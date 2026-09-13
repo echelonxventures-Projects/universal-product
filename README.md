@@ -2,6 +2,10 @@
 
 **Universal, white-label, multi-store commerce platform.** Zero runtime dependencies: Node.js ≥ 22.5 (`node:http`, `node:sqlite`, `node:crypto` only) + vanilla JS frontends. Everything—taxonomy, industries, product types, verticals, contexts, providers, countries, currencies, security policy—is *entity data*, never code.
 
+## Documentation
+
+End‑to‑end guides for every role — **Customers, Store Admins, Support, Marketplace Sellers, and Platform (Super) Admins** — live in **[USER_MANUAL.md](USER_MANUAL.md)** (roles & capability matrix, per‑surface walkthroughs, security, glossary, troubleshooting).
+
 ## Run
 
 ```bash
