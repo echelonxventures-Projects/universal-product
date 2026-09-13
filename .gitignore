@@ -1,0 +1,10 @@
+node_modules/
+data/*.db
+data/*.db-wal
+data/*.db-shm
+data/master.json
+data/master.key
+data/tls-*.pem
+.luxora.pid
+server.log
+/tmp

@@ -1,0 +1,17 @@
+{
+  "name": "luxora-platform",
+  "version": "1.0.0",
+  "description": "LUXORA - universal white-label commerce platform: zero-dependency Node server, SQLite, pluggable gateways, multi-tenant meta-model storefronts.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --check server.js && node --check lib/db.js && node --check lib/api.js && node --check lib/entity.js && node --check lib/meta.js && node --check public/js/app.js && node --check public/js/admin.js && node --check public/js/platform.js && node test/smoke.js",
+    "serve": "bash serve.sh",
+    "stop": "bash stop.sh"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "license": "MIT"
+}
