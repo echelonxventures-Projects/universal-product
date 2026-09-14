@@ -661,6 +661,40 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(!!aiNav, "AI Studio nav present in store console");
       if (aiNav) { click(aip.win, aiNav); await sleep(1400); const vb = aip.doc.querySelector("#vBody"); ok(vb && /AI Studio/i.test(vb.textContent) && !/⚠️/.test(vb.textContent), "AI Studio renders"); }
     }
+    console.log("▸ INTEGRATION LAYER (live payment/notification adapters — mocked transport, no network)");
+    {
+      const connect = require("../lib/connect.js");
+      const orig = globalThis.fetch;
+      // stripe live success
+      connect.__setFetch(async (url, o) => { const j = { id: "pi_live_9", status: "succeeded", client_secret: "secret" }; return { status: 200, ok: true, text: async () => JSON.stringify(j), json: j, headers: {} }; });
+      let r = await connect.pay({ provider: "stripe", config: { apiKey: "sk_test_1" }, amount: 12.5, currency: "USD", idempotency: "ord_1" });
+      ok(r.live === true && r.ok === true && r.ref === "pi_live_9" && r.status === "captured", "live Stripe charge succeeds", r);
+      // stripe live decline
+      connect.__setFetch(async () => { const j = { error: { message: "card declined" } }; return { status: 402, ok: false, text: async () => JSON.stringify(j), json: j }; });
+      r = await connect.pay({ provider: "stripe", config: { apiKey: "sk_test_1" }, amount: 5, currency: "USD" });
+      ok(r.live === true && r.ok === false && /declined/.test(r.error), "live decline is surfaced (not silently captured)", r);
+      // razorpay order create
+      connect.__setFetch(async () => { const j = { id: "order_abc" }; return { status: 200, ok: true, text: async () => JSON.stringify(j), json: j }; });
+      r = await connect.pay({ provider: "razorpay", config: { keyId: "k", keySecret: "s" }, amount: 100, currency: "INR" });
+      ok(r.live && r.ok && r.ref === "order_abc" && r.status === "pending", "live Razorpay order created", r);
+      // notifier live (resend)
+      let seen = null;
+      connect.__setFetch(async (url, o) => { seen = { url, auth: o.headers.Authorization, body: JSON.parse(o.body) }; const j = { id: "em_1" }; return { status: 200, ok: true, text: async () => JSON.stringify(j), json: j }; });
+      r = await connect.notify({ provider: "resend", config: { apiKey: "re_x", from: "a@b.co" }, to: "shopper@x.io", subject: "Hi", text: "Body" });
+      ok(r.live && r.ok && seen.url.includes("api.resend.com") && seen.auth === "Bearer re_x" && seen.body.to.includes("shopper@x.io"), "live Resend email dispatched", seen && seen.url);
+      // twilio sms
+      connect.__setFetch(async (url) => { const j = { sid: "SM1" }; return { status: 201, ok: true, text: async () => JSON.stringify(j), json: j }; });
+      r = await connect.notify({ provider: "twilio", config: { accountSid: "AC", authToken: "tok", from: "+1" }, to: "+1555", text: "x" });
+      ok(r.live && r.ok, "live Twilio SMS dispatched", r);
+      // no credentials → offline (caller will simulate)
+      r = await connect.pay({ provider: "stripe", config: {}, amount: 1 });
+      ok(r.live === false, "no credentials → simulated (live:false)", r);
+      // network throw is caught, surfaced as declined, never crashes
+      connect.__setFetch(async () => { throw new Error("ECONNRESET"); });
+      r = await connect.pay({ provider: "braintree", config: { merchantId: "m", publicKey: "p", privateKey: "q" }, amount: 1 });
+      ok(r.live === true && r.ok === false && /ECONNRESET/.test(r.error), "transport error handled gracefully", r);
+      connect.__setFetch(orig);
+    }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();
     await f("/api/session?store=velora");

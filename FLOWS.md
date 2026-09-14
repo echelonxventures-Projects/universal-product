@@ -514,3 +514,28 @@ flowchart TD
   AI --> RED
   RED --> FUND[funder settlement report]
 ```
+
+## 18. Integration layer — real payments & notifications (offline-safe)
+
+```
+  gateway/notifier row: mode = sandbox | live  +  sealed credentials (L5 AES-GCM)
+        │
+  api.js settlePayment / notify  ──►  lib/connect.js (zero-dep global fetch)
+        │                                 │ adapters (PAY): stripe·razorpay·paypal·square·braintree
+   mode≠live OR no creds OR LX_OFFLINE=1   │ adapters (NOTIFY): resend·sendgrid·twilio·webhook
+        │                                 │ (+ connect.ping for gateway "verify")
+        ▼                                 ▼
+   simulateGateway (offline, _sim ref)   LIVE HTTPS call → real txn id / delivered
+        │                                 on decline/error → payment.status='failed', order cancelled (402)
+  tests: __setFetch() injects a fake transport ⇒ real code paths exercised, never hits the network
+```
+```mermaid
+flowchart TD
+  CH[checkout / invoice pay] --> SP{live mode + creds?}
+  SP -- yes --> C[connect.pay] --> OK{ok?}
+  OK -- yes --> CAP[captured · real txn]
+  OK -- no --> F[failed → order cancelled 402]
+  SP -- no --> SIM[simulated capture]
+```
+> Env `LX_OFFLINE=1` forces every outbound call to the simulated path (CI / no-secrets runs).
+> AI premium models route through the same live/offline gate (`ai.js` provider `ai:<id>` creds).
