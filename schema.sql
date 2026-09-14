@@ -677,3 +677,71 @@ CREATE TRIGGER trg_wallet_entries_uid AFTER INSERT ON wallet_entries
 CREATE UNIQUE INDEX ux_offers_code ON offers(tenant_id, code) WHERE code<>'';
 CREATE INDEX ix_offers_chan ON offers(channel, status, tenant_id);
 CREATE INDEX ix_wallet_tx ON wallet_entries(tenant_id, owner);
+
+/* ---------- billing engine: line items, usage metering, credit notes, dunning events ---------- */
+CREATE TABLE invoice_lines (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  invoice_id INTEGER NOT NULL,
+  tenant_id INTEGER NOT NULL,
+  kind TEXT NOT NULL DEFAULT 'plan',
+  description TEXT NOT NULL,
+  qty REAL DEFAULT 1,
+  unit_amount REAL DEFAULT 0,
+  amount REAL DEFAULT 0,
+  tax REAL DEFAULT 0,
+  tax_class TEXT DEFAULT 'standard',
+  ref TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_invoice_lines_uid ON invoice_lines(uid);
+CREATE TRIGGER trg_invoice_lines_uid AFTER INSERT ON invoice_lines
+               BEGIN UPDATE invoice_lines SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE usage_records (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  kind TEXT NOT NULL,
+  ref TEXT DEFAULT '',
+  description TEXT NOT NULL DEFAULT '',
+  qty REAL DEFAULT 1,
+  unit_amount REAL DEFAULT 0,
+  amount REAL DEFAULT 0,
+  currency TEXT DEFAULT 'USD',
+  period TEXT NOT NULL DEFAULT '',
+  billed INTEGER DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_usage_records_uid ON usage_records(uid);
+CREATE TRIGGER trg_usage_records_uid AFTER INSERT ON usage_records
+               BEGIN UPDATE usage_records SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE credit_notes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  number TEXT NOT NULL UNIQUE,
+  invoice_id INTEGER,
+  amount REAL NOT NULL,
+  currency TEXT DEFAULT 'USD',
+  reason TEXT DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'issued',
+  to_wallet INTEGER DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_credit_notes_uid ON credit_notes(uid);
+CREATE TRIGGER trg_credit_notes_uid AFTER INSERT ON credit_notes
+               BEGIN UPDATE credit_notes SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE billing_events (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  invoice_id INTEGER,
+  kind TEXT NOT NULL,
+  detail TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_billing_events_uid ON billing_events(uid);
+CREATE TRIGGER trg_billing_events_uid AFTER INSERT ON billing_events
+               BEGIN UPDATE billing_events SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE INDEX IF NOT EXISTS ix_invoice_lines ON invoice_lines(invoice_id);
+CREATE INDEX IF NOT EXISTS ix_usage_open ON usage_records(tenant_id, billed);

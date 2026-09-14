@@ -815,6 +815,33 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok((await AD("/api/offers/preview", "POST", { amount: 100, coupon: "OLD", currency: "USD" })).body.discount === 0, "expired offer not applied");
       ok(((await AD("/api/offers")).body.offers.find(o => o.code === "OLD") || {}).status === "expired", "auto-expiry sweep flipped status");
     }
+    console.log("▸ TAX & BILLING ENGINES (data-driven rates, VAT/GST validation, line-item invoices, credits, dunning, aging)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const P = mk(); await P("/api/session"); await P("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      // Tax engine
+      const gst = (await A("/api/admin/tax/quote", "POST", { country: "IN", lines: [{ class: "standard", amount: 100 }, { class: "reduced", amount: 100 }] })).body;
+      ok(gst.tax === 17 && gst.lines.some(l => l.class === "reduced" && l.rate === 0.05), "GST classes rate resolution", gst.tax);
+      ok((await A("/api/admin/tax?country=IN&number=27AAAAA0000A1Z5")).body.taxNumber.ok === true, "valid GSTIN accepted");
+      ok((await A("/api/admin/tax?country=IN&number=BAD")).body.taxNumber.ok === false, "invalid GSTIN rejected");
+      const rc = (await A("/api/admin/tax/quote", "POST", { country: "DE", lines: [{ class: "digital", amount: 100 }], vatId: "DE123456789" })).body;
+      ok(rc.tax === 0 && rc.exempt.length === 1, "digital B2B reverse-charge zeroes VAT", rc.tax);
+      // Billing: usage → invoice with line items + plan + tax
+      await P("/api/platform/usage", "POST", { tenant_id: 1, kind: "ai", description: "AI premium units", qty: 5, unit_amount: 2 });
+      const inv = (await P("/api/platform/tenants/1/invoice", "POST", {})).body;
+      ok(inv.ok && inv.invoice.lines.some(l => l.kind === "plan") && inv.invoice.lines.some(l => l.kind === "usage"), "invoice has plan + usage lines", inv.invoice && inv.invoice.lines.map(l => l.kind));
+      ok(inv.invoice.amount > 49 && inv.invoice.tax >= 0, "invoice totals include usage + tax", { amount: inv.invoice.amount, tax: inv.invoice.tax });
+      // credit note refund to wallet
+      const rf = (await P("/api/platform/invoices/" + inv.invoice.id + "/refund", "POST", { to_wallet: true, owner: "t1:u:2" })).body;
+      ok(rf.ok && /^CN-/.test(rf.credit_note.number), "credit note issued", rf.credit_note && rf.credit_note.number);
+      const wl = (await A("/api/wallet/ledger?owner=t1:u:2")).body.entries || [];
+      ok(wl.some(e => e.kind === "refund" && /credit:/.test(e.ref || "")), "refund credited the wallet ledger");
+      // aging + dunning run without error
+      const ag = (await P("/api/platform/billing/aging")).body; ok(ag.aging && typeof ag.aging.total === "number", "aging buckets", ag.aging);
+      const dn = (await P("/api/platform/billing/dunning", "POST", { tenant_id: 1 })).body; ok(dn.ok, "dunning ran");
+      const bl = (await A("/api/admin/billing/detail")).body; ok(Array.isArray(bl.invoices) && bl.invoices.length >= 1, "store billing detail lists invoices");
+    }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();
     await f("/api/session?store=velora");

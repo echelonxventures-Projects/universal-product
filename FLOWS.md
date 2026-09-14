@@ -567,3 +567,32 @@ flowchart LR
 ```
 > Switching a store (or the platform) to Redis + S3 + a worker is a **config change**, not a
 > deploy — the same "everything is data" principle, now applied to infrastructure.
+
+## 20. Tax + Billing engines (first-class, config-driven, shared)
+
+```
+  lib/tax.js  — meta_lists: taxClasses · taxRules · exemptionReasons · taxNumberFormats
+     quote({country, lines[{class|tax_rule, amount}], buyerVat, inclusive}) → per-line rate + tax
+     · class → jurisdiction rate (standard/reduced/digital) · per-product tax_rule override
+     · B2B reverse-charge zeroes digital VAT when buyer VAT/GST valid · exemption via class/flag
+     validateNumber(country, num) — GSTIN / UK VAT / DE USt / AE TRN / FR TVA
+     computeLegacy() — exact old formula, so checkout is byte-identical (no regression)
+     ONE engine used by checkout AND invoices AND /api/admin/tax/quote
+
+  lib/billing.js — invoice_lines · usage_records · credit_notes · billing_events
+     issueInvoice(): plan line (+proration) + unbilled usage lines + offer discount (subscription
+        channel via offers.discountFor) + tax (via tax.js) → draft invoice + lines + event
+     recordUsage() (AI units, orders, storage, api) · creditNote() (refund → customer wallet via
+        offers.js double-entry) · dunning() (escalating stages) · aging() (receivables buckets)
+     AI premium runs auto-meter usage; module/plan purchases flow through invoices
+```
+```mermaid
+flowchart TD
+  U[usage: AI/orders/storage] --> BILL[issueInvoice]
+  S[plan + proration] --> BILL
+  O[offers discount subscription] --> BILL
+  T[tax.quote] --> BILL
+  BILL --> INV[draft invoice + lines]
+  INV -->|refund| CN[credit note → wallet]
+  INV -->|overdue| DUN[dunning stages]
+```

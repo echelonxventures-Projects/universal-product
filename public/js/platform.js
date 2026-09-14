@@ -28,7 +28,7 @@ function toast(msg) {
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3200);
 }
 const NAV = [["dash", "◈ Command"], ["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["geo", "🌍 Geo · Countries · Taxes"], ["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"],
-["invoices", "🧾 Invoices"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["offers", "🎁 Global Offers"], ["runtime", "🧩 Runtime · Infra"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"]];
+["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["offers", "🎁 Global Offers"], ["runtime", "🧩 Runtime · Infra"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"]];
 let view = "dash";
 const P = { user: null, tenants: [], plans: [] };
 
@@ -589,6 +589,43 @@ function wireRuntime() {
   $$("[data-flagedit]").forEach(b => b.onclick = async () => { const r = Number(prompt("Rollout % (0-100)", b.dataset.r)); if (r == null) return; const d = confirm("Default ON?"); await api("/platform/flags/" + encodeURIComponent(b.dataset.flagedit), "PUT", { rollout: r, default: d }); render(); });
   $$("[data-flagdel]").forEach(b => b.onclick = async () => { await api("/platform/flags/" + encodeURIComponent(b.dataset.flagdel), "DELETE", {}); render(); });
 }
+async function vBillingOps() {
+  const d = await api("/platform/billing/aging"); const tenants = (await api("/platform/tenants")).tenants;
+  const ag = d.aging, inv = (d.all && d.all.invoices) || [], notes = (d.all && d.all.notes) || [], events = (d.all && d.all.events) || [];
+  const bStatus = s => `<span class="badge ${s === "paid" ? "published" : s === "overdue" ? "failed" : "processing"}">${esc(s)}</span>`;
+  return `<div class="p-panel"><h2>💳 Billing Ops</h2>
+    <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Line-item subscription + usage invoicing, tax (via the Tax engine), credit notes / refunds-to-wallet (via the Offers wallet), dunning, and receivables aging.</p>
+    <div class="p-cards" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+      <div class="p-stat"><b>${money(ag.current)}</b> current</div><div class="p-stat"><b>${money(ag.d30)}</b> 1–30d</div><div class="p-stat"><b>${money(ag.d60)}</b> 31–60d</div><div class="p-stat"><b>${money(ag.d90)}</b> 60d+</div>
+      <div class="p-stat"><b>${money(ag.total)}</b> receivable</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px"><button class="p-btn sm primary" id="runDunning">Run dunning sweep</button>
+      <span id="dunOut" class="p-tag"></span></div>
+    <h3>Generate invoice</h3>
+    <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap"><label><span>Store</span><select id="biTenant">${tenants.map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join("")}</select></label><button class="p-btn sm" id="biGo">Issue monthly + usage invoice</button></div>
+    <h3>Record metered usage</h3>
+    <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+      <label><span>Store</span><select id="usTenant">${tenants.map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join("")}</select></label>
+      <label><span>Kind</span><select id="usKind"><option>ai</option><option>orders</option><option>storage</option><option>api</option><option>manual</option></select></label>
+      <label><span>Description</span><input id="usDesc" placeholder="AI premium units"></label>
+      <label><span>Qty</span><input id="usQty" type="number" value="1"></label>
+      <label><span>Unit</span><input id="usUnit" type="number" step="0.01" value="0"></label>
+      <button class="p-btn sm" id="usGo">Add usage</button></div>
+    <h3>Invoices (all stores)</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>#</th><th class="num">Amount</th><th>Status</th><th>Period</th><th>Lines</th><th></th></tr></thead><tbody>
+      ${inv.map(i => `<tr><td><code>${esc(i.number)}</code></td><td class="num">${money(i.amount)}</td><td>${bStatus(i.status)}</td><td>${esc(i.period_start || "")}→${esc(i.period_end || "")}</td><td class="p-tag">${(i.lines || []).map(l => `${l.kind} ${money(l.amount)}`).join(", ")}</td>
+        <td style="text-align:right"><button class="p-btn sm danger" data-ref="${i.id}">Credit/Refund</button></td></tr>`).join("") || '<tr><td colspan="6">None.</td></tr>'}
+    </tbody></table></div>
+    <h3>Credit notes</h3>${notes.length ? `<table class="p-table"><thead><tr><th>#</th><th class="num">Amount</th><th>Wallet</th><th>Reason</th></tr></thead><tbody>${notes.map(n => `<tr><td><code>${esc(n.number)}</code></td><td class="num">${money(n.amount)}</td><td>${n.to_wallet ? "yes" : "no"}</td><td>${esc(n.reason || "")}</td></tr>`).join("")}</tbody></table>` : '<p class="p-tag">None.</p>'}
+    <h3>Billing events</h3><div class="p-tag" style="max-height:220px;overflow:auto">${events.slice(0, 20).map(e => { let d = {}; try { d = JSON.parse(e.detail || "{}"); } catch (x) { } return `${esc((e.created_at || "").slice(0, 16))} · ${esc(e.kind)} · ${esc(JSON.stringify(d))}`; }).join("<br>") || "—"}</div>
+    </div>`;
+}
+function wireBillingOps() {
+  const $ = s => document.querySelector(s);
+  if ($("#runDunning")) $("#runDunning").onclick = async () => { try { const r = await api("/platform/billing/dunning", "POST", {}); $("#dunOut").textContent = (r.actions.length) + " overdue actions"; render(); } catch (e) { toast(e.message); } };
+  if ($("#biGo")) $("#biGo").onclick = async () => { try { await api("/platform/tenants/" + $("#biTenant").value + "/invoice", "POST", {}); toast("Invoice issued"); render(); } catch (e) { toast(e.message); } };
+  if ($("#usGo")) $("#usGo").onclick = async () => { try { await api("/platform/usage", "POST", { tenant_id: Number($("#usTenant").value), kind: $("#usKind").value, description: $("#usDesc").value || $("#usKind").value, qty: Number($("#usQty").value) || 1, unit_amount: Number($("#usUnit").value) || 0 }); toast("Usage recorded"); render(); } catch (e) { toast(e.message); } };
+  document.querySelectorAll("[data-ref]").forEach(b => b.onclick = async () => { const amt = prompt("Refund amount (blank = full)"); try { await api("/platform/invoices/" + b.dataset.ref + "/refund", "POST", { amount: amt ? Number(amt) : undefined, to_wallet: confirm("Credit to the store's customer wallet? (OK) or log a credit note only (Cancel)") }); toast("Credit note issued"); render(); } catch (e) { toast(e.message); } });
+}
 async function render() {
   shell('<div class="p-empty">Loading…</div>');
   const body = $("#vBody");
@@ -599,6 +636,7 @@ async function render() {
     else if (view === "plans") body.innerHTML = await vPlans();
     else if (view === "subs") body.innerHTML = await vSubs();
     else if (view === "invoices") body.innerHTML = await vInvoices();
+    else if (view === "billing") { body.innerHTML = await vBillingOps(); wireBillingOps(); }
     else if (view === "modules") { body.innerHTML = await vModules(); await wireModules(); }
     else if (view === "providers") body.innerHTML = await vProviders();
     else if (view === "ai") body.innerHTML = await vAI();
