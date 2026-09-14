@@ -544,26 +544,50 @@ function wireGlobalOffers() {
   function gval(id) { const el = document.getElementById(id); return el ? el.value : ""; }
 }
 async function vRuntime() {
-  const d = await api("/platform/runtime");
+  const d = await api("/platform/runtime"); const [eNv, fL] = await Promise.all([api("/platform/environments"), api("/platform/flags")]);
   const rt = d.runtime, cat = d.catalog, active = d.active;
   const concerns = Object.keys(cat.catalog);
-  return `<div class="p-panel"><h2>🧩 Runtime · Infrastructure</h2>
-    <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Every backend is a <b>config choice</b>, not a code change — safe in-process defaults now, switch to Redis / S3 / a worker / an HTTP hook anytime. DB stays SQLite (its swap seam is interface-isolated). Saving applies to newly-built adapters.</p>
-    ${d.offline ? '<p class="badge processing" style="display:inline-block;padding:6px 10px;border-radius:8px">LX_OFFLINE=1 — all outbound forced to simulated</p>' : ""}
-    <table class="p-table"><thead><tr><th>Concern</th><th>Default</th><th>Active now</th><th>Driver</th><th>Connection</th></tr></thead><tbody>
-      ${concerns.map(k => { const c = cat.catalog[k], cur = rt[k], kinds = c.drivers.map(dr => `<option ${dr === cur.driver ? "selected" : ""}>${dr}</option>`).join(""); const fields = cat.driverFields[cur.driver] || []; const params = cur.params || {}; const inp = fields.map(f => `<label style="display:block;font-size:11px"><span>${esc(f.label)}</span><input data-rtp="${k}.${f.key}" type="${f.secret ? "password" : "text"}" value="${esc(f.secret ? "••••" : (params[f.key] || ""))}" placeholder="${esc(f.key)}"></label>`).join("") || '<span class="p-tag">no config</span>'; return `<tr><td><b>${esc(c.label)}</b><br><code>${k}</code></td><td><code>${c.default}</code></td><td><span class="p-tag">${esc(active[k] || cur.driver)}</span></td>
-        <td><select data-rt="${k}">${kinds}</select></td><td style="min-width:220px">${inp}</td></tr>`; }).join("")}
+  const envRows = (eNv.environments || []).map(e => `<tr><td><b>${esc(e.label)}</b>${e.active ? ' <span class="badge published">ACTIVE</span>' : ""}<br><code>${esc(e.name)}</code></td><td>${esc(e.region || "—")}</td><td class="p-tag">${e.tenants && e.tenants.length ? e.tenants.join(",") : "base"}</td><td>${(e.flags || []).length ? e.flags.map(f => `<code>${esc(f)}</code>`).join(" ") : "—"}</td><td class="p-tag">${Object.entries(e.runtime || {}).map(([k, v]) => `${k}:${v.driver}`).join(" ") || "defaults"}</td>
+    <td style="text-align:right;white-space:nowrap"><button class="p-btn sm primary" data-envact="${esc(e.name)}">Activate</button> <button class="p-btn sm" data-envedit="${esc(e.name)}">Edit</button> <button class="p-btn sm danger" data-envdel="${esc(e.name)}">✕</button></td></tr>`).join("");
+  const flagRows = Object.entries(fL.flags || {}).map(([k, f]) => `<tr><td><code>${esc(k)}</code></td><td>${esc(f.description || "")}</td><td><span class="badge ${f.default ? "published" : "draft"}">${f.default ? "on" : "off"}</span></td><td class="num">${f.rollout}%</td><td><button class="p-btn sm" data-flagedit="${esc(k)}" data-r="${f.rollout}" data-d="${f.default ? 1 : 0}">edit</button> <button class="p-btn sm danger" data-flagdel="${esc(k)}">✕</button></td></tr>`).join("");
+  return `<div class="p-panel"><h2>🧩 Runtime · Infra</h2>
+    <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Every backend is a <b>config choice</b>. Define unlimited <b>named environments</b> (bundles of driver choices + secrets + feature flags), activate one to swap the whole topology, or set <code>LX_ENV=prod</code> at boot.</p>
+    ${d.offline ? '<p class="badge processing" style="display:inline-block;padding:6px 10px;border-radius:8px;margin-bottom:8px">LX_OFFLINE=1 — outbound forced to simulated</p>' : ""}
+    <h3>Environments</h3>
+    ${envRows ? `<div class="p-scroll-x"><table class="p-table"><thead><tr><th>Environment</th><th>Region</th><th>Tenants</th><th>Flags</th><th>Runtime overlay</th><th></th></tr></thead><tbody>${envRows}</tbody></table></div>` : '<p class="p-tag">No environments yet — the base runtime below is active.</p>'}
+    <div class="p-panel" style="margin-top:10px"><b>New environment</b>
+      <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin-top:6px">
+        <label><span>Name</span><input id="envName" placeholder="prod-eu"></label>
+        <label><span>Region</span><input id="envRegion" placeholder="eu-west-1"></label>
+        <label><span>Tenant ids (CSV)</span><input id="envTenants" placeholder="1,4"></label>
+        <button class="p-btn sm primary" id="envCreate">Create</button>
+        <button class="p-btn sm" id="envExport">Export JSON</button>
+        <label style="font-size:12px"><span>Import (JSON)</span><input type="file" id="envImportFile" accept="application/json" style="display:inline-block"></label>
+      </div></div>
+    <h3 style="margin-top:16px">Feature flags</h3>
+    ${flagRows ? `<table class="p-table"><thead><tr><th>Flag</th><th>What</th><th>Default</th><th class="num">Rollout</th><th></th></tr></thead><tbody>${flagRows}</tbody></table>` : '<p class="p-tag">No flags.</p>'}
+    <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin-top:6px"><label><span>New flag</span><input id="flagName" placeholder="checkout.upsells"></label><label><span>Rollout %</span><input id="flagRollout" type="number" value="0" min="0" max="100"></label><label><span>Default on</span><input id="flagDefault" type="checkbox"></label><button class="p-btn sm primary" id="flagSave">Add</button></div>
+    <h3 style="margin-top:16px">Base runtime (active now)</h3>
+    <table class="p-table"><thead><tr><th>Concern</th><th>Default</th><th>Active</th><th>Driver</th><th>Connection</th></tr></thead><tbody>
+      ${concerns.map(k => { const c = cat.catalog[k], cur = rt[k], kinds = c.drivers.map(dr => `<option ${dr === cur.driver ? "selected" : ""}>${dr}</option>`).join(""); const fields = cat.driverFields[cur.driver] || []; const params = cur.params || {}; const inp = fields.map(f => `<label style="display:block;font-size:11px"><span>${esc(f.label)}</span><input data-rtp="${k}.${f.key}" type="${f.secret ? "password" : "text"}" value="${esc(f.secret ? "••••" : (params[f.key] || ""))}" placeholder="${esc(f.key)}"></label>`).join("") || '<span class="p-tag">none</span>'; return `<tr><td><b>${esc(c.label)}</b><br><code>${k}</code></td><td><code>${c.default}</code></td><td><span class="p-tag">${esc(active[k] || cur.driver)}</span></td><td><select data-rt="${k}">${kinds}</select></td><td>${inp}</td></tr>`; }).join("")}
     </tbody></table>
-    <div style="margin-top:12px"><button class="p-btn primary sm" id="rtSave">Apply runtime config</button> <span class="p-tag">Drivers: ${concerns.map(k => `${k}=[${cat.catalog[k].drivers.join("|")}]`).join(" · ")}</span></div></div>`;
+    <div style="margin-top:12px"><button class="p-btn primary sm" id="rtSave">Apply base runtime</button> <button class="p-btn sm" id="rtTest">Test connections</button> <span id="rtTestOut" class="p-tag"></span></div></div>`;
 }
 function wireRuntime() {
-  const save = async () => {
-    const body = {};
-    document.querySelectorAll("[data-rt]").forEach(sel => { body[sel.dataset.rt] = { driver: sel.value }; });
-    document.querySelectorAll("[data-rtp]").forEach(inp => { const [k, field] = inp.dataset.rtp.split("."); body[k] = body[k] || { driver: null }; body[k].params = body[k].params || {}; if (inp.value && !inp.value.startsWith("••••")) body[k].params[field] = inp.value; });
-    try { await api("/platform/runtime", "PUT", body); toast("Runtime configuration applied"); render(); } catch (e) { toast(e.message); }
-  };
-  const b = document.getElementById("rtSave"); if (b) b.onclick = save;
+  const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
+  const baseBody = () => { const body = {}; $$("[data-rt]").forEach(sel => { body[sel.dataset.rt] = { driver: sel.value }; }); $$("[data-rtp]").forEach(inp => { const [k, field] = inp.dataset.rtp.split("."); body[k] = body[k] || {}; body[k].params = body[k].params || {}; if (inp.value && !inp.value.startsWith("••••")) body[k].params[field] = inp.value; }); return body; };
+  const save = async () => { try { await api("/platform/runtime", "PUT", baseBody()); toast("Base runtime applied"); render(); } catch (e) { toast(e.message); } };
+  if ($("#rtSave")) $("#rtSave").onclick = save;
+  if ($("#rtTest")) $("#rtTest").onclick = async () => { const out = []; for (const c of ["cache", "ratelimit", "queue", "storage", "db"]) { try { const r = await api("/platform/runtime/test", "POST", { concern: c }); out.push(c + "=" + (r.ok ? "ok" : "FAIL") + (r.error ? ":" + r.error : "")); } catch (e) { out.push(c + "=err"); } } $("#rtTestOut").textContent = out.join(" · "); };
+  if ($("#envCreate")) $("#envCreate").onclick = async () => { try { await api("/platform/environments?name=" + encodeURIComponent($("#envName").value), "POST", { name: $("#envName").value, label: $("#envName").value, region: $("#envRegion").value, tenants: $("#envTenants").value.split(",").map(x => Number(x)).filter(Boolean), runtime: baseBody() }); toast("Environment created"); render(); } catch (e) { toast(e.message); } };
+  $$("[data-envact]").forEach(b => b.onclick = async () => { try { await api("/platform/environments/" + encodeURIComponent(b.dataset.envact) + "/activate", "POST", {}); toast("Environment activated"); render(); } catch (e) { toast(e.message); } });
+  $$("[data-envdel]").forEach(b => b.onclick = async () => { if (!confirm("Delete environment?")) return; try { await api("/platform/environments/" + encodeURIComponent(b.dataset.envdel), "DELETE", {}); render(); } catch (e) { toast(e.message); } });
+  $$("[data-envedit]").forEach(b => b.onclick = async () => { const e = (await api("/platform/environments/" + encodeURIComponent(b.dataset.envedit))).environment; $("#envName").value = e.name; $("#envRegion").value = e.region || ""; $("#envTenants").value = (e.tenants || []).join(","); /* load its overlay into selects */ for (const [k, cfg] of Object.entries(e.runtime || {})) { const sel = $(`[data-rt="${k}"]`); if (sel) sel.value = cfg.driver; } toast("Loaded " + e.name + " into the base form — Create to update"); });
+  if ($("#envExport")) $("#envExport").onclick = async () => { const r = await api("/platform/environments-export"); const blob = new Blob([JSON.stringify(r.bundle, null, 1)], { type: "application/json" }); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "luxora-environments.json"; a.click(); };
+  if ($("#envImportFile")) $("#envImportFile").onchange = e => { const file = e.target.files[0]; if (!file) return; const fr = new FileReader(); fr.onload = async () => { try { const bundle = JSON.parse(fr.result); await api("/platform/environments-import", "POST", { bundle }); toast("Environments imported"); render(); } catch (err) { toast(err.message); } }; fr.readAsText(file); };
+  if ($("#flagSave")) $("#flagSave").onclick = async () => { try { await api("/platform/flags/" + encodeURIComponent($("#flagName").value), "PUT", { name: $("#flagName").value, rollout: Number($("#flagRollout").value) || 0, default: $("#flagDefault").checked }); toast("Flag set"); render(); } catch (e) { toast(e.message); } };
+  $$("[data-flagedit]").forEach(b => b.onclick = async () => { const r = Number(prompt("Rollout % (0-100)", b.dataset.r)); if (r == null) return; const d = confirm("Default ON?"); await api("/platform/flags/" + encodeURIComponent(b.dataset.flagedit), "PUT", { rollout: r, default: d }); render(); });
+  $$("[data-flagdel]").forEach(b => b.onclick = async () => { await api("/platform/flags/" + encodeURIComponent(b.dataset.flagdel), "DELETE", {}); render(); });
 }
 async function render() {
   shell('<div class="p-empty">Loading…</div>');

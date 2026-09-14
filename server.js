@@ -11,6 +11,7 @@ const api = require("./lib/api.js");
 const metrics = require("./lib/metrics.js");
 const sec = require("./lib/security.js");
 require("./lib/modules.js").ensureBaselines();
+try { require("./lib/env.js").boot(); } catch (e) { console.error("env boot:", e.message); }
 
 const PORT = Number(process.env.PORT || 3000);
 const PUB = path.join(__dirname, "public");

@@ -477,7 +477,7 @@ function wireAI() {
 /* ---------- Central Offers & Coupons (data-driven builder) ---------- */
 async function vOffers() {
   const meta = await api("/meta");
-  const [off, cp] = await Promise.all([api("/offers"), api("/offers/coupons")]);
+  const [off, cp, an] = await Promise.all([api("/offers"), api("/offers/coupons"), api("/offers/analytics")]);
   const types = meta.offerTypes || [], chans = meta.offerChannels || [], dirs = meta.offerDirections || [], scopes = meta.offerScopes || [], funders = meta.offerFunders || [], stacks = meta.stackingPolicies || [], cKinds = meta.couponKinds || [];
   const opt = (arr, lblFn) => arr.map(x => `<option value="${esc(x.key || x)}">${esc(lblFn ? lblFn(x) : (x.name || x))}</option>`).join("");
   const statusBadge = st => `<span class="badge ${st === "active" ? "published" : "draft"}">${esc(st)}</span>`;
@@ -504,7 +504,9 @@ async function vOffers() {
         <label><span>Stack policy</span><select id="oStack">${opt(stacks)}</select></label>
         <label><span>Max discount</span><input id="oMax" type="number" step="0.01" placeholder="0 = none"></label>
         <label><span>Min spend</span><input id="oMin" type="number" step="0.01"></label>
+        <label><span>Currency (fixed amt)</span><select id="oCur"><option>USD</option><option>EUR</option><option>GBP</option><option>INR</option><option>AED</option></select></label>
         <label><span>Usage limit</span><input id="oUse" type="number" value="0"></label>
+        <label><span>Per-owner limit</span><input id="oOwner" type="number" value="0"></label>
         <label><span>Priority</span><input id="oPri" type="number" value="0"></label>
         <label><span>Starts</span><input id="oStart" type="date"></label>
         <label><span>Ends</span><input id="oEnd" type="date"></label>
@@ -521,12 +523,21 @@ async function vOffers() {
         <label><span>Funder</span><select id="cFunder">${opt(funders)}</select></label>
         <label><span>Funder ref</span><input id="cFunderRef" placeholder="e.g. HDFC"></label>
         <label><span>Max uses</span><input id="cMax" type="number" value="1"></label>
+        <label><span>Per owner</span><input id="cOwner" type="number" value="1"></label>
         <button class="p-btn primary sm" id="cCreate">+ Coupon</button>
         <button class="p-btn sm" id="cGen">Generate 10 codes</button>
       </div>
       <div class="p-scroll-x" style="margin-top:10px"><table class="p-table"><thead><tr><th>Code</th><th>Kind</th><th>Funder</th><th class="num">Value</th><th class="num">Used/Max</th><th>Status</th><th></th></tr></thead><tbody>
         ${(cp.coupons || []).map(c => `<tr><td><code>${esc(c.code)}</code>${c.tenant_id === 0 ? ' <span class="p-tag">GLOBAL</span>' : ""}</td><td>${esc(c.kind)}</td><td>${esc(c.funder)}${c.funder_ref ? " " + esc(c.funder_ref) : ""}</td><td class="num">${esc(c.value)}</td><td class="num">${c.used}/${c.max_uses}</td><td>${statusBadge(c.status)}</td><td style="text-align:right"><button class="p-btn sm danger" data-cvoid="${c.id}">Void</button></td></tr>`).join("") || '<tr><td colspan="7">No coupons.</td></tr>'}
       </tbody></table></div>
+      <h3>Redemption performance</h3>
+      <div class="p-cards" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">
+        <div class="p-stat"><b>${(an.totals && an.totals.redemptions) || 0}</b> redemptions</div>
+        <div class="p-stat"><b>${money(an.totals && an.totals.discount || 0)}</b> discount given</div>
+        <div class="p-stat"><b>${money(an.totals && an.totals.credits || 0)}</b> credits rewarded</div>
+      </div>
+      ${(an.byCode || []).filter(x => x.k).length ? `<table class="p-table"><thead><tr><th>Top codes</th><th class="num">Times</th><th class="num">Discount</th></tr></thead><tbody>${an.byCode.filter(x => x.k).slice(0, 8).map(x => `<tr><td><code>${esc(x.k)}</code></td><td class="num">${x.n}</td><td class="num">${money(x.discount)}</td></tr>`).join("")}</tbody></table>` : ""}
+      ${(an.byFunder || []).length ? `<p class="p-tag">By funder: ${an.byFunder.map(x => `${esc(x.k || "self")}: ${x.n} (${money(x.discount)})`).join(" · ")}</p>` : ""}
       <h3>Recent redemptions</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Code</th><th class="num">Amount</th><th>Funder</th><th>Channel</th><th>Owner</th><th>When</th></tr></thead><tbody>
         ${(cp.redemptions || []).slice(0, 12).map(r => `<tr><td><code>${esc(r.code)}</code></td><td class="num">${money(r.amount)}</td><td>${esc(r.funder)}${r.funder_ref ? " " + esc(r.funder_ref) : ""}</td><td>${esc(r.channel)}</td><td class="p-tag">${esc((r.owner || "").slice(0, 16))}</td><td>${esc((r.created_at || "").slice(0, 16))}</td></tr>`).join("") || '<tr><td colspan="6">No redemptions yet.</td></tr>'}
       </tbody></table></div>
@@ -545,14 +556,14 @@ function wireOffers() {
   const $ = s => document.querySelector(s); const $$ = s => Array.from(document.querySelectorAll(s));
   const readScope = () => { const st = $("#oScope").value, csv = $("#oScopeVal").value.split(",").map(x => x.trim()).filter(Boolean); if (st === "product") return { products: csv }; if (st === "category") return { categories: csv }; if (st === "brand") return { brands: csv }; if (st === "node") return { node: csv[0] || "" }; return {}; };
   const save = async (id) => {
-    const body = { name: $("#oName").value, type: $("#oType").value, value: Number($("#oValue").value), code: $("#oCode").value, channel: $("#oChan").value, scope_type: $("#oScope").value, scope: readScope(), funder: $("#oFunder").value, funder_ref: $("#oFunderRef").value, brand_ref: "", direction: $("#oDir").value, stack_policy: $("#oStack").value, max_discount: Number($("#oMax").value) || 0, min_amount: Number($("#oMin").value) || 0, usage_limit: Number($("#oUse").value) || 0, priority: Number($("#oPri").value) || 0, starts: $("#oStart").value || null, ends: $("#oEnd").value || null, status: $("#oStatus").value };
+    const body = { name: $("#oName").value, type: $("#oType").value, value: Number($("#oValue").value), code: $("#oCode").value, channel: $("#oChan").value, scope_type: $("#oScope").value, scope: readScope(), funder: $("#oFunder").value, funder_ref: $("#oFunderRef").value, brand_ref: "", direction: $("#oDir").value, stack_policy: $("#oStack").value, max_discount: Number($("#oMax").value) || 0, min_amount: Number($("#oMin").value) || 0, currency: ($("#oCur") || {}).value || "USD", usage_limit: Number($("#oUse").value) || 0, per_owner_limit: Number(($("#oOwner") || {}).value) || 0, priority: Number($("#oPri").value) || 0, starts: $("#oStart").value || null, ends: $("#oEnd").value || null, status: $("#oStatus").value };
     try { await api("/offers" + (id ? "/" + id : ""), id ? "PUT" : "POST", body); toast("Offer saved"); render(); } catch (e) { toast(e.message); }
   };
   $("#oSave").onclick = () => save(window.__oeid || null);
-  $$("[data-oedit]").forEach(b => b.onclick = async () => { window.__oeid = b.dataset.oedit; const o = ((await api("/offers")).offers.find(x => String(x.id) === b.dataset.oedit) || {}); $("#oName").value = o.name || ""; $("#oType").value = o.type || "percent"; $("#oValue").value = o.value || 0; $("#oCode").value = o.code || ""; $("#oChan").value = o.channel || "commerce"; $("#oScope").value = o.scope_type || "store"; $("#oScopeVal").value = [].concat((o.scope || {}).products || (o.scope || {}).categories || (o.scope || {}).brands || (o.scope || {}).node || []).join(","); $("#oFunder").value = o.funder || "self"; $("#oFunderRef").value = o.funder_ref || ""; $("#oDir").value = o.direction || "discount"; $("#oStack").value = o.stack_policy || "stack_with_others"; $("#oMax").value = o.max_discount || ""; $("#oMin").value = o.min_amount || ""; $("#oUse").value = o.usage_limit || 0; $("#oPri").value = o.priority || 0; $("#oStatus").value = o.status || "active"; $("#oEditHint").textContent = "editing #" + b.dataset.oedit; $("#oSave").textContent = "Update offer"; });
+  $$("[data-oedit]").forEach(b => b.onclick = async () => { window.__oeid = b.dataset.oedit; const o = ((await api("/offers")).offers.find(x => String(x.id) === b.dataset.oedit) || {}); $("#oName").value = o.name || ""; $("#oType").value = o.type || "percent"; $("#oValue").value = o.value || 0; $("#oCode").value = o.code || ""; $("#oChan").value = o.channel || "commerce"; $("#oScope").value = o.scope_type || "store"; $("#oScopeVal").value = [].concat((o.scope || {}).products || (o.scope || {}).categories || (o.scope || {}).brands || (o.scope || {}).node || []).join(","); $("#oFunder").value = o.funder || "self"; $("#oFunderRef").value = o.funder_ref || ""; $("#oDir").value = o.direction || "discount"; $("#oStack").value = o.stack_policy || "stack_with_others";     $("#oMax").value = o.max_discount || ""; $("#oMin").value = o.min_amount || ""; $("#oUse").value = o.usage_limit || 0; if ($("#oCur")) $("#oCur").value = o.currency || "USD"; if ($("#oOwner")) $("#oOwner").value = o.per_owner_limit || 0; $("#oPri").value = o.priority || 0; $("#oStatus").value = o.status || "active"; $("#oEditHint").textContent = "editing #" + b.dataset.oedit; $("#oSave").textContent = "Update offer"; });
   $$("[data-oret]").forEach(b => b.onclick = async () => { try { await api("/offers/" + b.dataset.oret, "DELETE"); toast("Retired"); render(); } catch (e) { toast(e.message); } });
-  $("#cCreate").onclick = async () => { try { await api("/offers/coupons", "POST", { kind: $("#cKind").value, code: $("#cCode").value, value: Number($("#cVal").value), funder: $("#cFunder").value, funder_ref: $("#cFunderRef").value, max_uses: Number($("#cMax").value) || 1 }); toast("Coupon created"); render(); } catch (e) { toast(e.message); } };
-  $("#cGen").onclick = async () => { try { const r = await api("/offers/coupons/generate", "POST", { count: 10, kind: $("#cKind").value, funder: $("#cFunder").value, funder_ref: $("#cFunderRef").value, value: Number($("#cVal").value) }); toast(r.count + " codes (" + r.batch + ")"); render(); } catch (e) { toast(e.message); } };
+  $("#cCreate").onclick = async () => { try { await api("/offers/coupons", "POST", { kind: $("#cKind").value, code: $("#cCode").value, value: Number($("#cVal").value), funder: $("#cFunder").value, funder_ref: $("#cFunderRef").value, max_uses: Number($("#cMax").value) || 1, per_owner_limit: Number(($("#cOwner") || {}).value) || 1 }); toast("Coupon created"); render(); } catch (e) { toast(e.message); } };
+  $("#cGen").onclick = async () => { try { const r = await api("/offers/coupons/generate", "POST", { count: 10, kind: $("#cKind").value, funder: $("#cFunder").value, funder_ref: $("#cFunderRef").value, value: Number($("#cVal").value), per_owner_limit: Number(($("#cOwner") || {}).value) || 1 }); toast(r.count + " codes (" + r.batch + ")"); render(); } catch (e) { toast(e.message); } };
   $$("[data-cvoid]").forEach(b => b.onclick = async () => { try { await api("/offers/coupons/" + b.dataset.cvoid, "DELETE"); toast("Voided"); render(); } catch (e) { toast(e.message); } });
   $("#pvGo").onclick = async () => { try { const r = await api("/offers/preview", "POST", { amount: Number($("#pvAmt").value), channel: $("#pvChan").value, coupon: $("#pvCode").value }); $("#pvOut").textContent = JSON.stringify({ discount: r.discount, credits: r.credits, freeShip: r.freeShip, netBase: r.netBase, applied: r.applied.map(a => a.name + " (" + a.type + ")") }, null, 1); } catch (e) { $("#pvOut").textContent = "⚠ " + e.message; } };
   $("#wlGo").onclick = async () => { try { const r = await api("/wallet/ledger" + ($("#wlOwner").value ? "?owner=" + encodeURIComponent($("#wlOwner").value) : "")); $("#wlOut").innerHTML = "balance " + money(r.balance) + "<br>" + (r.entries || []).map(e2 => `${esc(e2.kind)} ${Number(e2.amount).toFixed(2)} → ${money(e2.balance_after)} · ${esc((e2.created_at || "").slice(0, 16))}`).join("<br>") || "no entries"; } catch (e) { toast(e.message); } };

@@ -286,6 +286,17 @@ One discount engine powers cart, checkout, billing and AI — everything is conf
 - New types / scopes / channels / funders are edited in **Data Studio** (`offerTypes`,
   `offerScopes`, …) — no code.
 
+**Enforced end-to-end (not just preview):**
+- **Refund clawback** — refunding a payment (or marking a return *refunded*) voids the coupon/offer
+  redemptions for that order, restores coupon usage counts, and reverses any wallet reward credits.
+- **Currency safety** — an absolute-value offer (`fixed`, `fixed_per_item`, `bundle`, `multi_buy`,
+  `spend_get_credit`) applies only when its currency matches the store currency; percentages / ratios /
+  free-shipping are currency-agnostic; global offers honour this per store.
+- **Usage + per-owner limits** — `usage_limit` and `per_owner_limit` are counted from live redemptions
+  and released again on refund.
+- **Auto lifecycle** — scheduled offers activate at start; past-end offers/coupons flip to `expired`.
+- **Analytics** — redemption performance by code / funder / type / source, with discount + credit totals.
+
 ## B9. AI Studio
 Every store gets the **free built-in AI engine** automatically (recommendations, image
 processing, data analysis, data cleaning, reporting — computed from your own store data, no

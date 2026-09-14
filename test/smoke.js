@@ -734,7 +734,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
       const pp = await render("/platform.html");
       const rn = [...pp.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "runtime");
-      if (rn) { click(pp.win, rn); await sleep(1400); const vb = pp.doc.querySelector("#vBody"); ok(vb && /Runtime · Infrastructure/i.test(vb.textContent), "platform Runtime console renders"); } else ok(false, "runtime nav present");
+      if (rn) { click(pp.win, rn); await sleep(1400); const vb = pp.doc.querySelector("#vBody"); ok(vb && /Runtime · Infra/i.test(vb.textContent), "platform Runtime console renders"); } else ok(false, "runtime nav present");
     }
     console.log("▸ MULTI-NODE DRIVERS (Redis client + queue worker, Postgres wire — mocked sockets, no network)");
     {
@@ -774,6 +774,46 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       /* config now offers postgres */
       ok((require("../lib/config.js")).RUNTIME_CATALOG.db.drivers.includes("postgres"), "config offers postgres db driver");
       adapters.__setTransport({}); pg.__setTransport({});
+    }
+    console.log("▸ OFFERS END-TO-END (refund clawback · currency · per-owner limit · auto-expiry · analytics)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const AD = mk(); await AD("/api/session?store=luxora"); await AD("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const mkOffer = b => AD("/api/offers", "POST", Object.assign({ channel: "commerce", scope_type: "store", currency: "USD", status: "active" }, b));
+      await mkOffer({ name: "Cashback10", type: "cashback", value: 10, code: "CB10" });
+      await mkOffer({ name: "OnceOnly", type: "fixed", value: 1, code: "ONCE", per_owner_limit: 1 });
+      await mkOffer({ name: "ExpiredPromo", type: "percent", value: 50, code: "OLD", ends: "2000-01-01" });
+      await mkOffer({ name: "EurFixed", type: "fixed", value: 99, code: "EURFIX", currency: "EUR" });
+
+      const CU = mk(); await CU("/api/session?store=luxora"); const dlog = await CU("/api/auth/login", "POST", { email: "demo@luxora.shop", password: "demo123" });
+      const owner = "t1:u:" + dlog.body.user.id;
+      async function checkout(code) { await CU("/api/cart", "POST", { id: "LX-CMP-005", qty: 1 }); await CU("/api/coupon", "POST", { code }); const c = await CU("/api/checkout", "POST", { name: "A", address: "A st", city: "Seattle", zip: "98109", gateway: "stripe", carrier: "house-std" }); return c.body; }
+
+      // refund clawback: cashback credits wallet, refund voids redemption + claws back credit
+      const o1 = await checkout("CB10"); ok(o1.order, "cashback checkout placed");
+      const ledA = (await AD("/api/wallet/ledger?owner=" + encodeURIComponent(owner))).body.entries || [];
+      ok(ledA.some(e => e.kind === "reward" && e.ref === o1.order.num), "cashback credited wallet at checkout", ledA.map(e => e.kind));
+      const myOrder = (await AD("/api/admin/orders")).body.orders.find(o => o.num === o1.order.num);
+      const pays = (await AD("/api/admin/payments")).body.payments; const pay = pays.find(p => p.order_id === (myOrder && myOrder.id) && p.status === "captured");
+      const rf = await AD("/api/admin/payments/" + pay.id + "/refund", "POST", {}); ok(rf.body.ok, "payment refunded");
+      const reds = (await AD("/api/offers/coupons")).body.redemptions || [];
+      ok(reds.some(x => x.status === "voided" && x.code === "CB10"), "refund voided the redemption (clawback)");
+      const ledB = (await AD("/api/wallet/ledger?owner=" + encodeURIComponent(owner))).body.entries || [];
+      ok(ledB.some(e => e.kind === "refund" && /clawback/.test(e.ref || "")), "wallet reward clawed back on refund");
+
+      // currency guard: EUR fixed offer invisible on USD store, valid on EUR
+      ok((await AD("/api/offers/preview", "POST", { amount: 500, coupon: "EURFIX", currency: "USD" })).body.discount === 0, "EUR offer skipped on USD store");
+      ok((await AD("/api/offers/preview", "POST", { amount: 500, coupon: "EURFIX", currency: "EUR" })).body.discount === 99, "EUR offer applies in EUR");
+
+      // per-owner limit: ONCE applies once, then blocked on that account
+      await checkout("ONCE"); const second = await checkout("ONCE");
+      ok(second.order && !(second.promos || []).some(p => p.code === "ONCE"), "per-owner limit blocks second use", second.promos && second.promos.map(p => p.code));
+      const an = (await AD("/api/offers/analytics")).body;
+      ok((an.byCode.find(x => x.k === "ONCE") || { n: 0 }).n === 1, "analytics: ONCE redeemed exactly once", an.byCode);
+
+      // auto-expiry sweep flips the past-dated offer
+      ok((await AD("/api/offers/preview", "POST", { amount: 100, coupon: "OLD", currency: "USD" })).body.discount === 0, "expired offer not applied");
+      ok(((await AD("/api/offers")).body.offers.find(o => o.code === "OLD") || {}).status === "expired", "auto-expiry sweep flipped status");
     }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();
