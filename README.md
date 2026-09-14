@@ -19,6 +19,8 @@ npm test                     # syntax + 191-assertion jsdom E2E suite (own DB/po
 
 Env: `PORT`, `LX_DB` (db path), `LUX_TLS=1` (HTTPS; self-signed generated via openssl, or supply `LUX_TLS_KEY`/`LUX_TLS_CERT`), `LUXORA_MASTER_KEY`, `LUXORA_PEPPER`, `LUXORA_DEMO_HINT=0`, `LX_OFFLINE=1` (force all outbound payments/notifications/AI to the offline-simulated path — CI/no-secrets), seed overrides `PLATFORM_EMAIL/PLATFORM_PASSWORD/ADMIN_EMAIL/ADMIN_PASSWORD/DEMO_PASSWORD`.
 
+Runtime backends are **config**, not code — default to in-process (SQLite + memory + inline queue + local disk); switch any of them via `Platform → Runtime` (or `platform_settings.runtime`) / env: `LX_CACHE`, `LX_QUEUE`, `LX_STORAGE`, `LX_RATELIMIT`, `LX_SESSION`, `LX_OUTBOUND` (`memory|redis`, `inline|redis|webhook`, `local|s3|webhook`, `auto|offline|live`) with connection params `LX_REDIS_URL`, `LX_S3_BUCKET/REGION/ACCESS/SECRET/ENDPOINT`, `LX_WEBHOOK_URL/SECRET`. All dependency-free (raw RESP / SigV4-over-fetch); unconfigured drivers fall back safely.
+
 ## Surfaces
 
 | URL | What |

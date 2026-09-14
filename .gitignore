@@ -4,6 +4,7 @@ data/*.db-wal
 data/*.db-shm
 data/master.json
 data/master.key
+data/exports/
 data/tls-*.pem
 .luxora.pid
 server.log

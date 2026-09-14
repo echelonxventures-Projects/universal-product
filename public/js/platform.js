@@ -28,7 +28,7 @@ function toast(msg) {
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3200);
 }
 const NAV = [["dash", "◈ Command"], ["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["geo", "🌍 Geo · Countries · Taxes"], ["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"],
-["invoices", "🧾 Invoices"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["offers", "🎁 Global Offers"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"]];
+["invoices", "🧾 Invoices"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["offers", "🎁 Global Offers"], ["runtime", "🧩 Runtime · Infra"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"]];
 let view = "dash";
 const P = { user: null, tenants: [], plans: [] };
 
@@ -543,6 +543,28 @@ function wireGlobalOffers() {
   g.onclick = async () => { try { await api("/offers", "POST", { name: gval("gName"), type: gval("gType"), value: Number(gval("gValue")), code: gval("gCode"), channel: gval("gChan"), funder: gval("gFunder"), funder_ref: gval("gFunderRef"), usage_limit: Number(gval("gUse")) || 0, scope_level: "global", scope_type: "store" }); toast("Global offer published"); render(); } catch (e) { toast(e.message); } };
   function gval(id) { const el = document.getElementById(id); return el ? el.value : ""; }
 }
+async function vRuntime() {
+  const d = await api("/platform/runtime");
+  const rt = d.runtime, cat = d.catalog, active = d.active;
+  const concerns = Object.keys(cat.catalog);
+  return `<div class="p-panel"><h2>🧩 Runtime · Infrastructure</h2>
+    <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Every backend is a <b>config choice</b>, not a code change — safe in-process defaults now, switch to Redis / S3 / a worker / an HTTP hook anytime. DB stays SQLite (its swap seam is interface-isolated). Saving applies to newly-built adapters.</p>
+    ${d.offline ? '<p class="badge processing" style="display:inline-block;padding:6px 10px;border-radius:8px">LX_OFFLINE=1 — all outbound forced to simulated</p>' : ""}
+    <table class="p-table"><thead><tr><th>Concern</th><th>Default</th><th>Active now</th><th>Driver</th><th>Connection</th></tr></thead><tbody>
+      ${concerns.map(k => { const c = cat.catalog[k], cur = rt[k], kinds = c.drivers.map(dr => `<option ${dr === cur.driver ? "selected" : ""}>${dr}</option>`).join(""); const fields = cat.driverFields[cur.driver] || []; const params = cur.params || {}; const inp = fields.map(f => `<label style="display:block;font-size:11px"><span>${esc(f.label)}</span><input data-rtp="${k}.${f.key}" type="${f.secret ? "password" : "text"}" value="${esc(f.secret ? "••••" : (params[f.key] || ""))}" placeholder="${esc(f.key)}"></label>`).join("") || '<span class="p-tag">no config</span>'; return `<tr><td><b>${esc(c.label)}</b><br><code>${k}</code></td><td><code>${c.default}</code></td><td><span class="p-tag">${esc(active[k] || cur.driver)}</span></td>
+        <td><select data-rt="${k}">${kinds}</select></td><td style="min-width:220px">${inp}</td></tr>`; }).join("")}
+    </tbody></table>
+    <div style="margin-top:12px"><button class="p-btn primary sm" id="rtSave">Apply runtime config</button> <span class="p-tag">Drivers: ${concerns.map(k => `${k}=[${cat.catalog[k].drivers.join("|")}]`).join(" · ")}</span></div></div>`;
+}
+function wireRuntime() {
+  const save = async () => {
+    const body = {};
+    document.querySelectorAll("[data-rt]").forEach(sel => { body[sel.dataset.rt] = { driver: sel.value }; });
+    document.querySelectorAll("[data-rtp]").forEach(inp => { const [k, field] = inp.dataset.rtp.split("."); body[k] = body[k] || { driver: null }; body[k].params = body[k].params || {}; if (inp.value && !inp.value.startsWith("••••")) body[k].params[field] = inp.value; });
+    try { await api("/platform/runtime", "PUT", body); toast("Runtime configuration applied"); render(); } catch (e) { toast(e.message); }
+  };
+  const b = document.getElementById("rtSave"); if (b) b.onclick = save;
+}
 async function render() {
   shell('<div class="p-empty">Loading…</div>');
   const body = $("#vBody");
@@ -557,6 +579,7 @@ async function render() {
     else if (view === "providers") body.innerHTML = await vProviders();
     else if (view === "ai") body.innerHTML = await vAI();
     else if (view === "offers") { body.innerHTML = await vGlobalOffers(); wireGlobalOffers(); }
+    else if (view === "runtime") { body.innerHTML = await vRuntime(); wireRuntime(); }
     else if (view === "geo") { body.innerHTML = await vGeo(); await wireGeoFx(); }
     else if (view === "monitor") body.innerHTML = await vMonitor();
     else if (view === "audit") body.innerHTML = await vAudit();

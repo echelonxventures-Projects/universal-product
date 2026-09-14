@@ -539,3 +539,31 @@ flowchart TD
 ```
 > Env `LX_OFFLINE=1` forces every outbound call to the simulated path (CI / no-secrets runs).
 > AI premium models route through the same live/offline gate (`ai.js` provider `ai:<id>` creds).
+
+## 19. Runtime configuration spine (every backend is config, zero code-fork)
+
+```
+  lib/config.js  ← platform_settings.runtime  ← env (LX_CACHE/LX_QUEUE/LX_STORAGE/…)  ← safe defaults
+  one catalog of "concerns": cache · queue · storage · ratelimit · session · outbound · db
+        │  each lists selectable drivers (data-described → new drivers need no UI code)
+  lib/adapters.js implements them, dependency-free:
+     cache     memory            | redis (RESP over TCP, write-through mirror)
+     queue     inline (runs now) | redis (LPUSH) | webhook (POST job)
+     storage   local disk        | s3 (SigV4 via fetch) | webhook
+     ratelimit memory            | redis (shared counts)
+     outbound  auto | offline     | live   (drives connect.js payments/notify/AI)
+     db        sqlite (default) — swap seam (run/all/get) isolated; postgres reserved
+  safe-by-default: unconfigured/unreachable drivers fall back in-process → nothing breaks, no hangs
+  Platform → Runtime screen edits it live; /api/platform/runtime (GET/PUT); LX_OFFLINE=1 forces simulated
+```
+```mermaid
+flowchart LR
+  C[config: concern→driver] --> A[adapters.build]
+  A --> M[memory/inline/local default]
+  A --> R[redis]
+  A --> S[s3]
+  A --> H[webhook]
+  M & R & S & H --> SUR[checkout · billing · AI · exports · cache]
+```
+> Switching a store (or the platform) to Redis + S3 + a worker is a **config change**, not a
+> deploy — the same "everything is data" principle, now applied to infrastructure.

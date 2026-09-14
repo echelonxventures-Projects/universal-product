@@ -695,6 +695,46 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(r.live === true && r.ok === false && /ECONNRESET/.test(r.error), "transport error handled gracefully", r);
       connect.__setFetch(orig);
     }
+    console.log("▸ RUNTIME CONFIG & ADAPTERS (everything backend is config · defaults in-process)");
+    {
+      const adapters = require("../lib/adapters.js");
+      const cfgmod = require("../lib/config.js");
+      // unit: default concerns are in-process and dependency-free
+      ok(cfgmod.driverOf("cache") === "memory" && cfgmod.driverOf("queue") === "inline" && cfgmod.driverOf("storage") === "local", "defaults are memory/inline/local");
+      const cch = adapters.build("cache", { driver: "memory" }); cch.set("k", { a: 1 });
+      ok(cch.has("k") && cch.get("k").a === 1, "memory cache get/set/has");
+      cch.del("k"); ok(!cch.has("k"), "cache delete");
+      let putUrl = null, putHeaders = null;
+      adapters.__setTransport({ fetch: async (url, o) => { putUrl = url; putHeaders = o.headers; return { ok: true, status: 200, text: async () => "", headers: {} }; } });
+      await adapters.build("storage", { driver: "s3", params: { bucket: "b", region: "us-east-1", accessKey: "AK", secretKey: "SK" } }).put("x/y.csv", "a,b\n1,2", "text/csv");
+      ok(putUrl && putUrl.includes("/b/x/y.csv") && /AWS4-HMAC-SHA256/.test(putHeaders.Authorization) && putHeaders["x-amz-content-sha256"], "S3 adapter signs a real PUT (SigV4)", putHeaders && putHeaders.Authorization.slice(0, 20));
+      let qran = null; adapters.registerHandler("__t", (job) => { qran = job.v; });
+      const qr = await adapters.build("queue", { driver: "inline" }).push({ type: "__t", v: 42 });
+      ok(qr.ran && qran === 42, "inline queue dispatches handler");
+      ok(adapters.parseRedisUrl("redis://:pw@h:6380/1").port === 6380, "redis URL parsed");
+      adapters.__setTransport({});
+      // server: runtime view + validation + offline toggle
+      const mk = () => { const cc = new Map(); const H = () => [...cc].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": cc.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); cc.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const PA = mk(); await PA("/api/session"); await PA("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      const rt = (await PA("/api/platform/runtime")).body;
+      ok(rt.runtime && rt.runtime.storage && rt.runtime.storage.driver === "local" && rt.catalog.catalog.queue.drivers.includes("redis"), "GET /platform/runtime returns config + catalog", rt.runtime && Object.keys(rt.runtime).join(","));
+      const badD = await PA("/api/platform/runtime", "PUT", { storage: { driver: "carrier-pigeon" } });
+      ok(badD.body.error && /Unknown driver/.test(badD.body.error), "unknown driver rejected by config", badD.body.error);
+      await PA("/api/platform/runtime", "PUT", { outbound: { driver: "offline" } });
+      ok((await PA("/api/platform/runtime")).body.offline === true, "outbound=offline applied via config");
+      await PA("/api/platform/runtime", "PUT", { outbound: { driver: "auto" } });
+      // export via configurable storage (local) → file written (store-admin endpoint)
+      const AT = mk(); await AT("/api/session?store=luxora"); await AT("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const ex = await AT("/api/admin/export/products", "POST", {});
+      ok(ex.body.result && ex.body.result.ok && /\.csv$/.test(ex.body.result.key || ""), "products export stored via storage adapter", ex.body.result);
+      // queue-backed AI task still completes
+      ok((await AT("/api/ai/tasks", "POST", { capability: "reporting", runNow: true })).body.tasks.some(t => t.status === "done"), "AI task completes through the queue");
+      // platform Runtime console screen renders
+      jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      const pp = await render("/platform.html");
+      const rn = [...pp.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "runtime");
+      if (rn) { click(pp.win, rn); await sleep(1400); const vb = pp.doc.querySelector("#vBody"); ok(vb && /Runtime · Infrastructure/i.test(vb.textContent), "platform Runtime console renders"); } else ok(false, "runtime nav present");
+    }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();
     await f("/api/session?store=velora");
