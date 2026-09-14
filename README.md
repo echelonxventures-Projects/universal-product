@@ -6,13 +6,15 @@
 
 End‑to‑end guides for every role — **Customers, Store Admins, Support, Marketplace Sellers, and Platform (Super) Admins** — live in **[USER_MANUAL.md](USER_MANUAL.md)** (roles & capability matrix, per‑surface walkthroughs, security, glossary, troubleshooting).
 
+The complete **pictorial flow** of the whole platform — three planes, the 10‑layer request pipeline, multi‑tenant resolution, meta hierarchy, pricing/checkout, B2B (RFQ·Tender·Contract), supply (sellers vs suppliers), serialization, lifecycles, modules, data model and role matrix — is in **[FLOWS.md](FLOWS.md)**.
+
 ## Run
 
 ```bash
 npm start                    # http://localhost:3000
 PORT=8787 ./serve.sh         # supervised (auto-restart), writes .luxora.pid
 ./stop.sh                    # clean stop
-npm test                     # syntax + 135-assertion jsdom E2E suite (own DB/port)
+npm test                     # syntax + 191-assertion jsdom E2E suite (own DB/port)
 ```
 
 Env: `PORT`, `LX_DB` (db path), `LUX_TLS=1` (HTTPS; self-signed generated via openssl, or supply `LUX_TLS_KEY`/`LUX_TLS_CERT`), `LUXORA_MASTER_KEY`, `LUXORA_PEPPER`, `LUXORA_DEMO_HINT=0`, seed overrides `PLATFORM_EMAIL/PLATFORM_PASSWORD/ADMIN_EMAIL/ADMIN_PASSWORD/DEMO_PASSWORD`.
@@ -22,14 +24,14 @@ Env: `PORT`, `LX_DB` (db path), `LUX_TLS=1` (HTTPS; self-signed generated via op
 | URL | What |
 |---|---|
 | `/` | Storefront (per tenant). `?store=<slug>` or subdomain `<slug>.localhost` switches |
-| `/admin.html` | **Store console**: dashboard, catalog+full product editor, SKUs/inventory, orders, returns, RFQs, sellers, settlements, promotions, content, taxonomy, attributes, payments, settings, analytics, audit, monitor, Data Studio |
-| `/platform.html` | **Platform console**: provisioning policy, stores (launch wizard: owner, jurisdiction, taxation, categories, gateways, plan), Geo (countries/currencies/tax modes/providers+availability), plans, subscriptions, invoices, provider registry, monitoring, global audit |
+| `/admin.html` | **Store console**: dashboard, catalog+full product editor, SKUs/inventory, orders, returns, RFQs, sellers, settlements, **contracts & tenders (B2B)**, suppliers & **serialized items**, **compliance & certs**, **localizations (i18n)**, **AI Studio**, promotions, content, taxonomy, attributes, payments, settings, analytics, audit, monitor, Data Studio |
+| `/platform.html` | **Platform console**: provisioning policy, stores (launch wizard: owner, jurisdiction, taxation, categories, gateways, plan), Geo (countries/currencies/tax modes/providers+availability), plans, subscriptions, invoices, provider registry, **AI providers & plans (product + billing)**, monitoring, global audit |
 
 Seed accounts (env-overridable; hints auto-hide when passwords change): platform `platform@luxora.shop/platform123` · store admins `admin@luxora.shop/admin123`, `admin@aurum.shop/aurum123` (INR/GST/Razorpay/UPI/Delhivery), `admin@velora.shop/velora123` (AED/VAT/Tabby, brand mode) · customer `demo@luxora.shop/demo123`.
 
 ## The product model
 
-**Meta hierarchy**: domain → industry → category → subcategory → family → model → product → variant/SKU → inventory → serialized items. **33 industries, 23 product types, 16 vertical profiles** (grocery, jewellery, chemical, vehicle, service, rental… — each an editable field schema), EAV attribute engine, universal relationships (product relations + `links` graph), media/packaging/UOM/lifecycle engines, **contexts** (`tax / invoice / payment` per industry, validated at checkout, server auto-derived), pluggable providers (**16 payment incl. country rails: Stripe, Razorpay, UPI, PIX, iDEAL, M-Pesa, Tabby…**, shipping, notifications, tax) with per-country availability as a relation table, **currencies + FX** (entities, rates, history, optional JSON feed sync), tiered/B2B pricing, promotions with coupon redemption, settlements, RFQs.
+**Meta hierarchy**: domain → industry → category → subcategory → family → model → product → variant/SKU → inventory → serialized items. **33 industries, 23 product types, 16 vertical profiles** (grocery, jewellery, chemical, vehicle, service, rental… — each an editable field schema), EAV attribute engine, **universal identity layer** (GTIN/UPC/EAN/ISBN/MPN/OEM/VIN/IMEI/HSN/UNSPSC/GS1‑GPC/eCl@ss/ETIM — 20 codes), **variant groups** (SKU‑authoritative pricing), **structured compliance & certification records** (issuer/jurisdiction/validity), **per‑object i18n localizations**, **supplier & procurement model** (suppliers, price lists, product‑supplier links, lead time, MOQ, payment terms), **B2B contracts** (fixed/tiered contract pricing applied at cart + checkout) and **tenders** (award → auto‑contract), universal relationships (product relations + `links` graph), media/packaging/UOM/lifecycle engines, **contexts** (`tax / invoice / payment` per industry, validated at checkout, server auto-derived), pluggable providers (**16 payment incl. country rails: Stripe, Razorpay, UPI, PIX, iDEAL, M-Pesa, Tabby…**, shipping, notifications, tax) with per-country availability as a relation table, **currencies + FX** (entities, rates, history, optional JSON feed sync), tiered/B2B pricing, promotions with coupon redemption, settlements, RFQs.
 
 **Deployment modes per tenant** (marketplace / industry / brand) — same backend, different configuration. Three stores ship seeded to demonstrate all three.
 

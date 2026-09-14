@@ -152,7 +152,7 @@ CREATE TABLE attribute_defs (
 CREATE TABLE skus (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL,
   code TEXT NOT NULL, name TEXT DEFAULT '', identity TEXT DEFAULT '{}', variant TEXT DEFAULT '{}',
-  price REAL, mrp REAL, stock INTEGER DEFAULT 0, active INTEGER DEFAULT 1
+  price REAL, mrp REAL, stock INTEGER DEFAULT 0, active INTEGER DEFAULT 1, group_id INTEGER
 );
 CREATE TABLE warehouses (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, name TEXT NOT NULL,
@@ -361,3 +361,319 @@ CREATE TRIGGER trg_links_uid AFTER INSERT ON links
 CREATE UNIQUE INDEX ux_context_types_uid ON context_types(uid);
 CREATE TRIGGER trg_context_types_uid AFTER INSERT ON context_types
                BEGIN UPDATE context_types SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+
+/* ---------- advanced universal-model entities: suppliers, serialization, variant groups, compliance, localization, contracts, tenders ---------- */
+CREATE TABLE serialized_items (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  product_id TEXT NOT NULL,
+  sku_id INTEGER,
+  warehouse_id INTEGER,
+  serial TEXT NOT NULL,
+  imei TEXT,
+  rfid TEXT,
+  asset_tag TEXT,
+  batch TEXT DEFAULT '',
+  lot TEXT DEFAULT '',
+  expiry TEXT,
+  status TEXT NOT NULL DEFAULT 'in_stock',
+  condition TEXT DEFAULT 'new',
+  customer_id INTEGER,
+  order_id INTEGER,
+  purchase_date TEXT,
+  warranty_end TEXT,
+  meta TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_serialized_items_uid ON serialized_items(uid);
+CREATE TRIGGER trg_serialized_items_uid AFTER INSERT ON serialized_items
+               BEGIN UPDATE serialized_items SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE variant_groups (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  product_id TEXT NOT NULL,
+  name TEXT NOT NULL,
+  axis TEXT DEFAULT 'General',
+  attr_key TEXT DEFAULT '',
+  position INTEGER DEFAULT 0,
+  active INTEGER DEFAULT 1,
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_variant_groups_uid ON variant_groups(uid);
+CREATE TRIGGER trg_variant_groups_uid AFTER INSERT ON variant_groups
+               BEGIN UPDATE variant_groups SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE compliance_records (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  scope TEXT NOT NULL DEFAULT 'product',
+  ref_id TEXT NOT NULL DEFAULT '',
+  kind TEXT NOT NULL DEFAULT 'certificate',
+  code TEXT DEFAULT '',
+  issuer TEXT DEFAULT '',
+  jurisdiction TEXT DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'valid',
+  valid_from TEXT,
+  valid_to TEXT,
+  doc_media TEXT DEFAULT '',
+  notes TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_compliance_records_uid ON compliance_records(uid);
+CREATE TRIGGER trg_compliance_records_uid AFTER INSERT ON compliance_records
+               BEGIN UPDATE compliance_records SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE suppliers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  party_role TEXT DEFAULT 'manufacturer',
+  tax_id TEXT DEFAULT '',
+  country TEXT DEFAULT 'US',
+  region TEXT DEFAULT '',
+  address TEXT DEFAULT '',
+  email TEXT DEFAULT '',
+  phone TEXT DEFAULT '',
+  lead_time_days INTEGER DEFAULT 7,
+  moq INTEGER DEFAULT 1,
+  currency TEXT DEFAULT 'USD',
+  payment_terms TEXT DEFAULT 'net30',
+  on_time_pct REAL DEFAULT 0,
+  status TEXT DEFAULT 'active',
+  certifications TEXT DEFAULT '[]',
+  price_list TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_suppliers_uid ON suppliers(uid);
+CREATE TRIGGER trg_suppliers_uid AFTER INSERT ON suppliers
+               BEGIN UPDATE suppliers SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE product_suppliers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  product_id TEXT NOT NULL,
+  supplier_id INTEGER NOT NULL,
+  supplier_sku TEXT DEFAULT '',
+  price REAL,
+  lead_days INTEGER DEFAULT 7,
+  moq INTEGER DEFAULT 1,
+  is_primary INTEGER DEFAULT 0,
+  status TEXT DEFAULT 'active',
+  uid TEXT,
+  UNIQUE (tenant_id, product_id, supplier_id)
+);
+CREATE UNIQUE INDEX ux_product_suppliers_uid ON product_suppliers(uid);
+CREATE TRIGGER trg_product_suppliers_uid AFTER INSERT ON product_suppliers
+               BEGIN UPDATE product_suppliers SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE localizations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  entity TEXT NOT NULL DEFAULT 'product',
+  ref_id TEXT NOT NULL,
+  locale TEXT NOT NULL,
+  name TEXT DEFAULT '',
+  description TEXT DEFAULT '',
+  bullets TEXT DEFAULT '[]',
+  attrs TEXT DEFAULT '{}',
+  active INTEGER DEFAULT 1,
+  uid TEXT,
+  UNIQUE (tenant_id, entity, ref_id, locale)
+);
+CREATE UNIQUE INDEX ux_localizations_uid ON localizations(uid);
+CREATE TRIGGER trg_localizations_uid AFTER INSERT ON localizations
+               BEGIN UPDATE localizations SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE contracts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  ref TEXT NOT NULL,
+  buyer_name TEXT NOT NULL,
+  buyer_email TEXT NOT NULL,
+  buyer_org TEXT DEFAULT '',
+  supplier_id INTEGER,
+  product_ids TEXT DEFAULT '[]',
+  currency TEXT DEFAULT 'USD',
+  pricing TEXT DEFAULT '{}',
+  min_qty INTEGER DEFAULT 1,
+  incoterms TEXT DEFAULT 'EXW',
+  payment_terms TEXT DEFAULT 'net30',
+  valid_from TEXT,
+  valid_to TEXT,
+  status TEXT NOT NULL DEFAULT 'draft',
+  notes TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT,
+  UNIQUE (tenant_id, ref)
+);
+CREATE UNIQUE INDEX ux_contracts_uid ON contracts(uid);
+CREATE TRIGGER trg_contracts_uid AFTER INSERT ON contracts
+               BEGIN UPDATE contracts SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE tenders (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  ref TEXT NOT NULL,
+  title TEXT NOT NULL,
+  buyer_org TEXT DEFAULT '',
+  buyer_email TEXT DEFAULT '',
+  description TEXT DEFAULT '',
+  currency TEXT DEFAULT 'USD',
+  budget REAL DEFAULT 0,
+  open_at TEXT,
+  close_at TEXT,
+  status TEXT NOT NULL DEFAULT 'open',
+  awarded_seller_id INTEGER,
+  awarded_contract_id INTEGER,
+  items TEXT DEFAULT '[]',
+  bids TEXT DEFAULT '[]',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT,
+  UNIQUE (tenant_id, ref)
+);
+CREATE UNIQUE INDEX ux_tenders_uid ON tenders(uid);
+CREATE TRIGGER trg_tenders_uid AFTER INSERT ON tenders
+               BEGIN UPDATE tenders SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ix_serial_tenant ON serialized_items(tenant_id, serial);
+
+/* ---------- AI product layer: usage ledger + task queue ---------- */
+CREATE TABLE ai_usage (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  capability TEXT NOT NULL,
+  provider TEXT NOT NULL,
+  model TEXT DEFAULT '',
+  units INTEGER NOT NULL DEFAULT 1,
+  cost REAL NOT NULL DEFAULT 0,
+  currency TEXT DEFAULT 'USD',
+  tier TEXT DEFAULT 'free',
+  status TEXT DEFAULT 'ok',
+  actor TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_ai_usage_uid ON ai_usage(uid);
+CREATE TRIGGER trg_ai_usage_uid AFTER INSERT ON ai_usage
+               BEGIN UPDATE ai_usage SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE ai_tasks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  capability TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'queued',
+  params TEXT DEFAULT '{}',
+  result TEXT,
+  cost REAL DEFAULT 0,
+  actor TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT,
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_ai_tasks_uid ON ai_tasks(uid);
+CREATE TRIGGER trg_ai_tasks_uid AFTER INSERT ON ai_tasks
+               BEGIN UPDATE ai_tasks SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+
+/* ---------- central offers / coupons / wallet ledger ---------- */
+CREATE TABLE offers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL DEFAULT 0,
+  scope_level TEXT NOT NULL DEFAULT 'tenant',
+  channel TEXT NOT NULL DEFAULT 'commerce',
+  name TEXT NOT NULL,
+  code TEXT DEFAULT '',
+  type TEXT NOT NULL,
+  direction TEXT NOT NULL DEFAULT 'discount',
+  value REAL DEFAULT 0,
+  currency TEXT DEFAULT 'USD',
+  scope_type TEXT NOT NULL DEFAULT 'store',
+  scope_value TEXT DEFAULT '{}',
+  funder TEXT NOT NULL DEFAULT 'self',
+  funder_ref TEXT DEFAULT '',
+  brand_ref TEXT DEFAULT '',
+  min_amount REAL DEFAULT 0,
+  min_qty INTEGER DEFAULT 0,
+  max_discount REAL DEFAULT 0,
+  usage_limit INTEGER DEFAULT 0,
+  per_owner_limit INTEGER DEFAULT 0,
+  used INTEGER DEFAULT 0,
+  stack_group TEXT DEFAULT '',
+  stack_policy TEXT DEFAULT 'stack_with_others',
+  priority INTEGER DEFAULT 0,
+  starts TEXT,
+  ends TEXT,
+  status TEXT DEFAULT 'active',
+  rules TEXT DEFAULT '{}',
+  summary TEXT DEFAULT '',
+  source TEXT DEFAULT 'offer',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_offers_uid ON offers(uid);
+CREATE TRIGGER trg_offers_uid AFTER INSERT ON offers
+               BEGIN UPDATE offers SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE coupons (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL DEFAULT 0,
+  code TEXT NOT NULL,
+  offer_id INTEGER,
+  funder TEXT DEFAULT 'self',
+  funder_ref TEXT DEFAULT '',
+  brand_ref TEXT DEFAULT '',
+  kind TEXT NOT NULL DEFAULT 'single_use',
+  value REAL DEFAULT 0,
+  currency TEXT DEFAULT 'USD',
+  max_uses INTEGER DEFAULT 1,
+  per_owner_limit INTEGER DEFAULT 1,
+  used INTEGER DEFAULT 0,
+  issued_to TEXT DEFAULT '',
+  batch TEXT DEFAULT '',
+  starts TEXT,
+  ends TEXT,
+  status TEXT DEFAULT 'active',
+  note TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT,
+  UNIQUE (tenant_id, code)
+);
+CREATE UNIQUE INDEX ux_coupons_uid ON coupons(uid);
+CREATE TRIGGER trg_coupons_uid AFTER INSERT ON coupons
+               BEGIN UPDATE coupons SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE coupon_redemptions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  coupon_id INTEGER,
+  offer_id INTEGER,
+  code TEXT,
+  order_id INTEGER,
+  invoice_id INTEGER,
+  owner TEXT,
+  channel TEXT DEFAULT 'commerce',
+  amount REAL DEFAULT 0,
+  qty INTEGER DEFAULT 1,
+  funder TEXT DEFAULT 'self',
+  funder_ref TEXT DEFAULT '',
+  brand_ref TEXT DEFAULT '',
+  meta TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_coupon_redemptions_uid ON coupon_redemptions(uid);
+CREATE TRIGGER trg_coupon_redemptions_uid AFTER INSERT ON coupon_redemptions
+               BEGIN UPDATE coupon_redemptions SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE wallet_entries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL DEFAULT 0,
+  owner TEXT NOT NULL,
+  currency TEXT DEFAULT 'USD',
+  kind TEXT NOT NULL,
+  amount REAL NOT NULL,
+  balance_after REAL DEFAULT 0,
+  ref TEXT DEFAULT '',
+  note TEXT DEFAULT '',
+  channel TEXT DEFAULT 'commerce',
+  actor TEXT DEFAULT 'system',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_wallet_entries_uid ON wallet_entries(uid);
+CREATE TRIGGER trg_wallet_entries_uid AFTER INSERT ON wallet_entries
+               BEGIN UPDATE wallet_entries SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_offers_code ON offers(tenant_id, code) WHERE code<>'';
+CREATE INDEX ix_offers_chan ON offers(channel, status, tenant_id);
+CREATE INDEX ix_wallet_tx ON wallet_entries(tenant_id, owner);

@@ -48,6 +48,7 @@ async function vProvisioning() {
     + pol_bool("provisioning.sandboxGatewaysByDefault", "Gateways start in sandbox mode")
     + pol_bool("provisioning.currencyOverridesAllowed", "Allow stores to override settlement currency")
     + pol_bool("provisioning.couponsAllowed", "Stores may offer promo codes to customers")
+    + pol_bool("provisioning.globalOffersAllowed", "Platform global offers/coupons apply across every store")
     + pol_bool("provisioning.fiscalContextsAllowed", "Allow customer-facing fiscal context pickers (procurement portals)")
     + '</div></div></div>';
   h += '<p><button class="p-btn primary" id="polSave">Save platform policy</button></p>';

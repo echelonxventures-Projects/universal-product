@@ -271,6 +271,42 @@ Data Studio is the platform's "manage anything" surface. Every table is a declar
 
 This is how you extend the store without touching the source.
 
+## B8. Offers & Coupons (central engine)
+One discount engine powers cart, checkout, billing and AI — everything is configuration.
+- **Build an offer**: pick a **type** (`% off`, fixed, free ship, BOGO, buy-X-get-Y, X-for-Y,
+  multi-buy, bundle, tier, cashback→wallet, spend-get-credit…), a **scope** (whole store, a
+  category, a taxonomy node, specific products, a brand), a **channel** (commerce,
+  subscription, AI, any), and a **funder** (self / **bank** / **brand** / partner / platform).
+- **Stacking**: exclusive / group-exclusive / max-count, per-order cap, min spend, priority.
+- **Coupons**: a single code (or auto-applied), **single-use**, **first-order-only**, **bulk
+  generate** codes, or a **gift-card** / **bank voucher**. Every redemption is logged with its
+  **funder**, so a bank- or brand-funded discount can be settled back to them.
+- **Credits / wallets**: cashback and spend-get awards go to the wallet (double-entry ledger);
+  wallet balance is applied at checkout automatically.
+- New types / scopes / channels / funders are edited in **Data Studio** (`offerTypes`,
+  `offerScopes`, …) — no code.
+
+## B9. AI Studio
+Every store gets the **free built-in AI engine** automatically (recommendations, image
+processing, data analysis, data cleaning, reporting — computed from your own store data, no
+keys, no cost). Turn on a **premium** model (OpenAI / Anthropic / Stability / Google Vision)
+per capability only once the store is on a **paid plan** (or buys the AI Premium module) and
+has configured provider credentials; otherwise it safely falls back to the free engine.
+Usage is metered to an AI ledger and can appear on your invoice.
+
+## B10. The wider catalogue model (what the new tabs add)
+- **📝 Contracts** — standing B2B prices for a buyer (fixed/tiered, min qty, validity). A buyer
+  with a contract automatically gets the contracted price at cart/checkout.
+- **🏛️ Tenders** — open a tender for procurement, then **Award** to auto-create a contract.
+- **🚚 Suppliers & Procurement** — your supply partners (lead time, MOQ, terms, certifications,
+  price lists) linked to products (a product can have several, one primary).
+- **🔢 Serialized Items** — track each physical unit (serial, IMEI/RFID, batch/lot, expiry,
+  warranty, custody). Bulk-generate serials.
+- **✅ Compliance & Certifications** — structured certificates (issuer, jurisdiction, valid
+  dates) shown as badges on the storefront.
+- **🌐 Localizations (i18n)** — per-product (and other objects) translations applied at the
+  shopper's locale.
+
 ---
 
 # Part C — Support Staff guide

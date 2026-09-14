@@ -31,7 +31,9 @@ function toast(msg) {
 const NAV = [
   ["dash", "◈ Dashboard"], ["products", "📦 Products"], ["skus", "🔖 SKUs & Inventory"], ["orders", "🧾 Orders"],
   ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["sellers", "🏪 Sellers"], ["settlements", "🤝 Settlements"],
-  ["promotions", "🎯 Promotions"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
+  ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["suppliers", "🚚 Suppliers & Procurement"], ["serialized", "🔢 Serialized Items"], ["compliance", "✅ Compliance & Certs"], ["localizations", "🌐 Localizations"],
+  ["ai", "🤖 AI Studio"],
+  ["promotions", "💸 Offers & Coupons"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
   ["payments", "💳 Payment Gateways"], ["modules", "🧩 Modules"], ["settings", "⚙️ Settings"], ["billing", "🧮 Billing"], ["analytics", "📊 Analytics"], ["audit", "📜 Audit Trail"],
   ["monitor", "📈 Monitor"], ["studio", "🛠️ Data Studio"]
 ];
@@ -97,11 +99,12 @@ async function openForm(key, id, onDone) {
   let row = {};
   if (id != null) { const rows = await entityRows(key); row = rows.find(r => String(r[def.pk] ?? r.id) === String(id)) || {}; }
   const fields = def.fields.filter(f => !["tenant_id"].includes(f.key));
-  $("#modal").innerHTML = `<div class="p-modal-box"><div class="p-modal-head"><h3>${id != null ? "Edit" : "New"} ${esc(def.label.replace(/s$/, ""))}</h3><button id="mClose">✕</button></div>
+  $("#modal").innerHTML = `<div class="p-modal"><div class="p-modal-box"><div class="p-modal-head"><h3>${id != null ? "Edit" : "New"} ${esc(def.label.replace(/s$/, ""))}</h3><button id="mClose">✕</button></div>
     <div class="p-form" id="mForm">${await Promise.all(fields.map(f => fieldInput(f, row[f.key], registry))).then(a => a.join(""))}
-      <div style="display:flex;gap:10px;margin-top:8px"><button class="p-btn primary" id="mSave">Save</button><button class="p-btn" id="mCancel">Cancel</button></div></div></div>`;
+      <div style="display:flex;gap:10px;margin-top:8px"><button class="p-btn primary" id="mSave">Save</button><button class="p-btn" id="mCancel">Cancel</button></div></div></div></div>`;
   $("#modal").classList.remove("hidden");
-  $("#mClose").onclick = $("#mCancel").onclick = () => $("#modal").classList.add("hidden");
+  const close = () => { const m = $("#modal"); m.innerHTML = ""; m.classList.add("hidden"); };
+  $("#mClose").onclick = $("#mCancel").onclick = close;
   $("#mSave").onclick = async () => {
     try {
       const body = collect(def);
@@ -110,7 +113,7 @@ async function openForm(key, id, onDone) {
         if (def.pkType === "text" && body[def.pk]) await api(`/meta/entity/${key}`, "POST", body);
         else await api(`/meta/entity/${key}`, "POST", body);
       }
-      $("#modal").classList.add("hidden"); toast("Saved"); onDone && onDone();
+      close(); toast("Saved"); onDone && onDone();
     } catch (e) { toast(e.message); }
   };
 }
@@ -364,19 +367,217 @@ async function vStudio() {
 }
 
 /* ---------- render ---------- */
+/* ---------- serialized / contracts / tenders (custom screens over the entity engine) ---------- */
+const pj = (x, d) => { try { return JSON.parse(x == null || x === "" ? (d || "null") : x); } catch (e) { return d == null ? null : JSON.parse(d); } };
+async function vSerialized() {
+  const products = ((await api("/meta/entity/product")).rows || []).map(p => ({ id: p.id, t: p.title || p.id }));
+  return `<div class="p-panel"><div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px">
+    <label><span>Bulk-generate units for</span><select id="sbProd">${products.map(p => `<option value="${esc(p.id)}">${esc(String(p.t).slice(0, 40))}</option>`).join("")}</select></label>
+    <label><span>Count</span><input id="sbCount" type="number" value="5" min="1" max="500"></label>
+    <label><span>Prefix (optional)</span><input id="sbPrefix" placeholder="e.g. SN-2026"></label>
+    <button class="p-btn primary sm" id="sbGo">Generate</button></div>
+    ${await entityTable("serialized")}</div>`;
+}
+function wireSerialized() { const g = $("#sbGo"); if (g) g.onclick = async () => { try { const r = await api("/admin/serialized/bulk", "POST", { product_id: $("#sbProd").value, count: Number($("#sbCount").value) || 1, prefix: $("#sbPrefix").value || undefined }); toast("Generated " + r.created + " serialized units"); render(); } catch (e) { toast(e.message); } }; }
+async function vContracts() {
+  const rows = (await api("/meta/entity/contract")).rows || [];
+  return `<div class="p-panel"><div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px">
+    <label><span>Buyer name</span><input id="ncName" placeholder="Acme Corp"></label>
+    <label><span>Buyer email</span><input id="ncEmail" placeholder="buy@acme.example"></label>
+    <label><span>Product ids (CSV)</span><input id="ncProducts" placeholder="VR-HARD-01"></label>
+    <label><span>Fixed unit price</span><input id="ncPrice" type="number" step="0.01" placeholder="10.00"></label>
+    <label><span>Min qty</span><input id="ncMin" type="number" value="10"></label>
+    <button class="p-btn primary sm" id="ncGo">+ New contract</button></div>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Ref</th><th>Buyer</th><th>Products</th><th>Price</th><th>Min</th><th>Valid</th><th>Status</th><th></th></tr></thead>
+    <tbody>${rows.map(c => { const pr = pj(c.pricing, "{}") || {}, pid = pj(c.product_ids, "[]") || []; const fp = pr.fixed ? Object.values(pr.fixed)[0] : (Array.isArray(pr.tiers) && pr.tiers[0] ? pr.tiers[0].price : null); return `<tr><td><b>${esc(c.ref)}</b></td><td>${esc(c.buyer_name)}<br><span class="p-tag">${esc(c.buyer_email)}</span></td><td>${esc((pid).join(", "))}</td><td>${fp != null ? money(fp) : "—"}</td><td>${esc(c.min_qty)}</td><td>${esc(c.valid_from || "")}→${esc(c.valid_to || "")}</td><td><span class="badge ${esc(c.status)}">${esc(c.status)}</span></td><td style="white-space:nowrap;text-align:right">${c.status !== "active" ? `<button class="p-btn sm" data-cstat="${c.id}" data-v="active">Activate</button>` : ""}${c.status === "active" ? `<button class="p-btn sm" data-cstat="${c.id}" data-v="expired">Expire</button> <button class="p-btn sm danger" data-cstat="${c.id}" data-v="terminated">Terminate</button>` : ""} <button class="p-btn sm" data-cedit="${c.id}" data-id="${esc(c.id)}">Edit</button> <button class="p-btn sm danger" data-cdel="${c.id}">✕</button></td></tr>`; }).join("")}</tbody></table></div></div>`;
+}
+function wireContracts() {
+  $$("[data-cstat]").forEach(b => b.onclick = async () => { try { await api(`/admin/contracts/${b.dataset.cstat}/status`, "PUT", { status: b.dataset.v }); toast("Contract " + b.dataset.v); render(); } catch (e) { toast(e.message); } });
+  $$("[data-cedit]").forEach(b => b.onclick = () => openForm("contract", b.dataset.id, render));
+  $$("[data-cdel]").forEach(b => b.onclick = async () => { if (!confirm("Delete contract?")) return; try { await api(`/meta/entity/contract/${b.dataset.cdel}`, "DELETE"); toast("Deleted"); render(); } catch (e) { toast(e.message); } });
+  const g = $("#ncGo"); if (g) g.onclick = async () => {
+    const ids = $("#ncProducts").value.split(",").map(x => x.trim()).filter(Boolean), pv = Number($("#ncPrice").value), pricing = {}; if (ids.length && pv) { pricing.fixed = {}; ids.forEach(id => pricing.fixed[id] = pv); }
+    try { const r = await api("/admin/contracts", "POST", { buyer_name: $("#ncName").value, buyer_email: $("#ncEmail").value, product_ids: ids, pricing, min_qty: Number($("#ncMin").value) || 1 }); toast("Contract " + r.ref); render(); } catch (e) { toast(e.message); }
+  };
+}
+async function vTenders() {
+  const rows = (await api("/meta/entity/tender")).rows || [];
+  return `<div class="p-panel"><div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px">
+    <label><span>Title</span><input id="ntTitle" placeholder="Annual fastener supply"></label>
+    <label><span>Issuing org</span><input id="ntOrg" placeholder="BuildRight LLC"></label>
+    <label><span>Budget</span><input id="ntBudget" type="number" step="1" placeholder="120000"></label>
+    <button class="p-btn primary sm" id="ntGo">+ New tender</button></div>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Ref</th><th>Title</th><th>Org</th><th>Budget</th><th>Closes</th><th>Status</th><th></th></tr></thead>
+    <tbody>${rows.map(t => `<tr><td><b>${esc(t.ref)}</b></td><td>${esc(t.title)}</td><td>${esc(t.buyer_org)}</td><td>${t.budget ? money(t.budget) : "—"}</td><td>${esc(t.close_at || "")}</td><td><span class="badge ${esc(t.status)}">${esc(t.status)}</span>${t.awarded_contract_id ? ` <span class="p-tag">→ contract #${esc(t.awarded_contract_id)}</span>` : ""}</td><td style="white-space:nowrap;text-align:right">${(t.status === "open" || t.status === "in_review") ? `<button class="p-btn sm primary" data-taward="${t.id}">Award → contract</button>` : ""} <button class="p-btn sm danger" data-tdel="${t.id}">✕</button></td></tr>`).join("")}</tbody></table></div></div>`;
+}
+function wireTenders() {
+  $$("[data-taward]").forEach(b => b.onclick = async () => { try { const r = await api(`/admin/tenders/${b.dataset.taward}/award`, "POST", {}); toast("Awarded → " + r.contract_ref); render(); } catch (e) { toast(e.message); } });
+  $$("[data-tdel]").forEach(b => b.onclick = async () => { if (!confirm("Delete tender?")) return; try { await api(`/meta/entity/tender/${b.dataset.tdel}`, "DELETE"); toast("Deleted"); render(); } catch (e) { toast(e.message); } });
+  const g = $("#ntGo"); if (g) g.onclick = async () => { try { const r = await api("/admin/tenders", "POST", { title: $("#ntTitle").value, buyer_org: $("#ntOrg").value, budget: Number($("#ntBudget").value) || 0 }); toast("Tender " + r.ref); render(); } catch (e) { toast(e.message); } };
+}
+
+/* ---------- AI Studio (capability layer) ---------- */
+async function vAI() {
+  const ov = await api("/ai");
+  const cap = ov.capabilities || [];
+  const st = ov.settings || {};
+  const premProviders = (await api("/meta")).providersAi || [];
+  const tierBadge = t => `<span class="badge ${t === "premium" ? "active" : "processing"}">${esc(t)}</span>`;
+  return `<div class="p-panel"><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <h2 style="margin:0">🤖 AI Studio</h2>
+      <span class="p-tag">store tier: ${tierBadge(ov.plan.tier)}</span>
+      <span style="flex:1"></span>
+      <span class="p-tag">${(ov.usage && ov.usage.totalCalls) || 0} calls · ${money(ov.usage && ov.usage.totalCost || 0)} accrued</span>
+    </div>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Free built-in engine is on for every store (1st priority). Premium models (OpenAI / Anthropic / Stability / Google Vision) unlock for paid stores or after buying the <b>AI Premium</b> module — configure provider + model per capability below.</p>
+    <div class="p-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-bottom:16px">
+      ${cap.map(c => `<div class="p-stat" style="border:1px solid var(--p-line);border-radius:12px;padding:12px">
+        <div style="display:flex;align-items:center;gap:6px"><b>${esc(c.icon)} ${esc(c.name)}</b>${tierBadge(c.tier)}</div>
+        <div style="font-size:12px;color:var(--p-muted);margin:4px 0">${esc(c.desc)}</div>
+        <div style="font-size:12px">Provider: <b>${c.provider ? esc(c.provider.emoji + " " + c.provider.name) : "—"}</b> · model <code>${esc(c.model || "—")}</code></div>
+        <div style="font-size:12px;color:${c.status === "premium_locked" ? "var(--p-red)" : "var(--p-muted)"}">Status: ${esc(c.status.replace("_", " "))} · ${c.remaining}/${c.limits.perDay} left today</div>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px">
+          <input type="checkbox" data-aiprem="${esc(c.key)}" ${st[c.key] && st[c.key].premium ? "checked" : ""} ${c.tier === "premium" ? "" : "disabled"}> use premium model
+        </label>
+        <div style="display:flex;gap:6px;margin-top:6px">
+          <select data-aiprov="${esc(c.key)}" ${c.tier === "premium" ? "" : "disabled"}><option value="">provider…</option>${(premProviders.filter(p => (c.key)).map(p => `<option value="${esc(p.id)}" ${st[c.key] && st[c.key].provider === p.id ? "selected" : ""}>${esc(p.name)}</option>`).join(""))}</select>
+          <input data-aimodel="${esc(c.key)}" placeholder="model" value="${esc((st[c.key] || {}).model || "")}" style="flex:1" ${c.tier === "premium" ? "" : "disabled"}>
+        </div>
+      </div>`).join("")}
+    </div>
+    <div class="p-panel"><h3>Run a capability</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+        <label><span>Capability</span><select id="aiCapSel">${cap.map(c => `<option value="${esc(c.key)}">${esc(c.name)}</option>`).join("")}</select></label>
+        <label><span>Product id (reco/image)</span><input id="aiPid" placeholder="LX-ELS-001"></label>
+        <label><span>Columns (analysis, CSV)</span><input id="aiCols" placeholder="price,brand,rating"></label>
+        <button class="p-btn primary sm" id="aiRun">Run</button>
+        <button class="p-btn sm" id="aiTask">Queue as task</button>
+      </div>
+      <pre id="aiOut" class="p-code" style="margin-top:10px;max-height:340px;overflow:auto;background:#0b0d12;color:#cfe;border-radius:10px;padding:10px;font-size:12px">Run a capability to see output…</pre></div>
+    <div class="p-panel"><h3>Usage ledger</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Capability</th><th>Provider</th><th>Tier</th><th class="num">Units</th><th class="num">Cost</th><th class="num">Calls</th><th>Last</th></tr></thead>
+      <tbody>${(ov.usage && ov.usage.rows || []).map(u => `<tr><td>${esc(u.capability)}</td><td>${esc(u.provider)}</td><td>${esc(u.tier)}</td><td class="num">${u.units}</td><td class="num">${money(u.cost)}</td><td class="num">${u.calls}</td><td>${esc(u.last || "")}</td></tr>`).join("") || '<tr><td colspan="7">No AI calls yet.</td></tr>'}</tbody></table></div></div>
+    <div class="p-panel"><h3>Recent tasks</h3><div id="aiTasks">${(await api("/ai/tasks")).tasks.map(t => `<div class="p-tag" style="display:block;margin:4px 0">${esc(t.capability)} · <b>${esc(t.status)}</b> · ${money(t.cost || 0)}</div>`).join("") || "No tasks."}</div></div>
+    </div>`;
+}
+function wireAI() {
+  const save = async () => {
+    const ai = {};
+    $$("[data-aiprem]").forEach(cb => { const k = cb.dataset.aiprem; ai[k] = ai[k] || {}; ai[k].premium = cb.checked; });
+    $$("[data-aiprov]").forEach(sel => { const k = sel.dataset.aiprov; ai[k] = ai[k] || {}; if (sel.value) ai[k].provider = sel.value; });
+    $$("[data-aimodel]").forEach(inp => { const k = inp.dataset.aimodel; ai[k] = ai[k] || {}; if (inp.value) ai[k].model = inp.value; });
+    try { await api("/admin/settings", "PUT", { ai }); toast("AI configuration saved"); render(); } catch (e) { toast(e.message); }
+  };
+  $$("[data-aiprem],[data-aiprov],[data-aimodel]").forEach(el => el.onchange = el.onblur = save);
+  const collect = () => { const cap = $("#aiCapSel").value, p = {}; if (cap === "product_recommendation" || cap === "image_processing") { if ($("#aiPid").value) p.product_id = $("#aiPid").value; } if (cap === "data_analysis" && $("#aiCols").value) p.columns = $("#aiCols").value.split(",").map(x => x.trim()).filter(Boolean); return { cap, p }; };
+  const run = async () => { const { cap, p } = collect(); try { const r = await api("/ai/run/" + encodeURIComponent(cap), "POST", p); $("#aiOut").textContent = JSON.stringify(r, null, 1); toast(cap + " · " + (r.tier || "") + " · " + money(r.cost || 0)); } catch (e) { $("#aiOut").textContent = "⚠ " + e.message; toast(e.message); } };
+  const task = async () => { const { cap, p } = collect(); try { const r = await api("/ai/tasks", "POST", { capability: cap, params: p, runNow: true }); $("#aiOut").textContent = JSON.stringify(r.tasks.slice(0, 6), null, 1); toast("Queued"); render(); } catch (e) { toast(e.message); } };
+  if ($("#aiRun")) $("#aiRun").onclick = run; if ($("#aiTask")) $("#aiTask").onclick = task;
+}
+
+/* ---------- Central Offers & Coupons (data-driven builder) ---------- */
+async function vOffers() {
+  const meta = await api("/meta");
+  const [off, cp] = await Promise.all([api("/offers"), api("/offers/coupons")]);
+  const types = meta.offerTypes || [], chans = meta.offerChannels || [], dirs = meta.offerDirections || [], scopes = meta.offerScopes || [], funders = meta.offerFunders || [], stacks = meta.stackingPolicies || [], cKinds = meta.couponKinds || [];
+  const opt = (arr, lblFn) => arr.map(x => `<option value="${esc(x.key || x)}">${esc(lblFn ? lblFn(x) : (x.name || x))}</option>`).join("");
+  const statusBadge = st => `<span class="badge ${st === "active" ? "published" : "draft"}">${esc(st)}</span>`;
+  const row = o => `<tr><td><b>${esc(o.name)}</b>${o.code ? ` <code>${esc(o.code)}</code>` : ""}${o.tenant_id === 0 ? ' <span class="p-tag">GLOBAL</span>' : ""}</td>
+    <td>${esc(o.type)}</td><td><span class="p-tag">${esc(o.direction)}</span></td><td>${esc(o.channel)}</td>
+    <td>${esc(o.scope_type)}${o.scope && (o.scope.products || o.scope.categories || o.scope.node || o.scope.brands) ? ` <span class="p-tag">${esc([].concat(o.scope.products || o.scope.categories || o.scope.node || o.scope.brands).join(",").slice(0, 30))}</span>` : ""}</td>
+    <td>${esc(o.funder)}${o.funder_ref ? ` ${esc(o.funder_ref)}` : ""}</td><td class="num">${esc(o.value)}${esc(o.currency === "USD" ? "%" + (o.type === "percent" || o.type === "flash_percent" ? "" : "") : "")}</td>
+    <td class="num">${o.usage_limit ? o.used + "/" + o.usage_limit : o.used}</td><td>${statusBadge(o.status)}</td>
+    <td style="text-align:right;white-space:nowrap"><button class="p-btn sm" data-oedit="${o.id}">Edit</button><button class="p-btn sm danger" data-oret="${o.id}">Retire</button></td></tr>`;
+  return `<div class="p-panel"><h2>💸 Offers & Coupons</h2>
+    <p style="color:var(--p-muted);font-size:13px;margin:0 0 10px">One central engine used by cart, checkout, <b>platform billing</b> and <b>AI</b>. Types / scopes / funders / channels are configurable registries — the form options come from data, not code.</p>
+    <div class="p-panel"><h3>New / edit offer</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;align-items:end">
+        <label><span>Name</span><input id="oName"></label>
+        <label><span>Type</span><select id="oType">${opt(types)}</select></label>
+        <label><span>Value</span><input id="oValue" type="number" step="0.01" value="10"></label>
+        <label><span>Code (optional → coupon)</span><input id="oCode"></label>
+        <label><span>Channel</span><select id="oChan">${opt(chans)}</select></label>
+        <label><span>Scope</span><select id="oScope">${opt(scopes)}</select></label>
+        <label><span>Scope values (CSV/keys)</span><input id="oScopeVal" placeholder="e.g. grocery,furniture or LX-ELS-001"></label>
+        <label><span>Funder</span><select id="oFunder">${opt(funders)}</select></label>
+        <label><span>Funder ref</span><input id="oFunderRef" placeholder="bank/brand id"></label>
+        <label><span>Direction</span><select id="oDir">${opt(dirs)}</select></label>
+        <label><span>Stack policy</span><select id="oStack">${opt(stacks)}</select></label>
+        <label><span>Max discount</span><input id="oMax" type="number" step="0.01" placeholder="0 = none"></label>
+        <label><span>Min spend</span><input id="oMin" type="number" step="0.01"></label>
+        <label><span>Usage limit</span><input id="oUse" type="number" value="0"></label>
+        <label><span>Priority</span><input id="oPri" type="number" value="0"></label>
+        <label><span>Starts</span><input id="oStart" type="date"></label>
+        <label><span>Ends</span><input id="oEnd" type="date"></label>
+        <label><span>Status</span><select id="oStatus"><option>active</option><option>draft</option><option>scheduled</option><option>inactive</option></select></label>
+      </div>
+      <div style="margin-top:8px"><button class="p-btn primary sm" id="oSave">Save offer</button><span class="p-tag" id="oEditHint"></span></div>
+    </div>
+    <h3>Active & saved offers</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Name</th><th>Type</th><th>Dir</th><th>Channel</th><th>Scope</th><th>Funder</th><th class="num">Value</th><th class="num">Used</th><th>Status</th><th></th></tr></thead><tbody>${off.offers.map(row).join("") || '<tr><td colspan="10">No offers yet.</td></tr>'}</tbody></table></div>
+    <div class="p-panel"><h3>Coupons</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end">
+        <label><span>Kind</span><select id="cKind">${opt(cKinds)}</select></label>
+        <label><span>Code</span><input id="cCode" placeholder="auto if blank"></label>
+        <label><span>Value</span><input id="cVal" type="number" step="0.01"></label>
+        <label><span>Funder</span><select id="cFunder">${opt(funders)}</select></label>
+        <label><span>Funder ref</span><input id="cFunderRef" placeholder="e.g. HDFC"></label>
+        <label><span>Max uses</span><input id="cMax" type="number" value="1"></label>
+        <button class="p-btn primary sm" id="cCreate">+ Coupon</button>
+        <button class="p-btn sm" id="cGen">Generate 10 codes</button>
+      </div>
+      <div class="p-scroll-x" style="margin-top:10px"><table class="p-table"><thead><tr><th>Code</th><th>Kind</th><th>Funder</th><th class="num">Value</th><th class="num">Used/Max</th><th>Status</th><th></th></tr></thead><tbody>
+        ${(cp.coupons || []).map(c => `<tr><td><code>${esc(c.code)}</code>${c.tenant_id === 0 ? ' <span class="p-tag">GLOBAL</span>' : ""}</td><td>${esc(c.kind)}</td><td>${esc(c.funder)}${c.funder_ref ? " " + esc(c.funder_ref) : ""}</td><td class="num">${esc(c.value)}</td><td class="num">${c.used}/${c.max_uses}</td><td>${statusBadge(c.status)}</td><td style="text-align:right"><button class="p-btn sm danger" data-cvoid="${c.id}">Void</button></td></tr>`).join("") || '<tr><td colspan="7">No coupons.</td></tr>'}
+      </tbody></table></div>
+      <h3>Recent redemptions</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Code</th><th class="num">Amount</th><th>Funder</th><th>Channel</th><th>Owner</th><th>When</th></tr></thead><tbody>
+        ${(cp.redemptions || []).slice(0, 12).map(r => `<tr><td><code>${esc(r.code)}</code></td><td class="num">${money(r.amount)}</td><td>${esc(r.funder)}${r.funder_ref ? " " + esc(r.funder_ref) : ""}</td><td>${esc(r.channel)}</td><td class="p-tag">${esc((r.owner || "").slice(0, 16))}</td><td>${esc((r.created_at || "").slice(0, 16))}</td></tr>`).join("") || '<tr><td colspan="6">No redemptions yet.</td></tr>'}
+      </tbody></table></div>
+    </div>
+    <div class="p-panel"><h3>Preview the engine (what a cart would get)</h3>
+      <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+        <label><span>Amount</span><input id="pvAmt" type="number" step="0.01" value="50"></label>
+        <label><span>Channel</span><select id="pvChan">${opt(chans)}</select></label>
+        <label><span>Coupon</span><input id="pvCode" placeholder="optional"></label>
+        <button class="p-btn sm" id="pvGo">Evaluate</button>
+      </div><pre id="pvOut" style="margin-top:8px;background:#0b0d12;color:#cfe;padding:10px;border-radius:10px;font-size:12px;max-height:220px;overflow:auto"></pre></div>
+    <div class="p-panel"><h3>Wallet ledger</h3><div style="display:flex;gap:8px;align-items:end"><label><span>Owner (e.g. t1:u2)</span><input id="wlOwner" placeholder="leave blank for your session"></label><button class="p-btn sm" id="wlGo">Show</button></div><div id="wlOut" style="margin-top:8px" class="p-tag">—</div></div>
+    </div>`;
+}
+function wireOffers() {
+  const $ = s => document.querySelector(s); const $$ = s => Array.from(document.querySelectorAll(s));
+  const readScope = () => { const st = $("#oScope").value, csv = $("#oScopeVal").value.split(",").map(x => x.trim()).filter(Boolean); if (st === "product") return { products: csv }; if (st === "category") return { categories: csv }; if (st === "brand") return { brands: csv }; if (st === "node") return { node: csv[0] || "" }; return {}; };
+  const save = async (id) => {
+    const body = { name: $("#oName").value, type: $("#oType").value, value: Number($("#oValue").value), code: $("#oCode").value, channel: $("#oChan").value, scope_type: $("#oScope").value, scope: readScope(), funder: $("#oFunder").value, funder_ref: $("#oFunderRef").value, brand_ref: "", direction: $("#oDir").value, stack_policy: $("#oStack").value, max_discount: Number($("#oMax").value) || 0, min_amount: Number($("#oMin").value) || 0, usage_limit: Number($("#oUse").value) || 0, priority: Number($("#oPri").value) || 0, starts: $("#oStart").value || null, ends: $("#oEnd").value || null, status: $("#oStatus").value };
+    try { await api("/offers" + (id ? "/" + id : ""), id ? "PUT" : "POST", body); toast("Offer saved"); render(); } catch (e) { toast(e.message); }
+  };
+  $("#oSave").onclick = () => save(window.__oeid || null);
+  $$("[data-oedit]").forEach(b => b.onclick = async () => { window.__oeid = b.dataset.oedit; const o = ((await api("/offers")).offers.find(x => String(x.id) === b.dataset.oedit) || {}); $("#oName").value = o.name || ""; $("#oType").value = o.type || "percent"; $("#oValue").value = o.value || 0; $("#oCode").value = o.code || ""; $("#oChan").value = o.channel || "commerce"; $("#oScope").value = o.scope_type || "store"; $("#oScopeVal").value = [].concat((o.scope || {}).products || (o.scope || {}).categories || (o.scope || {}).brands || (o.scope || {}).node || []).join(","); $("#oFunder").value = o.funder || "self"; $("#oFunderRef").value = o.funder_ref || ""; $("#oDir").value = o.direction || "discount"; $("#oStack").value = o.stack_policy || "stack_with_others"; $("#oMax").value = o.max_discount || ""; $("#oMin").value = o.min_amount || ""; $("#oUse").value = o.usage_limit || 0; $("#oPri").value = o.priority || 0; $("#oStatus").value = o.status || "active"; $("#oEditHint").textContent = "editing #" + b.dataset.oedit; $("#oSave").textContent = "Update offer"; });
+  $$("[data-oret]").forEach(b => b.onclick = async () => { try { await api("/offers/" + b.dataset.oret, "DELETE"); toast("Retired"); render(); } catch (e) { toast(e.message); } });
+  $("#cCreate").onclick = async () => { try { await api("/offers/coupons", "POST", { kind: $("#cKind").value, code: $("#cCode").value, value: Number($("#cVal").value), funder: $("#cFunder").value, funder_ref: $("#cFunderRef").value, max_uses: Number($("#cMax").value) || 1 }); toast("Coupon created"); render(); } catch (e) { toast(e.message); } };
+  $("#cGen").onclick = async () => { try { const r = await api("/offers/coupons/generate", "POST", { count: 10, kind: $("#cKind").value, funder: $("#cFunder").value, funder_ref: $("#cFunderRef").value, value: Number($("#cVal").value) }); toast(r.count + " codes (" + r.batch + ")"); render(); } catch (e) { toast(e.message); } };
+  $$("[data-cvoid]").forEach(b => b.onclick = async () => { try { await api("/offers/coupons/" + b.dataset.cvoid, "DELETE"); toast("Voided"); render(); } catch (e) { toast(e.message); } });
+  $("#pvGo").onclick = async () => { try { const r = await api("/offers/preview", "POST", { amount: Number($("#pvAmt").value), channel: $("#pvChan").value, coupon: $("#pvCode").value }); $("#pvOut").textContent = JSON.stringify({ discount: r.discount, credits: r.credits, freeShip: r.freeShip, netBase: r.netBase, applied: r.applied.map(a => a.name + " (" + a.type + ")") }, null, 1); } catch (e) { $("#pvOut").textContent = "⚠ " + e.message; } };
+  $("#wlGo").onclick = async () => { try { const r = await api("/wallet/ledger" + ($("#wlOwner").value ? "?owner=" + encodeURIComponent($("#wlOwner").value) : "")); $("#wlOut").innerHTML = "balance " + money(r.balance) + "<br>" + (r.entries || []).map(e2 => `${esc(e2.kind)} ${Number(e2.amount).toFixed(2)} → ${money(e2.balance_after)} · ${esc((e2.created_at || "").slice(0, 16))}`).join("<br>") || "no entries"; } catch (e) { toast(e.message); } };
+}
+
 async function render() {
   shell('<div class="p-empty">Loading…</div>');
   const body = $("#vBody");
   try {
     if (view === "dash") body.innerHTML = await vDash();
     else if (view === "products") body.innerHTML = await entityTable("product");
-    else if (view === "skus") body.innerHTML = await entityTable("sku") + await entityTable("inventory") + await entityTable("warehouse");
+    else if (view === "skus") body.innerHTML = await entityTable("sku") + await entityTable("inventory") + await entityTable("warehouse") + await entityTable("variant_group");
     else if (view === "orders") body.innerHTML = await entityTable("order");
     else if (view === "returns") body.innerHTML = await entityTable("ret");
     else if (view === "rfqs") body.innerHTML = await entityTable("rfq");
     else if (view === "sellers") body.innerHTML = await entityTable("seller");
     else if (view === "settlements") body.innerHTML = await entityTable("settlement");
-    else if (view === "promotions") body.innerHTML = await entityTable("promotion");
+    else if (view === "contracts") { body.innerHTML = await vContracts(); wireContracts(); }
+    else if (view === "tenders") { body.innerHTML = await vTenders(); wireTenders(); }
+    else if (view === "suppliers") body.innerHTML = await entityTable("supplier") + await entityTable("product_supplier");
+    else if (view === "serialized") { body.innerHTML = await vSerialized(); wireSerialized(); }
+    else if (view === "compliance") body.innerHTML = await entityTable("compliance");
+    else if (view === "localizations") body.innerHTML = await entityTable("localization");
+    else if (view === "ai") { body.innerHTML = await vAI(); wireAI(); }
+    else if (view === "promotions") { body.innerHTML = await vOffers(); wireOffers(); }
     else if (view === "content") body.innerHTML = await entityTable("banner") + await entityTable("card") + await entityTable("department");
     else if (view === "taxonomy") body.innerHTML = await entityTable("taxonomy");
     else if (view === "attributes") body.innerHTML = await entityTable("attribute");
@@ -420,17 +621,18 @@ function wirePayments() {
   });
   $$("[data-gwcfg]").forEach(b => b.onclick = async () => {
     const g = (await api("/admin/gateways")).gateways.find(x => x.id === b.dataset.gwcfg);
-    $("#modal").innerHTML = `<div class="p-modal-box"><div class="p-modal-head"><h3>${esc(g.name)} configuration</h3><button id="mClose">✕</button></div>
+    $("#modal").innerHTML = `<div class="p-modal"><div class="p-modal-box"><div class="p-modal-head"><h3>${esc(g.name)} configuration</h3><button id="mClose">✕</button></div>
       <div class="p-form">${(g.fields || []).map(f => `<label><span>${esc(f.label)}${f.secret ? " (secret)" : ""}</span><input data-gcfg="${f.key}" value="${esc(g.config[f.key] || "")}" ${f.secret ? 'type="password"' : ""}></label>`).join("") || '<p class="p-tag">No credentials needed.</p>'}
-      <button class="p-btn primary" id="mCfgSave">Save</button></div></div>`;
+      <button class="p-btn primary" id="mCfgSave">Save</button></div></div></div>`;
     $("#modal").classList.remove("hidden");
-    $("#mClose").onclick = () => $("#modal").classList.add("hidden");
+    const closeGw = () => { const m = $("#modal"); m.innerHTML = ""; m.classList.add("hidden"); };
+    $("#mClose").onclick = closeGw;
     $("#mCfgSave").onclick = () => {
       A.gwCfg = A.gwCfg || {};
       A.gwCfg[g.id] = A.gwCfg[g.id] || {};
       $$("[data-gcfg]").forEach(i => { if (i.value && !i.value.startsWith("••••")) A.gwCfg[g.id][i.dataset.gcfg] = i.value; });
       Object.assign(A.gwCfg[g.id], g.config);
-      $("#modal").classList.add("hidden"); toast("Credentials staged — press Save gateway config");
+      closeGw(); toast("Credentials staged — press Save gateway config");
     };
   });
 }
@@ -460,7 +662,7 @@ function wireSettings() {
 
 /* ---------- boot ---------- */
 const A = { user: null, gwCfg: {}, studioSel: null };
-document.addEventListener("click", e => { if (e.target.closest("[data-mclose]")) { const mm = document.getElementById("modal"); if (mm) mm.innerHTML = ""; } }); /* __mclose */
+document.addEventListener("click", e => { const close = e.target.closest("[data-mclose]") || (e.target.classList && e.target.classList.contains("p-modal")); if (close) { const mm = document.getElementById("modal"); if (mm) { mm.innerHTML = ""; mm.classList.add("hidden"); } } }); /* __mclose + backdrop */
 (async function boot() {
   try {
     const [sess, cfg] = await Promise.all([api("/session"), api("/config")]);

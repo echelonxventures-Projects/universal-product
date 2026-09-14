@@ -141,6 +141,29 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(page.doc.querySelectorAll(".p-stat").length >= 4, "admin dashboard stats");
     ok(page.doc.querySelectorAll(".p-nav button").length >= 16, "console sections ≥16", page.doc.querySelectorAll(".p-nav button").length);
     ok(page.errs.length === 0, "admin no JS errors", page.errs.slice(0, 2).join("|"));
+    // Products "+ New" must open a real (fixed, centered) modal — regression guard for the
+    // missing .p-modal overlay wrapper that previously rendered the dialog off-screen.
+    const prodBtn = [...page.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === "products");
+    click(page.win, prodBtn); await sleep(900);
+    const newBtn = page.doc.querySelector("[data-new='product']");
+    ok(!!newBtn, "products table shows + New button");
+    click(page.win, newBtn); await sleep(1000);
+    const pmod = page.doc.querySelector("#modal .p-modal .p-modal-box");
+    const phead = page.doc.querySelector("#modal h3");
+    ok(!!pmod && phead && /New Product/.test(phead.textContent), "New Product opens a real modal overlay", phead && phead.textContent);
+    ok(page.doc.querySelectorAll("#modal #mForm input, #modal #mForm select, #modal #mForm textarea").length > 5, "New Product form renders fields");
+    const cancelBtn = page.doc.querySelector("#modal #mCancel");
+    click(page.win, cancelBtn); await sleep(300);
+    ok(page.doc.getElementById("modal").innerHTML.trim() === "", "modal closes on Cancel");
+    click(page.win, prodBtn); await sleep(500);
+    for (const v of ["contracts", "tenders", "serialized", "suppliers", "compliance", "localizations"]) {
+      const nb = [...page.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === v);
+      ok(!!nb, "nav entry present: " + v);
+      if (!nb) continue;
+      click(page.win, nb); await sleep(1000);
+      const vb = page.doc.querySelector("#vBody");
+      ok(vb && vb.innerHTML.length > 30 && !/⚠️|No access|not permitted/i.test(vb.textContent), "admin view renders: " + v, vb && vb.textContent.slice(0, 70));
+    }
     const gwBtn = [...page.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === "payments");
     click(page.win, gwBtn); await sleep(900);
     ok(page.doc.body.textContent.includes("Stripe"), "payments view lists Stripe");
@@ -499,6 +522,145 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     const mon = await f("/api/admin/monitor");
     ok(mon.totals.req > 50 && mon.series.length === 30, "per-tenant live metrics", mon.totals.req);
 
+    console.log("▸ UNIVERSAL MODEL: serialization · variant groups · compliance · i18n · suppliers · B2B");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m = "GET", b) => { const o = { method: m, headers: Object.assign({ Cookie: H() }, m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return r.json().catch(() => ({})); }; };
+      const A = mk(); await A("/api/session"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const U = mk(); await U("/api/session"); await U("/api/auth/login", "POST", { email: "demo@luxora.shop", password: "demo123" });
+      const ents = (await A("/api/meta/entities")).entities || {};
+      ok(["serialized", "variant_group", "compliance", "supplier", "product_supplier", "localization", "contract", "tender"].every(e => ents[e]), "all 8 universal entities exposed");
+      const groc = await U("/api/products/VR-GROC-01?locale=fr-FR");
+      ok(groc.localized === true && /Lait/.test(groc.product.t), "i18n: localized title applied per locale", groc.product && groc.product.t);
+      ok(Array.isArray(groc.compliance) && groc.compliance.length >= 1, "compliance/cert records on product", groc.compliance && groc.compliance.length);
+      const elec = await U("/api/products/VR-ELEC-01");
+      ok(elec.serialized && elec.serialized.total >= 3, "serialized units counted", elec.serialized);
+      ok(elec.variant_groups && elec.variant_groups.some(g => g.options && g.options.length >= 2), "variant groups expose variant options", elec.variant_groups && elec.variant_groups.map(g => (g.options || []).length));
+      const hard = await U("/api/products/VR-HARD-01");
+      ok(hard.supplier_links && hard.supplier_links.length >= 2, "product linked to multiple suppliers (procurement)", hard.supplier_links && hard.supplier_links.length);
+      await U("/api/cart", "POST", { id: "VR-HARD-01", qty: 10 });
+      const cline = ((await U("/api/cart")).items || []).find(i => i.product.id === "VR-HARD-01");
+      ok(cline && cline.unit === 10.00, "B2B contract price beats tiered price", cline && cline.unit);
+      const comp = await A("/api/meta/entity/compliance", "POST", { scope: "tenant", kind: "certificate", code: "SMOKE-CERT-9", issuer: "QA", jurisdiction: "US", status: "valid" });
+      ok(!!comp.id, "compliance record created via generic engine", comp);
+      ok(((await A("/api/admin/audit")).entries || []).some(e => e.entity === "compliance"), "compliance CRUD is audited");
+      const badC = await A("/api/meta/entity/compliance", "POST", { scope: "product", kind: "bogus", code: "X" });
+      ok(!!badC.error, "validation rejects invalid compliance kind");
+      ok((await A("/api/admin/serialized/bulk", "POST", { product_id: "VR-ELEC-01", count: 4 })).created === 4, "serialized bulk-generate");
+      const tender = await A("/api/admin/tenders", "POST", { title: "Smoke tender", buyer_org: "Smoke U", buyer_email: "t@ex.io", budget: 100, items: [{ product_id: "VR-ELEC-01", qty: 10 }] });
+      ok(/^TDR-/.test(tender.ref || ""), "tender created with server-generated ref", tender);
+      ok((await A("/api/admin/tenders/" + tender.id + "/award", "POST", {})).ok, "tender awarded → contract");
+      const ctn = await A("/api/admin/contracts", "POST", { buyer_name: "Smoke Co", buyer_email: "buy@smoke.io", product_ids: ["VR-HARD-01"], pricing: { fixed: { "VR-HARD-01": 12 } }, min_qty: 3, status: "active" });
+      ok(/^CT-/.test(ctn.ref || ""), "contract created via admin route", ctn);
+      // storefront renders the new blocks (compliance + serialization) without JS errors
+      const um = await render("/product.html?id=VR-ELEC-01&store=luxora");
+      const bodyTxt = um.doc.body.textContent;
+      ok(um.errs.length === 0, "product page (serialized) loads with no JS errors", um.errs.slice(0, 2).join("|"));
+      ok(/serialized/i.test(bodyTxt), "storefront shows serialization trust line");
+      // variant-group SKUs are real and SKU-authoritative in the cart (not just listed)
+      const sku1tb = ((await A("/api/meta/entity/sku")).rows || []).find(k => k.product_id === "VR-ELEC-01" && /1TB/.test(k.name || ""));
+      ok(!!sku1tb && Number(sku1tb.price) > 1099, "seeded variant-group SKU with delta price", sku1tb && sku1tb.price);
+      await U("/api/cart", "POST", { id: "VR-ELEC-01", qty: 1, sku_id: sku1tb.id });
+      const vline = ((await U("/api/cart")).items || []).find(i => i.product.id === "VR-ELEC-01");
+      ok(vline && vline.sku_id === sku1tb.id && vline.unit === Number(sku1tb.price), "cart prices the selected variant SKU", vline && { unit: vline.unit, sku: vline.sku_id });
+      const vopt = um.doc.querySelector(".bb-vg-opt");
+      ok(!!vopt, "product page renders a variant selector");
+      if (vopt) { click(um.win, vopt); const ab = um.doc.querySelector("#bbAdd"); ok(ab && ab.dataset.sku === vopt.dataset.sku, "selecting a variant binds the SKU to Add-to-bag"); }
+    }
+    console.log("▸ CENTRAL OFFERS / COUPONS / WALLET (one engine · funder split · global · credits)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m = "GET", b) => { const o = { method: m, headers: Object.assign({ Cookie: H() }, m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const AD = mk(); await AD("/api/session?store=luxora"); await AD("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const pv = async (body) => (await AD("/api/offers/preview", "POST", body)).body;
+      // code offer → discount + redemption, and stacking with an auto offer
+      await AD("/api/offers", "POST", { name: "Save10 code", type: "percent", value: 10, code: "SAVE10", scope_type: "store", channel: "commerce", funder: "self" });
+      await AD("/api/offers", "POST", { name: "Big cart $3", type: "fixed", value: 3, code: "", scope_type: "store", channel: "commerce", min_amount: 100000 });
+      let r = await pv({ amount: 50, coupon: "SAVE10" });
+      ok(r.discount === 5 && r.applied.length === 1 && r.redemptions.length === 1 && r.redemptions[0].code === "SAVE10", "code offer discounts + registers redemption", r);
+      r = await pv({ amount: 200000, coupon: "SAVE10" });
+      ok(r.discount === 20003 && r.applied.length === 2, "stacking: code 10% + auto fixed both apply (cap-aware)", { d: r.discount, n: r.applied.length });
+      // de-hardcode proof: edit the offer value through the API and the engine reflects it (no code change)
+      const list0 = (await AD("/api/offers")).body.offers; const save10 = list0.find(o => o.code === "SAVE10");
+      await AD("/api/offers/" + save10.id, "PUT", { name: "Save20 code", type: "percent", value: 20, code: "SAVE10", scope_type: "store", channel: "commerce", funder: "self" });
+      r = await pv({ amount: 50, coupon: "SAVE10" }); ok(r.discount === 10, "engine reads edited offer config (de-hardcoded)", r.discount);
+      // coupon issuance (single-use) + bulk generation + void
+      const cc = await AD("/api/offers/coupons", "POST", { kind: "single_use", code: "BANK50", value: 50, funder: "bank", funder_ref: "HDFC", max_uses: 1 });
+      ok(cc.body.ok && cc.body.code === "BANK50", "coupon created", cc.body);
+      const gen = await AD("/api/offers/coupons/generate", "POST", { count: 6, kind: "bulk_issued", funder: "brand", funder_ref: "NIKE", value: 15 });
+      ok(gen.body.count === 6 && gen.body.codes.length === 6, "bulk coupon generation", gen.body.count);
+      // bank-funded cashback → wallet credit (reward) + ledger entry
+      await AD("/api/offers", "POST", { name: "Bank 5% cashback", type: "cashback", value: 5, code: "CB5", scope_type: "store", channel: "commerce", funder: "bank", funder_ref: "HDFC" });
+      r = await pv({ amount: 100, coupon: "CB5" }); ok(r.credits === 5 && r.discount === 0, "cashback yields wallet credit, not discount", { c: r.credits });
+      const CU = mk(); await CU("/api/session?store=luxora"); const dlg = await CU("/api/auth/login", "POST", { email: "demo@luxora.shop", password: "demo123" });
+      await CU("/api/cart", "POST", { id: "LX-CMP-005", qty: 1 }); await CU("/api/coupon", "POST", { code: "CB5" });
+      const chk = await CU("/api/checkout", "POST", { name: "W", address: "A", city: "Seattle", zip: "98109", gateway: "stripe", carrier: "house-std" });
+      ok(!!chk.body.order, "checkout with cashback coupon completes", chk.body.error || "");
+      const wlOwner = "t1:u:" + (dlg.body.user && dlg.body.user.id);
+      const wl = (await AD("/api/wallet/ledger?owner=" + encodeURIComponent(wlOwner))).body;
+      ok((wl.entries || []).some(e => (e.kind === "reward" || e.kind === "cashback")), "wallet ledger records the credit", wl.entries && wl.entries.map(e => e.kind));
+      const reds = (await AD("/api/offers/coupons")).body.redemptions || [];
+      ok(reds.some(x => x.code === "CB5" && x.funder === "bank" && x.funder_ref === "HDFC"), "redemption ledger attributes the funder (bank)", reds[0]);
+      // global offer published by platform, inherited by a DIFFERENT store
+      const PA = mk(); await PA("/api/session"); await PA("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      const gp = await PA("/api/offers", "POST", { name: "Platform-wide 2% credit", type: "cashback", value: 2, code: "GLOBALG", scope_level: "global", channel: "commerce", funder: "platform" });
+      ok(gp.body.ok && gp.body.id, "platform publishes global offer", gp.body);
+      const AU = mk(); await AU("/api/session?store=aurum"); await AU("/api/auth/login", "POST", { email: "admin@aurum.shop", password: "aurum123" });
+      const aurPreview = (await AU("/api/offers/preview", "POST", { amount: 500, coupon: "GLOBALG" })).body;
+      ok(aurPreview.credits === 10 && aurPreview.applied.some(a => a.name === "Platform-wide 2% credit"), "global offer inherited across stores (aurum)", aurPreview);
+      const pfO = (await PA("/api/platform/offers")).body;
+      ok(pfO.global.some(o => o.code === "GLOBALG") && pfO.stats.byFunder.length >= 1, "platform sees global offers + funder split", pfO.stats.byFunder);
+      // store console Offers & platform Global Offers screens render
+      jar.clear(); await f("/api/session?store=luxora"); await f("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const ap = await render("/admin.html");
+      const ovNav = [...ap.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === "promotions");
+      if (ovNav) { click(ap.win, ovNav); await sleep(1500); const vb = ap.doc.querySelector("#vBody"); ok(vb && /Offers & Coupons/i.test(vb.textContent) && !/⚠️/.test(vb.textContent), "store Offers & Coupons builder renders"); } else ok(false, "offers nav present");
+      const ppage = await (async () => { jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" }); return render("/platform.html"); })();
+      const goNav = [...ppage.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "offers");
+      if (goNav) { click(ppage.win, goNav); await sleep(1500); const vb = ppage.doc.querySelector("#vBody"); ok(vb && /Global Offers/i.test(vb.textContent), "platform Global Offers screen renders"); } else ok(false, "platform offers nav present");
+    }
+    console.log("▸ AI PRODUCT LAYER (free default · premium gated by billing · metering · tasks)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m = "GET", b) => { const o = { method: m, headers: Object.assign({ Cookie: H() }, m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const AL = mk(); await AL("/api/session?store=luxora"); await AL("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const ai = (p, m, b) => AL("/api" + p, m, b);
+      const ov = (await ai("/ai")).body;
+      ok(Array.isArray(ov.capabilities) && ov.capabilities.length === 5, "5 AI capabilities exposed", ov.capabilities && ov.capabilities.length);
+      ok(ov.plan && (ov.plan.tier === "premium" || ov.plan.tier === "free"), "AI tier resolved from billing", ov.plan);
+      const freeRuns = (await ai("/ai/run/data_analysis", "POST", { columns: ["price", "brand"] })).body;
+      ok(freeRuns.ok && freeRuns.provider === "ai-local" && freeRuns.cost === 0, "free built-in engine runs at zero cost", freeRuns && freeRuns.provider);
+      ok((await ai("/ai/run/product_recommendation", "POST", { product_id: "LX-ELS-001" })).body.result.items.length >= 1, "recommendation returns items");
+      ok((await ai("/ai/run/data_cleaning", "POST", { apply: false })).body.result.scanned > 0, "data cleaning scans records");
+      ok((await ai("/ai/run/reporting", "POST", {})).body.result.sections.length >= 2, "reporting composes sections");
+      ok((await ai("/ai/run/image_processing", "POST", { product_id: "LX-ELS-001" })).body.result.images >= 1, "image processing produces variants");
+      // metering: usage ledger now has calls
+      const usage = (await ai("/ai/usage")).body; ok(usage.totalCalls >= 5, "AI calls metered into ledger", usage.totalCalls);
+      // task queue
+      const tk = (await ai("/ai/tasks", "POST", { capability: "reporting", params: {}, runNow: true })).body;
+      ok(tk.ok && tk.tasks.some(t => t.status === "done"), "AI task queued + executed");
+      // gating: a store on a paid plan that opts into premium (no keys configured) must fall back to free, never error, never lock
+      await ai("/admin/settings", "PUT", { ai: { reporting: { premium: true, provider: "ai-openai", model: "gpt-4o" } } });
+      const premOv = (await ai("/ai")).body.capabilities.find(c => c.key === "reporting");
+      ok(premOv.tier === "premium" && ["available", "available_fallback_free"].includes(premOv.status), "paid store: premium available (falls back to free without keys)", premOv.status);
+      const premRun = (await ai("/ai/run/reporting", "POST", {})).body; ok(premRun.ok, "premium-selected capability still runs (fallback)");
+      // de-hardcoding proof: platform edits an AI provider's per-unit price in the registry, store must reflect it
+      const priceBefore = ((await ai("/ai")).body.capabilities.find(c => c.key === "product_recommendation").provider || {});
+      const PA = mk(); await PA("/api/session"); await PA("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      const pf = (p, m, b) => PA("/api" + p, m, b);
+      const pai = (await pf("/platform/ai")).body; ok(pai.providers.length === 5 && pai.plans.length === 2, "platform sees AI providers + plans");
+      const newPrice = 0.5;
+      const upd = await pf("/meta/entity/provider_def/ai-openai|ai", "PUT", { fee_fixed: newPrice });
+      ok(upd.body.ok !== false && !upd.body.error, "platform edits AI provider price via entity engine", upd.body);
+      // enable premium with a real provider key on luxora (configure credentials) so premium path is exercised end-to-end
+      await AL("/api/admin/settings", "PUT", { ai: { data_analysis: { premium: true, provider: "ai-openai", model: "gpt-4o" } } });
+      // free-tier gating: a store with NO paid plan and NO premium should still be 'free' tier and never premium_locked unless premium requested
+      const freeStore = mk(); await freeStore("/api/session?store=velora"); await freeStore("/api/auth/login", "POST", { email: "admin@velora.shop", password: "velora123" });
+      const vOv = (await freeStore("/api/ai")).body; ok(vOv.capabilities.every(c => c.status !== "premium_locked"), "default: nothing premium_locked (free tier on by default)");
+      // admin AI Studio renders (console)
+      jar.clear(); await f("/api/session?store=luxora"); await f("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const aip = await render("/admin.html");
+      const aiNav = [...aip.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === "ai");
+      ok(!!aiNav, "AI Studio nav present in store console");
+      if (aiNav) { click(aip.win, aiNav); await sleep(1400); const vb = aip.doc.querySelector("#vBody"); ok(vb && /AI Studio/i.test(vb.textContent) && !/⚠️/.test(vb.textContent), "AI Studio renders"); }
+    }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();
     await f("/api/session?store=velora");

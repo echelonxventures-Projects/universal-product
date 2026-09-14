@@ -365,19 +365,23 @@ async function pageProduct() {
         ${attrs.length ? `<h3>Attributes</h3><table class="pp-vtable">${attrs.map(([k, v]) => `<tr><th>${esc(humanize(k))}</th><td>${esc(String(v))}</td></tr>`).join("")}</table>` : ""}
         ${verticalRows(p)}
         ${identity.length ? `<h3>Identity & Compliance</h3><table class="pp-vtable">${identity.map(([k, v]) => `<tr><th>${esc(humanize(k))}</th><td>${esc(typeof v === "object" ? JSON.stringify(v) : String(v))}</td></tr>`).join("")}</table>` : ""}
+        ${data.compliance && data.compliance.length ? `<h3>Certifications &amp; Compliance</h3><div class="pp-certs">${data.compliance.map(c => `<span class="pp-cert" title="${esc((c.issuer || "") + " · " + (c.jurisdiction || "") + (c.valid_to ? " · valid to " + c.valid_to : ""))}" style="display:inline-block;margin:0 6px 6px 0;padding:3px 9px;border:1px solid #cbb89a;border-radius:999px;font-size:12px;background:#faf6ee">${c.kind === "approval" ? "🧾" : c.kind === "mark" ? "🛡️" : c.kind === "registration" ? "🔖" : c.kind === "license" ? "🎫" : c.kind === "authorization" ? "📝" : "📜"} ${esc(c.code)}${c.status !== "valid" ? " · " + esc(c.status) : ""}</span>`).join("")}</div>` : ""}
+        ${data.serialized ? `<p class="pp-serialized" style="font-size:13px;color:#646cff;margin:6px 0">🔢 Unit-serialized — <b>${data.serialized.total}</b> tracked item(s), ${data.serialized.by_status.in_stock || 0} in stock; warranty &amp; custody recorded per serial.</p>` : ""}
+        ${data.supplier ? `<p class="pp-supplier" style="font-size:13px;color:#76777a;margin:6px 0">🚚 Backed by vetted supplier ${esc(data.supplier.supplier_name || "")}${data.supplier.lead_days ? " · typical lead " + esc(String(data.supplier.lead_days)) + "d" : ""}.</p>` : ""}
         ${p.packaging && p.packaging.length ? `<h3>Packaging</h3><table class="pp-vtable">${p.packaging.map(pk => `<tr><th>${esc(humanize(pk.level))}</th><td>${esc(pk.unit)} × ${pk.qty}</td></tr>`).join("")}</table>` : ""}
         ${p.logistics && p.logistics.shippingClass && p.logistics.shippingClass !== "standard" ? `<p class="pp-ship-class">🚚 Shipping class: <b>${esc(humanize(p.logistics.shippingClass))}</b></p>` : ""}
         <a class="pp-report" href="#" data-act="soon">Report an issue with this piece</a>
       </div>
       <div class="buybox">
-        <div class="bb-price">${priceHtml(p.p)}${isSub ? '<span class="bb-cycle">/mo</span>' : ""}</div>
+        <div class="bb-price" id="bbPrice">${priceHtml(p.p)}${isSub ? '<span class="bb-cycle">/mo</span>' : ""}</div>
         <div class="bb-del">${p.pr ? `${prioBadge()} <b>${dLong(daysP())}</b>` : `${esc(T("deliverEstimate"))} <b>${dLong(daysS())}</b>`}</div>
-        <div class="bb-stock">${stockText(p)}</div>
+        <div class="bb-stock" id="bbStock">${stockText(p.st)}</div>
+        ${(data.variant_groups || []).filter(g => g.options && g.options.length > 1).map(g => `<div class="bb-vg" style="margin:8px 0"><div style="font-size:12px;color:#565d64;margin-bottom:4px">${esc(g.name || g.axis)}${g.options.some(o => o.variant) ? '' : ''}</div><div style="display:flex;flex-wrap:wrap;gap:6px">${g.options.map(o => `<button class="bb-vg-opt" style="border:1px solid #d5d9d9;background:#fff;border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer" data-vggroup="${esc(g.name || g.axis)}" data-act="select-variant" data-sku="${o.id}" data-price="${o.price}" data-stock="${o.stock}" data-name="${esc(o.name || o.code)}">${esc(o.name || o.code)}</button>`).join("")}</div></div>`).join("")}
         ${p.st ? `
         ${durations ? `<label class="bb-dur">Rental period <select id="bbDur">${durations.map(d => `<option value="${d.price}">${esc(d.label)} — ${money(d.price)}</option>`).join("")}</select></label>` : ""}
         <div class="bb-qty"><label>Quantity <select id="bbQty">${Array.from({ length: Math.min(CFG.commerce.cartMaxQty, Math.max(1, p.st)) }, (_, i) => `<option>${i + 1}</option>`).join("")}</select></label></div>
-        <button class="btn-yellow bb-btn" data-act="add" data-id="${p.id}" data-qty-src="bbQty">${esc(T("addToCart"))}</button>
-        ${f.buyNow && !isRental ? `<button class="btn-orange bb-btn" data-act="buy-now" data-id="${p.id}">${esc(T("buyNow"))}</button>` : ""}
+        <button class="btn-yellow bb-btn" id="bbAdd" data-act="add" data-id="${p.id}" data-qty-src="bbQty">${esc(T("addToCart"))}</button>
+        ${f.buyNow && !isRental ? `<button class="btn-orange bb-btn" id="bbBuy" data-act="buy-now" data-id="${p.id}">${esc(T("buyNow"))}</button>` : ""}
         ${p.vertical && p.vertical.test_drive ? `<button class="btn-white bb-btn" data-act="rfq-open" data-id="${p.id}">🚗 Book a test drive</button>` : ""}
         <div class="bb-ship"><div><em>Ships from</em> ${esc(CFG.brand.name)} Atelier</div><div><em>Sold by</em> ${esc(p.b)}</div><div><em>Returns</em> 30-day, complimentary</div><div><em>Payment</em> 🔒 Secure</div></div>` : `<div class="oos">${esc(T("outOfStock"))}</div>`}
       </div>
@@ -393,6 +397,7 @@ async function pageProduct() {
       <div class="pp-specs"><h3>Reference</h3><table>
         <tr><th>Maison</th><td>${esc(p.b)}</td></tr><tr><th>Type</th><td>${esc(typeIcon(p.type) || "Physical Product")}</td></tr>
         <tr><th>SKU</th><td>${esc((p.identity || {}).sku || p.id)}</td></tr>
+        ${data.localized ? `<tr><th>Language</th><td>${esc(data.locale)} · localized content</td></tr>` : ""}
         ${skus && skus.length > 1 ? `<tr><th>Variants</th><td>${skus.map(k => `${esc(k.name || k.code)} · ${money(k.price)} · ${k.stock} in stock`).join("<br>")}</td></tr>` : ""}
         <tr><th>Rating</th><td>${starsHtml(p.r)} ${p.r} / 5</td></tr></table></div>
       ${f.reviews ? `<div class="pp-rev-col" id="reviews"><div class="rev-head"><h3>${esc(T("reviewsTitle"))}</h3></div>
@@ -716,12 +721,23 @@ document.addEventListener("click", async e => {
   const el = e.target.closest("[data-act]");
   if (!el) return;
   const act = el.dataset.act, id = el.dataset.id;
-  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "gift", "open-review", "buy-again", "list", "rfq-open", "return-open", "coupon"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
+  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "gift", "open-review", "buy-again", "list", "rfq-open", "return-open", "coupon", "select-variant"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
   try {
     switch (act) {
+      case "select-variant": {
+        const grp = el.dataset.vggroup;
+        document.querySelectorAll(".bb-vg-opt").forEach(b => { if (b.dataset.vggroup === grp) { b.style.borderColor = "#d5d9d9"; b.style.fontWeight = ""; } });
+        el.style.borderColor = "#c8a24a"; el.style.fontWeight = "700";
+        const price = Number(el.dataset.price), stock = Number(el.dataset.stock);
+        const bp = $("#bbPrice"); if (bp) bp.innerHTML = priceHtml(price);
+        const bs = $("#bbStock"); if (bs) bs.textContent = stock > 0 ? `${stock} in stock` : "Out of stock";
+        const add = $("#bbAdd"); if (add) add.dataset.sku = el.dataset.sku;
+        const buy = $("#bbBuy"); if (buy) buy.dataset.sku = el.dataset.sku;
+        break;
+      }
       case "add": {
         const qtySrc = el.dataset.qtySrc ? $("#" + el.dataset.qtySrc) : null;
-        const c = await api("/cart", "POST", { id, qty: qtySrc ? Number(qtySrc.value) : 1 });
+        const c = await api("/cart", "POST", { id, qty: qtySrc ? Number(qtySrc.value) : 1, sku_id: el.dataset.sku ? Number(el.dataset.sku) : undefined });
         S.cartCount = c.count; $("#cartCount").textContent = c.count;
         toast(`◇ Added to your bag <a href="cart.html">View →</a>`); break;
       }
@@ -730,7 +746,7 @@ document.addEventListener("click", async e => {
         await refreshSession(); $("#cartCount").textContent = S.cartCount;
         toast("◇ Added to your bag <a href='cart.html'>View →</a>"); break;
       }
-      case "buy-now": { await api("/cart", "POST", { id, qty: 1 }); await refreshSession(); location.href = "checkout.html"; return; }
+      case "buy-now": { await api("/cart", "POST", { id, qty: 1, sku_id: el.dataset.sku ? Number(el.dataset.sku) : undefined }); await refreshSession(); location.href = "checkout.html"; return; }
       case "cart-remove": await api("/cart/" + encodeURIComponent(id), "DELETE"); applyCart(await api("/cart")); return;
       case "save-later": await api("/saved", "POST", { id }); applyCart(await api("/cart")); return;
       case "move-cart": await api(`/saved/${encodeURIComponent(id)}/move`, "POST"); applyCart(await api("/cart")); return;

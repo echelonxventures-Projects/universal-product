@@ -27,8 +27,8 @@ function toast(msg) {
   t.textContent = msg; t.classList.add("show");
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3200);
 }
-const NAV = [["dash", "◈ Command"], ["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores"], ["geo", "🌍 Geo · Countries · Taxes"], ["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"],
-["invoices", "🧾 Invoices"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"]];
+const NAV = [["dash", "◈ Command"], ["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["geo", "🌍 Geo · Countries · Taxes"], ["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"],
+["invoices", "🧾 Invoices"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["offers", "🎁 Global Offers"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"]];
 let view = "dash";
 const P = { user: null, tenants: [], plans: [] };
 
@@ -71,9 +71,10 @@ async function vTenants() {
   const { tenants } = await api("/platform/tenants");
   P.tenants = tenants;
   return `
-  <div class="p-panel"><div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+  <div class="p-panel"><div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
     <h2 style="margin:0">Stores (${tenants.length})</h2><span style="flex:1"></span>
     <button class="p-btn primary sm" id="newTenant">+ Launch store</button></div>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Each store's <b>Products</b>, SKUs &amp; inventory, orders, suppliers, compliance and settings live in that store's <b>Store Console</b> — click <b>Manage · Catalog</b> to open it for a store.</p>
     <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Store</th><th>Slug</th><th>Jurisdiction</th><th>Owner</th><th>Mode</th><th>Industries</th><th class="num">Products</th><th class="num">Orders</th><th class="num">GMV</th><th>Plan</th><th>Status</th><th></th></tr></thead>
     <tbody>${tenants.map(t => `<tr><td><b>${esc(t.name)}</b></td><td>${esc(t.slug)}</td><td>${esc(t.country || "—")}</td><td class="p-tag">${esc((t.profile && t.profile.ownerEmail) || "—")}</td><td>${esc(t.mode)}</td>
       <td class="p-tag">${esc((t.industries || "[]").replace(/["[\]]/g, "").slice(0, 40))}</td>
@@ -81,7 +82,7 @@ async function vTenants() {
       <td>${esc(t.plan || "—")}</td><td><span class="badge ${esc(t.status)}">${esc(t.status)}</span></td>
       <td style="white-space:nowrap"><button class="p-btn sm" data-open="${t.id}">Open</button>
         <button class="p-btn sm" data-tedit="${t.id}">Edit</button>
-        <button class="p-btn sm" data-imp="${t.id}">Manage</button>
+        <button class="p-btn sm primary" data-imp="${t.id}" title="Enter this store's Store Console — Products, SKUs, Orders and more">Manage · Catalog</button>
         <button class="p-btn sm" data-susp="${t.id}">${t.status === "active" ? "Suspend" : "Resume"}</button>
         <button class="p-btn sm" data-inv="${t.id}">Invoice</button>
         <button class="p-btn sm danger" data-del="${t.id}">✕</button></td></tr>`).join("")}</tbody></table></div></div>`;
@@ -495,6 +496,53 @@ async function openTenantWizard(editId) {
     } catch (e) { toast(e.message); }
   };
 }
+async function vAI() {
+  const d = await api("/platform/ai");
+  const cap = d.capabilities || [], prov = d.providers || [], plans = d.plans || [], tiers = d.tierByTenant || [];
+  const usedBy = {}; (d.usage || []).forEach(u => usedBy[u.slug] = u);
+  return `<div class="p-panel"><h2>🧠 AI · Providers, Capabilities & Plans</h2>
+    <p style="color:var(--p-muted);font-size:13px">AI is a product on this platform: providers, capabilities, plans and pricing are all <b>editable data</b> (Provider Registry kind “ai”, Data Studio registries). Every store gets the <b>free built-in engine</b> automatically; premium models unlock only for <b>paid</b> stores (active paid plan or the AI Premium module).</p>
+    <div class="p-grid"><div class="p-card"><h3>AI Providers (${prov.length})</h3><table class="p-table"><thead><tr><th></th><th>Provider</th><th>Cost / unit</th><th>Capabilities</th></tr></thead><tbody>
+      ${prov.map(p => `<tr><td>${esc(p.emoji)}</td><td><b>${esc(p.name)}</b><br><code>${esc(p.id)}</code></td><td>${Number(p.feePct) === 0 && (!p.feeFixed) ? "<span class='badge published'>free</span>" : money(p.feeFixed || 0)}</td><td class="p-tag">${esc((p.methods || []).join(", "))}</td></tr>`).join("")}
+    </tbody></table></div>
+    <div class="p-card"><h3>Plans</h3>${plans.map(pl => `<div class="p-stat"><b>${esc(pl.name)}</b> · ${pl.price ? money(pl.price) + "/" + esc(pl.billing) : "free"}<div class="p-tag">${esc(pl.note)}</div></div>`).join("")}
+    </div></div>
+    <h3>Capabilities</h3><div class="p-grid">${cap.map(c => `<div class="p-card"><b>${esc(c.icon)} ${esc(c.name)}</b><div class="p-tag">${esc(c.unit)} · premium: ${(c.premiumProviders || []).join(", ") || "—"}</div><div style="font-size:12px">${esc(c.desc)}</div><div class="p-tag">free/day ${c.freeLimit.perDay} · premium/day ${c.premiumLimit.perDay}</div></div>`).join("")}</div>
+    <h3>Store tiers & usage</h3><table class="p-table"><thead><tr><th>Store</th><th>AI tier</th><th>Why</th><th class="num">Calls</th><th class="num">Accrued</th></tr></thead><tbody>
+      ${tiers.map(t => { const u = usedBy[t.slug] || {}; return `<tr><td>${esc(t.name)}</td><td><span class="badge ${t.premium ? "published" : "processing"}">${t.premium ? "premium" : "free"}</span></td><td class="p-tag">${t.hasPaidPlan ? "paid plan" : ""}${t.hasAiPro ? (t.hasPaidPlan ? " + " : "") + "AI Pro" : ""}${!t.premium ? "trial/free plan" : ""}</td><td class="num">${u.calls || 0}</td><td class="num">${money(u.cost || 0)}</td></tr>`; }).join("")}
+    </tbody></table>
+    <p class="p-tag">Manage providers in <b>🔌 Provider Registry</b> (add/enable “ai” kind). Editing capabilities/plans/limits = change the <code>aiCapabilities</code>/<code>aiPlans</code> registries in Data Studio — no code.</p></div>`;
+}
+async function vGlobalOffers() {
+  const meta = await api("/meta"); const d = await api("/platform/offers");
+  const opt = arr => (arr || []).map(x => `<option value="${esc(x.key || x)}">${esc(x.name || x)}</option>`).join("");
+  const byFunder = d.stats && d.stats.byFunder || [];
+  return `<div class="p-panel"><h2>🎁 Global Offers & Funder Settlements</h2>
+    <p style="color:var(--p-muted);font-size:13px">Publish a platform-wide offer/coupon (scope = <b>global</b>) that every store inherits — bank cashbacks, brand vouchers, marketplace-wide sales. Funders are tracked so each redemption can be settled back to the paying bank/brand. Toggle whether stores honour global offers under <b>Provisioning</b>.</p>
+    <div class="p-panel"><h3>New global offer</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;align-items:end">
+        <label><span>Name</span><input id="gName"></label>
+        <label><span>Type</span><select id="gType">${opt(meta.offerTypes)}</select></label>
+        <label><span>Value</span><input id="gValue" type="number" step="0.01" value="10"></label>
+        <label><span>Code (optional)</span><input id="gCode"></label>
+        <label><span>Channel</span><select id="gChan">${opt(meta.offerChannels)}</select></label>
+        <label><span>Funder</span><select id="gFunder">${opt(meta.offerFunders)}</select></label>
+        <label><span>Funder ref</span><input id="gFunderRef" placeholder="HDFC / Nike / GSTR"></label>
+        <label><span>Usage limit</span><input id="gUse" type="number" value="0"></label>
+      </div>
+      <div style="margin-top:8px"><button class="p-btn primary sm" id="gSave">Publish global offer</button></div>
+    </div>
+    <h3>Live global offers</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Name</th><th>Type</th><th>Channel</th><th>Funder</th><th class="num">Value</th><th class="num">Used/Limit</th><th>Status</th></tr></thead>
+      <tbody>${(d.global || []).map(o => `<tr><td>${esc(o.name)}${o.code ? ` <code>${esc(o.code)}</code>` : ""}</td><td>${esc(o.type)}</td><td>${esc(o.channel)}</td><td>${esc(o.funder)}${o.funder_ref ? " " + esc(o.funder_ref) : ""}</td><td class="num">${esc(o.value)}</td><td class="num">${o.used}/${o.usage_limit || "∞"}</td><td><span class="badge ${o.status === "active" ? "published" : "draft"}">${esc(o.status)}</span></td></tr>`).join("") || '<tr><td colspan="7">No global offers.</td></tr>'}</tbody></table></div>
+    <h3>Redemption split by funder</h3>${byFunder.length ? `<table class="p-table"><thead><tr><th>Funder</th><th class="num">Discount granted</th><th class="num">Redemptions</th></tr></thead><tbody>${byFunder.map(f => `<tr><td>${esc(f.funder)}</td><td class="num">${money(f.amount)}</td><td class="num">${f.redemptions}</td></tr>`).join("")}</tbody></table>` : '<p class="p-tag">No redemptions yet.</p>'}
+    <h3>Recent redemptions (all stores)</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Code</th><th class="num">Amount</th><th>Funder</th><th>Channel</th><th>Owner</th></tr></thead>
+      <tbody>${(d.redemptions || []).slice(0, 15).map(r => `<tr><td><code>${esc(r.code)}</code></td><td class="num">${money(r.amount)}</td><td>${esc(r.funder)}${r.funder_ref ? " " + esc(r.funder_ref) : ""}</td><td>${esc(r.channel)}</td><td class="p-tag">${esc((r.owner || "").slice(0, 18))}</td></tr>`).join("") || '<tr><td colspan="5">—</td></tr>'}</tbody></table></div></div>`;
+}
+function wireGlobalOffers() {
+  const g = document.getElementById("gSave"); if (!g) return;
+  g.onclick = async () => { try { await api("/offers", "POST", { name: gval("gName"), type: gval("gType"), value: Number(gval("gValue")), code: gval("gCode"), channel: gval("gChan"), funder: gval("gFunder"), funder_ref: gval("gFunderRef"), usage_limit: Number(gval("gUse")) || 0, scope_level: "global", scope_type: "store" }); toast("Global offer published"); render(); } catch (e) { toast(e.message); } };
+  function gval(id) { const el = document.getElementById(id); return el ? el.value : ""; }
+}
 async function render() {
   shell('<div class="p-empty">Loading…</div>');
   const body = $("#vBody");
@@ -507,6 +555,8 @@ async function render() {
     else if (view === "invoices") body.innerHTML = await vInvoices();
     else if (view === "modules") { body.innerHTML = await vModules(); await wireModules(); }
     else if (view === "providers") body.innerHTML = await vProviders();
+    else if (view === "ai") body.innerHTML = await vAI();
+    else if (view === "offers") { body.innerHTML = await vGlobalOffers(); wireGlobalOffers(); }
     else if (view === "geo") { body.innerHTML = await vGeo(); await wireGeoFx(); }
     else if (view === "monitor") body.innerHTML = await vMonitor();
     else if (view === "audit") body.innerHTML = await vAudit();
