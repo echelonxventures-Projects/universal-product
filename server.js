@@ -195,6 +195,11 @@ listenServer.listen(PORT, () => {
   🏬 Stores:      ${tenants.map(t => `http${IS_TLS ? "s" : ""}://${t.slug}.localhost:${PORT} (${t.slug})`).join("  |  ")}
   🧾 Store admin: http${IS_TLS ? "s" : ""}://localhost:${PORT}/admin.html      (admin@luxora.shop / admin123)
   🛰  Platform:   http${IS_TLS ? "s" : ""}://localhost:${PORT}/platform.html   (platform@luxora.shop / platform123)
-  🔐 Scorecard:   GET /api/platform/security
+   🔐 Scorecard:   GET /api/platform/security
 `);
+  /* optional multi-node Redis queue worker (config-driven; off unless queue=redis and LX_WORKER≠0) */
+  try { const cfg = require("./lib/config.js"), ad = require("./lib/adapters.js");
+    if (cfg.driverOf("queue") === "redis" && process.env.LX_WORKER !== "0") { const w = ad.startWorker(cfg.get("queue"), {}); if (w.active) console.log("   ⚙️  Redis queue worker: RUNNING"); }
+    if (cfg.driverOf("db") === "postgres") { const a = ad.build("db", cfg.get("db")); if (a.configured) a.ping().then(r => console.log("   🐘 postgres " + (r.ok ? "reachable" : "unreachable: " + r.error))).catch(() => { }); }
+  } catch (e) { }
 });

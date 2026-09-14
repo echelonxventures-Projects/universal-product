@@ -730,10 +730,50 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       // queue-backed AI task still completes
       ok((await AT("/api/ai/tasks", "POST", { capability: "reporting", runNow: true })).body.tasks.some(t => t.status === "done"), "AI task completes through the queue");
       // platform Runtime console screen renders
+      ok((await PA("/api/platform/queue/drain", "POST", { batch: 5 })).body.ok === true, "queue drain endpoint works");
       jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
       const pp = await render("/platform.html");
       const rn = [...pp.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "runtime");
       if (rn) { click(pp.win, rn); await sleep(1400); const vb = pp.doc.querySelector("#vBody"); ok(vb && /Runtime · Infrastructure/i.test(vb.textContent), "platform Runtime console renders"); } else ok(false, "runtime nav present");
+    }
+    console.log("▸ MULTI-NODE DRIVERS (Redis client + queue worker, Postgres wire — mocked sockets, no network)");
+    {
+      const { EventEmitter } = require("events");
+      const adapters = require("../lib/adapters.js"); const pg = require("../lib/pg.js");
+      /* generic scripted socket: on write(buf) -> handler returns a reply Buffer emitted as 'data' */
+      function fakeSock(handler) { const s = new EventEmitter(); s.destroyed = false; s.write = b => { const r = handler(Buffer.from(b)); if (r && r.length) setImmediate(() => { if (!s.destroyed) s.emit("data", Buffer.from(r)); }); return true; }; s.destroy = () => { s.destroyed = true; }; return s; }
+      /* --- Mock Redis (real RESP encode/decode) --- */
+      const rstore = { strings: {}, lists: {}, ints: {} };
+      function decodeCmds(buf) { const out = []; let i = 0; const readLine = () => { const j = buf.indexOf("\r\n", i); const l = buf.toString("utf8", i, j); i = j + 2; return l; };
+        while (i < buf.length && buf[i] === 0x2a) { const n = Number(readLine().slice(1)); const args = []; for (let k = 0; k < n; k++) { const len = Number(readLine().slice(1)); args.push(buf.toString("utf8", i, i + len)); i += len + 2; } out.push(args); } return out; }
+      const enc = v => v === null ? "$-1\r\n" : "$" + Buffer.byteLength(v) + "\r\n" + v + "\r\n";
+      function redisHandler(buf) { let out = ""; for (const a of decodeCmds(buf)) { const c = a[0].toUpperCase();
+        if (c === "PING") out += "+PONG\r\n"; else if (c === "AUTH" || c === "SELECT") out += "+OK\r\n";
+        else if (c === "LPUSH") { (rstore.lists[a[1]] = rstore.lists[a[1]] || []); rstore.lists[a[1]].unshift(a[2]); out += ":" + rstore.lists[a[1]].length + "\r\n"; }
+        else if (c === "RPOP") { const L = rstore.lists[a[1]] || []; out += L.length ? enc(L.pop()) : "$-1\r\n"; }
+        else if (c === "SET") { rstore.strings[a[1]] = a[2]; out += "+OK\r\n"; } else if (c === "GET") out += rstore.strings[a[1]] != null ? enc(rstore.strings[a[1]]) : "$-1\r\n";
+        else if (c === "INCRBY") { rstore.ints[a[1]] = (rstore.ints[a[1]] || 0) + Number(a[2]); out += ":" + rstore.ints[a[1]] + "\r\n"; } else if (c === "DEL") out += ":1\r\n"; else out += "+OK\r\n"; } return Buffer.from(out); }
+      adapters.__setTransport({ connect: () => fakeSock(redisHandler) });
+      const q = adapters.build("queue", { driver: "redis", params: { url: "redis://127.0.0.1:6379" } });
+      ok(q.kind === "redis", "queue resolves redis driver from config");
+      const push = await q.push({ type: "ping-job", v: 7 }); ok(push.queued, "redis queue LPUSH enqueues");
+      let ran = null; adapters.registerHandler("ping-job", (job) => { ran = job.v; });
+      const dr = await q.drain(10); ok(dr.drained === 1 && ran === 7, "redis queue RPOP drained + dispatched handler", dr);
+      const rkv = adapters.build("ratelimit", { driver: "redis", params: { url: "redis://x:6379" } }); const cnt = await rkv.incrShared("k", 3); ok(cnt === 3 || typeof cnt === "number", "redis INCRBY shared counter", cnt);
+      const w = adapters.startWorker({ driver: "redis", params: { url: "redis://x:6379" } }, { intervalMs: 20 }); ok(w.active && w.kind === "redis", "worker starts for redis queue"); w.stop();
+      const noW = adapters.startWorker({ driver: "inline" }, {}); ok(noW.active === false, "no worker for inline queue");
+      /* --- Mock Postgres (real wire parse) --- */
+      const pgRowDesc = (cols) => { const parts = [Buffer.alloc(2)]; parts[0].writeInt16BE(cols.length, 0); for (const c of cols) { parts.push(Buffer.from(c + "\0")); const f = Buffer.alloc(18); f.writeInt32BE(0, 0); f.writeInt16BE(0, 4); f.writeInt32BE(23, 6); f.writeInt16BE(4, 10); f.writeInt32BE(-1, 12); f.writeInt16BE(0, 16); parts.push(f); } return Buffer.concat(parts); };
+      const pgData = (vals) => { const parts = [Buffer.alloc(2)]; parts[0].writeInt16BE(vals.length, 0); for (const v of vals) { const b = Buffer.from(String(v)); const l = Buffer.alloc(4); l.writeInt32BE(b.length, 0); parts.push(l, b); } return Buffer.concat(parts); };
+      const pgHandler = buf => { const type = String.fromCharCode(buf[0]);
+        if (type === "Q") { return Buffer.concat([pg.fe("t", pgRowDesc(["n", "nm"])), pg.fe("d", pgData(["1", "PulseBook"])), pg.fe("C", Buffer.from("SELECT 1\0")), pg.fe("Z", Buffer.from("I"))]); }
+        return Buffer.concat([pg.fe("R", (function () { const b = Buffer.alloc(4); b.writeInt32BE(0, 0); return b; })()), pg.fe("Z", Buffer.from("I"))]); };
+      pg.__setTransport({ connect: () => fakeSock(pgHandler) });
+      const pr = await pg.query({ host: "h", port: 5432, user: "u", password: "", database: "d" }, "SELECT n,nm FROM products");
+      ok(pr.ok && pr.cmdTag === "SELECT 1" && pr.rows[0][1] === "PulseBook", "postgres wire client: auth→query→rows", JSON.stringify(pr).slice(0, 80));
+      /* config now offers postgres */
+      ok((require("../lib/config.js")).RUNTIME_CATALOG.db.drivers.includes("postgres"), "config offers postgres db driver");
+      adapters.__setTransport({}); pg.__setTransport({});
     }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();
