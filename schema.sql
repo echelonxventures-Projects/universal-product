@@ -825,3 +825,9 @@ ALTER TABLE offers   ADD COLUMN deleted_at TEXT;
 ALTER TABLE contracts ADD COLUMN deleted_at TEXT;
 ALTER TABLE tenders  ADD COLUMN deleted_at TEXT;
 ALTER TABLE returns  ADD COLUMN deleted_at TEXT;
+
+/* ---------- RBAC: staff roles + per-user permission overrides ---------- */
+ALTER TABLE users ADD COLUMN staff_role TEXT DEFAULT 'owner';   /* key into meta_lists.staffRoles */
+ALTER TABLE users ADD COLUMN perms      TEXT DEFAULT '{}';      /* per-user {section: read|write|false} override */
+ALTER TABLE users ADD COLUMN disabled   INTEGER DEFAULT 0;      /* soft-disable login for staff */
+ALTER TABLE users ADD COLUMN last_login TEXT;

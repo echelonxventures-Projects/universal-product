@@ -656,3 +656,22 @@ flowchart LR
   purge(): hard-deletes tombstoned rows older than retention  (GDPR erasure path; ?hard=1 to skip trash)
   Applies to ANY content entity through the one engine — no per-entity code.
 ```
+
+## 24. RBAC — staff roles & per-section access (data)
+
+```
+  meta_lists.staffRoles  = [{key,name,sections:{section:read|write, "*":…}}]  (editable)
+  users.staff_role + perms(json)  →  rbac.grant(user)  →  allowedSections
+  owner/manager ⇒ '*' (full).  Existing seeded admins = owner ⇒ no behavior change.
+
+  Enforcement (server): requireSection(section, mode) gates
+    • generic entity CRUD (entity→section map)   • settings / payments / Data Studio / AI / team
+    • /api/session returns allowedSections → console filters nav + blocks the view
+  Login: disabled blocked, last_login stamped; can't disable/remove self; keep ≥1 active admin.
+```
+```mermaid
+flowchart LR
+  L[staff login] --> G[rbac.grant role+perms] --> SEC[allowedSections]
+  SEC --> NAV[nav filtered] 
+  SEC --> API[requireSection gates entity+endpoints]
+```
