@@ -872,6 +872,30 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       hit = null; const cr = await spec.execute(mycrm.spec, { config: { key: "K1" }, payload: { email: "a@b.co" } }, fakeHttp);
       ok(cr.ok && /crm\.example\/lead/.test(hit.url) && hit.o.headers["X-Key"] === "K1", "custom data-only provider executes end-to-end (no code)", hit && hit.url);
     }
+    console.log("▸ PLATFORM HARDENING (trace ids · idempotent retries · webhooks · universal entity tags)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b, hdr) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}, hdr || {}) }; if (b) o.body = JSON.stringify(b); const res = await fetch(BASE + p, o); (res.headers.getSetCookie ? res.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: res.status, body: await res.json().catch(() => ({})), headers: res.headers }; }; };
+      // trace id on every response
+      const hr = await fetch(BASE + "/api/meta"); ok(/^[0-9a-f-]{20,}$/.test(hr.headers.get("x-trace-id") || ""), "response carries a trace/request id", hr.headers.get("x-trace-id"));
+      const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      // idempotency: same key + same payload → replay (single resource created)
+      const wk = "smoke-" + Date.now();
+      const w1 = await A("/api/admin/webhooks", "POST", { url: "https://hooks.acme.example/orders", events: ["order.paid", "order.refunded"], secret: "s3cr3t" }, { "idempotency-key": wk });
+      const w2 = await A("/api/admin/webhooks", "POST", { url: "https://hooks.acme.example/orders", events: ["order.paid", "order.refunded"], secret: "s3cr3t" }, { "idempotency-key": wk });
+      ok(w1.body.ok && w2.headers.get("x-idempotent-replay") === "true" && w2.body.id === w1.body.id, "idempotent retry replays, does not duplicate", w1.body.id === w2.body.id);
+      const w3 = await A("/api/admin/webhooks", "POST", { url: "https://different.example", events: ["*"], secret: "x" }, { "idempotency-key": wk });
+      ok(w3.status === 422, "reusing an idempotency key with a different payload is rejected", w3.status);
+      // webhooks: created + listed + catalog is data; HMAC sign/verify is correct (pure unit, no network)
+      const wh = (await A("/api/admin/webhooks")).body;
+      ok((wh.webhooks || []).some(x => x.id === w1.body.id && x.events.includes("order.paid")), "webhook registered with event filters");
+      ok(Array.isArray(wh.events) && wh.events.includes("order.paid"), "event catalog is data (meta_lists.webhookEvents)");
+      const ev = require("../lib/events.js"); const sig = ev.sign("k", "body"); ok(/^sha256=[0-9a-f]{64}$/.test(sig) && ev.verify("k", "body", sig) && !ev.verify("k", "tamper", sig), "webhook HMAC sign/verify (constant-time)");
+      // universal entity metadata: tag ANY record by its global uid, surface on product page
+      const tagRes = await A("/api/admin/entity-meta", "PUT", { entity: "product", uid: "VR-ELEC-01", tags: ["featured", "warehouse-x"], meta: { internal_ref: "PO-88" }, notes: "priority restock" });
+      ok(tagRes.body.ok, "entity metadata saved (by uid)");
+      const shown = (await A("/api/products/VR-ELEC-01")).body.tags || [];
+      ok(shown.includes("featured"), "product detail surfaces its tags (uid-linked, no code)");
+    }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();
     await f("/api/session?store=velora");

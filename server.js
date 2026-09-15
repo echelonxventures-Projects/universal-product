@@ -10,6 +10,7 @@ const { run, get, all } = require("./lib/db.js");
 const api = require("./lib/api.js");
 const metrics = require("./lib/metrics.js");
 const sec = require("./lib/security.js");
+const idem = require("./lib/idempotency.js");
 require("./lib/modules.js").ensureBaselines();
 try { require("./lib/env.js").boot(); } catch (e) { console.error("env boot:", e.message); }
 
@@ -119,12 +120,15 @@ const handler = async (req, res) => {
   const t0 = Date.now();
   const cookies = parseCookies(req.headers.cookie);
   const clientIp = (req.socket && req.socket.remoteAddress) || "";
+  req.__trace = req.headers["x-request-id"] || crypto.randomUUID();
   for (const [k, v] of Object.entries(sec.securityHeaders(IS_TLS))) res.setHeader(k, v);
+  res.setHeader("X-Request-Id", req.__trace); res.setHeader("X-Trace-Id", req.__trace);
+  res.setHeader("Access-Control-Expose-Headers", "X-Request-Id, X-Trace-Id");
   if (IS_TLS && sec.policy().hsts) res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
   res.on("finish", () => {
     const tenant = res.__tenantId || 0;
     metrics.record(tenant, req.method, url.pathname, res.statusCode, Date.now() - t0);
-    console.log(`${req.method.padEnd(6)} [t${tenant}] ${url.pathname.padEnd(34)} ${res.statusCode} ${Date.now() - t0}ms`);
+    console.log(`${req.method.padEnd(6)} [t${tenant}] ${url.pathname.padEnd(34)} ${res.statusCode} ${Date.now() - t0}ms ${req.__trace ? "#" + String(req.__trace).slice(0, 8) : ""}`);
   });
   try {
     if (url.pathname.startsWith("/api/")) {
@@ -156,6 +160,17 @@ const handler = async (req, res) => {
       if (session.tenant.status === "suspended" && !session.platform_admin) return api.bad(res, "This store is suspended", 403);
       let body = {};
       if (["POST", "PUT", "DELETE"].includes(req.method)) body = await readBody(req);
+      session.trace = req.__trace;
+      /* idempotency: safe client retries for mutations */
+      const idemKey = req.headers["idempotency-key"] || req.headers["x-idempotency-key"];
+      if (idem.enabled() && idemKey && ["POST", "PUT", "DELETE"].includes(req.method)) {
+        const c = idem.claim(idemKey, session.tenant.id, req.method, url.pathname, body);
+        if (c.replay) { res.writeHead((c.replay.status || 200), { "Content-Type": "application/json", "X-Idempotent-Replay": "true" }); return res.end(c.replay.response || "{}"); }
+        if (c.conflict) { res.writeHead(422, { "Content-Type": "application/json" }); return res.end(JSON.stringify({ error: "Idempotency key already used with a different request payload" })); }
+        const _end = res.end.bind(res); const _wh = res.writeHead.bind(res); let st = res.statusCode; let cap = "";
+        res.writeHead = (s, h) => { st = s || st; return _wh(s, h); };
+        res.end = (chunk) => { if (chunk != null) cap += (typeof chunk === "string" ? chunk : Buffer.from(chunk).toString("utf8")); let parsed; try { parsed = JSON.parse(cap); } catch (e) { parsed = cap; } idem.store(idemKey, session.tenant.id, st, parsed); return _end(chunk); };
+      }
       const handled = api.handle(req, res, url, session, body, metrics);
       if (!handled) api.bad(res, "No such API endpoint", 404);
       return;

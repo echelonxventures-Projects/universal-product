@@ -745,3 +745,70 @@ CREATE TRIGGER trg_billing_events_uid AFTER INSERT ON billing_events
                BEGIN UPDATE billing_events SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 CREATE INDEX IF NOT EXISTS ix_invoice_lines ON invoice_lines(invoice_id);
 CREATE INDEX IF NOT EXISTS ix_usage_open ON usage_records(tenant_id, billed);
+
+/* ---------- platform hardening: webhooks, event deliveries, universal entity metadata, idempotency ---------- */
+CREATE TABLE webhooks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  url TEXT NOT NULL,
+  secret TEXT DEFAULT '',
+  events TEXT DEFAULT '["*"]',
+  active INTEGER DEFAULT 1,
+  description TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT,
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_webhooks_uid ON webhooks(uid);
+CREATE TRIGGER trg_webhooks_uid AFTER INSERT ON webhooks
+               BEGIN UPDATE webhooks SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE webhook_deliveries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  webhook_id INTEGER,
+  event TEXT NOT NULL,
+  subject_uid TEXT,
+  payload TEXT DEFAULT '{}',
+  status TEXT NOT NULL DEFAULT 'queued',
+  attempts INTEGER DEFAULT 0,
+  response TEXT DEFAULT '',
+  next_retry_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_webhook_deliveries_uid ON webhook_deliveries(uid);
+CREATE TRIGGER trg_webhook_deliveries_uid AFTER INSERT ON webhook_deliveries
+               BEGIN UPDATE webhook_deliveries SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE entity_meta (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  entity TEXT NOT NULL,
+  ref_uid TEXT NOT NULL,
+  tags TEXT DEFAULT '[]',
+  meta TEXT DEFAULT '{}',
+  notes TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT,
+  uid TEXT,
+  UNIQUE (tenant_id, entity, ref_uid)
+);
+CREATE UNIQUE INDEX ux_entity_meta_uid ON entity_meta(uid);
+CREATE TRIGGER trg_entity_meta_uid AFTER INSERT ON entity_meta
+               BEGIN UPDATE entity_meta SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE idempotency_keys (
+  key TEXT PRIMARY KEY,
+  tenant_id INTEGER,
+  method TEXT,
+  path TEXT,
+  request_hash TEXT,
+  status INTEGER,
+  response TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  expires_at TEXT NOT NULL,
+  uid TEXT
+);
+CREATE UNIQUE INDEX ux_idempotency_keys_uid ON idempotency_keys(uid);
+CREATE TRIGGER trg_idempotency_keys_uid AFTER INSERT ON idempotency_keys
+               BEGIN UPDATE idempotency_keys SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE INDEX IF NOT EXISTS ix_deliveries ON webhook_deliveries(tenant_id, status);
+CREATE INDEX IF NOT EXISTS ix_entity_meta ON entity_meta(tenant_id, entity, ref_uid);

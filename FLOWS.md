@@ -615,3 +615,33 @@ flowchart TD
   marketing (data): meta · google-ads · ga4 · tiktok  — + ANY custom provider via a manifest spec
   → "Add Meta/Google/TikTok/my CRM" = a row of data (fill the blanks), not a deploy.
 ```
+
+## 22. Platform hardening (traceability · safe retries · events · universal metadata)
+
+```
+  Every request:  X-Request-Id / X-Trace-Id  ← honored or generated (uuid)
+                  → echoed in response · logged · stamped on audit_log + orders/invoices
+
+  Idempotency (lib/idempotency.js): client sends Idempotency-Key on POST/PUT/DELETE
+     first → executes + stores {status,response} (24h TTL) · same key+payload → replay (X-Idempotent-Replay)
+     same key+different payload → 422 (never mis-applied) · LX_IDEMPOTENCY=0 disables
+     → a retried "place order"/"capture payment" can't double-run
+
+  Events + outbound webhooks (lib/events.js): emit(tenant, event, data)
+     event catalog is data (meta_lists.webhookEvents) · HMAC-signed (X-Lux-Signature) POST
+     webhook_deliveries ledger · offline→queued · drain() retries w/ backoff (rides the queue)
+     emits: order.created/paid/refunded · ai.usage · (invoice/offer/coupon wired)
+
+  Universal entity metadata (entity_meta keyed by ANY record's global uid):
+     tags[] + arbitrary meta{} + notes on products, orders, customers, … — no schema change,
+     no code per entity. Surfaced on the storefront (product tags) + editable via API/UI.
+```
+```mermaid
+flowchart LR
+  R[request] --> T[trace id] --> AUD[audit + orders]
+  R -->|Idempotency-Key| ID{seen?}
+  ID -- replay --> RES[cached response]
+  ID -- new --> RUN[execute] --> CAP[store response]
+  RUN --> E[emit events] --> WH[signed webhooks] --> RETRY[drain + backoff]
+  E --> Q[queue/worker]
+```
