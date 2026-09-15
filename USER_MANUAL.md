@@ -461,6 +461,20 @@ mutations for everyone except platform admins (a kill‑switch for abuse or non�
 
 ---
 
+## E8. Enterprise ops (Platform → Runtime & store 🔐 SSO & Integrations) — all OFF until configured
+- **Database**: set driver **postgres** + connection string → *Test / Dry-run / Apply / Revert* runs the
+  async dual-engine + SQLite→Postgres migration planner against your live PG (SQLite until then).
+- **SSO/SAML + SCIM**: per-store SSO connection (okta/entra/google/generic + allowed email domains) and
+  a bearer-token SCIM endpoint so HR/IdP sync staff accounts (mapped to RBAC roles).
+- **Regions / Edge**: manage the region list + CDN base URL; asset URLs rebase to the CDN when set.
+- **Observability**: `GET /metrics` (Prometheus), `/healthz`, structured JSON logs, trace ids.
+- **Feeds / inventory / tax**: Shopping product feeds, warehouse stock transfers, tax remittance report.
+
+Everything here is fill-in-the-blank **config** (URLs, keys, IdP metadata, connection strings); nothing
+activates until you write its config, and all of it is tenant-isolated + audited.
+
+---
+
 ## 9. Security & account safety (all users)
 
 Your safety is enforced by a 10‑layer stack; here's what it means for you:
