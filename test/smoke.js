@@ -939,6 +939,22 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       // owner cannot lock self out
       ok(!(await OWNER("/api/admin/staff", "POST", { name: "X", email: "x@y.z", staff_role: "nonsense" })).body.ok, "unknown role rejected");
     }
+    console.log("▸ B FOUNDATION (SQLite→Postgres dialect + async pool + migration planner)");
+    {
+      const sqlm = require("../lib/sql.js");
+      ok(/now\(\)/.test(sqlm.toPg("SELECT * FROM t WHERE d>datetime('now')")) && /\$1/.test(sqlm.toPg("SELECT * FROM t WHERE x=?")), "translator: datetime→now(), ?→$n");
+      ok(/to_char\(ts, 'YYYY-MM'\)/.test(sqlm.toPg("SELECT strftime('%Y-%m', ts) FROM t")), "translator: strftime→to_char");
+      ok(/substring\(|from 1 for 10/.test(sqlm.toPg("SELECT substr(name,1,10) FROM t")), "translator: substr→substring");
+      ok(/ON CONFLICT DO NOTHING|INSERT INTO/.test(sqlm.toPg("INSERT OR IGNORE INTO t VALUES(?,?)")) && !/OR IGNORE/.test(sqlm.toPg("INSERT OR IGNORE INTO t VALUES(?,?)")), "translator: INSERT OR IGNORE→plain (no OR IGNORE)");
+      const dbp = require("../lib/dbpool.js");
+      ok(dbp.driver() === "sqlite", "async pool defaults to sqlite driver (no behavior change)");
+      ok((await dbp.get("SELECT 1 AS one")) !== null, "async pool reads through sqlite");
+      const PA = (() => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const res = await fetch(BASE + p, o); (res.headers.getSetCookie ? res.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: res.status, body: await res.json().catch(() => ({})) }; }; })();
+      await PA("/api/session"); await PA("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      const dbx = (await PA("/api/platform/db")).body;
+      ok(dbx.driver === "sqlite" && dbx.health && dbx.health.ok === true, "platform sees db driver + health", dbx.health);
+      ok(dbx.plan && dbx.plan.tables > 30 && dbx.plan.dataStatements > 100, "migration planner reads full schema+rows", dbx.plan && { tables: dbx.plan.tables, rows: dbx.plan.dataStatements });
+    }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();
     await f("/api/session?store=velora");

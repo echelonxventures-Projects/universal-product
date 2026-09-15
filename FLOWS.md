@@ -675,3 +675,25 @@ flowchart LR
   SEC --> NAV[nav filtered] 
   SEC --> API[requireSection gates entity+endpoints]
 ```
+
+## 25. B — async dual-engine data layer + SQLite→Postgres migration
+
+```
+  config:  db = sqlite | postgres   (Platform → Runtime)   ← selectable, no code fork
+  lib/sql.js     SQLite→Postgres dialect translator (?→$n, datetime('now')→now(),
+                 date modifiers→intervals/date_trunc, strftime→to_char, substr→substring,
+                 INSERT OR IGNORE→ON CONFLICT, AUTOINCREMENT→GENERATED ALWAYS AS IDENTITY)
+  lib/pg.js      zero-dep Postgres wire client: startup + trust/cleartext/MD5, simple Query +
+                 EXTENDED queryP (Parse/Bind/Describe/Execute/Sync, text params)
+  lib/dbpool.js  async facade over the data layer, driver-selected; sqlite default = current behavior
+  lib/migrate.js plan() = deterministic translated DDL + parameterized data (testable, no server);
+                 apply() = stream to Postgres via queryP; uid→gen_random_uuid()
+
+  READOUT:  GET /api/platform/db → { driver, health(ping), plan: {tables, dataStatements, byTable} }
+```
+**Remaining for a true cutover (runbook — requires a live Postgres, cannot be validated in-sandbox):**
+1. `docker run postgres`; set `LX_PG_URL` + `db=postgres` → `POST /api/platform/db` migrate/apply (seed schema+data).
+2. Flip the ~800 synchronous `run/all/get` call sites to `await dbpool.*` (mechanical, module-by-module, each keeping the suite green via sqlite fallback).
+3. Replace SQLite triggers/PRAGMAs with PG defaults (`gen_random_uuid()`, `DEFAULT now()`); keep dual-write during rollout.
+4. Canary per-tenant `db` routing, then decommission SQLite.
+The engine, dialect, client, and migration planner are DONE and tested; step 2 is the cutover itself.
