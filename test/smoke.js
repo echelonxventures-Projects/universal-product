@@ -913,6 +913,32 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const rp = await A("/api/admin/retention", "PUT", { _default: 30, products: 30 }); ok(rp.body.ok, "retention policy saved");
       const pg = await A("/api/admin/trash/purge", "POST", {}); ok(pg.body.ok && (pg.body.purged.product || 0) === 0, "purge keeps recently-trashed (within retention)", pg.body.purged);
     }
+    console.log("▸ RBAC (staff roles · per-section enforcement · per-user override · disable)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const res = await fetch(BASE + p, o); (res.headers.getSetCookie ? res.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: res.status, body: await res.json().catch(() => ({})) }; }; };
+      const OWNER = mk(); await OWNER("/api/session?store=luxora"); await OWNER("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      ok((await OWNER("/api/admin/roles")).body.roles.some(r => r.key === "owner"), "roles catalog present (data)");
+      const add = await OWNER("/api/admin/staff", "POST", { name: "Order Desk", email: "desk.staff@luxora.shop", staff_role: "orders", password: "Desk!2345" });
+      ok(add.body.ok && add.body.id, "staff member created", add.body);
+      const ST = mk(); await ST("/api/session?store=luxora"); const sl = await ST("/api/auth/login", "POST", { email: "desk.staff@luxora.shop", password: "Desk!2345" });
+      ok(sl.body.ok, "staff can sign in");
+      const sess = (await ST("/api/session")).body.allowedSections || [];
+      ok(sess.includes("orders") && !sess.includes("products"), "role grants orders but not products", sess);
+      ok((await ST("/api/meta/entity/order")).status === 200, "staff reads allowed section (orders)");
+      ok((await ST("/api/meta/entity/product", "POST", { title: "Nope", brand: "X", price: 1 })).status === 403, "staff blocked from un-granted write (products)");
+      // per-user override grants products write
+      await OWNER("/api/admin/staff/" + add.body.id, "PUT", { perms: { products: "write" } });
+      const ST2 = mk(); await ST2("/api/session?store=luxora"); await ST2("/api/auth/login", "POST", { email: "desk.staff@luxora.shop", password: "Desk!2345" });
+      const made = await ST2("/api/meta/entity/product", "POST", { title: "RBAC Probe Widget", brand: "Probe", price: 5, stock: 3, dept: "retail" });
+      ok(made.status === 200 && (made.body && made.body.ok), "per-user override grants extra section", made.body);
+      // disable → login blocked
+      const dis = await OWNER("/api/admin/staff/" + add.body.id, "PUT", { disabled: true });
+      ok(dis.body.ok, "staff disabled");
+      const ST3 = mk(); await ST3("/api/session?store=luxora"); const blocked = await ST3("/api/auth/login", "POST", { email: "desk.staff@luxora.shop", password: "Desk!2345" });
+      ok(blocked.status === 403, "disabled staff cannot sign in", blocked.body);
+      // owner cannot lock self out
+      ok(!(await OWNER("/api/admin/staff", "POST", { name: "X", email: "x@y.z", staff_role: "nonsense" })).body.ok, "unknown role rejected");
+    }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();
     await f("/api/session?store=velora");

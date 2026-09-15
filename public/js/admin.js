@@ -35,8 +35,11 @@ const NAV = [
   ["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"], ["trash", "🗑️ Trash & Retention"],
   ["promotions", "💸 Offers & Coupons"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
   ["payments", "💳 Payment Gateways"], ["modules", "🧩 Modules"], ["settings", "⚙️ Settings"], ["billing", "🧮 Billing"], ["analytics", "📊 Analytics"], ["audit", "📜 Audit Trail"],
-  ["monitor", "📈 Monitor"], ["studio", "🛠️ Data Studio"]
+  ["monitor", "📈 Monitor"], ["team", "👥 Team & Roles"], ["studio", "🛠️ Data Studio"]
 ];
+const NAVSEC = { promotions: "offers", ai: "ai", webhooks: "webhooks", trash: "trash", team: "team", studio: "studio" };
+const navSection = k => NAVSEC[k] || k;
+const canSee = k => { if (!A.allowed || A.allowed.includes("*")) return true; if (k === "dash") return true; return A.allowed.includes(navSection(k)); };
 let view = "dash";
 
 function shell(content) {
@@ -44,7 +47,7 @@ function shell(content) {
   <div class="p-shell">
     <aside class="p-side">
       <div class="p-logo"><b>${esc(TT.brand.wordmark)}</b><small>Store Console · ${esc(TT.tenant.slug)}</small></div>
-      <nav class="p-nav">${NAV.map(([k, l]) => `<button data-v="${k}" class="${view === k ? "on" : ""}">${l}</button>`).join("")}</nav>
+      <nav class="p-nav">${NAV.filter(([k]) => canSee(k)).map(([k, l]) => `<button data-v="${k}" class="${view === k ? "on" : ""}">${l}</button>`).join("")}</nav>
       <div style="padding:18px 22px;border-top:1px solid var(--p-line);margin-top:14px">
         <a href="/index.html?store=${esc(TT.tenant.slug)}" target="_blank">↗ Open storefront</a>
       </div>
@@ -616,10 +619,38 @@ function wireTrash() {
   if ($("#retSave")) $("#retSave").onclick = async () => { const patch = {}; $$("[data-ret]").forEach(i => { if (i.value !== "") patch[i.dataset.ret] = Number(i.value); }); try { await api("/admin/retention", "PUT", patch); toast("Retention saved"); render(); } catch (e) { toast(e.message); } };
   if ($("#purgeNow")) $("#purgeNow").onclick = async () => { if (!confirm("Purge tombstoned rows past their retention? This is permanent.")) return; try { const r = await api("/admin/trash/purge", "POST", {}); toast("Purged " + Object.values(r.purged || {}).reduce((a, b) => a + b, 0)); render(); } catch (e) { toast(e.message); } };
 }
+/* ---------- Team & Roles (RBAC) ---------- */
+async function vTeam() {
+  const [r, s] = await Promise.all([api("/admin/roles"), api("/admin/staff")]);
+  const roles = r.roles || [], secs = r.sections || [];
+  const isOwner = !A.allowed || A.allowed.includes("*") || (A.allowed.includes("team") && A.allowed.length > 5);
+  const row = u => `<tr><td><b>${esc(u.name)}</b><br><span class="p-tag">${esc(u.email)}</span></td>
+    <td><select data-srole="${u.id}" ${String(u.id) === String(r.me.user.id) ? "disabled" : ""}>${roles.map(rl => `<option ${u.staff_role === rl.key ? "selected" : ""}>${esc(rl.key)}</option>`).join("")}</select></td>
+    <td><span class="badge ${u.disabled ? "failed" : "published"}">${u.disabled ? "disabled" : "active"}</span></td>
+    <td class="p-tag">${esc((u.last_login || "").slice(0, 16) || "never")}</td>
+    <td style="text-align:right;white-space:nowrap"><button class="p-btn sm" data-sperm="${u.id}" title="Per-user overrides">Perms</button> ${String(u.id) !== String(r.me.user.id) ? `<button class="p-btn sm danger" data-sdel="${u.id}">Remove</button>` : ""}</td></tr>`;
+  return `<div class="p-panel"><h2>👥 Team &amp; Roles</h2>
+    <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Staff share the store-console admin login but see and can only edit the sections their <b>role</b> grants. Roles are editable data; per-user permission overrides take precedence.</p>
+    <h3>Role definitions (data)</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Role</th><th>Grants (section: access)</th></tr></thead><tbody>${roles.map(rl => `<tr><td><b>${esc(rl.name)}</b><br><code>${esc(rl.key)}</code></td><td class="p-tag">${Object.entries(rl.sections || {}).map(([k, v]) => `${esc(k)}=${esc(v)}`).join(" · ")}</td></tr>`).join("")}</tbody></table></div>
+    <h3>Members</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Member</th><th>Role</th><th>Status</th><th>Last login</th><th></th></tr></thead><tbody>${(s.staff || []).map(row).join("")}</tbody></table></div>
+    <div class="p-panel" style="margin-top:10px"><b>Add staff member</b><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin-top:6px">
+      <label><span>Name</span><input id="stName"></label><label><span>Email</span><input id="stEmail"></label>
+      <label><span>Role</span><select id="stRole">${roles.filter(rl => rl.key !== "owner").map(rl => `<option>${esc(rl.key)}</option>`).join("")}</select></label>
+      <label><span>Password</span><input id="stPw" type="text" placeholder="blank = generate"></label>
+      <button class="p-btn primary sm" id="stAdd">Add member</button><span id="stGen" class="p-tag"></span></div></div></div>`;
+}
+function wireTeam() {
+  const $$ = s => Array.from(document.querySelectorAll(s));
+  $$("[data-srole]").forEach(sel => sel.onchange = async () => { try { await api("/admin/staff/" + sel.dataset.srole, "PUT", { staff_role: sel.value }); toast("Role updated"); } catch (e) { toast(e.message); } });
+  $$("[data-sdel]").forEach(b => b.onclick = async () => { if (!confirm("Disable this member?")) return; try { await api("/admin/staff/" + b.dataset.sdel, "DELETE"); render(); } catch (e) { toast(e.message); } });
+  $$("[data-sperm]").forEach(b => b.onclick = async () => { const cur = prompt("Per-user overrides as JSON, e.g. {\"products\":\"read\",\"trash\":false}", "{}"); if (cur == null) return; try { await api("/admin/staff/" + b.dataset.sperm, "PUT", { perms: JSON.parse(cur) }); toast("Saved"); } catch (e) { toast(e.message); } });
+  if (document.getElementById("stAdd")) document.getElementById("stAdd").onclick = async () => { try { const r = await api("/admin/staff", "POST", { name: document.getElementById("stName").value, email: document.getElementById("stEmail").value, staff_role: document.getElementById("stRole").value, password: document.getElementById("stPw").value || undefined }); if (r.generated) document.getElementById("stGen").textContent = "generated password: " + r.generated; toast("Member added"); render(); } catch (e) { toast(e.message); } };
+}
 async function render() {
   shell('<div class="p-empty">Loading…</div>');
   const body = $("#vBody");
   try {
+    if (view !== "dash" && !canSee(view)) { body.innerHTML = `<div class="p-empty">🔒 Your role (<b>${esc((A.user && A.user.staff_role) || "admin")}</b>) does not grant access to “${esc(view)}”.</div>`; return; }
     if (view === "dash") body.innerHTML = await vDash();
     else if (view === "products") body.innerHTML = await entityTable("product");
     else if (view === "skus") body.innerHTML = await entityTable("sku") + await entityTable("inventory") + await entityTable("warehouse") + await entityTable("variant_group");
@@ -637,6 +668,7 @@ async function render() {
     else if (view === "ai") { body.innerHTML = await vAI(); wireAI(); }
     else if (view === "webhooks") { body.innerHTML = await vWebhooks(); wireWebhooks(); }
     else if (view === "trash") { body.innerHTML = await vTrash(); wireTrash(); }
+    else if (view === "team") { body.innerHTML = await vTeam(); wireTeam(); }
     else if (view === "promotions") { body.innerHTML = await vOffers(); wireOffers(); }
     else if (view === "content") body.innerHTML = await entityTable("banner") + await entityTable("card") + await entityTable("department");
     else if (view === "taxonomy") body.innerHTML = await entityTable("taxonomy");
@@ -746,6 +778,7 @@ document.addEventListener("click", e => { const close = e.target.closest("[data-
       return;
     }
     A.user = sess.user;
+    A.allowed = Array.isArray(sess.allowedSections) ? sess.allowedSections : null;
     if (!$("#modal")) { const m = document.createElement("div"); m.id = "modal"; m.className = "hidden"; document.body.appendChild(m); }
     render();
   } catch (e) { console.error(e); }
