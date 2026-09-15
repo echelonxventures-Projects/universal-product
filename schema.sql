@@ -812,3 +812,16 @@ CREATE TRIGGER trg_idempotency_keys_uid AFTER INSERT ON idempotency_keys
                BEGIN UPDATE idempotency_keys SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 CREATE INDEX IF NOT EXISTS ix_deliveries ON webhook_deliveries(tenant_id, status);
 CREATE INDEX IF NOT EXISTS ix_entity_meta ON entity_meta(tenant_id, entity, ref_uid);
+
+/* ---------- governance: soft-delete (deleted_at) on content tables ----------
+   Additive columns applied via idempotent ALTER at boot (lib/db.js). Reads filter `deleted_at IS NULL`;
+   the entity delete endpoint soft-deletes by default (hard with ?hard=1). Retention (platform_settings
+   .retention / tenant settings 'retention') drives purge() that hard-deletes tombstoned rows past N days. */
+ALTER TABLE products ADD COLUMN deleted_at TEXT;
+ALTER TABLE orders   ADD COLUMN deleted_at TEXT;
+ALTER TABLE reviews  ADD COLUMN deleted_at TEXT;
+ALTER TABLE suppliers ADD COLUMN deleted_at TEXT;
+ALTER TABLE offers   ADD COLUMN deleted_at TEXT;
+ALTER TABLE contracts ADD COLUMN deleted_at TEXT;
+ALTER TABLE tenders  ADD COLUMN deleted_at TEXT;
+ALTER TABLE returns  ADD COLUMN deleted_at TEXT;

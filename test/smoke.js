@@ -896,6 +896,23 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const shown = (await A("/api/products/VR-ELEC-01")).body.tags || [];
       ok(shown.includes("featured"), "product detail surfaces its tags (uid-linked, no code)");
     }
+    console.log("▸ GOVERNANCE (soft-delete / trash / restore / retention purge)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b, h) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}, h || {}) }; if (b) o.body = JSON.stringify(b); const res = await fetch(BASE + p, o); (res.headers.getSetCookie ? res.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: res.status, body: await res.json().catch(() => ({})) }; }; };
+      const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      ok((await A("/api/products/LX-CMP-005")).status === 200, "product visible before trash");
+      const tr = await A("/api/meta/entity/product/LX-CMP-005", "DELETE");
+      ok(tr.body.ok && tr.body.trashed === true, "delete is a soft-delete (trashed:true)", tr.body);
+      ok((await A("/api/products/LX-CMP-005")).status === 404, "trashed product hidden from storefront detail");
+      const lst = (await A("/api/products?limit=200")).body;
+      ok(!(lst.items || []).some(i => i.id === "LX-CMP-005"), "trashed product hidden from storefront list");
+      const tb = (await A("/api/admin/trash")).body;
+      ok(tb.counts && tb.counts.product >= 1 && (tb.items || []).some(i => i.entity === "product" && i.id === "LX-CMP-005"), "trash lists the tombstoned product", tb.counts);
+      const rs = await A("/api/admin/trash/product/LX-CMP-005/restore", "POST", {});
+      ok(rs.body.ok && (await A("/api/products/LX-CMP-005")).status === 200, "restore brings it back");
+      const rp = await A("/api/admin/retention", "PUT", { _default: 30, products: 30 }); ok(rp.body.ok, "retention policy saved");
+      const pg = await A("/api/admin/trash/purge", "POST", {}); ok(pg.body.ok && (pg.body.purged.product || 0) === 0, "purge keeps recently-trashed (within retention)", pg.body.purged);
+    }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();
     await f("/api/session?store=velora");

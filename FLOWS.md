@@ -645,3 +645,14 @@ flowchart LR
   RUN --> E[emit events] --> WH[signed webhooks] --> RETRY[drain + backoff]
   E --> Q[queue/worker]
 ```
+
+## 23. Governance (soft-delete · trash · restore · retention)
+
+```
+  delete (generic entity route) → soft: sets deleted_at (a tombstone), NOT physical delete
+  reads (storefront + entity list) hide rows where deleted_at IS NOT NULL
+  Trash view lists tombstoned rows (by global uid) → Restore clears deleted_at
+  Retention = data (platform_settings.retention + tenant settings) per entity, days; 0 = keep forever
+  purge(): hard-deletes tombstoned rows older than retention  (GDPR erasure path; ?hard=1 to skip trash)
+  Applies to ANY content entity through the one engine — no per-entity code.
+```
