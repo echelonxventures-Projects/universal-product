@@ -596,3 +596,22 @@ flowchart TD
   INV -->|refund| CN[credit note → wallet]
   INV -->|overdue| DUN[dunning stages]
 ```
+
+## 21. Declarative integrations (spec = data, not code)
+
+```
+  provider_defs.spec / custom_provider.manifest.spec   ← the "blanks"
+     { method, url: "…{{cfg.id}}…", auth: basic|bearer|apikey, form|json,
+       body: { …{{amountCents}} {{currency}} {{to}} {{payload.x}}… },
+       idPath, statusPath, statusMap{ succeeded→captured,… }, errorPath, token:{…} }
+        │
+  lib/spec.js  render templates + execute (optional token step, urlencoded/json, idempotency)
+        │
+  lib/connect.js  pay/notify/marketing/ping — looks up the spec (provider_defs or inline),
+                  checks offline + credentials, executes generically, maps status.
+                  NO per-provider code. Offline/no-creds/no-spec → caller simulates.
+
+  kinds (providerKinds registry): payment · shipping · notification · tax · ai · marketing
+  marketing (data): meta · google-ads · ga4 · tiktok  — + ANY custom provider via a manifest spec
+  → "Add Meta/Google/TikTok/my CRM" = a row of data (fill the blanks), not a deploy.
+```

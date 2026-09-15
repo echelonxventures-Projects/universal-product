@@ -661,39 +661,39 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(!!aiNav, "AI Studio nav present in store console");
       if (aiNav) { click(aip.win, aiNav); await sleep(1400); const vb = aip.doc.querySelector("#vBody"); ok(vb && /AI Studio/i.test(vb.textContent) && !/⚠️/.test(vb.textContent), "AI Studio renders"); }
     }
-    console.log("▸ INTEGRATION LAYER (live payment/notification adapters — mocked transport, no network)");
+    console.log("▸ INTEGRATION LAYER (spec-driven outbound — mocked transport, no network)");
     {
       const connect = require("../lib/connect.js");
-      const orig = globalThis.fetch;
-      // stripe live success
-      connect.__setFetch(async (url, o) => { const j = { id: "pi_live_9", status: "succeeded", client_secret: "secret" }; return { status: 200, ok: true, text: async () => JSON.stringify(j), json: j, headers: {} }; });
-      let r = await connect.pay({ provider: "stripe", config: { apiKey: "sk_test_1" }, amount: 12.5, currency: "USD", idempotency: "ord_1" });
-      ok(r.live === true && r.ok === true && r.ref === "pi_live_9" && r.status === "captured", "live Stripe charge succeeds", r);
-      // stripe live decline
-      connect.__setFetch(async () => { const j = { error: { message: "card declined" } }; return { status: 402, ok: false, text: async () => JSON.stringify(j), json: j }; });
-      r = await connect.pay({ provider: "stripe", config: { apiKey: "sk_test_1" }, amount: 5, currency: "USD" });
-      ok(r.live === true && r.ok === false && /declined/.test(r.error), "live decline is surfaced (not silently captured)", r);
-      // razorpay order create
-      connect.__setFetch(async () => { const j = { id: "order_abc" }; return { status: 200, ok: true, text: async () => JSON.stringify(j), json: j }; });
-      r = await connect.pay({ provider: "razorpay", config: { keyId: "k", keySecret: "s" }, amount: 100, currency: "INR" });
-      ok(r.live && r.ok && r.ref === "order_abc" && r.status === "pending", "live Razorpay order created", r);
-      // notifier live (resend)
+      const S = {
+        stripe: { method: "POST", url: "https://api.stripe.com/v1/payment_intents", auth: { type: "basic", user: "{{cfg.apiKey}}", pass: "" }, idPath: "id", statusPath: "status", statusMap: { succeeded: "captured" }, body: { amount: "{{amountCents}}" } },
+        razorpay: { method: "POST", url: "https://api.razorpay.com/v1/orders", auth: { type: "basic", user: "{{cfg.keyId}}", pass: "{{cfg.keySecret}}" }, idPath: "id", okStatus: "pending", body: {} },
+        resend: { method: "POST", url: "https://api.resend.com/emails", auth: { type: "bearer", token: "{{cfg.apiKey}}" }, body: { to: ["{{to}}"], subject: "{{subject}}" }, idPath: "id" },
+        twilio: { method: "POST", url: "https://api.twilio.com/2010-04-01/Accounts/{{cfg.accountSid}}/Messages.json", auth: { type: "basic", user: "{{cfg.accountSid}}", pass: "{{cfg.authToken}}" }, body: { To: "{{to}}" }, idPath: "sid" },
+        braintree: { method: "POST", url: "https://api.braintreegateway.com:443/merchants/{{cfg.merchantId}}/transactions", auth: { type: "basic", user: "{{cfg.publicKey}}", pass: "{{cfg.privateKey}}" }, body: {} }
+      };
+      let r = null;
+      connect.__setTransport(async () => ({ ok: true, status: 200, async text() { return JSON.stringify({ id: "pi_live_9", status: "succeeded" }); } }));
+      r = await connect.pay({ provider: "stripe", spec: S.stripe, config: { apiKey: "sk_test_1" }, amount: 12.5, currency: "USD", idempotency: "ord_1" });
+      ok(r.live === true && r.ok === true && r.id === "pi_live_9" && r.status === "captured", "spec-driven Stripe charge succeeds (basic auth + cents + statusMap)", r);
+      connect.__setTransport(async () => ({ ok: false, status: 402, async text() { return JSON.stringify({ error: { message: "card declined" } }); } }));
+      r = await connect.pay({ provider: "stripe", spec: S.stripe, config: { apiKey: "sk_test_1" }, amount: 5, currency: "USD" });
+      ok(r.live === true && r.ok === false && /declined/.test(r.error), "live decline surfaced (not silently captured)", r);
+      connect.__setTransport(async () => ({ ok: true, status: 200, async text() { return JSON.stringify({ id: "order_abc" }); } }));
+      r = await connect.pay({ provider: "razorpay", spec: S.razorpay, config: { keyId: "k", keySecret: "s" }, amount: 100, currency: "INR" });
+      ok(r.live && r.ok && r.id === "order_abc" && r.status === "pending", "razorpay order created", r);
       let seen = null;
-      connect.__setFetch(async (url, o) => { seen = { url, auth: o.headers.Authorization, body: JSON.parse(o.body) }; const j = { id: "em_1" }; return { status: 200, ok: true, text: async () => JSON.stringify(j), json: j }; });
-      r = await connect.notify({ provider: "resend", config: { apiKey: "re_x", from: "a@b.co" }, to: "shopper@x.io", subject: "Hi", text: "Body" });
-      ok(r.live && r.ok && seen.url.includes("api.resend.com") && seen.auth === "Bearer re_x" && seen.body.to.includes("shopper@x.io"), "live Resend email dispatched", seen && seen.url);
-      // twilio sms
-      connect.__setFetch(async (url) => { const j = { sid: "SM1" }; return { status: 201, ok: true, text: async () => JSON.stringify(j), json: j }; });
-      r = await connect.notify({ provider: "twilio", config: { accountSid: "AC", authToken: "tok", from: "+1" }, to: "+1555", text: "x" });
-      ok(r.live && r.ok, "live Twilio SMS dispatched", r);
-      // no credentials → offline (caller will simulate)
-      r = await connect.pay({ provider: "stripe", config: {}, amount: 1 });
-      ok(r.live === false, "no credentials → simulated (live:false)", r);
-      // network throw is caught, surfaced as declined, never crashes
-      connect.__setFetch(async () => { throw new Error("ECONNRESET"); });
-      r = await connect.pay({ provider: "braintree", config: { merchantId: "m", publicKey: "p", privateKey: "q" }, amount: 1 });
+      connect.__setTransport(async (url, o) => { seen = { url, auth: o.headers.Authorization, body: JSON.parse(o.body) }; return { ok: true, status: 200, async text() { return JSON.stringify({ id: "em_1" }); } }; });
+      r = await connect.notify({ provider: "resend", spec: S.resend, config: { apiKey: "re_x" }, to: "shopper@x.io", subject: "Hi", text: "Body" });
+      ok(r.live && r.ok && /api\.resend\.com/.test(seen.url) && seen.auth === "Bearer re_x" && seen.body.to[0] === "shopper@x.io", "resend email dispatched with template body", seen && seen.url);
+      connect.__setTransport(async () => ({ ok: true, status: 201, async text() { return JSON.stringify({ sid: "SM1" }); } }));
+      r = await connect.notify({ provider: "twilio", spec: S.twilio, config: { accountSid: "AC", authToken: "tok" }, to: "+1555", text: "x" });
+      ok(r.live && r.ok, "twilio SMS dispatched", r);
+      r = await connect.pay({ provider: "stripe", spec: S.stripe, config: {}, amount: 1 });
+      ok(r.live === false, "no credentials → live:false (caller simulates)", r);
+      connect.__setTransport(async () => { throw new Error("ECONNRESET"); });
+      r = await connect.pay({ provider: "braintree", spec: S.braintree, config: { merchantId: "m", publicKey: "p", privateKey: "q" }, amount: 1 });
       ok(r.live === true && r.ok === false && /ECONNRESET/.test(r.error), "transport error handled gracefully", r);
-      connect.__setFetch(orig);
+      connect.__setTransport(null);
     }
     console.log("▸ RUNTIME CONFIG & ADAPTERS (everything backend is config · defaults in-process)");
     {
@@ -841,6 +841,36 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const ag = (await P("/api/platform/billing/aging")).body; ok(ag.aging && typeof ag.aging.total === "number", "aging buckets", ag.aging);
       const dn = (await P("/api/platform/billing/dunning", "POST", { tenant_id: 1 })).body; ok(dn.ok, "dunning ran");
       const bl = (await A("/api/admin/billing/detail")).body; ok(Array.isArray(bl.invoices) && bl.invoices.length >= 1, "store billing detail lists invoices");
+    }
+    console.log("▸ DECLARATIVE INTEGRATIONS (fill-in-the-blank specs: payments + marketing + custom-provider = data, no code)");
+    {
+      const spec = require("../lib/spec.js");
+      ok(spec.render("{{amountCents}}", { amountCents: 1299 }) === 1299, "spec numeric token renders to number");
+      ok(spec.getPath({ a: { b: 7 } }, "a.b") === 7, "spec getPath resolves nested");
+      let hit = null; const fakeHttp = async (url, o) => { hit = { url, o }; return { ok: true, status: 200, json: { id: "pi_x", status: "succeeded" }, text: "{}" }; };
+      const sp = { method: "POST", url: "https://api.stripe.com/v1/payment_intents", form: true, auth: { type: "basic", user: "{{cfg.apiKey}}", pass: "" }, idempotencyHeader: "Idempotency-Key", body: { amount: "{{amountCents}}", currency: "{{currency}}" }, idPath: "id", statusPath: "status", statusMap: { succeeded: "captured" }, errorPath: "error.message" };
+      const r = await spec.execute(sp, { config: { apiKey: "sk_live" }, amount: 12.5, currency: "usd", idempotency: "ord1" }, fakeHttp);
+      ok(r.ok && r.id === "pi_x" && r.status === "captured", "generic spec engine executes a payment shape", r);
+      ok(/api\.stripe\.com/.test(hit.url) && hit.o.headers["Idempotency-Key"] === "ord1" && /amount=1250/.test(hit.o.body), "spec renders url/auth/idempotency/body (incl. cents)", hit && hit.o.body);
+      // error mapping
+      const rr = await spec.execute(sp, { config: {}, amount: 1, currency: "usd" }, async () => ({ ok: false, status: 402, json: { error: { message: "declined" } }, text: "" }));
+      ok(rr.ok === false && /declined/.test(rr.error), "spec maps API error path");
+      // marketing providers are data specs; run each spec through the engine client-side (no network)
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const res = await fetch(BASE + p, o); (res.headers.getSetCookie ? res.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: res.status, body: await res.json().catch(() => ({})) }; }; };
+      const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const provs = (await A("/api/marketing/providers")).body.providers || [];
+      const meta = provs.find(p => p.id === "meta");
+      ok(["meta", "google-ads", "ga4", "tiktok"].every(id => provs.find(p => p.id === id && p.hasSpec)), "Meta/Google/GA4/TikTok present via data specs", provs.map(p => p.id));
+      hit = null;
+      const mr = await spec.execute(meta.spec, { config: { adAccountId: "act_1", accessToken: "EAA_t" }, payload: { hash: "abc", value: 20, currency: "USD" }, iso: "t", ts: 1 }, fakeHttp);
+      ok(mr.ok && /graph\.facebook\.com/.test(hit.url) && /Bearer EAA_t/.test(hit.o.headers.Authorization), "Meta spec dispatches to CAPI endpoint w/ token", hit && hit.url);
+      // a NEW provider defined purely as data (custom manifest spec) — no code anywhere
+      const cust = await A("/api/admin/custom-providers", "POST", { kind: "marketing", manifest: { id: "mycrm", name: "My CRM", fields: [{ key: "key", label: "API key", secret: true }], spec: { method: "POST", url: "https://crm.example/lead", auth: { type: "apikey", header: "X-Key", value: "{{cfg.key}}" }, body: { email: "{{payload.email}}" } } } });
+      ok(cust.status === 200 && !cust.body.error, "custom marketing provider accepted (kind + spec are data)", cust.body);
+      const mycrm = ((await A("/api/marketing/providers")).body.providers || []).find(p => p.id === "mycrm");
+      ok(mycrm && mycrm.hasSpec, "custom provider surfaces with its spec (data-driven registry)");
+      hit = null; const cr = await spec.execute(mycrm.spec, { config: { key: "K1" }, payload: { email: "a@b.co" } }, fakeHttp);
+      ok(cr.ok && /crm\.example\/lead/.test(hit.url) && hit.o.headers["X-Key"] === "K1", "custom data-only provider executes end-to-end (no code)", hit && hit.url);
     }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();
