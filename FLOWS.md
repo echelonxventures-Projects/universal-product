@@ -697,3 +697,19 @@ flowchart LR
 3. Replace SQLite triggers/PRAGMAs with PG defaults (`gen_random_uuid()`, `DEFAULT now()`); keep dual-write during rollout.
 4. Canary per-tenant `db` routing, then decommission SQLite.
 The engine, dialect, client, and migration planner are DONE and tested; step 2 is the cutover itself.
+
+## 26. Enterprise ops (all OFF-by-default, fill-in-the-blank config)
+
+```
+  1 DB cutover      config db=postgres + conn string → Platform→Runtime: /db status·ping·dryRun·apply·switch
+                   (async dual-engine + dialect + migration planner from §25)
+  2 PSP validation  gateway/preview (would-call, no network) · webhooks/inbound/:provider (HMAC verified)
+  3 SSO + SCIM      /admin/sso (okta/entra/google/generic, domains) → /auth/sso/start; SCIM /scim/Users
+                   bearer-token (created via /admin/scim/token, hashed at rest) provisions staff+RBAC role
+  4 regions/CDN     platform_settings.regions {list,cdn}; tenants.region; asset URL rebase to CDN
+  5 observability   GET /metrics (Prometheus) · /healthz · JSON logs (LX_LOG=1) · trace ids (§22)
+  6 domain depth    product feeds /feeds/<slug>.(xml|csv) (Google/Meta Shopping) · stock transfers ·
+                   tax remittance report (via tax engine) · loyalty/alert registries (data)
+  7 CI              .github/workflows/ci.yml (syntax + E2E + boot smoke, node matrix)
+  Store console: 🔐 SSO & Integrations · Team & Roles · Webhooks · Trash · AI Studio
+```

@@ -128,7 +128,8 @@ const handler = async (req, res) => {
   res.on("finish", () => {
     const tenant = res.__tenantId || 0;
     metrics.record(tenant, req.method, url.pathname, res.statusCode, Date.now() - t0);
-    console.log(`${req.method.padEnd(6)} [t${tenant}] ${url.pathname.padEnd(34)} ${res.statusCode} ${Date.now() - t0}ms ${req.__trace ? "#" + String(req.__trace).slice(0, 8) : ""}`);
+    if (process.env.LX_LOG === "json") console.log(JSON.stringify({ ts: new Date().toISOString(), lvl: res.statusCode >= 500 ? "error" : "info", trace: req.__trace, tenant, method: req.method, path: url.pathname, status: res.statusCode, ms: Date.now() - t0 }));
+    else console.log(`${req.method.padEnd(6)} [t${tenant}] ${url.pathname.padEnd(34)} ${res.statusCode} ${Date.now() - t0}ms ${req.__trace ? "#" + String(req.__trace).slice(0, 8) : ""}`);
   });
   try {
     if (url.pathname.startsWith("/api/")) {
@@ -180,6 +181,11 @@ const handler = async (req, res) => {
       const t = resolveTenant(req, url, cookies);
       res.writeHead(200, { "Content-Type": "application/json" });
       return res.end(JSON.stringify({ ok: true, tenant: t && t.slug, products: get("SELECT COUNT(*) c FROM products WHERE tenant_id=?", t.id).c, uptime: Math.floor(process.uptime()), tls: IS_TLS }));
+    }
+    if (url.pathname === "/metrics") {
+      const body = require("./lib/enterprise.js").promMetrics(metrics.snapshot(null));
+      res.writeHead(200, { "Content-Type": "text/plain; version=0.0.4" });
+      return res.end(body);
     }
     if (url.searchParams.get("store")) res.appendHeader("Set-Cookie", `store=${url.searchParams.get("store")}; Path=/; Max-Age=${365 * DAY}; SameSite=Lax`);
     serveStatic(req, res, url.pathname);

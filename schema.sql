@@ -831,3 +831,13 @@ ALTER TABLE users ADD COLUMN staff_role TEXT DEFAULT 'owner';   /* key into meta
 ALTER TABLE users ADD COLUMN perms      TEXT DEFAULT '{}';      /* per-user {section: read|write|false} override */
 ALTER TABLE users ADD COLUMN disabled   INTEGER DEFAULT 0;      /* soft-disable login for staff */
 ALTER TABLE users ADD COLUMN last_login TEXT;
+
+/* ---------- enterprise ops tables ---------- */
+ALTER TABLE tenants ADD COLUMN region TEXT DEFAULT 'global';
+ALTER TABLE tenants ADD COLUMN sso_provider TEXT DEFAULT '';
+ALTER TABLE tenants ADD COLUMN cdn TEXT DEFAULT '';
+CREATE TABLE IF NOT EXISTS sso_connections (tenant_id INTEGER PRIMARY KEY, provider TEXT DEFAULT 'okta', entity_id TEXT DEFAULT '', sso_url TEXT DEFAULT '', cert TEXT DEFAULT '', enabled INTEGER DEFAULT 0, domains TEXT DEFAULT '[]', updated_at TEXT);
+CREATE TABLE IF NOT EXISTS scim_tokens (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, token_hash TEXT NOT NULL, label TEXT DEFAULT '', prefix TEXT DEFAULT '', created_at TEXT);
+CREATE TABLE IF NOT EXISTS stock_transfers (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, from_warehouse INTEGER, to_warehouse INTEGER, sku_id INTEGER, qty INTEGER NOT NULL DEFAULT 1, status TEXT DEFAULT 'draft', reference TEXT DEFAULT '', note TEXT DEFAULT '', created_at TEXT, deleted_at TEXT);
+CREATE TABLE IF NOT EXISTS remittance_records (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, period TEXT NOT NULL, jurisdiction TEXT NOT NULL, tax_type TEXT DEFAULT 'vat', taxable REAL DEFAULT 0, tax_collected REAL DEFAULT 0, currency TEXT DEFAULT 'USD', status TEXT DEFAULT 'pending', filed_at TEXT, reference TEXT DEFAULT '', created_at TEXT, deleted_at TEXT);
+CREATE TABLE IF NOT EXISTS inbound_events (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER, provider TEXT, event TEXT, payload TEXT DEFAULT '{}', signature_ok INTEGER DEFAULT 0, processed INTEGER DEFAULT 0, created_at TEXT);

@@ -52,6 +52,10 @@ Seed accounts (env-overridable; hints auto-hide when passwords change): platform
 9. **Supply chain** — sha384 SRI injected into every served JS/CSS tag; parameterized SQL; strict schema validation
 10. **Isolation** — tenant-scoped data, platformOnly entity guards, role gates, suspended-store blocks, platform-policy gates over store features (coupons, currency overrides, fiscal pickers)
 
+## Enterprise ops (all OFF-by-default, fill-in-the-blank config)
+
+DB→Postgres cutover control plane (status/ping/dry-run/apply/switch), PSP gateway **preview** + verified **inbound webhooks** (HMAC), **SAML/OIDC SSO** + **SCIM 2.0** staff sync (bearer tokens), **regions + CDN/edge**, **Prometheus `/metrics`** + JSON logs + trace ids, **product feeds** (`/api/feeds/<slug>.xml|.csv`), **warehouse stock transfers**, **tax remittance** report, and **RBAC** staff roles + Team/SSO/Trash/Webhooks/AI consoles. Each is enabled only by writing its config; nothing activates silently.
+
 ## Architecture
 
 ```

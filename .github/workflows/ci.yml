@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [22, 22.5, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install (zero runtime deps — dev-free)
+        run: node -e "1"   # no npm install needed
+      - name: Syntax + E2E suite (own DB/port)
+        run: npm test
+      - name: Boot smoke (fresh DB, healthz)
+        run: |
+          LX_DB=/tmp/ci.db PORT=3055 nohup node server.js >/tmp/ci.log 2>&1 &
+          for i in $(seq 1 30); do sleep 1; curl -sf http://localhost:3055/healthz && break; done
+          curl -sf http://localhost:3055/healthz >/dev/null && echo OK

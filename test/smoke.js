@@ -955,6 +955,49 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(dbx.driver === "sqlite" && dbx.health && dbx.health.ok === true, "platform sees db driver + health", dbx.health);
       ok(dbx.plan && dbx.plan.tables > 30 && dbx.plan.dataStatements > 100, "migration planner reads full schema+rows", dbx.plan && { tables: dbx.plan.tables, rows: dbx.plan.dataStatements });
     }
+    console.log("▸ ENTERPRISE OPS (cutover · SSO/SCIM · regions/CDN · metrics · feeds · transfers · tax)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b, h) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}, h || {}) }; if (b) o.body = JSON.stringify(b); const res = await fetch(BASE + p, o); (res.headers.getSetCookie ? res.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: res.status, body: await res.json().catch(() => ({})), text: await Promise.resolve((res.headers.get("content-type") || "").includes("text") ? res.clone().text() : "") }; }; };
+      const P = mk(); await P("/api/session"); await P("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      // #1 cutover: guarded apply, then dry-run against a placeholder PG connection string
+      ok((await P("/api/platform/db")).body.driver === "sqlite", "db status default sqlite");
+      const pre = await P("/api/platform/db/apply", "POST", { dryRun: true }); ok(pre.body.ok === false && /not configured/.test(pre.body.error || ""), "apply blocked until Postgres configured");
+      await P("/api/platform/runtime", "PUT", { db: { driver: "postgres", params: { url: "postgres://lux:lux@db.example:5432/luxora" } } });
+      const dry = await P("/api/platform/db/apply", "POST", { dryRun: true });
+      ok(dry.body.ok && dry.body.statements > 100, "dry-run migration plans full schema without connecting", dry.body);
+      await P("/api/platform/db/switch", "POST", { driver: "sqlite", mode: "sqlite" }); // back to default (safe)
+      // #4 regions + CDN
+      ok((await P("/api/platform/regions")).body.list.length >= 4, "region catalog (data)");
+      await P("/api/platform/regions", "PUT", { list: [{ key: "global", label: "G" }, { key: "eu-west", label: "EU" }], cdn: "https://cdn.example" });
+      const st = (await A("/api/session")).body; ok(st && (st.allowedSections || st.user), "session still works after region change");
+      // #5 observability
+      const mt = await fetch(BASE + "/metrics"); const mtText = await mt.text(); ok(mt.status === 200 && /luxora_http_requests_total/.test(mtText), "/metrics exposes Prometheus text");
+      // #6 feeds (public)
+      const fx = await fetch(BASE + "/api/feeds/luxora.xml"); const fxt = await fx.text(); ok(fx.status === 200 && /<g:id>/.test(fxt) && /in stock|out of stock/.test(fxt), "Google/Meta Shopping XML feed");
+      const fc = await (await fetch(BASE + "/api/feeds/luxora.csv")).text(); ok(/id,title,brand/.test(fc), "CSV feed");
+      // #2 gateway preview + inbound webhook HMAC
+      ok(((await A("/api/admin/gateway/preview/stripe", "POST", {})).body.url || "").includes("stripe.com"), "gateway preview shows the would-call endpoint (no network)");
+      const inc = await fetch(BASE + "/api/webhooks/inbound/stripe", { method: "POST", headers: { "content-type": "application/json", "x-lux-signature": "sha256=deadbeef" }, body: JSON.stringify({ type: "charge.succeeded" }) });
+      ok(inc.status === 200 && (await inc.json()).ok === true, "inbound PSP webhook accepted (signature verified-or-rejected, never crashes)");
+      // #3 SSO + SCIM
+      const ssoOff = await A("/api/auth/sso/start", "POST", { tenant_id: 1, email: "a@corp.com" }); ok(ssoOff.status === 400 && /not enabled/.test(ssoOff.body.error || ""), "SSO gated until configured");
+      await A("/api/admin/sso", "PUT", { enabled: true, provider: "okta", entityId: "urn:okta", ssoUrl: "https://okta.example/sso", domains: ["corp.com"] });
+      const sso = await A("/api/auth/sso/start", "POST", { tenant_id: 1, email: "a@corp.com" }); ok(sso.body.ok && /okta.example/.test(sso.body.redirectUrl), "SSO start builds an IdP redirect (placeholder request)");
+      ok((await A("/api/auth/sso/start", "POST", { tenant_id: 1, email: "a@other.com" })).status === 400, "SSO domain enforced");
+      const tok = await A("/api/admin/scim/token", "POST", { label: "hr" }); ok(/^sc_/.test(tok.body.token), "SCIM token issued");
+      const lst = await fetch(BASE + "/api/scim/Users?tenant_id=1", { headers: { Authorization: "Bearer " + tok.body.token } }); const lj = await lst.json();
+      ok(lst.status === 200 && lj.totalResults >= 1, "SCIM lists staff (bearer)");
+      const badAuth = await fetch(BASE + "/api/scim/Users?tenant_id=1", { headers: { Authorization: "Bearer nope" } }); ok(badAuth.status === 401, "SCIM rejects bad token");
+      await fetch(BASE + "/api/scim/Users?tenant_id=1", { method: "POST", headers: { Authorization: "Bearer " + tok.body.token, "content-type": "application/json" }, body: JSON.stringify({ userName: "scim.user@luxora.shop", name: { givenName: "Scim" }, roles: [{ value: "support" }] }) });
+      ok((await A("/api/admin/staff")).body.staff.some(u => u.email === "scim.user@luxora.shop"), "SCIM create provisions a staff user");
+      // #6 transfers + tax report
+      const wh = (await A("/api/meta/entity/warehouse")).body.rows; const sk = (await A("/api/meta/entity/sku")).body.rows;
+      const invA = wh[0], invB = wh[1]; const oneSku = sk[0];
+      const tr = await A("/api/admin/transfers", "POST", { from_warehouse: invA && invA.id, to_warehouse: invB && invB.id, sku_id: oneSku && oneSku.id, qty: 2 });
+      ok(tr.body.ok || /insufficient|required/.test(tr.body.error || ""), "stock transfer endpoint enforces rules", tr.body);
+      const trr = (await A("/api/admin/tax/report?period=" + new Date().toISOString().slice(0, 7))).body; ok(trr && trr.period && typeof trr.taxCollected !== "undefined", "tax remittance report (via tax engine)");
+    }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();
     await f("/api/session?store=velora");

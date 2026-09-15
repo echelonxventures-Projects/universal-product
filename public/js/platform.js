@@ -571,7 +571,13 @@ async function vRuntime() {
     <table class="p-table"><thead><tr><th>Concern</th><th>Default</th><th>Active</th><th>Driver</th><th>Connection</th></tr></thead><tbody>
       ${concerns.map(k => { const c = cat.catalog[k], cur = rt[k], kinds = c.drivers.map(dr => `<option ${dr === cur.driver ? "selected" : ""}>${dr}</option>`).join(""); const fields = cat.driverFields[cur.driver] || []; const params = cur.params || {}; const inp = fields.map(f => `<label style="display:block;font-size:11px"><span>${esc(f.label)}</span><input data-rtp="${k}.${f.key}" type="${f.secret ? "password" : "text"}" value="${esc(f.secret ? "••••" : (params[f.key] || ""))}" placeholder="${esc(f.key)}"></label>`).join("") || '<span class="p-tag">none</span>'; return `<tr><td><b>${esc(c.label)}</b><br><code>${k}</code></td><td><code>${c.default}</code></td><td><span class="p-tag">${esc(active[k] || cur.driver)}</span></td><td><select data-rt="${k}">${kinds}</select></td><td>${inp}</td></tr>`; }).join("")}
     </tbody></table>
-    <div style="margin-top:12px"><button class="p-btn primary sm" id="rtSave">Apply base runtime</button> <button class="p-btn sm" id="rtTest">Test connections</button> <span id="rtTestOut" class="p-tag"></span></div></div>`;
+    <div style="margin-top:12px"><button class="p-btn primary sm" id="rtSave">Apply base runtime</button> <button class="p-btn sm" id="rtTest">Test connections</button> <span id="rtTestOut" class="p-tag"></span></div></div>
+    <div class="p-panel"><h2>🐘 Database (Postgres cutover)</h2>
+      <p style="color:var(--p-muted);font-size:13px;margin:0 0 10px">Set driver <b>postgres</b> + connection string above and save, then dry-run / verify / apply. SQLite is the default; nothing changes until you switch.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px"><button class="p-btn sm" id="dbPing">Test connection</button><button class="p-btn sm" id="dbDry">Dry-run migration</button><button class="p-btn sm primary" id="dbApply">Apply migration</button><button class="p-btn sm danger" id="dbBack">Revert to SQLite</button></div>
+      <pre id="dbOut" style="background:#0b0d12;color:#cfe;padding:10px;border-radius:10px;font-size:12px;max-height:220px;overflow:auto">Status loading…</pre>
+      <h3 style="margin-top:12px">Regions &amp; Edge / CDN</h3><div id="regWrap" class="p-tag">loading…</div>
+    </div>`;
 }
 function wireRuntime() {
   const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
@@ -579,6 +585,20 @@ function wireRuntime() {
   const save = async () => { try { await api("/platform/runtime", "PUT", baseBody()); toast("Base runtime applied"); render(); } catch (e) { toast(e.message); } };
   if ($("#rtSave")) $("#rtSave").onclick = save;
   if ($("#rtTest")) $("#rtTest").onclick = async () => { const out = []; for (const c of ["cache", "ratelimit", "queue", "storage", "db"]) { try { const r = await api("/platform/runtime/test", "POST", { concern: c }); out.push(c + "=" + (r.ok ? "ok" : "FAIL") + (r.error ? ":" + r.error : "")); } catch (e) { out.push(c + "=err"); } } $("#rtTestOut").textContent = out.join(" · "); };
+  const dbLog = obj => { const el = document.getElementById("dbOut"); if (el) el.textContent = JSON.stringify(obj, null, 1).slice(0, 4000); };
+  (async () => { try { dbLog(await api("/platform/db")); } catch (e) { dbLog({ error: e.message }); } })();
+  if ($("#dbPing")) $("#dbPing").onclick = async () => { try { dbLog(await api("/platform/db/ping", "POST", {})); } catch (e) { dbLog({ error: e.message }); } };
+  if ($("#dbDry")) $("#dbDry").onclick = async () => { try { dbLog(await api("/platform/db/apply", "POST", { dryRun: true })); } catch (e) { dbLog({ error: e.message }); } };
+  if ($("#dbApply")) $("#dbApply").onclick = async () => { if (!confirm("Apply migration to the configured Postgres? Runs DDL + data copy.")) return; try { dbLog(await api("/platform/db/apply", "POST", {})); } catch (e) { dbLog({ error: e.message }); } };
+  if ($("#dbBack")) $("#dbBack").onclick = async () => { try { await api("/platform/db/switch", "POST", { driver: "sqlite" }); toast("Reverted to SQLite"); render(); } catch (e) { toast(e.message); } };
+  let REG = { list: [], cdn: "" };
+  const renderReg = () => { const el = document.getElementById("regWrap"); if (!el) return; el.innerHTML = `${REG.list.map((r, i) => `<span class="p-tag"><input data-regk="${i}" value="${esc(r.key)}" size="8"> <input data-regl="${i}" value="${esc(r.label)}" size="10"> <button class="p-btn sm danger" data-regdel="${i}">✕</button></span>`).join(" ")}<div style="margin-top:6px"><label>CDN base URL <input id="cdn" value="${esc(REG.cdn || "")}" placeholder="https://cdn.example (blank = off)" style="min-width:280px"></label> <button class="p-btn sm" id="regAdd">+ region</button> <button class="p-btn sm primary" id="regSave">Save regions</button></div>`; };
+  (async () => { try { REG = await api("/platform/regions"); renderReg(); } catch (e) { const el = document.getElementById("regWrap"); if (el) el.textContent = "regions error: " + e.message; } })();
+  const regWrap = document.getElementById("regWrap"); if (regWrap) regWrap.onclick = e => {
+    if (e.target.id === "regAdd") { REG.list.push({ key: "", label: "" }); renderReg(); }
+    else if (e.target.dataset && e.target.dataset.regdel) { REG.list.splice(Number(e.target.dataset.regdel), 1); renderReg(); }
+    else if (e.target.id === "regSave") { document.querySelectorAll("[data-regk]").forEach(x => { REG.list[Number(x.dataset.regk)] = REG.list[Number(x.dataset.regk)] || {}; REG.list[Number(x.dataset.regk)].key = x.value; }); document.querySelectorAll("[data-regl]").forEach(x => { REG.list[Number(x.dataset.regl)].label = x.value; }); REG.cdn = (document.getElementById("cdn") || {}).value || ""; api("/platform/regions", "PUT", REG).then(() => toast("Regions saved")).catch(er => toast(er.message)); }
+  };
   if ($("#envCreate")) $("#envCreate").onclick = async () => { try { await api("/platform/environments?name=" + encodeURIComponent($("#envName").value), "POST", { name: $("#envName").value, label: $("#envName").value, region: $("#envRegion").value, tenants: $("#envTenants").value.split(",").map(x => Number(x)).filter(Boolean), runtime: baseBody() }); toast("Environment created"); render(); } catch (e) { toast(e.message); } };
   $$("[data-envact]").forEach(b => b.onclick = async () => { try { await api("/platform/environments/" + encodeURIComponent(b.dataset.envact) + "/activate", "POST", {}); toast("Environment activated"); render(); } catch (e) { toast(e.message); } });
   $$("[data-envdel]").forEach(b => b.onclick = async () => { if (!confirm("Delete environment?")) return; try { await api("/platform/environments/" + encodeURIComponent(b.dataset.envdel), "DELETE", {}); render(); } catch (e) { toast(e.message); } });
