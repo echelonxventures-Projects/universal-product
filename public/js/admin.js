@@ -33,7 +33,7 @@ const NAV = [
   ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["sellers", "🏪 Sellers"], ["settlements", "🤝 Settlements"],
   ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["suppliers", "🚚 Suppliers & Procurement"], ["serialized", "🔢 Serialized Items"], ["compliance", "✅ Compliance & Certs"], ["localizations", "🌐 Localizations"],
   ["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"], ["trash", "🗑️ Trash & Retention"], ["sso", "🔐 SSO & Integrations"],
-  ["promotions", "💸 Offers & Coupons"], ["goip", "Ω∞ GOIP"], ["search", "🔎 Search & Discovery"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
+  ["promotions", "💸 Offers & Coupons"], ["goip", "Ω∞ GOIP"],   ["search", "🔎 Search & Discovery"], ["logistics", "🚚 Logistics & Fulfilment"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
   ["payments", "💳 Payment Gateways"], ["modules", "🧩 Modules"], ["settings", "⚙️ Settings"], ["billing", "🧮 Billing"], ["analytics", "📊 Analytics"], ["audit", "📜 Audit Trail"],
   ["monitor", "📈 Monitor"], ["team", "👥 Team & Roles"], ["studio", "🛠️ Data Studio"]
 ];
@@ -57,6 +57,24 @@ async function vSearch() {
   </div>
   <div class="a-card"><h3>Autocomplete · prefix <code>so</code></h3>
     <div>${(suggest.items || []).map(t => `<span class="a-chip">${esc(t)}</span>`).join(" ") || "—"}</div>
+  </div>`;
+}
+async function vLogistics() {
+  const [ships, sla, carriers] = await Promise.all([api("/shipments", {}), api("/admin/sla", { days: 3 }), api("/carriers", {})]);
+  const statuses = ships.statuses || [];
+  const by = {}; ships.shipments.forEach(s => by[s.status] = (by[s.status] || 0) + 1);
+  return `<div class="a-head"><h2>🚚 Logistics &amp; Fulfilment</h2><p class="a-sub">Fulfilment state machine · shipment tracking · 3PL carrier abstraction · warehouse routing · SLA · return disposition. States &amp; dispositions live in Data Studio: <code>logisticsStates</code>, <code>logisticsDispositions</code>.</p></div>
+  <div class="a-card"><h3>Active shipments</h3>
+    <p class="a-sub">${Object.entries(by).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join(" ") || "none"}</p>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>order</th><th>carrier</th><th>status</th><th>warehouse</th></tr></thead>
+      <tbody>${ships.shipments.slice(0, 25).map(s => `<tr><td><code>${esc(s.tracking_ref)}</code></td><td>${s.order_id}</td><td>${esc(s.carrier || "—")}</td><td><span class="a-chip">${esc(s.status)}</span></td><td>${s.warehouse_id || "—"}</td></tr>`).join("") || '<tr><td colspan="5">No shipments yet.</td></tr>'}</tbody></table></div>
+  </div>
+  <div class="a-card"><h3>SLA breaches (&gt;3 days undelivered)</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>status</th><th>created</th></tr></thead>
+      <tbody>${sla.breaches.map(b => `<tr><td><code>${esc(b.tracking_ref)}</code></td><td>${esc(b.status)}</td><td>${esc(b.created_at)}</td></tr>`).join("") || '<tr><td colspan="3">On schedule.</td></tr>'}</tbody></table></div>
+  </div>
+  <div class="a-card"><h3>3PL carriers (registry)</h3>
+    <div>${(carriers.carriers || []).map(c => `<span class="a-chip">${esc(c.emoji || "")} ${esc(c.name)}</span>`).join(" ") || "none configured"}</div>
   </div>`;
 }
 function shell(content) {
@@ -816,6 +834,7 @@ async function render() {
     else if (view === "billing") body.innerHTML = await vBilling();
     else if (view === "modules") { body.innerHTML = await vModules(); }
     else if (view === "audit") { body.innerHTML = await vAudit(); wireAudit(); }
+    else if (view === "logistics") body.innerHTML = await vLogistics();
     else if (view === "search") body.innerHTML = await vSearch();
     else if (view === "monitor") body.innerHTML = await vMonitor();
     else if (view === "studio") { body.innerHTML = await vStudio(); wireStudio(); }

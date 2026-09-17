@@ -1222,6 +1222,27 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(Array.isArray(sug.items) && sug.items.length > 0, "autocomplete suggestions", sug);
     const rec = await f("/api/recommend?anchor=LX-ELS-007&limit=5");
     ok(Array.isArray(rec.items), "recommend returns array", rec);
+
+    console.log("▸ LOGISTICS (fulfilment · tracking · 3PL · returns)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const sc = await A("/api/admin/shipments", "POST", { order_id: 1, carrier: "ship:house-std", warehouse_id: 1 });
+      ok(sc.status === 200 && sc.body.shipment.tracking_ref, "admin creates shipment", sc.body);
+      const sid = sc.body.shipment.id;
+      const t1 = await A("/api/admin/shipments/" + sid + "/status", "PUT", { status: "dispatched" });
+      ok(t1.status === 200 && t1.body.shipment.status === "dispatched" && t1.body.shipment.dispatched_at, "shipment transitions to dispatched", t1.body);
+      const t2 = await A("/api/admin/shipments/" + sid + "/status", "PUT", { status: "delivered" });
+      ok(t2.status === 200 && t2.body.shipment.delivered_at && t2.body.shipment.events.length >= 3, "tracking event chain recorded", t2.body.shipment.events.length);
+      const bad = await A("/api/admin/shipments/" + sid + "/status", "PUT", { status: "not-a-status" });
+      ok(bad.status === 400, "invalid status rejected", bad.body);
+      const list = await A("/api/shipments");
+      ok(list.body.shipments.some(x => x.tracking_ref === sc.body.shipment.tracking_ref), "list shipments includes created", list.body);
+      const route = await A("/api/admin/warehouses/route", "POST", { warehouse_id: 1 });
+      ok(route.body.primary || route.body.all, "warehouse routing responds", route.body);
+      const cars = await A("/api/carriers");
+      ok(Array.isArray(cars.body.carriers), "3PL carriers from registry", cars.body);
+    }
   } catch (e) {
     console.error("TEST CRASH:", e);
     failed++;
