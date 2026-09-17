@@ -1243,6 +1243,29 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const cars = await A("/api/carriers");
       ok(Array.isArray(cars.body.carriers), "3PL carriers from registry", cars.body);
     }
+
+    console.log("▸ FINANCE (disputes · retries · payouts · reconciliation · FX ledger)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const po = await A("/api/admin/fin/disputes", "POST", { payment_id: 1, reason: "not_received", amount: 42.5, currency: "USD" });
+      ok(po.status === 200 && po.body.dispute && /DSP-/.test(po.body.dispute.ref), "open chargeback dispute", po.body);
+      const did = po.body.dispute.id;
+      const dt = await A("/api/admin/fin/disputes/" + did, "PUT", { state: "lost", resolution: "buyer evidence insufficient" });
+      ok(dt.status === 200 && dt.body.dispute.state === "lost" && dt.body.dispute.closed_at, "dispute transitions + closes", dt.body);
+      const dp = await A("/api/admin/fin/disputes");
+      ok(dp.body.disputes.some(x => x.id === did), "dispute list includes opened", dp.body);
+      const pa = await A("/api/admin/fin/payments/1/retry", "POST", {});
+      ok(pa.status === 200 && Array.isArray(pa.body.attempts) && pa.body.attempts.length >= 1, "payment retry records an attempt", pa.body);
+      const po2 = await A("/api/admin/fin/payouts", "POST", { seller_id: 1, kind: "seller", period: new Date().toISOString().slice(0, 7), items: [{ ref: "order:1", amount: 100, currency: "USD" }, { ref: "fee", kind: "commission", amount: -5, currency: "USD" }] });
+      ok(po2.status === 200 && po2.body.payout.net === 95, "payout run computes net of items", po2.body);
+      const pd = await A("/api/admin/fin/payouts/" + po2.body.payout.id + "/disburse", "POST", {});
+      ok(pd.status === 200 && pd.body.payout.status === "disbursed" && pd.body.payout.disbursed_at, "payout disburses + sets timestamp", pd.body);
+      const rc = await A("/api/admin/fin/reconcile", "POST", { period: new Date().toISOString().slice(0, 7), source: "bank", lines: [{ ref: "nonexistent-ref", amount: 10 }], gateway: "" });
+      ok(rc.status === 200 && rc.body.batch.unmatched >= 1, "reconciliation flags unmatched bank lines", rc.body.batch);
+      const led = await A("/api/admin/fin/ledger?owner=t1:s:demo");
+      ok(Array.isArray(led.body.entries), "FX ledger returns entries", led.body);
+    }
   } catch (e) {
     console.error("TEST CRASH:", e);
     failed++;

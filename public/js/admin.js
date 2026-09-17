@@ -33,7 +33,7 @@ const NAV = [
   ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["sellers", "🏪 Sellers"], ["settlements", "🤝 Settlements"],
   ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["suppliers", "🚚 Suppliers & Procurement"], ["serialized", "🔢 Serialized Items"], ["compliance", "✅ Compliance & Certs"], ["localizations", "🌐 Localizations"],
   ["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"], ["trash", "🗑️ Trash & Retention"], ["sso", "🔐 SSO & Integrations"],
-  ["promotions", "💸 Offers & Coupons"], ["goip", "Ω∞ GOIP"],   ["search", "🔎 Search & Discovery"], ["logistics", "🚚 Logistics & Fulfilment"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
+  ["promotions", "💸 Offers & Coupons"], ["goip", "Ω∞ GOIP"],   ["search", "🔎 Search & Discovery"],   ["logistics", "🚚 Logistics & Fulfilment"], ["finance", "💰 Finance & Settlements"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
   ["payments", "💳 Payment Gateways"], ["modules", "🧩 Modules"], ["settings", "⚙️ Settings"], ["billing", "🧮 Billing"], ["analytics", "📊 Analytics"], ["audit", "📜 Audit Trail"],
   ["monitor", "📈 Monitor"], ["team", "👥 Team & Roles"], ["studio", "🛠️ Data Studio"]
 ];
@@ -75,6 +75,24 @@ async function vLogistics() {
   </div>
   <div class="a-card"><h3>3PL carriers (registry)</h3>
     <div>${(carriers.carriers || []).map(c => `<span class="a-chip">${esc(c.emoji || "")} ${esc(c.name)}</span>`).join(" ") || "none configured"}</div>
+  </div>`;
+}
+async function vFinance() {
+  const [disp, pays, led] = await Promise.all([api("/admin/fin/disputes"), api("/admin/fin/payouts"), api("/admin/fin/ledger", { owner: "t1:s:demo" })]);
+  const byS = {}; disp.disputes.forEach(d => byS[d.state] = (byS[d.state] || 0) + 1);
+  return `<div class="a-head"><h2>💰 Finance &amp; Settlements</h2><p class="a-sub">Chargebacks / disputes · multi-gateway retries · batch payout runs · bank-feed reconciliation · FX-aware ledger. States &amp; kinds in Data Studio: <code>finDisputeStates</code>, <code>finPayoutKinds</code>, <code>finReconSources</code>.</p></div>
+  <div class="a-card"><h3>Disputes / chargebacks</h3>
+    <p class="a-sub">${Object.entries(byS).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("") || "none open"}</p>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>payment</th><th>amount</th><th>state</th></tr></thead>
+      <tbody>${disp.disputes.slice(0, 15).map(d => `<tr><td><code>${esc(d.ref)}</code></td><td>${d.payment_id || "—"}</td><td>${money(d.amount)} ${esc(d.currency)}</td><td><span class="a-chip">${esc(d.state)}</span></td></tr>`).join("") || '<tr><td colspan="4">No disputes.</td></tr>'}</tbody></table></div>
+  </div>
+  <div class="a-card"><h3>Payout runs</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>kind</th><th>seller</th><th>gross</th><th>net</th><th>status</th><th>items</th></tr></thead>
+      <tbody>${pays.payouts.slice(0, 15).map(p => `<tr><td><code>${esc(p.ref)}</code></td><td>${esc(p.kind)}</td><td>${p.seller_id || "—"}</td><td>${money(p.gross)}</td><td>${money(p.net)}</td><td><span class="a-chip">${esc(p.status)}</span></td><td>${p.items}</td></tr>`).join("") || '<tr><td colspan="7">No payout runs.</td></tr>'}</tbody></table></div>
+  </div>
+  <div class="a-card"><h3>FX ledger · <code>t1:s:demo</code></h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>kind</th><th>amount</th><th>currency</th><th>balance_after</th></tr></thead>
+      <tbody>${(led.entries || []).slice(0, 10).map(e => `<tr><td>${esc(e.kind)}</td><td>${money(e.amount)}</td><td>${esc(e.currency)}</td><td>${money(e.balance_after)}</td></tr>`).join("") || '<tr><td colspan="4">—</td></tr>'}</tbody></table></div>
   </div>`;
 }
 function shell(content) {
@@ -834,6 +852,7 @@ async function render() {
     else if (view === "billing") body.innerHTML = await vBilling();
     else if (view === "modules") { body.innerHTML = await vModules(); }
     else if (view === "audit") { body.innerHTML = await vAudit(); wireAudit(); }
+    else if (view === "finance") body.innerHTML = await vFinance();
     else if (view === "logistics") body.innerHTML = await vLogistics();
     else if (view === "search") body.innerHTML = await vSearch();
     else if (view === "monitor") body.innerHTML = await vMonitor();
