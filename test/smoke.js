@@ -1209,6 +1209,19 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(page.doc.querySelector(".wordmark") && page.doc.querySelector(".wordmark").textContent.includes("VELORA"), "brand store renders own identity");
     const vp = await f("/api/providers");
     ok(vp.country.code === "AE" && vp.gateways.some(g => g.id === "tabby"), "UAE store offers Tabby BNPL", vp.gateways.map(g => g.id).join(","));
+
+    console.log("▸ SEARCH & DISCOVERY (faceted · typo · recommend · suggest)");
+    jar.clear();
+    await f("/api/session?store=luxora");
+    const sres = await f("/api/search?q=gold&limit=10");
+    ok(sres.matched > 0 && sres.items.every(i => i.id), "search returns faceted items", sres);
+    ok(sres.facets && Object.keys(sres.facets).length > 0, "search returns facet counts", sres.facets);
+    const s1 = await f("/api/search?q=guld");
+    ok(s1.matched > 0 && s1.items.some(i => /gold|22k/i.test(i.title)), "typo-tolerant query matches real token", s1);
+    const sug = await f("/api/suggest?prefix=so&limit=10");
+    ok(Array.isArray(sug.items) && sug.items.length > 0, "autocomplete suggestions", sug);
+    const rec = await f("/api/recommend?anchor=LX-ELS-007&limit=5");
+    ok(Array.isArray(rec.items), "recommend returns array", rec);
   } catch (e) {
     console.error("TEST CRASH:", e);
     failed++;
