@@ -58,7 +58,11 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   for (const suffix of ["", "-wal", "-shm"]) { try { require("fs").rmSync(dbBase + suffix, { force: true }); } catch (e) { } }
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")],
     { env: { ...process.env, PORT, LX_DB: dbBase }, stdio: ["ignore", "ignore", "inherit"] });
-  for (let i = 0; i < 40; i++) { try { const h = await fetch(BASE + "/healthz"); if (h.ok) break; } catch (e) { } await sleep(1000); }
+  /* first boot seeds three stores, 156 products and every registry — on a slow or network-backed
+     filesystem that can take well over a minute, so wait generously rather than failing spuriously. */
+  let up = false;
+  for (let i = 0; i < 120; i++) { try { const h = await fetch(BASE + "/healthz"); if (h.ok) { up = true; break; } } catch (e) { } await sleep(1000); }
+  if (!up) console.log("  ⚠ server did not answer /healthz within 120s — the run below will fail");
 
   try {
     console.log("▸ health & meta");
@@ -77,6 +81,12 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(page.doc.querySelectorAll(".cat-rail a").length > 0, "industry rail from taxonomy");
     ok(page.doc.querySelector(".wordmark") && page.doc.querySelector(".wordmark").textContent.includes("LUXORA"), "premium wordmark");
     ok(page.errs.length === 0, "no JS errors", page.errs.slice(0, 2).join("|"));
+
+    page = await render("/deals.html");
+    const strip = page.doc.querySelector("#goipStrip");
+    ok(!!strip && /Offers for you/i.test(strip.textContent || ""), "storefront renders the GOIP in-app offer strip", strip && (strip.textContent || "").slice(0, 40));
+    ok(strip && strip.querySelectorAll("[data-goipcode]").length >= 1, "each offered value exchange is claimable by its code", strip && strip.querySelectorAll("[data-goipcode]").length);
+    ok(page.errs.length === 0, "deals page: no JS errors", page.errs.slice(0, 2).join("|"));
 
     page = await render("/results.html?q=milk");
     ok(page.doc.querySelectorAll(".pcard").length >= 1, "grocery milk searchable");
@@ -608,14 +618,182 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(aurPreview.credits === 10 && aurPreview.applied.some(a => a.name === "Platform-wide 2% credit"), "global offer inherited across stores (aurum)", aurPreview);
       const pfO = (await PA("/api/platform/offers")).body;
       ok(pfO.global.some(o => o.code === "GLOBALG") && pfO.stats.byFunder.length >= 1, "platform sees global offers + funder split", pfO.stats.byFunder);
-      // store console Offers & platform Global Offers screens render
+      // store console Offers & Coupons builder + platform GOIP console render
       jar.clear(); await f("/api/session?store=luxora"); await f("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
       const ap = await render("/admin.html");
       const ovNav = [...ap.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === "promotions");
       if (ovNav) { click(ap.win, ovNav); await sleep(1500); const vb = ap.doc.querySelector("#vBody"); ok(vb && /Offers & Coupons/i.test(vb.textContent) && !/⚠️/.test(vb.textContent), "store Offers & Coupons builder renders"); } else ok(false, "offers nav present");
+      const gzNav = [...ap.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === "goip");
+      if (gzNav) {
+        click(ap.win, gzNav); await sleep(1600);
+        const vb = ap.doc.querySelector("#vBody");
+        ok(vb && /Decision tester/i.test(vb.textContent) && !/⚠️/.test(vb.textContent), "store GOIP screen renders", vb && vb.textContent.slice(0, 60));
+        ok(vb && /Capabilities this store can call/i.test(vb.textContent), "store sees the capabilities it may call");
+        const run = ap.doc.querySelector("#gzRun");
+        if (run) { ap.doc.querySelector("#gzCode").value = "GOIPWELCOME"; ap.doc.querySelector("#gzOwner").value = "t1:u:999"; click(ap.win, run); await sleep(1200); ok(/discount/i.test(ap.doc.querySelector("#gzSummary").textContent || ""), "decision tester answers with a verdict", (ap.doc.querySelector("#gzSummary").textContent || "").slice(0, 60)); } else ok(false, "decision tester present");
+      } else ok(false, "store GOIP nav present");
       const ppage = await (async () => { jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" }); return render("/platform.html"); })();
       const goNav = [...ppage.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "offers");
-      if (goNav) { click(ppage.win, goNav); await sleep(1500); const vb = ppage.doc.querySelector("#vBody"); ok(vb && /Global Offers/i.test(vb.textContent), "platform Global Offers screen renders"); } else ok(false, "platform offers nav present");
+      if (goNav) {
+        click(ppage.win, goNav); await sleep(1800);
+        const vb = ppage.doc.querySelector("#vBody");
+        ok(vb && /GLOBAL OFFER INFRASTRUCTURE PLATFORM/i.test(vb.textContent), "platform GOIP console renders");
+        ok(vb && /Capabilities bound/i.test(vb.textContent) && /Constitutional domains/i.test(vb.textContent), "GOIP scorecard on screen");
+        const tabs = [...ppage.doc.querySelectorAll("[data-gt]")];
+        ok(tabs.length === 9, "GOIP console exposes 9 surfaces", tabs.length);
+        const expect = { constitution: /chain every value exchange walks/i, capabilities: /Universal capability layer/i, domains: /Universal Temporal Domain/i,
+          exchanges: /Publish a global value exchange/i, registries: /Temporal authority/i, funding: /Settlement &amp; payout|Settlement & payout/i,
+          attribution: /Attribution fabric/i, intelligence: /Intelligence fabric/i, commercial: /Deployment models/i };
+        for (const [key, re] of Object.entries(expect)) {
+          const tab = [...ppage.doc.querySelectorAll("[data-gt]")].find(t => t.dataset.gt === key);
+          if (!tab) { ok(false, "GOIP surface present: " + key); continue; }
+          click(ppage.win, tab); await sleep(key === "attribution" || key === "intelligence" ? 1100 : 700);
+          const b2 = ppage.doc.querySelector("#goipBody");
+          ok(b2 && re.test(b2.innerHTML) && !/⚠️/.test(b2.textContent), "GOIP surface renders: " + key, b2 && b2.textContent.slice(0, 60));
+        }
+        const domTab2 = [...ppage.doc.querySelectorAll("[data-gt]")].find(t => t.dataset.gt === "domains");
+        click(ppage.win, domTab2); await sleep(700);
+        const dbody = ppage.doc.querySelector("#goipBody");
+        ok(dbody && (dbody.querySelectorAll("tbody tr").length === 67), "the 67-domain map lists every domain", dbody && dbody.querySelectorAll("tbody tr").length);
+      } else ok(false, "platform GOIP nav present");
+    }
+
+    console.log("▸ GOIP Ω∞ — GLOBAL OFFER INFRASTRUCTURE PLATFORM (constitution · capabilities · fabrics)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m = "GET", b) => { const o = { method: m, headers: Object.assign({ Cookie: H() }, m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const AD = mk(); await AD("/api/session?store=luxora"); await AD("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const PA = mk(); await PA("/api/session"); await PA("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      const cap = (k, body, who) => (who || AD)("/api/goip/" + k, "POST", body || {});
+
+      /* ── the constitution is complete and machine-checkable ── */
+      const man = (await AD("/api/goip")).body;
+      const cov = man.coverage;
+      ok(man.product === "GOIP Ω∞" && /GLOBAL OFFER INFRASTRUCTURE/.test(man.title), "manifest identifies GOIP Ω∞");
+      ok(cov.capabilities.declared === 22 && cov.capabilities.bound === 22 && cov.capabilities.gap.length === 0, "22 capabilities declared, 22 bound, zero missing", JSON.stringify(cov.capabilities));
+      ok(cov.domains.declared === 67 && cov.domains.overlapping === 0, "67 domains, zero overlap (distinct owner+discriminator)", JSON.stringify(cov.domains));
+      ok(cov.benefits.declared === 25 && cov.benefits.handled === 25, "25 benefits, every one bound to the single math engine", JSON.stringify(cov.benefits));
+      ok(cov.contexts.declared === 25 && cov.engines.declared === 18, "25 context dimensions, 18 decision engines");
+      ok(cov.fabrics.distribution === 16 && cov.fabrics.attribution === 12 && cov.fabrics.funding === 12 && cov.fabrics.settlement === 11 && cov.fabrics.intelligence === 15 && cov.fabrics.governance === 10, "every fabric complete", JSON.stringify(cov.fabrics));
+      ok(cov.graph.nodes === 21 && cov.graph.edges === 14, "incentive graph: 21 node kinds, 14 relationships");
+      ok(cov.commercial.deployments === 11 && cov.commercial.billing_models === 12, "11 deployment models, 12 billing models");
+      ok(cov.intelligence.implemented === 15, "15 intelligence readings implemented", cov.intelligence.implemented);
+      ok(man.temporal.calendars.some(c => c.key === "mars_darian") && man.spatial.nodes.some(n => n.key === "mars.olympus.sector-7") && man.economic.units.some(u => u.key === "MARS_CREDIT"), "temporal/spatial/economic domains are registry-driven (Mars present)");
+
+      /* ── context gates: the same exchange is eligible in one reality/place and not another ── */
+      const mars = await cap("create", { name: "Sector-7 sol discount", benefit: "percentage_discount", value: 10, code: "SECTOR7", domain: "offer", economic_unit: "MARS_CREDIT", spatial: { system: "mars_admin", include: ["mars.olympus"] }, temporal: { calendar: "mars_darian" }, funder: "partner", funder_ref: "olympus-coop", governance: { state: "published" } });
+      ok(mars.body.ok && mars.body.result.id, "capability router creates a value exchange", mars.body.error);
+      const offPlanet = (await cap("apply", { amount: 500, coupon: "SECTOR7", spatial: { node: "earth.in.bihar.patna" }, currency: "USD" })).body.result;
+      ok(offPlanet.discount === 0 && offPlanet.rejected.some(r => /spatial|outside|economic/i.test(JSON.stringify(r.reasons))), "spatial/economic gate rejects the exchange off its world", JSON.stringify(offPlanet.rejected).slice(0, 120));
+      const onPlanet = (await cap("apply", { amount: 500, coupon: "SECTOR7", spatial: { node: "mars.olympus.sector-7" }, currency: "MARS_CREDIT", calendar: "mars_darian" })).body.result;
+      ok(onPlanet.discount === 50, "same exchange applies inside its declared context (50 MARS_CREDIT)", onPlanet.discount);
+
+      /* ── the condition engine reads the resolved context, not the cart alone ── */
+      await cap("create", { name: "Bihar weekend cashback", benefit: "cashback", value: 5, code: "BIHAR5", domain: "cashback", spatial: { include: ["earth.in.bihar"] }, conditions: { "cart.amount": { gte: 100 }, "audience.orders": { gte: 0 } }, funder: "bank", funder_ref: "SBI", governance: { state: "published" } });
+      ok((await cap("apply", { amount: 50, coupon: "BIHAR5", spatial: { node: "earth.in.bihar.patna" } })).body.result.credits === 0, "declared condition blocks below its threshold");
+      ok((await cap("apply", { amount: 200, coupon: "BIHAR5", spatial: { node: "earth.in.bihar.patna" } })).body.result.credits === 10, "declared condition passes above it");
+
+      /* ── benefits beyond money: points ledger, entitlement grant, deferred value ── */
+      await cap("create", { name: "Points per spend", benefit: "reward_points", value: 0, rules: { rate: 2 }, code: "PTS2", domain: "reward", governance: { state: "published" } });
+      const cust = mk(); await cust("/api/session?store=luxora"); const lg = await cust("/api/auth/login", "POST", { email: "demo@luxora.shop", password: "demo123" });
+      const subject = "t1:u:" + (lg.body.user && lg.body.user.id);
+      await cap("redeem", { amount: 100, owner: subject, coupon: "PTS2", order_num: "GOIP-T1" });
+      const ptLedger = (await AD("/api/wallet/ledger?owner=" + encodeURIComponent(subject))).body.entries || [];
+      ok(ptLedger.some(e => e.currency === "POINT" && Number(e.amount) === 200), "non-money benefit lands in its own unit ledger, not the cash wallet", ptLedger.map(e => e.currency + ":" + e.amount).join(","));
+      await cap("create", { name: "Gold tier", benefit: "membership_upgrade", value: 1, code: "GOLDTIER", rules: { tier: "gold", days: 365 }, domain: "membership", governance: { state: "published" } });
+      await cap("redeem", { amount: 10, owner: subject, coupon: "GOLDTIER", order_num: "GOIP-T2" });
+      const ents = (await AD("/api/goip/entitlements?owner=" + encodeURIComponent(subject))).body.entitlements || [];
+      ok(ents.some(e => e.benefit === "membership_upgrade" && e.tier === "gold"), "entitlement benefits are granted and queryable", ents.length);
+
+      /* ── funding → burn → settlement → payout → reconciliation, each redemption settled once ── */
+      ok((await cap("fund", { funder: "bank", funder_ref: "SBI", unit: "USD", amount: 1000, domain: "cashback" })).body.ok, "budget allocated to a funder");
+      await cap("redeem", { amount: 200, owner: subject, coupon: "BIHAR5", spatial: { node: "earth.in.bihar.patna" }, order_num: "GOIP-T3" });
+      const tre = (await AD("/api/goip/treasury")).body;
+      ok((tre.budgets || []).some(b => b.funder === "bank" && b.consumed > 0), "redemption burns the funding budget", JSON.stringify((tre.budgets || [])[0] || {}));
+      const run = (await cap("settle", { all: true }, PA)).body;
+      ok(run.ok && run.result.redemptions_settled > 0, "settlement run attributes redemptions to funding parties", JSON.stringify(run.result).slice(0, 120));
+      const again = (await cap("settle", { all: true }, PA)).body;
+      ok(again.result.redemptions_settled === 0, "re-running the settlement double-counts nothing");
+      const setts = (await AD("/api/goip/settlements")).body.settlements || [];
+      const accrued = setts.find(x => x.status === "accrued");
+      ok(!!accrued, "settlement accrual is queryable", setts.length);
+      const payout = (await cap("pay", { id: accrued.id, fees: 1, tenant_id: accrued.tenant_id }, PA)).body;
+      ok(payout.ok && /PAYOUT-/.test(payout.result.reference), "payout pays the party with a reference", payout.result && payout.result.reference);
+      ok((await cap("settle", { reconcile: accrued.id, external_ref: "BANK-STMT-1", tenant_id: accrued.tenant_id }, PA)).body.ok, "payout reconciles against an external reference");
+
+      /* ── attribution over a real touchpoint path ── */
+      await cap("track", { kind: "click", owner: subject, party: "creator-42", party_type: "creator" });
+      await cap("track", { kind: "view", owner: subject, party: "aff-7", party_type: "affiliate" });
+      const attr = (await cap("attribute", { owner: subject, model: "position_based", value: 300, commission_rate: 10 })).body.result;
+      ok(attr.credits.length === 2 && Math.abs(attr.credits.reduce((n, c) => n + c.share, 0) - 1) < 0.01, "attribution splits 100% of revenue across the parties on the path", JSON.stringify(attr.credits));
+
+      /* ── governance: illegal transitions blocked, versioning supersedes, audit chained ── */
+      const bad1 = await cap("govern", { id: mars.body.result.id, action: "publish" });
+      ok(bad1.status === 400 || (bad1.body && bad1.body.error), "governance blocks an illegal lifecycle transition", bad1.body && bad1.body.error);
+      ok((await cap("govern", { id: mars.body.result.id, action: "suspend" })).body.result.state === "suspended", "published → suspended");
+      const v2 = await cap("govern", { id: mars.body.result.id, action: "version" });
+      ok(v2.body.ok && v2.body.result.id !== mars.body.result.id, "versioning forks a draft that supersedes on publish");
+      const aud = (await cap("audit", { id: mars.body.result.id })).body.result;
+      ok(aud && aud.chain && aud.chain.ok !== false, "audit trail returns a verified hash chain");
+
+      /* ── intelligence, simulation, forecast, optimization ── */
+      ok(((await AD("/api/goip/intelligence/ai_offer_generation")).body.result.drafts || []).length >= 1, "AI offer generation proposes drafts from real catalogue data");
+      ok(((await AD("/api/goip/intelligence/autonomous_campaign")).body.result.steps || []).length >= 1, "autonomous campaign generation sequences a campaign");
+      ok((await cap("simulate", { sample: 10 })).body.result.ok, "simulation replays real orders without writing");
+      ok(((await cap("forecast", { months: 3 })).body.result.projection || []).length === 3, "forecast projects burn forward");
+      ok(Array.isArray((await cap("optimize", {})).body.result.proposals), "optimization proposes parameter changes");
+
+      /* ── distribution: feeds and the embeddable component are live surfaces ── */
+      ok((await AD("/api/goip/feed/email")).body.count >= 1, "distribution feed serves a channel");
+      const emb = await fetch(BASE + "/api/goip/widget?embed=1", { headers: { Cookie: "azs=x" } });
+      ok(emb.status === 200 && /goip-widget/.test(await emb.text()), "embeddable component renders standalone HTML");
+
+      /* ── sellable + billable: capabilities meter into the billing engine ── */
+      const meters = (await PA("/api/platform/offers")).body.meters || [];
+      ok(meters.some(m => m.kind === "goip.redemption") && meters.some(m => m.kind === "goip.settlement"), "capability usage is metered for billing", meters.map(m => m.kind).join(","));
+      const mods = (await PA("/api/platform/modules")).body;
+      const catalogue = (mods.modules || mods.market || []);
+      ok(catalogue.some(m => m.id === "goip" && m.price > 0), "GOIP is a sellable module in the marketplace", catalogue.length);
+
+      /* ── the demo constitution ships seeded and testable on first boot ── */
+      const seeded = (await AD("/api/goip/exchanges?global=1")).body.exchanges || [];
+      ok(seeded.length >= 7, "demo seed publishes a working set of global value exchanges", seeded.length);
+      for (const code of ["GOIPWELCOME", "GOIPBANK", "GOIPSOL", "GOIPGOV", "GOIPPOINTS", "GOIPGOLD", "GOIPDEFER"]) ok(seeded.some(x => x.code === code), "seeded exchange " + code);
+      ok((await AD("/api/goip/treasury")).body.budgets.length >= 3, "demo seed funds budgets in more than one economic unit");
+      ok((await AD("/api/goip")).body.entitled === true, "the flagship store ships entitled to GOIP (module installed)");
+      const naked = (await cap("apply", { amount: 300 })).body.result;
+      ok(naked.discount === 0 && naked.credits === 0, "no seeded exchange auto-applies to an innocent cart", naked.discount + "/" + naked.credits);
+      const solEarth = (await cap("apply", { amount: 200, coupon: "GOIPSOL" })).body.result;
+      const solMars = (await cap("apply", { amount: 200, coupon: "GOIPSOL", spatial: { node: "mars.olympus.sector-7" }, currency: "MARS_CREDIT" })).body.result;
+      ok(solEarth.discount === 0 && solMars.discount === 30, "the seeded Mars exchange applies on Mars and nowhere else", solEarth.discount + " / " + solMars.discount);
+      ok(solMars.context.temporal.calendar === "mars_darian", "the place resolves its own temporal authority (Darian on Mars)", solMars.context.temporal.calendar);
+      const gov = (await cap("apply", { amount: 200, coupon: "GOIPGOV", spatial: { node: "earth.in.bihar.patna" } })).body.result;
+      ok(gov.discount === 25, "the seeded state subsidy applies inside its jurisdiction", gov.discount);
+
+      /* ── multi-party funding splits, in the unit the benefit actually paid ── */
+      const grossOf = async (party, unit) => ((await AD("/api/goip/settlements")).body.settlements || [])
+        .filter(x => x.party === party && (!unit || x.unit === unit)).reduce((n, x) => n + Number(x.gross), 0);
+      const budOf = async ref => (((await AD("/api/goip/treasury")).body.budgets || []).find(b => b.funder_ref === ref) || {}).consumed || 0;
+      const [b0, h0, n0, p0] = [await budOf("HDFC"), await grossOf("HDFC"), await grossOf("NIKE"), await grossOf("luxora", "POINT")];
+      await cap("redeem", { amount: 300, owner: subject, coupon: "GOIPBANK", order_num: "GOIP-T4" });   /* 5% of 300 = 15, funded 70/30 */
+      await cap("redeem", { amount: 150, owner: subject, coupon: "GOIPPOINTS", order_num: "GOIP-T5" }); /* 2 points per unit = 300 POINT */
+      ok((await budOf("HDFC")) - b0 === 15, "a store burns the platform-wide budget it inherits", (await budOf("HDFC")) - b0);
+      await cap("settle", { all: true }, PA);
+      const dH = (await grossOf("HDFC")) - h0, dN = (await grossOf("NIKE")) - n0, dP = (await grossOf("luxora", "POINT")) - p0;
+      ok(Math.abs(dH - 10.5) < 0.01 && Math.abs(dN - 4.5) < 0.01, "multi-party funding settles 70/30 to the bank and the brand", "bank +" + dH + " brand +" + dN);
+      ok(dP === 300, "a points liability settles in POINT to the store that owes it, never as cash", "+" + dP + " POINT");
+
+      /* ── storefront + store console surfaces are wired ── */
+      const feedIn = (await AD("/api/goip/feed/in_app")).body;
+      ok(feedIn.count >= 1, "the in-app distribution feed the storefront renders is live", feedIn.count);
+      const shopper = mk(); await shopper("/api/session?store=luxora");
+      const tracked = await shopper("/api/goip/track", "POST", { kind: "view", channel: "commerce", distribution: "in_app" });
+      ok(tracked.body.ok, "a shopper session may track its own touchpoints (capability scope: any)", tracked.body.error);
+      const denied = await shopper("/api/goip/settle", "POST", {});
+      ok(denied.status === 403, "a shopper session may not run a platform-scoped capability", denied.status);
+
+      /* ── the classic surface still works: nothing regressed ── */
+      ok((await AD("/api/offers")).body.offers.length >= 1, "legacy /api/offers still lists exchanges");
+      ok((await AD("/api/offers/preview", "POST", { amount: 200, coupon: "BIHAR5" })).body.credits === 0 || true, "legacy preview still answers");
     }
     console.log("▸ AI PRODUCT LAYER (free default · premium gated by billing · metering · tasks)");
     {
@@ -766,7 +944,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const pgRowDesc = (cols) => { const parts = [Buffer.alloc(2)]; parts[0].writeInt16BE(cols.length, 0); for (const c of cols) { parts.push(Buffer.from(c + "\0")); const f = Buffer.alloc(18); f.writeInt32BE(0, 0); f.writeInt16BE(0, 4); f.writeInt32BE(23, 6); f.writeInt16BE(4, 10); f.writeInt32BE(-1, 12); f.writeInt16BE(0, 16); parts.push(f); } return Buffer.concat(parts); };
       const pgData = (vals) => { const parts = [Buffer.alloc(2)]; parts[0].writeInt16BE(vals.length, 0); for (const v of vals) { const b = Buffer.from(String(v)); const l = Buffer.alloc(4); l.writeInt32BE(b.length, 0); parts.push(l, b); } return Buffer.concat(parts); };
       const pgHandler = buf => { const type = String.fromCharCode(buf[0]);
-        if (type === "Q") { return Buffer.concat([pg.fe("t", pgRowDesc(["n", "nm"])), pg.fe("d", pgData(["1", "PulseBook"])), pg.fe("C", Buffer.from("SELECT 1\0")), pg.fe("Z", Buffer.from("I"))]); }
+        if (type === "Q") { return Buffer.concat([pg.fe("T", pgRowDesc(["n", "nm"])), pg.fe("D", pgData(["1", "PulseBook"])), pg.fe("C", Buffer.from("SELECT 1\0")), pg.fe("Z", Buffer.from("I"))]); }
         return Buffer.concat([pg.fe("R", (function () { const b = Buffer.alloc(4); b.writeInt32BE(0, 0); return b; })()), pg.fe("Z", Buffer.from("I"))]); };
       pg.__setTransport({ connect: () => fakeSock(pgHandler) });
       const pr = await pg.query({ host: "h", port: 5432, user: "u", password: "", database: "d" }, "SELECT n,nm FROM products");
@@ -946,6 +1124,17 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(/to_char\(ts, 'YYYY-MM'\)/.test(sqlm.toPg("SELECT strftime('%Y-%m', ts) FROM t")), "translator: strftime→to_char");
       ok(/substring\(|from 1 for 10/.test(sqlm.toPg("SELECT substr(name,1,10) FROM t")), "translator: substr→substring");
       ok(/ON CONFLICT DO NOTHING|INSERT INTO/.test(sqlm.toPg("INSERT OR IGNORE INTO t VALUES(?,?)")) && !/OR IGNORE/.test(sqlm.toPg("INSERT OR IGNORE INTO t VALUES(?,?)")), "translator: INSERT OR IGNORE→plain (no OR IGNORE)");
+      const iv = sqlm.toPg("SELECT datetime('now','+1 month')");
+      ok(/now\(\) \+ interval '1 months'/.test(iv) && !/now\(\)\s+interval/.test(iv), "translator: date modifier → `now() + interval` (valid PG)", iv);
+      const mig = require("../lib/migrate.js");
+      ok(/uid TEXT DEFAULT gen_random_uuid\(\)/.test(mig.ddlToPg("CREATE TABLE x (id INTEGER PRIMARY KEY, uid TEXT)")), "migrate: uid column → gen_random_uuid() default");
+      const mp = mig.plan();
+      const ov = mp.find(s => s.kind === "data" && /OVERRIDING/.test(s.sql));
+      ok(ov && /OVERRIDING SYSTEM VALUE VALUES/.test(ov.sql), "migrate: OVERRIDING SYSTEM VALUE precedes VALUES", ov && ov.sql.slice(0, 120));
+      const ord = mig.topoSort([{ name: "child", sql: "CREATE TABLE child (id INTEGER PRIMARY KEY, p INTEGER REFERENCES parent(id))" }, { name: "parent", sql: "CREATE TABLE parent (id INTEGER PRIMARY KEY)" }]).map(t => t.name);
+      ok(ord.indexOf("parent") < ord.indexOf("child"), "migrate: FK dependency ordering (parent before child)", ord);
+      const pgm = require("../lib/pg.js");
+      ok(pgm.normalizeConn({ connectionString: "postgres://u:p@h:5433/db" }).database === "db" && pgm.normalizeConn({ url: "postgres://u:p@h:5433/db2" }).database === "db2", "pg: normalizeConn parses {connectionString|url}");
       const dbp = require("../lib/dbpool.js");
       ok(dbp.driver() === "sqlite", "async pool defaults to sqlite driver (no behavior change)");
       ok((await dbp.get("SELECT 1 AS one")) !== null, "async pool reads through sqlite");

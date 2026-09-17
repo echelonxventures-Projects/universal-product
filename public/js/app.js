@@ -591,8 +591,32 @@ async function pageDeals() {
   main.innerHTML = `
   <div class="deals-hero"><h1>${esc(T("dealsTitle"))}</h1><p>Curated offers across every department, refreshed daily.</p></div>
   <div class="deal-tabs"><a class="dtab on" href="deals.html">All</a>${CFG.departments.slice(0, 6).map(d => `<a class="dtab" href="results.html?dept=${d.key}&deal=1">${esc(d.label)}</a>`).join("")}</div>
-  ${carousel("Time-limited", deals.slice(0, 12))}<div class="deals-grid">${deals.map(card).join("")}</div>`;
+  ${carousel("Time-limited", deals.slice(0, 12))}<div id="goipStrip"></div><div class="deals-grid">${deals.map(card).join("")}</div>`;
   wireCarousels();
+  goipStrip();
+}
+/* GOIP Ω∞ — the value exchanges available to THIS shopper, in THIS context, from the in-app
+   distribution channel. Discovery is a capability call; seeing them is a tracked touchpoint. */
+async function goipStrip() {
+  const box = document.getElementById("goipStrip"); if (!box) return;
+  try {
+    const d = await api("/goip/feed/in_app");
+    if (!d.items || !d.items.length) return;
+    box.innerHTML = `<section class="carousel"><h2>Offers for you</h2>
+      <div class="deals-grid" style="margin-top:8px">${d.items.slice(0, 8).map(i => `
+        <div class="card" style="padding:14px">
+          <b>${esc(i.title)}</b>
+          <div class="muted" style="font-size:12px;margin:4px 0">${esc(i.summary || "")}</div>
+          ${i.code ? `<button class="btn-white" data-goipcode="${esc(i.code)}">Use code ${esc(i.code)}</button>` : '<span class="badge">applied automatically</span>'}
+        </div>`).join("")}</div></section>`;
+    box.querySelectorAll("[data-goipcode]").forEach(b => b.onclick = async () => {
+      const code = b.dataset.goipcode;
+      try { await api("/goip/track", "POST", { kind: "click", code, channel: "commerce", distribution: "in_app" }); } catch (e) { }
+      try { await api("/coupon", "POST", { code }); toast("Code " + code + " applied to your cart"); }
+      catch (e) { toast(e.message); }
+    });
+    try { await api("/goip/track", "POST", { kind: "view", channel: "commerce", distribution: "in_app", context: { page: "deals", shown: d.items.length } }); } catch (e) { }
+  } catch (e) { /* GOIP feed is additive — the page never depends on it */ }
 }
 async function pageGift() {
   if (!CFG.features.giftCards) { location.href = "index.html"; return; }

@@ -713,3 +713,133 @@ The engine, dialect, client, and migration planner are DONE and tested; step 2 i
   7 CI              .github/workflows/ci.yml (syntax + E2E + boot smoke, node matrix)
   Store console: 🔐 SSO & Integrations · Team & Roles · Webhooks · Trash · AI Studio
 ```
+
+---
+
+## 27. GOIP Ω∞ — Global Offer Infrastructure Platform (the value-exchange constitution)
+
+`GET /api/goip` serves this whole section as data; the platform console's **Ω∞ GOIP** screen renders it.
+Nothing below is hardcoded — every list is a `meta_lists` registry, editable in Data Studio.
+
+```
+                    ┌──────────────────────────────────────────────────────────┐
+  ANY SURFACE  ───▶ │  POST /api/goip/<capability>   (22 verbs, one entry)      │
+  web · mobile · POS│  create clone publish discover search compare validate    │
+  marketplace · ERP │  reserve activate issue track attribute apply redeem      │
+  CRM · CDP · bank  │  settle fund pay optimize forecast simulate govern audit  │
+  gov · creator ·   └───────────────────────────┬──────────────────────────────┘
+  IoT · AI · agent                              │  consumers NEVER see the words
+                                                │  coupon / cashback / gift card
+                                                ▼
+        ┌───────────────────────────────────────────────────────────────────────┐
+        │                    THE CONSTITUTIONAL CHAIN (8 stages)                │
+        │  VALUE EXCHANGE → CONTEXT → CONDITIONS → ELIGIBILITY → BENEFIT →      │
+        │  EXECUTION → SETTLEMENT → AUDIT                                       │
+        └───────────────────────────────────────────────────────────────────────┘
+             │            │            │             │           │        │
+             ▼            ▼            ▼             ▼           ▼        ▼
+        offers row   25 context   declared      reality/time/  offers.  goip_settlements
+        (the ONE     dimensions   conditions    place/economy/ HANDLERS + wallets +
+         record)     resolved     over context  governance/    (25       coupon_redemptions
+                     per decision (no eval,     audience       benefits)  → audit_log chain
+                                  data ops)     gates
+```
+
+**Decision pipeline (what actually runs on `apply` / `redeem`)**
+
+```
+resolveContext(ctx)                    25 dimensions ← tenants, orders, users, products,
+      │                                 inventory, providers, policy, ai tier, registries
+      ▼
+eligibility(candidate, ctx)            reality · temporal (calendar/weekday/hour/period)
+      │                                 spatial (path prefix) · economic unit · governance
+      │                                 state + jurisdictions · audience · activation · risk
+      ▼
+qualify(conditions, ctx)               declared conditions: eq ne gt gte lt lte in nin has
+      │                                 nhas between exists prefix matches — over ANY context path
+      ▼
+resolveConflicts(kept)                 one winner per (domain, stack group)
+      │
+      ▼
+rank(objective)                        max_benefit | min_cost | max_margin | max_conversion | balanced
+      │
+      ▼
+offers.evaluate({ pool, rank })        THE single math engine: stacking, caps, limits, currency
+      │                                 guard, per-owner limits → discount / credits / freeShip / grant
+      ▼
+offers.redeem(...)  ──hook──▶ goip.postRedeem
+      │                          ├─ entitlements granted (membership, tier, asset, voucher…)
+      │                          ├─ deferred value scheduled (released on its due date)
+      │                          ├─ funding budget burned (reserve → consumed)
+      │                          ├─ graph edges written (REDEEMED_BY, FUNDED_BY, …)
+      │                          ├─ conversion touchpoint tracked
+      │                          └─ meter billed (usage_records via billing.meter)
+      ▼
+settle → approve → pay → reconcile     goip_settlements; refund ⇒ recover() reverses it
+```
+
+**Universal domains (no assumptions about time, place or money)**
+
+```
+TEMPORAL   calendars: gregorian · iso_week · islamic · hebrew · fiscal · academic · lunar
+           · mars_darian (88 775.244 s sol) · federation · custom_planetary
+           chronologies + units (second…mars_year, lunation, declared cycle) + conversions
+SPATIAL    systems: earth_admin · mars_admin · lunar_admin · galactic · network · declared
+           paths:  earth.in.bihar.patna │ mars.olympus.sector-7 │ moon.alpha │ galaxy-7.zone-22
+           scoping is prefix matching on the path — nothing knows what a "country" is
+ECONOMIC   USD/EUR/INR (fiat) · MARS_CREDIT · LUNAR_TOKEN · FED_CREDIT · CARBON · ENERGY
+           · RESOURCE · POINT · COIN · TOKEN — money moves wallets.balance, everything else
+           is a ledger-only entry in its own unit (wallet_entries.currency)
+REALITY    physical · digital · virtual · hybrid · simulated · any
+```
+
+**Where every domain lives (zero overlap, mechanically)**
+
+| Store | Domains it owns |
+|---|---|
+| `offers` | incentive · offer · discount · cashback · reward · deal · dynamic_pricing · subscription/partner/corporate/government/employee benefit · campaign · brand · governance |
+| `coupons` | coupon · gift_card · voucher |
+| `coupon_redemptions` | analytics · recovery |
+| `goip_touchpoints` | referral · affiliate · creator · influencer · attribution · tracking |
+| `goip_budgets` | funding · budget · treasury |
+| `goip_settlements` | settlement · reconciliation · payout |
+| `goip_entitlements` | loyalty · membership · gamification |
+| `wallets` / `wallet_entries` | wallet |
+| `meta_lists` | registry · audience · universal temporal/spatial/economic/reality |
+| engines | discovery · search · recommendation · personalization · fraud · risk · forecasting · simulation · agent · knowledge |
+| existing platform tables | pricing (`products.pricing_rules`) · auction (`tenders`) · payment (`payments`) · marketplace/merchant (`tenants`) · provider (`provider_defs`) · partner (`suppliers`) · compliance (`compliance_records`) · AI (`ai.js`) |
+
+**Commercial spine**
+
+```
+MODULE  goip (199) → capabilities: goip, offersPro, wallet      MARKETPLACE: "Value Exchange"
+        goip-agent (79) → agent/MCP access to the router
+METERS  goip.create · publish · issue · reserve · track · attribute · decision · redemption
+        · settlement · payout · fund · govern · intelligence · tenant · merchant · provider
+        · active_user      →  billing.meter() → usage_records → the store's next invoice
+MODELS  per_tenant · per_merchant · per_provider · per_offer · per_redemption · per_settlement
+        · per_payout · per_api · per_active_user · per_campaign · revenue_share · hybrid
+DEPLOY  embedded_sdk · embedded_widget · microservice · headless_api · saas · private_cloud
+        · dedicated_cloud · white_label · marketplace_service · managed_service · agent_service
+```
+
+```mermaid
+flowchart TD
+  SUR[Any surface or agent] -->|POST /api/goip/:capability| CAP[Capability router · 22 verbs]
+  CAP --> CTX[Context resolution · 25 dimensions]
+  CTX --> ELI[Eligibility · reality/time/place/economy/governance/audience]
+  ELI --> QUA[Qualification · declared conditions]
+  QUA --> DEC[Decision · conflict + stacking + ranking]
+  DEC --> BEN[Benefit resolution · offers.HANDLERS · 25 benefits]
+  BEN --> EXE[Execution · redeem / issue / grant / reserve]
+  EXE --> LED[(wallets · wallet_entries · coupons · coupon_redemptions · goip_entitlements)]
+  EXE --> BUD[(goip_budgets · burn)]
+  EXE --> TP[(goip_touchpoints)]
+  BUD --> SET[Settlement run]
+  TP --> ATTR[Attribution models]
+  ATTR --> SET
+  SET --> PAY[Payout → reconciliation]
+  EXE --> MET[billing.meter → usage_records → invoice]
+  EXE --> AUD[(audit_log hash chain)]
+  EXE --> GRAPH[(links · incentive graph)]
+```

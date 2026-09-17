@@ -28,7 +28,7 @@ function toast(msg) {
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3200);
 }
 const NAV = [["dash", "◈ Command"], ["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["geo", "🌍 Geo · Countries · Taxes"], ["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"],
-["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["offers", "🎁 Global Offers"], ["runtime", "🧩 Runtime · Infra"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"]];
+["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["offers", "Ω∞ GOIP · Value Exchange"], ["runtime", "🧩 Runtime · Infra"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"]];
 let view = "dash";
 const P = { user: null, tenants: [], plans: [] };
 
@@ -513,35 +513,302 @@ async function vAI() {
     </tbody></table>
     <p class="p-tag">Manage providers in <b>🔌 Provider Registry</b> (add/enable “ai” kind). Editing capabilities/plans/limits = change the <code>aiCapabilities</code>/<code>aiPlans</code> registries in Data Studio — no code.</p></div>`;
 }
+/* ═══ GOIP Ω∞ — GLOBAL OFFER INFRASTRUCTURE PLATFORM · platform control plane ═══
+   Nine surfaces over one constitution: the 8-stage chain, the 22 capabilities (live-invokable),
+   the 67 domains, the value-exchange register, every registry, funding→settlement→payout,
+   attribution, intelligence and commercialization. Nothing here is hardcoded: every list is a
+   meta_lists registry served by /api/goip, editable in Data Studio. */
+let goipTab = "constitution";
+const GOIP_TABS = [["constitution", "Ω Constitution"], ["capabilities", "⚡ Capabilities"], ["domains", "🌐 67 Domains"],
+["exchanges", "💠 Value Exchanges"], ["registries", "📚 Registries"], ["funding", "🏦 Funding · Settlement"],
+["attribution", "🔗 Attribution · Graph"], ["intelligence", "🧠 Intelligence"], ["commercial", "💳 Commercialization"]];
+const GOIP = { manifest: null, platform: null };
+function gTabs() { return `<div class="p-nav" style="display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px">${GOIP_TABS.map(([k, l]) => `<button class="p-btn sm ${goipTab === k ? "primary" : ""}" data-gt="${k}">${l}</button>`).join("")}</div>`; }
+function pj(v, d) { try { return v ? JSON.parse(v) : (d || {}); } catch (e) { return d || {}; } }
+function gRow(k, v) { return `<tr><td class="p-tag">${esc(k)}</td><td>${v}</td></tr>`; }
+function gCount(n, label, ok) { return `<div class="p-stat"><em>${esc(label)}</em><b>${n}</b><small style="color:${ok === false ? "var(--p-red)" : "var(--p-muted)"}">${ok === false ? "gap" : "complete"}</small></div>`; }
+
 async function vGlobalOffers() {
-  const meta = await api("/meta"); const d = await api("/platform/offers");
-  const opt = arr => (arr || []).map(x => `<option value="${esc(x.key || x)}">${esc(x.name || x)}</option>`).join("");
-  const byFunder = d.stats && d.stats.byFunder || [];
-  return `<div class="p-panel"><h2>🎁 Global Offers & Funder Settlements</h2>
-    <p style="color:var(--p-muted);font-size:13px">Publish a platform-wide offer/coupon (scope = <b>global</b>) that every store inherits — bank cashbacks, brand vouchers, marketplace-wide sales. Funders are tracked so each redemption can be settled back to the paying bank/brand. Toggle whether stores honour global offers under <b>Provisioning</b>.</p>
-    <div class="p-panel"><h3>New global offer</h3>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;align-items:end">
-        <label><span>Name</span><input id="gName"></label>
-        <label><span>Type</span><select id="gType">${opt(meta.offerTypes)}</select></label>
-        <label><span>Value</span><input id="gValue" type="number" step="0.01" value="10"></label>
-        <label><span>Code (optional)</span><input id="gCode"></label>
-        <label><span>Channel</span><select id="gChan">${opt(meta.offerChannels)}</select></label>
-        <label><span>Funder</span><select id="gFunder">${opt(meta.offerFunders)}</select></label>
-        <label><span>Funder ref</span><input id="gFunderRef" placeholder="HDFC / Nike / GSTR"></label>
-        <label><span>Usage limit</span><input id="gUse" type="number" value="0"></label>
+  const [m, d] = await Promise.all([api("/goip"), api("/platform/offers")]);
+  GOIP.manifest = m; GOIP.platform = d;
+  const c = m.coverage;
+  const head = `<div class="p-panel"><h2>Ω∞ GOIP — GLOBAL OFFER INFRASTRUCTURE PLATFORM</h2>
+    <p style="color:var(--p-muted);font-size:13px;margin:0 0 10px">${esc(m.subtitle)} — a constitutional platform for <b>any</b> incentive, offer, promotion, benefit, entitlement, subsidy, commission, loyalty construct or future value-exchange model, across any industry, organization, country, planet, economy, calendar, governance model or reality. Consumers call <b>capabilities</b>; they never learn the words coupon, cashback or gift card.</p>
+    <div class="p-cards">
+      ${gCount(c.capabilities.bound + "/" + c.capabilities.declared, "Capabilities bound", c.capabilities.gap.length === 0)}
+      ${gCount(c.domains.declared, "Constitutional domains", c.domains.overlapping === 0)}
+      ${gCount(c.benefits.handled + "/" + c.benefits.declared, "Benefits with math", c.benefits.gap.length === 0)}
+      ${gCount(c.contexts.declared, "Context dimensions", true)}
+      ${gCount(c.engines.declared, "Decision engines", true)}
+      ${gCount(c.economic.units, "Economic units", true)}
+    </div></div>`;
+  return head + gTabs() + `<div id="goipBody">` + (await gView()) + `</div>`;
+}
+async function gView() {
+  const m = GOIP.manifest, d = GOIP.platform;
+  if (goipTab === "constitution") return gConstitution(m, d);
+  if (goipTab === "capabilities") return gCapabilities(m);
+  if (goipTab === "domains") return gDomains(m, d);
+  if (goipTab === "exchanges") return gExchanges(m, d);
+  if (goipTab === "registries") return gRegistries(m);
+  if (goipTab === "funding") return gFunding(m, d);
+  if (goipTab === "attribution") return await gAttribution(m, d);
+  if (goipTab === "intelligence") return await gIntelligence(m);
+  if (goipTab === "commercial") return gCommercial(m, d);
+  return "";
+}
+function gConstitution(m, d) {
+  const c = m.coverage;
+  return `<div class="p-grid">
+    <div class="p-card"><h3>The chain every value exchange walks</h3>
+      <table class="p-table"><tbody>${m.constitution.map(x => `<tr><td><b>${x.step}. ${esc(x.name)}</b><div class="p-tag">${esc(x.question)}</div></td><td class="p-tag">owner <code>${esc(x.owner)}</code><br>engine <code>${esc(x.engine)}</code></td></tr>`).join("")}</tbody></table></div>
+    <div class="p-card"><h3>Zero-gap scorecard</h3><table class="p-table"><tbody>
+      ${gRow("Capabilities declared → bound", c.capabilities.bound + " / " + c.capabilities.declared + (c.capabilities.gap.length ? ' <span class="badge draft">' + esc(c.capabilities.gap.join(",")) + "</span>" : ' <span class="badge published">no gap</span>'))}
+      ${gRow("Benefits declared → with math", c.benefits.handled + " / " + c.benefits.declared + (c.benefits.gap.length ? ' <span class="badge draft">' + esc(c.benefits.gap.join(",")) + "</span>" : ' <span class="badge published">no gap</span>'))}
+      ${gRow("Domains → distinct owners", c.domains.declared + " / " + c.domains.distinct_owners + (c.domains.overlapping ? ' <span class="badge draft">' + c.domains.overlapping + " overlapping</span>" : ' <span class="badge published">zero overlap</span>'))}
+      ${gRow("Intelligence implemented", c.intelligence.implemented + " / " + c.intelligence.declared)}
+      ${gRow("Fabrics", Object.entries(c.fabrics).map(([k, v]) => `${esc(k)} <b>${v}</b>`).join(" · "))}
+      ${gRow("Temporal", c.temporal.calendars + " calendars · " + c.temporal.chronologies + " chronologies · " + c.temporal.units + " units")}
+      ${gRow("Spatial", c.spatial.systems + " systems · " + c.spatial.coordinate_systems + " coordinate systems · " + c.spatial.nodes + " nodes")}
+      ${gRow("Economic · reality", c.economic.units + " units · " + c.economic.classes + " classes · " + c.reality.models + " reality models")}
+      ${gRow("Graph", c.graph.nodes + " node kinds · " + c.graph.edges + " relationships")}
+      ${gRow("Surfaces · protocols", c.experience.surfaces + " experience surfaces · " + c.access.protocols + " access protocols")}
+      ${gRow("Commercial", c.commercial.deployments + " deployment models · " + c.commercial.billing_models + " billing models · " + c.commercial.meters + " meters")}
+    </tbody></table></div></div>
+    <div class="p-panel"><h3>Experience fabric</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Surface</th><th>Bound to</th><th>State</th></tr></thead><tbody>
+      ${m.experience.map(x => `<tr><td>${esc(x.name)}</td><td class="p-tag"><code>${esc(x.binding)}</code></td><td><span class="badge ${x.state === "live" ? "published" : "draft"}">${esc(x.state)}</span></td></tr>`).join("")}
+    </tbody></table></div></div>
+    <div class="p-panel"><h3>Universal access fabric</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Protocol</th><th>Bound to</th><th>State</th></tr></thead><tbody>
+      ${m.access.map(x => `<tr><td>${esc(x.name)}</td><td class="p-tag"><code>${esc(x.binding)}</code></td><td><span class="badge ${x.state === "live" ? "published" : "draft"}">${esc(x.state)}</span></td></tr>`).join("")}
+    </tbody></table></div></div>`;
+}
+function gCapabilities(m) {
+  return `<div class="p-panel"><h3>Universal capability layer — the only vocabulary a consumer needs</h3>
+    <p class="p-tag">Every call is <code>POST /api/goip/&lt;capability&gt;</code>. Scope decides who may call it: <b>any</b> = a shopper session, <b>tenant</b> = store admin, <b>platform</b> = this console. Each capability writes exactly one store and bills exactly one meter.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Capability</th><th>Stage</th><th>Engine</th><th>Writes</th><th>Meter</th><th>Scope</th><th></th></tr></thead><tbody>
+      ${m.capabilities.map(c => `<tr><td><b>${esc(c.name)}</b><br><code>${esc(c.key)}</code></td><td class="p-tag">${esc(c.stage)}</td><td class="p-tag">${esc(c.engine)}</td><td class="p-tag">${esc(c.writes || "—")}</td><td class="p-tag">${esc(c.meter)}</td><td><span class="badge ${c.scope === "platform" ? "draft" : "published"}">${esc(c.scope)}</span></td>
+        <td style="text-align:right"><button class="p-btn sm" data-gcap="${esc(c.key)}">invoke</button></td></tr>`).join("")}
+    </tbody></table></div>
+    <div class="p-panel" style="margin-top:10px"><h3>Capability console</h3>
+      <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+        <label><span>Capability</span><select id="gcSel">${m.capabilities.map(c => `<option value="${esc(c.key)}">${esc(c.key)} — ${esc(c.name)}</option>`).join("")}</select></label>
+        <button class="p-btn primary sm" id="gcRun">Invoke</button>
       </div>
-      <div style="margin-top:8px"><button class="p-btn primary sm" id="gSave">Publish global offer</button></div>
+      <label style="display:block;margin-top:8px"><span>Input (JSON)</span><textarea id="gcBody" rows="5" style="width:100%;font-family:ui-monospace,monospace;font-size:12px">{ "amount": 250 }</textarea></label>
+      <pre id="gcOut" class="p-scroll-x" style="background:var(--p-bg2,#0b1020);color:#9ae6b4;padding:10px;border-radius:8px;max-height:320px;overflow:auto;font-size:12px">—</pre>
     </div>
-    <h3>Live global offers</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Name</th><th>Type</th><th>Channel</th><th>Funder</th><th class="num">Value</th><th class="num">Used/Limit</th><th>Status</th></tr></thead>
-      <tbody>${(d.global || []).map(o => `<tr><td>${esc(o.name)}${o.code ? ` <code>${esc(o.code)}</code>` : ""}</td><td>${esc(o.type)}</td><td>${esc(o.channel)}</td><td>${esc(o.funder)}${o.funder_ref ? " " + esc(o.funder_ref) : ""}</td><td class="num">${esc(o.value)}</td><td class="num">${o.used}/${o.usage_limit || "∞"}</td><td><span class="badge ${o.status === "active" ? "published" : "draft"}">${esc(o.status)}</span></td></tr>`).join("") || '<tr><td colspan="7">No global offers.</td></tr>'}</tbody></table></div>
-    <h3>Redemption split by funder</h3>${byFunder.length ? `<table class="p-table"><thead><tr><th>Funder</th><th class="num">Discount granted</th><th class="num">Redemptions</th></tr></thead><tbody>${byFunder.map(f => `<tr><td>${esc(f.funder)}</td><td class="num">${money(f.amount)}</td><td class="num">${f.redemptions}</td></tr>`).join("")}</tbody></table>` : '<p class="p-tag">No redemptions yet.</p>'}
-    <h3>Recent redemptions (all stores)</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Code</th><th class="num">Amount</th><th>Funder</th><th>Channel</th><th>Owner</th></tr></thead>
-      <tbody>${(d.redemptions || []).slice(0, 15).map(r => `<tr><td><code>${esc(r.code)}</code></td><td class="num">${money(r.amount)}</td><td>${esc(r.funder)}${r.funder_ref ? " " + esc(r.funder_ref) : ""}</td><td>${esc(r.channel)}</td><td class="p-tag">${esc((r.owner || "").slice(0, 18))}</td></tr>`).join("") || '<tr><td colspan="5">—</td></tr>'}</tbody></table></div></div>`;
+    <div class="p-panel"><h3>Decision fabric — 18 engines, one job each</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Engine</th><th>Owns</th><th>Implementation</th></tr></thead><tbody>
+      ${m.engines.map(e => `<tr><td><b>${esc(e.name)}</b></td><td>${esc(e.owns)}</td><td class="p-tag"><code>${esc(e.impl)}</code></td></tr>`).join("")}
+    </tbody></table></div></div>
+    <div class="p-panel"><h3>Context fabric — 25 dimensions resolved on every decision</h3><div class="p-grid">
+      ${m.contexts.map(x => `<div class="p-card" style="padding:8px 10px"><b>${esc(x.name)}</b><div class="p-tag">${esc(x.source)}</div></div>`).join("")}
+    </div></div>`;
+}
+function gDomains(m, d) {
+  const counts = {}; (d.domains || []).forEach(x => counts[x.domain] = x.n);
+  return `<div class="p-panel"><h3>67 constitutional domains — each with exactly one owner and one discriminator</h3>
+    <p class="p-tag">The discriminator is what makes overlap impossible: no two domains select the same rows from the same store. Live counts are value-exchange records currently in each domain.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>#</th><th>Domain</th><th>Owner (store)</th><th>Discriminator</th><th>Fabric</th><th class="num">Records</th></tr></thead><tbody>
+      ${m.domains.map(x => `<tr><td class="p-tag">${String(x.n).padStart(2, "0")}</td><td><b>${esc(x.name)}</b><br><code>${esc(x.key)}</code></td><td class="p-tag"><code>${esc(x.owner)}</code></td><td style="font-size:12px">${esc(x.discriminator)}</td><td><span class="badge ${x.fabric === "capability" ? "published" : "draft"}">${esc(x.fabric)}</span></td><td class="num">${counts[x.key] || 0}</td></tr>`).join("")}
+    </tbody></table></div></div>`;
+}
+function gExchanges(m, d) {
+  const opt = (arrx, val) => (arrx || []).map(x => `<option value="${esc(x.key || x)}" ${val === (x.key || x) ? "selected" : ""}>${esc(x.name || x)}</option>`).join("");
+  const benefits = m.benefits, domains = m.domains, units = m.economic.units, places = m.spatial.nodes, cals = m.temporal.calendars, dist = m.fabrics.distribution;
+  return `<div class="p-panel"><h3>Publish a global value exchange</h3>
+    <p class="p-tag">Scope = <b>global</b> — every store inherits it (bank cashbacks, brand vouchers, government subsidies, marketplace-wide sales, partner benefits). Stores honour global exchanges only while <b>Provisioning → global offers</b> allows it.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;align-items:end">
+      <label><span>Name</span><input id="gName" placeholder="Platform-wide 2% credit"></label>
+      <label><span>Benefit</span><select id="gBenefit">${opt(benefits, "percentage_discount")}</select></label>
+      <label><span>Value</span><input id="gValue" type="number" step="0.01" value="10"></label>
+      <label><span>Code (optional)</span><input id="gCode" placeholder="GLOBAL10"></label>
+      <label><span>Domain</span><select id="gDomain">${opt(domains, "incentive")}</select></label>
+      <label><span>Channel</span><select id="gChan"><option>commerce</option><option>subscription</option><option>ai</option><option>any</option></select></label>
+      <label><span>Funder</span><select id="gFunder">${opt(m.fabrics.funding.filter(f => f.kind === "source").map(f => ({ key: f.party_type === "split" ? "split" : f.key, name: f.name })))}</select></label>
+      <label><span>Funder ref</span><input id="gFunderRef" placeholder="HDFC / Nike / Ministry"></label>
+      <label><span>Economic unit</span><select id="gUnit"><option value="">store currency</option>${opt(units)}</select></label>
+      <label><span>Reality</span><select id="gReality">${opt(m.realities, "any")}</select></label>
+      <label><span>Calendar</span><select id="gCal"><option value="">any</option>${opt(cals)}</select></label>
+      <label><span>Place (prefix)</span><select id="gPlace"><option value="">anywhere</option>${opt(places)}</select></label>
+      <label><span>Usage limit</span><input id="gUse" type="number" value="0"></label>
+      <label><span>Governance</span><select id="gGov">${opt(m.governance_states.map(x => ({ key: x, name: x })), "published")}</select></label>
+    </div>
+    <label style="display:block;margin-top:8px"><span>Distribution channels</span>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">${dist.map(c => `<label style="display:flex;gap:4px;align-items:center;font-size:12px"><input type="checkbox" data-gdist="${esc(c.key)}"> ${esc(c.name)}</label>`).join("")}</div></label>
+    <label style="display:block;margin-top:8px"><span>Declared conditions (JSON over the resolved context)</span><input id="gCond" placeholder='{ "audience.orders": { "gte": 1 }, "cart.amount": { "gte": 100 } }'></label>
+    <label style="display:block;margin-top:8px"><span>Funding split (JSON, multi-party)</span><input id="gFund" placeholder='{ "parties": [{ "party": "HDFC", "party_type": "bank", "share": 0.6 }, { "party": "NIKE", "party_type": "brand", "share": 0.4 }] }'></label>
+    <div style="margin-top:8px"><button class="p-btn primary sm" id="gSave">Publish value exchange</button> <span class="p-tag" id="gSaveMsg"></span></div>
+  </div>
+  <div class="p-panel"><h3>Global value exchanges</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Name</th><th>Domain · Benefit</th><th>Context</th><th>Funder</th><th class="num">Value</th><th class="num">Used/Limit</th><th>State</th><th></th></tr></thead>
+    <tbody>${(d.global || []).map(o => `<tr><td><b>${esc(o.name)}</b>${o.code ? ` <code>${esc(o.code)}</code>` : ""}${o.version > 1 ? ` <span class="p-tag">v${o.version}</span>` : ""}</td>
+      <td class="p-tag">${esc(o.domain || "incentive")}<br>${esc(o.benefit || o.type)}</td>
+      <td class="p-tag">${esc(o.reality || "any")} · ${esc((pj(o.spatial_spec).include || []).join(",") || "anywhere")} · ${esc(pj(o.temporal_spec).calendar || "any calendar")} · ${esc(o.economic_unit || o.currency)}</td>
+      <td>${esc(o.funder)}${o.funder_ref ? " " + esc(o.funder_ref) : ""}</td><td class="num">${esc(o.value)}</td><td class="num">${o.used}/${o.usage_limit || "∞"}</td>
+      <td><span class="badge ${(pj(o.governance).state || o.status) === "published" || o.status === "active" ? "published" : "draft"}">${esc(pj(o.governance).state || o.status)}</span></td>
+      <td style="text-align:right;white-space:nowrap"><button class="p-btn sm" data-ggov="publish" data-gid="${o.id}">publish</button> <button class="p-btn sm" data-ggov="suspend" data-gid="${o.id}">suspend</button> <button class="p-btn sm" data-ggov="version" data-gid="${o.id}">version</button></td></tr>`).join("") || '<tr><td colspan="8">No global value exchanges yet.</td></tr>'}</tbody></table></div></div>
+  <div class="p-panel"><h3>Benefit fabric — 25 constructs, one math engine</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Benefit</th><th>Handler (offers.HANDLERS)</th><th>Direction</th><th>Unit</th><th>Grants</th></tr></thead><tbody>
+    ${m.benefits.map(b => `<tr><td><b>${esc(b.name)}</b><br><code>${esc(b.key)}</code></td><td class="p-tag"><code>${esc(b.type)}</code></td><td>${esc(b.direction)}</td><td class="p-tag">${esc(b.unit || "—")}</td><td class="p-tag">${esc(b.grants || "—")}</td></tr>`).join("")}
+  </tbody></table></div></div>`;
+}
+function gRegistries(m) {
+  const tbl = (title, rows, cols) => `<div class="p-panel"><h3>${esc(title)}</h3><div class="p-scroll-x"><table class="p-table"><thead><tr>${cols.map(c => `<th>${esc(c[0])}</th>`).join("")}</tr></thead><tbody>${(rows || []).map(r => `<tr>${cols.map(c => `<td>${esc(typeof c[1] === "function" ? c[1](r) : r[c[1]])}</td>`).join("")}</tr>`).join("")}</tbody></table></div></div>`;
+  return `<p class="p-tag">Every row below is a <code>meta_lists</code> registry — add a calendar, a planet, an economic unit, a benefit, a channel, an attribution model or an entire civilization in <b>Data Studio → Registries</b> and the engines obey it on the next request. No code, no redeploy, no redesign.</p>
+  ${tbl("Temporal authority · calendars", m.temporal.calendars, [["Calendar", "name"], ["Key", "key"], ["Chronology", "chronology"], ["Epoch", "epoch"], ["Day (s)", "day_seconds"], ["Year (days)", "year_days"], ["Authority", "authority"]])}
+  ${tbl("Chronologies", m.temporal.chronologies, [["Chronology", "name"], ["Base unit", "base_unit"], ["Rotation (s)", "rotation_seconds"]])}
+  ${tbl("Temporal measurement", m.temporal.units, [["Unit", "name"], ["Key", "key"], ["Seconds", "seconds"]])}
+  ${tbl("Spatial systems", m.spatial.systems, [["System", "name"], ["Body", "body"], ["Levels", r => (r.levels || []).join(" → ")], ["Coordinates", "coordinate"]])}
+  ${tbl("Coordinate systems", m.spatial.coordinates, [["System", "name"], ["Axes", r => (r.axes || []).join(", ") || "—"], ["Unit", "unit"]])}
+  ${tbl("Spatial hierarchy", m.spatial.nodes, [["Path", "key"], ["Name", "name"], ["System", "system"], ["Level", "level"], ["Parent", r => r.parent || "—"]])}
+  ${tbl("Economic units", m.economic.units, [["Unit", "name"], ["Key", "key"], ["Class", "class"], ["Decimals", "decimals"], ["Rate → USD", r => r.base_rate || "declared"], ["Settleable", r => r.settleable ? "yes" : "no"]])}
+  ${tbl("Reality models", m.realities, [["Reality", "name"], ["Key", "key"]])}
+  ${tbl("Distribution fabric", m.fabrics.distribution, [["Channel", "name"], ["Bound to", "binding"], ["State", "state"]])}
+  ${tbl("Attribution fabric", m.fabrics.attribution, [["Attribution", "name"], ["Basis", "basis"], ["Default model", "model"]])}
+  ${tbl("Funding fabric", m.fabrics.funding, [["Funding", "name"], ["Party type", r => r.party_type || "—"], ["Kind", "kind"]])}
+  ${tbl("Settlement fabric", m.fabrics.settlement, [["Element", "name"], ["Store", "store"], ["Stage", "stage"]])}
+  ${tbl("Governance fabric", m.fabrics.governance, [["Engine", "name"], ["Action", "action"], ["Store", "store"]])}`;
+}
+function gFunding(m, d) {
+  const t = d.treasury || { positions: [], burn: { monthly: [] } };
+  const byFunder = (d.stats && d.stats.byFunder) || [];
+  return `<div class="p-cards">
+      ${(t.positions || []).map(p => `<div class="p-stat"><em>${esc(p.unit)} treasury</em><b>${p.available}</b><small>allocated ${p.allocated} · consumed ${p.consumed}</small></div>`).join("") || '<div class="p-stat"><em>Treasury</em><b>—</b><small>no budgets funded yet</small></div>'}
+      <div class="p-stat"><em>Avg monthly burn</em><b>${money((t.burn && t.burn.average) || 0)}</b><small>last ${(t.burn && t.burn.monthly || []).length} periods</small></div>
+    </div>
+    <div class="p-panel"><h3>Fund a budget</h3>
+      <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+        <label><span>Funder</span><select id="fFunder">${(m.fabrics.funding.filter(f => f.kind === "source")).map(f => `<option value="${esc(f.party_type === "split" ? "split" : f.key)}">${esc(f.name)}</option>`).join("")}</select></label>
+        <label><span>Funder ref</span><input id="fRef" placeholder="HDFC"></label>
+        <label><span>Unit</span><select id="fUnit">${m.economic.units.map(u => `<option value="${esc(u.key)}">${esc(u.key)}</option>`).join("")}</select></label>
+        <label><span>Domain</span><select id="fDomain">${m.domains.map(x => `<option value="${esc(x.key)}" ${x.key === "incentive" ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
+        <label><span>Amount</span><input id="fAmount" type="number" value="1000"></label>
+        <button class="p-btn primary sm" id="fGo">Allocate</button>
+      </div></div>
+    <div class="p-panel"><h3>Budgets</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Funder</th><th>Domain</th><th>Unit</th><th>Period</th><th class="num">Allocated</th><th class="num">Reserved</th><th class="num">Consumed</th><th class="num">Available</th><th class="num">Burn</th><th>Status</th></tr></thead><tbody>
+      ${(d.budgets || []).map(b => `<tr><td>${esc(b.funder)}${b.funder_ref ? " " + esc(b.funder_ref) : ""}</td><td class="p-tag">${esc(b.domain)}</td><td>${esc(b.unit)}</td><td class="p-tag">${esc(b.period)}</td><td class="num">${b.allocated}</td><td class="num">${b.reserved}</td><td class="num">${b.consumed}</td><td class="num">${b.available}</td><td class="num">${b.burn_pct}%</td><td><span class="badge ${b.status === "open" ? "published" : "draft"}">${esc(b.status)}</span></td></tr>`).join("") || '<tr><td colspan="10">No budgets — allocate one above.</td></tr>'}
+    </tbody></table></div></div>
+    <div class="p-panel"><h3>Settlement &amp; payout</h3>
+      <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin-bottom:8px">
+        <label><span>Period</span><input id="sPeriod" value="${esc(d.period || "")}" placeholder="YYYY-MM"></label>
+        <button class="p-btn primary sm" id="sRun">Run settlement</button>
+        <span class="p-tag">Each redeemed-but-unsettled redemption is attributed to its funding parties exactly once — re-running settles nothing twice.</span>
+      </div>
+      <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Period</th><th>Party</th><th>Type</th><th>Unit</th><th class="num">Gross</th><th class="num">Fees</th><th class="num">Net</th><th class="num">Redemptions</th><th>Status</th><th></th></tr></thead><tbody>
+        ${(d.settlements || []).map(x => `<tr><td class="p-tag">${esc(x.period)}</td><td><b>${esc(x.party)}</b></td><td class="p-tag">${esc(x.party_type)}</td><td>${esc(x.unit)}</td><td class="num">${x.gross}</td><td class="num">${x.fees}</td><td class="num">${x.net}</td><td class="num">${x.redemptions}</td><td><span class="badge ${x.status === "paid" || x.status === "reconciled" ? "published" : "draft"}">${esc(x.status)}</span>${x.reference ? `<br><code>${esc(x.reference)}</code>` : ""}</td>
+          <td style="text-align:right;white-space:nowrap">${x.status === "accrued" ? `<button class="p-btn sm" data-sapprove="${x.id}" data-stenant="${x.tenant_id}">approve</button> ` : ""}${x.status === "accrued" || x.status === "approved" ? `<button class="p-btn sm primary" data-spay="${x.id}" data-stenant="${x.tenant_id}">pay</button>` : ""}${x.status === "paid" ? `<button class="p-btn sm" data-srec="${x.id}" data-stenant="${x.tenant_id}">reconcile</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="10">Nothing accrued yet — run a settlement.</td></tr>'}
+      </tbody></table></div></div>
+    <div class="p-panel"><h3>Redemption split by funder (all stores)</h3>${byFunder.length ? `<table class="p-table"><thead><tr><th>Funder</th><th class="num">Value granted</th><th class="num">Redemptions</th></tr></thead><tbody>${byFunder.map(f => `<tr><td>${esc(f.funder)}</td><td class="num">${money(f.amount)}</td><td class="num">${f.redemptions}</td></tr>`).join("")}</tbody></table>` : '<p class="p-tag">No redemptions yet.</p>'}</div>`;
+}
+async function gAttribution(m, d) {
+  let tp = { touchpoints: [] };
+  try { tp = await api("/goip/touchpoints"); } catch (e) { }
+  return `<div class="p-panel"><h3>Attribution fabric</h3>
+    <p class="p-tag">Touchpoints are captured by <code>POST /api/goip/track</code> from any surface; <code>POST /api/goip/attribute</code> replays a subject's path through any declared model (${m.fabrics.attribution_models.join(", ")}) and splits revenue and commission across the parties that earned it.</p>
+    <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+      <label><span>Subject (owner)</span><input id="aOwner" placeholder="t1:u:2"></label>
+      <label><span>Model</span><select id="aModel">${m.fabrics.attribution_models.map(x => `<option>${esc(x)}</option>`).join("")}</select></label>
+      <label><span>Revenue</span><input id="aValue" type="number" value="0"></label>
+      <label><span>Commission %</span><input id="aRate" type="number" value="10"></label>
+      <button class="p-btn primary sm" id="aRun">Attribute</button>
+    </div>
+    <pre id="aOut" class="p-scroll-x" style="background:var(--p-bg2,#0b1020);color:#9ae6b4;padding:10px;border-radius:8px;margin-top:8px;max-height:260px;overflow:auto;font-size:12px">—</pre>
+  </div>
+  <div class="p-panel"><h3>Recent touchpoints</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>When</th><th>Kind</th><th>Party</th><th>Channel</th><th>Subject</th><th class="num">Value</th></tr></thead><tbody>
+    ${(tp.touchpoints || []).slice(-25).reverse().map(t => `<tr><td class="p-tag">${esc(String(t.created_at || "").slice(0, 19))}</td><td><span class="badge ${t.kind === "conversion" ? "published" : "draft"}">${esc(t.kind)}</span></td><td>${esc(t.party)}<div class="p-tag">${esc(t.party_type)}</div></td><td class="p-tag">${esc(t.channel)} · ${esc(t.distribution)}</td><td class="p-tag">${esc((t.owner || "").slice(0, 22))}</td><td class="num">${t.value}</td></tr>`).join("") || '<tr><td colspan="6">No touchpoints recorded yet.</td></tr>'}
+  </tbody></table></div></div>
+  <div class="p-panel"><h3>Universal incentive graph</h3>
+    <p class="p-tag">${m.graph.nodes.length} node kinds · ${m.graph.edges.length} relationships, projected onto the platform's existing <code>links</code> table — every edge is queryable with <code>GET /api/goip/exchanges/:id</code>.</p>
+    <div class="p-grid">${m.graph.nodes.map(n => `<div class="p-card" style="padding:6px 10px"><b>${esc(n.key)}</b><div class="p-tag">${esc(n.store)}</div></div>`).join("")}</div>
+    <p style="margin-top:8px">${m.graph.edges.map(e => `<code style="margin-right:6px">${esc(e)}</code>`).join("")}</p></div>`;
+}
+async function gIntelligence(m) {
+  return `<div class="p-panel"><h3>Intelligence fabric — 15 readings over live data</h3>
+    <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+      <label><span>Reading</span><select id="iSel">${m.fabrics.intelligence.map(x => `<option value="${esc(x.key)}">${esc(x.name)}</option>`).join("")}</select></label>
+      <button class="p-btn primary sm" id="iRun">Read</button>
+      <span class="p-tag">Generation readings propose drafts; nothing publishes without the governance engine.</span>
+    </div>
+    <pre id="iOut" class="p-scroll-x" style="background:var(--p-bg2,#0b1020);color:#9ae6b4;padding:10px;border-radius:8px;margin-top:8px;max-height:420px;overflow:auto;font-size:12px">Pick a reading.</pre>
+  </div>`;
+}
+function gCommercial(m, d) {
+  const meters = d.meters || [], installs = d.installs || [];
+  return `<div class="p-panel"><h3>Deployment models</h3><div class="p-grid">
+      ${m.commercialization.deployments.map(x => `<div class="p-card" style="padding:8px 10px"><b>${esc(x.name)}</b><div class="p-tag"><code>${esc(x.key)}</code></div></div>`).join("")}
+    </div></div>
+    <div class="p-panel"><h3>Billing models — every capability bills a meter</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Model</th><th>Meter</th><th>Unit</th><th class="num">Rate</th><th class="num">Metered qty</th><th class="num">Accrued</th></tr></thead><tbody>
+      ${m.commercialization.billing_models.map(b => { const live = meters.find(x => x.kind === b.meter) || { qty: 0, amount: 0 }; return `<tr><td><b>${esc(b.name)}</b></td><td class="p-tag"><code>${esc(b.meter)}</code></td><td class="p-tag">${esc(b.unit)}</td><td class="num">${b.rate}</td><td class="num">${live.qty || 0}</td><td class="num">${money(live.amount || 0)}</td></tr>`; }).join("")}
+    </tbody></table></div>
+    <p class="p-tag">Meters are written through <code>billing.meter()</code> into <code>usage_records</code> — they ride the existing invoice run, so GOIP usage appears as billed lines on the store's next invoice. Rates apply only to stores that purchased the GOIP module; everyone else is metered at zero.</p></div>
+    <div class="p-panel"><h3>Stores entitled to GOIP</h3><table class="p-table"><thead><tr><th>Store</th><th>Status</th></tr></thead><tbody>
+      ${installs.map(i => `<tr><td>${esc(i.slug)}</td><td><span class="badge ${i.status === "installed" ? "published" : "draft"}">${esc(i.status)}</span></td></tr>`).join("") || '<tr><td colspan="2">No store has purchased GOIP yet — sell it in <b>🧩 Module Marketplace</b>.</td></tr>'}
+    </tbody></table></div>`;
 }
 function wireGlobalOffers() {
-  const g = document.getElementById("gSave"); if (!g) return;
-  g.onclick = async () => { try { await api("/offers", "POST", { name: gval("gName"), type: gval("gType"), value: Number(gval("gValue")), code: gval("gCode"), channel: gval("gChan"), funder: gval("gFunder"), funder_ref: gval("gFunderRef"), usage_limit: Number(gval("gUse")) || 0, scope_level: "global", scope_type: "store" }); toast("Global offer published"); render(); } catch (e) { toast(e.message); } };
-  function gval(id) { const el = document.getElementById(id); return el ? el.value : ""; }
+  const $id = i => document.getElementById(i);
+  const gval = i => { const el = $id(i); return el ? el.value : ""; };
+  const jparse = (v, d) => { try { return v ? JSON.parse(v) : d; } catch (e) { return d; } };
+  document.querySelectorAll("[data-gt]").forEach(b => b.onclick = async () => {
+    goipTab = b.dataset.gt;
+    document.querySelectorAll("[data-gt]").forEach(x => x.classList.toggle("primary", x.dataset.gt === goipTab));
+    const body = $id("goipBody"); if (body) { body.innerHTML = '<div class="p-empty">Loading…</div>'; body.innerHTML = await gView(); wireGlobalOffers(); }
+  });
+  if ($id("gSave")) $id("gSave").onclick = async () => {
+    const dist = [...document.querySelectorAll("[data-gdist]")].filter(c => c.checked).map(c => c.dataset.gdist);
+    const place = gval("gPlace"), cal = gval("gCal");
+    try {
+      const r = await api("/goip/create", "POST", {
+        name: gval("gName"), benefit: gval("gBenefit"), value: Number(gval("gValue")), code: gval("gCode"),
+        domain: gval("gDomain"), channel: gval("gChan"), funder: gval("gFunder"), funder_ref: gval("gFunderRef"),
+        economic_unit: gval("gUnit"), reality: gval("gReality"), usage_limit: Number(gval("gUse")) || 0,
+        temporal: cal ? { calendar: cal } : {}, spatial: place ? { include: [place] } : {},
+        conditions: jparse(gval("gCond"), {}), funding: jparse(gval("gFund"), {}), distribution: dist,
+        governance: { state: gval("gGov") }, scope_level: "global", scope_type: "store", status: "active"
+      });
+      toast("Value exchange published (#" + (r.result && r.result.id) + ")"); render();
+    } catch (e) { toast(e.message); }
+  };
+  document.querySelectorAll("[data-ggov]").forEach(b => b.onclick = async () => {
+    try { const r = await api("/goip/govern", "POST", { id: Number(b.dataset.gid), action: b.dataset.ggov }); toast(b.dataset.ggov + " → " + ((r.result && r.result.state) || (r.result && r.result.id) || "ok")); render(); }
+    catch (e) { toast(e.message); }
+  });
+  if ($id("gcRun")) $id("gcRun").onclick = async () => {
+    const out = $id("gcOut"); out.textContent = "…";
+    try { const r = await api("/goip/" + gval("gcSel"), "POST", jparse(gval("gcBody"), {})); out.textContent = JSON.stringify(r, null, 2); }
+    catch (e) { out.textContent = "⚠️ " + e.message; }
+  };
+  document.querySelectorAll("[data-gcap]").forEach(b => b.onclick = () => { const sel = $id("gcSel"); if (sel) { sel.value = b.dataset.gcap; sel.scrollIntoView({ block: "center" }); } });
+  if ($id("fGo")) $id("fGo").onclick = async () => {
+    try { await api("/goip/fund", "POST", { funder: gval("fFunder"), funder_ref: gval("fRef"), unit: gval("fUnit"), domain: gval("fDomain"), amount: Number(gval("fAmount")) || 0 }); toast("Budget allocated"); render(); }
+    catch (e) { toast(e.message); }
+  };
+  if ($id("sRun")) $id("sRun").onclick = async () => {
+    try { const r = await api("/goip/settle", "POST", { period: gval("sPeriod"), all: true }); toast((r.result.redemptions_settled || 0) + " redemptions settled across all stores"); render(); }
+    catch (e) { toast(e.message); }
+  };
+  document.querySelectorAll("[data-spay]").forEach(b => b.onclick = async () => {
+    const fees = prompt("Payout fees (blank = 0)"); if (fees === null) return;
+    try { const r = await api("/goip/pay", "POST", { id: Number(b.dataset.spay), fees: Number(fees) || 0, tenant_id: Number(b.dataset.stenant || 0) || undefined }); toast("Paid " + r.result.net + " " + r.result.unit + " · " + r.result.reference); render(); }
+    catch (e) { toast(e.message); }
+  });
+  document.querySelectorAll("[data-sapprove]").forEach(b => b.onclick = async () => {
+    try { await api("/goip/settle", "POST", { approve: Number(b.dataset.sapprove), tenant_id: Number(b.dataset.stenant || 0) || undefined }); toast("Settlement approved"); render(); }
+    catch (e) { toast(e.message); }
+  });
+  document.querySelectorAll("[data-srec]").forEach(b => b.onclick = async () => {
+    const ref = prompt("External reference (bank statement id)"); if (ref === null) return;
+    try { await api("/goip/settle", "POST", { reconcile: Number(b.dataset.srec), external_ref: ref, tenant_id: Number(b.dataset.stenant || 0) || undefined }); toast("Reconciled"); render(); }
+    catch (e) { toast(e.message); }
+  });
+  if ($id("aRun")) $id("aRun").onclick = async () => {
+    const out = $id("aOut"); out.textContent = "…";
+    try { const r = await api("/goip/attribute", "POST", { owner: gval("aOwner"), model: gval("aModel"), value: Number(gval("aValue")) || 0, commission_rate: Number(gval("aRate")) || 0 }); out.textContent = JSON.stringify(r.result, null, 2); }
+    catch (e) { out.textContent = "⚠️ " + e.message; }
+  };
+  if ($id("iRun")) $id("iRun").onclick = async () => {
+    const out = $id("iOut"); out.textContent = "…";
+    try { const r = await api("/goip/intelligence/" + gval("iSel")); out.textContent = JSON.stringify(r.result, null, 2); }
+    catch (e) { out.textContent = "⚠️ " + e.message; }
+  };
 }
 async function vRuntime() {
   const d = await api("/platform/runtime"); const [eNv, fL] = await Promise.all([api("/platform/environments"), api("/platform/flags")]);

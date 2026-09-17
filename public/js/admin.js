@@ -33,11 +33,11 @@ const NAV = [
   ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["sellers", "🏪 Sellers"], ["settlements", "🤝 Settlements"],
   ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["suppliers", "🚚 Suppliers & Procurement"], ["serialized", "🔢 Serialized Items"], ["compliance", "✅ Compliance & Certs"], ["localizations", "🌐 Localizations"],
   ["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"], ["trash", "🗑️ Trash & Retention"], ["sso", "🔐 SSO & Integrations"],
-  ["promotions", "💸 Offers & Coupons"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
+  ["promotions", "💸 Offers & Coupons"], ["goip", "Ω∞ GOIP"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
   ["payments", "💳 Payment Gateways"], ["modules", "🧩 Modules"], ["settings", "⚙️ Settings"], ["billing", "🧮 Billing"], ["analytics", "📊 Analytics"], ["audit", "📜 Audit Trail"],
   ["monitor", "📈 Monitor"], ["team", "👥 Team & Roles"], ["studio", "🛠️ Data Studio"]
 ];
-const NAVSEC = { promotions: "offers", ai: "ai", webhooks: "webhooks", trash: "trash", team: "team", studio: "studio", sso: "settings" };
+const NAVSEC = { promotions: "offers", goip: "offers", ai: "ai", webhooks: "webhooks", trash: "trash", team: "team", studio: "studio", sso: "settings" };
 const navSection = k => NAVSEC[k] || k;
 const canSee = k => { if (!A.allowed || A.allowed.includes("*")) return true; if (k === "dash") return true; return A.allowed.includes(navSection(k)); };
 let view = "dash";
@@ -478,6 +478,97 @@ function wireAI() {
 }
 
 /* ---------- Central Offers & Coupons (data-driven builder) ---------- */
+/* ═══ GOIP Ω∞ — store surface: the constitution as this store can use it ═══
+   A store admin gets the decision tester (what applies, what does not, and WHY), the store's own
+   value exchanges (its own + the global ones it inherits), subject entitlements and unit balances,
+   its funding budgets and settlements, and the capability list it is entitled to call. */
+async function vGoip() {
+  const [man, ex, tre] = await Promise.all([api("/goip"), api("/goip/exchanges"), api("/goip/treasury").catch(() => ({ budgets: [], treasury: { positions: [] } }))]);
+  const entitled = man.entitled;
+  const opt = (a, sel) => (a || []).map(x => `<option value="${esc(x.key || x)}"${(x.key || x) === sel ? " selected" : ""}>${esc(x.name || x)}</option>`).join("");
+  const rows = (ex.exchanges || []).map(o => `<tr>
+    <td><b>${esc(o.name)}</b>${o.code ? ` <code>${esc(o.code)}</code>` : ""}${o.tenant_id === 0 ? ' <span class="p-tag">INHERITED</span>' : ""}</td>
+    <td class="p-tag">${esc(o.domain || "incentive")}<br>${esc(o.benefit || o.type)}</td>
+    <td class="p-tag">${esc(o.reality || "any")} · ${esc((JSON.parse(o.spatial_spec || "{}").include || []).join(",") || "anywhere")} · ${esc(o.economic_unit || o.currency)}</td>
+    <td>${esc(o.funder)}${o.funder_ref ? " " + esc(o.funder_ref) : ""}</td>
+    <td class="num">${esc(o.value)}</td><td class="num">${o.used}/${o.usage_limit || "∞"}</td>
+    <td><span class="badge ${(o.governance || {}).state === "published" || o.status === "active" ? "published" : "draft"}">${esc((o.governance || {}).state || o.status)}</span></td></tr>`).join("")
+    || '<tr><td colspan="7">No value exchanges yet.</td></tr>';
+  return `<div class="p-panel"><h2>Ω∞ GOIP — Value Exchange</h2>
+    <p style="color:var(--p-muted);font-size:13px;margin:0 0 8px">Every offer, coupon, cashback, reward, voucher, membership, subsidy or commission this store runs is one <b>value exchange</b> resolved against the live context: reality · time · place · economy · governance · audience. This screen is where you test what applies, and why it does not when it does not.</p>
+    ${entitled === false ? '<p class="p-tag" style="padding:8px 10px;border-radius:8px;background:rgba(245,158,11,.12)">This store has not purchased <b>GOIP Ω∞</b> — reads work, capability calls are metered at zero and some writes stay closed. Buy it under <b>🧩 Modules</b>.</p>' : '<p class="p-tag"><span class="badge published">entitled</span> GOIP is installed on this store — all 22 capabilities are callable and metered.</p>'}
+  </div>
+
+  <div class="p-panel"><h3>Decision tester — ask the platform what applies right now</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;align-items:end">
+      <label><span>Capability</span><select id="gzCap"><option value="apply">apply — what would apply</option><option value="discover">discover — what is available</option><option value="validate">validate — is this code usable</option><option value="compare">compare — rank every candidate</option><option value="recommend" disabled>recommend (via discover)</option></select></label>
+      <label><span>Cart amount</span><input id="gzAmount" type="number" value="200"></label>
+      <label><span>Code</span><input id="gzCode" placeholder="GOIPWELCOME"></label>
+      <label><span>Place</span><select id="gzPlace"><option value="">store default</option>${opt(man.spatial.nodes)}</select></label>
+      <label><span>Economic unit</span><select id="gzUnit"><option value="">store currency</option>${opt(man.economic.units)}</select></label>
+      <label><span>Subject (owner)</span><input id="gzOwner" placeholder="t1:u:2"></label>
+      <label><span>Objective</span><select id="gzObj">${opt(["max_benefit", "min_cost", "max_margin", "max_conversion", "balanced"])}</select></label>
+      <button class="p-btn primary sm" id="gzRun">Run</button>
+    </div>
+    <div id="gzSummary" style="margin-top:10px"></div>
+    <pre id="gzOut" class="p-scroll-x" style="background:#0b1020;color:#9ae6b4;padding:10px;border-radius:8px;max-height:320px;overflow:auto;font-size:12px">—</pre>
+  </div>
+
+  <div class="p-panel"><h3>Value exchanges (this store + inherited)</h3><div class="p-scroll-x"><table class="p-table">
+    <thead><tr><th>Name</th><th>Domain · Benefit</th><th>Context</th><th>Funder</th><th class="num">Value</th><th class="num">Used</th><th>State</th></tr></thead>
+    <tbody>${rows}</tbody></table></div></div>
+
+  <div class="p-panel"><h3>Subject lookup — entitlements &amp; non-money balances</h3>
+    <div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap">
+      <label><span>Subject (owner)</span><input id="gzSubj" placeholder="t1:u:2"></label>
+      <button class="p-btn sm" id="gzSubjGo">Look up</button>
+      <span class="p-tag">Entitlements are memberships, tiers, assets and deferred value — benefits that are not money.</span>
+    </div>
+    <div id="gzSubjOut" style="margin-top:8px"></div></div>
+
+  <div class="p-panel"><h3>Funding &amp; settlement for this store</h3>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Funder</th><th>Domain</th><th>Unit</th><th class="num">Allocated</th><th class="num">Consumed</th><th class="num">Available</th><th class="num">Burn</th></tr></thead><tbody>
+      ${(tre.budgets || []).map(b => `<tr><td>${esc(b.funder)}${b.funder_ref ? " " + esc(b.funder_ref) : ""}</td><td class="p-tag">${esc(b.domain)}</td><td>${esc(b.unit)}</td><td class="num">${b.allocated}</td><td class="num">${b.consumed}</td><td class="num">${b.available}</td><td class="num">${b.burn_pct}%</td></tr>`).join("") || '<tr><td colspan="7">No budgets funded for this store yet.</td></tr>'}
+    </tbody></table></div>
+    <p class="p-tag" style="margin-top:6px">Forecast: ${(tre.forecast && tre.forecast.projection || []).map(p => esc(p.period) + " → " + esc(p.projected_cost)).join(" · ") || "not enough history yet"}</p></div>
+
+  <div class="p-panel"><h3>Capabilities this store can call</h3><div class="p-scroll-x"><table class="p-table">
+    <thead><tr><th>Capability</th><th>Stage</th><th>Scope</th><th>Meter</th></tr></thead><tbody>
+    ${man.capabilities.map(c => `<tr><td><code>POST /api/goip/${esc(c.key)}</code><br><span class="p-tag">${esc(c.name)}</span></td><td class="p-tag">${esc(c.stage)}</td><td><span class="badge ${c.scope === "platform" ? "draft" : "published"}">${esc(c.scope)}</span></td><td class="p-tag">${esc(c.meter)}</td></tr>`).join("")}
+    </tbody></table></div></div>`;
+}
+function wireGoip() {
+  const $i = id => document.getElementById(id);
+  const val = id => { const el = $i(id); return el ? el.value : ""; };
+  if ($i("gzRun")) $i("gzRun").onclick = async () => {
+    const out = $i("gzOut"), sum = $i("gzSummary");
+    out.textContent = "…"; sum.innerHTML = "";
+    const body = { amount: Number(val("gzAmount")) || 0, coupon: val("gzCode") || undefined, objective: val("gzObj") };
+    if (val("gzPlace")) body.spatial = { node: val("gzPlace") };
+    if (val("gzUnit")) body.currency = val("gzUnit");
+    if (val("gzOwner")) body.owner = val("gzOwner");
+    try {
+      const r = await api("/goip/" + val("gzCap"), "POST", body);
+      const res = r.result || {};
+      const applied = (res.applied || []).map(a => `<span class="badge published">${esc(a.name)} · ${esc(a.amount || a.credits || (a.freeShip ? "free ship" : a.grant ? "grant" : ""))}${a.unit ? " " + esc(a.unit) : ""}</span>`).join(" ");
+      const rejected = (res.rejected || []).map(x => `<div class="p-tag">✗ <b>${esc(x.name || x.id)}</b> — ${esc((x.reasons || []).join("; "))}</div>`).join("");
+      const ctx = res.context ? `<div class="p-tag">context: ${esc(res.context.reality)} · ${esc(res.context.temporal.calendar)} · ${esc(res.context.spatial.node)} · ${esc(res.context.economic.unit)} · segments ${esc((res.context.audience.segments || []).join(","))}</div>` : "";
+      sum.innerHTML = (res.discount !== undefined ? `<b>discount ${res.discount}</b> · credits ${res.credits} · free shipping ${res.freeShip ? "yes" : "no"}<br>` : "") + applied + ctx + rejected;
+      out.textContent = JSON.stringify(r, null, 2);
+    } catch (e) { out.textContent = "⚠️ " + e.message; }
+  };
+  if ($i("gzSubjGo")) $i("gzSubjGo").onclick = async () => {
+    const owner = val("gzSubj"); const box = $i("gzSubjOut"); box.innerHTML = "…";
+    try {
+      const [ent, led] = await Promise.all([api("/goip/entitlements?owner=" + encodeURIComponent(owner)), api("/wallet/ledger?owner=" + encodeURIComponent(owner))]);
+      const units = {}; (led.entries || []).forEach(e => { units[e.currency] = (units[e.currency] || 0) + Number(e.amount); });
+      box.innerHTML = `<p class="p-tag">Money wallet: <b>${led.balance}</b> · unit balances: ${Object.entries(units).map(([u, v]) => `<b>${esc(u)} ${Math.round(v * 100) / 100}</b>`).join(" · ") || "none"}</p>
+        <table class="p-table"><thead><tr><th>Benefit</th><th>Tier</th><th class="num">Qty</th><th>Unit</th><th>Ends / due</th><th>Status</th></tr></thead><tbody>
+        ${(ent.entitlements || []).map(e => `<tr><td>${esc(e.benefit)}</td><td>${esc(e.tier || "—")}</td><td class="num">${e.qty}</td><td>${esc(e.unit || "—")}</td><td>${esc(e.ends || "—")}</td><td><span class="badge ${e.status === "active" ? "published" : "draft"}">${esc(e.status)}</span></td></tr>`).join("") || '<tr><td colspan="6">No entitlements for this subject.</td></tr>'}
+        </tbody></table>`;
+    } catch (e) { box.innerHTML = '<p class="p-tag">⚠️ ' + esc(e.message) + "</p>"; }
+  };
+}
 async function vOffers() {
   const meta = await api("/meta");
   const [off, cp, an] = await Promise.all([api("/offers"), api("/offers/coupons"), api("/offers/analytics")]);
@@ -699,6 +790,7 @@ async function render() {
     else if (view === "sso") { body.innerHTML = await vSso(); wireSso(); }
     else if (view === "team") { body.innerHTML = await vTeam(); wireTeam(); }
     else if (view === "promotions") { body.innerHTML = await vOffers(); wireOffers(); }
+    else if (view === "goip") { body.innerHTML = await vGoip(); wireGoip(); }
     else if (view === "content") body.innerHTML = await entityTable("banner") + await entityTable("card") + await entityTable("department");
     else if (view === "taxonomy") body.innerHTML = await entityTable("taxonomy");
     else if (view === "attributes") body.innerHTML = await entityTable("attribute");

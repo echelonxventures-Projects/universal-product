@@ -285,6 +285,14 @@ One discount engine powers cart, checkout, billing and AI — everything is conf
   wallet balance is applied at checkout automatically.
 - New types / scopes / channels / funders are edited in **Data Studio** (`offerTypes`,
   `offerScopes`, …) — no code.
+- This builder is the classic surface over **GOIP Ω∞** (Part E5b): every save goes through the one
+  value-exchange writer, so an offer created here is a full constitutional record — it can carry a
+  reality, a calendar, a spatial scope, an economic unit, declared conditions, distribution channels,
+  a multi-party funding split and a governance state, and it settles like any other exchange. Your
+  store can call the same 22 capabilities at `POST /api/goip/<capability>` once the GOIP module is
+  installed. The **Ω∞ GOIP** tab next door is where you test it: a decision tester that answers *what
+  applies, what does not and why*, the exchanges this store owns and inherits, a subject lookup for
+  entitlements and non-money balances, this store's funding budgets, and the capability list it may call.
 
 **Enforced end-to-end (not just preview):**
 - **Refund clawback** — refunding a payment (or marking a return *refunded*) voids the coupon/offer
@@ -408,6 +416,7 @@ of a store."
 | **🧾 Invoices** | Platform billing to stores |
 | **🧩 Module Marketplace** | Sell/enable add‑ons and install them on stores (audited) |
 | **🔌 Provider Registry** | The global catalogue of payment/shipping/notification/tax providers + custom manifests |
+| **Ω∞ GOIP · Value Exchange** | The Global Offer Infrastructure Platform control plane — constitution, 22 capabilities, 67 domains, every registry, funding → settlement → payout, attribution, intelligence, commercialization (see **E5b**) |
 | **📈 Monitoring** | Fleet‑wide traffic & health |
 | **📜 Global Audit** | Cross‑store, tamper‑evident log |
 
@@ -446,6 +455,76 @@ Wallet, Recommendation Engine, Identity Pro, Billing Pro, catalog "packs").
 3. **Configure** an installed module's options, or **Uninstall** to remove it.
 > Every install/uninstall/configure is written to the **Global Audit** trail (with the acting
 > admin and IP). After changes, the storefront updates immediately.
+
+## E5b. Ω∞ GOIP — the Global Offer Infrastructure Platform
+
+This screen replaces the old *Global Offers* page. It is not a coupon editor: it is the control plane for
+**every** incentive, offer, promotion, benefit, entitlement, subsidy, commission, loyalty construct or
+future value-exchange model the platform can express — across any industry, organization, country,
+planet, economy, calendar, governance model or reality, without redesign.
+
+**What a value exchange is.** One record that walks one chain: *value exchange → context → conditions →
+eligibility → benefit → execution → settlement → audit*. A "10% coupon", a bank cashback, a government
+subsidy, a creator commission, a membership upgrade and a Mars-colony credit are the same record with
+different registry values.
+
+**The nine surfaces**
+
+| Tab | What you do there |
+|---|---|
+| **Ω Constitution** | The 8-stage chain, the zero-gap scorecard (capabilities bound, domains with distinct owners, benefits with math), and the experience/access fabrics with what each is bound to |
+| **⚡ Capabilities** | All 22 capabilities with stage, engine, the store each writes and the meter each bills — plus a live console that invokes any of them with a JSON body |
+| **🌐 67 Domains** | Every constitutional domain, its owning store, the exact discriminator that isolates its rows (this is what makes overlap impossible), and live record counts |
+| **💠 Value Exchanges** | Publish a *global* exchange every store inherits — choosing benefit, domain, funder, economic unit, reality, calendar, place prefix, distribution channels, declared conditions, multi-party funding split and governance state — then publish / suspend / version it |
+| **📚 Registries** | Calendars, chronologies, temporal units, spatial systems, coordinate systems, hierarchy paths, economic units, reality models and every fabric — all editable in **Data Studio → Registries** |
+| **🏦 Funding · Settlement** | Allocate budgets per funder/unit/domain, watch burn, run the settlement, approve, pay out with a reference, reconcile against a bank statement |
+| **🔗 Attribution · Graph** | Touchpoints captured from any surface; replay a subject's path through any attribution model to split revenue and commission; the 21-node / 14-relationship incentive graph |
+| **🧠 Intelligence** | 15 readings over live data — deal, offer, price, audience, merchant, provider, partner, fraud, optimization, forecast, recommendation, AI offer/incentive generation, autonomous campaign and optimization |
+| **💳 Commercialization** | 11 deployment models, 12 billing models with their live metered quantities and accrued charges, and which stores have purchased GOIP |
+
+**Governing an exchange.** Lifecycle is a state machine: `draft → submitted → approved → certified →
+published → suspended → retired`. Illegal jumps are refused. *Version* forks a draft that inherits the
+public code only when it is published — at which point it supersedes and retires the version it replaced,
+so a code is never live on two records at once.
+
+**Settlement is exactly-once.** Every redeemed-but-unsettled redemption is attributed to its funding
+parties (including multi-party splits) once and stamped; re-running the settlement settles nothing twice.
+Refunding an order recovers the accrual and revokes entitlements granted by it.
+
+**Selling it.** GOIP is a marketplace module (**Value Exchange** category). Every capability call meters
+into the billing engine and appears on the store's next invoice; stores without the module are metered at
+zero. Agent and MCP callers buy `goip-agent` and speak the same 22 capabilities.
+
+**Test it in five minutes** (everything below ships seeded on first boot):
+
+1. **Platform → Ω∞ GOIP → Value Exchanges.** Seven global exchanges are already published. Note their
+   contexts: one is priced in Mars Credits and scoped to Olympus Territory, one is restricted to Bihar,
+   one is funded 70/30 by a bank and a brand.
+2. **Store console → Ω∞ GOIP → Decision tester.** Enter amount `200`, code `GOIPSOL`, leave the place
+   empty → **0**, with the reasons printed: wrong calendar, wrong spatial system, wrong economic unit.
+   Set place to `mars.olympus.sector-7` and unit to `MARS_CREDIT` → **30**, and the context line shows
+   the Darian calendar, which nobody typed: the place resolved its own temporal authority.
+3. Try `GOIPGOV` with place `earth.in.bihar.patna` (→ 25) and then `earth.us` (→ 0, jurisdiction).
+4. Try `GOIPWELCOME` with subject `t1:u:999` (no orders → 10%) and then with a subject that has orders
+   (→ refused by the declared condition, not by a hardcoded flag).
+5. **Storefront → The Edit (`/deals.html`).** The offer strip lists what is available on the in-app
+   channel; clicking a code tracks a touchpoint and applies it to the cart. Check out to see the
+   benefit land, then look at **Store console → Ω∞ GOIP → Subject lookup** for the wallet, the POINT
+   balance and any entitlement granted.
+6. **Platform → Ω∞ GOIP → Funding · Settlement.** Press **Run settlement**: redemptions attribute to
+   their funding parties (the bank and the brand split 70/30; a points liability settles in POINT, not
+   cash). **Pay** one, then **reconcile** it. Press **Run settlement** again — nothing double-counts.
+7. **Platform → Ω∞ GOIP → Attribution** (replay a subject's path through any model), **Intelligence**
+   (15 live readings), and **Commercialization** (the meters your capability calls just billed).
+8. **Capabilities tab → capability console.** Invoke any of the 22 verbs with a JSON body and read the
+   raw response — this is exactly what an SDK, an agent or a partner system sees.
+
+**For developers.** One entry point — `POST /api/goip/<capability>` — plus read surfaces
+`GET /api/goip` (the machine-readable constitution), `/api/goip/exchanges`, `/api/goip/context`,
+`/api/goip/treasury`, `/api/goip/settlements`, `/api/goip/entitlements`, `/api/goip/touchpoints`,
+`/api/goip/registry/<name>`, `/api/goip/intelligence/<key>`, `/api/goip/feed/<channel>` and
+`/api/goip/widget` (embeddable). Access follows each capability's scope: `any` (a shopper session),
+`tenant` (store admin) or `platform` (this console).
 
 ## E6. Watch & prove (Monitoring, Global Audit, Security)
 - **Monitoring** — fleet traffic, latency and errors per store.

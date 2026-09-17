@@ -14,7 +14,7 @@ The complete **pictorial flow** of the whole platform — three planes, the 10�
 npm start                    # http://localhost:3000
 PORT=8787 ./serve.sh         # supervised (auto-restart), writes .luxora.pid
 ./stop.sh                    # clean stop
-npm test                     # syntax + 191-assertion jsdom E2E suite (own DB/port)
+npm test                     # syntax + 421-assertion jsdom E2E suite (+197-check GOIP conformance audit) (own DB/port)
 ```
 
 Env: `PORT`, `LX_DB` (db path), `LUX_TLS=1` (HTTPS; self-signed generated via openssl, or supply `LUX_TLS_KEY`/`LUX_TLS_CERT`), `LUXORA_MASTER_KEY`, `LUXORA_PEPPER`, `LUXORA_DEMO_HINT=0`, `LX_OFFLINE=1` (force all outbound payments/notifications/AI to the offline-simulated path — CI/no-secrets), seed overrides `PLATFORM_EMAIL/PLATFORM_PASSWORD/ADMIN_EMAIL/ADMIN_PASSWORD/DEMO_PASSWORD`.
@@ -27,7 +27,7 @@ Runtime backends are **config**, not code — default to in-process (SQLite + me
 |---|---|
 | `/` | Storefront (per tenant). `?store=<slug>` or subdomain `<slug>.localhost` switches |
 | `/admin.html` | **Store console**: dashboard, catalog+full product editor, SKUs/inventory, orders, returns, RFQs, sellers, settlements, **contracts & tenders (B2B)**, suppliers & **serialized items**, **compliance & certs**, **localizations (i18n)**, **AI Studio**, promotions, content, taxonomy, attributes, payments, settings, analytics, audit, monitor, Data Studio, **Team & Roles (RBAC staff roles)** |
-| `/platform.html` | **Platform console**: provisioning policy, stores (launch wizard: owner, jurisdiction, taxation, categories, gateways, plan), Geo (countries/currencies/tax modes/providers+availability), plans, subscriptions, invoices, provider registry, **AI providers & plans (product + billing)**, monitoring, global audit |
+| `/platform.html` | **Platform console**: provisioning policy, stores (launch wizard: owner, jurisdiction, taxation, categories, gateways, plan), Geo (countries/currencies/tax modes/providers+availability), plans, subscriptions, invoices, provider registry, **AI providers & plans (product + billing)**, **Ω∞ GOIP — the value-exchange control plane**, monitoring, global audit |
 
 Seed accounts (env-overridable; hints auto-hide when passwords change): platform `platform@luxora.shop/platform123` · store admins `admin@luxora.shop/admin123`, `admin@aurum.shop/aurum123` (INR/GST/Razorpay/UPI/Delhivery), `admin@velora.shop/velora123` (AED/VAT/Tabby, brand mode) · customer `demo@luxora.shop/demo123`.
 
@@ -38,6 +38,34 @@ Seed accounts (env-overridable; hints auto-hide when passwords change): platform
 **Deployment modes per tenant** (marketplace / industry / brand) — same backend, different configuration. Three stores ship seeded to demonstrate all three.
 
 **Entity engine**: every table is a declared entity (fields, types, validation, permissions, composite keys, universal UUIDs via SQLite triggers). Define *new entities* in Data Studio or via `POST /api/meta/entity-def` — CRUD, validation, audit, and forms appear automatically. Custom providers register as JSON manifests, no code.
+
+## GOIP Ω∞ — Global Offer Infrastructure Platform
+
+The platform's incentive layer is not a coupon feature; it is a **constitution**. `GET /api/goip` returns it, and the platform console's **Ω∞ GOIP** screen renders it live.
+
+One record — a **value exchange** — walks one chain: **value exchange → context → conditions → eligibility → benefit → execution → settlement → audit**. Everything a business calls a coupon, cashback, reward, gift card, voucher, discount, subsidy, commission, membership, tier, grant, entitlement or future economic instrument is an *instance* of that record.
+
+**Consumers speak 22 capabilities and nothing else** — `create · clone · publish · discover · search · compare · validate · reserve · activate · issue · track · attribute · apply · redeem · settle · fund · pay · optimize · forecast · simulate · govern · audit` — through one entry point: `POST /api/goip/<capability>`. They never learn the words coupon, cashback or gift card. Each capability declares its stage, its engine, the single store it writes, the meter it bills, and its scope (`any` shopper session · `tenant` store admin · `platform` super admin).
+
+| Layer | What it is | Count |
+|---|---|---|
+| Constitution | the 8-stage chain every exchange walks | 8 |
+| Capability layer | the only vocabulary a consumer needs | 22 |
+| Decision fabric | engines with exactly one job each (context resolution, eligibility, qualification, decision, discovery, benefit resolution, conflict, stacking, ranking, optimization, recommendation, personalization, pricing, simulation, forecasting, fraud, risk, governance) | 18 |
+| Context fabric | dimensions resolved on **every** decision (reality, temporal, spatial, economic, governance, audience, identity, behavioural, product, catalog, cart, session, device, market, inventory, risk, organization, merchant, provider, partner, creator, channel, event, campaign, AI) | 25 |
+| Domain ecosystem | constitutional domains, each with one owner store and one discriminator | 67 |
+| Benefit fabric | value constructs, each bound to the single math engine in `lib/offers.js` | 25 |
+| Distribution · attribution · funding · settlement · intelligence · governance | the operating fabrics | 16 · 12 · 12 · 11 · 15 · 10 |
+| Incentive graph | node kinds · relationships, projected onto the existing `links` table | 21 · 14 |
+| Commercialization | deployment models · billing models · meters | 11 · 12 · 17 |
+
+**Nothing about time, place or money is assumed.** Calendars (Gregorian, fiscal, academic, Islamic, Hebrew, lunar, **Mars Darian**, Federation, custom planetary), chronologies, temporal units, spatial systems (Earth administrative, Mars territorial, lunar colonial, galactic zonal, virtual), coordinate systems, hierarchy paths (`earth.in.bihar.patna`, `mars.olympus.sector-7`, `moon.alpha`, `galaxy-7.zone-22`), economic units (USD/EUR/INR, Mars credits, lunar tokens, federation credits, carbon/energy/resource units, points, coins, tokens) and reality models are **registry rows in `meta_lists`** — add a planet, a calendar, a currency or an entire civilization in Data Studio and every engine obeys it on the next request. No redesign, no redeploy.
+
+**Zero duplicate · zero overlap by construction.** GOIP owns only what had no home: the constitution, context resolution, the temporal/spatial/economic/reality domains, the condition engine, attribution, funding budgets, settlement runs, entitlements, intelligence, governance state and commercialization — four tables (`goip_touchpoints`, `goip_budgets`, `goip_settlements`, `goip_entitlements`). Benefit math stays in `offers.HANDLERS` (GOIP registers its 25 benefits there rather than forking it), money stays in `wallets`/`wallet_entries`, codes stay in `coupons`, the redemption ledger stays in `coupon_redemptions`, metering stays in `billing.js` → `usage_records`, the graph stays in `links`, registries stay in `meta_lists`, audit stays on the hash chain. Every domain names the exact discriminator that isolates its rows — `GET /api/goip` reports `domains.overlapping: 0` and fails loudly if that ever stops being true.
+
+**Ships wired and testable.** First boot seeds seven global value exchanges that exercise every axis — `GOIPWELCOME` (condition-gated), `GOIPBANK` (multi-party funded 70/30 bank+brand), `GOIPSOL` (Mars Credits, Olympus Territory, Darian calendar), `GOIPGOV` (state subsidy, jurisdiction-restricted), `GOIPPOINTS` (points ledger), `GOIPGOLD` (entitlement grant), `GOIPDEFER` (deferred value) — plus funding budgets in two economic units and a touchpoint path. None of them auto-applies to a cart. The flagship store ships with the module installed; the platform console's **Ω∞ GOIP** screen, the store console's **Ω∞ GOIP** screen (with a decision tester that shows *why* something did not apply) and the storefront's offer strip on `/deals.html` are all live against it.
+
+**Sellable and billable.** GOIP is a marketplace module (`goip`, plus `goip-agent` for agent/MCP access). Every capability invocation meters into the billing engine — per tenant, merchant, provider, offer, redemption, settlement, payout, API call, active user, campaign, revenue share or hybrid — and rides the existing invoice run. Stores without the module are metered at zero.
 
 ## The 10-layer security stack (`GET /api/platform/security` for the live scorecard)
 
@@ -66,7 +94,10 @@ lib/entity.js        entity engine (23 entities incl. country, currency, provide
 lib/registry.js      live registries (geo, currencies+FX, tax modes, providers, availability, meta lists)
 lib/meta.js          seed definitions (industries, types, verticals, contexts, lifecycle)
 lib/providers.js     seed definitions (countries, providers, currencies) — data, editable post-seed
-lib/api.js           ~110 REST routes; lib/uid.js UUID triggers; lib/metrics.js live traffic
+lib/goip.js          GOIP Ω∞ — the value-exchange constitution: capability router, context/
+                     temporal/spatial/economic/reality domains, 67-domain map, fabrics, graph
+lib/offers.js        the ONE benefit-math engine GOIP resolves benefits through
+lib/api.js           ~125 REST routes (incl. /api/goip/*); lib/uid.js UUID triggers; lib/metrics.js live traffic
 public/              storefront + store console + platform console (no frameworks, no CDN)
 data/                luxora.db + master.json (created at first boot)
 ```
