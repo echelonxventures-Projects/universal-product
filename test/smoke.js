@@ -196,6 +196,8 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(page.errs.length === 0, "platform no JS errors", page.errs.slice(0, 2).join("|"));
 
     console.log("▸ PLATFORM: launch store → billing → invoice collect");
+    // re-establish a clean platform session (the jsdom render above rotates azs/azc)
+    jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
     const created = await f("/api/platform/tenants", "POST", { name: "TEST CO", slug: "testco", mode: "marketplace", industries: [], adminEmail: "admin@test.co", adminPassword: "test1234", seedCatalog: false });
     ok(created.tenant && created.tenant.slug === "testco", "store launched");
     const invGen = await f(`/api/platform/tenants/${created.tenant.id}/invoice`, "POST", {});
@@ -1265,6 +1267,30 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(rc.status === 200 && rc.body.batch.unmatched >= 1, "reconciliation flags unmatched bank lines", rc.body.batch);
       const led = await A("/api/admin/fin/ledger?owner=t1:s:demo");
       ok(Array.isArray(led.body.entries), "FX ledger returns entries", led.body);
+    }
+
+    console.log("▸ MARKETPLACE (ads · GSP bid · attribution · seller KPI · take-rate settle)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const s1 = await A("/api/session?store=luxora"); // anonymous customer jar for events
+      const ad = await A("/api/admin/marketplace/ads", "POST", { seller_id: 1, name: "Hero Search Ad", bid_model: "cpc", bid_amount: 0.35, budget: 100, target: { surface: "search" } });
+      ok(ad.status === 200 && ad.body.ad.id, "create CPC ad", ad.body);
+      const ad2 = await A("/api/admin/marketplace/ads", "POST", { seller_id: 1, name: "CPM Brand Ad", bid_model: "cpm", bid_amount: 8, budget: 50, target: { surface: "search" } });
+      ok(ad2.status === 200, "create CPM ad", ad2.body);
+      const rank = await A("/api/marketplace/rank?surface=search&slots=3");
+      ok(rank.status === 200 && rank.body.ranked.length >= 2 && rank.body.ranked[0].position === 1, "GSP ranks ads by score", rank.body.ranked);
+      ok(rank.body.ranked.every(r => r.charge >= 0), "GSP charges respect next-bidder price", rank.body.ranked);
+      const ev = await A("/api/marketplace/ads/" + ad.body.ad.id + "/event", "POST", { kind: "click", ref: "order:2" });
+      ok(ev.status === 200, "click event logged", ev.body);
+      const attr = await A("/api/admin/marketplace/attribute", "POST", { order_id: 2, revenue: 547.62, model: "last_click" });
+      ok(attr.status === 200 && attr.body.attribution, "attribution resolves click → ad", attr.body);
+      const met = await A("/api/admin/marketplace/metrics?seller=1&period=" + new Date().toISOString().slice(0, 7));
+      ok(met.status === 200 && met.body.sellers[0].orders >= 0 && typeof met.body.sellers[0].ad_roi === "number", "seller KPIs computed", met.body);
+      const st = await A("/api/admin/marketplace/settle", "POST", { seller_id: 1, period: new Date().toISOString().slice(0, 7) });
+      ok(st.status === 200 && st.body.payout && st.body.metrics, "take-rate settlement opens a payout run", st.body);
+      const adsList = await A("/api/marketplace/ads?status=active");
+      ok(adsList.body.ads.length >= 2, "ads list returns active ads", adsList.body);
     }
   } catch (e) {
     console.error("TEST CRASH:", e);

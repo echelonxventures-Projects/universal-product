@@ -33,7 +33,7 @@ const NAV = [
   ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["sellers", "🏪 Sellers"], ["settlements", "🤝 Settlements"],
   ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["suppliers", "🚚 Suppliers & Procurement"], ["serialized", "🔢 Serialized Items"], ["compliance", "✅ Compliance & Certs"], ["localizations", "🌐 Localizations"],
   ["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"], ["trash", "🗑️ Trash & Retention"], ["sso", "🔐 SSO & Integrations"],
-  ["promotions", "💸 Offers & Coupons"], ["goip", "Ω∞ GOIP"],   ["search", "🔎 Search & Discovery"],   ["logistics", "🚚 Logistics & Fulfilment"], ["finance", "💰 Finance & Settlements"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
+  ["promotions", "💸 Offers & Coupons"], ["goip", "Ω∞ GOIP"],   ["search", "🔎 Search & Discovery"],   ["logistics", "🚚 Logistics & Fulfilment"],   ["finance", "💰 Finance & Settlements"], ["marketplace", "📣 Marketplace & Ads"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
   ["payments", "💳 Payment Gateways"], ["modules", "🧩 Modules"], ["settings", "⚙️ Settings"], ["billing", "🧮 Billing"], ["analytics", "📊 Analytics"], ["audit", "📜 Audit Trail"],
   ["monitor", "📈 Monitor"], ["team", "👥 Team & Roles"], ["studio", "🛠️ Data Studio"]
 ];
@@ -93,6 +93,24 @@ async function vFinance() {
   <div class="a-card"><h3>FX ledger · <code>t1:s:demo</code></h3>
     <div class="a-tablewrap"><table class="a-table"><thead><tr><th>kind</th><th>amount</th><th>currency</th><th>balance_after</th></tr></thead>
       <tbody>${(led.entries || []).slice(0, 10).map(e => `<tr><td>${esc(e.kind)}</td><td>${money(e.amount)}</td><td>${esc(e.currency)}</td><td>${money(e.balance_after)}</td></tr>`).join("") || '<tr><td colspan="4">—</td></tr>'}</tbody></table></div>
+  </div>`;
+}
+async function vMarketplace() {
+  const [ads, m, rank] = await Promise.all([api("/marketplace/ads", {}), api("/admin/marketplace/metrics", {}), api("/marketplace/rank", { surface: "search", slots: 3 })]);
+  const byM = {}; (ads.ads || []).forEach(a => byM[a.bid_model] = (byM[a.bid_model] || 0) + 1);
+  return `<div class="a-head"><h2>📣 Marketplace &amp; Ads</h2><p class="a-sub">Ad inventory · GSP bidding · impression/click ledger · last-click attribution · seller KPIs · take-rate settlement. Bid models / attribution models / surfaces in Data Studio: <code>mktBidModels</code>, <code>mktAttribution</code>, <code>mktSurfaces</code>.</p></div>
+  <div class="a-card"><h3>Ad inventory</h3>
+    <p class="a-sub">${Object.entries(byM).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("") || "no active ads"}</p>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>name</th><th>seller</th><th>model</th><th>bid</th><th>spent</th><th>status</th></tr></thead>
+      <tbody>${(ads.ads || []).slice(0, 15).map(a => `<tr><td>${esc(a.name)}</td><td>${a.seller_id || "—"}</td><td><span class="a-chip">${esc(a.bid_model)}</span></td><td>${money(a.bid_amount)}</td><td>${money(a.spent)}</td><td><span class="a-chip">${esc(a.status)}</span></td></tr>`).join("") || '<tr><td colspan="6">No ads yet.</td></tr>'}</tbody></table></div>
+  </div>
+  <div class="a-card"><h3>Ad auction · surface <code>search</code> (top 3, GSP)</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>position</th><th>ad</th><th>seller</th><th>charge</th></tr></thead>
+      <tbody>${(rank.ranked || []).map(r => `<tr><td>${r.position}</td><td>${esc(r.name)} <code>${r.ad}</code></td><td>${r.seller || "—"}</td><td>${money(r.charge)}</td></tr>`).join("") || '<tr><td colspan="4">No active bids.</td></tr>'}</tbody></table></div>
+  </div>
+  <div class="a-card"><h3>Seller KPIs</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>seller</th><th>orders</th><th>revenue</th><th>take rate</th><th>commission</th><th>ad spend</th><th>ad ROI</th></tr></thead>
+      <tbody>${(m.sellers || []).map(x => `<tr><td>${esc(x.seller_id)}</td><td>${x.orders}</td><td>${money(x.revenue)}</td><td>${(x.take_rate*100).toFixed(0)}%</td><td>${money(x.commission)}</td><td>${money(x.ads_spend)}</td><td>${x.ad_roi}</td></tr>`).join("") || '<tr><td colspan="7">No seller data yet.</td></tr>'}</tbody></table></div>
   </div>`;
 }
 function shell(content) {
@@ -852,6 +870,7 @@ async function render() {
     else if (view === "billing") body.innerHTML = await vBilling();
     else if (view === "modules") { body.innerHTML = await vModules(); }
     else if (view === "audit") { body.innerHTML = await vAudit(); wireAudit(); }
+    else if (view === "marketplace") body.innerHTML = await vMarketplace();
     else if (view === "finance") body.innerHTML = await vFinance();
     else if (view === "logistics") body.innerHTML = await vLogistics();
     else if (view === "search") body.innerHTML = await vSearch();
