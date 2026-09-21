@@ -9,6 +9,7 @@ Authority: Violation 4, MASTER-EXECUTION-ADMISSION-MATRIX.md, Phase 1B authoriza
 from __future__ import annotations
 
 import json
+import re
 import tempfile
 from pathlib import Path
 from platform.repository_intelligence.mutation_class_extension import (
@@ -19,6 +20,44 @@ from platform.repository_intelligence.mutation_class_extension import (
 )
 
 import pytest
+
+#: The boundary register is the source of truth for the class set and the rule order. These
+#: tests read it rather than restating it, because a test that asserts a module's own
+#: literals back to itself cannot see the module drift away from the register -- which is
+#: exactly what happened here: the module carried precedence 9 and the narrow criteria
+#: against the register's 8 and the widened ones, and fourteen passing tests never noticed.
+BOUNDARY_REGISTER = Path("00-BOOK/DATA/mutation-governance-boundary.json")
+
+
+def _boundary() -> dict:
+    """The declared boundary register, read from the repository root."""
+    return json.loads(BOUNDARY_REGISTER.read_text(encoding="utf-8"))
+
+
+def _declared_class(name: str) -> dict:
+    """The register's own entry for a mutation class."""
+    return next(c for c in _boundary()["mutation_classes"] if c["class"] == name)
+
+
+def _declared_rule(class_name: str) -> dict:
+    """The register's own classification rule for a mutation class."""
+    rules = _boundary()["classification_rules"]["rules"]
+    return next(r for r in rules if r["class"] == class_name)
+
+
+def _analysis_keywords() -> tuple[str, ...]:
+    """The analysis-artifact keywords the register declares, read from the criterion itself."""
+    criteria = _declared_class("GOVERNED_ANALYSIS")["membership_criteria"]
+    criterion = next(c for c in criteria if c.startswith("analysis-artifact"))
+    run = re.search(r"((?:[a-z]+/)+[a-z]+)", criterion)
+    assert run, f"no keyword run found in the declared criterion: {criterion!r}"
+    return tuple(run.group(1).split("/"))
+
+
+def _authored_document_precedence() -> int:
+    """R-08's precedence, so the ordering can be asserted as an ordering."""
+    return int(_declared_rule("AUTHORED_DOCUMENT")["precedence"])
+
 
 # -----------------------------------------------------------------------------
 # Violation 4 Test 1: GOVERNED_ANALYSIS Class Definition
@@ -45,19 +84,25 @@ def test_violation_4_governed_analysis_class_structure() -> None:
     assert len(GOVERNED_ANALYSIS_CLASS["membership_criteria"]) == 6
     assert "markdown — the path ends .md" in GOVERNED_ANALYSIS_CLASS["membership_criteria"]
     analysis_criterion = (
-        "analysis-artifact — carries determination/analysis/assessment in "
-        "filename or declares analysis type"
+        "analysis-artifact — carries determination/analysis/assessment/execution/"
+        "matrix/readiness/admission/blocker/gap in filename"
     )
     assert analysis_criterion in GOVERNED_ANALYSIS_CLASS["membership_criteria"]
 
-    # Validate: examples are analysis artifacts
+    # Validate: every example is an analysis artifact under the register's OWN keywords.
+    # The keywords are read from the declared criterion rather than restated here: the
+    # earlier form of this test restated five of them, so widening the register to nine
+    # left the test asserting the narrow set, and an example the register itself declares
+    # -- 100-PERCENT-IMPLEMENTATION-READINESS-CERTIFICATION.md -- failed a test that was
+    # supposed to be describing the register.
     examples = GOVERNED_ANALYSIS_CLASS["examples"]
     assert len(examples) > 0
+    keywords = _analysis_keywords()
+    assert len(keywords) >= 5, f"the register declares too few analysis keywords: {keywords}"
     for example in examples:
         assert any(
-            keyword in example.lower()
-            for keyword in ["determination", "analysis", "assessment", "execution", "matrix"]
-        )
+            keyword in example.lower() for keyword in keywords
+        ), f"{example!r} matches none of the register's analysis keywords {keywords}"
 
     # Validate: grants only mutation ownership
     assert "grants_only_mutation_ownership" in GOVERNED_ANALYSIS_CLASS
@@ -74,7 +119,7 @@ def test_violation_4_governed_analysis_rule_structure() -> None:
     """
     # Validate: rule structure
     assert GOVERNED_ANALYSIS_RULE["id"] == "R-09"
-    assert GOVERNED_ANALYSIS_RULE["precedence"] == 9
+    assert GOVERNED_ANALYSIS_RULE["precedence"] == 8
     assert GOVERNED_ANALYSIS_RULE["class"] == "GOVERNED_ANALYSIS"
     assert "predicate" in GOVERNED_ANALYSIS_RULE
 
@@ -297,7 +342,8 @@ def test_violation_4_governed_analysis_vs_authored_document_distinction() -> Non
     Validates:
     - GOVERNED_ANALYSIS has distinct membership criteria from AUTHORED_DOCUMENT
     - Analysis artifacts (determinations) vs general documents (ADRs)
-    - R-09 precedence > R-08 (GOVERNED_ANALYSIS evaluated before AUTHORED_DOCUMENT)
+    - R-09 precedence < R-08 (GOVERNED_ANALYSIS evaluated before AUTHORED_DOCUMENT,
+      because first-matching-rule order is ASCENDING: a lower number is decided earlier)
     """
     # Validate: GOVERNED_ANALYSIS has analysis-specific criterion
     criteria = GOVERNED_ANALYSIS_CLASS["membership_criteria"]
@@ -306,9 +352,13 @@ def test_violation_4_governed_analysis_vs_authored_document_distinction() -> Non
     )
     assert analysis_criterion is not None
 
-    # Validate: R-09 precedence (9) > R-08 precedence (8)
-    # Analysis artifacts should be classified as GOVERNED_ANALYSIS, not AUTHORED_DOCUMENT
-    assert GOVERNED_ANALYSIS_RULE["precedence"] == 9
+    # Validate: R-09 precedence (8) < R-08 precedence (9), so GOVERNED_ANALYSIS is decided
+    # first. Asserting the inequality rather than the literal is the point: it is the
+    # ORDER that carries the meaning, and the earlier form of this test asserted 9 on the
+    # belief that a higher number wins, which is the inverted reading that let every
+    # determination fall to AUTHORED_DOCUMENT.
+    assert GOVERNED_ANALYSIS_RULE["precedence"] == 8
+    assert GOVERNED_ANALYSIS_RULE["precedence"] < _authored_document_precedence()
 
     # Validate: examples are analysis artifacts (not ADRs/constitutions)
     examples = GOVERNED_ANALYSIS_CLASS["examples"]
@@ -330,7 +380,7 @@ def test_violation_4_certification_checklist() -> None:
 
     ✅ GOVERNED_ANALYSIS class defined (9th mutation class)
     ✅ Class structure valid (governed_by, membership_criteria, examples)
-    ✅ R-09 rule defined (precedence 9, decidable predicate)
+    ✅ R-09 rule defined (precedence 8, decidable predicate)
     ✅ Boundary extension operational (add class + rule, version increment)
     ✅ Duplicate prevention (raises ValueError on duplicate class)
     ✅ Extensibility mechanism specified (DYNAMIC_CLASS_REGISTRATION)
@@ -357,7 +407,7 @@ def test_violation_4_certification_checklist() -> None:
 
     # VIOLATION 4 CERTIFICATION: All validation evidence satisfied
     # - GOVERNED_ANALYSIS class: DEFINED (9th mutation class)
-    # - R-09 rule: DEFINED (precedence 9, decidable predicate)
+    # - R-09 rule: DEFINED (precedence 8, decidable predicate)
     # - Boundary extension: OPERATIONAL (add class + rule, version increment)
     # - Duplicate prevention: OPERATIONAL (ValueError on duplicate)
     # - Extensibility mechanism: SPECIFIED (DYNAMIC_CLASS_REGISTRATION)
@@ -480,3 +530,63 @@ def test_violation_4_extending_an_already_extended_register_is_refused(tmp_path:
     reloaded = json.loads(path.read_text(encoding="utf-8"))
     assert [cls["class"] for cls in reloaded["mutation_classes"]].count("GOVERNED_ANALYSIS") == 1
     assert reloaded["version"] == "2.4.4", "a refused extension must not bump the version"
+
+
+# -----------------------------------------------------------------------------
+# Violation 4 Drift Guard: the module may never disagree with the register
+# -----------------------------------------------------------------------------
+
+
+def test_violation_4_extension_constants_match_the_boundary_register() -> None:
+    """The module's copy of R-09 may never diverge from the register that governs it.
+
+    THIS IS THE TEST THAT WAS MISSING. Every other test in this file reads
+    GOVERNED_ANALYSIS_CLASS and GOVERNED_ANALYSIS_RULE and asserts their contents against
+    literals written beside them, so the module was free to disagree with
+    mutation-governance-boundary.json and did: precedence 9 against the register's 8, and a
+    narrower analysis-artifact criterion. Nothing consumed the module, so no gate could see
+    it, and the fourteen tests here passed throughout. This guard closes that by asserting
+    the agreement itself rather than either side's values.
+    """
+    declared_class = _declared_class("GOVERNED_ANALYSIS")
+    declared_rule = _declared_rule("GOVERNED_ANALYSIS")
+
+    # EVERY GOVERNED KEY, NOT A CHOSEN FEW. A hand-listed set of keys repeats the same
+    # failure one level up, because the key that drifts is the one nobody listed -- and
+    # "examples" was exactly that key, diverging by two entries while precedence was being
+    # argued over. Keys the register prefixes with "$" are its own commentary and carry no
+    # governed content, so they are the one exemption, stated here rather than assumed.
+    governed_class = {k: v for k, v in declared_class.items() if not k.startswith("$")}
+    assert governed_class, "the register declares no governed key for GOVERNED_ANALYSIS"
+    for key, declared in governed_class.items():
+        assert (
+            key in GOVERNED_ANALYSIS_CLASS
+        ), f"the register declares GOVERNED_ANALYSIS[{key!r}] and the module omits it"
+        assert (
+            GOVERNED_ANALYSIS_CLASS[key] == declared
+        ), f"GOVERNED_ANALYSIS_CLASS[{key!r}] disagrees with the boundary register"
+
+    governed_rule = {k: v for k, v in declared_rule.items() if not k.startswith("$")}
+    assert governed_rule, "the register declares no governed key for R-09"
+    for key, declared in governed_rule.items():
+        assert (
+            key in GOVERNED_ANALYSIS_RULE
+        ), f"the register declares R-09[{key!r}] and the module omits it"
+        assert (
+            GOVERNED_ANALYSIS_RULE[key] == declared
+        ), f"GOVERNED_ANALYSIS_RULE[{key!r}] disagrees with the boundary register"
+
+
+def test_violation_4_rule_order_is_ascending_and_total() -> None:
+    """First-matching-rule order requires a total order, and ascending is its direction.
+
+    The inverted reading of precedence is what made GOVERNED_ANALYSIS claim nothing, so the
+    direction is asserted here rather than assumed: the register's precedences are exactly
+    1..n with no duplicates, and GOVERNED_ANALYSIS sits ahead of AUTHORED_DOCUMENT.
+    """
+    rules = _boundary()["classification_rules"]["rules"]
+    precedences = sorted(int(r["precedence"]) for r in rules)
+    assert precedences == list(
+        range(1, len(rules) + 1)
+    ), f"precedence must be a total order 1..{len(rules)}, measured {precedences}"
+    assert _declared_rule("GOVERNED_ANALYSIS")["precedence"] < _authored_document_precedence()

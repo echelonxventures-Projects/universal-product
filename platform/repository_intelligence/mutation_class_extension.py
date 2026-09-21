@@ -25,6 +25,8 @@ GOVERNED_ANALYSIS_CLASS = {
         "*-ASSESSMENT-DETERMINATION.md",
         "PHASE-*-EXECUTION-COMPLETION-REPORT.md",
         "MASTER-EXECUTION-ADMISSION-MATRIX.md",
+        "BLOCKER-ELIMINATION-DETERMINATION.md",
+        "100-PERCENT-IMPLEMENTATION-READINESS-CERTIFICATION.md",
     ],
     "governed_by": (
         "the authority the analysis declares of itself (owner-parameterised, "
@@ -37,8 +39,8 @@ GOVERNED_ANALYSIS_CLASS = {
         "repository-controlled — tracked by version control",
         "non-generated — absent from generated-artifact-registry.json canonical_path",
         (
-            "analysis-artifact — carries determination/analysis/assessment in "
-            "filename or declares analysis type"
+            "analysis-artifact — carries determination/analysis/assessment/execution/"
+            "matrix/readiness/admission/blocker/gap in filename"
         ),
         "self-declared-authority — carries Authority field in opening metadata block",
     ],
@@ -63,7 +65,14 @@ GOVERNED_ANALYSIS_CLASS = {
 }
 
 GOVERNED_ANALYSIS_RULE = {
-    "precedence": 9,
+    # PRECEDENCE IS ASCENDING, AND THAT IS WHY THIS IS 8 AND NOT 9. The boundary register
+    # declares first-matching-rule order over precedence 1..9, so a LOWER number is
+    # evaluated EARLIER. GOVERNED_ANALYSIS must be decided before AUTHORED_DOCUMENT or
+    # every determination is swallowed by R-08 first -- the measured form of that error was
+    # GOVERNED_ANALYSIS claiming 0 of 6751 tracked paths. At 8, ahead of R-08's 9, it claims
+    # 209 of 7165. The register at 00-BOOK/DATA/mutation-governance-boundary.json is the
+    # source of truth for both values below; this module must never disagree with it.
+    "precedence": 8,
     "id": "R-09",
     "class": "GOVERNED_ANALYSIS",
     "predicate": (
@@ -160,7 +169,11 @@ def add_dynamic_class_extension_mechanism() -> dict[str, Any]:
                 "membership_criteria": "array[string] (predicates)",
                 "examples": "array[string] (example paths)",
                 "predicate": "string (decidable from repository state)",
-                "precedence": "integer (higher than existing rules)",
+                "precedence": (
+                    "integer, ascending = evaluated earlier (first-matching-rule order). "
+                    "A class that must be decided before an existing one takes a LOWER "
+                    "number than it, not a higher one"
+                ),
                 "rule_id": "string (R-10, R-11, ...)",
             },
             "loader": {
