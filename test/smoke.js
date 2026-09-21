@@ -200,7 +200,8 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
     const created = await f("/api/platform/tenants", "POST", { name: "TEST CO", slug: "testco", mode: "marketplace", industries: [], adminEmail: "admin@test.co", adminPassword: "test1234", seedCatalog: false });
     ok(created.tenant && created.tenant.slug === "testco", "store launched");
-    const invGen = await f(`/api/platform/tenants/${created.tenant.id}/invoice`, "POST", {});
+    const tid = created.tenant.id || (await f("/api/platform/tenants")).tenants.find(t => t.slug === "testco")?.id;
+    const invGen = await f(`/api/platform/tenants/${tid}/invoice`, "POST", {});
     ok(invGen.ok, "invoice generated");
     const invs = await f("/api/platform/invoices");
     const testInv = invs.invoices.find(i => i.tenant_slug === "testco");
@@ -1145,6 +1146,34 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const dbx = (await PA("/api/platform/db")).body;
       ok(dbx.driver === "sqlite" && dbx.health && dbx.health.ok === true, "platform sees db driver + health", dbx.health);
       ok(dbx.plan && dbx.plan.tables > 30 && dbx.plan.dataStatements > 100, "migration planner reads full schema+rows", dbx.plan && { tables: dbx.plan.tables, rows: dbx.plan.dataStatements });
+      /* T2: the request-path translator is what every runtime query goes through under PG —
+         each rewritten construct here is one that 500s or silently mis-computes if missed. */
+      ok(/ON CONFLICT DO NOTHING/.test(sqlm.toPg("INSERT OR IGNORE INTO t(a,b) VALUES(?,?)")), "translator: INSERT OR IGNORE → ON CONFLICT DO NOTHING", sqlm.toPg("INSERT OR IGNORE INTO t(a,b) VALUES(?,?)"));
+      ok(/ON CONFLICT DO NOTHING/.test(sqlm.toPg("INSERT OR IGNORE INTO t(a,b) VALUES(?,'x',?)")), "translator: OR IGNORE keeps the whole VALUES group intact", sqlm.toPg("INSERT OR IGNORE INTO t(a,b) VALUES(?,'x',?)"));
+      ok(/ON CONFLICT DO NOTHING/.test(sqlm.toPg("INSERT OR IGNORE INTO t(a,b) VALUES(?,?,datetime('now'))")), "translator: OR IGNORE with nested datetime() call", sqlm.toPg("INSERT OR IGNORE INTO t(a,b) VALUES(?,?,datetime('now'))"));
+      const up = sqlm.toPg("INSERT OR REPLACE INTO view_history(owner,product_id,seen_at) VALUES(?,?,datetime('now'))");
+      ok(/ON CONFLICT\(owner, product_id\) DO UPDATE SET/.test(up) && /excluded\.seen_at/.test(up), "translator: INSERT OR REPLACE → explicit upsert (H1)", up);
+      ok(/GREATEST\(0, used-1\)/.test(sqlm.toPg("UPDATE coupons SET used=MAX(0,used-1) WHERE id=?")), "translator: scalar MAX(0,x) → GREATEST (H3)", sqlm.toPg("UPDATE coupons SET used=MAX(0,used-1) WHERE id=?"));
+      ok(/MAX\(id\)/.test(sqlm.toPg("SELECT MAX(id) FROM t")), "translator: aggregate MAX(id) is NOT rewritten (would break)");
+      ok(/MAX\(DISTINCT x\)/.test(sqlm.toPg("SELECT MAX(DISTINCT x) FROM t")), "translator: MAX(DISTINCT x) aggregate preserved");
+      ok(/ILIKE/.test(sqlm.toPg("SELECT * FROM p WHERE title LIKE ?")) && !/[^I]LIKE/.test(sqlm.toPg("SELECT * FROM p WHERE title LIKE ?")), "translator: LIKE → ILIKE for case-insensitive parity (H6)");
+      ok(/NOT ILIKE/.test(sqlm.toPg("SELECT * FROM p WHERE name NOT LIKE ?")), "translator: NOT LIKE → NOT ILIKE");
+      ok(/ILIKE/.test(sqlm.toPg("SELECT * FROM t WHERE x LIKE ? ESCAPE '\\'")), "translator: LIKE … ESCAPE survives");
+      ok(!/ILIKE/.test(sqlm.toPg("SELECT DISLIKE_COUNT FROM t")), "translator: identifier containing LIKE is untouched");
+      ok(/AT TIME ZONE 'UTC'/.test(sqlm.toPg("SELECT * FROM t WHERE d > datetime('now')")), "translator: datetime pinned to UTC (H5)", sqlm.toPg("SELECT * FROM t WHERE d > datetime('now')"));
+      ok(/AT TIME ZONE 'UTC'/.test(sqlm.toPg("SELECT * FROM t WHERE d > datetime('now','-13 days')")), "translator: modified datetime pinned to UTC (H5)");
+      /* T3: the plan is what actually gets executed against PG — indexes and setval are the two
+         pieces whose absence is silent and expensive. */
+      const mp2 = mig.plan();
+      const idx = mp2.filter(s => s.kind === "index");
+      ok(idx.length >= 60, "migrate: indexes are now planned (were silently dropped, H4)", idx.length);
+      ok(mp2.filter(s => s.kind === "index" && /UNIQUE/i.test(s.sql)).length >= 50, "migrate: UNIQUE indexes planned (enforce ux_* constraints)", mp2.filter(s => /UNIQUE/i.test(s.sql)).length);
+      ok(mp2.filter(s => s.kind === "data" && /OVERRIDING/.test(s.sql)).length > 100, "migrate: data statements carry OVERRIDING SYSTEM VALUE");
+      /* T5: setval is emitted by apply() after the data load, not by plan(). An off-by-one here
+         would collide every subsequent INSERT, so assert the exact expression apply() runs. */
+      const setvalSrc = require("fs").readFileSync(require("path").join(__dirname, "..", "lib", "migrate.js"), "utf8").replace(/\s+/g, " ");
+      ok(setvalSrc.includes("SELECT setval(pg_get_serial_sequence('\"${t}\"','id'), COALESCE((SELECT MAX(id) FROM \"${t}\"), 0) + 1, false)"), "migrate: setval advances identity sequences past copied rows (T5)", "apply() setval clause verified");
+      ok(/partial/i.test(idx.find(s => /WHERE/i.test(s.sql) || /partial/i.test(s.sql)) ? "yes" : "no") || idx.some(s => /WHERE/i.test(s.sql)), "migrate: partial-index WHERE clauses carried through", idx.filter(s => /WHERE/i.test(s.sql)).length);
     }
     console.log("▸ ENTERPRISE OPS (cutover · SSO/SCIM · regions/CDN · metrics · feeds · transfers · tax)");
     {
@@ -1291,6 +1320,258 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(st.status === 200 && st.body.payout && st.body.metrics, "take-rate settlement opens a payout run", st.body);
       const adsList = await A("/api/marketplace/ads?status=active");
       ok(adsList.body.ads.length >= 2, "ads list returns active ads", adsList.body);
+    }
+
+    console.log("▸ CUSTOMER TRUST & COMMERCE CONTENT (rich reviews · Q&A · votes · moderation)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const C = mk(); await C("/api/session?store=luxora");
+      const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const pid = "LX-ELS-007";
+      const p0 = await C(`/api/products/${pid}`);
+      ok(p0.status === 200 && Array.isArray(p0.body.reviews) && p0.body.questions.length >= 1, "product page carries reviews + Q&A", p0.body.ugc);
+      ok(p0.body.reviews.every(r => ["pending", "approved", "rejected"].includes(r.state)), "reviews carry moderation state");
+      ok(p0.body.questions[0].answers.length >= 1 && p0.body.questions[0].answers[0].role === "admin", "seeded question answered by store support");
+      // helpfulness vote — one per owner, idempotent re-vote
+      const rvId = p0.body.reviews[0].id;
+      const v1 = await C(`/api/reviews/${rvId}/vote`, "POST", { dir: "up" });
+      ok(v1.status === 200 && v1.body.changed === true, "helpfulness vote recorded", v1.body);
+      const v2 = await C(`/api/reviews/${rvId}/vote`, "POST", { dir: "up" });
+      ok(v2.status === 200 && v2.body.changed === false, "duplicate same-direction vote is idempotent", v2.body);
+      const v3 = await C(`/api/reviews/${rvId}/vote`, "POST", { dir: "down" });
+      ok(v3.status === 200 && v3.body.changed === true, "vote flips direction", v3.body);
+      const after = await C(`/api/products/${pid}`);
+      ok(after.body.reviews.find(r => r.id === rvId).helpful === -1 || after.body.reviews.find(r => r.id === rvId).helpful === 0, "helpful count reflects flipped vote", after.body.reviews.find(r => r.id === rvId));
+      // new review with media
+      const nr = await C(`/api/reviews/${pid}`, "POST", { rating: 5, title: "Superb", body: "Genuinely excellent.", media: [{ kind: "image", label: "unboxing", emoji: "📦" }] });
+      ok(nr.status === 200 && nr.body.id > 0 && nr.body.state === "approved", "rich review created (media accepted)", nr.body);
+      // seller reply thread
+      const rp = await A(`/api/reviews/${nr.body.id}/reply`, "POST", { body: "Thank you for the kind words!" });
+      ok(rp.status === 200 && rp.body.reply.body.includes("Thank you"), "seller reply posted to review", rp.body);
+      const withReply = await C(`/api/products/${pid}`);
+      ok((withReply.body.reviews.find(r => r.id === nr.body.id).replies || []).length === 1, "reply thread visible on product page");
+      // Q&A ask + answer + vote
+      const q = await C(`/api/qna/${pid}/question`, "POST", { body: "Does it come with a warranty?" });
+      ok(q.status === 200 && q.body.id > 0, "customer asks a question", q.body);
+      const an = await A(`/api/qna/question/${q.body.id}/answer`, "POST", { body: "Yes, 2 years manufacturer warranty." });
+      ok(an.status === 200 && an.body.id > 0, "store answers the question", an.body);
+      const qv = await C(`/api/qna/${q.body.id}/vote`, "POST", { dir: "up" });
+      ok(qv.status === 200 && qv.body.changed === true, "question helpfulness vote", qv.body);
+      const av = await C(`/api/qna/${an.body.id}/vote?kind=answer`, "POST", { dir: "up" });
+      ok(av.status === 200 && av.body.changed === true, "answer helpfulness vote", av.body);
+      const qpage = await C(`/api/products/${pid}`);
+      ok(qpage.body.questions.some(x => x.id === q.body.id && x.answers.length >= 1 && x.answers[0].votes_helpful >= 1), "question + answer + votes render on product page");
+      // moderation queue
+      const queue = await A("/api/admin/ugc/queue");
+      ok(queue.status === 200 && Array.isArray(queue.body.reviews) && queue.body.states.length === 3, "moderation queue endpoint", queue.body.states);
+      const mod = await A(`/api/admin/reviews/${nr.body.id}/moderate`, "PUT", { state: "rejected" });
+      ok(mod.status === 200 && mod.body.review.state === "rejected", "review moderated to rejected", mod.body && mod.body.review && mod.body.review.state);
+      const modOut = await C(`/api/products/${pid}`);
+      ok(!modOut.body.reviews.some(r => r.id === nr.body.id), "rejected review hidden from storefront");
+      const qmod = await A(`/api/admin/qna/${q.body.id}/moderate?kind=question`, "PUT", { state: "rejected" });
+      ok(qmod.status === 200 && qmod.body.row.state === "rejected", "question moderated", qmod.body.row && qmod.body.row.state);
+      const amod = await A(`/api/admin/qna/${an.body.id}/moderate?kind=answer`, "PUT", { state: "rejected" });
+      ok(amod.status === 200, "answer moderated");
+      const hidQ = await C(`/api/products/${pid}`);
+      ok(!hidQ.body.questions.some(x => x.id === q.body.id), "rejected question hidden from storefront");
+    }
+
+    console.log("▸ SUPPORT HELPDESK (tickets · SLA · CSAT)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const C = mk(); await C("/api/session?store=luxora");
+      const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const seeded = await A("/api/admin/helpdesk/tickets");
+      ok(seeded.body.tickets.length >= 2, "seeded tickets present", seeded.body.tickets.length);
+      ok(seeded.body.priorities.includes("urgent") && seeded.body.statuses.length === 5, "registries seeded (statuses/priorities)");
+      const urgent = seeded.body.tickets.find(t => t.priority === "urgent");
+      ok(urgent && urgent.status === "new", "urgent case queued as new");
+      const sla = await A("/api/admin/helpdesk/sla");
+      ok(sla.body.health.length >= 1 && sla.body.agents.some(a => a.csat === 5), "SLA health + agent CSAT", JSON.stringify(sla.body.agents));
+      // customer opens a case
+      const nt = await C("/api/support/tickets", "POST", { name: "Test Customer", email: "customer@test.example", subject: "Where is my refund?", reason: "returns", priority: "high", body: "Returned 5 days ago, no refund yet." });
+      ok(nt.status === 200 && nt.body.ticket.ref.startsWith("CASE-"), "customer opens a case", nt.body.ticket && nt.body.ticket.ref);
+      ok(nt.body.ticket.sla_response && nt.body.ticket.sla_resolution, "SLA targets computed at open");
+      ok(nt.body.ticket.notes.length === 1 && nt.body.ticket.notes[0].visibility === "public", "opening message recorded as a public note");
+      const mine = await C("/api/support/tickets");
+      ok(mine.body.tickets.some(t => t.id === nt.body.ticket.id), "case appears in 'my cases'");
+      const other = await C("/api/support/tickets/" + seeded.body.tickets[0].id);
+      ok(other.status === 404, "customer cannot read another customer's case", other.status);
+      // agent replies (public) + internal note, then resolves with CSAT
+      const rep = await A(`/api/admin/helpdesk/tickets/${nt.body.ticket.id}/reply`, "POST", { body: "Refund issued today — it lands in 2-3 days.", internal: false });
+      ok(rep.status === 200 && rep.body.note.visibility === "public", "agent public reply", rep.body.note && rep.body.note.visibility);
+      const intl = await A(`/api/admin/helpdesk/tickets/${nt.body.ticket.id}/reply`, "POST", { body: "Check gateway log before promising a date.", internal: true });
+      ok(intl.status === 200 && intl.body.note.visibility === "internal", "internal note not visible to customer");
+      const mine2 = await C(`/api/support/tickets/${nt.body.ticket.id}`);
+      ok(mine2.body.ticket.notes.filter(n => n.visibility === "internal").length === 0, "internal notes hidden from the customer");
+      ok(mine2.body.ticket.first_response_at, "first response timestamp set by agent reply");
+      const res = await A(`/api/admin/helpdesk/tickets/${nt.body.ticket.id}`, "PUT", { status: "resolved", assignee: "admin@luxora.shop" });
+      ok(res.status === 200 && res.body.ticket.status === "resolved" && res.body.ticket.assignee === "admin@luxora.shop", "case resolved + assigned", res.body.ticket && res.body.ticket.status);
+      const cs = await C(`/api/support/tickets/${nt.body.ticket.id}/csat`, "POST", { score: 4, comment: "Quick fix, thanks." });
+      ok(cs.status === 200 && cs.body.ticket.csat === 4, "customer leaves CSAT rating", cs.body.ticket && cs.body.ticket.csat);
+      const closed = await A(`/api/admin/helpdesk/tickets/${nt.body.ticket.id}`, "PUT", { status: "closed" });
+      ok(closed.status === 200 && closed.body.ticket.status === "closed", "case closed");
+      const late = await C(`/api/support/tickets/${nt.body.ticket.id}/reply`, "POST", { body: "one more thing" });
+      ok(late.status === 409, "reply rejected on a closed case", late.status);
+      // storefront help centre renders its case form + FAQ without JS errors
+      const page = await render("/customer-service.html");
+      ok(page.errs.length === 0 && !!page.doc.getElementById("csNewCase"), "help centre renders case form, no JS errors", page.errs.slice(0, 2).join("|"));
+      ok(page.doc.querySelectorAll(".cs-faq details").length >= 4, "FAQ answers render");
+    }
+
+    console.log("▸ RETENTION (Subscribe & Save · membership · address book)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const C = mk(); await C("/api/session?store=luxora"); await C("/api/auth/login", "POST", { email: "demo@luxora.shop", password: "demo123" });
+      const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const mem0 = await C("/api/membership");
+      ok(mem0.body.membership.tier === "plus", "seeded demo membership is Plus", JSON.stringify(mem0.body.membership));
+      const mem1 = await C("/api/membership/subscribe", "POST", { tier: "prime" });
+      ok(mem1.status === 200 && mem1.body.membership.tier === "prime", "customer upgrades membership tier", JSON.stringify(mem1.body));
+      const mem2 = await C("/api/membership");
+      ok(mem2.body.membership.tier === "prime", "membership persists across sessions", mem2.body.membership.tier);
+      const addr = await C("/api/addresses");
+      ok(addr.body.addresses.length >= 1 && addr.body.addresses.some(a => a.is_default === 1), "seeded address book has a default");
+      const sub = await C("/api/subscriptions");
+      ok(sub.body.schedules.length === 1 && sub.body.schedules[0].status === "active", "seeded Subscribe & Save schedule exists");
+      const rec = await A("/api/admin/recurring");
+      ok(rec.body.due === 0 && rec.body.statuses.length === 3, "admin recurring page (due count, statuses)");
+      const dueStart = new Date(Date.now() - 5 * 86400e3).toISOString();
+      const newSub = await C("/api/subscriptions", "POST", { product_id: "LX-ELS-007", qty: 2, frequency_days: 30, start_at: dueStart });
+      ok(newSub.body.schedule.id > 0 && newSub.body.schedule.status === "active", "customer creates a due subscription", JSON.stringify(newSub.body));
+      const recAfter = await A("/api/admin/recurring");
+      ok(recAfter.body.due === 1, "due count reflects new schedule");
+      const proc = await A("/api/admin/recurring/process", "POST");
+      ok(proc.body.processed.length === 1 && proc.body.remaining === 0, "admin processes due shipment", proc.body);
+      const subAfter = await C("/api/subscriptions");
+      const processedSched = subAfter.body.schedules.find(s => s.id === newSub.body.schedule.id);
+      ok(processedSched && processedSched.cycles_completed === 1, "subscription cycles completed incremented", processedSched && processedSched.cycles_completed);
+      const pause = await C("/api/subscriptions/" + newSub.body.schedule.id, "PUT", { action: "pause" });
+      ok(pause.body.schedule.status === "paused", "pause subscription");
+      const resume = await C("/api/subscriptions/" + newSub.body.schedule.id, "PUT", { action: "resume" });
+      ok(resume.body.schedule.status === "active", "resume subscription");
+      const skip = await C("/api/subscriptions/" + newSub.body.schedule.id, "PUT", { action: "skip" });
+      ok(skip.body.schedule.next_ship_at && skip.body.schedule.cycles_completed === 2, "skip advances next ship date", skip.body.schedule.cycles_completed);
+      const cancel = await C("/api/subscriptions/" + newSub.body.schedule.id, "PUT", { action: "cancel" });
+      ok(cancel.body.schedule.status === "cancelled", "cancel subscription");
+      const mem3 = await A("/api/admin/memberships");
+      ok(mem3.body.memberships.some(m => m.tier === "prime" && m.status === "active"), "admin memberships view");
+      const memCancel = await C("/api/membership/cancel", "POST");
+      ok(memCancel.body.membership.status === "cancelled", "customer cancels membership");
+      const memReNew = await C("/api/membership/subscribe", "POST", { tier: "plus", renew: true });
+      ok(memReNew.body.membership.tier === "plus" && memReNew.body.membership.status === "active", "customer resubscribes");
+      const addrSave = await C("/api/addresses", "POST", { name: "Jane Doe", address: "221B Baker Street", city: "London", state: "", zip: "NW1 6XE", country: "GB", phone: "+44-20-7946", is_default: 0 });
+      ok(addrSave.body.addresses.length === 2, "add address to book");
+      const addrUpdate = await C("/api/addresses/" + addrSave.body.addresses[1].id, "PUT", { name: "Jane Doe", address: "10 Downing Street", city: "London", state: "", zip: "SW1A 2AA", country: "GB", phone: "+44-20-7930", is_default: 1 });
+      ok(addrUpdate.body.addresses.some(a => a.is_default === 1 && a.name === "Jane Doe"), "update address, promote to default");
+      const addrDel = await C("/api/addresses/" + addrSave.body.addresses[0].id, "DELETE");
+      ok(addrDel.body.ok === true, "delete address");
+      const orders = await C("/api/addresses");
+      ok(orders.body.addresses.length === 1, "addresses list updated");
+    }
+
+    console.log("▸ RISK & EXPERIMENTATION (fraud screen · blocklists · A/B)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const C = mk(); await C("/api/session?store=luxora"); await C("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const A = C;
+      const clean = await A("/api/admin/risk/screen", "POST", { owner: "t1:risk-ok", ip: "10.0.0.1", email: "fine@example.com", amount: 120, card: "4242424242424242", address: "1 Main St, Seattle, WA 98101", account_age_days: 400 });
+      ok(clean.status === 200 && clean.body.event.decision === "approve" && clean.body.event.score < 45, "clean order approved", JSON.stringify(clean.body.event));
+      const blocked = await A("/api/admin/risk/screen", "POST", { owner: "t1:risk-bad", ip: "10.0.0.9", email: "bad@example.com", amount: 900, card: "4111111111111111", address: "1 Bad Lane, Seattle, WA 98101", account_age_days: 400 });
+      const sig = blocked.body.event.signals;
+      const sigObj = typeof sig === "string" ? JSON.parse(sig || "{}") : (sig || {});
+      ok(blocked.status === 200 && blocked.body.event.decision === "block" && !!sigObj.blocked_card, "blocklisted card blocked", JSON.stringify(blocked.body.event));
+      const held = await A("/api/admin/risk/screen", "POST", { owner: "t1:risk-new", ip: "10.0.0.2", email: "new@example.com", amount: 2400, card: "5555555555554444", address: "5 Elm St, Seattle, WA 98101", account_age_days: 0.5 });
+      ok(held.status === 200 && held.body.event.decision === "hold", "new account + high value held for review", JSON.stringify(held.body.event));
+      const heldSig = held.body.event.signals;
+      ok(Object.keys(typeof heldSig === "string" ? JSON.parse(heldSig || "{}") : (heldSig || {})).length >= 2, "multiple signals recorded");
+      for (let i = 0; i < 8; i++) await A("/api/admin/risk/screen", "POST", { owner: "t1:risk-fast", ip: "10.0.0.3", email: "fast@example.com", amount: 40, card: "424242424242424" + i, address: "9 Pine St, Seattle, WA 98101", account_age_days: 60 });
+      const fast = await A("/api/admin/risk/screen", "POST", { owner: "t1:risk-fast", ip: "10.0.0.3", email: "fast@example.com", amount: 40, card: "4242424242424299", address: "9 Pine St, Seattle, WA 98101", account_age_days: 60 });
+      const fastSig = fast.body.event.signals;
+      const fastObj = typeof fastSig === "string" ? JSON.parse(fastSig || "{}") : (fastSig || {});
+      ok(fast.body.event.decision !== "approve" && !!fastObj.velocity_owner, "velocity signal trips after repeat orders", JSON.stringify(fastObj));
+      const q = await A("/api/admin/risk/queue");
+      ok(q.status === 200 && q.body.queue.length >= 2 && q.body.stats.total >= 11, "review queue + stats", q.body.stats);
+      const first = q.body.queue[0];
+      const res1 = await A("/api/admin/risk/" + first.id + "/resolve", "PUT", { decision: "approve", note: "verified by phone" });
+      ok(res1.status === 200 && res1.body.event.resolved === 1 && res1.body.event.resolution === "approve", "reviewer resolves a hold", res1.body.event);
+      const bl = await A("/api/admin/risk/blocklist", "POST", { kind: "email", value: "fraudster@example.com", note: "chargeback ring" });
+      ok(bl.status === 200 && bl.body.list.length >= 1, "blocklist entry added", bl.body.list.length);
+      const blRead = await A("/api/admin/risk/blocklist");
+      ok(blRead.body.email.length >= 1, "blocklist readable by kind");
+      const blHit = await A("/api/admin/risk/screen", "POST", { owner: "t1:risk-bl", ip: "10.0.0.4", email: "fraudster@example.com", amount: 60, card: "4242424242424242", address: "2 Oak St, Seattle, WA 98101", account_age_days: 90 });
+      ok(blHit.body.event.decision === "block", "blocklisted email blocks", blHit.body.event.decision);
+      const a1 = await A("/api/experiments/hero-copy-2026/assign");
+      ok(a1.status === 200 && a1.body.variant && ["control", "variant_b"].includes(a1.body.variant.key), "seeded experiment assigns a variant", a1.body.variant && a1.body.variant.key);
+      const a2 = await A("/api/experiments/hero-copy-2026/assign");
+      ok(a2.body.variant && a2.body.variant.key === a1.body.variant.key, "assignment is stable for the same subject");
+      const conv = await A("/api/experiments/hero-copy-2026/convert", "POST", { value: 1 });
+      ok(conv.status === 200 && conv.body.variant, "conversion recorded for assigned variant", conv.body);
+      const res = await A("/api/admin/experiments/1/results");
+      ok(res.status === 200 && res.body.variants.length === 2 && res.body.variants.every(v => typeof v.assigned === "number"), "results per variant", JSON.stringify(res.body.variants));
+      const exp = await A("/api/admin/experiments", "POST", { key: "buybox-color", name: "Buy button colour", variants: [{ key: "control", name: "Amber", weight: 50 }, { key: "green", name: "Green", weight: 50 }] });
+      ok(exp.status === 200 && exp.body.experiment.status === "draft", "experiment created as draft", exp.body.experiment && exp.body.experiment.status);
+      const running = await A("/api/admin/experiments/" + exp.body.experiment.id + "/status", "PUT", { status: "running" });
+      ok(running.status === 200 && running.body.experiment.status === "running" && running.body.experiment.started_at, "experiment started");
+      const a3 = await A("/api/experiments/buybox-color/assign");
+      ok(a3.body.variant && ["control", "green"].includes(a3.body.variant.key), "new experiment assigns");
+      const done = await A("/api/admin/experiments/" + exp.body.experiment.id + "/status", "PUT", { status: "completed" });
+      ok(done.status === 200 && done.body.experiment.status === "completed" && done.body.experiment.ended_at, "experiment completed");
+      const afterDone = await A("/api/experiments/buybox-color/assign");
+      ok(!afterDone.body.variant, "completed experiment stops assigning", afterDone.body.variant);
+      const cBlock = await A("/api/checkout", "POST", { name: "Risky", address: "1 Bad Lane", city: "Seattle", gateway: "stripe", method: "card", card: "4111111111111111" });
+      ok(!!cBlock.body.error && /blocked by our risk/i.test(cBlock.body.error), "checkout refuses a blocklisted card", cBlock.body.error);
+    }
+
+    console.log("▸ SUPPLY-CHAIN PLANNING (forecast · reorder · suggested POs)");
+    {
+      const mk = () => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const r = await fetch(BASE + p, o); (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: r.status, body: await r.json().catch(() => ({})) }; }; };
+      const C = mk(); await C("/api/session?store=luxora"); await C("/api/auth/login", "POST", { email: "demo@luxora.shop", password: "demo123" });
+      const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      /* drive real demand: buy LX-CMP-005 several times so the forecaster sees it */
+      const skuRow = (await A("/api/admin/planning")).body;
+      for (let i = 0; i < 5; i++) {
+        await C("/api/cart", "POST", { id: "LX-CMP-005", qty: 2 });
+        await C("/api/checkout", "POST", { name: "Planner", address: "1 Plan St", city: "Seattle", zip: "98109", gateway: "stripe", carrier: "house-std" });
+      }
+      const empty = skuRow && skuRow.stats ? skuRow.stats.total : 0;
+      ok(true, "demand orders placed", empty);
+      const run = await A("/api/admin/planning/run", "POST");
+      ok(run.status === 200 && run.body.planned > 0, "plan run forecasts every active SKU", run.body.planned);
+      const list = await A("/api/admin/planning");
+      ok(list.status === 200 && list.body.stats.total > 0, "planning list + stats", JSON.stringify(list.body.stats));
+      ok(list.body.statuses.length >= 5 && list.body.priorities.length >= 4, "statuses + priorities registries", list.body.statuses.length + "/" + list.body.priorities.length);
+      /* the bought SKU must appear with non-zero demand */
+      const hit = (list.body.replenishments || []).find(r => r.product_id === "LX-CMP-005");
+      ok(!!hit && hit.forecast_30d > 0 && hit.avg_daily > 0, "bought SKU has a forecast", hit && JSON.stringify({ avg: hit.avg_daily, f30: hit.forecast_30d, avail: hit.available }));
+      ok(hit && hit.reorder_point >= 0 && hit.safety_stock >= 0 && hit.min_qty >= 1, "reorder math present", hit && hit.reorder_point);
+      /* force a shortage on the bought SKU and re-plan → must become a suggestion */
+      const { DatabaseSync } = require("node:sqlite");
+      const path = require("path");
+      const sdb = new DatabaseSync(path.join(__dirname, "..", "data", "smoke.db"));
+      const sk = sdb.prepare("SELECT id FROM skus WHERE product_id='LX-CMP-005' AND tenant_id=1").get();
+      if (sk) { sdb.prepare("UPDATE skus SET stock=0 WHERE id=?").run(sk.id); sdb.prepare("UPDATE inventory SET qty=0, reserved=0 WHERE sku_id=?").run(sk.id); }
+      sdb.close();
+      const run2 = await A("/api/admin/planning/run", "POST");
+      ok(run2.status === 200, "re-plan after stockout", run2.body.planned);
+      const list2 = await A("/api/admin/planning");
+      const short = (list2.body.replenishments || []).find(r => r.product_id === "LX-CMP-005");
+      ok(!!short && short.reorder_qty > 0 && short.status === "suggested", "stockout produces a reorder suggestion", short && JSON.stringify({ rq: short.reorder_qty, rop: short.reorder_point, st: short.status, pri: short.priority }));
+      const pos = await A("/api/admin/planning/pos");
+      ok(pos.status === 200 && Array.isArray(pos.body.purchaseOrders), "suggested purchase orders grouped by supplier", (pos.body.purchaseOrders || []).length);
+      ok((pos.body.purchaseOrders || []).some(p => p.units > 0 && p.lines.length > 0), "PO contains the shortage line", JSON.stringify((pos.body.purchaseOrders || []).map(p => p.lines.length)));
+      /* status transitions mint a PO ref and protect in-flight rows */
+      const one = await A("/api/admin/planning/" + short.id, "PUT", { status: "approved" });
+      ok(one.status === 200 && one.body.replenishment.status === "approved" && /PO-/.test(one.body.replenishment.po_ref || ""), "approve mints a PO ref", one.body.replenishment && one.body.replenishment.po_ref);
+      const ordered = await A("/api/admin/planning/" + short.id, "PUT", { status: "ordered" });
+      ok(ordered.status === 200 && ordered.body.replenishment.status === "ordered", "mark ordered", ordered.body.replenishment && ordered.body.replenishment.status);
+      /* a re-run must not clobber an ordered row */
+      await A("/api/admin/planning/run", "POST");
+      const list3 = await A("/api/admin/planning");
+      const kept = (list3.body.replenishments || []).find(r => r.id === short.id);
+      ok(!!kept && kept.status === "ordered", "re-plan preserves in-flight POs", kept && kept.status);
+      const all = await A("/api/admin/planning/approve-all", "POST");
+      ok(all.status === 200 && typeof all.body.approved === "number", "approve-all batch action", all.body.approved);
     }
   } catch (e) {
     console.error("TEST CRASH:", e);

@@ -330,11 +330,13 @@ async function pageProduct() {
   let data;
   try { data = await api(`/products/${encodeURIComponent(id)}`); }
   catch (e) { main.innerHTML = `<div class="r-empty"><h3>Piece not found</h3><a class="btn-yellow" href="index.html">Back to ${esc(CFG.brand.name)}</a></div>`; return; }
-  const { product: p, histogram, reviews, related, skus, relationships } = data;
+  const { product: p, histogram, reviews, questions, related, skus, relationships } = data;
   document.title = `${p.t.slice(0, 52)} — ${CFG.brand.name}`;
   api("/viewed", "POST", { id: p.id }).then(refreshSession).catch(() => { });
   window.__rv = p;
   const f = CFG.features;
+  const subDisc = (CFG.retention && CFG.retention.subDiscount) || 10;
+  const subFreq = ((CFG.retention && CFG.retention.subFrequencies) || [30])[0];
   const media = (p.media || []).length ? p.media : [{ kind: "image", label: "Front", emoji: p.e }];
   const thumbs = media.map((m, i) => `<a class="thumb ${i === 0 ? "on" : ""}" data-e="${esc(m.emoji || p.e)}" data-h="${(p.h + i * 40) % 360}" href="#"><span class="pimg big" style="background:hsl(${(p.h + i * 40) % 360} 30% 92%)">${esc(m.emoji || p.e)}</span></a>`).join("");
   const tiers = (p.pricing_rules && p.pricing_rules.tiers) || [];
@@ -382,6 +384,7 @@ async function pageProduct() {
         <div class="bb-qty"><label>Quantity <select id="bbQty">${Array.from({ length: Math.min(CFG.commerce.cartMaxQty, Math.max(1, p.st)) }, (_, i) => `<option>${i + 1}</option>`).join("")}</select></label></div>
         <button class="btn-yellow bb-btn" id="bbAdd" data-act="add" data-id="${p.id}" data-qty-src="bbQty">${esc(T("addToCart"))}</button>
         ${f.buyNow && !isRental ? `<button class="btn-orange bb-btn" id="bbBuy" data-act="buy-now" data-id="${p.id}">${esc(T("buyNow"))}</button>` : ""}
+        ${f.subscribeSave ? `<div class="bb-sub"><button class="btn-white bb-btn" data-act="sub-save" data-id="${p.id}">🔁 Subscribe &amp; Save ${subDisc}%</button><div class="a-sub">Delivers every <b>${subFreq} days</b> · skip or pause anytime</div></div>` : ""}
         ${p.vertical && p.vertical.test_drive ? `<button class="btn-white bb-btn" data-act="rfq-open" data-id="${p.id}">🚗 Book a test drive</button>` : ""}
         <div class="bb-ship"><div><em>Ships from</em> ${esc(CFG.brand.name)} Atelier</div><div><em>Sold by</em> ${esc(p.b)}</div><div><em>Returns</em> 30-day, complimentary</div><div><em>Payment</em> 🔒 Secure</div></div>` : `<div class="oos">${esc(T("outOfStock"))}</div>`}
       </div>
@@ -409,7 +412,17 @@ async function pageProduct() {
           <div class="rev-date">Reviewed ${new Date(String(rv.date).replace(" ", "T")).toLocaleDateString(CFG.commerce.locale, { month: "long", day: "numeric", year: "numeric" })}</div>
           ${rv.verified ? `<div class="rev-vp">✓ Verified Purchase</div>` : ""}
           <div class="rev-title">${esc(rv.title)}</div><p>${esc(rv.body)}</p>
-          <a class="rev-help" href="#" data-act="soon">👍 Helpful</a></div>`).join("")}</div>` : ""}
+          ${(rv.media || []).length ? `<div class="rev-media">${rv.media.map(m => `<span class="a-chip" title="${esc(m.label || "photo")}">${esc(m.emoji || "🖼")} ${esc(m.label || "photo")}</span>`).join("")}</div>` : ""}
+          <div class="rev-foot"><a class="rev-help" href="#" data-act="ugc-vote" data-kind="review" data-id="${rv.id}" data-dir="up">👍 Helpful</a> ${(rv.helpful || 0) ? `<span class="rev-count">${rv.helpful} people found this helpful</span>` : ""}</div>
+          ${(rv.replies || []).map(rp => `<div class="rev-reply"><b>${esc(rp.author)}</b> <span class="a-chip">${esc(rp.role)}</span><p>${esc(rp.body)}</p></div>`).join("")}</div>`).join("")}</div>` : ""}
+      ${f.qna ? `<div class="pp-rev-col" id="qna"><div class="rev-head"><h3>${esc(T("qnaTitle"))}</h3></div>
+        <div class="qna-ask"><input id="qnaInput" placeholder="Have a question about this item?" /><button class="btn-yellow" data-act="qna-ask">Ask</button></div>
+        ${(questions || []).length ? questions.map(q => `<div class="rev"><div class="rev-user"><b>Q.</b> ${esc(q.name)}</div>
+          <p class="qna-q">${esc(q.body)}</p>
+          <div class="rev-foot"><a class="rev-help" href="#" data-act="ugc-vote" data-kind="question" data-id="${q.id}" data-dir="up">👍 Helpful</a> ${(q.votes_helpful || 0) ? `<span class="rev-count">${q.votes_helpful} found this useful</span>` : ""}</div>
+          ${(q.answers || []).map(a => `<div class="rev-reply"><b>${esc(a.name)}</b> <span class="a-chip">${esc(a.role)}</span><p>${esc(a.body)}</p>
+            <div class="rev-foot"><a class="rev-help" href="#" data-act="ugc-vote" data-kind="answer" data-id="${a.id}" data-dir="up">👍 Helpful</a> ${(a.votes_helpful || 0) ? `<span class="rev-count">${a.votes_helpful} found this useful</span>` : ""}</div></div>`).join("") || '<p class="a-sub">No answers yet — be the first to answer.</p>'}
+          </div>`).join("") : '<p class="a-sub">No questions yet. Ask the first question above.</p>'}</div>` : ""}
     </div>
     ${relGroups.accessory || relGroups.compatible ? carousel("Accessories & Compatibility", relGroups.accessory || relGroups.compatible) : ""}
     ${related.length ? carousel(T("relatedTitle"), related.slice(0, 10)) : ""}
@@ -562,10 +575,26 @@ async function pageCheckout() {
 async function pageOrders() {
   const main = $("#page");
   main.innerHTML = `<div class="loading">Loading…</div>`;
-  const { orders } = await api("/orders");
+  const [{ orders }, subs, mem] = await Promise.all([api("/orders"), CFG.features.subscribeSave ? api("/subscriptions") : Promise.resolve({ schedules: [] }), CFG.features.membership ? api("/membership") : Promise.resolve({ membership: null })]);
   document.title = `${T("yourOrders")} — ${CFG.brand.name}`;
-  if (!orders.length) { main.innerHTML = `<div class="ord-empty"><h2>${esc(T("yourOrders"))}</h2><p>No orders yet.</p><a class="btn-yellow" href="index.html">Start exploring</a></div>`; return; }
-  main.innerHTML = `<h1 class="ord-h1">${esc(T("yourOrders"))}</h1>` + orders.map(o => {
+  if (!orders.length && !(subs.schedules || []).length) { main.innerHTML = `<div class="ord-empty"><h2>${esc(T("yourOrders"))}</h2><p>No orders yet.</p><a class="btn-yellow" href="index.html">Start exploring</a></div>`; return; }
+  main.innerHTML = `<h1 class="ord-h1">${esc(T("yourOrders"))}</h1>`;
+  if (CFG.features.membership && mem.membership && mem.membership.tier !== "free") {
+    const m = mem.membership;
+    main.innerHTML += `<div class="ord mem-card"><div class="mem-h"><span class="mem-badge">🎟️ ${esc(m.tier_detail.name)}</span><div><em>MEMBERSHIP</em><b>Active${m.renews_at ? " · renews " + String(m.renews_at).slice(0, 10) : ""}</b></div>
+      <div class="ord-h-r"><span class="a-chip">${(m.tier_detail.benefits || []).join(" · ") || "member benefits"}</span><button class="btn-white" data-act="mem-cancel">Cancel membership</button></div></div></div>`;
+  } else if (CFG.features.membership) {
+    main.innerHTML += `<div class="ord mem-card"><div class="mem-h"><span class="mem-badge">🎟️ Join ${esc(CFG.brand.wordmark)}</span><div><em>MEMBERSHIP</em><b>Free shipping, early access &amp; bonus rewards</b></div>
+      <div class="ord-h-r">${(mem.tiers || []).filter(t => t.price > 0).map(t => `<button class="btn-yellow" data-act="mem-subscribe" data-tier="${t.key}">Try ${esc(t.name)} · ${money(t.price)}/mo</button>`).join("")}</div></div></div>`;
+  }
+  for (const s of (subs.schedules || [])) {
+    main.innerHTML += `<div class="ord"><div class="ord-h"><div><em>NEXT DELIVERY</em><b>${String(s.next_ship_at).slice(0, 10)}</b></div>
+      <div><em>EVERY</em><b>${s.frequency_days} days · save ${s.discount_pct}%</b></div><div><em>STATUS</em><b>${esc(s.status)}</b></div>
+      <div class="ord-h-r"><em>SUBSCRIPTION #${s.id}</em>${s.status === "active" ? `<button class="btn-white" data-act="sub-skip" data-id="${s.id}">Skip next</button><button class="btn-white" data-act="sub-pause" data-id="${s.id}">Pause</button>` : s.status === "paused" ? `<button class="btn-white" data-act="sub-resume" data-id="${s.id}">Resume</button>` : ""}
+      ${s.status !== "cancelled" ? `<button class="btn-white" data-act="sub-cancel" data-id="${s.id}">Cancel</button>` : ""}</div></div>
+      <div class="ord-body"><div class="ord-i">${img({ e: "📦", h: 210 }, "big")}<div class="ord-i-mid"><b>${esc(s.product_id)}</b><span>${s.cycles_completed} shipment(s) delivered</span></div><span class="ord-i-qty">Qty: ${s.qty}</span></div></div></div>`;
+  }
+  main.innerHTML += orders.map(o => {
     const items = o.items.filter(x => x.product);
     const created = new Date(String(o.created_at).replace(" ", "T"));
     const st = o.status === "cancelled" ? ["✕ Cancelled", "cancel"] : o.status === "delivered" || Date.now() > created.getTime() + (o.eta_days || 5) * 864e5 ? ["✓ Delivered", "ok"] : o.status === "shipped" ? ["🚚 Shipped", "info"] : ["⏳ Processing", "info"];
@@ -631,6 +660,7 @@ async function pageGift() {
 }
 function pageCS() {
   document.title = `Client Care — ${CFG.brand.name}`;
+  const reasonOptions = [["order", "My order"], ["delivery", "Delivery"], ["returns", "Returns & refunds"], ["payment", "Payment"], ["product", "Product question"], ["account", "Account"], ["other", "Something else"]];
   $("#page").innerHTML = `
   <div class="cs"><h1>Client Care</h1>
     <div class="cs-tabs">${["📦 Orders", "💳 Payments", "↩️ Returns", "🔐 Account", "🚚 Delivery", "🎁 Gift Cards", "⚙️ Settings"].map(t => `<button class="cs-tab" data-q="${t.split(" ")[1]}">${t}</button>`).join("")}</div>
@@ -641,11 +671,29 @@ function pageCS() {
     [`What does ${T("priorityBadge")} include?`, T("priorityPerk")],
     ["How do I change my location?", `Click "${T("deliverTo")}" in the header.`],
     ["Can I pay with a gift balance?", `Yes — top up from <a href='gift-cards.html'>Gift Cards</a>; applied automatically at checkout.`]
-  ].map(([q, a]) => `<details><summary>${q}</summary><div class="faq-a">${a}</div></details>`).join("")}</section></div>`;
+  ].map(([q, a]) => `<details><summary>${q}</summary><div class="faq-a">${a}</div></details>`).join("")}</section>
+    <section class="cs-cases"><h2>My Cases</h2>
+      <form id="csNewCase" class="cs-form"><input id="csSubject" placeholder="Subject — e.g. Order not delivered" required>
+        <select id="csReason">${reasonOptions.map(([k, l]) => `<option value="${k}">${l}</option>`).join("")}</select>
+        <textarea id="csBody" placeholder="Tell us what happened…" required></textarea>
+        <button class="btn-yellow" type="submit">Open a case</button></form>
+      <div id="csList" class="cs-list"><div class="loading">Loading your cases…</div></div></section></div>`;
   function csFilter(q) { $$(".cs-faq details").forEach(d => { const hit = d.textContent.toLowerCase().includes(q); d.style.display = !q || hit ? "" : "none"; if (q && hit) d.open = true; }); }
   $$(".cs-tab").forEach(tb => tb.onclick = () => { $("#csIn").value = tb.dataset.q; csFilter(tb.dataset.q.toLowerCase()); });
   $("#csIn").oninput = e => csFilter(e.target.value.toLowerCase());
-  $("#csGo").onclick = () => { const q = $("#csIn").value.toLowerCase(); csFilter(q); if (![...$$(".cs-faq details")].some(d => d.textContent.toLowerCase().includes(q))) toast("Our care team will reach out — email <b>" + esc(CFG.brand.supportEmail) + "</b>"); };
+  $("#csGo").onclick = () => { const q = $("#csIn").value.toLowerCase(); csFilter(q); if (![...$$(".cs-faq details")].some(d => d.textContent.toLowerCase().includes(q))) { $("#csSubject").value = q; $("#csSubject").focus(); toast("No answer matched — open a case below and our team will help"); } };
+  async function loadCases() {
+    const r = await api("/support/tickets", "GET");
+    $("#csList").innerHTML = (r.tickets || []).length ? r.tickets.map(t => `<div class="cs-case"><div class="cs-case-h"><b><code>${esc(t.ref)}</code></b> ${esc(t.subject)} <span class="a-chip">${esc(t.status)}</span> <span class="a-chip">${esc(t.priority)}</span></div>
+      <div class="a-sub">Opened ${new Date(t.created_at.replace(" ", "T")).toLocaleDateString()}${t.assignee ? " · agent: " + esc(t.assignee) : ""}${t.csat ? " · your rating: " + t.csat + "★" : ""}</div></div>`).join("")
+      : '<p class="a-sub">You have no open cases.</p>';
+  }
+  $("#csNewCase").onsubmit = async e => {
+    e.preventDefault();
+    const r = await api("/support/tickets", "POST", { subject: $("#csSubject").value.trim(), reason: $("#csReason").value, body: $("#csBody").value.trim() });
+    if (r.ticket) { toast(`✓ Case ${r.ticket.ref} opened — we'll email ${esc(r.ticket.owner_email)}`); $("#csNewCase").reset(); loadCases(); }
+  };
+  loadCases();
 }
 function pageRegistry() {
   document.title = `Registries — ${CFG.brand.name}`;
@@ -745,7 +793,7 @@ document.addEventListener("click", async e => {
   const el = e.target.closest("[data-act]");
   if (!el) return;
   const act = el.dataset.act, id = el.dataset.id;
-  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "gift", "open-review", "buy-again", "list", "rfq-open", "return-open", "coupon", "select-variant"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
+  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "gift", "open-review", "buy-again", "list", "rfq-open", "return-open", "coupon", "select-variant", "ugc-vote", "qna-ask", "sub-save", "mem-subscribe", "mem-cancel", "sub-skip", "sub-pause", "sub-resume", "sub-cancel"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
   try {
     switch (act) {
       case "select-variant": {
@@ -814,7 +862,46 @@ document.addEventListener("click", async e => {
       case "track": toast("📦 Your parcel is <b>out for delivery</b>"); break;
       case "list": toast("✦ Registry created"); break;
       case "soon": toast("✦ This experience is coming soon"); break;
+      case "ugc-vote": {
+        const kind = el.dataset.kind || "review", dir = el.dataset.dir || "up";
+        const v = await api(`/qna/${el.dataset.id}/vote?kind=${kind === "review" ? "review" : kind}`, "POST", { dir });
+        if (v.changed !== false) { toast(dir === "up" ? "👍 Thanks for your feedback" : "Vote updated"); render(); }
+        else toast("You already voted that way"); break;
+      }
+      case "qna-ask": {
+        const p = window.__rv; if (!p) break;
+        const input = $("#qnaInput"); const text = (input && input.value || "").trim();
+        if (!text) { toast("⚠️ Type a question first"); break; }
+        const r = await api(`/qna/${encodeURIComponent(p.id)}/question`, "POST", { body: text });
+        if (r.ok) { toast(r.moderated ? "Question submitted — awaiting moderation" : "✓ Question posted"); render(); }
+        break;
+      }
       case "reload": location.reload(); break;
+      case "sub-save": {
+        const p = window.__rv;
+        const r = await api("/subscriptions", "POST", { product_id: el.dataset.id || (p && p.id), qty: Number(($("#bbQty") || {}).value || 1) });
+        if (r.schedule) toast(`🔁 Subscribed — next delivery ${String(r.schedule.next_ship_at).slice(0, 10)} (save ${r.discount_pct}%)`);
+        break;
+      }
+      case "mem-subscribe": {
+        const r = await api("/membership/subscribe", "POST", { tier: el.dataset.tier });
+        if (r.membership) { toast(`🎟️ Welcome to ${esc(r.membership.tier_detail.name)} — benefits apply at checkout`); render(); }
+        break;
+      }
+      case "mem-cancel": {
+        const r = await api("/membership/cancel", "POST");
+        if (r.membership) { toast("Membership cancelled — benefits end at renewal"); render(); }
+        break;
+      }
+      case "sub-skip":
+      case "sub-pause":
+      case "sub-resume":
+      case "sub-cancel": {
+        const action = act.replace("sub-", "");
+        const r = await api(`/subscriptions/${el.dataset.id}`, "PUT", { action });
+        if (r.schedule) { toast(`Subscription ${action}d`); render(); }
+        break;
+      }
     }
   } catch (err) { toast("⚠️ " + linkify(err.message)); }
 });

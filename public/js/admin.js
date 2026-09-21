@@ -33,7 +33,7 @@ const NAV = [
   ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["sellers", "🏪 Sellers"], ["settlements", "🤝 Settlements"],
   ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["suppliers", "🚚 Suppliers & Procurement"], ["serialized", "🔢 Serialized Items"], ["compliance", "✅ Compliance & Certs"], ["localizations", "🌐 Localizations"],
   ["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"], ["trash", "🗑️ Trash & Retention"], ["sso", "🔐 SSO & Integrations"],
-  ["promotions", "💸 Offers & Coupons"], ["goip", "Ω∞ GOIP"],   ["search", "🔎 Search & Discovery"],   ["logistics", "🚚 Logistics & Fulfilment"],   ["finance", "💰 Finance & Settlements"], ["marketplace", "📣 Marketplace & Ads"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
+  ["promotions", "💸 Offers & Coupons"], ["goip", "Ω∞ GOIP"],   ["search", "🔎 Search & Discovery"],   ["logistics", "🚚 Logistics & Fulfilment"],   ["finance", "💰 Finance & Settlements"], ["marketplace", "📣 Marketplace & Ads"],   ["ugc", "⭐ Reviews & Q&A"],   ["helpdesk", "🎧 Support Helpdesk"],   ["retention", "🔁 Subscriptions & Members"], ["risk", "🛡️ Risk & Fraud"], ["experiments", "🧪 Experiments"], ["planning", "📦 Planning & Replenishment"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
   ["payments", "💳 Payment Gateways"], ["modules", "🧩 Modules"], ["settings", "⚙️ Settings"], ["billing", "🧮 Billing"], ["analytics", "📊 Analytics"], ["audit", "📜 Audit Trail"],
   ["monitor", "📈 Monitor"], ["team", "👥 Team & Roles"], ["studio", "🛠️ Data Studio"]
 ];
@@ -113,8 +113,116 @@ async function vMarketplace() {
       <tbody>${(m.sellers || []).map(x => `<tr><td>${esc(x.seller_id)}</td><td>${x.orders}</td><td>${money(x.revenue)}</td><td>${(x.take_rate*100).toFixed(0)}%</td><td>${money(x.commission)}</td><td>${money(x.ads_spend)}</td><td>${x.ad_roi}</td></tr>`).join("") || '<tr><td colspan="7">No seller data yet.</td></tr>'}</tbody></table></div>
   </div>`;
 }
-function shell(content) {
-  $("#app").innerHTML = `
+async function vUgc() {
+  const [q, revs] = await Promise.all([api("/admin/ugc/queue", {}), api("/admin/reviews", {})]);
+  const allR = revs.reviews || [];
+  const byS = {}; allR.forEach(r => byS[r.state] = (byS[r.state] || 0) + 1);
+  return `<div class="a-head"><h2>⭐ Reviews &amp; Q&amp;A</h2><p class="a-sub">Rich reviews (helpfulness votes, seller reply threads, media, moderation states) and product Q&amp;A. States &amp; roles are Data Studio registries: <code>ugcStates</code>, <code>ugcRoles</code>; behaviour toggles live in Settings → UGC.</p></div>
+  <div class="a-card"><h3>Moderation queue · ${q.pending || 0} pending</h3>
+    <p class="a-sub">${Object.entries(byS).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("") || "no reviews"}</p>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>type</th><th>product</th><th>author</th><th>text</th><th>state</th></tr></thead>
+      <tbody>${[
+        ...q.reviews.map(r => ({ k: "review", p: r.product_id, a: r.name, t: (r.title + " — " + r.body).slice(0, 90), s: r.state, id: r.id })),
+        ...q.questions.map(r => ({ k: "question", p: r.product_id, a: r.name, t: r.body.slice(0, 90), s: r.state, id: r.id })),
+        ...q.answers.map(r => ({ k: "answer", p: r.product_id, a: r.name, t: r.body.slice(0, 90), s: r.state, id: r.id }))
+      ].slice(0, 20).map(x => `<tr><td><span class="a-chip">${esc(x.k)}</span></td><td><code>${esc(x.p)}</code></td><td>${esc(x.a)}</td><td>${esc(x.t)}</td><td><span class="a-chip">${esc(x.s)}</span></td></tr>`).join("") || '<tr><td colspan="5">Queue is empty — everything published.</td></tr>'}</tbody></table></div>
+  </div>
+  <div class="a-card"><h3>Latest reviews</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>author</th><th>rating</th><th>helpful</th><th>state</th></tr></thead>
+      <tbody>${allR.slice(0, 15).map(r => `<tr><td><code>${esc(r.product_id)}</code></td><td>${esc(r.name)}</td><td>${r.rating}★</td><td>${r.votes_helpful || 0}/${r.votes_total || 0}</td><td><span class="a-chip">${esc(r.state)}</span></td></tr>`).join("") || '<tr><td colspan="5">No reviews yet.</td></tr>'}</tbody></table></div>
+  </div>`;
+}
+async function vHelpdesk() {
+  const [list, sla] = await Promise.all([api("/admin/helpdesk/tickets", {}), api("/admin/helpdesk/sla", {})]);
+  const tk = list.tickets || [];
+  const byS = {}; tk.forEach(t => byS[t.status] = (byS[t.status] || 0) + 1);
+  const breaches = (sla.health || []).filter(h => h.breach);
+  return `<div class="a-head"><h2>🎧 Support Helpdesk</h2><p class="a-sub">Customer cases · agent assignment · SLA timers (first response + resolution per priority) · public replies vs internal notes · CSAT on close. Statuses / priorities / reasons in Data Studio: <code>hdStatuses</code>, <code>hdPriorities</code>, <code>hdReasons</code>.</p></div>
+  <div class="a-card"><h3>Queue · ${tk.length} cases${breaches.length ? ` · <span class="a-chip">⚠ ${breaches.length} SLA breach</span>` : ""}</h3>
+    <p class="a-sub">${Object.entries(byS).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("") || "no cases"}</p>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>subject</th><th>customer</th><th>priority</th><th>status</th><th>assignee</th><th>csat</th></tr></thead>
+      <tbody>${tk.slice(0, 25).map(t => `<tr><td><code>${esc(t.ref)}</code></td><td>${esc(t.subject.slice(0, 48))}</td><td>${esc(t.owner_name)}</td><td><span class="a-chip">${esc(t.priority)}</span></td><td><span class="a-chip">${esc(t.status)}</span></td><td>${esc(t.assignee || "unassigned")}</td><td>${t.csat ? t.csat + "★" : "—"}</td></tr>`).join("") || '<tr><td colspan="7">No cases yet.</td></tr>'}</tbody></table></div>
+  </div>
+  <div class="a-card"><h3>SLA health</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>priority</th><th>status</th><th>breach</th></tr></thead>
+      <tbody>${(sla.health || []).slice(0, 15).map(h => `<tr><td><code>${esc(h.ref)}</code></td><td>${esc(h.priority)}</td><td>${esc(h.status)}</td><td>${h.breach ? `<span class="a-chip">⚠ ${esc(h.breach)}</span>` : "on schedule"}</td></tr>`).join("") || '<tr><td colspan="4">No open cases.</td></tr>'}</tbody></table></div>
+  </div>
+  <div class="a-card"><h3>Agent performance</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>agent</th><th>cases</th><th>responded</th><th>avg CSAT</th></tr></thead>
+      <tbody>${(sla.agents || []).map(a => `<tr><td>${esc(a.assignee)}</td><td>${a.tickets}</td><td>${a.responded}</td><td>${a.csat ? a.csat + " / 5" : "—"}</td></tr>`).join("") || '<tr><td colspan="4">No agent activity.</td></tr>'}</tbody></table></div>
+  </div>`;
+}
+async function vRetention() {
+  const [rec, mem] = await Promise.all([api("/admin/recurring", {}), api("/admin/memberships", {})]);
+  const scheds = rec.schedules || [];
+  const byS = {}; scheds.forEach(s => byS[s.status] = (byS[s.status] || 0) + 1);
+  const mems = mem.memberships || [];
+  return `<div class="a-head"><h2>🔁 Subscriptions &amp; Members</h2><p class="a-sub">Subscribe &amp; Save recurring delivery schedules + paid membership tiers (Prime / Plus / Walmart+ style; benefits apply at checkout). Tiers &amp; frequencies in Data Studio: <code>membershipTiers</code>, <code>recFrequencies</code>.</p></div>
+  <div class="a-card"><h3>Recurring schedules · ${scheds.length} · ${rec.due} due now</h3>
+    <p class="a-sub">${Object.entries(byS).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("") || "none"}</p>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>customer</th><th>qty</th><th>freq</th><th>disc</th><th>next ship</th><th>cycles</th><th>status</th></tr></thead>
+      <tbody>${scheds.slice(0, 20).map(s => `<tr><td><code>${esc(s.product_id)}</code> ${esc(s.product_title || "")}</td><td>${esc(s.owner)}</td><td>${s.qty}</td><td>${s.frequency_days}d</td><td>${s.discount_pct}%</td><td>${esc(String(s.next_ship_at).slice(0, 10))}</td><td>${s.cycles_completed}</td><td><span class="a-chip">${esc(s.status)}</span></td></tr>`).join("") || '<tr><td colspan="8">No subscriptions yet.</td></tr>'}</tbody></table></div>
+    <button class="btn-yellow" data-act="admin-rec-process">Process due shipments</button>
+  </div>
+  <div class="a-card"><h3>Membership tiers</h3>
+    <div>${(mem.tiers || []).map(t => `<span class="a-chip">${esc(t.name)} · ${money(t.price)}${t.benefits.length ? " · " + t.benefits.join(", ") : ""}</span>`).join("")}</div>
+  </div>
+  <div class="a-card"><h3>Members</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>customer</th><th>tier</th><th>status</th><th>renews</th></tr></thead>
+      <tbody>${mems.slice(0, 20).map(m => `<tr><td>${esc(m.owner)}</td><td><span class="a-chip">${esc(m.tier_detail ? m.tier_detail.name : m.tier)}</span></td><td>${esc(m.status)}</td><td>${esc(String(m.renews_at || "").slice(0, 10))}</td></tr>`).join("") || '<tr><td colspan="4">No members yet.</td></tr>'}</tbody></table></div>
+  </div>`;
+}
+async function vRisk() {
+  const q = await api("/admin/risk/queue", {});
+  const st = q.stats || { total: 0, approved: 0, held: 0, blocked: 0, pending: 0, avg_score: 0 };
+  return `<div class="a-head"><h2>🛡️ Risk &amp; Fraud</h2><p class="a-sub">Order screening at checkout — velocity (owner / IP / card), blocklists, composite 0–100 score → approve / hold / block. Held and blocked orders land in this queue. Signals &amp; thresholds are Data Studio registries: <code>riskSignals</code>, <code>riskActions</code>.</p></div>
+  <div class="a-card"><h3>Screening stats</h3>
+    <p class="a-sub"><span class="a-chip">screened·${st.total}</span><span class="a-chip">approved·${st.approved}</span><span class="a-chip">held·${st.held}</span><span class="a-chip">blocked·${st.blocked}</span><span class="a-chip">avg score·${st.avg_score}</span></p>
+  </div>
+  <div class="a-card"><h3>Review queue · ${st.pending} open</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>customer</th><th>amount</th><th>score</th><th>signals</th><th>decision</th></tr></thead>
+      <tbody>${(q.queue || []).slice(0, 25).map(e => `<tr><td><code>${esc(e.ref || e.id)}</code></td><td>${esc(e.owner || "—")}</td><td>${money(e.amount)}</td><td><b>${e.score}</b></td><td>${Object.keys(JSON.parse(e.signals || "{}")).map(k => `<span class="a-chip">${esc(k)}</span>`).join("") || "—"}</td><td><span class="a-chip">${esc(e.action)}</span></td></tr>`).join("") || '<tr><td colspan="6">Queue is clear.</td></tr>'}</tbody></table></div>
+  </div>`;
+}
+async function vExperiments() {
+  const list = await api("/admin/experiments", {});
+  return `<div class="a-head"><h2>🧪 Experiments</h2><p class="a-sub">A/B tests with weighted variants — assignment is deterministic per customer (stable hash), conversion tracked per variant with a 95% significance readout. Statuses in Data Studio: <code>expStatuses</code>.</p></div>
+  <div class="a-card"><h3>Experiments</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>key</th><th>name</th><th>variants</th><th>status</th><th>metric</th></tr></thead>
+      <tbody>${(list.experiments || []).map(e => `<tr><td><code>${esc(e.key)}</code></td><td>${esc(e.name)}</td><td>${(e.variants || []).map(v => `<span class="a-chip">${esc(v.key)}·${(v.share * 100).toFixed(0)}%</span>`).join("")}</td><td><span class="a-chip">${esc(e.status)}</span></td><td>${esc(e.metric)}</td></tr>`).join("") || '<tr><td colspan="5">No experiments yet.</td></tr>'}</tbody></table></div>
+  </div>`;
+}
+async function vPlanning() {
+  const [list, pos] = await Promise.all([api("/admin/planning", {}), api("/admin/planning/pos", {})]);
+  const st = list.stats || {};
+  const buy = (list.replenishments || []).filter(r => r.reorder_qty > 0);
+  return `<div class="a-head"><h2>📦 Planning &amp; Replenishment</h2><p class="a-sub">Per-SKU demand forecast from real order history (weighted moving average + trend), reorder point, safety stock and lead-time-aware suggested purchase orders to the primary supplier. Run the plan after order spikes or on a schedule. Statuses &amp; priorities in Data Studio: <code>planStatuses</code>, <code>planPriorities</code>.</p></div>
+  <div class="a-cards">
+    <div class="a-card"><h3>Overview</h3>
+      <div class="a-stats">${[["SKUs tracked", st.skus || 0], ["Active SKUs", st.active_skus || 0], ["Open suggestions", st.open || 0], ["Urgent", st.urgent || 0], ["Below reorder point", st.below_reorder || 0]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+        <button class="btn-yellow" data-act="plan-run">▶ Run plan</button>
+        <button class="btn-white" data-act="plan-approve-all" ${buy.length ? "" : "disabled"}>Approve ${buy.length} suggestion${buy.length === 1 ? "" : "s"}</button>
+      </div></div>
+    <div class="a-card"><h3>Suggested purchase orders</h3>
+      <div class="a-tablewrap"><table class="a-table"><thead><tr><th>supplier</th><th>lines</th><th>units</th><th>est. cost</th></tr></thead>
+        <tbody>${(pos.purchaseOrders || []).map(p => `<tr><td>${esc(p.supplier_name)}</td><td>${p.lines.length}</td><td>${p.units}</td><td>${p.cost ? esc(p.cost.toFixed(2)) : "—"}</td></tr>`).join("") || '<tr><td colspan="4">No purchase orders — run the plan.</td></tr>'}</tbody></table></div></div>
+  </div>
+  <div class="a-card"><h3>Replenishment plan</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>sku</th><th>product</th><th>available</th><th>avg/day</th><th>forecast 30d</th><th>lead</th><th>safety</th><th>reorder pt</th><th>reorder qty</th><th>supplier</th><th>priority</th><th>status</th><th></th></tr></thead>
+      <tbody>${(list.replenishments || []).map(r => `<tr>
+        <td><code>${esc(r.sku_code || r.sku_id)}</code></td><td>${esc(r.product_title || r.product_id)}</td>
+        <td>${r.available}</td><td>${(+r.avg_daily).toFixed(1)}</td><td>${r.forecast_30d}</td><td>${r.lead_days}d</td>
+        <td>${r.safety_stock}</td><td>${r.reorder_point}</td>
+        <td><b>${r.reorder_qty > 0 ? r.reorder_qty : "—"}</b></td>
+        <td>${esc(r.supplier_name || "—")}</td>
+        <td><span class="a-chip">${esc(r.priority)}</span></td>
+        <td><span class="a-chip">${esc(r.status)}</span></td>
+        <td>${!["ordered", "received"].includes(r.status) ? `<button class="btn-white sm" data-act="plan-approve" data-id="${r.id}">Approve</button>` : `<code>${esc(r.po_ref || "")}</code>`}</td>
+      </tr>`).join("") || '<tr><td colspan="13">No plan yet — run the plan to forecast demand.</td></tr>'}</tbody></table></div>
+  </div>`;
+}
+function shell(content) {  $("#app").innerHTML = `
   <div class="p-shell">
     <aside class="p-side">
       <div class="p-logo"><b>${esc(TT.brand.wordmark)}</b><small>Store Console · ${esc(TT.tenant.slug)}</small></div>
@@ -216,7 +324,24 @@ async function entityTable(key, opts = {}) {
 }
 document.addEventListener("click", async e => {
   const nb = e.target.closest("[data-new]"), eb = e.target.closest("[data-edit]"), db = e.target.closest("[data-del]");
+  const act = e.target.closest("[data-act]");
   try {
+    if (act && act.dataset.act === "admin-rec-process") {
+      const r = await api("/admin/recurring/process", "POST");
+      toast(`Processed ${r.processed.length} due shipment(s) · ${r.remaining} remaining`); render();
+    }
+    if (act && act.dataset.act === "plan-run") {
+      const r = await api("/admin/planning/run", "POST");
+      toast(`Plan computed for ${r.planned} SKU(s) · ${r.stats.open} open suggestion(s)`); render();
+    }
+    if (act && act.dataset.act === "plan-approve-all") {
+      const r = await api("/admin/planning/approve-all", "POST");
+      toast(`Approved ${r.approved} suggestion(s)`); render();
+    }
+    if (act && act.dataset.act === "plan-approve") {
+      const r = await api(`/admin/planning/${act.dataset.id}`, "PUT", { status: "approved" });
+      toast(`Approved ${r.replenishment.po_ref}`); render();
+    }
     if (nb) openForm(nb.dataset.new, null, render);
     if (eb) openForm(eb.dataset.edit, eb.dataset.id, render);
     if (db) { if (!confirm("Delete this record?")) return; await api(`/meta/entity/${db.dataset.del}/${encodeURIComponent(db.dataset.id)}`, "DELETE"); toast("Deleted"); render(); }
@@ -871,6 +996,12 @@ async function render() {
     else if (view === "modules") { body.innerHTML = await vModules(); }
     else if (view === "audit") { body.innerHTML = await vAudit(); wireAudit(); }
     else if (view === "marketplace") body.innerHTML = await vMarketplace();
+    else if (view === "ugc") body.innerHTML = await vUgc();
+    else if (view === "helpdesk") body.innerHTML = await vHelpdesk();
+    else if (view === "retention") body.innerHTML = await vRetention();
+    else if (view === "risk") body.innerHTML = await vRisk();
+    else if (view === "experiments") body.innerHTML = await vExperiments();
+    else if (view === "planning") body.innerHTML = await vPlanning();
     else if (view === "finance") body.innerHTML = await vFinance();
     else if (view === "logistics") body.innerHTML = await vLogistics();
     else if (view === "search") body.innerHTML = await vSearch();
