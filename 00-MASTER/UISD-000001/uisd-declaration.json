@@ -349,6 +349,33 @@
       "admission": "Append the token and re-parse. Data alone: read by membership test at ukb.py:196; no engine change and no schema change, and the traceability graph is re-derived from the corpus on each build.",
       "intentional": true,
       "$what_it_is": "how a reference cell says it names nothing"
+    },
+    {
+      "id": "ISD-CE-22",
+      "enumeration": "ID_PREFIX",
+      "declared_at": "engine/registry/universal/identity.py",
+      "population": 1,
+      "closing_invariant": "ID-02. The prefix is not a member of a set the authority chooses from — it IS the authority's name inside every identifier it mints (identity.py:269 emits '{ID_PREFIX}-{code}-{digest}'). One minting authority therefore admits exactly one prefix, and a second prefix would mean this authority minting under a name that is not its own. Closure is what makes parse total: parse_kind and parse_kind_name both refuse on parts[0] != ID_PREFIX, so an identifier bearing another authority's prefix is rejected rather than silently resolved against this ledger.",
+      "admission": "A second authority declares its own prefix in its own declaration and mints under it. Nothing is appended here: ISD-BND-02 refuses this declaration the power to issue any identifier or urn, so admitting a prefix is not an act available to UISD-000001.",
+      "intentional": true
+    },
+    {
+      "id": "ISD-CE-23",
+      "enumeration": "_ID_DIGEST_LEN",
+      "declared_at": "engine/registry/universal/identity.py",
+      "population": 1,
+      "closing_invariant": "ID-03. Twelve hex characters is a width, not a membership, and it is closed by Article 5 rather than by preference: 01-EXECUTABLE-OBJECT-REGISTRY.json records that nothing is 're-minted, renumbered, reissued or retired', so widening or narrowing the digest would re-mint every identifier already minted at the old width. The width is therefore closed for exactly as long as the ledger holds an identifier, which is permanently. Distinct from ID-01: that is a numeric SERIAL ceiling where the mint pads and the validator caps, and it is recorded BLOCKED because a fix moves the universe digest; this is a digest width and moves nothing.",
+      "admission": "None available, and that is the disclosure. A second width is a second identifier shape, which is a re-mint under Article 5. An authority needing another width mints under its own prefix (ISD-CE-22) rather than rewidening this one.",
+      "intentional": true
+    },
+    {
+      "id": "ISD-CE-24",
+      "enumeration": "universal id part arity",
+      "declared_at": "engine/registry/universal/identity.py",
+      "population": 3,
+      "closing_invariant": "ID-04. Both parsers split on '-' and refuse len(parts) != 3. The arity is closed because the mint emits exactly three parts and neither of the last two can contain the separator: a kind code matches [A-Z][A-Z0-9]{1,7} (identity.py:160-199) and the digest is hex. THE REGISTER'S RECORDED CAUSE IS WRONG AND IS CORRECTED HERE: it states that 'any natural key containing a hyphen is unparseable', but the natural key never enters the identifier — it is hashed into the digest — so a hyphenated natural key is representable and parseable. The closure is real; the failure mode attributed to it cannot occur.",
+      "admission": "A fourth part is a new identifier shape and therefore a re-mint, refused on the same Article 5 ground as ISD-CE-23. A natural key of any shape needs no admission: it is hashed, never embedded.",
+      "intentional": true
     }
   ],
   "$disclosure_completeness": "This list is itself open: it enumerates the closed enumerations located at baseline bb9c27d2 and is extended by appending an entry. ISD-L-01 measures that each entry names a closing invariant and an admission path, not that the list is exhaustive — a claim of exhaustiveness would be the very finite assumption the principle prohibits.",
