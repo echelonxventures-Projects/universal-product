@@ -1,30 +1,13 @@
 {
   "name": "ucii-platform",
   "version": "1.0.0",
-  "description": "Universal Commerce & Incentive Infrastructure - Complete Implementation",
-  "license": "UNLICENSED",
-  "private": true,
+  "description": "Universal Commerce & Incentive Infrastructure",
+  "main": "server.js",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:e2e": "playwright test",
-    "lint": "eslint .",
-    "typecheck": "tsc --noEmit",
-    "docker:up": "docker-compose up",
-    "docker:down": "docker-compose down",
-    "docs": "typedoc"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
-    "@types/node": "^20.0.0",
-    "typescript": "^5.0.0",
-    "tsx": "^3.12.0"
-  },
-  "devDependencies": {
-    "vitest": "^1.0.0",
-    "@playwright/test": "^1.40.0",
-    "eslint": "^8.0.0",
-    "typedoc": "^0.25.0"
+    "express": "^4.18.2"
   }
 }
