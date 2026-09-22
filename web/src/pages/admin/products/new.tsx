@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import Layout from '../../components/Layout';
-import { products } from '../../services/api';
+import Layout from '@/components/Layout';
+import { products } from '@/services/api';
 import { useRouter } from 'next/router';
 
 export default function CreateProductPage() {

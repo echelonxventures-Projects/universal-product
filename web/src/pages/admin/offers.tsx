@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
-import { offers } from '../services/api';
-import type { Offer } from '../types';
+import Layout from '@/components/Layout';
+import { offers } from '@/services/api';
+import type { Offer } from '@/types';
 
 export default function OffersPage() {
   const [items, setItems] = useState<Offer[]>([]);

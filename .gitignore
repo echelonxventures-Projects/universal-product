@@ -12,4 +12,4 @@ coverage/
 *.swo
 .DS_Store
 *.sqlite3
-tmp/
+tmp/web/.next

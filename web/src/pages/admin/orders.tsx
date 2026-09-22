@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import Layout from '../../components/Layout';
-import { orders } from '../../services/api';
-import type { Order } from '../../types';
+import Layout from '@/components/Layout';
+import { orders } from '@/services/api';
+import type { Order } from '@/types';
 
 export default function OrdersPage() {
   const [items, setItems] = useState<Order[]>([]);

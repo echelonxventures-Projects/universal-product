@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import Layout from '../../components/Layout';
-import { products } from '../../services/api';
-import type { Product } from '../../types';
+import Layout from '@/components/Layout';
+import { products } from '@/services/api';
+import type { Product } from '@/types';
 
 export default function ProductsPage() {
   const [items, setItems] = useState<Product[]>([]);

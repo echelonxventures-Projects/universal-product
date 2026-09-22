@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
-import { products, orders, offers } from '../services/api';
-import type { Product, Order, Offer } from '../types';
+import Layout from '@/components/Layout';
+import { products, orders, offers } from '@/services/api';
+import type { Product, Order, Offer } from '@/types';
 
 export default function AdminDashboard() {
   const [products, setProducts] = useState<Product[]>([]);

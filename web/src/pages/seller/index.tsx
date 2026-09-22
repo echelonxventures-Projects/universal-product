@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
+import Layout from '@/components/Layout';
 
 export default function SellerDashboard() {
   const [stats, setStats] = useState({ inventory: 0, sales: 0, revenue: 0 });

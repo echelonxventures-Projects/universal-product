@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Layout from '../components/Layout';
+import Layout from '@/components/Layout';
 
 export default function MerchantDashboard() {
   const [stats, setStats] = useState({ products: 0, orders: 0, earnings: 0 });
