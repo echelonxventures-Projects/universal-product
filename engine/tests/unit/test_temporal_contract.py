@@ -11,6 +11,9 @@ happy-path tests.
 
 from __future__ import annotations
 
+import ast
+import subprocess
+
 import pytest
 
 from engine.temporal import (
@@ -31,7 +34,12 @@ from engine.temporal import (
     convert,
     validate_ordering,
 )
-from engine.temporal.coordinate import Conversion, CreationMethod, SystemType
+from engine.temporal.coordinate import (
+    Conversion,
+    CreationMethod,
+    SystemType,
+    parse_qualified,
+)
 from engine.temporal.operations import preserve_context
 
 
@@ -449,8 +457,6 @@ def test_qualified_form_carries_the_frame_with_the_value() -> None:
 
 
 def test_qualified_round_trips() -> None:
-    from engine.temporal.coordinate import parse_qualified
-
     original = _coord("484", LAMPORT)
     restored = parse_qualified(original.qualified, authority="test")
     assert restored.primary == original.primary
@@ -458,8 +464,6 @@ def test_qualified_round_trips() -> None:
 
 
 def test_qualified_round_trip_preserves_comparability() -> None:
-    from engine.temporal.coordinate import parse_qualified
-
     a = parse_qualified(_coord("2", LAMPORT).qualified, authority="t")
     b = parse_qualified(_coord("10", LAMPORT).qualified, authority="t")
     assert compare(a, b) is Ordering.BEFORE
@@ -467,37 +471,27 @@ def test_qualified_round_trip_preserves_comparability() -> None:
 
 def test_bare_value_is_refused() -> None:
     """A timestamp with no reference system has silently mandated a representation."""
-    from engine.temporal.coordinate import parse_qualified
-
     with pytest.raises(TemporalError, match="mandates a representation"):
         parse_qualified("2026-08-17T00:00:00Z", authority="test")
 
 
 def test_qualified_without_a_primary_is_refused() -> None:
-    from engine.temporal.coordinate import parse_qualified
-
     with pytest.raises(TemporalError, match="no primary value"):
         parse_qualified("logical:lamport@1#", authority="test")
 
 
 @pytest.mark.parametrize("bad", ["logical:lamport#5", "logical:@1#5", "logical#5"])
 def test_malformed_reference_system_key_is_refused(bad: str) -> None:
-    from engine.temporal.coordinate import parse_qualified
-
     with pytest.raises(TemporalError, match="malformed reference system key"):
         parse_qualified(bad, authority="test")
 
 
 def test_unknown_system_type_token_is_refused() -> None:
-    from engine.temporal.coordinate import parse_qualified
-
     with pytest.raises(TemporalError, match="unknown reference system type"):
         parse_qualified("invented:frame@1#5", authority="test")
 
 
 def test_qualified_preserves_a_non_default_system_version() -> None:
-    from engine.temporal.coordinate import parse_qualified
-
     versioned = ReferenceSystem(
         system_type=SystemType.CONTEXTUAL, system_identifier="cal", system_version="7"
     )
@@ -521,3 +515,143 @@ def test_a_conversion_projects_every_field_it_declares() -> None:
     projected = conversion.to_dict()
     assert projected["source_system"] == "epoch-ns"
     assert projected["conversion_authority"] == "CMG-000002"
+
+
+# --------------------------------------------------- IE-03: the ban, measured repo-wide
+#
+# `test_package_exposes_no_clock` above bans now/utcnow/today on `engine.temporal` and
+# `engine.temporal.operations`. That is the package that DEFINES the coordinate contract,
+# and the ban never reached the repository that has to honour it -- so every module outside
+# those two could read a wall clock and emit a bare ISO-8601 string, and nothing measured
+# it. IE-03 records "2 unqualified UTC/ISO-8601 emissions bypass it" and names
+# obs/logging.py and registry/universal/audit.py. Measured by shape over tracked
+# non-test source under the governed roots, the population is NINE across EIGHT modules.
+# The register undercounts by seven, all of them `datetime.now(...)` rather than
+# `fromtimestamp(...)`, which is the shape it happened to grep for.
+#
+# Both bounds below are two-sided: a tenth emission fails, and repaying one fails too
+# until the bound is lowered to match, because a bound that only refuses growth lets
+# repaid debt sit unrecorded.
+
+#: Calls that turn a wall clock into a temporal VALUE: an evidence stamp, an audit clock,
+#: a log field. Each one is a coordinate emitted with no ReferenceSystem, which is what
+#: CMG-000002 requires and what makes the result unreplayable.
+_COORDINATE_EMISSIONS = frozenset(
+    {
+        ("engine/construct/evidence.py", "now"),
+        ("engine/execution_environment/evidence.py", "now"),
+        ("engine/foundation/obs/logging.py", "fromtimestamp"),
+        ("engine/graph/architecture/evidence.py", "now"),
+        ("engine/graph/evidence.py", "now"),
+        ("engine/ledger_authority/__init__.py", "now"),
+        ("engine/recursive_knowledge/evidence.py", "now"),
+        ("engine/registry/universal/audit.py", "fromtimestamp"),
+        ("engine/registry/universal/audit.py", "now"),
+    }
+)
+
+#: Modules that read a clock for a DURATION rather than a coordinate. A monotonic or
+#: perf_counter reading carries no calendar meaning, cannot be compared across systems and
+#: is not a coordinate, so CMG-000002 does not reach it. Bounded per MODULE rather than
+#: per call: another elapsed-time measurement inside a module already sanctioned for it is
+#: not a new finding, but a module that starts reading a clock is.
+_DURATION_MODULES = frozenset(
+    {
+        "engine/certification_integrity/immutable.py",
+        "engine/certification_integrity/suite.py",
+        "engine/foundation/obs/telemetry.py",
+        "engine/ledger_authority/__init__.py",
+    }
+)
+
+_EMISSION_CALLS = frozenset({"now", "utcnow", "today", "fromtimestamp"})
+_DURATION_CALLS = frozenset({"monotonic", "perf_counter", "time", "time_ns"})
+_GOVERNED_ROOTS = ("engine/", "platform/", "intelligence/", "data/", "application/")
+
+
+def _clock_reads() -> tuple[set[tuple[str, str]], set[str]]:
+    """Every wall-clock read in tracked non-test governed source, found by AST shape.
+
+    Returns the emission pair set, the duration module set, and the emission TALLY. The
+    tally exists because pair identity alone is blind to a SECOND identical call in a
+    module already listed -- (path, "now") is the same pair whether the module emits once
+    or twice -- and a second emission site is a new finding.
+
+    By shape rather than by name, for the reason `engine/infinite_scope/detector.py` gives
+    about closed enumerations: a list of known sites is finite and goes stale, a detector
+    for the shape catches the one somebody adds next year.
+    """
+    here = __file__.rsplit("/", 1)[0]
+    root = (
+        subprocess.run(  # noqa: S603
+            ["git", "rev-parse", "--show-toplevel"],  # noqa: S607
+            capture_output=True,
+            check=True,
+            cwd=here,
+        )
+        .stdout.decode("utf-8")
+        .strip()
+    )
+    listing = subprocess.run(  # noqa: S603
+        ["git", "ls-files", "-z"],  # noqa: S607
+        capture_output=True,
+        check=True,
+        cwd=root,
+    )
+    paths = [p for p in listing.stdout.decode("utf-8").split("\0") if p.endswith(".py")]
+    emissions: set[tuple[str, str]] = set()
+    durations: set[str] = set()
+    tally: list[tuple[str, str]] = []
+    for path in paths:
+        if not path.startswith(_GOVERNED_ROOTS):
+            continue
+        if "/tests/" in path or path.rsplit("/", 1)[-1].startswith("test_"):
+            continue
+        try:
+            with open(f"{root}/{path}", encoding="utf-8") as handle:
+                tree = ast.parse(handle.read())
+        except (OSError, SyntaxError):  # pragma: no cover - a parse failure is not a finding
+            continue
+        for node in ast.walk(tree):
+            if not (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)):
+                continue
+            if node.func.attr in _EMISSION_CALLS:
+                emissions.add((path, node.func.attr))
+                tally.append((path, node.func.attr))
+            elif node.func.attr in _DURATION_CALLS:
+                durations.add(path)
+    return emissions, durations, tally
+
+
+def test_the_clock_ban_is_measured_over_the_repository_not_only_the_package() -> None:
+    """No module may begin emitting an unqualified temporal coordinate unnoticed."""
+    emissions, _, tally = _clock_reads()
+    assert emissions == _COORDINATE_EMISSIONS, (
+        f"unqualified coordinate emissions changed: "
+        f"new={sorted(emissions - _COORDINATE_EMISSIONS)}, "
+        f"repaid={sorted(_COORDINATE_EMISSIONS - emissions)}"
+    )
+    assert len(tally) == len(_COORDINATE_EMISSIONS), (
+        f"emission COUNT is {len(tally)} against {len(_COORDINATE_EMISSIONS)} disclosed "
+        f"sites: a module already listed has begun emitting more than once"
+    )
+
+
+def test_duration_measurement_is_distinguished_from_coordinate_emission() -> None:
+    """A duration is not a coordinate, and the distinction is measured, not assumed.
+
+    Conflating the two is how IE-03's own count went wrong in the other direction: twelve
+    monotonic and perf_counter reads sit in this tree and none of them is a temporal
+    coordinate, so a scan that counted every clock read would report eighteen findings and
+    train the reader to ignore the report.
+    """
+    emissions, durations, _ = _clock_reads()
+    assert durations == _DURATION_MODULES, (
+        f"modules reading a clock for duration changed: "
+        f"new={sorted(durations - _DURATION_MODULES)}, "
+        f"removed={sorted(_DURATION_MODULES - durations)}"
+    )
+    assert not (_DURATION_CALLS & _EMISSION_CALLS), "a call cannot be both classes"
+    assert {
+        path for path, _ in emissions
+    } != durations, "the two populations are measured separately and must not be the same set"
