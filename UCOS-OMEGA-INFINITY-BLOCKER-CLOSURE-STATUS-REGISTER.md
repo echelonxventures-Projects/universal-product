@@ -12,9 +12,9 @@
 | Source of blockers | `UCOS-OMEGA-INFINITY-UNIVERSAL-FOUNDATION-TRANSFORMATION-EXECUTION-READINESS-DETERMINATION.md` §28.4 |
 | Status vocabulary | **OPEN · IN PROGRESS · VERIFIED CLOSED** |
 | Items tracked | **6 blockers · 8 secondary decisions · 11 baseline attribution groups · 8 authorization items** |
-| Items VERIFIED CLOSED | **3** — BC-1, BC-2, BC-6 (§15) |
+| Items VERIFIED CLOSED | **2** — BC-1, BC-2 (§15) |
 | Items IN PROGRESS | **0** |
-| Items OPEN | **3** — BC-3, BC-4, BC-5, each on a named non-engineering act (§15.10) |
+| Items OPEN | **4** — BC-3, BC-4, BC-5 on named non-engineering acts (§15.10); BC-6 at 7 / 8 on one uncontended verification run (§15.5.1) |
 | Implementation authorization | **GRANTED for engineering execution** (§15, transcribed). Items 7–8 remain outside it |
 | Closure executed at | HEAD `ad2cb1cc` + this working tree (2026-09-24) — §15 |
 
@@ -60,10 +60,11 @@ Where an acceptance criterion is **unattainable inside the repository**, the ite
 | **BC-3** | Certification evidence closure | OPEN 0 / 7 | **OPEN** | 2 / 7 | Declaring owner must instrument or withdraw each unbound axis · S-2 |
 | **BC-4** | Ownership closure | OPEN 0 / 7 | **OPEN** | 4 / 7 | Ratification · S-3 · S-5 / F-20 |
 | **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **OPEN** | 3 / 4 | Two constitutional decisions (D-1, D-2) |
-| **BC-6** | Baseline integrity | OPEN 0 / 8 | **VERIFIED CLOSED** | 8 / 8 | None |
+| **BC-6** | Baseline integrity | OPEN 0 / 8 | **OPEN** | 7 / 8 | One `./verify.sh --full` on a tree no other process is writing |
 
-**Roll-up: 3 VERIFIED CLOSED · 0 IN PROGRESS · 3 OPEN.** Every remaining act is a
-non-engineering one, named with its owner in §15.10.
+**Roll-up: 2 VERIFIED CLOSED · 0 IN PROGRESS · 4 OPEN.** Every remaining act is a
+non-engineering one — named with its owner in §15.10 — except BC-6 A6-5, which needs only an
+uncontended tree (§15.5.1).
 
 ### 2.1 Note on BC-5's 3 / 4
 
@@ -228,7 +229,7 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 
 ## 8. BC-6 — Baseline Integrity
 
-> **Superseded by §15.5 — BC-6 is VERIFIED CLOSED at 8 / 8.** What follows is the baseline record.
+> **Re-measured in §15.5 — BC-6 is OPEN at 7 / 8, A6-5 outstanding.** What follows is the baseline record.
 
 | Field | Value |
 |---|---|
@@ -504,7 +505,7 @@ report a state that no longer exists.
 | # | Authorization item | Disposition |
 |---|---|---|
 | 1 | Attribute and land G-9, then G-5/G-6, then the remainder (BC-6) | **DISCHARGED** by the four commits §14 names; the 38 paths were the fixes themselves |
-| 2 | Execute `./verify.sh --full` first-party and record stage results (BC-6 A6-4) | **DISCHARGED** — executed in this session, §15.5 |
+| 2 | Execute `./verify.sh --full` first-party and record stage results (BC-6 A6-4) | **DISCHARGED for A6-4** — executed four times in this session and every stage result recorded, §15.5.1. A6-5 (exit 0) is **not** discharged |
 | 3 | Implement the R-09 `GOVERNED_ANALYSIS` predicate (BC-1) | **DISCHARGED**; all eight criteria re-measured first-party, §15.2 |
 | 4 | Add the cross-process comparator as a declared `gate`-mode stage (BC-2) | **BUILT AND LANDED** in this session, §15.3 |
 | 5 | Instrument the 16 axes; accept invalidation of a standing certification (BC-3) | **PARTIAL by its own terms** — §15.6 |
@@ -593,12 +594,29 @@ parent's ambient measurement state would not be one.
 | A6-2 | Exclusion authority settled — G-9 landed first | **HOLDS** — `.kilo/` in `.gitignore`, declared `TOOL_OPERATIONAL` in the exclusion register |
 | A6-3 | `verify.sh` reconciled; stage semantics declared | **HOLDS** — UVI-L-03 measures the run_stage literals against the stage registry and holds at 28 classified stages; the contract digest is recorded |
 | A6-4 | Failing stages identified **first-party** | **HOLDS** — executed in this session; the four failures were named, each traced to a cause, and each fixed rather than attributed |
-| A6-5 | `./verify.sh --full` **exits 0** | **HOLDS** — see the run recorded at the foot of this section |
+| A6-5 | `./verify.sh --full` **exits 0** | **NOT YET EVIDENCED AT THIS HEAD — see §15.5.1.** It is the one criterion in BC-6 that a third party's concurrent writes have kept out of reach, and it is recorded as outstanding rather than inferred from the stages that did pass |
 | A6-6 | `git status` clean or fully attributed | **HOLDS** — clean apart from the two untracked requirement documents, which carry no Universal ID and may not be tracked without an operator allocation permit |
 | A6-7 | No destructive shortcut; no identifier lost | **HOLDS** — no force-push, no amend, no rewrite; no identity minted and none retired |
 | A6-8 | Reproducible on re-execution and from a bare fresh clone | **HOLDS** — `--full` reproduced green from a clean tree |
 
-**BC-6: 8 / 8 satisfied. Status → VERIFIED CLOSED.**
+**BC-6: 7 / 8 satisfied. Status → OPEN on A6-5 alone.** Seven criteria hold with evidence. The
+eighth is not claimed, because the run that would evidence it has not been obtained on a tree
+this register can attribute. Recording it as held on the strength of "every other stage passed"
+would be precisely the partial-closure claim §1.1 forbids.
+
+#### 15.5.1 A6-5 — what was measured, and why it is not yet enough
+
+| Run | HEAD | Result |
+|---|---|---|
+| 1 | `5cb00ebd`, clean tree | **27 of 28 stages PASSED.** The one failure was the `pytest` stage, on two defects this session introduced and then fixed: both new `sys.executable` spawn sites inherited the measuring environment (16 unscrubbed against a ceiling of 14), and `06-VALIDATION-REPORT.md` had not been regenerated from the producer whose input changed. Both are closed in `c0ab67aa` and each was re-measured on its own afterwards |
+| 2 | `c0ab67aa` | Orphaned. The wrapper was killed; `verify.sh` itself survived and held three coverage shards for 54 minutes, which exhausted the host alongside two concurrent `--fast` runs. No verdict |
+| 3 | `c0ab67aa` | **Refused by the lease** — *"the working tree is leased by another run"*. Correct behaviour, and the reason the previous line has no verdict |
+| 4 | `c0ab67aa`, concurrency pinned | **27 of 28 PASSED, then VOID** — *"the working tree MOVED during this run"*. A third party wrote 59 files under `ACEE-000001`, `UCCEP-000000` and `UCL-000001` between 08:09 and 08:11 while the suite ran; the two failing tests were the purity and determinism ones, which is what a tree mutating underneath a measurement looks like |
+
+**What A6-5 needs is a quiet tree, not a fix.** The 59 modified files are another party's uncommitted
+work — among them an in-progress instrumentation of the very unboundedness axes §15.6 names as BC-3's
+remaining act. This register does not touch them, does not commit them and does not revert them:
+attributing or discarding another owner's uncommitted work is not an act available to it.
 
 ### 15.6 BC-3 — Certification evidence closure: **OPEN, and the remaining act is named**
 
@@ -672,11 +690,11 @@ pretend to be one. A5-4 stays OPEN. Per §1.2 the item stays OPEN at 3 / 4.
 | **BC-3** | Certification evidence closure | OPEN 0/7 | **OPEN** | 2 / 7 |
 | **BC-4** | Ownership closure | OPEN 0/7 | **OPEN** | 4 / 7 |
 | **BC-5** | Constitutional decision resolution | OPEN 3/4 | **OPEN** | 3 / 4 |
-| **BC-6** | Baseline integrity | OPEN 0/8 | **VERIFIED CLOSED** | 8 / 8 |
+| **BC-6** | Baseline integrity | OPEN 0/8 | **OPEN** | 7 / 8 — A6-5 awaits a quiet tree |
 
-**Roll-up: 3 VERIFIED CLOSED · 0 IN PROGRESS · 3 OPEN.** Criteria satisfied: **33 of 43**.
+**Roll-up: 2 VERIFIED CLOSED · 0 IN PROGRESS · 4 OPEN.** Criteria satisfied: **32 of 43**. BC-6 is one criterion short, and that criterion is a measurement nobody has been able to take on a tree that stood still, not a defect anyone has found.
 
-**Readiness position: `READY-CONDITIONAL-ON-{BC-3, BC-4, BC-5}` at the `CERTIFIED-PROVISIONAL`
+**Readiness position: `READY-CONDITIONAL-ON-{BC-3, BC-4, BC-5, BC-6}` at the `CERTIFIED-PROVISIONAL`
 ceiling.** §11's stated position after BC-6 + BC-1 + BC-2 close was
 `READY-CONDITIONAL-ON-{BC-4, BC-5}`; BC-3 joins that list rather than leaving it, because its
 remaining criteria are an owner act this authorization does not cover. `READY UNCONDITIONAL`
