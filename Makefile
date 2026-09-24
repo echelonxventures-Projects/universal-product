@@ -263,12 +263,40 @@ repo-ops:
 # ALREADY-DECLARED console script (ucos-knowledge / ec1-determinism in pyproject.toml) —
 # no new capability, only reachability, which is the same discharge REG-AUTO-001 P7
 # requires of every other engine (a target, a workflow and a test must name it).
-.PHONY: knowledge determinism-evidence
+.PHONY: knowledge determinism-evidence determinism-init-gate
 knowledge: bootstrap-quiet
 	@$(PY) -m engine.knowledge.cli init
 
 determinism-evidence: bootstrap-quiet
 	@$(PY) -m engine.determinism.reproduce
+
+# ===========================================================================
+# BC-2 — cross-process initialization independence.
+#
+# THE PROPERTY THE DOUBLE BUILD STRUCTURALLY CANNOT SEE. `determinism-evidence` above
+# compiles one blueprint twice and compares the bytes, and both builds run inside ONE
+# interpreter — so every module global the second build reads is already whatever the
+# first left it. That measures PATH REPRODUCIBILITY, which this repository has genuinely
+# proven, and it has never measured whether a verdict depends on WHEN, or IN WHICH ORDER,
+# the process was initialized. TA-26 records that the two are distinct properties;
+# conflating them is the evidential error blocker BC-2 names.
+#
+# WHAT IT DOES. Three child interpreters over one canonical subject set — uninitialized,
+# bootstrapped, and bootstrapped by the reverse arrival order — each reporting a verdict
+# digest. A core kind whose verdict moves is refused; an extension kind's is disclosed,
+# because "unknown before registration, known after it" is UCKP-ART-17's open extension
+# space working rather than hidden state. Two admissible orders that disagree are refused
+# unconditionally. Its own positive control must be detected or the run refuses itself.
+#
+# TWO PLANES, ONE COMMAND. This target and the ./verify.sh initialization-independence
+# stage run identical argv, so they measure one thing rather than two, which is what
+# UEC-L-06 requires. READ_ONLY: three subprocesses, no clock, no network, no write
+# anywhere — not even to a gitignored path.
+# ===========================================================================
+determinism-init-gate: bootstrap-quiet
+	@$(PY) -m engine.determinism.reproduce --gate --quiet \
+	  || { echo "INITIALIZATION INDEPENDENCE REFUSED — a verdict moved with initialization; run 'make determinism-init-gate' without --quiet for the localised authority" >&2; exit 1; }
+	@echo "determinism-init-gate: no core verdict moves with initialization, and no arrival order decides one"
 
 # closure: UAKOS-CLOSURE-002 — regenerate the Vision-to-Repository closure artifacts
 # (source inventory, concept inventory, coverage/traceability matrices, gap register,

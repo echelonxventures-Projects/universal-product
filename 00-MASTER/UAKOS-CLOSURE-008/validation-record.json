@@ -20,7 +20,7 @@
     "command": "./verify.sh --full",
     "contract_id": "UCOS-VERIFY-001",
     "invocation": "--full (the certification contract; the bare invocation is --change, a developer mode that certifies nothing)",
-    "stages_digest": "d2ebc664b238107347205e5be85ba7ba8f657a755dbbcedaa9dad5e589482ac8",
+    "stages_digest": "e1c44382b4111296fe3e9cf997c93bd4a6a21a23c71468e8d0562eb737aa1434",
     "stages_digest_definition": "sha256 over the newline-joined stage names this contract declares, read from verify.sh. A gate added to the contract and not to this record fails the record's own test."
   },
   "evidence_reference": {
@@ -133,6 +133,10 @@
     {
       "result": "PASS",
       "stage": "mandate disposition closure (CAEM-001, every mandate disposed and no disposition invented)"
+    },
+    {
+      "result": "PASS",
+      "stage": "cross-process initialization independence (BC-2, no verdict moves with initialization order)"
     },
     {
       "result": "PASS",

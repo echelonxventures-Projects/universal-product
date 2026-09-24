@@ -934,6 +934,31 @@
         "$modes": "Admitted by change, integration and full and excluded from fast. Its subject is the committed disposition register derived from the whole corpus, so a selection-based run that skipped it could add an undispositioned mandate and report success. Fast runs lint and test only, and carry no claim about mandates."
       },
       {
+        "depends_on": [],
+        "id": "initialization-independence",
+        "label": "cross-process initialization independence (BC-2, no verdict moves with initialization order)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UVI-000001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "engine/determinism/",
+          "engine/ceu/",
+          "engine/registry/universal/"
+        ],
+        "reusable": false,
+        "shardable": false,
+        "$not_reusable": "Its subject is the behaviour of a fresh interpreter over the imported tree, not a file set. Any module that runs at import time anywhere under the transitive closure of the identity authority can move a verdict, and that closure is not a prefix set a reuse key could name honestly. The stage costs about a third of a second for four child processes, so paying it on every run is cheaper than arguing a key that would be reused across exactly the change that mattered.",
+        "$read_set": "The determinism harness that owns the comparator, the CEU catalogue whose bootstrap is the declared initialization, and the identity authority whose kind space is the subject. Declared as three prefixes rather than '**' because the comparator reads no repository file at all -- it spawns interpreters and compares what they answer -- so the honest read set is the code those interpreters import to reach a verdict.",
+        "$phase": "MAIN rather than PREFLIGHT or POST. It reads no artifact any other stage produces and produces none, so it has no data dependency in either direction and runs concurrently with every other MAIN gate.",
+        "$modes": "Admitted by change, integration and full and excluded from fast. Its subject is import-time behaviour of the tree, which any source change can move, so a selection-based run that skipped it could land a module global that decides truth and report success. Fast runs lint and test only and carry no claim about initialization.",
+        "$plane": "READ_ONLY in the strict sense: three child interpreters, no clock, no network, and no write anywhere -- not even to a gitignored path. The gate-mode field H-06/CR-09 leaves open for the other twenty-five stages is declared here rather than deferred, because a comparator that could dirty the tree could not certify one."
+      },
+      {
         "$modes": "Excluded from fast and change because those modes run --no-cov: there is no coverage data to summarise and a stale total is worse than none.",
         "depends_on": [
           "pytest"

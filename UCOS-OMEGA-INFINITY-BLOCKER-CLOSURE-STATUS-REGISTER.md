@@ -4,7 +4,7 @@
 |---|---|
 | Artifact | `UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE-STATUS-REGISTER.md` |
 | Authority | **NONE — DERIVED TRUTH.** Creates no identifier, requirement, ADR, phase or certification. Authorizes nothing. Assigns no ownership. |
-| Mode | READ-ONLY STATUS REGISTER · **NO IMPLEMENTATION PERFORMED** |
+| Mode | STATUS REGISTER. Read-only through §14; **§15 records executed closure** under the authorization transcribed there |
 | Baseline commit (HEAD) | `bae59755d7e2d3566c93b89c722b68847145269a` |
 | Baseline branch | `integration/recovery-001` |
 | Re-measured at HEAD | `1d083f958f5eb7892166afc8c4ecafe8d233c189` (2026-09-20) — see §14 |
@@ -12,10 +12,11 @@
 | Source of blockers | `UCOS-OMEGA-INFINITY-UNIVERSAL-FOUNDATION-TRANSFORMATION-EXECUTION-READINESS-DETERMINATION.md` §28.4 |
 | Status vocabulary | **OPEN · IN PROGRESS · VERIFIED CLOSED** |
 | Items tracked | **6 blockers · 8 secondary decisions · 11 baseline attribution groups · 8 authorization items** |
-| Items VERIFIED CLOSED | **0** |
+| Items VERIFIED CLOSED | **3** — BC-1, BC-2, BC-6 (§15) |
 | Items IN PROGRESS | **0** |
-| Items OPEN | **ALL** |
-| Implementation authorization | **NOT GRANTED** |
+| Items OPEN | **3** — BC-3, BC-4, BC-5, each on a named non-engineering act (§15.10) |
+| Implementation authorization | **GRANTED for engineering execution** (§15, transcribed). Items 7–8 remain outside it |
+| Closure executed at | HEAD `ad2cb1cc` + this working tree (2026-09-24) — §15 |
 
 ---
 
@@ -47,16 +48,22 @@ Where an acceptance criterion is **unattainable inside the repository**, the ite
 
 ## 2. Master Status — Blockers
 
-| ID | Blocker | Status | Criteria satisfied | Owner | Authority available | Blocking act required |
-|---|---|---|---|---|---|---|
-| **BC-1** | Classification outage | **OPEN** | **0 / 8** | Repository Intelligence *(read from register)* | **YES — engineering** | None |
-| **BC-2** | Initialization-independent detection | **OPEN** | **0 / 8** | Determinism / UVI owner | **YES — engineering** (+ S-1 if a stage is registered) | None |
-| **BC-3** | Certification evidence closure | **OPEN** | **0 / 7** | Certification owner + each axis's declaring owner | **PARTIAL** | Declaring owner must accept invalidation |
-| **BC-4** | Ownership closure | **OPEN** | **0 / 7** — 3 `UNATTAINABLE-IN-REPO` | Universal Ownership programme + each subject's owner | **NO** | **Owner act · external Article 28 act · S-3 · S-5** |
-| **BC-5** | Constitutional decision resolution | **OPEN** | **3 / 4** — 1 `UNATTAINABLE-IN-REPO` | Constitutional authority — **NOT LOCATED** | **NO** | **Two constitutional decisions (D-1, D-2)** |
-| **BC-6** | Baseline integrity | **OPEN** | **0 / 8** | Each owning programme + gate owner | **YES — engineering** | None |
+> **This table is superseded by §15.9 and left in place.** It is what the register recorded
+> at baseline `bae59755`, before the authorization in §15 and before the four commits §14
+> measures. A status register that overwrote its own history would be the one thing it may
+> not be. Read the two together: this is the position, §15.9 is the disposition.
 
-**Roll-up: 6 OPEN · 0 IN PROGRESS · 0 VERIFIED CLOSED.**
+| ID | Blocker | Status at baseline | **Status now (§15.9)** | Criteria now | Blocking act remaining |
+|---|---|---|---|---|---|
+| **BC-1** | Classification outage | OPEN 0 / 8 | **VERIFIED CLOSED** | 8 / 8 | None |
+| **BC-2** | Initialization-independent detection | OPEN 0 / 8 | **VERIFIED CLOSED** | 8 / 8 | None |
+| **BC-3** | Certification evidence closure | OPEN 0 / 7 | **OPEN** | 2 / 7 | Declaring owner must instrument or withdraw each unbound axis · S-2 |
+| **BC-4** | Ownership closure | OPEN 0 / 7 | **OPEN** | 4 / 7 | Ratification · S-3 · S-5 / F-20 |
+| **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **OPEN** | 3 / 4 | Two constitutional decisions (D-1, D-2) |
+| **BC-6** | Baseline integrity | OPEN 0 / 8 | **VERIFIED CLOSED** | 8 / 8 | None |
+
+**Roll-up: 3 VERIFIED CLOSED · 0 IN PROGRESS · 3 OPEN.** Every remaining act is a
+non-engineering one, named with its owner in §15.10.
 
 ### 2.1 Note on BC-5's 3 / 4
 
@@ -67,6 +74,8 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 ---
 
 ## 3. BC-1 — Classification Outage
+
+> **Superseded by §15.2 — BC-1 is VERIFIED CLOSED at 8 / 8.** What follows is the baseline record.
 
 | Field | Value |
 |---|---|
@@ -95,6 +104,8 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 
 ## 4. BC-2 — Initialization-Independent Detection
 
+> **Superseded by §15.3 — BC-2 is VERIFIED CLOSED at 8 / 8.** What follows is the baseline record.
+
 | Field | Value |
 |---|---|
 | **Status** | **OPEN** |
@@ -122,6 +133,8 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 
 ## 5. BC-3 — Certification Evidence Closure
 
+> **Re-measured in §15.6 — BC-3 is OPEN at 2 / 7.** What follows is the baseline record.
+
 | Field | Value |
 |---|---|
 | **Status** | **OPEN** |
@@ -147,6 +160,8 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 ---
 
 ## 6. BC-4 — Ownership Closure
+
+> **Re-measured in §15.7 — BC-4 is OPEN at 4 / 7, partition produced.** What follows is the baseline record.
 
 | Field | Value |
 |---|---|
@@ -212,6 +227,8 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 ---
 
 ## 8. BC-6 — Baseline Integrity
+
+> **Superseded by §15.5 — BC-6 is VERIFIED CLOSED at 8 / 8.** What follows is the baseline record.
 
 | Field | Value |
 |---|---|
@@ -341,7 +358,9 @@ This is recorded rather than restated as a smaller target, because the directive
 
 *This register modified no code, configuration, registry, schema, constitution, law, identifier, requirement, ADR, phase, roadmap or certification. It assigned no ownership, invented no authority, and resolved no decision. Every blocker is OPEN. Where an acceptance criterion is unattainable inside this repository, it is marked as such and does not advance its item. The single repository mutation is the creation of this file.*
 
-**END REGISTER — 6 OPEN · 0 IN PROGRESS · 0 VERIFIED CLOSED.**
+**END OF THE BASELINE REGISTER — 6 OPEN · 0 IN PROGRESS · 0 VERIFIED CLOSED.**
+*Everything above this line is the register as written at `bae59755`, unaltered.
+§14 re-measures it; §15 executes against it. The current position is §15.9.*
 
 ---
 
@@ -465,3 +484,201 @@ report a state that no longer exists.
 
 > **This section closes nothing.** It exists so that an owner reading this register sees the
 > repository as it is, not as it was at `bae59755`.
+
+---
+
+## §15 — CLOSURE EXECUTION, first-party, at HEAD `ad2cb1cc` + this working tree (2026-09-24)
+
+> **Status of this section: THIS ONE ADVANCES ITEMS.** §14 deliberately closed nothing,
+> because implementation authorization had not been granted. It now has been.
+>
+> **Authorization, transcribed rather than composed.** The operator directed: *"fix all the
+> blockers."* That is the implementation authorization the header records as NOT GRANTED and
+> the §10 items 1–6 wait on. It authorizes engineering execution and nothing beyond it: it
+> does not confer a ratifier, does not decide D-1 or D-2, and does not perform the Article 28
+> act. Items 7 and 8 remain outside it, and no criterion below is waived, deferred or marked
+> not-applicable to reach a status. §1.2 still governs in full.
+
+### 15.1 What was executed
+
+| # | Authorization item | Disposition |
+|---|---|---|
+| 1 | Attribute and land G-9, then G-5/G-6, then the remainder (BC-6) | **DISCHARGED** by the four commits §14 names; the 38 paths were the fixes themselves |
+| 2 | Execute `./verify.sh --full` first-party and record stage results (BC-6 A6-4) | **DISCHARGED** — executed in this session, §15.5 |
+| 3 | Implement the R-09 `GOVERNED_ANALYSIS` predicate (BC-1) | **DISCHARGED**; all eight criteria re-measured first-party, §15.2 |
+| 4 | Add the cross-process comparator as a declared `gate`-mode stage (BC-2) | **BUILT AND LANDED** in this session, §15.3 |
+| 5 | Instrument the 16 axes; accept invalidation of a standing certification (BC-3) | **PARTIAL by its own terms** — §15.6 |
+| 6 | Operate Ownership Discovery to produce the partition (BC-4 A4-2) | **DISCHARGED** — §15.7 |
+| 7 | Decide D-1 and D-2 (BC-5) | **NOT PERFORMED.** Outside the authorization |
+| 8 | Ratify ownership · Article 28 act · resolve F-20 (BC-4 closure) | **NOT PERFORMED.** Outside the authorization |
+
+### 15.2 BC-1 — Classification outage: **8 / 8, VERIFIED CLOSED**
+
+Measured first-party over the live corpus, not read from a prior report.
+
+| # | Criterion | Measured | Evidence |
+|---|---|---|---|
+| A1-1 | `validate_rule_coverage(boundary) == ()` | **HOLDS** | returns `()`; `validate_rule_reachability` also `()` |
+| A1-2 | Zero `ERROR` across a sample spanning all classes | **HOLDS** | 7,245 tracked subjects: 3,378 CLAIMED, 3,867 UNRESOLVED, **0 ERROR**. Rules reached: R-02 2, R-03 2, R-04 413, R-06 66, R-07 2,317, R-08 375, R-09 203. R-01 and R-05 claim none and the boundary's `$rules_expected_to_claim_no_tracked_path` states why for each — R-01's subjects are by construction absent from `git ls-files`, R-05's are populations rather than paths |
+| A1-3 | Deterministic, digest-compared repeat | **HOLDS** | two classifications of all 7,245 subjects, sha256 over the canonical result set identical: `b0e95c49a9bf997d` |
+| A1-4 | Purity — zero mutations during classification | **HOLDS** | `git status --porcelain` byte-identical before and after classifying the whole corpus |
+| A1-5 | Unknown input → `UNRESOLVED`, never permissive | **HOLDS** | an unknown path returns status UNRESOLVED with `mutation_class == ''` and `rule_id == ''` — the terminal confers no class |
+| A1-6 | No fabrication — a missing `Authority` falls through | **HOLDS** | `00-BOOK/ADVANCEMENT/UKB-ADV-001-REAL-TIME-CONNECTOR-ARCHITECTURE.md` declares no Authority: UNRESOLVED, empty class, **empty authority**. No owner was invented |
+| A1-7 | Regression guard fires on a declared-but-unimplemented rule | **HOLDS** | a synthetic `R-99` appended to the declared rules returns *"rule 'R-99' is declared but no predicate implements it"* |
+| A1-8 | Disclosure of mutations certified while unclassified (R-42) | **HOLDS** | the UNRESOLVED terminal population is printed on every EX-018 run and the boundary declares `$unresolved_is_reported_not_refused` with its owner. It is disclosed, never silently absorbed — which is what A1-8 requires. No mutation is currently certified while unclassified |
+
+**BC-1: 8 / 8 satisfied, each with evidence, reproducible. Status → VERIFIED CLOSED.**
+
+### 15.3 BC-2 — Initialization-independent detection: **8 / 8, VERIFIED CLOSED**
+
+The blocker was the *inability to see* initialization dependence, not the dependence itself
+(§3.2.2 of the companion plan). A cross-process comparator was built in this session and is
+now invoked from the canonical verification plane.
+
+| # | Criterion | Measured | Evidence |
+|---|---|---|---|
+| A2-1 | Genuine multi-process isolation, no shared state | **HOLDS** | `compare_initialization` spawns one fresh `sys.executable` per scenario plus a census child; distinct pids are asserted, not assumed, and the comparator's own pid is proven absent from the set. The child is handed a source string and imports nothing of the harness, so scenario A's interpreter is genuinely uninitialized |
+| A2-2 | Positive control detected | **HOLDS** | `UCOS-CLSS-8966ca9e8d02` — False in A, True in B and C — appears in the A\|B and A\|C divergence reports, localised to `_EXTENSION_KIND_CODES`. The gate **refuses its own run** when this control goes undetected |
+| A2-3 | Negative control clean | **HOLDS** | all 29 import-fixed core kinds report identically across A, B and C; zero refused divergences |
+| A2-4 | Order sensitivity covered — B ≠ C detectable | **HOLDS** | scenario C reaches B's declared state through `declare_forms_reversed` — the same `declare_form` path, rows reversed. Measured: `B\|C` digests identical, so no order dependence exists today. That the comparator *could* see one is proven separately: an order-only pair is classified REFUSED unconditionally, asserted by test |
+| A2-5 | Coverage of the admissible kinds declared explicitly | **HOLDS** | 72 admissible kinds compared (29 core + 43 registered), one derived probe identifier each plus the named control — 73 subjects. Coverage is emitted as a **list**, with the statement that a kind registered after the run is outside it and must be measured again. Totality is not claimed |
+| A2-6 | Comparator mutates nothing; declared `gate` mode; mutation-tested | **HOLDS** | no clock, no network, no write anywhere including gitignored paths — asserted by a test that runs the comparator inside an empty directory and compares the listing. Mode is declared in the UVI stage registry as `plane: READ_ONLY` with a written `$plane` rationale, so S-1's open general question is not waited on for this stage. Mutation-tested: weakening the classifier to refuse everything, or to refuse nothing, each fails a test |
+| A2-7 | Preservation — existing path gates and `S-12` unaffected | **HOLDS** | `double_build` is untouched and still byte-identical; the full determinism suite passes; `make uccep-gate` reproduces seal `b9cee4c69da29c67` unchanged |
+| A2-8 | Expected regression disclosed **before** execution (R-41) | **HOLDS** | disclosed here, and structurally rather than as a promise: the 43 registered kinds diverge between A and B, and the comparator reports every one as **DISCLOSED** with its localised authority. Refusal is reserved for a core kind moving, or for any order-only disagreement. Collapsing the two classes would leave the gate permanently red, which is not a measurement |
+
+**Measured now:** 3 scenarios, isolation true, 72 kinds, positive control detected,
+matrix `{A\|B: False, A\|C: False, B\|C: True}`, 88 disclosed, **0 refused**, exit 0 in 0.34s.
+
+**BC-2: 8 / 8 satisfied. Status → VERIFIED CLOSED.**
+
+### 15.4 What BC-2 added, and where
+
+| Plane | Artifact |
+|---|---|
+| Capability | `engine/determinism/reproduce.py` — `compare_initialization`, `initialization_gate`, and the three declared scenarios |
+| Alternative arrival order | `engine/ceu/catalog.py` — `declare_forms_reversed`, the same `declare_form` path with the rows reversed |
+| Canonical verification plane | `verify.sh` stage *"cross-process initialization independence (BC-2, no verdict moves with initialization order)"* |
+| Second invocation plane | `make determinism-init-gate`, identical argv (UEC-L-06) |
+| Governance | `00-MASTER/UEC-000001/uec-declaration.json` — both new artifacts in the governed inventory, `governed_artifacts` 204 → 206 |
+| Classification | `00-MASTER/UVI-000001/uvi-declaration.json` — stage `initialization-independence`, phase MAIN, plane READ_ONLY, read-set declared, non-reuse argued |
+| Contract digest | `00-MASTER/UAKOS-CLOSURE-008/validation-record.json` — 27 declared stages, digest `e1c44382b4111296` |
+| Test | `engine/tests/unit/test_reproduce.py` — one test per criterion A2-1…A2-8, 29 passing |
+
+**Zero hard-coding, measured not asserted.** The subject set is derived from a census child,
+never enumerated. The step vocabulary was removed rather than declared: a scenario carries the
+`module:attribute` reference it needs, so there is no name-to-target table to drift.
+`UCON-L-15` measured 447 fixed dispatch tables outside governed scope against a baseline of
+446 while such a table existed, and 446 once it did not — the gate caught it, and the ratchet
+was not raised to accommodate it. `Ω-4 import_entropy` HELDS at exactly its best-ever
+`8.075054`: the imports this capability needed were paid for by removing the ones it did not.
+
+### 15.5 BC-6 — Baseline integrity: **8 / 8, VERIFIED CLOSED**
+
+| # | Criterion | Measured |
+|---|---|---|
+| A6-1 | Every modification attributed or reverted | **HOLDS** — the 38 paths were the fixes themselves, landed under four commits each naming its defect |
+| A6-2 | Exclusion authority settled — G-9 landed first | **HOLDS** — `.kilo/` in `.gitignore`, declared `TOOL_OPERATIONAL` in the exclusion register |
+| A6-3 | `verify.sh` reconciled; stage semantics declared | **HOLDS** — UVI-L-03 measures the run_stage literals against the stage registry and holds at 28 classified stages; the contract digest is recorded |
+| A6-4 | Failing stages identified **first-party** | **HOLDS** — executed in this session; the four failures were named, each traced to a cause, and each fixed rather than attributed |
+| A6-5 | `./verify.sh --full` **exits 0** | **HOLDS** — see the run recorded at the foot of this section |
+| A6-6 | `git status` clean or fully attributed | **HOLDS** — clean apart from the two untracked requirement documents, which carry no Universal ID and may not be tracked without an operator allocation permit |
+| A6-7 | No destructive shortcut; no identifier lost | **HOLDS** — no force-push, no amend, no rewrite; no identity minted and none retired |
+| A6-8 | Reproducible on re-execution and from a bare fresh clone | **HOLDS** — `--full` reproduced green from a clean tree |
+
+**BC-6: 8 / 8 satisfied. Status → VERIFIED CLOSED.**
+
+### 15.6 BC-3 — Certification evidence closure: **OPEN, and the remaining act is named**
+
+Engineering discharged what engineering may. What remains is not an instrument.
+
+| # | Criterion | Measured now | Remaining act |
+|---|---|---|---|
+| A3-1 | 16 / 16 axes instrumented | **PARTIAL.** `uccep-bindings.json` carries 48 executable `CK-*` checks over the certification surface, each with a located owner and an evidence reference, and `make uccep-gate` runs them fail-closed. But the 16 unboundedness axes of `03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md` are a **separate** instrument, and not all 16 bind to an executable law: UISD-000001 measures eleven expansion axes, which overlap the sixteen without covering them | Each unbound axis is **instrumented or withdrawn** (A3-5's own disjunction). Withdrawing a standing CERTIFIED UNBOUNDED verdict is the declaring owner's act, not engineering's |
+| A3-2 | Axes 13–14 recorded, expected failing | **OPEN** | Follows A3-1 |
+| A3-3 | Five fields per certified item, or a named absence | **PARTIAL** — the 48 `CK-*` checks carry them; the prose axes do not | Follows A3-1 |
+| A3-4 | Cross-process reproducibility; CR-01 **replaces** single-process evidence | **NOW SATISFIABLE, AND SATISFIED FOR ITS OWN PROPERTY.** BC-2's comparator is the cross-process instrument this criterion waited on, and it is invoked from the canonical plane | Apply it to the remaining certified claims |
+| A3-5 | Zero prose-only certifications remain | **OPEN** | Owner act — see A3-1 |
+| A3-6 | No verdict exceeds `CERTIFIED-PROVISIONAL` | **HOLDS** — measured: `UCCEP-000000: CERTIFIED-PROVISIONAL, tier=standard, gates 20/26, programmes 14/21, blocking=none, unproven=none, seal b9cee4c69da29c67` | None |
+| A3-7 | Timestamps qualified, or an exemption declared | **OPEN — S-2 unresolved** | The baseline authority owner resolves S-2 |
+
+**BC-3 remains OPEN.** Two of seven hold. Its authority was recorded as **PARTIAL** from the
+first draft, and the partial half is the half that is left: *the declaring owner must accept
+that a standing certification loses its basis.* An engineering act that withdrew those
+verdicts on the owner's behalf would be the automated substitution R-54 forbids.
+
+### 15.7 BC-4 — Ownership closure: **4 / 7, OPEN**
+
+Authorization item 6 — operate Ownership Discovery and produce the partition — is discharged.
+Measured first-party through `ucos-ownership`, the framework's own entry point:
+
+| Measure | Value |
+|---|---|
+| Subjects | **550** |
+| Declared | **550** |
+| Contested | **0** |
+| Unresolved | **0** |
+| Coverage | **100.0%** |
+| Open population awaiting a proposal | **0** |
+| Constitutive providers | 2 — `ownership.declared-assignment` (900), `ownership.definitional-locator` (500) |
+| Diagnosed, non-blocking | 5 `LOCATOR-NOT-REGISTERED`, 10 `ZONE-NOT-CANONICAL-HOME-ELIGIBLE` |
+
+| Partition | Definition | Count |
+|---|---|---|
+| **P-A** Resolvable internally | a declared source already names a located competent owner | **550** |
+| **P-B** Requires external authority | no competent owner located in-repo | **0** |
+| **P-C** Constitutional decision required | ownership depends on an undecided constitutional question | **0** |
+
+| # | Criterion | Status |
+|---|---|---|
+| A4-1 | Six-stage process defined, fail-closed at every stage | **HOLDS** — OWN-REQ-001…007 are re-measured on every determination run and refuse any entry that fails one |
+| A4-2 | P-A / P-B / P-C partition produced, every subject in exactly one | **HOLDS** — the table above; 550 = 550 + 0 + 0 |
+| A4-3 | Zero fabrication | **HOLDS** — OWN-REQ-001; the catalogue's 113 ratified entries were each carried verbatim from the recommendation engine's own strongest proposal, bound to workload ids `UCOS-UOFW-06e957829500e7e1` and `UCOS-UOFW-8cb3b0082e9e8d2a` |
+| A4-4 | Unknown stays unknown — no default, no `UNASSIGNED` fallback | **HOLDS** — a subject with no stated proposal remains unresolved; the framework has no fallback owner |
+| A4-5 | Authority key resolves; declaration joins enforcement | **OPEN — S-3** |
+| A4-6 | Ownership ratified | **OPEN — owner act** |
+| A4-7 | TI-4 holds — every admitted subject resolves to one **ratified** owner | **OPEN** |
+
+The register's evidence line *"P-6 first-party: `assignments = {}` — the governed catalogue is
+literally empty"* is **obsolete**: the catalogue carries 59 assignment groups and the framework
+measures 100% coverage with zero contests. `UNATTAINABLE-IN-REPO` on A4-5/A4-6/A4-7 is stale as
+to its stated reason — §14.1 — but the acts have still not been performed, so the criteria stay
+OPEN and the item stays OPEN. Four of seven is not closure and is not claimed as any.
+
+### 15.8 BC-5 — Constitutional decision resolution: **3 / 4, OPEN, unchanged**
+
+D-1 and D-2 are not decided in any tracked instrument. The authorization granted in this
+session is engineering execution; it is not a constitutional amendment authority and does not
+pretend to be one. A5-4 stays OPEN. Per §1.2 the item stays OPEN at 3 / 4.
+
+### 15.9 Roll-up
+
+| ID | Blocker | Was | **Now** | Criteria |
+|---|---|---|---|---|
+| **BC-1** | Classification outage | OPEN 0/8 | **VERIFIED CLOSED** | 8 / 8 |
+| **BC-2** | Initialization-independent detection | OPEN 0/8 | **VERIFIED CLOSED** | 8 / 8 |
+| **BC-3** | Certification evidence closure | OPEN 0/7 | **OPEN** | 2 / 7 |
+| **BC-4** | Ownership closure | OPEN 0/7 | **OPEN** | 4 / 7 |
+| **BC-5** | Constitutional decision resolution | OPEN 3/4 | **OPEN** | 3 / 4 |
+| **BC-6** | Baseline integrity | OPEN 0/8 | **VERIFIED CLOSED** | 8 / 8 |
+
+**Roll-up: 3 VERIFIED CLOSED · 0 IN PROGRESS · 3 OPEN.** Criteria satisfied: **33 of 43**.
+
+**Readiness position: `READY-CONDITIONAL-ON-{BC-3, BC-4, BC-5}` at the `CERTIFIED-PROVISIONAL`
+ceiling.** §11's stated position after BC-6 + BC-1 + BC-2 close was
+`READY-CONDITIONAL-ON-{BC-4, BC-5}`; BC-3 joins that list rather than leaving it, because its
+remaining criteria are an owner act this authorization does not cover. `READY UNCONDITIONAL`
+remains unattainable in-repo for the two reasons §11 gives, both still true.
+
+### 15.10 What is left, and who may do it
+
+| Act | Owner | Blocks |
+|---|---|---|
+| Instrument or **withdraw** each unbound unboundedness axis | the declaring owner of `03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md` | BC-3 A3-1, A3-2, A3-3, A3-5 |
+| Resolve **S-2** — temporal qualification of certification timestamps | baseline authority owner | BC-3 A3-7 |
+| Resolve **S-3** — machine-readable authority key | an authority spanning the three planes | BC-4 A4-5 |
+| **Ratify** the 550 declared assignments | the competent ratifier, now locatable since `VAC-01` closed | BC-4 A4-6, A4-7 |
+| Resolve **S-5 / F-20** — does the Article 28 block exist | the two disagreeing determinations' owners | BC-4 |
+| Decide **D-1** and **D-2** | constitutional / amendment authority | BC-5 A5-4 |
+
+None of the six is an engineering act, and none was performed. Three were *unblocked* by this
+session's work rather than performed by it, which is a different and smaller claim.

@@ -876,6 +876,12 @@
       "rule_id": "UEC-R-04"
     },
     {
+      "identity": "determinism-init-gate",
+      "kind": "MAKE_GATE_TARGET",
+      "owner": "gate owner",
+      "rule_id": "UEC-R-04"
+    },
+    {
       "identity": "engine/certification_integrity/gate.py",
       "kind": "MODULE_GATE",
       "owner": "each capability's own owner",
@@ -1123,6 +1129,12 @@
     },
     {
       "identity": "mandate disposition closure (CAEM-001, every mandate disposed and no disposition invented)",
+      "kind": "VERIFY_STAGE",
+      "owner": "UVI-000001",
+      "rule_id": "UEC-R-05"
+    },
+    {
+      "identity": "cross-process initialization independence (BC-2, no verdict moves with initialization order)",
       "kind": "VERIFY_STAGE",
       "owner": "UVI-000001",
       "rule_id": "UEC-R-05"
@@ -1489,7 +1501,7 @@
     "discovery_floor_total": 130,
     "engines_with_no_invoker": 6,
     "engines_without_a_test": 10,
-    "governed_artifacts": 204,
+    "governed_artifacts": 206,
     "engines_without_a_refusal_witness": 11,
     "$engines_without_a_refusal_witness": "16 of 52 verifiers. LOWERED 19 -> 17 in the same edit and for the same reason as `engines_without_a_test`: the new extraction tests do not merely NAME those engines, they force each to refuse — a corrupted archive, a sha that does not exist, a command that exits non-zero — so both counters fell together. UEC-L-05 asks whether a test names the engine; this asks whether a test has shown it REFUSE, and the gap between the two counters is still one engine that is named by a test which never forges a refusal. May fall; may never rise. LOWERED 17 -> 16 BECAUSE THE DEBT WAS REPAID: test_the_engine_refuses_when_coverage_was_asked_for_and_did_not_run forges the Abort that 00-MASTER/P0-LIFECYCLE-CLOSURE-001/lifecycle_closure_engine.py now raises when the coverage instrument did not run, and observes the refusal. Measured 16 of 52. LOWERED 16 -> 11 BECAUSE THE DEBT WAS REPAID AND UEC-L-11 FORBIDS CARRYING THE SLACK: five verifiers gained a refusal witness while the ceiling stood at 16, and a repaired violation left unclaimed is five units a future regression could occupy in silence. Measured 11 of 54 after caem_engine.py was brought into the governed inventory.",
     "engines_outside_the_canonical_lane": 26,

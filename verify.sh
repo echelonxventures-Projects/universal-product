@@ -979,6 +979,52 @@ run_stage "mutation governance boundary decidability (EX-018, every classificati
 run_stage "mandate disposition closure (CAEM-001, every mandate disposed and no disposition invented)" \
   "$PY" 00-MASTER/CAEM-001/caem_engine.py --gate --quiet
 
+# --- Stage 6n (MAIN): cross-process initialization independence (BC-2) -----------
+# THE PROPERTY EVERY DETERMINISM GATE ABOVE STRUCTURALLY CANNOT SEE. The double-build
+# harness compiles one blueprint twice and compares the bytes, and both builds run inside
+# ONE interpreter — so every module global the second build reads is already whatever the
+# first one left it. That is the correct shape for PATH REPRODUCIBILITY, which this
+# repository has genuinely proven, and it is blind by construction to whether a verdict
+# depends on WHEN, or IN WHICH ORDER, the process was initialized. TA-26 records that the
+# two are distinct properties; conflating them is the whole of the evidential error
+# blocker BC-2 names, and zero of the twenty-nine gates varied initialization order.
+#
+# THE CONDITION IT SEES. The identifier kind space is process-global mutable module state:
+# 29 core kinds fixed in an enum, and an extension space only a CALL fills. Same commit,
+# zero file changes, `is_well_formed("UCOS-CLSS-8966ca9e8d02")` is False in a fresh
+# interpreter and True after `engine.ceu.catalog.bootstrap()`. 43 of 72 admissible kinds
+# are in that state, and until this stage existed no instrument reported it.
+#
+# THREE CHILD PROCESSES, NOT THREE CALLS. A (uninitialized), B (the declared bootstrap)
+# and C (the same declared state reached by the reverse arrival order), each a fresh
+# `sys.executable` — the only arrangement in which "before initialization" is a real state
+# rather than a name for whatever the previous call left behind. Distinct pids are
+# asserted, not assumed. The child is handed a source string and imports nothing of the
+# harness, so scenario A's interpreter is genuinely uninitialized.
+#
+# WHAT IT REFUSES AND WHAT IT DISCLOSES, AND WHY BOTH. A core kind whose verdict moves
+# with initialization is hidden runtime state deciding truth: REFUSED. An extension kind's
+# moving is UCKP-ART-17's open extension space working exactly as declared — admitted by
+# registration, unknown before it and known after it: DISCLOSED, reported with the module
+# global it localises to, and it does not move the verdict. B ≠ C is refused
+# unconditionally, because no arrival order is entitled to decide a declared state.
+# Collapsing the two classes would leave this gate either blind or permanently red.
+#
+# IT REFUSES ITSELF WHEN ITS CONTROL GOES UNDETECTED. The known initialization-dependent
+# subject must appear in the divergence report or the run exits 1: a comparator that
+# reports clean on a known-dirty subject is worthless, and a green line from one is worse
+# than no line at all.
+#
+# TWO OTHER PLANES INVOKE THE SAME GATE — `make determinism-init-gate` and the A2-1..A2-8
+# suite in engine/tests/unit/test_reproduce.py — as UEC-L-06 requires.
+#
+# READ_ONLY. Three subprocesses, no clock, no network, and no write anywhere — not even to
+# a gitignored path. Exit 1 means a divergence was refused or the control went undetected;
+# exit 2 means a probe did not complete, so no verdict could be reached, which is
+# deliberately a different answer from "measured and refused".
+run_stage "cross-process initialization independence (BC-2, no verdict moves with initialization order)" \
+  "$PY" -m engine.determinism.reproduce --gate --quiet
+
 # --- Stage 7 (POST): coverage report (explicit coverage tool invocation) ---------
 # The pytest stage already produced .coverage + coverage.xml; re-summarize with the
 # coverage CLI to prove the coverage tool itself resolves and to surface the total.

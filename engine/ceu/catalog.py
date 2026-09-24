@@ -473,6 +473,27 @@ def bootstrap(registry: ExistenceRegistry | None = None) -> ExistenceRegistry:
     return target
 
 
+def declare_forms_reversed(registry: ExistenceRegistry | None = None) -> ExistenceRegistry:
+    """Declare every seed form last row first — the same state, a different arrival order.
+
+    :func:`bootstrap` fixes one arrival order for the catalogue, and an instrument that
+    only ever sees that order cannot tell a declared state apart from the sequence that
+    produced it. This reaches the identical kind space through the identical
+    ``declare_form`` path with the rows reversed, so any difference an observer measures
+    between the two is arrival order and nothing else. It is the alternative admissible
+    sequence BC-2's cross-process comparator runs as its third scenario.
+    """
+    target = registry if registry is not None else ExistenceRegistry()
+    for key, code, title, expressed_by in reversed(SEED_FORMS):
+        target.declare_form(
+            key,
+            title=title,
+            code=code,
+            attributes={ATTR_EXPRESSED_BY: expressed_by},
+        )
+    return target
+
+
 def register_conversions(
     registry: ExistenceRegistry, conversions: tuple[tuple[str, str, dict[str, Any]], ...] = ()
 ) -> tuple[ExistenceUnit, ...]:
@@ -536,6 +557,7 @@ def to_document(registry: ExistenceRegistry | None = None) -> dict[str, Any]:
 
 __all__ = [
     "SEED_FORMS",
+    "declare_forms_reversed",
     "SEED_TOPOLOGIES",
     "SEED_RELATIONSHIP_TYPES",
     "SEED_CLASSIFICATIONS",
