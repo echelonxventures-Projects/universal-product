@@ -820,12 +820,217 @@ def self_determinism(decl: dict) -> list[str]:
     return [f"non-deterministic rendering: {name}" for name in divergent]
 
 
+
+def check_unboundedness_cardinality(decl: dict) -> list[str]:
+    """Check no finite cardinality cap is declared."""
+    findings: list[str] = []
+    # Check CEP-007 and registry declarations for cardinality caps
+    path = REPO / "00-CEP" / "CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    if path.exists():
+        content = path.read_text()
+        # Look for explicit cardinality limits (excluding "unlimited", "unbounded" terms)
+        if "max_records" in content.lower() or "capacity_limit" in content.lower():
+            findings.append("finite cardinality cap declared in CEP-007")
+    # Check registry files for caps
+    registry = REPO / "00-BOOK" / "MASTER-BOOK" / "UMB-005-REGISTRY-ARCHITECTURE.md"
+    if registry.exists():
+        content = registry.read_text()
+        if "max_size" in content.lower() or "capacity:" in content.lower():
+            findings.append("finite cardinality cap declared in registry architecture")
+    return findings
+
+
+def check_unboundedness_hierarchy(decl: dict) -> list[str]:
+    """Check no finite nesting limit is declared."""
+    findings: list[str] = []
+    path = REPO / "00-MASTER" / "UCL-000001" / "ucl-declaration.json"
+    if path.exists():
+        file_content = path.read_text()
+        # Look for actual numeric depth limits (not just the word which appears in limit_tokens list)
+        import re
+        if re.search(r'"max_depth"\s*:\s*\d+', file_content) or re.search(r'"depth_limit"\s*:\s*\d+', file_content):
+            findings.append("finite nesting limit declared in lifecycle")
+    return findings
+
+
+def check_unboundedness_composition(decl: dict) -> list[str]:
+    """Check no finite composition limit is declared."""
+    findings: list[str] = []
+    # Check universal compiler and meta-model declarations
+    path = REPO / "00-MASTER" / "UCEF-000001" / "ucef-declaration.json"
+    if path.exists():
+        content = path.read_text()
+        if "max_compositions" in content.lower():
+            findings.append("finite composition limit declared")
+    return findings
+
+
+def check_unboundedness_federation(decl: dict) -> list[str]:
+    """Check no finite federation cap is declared."""
+    findings: list[str] = []
+    path = REPO / "00-CEP" / "CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md"
+    if path.exists():
+        content = path.read_text()
+        if "max_federations" in content.lower() or "fed_limit" in content.lower():
+            findings.append("finite federation cap declared")
+    return findings
+
+
+def check_unboundedness_recursion(decl: dict) -> list[str]:
+    """Check no finite recursion limit is declared."""
+    findings: list[str] = []
+    path = REPO / "00-CEP" / "CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+    if path.exists():
+        content = path.read_text()
+        if "max_recursion" in content.lower() or "recursion_limit" in content.lower():
+            findings.append("finite recursion limit declared in CEP-009")
+    return findings
+
+
+def check_unboundedness_distribution(decl: dict) -> list[str]:
+    """Check no finite node cap is declared."""
+    findings: list[str] = []
+    path = REPO / "00-MASTER" / "UIE-000001" / "uie-declaration.json"
+    if path.exists():
+        content = path.read_text()
+        if "max_nodes" in content.lower() or "node_limit" in content.lower():
+            findings.append("finite node cap declared")
+    return findings
+
+
+def check_unboundedness_relationships(decl: dict) -> list[str]:
+    """Check no finite relationship cap is declared."""
+    findings: list[str] = []
+    path = REPO / "00-MASTER" / "UCMG-000001" / "CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md"
+    if path.exists():
+        content = path.read_text()
+        if "max_relationships" in content.lower() or "rel_limit" in content.lower():
+            findings.append("finite relationship cap declared")
+    return findings
+
+
+def check_unboundedness_transformations(decl: dict) -> list[str]:
+    """Check no finite transformation limit is declared."""
+    findings: list[str] = []
+    path = REPO / "00-MASTER" / "UCF-000001" / "ucf-declaration.json"
+    if path.exists():
+        content = path.read_text()
+        if "max_transformations" in content.lower():
+            findings.append("finite transformation limit declared")
+    return findings
+
+
+def check_unboundedness_coordinate_dimensions(decl: dict) -> list[str]:
+    """Check no finite dimension cap is declared."""
+    findings: list[str] = []
+    path = REPO / "00-MASTER" / "UCOS-UCF-000" / "ucf-declaration.json"
+    if path.exists():
+        content = path.read_text()
+        if "max_dimensions" in content.lower() or "dim_limit" in content.lower():
+            findings.append("finite dimension cap declared")
+    return findings
+
+
+def check_unboundedness_reality_models(decl: dict) -> list[str]:
+    """Check no finite reality model cap is declared."""
+    findings: list[str] = []
+    path = REPO / "00-MASTER" / "UCOS-UCF-000" / "ucf-declaration.json"
+    if path.exists():
+        content = path.read_text()
+        if "max_reality_models" in content.lower():
+            findings.append("finite reality model cap declared")
+    return findings
+
+
+def check_unboundedness_civilization_models(decl: dict) -> list[str]:
+    """Check no civilization assumption is in foundation."""
+    findings: list[str] = []
+    path = REPO / "00-MASTER" / "UCOS-UCF-000" / "ucf-declaration.json"
+    if path.exists():
+        content = path.read_text()
+        # Check for hardcoded civilization assumptions
+        if "civilization" in content.lower() and "assumption" in content.lower():
+            findings.append("civilization assumption found in foundation")
+    return findings
+
+
+def check_unboundedness_intelligence_models(decl: dict) -> list[str]:
+    """Check no finite intelligence model cap is declared."""
+    findings: list[str] = []
+    path = REPO / "00-MASTER" / "UCOS-UCF-000" / "ucf-declaration.json"
+    if path.exists():
+        content = path.read_text()
+        if "max_intelligence_models" in content.lower() or "intel_limit" in content.lower():
+            findings.append("finite intelligence model cap declared")
+    return findings
+
+
+def check_unboundedness_governance_models(decl: dict) -> list[str]:
+    """Check governance is extensible, not fixed."""
+    findings: list[str] = []
+    path = REPO / "00-CEP" / "CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md"
+    if path.exists():
+        content = path.read_text()
+        if "governance_frozen" in content.lower() or "governance_fixed" in content.lower():
+            findings.append("governance is fixed (not extensible)")
+    return findings
+
+
+def check_unboundedness_knowledge_models(decl: dict) -> list[str]:
+    """Check no finite schema ceiling is declared."""
+    findings: list[str] = []
+    path = REPO / "00-MASTER" / "UCOS-UCF-000" / "ucf-declaration.json"
+    if path.exists():
+        content = path.read_text()
+        if "max_knowledge_schema" in content.lower() or "schema_cap" in content.lower():
+            findings.append("finite schema ceiling declared")
+    return findings
+
+
+def check_unboundedness_evolution(decl: dict) -> list[str]:
+    """Check no finite evolution limit is declared."""
+    findings: list[str] = []
+    path = REPO / "00-CEP" / "CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    if path.exists():
+        content = path.read_text()
+        if "max_evolution" in content.lower() or "evolution_limit" in content.lower():
+            findings.append("finite evolution limit declared in CEP-007")
+    return findings
+
+
+def check_unboundedness_future_extension(decl: dict) -> list[str]:
+    """Check no finite concept cap is declared."""
+    findings: list[str] = []
+    path = REPO / "00-MASTER" / "UCOS-UCF-000" / "ucf-declaration.json"
+    if path.exists():
+        content = path.read_text()
+        if "max_concepts" in content.lower() or "concept_cap" in content.lower():
+            findings.append("finite concept cap declared")
+    return findings
+
+
 SELF_CHECKS = {
     "--check-declaration": check_declaration,
     "--check-no-enumeration": check_no_enumeration,
     "--check-write-scope": lambda decl: check_write_scope(decl),
     "--check-determinism": self_determinism,
     "--check-observation": check_observation,
+    "--check-unboundedness-cardinality": check_unboundedness_cardinality,
+    "--check-unboundedness-hierarchy": check_unboundedness_hierarchy,
+    "--check-unboundedness-composition": check_unboundedness_composition,
+    "--check-unboundedness-federation": check_unboundedness_federation,
+    "--check-unboundedness-recursion": check_unboundedness_recursion,
+    "--check-unboundedness-distribution": check_unboundedness_distribution,
+    "--check-unboundedness-relationships": check_unboundedness_relationships,
+    "--check-unboundedness-transformations": check_unboundedness_transformations,
+    "--check-unboundedness-coordinate-dimensions": check_unboundedness_coordinate_dimensions,
+    "--check-unboundedness-reality-models": check_unboundedness_reality_models,
+    "--check-unboundedness-civilization-models": check_unboundedness_civilization_models,
+    "--check-unboundedness-intelligence-models": check_unboundedness_intelligence_models,
+    "--check-unboundedness-governance-models": check_unboundedness_governance_models,
+    "--check-unboundedness-knowledge-models": check_unboundedness_knowledge_models,
+    "--check-unboundedness-evolution": check_unboundedness_evolution,
+    "--check-unboundedness-future-extension": check_unboundedness_future_extension,
 }
 
 

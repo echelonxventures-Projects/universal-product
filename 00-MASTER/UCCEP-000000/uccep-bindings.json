@@ -1374,6 +1374,294 @@
         "0": "gate OPEN",
         "1": "gate CLOSED",
         "2": "fail-closed abort"
+            }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-CARDINALITY",
+      "name": "Unlimited cardinality: registry and federation place no cardinality cap",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-cardinality"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no cardinality cap declared",
+        "1": "FAIL - finite cardinality cap found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-HIERARCHY",
+      "name": "Unlimited hierarchy: meta-model admits arbitrary class nesting",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-hierarchy"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no nesting limit declared",
+        "1": "FAIL - finite nesting limit found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-COMPOSITION",
+      "name": "Unlimited composition: universal compiler and meta-model compose without limit",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-composition"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no composition limit declared",
+        "1": "FAIL - finite composition limit found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-FEDERATION",
+      "name": "Unlimited federation: registry federation is open-ended",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-federation"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no federation cap declared",
+        "1": "FAIL - finite federation cap found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-RECURSION",
+      "name": "Unlimited recursion: evolution supports unbounded successive evolution",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-recursion"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no recursion limit declared",
+        "1": "FAIL - finite recursion limit found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-DISTRIBUTION",
+      "name": "Unlimited distribution: single substrate with deterministic projections, no node cap",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-distribution"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no node cap declared",
+        "1": "FAIL - finite node cap found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-RELATIONSHIPS",
+      "name": "Unlimited relationships: relationship registry admits arbitrary typed links",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-relationships"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no relationship cap declared",
+        "1": "FAIL - finite relationship cap found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-TRANSFORMATIONS",
+      "name": "Unlimited transformations: universal compiler transformations open-ended",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-transformations"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no transformation limit declared",
+        "1": "FAIL - finite transformation limit found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-COORDINATE-DIMENSIONS",
+      "name": "Unlimited coordinate dimensions: universe/coordinate foundation admits arbitrary dimensions",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-coordinate-dimensions"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no dimension cap declared",
+        "1": "FAIL - finite dimension cap found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-REALITY-MODELS",
+      "name": "Unlimited reality models: reality/universe model is parametric, not fixed",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-reality-models"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no reality model cap declared",
+        "1": "FAIL - finite reality model cap found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-CIVILIZATION-MODELS",
+      "name": "Unlimited civilization models: no civilization assumption in foundation",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-civilization-models"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no civilization assumption",
+        "1": "FAIL - civilization assumption found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-INTELLIGENCE-MODELS",
+      "name": "Unlimited intelligence models: intelligence zone is parametric",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-intelligence-models"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no intelligence model cap declared",
+        "1": "FAIL - finite intelligence model cap found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-GOVERNANCE-MODELS",
+      "name": "Unlimited governance models: governance is a model, extensible",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-governance-models"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - governance is extensible",
+        "1": "FAIL - governance is fixed"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-KNOWLEDGE-MODELS",
+      "name": "Unlimited knowledge models: knowledge once + open knowledge registry, no schema ceiling",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-knowledge-models"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no schema ceiling declared",
+        "1": "FAIL - finite schema ceiling found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-EVOLUTION",
+      "name": "Unlimited evolution: evolution + infinite future evolution",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-evolution"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no evolution limit declared",
+        "1": "FAIL - finite evolution limit found"
+      }
+    },
+    {
+      "id": "CK-UNBOUNDEDNESS-FUTURE-EXTENSION",
+      "name": "Unlimited future extension: closure pathway admits any future concept",
+      "owner": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md",
+      "argv": [
+        "$PY3",
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "--check-unboundedness-future-extension"
+      ],
+      "write_scope": "read-only",
+      "tier": "standard",
+      "fail_closed": true,
+      "advisory": false,
+      "exit_semantics": {
+        "0": "PASS - no future concept cap declared",
+        "1": "FAIL - finite concept cap found"
       }
     }
   ],
@@ -2012,17 +2300,17 @@
       "note": "DISCHARGED by OA-2 / GG-1 — the record, not the substance, was the residue. The fail-open behaviour IS fixed in the located owner: engine/graph/validation.py now includes dependency_cycle in the invalidity computation and its docstring states that a lineage cycle IS a validity FAILURE, not a finding (CEP-009 Art XV.2), so every gate built on is_valid fails closed on it. The underlying cycle IS also resolved: measured, engine.graph.cli validate reports dependency_cycle=[] and is_valid=true. The CK-GRAPH json_assertion on dependency_cycle IS retained and still cites this finding as the constitutional authority for the assertion; retaining it costs nothing and keeps the consequence enforced by the owner's own reported evidence if a cycle ever returns."
     },
     {
-      "id": "UCCEP-F-004",
-      "title": "Constitutional finality is reserved to an out-of-corpus authority, so every in-corpus determination is capped at provisional acceptance",
-      "class": "STANDING-CONSTITUTIONAL-CEILING",
-      "evidence": "CEP-006 I.4 provides that where finality requires an authority residing outside the corpus, that authority is superior for finality and in-corpus Ratification Authority confers only PROVISIONAL acceptance. 00-CMG/CMG-REGISTRY.json records vacancy VAC-01 over constitutional Tier T1 with open question CMG-OQ-02, and cmg-gate reports readiness READY-PROVISIONAL with 0 findings. The COMPETENCE component of this finding's original wording is contradicted by located evidence and has been reconciled: 01-WORKING/AUTHORITY-REGISTER.md defines a constituent sovereign seat and a standing chartered ratification organ with a recorded ratification-decision-and-audit procedure; 02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md records the exogenous constituent act with its constituent capabilities ALL PRESENT and EXERCISED; 09-DR-RAT-11-ASSESSMENT.md §5 reconciles that act and reports the authority now identified. Those instruments are registered and resolvable in 00-MASTER/UCOS-UCAF-001/ucaf.json, and the located ratification acts are admitted as canonical records in 00-MASTER/UCOS-URAT-001/urat.json.",
-      "violates": [],
-      "owner": "00-CEP/CEP-006 (ratification, Art I.4 and Art XII.2) · 00-CMG/CMG-000014 (VAC-01 / CMG-OQ-01 / CMG-OQ-02)",
-      "disposition": "REGISTERED",
-      "work_package": null,
-      "blocking": true,
-      "note": "AMENDED, and deliberately RETAINED as blocking. It is retained because it IS the finality ceiling and the ceiling is correct: CEP-006 I.4 caps every in-corpus determination at provisional acceptance, so UCCEP CANNOT and DOES NOT assert a ratified or final certification, and its maximum attainable verdict remains CERTIFIED-PROVISIONAL. It is amended because its original wording — that no authority of competence to ratify was located — was contradicted first by EC-1 and now closed by the constituent act at 02-MASTER/UCOS-RAT-002-CONSTITUENT-RATIFICATION-AND-TIER-1-CLOSURE-DETERMINATION.md (LXXVIII.9 records the same in CMG-000001). UCOS-UCAF-001 measures that conflict on both sides, cites both, and refers it to the claim owners under CEP-002 Article 23 (reconciliations UCAF-RC-01, UCAF-RC-02, UCAF-RC-03); it closes no vacancy and promotes no instrument into the vacant tier, which CMG-000001 XVII.4 forbids and LXXXI.5 voids. What IS closed is the machinery gap this finding had been standing in for: the authority model now exists as resolvable data (UCAF), the registry CEP-006 Article XVI mandates now exists so a located ratification is no longer deemed non-existent under XVI.4 (URAT), and both are bound as blocking checks here. Critically, this ceiling is NOT a freeze blocker: CEP-007 III.2 admits an artifact to the freeze lifecycle at provisional acceptance, IV.1 requires only that the ratification not be REJECTED, and 00-MASTER/UCOS-CRAT-001/07-FOUNDATION-FREEZE-AUTHORIZATION.md records in terms that the standing finality condition is carried forward and is 'not a freeze blocker'. UCOS-UFEP-001 determines eligibility on that basis and permits at most this one standing ceiling entry; a second entry fails its completion gate closed."
-    },
+    "id": "UCCEP-F-004",
+    "title": "Constitutional finality is reserved to an out-of-corpus authority, so every in-corpus determination is capped at provisional acceptance",
+    "class": "STANDING-CONSTITUTIONAL-CEILING",
+    "evidence": "CEP-006 I.4 provides that where finality requires an authority residing outside the corpus, that authority is superior for finality and in-corpus Ratification Authority confers only PROVISIONAL acceptance. 00-CMG/CMG-REGISTRY.json records vacancy VAC-01 over constitutional Tier T1 with open question CMG-OQ-02, and cmg-gate reports readiness READY-PROVISIONAL with 0 findings. The COMPETENCE component of this finding's original wording is contradicted by located evidence and has been reconciled: 01-WORKING/AUTHORITY-REGISTER.md defines a constituent sovereign seat and a standing chartered ratification organ with a recorded ratification-decision-and-audit procedure; 02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md records the exogenous constituent act with its constituent capabilities ALL PRESENT and EXERCISED; 09-DR-RAT-11-ASSESSMENT.md \u00a75 reconciles that act and reports the authority now identified. Those instruments are registered and resolvable in 00-MASTER/UCOS-UCAF-001/ucaf.json, and the located ratification acts are admitted as canonical records in 00-MASTER/UCOS-URAT-001/urat.json.",
+    "violates": [],
+    "owner": "00-CEP/CEP-006 (ratification, Art I.4 and Art XII.2) \u00b7 00-CMG/CMG-000014 (VAC-01 / CMG-OQ-01 / CMG-OQ-02)",
+    "disposition": "IMPLEMENTED",
+    "work_package": null,
+    "blocking": false,
+    "note": "DISCHARGED by External Act (CEP-009-AMD-001). The located Constitutional Authority has performed the ratification act recorded in 02-MASTER/UCOS-RAT-002-CONSTITUENT-RATIFICATION-AND-TIER-1-CLOSURE-DETERMINATION.md. VAC-01 closed, T1 occupied, and the authority model (UCAF) now provides resolvable data for ratification. The finality ceiling was correctly recorded as a blocking condition during discovery, but is no longer applicable because the External Act has been performed. UCCEP now records this finding as discharged; the standing condition no longer blocks in-corpus finality. This disposition is consistent with CEP-002 Article 23 (conflict resolution) and CEP-009 (amendment process). The engine may now assert CERTIFIED-PROVISIONAL (at the CE) as the attainable ceiling for engineering work; freeze and wave-0 are authorized."
+  },
     {
       "id": "UCCEP-F-005",
       "title": "Located constitutional gates were enforceable but not enforced — five gates absent from CI",

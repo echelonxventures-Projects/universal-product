@@ -49,7 +49,7 @@
       "kind": "quality-capability",
       "name": "Constitutional checks",
       "note": "supplies the validation and verification planes; a second adapter over one provider",
-      "objects": 48,
+      "objects": 64,
       "pointer": "checks",
       "provider": "PRV-GOVERNANCE",
       "providers_matched": 1,
@@ -572,7 +572,10 @@
       "role": "the disposition law under which this programme is an EXTEND"
     }
   ],
-  "blocking_failures": [],
+  "blocking_failures": [
+    "ACEE-V-07",
+    "ACEE-V-10"
+  ],
   "bound_hits": [],
   "bounds_slack": [],
   "capabilities": [
@@ -709,7 +712,7 @@
     "capabilities_created": 0,
     "capabilities_unowned": 0,
     "cko_identity_collisions": 0,
-    "ckos_discovered": 4452,
+    "ckos_discovered": 4468,
     "ckos_of_unknown_kind": 0,
     "ckos_without_semantic_identity": 0,
     "closed_enumerations_declared": 0,
@@ -736,12 +739,12 @@
     "graph_cycles": 0,
     "graph_types_empty": 0,
     "identities_on_mutable_input": 0,
-    "invariant_property_failures": 0,
+    "invariant_property_failures": 5,
     "invariants_discovered": 48,
     "invariants_dispositioned_create": 0,
     "invariants_owned_here": 0,
     "invariants_unmeasured": 0,
-    "invariants_unsatisfied": 0,
+    "invariants_unsatisfied": 5,
     "invariants_without_anchor": 0,
     "invariants_without_located_owner": 0,
     "limit_tokens_present": 0,
@@ -782,7 +785,7 @@
   },
   "cycles": [],
   "dependency_relation": "binds",
-  "determination": "AUTONOMOUS-CONSTITUTIONAL-ENGINEERING-ESTABLISHED",
+  "determination": "AUTONOMOUS-CONSTITUTIONAL-ENGINEERING-NOT-ESTABLISHED",
   "disposition_rules": [
     {
       "disposition": "DEC-REUSE",
@@ -1172,8 +1175,8 @@
       "located": true,
       "measure": "invariants_unsatisfied",
       "owner": "00-MASTER/URRC-000001/07-COMPLETENESS-MATRIX.md",
-      "ready": true,
-      "value": 0
+      "ready": false,
+      "value": 5
     },
     {
       "comparator": "==",
@@ -1611,7 +1614,7 @@
       "measure": "ckos_discovered",
       "measured": true,
       "reusable_as": "a composable object graph any further measurement reads without re-parsing its owners",
-      "value": 4452
+      "value": 4468
     },
     {
       "id": "EK-05",
@@ -1681,7 +1684,7 @@
       "why_not_repaired": "Adding a stage here would create a second lifecycle, which CMG-000001 Art LXXVI.6 forbids. A missing stage is admitted by appending a node to the located owner's manifest, which that owner's own admission clause provides for."
     }
   ],
-  "gate": "OPEN",
+  "gate": "CLOSED",
   "goal_contract": {
     "actuation_owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
     "invokes_capabilities": false,
@@ -5669,7 +5672,7 @@
       "subject_located": true
     }
   ],
-  "graph_digest": "ca1e098039790b5c6d061d1119e1f016f15c2373bcd16583c33fef126e53d6ee",
+  "graph_digest": "bf29ff21ed92c532353b0d3b6008e54edd20a9c70a9117939397325efac01b2d",
   "graphs": [
     {
       "composed": true,
@@ -5750,7 +5753,7 @@
         "governance-gate",
         "quality-capability"
       ],
-      "nodes": 74
+      "nodes": 90
     },
     {
       "composed": true,
@@ -5765,7 +5768,7 @@
         "governance-programme",
         "quality-capability"
       ],
-      "nodes": 69
+      "nodes": 85
     },
     {
       "composed": true,
@@ -5779,7 +5782,7 @@
         "governance-principle",
         "quality-capability"
       ],
-      "nodes": 70
+      "nodes": 86
     },
     {
       "composed": true,
@@ -6695,26 +6698,26 @@
       "anchor": "reentrancy_env",
       "cko_id": "SRC-INVARIANT::ACEE-I-0180",
       "comparator": "==",
-      "disposition": "DEC-REUSE",
+      "disposition": "DEC-EXTEND",
       "disposition_located": true,
-      "disposition_rationale": "a located owner outside this programme carries the anchor and the measure is met, so Repository Truth already satisfies the invariant and reimplementing it would duplicate a constitutional capability",
-      "disposition_rule": "DR-INVARIANT-REUSE",
+      "disposition_rationale": "an owner is located but the anchor, the measure or the expectation is not yet discharged, so that located owner is extended",
+      "disposition_rule": "DR-INVARIANT-EXTEND",
       "expect": 0,
       "facts": {
         "anchor_present": true,
         "machine_readable": true,
         "measure_declared": true,
         "measure_located": true,
-        "measure_met": true,
-        "measure_value": 0,
+        "measure_met": false,
+        "measure_value": 2,
         "outside_own_home": true,
         "owner_located": true,
-        "properties_unmet": false
+        "properties_unmet": true
       },
       "invariant": "Universal Execution Coordination",
       "measure": "independent_view.00-MASTER/ACEE-000001.gate_blocking",
       "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
-      "measure_value": 0,
+      "measure_value": 2,
       "ordinal": 180,
       "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
       "properties": {
@@ -6726,7 +6729,7 @@
         "PROP-MEASURE-LOCATED": true,
         "PROP-OWNED": true,
         "PROP-READABLE": true,
-        "PROP-SATISFIED": true,
+        "PROP-SATISFIED": false,
         "PROP-TRACEABLE": true
       },
       "provenance": {
@@ -6883,26 +6886,26 @@
       "anchor": "fail_closed",
       "cko_id": "SRC-INVARIANT::ACEE-I-0220",
       "comparator": "==",
-      "disposition": "DEC-REUSE",
+      "disposition": "DEC-EXTEND",
       "disposition_located": true,
-      "disposition_rationale": "a located owner outside this programme carries the anchor and the measure is met, so Repository Truth already satisfies the invariant and reimplementing it would duplicate a constitutional capability",
-      "disposition_rule": "DR-INVARIANT-REUSE",
+      "disposition_rationale": "an owner is located but the anchor, the measure or the expectation is not yet discharged, so that located owner is extended",
+      "disposition_rule": "DR-INVARIANT-EXTEND",
       "expect": 0,
       "facts": {
         "anchor_present": true,
         "machine_readable": true,
         "measure_declared": true,
         "measure_located": true,
-        "measure_met": true,
-        "measure_value": 0,
+        "measure_met": false,
+        "measure_value": 2,
         "outside_own_home": true,
         "owner_located": true,
-        "properties_unmet": false
+        "properties_unmet": true
       },
       "invariant": "Universal Validation",
       "measure": "independent_view.00-MASTER/ACEE-000001.blocking_failures",
       "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
-      "measure_value": 0,
+      "measure_value": 2,
       "ordinal": 220,
       "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
       "properties": {
@@ -6914,7 +6917,7 @@
         "PROP-MEASURE-LOCATED": true,
         "PROP-OWNED": true,
         "PROP-READABLE": true,
-        "PROP-SATISFIED": true,
+        "PROP-SATISFIED": false,
         "PROP-TRACEABLE": true
       },
       "provenance": {
@@ -6977,26 +6980,26 @@
       "anchor": "Gate",
       "cko_id": "SRC-INVARIANT::ACEE-I-0240",
       "comparator": "==",
-      "disposition": "DEC-REUSE",
+      "disposition": "DEC-EXTEND",
       "disposition_located": true,
-      "disposition_rationale": "a located owner outside this programme carries the anchor and the measure is met, so Repository Truth already satisfies the invariant and reimplementing it would duplicate a constitutional capability",
-      "disposition_rule": "DR-INVARIANT-REUSE",
+      "disposition_rationale": "an owner is located but the anchor, the measure or the expectation is not yet discharged, so that located owner is extended",
+      "disposition_rule": "DR-INVARIANT-EXTEND",
       "expect": 0,
       "facts": {
         "anchor_present": true,
         "machine_readable": true,
         "measure_declared": true,
         "measure_located": true,
-        "measure_met": true,
-        "measure_value": 0,
+        "measure_met": false,
+        "measure_value": 1,
         "outside_own_home": true,
         "owner_located": true,
-        "properties_unmet": false
+        "properties_unmet": true
       },
       "invariant": "Universal Certification",
       "measure": "independent_view.00-MASTER/ACEE-000001.gate_exit",
       "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
-      "measure_value": 0,
+      "measure_value": 1,
       "ordinal": 240,
       "owner": "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md",
       "properties": {
@@ -7008,7 +7011,7 @@
         "PROP-MEASURE-LOCATED": true,
         "PROP-OWNED": true,
         "PROP-READABLE": true,
-        "PROP-SATISFIED": true,
+        "PROP-SATISFIED": false,
         "PROP-TRACEABLE": true
       },
       "provenance": {
@@ -7964,26 +7967,26 @@
       "anchor": "Engineer",
       "cko_id": "SRC-INVARIANT::ACEE-I-0450",
       "comparator": "==",
-      "disposition": "DEC-REUSE",
+      "disposition": "DEC-EXTEND",
       "disposition_located": true,
-      "disposition_rationale": "a located owner outside this programme carries the anchor and the measure is met, so Repository Truth already satisfies the invariant and reimplementing it would duplicate a constitutional capability",
-      "disposition_rule": "DR-INVARIANT-REUSE",
+      "disposition_rationale": "an owner is located but the anchor, the measure or the expectation is not yet discharged, so that located owner is extended",
+      "disposition_rule": "DR-INVARIANT-EXTEND",
       "expect": 0,
       "facts": {
         "anchor_present": true,
         "machine_readable": true,
         "measure_declared": true,
         "measure_located": true,
-        "measure_met": true,
-        "measure_value": 0,
+        "measure_met": false,
+        "measure_value": 1,
         "outside_own_home": true,
         "owner_located": true,
-        "properties_unmet": false
+        "properties_unmet": true
       },
       "invariant": "Auto Engineering",
       "measure": "independent_view.00-MASTER/ACEE-000001.gate_exit",
       "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
-      "measure_value": 0,
+      "measure_value": 1,
       "ordinal": 450,
       "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
       "properties": {
@@ -7995,7 +7998,7 @@
         "PROP-MEASURE-LOCATED": true,
         "PROP-OWNED": true,
         "PROP-READABLE": true,
-        "PROP-SATISFIED": true,
+        "PROP-SATISFIED": false,
         "PROP-TRACEABLE": true
       },
       "provenance": {
@@ -8058,26 +8061,26 @@
       "anchor": "Integrate",
       "cko_id": "SRC-INVARIANT::ACEE-I-0470",
       "comparator": "==",
-      "disposition": "DEC-REUSE",
+      "disposition": "DEC-EXTEND",
       "disposition_located": true,
-      "disposition_rationale": "a located owner outside this programme carries the anchor and the measure is met, so Repository Truth already satisfies the invariant and reimplementing it would duplicate a constitutional capability",
-      "disposition_rule": "DR-INVARIANT-REUSE",
+      "disposition_rationale": "an owner is located but the anchor, the measure or the expectation is not yet discharged, so that located owner is extended",
+      "disposition_rule": "DR-INVARIANT-EXTEND",
       "expect": 0,
       "facts": {
         "anchor_present": true,
         "machine_readable": true,
         "measure_declared": true,
         "measure_located": true,
-        "measure_met": true,
-        "measure_value": 0,
+        "measure_met": false,
+        "measure_value": 2,
         "outside_own_home": true,
         "owner_located": true,
-        "properties_unmet": false
+        "properties_unmet": true
       },
       "invariant": "Auto Integration",
       "measure": "independent_view.00-MASTER/ACEE-000001.blocking_failures",
       "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
-      "measure_value": 0,
+      "measure_value": 2,
       "ordinal": 470,
       "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
       "properties": {
@@ -8089,7 +8092,7 @@
         "PROP-MEASURE-LOCATED": true,
         "PROP-OWNED": true,
         "PROP-READABLE": true,
-        "PROP-SATISFIED": true,
+        "PROP-SATISFIED": false,
         "PROP-TRACEABLE": true
       },
       "provenance": {
@@ -8318,7 +8321,7 @@
       "relation": "reenters"
     }
   ],
-  "omega_e05_complete": true,
+  "omega_e05_complete": false,
   "order": [
     "SRC-LIFECYCLE::UCL-S-0010",
     "SRC-LIFECYCLE::UCL-S-0020",
@@ -24175,7 +24178,7 @@
       "target_identified": true
     }
   ],
-  "seal_sha256": "ec478e0090041143a04b180feba3e31db50d7ec25cf1ab71e4e8841fed05018e",
+  "seal_sha256": "fbd8ce7cd6767d728ca1742c426afa0eb6b94c705afd3a47ac4d2af50dec2930",
   "self_evolution": [
     {
       "anchor": "determination",
@@ -25356,8 +25359,8 @@
       "expect": 0,
       "id": "ACEE-V-07",
       "measure": "invariants_unsatisfied",
-      "satisfied": true,
-      "value": 0
+      "satisfied": false,
+      "value": 5
     },
     {
       "blocking": true,
@@ -25389,8 +25392,8 @@
       "expect": 0,
       "id": "ACEE-V-10",
       "measure": "invariant_property_failures",
-      "satisfied": true,
-      "value": 0
+      "satisfied": false,
+      "value": 5
     },
     {
       "blocking": true,
