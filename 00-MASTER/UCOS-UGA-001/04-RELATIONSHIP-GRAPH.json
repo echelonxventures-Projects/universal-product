@@ -244,7 +244,7 @@
       "meaning": "checks the shape of another object — the forward sense of the contract validated_by names inversely"
     }
   },
-  "count": 39938,
+  "count": 40013,
   "relationships": [
     {
       "from": "UCOS-ADR-000001",
@@ -28878,11 +28878,6 @@
     },
     {
       "from": "UCOS-ENGINE-000276",
-      "kind": "depends_on",
-      "to": "engine/determinism/reproduce.py"
-    },
-    {
-      "from": "UCOS-ENGINE-000276",
       "kind": "evidenced_by",
       "to": "VALIDATION"
     },
@@ -28965,6 +28960,11 @@
       "from": "UCOS-ENGINE-000278",
       "kind": "validated_by",
       "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-ENGINE-000279",
+      "kind": "depends_on",
+      "to": "engine/certification_integrity/immutable.py"
     },
     {
       "from": "UCOS-ENGINE-000279",
@@ -77005,6 +77005,16 @@
       "from": "UCOS-ENGINE-001390",
       "kind": "validated_by",
       "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-ENGINE-001391",
+      "kind": "depends_on",
+      "to": "engine/omega_infinite/artifact.py"
+    },
+    {
+      "from": "UCOS-ENGINE-001391",
+      "kind": "depends_on",
+      "to": "engine/omega_infinite/classification.py"
     },
     {
       "from": "UCOS-ENGINE-001391",
@@ -136457,6 +136467,46 @@
       "to": "UCOS-UGA-001 §UGA-INV-01..10"
     },
     {
+      "from": "UCOS-EXDOC-003152",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-EXDOC-003152",
+      "kind": "owned_by",
+      "to": "00-BOOK/PORTAL"
+    },
+    {
+      "from": "UCOS-EXDOC-003152",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-EXDOC-003152",
+      "kind": "validated_by",
+      "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-EXDOC-003153",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-EXDOC-003153",
+      "kind": "owned_by",
+      "to": "00-BOOK/PORTAL"
+    },
+    {
+      "from": "UCOS-EXDOC-003153",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-EXDOC-003153",
+      "kind": "validated_by",
+      "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
       "from": "UCOS-EXEC-000001",
       "kind": "evidenced_by",
       "to": "VALIDATION"
@@ -136873,6 +136923,26 @@
     },
     {
       "from": "UCOS-FINALRECOMME-000001",
+      "kind": "validated_by",
+      "to": "UMB-IMP-001 ENFORCEMENT_GATES"
+    },
+    {
+      "from": "UCOS-FINALS-000001",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-FINALS-000001",
+      "kind": "owned_by",
+      "to": "UCOS-REPOSITORY-ROOT"
+    },
+    {
+      "from": "UCOS-FINALS-000001",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-FINALS-000001",
       "kind": "validated_by",
       "to": "UMB-IMP-001 ENFORCEMENT_GATES"
     },
@@ -143933,6 +144003,26 @@
     },
     {
       "from": "UCOS-MASTER-000045",
+      "kind": "validated_by",
+      "to": "UMB-IMP-001 ENFORCEMENT_GATES"
+    },
+    {
+      "from": "UCOS-MASTER-000046",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-MASTER-000046",
+      "kind": "owned_by",
+      "to": "UCOS-REPOSITORY-ROOT"
+    },
+    {
+      "from": "UCOS-MASTER-000046",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-MASTER-000046",
       "kind": "validated_by",
       "to": "UMB-IMP-001 ENFORCEMENT_GATES"
     },
@@ -167580,6 +167670,11 @@
       "from": "UCOS-TESTOBJ-000324",
       "kind": "validated_by",
       "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000325",
+      "kind": "depends_on",
+      "to": "engine/determinism/__init__.py"
     },
     {
       "from": "UCOS-TESTOBJ-000325",
@@ -194288,6 +194383,46 @@
     },
     {
       "from": "UCOS-TESTOBJ-000903",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_index.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000903",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_model.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000903",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_prd.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000903",
+      "kind": "depends_on",
+      "to": "engine/uckp/facets.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000903",
+      "kind": "depends_on",
+      "to": "engine/uckp/law.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000903",
+      "kind": "depends_on",
+      "to": "engine/uckp/ucko.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000903",
+      "kind": "depends_on",
+      "to": "engine/uckp/vocabulary.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000903",
+      "kind": "depends_on",
+      "to": "engine/validation/checks.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000903",
       "kind": "evidenced_by",
       "to": "VALIDATION"
     },
@@ -194309,7 +194444,47 @@
     {
       "from": "UCOS-TESTOBJ-000904",
       "kind": "depends_on",
+      "to": "engine/graph/projections.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000904",
+      "kind": "depends_on",
+      "to": "engine/kernel/compliance.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000904",
+      "kind": "depends_on",
+      "to": "engine/kernel/kernel.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000904",
+      "kind": "depends_on",
       "to": "engine/tests/conformance/mandate_corpus.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000904",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_arch.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000904",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_layers.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000904",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_model.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000904",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_prd.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000904",
+      "kind": "depends_on",
+      "to": "engine/uckp/law.py"
     },
     {
       "from": "UCOS-TESTOBJ-000904",
@@ -194344,7 +194519,82 @@
     {
       "from": "UCOS-TESTOBJ-000905",
       "kind": "depends_on",
+      "to": "engine/context/taxonomy.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "engine/kernel/compliance.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "engine/kernel/kernel.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "engine/kernel/seed.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "engine/provider/framework.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
       "to": "engine/tests/conformance/mandate_corpus.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_arch.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_index.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_model.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_prd.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "engine/uckp/facets.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "engine/uckp/law.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "engine/uckp/ucko.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "engine/uckp/vocabulary.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "intelligence/realization/contracts.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000905",
+      "kind": "depends_on",
+      "to": "intelligence/realization/generators/__init__.py"
     },
     {
       "from": "UCOS-TESTOBJ-000905",
@@ -194369,7 +194619,27 @@
     {
       "from": "UCOS-TESTOBJ-000906",
       "kind": "depends_on",
+      "to": "engine/kernel/compliance.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000906",
+      "kind": "depends_on",
+      "to": "engine/kernel/kernel.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000906",
+      "kind": "depends_on",
       "to": "engine/tests/conformance/mandate_corpus.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000906",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_index.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000906",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_prd.py"
     },
     {
       "from": "UCOS-TESTOBJ-000906",
@@ -194395,6 +194665,11 @@
       "from": "UCOS-TESTOBJ-000906",
       "kind": "validated_by",
       "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000907",
+      "kind": "depends_on",
+      "to": "engine/conformance/measure.py"
     },
     {
       "from": "UCOS-TESTOBJ-000907",
@@ -194404,7 +194679,62 @@
     {
       "from": "UCOS-TESTOBJ-000907",
       "kind": "depends_on",
+      "to": "engine/kernel/kernel.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000907",
+      "kind": "depends_on",
+      "to": "engine/kernel/seed.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000907",
+      "kind": "depends_on",
+      "to": "engine/knowledge/integration/composition.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000907",
+      "kind": "depends_on",
+      "to": "engine/registry/universal/records.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000907",
+      "kind": "depends_on",
       "to": "engine/tests/conformance/mandate_corpus.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000907",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_arch.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000907",
+      "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_uakp.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000907",
+      "kind": "depends_on",
+      "to": "engine/tests/kernel/test_compliance.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000907",
+      "kind": "depends_on",
+      "to": "engine/uckp/facets.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000907",
+      "kind": "depends_on",
+      "to": "engine/uckp/law.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000907",
+      "kind": "depends_on",
+      "to": "engine/uckp/ucko.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000907",
+      "kind": "depends_on",
+      "to": "intelligence/publication/formats.py"
     },
     {
       "from": "UCOS-TESTOBJ-000907",
@@ -194429,7 +194759,27 @@
     {
       "from": "UCOS-TESTOBJ-000908",
       "kind": "depends_on",
+      "to": "engine/kernel/compliance.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000908",
+      "kind": "depends_on",
+      "to": "engine/kernel/kernel.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000908",
+      "kind": "depends_on",
+      "to": "engine/kernel/seed.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000908",
+      "kind": "depends_on",
       "to": "engine/knowledge/ukip/confidence.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000908",
+      "kind": "depends_on",
+      "to": "engine/provider/framework.py"
     },
     {
       "from": "UCOS-TESTOBJ-000908",
@@ -194439,12 +194789,37 @@
     {
       "from": "UCOS-TESTOBJ-000908",
       "kind": "depends_on",
+      "to": "engine/tests/conformance/test_mandates_prd.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000908",
+      "kind": "depends_on",
+      "to": "engine/tests/kernel/test_compliance.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000908",
+      "kind": "depends_on",
+      "to": "engine/uckp/errors.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000908",
+      "kind": "depends_on",
       "to": "engine/uckp/facets.py"
     },
     {
       "from": "UCOS-TESTOBJ-000908",
       "kind": "depends_on",
+      "to": "engine/uckp/law.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000908",
+      "kind": "depends_on",
       "to": "engine/uckp/ucko.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000908",
+      "kind": "depends_on",
+      "to": "engine/uckp/vocabulary.py"
     },
     {
       "from": "UCOS-TESTOBJ-000908",

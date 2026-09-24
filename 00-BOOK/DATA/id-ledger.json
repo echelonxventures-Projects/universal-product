@@ -12040,9 +12040,23 @@
       "page_start": 13186,
       "page_count": 2,
       "first_seen": "2026-09-13T23:56:06+00:00"
+    },
+    "FINAL-SEQUENCED-MASTER-TODO.md": {
+      "universal_id": "UCOS-FINALS-000001",
+      "category": "FINALS",
+      "page_start": 13188,
+      "page_count": 6,
+      "first_seen": "2026-09-24T11:49:17+00:00"
+    },
+    "MASTER-SINGLE-COMPREHENSIVE-REQUIREMENTS.md": {
+      "universal_id": "UCOS-MASTER-000046",
+      "category": "MASTER",
+      "page_start": 13194,
+      "page_count": 4,
+      "first_seen": "2026-09-24T11:49:17+00:00"
     }
   },
-  "page_cursor": 13187,
+  "page_cursor": 13197,
   "category_seq": {
     "BOOK": 1,
     "REG": 19,
@@ -12069,7 +12083,7 @@
     "EXEC": 4,
     "GOV": 6,
     "ADR": 43,
-    "MASTER": 45,
+    "MASTER": 46,
     "ENVIRONMENTS": 1,
     "VERIFICATION": 1,
     "UCOSOMEGAINF": 1,
@@ -12156,7 +12170,7 @@
     "DET": 6,
     "CONFIG": 40,
     "DATAOBJ": 149,
-    "EXDOC": 3151,
+    "EXDOC": 3153,
     "TOOLING": 57,
     "ENGINE": 1391,
     "TESTOBJ": 908,
@@ -12280,7 +12294,8 @@
     "SHELLO": 1,
     "UFINOC": 1,
     "UNCOND": 1,
-    "W4UFIF": 1
+    "W4UFIF": 1,
+    "FINALS": 1
   },
   "discovered_volumes": {
     "VOL-023": {
@@ -31251,6 +31266,15 @@
         "status": "ACTIVE",
         "path": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE-STATUS-REGISTER.md",
         "name": "UCOS Ω∞ — BLOCKER CLOSURE STATUS REGISTER"
+      },
+      {
+        "seq": 2,
+        "at": "2026-09-24T11:49:18+00:00",
+        "content_hash": "8f676567b408e6db8497f96eba5a869f1ab502f75154063228a48153d7032b74",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "path": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE-STATUS-REGISTER.md",
+        "name": "UCOS Ω∞ — BLOCKER CLOSURE STATUS REGISTER"
       }
     ],
     "UCOS-UCOSOM-000020": [
@@ -33272,6 +33296,28 @@
         "status": "ACTIVE",
         "path": "02-MASTER/UCOS-RAT-002-CONSTITUENT-RATIFICATION-AND-TIER-1-CLOSURE-DETERMINATION.md",
         "name": "UCOS Ω∞ — Constituent Ratification of the Meta-Governance Constitution and Closure of the Tier-1 Vacancy"
+      }
+    ],
+    "UCOS-FINALS-000001": [
+      {
+        "seq": 1,
+        "at": "2026-09-24T11:49:17+00:00",
+        "content_hash": "84361eab7d39b01777d53c6a14416770e95832ac84daceafaa5a9b446712ad8b",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "path": "FINAL-SEQUENCED-MASTER-TODO.md",
+        "name": "UCOS Ω∞ — FINAL SEQUENCED MASTER TODO"
+      }
+    ],
+    "UCOS-MASTER-000046": [
+      {
+        "seq": 1,
+        "at": "2026-09-24T11:49:17+00:00",
+        "content_hash": "9ed71255b4021e40d0ac914b56d099e91c35c8641d7c2394ed13b953d2076c4e",
+        "version": "1.0.0",
+        "status": "IMPLEMENTED",
+        "path": "MASTER-SINGLE-COMPREHENSIVE-REQUIREMENTS.md",
+        "name": "UCOS Ω∞ — MASTER SINGLE COMPREHENSIVE REQUIREMENTS (MSCR)"
       }
     ]
   },
@@ -67451,6 +67497,18 @@
       "object_class": "TEST_OBJECT",
       "category": "TESTOBJ",
       "first_seen": "commit:fea8a8652008"
+    },
+    "00-BOOK/PORTAL/UCOS-FINALS-000001.md": {
+      "universal_id": "UCOS-EXDOC-003152",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "category": "EXDOC",
+      "first_seen": "commit:0e13b5257d02"
+    },
+    "00-BOOK/PORTAL/UCOS-MASTER-000046.md": {
+      "universal_id": "UCOS-EXDOC-003153",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "category": "EXDOC",
+      "first_seen": "commit:0e13b5257d02"
     }
   },
   "by_observation": {

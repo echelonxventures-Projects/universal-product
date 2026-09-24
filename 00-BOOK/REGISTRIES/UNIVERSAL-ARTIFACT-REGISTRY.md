@@ -4,7 +4,7 @@
 
 The authoritative crosswalk from every reachable UCOS Ω∞ artifact to its **Universal Artifact ID**, volume, page range, native program identifier, status, parent, dependencies, and direct/return links. Universal IDs and page numbers are append-only and never reused or renumbered; native identifiers are preserved verbatim.
 
-**Total artifacts:** 1689
+**Total artifacts:** 1691
 
 | # | Universal ID | Name | Native ID | Vol | Pages | Status | Parent | Deps | Link |
 |---|--------------|------|-----------|-----|-------|--------|--------|------|------|
@@ -1697,5 +1697,7 @@ The authoritative crosswalk from every reachable UCOS Ω∞ artifact to its **Un
 | 1687 | `UCOS-MASTER-000044` | UCOS Ω∞ — COMPILER COMPONENT REGISTER | — | 000 | UPN-000013177–UPN-000013179 | ACTIVE | `UCOS-BOOK-000000` | 0 | [↗](../../02-MASTER/UCOS-COMPILER-COMPONENT-REGISTER.md) |
 | 1688 | `UCOS-MASTER-000045` | UCOS Ω∞ — PROGRAM FAMILY CONCEPT REGISTER | — | 000 | UPN-000013180–UPN-000013185 | ACTIVE | `UCOS-BOOK-000000` | 0 | [↗](../../02-MASTER/UCOS-PROGRAM-FAMILY-CONCEPT-REGISTER.md) |
 | 1689 | `UCOS-CON-000087` | UCOS Ω∞ — Constituent Ratification of the Meta-Governance… | UCOS-RAT-002 | 002 | UPN-000013186–UPN-000013187 | ACTIVE | `UCOS-IDX-000001` | 0 | [↗](../../02-MASTER/UCOS-RAT-002-CONSTITUENT-RATIFICATION-AND-TIER-1-CLOSURE-DETERMINATION.md) |
+| 1690 | `UCOS-FINALS-000001` | UCOS Ω∞ — FINAL SEQUENCED MASTER TODO | — | 000 | UPN-000013188–UPN-000013193 | ACTIVE | `UCOS-BOOK-000000` | 0 | [↗](../../FINAL-SEQUENCED-MASTER-TODO.md) |
+| 1691 | `UCOS-MASTER-000046` | UCOS Ω∞ — MASTER SINGLE COMPREHENSIVE REQUIREMENTS (MSCR) | — | 000 | UPN-000013194–UPN-000013197 | IMPLEMENTED | `UCOS-BOOK-000000` | 0 | [↗](../../MASTER-SINGLE-COMPREHENSIVE-REQUIREMENTS.md) |
 
 *Return: [UCOS-BOOK-000000 Master Index](../../00-BOOK/UCOS-BOOK-000000-UNIVERSAL-MASTER-KNOWLEDGE-BOOK.md)*

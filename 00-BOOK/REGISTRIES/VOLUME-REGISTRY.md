@@ -6,7 +6,7 @@ The 25 root volumes of the Universal Master Knowledge Book. Volumes are permanen
 
 | Volume | Serial | Name | Category | Status | Artifacts | Page Range |
 |--------|--------|------|----------|--------|-----------|------------|
-| `VOL-000` | 0 | MASTER INDEX | IDX | ACTIVE | 469 | UPN-000000001–UPN-000013185 |
+| `VOL-000` | 0 | MASTER INDEX | IDX | ACTIVE | 471 | UPN-000000001–UPN-000013197 |
 | `VOL-001` | 1 | VISION | VSN | ACTIVE | 3 | UPN-000004086–UPN-000004112 |
 | `VOL-002` | 2 | CONSTITUTION | CON | ACTIVE | 125 | UPN-000001327–UPN-000013187 |
 | `VOL-003` | 3 | ARCHITECTURE | ARCH | ACTIVE | 108 | UPN-000000022–UPN-000013173 |
@@ -36,7 +36,7 @@ The 25 root volumes of the Universal Master Knowledge Book. Volumes are permanen
 ### VOL-000 — MASTER INDEX <a id="vol-000"></a>
 
 *Root navigation, master index, and book infrastructure.*  \
-**Category:** IDX · **Status:** ACTIVE · **Artifacts:** 469
+**Category:** IDX · **Status:** ACTIVE · **Artifacts:** 471
 
 | Universal ID | Name | Native | Status |
 |--------------|------|--------|--------|
@@ -509,6 +509,8 @@ The 25 root volumes of the Universal Master Knowledge Book. Volumes are permanen
 | `UCOS-MASTER-000043` | UCOS Ω∞ — EC-3 BAND REALIZATION UNIT REGISTER | EC-3 | ACTIVE |
 | `UCOS-MASTER-000044` | UCOS Ω∞ — COMPILER COMPONENT REGISTER | — | ACTIVE |
 | `UCOS-MASTER-000045` | UCOS Ω∞ — PROGRAM FAMILY CONCEPT REGISTER | — | ACTIVE |
+| `UCOS-FINALS-000001` | UCOS Ω∞ — FINAL SEQUENCED MASTER TODO | — | ACTIVE |
+| `UCOS-MASTER-000046` | UCOS Ω∞ — MASTER SINGLE COMPREHENSIVE REQUIREMENTS (MSCR) | — | IMPLEMENTED |
 
 ### VOL-001 — VISION <a id="vol-001"></a>
 

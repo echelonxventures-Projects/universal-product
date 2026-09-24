@@ -5,7 +5,7 @@
   "determinism": "No wall clock. Timestamps are ledger first_seen values.",
   "epoch": "0 — Existence Discovery",
   "success_condition": "unknown_objects == 0",
-  "total_objects": 7165,
+  "total_objects": 7169,
   "unknown_objects": 0,
   "classifier_property": "TOTAL — the final branch is unconditional, so UNKNOWN is structurally unreachable.",
   "objects": [
@@ -6870,6 +6870,15 @@
       "first_seen": "commit:e98f59cd22e9"
     },
     {
+      "path": "00-BOOK/PORTAL/UCOS-FINALS-000001.md",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "lifecycle": "AUTHORED",
+      "owner": "00-BOOK/PORTAL",
+      "identity_authority": "UCOS-UGA-001",
+      "universal_id": "UCOS-EXDOC-003152",
+      "first_seen": "commit:0e13b5257d02"
+    },
+    {
       "path": "00-BOOK/PORTAL/UCOS-FINALU-000001.md",
       "object_class": "EXCLUDED_DOCUMENT",
       "lifecycle": "AUTHORED",
@@ -10054,6 +10063,15 @@
       "identity_authority": "UCOS-UGA-001",
       "universal_id": "UCOS-EXDOC-003149",
       "first_seen": "commit:196ff6937ecc"
+    },
+    {
+      "path": "00-BOOK/PORTAL/UCOS-MASTER-000046.md",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "lifecycle": "AUTHORED",
+      "owner": "00-BOOK/PORTAL",
+      "identity_authority": "UCOS-UGA-001",
+      "universal_id": "UCOS-EXDOC-003153",
+      "first_seen": "commit:0e13b5257d02"
     },
     {
       "path": "00-BOOK/PORTAL/UCOS-MCRFST-000001.md",
@@ -33822,6 +33840,14 @@
       "identity_authority": "UMB-IMP-001"
     },
     {
+      "path": "FINAL-SEQUENCED-MASTER-TODO.md",
+      "object_class": "DOCUMENT_ARTIFACT",
+      "lifecycle": "AUTHORED",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "universal_id": "UCOS-FINALS-000001",
+      "identity_authority": "UMB-IMP-001"
+    },
+    {
       "path": "FINAL-UNIVERSAL-INFINITE-EXPANSION-FOUNDATION-CERTIFICATION-REPORT.md",
       "object_class": "DOCUMENT_ARTIFACT",
       "lifecycle": "AUTHORED",
@@ -34923,6 +34949,14 @@
       "lifecycle": "AUTHORED",
       "owner": "UCOS-REPOSITORY-ROOT",
       "universal_id": "UCOS-MASTER-000042",
+      "identity_authority": "UMB-IMP-001"
+    },
+    {
+      "path": "MASTER-SINGLE-COMPREHENSIVE-REQUIREMENTS.md",
+      "object_class": "DOCUMENT_ARTIFACT",
+      "lifecycle": "AUTHORED",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "universal_id": "UCOS-MASTER-000046",
       "identity_authority": "UMB-IMP-001"
     },
     {
