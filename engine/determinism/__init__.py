@@ -12,8 +12,6 @@ harness), TASK-000033 (determinism CI gate).
 
 from __future__ import annotations
 
-from typing import Any
-
 from engine.determinism.errors import (
     BlueprintResolutionError,
     DependencyLockError,
@@ -37,7 +35,7 @@ from engine.determinism.hermetic import (
 )
 
 
-def __getattr__(name: str) -> Any:
+def __getattr__(name: str) -> object:
     """Resolve the reproducibility harness on first use rather than at package import.
 
     ``engine.determinism.reproduce`` is a declared command-line entry point, and a package

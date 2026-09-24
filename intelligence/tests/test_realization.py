@@ -1192,8 +1192,6 @@ def test_generation_refuses_stages_derived_from_different_states(pipeline) -> No
     two states would generate artifacts anchored to objects the manifest does not cite, and the
     seals would still all verify — each against its own half."""
 
-    from intelligence.realization.generation import GenerationEngine
-
     intake, plan, composition, _findings, _manifest = pipeline
     with pytest.raises(GenerationError, match="does not belong to the supplied plan"):
         GenerationEngine._assert_coherent(
@@ -1212,8 +1210,6 @@ def test_a_generator_that_emits_nothing_or_the_wrong_family_is_refused(pipeline)
     step, producing something outside its own family, and producing something anchored to no
     canonical object. Each would leave the manifest describing a realization that did not
     happen."""
-
-    from intelligence.realization.generation import GenerationEngine
 
     _intake, _plan, composition, _findings, manifest = pipeline
     artifact = manifest.artifacts[0]
@@ -1262,8 +1258,6 @@ def test_a_generator_that_emits_nothing_or_the_wrong_family_is_refused(pipeline)
 def test_two_units_claiming_one_output_path_are_refused(pipeline) -> None:
     """Two units writing one path is a silent overwrite: the manifest would carry one entry and
     the tree would carry whichever unit ran last."""
-    from intelligence.realization.generation import GenerationEngine
-
     _intake, _plan, _composition, _findings, manifest = pipeline
     artifact = manifest.artifacts[0]
     claimed: dict[str, str] = {}

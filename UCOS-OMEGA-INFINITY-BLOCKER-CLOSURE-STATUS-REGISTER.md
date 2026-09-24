@@ -569,8 +569,21 @@ never enumerated. The step vocabulary was removed rather than declared: a scenar
 `module:attribute` reference it needs, so there is no name-to-target table to drift.
 `UCON-L-15` measured 447 fixed dispatch tables outside governed scope against a baseline of
 446 while such a table existed, and 446 once it did not — the gate caught it, and the ratchet
-was not raised to accommodate it. `Ω-4 import_entropy` HELDS at exactly its best-ever
-`8.075054`: the imports this capability needed were paid for by removing the ones it did not.
+was not raised to accommodate it. `Ω-4 import_entropy` reads **8.074187 against a best-ever
+8.075054 — IMPROVED**: the imports this capability needed were paid for by removing ones that
+re-bound a name their own module already bound unconditionally, so deleting the statement
+deleted no import edge.
+
+**Three gates refused this work while it was being written, and each refusal was answered by
+moving the code rather than the bound.** UCON-L-15 refused the dispatch table. UCAF-VAL-17
+refused a module constant named `IDENTITY_AUTHORITY` — *"token is classified nowhere"* — because
+a constant whose name claims an authority is a second place to look for one; it names
+`IDENTITY_MODULE` now, and it only ever held an import path. `test_no_new_subprocess_inherits_the_measurement_environment`
+refused both new spawn sites at 16 against a ceiling of 14: a child inheriting `COV_CORE_*`
+binds `sys.modules['platform']` to the stdlib module and breaks this repository's own platform
+package inside it. Both sites now pass `clean_environment()`, which this comparator wanted
+independently of the law — a scenario called *"no initialization call"* that inherited the
+parent's ambient measurement state would not be one.
 
 ### 15.5 BC-6 — Baseline integrity: **8 / 8, VERIFIED CLOSED**
 

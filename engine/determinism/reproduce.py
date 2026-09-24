@@ -42,6 +42,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from engine.certification_integrity.immutable import clean_environment
 from engine.compiler.pipeline import CompilerPipeline
 from engine.compiler.signing import Signer
 from engine.determinism.errors import (
@@ -394,9 +395,14 @@ def double_build(
 # Collapsing the two classes into one would leave the gate either blind or permanently
 # red, and neither of those is a measurement.
 #
-# PURE. Children import, initialize and answer on stdout; nothing writes. The comparator
-# spawns, reads and compares. No clock, no network, no file written anywhere — including
-# gitignored paths — so a verdict is reproducible and the gate cannot dirty the tree.
+# PURE, AND SPAWNED INTO A SCRUBBED ENVIRONMENT. Children import, initialize and answer on
+# stdout; nothing writes. No clock, no network, no file written anywhere — including
+# gitignored paths — so a verdict is reproducible and the gate cannot dirty the tree. Each
+# child is started with ``clean_environment()``, which is required twice over: a COV_CORE_*
+# inherited from a measuring parent binds sys.modules['platform'] to the STDLIB module and
+# breaks this repository's own platform package inside the child, and — the reason that
+# matters most here — a scenario called "no initialization call" that inherited the parent's
+# ambient measurement state would not be one.
 
 #: The subject the closure plan names as the known initialization-dependent identifier.
 #: It is the positive control: a comparator that reports clean on this one is worthless,
@@ -635,6 +641,7 @@ def _run_scenario(
         capture_output=True,
         text=True,
         cwd=str(cwd),
+        env=clean_environment(),
         check=False,
     )
     if completed.returncode != 0:
@@ -664,8 +671,14 @@ def _run_scenario(
 def _classify(
     left: ScenarioObservation, right: ScenarioObservation, kind: str, core: frozenset[str]
 ) -> tuple[str, str]:
-    """The standing of one divergence, and where its authority localises."""
-    if "A" not in (left.scenario, right.scenario):
+    """The standing of one divergence, and where its authority localises.
+
+    "Order only" is read from the scenarios' STEPS, not from their names. A pair is an
+    order comparison when neither side is the uninitialized one, and the uninitialized
+    one is the scenario that performs no initialization step — which is a property of the
+    arrangement rather than a letter somebody chose for it.
+    """
+    if left.steps and right.steps:
         return (
             "REFUSED",
             "two admissible arrival orders reached one declared state and disagreed — "
@@ -711,6 +724,7 @@ def compare_initialization(
         capture_output=True,
         text=True,
         cwd=str(root),
+        env=clean_environment(),
         check=False,
     )
     if census.returncode != 0:

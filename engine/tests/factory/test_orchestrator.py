@@ -137,7 +137,7 @@ def test_factory_delegates_to_shared_execution_path(factory_registry):
     # BaseFactory.generate() must route through the injected execution path,
     # proving all factories reuse one execution path (no duplicated logic).
     from engine.factory.classifier import resolve_blueprint_class
-    from engine.factory.contracts import FactoryResult, GenerationStatus
+    from engine.factory.contracts import FactoryResult
     from engine.factory.factories.base import ExecutionContext
 
     factory = factory_registry.resolve_factory("BP-DATA")

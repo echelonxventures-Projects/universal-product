@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -293,6 +294,15 @@ def test_a2_3_the_deterministic_core_plane_reports_clean(comparison):
     assert comparison.refusals == ()
 
 
+def test_a2_4_order_only_is_read_from_the_steps_not_from_the_name():
+    """A scenario named anything at all is uninitialized iff it takes no step."""
+    bare = ScenarioObservation("first", (), 1, (), (("s", False),))
+    booted = ScenarioObservation("second", ("engine.ceu.catalog:bootstrap",), 2, (), (("s", True),))
+    core = frozenset({"CLASSIFICATION"})
+    assert _classify(bare, booted, "OBSERVER", core)[0] == "DISCLOSED"
+    assert _classify(booted, booted, "OBSERVER", core)[0] == "REFUSED"
+
+
 def test_a2_4_an_order_only_divergence_is_refused():
     """A2-4: B != C is detectable, not only A != B.
 
@@ -330,11 +340,26 @@ def test_a2_5_coverage_is_stated_as_a_list_not_claimed_as_total(comparison):
 
 
 def test_a2_6_the_comparator_writes_nothing(tmp_path, monkeypatch):
-    """A2-6 purity: a gate that can dirty the tree cannot certify one."""
+    """A2-6 purity: a gate that can dirty the tree cannot certify one.
+
+    Two places are watched, because the comparator touches two: the caller's working
+    directory, and the repository the child interpreters are started in.
+    """
     monkeypatch.chdir(tmp_path)
-    before = sorted(p.name for p in tmp_path.iterdir())
+    porcelain = ["git", "status", "--porcelain"]
+    root = str(Path(reproduce_module.__file__).resolve().parents[2])
+    before_tree = subprocess.run(  # noqa: S603 - fixed argv, no shell, no caller input
+        porcelain, cwd=root, capture_output=True, text=True, check=True
+    )
+    before_cwd = sorted(p.name for p in tmp_path.iterdir())
+
     result = compare_initialization()
-    assert sorted(p.name for p in tmp_path.iterdir()) == before
+
+    after_tree = subprocess.run(  # noqa: S603 - fixed argv, no shell, no caller input
+        porcelain, cwd=root, capture_output=True, text=True, check=True
+    )
+    assert sorted(p.name for p in tmp_path.iterdir()) == before_cwd
+    assert after_tree.stdout == before_tree.stdout, "the comparator moved the repository"
     assert result.observations, "the comparator produced no observation to be pure about"
 
 
