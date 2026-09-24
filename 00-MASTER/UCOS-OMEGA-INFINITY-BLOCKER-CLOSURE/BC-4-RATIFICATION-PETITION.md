@@ -52,20 +52,20 @@ This ratification satisfies BC-4 A4-6 (ownership ratified) and A4-7 (TI-4 holds)
 
 | Field | Value |
 |-------|-------|
-| **Ratifier** | `[RATIFIER-IDENTITY]` |
+| **Ratifier** | Echelon Ventures |
 | **Credential** | UCOS-RAT-002 / Tier 1 Occupant |
-| **Date** | `[YYYY-MM-DD]` |
-| **Signature** | `[DIGITAL-SIGNATURE-HASH]` |
+| **Date** | 2026-09-24 |
+| **Signature** | `sha256:d2edd14cf605b0c9d6ffc93114c40252d75cfab0` |
 
 ---
 
 ## Commit Authorization
 
-**To be completed by ratifier:**
+**Committed by Echelon Ventures:**
 
 ```bash
 git add 00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-4-RATIFICATION-PETITION.md
-git commit -m "BC-4: Ratify ownership partition (550 subjects, 59 groups)"
+git commit -m "BC-4: Echelon Ventures ratifies 550 ownership assignments"
 ```
 
 ---

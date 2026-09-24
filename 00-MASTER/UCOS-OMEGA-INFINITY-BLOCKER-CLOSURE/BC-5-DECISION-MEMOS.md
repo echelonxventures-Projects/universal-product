@@ -65,18 +65,18 @@ How should protocol representation be structured?
 
 | Decision | Status | Recorded By | Date |
 |----------|--------|-------------|------|
-| D-1 | `[SELECTED-OR-PENDING]` | `[RATIFIER-IDENTITY]` | `[YYYY-MM-DD]` |
-| D-2 | `[SELECTED-OR-PENDING]` | `[RATIFIER-IDENTITY]` | `[YYYY-MM-DD]` |
+| D-1 | SELECTED (Option A: INVARIANT) | Echelon Ventures | 2026-09-24 |
+| D-2 | SELECTED (Option A: Neutral core + representable periphery) | Echelon Ventures | 2026-09-24 |
 
 ---
 
 ## Commit Authorization
 
-**To be completed by constitutional authority:**
+**Committed by Echelon Ventures:**
 
 ```bash
 git add 00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-5-DECISION-MEMOS.md
-git commit -m "BC-5: Record constitutional decisions D-1 and D-2"
+git commit -m "BC-5: Echelon Ventures records D-1 (INVARIANT) and D-2 (Option A)"
 ```
 
 ---
