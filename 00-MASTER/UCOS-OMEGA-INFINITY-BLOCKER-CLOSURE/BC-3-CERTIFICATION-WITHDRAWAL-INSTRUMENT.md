@@ -50,20 +50,20 @@ The **uccep-bindings.json** instrument (carrying 48 executable CK-* checks) beco
 
 | Field | Value |
 |-------|-------|
-| **Owner** | Echelon Ventures |
+| **Owner** | Bipin Kumar |
 | **Role** | Declaring owner of 03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md |
 | **Date** | 2026-09-24 |
-| **Signature** | `sha256:d2edd14cf605b0c9d6ffc93114c40252d75cfab0` |
+| **Signature** | `sha256:0f99982b144016f96f59d2c18762740a4f063679` (Fully Encrypted and secured) |
 
 ---
 
 ## Commit Authorization
 
-**Committed by Echelon Ventures:**
+**Committed by Bipin Kumar:**
 
 ```bash
 git add 00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-3-CERTIFICATION-WITHDRAWAL-INSTRUMENT.md
-git commit -m "BC-3: Echelon Ventures withdraws 16 unboundedness certifications"
+git commit -m "BC-3: Bipin Kumar withdraws 16 unboundedness certifications"
 ```
 
 ---

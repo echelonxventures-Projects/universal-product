@@ -65,18 +65,18 @@ How should protocol representation be structured?
 
 | Decision | Status | Recorded By | Date |
 |----------|--------|-------------|------|
-| D-1 | SELECTED (Option A: INVARIANT) | Echelon Ventures | 2026-09-24 |
-| D-2 | SELECTED (Option A: Neutral core + representable periphery) | Echelon Ventures | 2026-09-24 |
+| D-1 | SELECTED (Option A: INVARIANT) | Bipin Kumar | 2026-09-24 |
+| D-2 | SELECTED (Option A: Neutral core + representable periphery) | Bipin Kumar | 2026-09-24 |
 
 ---
 
 ## Commit Authorization
 
-**Committed by Echelon Ventures:**
+**Committed by Bipin Kumar:**
 
 ```bash
 git add 00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-5-DECISION-MEMOS.md
-git commit -m "BC-5: Echelon Ventures records D-1 (INVARIANT) and D-2 (Option A)"
+git commit -m "BC-5: Bipin Kumar records D-1 (INVARIANT) and D-2 (Option A)"
 ```
 
 ---
