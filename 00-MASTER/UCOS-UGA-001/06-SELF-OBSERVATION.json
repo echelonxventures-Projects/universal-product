@@ -7,21 +7,21 @@
   "evidence_class": "IMPROVEMENT",
   "may_influence_certification": false,
   "observation": {
-    "total_objects": 7169,
+    "total_objects": 7173,
     "by_object_class": {
       "CONFIGURATION_OBJECT": 40,
       "DATA_OBJECT": 143,
       "DOCUMENT_ARTIFACT": 1691,
-      "EXCLUDED_DOCUMENT": 2945,
+      "EXCLUDED_DOCUMENT": 2949,
       "EXECUTABLE_OBJECT": 1386,
       "TEST_OBJECT": 908,
       "TOOLING_OBJECT": 56
     },
     "by_lifecycle": {
-      "AUTHORED": 6756,
+      "AUTHORED": 6760,
       "GENERATED": 413
     },
-    "distinct_owners": 299,
+    "distinct_owners": 300,
     "top_owners": [
       {
         "owner": "00-BOOK/PORTAL",

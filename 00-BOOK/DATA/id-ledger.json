@@ -12170,7 +12170,7 @@
     "DET": 6,
     "CONFIG": 40,
     "DATAOBJ": 149,
-    "EXDOC": 3153,
+    "EXDOC": 3157,
     "TOOLING": 57,
     "ENGINE": 1391,
     "TESTOBJ": 908,
@@ -67509,6 +67509,30 @@
       "object_class": "EXCLUDED_DOCUMENT",
       "category": "EXDOC",
       "first_seen": "commit:0e13b5257d02"
+    },
+    "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-3-CERTIFICATION-WITHDRAWAL-INSTRUMENT.md": {
+      "universal_id": "UCOS-EXDOC-003154",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "category": "EXDOC",
+      "first_seen": "commit:e60cbb3e2beb"
+    },
+    "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-4-RATIFICATION-PETITION.md": {
+      "universal_id": "UCOS-EXDOC-003155",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "category": "EXDOC",
+      "first_seen": "commit:e60cbb3e2beb"
+    },
+    "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-5-DECISION-MEMOS.md": {
+      "universal_id": "UCOS-EXDOC-003156",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "category": "EXDOC",
+      "first_seen": "commit:e60cbb3e2beb"
+    },
+    "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/FINAL-ENGINEERING-COMPLETION-STATUS.md": {
+      "universal_id": "UCOS-EXDOC-003157",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "category": "EXDOC",
+      "first_seen": "commit:e60cbb3e2beb"
     }
   },
   "by_observation": {

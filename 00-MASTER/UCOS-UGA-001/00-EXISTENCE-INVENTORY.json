@@ -5,7 +5,7 @@
   "determinism": "No wall clock. Timestamps are ledger first_seen values.",
   "epoch": "0 — Existence Discovery",
   "success_condition": "unknown_objects == 0",
-  "total_objects": 7169,
+  "total_objects": 7173,
   "unknown_objects": 0,
   "classifier_property": "TOTAL — the final branch is unconditional, so UNKNOWN is structurally unreachable.",
   "objects": [
@@ -25279,6 +25279,42 @@
       "identity_authority": "UCOS-UGA-001",
       "universal_id": "UCOS-EXDOC-003003",
       "first_seen": "commit:77798202d2df"
+    },
+    {
+      "path": "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-3-CERTIFICATION-WITHDRAWAL-INSTRUMENT.md",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "lifecycle": "AUTHORED",
+      "owner": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE",
+      "identity_authority": "UCOS-UGA-001",
+      "universal_id": "UCOS-EXDOC-003154",
+      "first_seen": "commit:e60cbb3e2beb"
+    },
+    {
+      "path": "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-4-RATIFICATION-PETITION.md",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "lifecycle": "AUTHORED",
+      "owner": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE",
+      "identity_authority": "UCOS-UGA-001",
+      "universal_id": "UCOS-EXDOC-003155",
+      "first_seen": "commit:e60cbb3e2beb"
+    },
+    {
+      "path": "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-5-DECISION-MEMOS.md",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "lifecycle": "AUTHORED",
+      "owner": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE",
+      "identity_authority": "UCOS-UGA-001",
+      "universal_id": "UCOS-EXDOC-003156",
+      "first_seen": "commit:e60cbb3e2beb"
+    },
+    {
+      "path": "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/FINAL-ENGINEERING-COMPLETION-STATUS.md",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "lifecycle": "AUTHORED",
+      "owner": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE",
+      "identity_authority": "UCOS-UGA-001",
+      "universal_id": "UCOS-EXDOC-003157",
+      "first_seen": "commit:e60cbb3e2beb"
     },
     {
       "path": "00-MASTER/UCOS-PROJ-SYNC-001/01-PROJECTION-SYNCHRONIZATION.md",

@@ -649,6 +649,22 @@
       "expires_at": null,
       "single_use": true,
       "$authorization": "OPERATOR-AUTHORIZED - allocation of two portal identities for the registered master files"
+    },
+    {
+      "permit_id": "P-UCOS-UGA-BLOCKER-DOCS-001",
+      "actor": "UCOS-UGA-001 :: uga_engine.py run",
+      "manifest_digest": "5503bbfcf7125e29c4a571429e31b074ba7b1dcf780f9f8a526d913a77875e80",
+      "preimage_digest": "85df03dfdc61755cd6d07672ba0ab1df90fd302b566a0bcb68a96cace4fcc2e4",
+      "head": "e60cbb3e2beb025791b1241b2257a507044df38a",
+      "scope": {
+        "maps": [
+          "by_object"
+        ],
+        "max_allocations": 4
+      },
+      "expires_at": null,
+      "single_use": true,
+      "$authorization": "OPERATOR-AUTHORIZED - allocation of 4 identities for blocker closure documents"
     }
   ]
 }

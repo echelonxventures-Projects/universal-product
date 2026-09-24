@@ -145,7 +145,7 @@
       "artifact": "00-MASTER/UCOS-UGA-001/03-AUDIT-UNIVERSE.json",
       "producer": "00-MASTER/UCOS-UGA-001/uga_engine.py",
       "observation_type": "ENVIRONMENT_STATE",
-      "current_location": "$.events[5695].timestamp",
+      "current_location": "$.events[5697].timestamp",
       "classification": "CANDIDATE — signature present, not yet under an enforced rule",
       "enforced_by_rule": false,
       "remediation": "replace the reading with the UCOS-UGA-001 observation identity and write the value to that programme's evidence surface",

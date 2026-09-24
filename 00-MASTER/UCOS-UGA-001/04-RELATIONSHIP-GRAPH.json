@@ -244,7 +244,7 @@
       "meaning": "checks the shape of another object — the forward sense of the contract validated_by names inversely"
     }
   },
-  "count": 40013,
+  "count": 40029,
   "relationships": [
     {
       "from": "UCOS-ADR-000001",
@@ -136503,6 +136503,86 @@
     },
     {
       "from": "UCOS-EXDOC-003153",
+      "kind": "validated_by",
+      "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-EXDOC-003154",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-EXDOC-003154",
+      "kind": "owned_by",
+      "to": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE"
+    },
+    {
+      "from": "UCOS-EXDOC-003154",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-EXDOC-003154",
+      "kind": "validated_by",
+      "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-EXDOC-003155",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-EXDOC-003155",
+      "kind": "owned_by",
+      "to": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE"
+    },
+    {
+      "from": "UCOS-EXDOC-003155",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-EXDOC-003155",
+      "kind": "validated_by",
+      "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-EXDOC-003156",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-EXDOC-003156",
+      "kind": "owned_by",
+      "to": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE"
+    },
+    {
+      "from": "UCOS-EXDOC-003156",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-EXDOC-003156",
+      "kind": "validated_by",
+      "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-EXDOC-003157",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-EXDOC-003157",
+      "kind": "owned_by",
+      "to": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE"
+    },
+    {
+      "from": "UCOS-EXDOC-003157",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-EXDOC-003157",
       "kind": "validated_by",
       "to": "UCOS-UGA-001 §UGA-INV-01..10"
     },
