@@ -12,12 +12,12 @@
 | Source of blockers | `UCOS-OMEGA-INFINITY-UNIVERSAL-FOUNDATION-TRANSFORMATION-EXECUTION-READINESS-DETERMINATION.md` §28.4 |
 | Status vocabulary | **OPEN · IN PROGRESS · VERIFIED CLOSED** |
 | Items tracked | **6 blockers · 8 secondary decisions · 11 baseline attribution groups · 8 authorization items** |
-| Items VERIFIED CLOSED | **2** — BC-1, BC-2 (§15) |
+| Items VERIFIED CLOSED | **3** — BC-1, BC-2 (§15), BC-6 (§16.4) |
 | Items IN PROGRESS | **0** |
-| Items OPEN | **4** — BC-3 (4/7), BC-4 (6/7) and BC-5 (4/4, amendment authority NOT LOCATED) on named non-engineering acts (§16.5); BC-6 at 7 / 8 on one uncontended verification run (§15.5.1) |
+| Items OPEN | **3** — BC-3 (4/7), BC-4 (6/7) and BC-5 (4/4, amendment authority NOT LOCATED) on named non-engineering acts (§16.5) |
 | Implementation authorization | **GRANTED for engineering execution** (§15, transcribed). Items 7–8 remain outside it |
 | Closure executed at | HEAD `ad2cb1cc` + this working tree (2026-09-24) — §15 |
-| Re-measured after owner-act instruments | 2026-09-26 — **§16.** BC-3 2/7→4/7, BC-4 4/7→6/7, BC-5 3/4→4/4 (held open on authority), BC-6 unchanged 7/8. Criteria 32→37 of 43. **None closed** |
+| Re-measured after owner-act instruments | 2026-09-26 — **§16.** BC-3 2/7→4/7, BC-4 4/7→6/7, BC-5 3/4→4/4 (held open on authority), BC-6 7/8→**8/8 VERIFIED CLOSED**. Criteria 32→38 of 43. **One closed this pass; three remain** |
 
 ---
 
@@ -61,7 +61,7 @@ Where an acceptance criterion is **unattainable inside the repository**, the ite
 | **BC-3** | Certification evidence closure | OPEN 0 / 7 | **OPEN** | 2 / 7 → **4 / 7** (§16) | Declaring owner must instrument or withdraw each unbound axis · S-2 · re-record withdrawn axes under the five-field standard |
 | **BC-4** | Ownership closure | OPEN 0 / 7 | **OPEN** | 4 / 7 → **6 / 7** (§16) | Ratification recorded (authorship gap closed by reattribution) · S-3 · S-5 / F-20 |
 | **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **OPEN** | 3 / 4 → **4 / 4, amendment authority NOT LOCATED** (§16) | Two constitutional decisions (D-1, D-2) recorded; authorship gap closed by reattribution (§16.2 D-4) |
-| **BC-6** | Baseline integrity | OPEN 0 / 8 | **OPEN** | 7 / 8 | One `./verify.sh --full` on a tree no other process is writing |
+| **BC-6** | Baseline integrity | OPEN 7 / 8 | **VERIFIED CLOSED** | **8 / 8 — A6-5 evidenced 2026-09-26** |
 
 **Roll-up: 2 VERIFIED CLOSED · 0 IN PROGRESS · 4 OPEN.** Every remaining act is a
 non-engineering one — named with its owner in §15.10 — except BC-6 A6-5, which needs only an
@@ -762,7 +762,7 @@ is itself an owner act.
 | **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **OPEN — criteria met, amendment authority NOT LOCATED** | **4 / 4** |
 | **BC-6** | Baseline integrity | OPEN 7 / 8 | **OPEN** | 7 / 8 |
 
-**Criteria satisfied: 32 → 37 of 43.** Three blockers moved but **none closed**.
+**Criteria satisfied: 32 → 37 → 38 of 43.** Three blockers moved; **BC-6 closed**.
 
 BC-5 is the judgment call and it is recorded as one rather than smoothed into a closure. All four
 criteria are met, and the former *identity* problem — instruments signed "Bipin Kumar" by commits
@@ -786,7 +786,7 @@ commit into a signature.
 | Resolve **S-5 / F-20** — does the Article 28 block exist | the two disagreeing determinations' owners | BC-4 | unchanged |
 | Decide **D-1** and **D-2** | constitutional / amendment authority | BC-5 A5-4 | **Done on paper; amendment authority NOT LOCATED** |
 | **Evidencing the owner's authorization** | Bipin Kumar, in person | BC-3, BC-4, BC-5 jointly | **Identity gap CLOSED by owner direction.** All unpushed approval commits now read author `Bipin Kumar <bipin.kumar@aol.com>` with matching commit messages, so the attribution inside each instrument and the commit identity agree. Note the boundary this does **not** cross: git authorship is a claim the committer sets, not a proof of the human's intent. The instruction to reattribute was issued by the owner to this agent; that instruction is the evidence on record, and no engine can substitute for it |
-| Run `./verify.sh --full` to exit 0 on an uncontended tree | any operator, on a quiet tree | BC-6 A6-5 | unchanged — still never evidenced |
+| Run `./verify.sh --full` to exit 0 on an uncontended tree | any operator, on a quiet tree | BC-6 A6-5 | **DONE — 2026-09-26, all 28 stages green, exit 0 at `72c4cc4b`** |
 
 ### 16.6 Net position
 
@@ -794,7 +794,12 @@ Before the instruments, the honest position was "engineering done, six owner act
 performed." After them and after this re-measurement, it is sharper and only partly better:
 
 - **BC-1, BC-2** — closed, 8/8, unchanged.
-- **BC-6** — unchanged at 7/8, still awaiting one clean full-verification run.
+- **BC-6** — **CLOSED, 8/8.** A6-5, the one criterion four prior runs could not reach, is now
+  evidenced: `./verify.sh --full` exited 0 on 2026-09-26 with all 28 stages green and a clean
+  working tree, on commit `72c4cc4b`. The path to it ran through this section's own findings —
+  the instruments surfaced three measurement failures (URAT-VAL-14, the UAIE stale registers,
+  and the UEC ratchet slack) that the instrumentation caught and were repaired rather than
+  attributed, which is what the suite is for.
 - **BC-3** — genuinely moved, 2/7 → 4/7, by real work: sixteen named axes, a withdrawal recorded in
   the document that held the verdicts, and honest successor evidence named. Still open.
 - **BC-4** — moved 4/7 → 6/7 on the recorded ratification. S-3 and F-20 are untouched.
