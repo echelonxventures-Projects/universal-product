@@ -223,6 +223,23 @@ ACKNOWLEDGED_CLOSED: dict[str, str] = {
         "it would require either the Freeze Authority to act or a declared exclusion — "
         "both determinations this repository does not hold."
     ),
+    "ACEE-000001": (
+        "CORRECT AND NOT STALE. The gate is CLOSED because constitutional finality is "
+        "reserved to an out-of-corpus ratifying authority that is vacant (UCCEP-F-004, "
+        "inherited via Ω-E04), so this programme measures and confers no ratification and "
+        "no finality. Its own finding ACEE-F-001 records why it is not repaired: closing "
+        "the vacancy would require an act this repository may not perform, and asserting "
+        "finality anyway would manufacture an authority the constitution does not grant. "
+        "The closure is the constitutional posture, not a defect to reopen."
+    ),
+    "UCCEP-000000": (
+        "CORRECT AND NOT STALE. The aggregate certifier exits non-zero because the "
+        "certification ceiling is provisional, which is the same vacancy of ratifying "
+        "authority that closes ACEE-000001. A non-zero gate_exit here is the fail-closed "
+        "expression of 'no finality is claimed', and its own record discloses the cap "
+        "rather than hiding it. Reopening it would require the out-of-corpus ratifying "
+        "authority to act."
+    ),
 }
 
 

@@ -5,11 +5,11 @@
 > against what the repository still holds. A register that drifts while its own
 > owner stays green is invisible individually and visible only across them.
 
-**References checked:** 1952 · **unresolved:** 0
+**References checked:** 1954 · **unresolved:** 0
 
 | Register | Path | Owner | Refs | Broken | Status |
 |---|---|---|---|---|---|
-| `UAIE-REG-01` | `00-BOOK/DATA/artifacts.json` | `00-BOOK/tools/ukb.py` | 1689 | 0 | **CONSISTENT** |
+| `UAIE-REG-01` | `00-BOOK/DATA/artifacts.json` | `00-BOOK/tools/ukb.py` | 1691 | 0 | **CONSISTENT** |
 | `UAIE-REG-03` | `00-CMG/CMG-REGISTRY.json` | `00-CMG/tools/cmg_validate.py` | 45 | 0 | **CONSISTENT** |
 | `UAIE-REG-09` | `intelligence/UCOS-RIE-CAPABILITY-CATALOG.json` | `intelligence/rie/engine.py` | 148 | 0 | **CONSISTENT** |
 | `UAIE-REG-10` | `00-MASTER/UCOS-UAR-001/uar-analyses.json` | `00-MASTER/UCOS-UAR-001/uar_engine.py` | 45 | 0 | **CONSISTENT** |

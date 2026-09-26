@@ -580,6 +580,11 @@
    "reason": "The charter of the ratification programme, not one of its determinations. Its determinations are rolled up in the certificate registered as URAT-REC-02."
   },
   {
+   "path": "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-4-RATIFICATION-PETITION.md",
+   "class": "PETITION",
+   "reason": "A petition requests ratification; it does not perform it. It records the 550-subject ownership partition offered for ratification and the ratifier's signature, but CEP-006 VII.1 requires a decision to yield exactly one outcome and a petition yields none until the ratification act it solicits is completed and registered. Its effect is tracked in the blocker register as BC-4 A4-6/A4-7."
+  },
+  {
    "path": "00-MASTER/UCOS-CRAT-001/01-CONSTITUTIONAL-RATIFICATION.md",
    "class": "COMPONENT-OF-REGISTERED-RECORD",
    "reason": "A component determination rolled up into the certificate registered as URAT-REC-02, and carried there as evidence. Registering it separately would breach CEP-006 XVI.2 uniqueness."

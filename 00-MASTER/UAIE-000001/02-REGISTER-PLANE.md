@@ -6,7 +6,7 @@
 
 | ID | Subject | Register | Form | Status | Refs | Broken | Claimed by |
 |---|---|---|---|---|---|---|---|
-| `UAIE-REG-01` | every repository artifact | `00-BOOK/DATA/artifacts.json` | json | **RESOLVES** | 1689 | 0 | UAIE-FAC-01, UAIE-FAC-06 |
+| `UAIE-REG-01` | every repository artifact | `00-BOOK/DATA/artifacts.json` | json | **RESOLVES** | 1691 | 0 | UAIE-FAC-01, UAIE-FAC-06 |
 | `UAIE-REG-02` | every relationship between artifacts | `00-BOOK/DATA/relationships.json` | json | **RESOLVES** | 0 | 0 | UAIE-FAC-01, UAIE-FAC-02 |
 | `UAIE-REG-03` | every constitution | `00-CMG/CMG-REGISTRY.json` | json | **RESOLVES** | 45 | 0 | UAIE-FAC-04, UAIE-FAC-09 |
 | `UAIE-REG-04` | every registry | `00-MASTER/MIP-W1-P001/10-UNIVERSAL-REGISTRY-CATALOG.md` | markdown | **RESOLVES** | 0 | 0 | UAIE-FAC-01, UAIE-FAC-07 |
