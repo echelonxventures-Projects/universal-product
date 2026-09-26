@@ -5,9 +5,27 @@ const $ = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 function __csrf() { const m = /(?:^|; )azc=([^;]+)/.exec(document.cookie || ""); return m ? m[1] : ""; }
-async function api(path, method = "GET", body) {
+async function api(path, methodOrOpts, body) {
+  let method = "GET";
+  let bodyData = undefined;
+  if (typeof methodOrOpts === "object") {
+    method = methodOrOpts.method || "GET";
+    bodyData = methodOrOpts.body || methodOrOpts;
+  } else {
+    method = methodOrOpts;
+    bodyData = body;
+  }
   const opt = { method, headers: { "Content-Type": "application/json", "x-csrf": __csrf() }, credentials: "same-origin" };
-  if (body) opt.body = JSON.stringify(body);
+  // For GET/HEAD, convert body to query params instead of sending as body
+  if ((method === "GET" || method === "HEAD") && bodyData && typeof bodyData === "object") {
+    const qs = Object.entries(bodyData).map(([k,v]) => `${k}=${encodeURIComponent(v)}`).join("&");
+    if (qs) {
+      path += path.includes("?") ? "&" + qs : "?" + qs;
+      delete opt.body;
+    }
+  } else if (bodyData !== undefined) {
+    opt.body = JSON.stringify(bodyData);
+  }
   const r = await fetch("/api" + path, opt);
   const data = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(data.error || ("HTTP " + r.status));
@@ -35,7 +53,7 @@ const NAV = [
   ["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"], ["trash", "🗑️ Trash & Retention"], ["sso", "🔐 SSO & Integrations"],
   ["promotions", "💸 Offers & Coupons"], ["goip", "Ω∞ GOIP"],   ["search", "🔎 Search & Discovery"],   ["logistics", "🚚 Logistics & Fulfilment"],   ["finance", "💰 Finance & Settlements"], ["marketplace", "📣 Marketplace & Ads"],   ["ugc", "⭐ Reviews & Q&A"],   ["helpdesk", "🎧 Support Helpdesk"],   ["retention", "🔁 Subscriptions & Members"], ["risk", "🛡️ Risk & Fraud"], ["experiments", "🧪 Experiments"], ["planning", "📦 Planning & Replenishment"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
   ["payments", "💳 Payment Gateways"], ["modules", "🧩 Modules"], ["settings", "⚙️ Settings"], ["billing", "🧮 Billing"], ["analytics", "📊 Analytics"], ["audit", "📜 Audit Trail"],
-  ["monitor", "📈 Monitor"], ["team", "👥 Team & Roles"], ["studio", "🛠️ Data Studio"]
+  ["monitor", "📈 Monitor"], ["team", "👥 Team & Roles"], ["studio", "🛠️ Data Studio"], ["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]
 ];
 const NAVSEC = { promotions: "offers", goip: "offers", ai: "ai", webhooks: "webhooks", trash: "trash", team: "team", studio: "studio", sso: "settings" };
 const navSection = k => NAVSEC[k] || k;
@@ -225,7 +243,7 @@ async function vPlanning() {
 function shell(content) {  $("#app").innerHTML = `
   <div class="p-shell">
     <aside class="p-side">
-      <div class="p-logo"><b>${esc(TT.brand.wordmark)}</b><small>Store Console · ${esc(TT.tenant.slug)}</small></div>
+      <div class="p-logo"><b>${esc(TT.brand?.name || TT.brand?.wordmark || "Store")}</b><small>Store Console · ${esc(TT.tenant.slug)}</small></div>
       <nav class="p-nav">${NAV.filter(([k]) => canSee(k)).map(([k, l]) => `<button data-v="${k}" class="${view === k ? "on" : ""}">${l}</button>`).join("")}</nav>
       <div style="padding:18px 22px;border-top:1px solid var(--p-line);margin-top:14px">
         <a href="/index.html?store=${esc(TT.tenant.slug)}" target="_blank">↗ Open storefront</a>
@@ -241,6 +259,50 @@ function shell(content) {  $("#app").innerHTML = `
 }
 
 /* ---------- generic entity table/form ---------- */
+/* Validation utilities */
+function validateField(key, value, fieldDef) {
+  const errors = [];
+  // Required check
+  if (fieldDef.required && (value === "" || value === null || value === undefined)) {
+    errors.push(`${fieldDef.label} is required`);
+    return errors;
+  }
+  // Skip if not required and empty
+  if (!fieldDef.required && value === "") return errors;
+  
+  // Type-specific validation
+  switch (fieldDef.type) {
+    case "email":
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) errors.push(`${fieldDef.label} must be a valid email`);
+      break;
+    case "url":
+      if (!/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/.test(value)) errors.push(`${fieldDef.label} must be a valid URL`);
+      break;
+    case "number":
+    case "money":
+      if (value !== "" && isNaN(Number(value))) errors.push(`${fieldDef.label} must be a number`);
+      if (fieldDef.min !== undefined && Number(value) < fieldDef.min) errors.push(`${fieldDef.label} must be >= ${fieldDef.min}`);
+      if (fieldDef.max !== undefined && Number(value) > fieldDef.max) errors.push(`${fieldDef.label} must be <= ${fieldDef.max}`);
+      break;
+    case "text":
+      if (fieldDef.minLength && value.length < fieldDef.minLength) errors.push(`${fieldDef.label} must be at least ${fieldDef.minLength} characters`);
+      if (fieldDef.maxLength && value.length > fieldDef.maxLength) errors.push(`${fieldDef.label} must be at most ${fieldDef.maxLength} characters`);
+      if (fieldDef.pattern && !new RegExp(fieldDef.pattern).test(value)) errors.push(`${fieldDef.label} has invalid format`);
+      break;
+    case "json":
+      if (value && typeof value !== "object") errors.push(`${fieldDef.label} must be a valid JSON object/array`);
+      break;
+  }
+  return errors;
+}
+function validateRow(row, def) {
+  const errors = {};
+  for (const f of def.fields) {
+    const fieldErrors = validateField(f.key, row[f.key], f);
+    if (fieldErrors.length > 0) errors[f.key] = fieldErrors;
+  }
+  return errors;
+}
 async function entityRows(key) { try { return (await api("/meta/entity/" + key)).rows; } catch (e) { return []; } }
 async function refOptions(key) { const rows = await entityRows(key); return rows.map(r => ({ v: r.id != null ? r.id : r.key, l: r.title || r.name || r.label || r.code || r.ref || String(r.id || r.key) })); }
 async function fieldInput(f, val, registry) {
@@ -261,7 +323,11 @@ async function fieldInput(f, val, registry) {
     return `<label><span>${esc(f.label)}</span><select id="${id}"><option value="">—</option>${opts.map(o => `<option value="${esc(o.v)}" ${String(o.v) === String(val) ? "selected" : ""}>${esc(o.l)}</option>`).join("")}</select></label>`;
   }
   const t = f.type === "money" || f.type === "number" ? "number" : f.type === "date" ? "date" : "text";
-  return `<label><span>${esc(f.label)}${f.required ? " *" : ""}</span><input id="${id}" type="${t}" step="any" value="${esc(val == null ? "" : val)}" ${f.readonly ? "disabled" : ""}></label>`;
+  const minAttr = f.min !== undefined ? `min="${f.min}"` : "";
+  const maxAttr = f.max !== undefined ? `max="${f.max}"` : "";
+  const patternAttr = f.pattern ? `pattern="${f.pattern}"` : "";
+  const lengthAttrs = (f.minLength || f.maxLength) ? `data-minlen="${f.minLength||""}" data-maxlen="${f.maxLength||""}"` : "";
+  return `<label><span>${esc(f.label)}${f.required ? " *" : ""}</span><input id="${id}" type="${t}" step="any" value="${esc(val == null ? "" : val)}" ${minAttr} ${maxAttr} ${patternAttr} ${lengthAttrs} ${f.readonly ? "disabled" : ""}></label>`;
 }
 function collect(def) {
   const row = {};
@@ -276,7 +342,8 @@ function collect(def) {
 }
 async function openForm(key, id, onDone) {
   const defs = (await api("/meta/entities")).entities;
-  const def = defs[key];
+  const storeDefs = Object.fromEntries(Object.entries(defs).filter(([, d]) => !d.platformOnly));
+  const def = storeDefs[key];
   const registry = await api("/meta");
   let row = {};
   if (id != null) { const rows = await entityRows(key); row = rows.find(r => String(r[def.pk] ?? r.id) === String(id)) || {}; }
@@ -287,9 +354,33 @@ async function openForm(key, id, onDone) {
   $("#modal").classList.remove("hidden");
   const close = () => { const m = $("#modal"); m.innerHTML = ""; m.classList.add("hidden"); };
   $("#mClose").onclick = $("#mCancel").onclick = close;
+  // Inline validation feedback
+  $$("#mForm input, #mForm select, #mForm textarea").forEach(el => {
+    el.oninput = el.onblur = () => {
+      const f = def.fields.find(x => x.key === el.id.replace("f_", ""));
+      if (!f) return;
+      const val = f.type === "bool" ? el.checked : el.value;
+      const errors = validateField(f.key, val, f);
+      el.classList.toggle("field-invalid", errors.length > 0);
+      el.classList.toggle("field-valid", errors.length === 0 && val !== "");
+      el.title = errors.join("\n");
+    };
+  });
   $("#mSave").onclick = async () => {
     try {
       const body = collect(def);
+      // Validate before submit
+      const errs = validateRow(body, def);
+      if (Object.keys(errs).length > 0) {
+        const msg = Object.entries(errs).map(([k, v]) => v.join(", ")).join(" · ");
+        toast(`Validation failed: ${msg}`);
+        // Highlight fields
+        Object.keys(errs).forEach(k => {
+          const el = $("#f_" + k);
+          if (el) { el.classList.add("field-invalid"); el.title = errs[k].join("\n"); }
+        });
+        return;
+      }
       if (id != null) await api(`/meta/entity/${key}/${encodeURIComponent(id)}`, "PUT", body);
       else {
         if (def.pkType === "text" && body[def.pk]) await api(`/meta/entity/${key}`, "POST", body);
@@ -301,7 +392,9 @@ async function openForm(key, id, onDone) {
 }
 async function entityTable(key, opts = {}) {
   const defs = (await api("/meta/entities")).entities;
-  const def = defs[key];
+  // Filter out platform-only entities for store admins
+  const storeDefs = Object.fromEntries(Object.entries(defs).filter(([, d]) => !d.platformOnly));
+  const def = storeDefs[key];
   if (!def) return `<div class="p-empty">No access to ${esc(key)}</div>`;
   const rows = await entityRows(key);
   const listFields = def.fields.filter(f => f.list);
@@ -545,24 +638,13 @@ async function vMonitor() {
     <tbody>${m.endpoints.map(x => `<tr><td>${esc(x.endpoint)}</td><td class="num">${x.count}</td><td class="num">${x.err}</td><td class="num">${x.avgMs}</td></tr>`).join("")}</tbody></table></div>`;
 }
 async function vStudio() {
-  const defs = (await api("/meta/entities")).entities;
+  const defs = Object.fromEntries(Object.entries((await api("/meta/entities")).entities).filter(([, d]) => !d.platformOnly));
   const customs = await api("/meta/entity/custom_provider").catch(() => ({ rows: [] }));
   return `
-  <div class="p-panel"><h2>Universal Entity Studio</h2>
-    <p class="p-tag">Every entity on the platform is metadata. Pick one to browse/edit, or define a brand-new entity — it instantly gets CRUD, validation, audit and UI.</p>
+  <div class="p-panel"><h2>Entity Studio</h2>
+    <p class="p-tag">Browse and manage entity data for this store.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0">${Object.entries(defs).map(([k, d]) => `<button class="p-btn sm ${k === A.studioSel ? "primary" : ""}" data-studio="${k}">${d.icon} ${esc(d.label)}</button>`).join("")}</div>
-    <div id="studioBody">${A.studioSel ? await entityTable(A.studioSel) : '<div class="p-empty">Select an entity above</div>'}</div></div>
-  <div class="p-panel"><h2>Define a new entity</h2>
-    <div class="p-form"><div class="row3">
-      <label><span>Key (snake_case)</span><input id="ceKey" placeholder="e.g. service_contract"></label>
-      <label><span>Label</span><input id="ceLabel" placeholder="Service Contracts"></label>
-      <label><span>Icon</span><input id="ceIcon" placeholder="🧾"></label></div>
-    <label><span>Fields (JSON array)</span><textarea id="ceFields" rows="5">[
-  {"key":"name","label":"Name","type":"text","required":true,"list":true},
-  {"key":"value","label":"Value","type":"money","list":true},
-  {"key":"active","label":"Active","type":"bool","list":true}
-]</textarea></label>
-    <button class="p-btn primary" id="ceSave">Create entity</button></div></div>`;
+    <div id="studioBody">${A.studioSel ? await entityTable(A.studioSel) : '<div class="p-empty">Select an entity above</div>'}</div></div>`;
 }
 
 /* ---------- render ---------- */
@@ -621,6 +703,7 @@ async function vAI() {
   const cap = ov.capabilities || [];
   const st = ov.settings || {};
   const premProviders = (await api("/meta")).providersAi || [];
+  const aiGw = await api("/admin/ai-gateways").catch(() => ({ gateways: [] }));
   const tierBadge = t => `<span class="badge ${t === "premium" ? "active" : "processing"}">${esc(t)}</span>`;
   return `<div class="p-panel"><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
       <h2 style="margin:0">🤖 AI Studio</h2>
@@ -643,6 +726,26 @@ async function vAI() {
           <input data-aimodel="${esc(c.key)}" placeholder="model" value="${esc((st[c.key] || {}).model || "")}" style="flex:1" ${c.tier === "premium" ? "" : "disabled"}>
         </div>
       </div>`).join("")}
+    </div>
+    <div class="p-panel"><h3>AI Provider Credentials</h3>
+      <p style="color:var(--p-muted);font-size:13px">Configure API keys for each AI provider. Secrets are stored encrypted server-side.</p>
+      <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Provider</th><th>Fields</th><th>Status</th><th></th></tr></thead>
+      <tbody id="aiGwBody">${aiGw.gateways.map(gw => {
+        const p = premProviders.find(p => p.id === gw.id) || {};
+        const fields = p.fields || [];
+        const hasSecret = fields.some(f => f.secret && (gw.config || {})[f.key]);
+        return `<tr>
+          <td><b>${esc(p.emoji)} ${esc(p.name)}</b><br><span class="p-tag">${esc(p.desc || "")}</span></td>
+          <td><div style="display:flex;flex-wrap:wrap;gap:6px">${fields.map(f => {
+            const val = (gw.config || {})[f.key] || "";
+            const masked = f.secret && val ? `••••${val.slice(-4)}` : val;
+            return `<label style="font-size:11px"><span>${esc(f.label)}</span><input data-aicred="${gw.id}" data-aikey="${f.key}" value="${esc(masked)}" style="font-size:11px" ${f.secret ? 'type="password"' : ''}></label>`;
+          }).join("")}</div></td>
+          <td>${hasSecret ? '<span class="badge active">configured</span>' : '<span class="badge processing">unconfigured</span>'}</td>
+          <td><button class="p-btn sm" data-aicfg="${gw.id}">Test</button></td>
+        </tr>`;
+      }).join("") || '<tr><td colspan="4">No AI providers available. Configure them in Platform Console → Provider Registry.</td></tr>'}</tbody></table></div>
+      <div style="margin-top:10px;display:flex;gap:10px"><button class="p-btn primary" id="aiGwSave">Save credentials</button><button class="p-btn" id="aiGwTestAll">Test all</button></div>
     </div>
     <div class="p-panel"><h3>Run a capability</h3>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
@@ -667,10 +770,27 @@ function wireAI() {
     try { await api("/admin/settings", "PUT", { ai }); toast("AI configuration saved"); render(); } catch (e) { toast(e.message); }
   };
   $$("[data-aiprem],[data-aiprov],[data-aimodel]").forEach(el => el.onchange = el.onblur = save);
+  const saveCredentials = async () => {
+    const creds = {};
+    $$("[data-aicred]").forEach(inp => {
+      const id = inp.dataset.aicred, k = inp.dataset.aikey, v = inp.value;
+      if (v) { creds[id] = creds[id] || {}; creds[id][k] = v; }
+    });
+    try { await api("/admin/ai-gateways", "PUT", creds); toast("AI credentials saved"); } catch (e) { toast(e.message); }
+  };
+  const testCredential = async id => {
+    try { const r = await api("/admin/ai-gateways/" + encodeURIComponent(id) + "/test", "POST", {}); toast(r.message); } catch (e) { toast(e.message); }
+  };
+  const testAll = async () => {
+    $$("[data-aicfg]").forEach(b => testCredential(b.dataset.aicfg));
+  };
+  if ($("#aiGwSave")) $("#aiGwSave").onclick = saveCredentials;
+  if ($("#aiGwTestAll")) $("#aiGwTestAll").onclick = testAll;
   const collect = () => { const cap = $("#aiCapSel").value, p = {}; if (cap === "product_recommendation" || cap === "image_processing") { if ($("#aiPid").value) p.product_id = $("#aiPid").value; } if (cap === "data_analysis" && $("#aiCols").value) p.columns = $("#aiCols").value.split(",").map(x => x.trim()).filter(Boolean); return { cap, p }; };
   const run = async () => { const { cap, p } = collect(); try { const r = await api("/ai/run/" + encodeURIComponent(cap), "POST", p); $("#aiOut").textContent = JSON.stringify(r, null, 1); toast(cap + " · " + (r.tier || "") + " · " + money(r.cost || 0)); } catch (e) { $("#aiOut").textContent = "⚠ " + e.message; toast(e.message); } };
   const task = async () => { const { cap, p } = collect(); try { const r = await api("/ai/tasks", "POST", { capability: cap, params: p, runNow: true }); $("#aiOut").textContent = JSON.stringify(r.tasks.slice(0, 6), null, 1); toast("Queued"); render(); } catch (e) { toast(e.message); } };
   if ($("#aiRun")) $("#aiRun").onclick = run; if ($("#aiTask")) $("#aiTask").onclick = task;
+  $$("[data-aicfg]").forEach(b => b.onclick = () => testCredential(b.dataset.aicfg));
 }
 
 /* ---------- Central Offers & Coupons (data-driven builder) ---------- */
@@ -997,7 +1117,7 @@ async function render() {
     else if (view === "audit") { body.innerHTML = await vAudit(); wireAudit(); }
     else if (view === "marketplace") body.innerHTML = await vMarketplace();
     else if (view === "ugc") body.innerHTML = await vUgc();
-    else if (view === "helpdesk") body.innerHTML = await vHelpdesk();
+    else if (view === "helpdesk") { body.innerHTML = await vHelpdesk(); wireHelpdesk(); } else if (view === "affiliate") renderAffiliate(); else if (view === "sitemap") renderSitemap(); else if (view === "shipping") renderShipping();
     else if (view === "retention") body.innerHTML = await vRetention();
     else if (view === "risk") body.innerHTML = await vRisk();
     else if (view === "experiments") body.innerHTML = await vExperiments();
@@ -1008,6 +1128,8 @@ async function render() {
     else if (view === "monitor") body.innerHTML = await vMonitor();
     else if (view === "studio") { body.innerHTML = await vStudio(); wireStudio(); }
     else if (view === "analytics") body.innerHTML = await vAnalytics();
+    else if (view === "manual") window.open("/docs/user-manual.html", "_blank");
+    else if (view === "architecture") window.open("/docs/architecture.html", "_blank");
   } catch (e) { body.innerHTML = `<div class="p-empty">⚠️ ${esc(e.message)}</div>`; }
 }
 function wireAudit() {
@@ -1018,12 +1140,6 @@ function wireAudit() {
 }
 function wireStudio() {
   $$("[data-studio]").forEach(b => b.onclick = () => { A.studioSel = b.dataset.studio; render(); });
-  $("#ceSave").onclick = async () => {
-    try {
-      await api("/meta/entity-def", "POST", { key: $("#ceKey").value.trim(), label: $("#ceLabel").value.trim(), icon: $("#ceIcon").value.trim() || "🧬", fields: JSON.parse($("#ceFields").value) });
-      toast("Entity created — it now appears in the studio & nav"); render();
-    } catch (e) { toast(e.message); }
-  };
 }
 function wirePayments() {
   $("#gwSave").onclick = async () => {
@@ -1110,3 +1226,344 @@ document.addEventListener("click", e => { const close = e.target.closest("[data-
     render();
   } catch (e) { console.error(e); }
 })();
+
+async function vDocs() {
+  return `<div class="a-head">
+    <h2>📄 Architecture & User Manual</h2>
+    <p class="a-sub">Documentation for LUXORA Platform</p>
+  </div>
+  <div class="a-card">
+    <h3>📘 User Manual</h3>
+    <p>Complete guide for store administrators, customers, and platform operations.</p>
+    <p><a href="/docs/user-manual.html" target="_blank">View User Manual</a></p>
+    
+    <h3>🏛️ Architecture Documentation</h3>
+    <p>Technical architecture, schema, data models, and integration specs.</p>
+    <p><a href="/docs/architecture.html" target="_blank">View Architecture</a></p>
+    
+    <h3>📚 Quick Links</h3>
+    <ul>
+      <li><a href="/GOIP-ROADMAP-2.md" target="_blank">GOIP Value Exchange Roadmap</a></li>
+      <li><a href="/README.md" target="_blank">README</a></li>
+      <li><a href="/USER_MANUAL.md" target="_blank">Full Manual (Source)</a></li>
+    </ul>
+  </div>
+  <div class="a-card">
+    <h3>🔗 Admin API Reference</h3>
+    <p>Key endpoints for store administration.</p>
+    <ul>
+      <li><code>POST /admin/product</code> - Create product</li>
+      <li><code>GET /admin/orders</code> - List orders</li>
+      <li><code>GET /goip</code> - GOIP manifest</li>
+    </ul>
+  </div>`;
+}
+
+function wireDocs() {
+  // Add click handlers if needed
+}
+/* ========== NEW MODULES - Affiliate, Sitemap, Shipping, Helpdesk ========== */
+
+/* ========== Affiliate Network UI ========== */
+function renderAffiliate() {
+  const html = `
+    <div class="a-head">
+      <h2>🤝 Affiliate Network</h2>
+      <p class="a-sub">Manage affiliates, tracking, commissions, and payouts</p>
+    </div>
+    <div class="a-card">
+      <h3>Affiliate Stats</h3>
+      <div class="stats" id="affiliateStats"></div>
+    </div>
+    <div class="a-card">
+      <h3>My Affiliates</h3>
+      <p class="a-sub">Affiliates tracking and converting for your store</p>
+      <div id="affiliateList"></div>
+      <button class="p-btn" onclick="createAffiliateModal()">+ Add Affiliate</button>
+    </div>
+  `;
+  $$(".a-card").forEach(c => c.remove());
+  $$("#app").innerHTML += html;
+  loadAffiliateStats();
+  loadAffiliates();
+}
+
+async function loadAffiliateStats() {
+  try {
+    const res = await api("/affiliate/reports");
+    const s = res.summary || {};
+    $$("#affiliateStats").innerHTML = `
+      <div class="stat">
+        <div class="stat-num">${s.affiliates || 0}</div>
+        <div class="stat-label">Affiliates</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">$${(s.sales || 0).toLocaleString()}</div>
+        <div class="stat-label">Total Sales</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">$${(s.commissions || 0).toLocaleString()}</div>
+        <div class="stat-label">Total Commissions</div>
+      </div>
+    `;
+  } catch (e) { console.error(e); }
+}
+
+async function loadAffiliates() {
+  try {
+    const res = await api("/affiliate/affiliates");
+    const list = $$("#affiliateList");
+    if (!res.affiliates?.length) {
+      list.innerHTML = `<p class="a-sub">No affiliates yet. Add one to start tracking referrals.</p>`;
+      return;
+    }
+    let html = `<div class="a-table"><thead><tr>
+      <th>Name</th><th>Code</th><th>Status</th><th>Sales</th><th>Commissions</th>
+    </tr></thead><tbody>`;
+    res.affiliates.forEach(a => {
+      html += `<tr>
+        <td>${esc(a.name)}</td>
+        <td><code>${esc(a.affiliate_code)}</code></td>
+        <td><span class="stat-badge ${a.status}">${esc(a.status)}</span></td>
+        <td>$${(a.lifetime_sales || 0).toLocaleString()}</td>
+        <td>$${(a.lifetime_commissions || 0).toLocaleString()}</td>
+      </tr>`;
+    });
+    html += `</tbody></div>`;
+    list.innerHTML = html;
+  } catch (e) { console.error(e); }
+}
+
+function createAffiliateModal() {
+  const m = $("#modal");
+  m.innerHTML = `
+    <h3>Add Affiliate</h3>
+    <form class="p-form">
+      <label><span>Name</span><input type="text" id="affName" required></label>
+      <label><span>Email</span><input type="email" id="affEmail"></label>
+      <label><span>Tier</span>
+        <select id="affTier">
+          <option value="standard">Standard</option>
+          <option value="gold">Gold</option>
+          <option value="platinum">Platinum</option>
+        </select>
+      </label>
+      <button class="p-btn primary">Create</button>
+    </form>
+  `;
+  m.classList.remove("hidden");
+  $("#affName").focus();
+}
+
+/* ========== Sitemap/SEO UI ========== */
+function renderSitemap() {
+  const html = `
+    <div class="a-head">
+      <h2>🔍 Sitemap & SEO</h2>
+      <p class="a-sub">Auto-generate XML sitemaps for search engines</p>
+    </div>
+    <div class="a-card">
+      <h3>Sitemap Configuration</h3>
+      <div id="sitemapConfig"></div>
+    </div>
+    <div class="a-card">
+      <h3>Generate Sitemap</h3>
+      <p class="a-sub">Creates XML sitemap for submission to Google, Bing, etc.</p>
+      <button class="p-btn primary" onclick="generateSitemap()">🔄 Generate Now</button>
+    </div>
+    <div class="a-card">
+      <h3>Last Generated</h3>
+      <div id="sitemapLast"></div>
+    </div>
+  `;
+  $$(".a-card").forEach(c => c.remove());
+  $$("#app").innerHTML += html;
+  loadSitemapConfig();
+}
+
+async function loadSitemapConfig() {
+  try {
+    const res = await api("/sitemap/config");
+    const c = res.config || {};
+    $$("#sitemapConfig").innerHTML = `
+      <div class="p-form">
+        <label><span>Hostname</span><input type="text" id="sitemapHost" value="${esc(c.hostname || "https://example.com")}" style="width:300px"></label>
+        <label><span>Max entries per file</span>
+          <select id="sitemapMax">
+            <option value="50000" ${c.max_per_file == 50000 ? "selected" : ""}>50,000</option>
+            <option value="10000" ${c.max_per_file == 10000 ? "selected" : ""}>10,000</option>
+          </select>
+        </label>
+        <button class="p-btn" onclick="saveSitemapConfig()">Save</button>
+      </div>
+    `;
+    $$("#sitemapLast").innerHTML = `<p>Sitemap generated: <code>${esc(c.last_generated || "Never")}</code></p>`;
+  } catch (e) { console.error(e); }
+}
+
+async function saveSitemapConfig() {
+  const hostname = $("#sitemapHost").value;
+  const maxPerFile = parseInt($("#sitemapMax").value);
+  await api("/sitemap/config", "PUT", { hostname, max_per_file: maxPerFile });
+  toast("Sitemap config saved");
+  loadSitemapConfig();
+}
+
+async function generateSitemap() {
+  toast("Generating sitemap...");
+  const res = await api("/sitemap/generate", "POST");
+  if (res.ok) {
+    toast("✅ Sitemap generated at /sitemap.xml");
+    loadSitemapConfig();
+  } else {
+    toast("❌ Error generating sitemap");
+  }
+}
+
+/* ========== Shipping & Tracking UI ========== */
+function renderShipping() {
+  const html = `
+    <div class="a-head">
+      <h2>📦 Shipping & Tracking</h2>
+      <p class="a-sub">Integrate carriers, track shipments, generate labels</p>
+    </div>
+    <div class="a-card">
+      <h3>Available Carriers</h3>
+      <div id="shippingProviders"></div>
+    </div>
+    <div class="a-card">
+      <h3>Track Shipment</h3>
+      <p class="a-sub">Enter tracking number to see real-time status</p>
+      <div class="p-form">
+        <input type="text" id="trackNumber" placeholder="Tracking number" style="flex:1">
+        <button class="p-btn" onclick="trackShipment()">Track</button>
+      </div>
+      <div id="trackResult"></div>
+    </div>
+  `;
+  $$(".a-card").forEach(c => c.remove());
+  $$("#app").innerHTML += html;
+  loadShippingProviders();
+}
+
+async function loadShippingProviders() {
+  try {
+    const res = await api("/shipping/providers");
+    const list = $$("#shippingProviders");
+    if (!res.providers?.length) {
+      list.innerHTML = `<p class="a-sub">Configure carrier API credentials in platform settings.</p>`;
+      return;
+    }
+    let html = `<div class="a-table"><thead><tr>
+      <th>Provider</th><th>Type</th><th>Status</th>
+    </tr></thead><tbody>`;
+    res.providers.forEach(p => {
+      html += `<tr>
+        <td>${esc(p.name)}</td>
+        <td><code>${esc(p.carrier_type)}</code></td>
+        <td><span class="stat-badge ${p.status}">${esc(p.status)}</span></td>
+      </tr>`;
+    });
+    html += `</tbody></div>`;
+    list.innerHTML = html;
+  } catch (e) { console.error(e); }
+}
+
+async function trackShipment() {
+  const number = $("#trackNumber").value;
+  if (!number) return toast("Enter tracking number");
+  try {
+    const res = await api("/shipping/track/" + encodeURIComponent(number));
+    if (res.tracking) {
+      $$("#trackResult").innerHTML = `
+        <div class="a-table">
+          <p><strong>Status:</strong> ${esc(res.tracking.status)}</p>
+          <p><strong>Estimated Delivery:</strong> ${esc(res.tracking.estimated_delivery || "Unknown")}</p>
+        </div>
+      `;
+    } else {
+      toast("No tracking found for this number");
+    }
+  } catch (e) {
+    toast("Error tracking shipment");
+  }
+}
+
+/* ========== Helpdesk UI ========== */
+function renderHelpdesk() {
+  const html = `
+    <div class="a-head">
+      <h2>💬 Customer Support</h2>
+      <p class="a-sub">Tickets, live chat, SMS support</p>
+    </div>
+    <div class="a-card">
+      <h3>Active Tickets</h3>
+      <div id="helpdeskTickets"></div>
+    </div>
+    <div class="a-card">
+      <h3>Live Chat Status</h3>
+      <div id="chatStatus"></div>
+    </div>
+  `;
+  $$(".a-card").forEach(c => c.remove());
+  $$("#app").innerHTML += html;
+  loadHelpdeskTickets();
+  loadChatStatus();
+}
+
+async function loadHelpdeskTickets() {
+  try {
+    const res = await api("/helpdesk/tickets");
+    const list = $$("#helpdeskTickets");
+    if (!res.tickets?.length) {
+      list.innerHTML = `<p class="a-sub">No tickets yet. Happy customers!</p>`;
+      return;
+    }
+    let html = `<div class="a-table"><thead><tr>
+      <th>Ref</th><th>Subject</th><th>Channel</th><th>Status</th><th>Priority</th>
+    </tr></thead><tbody>`;
+    res.tickets.forEach(t => {
+      html += `<tr>
+        <td><code>${esc(t.ref)}</code></td>
+        <td>${esc(t.subject)}</td>
+        <td><span class="stat-badge">${esc(t.channel || "email")}</span></td>
+        <td><span class="stat-badge ${t.status}">${esc(t.status)}</span></td>
+        <td><span class="stat-badge ${t.priority}">${esc(t.priority)}</span></td>
+      </tr>`;
+    });
+    html += `</tbody></div>`;
+    list.innerHTML = html;
+  } catch (e) { console.error(e); }
+}
+
+async function loadChatStatus() {
+  try {
+    const res = await api("/helpdesk/agents/status");
+    const status = $$("#chatStatus");
+    if (!res.agents?.length) {
+      status.innerHTML = `<p class="a-sub">No agents configured yet.</p>`;
+      return;
+    }
+    let html = `<div class="a-table"><thead><tr>
+      <th>Agent</th><th>Status</th><th>Last Update</th>
+    </tr></thead><tbody>`;
+    res.agents.forEach(a => {
+      html += `<tr>
+        <td><code>${esc(a.agent_id)}</code></td>
+        <td><span class="stat-badge ${a.status}">${esc(a.status)}</span></td>
+        <td>${esc(a.updated_at)}</td>
+      </tr>`;
+    });
+    html += `</tbody></div>`;
+    status.innerHTML = html;
+  } catch (e) { console.error(e); }
+}
+
+/* ========== Module Registration ========== */
+window.renderAffiliate = renderAffiliate;
+window.renderSitemap = renderSitemap;
+window.renderShipping = renderShipping;
+window.renderHelpdesk = renderHelpdesk;
+window.generateSitemap = generateSitemap;
+window.trackShipment = trackShipment;
+

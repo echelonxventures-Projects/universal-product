@@ -10,11 +10,12 @@ const { run, get, all } = require("./lib/db.js");
 const api = require("./lib/api.js");
 const metrics = require("./lib/metrics.js");
 const sec = require("./lib/security.js");
+sec.initDb({ get, run, all });
 const idem = require("./lib/idempotency.js");
 require("./lib/modules.js").ensureBaselines();
 try { require("./lib/env.js").boot(); } catch (e) { console.error("env boot:", e.message); }
 
-const PORT = Number(process.env.PORT || 3000);
+const PORT = Number(process.env.PORT || 8787);
 const PUB = path.join(__dirname, "public");
 const DAY = 86400;
 const MIME = {

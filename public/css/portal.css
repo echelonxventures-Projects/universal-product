@@ -111,3 +111,17 @@ body.portal { margin: 0; font: 14px/1.5 "Inter", "Segoe UI", Arial, sans-serif; 
 .p-form .chk { display: flex; gap: 9px; align-items: center; font-size: 13.5px; color: var(--p-text); }
 .p-form .chk input { width: 17px; height: 17px; accent-color: var(--p-accent); }
 .p-form label em.p-tag { display: block; font-style: normal; }
+
+/* Validation styling */
+.p-form input.field-invalid, .p-form select.field-invalid, .p-form textarea.field-invalid {
+  border-color: var(--p-red);
+  background: rgba(229, 72, 77, 0.05);
+}
+.p-form input.field-valid, .p-form select.field-valid, .p-form textarea.field-valid {
+  border-color: #4ade80;
+  background: rgba(74, 222, 128, 0.05);
+}
+.p-form label:has(.field-invalid) span {
+  color: var(--p-red);
+}
+

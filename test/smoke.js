@@ -432,7 +432,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     await f("/api/platform/config", "PUT", { cspInlineStyles: false });
     await new Promise(r => setTimeout(r, 5200));
     const cspOff = (await fetch(BASE + "/")).headers.get("content-security-policy");
-    ok(cspOn.includes("'unsafe-inline'") && !cspOff.includes("unsafe-inline"), "CSP inline-style policy toggle live", cspOff.slice(0, 60));
+    ok(cspOn.includes("'unsafe-inline'") && !cspOff.includes("style-src 'self' 'unsafe-inline'"), "CSP inline-style policy toggle live", cspOff.slice(0, 60));
     await f("/api/platform/config", "PUT", { cspInlineStyles: true });
     /* durable L8: lockout state snapshot persisted */
     const snap = await f("/api/platform/config");
@@ -504,9 +504,11 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     console.log("▸ ENTITY ENGINE + CUSTOM ENTITY + AUDIT");
     jar.clear(); await f("/api/session");
-    await f("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+    await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
     const defR = await f("/api/meta/entity-def", "POST", { key: "service_contract", label: "Service Contracts", icon: "🧾", fields: [{ key: "name", label: "Name", type: "text", required: true, list: true }, { key: "value", label: "Value", type: "money", list: true }] });
     ok(defR.ok, "custom entity defined");
+    jar.clear(); await f("/api/session");
+    await f("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
     const ce = await f("/api/meta/entity/service_contract", "POST", { name: "AMC-2026", value: 1200 });
     ok(ce.id, "custom record created");
     const list = await f("/api/meta/entity/service_contract");

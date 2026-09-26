@@ -65,9 +65,27 @@ function applyTheme() {
 }
 
 function __csrf() { const m = /(?:^|; )azc=([^;]+)/.exec(document.cookie || ""); return m ? m[1] : ""; }
-async function api(path, method = "GET", body) {
+async function api(path, methodOrOpts, body) {
+  let method = "GET";
+  let bodyData = undefined;
+  if (typeof methodOrOpts === "object") {
+    method = methodOrOpts.method || "GET";
+    bodyData = methodOrOpts.body || methodOrOpts;
+  } else {
+    method = methodOrOpts;
+    bodyData = body;
+  }
   const opt = { method, headers: { "Content-Type": "application/json", "x-csrf": __csrf() }, credentials: "same-origin" };
-  if (body) opt.body = JSON.stringify(body);
+  // For GET/HEAD, convert body to query params instead of sending as body
+  if ((method === "GET" || method === "HEAD") && bodyData && typeof bodyData === "object") {
+    const qs = Object.entries(bodyData).map(([k,v]) => `${k}=${encodeURIComponent(v)}`).join("&");
+    if (qs) {
+      path += path.includes("?") ? "&" + qs : "?" + qs;
+      delete opt.body;
+    }
+  } else if (bodyData !== undefined) {
+    opt.body = JSON.stringify(bodyData);
+  }
   const r = await fetch("/api" + path, opt);
   const data = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(data.error || ("HTTP " + r.status));
