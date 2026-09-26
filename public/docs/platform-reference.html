@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platform Console Reference — LUXORA</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --text: #1f2937;
+            --bg: #f9fafb;
+            --sidebar: #ffffff;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+            padding: 40px 60px;
+            max-width: 1200px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 0.5em;
+            color: #111;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-top: 2.5em;
+            margin-bottom: 1em;
+            color: #16213e;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+        h3 {
+            font-size: 1.2em;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            color: #374151;
+        }
+        p { margin-bottom: 1em; }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #f3f4f6;
+            font-weight: 600;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .required {
+            color: var(--danger);
+            font-weight: 600;
+        }
+        .optional {
+            color: #6b7280;
+            font-style: italic;
+        }
+        .type-string {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+        .type-number {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+        .type-boolean {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+        .example-box {
+            background: #f9fafb;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+        .section-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <a href="/docs/user-manual.html" class="back-link">← Back to User Manual</a>
+    <h1>🏛️ Platform Console Reference</h1>
+    <p><strong>URL:</strong> <a href="/platform.html" target="_blank">http://localhost:8787/platform.html</a></p>
+    <p>Complete reference for all Platform Console sections, fields, validation rules, and examples.</p>
+
+    <div class="section-card">
+        <h3>🛡️ Provisioning</h3>
+        <p><strong>Purpose:</strong> Global security policies and new-store defaults</p>
+        
+        <h4>Credential Policy</h4>
+        <table>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr>
+            <tr>
+                <td>Minimum password length</td>
+                <td><span class="type-number">Number</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>8</td>
+                <td>Min characters for user passwords</td>
+            </tr>
+            <tr>
+                <td>Require letter + digit</td>
+                <td><span class="type-boolean">Boolean</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>false</td>
+                <td>Enforce mixed character types</td>
+            </tr>
+            <tr>
+                <td>Block breached passwords</td>
+                <td><span class="type-boolean">Boolean</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>false</td>
+                <td>Reject known compromised passwords</td>
+            </tr>
+        </table>
+
+        <h4>New-Store Defaults</h4>
+        <table>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr>
+            <tr>
+                <td>Default plan</td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>"starter"</td>
+                <td>Tier assigned to new stores (starter/professional)</td>
+            </tr>
+            <tr>
+                <td>Seed demo catalog</td>
+                <td><span class="type-boolean">Boolean</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>false</td>
+                <td>Auto-add sample products on launch</td>
+            </tr>
+            <tr>
+                <td>Gateways sandbox mode</td>
+                <td><span class="type-boolean">Boolean</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>true</td>
+                <td>Start payment providers in test mode</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section-card">
+        <h3>🏬 Stores (Tenant Management)</h3>
+        <p><strong>Purpose:</strong> Launch and manage store tenants</p>
+
+        <h4>Launch Wizard Fields</h4>
+        <table>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr>
+            <tr>
+                <td><strong>Name</strong></td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>Display name (e.g., "Luxora Fashion")</td>
+            </tr>
+            <tr>
+                <td><strong>Slug</strong></td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>URL identifier (e.g., "luxora") - unique</td>
+            </tr>
+            <tr>
+                <td>Tagline</td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>—</td>
+                <td>Short description shown on storefront</td>
+            </tr>
+            <tr>
+                <td><strong>Jurisdiction Country</strong></td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>Country code (US, IN, AE) - auto-loads currency/tax</td>
+            </tr>
+            <tr>
+                <td>Industry / Departments</td>
+                <td><span class="type-string">Array</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>[]</td>
+                <td>Selected industries (fashion, grocery, etc.)</td>
+            </tr>
+            <tr>
+                <td>Owner Email</td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>—</td>
+                <td>Admin email for store owner</td>
+            </tr>
+            <tr>
+                <td>Gateway Providers</td>
+                <td><span class="type-string">Array</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>[]</td>
+                <td>Payment providers for this country</td>
+            </tr>
+        </table>
+
+        <div class="example-box">
+            <strong>Example Launch:</strong><br>
+            <code>{ name: "Luxora", slug: "luxora", jurisdiction: "US", industries: ["fashion"], ownerEmail: "owner@luxora.com" }</code>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h3>🌍 Geo · Countries · Taxes</h3>
+        <p><strong>Purpose:</strong> Define countries, currencies, tax modes, provider availability</p>
+
+        <h4>Country Configuration</h4>
+        <table>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr>
+            <tr>
+                <td>Country Code</td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>ISO 3166 code (US, IN, AE, DE)</td>
+            </tr>
+            <tr>
+                <td>Base Currency</td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>Currency code (USD, INR, AED)</td>
+            </tr>
+            <tr>
+                <td>Tax Mode</td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>none</td>
+                <td>Tax type: sales_tax, vat, gst, none</td>
+            </tr>
+            <tr>
+                <td>Tax Rate</td>
+                <td><span class="type-number">Number</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>0</td>
+                <td>Default tax rate (e.g., 0.19 for 19%)</td>
+            </tr>
+            <tr>
+                <td>Provider Availability</td>
+                <td><span class="type-string">Array</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>[]</td>
+                <td>Enabled payment/shipping providers</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section-card">
+        <h3>💼 Plans (Subscription Tiers)</h3>
+        <p><strong>Purpose:</strong> Define store subscription tiers</p>
+
+        <h4>Plan Fields</h4>
+        <table>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr>
+            <tr>
+                <td><strong>Name</strong></td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>Plan name (Starter, Professional, Enterprise)</td>
+            </tr>
+            <tr>
+                <td>Price (Monthly)</td>
+                <td><span class="type-number">Number</span></td>
+                <td><span class="required">Required</span></td>
+                <td>0</td>
+                <td>Monthly subscription price</td>
+            </tr>
+            <tr>
+                <td>Max Products</td>
+                <td><span class="type-number">Number</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>100</td>
+                <td>Max products store can list</td>
+            </tr>
+            <tr>
+                <td>Max Orders / Month</td>
+                <td><span class="type-number">Number</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>100</td>
+                <td>Max orders processed per month</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section-card">
+        <h3>🔌 Provider Registry</h3>
+        <p><strong>Purpose:</strong> Register and configure payment, shipping, notification providers</p>
+
+        <h4>Provider Fields</h4>
+        <table>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr>
+            <tr>
+                <td><strong>Provider ID</strong></td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>Unique identifier (stripe, razorpay, tabby, aramex)</td>
+            </tr>
+            <tr>
+                <td><strong>Type</strong></td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>payment, shipping, notification, tax</td>
+            </tr>
+            <tr>
+                <td>Available Countries</td>
+                <td><span class="type-string">Array</span></td>
+                <td><span class="required">Required</span></td>
+                <td>[]</td>
+                <td>Country codes where provider works</td>
+            </tr>
+            <tr>
+                <td>API Credentials</td>
+                <td><span class="type-string">Object</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>{}</td>
+                <td>API keys (sealed at rest)</td>
+            </tr>
+            <tr>
+                <td>Sandbox Mode</td>
+                <td><span class="type-boolean">Boolean</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>true</td>
+                <td>Test mode (true) or live mode (false)</td>
+            </tr>
+        </table>
+
+        <div class="example-box">
+            <strong>Example:</strong><br>
+            <code>{ id: "stripe", type: "payment", countries: ["US", "AE"], sandbox: true }</code>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h3>Ω∞ GOIP (Value Exchange)</h3>
+        <p><strong>Purpose:</strong> Universal offer/ incentive infrastructure (coupons, cashback, Mars Credits, etc.)</p>
+
+        <h4>Value Exchange Fields</h4>
+        <table>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr>
+            <tr>
+                <td><strong>Benefit Type</strong></td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>percentage_discount, cashback, free_ship, reward_points</td>
+            </tr>
+            <tr>
+                <td>Value</td>
+                <td><span class="type-number">Number</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>0</td>
+                <td>Discount % or fixed amount</td>
+            </tr>
+            <tr>
+                <td>Funder</td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>merchant</td>
+                <td>Who pays: merchant, bank, brand, platform</td>
+            </tr>
+            <tr>
+                <td>Valid From / Until</td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>—</td>
+                <td>Date range (ISO 8601)</td>
+            </tr>
+            <tr>
+                <td>Max Uses</td>
+                <td><span class="type-number">Number</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>unlimited</td>
+                <td>Total redemption limit</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section-card">
+        <h3>📜 Global Audit</h3>
+        <p><strong>Purpose:</strong> Cross-store, tamper-evident audit trail</p>
+        
+        <table>
+            <tr><th>Feature</th><th>Description</th><th>Access</th></tr>
+            <tr>
+                <td>Audit Chain</td>
+                <td>Hash-chained log (SHA-256) of all privileged actions</td>
+                <td>Platform Console → Global Audit</td>
+            </tr>
+            <tr>
+                <td>Verify Chain</td>
+                <td>Verify integrity of audit chain</td>
+                <td><code>GET /api/platform/chain/verify</code></td>
+            </tr>
+            <tr>
+                <td>Search</td>
+                <td>Search across all stores</td>
+                <td>Platform Console → Global Audit</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- STORE CONSOLE REFERENCE -->
+    <h2>Store Console Reference</h2>
+    <p><strong>URL:</strong> <a href="/admin.html" target="_blank">http://localhost:8787/admin.html</a></p>
+
+    <div class="section-card">
+        <h3>📦 Products</h3>
+        <p><strong>Purpose:</strong> Product catalogue management</p>
+
+        <h4>Product Fields</h4>
+        <table>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr>
+            <tr>
+                <td><strong>Title</strong></td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>Product name</td>
+            </tr>
+            <tr>
+                <td><strong>Brand</strong></td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>Brand name</td>
+            </tr>
+            <tr>
+                <td><strong>Department</strong></td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>Category (fashion, grocery, electronics)</td>
+            </tr>
+            <tr>
+                <td><strong>Price</strong></td>
+                <td><span class="type-number">Number</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>Base price in store currency</td>
+            </tr>
+            <tr>
+                <td>Stock</td>
+                <td><span class="type-number">Number</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>0</td>
+                <td>Inventory quantity</td>
+            </tr>
+            <tr>
+                <td>Lifecycle</td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>published</td>
+                <td>published, draft, suspended</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section-card">
+        <h3>🎯 Promotions (Offers & Coupons)</h3>
+        <p><strong>Purpose:</strong> Create offers, coupons, discounts</p>
+
+        <h4>Offer Fields</h4>
+        <table>
+            <tr><th>Field</th><th>Type</th><th>Required</th><th>Default</th><th>Description</th></tr>
+            <tr>
+                <td>Code</td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>—</td>
+                <td>Promo code (leave blank for auto-apply)</td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="required">Required</span></td>
+                <td>—</td>
+                <td>percent, fixed, free_ship, bogo, cashback</td>
+            </tr>
+            <tr>
+                <td>Value</td>
+                <td><span class="type-number">Number</span></td>
+                <td><span class="required">Required</span></td>
+                <td>0</td>
+                <td>Discount % or amount</td>
+            </tr>
+            <tr>
+                <td>Start / End Date</td>
+                <td><span class="type-string">String</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>—</td>
+                <td>Validity period</td>
+            </tr>
+            <tr>
+                <td>Min Cart</td>
+                <td><span class="type-number">Number</span></td>
+                <td><span class="optional">Optional</span></td>
+                <td>0</td>
+                <td>Minimum cart value to apply</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- DOCUMENTATION ACCESS -->
+    <h2>Documentation Index</h2>
+    <table>
+        <tr><th>Document</th><th>URL</th><th>Covers</th></tr>
+        <tr><td>User Manual</td><td><a href="/docs/user-manual.html" target="_blank">/docs/user-manual.html</a></td><td>Full platform guide</td></tr>
+        <tr><td>Provisioning Guide</td><td><a href="/docs/provisioning-guide.html" target="_blank">/docs/provisioning-guide.html</a></td><td>Platform security & defaults</td></tr>
+        <tr><td>Platform Reference</td><td><a href="/docs/platform-reference.html" target="_blank">/docs/platform-reference.html</a></td><td>Platform Console fields</td></tr>
+        <tr><td>Architecture</td><td><a href="/docs/architecture.html" target="_blank">/docs/architecture.html</a></td><td>Technical reference</td></tr>
+    </table>
+
+    <p style="margin-top: 40px; color: #6b7280; font-size: 0.9em;">
+        Last updated: September 2026
+    </p>
+</body>
+</html>

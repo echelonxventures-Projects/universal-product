@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXORA Platform — User Manual</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --text: #1f2937;
+            --bg: #f9fafb;
+            --sidebar: #ffffff;
+            --border: #e5e7eb;
+            --success: #10b981;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 20px;
+            flex-shrink: 0;
+        }
+        .logo {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+        .nav-group {
+            margin-bottom: 20px;
+        }
+        .nav-header {
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #6b7280;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .nav-item {
+            display: block;
+            padding: 8px 12px;
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 4px;
+            font-size: 0.95em;
+        }
+        .nav-item:hover {
+            background: #f3f4f6;
+        }
+        .nav-item.active {
+            background: #eff6ff;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        .main-content {
+            flex: 1;
+            padding: 40px 60px;
+            overflow-y: auto;
+            max-width: 900px;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 0.5em;
+            color: #111;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-top: 2.5em;
+            margin-bottom: 1em;
+            color: #16213e;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+        h3 {
+            font-size: 1.2em;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            color: #374151;
+        }
+        p { margin-bottom: 1em; }
+        ul, ol { margin-bottom: 1em; padding-left: 20px; }
+        a { color: var(--primary); text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #f3f4f6;
+            font-weight: 600;
+        }
+        .step {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .step-number {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+        .btn:hover {
+            background: #1d4ed8;
+            text-decoration: none;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover {
+            background: #eff6ff;
+        }
+        .success {
+            border-left: 4px solid var(--success);
+            background: #f0fdf4;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="logo">LUXORA</div>
+        
+            <div class="nav-group">
+            <div class="nav-header">Getting Started</div>
+            <a href="#" class="nav-item active" data-tab="welcome" onclick="switchTab('welcome')">👋 Welcome & Quick Start</a>
+            <a href="/docs/e2e-flow.html" class="nav-item" target="_blank">✅ End-to-End Workflow</a>
+            <a href="#" class="nav-item" data-tab="setup" onclick="switchTab('setup')">⚙️ Global Configuration</a>
+            <a href="/docs/provisioning-guide.html" class="nav-item" target="_blank">📋 Provisioning Reference</a>
+            <a href="#" class="nav-item" data-tab="platform" onclick="switchTab('platform')">🏛️ Platform Admin</a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-header">Store Operations</div>
+            <a href="#" class="nav-item" data-tab="store" onclick="switchTab('store')">📦 Store Admin</a>
+            <a href="#" class="nav-item" data-tab="customer" onclick="switchTab('customer')">🛒 Customer</a>
+            <a href="#" class="nav-item" data-tab="support" onclick="switchTab('support')">🛠️ Support & Staff</a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-header">Reference</div>
+            <a href="/docs/platform-reference.html" class="nav-item" target="_blank">📋 Console Reference</a>
+            <a href="#" class="nav-item" data-tab="architecture" onclick="switchTab('architecture')">🔧 Architecture</a>
+            <a href="#" class="nav-item" data-tab="security" onclick="switchTab('security')">🛡️ Security</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        
+        <!-- TAB 1: WELCOME & QUICK START -->
+        <div id="welcome" class="tab-content active">
+            <h1>👋 Welcome & Quick Start</h1>
+            <p><strong>Version:</strong> 1.0.0 | <strong>Last Updated:</strong> September 2026</p>
+
+            <div class="success">
+                <strong>✅ Server Status:</strong> Running on port 8787
+            </div>
+
+            <h2>Quick Access</h2>
+            <p>Click the buttons below to open the live console in a new tab:</p>
+            <a href="/platform.html" target="_blank" class="btn">Open Platform Console</a>
+            <a href="/admin.html" target="_blank" class="btn btn-outline">Open Store Console</a>
+            <a href="/" target="_blank" class="btn btn-outline">Open Storefront</a>
+
+            <h2>1. Login Credentials</h2>
+            <table>
+                <tr><th>Role</th><th>Email</th><th>Password</th><th>Console</th></tr>
+                <tr><td><strong>Platform Admin</strong></td><td>platform@luxora.shop</td><td>platform123</td><td><a href="/platform.html" target="_blank">Platform Console</a></td></tr>
+                <tr><td><strong>Store Admin</strong></td><td>admin@luxora.shop</td><td>admin123</td><td><a href="/admin.html" target="_blank">Store Console</a></td></tr>
+                <tr><td><strong>Customer</strong></td><td>demo@luxora.shop</td><td>demo123</td><td><a href="/" target="_blank">Storefront</a></td></tr>
+            </table>
+
+            <h2>2. Quick Start Guide (5 Minutes)</h2>
+            <p>Follow these steps to get started:</p>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Login to Platform Console</strong>
+                <p>Click the <strong>Open Platform Console</strong> button above, or visit:</p>
+                <p><a href="/platform.html" target="_blank">http://localhost:8787/platform.html</a></p>
+                <p>Sign in with:</p>
+                <p><strong>Email:</strong> platform@luxora.shop | <strong>Password:</strong> platform123</p>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Configure Global Settings</strong>
+                <p><a href="?tab=setup" class="btn">View Global Configuration Steps</a></p>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Launch Your First Store</strong>
+                <p>In Platform Console:</p>
+                <ol>
+                    <li>Click <strong>🏬 Stores</strong> in the left menu</li>
+                    <li>Click <strong>Launch Wizard</strong></li>
+                    <li>Fill in store name, choose jurisdiction (country), select plan</li>
+                </ol>
+                <p>Store created! You'll receive admin credentials.</p>
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>Access Store Console</strong>
+                <p>In Platform Console → <strong>🏬 Stores</strong> → Click on your store name</p>
+                <p>Opens: <a href="/admin.html" target="_blank">http://localhost:8787/admin.html</a></p>
+            </div>
+
+            <div class="step">
+                <span class="step-number">5</span>
+                <strong>Add Products</strong>
+                <p>In Store Console:</p>
+                <ol>
+                    <li>Click <strong>📦 Products</strong> in the left menu</li>
+                    <li>Click <strong>New Product</strong></li>
+                    <li>Fill in title, brand, department, price, stock</li>
+                </ol>
+            </div>
+
+            <div class="success">
+                <strong>✅ You're ready!</strong> Your platform is configured and your first store is set up.
+            </div>
+        </div>
+
+        <!-- TAB 2: GLOBAL CONFIGURATION -->
+        <div id="setup" class="tab-content">
+            <h1>⚙️ Global Configuration (Step-by-Step)</h1>
+            <p>Follow these steps to configure the platform globally.</p>
+
+            <div class="step">
+                <span class="step-number">1</span>
+                <strong>Configure Security Policy</strong>
+                <p><strong>Location:</strong> Platform Console → <strong>🛡️ Provisioning</strong></p>
+                <p><strong>Action:</strong> Set minimum password length (e.g., 12 characters)</p>
+            </div>
+
+            <div class="step">
+                <span class="step-number">2</span>
+                <strong>Configure Countries & Taxes</strong>
+                <p><strong>Location:</strong> Platform Console → <strong>🌍 Geo · Countries · Taxes</strong></p>
+                <p><strong>Action:</strong> Verify countries with currency and tax mode:</p>
+                <table>
+                    <tr><th>Country</th><th>Currency</th><th>Tax Mode</th></tr>
+                    <tr><td>US</td><td>USD</td><td>Sales Tax</td></tr>
+                    <tr><td>IN</td><td>INR</td><td>GST</td></tr>
+                    <tr><td>AE</td><td>AED</td><td>VAT</td></tr>
+                </table>
+            </div>
+
+            <div class="step">
+                <span class="step-number">3</span>
+                <strong>Create Subscription Plans</strong>
+                <p><strong>Location:</strong> Platform Console → <strong>💼 Plans</strong></p>
+                <p><strong>Action:</strong> Click <strong>New Plan</strong> and define price and limits</p>
+            </div>
+
+            <div class="step">
+                <span class="step-number">4</span>
+                <strong>Register Payment Providers</strong>
+                <p><strong>Location:</strong> Platform Console → <strong>🔌 Provider Registry</strong></p>
+                <p><strong>Action:</strong> Add providers and enable them per country:</p>
+                <table>
+                    <tr><th>Provider</th><th>Country</th><th>Type</th></tr>
+                    <tr><td>Stripe</td><td>US, AE</td><td>Payment</td></tr>
+                    <tr><td>Razorpay</td><td>IN</td><td>Payment</td></tr>
+                    <tr><td>Tabby</td><td>AE</td><td>BNPL</td></tr>
+                </table>
+            </div>
+
+            <div class="step">
+                <span class="step-number">5</span>
+                <strong>Verify GOIP Registries</strong>
+                <p><strong>Location:</strong> Platform Console → <strong>Ω∞ GOIP → 📚 Registries</strong></p>
+                <p><strong>Check:</strong> Calendars, Spatial Systems, Economic Units are populated</p>
+            </div>
+
+            <div class="success">
+                <strong>✅ Global Configuration Complete!</strong> Platform is ready to launch stores.
+            </div>
+        </div>
+
+        <!-- TAB 3: PLATFORM ADMIN -->
+        <div id="platform" class="tab-content">
+            <h1>🏛️ Platform (Super) Administrator Guide</h1>
+            <p><strong>URL:</strong> <a href="/platform.html" target="_blank">http://localhost:8787/platform.html</a></p>
+
+            <h2>Console Layout</h2>
+            <table>
+                <tr><th>Section</th><th>Purpose</th></tr>
+                <tr><td>◈ Command</td><td>Platform KPIs</td></tr>
+                <tr><td>🛡️ Provisioning</td><td>Global policies</td></tr>
+                <tr><td>🏬 Stores</td><td>Launch & manage tenants</td></tr>
+                <tr><td>🌍 Geo</td><td>Countries, currencies, taxes</td></tr>
+                <tr><td>💼 Plans</td><td>Subscription tiers</td></tr>
+                <tr><td>🔌 Provider Registry</td><td>Payment/shipping providers</td></tr>
+                <tr><td>Ω∞ GOIP</td><td>Universal offers</td></tr>
+                <tr><td>📜 Global Audit</td><td>Cross-store audit</td></tr>
+            </table>
+        </div>
+
+        <!-- TAB 4: STORE ADMIN -->
+        <div id="store" class="tab-content">
+            <h1>📦 Store Administrator Guide</h1>
+            <p><strong>URL:</strong> <a href="/admin.html" target="_blank">http://localhost:8787/admin.html</a></p>
+
+            <h2>Console Layout</h2>
+            <table>
+                <tr><th>Section</th><th>Purpose</th></tr>
+                <tr><td>◈ Dashboard</td><td>Store KPIs</td></tr>
+                <tr><td>📦 Products</td><td>Catalogue</td></tr>
+                <tr><td>🔖 SKUs & Inventory</td><td>Stock management</td></tr>
+                <tr><td>🧾 Orders</td><td>Orders & fulfilment</td></tr>
+                <tr><td>🎯 Promotions</td><td>Offers & coupons</td></tr>
+                <tr><td>💳 Payment Gateways</td><td>Payment providers</td></tr>
+                <tr><td>⚙️ Settings</td><td>Branding, tax, commerce</td></tr>
+            </table>
+        </div>
+
+        <!-- TAB 5: CUSTOMER -->
+        <div id="customer" class="tab-content">
+            <h1>🛒 End Customer Guide</h1>
+            <p><strong>URL:</strong> <a href="/" target="_blank">http://localhost:8787/</a></p>
+            <p>Browse products, add to cart, apply promo code, checkout with available payment methods.</p>
+        </div>
+
+        <!-- TAB 6: SUPPORT -->
+        <div id="support" class="tab-content">
+            <h1>🛠️ Support & Seller Guide</h1>
+            <p><strong>Support:</strong> Work in Store Console → Orders, Returns, RFQs</p>
+            <p><strong>Sellers:</strong> Managed by store admin → Settlements for payouts</p>
+        </div>
+
+        <!-- TAB 7: ARCHITECTURE -->
+        <div id="architecture" class="tab-content">
+            <h1>🔧 Architecture & Tech Reference</h1>
+            <p>Node.js (zero deps) + SQLite/PostgreSQL + Vanilla JavaScript</p>
+            <p><strong>GOIP:</strong> 22 capabilities for universal offers</p>
+        </div>
+
+        <!-- TAB 8: SECURITY -->
+        <div id="security" class="tab-content">
+            <h1>🛡️ Security</h1>
+            <p>10-layer security stack including CSP, CSRF, audit hash chain, tenant isolation.</p>
+        </div>
+
+    </main>
+
+    <script>
+        // Check for tab parameter in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const tabParam = urlParams.get('tab');
+        
+        function switchTab(tabId) {
+            // Update URL with tab parameter
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?tab=' + tabId;
+            window.history.pushState({path: newUrl}, '', newUrl);
+            
+            // Remove active class from all nav items
+            var navItems = document.querySelectorAll('.nav-item');
+            for (var i = 0; i < navItems.length; i++) {
+                navItems[i].classList.remove('active');
+            }
+            // Add active class to clicked item (find by data-tab attribute)
+            var clickedItem = document.querySelector('[data-tab="' + tabId + '"]');
+            if (clickedItem) clickedItem.classList.add('active');
+            
+            // Hide all tabs
+            var tabs = document.querySelectorAll('.tab-content');
+            for (var j = 0; j < tabs.length; j++) {
+                tabs[j].classList.remove('active');
+            }
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+        }
+        
+        // Initialize tab on page load
+        if (tabParam) {
+            switchTab(tabParam);
+        }
+    </script>
+</body>
+</html>

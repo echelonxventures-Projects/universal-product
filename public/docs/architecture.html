@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUXORA Platform — Architecture Documentation</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --text: #1f2937;
+            --bg: #ffffff;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+            padding: 20px;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 0.2em;
+            color: #111;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-top: 2em;
+            color: #16213e;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 5px;
+        }
+        h3 {
+            font-size: 1.2em;
+            margin-top: 1.5em;
+            color: #374151;
+        }
+        p { margin-bottom: 1em; }
+        ul, ol { margin-bottom: 1em; }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #f9fafb;
+            font-weight: 600;
+        }
+        .back {
+            display: inline-block;
+            margin: 20px 0;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        .back:hover {
+            text-decoration: underline;
+        }
+        .toc {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .toc li {
+            margin-bottom: 8px;
+        }
+        .toc a {
+            text-decoration: none;
+            color: var(--text);
+        }
+        .toc a:hover {
+            color: var(--primary);
+        }
+        .feature-box {
+            background: #f0f9ff;
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .section-divider {
+            border-top: 1px dashed #e5e7eb;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <a href="/platform.html" class="back">← Back to Platform Console</a>
+    <h1>LUXORA Platform — Architecture Documentation</h1>
+    <p><strong>Architecture Version:</strong> 1.0.0 | <strong>Last Updated:</strong> September 2026</p>
+    <p><em>Universal, white-label, multi-store commerce platform built with zero external dependencies.</em></p>
+
+    <div class="toc">
+        <h3>Table of Contents</h3>
+        <ul>
+            <li><a href="#1-overview">1. System Overview</a></li>
+            <li><a href="#2-architecture">2. Architecture Diagram</a></li>
+            <li><a href="#3-core">3. Core Components</a></li>
+            <li><a href="#4-goip">4. GOIP Value Exchange</a></li>
+            <li><a href="#5-security">5. Security Stack</a></li>
+            <li><a href="#6-data">6. Data Model</a></li>
+            <li><a href="#7-api">7. API Endpoints</a></li>
+            <li><a href="#8-files">8. File Structure</a></li>
+            <li><a href="#9-ops">9. Operations</a></li>
+        </ul>
+    </div>
+
+    <h2 id="1-overview">1. System Overview</h2>
+    <h3>Core Stack</h3>
+    <table>
+        <tr><th>Component</th><th>Technology</th><th>Notes</th></tr>
+        <tr><td><strong>Runtime</strong></td><td>Node.js (≥22.5)</td><td>Zero external dependencies - uses native HTTP, SQLite, Crypto</td></tr>
+        <tr><td><strong>Database</strong></td><td>SQLite / PostgreSQL</td><td>Primary: SQLite (single-file); Migration path: PostgreSQL via migrate.js</td></tr>
+        <tr><td><strong>Frontend</strong></td><td>Vanilla JavaScript</td><td>No frameworks, no CDN dependencies</td></tr>
+        <tr><td><strong>Multi-Tenant</strong></td><td>100% Data Isolation</td><td>Every store has independent data, cannot cross-access</td></tr>
+        <tr><td><strong>Deployable</strong></td><td>Single Node</td><td>Designed for single-node deployment; no distributed systems required</td></tr>
+    </table>
+
+    <h3>Key Architectural Principles</h3>
+    <div class="feature-box">
+        <strong>Entity-Driven:</strong> Every table is a declared entity with fields, types, validation, and permissions. Add new entities via Data Studio — CRUD, forms, and audit appear automatically.
+    </div>
+    <div class="feature-box">
+        <strong>Registry-Driven:</strong> All configurations (currencies, calendars, benefits, providers) are data in <code>meta_lists</code> — add a new civilization, planet, or currency with no code changes.
+    </div>
+    <div class="feature-box">
+        <strong>Constitutional Value Exchange:</strong> GOIP Ω∞ implements a single 8-stage chain for any incentive, offer, or reward — from coupons to Mars-colony credits.
+    </div>
+
+    <div class="section-divider"></div>
+    <h2 id="2-architecture">2. Architecture Diagram</h2>
+
+    <h3>Request Flow</h3>
+    <pre>
+┌─────────────────────────────────────────────────────────────────┐
+│                          CLIENTS                                │
+│   ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐  │
+│   │ Storefront │  │ Admin     │  │ Platform  │  │ API/MCP   │  │
+│   └─────┬─────┘  └─────┬─────┘  └─────┬─────┘  └─────┬─────┘  │
+│         │              │              │              │        │
+└─────────┼──────────────┼──────────────┼──────────────┼─────────┘
+          │              │              │              │
+          └──────────────┴──────────────┴──────────────┘
+                           │
+                     ┌─────▼─────┐
+                     │ server.js │
+                     │ Multi-tenant │
+                     │ routing +   │
+                     │ security    │
+                     │ (CSP, CSRF, │
+                     │ rate limit) │
+                     └─────┬─────┘
+                           │
+              ┌────────────┴────────────┐
+              │                         │
+        ┌─────▼─────┐           ┌─────▼─────┐
+        │ lib/api.js │           │ lib/goip.js │
+        │ REST API  │           │ Value Exchange│
+        │ 125+      │           │ Constitution │
+        │ endpoints │           │ 22 caps    │
+        └─────┬─────┘           └─────┬─────┘
+              │                       │
+              └───────────┬───────────┘
+                          │
+                    ┌─────▼─────┐
+                    │ lib/db.js │
+                    │ Schema    │
+                    │ Migrations│
+                    │ Seed data │
+                    │ Entity engine│
+                    └─────┬─────┘
+                          │
+                    ┌─────▼─────┐
+                    │ lib/security.js │
+                    │ 10-layer stack │
+                    │ - Audit chain │
+                    │ - Encryption │
+                    └─────┬─────┘
+                          │
+                    ┌─────▼─────┐
+                    │ data/ │
+                    │ luxora.db │
+                    │ master.json │
+                    └───────────┘
+    </pre>
+
+    <h3>Multi-Tenant Architecture</h3>
+    <pre>
+┌─────────────────────────────────────────────────────────────┐
+│                      DATABASE (luxora.db)                   │
+├─────────────────────────────────────────────────────────────┤
+│ ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
+│ │  TENANT 1       │  │  TENANT 2       │  │  TENANT 3       │ │
+│ │  (luxora)       │  │  (aurum)        │  │  (velora)       │ │
+│ │                 │  │                 │  │                 │ │
+│ │  products       │  │  products       │  │  products       │ │
+│ │  orders         │  │  orders         │  │  orders         │ │
+│ │  reviews        │  │  reviews        │  │  reviews        │ │
+│ │  goip_*         │  │  goip_*         │  │  goip_*         │ │
+│ └─────────────────┘  └─────────────────┘  └─────────────────┘ │
+│ │                   │                   │                   │
+│ ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
+│ │  AUDIT LOG      │  │  AUDIT LOG      │  │  AUDIT LOG      │ │
+│ │  (hash-chained) │  │  (hash-chained) │  │  (hash-chained) │ │
+│ └─────────────────┘  └─────────────────┘  └─────────────────┘ │
+├─────────────────────────────────────────────────────────────┤
+│                      SHARED TABLES                          │
+│  platform_admins, plans, providers, meta_lists, countries   │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+
+    <div class="section-divider"></div>
+    <h2 id="3-core">3. Core Components</h2>
+
+    <h3>JavaScript Modules</h3>
+    <table>
+        <tr><th>File</th><th>Purpose</th><th>Size</th></tr>
+        <tr><td><code>server.js</code></td><td>Multi-tenant routing, security middleware, static serving</td><td>34KB</td></tr>
+        <tr><td><code>lib/api.js</code></td><td>REST API routes (125+ endpoints)</td><td>244KB</td></tr>
+        <tr><td><code>lib/goip.js</code></td><td>GOIP Value Exchange infrastructure</td><td>154KB</td></tr>
+        <tr><td><code>lib/db.js</code></td><td>Database schema, migrations, seed data, entity engine</td><td>119KB</td></tr>
+        <tr><td><code>lib/security.js</code></td><td>10-layer security stack</td><td>18KB</td></tr>
+        <tr><td><code>lib/entity.js</code></td><td>Entity engine (CRUD, validation, audit)</td><td>48KB</td></tr>
+        <tr><td><code>lib/registry.js</code></td><td>Live registries (geo, currencies, providers)</td><td>13KB</td></tr>
+        <tr><td><code>lib/offers.js</code></td><td>Benefit math engine (25 handlers)</td><td>25KB</td></tr>
+    </table>
+
+    <h3>Frontend Surfaces</h3>
+    <table>
+        <tr><th>File</th><th>URL</th><th>Purpose</th></tr>
+        <tr><td><code>public/index.html</code></td><td><code>/</code></td><td>Storefront (customer-facing)</td></tr>
+        <tr><td><code>public/admin.html</code></td><td><code>/admin.html</code></td><td>Store console (merchant admin)</td></tr>
+        <tr><td><code>public/platform.html</code></td><td><code>/platform.html</code></td><td>Platform console (super admin)</td></tr>
+    </table>
+
+    <div class="section-divider"></div>
+    <h2 id="4-goip">4. GOIP Value Exchange</h2>
+
+    <p>GOIP Ω∞ is the Universal Value Exchange Infrastructure Platform — a constitutional architecture that expresses <strong>any</strong> incentive, offer, promotion, benefit, entitlement, subsidy, commission, loyalty construct, or future value-exchange model.</p>
+
+    <h3>Constitutional Architecture</h3>
+    <table>
+        <tr><th>Stage</th><th>Question</th><th>Engine</th><th>Owner</th></tr>
+        <tr><td>1. Value Exchange</td><td>What is being exchanged?</td><td>governance</td><td>offers</td></tr>
+        <tr><td>2. Context</td><td>In which reality/time/place/economy?</td><td>context_resolution</td><td>goip</td></tr>
+        <tr><td>3. Conditions</td><td>Which declared conditions must hold?</td><td>qualification</td><td>goip</td></tr>
+        <tr><td>4. Eligibility</td><td>Is this exchange permitted?</td><td>eligibility</td><td>goip</td></tr>
+        <tr><td>5. Benefit</td><td>What value is produced?</td><td>benefit_resolution</td><td>offers</td></tr>
+        <tr><td>6. Execution</td><td>Apply / redeem / issue / grant</td><td>decision</td><td>offers</td></tr>
+        <tr><td>7. Settlement</td><td>Who funded it?</td><td>governance</td><td>goip</td></tr>
+        <tr><td>8. Audit</td><td>Prove every step</td><td>governance</td><td>audit_log</td></tr>
+    </table>
+
+    <h3>Capabilities (22 Total)</h3>
+    <pre>
+Capabilities bound: 22/22 complete
+
+create   Create Value Exchange
+clone   Clone Value Exchange
+publish Publish Value Exchange
+discover Discover Value Exchange
+search  Search Value Exchange
+compare Compare Value Exchange
+validate Validate Value Exchange
+reserve Reserve Value Exchange
+activate Activate Value Exchange
+issue   Issue Value Exchange
+track   Track Value Exchange
+attribute Attribute Value Exchange
+apply   Apply Value Exchange
+redeem  Redeem Value Exchange
+settle  Settle Value Exchange
+fund    Fund Value Exchange
+pay     Pay Value Exchange
+optimize Optimize Value Exchange
+forecast Forecast Value Exchange
+simulate Simulate Value Exchange
+govern  Govern Value Exchange
+audit   Audit Value Exchange
+    </pre>
+
+    <h3>Domains (67 Total)</h3>
+    <div class="feature-box">
+        Each domain owns exactly one store and has a unique discriminator — this makes overlap impossible by construction. Examples:
+        <ul>
+            <li><strong>Incentive Domain:</strong> owner=offers, discriminator=every value-exchange row</li>
+            <li><strong>Gift Card Domain:</strong> owner=coupons, discriminator=kind='gift_card'</li>
+            <li><strong>Government Benefit Domain:</strong> owner=offers, discriminator=funder='government'</li>
+            <li><strong>Membership Domain:</strong> owner=goip_entitlements, discriminator=benefit='membership_upgrade'</li>
+        </ul>
+    </div>
+
+    <h3>Context Dimensions (25 Total)</h3>
+    <pre>
+Reality Context          → registry:goipRealities
+Temporal Context         → registry:goipCalendars
+Spatial Context          → registry:goipSpatialSystems
+Economic Context         → registry:goipEconomicUnits + currencies
+Governance Context       → security.policy()
+Audience Context         → orders + goip_entitlements
+Identity Context         → users / session owner
+Behavioral Context       → view_history + orders
+Product Context          → products
+Catalog Context          → taxonomy + departments
+Cart Context             → cart items passed by caller
+Session Context          → sessions
+Device Context           → caller-supplied
+Market Context           → tenants + countries
+Inventory Context        → inventory + skus
+Risk Context             → goip.fraudScore
+Organization Context     → tenants
+Merchant Context         → tenants + sellers
+Provider Context         → provider_defs
+Partner Context          → suppliers + links
+Creator Context          → goip_touchpoints (party_type=creator)
+Channel Context          → registry:goipDistribution
+Event Context            → caller-supplied + events bus
+Campaign Context         → offers.campaign
+AI Context               → ai.tierOf
+    </pre>
+
+    <h3>Decision Engines (18 Total)</h3>
+    <table>
+        <tr><th>Engine</th><th>Owns</th><th>Implementation</th></tr>
+        <tr><td>Context Resolution</td><td>fills all 25 context dimensions</td><td>goip.resolveContext</td></tr>
+        <tr><td>Eligibility</td><td>is this exchange permitted?</td><td>goip.eligibility</td></tr>
+        <tr><td>Qualification</td><td>declared conditions</td><td>goip.qualify</td></tr>
+        <tr><td>Decision</td><td>which qualified exchanges execute?</td><td>offers.evaluate + goip hooks</td></tr>
+        <tr><td>Discovery</td><td>what is available now?</td><td>goip.discover</td></tr>
+        <tr><td>Benefit Resolution</td><td>benefit → concrete units</td><td>offers.HANDLERS</td></tr>
+        <tr><td>Conflict Resolution</td><td>same-domain collisions</td><td>goip.resolveConflicts</td></tr>
+        <tr><td>Stacking</td><td>stack groups / exclusivity</td><td>offers.evaluate</td></tr>
+        <tr><td>Ranking</td><td>order candidates</td><td>goip.rank</td></tr>
+        <tr><td>Optimization</td><td>parameter proposals</td><td>goip.optimize</td></tr>
+        <tr><td>Recommendation</td><td>best next exchange</td><td>goip.recommend</td></tr>
+        <tr><td>Personalization</td><td>subject segments + behaviour</td><td>goip.personalize</td></tr>
+        <tr><td>Pricing</td><td>net price after exchange</td><td>goip.price</td></tr>
+        <tr><td>Simulation</td><td>what-if runs</td><td>goip.simulate</td></tr>
+        <tr><td>Forecasting</td><td>burn / liability projection</td><td>goip.forecast</td></tr>
+        <tr><td>Fraud</td><td>abuse signals</td><td>goip.fraudScore</td></tr>
+        <tr><td>Risk</td><td>exposure of instrument</td><td>goip.riskScore</td></tr>
+        <tr><td>Governance</td><td>policy, approval, lifecycle</td><td>goip.govern</td></tr>
+    </table>
+
+    <h3>Registry System</h3>
+    <pre>
+Temporal Authority (Calendars):
+  Gregorian, ISO week, Islamic, Hebrew, Fiscal, Academic, Lunar, 
+  Mars Darian, Federation, Custom Planetary
+
+Spatial Systems:
+  Earth (admin), Mars (territorial), Moon (colonial), Galaxy-7 (zonal), Network
+
+Economic Units:
+  USD, EUR, INR (fiat)
+  Mars Credits, Lunar Tokens, Federation Credits (colonial/federation)
+  Carbon, Energy, Resource Credits (environmental/utility)
+  Points, Coins, Tokens (loyalty/digital)
+
+Reality Models:
+  Physical, Digital, Virtual, Hybrid, Simulated, Any
+    </pre>
+
+    <div class="section-divider"></div>
+    <h2 id="5-security">5. Security Stack (10 Layers)</h2>
+
+    <table>
+        <tr><th>Layer</th><th>Protection</th><th>Implementation</th></tr>
+        <tr><td>L1</td><td>Transport</td><td>CSP (Content Security Policy), frame-ancestors, nosniff, TLS/HSTS</td></tr>
+        <tr><td>L2</td><td>Session</td><td>CSRF double-submit (timing-safe), origin-pinned mutations, tenant-pinned state</td></tr>
+        <tr><td>L3</td><td>Credentials</td><td>scrypt v2 (policy-tunable N/r/p) + pepper, transparent v1→v2 upgrade on login</td></tr>
+        <tr><td>L4</td><td>Password Policy</td><td>platform-configured length/classes/blocklist + history reuse guard</td></tr>
+        <tr><td>L5</td><td>At Rest</td><td>AES-256-GCM envelope seals on gateway secrets, AAD-bound to tenant|provider|field</td></tr>
+        <tr><td>L6</td><td>Keys</td><td>versioned keyring (data/master.json, 0600), rotation API auto-rewraps all seals</td></tr>
+        <tr><td>L7</td><td>Audit</td><td>SHA-256 hash-chained log with verification endpoints (tamper detection)</td></tr>
+        <tr><td>L8</td><td>Abuse</td><td>durable token-bucket rate limits + per-account lockout with exponential backoff</td></tr>
+        <tr><td>L9</td><td>Supply Chain</td><td>sha384 SRI (Subresource Integrity) injected into every served JS/CSS tag; parameterized SQL</td></tr>
+        <tr><td>L10</td><td>Isolation</td><td>tenant-scoped data, platformOnly entity guards, role gates, suspended-store blocks</td></tr>
+    </table>
+
+    <h3>Audit Chain</h3>
+    <pre>
+Every privileged action is recorded in audit_log:
+
+{
+  id: INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id: INTEGER,
+  actor_type: TEXT NOT NULL DEFAULT 'system',
+  actor_id: INTEGER,
+  actor_name: TEXT,
+  action: TEXT NOT NULL,
+  entity: TEXT,
+  entity_id: TEXT,
+  meta: TEXT DEFAULT '',
+  ip: TEXT,
+  created_at: TEXT NOT NULL DEFAULT datetime('now'),
+  prev_hash: TEXT,    -- hash of previous audit entry
+  hash: TEXT           -- SHA-256 of this entry + prev_hash
+}
+
+Verification: GET /api/platform/chain/verify[?tenant=<id>]
+    </pre>
+
+    <div class="section-divider"></div>
+    <h2 id="6-data">6. Data Model</h2>
+
+    <h3>Key Entities</h3>
+    <table>
+        <tr><th>Entity</th><th>Fields</th><th>Purpose</th></tr>
+        <tr><td><strong>tenants</strong></td><td>id, slug, name, domain, status, mode, industries, profile, country</td><td>Stores/Organizations</td></tr>
+        <tr><td><strong>products</strong></td><td>tenant_id, id, title, brand, dept, price, list_price, rating, stock, lifecycle</td><td>Catalog Items</td></tr>
+        <tr><td><strong>orders</strong></td><td>id, tenant_id, owner, num, status, total, currency, fx, contexts</td><td>Customer Purchases</td></tr>
+        <tr><td><strong>offers</strong></td><td>tenant_id, id, benefit, scope, channel, funder, conditions, governance</td><td>Promotions & Discounts</td></tr>
+        <tr><td><strong>coupons</strong></td><td>tenant_id, kind, code, start_date, end_date, usage_limit</td><td>Code-Based Offers</td></tr>
+        <tr><td><strong>goip_touchpoints</strong></td><td>tenant_id, owner, kind, code, channel, distribution</td><td>Attribution Tracking</td></tr>
+        <tr><td><strong>goip_budgets</strong></td><td>tenant_id, funder, funder_ref, unit, domain, amount, reserved</td><td>Funding Budgets</td></tr>
+        <tr><td><strong>goip_settlements</strong></td><td>tenant_id, funder, period, status, net, reference</td><td>Settlement Runs</td></tr>
+        <tr><td><strong>goip_entitlements</strong></td><td>tenant_id, owner, status, benefit, tier, grant_date</td><td>Membership/Tier Entitlements</td></tr>
+        <tr><td><strong>wallets</strong></td><td>owner, currency, balance</td><td>Customer Balance</td></tr>
+        <tr><td><strong>audit_log</strong></td><td>tenant_id, actor_type, action, entity, entity_id, prev_hash, hash</td><td>Audit Chain</td></tr>
+    </table>
+
+    <h3>Entity Engine (Data Studio)</h3>
+    <pre>
+Every table is a declared entity — add new entities via Data Studio:
+
+POST /api/meta/entity-def
+{
+  "name": "custom_object",
+  "fields": [
+    {"name": "title", "type": "text", "required": true},
+    {"name": "price", "type": "number", "required": false}
+  ],
+  "permissions": ["view", "create", "update"]
+}
+
+Result:
+- CRUD forms appear automatically
+- Validation rules are enforced
+- All operations are audited
+- Entity data stored in entity_data table
+    </pre>
+
+    <div class="section-divider"></div>
+    <h2 id="7-api">7. API Endpoints</h2>
+
+    <h3>GOIP Capabilities</h3>
+    <pre>
+Universal entry point — all 22 capabilities:
+
+POST /api/goip/:capability
+
+Examples:
+POST /api/goip/create        # Create value exchange
+POST /api/goip/publish       # Make discoverable
+POST /api/goip/track         # Record touchpoint
+POST /api/goip/attribute     # Run attribution
+POST /api/goip/fund          # Allocate budget
+POST /api/goip/settle        # Run settlement run
+POST /api/goip/pay           # Process payout
+POST /api/goip/govern        # Lifecycle actions (publish, suspend, retire)
+
+Read surfaces:
+GET  /api/goip                # Manifest & scorecard
+GET  /api/goip/exchanges      # List value exchanges
+GET  /api/goip/registry/:name # Registry access
+GET  /api/goip/feed/:channel  # Distribution feeds
+GET  /api/goip/widget         # Embeddable component
+    </pre>
+
+    <h3>Platform Endpoints</h3>
+    <pre>
+POST /api/platform/login      # Platform admin login
+GET  /api/platform/tenants    # List stores
+POST /api/platform/tenants    # Create store
+PUT  /api/platform/tenants/:id # Update store
+GET  /api/platform/invoices   # Platform billing
+POST /api/platform/chain/verify # Verify audit chain
+GET  /api/platform/security   # 10-layer security scorecard
+GET  /api/platform/db         # Database status & migration plan
+    </pre>
+
+    <h3>Store Admin Endpoints</h3>
+    <pre>
+POST /admin/product           # Create product
+PUT  /admin/product/:id       # Update product
+DELETE /admin/product/:id     # Delete product
+GET  /admin/orders            # List orders
+POST /admin/order/:id/status  # Update order status
+GET  /admin/reviews           # List reviews (moderate)
+GET  /goip                    # GOIP manifest
+POST /goip/create             # Create offer
+GET  /wallet/ledger?owner=    # Wallet entries
+    </pre>
+
+    <div class="section-divider"></div>
+    <h2 id="8-files">8. File Structure</h2>
+
+    <pre>
+├── server.js              # Entry point, multi-tenant routing (34KB)
+├── package.json           # Node.js configuration
+├── README.md              # Project documentation
+├── USER_MANUAL.md         # Full user manual
+├── GOIP-ROADMAP.md        # GOIP implementation roadmap
+├── FLOWS.md               # Platform flow documentation
+├── REVIEW.md              # Code review notes
+├── schema.sql             # Database schema (50KB)
+│
+├── lib/                   # Core modules (44 files)
+│   ├── api.js             # REST API routes (244KB)
+│   ├── goip.js            # Value Exchange infrastructure (154KB)
+│   ├── db.js              # Database layer (119KB)
+│   ├── security.js        # 10-layer security (18KB)
+│   ├── entity.js          # Entity engine (48KB)
+│   ├── registry.js        # Live registries (13KB)
+│   ├── offers.js          # Benefit math engine (25KB)
+│   ├── billing.js         # Invoicing engine (21KB)
+│   ├── ai.js              # AI capabilities (21KB)
+│   ├── search.js          # Search & discovery (10KB)
+│   ├── logistics.js       # Fulfilment (7KB)
+│   ├── fin.js             # Finance (disputes, payouts) (9KB)
+│   ├── marketplace.js     # Ads, GSP, attribution (8KB)
+│   ├── ugc.js             # Reviews & Q&A (9KB)
+│   ├── helpdesk.js        # Tickets, SLA, CSAT (8KB)
+│   ├── recurring.js       # Subscribe & Save, membership (9KB)
+│   ├── risk.js            # Fraud screening (8KB)
+│   ├── experiments.js     # A/B testing (6KB)
+│   ├── planning.js        # Forecasting, replenishment (14KB)
+│   └── ...                # (25+ additional modules)
+│
+├── public/                # Frontend
+│   ├── index.html         # Storefront (1KB)
+│   ├── admin.html         # Store console (783B)
+│   ├── platform.html      # Platform console (828B)
+│   ├── css/               # Stylesheets
+│   ├── js/                # JavaScript (app.js, admin.js, platform.js)
+│   └── docs/              # Documentation
+│       ├── user-manual.html
+│       └── architecture.html
+│
+├── data/                  # Runtime data
+│   ├── luxora.db          # SQLite database (created on first boot)
+│   └── master.json        # Keyring (created on first boot)
+│
+├── test/                  # Test suite
+│   ├── goip-audit.js      # 197 conformance checks
+│   └── smoke.js           # 421+ E2E assertions
+│
+├── serve.sh               # Launch script with supervision
+├── stop.sh                # Clean shutdown script
+└── .git/                  # Version control
+    </pre>
+
+    <div class="section-divider"></div>
+    <h2 id="9-ops">9. Operations</h2>
+
+    <h3>Deployment Commands</h3>
+    <pre>
+npm start                    # Run on port 3000
+PORT=8787 ./serve.sh         # Run on port 8787 with auto-restart
+npm test                     # Run test suite (421+ assertions)
+./stop.sh                    # Clean shutdown
+    </pre>
+
+    <h3>Environment Variables</h3>
+    <pre>
+PORT                         # Server port (default: 3000)
+LX_DB                        # Database path
+LUX_TLS=1                    # Enable HTTPS (self-signed)
+LUX_TLS_KEY                  # Custom TLS key file
+LUX_TLS_CERT                 # Custom TLS certificate file
+LUXORA_MASTER_KEY            # Master key for encryption
+LUXORA_PEPPER                # Password hash pepper
+LX_OFFLINE=1                 # Force offline mode (all outbound paths simulated)
+PLATFORM_EMAIL               # Platform admin email
+PLATFORM_PASSWORD            # Platform admin password
+ADMIN_EMAIL                  # Store admin email
+ADMIN_PASSWORD               # Store admin password
+DEMO_PASSWORD                # Demo customer password
+    </pre>
+
+    <h3>Database Migration</h3>
+    <pre>
+Platform Console → Runtime → Database
+
+1. Configure PostgreSQL connection string
+2. Click "Dry-run" to generate migration plan
+3. Review migration SQL
+4. Click "Apply" to migrate from SQLite → PostgreSQL
+5. Switch driver to postgres
+
+Migration is handled by lib/migrate.js + lib/pg.js (async pool + dialect translator).
+    </pre>
+</body>
+</html>

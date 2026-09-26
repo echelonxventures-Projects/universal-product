@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provisioning Guide — LUXORA Platform</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --text: #1f2937;
+            --bg: #f9fafb;
+            --sidebar: #ffffff;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+            padding: 40px 60px;
+            max-width: 900px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 0.5em;
+            color: #111;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-top: 2.5em;
+            margin-bottom: 1em;
+            color: #16213e;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+        }
+        h3 {
+            font-size: 1.2em;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            color: #374151;
+        }
+        p { margin-bottom: 1em; }
+        a { color: var(--primary); text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95em;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #f3f4f6;
+            font-weight: 600;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .info-box {
+            border-left: 4px solid var(--primary);
+            background: #eff6ff;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .warning-box {
+            border-left: 4px solid var(--warning);
+            background: #fef3c7;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .success-box {
+            border-left: 4px solid var(--success);
+            background: #f0fdf4;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .field-name {
+            font-weight: 600;
+            color: #111;
+        }
+        .field-desc {
+            font-size: 0.95em;
+            color: #4b5563;
+            margin-top: 5px;
+        }
+        .field-recommendation {
+            font-size: 0.9em;
+            color: var(--success);
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <a href="/docs/user-manual.html" class="back-link">← Back to User Manual</a>
+    <h1>⚙️ Platform Provisioning Guide</h1>
+    <p><strong>Location:</strong> Platform Console → <strong>🛡️ Provisioning</strong></p>
+    <p>This page documents all platform security policies and store defaults. Each field affects either user security, platform protection, or default behavior for new stores.</p>
+
+    <!-- CREDENTIAL POLICY SECTION -->
+    <h2>1. Credential Policy</h2>
+    <p>Controls password requirements and hashing for all user accounts (platform, store admins, customers).</p>
+
+    <div class="info-box">
+        <strong>Important:</strong> Changes apply to <strong>new/rotated</strong> credentials only. Existing accounts upgrade transparently on next login.
+    </div>
+
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Description</th>
+            <th>Default</th>
+            <th>Recommendation</th>
+        </tr>
+        <tr>
+            <td><span class="field-name">Minimum password length</span><br><span class="field-desc">Minimum characters required for passwords</span></td>
+            <td>Users must create passwords at least this long</td>
+            <td>8</td>
+            <td><strong>12+</strong> for production<br><span class="field-recommendation">Shorter passwords are easier to crack</span></td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Require letter + digit</span><br><span class="field-desc">Forces mixed character types</span></td>
+            <td>Password must contain at least one letter and one number</td>
+            <td>Off</td>
+            <td><strong>Enable</strong><br><span class="field-recommendation">Prevents "password123" style passwords</span></td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Block common/breached passwords</span><br><span class="field-desc">Rejects known compromised passwords</span></td>
+            <td>Uses breach databases to reject weak passwords</td>
+            <td>Off</td>
+            <td><strong>Enable</strong><br><span class="field-recommendation">Critical protection against credential stuffing</span></td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>Hashing Parameters (scrypt)</strong><br>
+                <span class="field-desc">Memory-hard function parameters. Higher = more secure but slower login.</span>
+                <table>
+                    <tr>
+                        <td><span class="field-name">log₂N</span><br><span class="field-desc">CPU/memory cost parameter</span></td>
+                        <td>Default: <code>17</code></td>
+                        <td><strong>17</strong> (current)</td>
+                        <td>Don't change unless profiling performance</td>
+                    </tr>
+                    <tr>
+                        <td><span class="field-name">r</span><br><span class="field-desc">Block size parameter</span></td>
+                        <td>Default: <code>8</code></td>
+                        <td><strong>8</strong> (current)</td>
+                        <td>Don't change</td>
+                    </tr>
+                    <tr>
+                        <td><span class="field-name">p</span><br><span class="field-desc">Parallelization parameter</span></td>
+                        <td>Default: <code>2</code></td>
+                        <td><strong>2</strong> (current)</td>
+                        <td>Don't change</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ABUSE CONTROL SECTION -->
+    <h2>2. Abuse Control</h2>
+    <p>Protects platform from brute-force attacks and DoS/DDoS attempts.</p>
+
+    <div class="warning-box">
+        <strong>Warning:</strong> Values too low = legitimate users locked out. Values too high = platform vulnerable to attacks.
+    </div>
+
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Description</th>
+            <th>Default</th>
+            <th>Recommendation</th>
+        </tr>
+        <tr>
+            <td><span class="field-name">Auth attempts / minute / IP</span><br><span class="field-desc">Max login attempts per IP per minute</span></td>
+            <td>Prevents automated login scripts</td>
+            <td>30</td>
+            <td><strong>30-50</strong><br><span class="field-recommendation">Higher for enterprise, lower for public-facing</span></td>
+        </tr>
+        <tr>
+            <td><span class="field-name">API requests / minute / IP</span><br><span class="field-desc">Max API calls per IP per minute</span></td>
+            <td>Rate limits API access to prevent abuse</td>
+            <td>600</td>
+            <td><strong>600-1000</strong><br><span class="field-recommendation">Adjust based on API complexity</span></td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Failed logins before lockout</span><br><span class="field-desc">Attempts before account/IP lockout</span></td>
+            <td>After this many failures, lock account</td>
+            <td>5</td>
+            <td><strong>5</strong> (standard)</td>
+        </tr>
+        <tr>
+            <td><span class="field-name">First lockout seconds</span><br><span class="field-desc">Duration of first lockout</span></td>
+            <td>Account/IP locked for this many seconds</td>
+            <td>30</td>
+            <td><strong>30-60</strong> (start low, ramp up)</td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Max lockout seconds</span><br><span class="field-desc">Maximum lockout duration</span></td>
+            <td>Account/IP won't stay locked longer than this</td>
+            <td>900 (15 min)</td>
+            <td><strong>900 (15 min)</strong><br><span class="field-recommendation">Longer = more protection, worse UX</span></td>
+        </tr>
+    </table>
+
+    <!-- SESSION & TRANSPORT SECTION -->
+    <h2>3. Session & Transport</h2>
+    <p>Browser security headers and session handling.</p>
+
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Description</th>
+            <th>Default</th>
+            <th>Recommendation</th>
+        </tr>
+        <tr>
+            <td><span class="field-name">CSRF double-submit enforcement</span><br><span class="field-desc">Requires CSRF token on mutations</span></td>
+            <td>Prevents cross-site request forgery attacks</td>
+            <td>On</td>
+            <td><strong>Enable</strong><br><span class="field-recommendation">Never disable - critical security</span></td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Strict-Transport-Security (when TLS)</span><br><span class="field-desc">Forces HTTPS connections</span></td>
+            <td>Browser only connects via HTTPS</td>
+            <td>On</td>
+            <td><strong>Enable</strong><br><span class="field-recommendation">Only if using HTTPS (LUX_TLS=1)</span></td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Demo account hints on login</span><br><span class="field-desc">Shows demo credentials on login screens</span></td>
+            <td>Displays seeded passwords during demo mode</td>
+            <td>On</td>
+            <td><strong>Disable</strong> in production<br><span class="field-recommendation">Major security risk in production</span></td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Allow inline style in CSP</span><br><span class="field-desc">Relax Content Security Policy</span></td>
+            <td>Allows inline CSS styles</td>
+            <td>On</td>
+            <td><strong>Disable</strong> in strict mode<br><span class="field-recommendation">Security vs. flexibility tradeoff</span></td>
+        </tr>
+        <tr>
+            <td><span class="field-name">HttpOnly + SameSite cookies</span><br><span class="field-desc">Cookie security flags</span></td>
+            <td>Prevents JavaScript cookie access + CSRF</td>
+            <td>On</td>
+            <td><strong>Never disable</strong><br><span class="field-recommendation">Structural security - cannot be disabled</span></td>
+        </tr>
+    </table>
+
+    <!-- NEW-STORE DEFAULTS SECTION -->
+    <h2>4. New-Store Defaults</h2>
+    <p>These settings are automatically applied when launching new stores (tenants).</p>
+
+    <div class="info-box">
+        <strong>Note:</strong> Individual stores can override some of these settings after launch.
+    </div>
+
+    <table>
+        <tr>
+            <th>Field</th>
+            <th>Description</th>
+            <th>Default</th>
+            <th>Recommendation</th>
+        </tr>
+        <tr>
+            <td><span class="field-name">Default plan</span><br><span class="field-desc">Subscription tier for new stores</span></td>
+            <td>What tier stores start on (affects limits)</td>
+            <td>Starter</td>
+            <td><strong>Starter</strong> for free trial<br><strong>Professional</strong> for paid onboarding</td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Seed demo catalog</span><br><span class="field-desc">Auto-add sample products on launch</span></td>
+            <td>Creates sample products so store isn't empty</td>
+            <td>Off</td>
+            <td><strong>On</strong> for demo stores<br><strong>Off</strong> for production (manual catalog setup)</td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Gateways start in sandbox mode</span><br><span class="field-desc">Payment providers start in test mode</span></td>
+            <td>Stripe/Razorpay/Tabby start in test mode</td>
+            <td>On</td>
+            <td><strong>Enable</strong><br><span class="field-recommendation">Safe default - enable "live" manually when ready</span></td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Allow stores to override settlement currency</span><br><span class="field-desc">Can tenants change settlement currency?</span></td>
+            <td>Stores can use different currency than country default</td>
+            <td>Off</td>
+            <td><strong>Enable</strong> for international stores<br><strong>Disable</strong> for single-market stores</td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Stores may offer promo codes</span><br><span class="field-desc">Can tenants create coupons?</span></td>
+            <td>Enables / disables coupon functionality</td>
+            <td>Off</td>
+            <td><strong>Enable</strong> for most retailers<br><strong>Disable</strong> for luxury/premium stores</td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Platform global offers apply everywhere</span><br><span class="field-desc">Can platform-wide coupons work across stores?</span></td>
+            <td>Global campaigns work on all tenants</td>
+            <td>On</td>
+            <td><strong>Enable</strong> for chain operations<br><strong>Disable</strong> for isolated stores</td>
+        </tr>
+        <tr>
+            <td><span class="field-name">Allow fiscal context pickers</span><br><span class="field-desc">B2B tax ID fields at checkout</span></td>
+            <td>Enables GST/VAT/Invoice context inputs</td>
+            <td>Off</td>
+            <td><strong>Enable</strong> for B2B/Government procurement<br><strong>Disable</strong> for B2C-only stores</td>
+        </tr>
+    </table>
+
+    <!-- QUICK REFERENCE -->
+    <h2>Quick Reference: Security Levels</h2>
+    
+    <h3>Development / Demo</h3>
+    <ul>
+        <li>Password length: 8</li>
+        <li>Block breached passwords: On</li>
+        <li>Demo hints: On</li>
+        <li>Sandbox gateways: On</li>
+        <li>Seed demo catalog: On</li>
+    </ul>
+
+    <h3>Production (Standard)</h3>
+    <ul>
+        <li>Password length: 12</li>
+        <li>Require letter + digit: On</li>
+        <li>Block breached passwords: On</li>
+        <li>Demo hints: Off</li>
+        <li>CSP inline style: Off</li>
+        <li>Sandbox gateways: On → Enable live manually</li>
+    </ul>
+
+    <h3>Production (Enterprise / Strict)</h3>
+    <ul>
+        <li>Password length: 16</li>
+        <li>Require letter + digit: On</li>
+        <li>Block breached passwords: On</li>
+        <li>CSRF: On</li>
+        <li>Lockout: 5 attempts → 30s → max 15min</li>
+        <li>Fiscal context pickers: On (for B2B)</li>
+    </ul>
+
+    <!-- FOOTER -->
+    <p style="margin-top: 40px; color: #6b7280; font-size: 0.9em;">
+        Last updated: September 2026<br>
+        For complete usage guide, see <a href="/docs/user-manual.html">User Manual</a>
+    </p>
+</body>
+</html>

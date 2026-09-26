@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>End-to-End Workflow — LUXORA Platform</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --text: #1f2937;
+            --bg: #f9fafb;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --step: #f3f4f6;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+            margin: 0;
+            padding: 40px 60px;
+            max-width: 950px;
+        }
+        h1 { font-size: 2em; margin-bottom: 0.5em; color: #111; }
+        h2 { font-size: 1.5em; margin-top: 2.5em; margin-bottom: 1em; color: #16213e; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        h3 { font-size: 1.2em; margin-top: 1.5em; margin-bottom: 0.5em; color: #374151; }
+        p { margin-bottom: 1em; }
+        a { color: var(--primary); text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95em; }
+        th, td { border: 1px solid var(--border); padding: 10px; text-align: left; vertical-align: top; }
+        th { background: #f3f4f6; font-weight: 600; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: 500; }
+        .step-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            border-left: 5px solid var(--primary);
+        }
+        .step-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 3em;
+            font-weight: 700;
+            color: #f3f4f6;
+            line-height: 1;
+        }
+        .step-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 15px;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .checklist li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .checklist li:last-child {
+            border-bottom: none;
+        }
+        .checklist li::before {
+            content: "☐";
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .output-box {
+            background: #f9fafb;
+            border: 1px dashed var(--border);
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        .success-box {
+            border-left: 4px solid var(--success);
+            background: #f0fdf4;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .location {
+            font-size: 0.85em;
+            color: #6b7280;
+            margin-bottom: 10px;
+        }
+        .location code {
+            color: #374151;
+        }
+    </style>
+</head>
+<body>
+    <a href="/docs/user-manual.html" class="back-link">← Back to User Manual</a>
+    <h1>✅ End-to-End Workflow</h1>
+    <p>Complete workflow for launching a new store, configuring it, and processing the first order.</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <div class="step-title">Platform Global Setup</div>
+        <div class="location">Location: <code>Platform Console</code> → <code>🛡️ Provisioning</code></div>
+        
+        <h4>Configure Security Policy</h4>
+        <ul class="checklist">
+            <li>Set Minimum password length to <code>12</code></li>
+            <li>Enable <code>Require letter + digit</code></li>
+            <li>Enable <code>Block common/breached passwords</code></li>
+        </ul>
+
+        <h4>Configure Countries & Taxes</h4>
+        <div class="location">Location: <code>🌍 Geo · Countries · Taxes</code></div>
+        <ul class="checklist">
+            <li>Verify <code>AE (UAE)</code> exists with <code>AED</code> currency and <code>VAT</code> tax</li>
+            <li>Verify <code>US</code> exists with <code>USD</code> currency and <code>Sales Tax</code></li>
+        </ul>
+
+        <h4>Create Plan</h4>
+        <div class="location">Location: <code>💼 Plans</code></div>
+        <ul class="checklist">
+            <li>Click <strong>New Plan</strong></li>
+            <li>Name: <code>Professional</code></li>
+            <li>Max Products: <code>1000</code></li>
+            <li>Max Orders/Month: <code>1000</code></li>
+            <li>Click <strong>Create</strong></li>
+        </ul>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <div class="step-title">Launch First Store</div>
+        <div class="location">Location: <code>Platform Console</code> → <code>🏬 Stores</code></div>
+        
+        <h4>Launch Wizard</h4>
+        <ul class="checklist">
+            <li><strong>Name:</strong> <code>Velora Fashion</code></li>
+            <li><strong>Slug:</strong> <code>velora</code></li>
+            <li><strong>Jurisdiction:</strong> <code>United Arab Emirates (AE)</code> (Auto-loads AED, VAT)</li>
+            <li><strong>Industries:</strong> <code>Fashion</code></li>
+            <li><strong>Gateways:</strong> <code>Tabby</code>, <code>Stripe</code></li>
+            <li><strong>Plan:</strong> <code>Professional</code></li>
+            <li>Click <strong>Launch</strong></li>
+        </ul>
+
+        <div class="output-box">
+            <strong>Expected Result:</strong><br>
+            Store created. Admin email: <code>admin@velora.shop</code><br>
+            Password provided on screen (e.g., <code>velora123</code>)
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <div class="step-title">Store Configuration</div>
+        <div class="location">Location: <code>Store Console</code> → <code>http://localhost:8787/admin.html?store=velora</code></div>
+        
+        <h4>Settings & Branding</h4>
+        <div class="location">Location: <code>⚙️ Settings</code></div>
+        <ul class="checklist">
+            <li>Store Name: <code>Velora</code></li>
+            <li>Tagline: <code>Premium Fashion UAE</code></li>
+            <li>Currency: <code>AED</code> (Auto-set)</li>
+        </ul>
+
+        <h4>Add Products</h4>
+        <div class="location">Location: <code>📦 Products</code></div>
+        <ul class="checklist">
+            <li>Click <strong>New Product</strong></li>
+            <li>Title: <code>Silk Dress</code></li>
+            <li>Brand: <code>Velora</code></li>
+            <li>Price: <code>250</code></li>
+            <li>Stock: <code>50</code></li>
+            <li>Lifecycle: <code>Published</code></li>
+            <li>Click <strong>Save</strong></li>
+        </ul>
+
+        <h4>Enable Payment</h4>
+        <div class="location">Location: <code>💳 Payment Gateways</code></div>
+        <ul class="checklist">
+            <li>Ensure <strong>Tabby</strong> is set to <strong>Primary</strong></li>
+            <li>Click <strong>Activate</strong> (switch to Live mode if ready)</li>
+        </ul>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <div class="step-title">Create Offer</div>
+        <div class="location">Location: <code>Store Console</code> → <code>🎯 Promotions</code></div>
+        
+        <h4>New Promotion</h4>
+        <ul class="checklist">
+            <li>Type: <code>Percent</code></li>
+            <li>Code: <code>WELCOME20</code></li>
+            <li>Value: <code>20</code> (20%)</li>
+            <li>Min Cart: <code>100</code></li>
+            <li>Start: <code>Today</code></li>
+            <li>End: <code>End of Month</code></li>
+            <li>Click <strong>Save</strong></li>
+        </ul>
+
+        <div class="output-box">
+            <strong>Test:</strong><br>
+            Go to Store Console → <code>Ω∞ GOIP</code> → <code>Decision Tester</code><br>
+            Enter: Amount <code>250</code>, Code <code>WELCOME20</code><br>
+            Result: <code>APPROVED</code> (Discount: 50 AED)
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">5</span>
+        <div class="step-title">Customer Purchase (Frontend)</div>
+        <div class="location">Location: <code>Storefront</code> → <code>http://localhost:8787/?store=velora</code></div>
+        
+        <h4>Browse & Add to Cart</h4>
+        <ul class="checklist">
+            <li>Go to <code>http://localhost:8787/?store=velora</code></li>
+            <li>Search for <code>Silk Dress</code></li>
+            <li>Click <strong>Add to Cart</strong></li>
+            <li>Click <strong>Cart</strong> icon (top right)</li>
+        </ul>
+
+        <h4>Apply Code & Checkout</h4>
+        <ul class="checklist">
+            <li>Enter Promo Code: <code>WELCOME20</code></li>
+            <li>Click <strong>Apply</strong> (Total becomes 200 AED)</li>
+            <li>Click <strong>Checkout</strong></li>
+            <li>Enter Shipping Details (Name, Address, Phone)</li>
+            <li>Select Payment: <code>Tabby</code> or <code>Credit Card</code></li>
+            <li>Click <strong>Place Order</strong></li>
+        </ul>
+
+        <div class="success-box">
+            <strong>Success!</strong> Order created. You will see Order # (e.g., ORD-2025-0001).
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">6</span>
+        <div class="step-title">Order Fulfillment</div>
+        <div class="location">Location: <code>Store Console</code> → <code>🧾 Orders</code></div>
+        
+        <h4>Process Order</h4>
+        <ul class="checklist">
+            <li>Open the new order</li>
+            <li>Check Payment Status: <code>Captured</code></li>
+            <li>Check Inventory: Stock reduced by 1</li>
+            <li>Update Status to <code>Shipped</code> when ready</li>
+            <li>Enter Tracking Number</li>
+        </ul>
+
+        <div class="success-box">
+            <strong>Done!</strong> Order complete. Customer receives shipping update.
+        </div>
+    </div>
+
+    <!-- QUICK REFERENCE -->
+    <h2>Quick Links</h2>
+    <table>
+        <tr><th>Page</th><th>URL</th><th>Login</th></tr>
+        <tr><td>Platform Console</td><td><a href="/platform.html" target="_blank">Platform Console</a></td><td>platform@luxora.shop / platform123</td></tr>
+        <tr><td>Store Console</td><td><a href="/admin.html" target="_blank">Store Console</a></td><td>admin@luxora.shop / admin123</td></tr>
+        <tr><td>Storefront</td><td><a href="/" target="_blank">Storefront</a></td><td>Demo: demo@luxora.shop / demo123</td></tr>
+    </table>
+
+    <p style="margin-top: 40px; color: #6b7280; font-size: 0.9em;">
+        Last updated: September 2026<br>
+        See <a href="/docs/user-manual.html">User Manual</a> for detailed role guides
+    </p>
+</body>
+</html>
