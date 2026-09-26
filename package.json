@@ -2,6 +2,8 @@
   "name": "luxora-platform",
   "version": "1.0.0",
   "description": "LUXORA - universal white-label commerce platform: zero-dependency Node server, SQLite, pluggable gateways, multi-tenant meta-model storefronts.",
+  "author": "Bipin Kumar <bipin.kumar@aol.com> (bipin1@gmail.com)",
+  "contributors": ["Bipin Kumar <bipin1@gmail.com>"],
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
