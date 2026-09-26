@@ -17,7 +17,7 @@
 | Items OPEN | **3** — BC-3 (6/7, A3-7 alone), BC-4 (6/7) and BC-5 (4/4, amendment authority NOT LOCATED) on named non-engineering acts (§16.5) |
 | Implementation authorization | **GRANTED for engineering execution** (§15, transcribed). Items 7–8 remain outside it |
 | Closure executed at | HEAD `ad2cb1cc` + this working tree (2026-09-24) — §15 |
-| Re-measured after owner-act instruments | 2026-09-26 — **§16.** BC-3 2/7→**6/7**, BC-4 4/7→6/7, BC-5 3/4→4/4 (held open on authority), BC-6 7/8→**8/8 VERIFIED CLOSED**. Criteria 32→39 of 43. **One closed this pass; three remain** |
+| Re-measured after owner-act instruments | 2026-09-26 — **§16.** BC-3 2/7→**6/7**, BC-4 4/7→6/7, BC-5 3/4→4/4 (held open on authority), BC-6 7/8→**8/8 VERIFIED CLOSED**. Criteria 32→40 of 43. **One closed this pass; three remain** |
 
 ---
 
@@ -762,7 +762,7 @@ is itself an owner act.
 | **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **OPEN — criteria met, amendment authority NOT LOCATED** | **4 / 4** |
 | **BC-6** | Baseline integrity | OPEN 7 / 8 | **OPEN** | 7 / 8 |
 
-**Criteria satisfied: 32 → 37 → 38 → 39 of 43.** Three blockers moved; **BC-6 closed**.
+**Criteria satisfied: 32 → 37 → 38 → 39 → 40 of 43.** Three blockers moved; **BC-6 closed**.
 
 BC-5 is the judgment call and it is recorded as one rather than smoothed into a closure. All four
 criteria are met, and the former *identity* problem — instruments signed "Bipin Kumar" by commits
