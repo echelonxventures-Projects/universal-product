@@ -1391,9 +1391,59 @@ function wireUCOS() {
         '<b>' + esc(r.name) + '</b> <span class="p-tag">' + esc(kind) + ' · line ' + stat2(r.line) + '</span>' +
         (r.container ? '<div class="p-tag">in ' + esc(r.container) + '</div>' : "") +
         '<button class="p-btn sm" style="margin-left:6px" data-graph="' + esc(r.doc || "") + '" data-gtype="' + esc(kind === "concepts" ? "concept" : "section") + '" data-gid="' + esc(r.qkey || r.key || "") + '" data-gname="' + esc((r.name || "").slice(0, 40)) + '" data-gcontainer="' + esc(r.container || "") + '">⌘ graph</button>' +
+        '<button class="p-btn sm" data-ann="' + esc(r.doc || "") + '" data-akind="' + esc(kind === "concepts" ? "concept" : "section") + '" data-akey="' + esc(r.qkey || r.key || "") + '">✎ annotate</button>' +
+        '<div class="ucos-ann-list" data-annlist="' + esc(r.doc || "") + '|' + esc(kind === "concepts" ? "concept" : "section") + '|' + esc(r.qkey || r.key || "") + '"></div>' +
         '</div>';
     }).join("");
     wireGraph();
+    wireAnnotate();
+  };
+  /* annotation layer: inline notes per row, plus a composer; the documents stay read-only */
+  const wireAnnotate = () => {
+    $('[data-annlist]').forEach(el => loadAnnotations(el));
+    $('[data-ann]').forEach(b => b.onclick = () => {
+      const doc = b.dataset.ann, kind = b.dataset.akind, key = b.dataset.akey;
+      const list = document.querySelector('[data-annlist="' + doc + '|' + kind + '|' + key + '"]');
+      if (!list) return;
+      if (list.dataset.open === '1') { list.dataset.open = '0'; list.innerHTML = ''; return; }
+      list.dataset.open = '1';
+      const boxId = 'annTxt_' + key.replace(/[^A-Za-z0-9_-]/g, '_');
+      list.innerHTML = '<div style="margin-top:6px;padding:8px;border:1px dashed var(--p-line);border-radius:8px">' +
+        '<textarea id="' + boxId + '" rows="2" placeholder="Add an operator note (the document itself is never edited)…" style="width:100%;padding:6px;border-radius:6px;border:1px solid var(--p-line);background:var(--p-bg);color:var(--p-text);font-size:12.5px"></textarea>' +
+        '<label style="font-size:12px;margin:4px 0;display:inline-block"><input type="checkbox" id="annPin_' + key.replace(/[^A-Za-z0-9_-]/g, '_') + '"> pin to top</label>' +
+        '<button class="p-btn sm primary" data-annsave="' + doc + '|' + kind + '|' + key + '">Save</button></div>';
+      const save = list.querySelector('[data-annsave]');
+      if (save) save.onclick = async () => {
+        const txt = (list.querySelector('textarea') || {}).value;
+        const pin = !!(list.querySelector('input[type=checkbox]') || {}).checked;
+        if (!txt || !txt.trim()) { toast('note is required'); return; }
+        try {
+          const r = await api('/ucos/' + doc + '/annotations', 'POST', { kind, key, note: txt, pin });
+          if (!r.ok) { toast(r.error); return; }
+          toast('Annotation saved');
+          loadAnnotations(list);
+        } catch (e) { toast(e.message); }
+      };
+    });
+  };
+  const loadAnnotations = async el => {
+    const parts = (el.dataset.annlist || '').split('|');
+    if (parts.length < 3) return;
+    const doc = parts[0], kind = parts[1], key = parts.slice(2).join('|');
+    const wasOpen = el.dataset.open === '1';
+    if (!wasOpen) return;
+    try {
+      const r = await api('/ucos/' + doc + '/annotations', 'GET', { kind, key, limit: 20 });
+      el.innerHTML = (r.rows || []).map(a => '<div class="p-card" style="padding:6px 8px;margin:4px 0;font-size:12px">' +
+        (a.pin ? '<span class="badge published">pinned</span> ' : '') +
+        esc(a.note) + '<span class="p-tag">' + esc(a.created_by || '') + ' · ' + esc((a.updated_at || '').slice(0, 10)) + '</span>' +
+        '<button class="p-btn sm danger" data-anndel="' + a.id + '" data-anndoc="' + doc + '" style="margin-left:4px">✕</button></div>').join('') +
+        ((r.total || 0) > (r.rows || []).length ? '<div class="p-tag">' + ((r.total) - (r.rows || []).length) + ' more…</div>' : '');
+      el.querySelectorAll('[data-anndel]').forEach(d => d.onclick = async () => {
+        try { const rr = await api('/ucos/' + d.dataset.anndoc + '/annotations/' + d.dataset.anndel, 'DELETE'); if (!rr.ok) { toast(rr.error); return; } toast('Annotation removed'); loadAnnotations(el); }
+        catch (e) { toast(e.message); }
+      });
+    } catch (e) { /* reads are best-effort; the row still renders */ }
   };
   /* paginated browser: keeps a cursor so Next/Prev walk the real total */
   let cursor = { doc: "", kind: "", offset: 0, limit: 25, part: null, q: null };

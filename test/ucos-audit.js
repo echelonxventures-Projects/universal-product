@@ -18,6 +18,8 @@ for (const suffix of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP + suffix, { for
 const silence = console.log; console.log = () => { };          /* the seed banner is not the point */
 const db = require(path.join(__dirname, "..", "lib", "db.js"));
 const ucos = require(path.join(__dirname, "..", "lib", "ucos.js"));
+/* a stand-in session for the write-path checks (only .email is read by the annotation layer) */
+const s0 = { email: "audit@luxora.shop" };
 ucos.seed(db);
 console.log = silence;
 
@@ -117,6 +119,32 @@ try {
 }
 ok(mon.documentDigest() === stampBefore, "document restored byte-identical after the probe");
 ok(mon.driftStatus().drifted === false, "drift clears once the document is restored", mon.driftStatus().message.slice(0, 40));
+
+console.log("\n▸ WRITE PATH (annotations without mutating the documents)");
+/* the annotation layer must key to canonical targets only, and must survive a re-parse */
+const ann = ucos.annotations(db, "upip", "concept", "identity", 10, 0);
+ok(Array.isArray(ann.rows), "annotations are read as a page", JSON.stringify(ann).slice(0, 40));
+const made = ucos.addAnnotation(db, { email: "audit@luxora.shop" }, "upip", "concept", "identity", "Audit probe note", true);
+ok(made.ok === true, "an annotation attaches to a real concept", JSON.stringify(made));
+const listed = ucos.annotations(db, "upip", "concept", "identity", 10, 0);
+ok(listed.total >= 1 && listed.rows[0].pin === 1, "the annotation is stored and pinned", "total=" + listed.total);
+ok(listed.rows[0].created_by === "audit@luxora.shop", "the author is recorded", listed.rows[0].created_by);
+/* guard: no annotation may be created against a target the registry does not contain */
+const bogus = ucos.addAnnotation(db, s0, "upip", "concept", "no_such_concept_zzz", "should be refused", false);
+ok(bogus.ok === false, "an annotation on a non-existent target is refused", JSON.stringify(bogus));
+ok(/not present/.test(bogus.error), "the refusal names the missing target", bogus.error);
+ok(ucos.addAnnotation(db, s0, "upip", "concept", "identity", "", false).ok === false, "an empty note is refused");
+ok(ucos.addAnnotation(db, s0, "upip", "concept", "identity", "x".repeat(4001), false).ok === false, "an over-long note is refused");
+ok(ucos.orphanedAnnotations(db).length === 0, "no orphaned annotations while targets exist", JSON.stringify(ucos.orphanedAnnotations(db)));
+/* annotations survive a re-parse because they are keyed, not transcribed */
+ucos.seed(db);
+ok(ucos.annotations(db, "upip", "concept", "identity", 10, 0).total >= 1, "the annotation survives a re-parse", "total=" + ucos.annotations(db, "upip", "concept", "identity", 10, 0).total);
+const aid = listed.rows[0].id;
+ok(ucos.updateAnnotation(db, s0, aid, "revised note", false).ok === true, "an annotation can be edited");
+ok(ucos.annotations(db, "upip", "concept", "identity", 10, 0).rows[0].note === "revised note", "the edit persisted");
+ok(ucos.deleteAnnotation(db, s0, aid).ok === true, "an annotation can be deleted");
+ok(ucos.deleteAnnotation(db, s0, aid).ok === false, "deleting twice is reported as not-found");
+ok(ucos.annotations(db, "upip", "concept", "identity", 10, 0).total === 0, "all test annotations cleaned up");
 
 console.log("\n" + (failed ? "✗ " + failed + " check(s) failed" : "✓ all UCOS Ω∞ checks passed") + "  (" + passed + " passed)");
 process.exit(failed ? 1 : 0);

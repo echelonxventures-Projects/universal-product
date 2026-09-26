@@ -152,8 +152,11 @@ CREATE TABLE attribute_defs (
 CREATE TABLE skus (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL,
   code TEXT NOT NULL, name TEXT DEFAULT '', identity TEXT DEFAULT '{}', variant TEXT DEFAULT '{}',
-  price REAL, mrp REAL, stock INTEGER DEFAULT 0, active INTEGER DEFAULT 1, group_id INTEGER
+  price REAL, mrp REAL, stock INTEGER DEFAULT 0, active INTEGER DEFAULT 1, group_id INTEGER, uid TEXT
 );
+CREATE UNIQUE INDEX ux_skus_uid ON skus(uid);
+CREATE TRIGGER trg_skus_uid AFTER INSERT ON skus
+               BEGIN UPDATE skus SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 CREATE TABLE warehouses (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, name TEXT NOT NULL,
   code TEXT, country TEXT DEFAULT 'US', region TEXT DEFAULT '', active INTEGER DEFAULT 1
@@ -247,6 +250,57 @@ CREATE INDEX ix_products_tenant ON products(tenant_id, dept);
 CREATE INDEX ix_reviews_pid ON reviews(tenant_id, product_id);
 CREATE INDEX ix_orders_tenant ON orders(tenant_id, created_at);
 CREATE INDEX ix_audit_tenant ON audit_log(tenant_id, created_at);
+/* ---------- UCOS Ω∞ constitutional registry (UPIP + UMQSOCR documents) ---------- */
+CREATE TABLE ucos_documents (
+  doc_id TEXT PRIMARY KEY, file TEXT NOT NULL, code TEXT NOT NULL, name TEXT NOT NULL,
+  kind TEXT NOT NULL DEFAULT 'architecture',
+  parts INTEGER DEFAULT 0, sections INTEGER DEFAULT 0, articles INTEGER DEFAULT 0,
+  concepts INTEGER DEFAULT 0, registries INTEGER DEFAULT 0, lines INTEGER DEFAULT 0, chars INTEGER DEFAULT 0
+, uid TEXT);
+CREATE TABLE ucos_parts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, doc_id TEXT NOT NULL, no INTEGER, label TEXT, title TEXT, line INTEGER
+, uid TEXT);
+CREATE INDEX ix_ucos_parts ON ucos_parts(doc_id, no);
+CREATE TABLE ucos_sections (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, doc_id TEXT NOT NULL, qkey TEXT NOT NULL,
+  no INTEGER, key TEXT, name TEXT, part_no INTEGER, line INTEGER,
+  concepts INTEGER DEFAULT 0, registries INTEGER DEFAULT 0, meta TEXT DEFAULT '{}',
+  kind TEXT DEFAULT 'section', doc_block TEXT
+, uid TEXT);
+CREATE UNIQUE INDEX ux_ucos_sections ON ucos_sections(doc_id, qkey);
+CREATE TABLE ucos_concepts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, doc_id TEXT NOT NULL, key TEXT NOT NULL,
+  name TEXT NOT NULL, container_kind TEXT, container_key TEXT, container_name TEXT,
+  part_no INTEGER, line INTEGER
+, uid TEXT);
+CREATE INDEX ix_ucos_concepts ON ucos_concepts(doc_id, key);
+CREATE INDEX ix_ucos_concepts_name ON ucos_concepts(doc_id, name);
+CREATE TABLE ucos_registries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, doc_id TEXT NOT NULL, key TEXT NOT NULL, label TEXT,
+  container_kind TEXT, container_key TEXT, items TEXT DEFAULT '[]', item_count INTEGER DEFAULT 0, line INTEGER
+, uid TEXT);
+CREATE INDEX ix_ucos_reg ON ucos_registries(doc_id, key);
+CREATE TABLE ucos_edges (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, doc_id TEXT NOT NULL,
+  source_type TEXT NOT NULL, source_id TEXT NOT NULL, rel TEXT NOT NULL,
+  target_type TEXT NOT NULL, target_id TEXT NOT NULL
+, uid TEXT);
+CREATE UNIQUE INDEX ux_ucos_edges ON ucos_edges(doc_id, source_type, source_id, rel, target_type, target_id);
+CREATE INDEX ix_ucos_edges_src ON ucos_edges(doc_id, source_type, source_id);
+/* annotation layer — the write path; the documents stay immutable (see lib/db.js) */
+CREATE TABLE ucos_annotations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  doc_id TEXT NOT NULL,
+  target_kind TEXT NOT NULL,
+  target_key TEXT NOT NULL,
+  note TEXT NOT NULL,
+  pin INTEGER DEFAULT 0,
+  created_by TEXT,
+  created_at TEXT DEFAULT (datetime('now')),
+  updated_at TEXT DEFAULT (datetime('now'))
+, uid TEXT);
+CREATE INDEX ix_ucos_ann ON ucos_annotations(doc_id, target_kind, target_key);
+CREATE INDEX ix_ucos_ann_pin ON ucos_annotations(doc_id, target_kind, target_key, pin);
 CREATE UNIQUE INDEX ux_tenants_uid ON tenants(uid);
 CREATE TRIGGER trg_tenants_uid AFTER INSERT ON tenants
                BEGIN UPDATE tenants SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
@@ -779,6 +833,14 @@ CREATE TABLE webhook_deliveries (
 CREATE UNIQUE INDEX ux_webhook_deliveries_uid ON webhook_deliveries(uid);
 CREATE TRIGGER trg_webhook_deliveries_uid AFTER INSERT ON webhook_deliveries
                BEGIN UPDATE webhook_deliveries SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE entity_usage (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  entity TEXT NOT NULL,
+  action TEXT NOT NULL,
+  at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE(tenant_id, entity, action)
+);
 CREATE TABLE entity_meta (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   tenant_id INTEGER NOT NULL,
@@ -841,3 +903,261 @@ CREATE TABLE IF NOT EXISTS scim_tokens (id INTEGER PRIMARY KEY AUTOINCREMENT, te
 CREATE TABLE IF NOT EXISTS stock_transfers (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, from_warehouse INTEGER, to_warehouse INTEGER, sku_id INTEGER, qty INTEGER NOT NULL DEFAULT 1, status TEXT DEFAULT 'draft', reference TEXT DEFAULT '', note TEXT DEFAULT '', created_at TEXT, deleted_at TEXT);
 CREATE TABLE IF NOT EXISTS remittance_records (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, period TEXT NOT NULL, jurisdiction TEXT NOT NULL, tax_type TEXT DEFAULT 'vat', taxable REAL DEFAULT 0, tax_collected REAL DEFAULT 0, currency TEXT DEFAULT 'USD', status TEXT DEFAULT 'pending', filed_at TEXT, reference TEXT DEFAULT '', created_at TEXT, deleted_at TEXT);
 CREATE TABLE IF NOT EXISTS inbound_events (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER, provider TEXT, event TEXT, payload TEXT DEFAULT '{}', signature_ok INTEGER DEFAULT 0, processed INTEGER DEFAULT 0, created_at TEXT);
+CREATE TABLE IF NOT EXISTS tickets (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL UNIQUE,
+  subject TEXT NOT NULL, reason TEXT NOT NULL DEFAULT 'other', priority TEXT NOT NULL DEFAULT 'normal',
+  status TEXT NOT NULL DEFAULT 'new', assignee TEXT, owner TEXT, owner_name TEXT NOT NULL, owner_email TEXT,
+  order_ref TEXT DEFAULT '', product_id TEXT DEFAULT '', body TEXT NOT NULL, channel TEXT DEFAULT 'email',
+  sla_response TEXT, sla_resolution TEXT, first_response_at TEXT, resolved_at TEXT,
+  csat INTEGER, csat_comment TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS ix_tickets ON tickets(tenant_id, status, priority);
+CREATE TABLE IF NOT EXISTS agent_availability (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, agent_id TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'offline', updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE (tenant_id, agent_id)
+);
+CREATE TABLE IF NOT EXISTS ticket_notes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ticket_id INTEGER NOT NULL,
+  role TEXT NOT NULL DEFAULT 'agent', author TEXT NOT NULL, body TEXT NOT NULL, visibility TEXT NOT NULL DEFAULT 'public',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS capabilities (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  key TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'feature',
+  name TEXT NOT NULL,
+  description TEXT DEFAULT '',
+  version TEXT DEFAULT '1.0.0',
+  schema TEXT DEFAULT '{}',
+  config TEXT DEFAULT '{}',
+  dependencies TEXT DEFAULT '[]',
+  status TEXT DEFAULT 'active',
+  enabled INTEGER DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT
+);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_capabilities_tenant_key ON capabilities(tenant_id, key);
+
+CREATE TABLE IF NOT EXISTS provider_availability (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  provider_id TEXT NOT NULL,
+  country_code TEXT NOT NULL,
+  region TEXT DEFAULT '',
+  enabled INTEGER DEFAULT 1,
+  config TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_provider_availability ON provider_availability(provider_id, country_code);
+
+CREATE TABLE IF NOT EXISTS modules (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  category TEXT DEFAULT 'feature',
+  summary TEXT DEFAULT '',
+  price REAL DEFAULT 0,
+  manifest TEXT DEFAULT '{}',
+  status TEXT DEFAULT 'active',
+  position INTEGER DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS provider_defs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  key TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+  category TEXT DEFAULT 'feature',
+  description TEXT DEFAULT '',
+  config_schema TEXT DEFAULT '{}',
+  enabled INTEGER DEFAULT 1
+);
+
+CREATE TABLE IF NOT EXISTS localizations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  locale TEXT NOT NULL,
+  name TEXT NOT NULL,
+  currency TEXT DEFAULT 'USD',
+  currency_symbol TEXT DEFAULT '',
+  enabled INTEGER DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS ix_localizations_tenant_locale ON localizations(tenant_id, locale);
+
+CREATE TABLE IF NOT EXISTS payments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  order_id INTEGER NOT NULL,
+  gateway TEXT NOT NULL,
+  method TEXT DEFAULT '',
+  txn_ref TEXT,
+  amount REAL NOT NULL DEFAULT 0,
+  currency TEXT DEFAULT 'USD',
+  fee REAL DEFAULT 0,
+  status TEXT DEFAULT 'pending',
+  kind TEXT DEFAULT 'order',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS provider_availability (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  provider_id TEXT NOT NULL,
+  country_code TEXT NOT NULL,
+  region TEXT DEFAULT '',
+  enabled INTEGER DEFAULT 1,
+  config TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_prov_avail ON provider_availability(provider_id, country_code);
+
+CREATE TABLE IF NOT EXISTS ai_usage (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  capability TEXT NOT NULL,
+  provider TEXT NOT NULL,
+  tier TEXT DEFAULT '',
+  units REAL DEFAULT 0,
+  cost REAL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS config_store (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  key TEXT NOT NULL,
+  scope TEXT NOT NULL DEFAULT 'platform',
+  tenant_id INTEGER,
+  version INTEGER DEFAULT 1,
+  value TEXT DEFAULT '{}',
+  active INTEGER DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT
+);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_config_store ON config_store(key, scope, tenant_id);
+
+CREATE TABLE IF NOT EXISTS store_product_config (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  global_product_id TEXT NOT NULL,
+  category TEXT DEFAULT '',
+  permissions TEXT DEFAULT 'read',
+  enabled INTEGER DEFAULT 1,
+  config TEXT DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_spc ON store_product_config(tenant_id, global_product_id);
+
+CREATE TABLE IF NOT EXISTS affiliate_networks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER,
+  name TEXT NOT NULL,
+  description TEXT DEFAULT '',
+  commission_pct REAL DEFAULT 0,
+  status TEXT DEFAULT 'active',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS affiliates (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  network_id INTEGER,
+  tenant_id INTEGER,
+  name TEXT NOT NULL,
+  affiliate_code TEXT UNIQUE,
+  email TEXT,
+  status TEXT DEFAULT 'active',
+  lifetime_sales REAL DEFAULT 0,
+  lifetime_commissions REAL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS affiliate_conversions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  affiliate_id INTEGER NOT NULL,
+  order_id INTEGER,
+  amount REAL DEFAULT 0,
+  commission REAL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS sitemap_config (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER DEFAULT 1,
+  hostname TEXT DEFAULT 'https://example.com',
+  enabled INTEGER DEFAULT 1,
+  last_generated TEXT,
+  next_run TEXT,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS usage_records (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  kind TEXT NOT NULL,
+  qty REAL DEFAULT 1,
+  amount REAL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS identity_providers (
+  id TEXT PRIMARY KEY,
+  tenant_id INTEGER NOT NULL,
+  provider_type TEXT NOT NULL,
+  name TEXT NOT NULL,
+  enabled INTEGER DEFAULT 1,
+  config TEXT DEFAULT '{}',
+  display_order INTEGER DEFAULT 0,
+  created_at TEXT DEFAULT (datetime('now')),
+  updated_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS platform_identity_templates (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  description TEXT DEFAULT '',
+  config TEXT DEFAULT '{}',
+  is_default INTEGER DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS global_products (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  sku TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+  description TEXT DEFAULT '',
+  category TEXT DEFAULT '',
+  price REAL DEFAULT 0,
+  tax_class TEXT DEFAULT 'standard',
+  is_service INTEGER DEFAULT 0,
+  attributes TEXT DEFAULT '{}',
+  media TEXT DEFAULT '[]',
+  status TEXT DEFAULT 'draft',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS departments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  key TEXT NOT NULL UNIQUE,
+  label TEXT NOT NULL,
+  icon TEXT DEFAULT '',
+  position INTEGER DEFAULT 0,
+  active INTEGER DEFAULT 1
+);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_dept_tenant ON departments(tenant_id, key);
+
+CREATE TABLE IF NOT EXISTS attribute_defs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  key TEXT NOT NULL UNIQUE,
+  label TEXT NOT NULL,
+  type TEXT NOT NULL,
+  options TEXT DEFAULT '[]',
+  validation TEXT DEFAULT '{}',
+  position INTEGER DEFAULT 0
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS ix_attr_tenant ON attribute_defs(tenant_id, key);
