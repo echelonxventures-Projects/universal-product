@@ -164,5 +164,27 @@ ok(!!d9 && d9.articles === 20, "UMQSOCR-DOC-009 owns exactly 20 (not the leaked 
 ok(idx.documents.length >= 24, "the master index enumerates the corpus's declared documents", "documents=" + idx.documents.length);
 ok(idx.totals.articles === 529, "the index accounts for all 529 articles", "articles=" + idx.totals.articles);
 
+/* ---------- NEGATIVE TESTS ----------
+   A green audit is meaningless if the criteria cannot see a real violation, so each is probed
+   with a synthetic conflict and the registry restored byte-exact afterwards. */
+console.log("\n▸ COMPLETENESS DETECTOR (the criteria must still bite)");
+const probeName = "Authority Probe Measurement";
+const probeRows = [
+  ["umqscr", "ap1", probeName, "section", "c_probe_a", "DOC-A", 1, 1],
+  ["umqscr", "ap2", probeName, "section", "c_probe_b", "DOC-B", 1, 2]
+];
+db.run("DELETE FROM ucos_concepts WHERE name=?", probeName);
+probeRows.forEach(r => db.run("INSERT INTO ucos_concepts(doc_id,key,name,container_kind,container_key,container_name,part_no,line) VALUES(?,?,?,?,?,?,?,?)", ...r));
+try {
+  ok(comp.authorityGaps().some(g => g.concept === probeName), "authority flags the same concept owned twice in one family", "gaps=" + comp.authorityGaps().length);
+  const during = comp.audit();
+  ok(during.ok === false, "the freeze verdict flips to unsatisfied under a real conflict", during.verdict.slice(0, 40));
+  ok(during.criteria.some(c => c.kind === "authority" && !c.satisfied), "the authority criterion reports itself unsatisfied");
+} finally {
+  db.run("DELETE FROM ucos_concepts WHERE name=?", probeName);
+}
+ok(comp.audit().ok === true, "the registry returns to a freezable state once the probe is removed");
+ok(comp.authorityGaps().length === 0, "no authority gaps remain after cleanup", "count=" + comp.authorityGaps().length);
+
 console.log("\n" + (failed ? "✗ " + failed + " check(s) failed" : "✓ all UCOS Ω∞ checks passed") + "  (" + passed + " passed)");
 process.exit(failed ? 1 : 0);
