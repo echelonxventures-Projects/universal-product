@@ -14,10 +14,10 @@
 | Items tracked | **6 blockers · 8 secondary decisions · 11 baseline attribution groups · 8 authorization items** |
 | Items VERIFIED CLOSED | **3** — BC-1, BC-2 (§15), BC-6 (§16.4) |
 | Items IN PROGRESS | **0** |
-| Items OPEN | **3** — BC-3 (4/7), BC-4 (6/7) and BC-5 (4/4, amendment authority NOT LOCATED) on named non-engineering acts (§16.5) |
+| Items OPEN | **3** — BC-3 (6/7, A3-7 alone), BC-4 (6/7) and BC-5 (4/4, amendment authority NOT LOCATED) on named non-engineering acts (§16.5) |
 | Implementation authorization | **GRANTED for engineering execution** (§15, transcribed). Items 7–8 remain outside it |
 | Closure executed at | HEAD `ad2cb1cc` + this working tree (2026-09-24) — §15 |
-| Re-measured after owner-act instruments | 2026-09-26 — **§16.** BC-3 2/7→4/7, BC-4 4/7→6/7, BC-5 3/4→4/4 (held open on authority), BC-6 7/8→**8/8 VERIFIED CLOSED**. Criteria 32→38 of 43. **One closed this pass; three remain** |
+| Re-measured after owner-act instruments | 2026-09-26 — **§16.** BC-3 2/7→**6/7**, BC-4 4/7→6/7, BC-5 3/4→4/4 (held open on authority), BC-6 7/8→**8/8 VERIFIED CLOSED**. Criteria 32→39 of 43. **One closed this pass; three remain** |
 
 ---
 
@@ -58,7 +58,7 @@ Where an acceptance criterion is **unattainable inside the repository**, the ite
 |---|---|---|---|---|---|
 | **BC-1** | Classification outage | OPEN 0 / 8 | **VERIFIED CLOSED** | 8 / 8 | None |
 | **BC-2** | Initialization-independent detection | OPEN 0 / 8 | **VERIFIED CLOSED** | 8 / 8 | None |
-| **BC-3** | Certification evidence closure | OPEN 0 / 7 | **OPEN** | 2 / 7 → **4 / 7** (§16) | Declaring owner must instrument or withdraw each unbound axis · S-2 · re-record withdrawn axes under the five-field standard |
+| **BC-3** | Certification evidence closure | OPEN 0 / 7 | **OPEN** | 2 / 7 → **6 / 7** (§16) | A3-7 alone — S-2 temporal exemption declared but not confirmed by the baseline authority |
 | **BC-4** | Ownership closure | OPEN 0 / 7 | **OPEN** | 4 / 7 → **6 / 7** (§16) | Ratification recorded (authorship gap closed by reattribution) · S-3 · S-5 / F-20 |
 | **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **OPEN** | 3 / 4 → **4 / 4, amendment authority NOT LOCATED** (§16) | Two constitutional decisions (D-1, D-2) recorded; authorship gap closed by reattribution (§16.2 D-4) |
 | **BC-6** | Baseline integrity | OPEN 7 / 8 | **VERIFIED CLOSED** | **8 / 8 — A6-5 evidenced 2026-09-26** |
@@ -747,7 +747,7 @@ is itself an owner act.
 
 | Blocker | Was (§15.9) | Instrument's claim | **Re-measured now** | Basis |
 |---|---|---|---|---|
-| **BC-3** | 2 / 7 | 7 / 7 | **4 / 7 — OPEN** | A3-1 and A3-5 discharged: the sixteen axes are named and withdrawn, the prose verdicts are withdrawn in their own document, and the executable `CK-*` checks are named as successor evidence. A3-2 and A3-3 remain: the withdrawn axes must be *re-recorded* under the five-field executable standard, not merely struck. A3-7 remains: S-2 is unresolved |
+| **BC-3** | 2 / 7 | 7 / 7 | **6 / 7 — OPEN on A3-7 alone** | A3-1, A3-2, A3-3 and A3-5 discharged: the sixteen axes are named and withdrawn; each is re-recorded in the withdrawal instrument with the five fields (claim · measurement · evidence · verification · certification) or a named absence; axes 13–14 are recorded as expected-failing probes, which is A3-2's "contradictions surfaced"; and zero prose-only certifications remain. A3-7 alone remains: S-2 is resolved by a *declared* temporal exemption recorded in the instrument — certification rests on a content digest, not a wall-clock the contract refuses to certify — but that exemption is owned by the baseline authority, who has not confirmed it |
 | **BC-4** | 4 / 7 | 7 / 7 | **6 / 7 — OPEN** | A4-6 and A4-7 discharged by the recorded ratification of the 550/0/0 partition. A4-5 remains: S-3, the machine-readable authority key, is not addressed by the petition. F-20 / S-5 remains: the Article 28 question is not answered by it |
 | **BC-5** | 3 / 4 | 4 / 4 | **4 / 4 — criteria met, recorded with one qualification** | A5-4 discharged: D-1 = INVARIANT, D-2 = Option A (Neutral core + representable periphery), both recorded with rationale. The qualification: the memo's own impact rows say the required authority was **NOT LOCATED**, so the decisions are recorded as owner-recorded rather than constitutionally ratified. (The former identity gap — commits authored by `Echelon Ventures` — was closed by owner-directed reattribution, §16.2 D-4) |
 
@@ -762,7 +762,7 @@ is itself an owner act.
 | **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **OPEN — criteria met, amendment authority NOT LOCATED** | **4 / 4** |
 | **BC-6** | Baseline integrity | OPEN 7 / 8 | **OPEN** | 7 / 8 |
 
-**Criteria satisfied: 32 → 37 → 38 of 43.** Three blockers moved; **BC-6 closed**.
+**Criteria satisfied: 32 → 37 → 38 → 39 of 43.** Three blockers moved; **BC-6 closed**.
 
 BC-5 is the judgment call and it is recorded as one rather than smoothed into a closure. All four
 criteria are met, and the former *identity* problem — instruments signed "Bipin Kumar" by commits
@@ -779,7 +779,7 @@ commit into a signature.
 
 | Act | Owner | Blocks | Changed since §15.10 |
 |---|---|---|---|
-| Instrument or **withdraw** each unbound unboundedness axis | declaring owner of `03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md` | BC-3 A3-1, A3-2, A3-3, A3-5 | **A3-1/A3-5 done.** Re-record the withdrawn axes under the five-field executable standard → A3-2, A3-3 |
+| Instrument or **withdraw** each unbound unboundedness axis | declaring owner of `03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md` | BC-3 A3-1, A3-2, A3-3, A3-5 | **DONE — all four.** Sixteen axes withdrawn and re-recorded with five fields or a named absence |
 | Resolve **S-2** — temporal qualification of certification timestamps | baseline authority owner | BC-3 A3-7 | unchanged |
 | Resolve **S-3** — machine-readable authority key | an authority spanning the three planes | BC-4 A4-5 | unchanged |
 | **Ratify** the 550 declared assignments | competent ratifier | BC-4 A4-6, A4-7 | **Done on paper; authorship gap closed by owner-directed reattribution (§16.2 D-4)** |
@@ -800,8 +800,11 @@ performed." After them and after this re-measurement, it is sharper and only par
   the instruments surfaced three measurement failures (URAT-VAL-14, the UAIE stale registers,
   and the UEC ratchet slack) that the instrumentation caught and were repaired rather than
   attributed, which is what the suite is for.
-- **BC-3** — genuinely moved, 2/7 → 4/7, by real work: sixteen named axes, a withdrawal recorded in
-  the document that held the verdicts, and honest successor evidence named. Still open.
+- **BC-3** — moved 2/7 → 6/7. Sixteen named axes, a withdrawal recorded in the document that held
+  the verdicts, and each axis re-recorded with the five executable fields or a named absence.
+  Axes 13–14 are recorded as expected-failing probes, because repairing them to pass would destroy
+  the openness they measure. **A3-7 alone remains** — the temporal exemption is *declared*, but it
+  is owned by the baseline authority, who has not confirmed it.
 - **BC-4** — moved 4/7 → 6/7 on the recorded ratification. S-3 and F-20 are untouched.
 - **BC-5** — criteria met at 4/4, held open because the constitutional/amendment authority that
   decides D-1/D-2 was never located. The separate identity defect that compounded it — approvals
