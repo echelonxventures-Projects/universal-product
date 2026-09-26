@@ -6,9 +6,15 @@ const $$ = s => Array.from(document.querySelectorAll(s));
 function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
 function __csrf() { const m = /(?:^|; )azc=([^;]+)/.exec(document.cookie || ""); return m ? m[1] : ""; }
 async function api(path, method = "GET", body) {
+  let url = "/api" + path;
   const opt = { method, headers: { "Content-Type": "application/json", "x-csrf": __csrf() }, credentials: "same-origin" };
-  if (body) opt.body = JSON.stringify(body);
-  const r = await fetch("/api" + path, opt);
+  if (method === "GET" && body) {
+    const params = new URLSearchParams(body);
+    url += "?" + params.toString();
+  } else if (body) {
+    opt.body = JSON.stringify(body);
+  }
+  const r = await fetch(url, opt);
   const data = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(data.error || ("HTTP " + r.status));
   return data;
@@ -21,14 +27,21 @@ function linkify(m) {
 }
 function money(n) { return "$" + (+n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 let toastT;
-function toast(msg) {
+function toast(msg, type = "info") {
+  const container = document.getElementById("toastContainer");
+  if (!container) { const div = document.createElement("div"); div.id = "toastContainer"; document.body.appendChild(div); }
+  const toast = document.createElement("div");
+  toast.className = "toast " + (type === "error" ? "error" : "success");
+  toast.textContent = msg;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
   let t = $("#ptoast");
   if (!t) { t = document.createElement("div"); t.id = "ptoast"; t.className = "p-toast"; document.body.appendChild(t); }
-  t.textContent = msg; t.classList.add("show");
+  t.innerHTML = `<div class="toast $type"><span>✅</span> </div>`; t.classList.add("show");
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3200);
 }
 const NAV = [["dash", "◈ Command"], ["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["geo", "🌍 Geo · Countries · Taxes"], ["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"],
-["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["offers", "Ω∞ GOIP · Value Exchange"], ["runtime", "🧩 Runtime · Infra"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"]];
+["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"], ["gproducts", "🌐 Global Products"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["ucii", "🌀 UCII Ω∞ Registry"], ["ucos", "♾️ UCOS Ω∞ Constitution"], ["studio", "🛠️ Data Studio"], ["definitions", "📐 Entities"], ["offers", "Ω∞ GOIP · Value Exchange"], ["runtime", "🧩 Runtime · Infra"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"], ["identity", "🔐 Identity"], ["identity-templates", "📋 Identity Templates"], ["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]];
 let view = "dash";
 const P = { user: null, tenants: [], plans: [] };
 
@@ -116,6 +129,7 @@ async function vInvoices() {
 }
 async function vProviders() {
   const { custom, availability } = await api("/platform/custom-providers");
+  const { providerKinds } = await api("/meta");
   const [pay, ship, not] = await Promise.all([api("/meta/entity/provider_def"), api("/meta/entity/country")]);
   const byCountry = {};
   availability.forEach(a => { (byCountry[a.provider_id] = byCountry[a.provider_id] || []).push(a.country_code); });
@@ -136,15 +150,188 @@ async function vProviders() {
   <div class="p-panel"><h2>Custom providers (${custom.length})</h2>
     <table class="p-table"><thead><tr><th>Kind</th><th>ID</th><th>Name</th><th></th></tr></thead>
     <tbody>${custom.map(c => { const m = JSON.parse(c.manifest); return `<tr><td>${esc(c.kind)}</td><td>${esc(m.id)}</td><td>${esc(m.name)}</td><td><button class="p-btn sm danger" data-delprov="${c.id}">✕</button></td></tr>`; }).join("") || '<tr><td colspan="4" class="p-empty">None</td></tr>'}</tbody></table>
-    <h2 style="margin-top:18px">Register a new provider (no code)</h2>
-    <div class="p-form"><div class="row"><label><span>Kind</span><select id="cpKind"><option>payment</option><option>shipping</option><option>notification</option><option>tax</option></select></label>
-    <label><span>Manifest (JSON)</span><textarea id="cpManifest" rows="6">{
-  "id": "mybank", "name": "MyBank", "emoji": "🏦",
-  "countries": ["IN"], "methods": ["upi", "netbanking"],
-  "feePct": 1.5, "feeFixed": 0,
-  "fields": [{"key":"apiKey","label":"API key","secret":true}]
-}</textarea></label></div>
-    <button class="p-btn primary" id="cpSave">Register provider</button></div></div>`;
+    <h2 style="margin-top:18px">Register a new provider</h2>
+    <p class="p-tag">Fill in the form below to register a provider. ID is auto-generated.</p>
+    <div class="p-form">
+      <div class="row"><label><span>Kind</span><select id="cpKind">${(providerKinds || []).map(k => `<option>${esc(k)}</option>`).join("")}</select></label>
+      <label><span>ID (auto)</span><input id="cpId" placeholder="Auto-generated UUID" readonly style="background:var(--p-bg)"></label>
+      <label><span>Name (required)</span><input id="cpName" placeholder="e.g. My Payment Gateway"></label>
+      <label><span>Emoji</span><input id="cpEmoji" placeholder="🔌" value="🔌"></label></div>
+      <div class="row"><label><span>Description</span><input id="cpDesc" placeholder="Short description of what this provider does"></label></div>
+      <div class="row"><label><span>Countries</span><input id="cpCountries" placeholder="* for all, or comma-separated codes (e.g. US,IN,CN)"></label>
+      <label><span>Fee %</span><input id="cpFeePct" type="number" step="0.1" value="0"></label>
+      <label><span>Fee (fixed)</span><input id="cpFeeFixed" type="number" step="0.01" value="0"></label></div>
+      <div class="row"><label><span>Methods</span><input id="cpMethods" placeholder="Comma-separated (e.g. card,upi,netbanking)"></label>
+      <button class="p-btn sm" id="cpAddField">+ Add credential field</button></div>
+      <div id="cpFieldsContainer"></div>
+      <button class="p-btn primary" id="cpSave">Register provider</button>
+      <div id="cpError" class="p-tag" style="display:none;background:var(--p-red);color:#fff"></div>
+    </div></div>`;
+}
+ async function vUCII() {
+  const [caps, domains, policies, workflows, configs, entityTypes] = await Promise.all([
+    api("/ucii/capabilities"),
+    api("/ucii/domains"),
+    api("/ucii/policies"),
+    api("/ucii/workflows"),
+    api("/ucii/config", "GET", { scope: "platform" }),
+    api("/meta/entity-def")
+  ]);
+  
+  const configCategories = {
+    'identity': ['sso', 'mfa', 'auth'],
+    'commerce': ['product', 'cart', 'order', 'payment'],
+    'integrations': ['payments', 'shipping', 'tax']
+  };
+  
+  const configByCategory = Object.fromEntries(
+    Object.entries(configCategories).map(([cat, keys]) => [
+      cat, 
+      configs.config ? Object.keys(configs.config).filter(k => keys.some(key => k.includes(key))) : []
+    ])
+  );
+  
+  return `
+  <div class="p-panel"><h2>UCII Ω∞ Registry</h2>
+    <p class="p-tag">Zero duplicates, zero overlapping, zero gaps through registry-first design.</p>
+    
+    <div style="margin-top:14px">
+      <h3>🧩 Capabilities</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:8px 0">
+        ${caps.capabilities.map(c => `
+          <div class="p-card" style="padding:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <b>${esc(c.name)}</b>
+                <div class="p-tag" style="font-size:12px">${esc(c.category || 'uncategorized')}</div>
+              </div>
+              <span class="badge ${esc(c.status)}">${esc(c.status)}</span>
+            </div>
+          </div>
+        `).join('') || '<p class="p-tag">No capabilities defined.</p>'}
+      </div>
+      <button class="p-btn sm" data-action="newCap">+ New Capability</button>
+    </div>
+    
+    <div style="margin-top:14px">
+      <h3>🌐 Domains</h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0">
+        ${domains.domains.map(d => `
+          <div class="p-tag" style="padding:8px 12px"><b>${esc(d.name)}</b></div>
+        `).join('') || '<p class="p-tag">No domains defined.</p>'}
+      </div>
+      <button class="p-btn sm" data-action="newDomain">+ New Domain</button>
+    </div>
+    
+    <div style="margin-top:14px">
+      <h3>📜 Configuration</h3>
+      ${Object.entries(configByCategory).map(([cat, items]) => `
+        <div style="margin:10px 0">
+          <h4 style="margin:0 0 5px">${esc(cat)}</h4>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            ${items.map(k => `<div class="p-tag" style="font-size:12px">${esc(k)}</div>`).join('') || '<span class="p-tag">No config</span>'}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    
+    <div style="margin-top:14px">
+      <h3>📋 Entity Schemas</h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0">
+        ${(entityTypes.rows || []).map(e => `
+          <div class="p-tag" style="padding:8px 12px">
+            <b>${esc(e.key)}</b>
+            <div class="p-tag" style="font-size:12px">${e.isBuiltIn ? 'Built-in' : 'Custom'}</div>
+          </div>
+        `).join('') || '<p class="p-tag">No entity schemas.</p>'}
+      </div>
+    </div>
+    
+    <div style="margin-top:14px">
+      <h3>⚙️ Workflows & Policies</h3>
+      <div style="display:flex;gap:20px;margin:8px 0">
+        <div>
+          <div class="p-tag"><b>${workflows.workflows.length}</b> workflows</div>
+          <button class="p-btn sm" data-action="newWorkflow">+ New</button>
+        </div>
+        <div>
+          <div class="p-tag"><b>${policies.policies.length}</b> policies</div>
+          <button class="p-btn sm" data-action="newPolicy">+ New</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+ async function vStudio() {
+  const tenants = await api("/platform/tenants");
+  const { rows: entityDefs } = await api("/meta/entity-def");
+  const entities = entityDefs.map(e => ({ ...e, ...JSON.parse(e.def || "{}") }));
+  return `
+  <div class="p-panel"><h2>Platform Data Studio</h2>
+    <p class="p-tag">Browse all entity data across all stores.</p>
+    <div style="margin:14px 0">
+      <label><span>Store</span><select id="studioTenant">${tenants.tenants.map(t => `<option value="${t.id}">${esc(t.name)} (${esc(t.slug)})</option>`).join("")}</select></label>
+      <label><span>Entity</span><select id="studioEntity">${entities.map(e => `<option value="${esc(e.key)}">${esc(e.label)}</option>`).join("")}</select></label>
+      <button class="p-btn primary" id="studioLoad">Load</button>
+    </div>
+    <div id="studioBody"></div>
+  </div>`;
+}
+ async function vDefinitions() {
+  const data = await api("/meta/entity-def");
+  const rows = data.rows || [];
+  const defs = rows.map(e => ({ 
+    ...e, 
+    ...JSON.parse(e.def || "{}"),
+    isBuiltIn: e.isBuiltIn
+  }));
+  const tenants = await api("/platform/tenants");
+  return `
+  <div class="p-panel"><h2>Global Entity Definitions</h2>
+    <p class="p-tag">Built-in entities (read-only) + custom entities you define. Stores only use what Platform enables.</p>
+    <div style="display:flex;gap:10px;margin-bottom:14px">
+      <button class="p-btn primary" id="newDef">+ Define Custom Entity</button>
+    </div>
+    <div class="p-scroll-x">
+      <table class="p-table">
+         <thead><tr><th>Key</th><th>Label</th><th>Icon</th><th>Enabled For</th><th></th></tr></thead>
+         <tbody>${defs.map(e => {
+           const enabledTenants = (tenants.tenants || []).filter(t => t.custom_entities && t.custom_entities.includes(e.key));
+           if (e.isBuiltIn) {
+             return `<tr><td><b>${esc(e.key)}</b><span class="p-tag" style="margin-left:8px">Built-in</span></td><td>${esc(e.label)}</td><td>${esc(e.icon)}</td><td><span class="p-tag">N/A</span></td><td><span class="p-tag">Read-only</span></td></tr>`;
+           }
+           const allTenants = (tenants.tenants || []).map(t => ({
+             ...t,
+             enabled: enabledTenants.some(et => et.id === t.id)
+           }));
+           const toggleBtns = allTenants.map(t => 
+             `<button class="p-btn sm ${t.enabled ? 'primary' : ''}" data-toggle-entity="${e.key}" data-tenant="${t.id}">${t.enabled ? '✕' : '+'}</button>`
+           ).join(" ");
+           return `<tr><td><b>${esc(e.key)}</b></td><td>${esc(e.label)}</td><td>${esc(e.icon)}</td><td>${enabledTenants.length > 0 ? enabledTenants.map(t => `<span class="badge">${esc(t.slug)}</span>`).join(" ") : '<span class="p-tag">None</span>'}</td><td>${toggleBtns} <button class="p-btn sm" data-edit="${e.key}">Edit</button></td></tr>`;
+         }).join("")}</tbody>
+      </table>
+    </div>
+    <div class="p-modal" id="defModal" style="display:none">
+      <div class="p-modal-box">
+        <h3 id="defTitle">Define Entity</h3>
+        <div class="p-form">
+          <div class="row">
+            <label><span>Key</span><input id="defKey" placeholder="service_contract"></label>
+            <label><span>Label</span><input id="defLabel" placeholder="Service Contracts"></label>
+          </div>
+          <label><span>Icon</span><input id="defIcon" placeholder="🧾"></label>
+          <label><span>Fields (JSON array)</span><textarea id="defFields" rows="5">[
+  {"key":"name","label":"Name","type":"text","required":true},
+  {"key":"value","label":"Value","type":"money"}
+]</textarea></label>
+          <div style="display:flex;gap:10px;margin-top:8px">
+            <button class="p-btn primary" id="saveDef">Save</button>
+            <button class="p-btn" id="cancelDef">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
 }
 async function vGeo() {
   const [cs, tm, pv, cy, fx] = await Promise.all([api("/meta/entity/country"), api("/meta/entity/tax_mode"), api("/meta/entity/provider_availability"), api("/meta/entity/currency"), api("/platform/fx")]);
@@ -192,6 +379,85 @@ async function wireGeoFx() {
   g("fxSync").onclick = async () => { try { const r = await api("/platform/fx/sync", "POST", {}); toast("Synced " + r.applied.length + " rates" + (r.skipped.length ? " (skipped " + r.skipped.join(",") + ")" : "")); render(); } catch (e) { toast(e.message); } };
   const bg = g("fxBulkGo"); if (bg) bg.onclick = async () => { try { const rates = JSON.parse(g("fxBulk").value); const r = await api("/platform/fx/rates", "POST", { rates, note: "platform bulk" }); toast("Applied " + r.applied.length + (r.skipped.length ? ", skipped " + r.skipped.join(",") : "")); render(); } catch (e) { toast(e.message); } };
   g("cxGo").onclick = async () => { try { const r = await api("/fx?amount=" + encodeURIComponent(g("cxAmount").value || 1) + "&from=" + g("cxFrom").value + "&to=" + g("cxTo").value); g("cxOut").textContent = `= ${r.result.toLocaleString()} ${r.to} (rate ${r.rate})`; } catch (e) { g("cxOut").textContent = e.message; } };
+}
+/* ============ GLOBAL PRODUCTS: platform-level master catalog tenants subscribe to ============ */
+let gpFilter = "";
+async function vGproducts() {
+  const { products } = await api("/platform/global-products" + (gpFilter ? ("?category=" + encodeURIComponent(gpFilter)) : ""));
+  const cats = [...new Set(products.map(p => p.category).filter(Boolean))];
+  return `
+  <div class="p-panel"><div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap">
+    <h2 style="margin:0">Global Products (${products.length})</h2>
+    <select id="gpCat" style="padding:6px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg)">
+      <option value="">All categories</option>${cats.map(c => `<option value="${esc(c)}" ${c === gpFilter ? "selected" : ""}>${esc(c)}</option>`).join("")}
+    </select>
+    <span style="flex:1"></span>
+    <button class="p-btn primary sm" id="gpNew">+ New global product</button></div>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Platform-level master products. Stores subscribe to these via <b>Store Product Config</b> (permissions per store), so one catalog feeds every tenant.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>SKU</th><th>Name</th><th>Category</th><th class="num">Price</th><th>Tax class</th><th>Type</th><th>Status</th><th></th></tr></thead>
+    <tbody>${products.map(p => `<tr><td><b>${esc(p.sku)}</b></td><td>${esc(p.name)}</td><td class="p-tag">${esc(p.category || "—")}</td>
+      <td class="num">${money(p.price)}</td><td>${esc(p.tax_class)}</td><td>${p.is_service ? "Service" : "Physical"}</td>
+      <td><span class="badge ${esc(p.status)}">${esc(p.status)}</span></td>
+      <td style="white-space:nowrap"><button class="p-btn sm" data-gpedit="${p.id}">Edit</button>
+        <button class="p-btn sm danger" data-gpdel="${p.id}">✕</button></td></tr>`).join("") || '<tr><td colspan="8" class="p-empty">No global products yet</td></tr>'}</tbody></table></div></div>`;
+}
+function wireGproducts() {
+  const cat = document.getElementById("gpCat");
+  if (cat) cat.onchange = () => { gpFilter = cat.value; render(); };
+  document.getElementById("gpNew").onclick = () => gpModal(null);
+  $$("[data-gpedit]").forEach(b => b.onclick = () => {
+    api("/platform/global-products").then(({ products }) => {
+      const p = products.find(x => String(x.id) === b.dataset.gpedit);
+      if (p) gpModal(p);
+    }).catch(e => toast(e.message));
+  });
+  $$("[data-gpdel]").forEach(b => b.onclick = async () => {
+    if (!confirm("Delete this global product?")) return;
+    try { await api("/platform/global-products/" + b.dataset.gpdel, "DELETE", {}); toast("Deleted"); render(); }
+    catch (e) { toast(e.message); }
+  });
+}
+function gpModal(p) {
+  const isEdit = !!p;
+  const attrs = isEdit ? JSON.stringify(p.attributes || {}, null, 0) : "{}";
+  const media = isEdit ? JSON.stringify(p.media || [], null, 0) : "[]";
+  const m = modal(`
+    <h3 style="margin:0 0 14px">${isEdit ? "Edit" : "New"} global product</h3>
+    <div class="p-form" style="display:grid;gap:10px">
+      <label><span>SKU *</span><input id="gpSku" value="${esc(p ? p.sku : "")}" placeholder="e.g. GPU-001"></label>
+      <label><span>Name *</span><input id="gpName" value="${esc(p ? p.name : "")}"></label>
+      <label><span>Description</span><textarea id="gpDesc" rows="2">${esc(p ? p.description : "")}</textarea></label>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <label><span>Category</span><input id="gpCatIn" value="${esc(p ? p.category : "")}"></label>
+        <label><span>Price</span><input id="gpPrice" type="number" step="0.01" min="0" value="${p ? p.price : 0}"></label>
+        <label><span>Tax class</span><select id="gpTax">${["standard", "reduced", "zero", "exempt"].map(t => `<option value="${t}" ${p && p.tax_class === t ? "selected" : ""}>${t}</option>`).join("")}</select></label>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="gpService" ${p && p.is_service ? "checked" : ""}> Is a service (not a physical good)</label>
+      <label><span>Status</span><select id="gpStatus">${["draft", "active", "retired"].map(s => `<option value="${s}" ${p && p.status === s ? "selected" : ""}>${s}</option>`).join("")}</select></label>
+      <label><span>Attributes (JSON)</span><textarea id="gpAttrs" rows="3" class="p-code">${esc(attrs)}</textarea></label>
+      <label><span>Media (JSON array)</span><textarea id="gpMedia" rows="2" class="p-code">${esc(media)}</textarea></label>
+      <div class="p-err hidden" id="gpErr" style="color:var(--p-red);font-size:13px"></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button class="p-btn" id="gpCancel">Cancel</button>
+        <button class="p-btn primary" id="gpSave">${isEdit ? "Save changes" : "Create product"}</button></div>
+    </div>`);
+  m.querySelector("#gpCancel").onclick = () => { m.innerHTML = ""; };
+  m.querySelector("#gpSave").onclick = async () => {
+    const err = m.querySelector("#gpErr");
+    const val = id => m.querySelector(id).value;
+    let parsedAttrs, parsedMedia;
+    try { parsedAttrs = JSON.parse(val("#gpAttrs") || "{}"); } catch (e) { err.textContent = "Attributes must be valid JSON"; err.classList.remove("hidden"); return; }
+    try { parsedMedia = JSON.parse(val("#gpMedia") || "[]"); } catch (e) { err.textContent = "Media must be a valid JSON array"; err.classList.remove("hidden"); return; }
+    if (!val("#gpSku").trim() || !val("#gpName").trim()) { err.textContent = "SKU and name are required"; err.classList.remove("hidden"); return; }
+    const body = { sku: val("#gpSku").trim(), name: val("#gpName").trim(), description: val("#gpDesc"), category: val("#gpCatIn").trim(),
+      price: Number(val("#gpPrice")) || 0, tax_class: val("#gpTax"), is_service: m.querySelector("#gpService").checked,
+      attributes: parsedAttrs, media: parsedMedia, status: val("#gpStatus") };
+    try {
+      if (isEdit) await api("/platform/global-products/" + p.id, "PUT", body);
+      else await api("/platform/global-products", "POST", body);
+      toast(isEdit ? "Product updated" : "Product created"); m.innerHTML = ""; render();
+    } catch (e) { err.textContent = e.message; err.classList.remove("hidden"); }
+  };
 }
 /* ============ MODULE MARKETPLACE: every capability is a purchasable product ============ */
 async function vModules() {
@@ -333,8 +599,101 @@ document.addEventListener("click", async e => {
         mm.innerHTML = ""; toast("Subscription updated"); render();
       };
     }
+    const cpFields = [];
+    function renderCpFields() {
+      const container = $("#cpFieldsContainer");
+      if (!container) return;
+      container.innerHTML = cpFields.map((f, i) => `
+        <div style="display:flex;gap:8px;align-items:flex-end;margin-top:8px">
+          <input placeholder="Key" value="${esc(f.key)}" style="flex:1" data-cpfkey="${i}">
+          <input placeholder="Label" value="${esc(f.label)}" style="flex:1" data-cpflabel="${i}">
+          <label style="font-size:12px"><input type="checkbox" ${f.secret ? "checked" : ""} data-cpfsecret="${i}"> Secret</label>
+          <button class="p-btn sm danger" data-cpfdel="${i}">✕</button>
+        </div>`).join("");
+      $$("[data-cpfdel]").forEach(b => b.onclick = () => { cpFields.splice(Number(b.dataset.cpfdel), 1); renderCpFields(); });
+      $$("[data-cpfkey]").forEach(inp => inp.oninput = () => { cpFields[inp.dataset.cpfkey].key = inp.value; });
+      $$("[data-cpflabel]").forEach(inp => inp.oninput = () => { cpFields[inp.dataset.cpflabel].label = inp.value; });
+      $$("[data-cpfsecret]").forEach(inp => inp.onchange = () => { cpFields[inp.dataset.cpfsecret].secret = inp.checked; });
+    }
+    // UUID generator
+    const uuid = () => crypto.randomUUID ? crypto.randomUUID() : ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16));
+    // Generate UUID for ID field
+    if ($("#cpId")) $("#cpId").value = uuid();
+    // Initialize with default field
+    cpFields.push({key:"apiKey",label:"API Key",secret:true});
+    renderCpFields();
+    if ($("#cpAddField")) $("#cpAddField").onclick = () => { cpFields.push({key:"",label:"",secret:false}); renderCpFields(); };
+    // Validate UUID
+    const validateUUID = (id) => {
+      if (!id) return { valid: false, error: "ID is required" };
+      if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id))
+        return { valid: false, error: "ID must be a valid UUID format" };
+      return { valid: true };
+    };
+    // Validate provider name
+    const validateName = (name) => {
+      if (!name) return { valid: false, error: "Name is required" };
+      if (name.length < 3 || name.length > 100)
+        return { valid: false, error: "Name must be 3-100 characters" };
+      return { valid: true };
+    };
+    // Validate methods
+    const validateMethods = (methods) => {
+      if (!methods || methods.length === 0)
+        return { valid: false, error: "At least one method is required" };
+      for (let i = 0; i < methods.length; i++) {
+        if (!/^[a-z0-9_]+$/.test(methods[i]))
+          return { valid: false, error: `Method ${i+1} must be lowercase alphanumeric with underscores` };
+        if (methods[i].length < 2 || methods[i].length > 50)
+          return { valid: false, error: `Method ${i+1} must be 2-50 characters` };
+      }
+      return { valid: true };
+    };
+    // Validate credential fields
+    const validateFields = (fields) => {
+      if (fields.length === 0) return { valid: false, error: "At least one credential field is required" };
+      const seenKeys = new Set();
+      for (let i = 0; i < fields.length; i++) {
+        const f = fields[i];
+        if (!f.key) return { valid: false, error: `Field ${i+1} is missing key` };
+        if (!f.label) return { valid: false, error: `Field ${i+1} is missing label` };
+        if (!/^[a-zA-Z][a-zA-Z0-9]*$/.test(f.key))
+          return { valid: false, error: `Field ${i+1} key must start with letter, alphanumeric only` };
+        if (seenKeys.has(f.key))
+          return { valid: false, error: `Duplicate field key: ${f.key}` };
+        seenKeys.add(f.key);
+      }
+      return { valid: true };
+    };
     if (e.target.id === "cpSave") {
-      await api("/platform/custom-providers", "POST", { kind: $("#cpKind").value, manifest: JSON.parse($("#cpManifest").value) });
+      const kind = $("#cpKind").value;
+      const id = $("#cpId").value.trim();
+      const name = $("#cpName").value.trim();
+      const emoji = $("#cpEmoji").value.trim() || "🔌";
+      const desc = $("#cpDesc").value.trim();
+      const countries = $("#cpCountries").value.trim() || "*";
+      const feePct = parseFloat($("#cpFeePct").value) || 0;
+      const feeFixed = parseFloat($("#cpFeeFixed").value) || 0;
+      const methods = $("#cpMethods").value.split(",").map(s => s.trim()).filter(Boolean);
+      const error = $("#cpError");
+      // Validate
+      const idVal = validateUUID(id);
+      if (!idVal.valid) { error.textContent = idVal.error; error.style.display = "block"; return; }
+      const nameVal = validateName(name);
+      if (!nameVal.valid) { error.textContent = nameVal.error; error.style.display = "block"; return; }
+      const methodsVal = validateMethods(methods);
+      if (!methodsVal.valid) { error.textContent = methodsVal.error; error.style.display = "block"; return; }
+      const fieldsVal = validateFields(cpFields.filter(f => f.key));
+      if (!fieldsVal.valid) { error.textContent = fieldsVal.error; error.style.display = "block"; return; }
+      error.style.display = "none";
+      const manifest = {
+        id, name, emoji, desc,
+        countries: countries.split(",").map(s => s.trim()).filter(Boolean),
+        methods,
+        fields: cpFields.filter(f => f.key).map(f => ({key:f.key,label:f.label,secret:f.secret})),
+        feePct, feeFixed
+      };
+      await api("/platform/custom-providers", "POST", { kind, manifest });
       toast("Provider registered platform-wide"); render();
     }
     const pe = e.target.closest("[data-pedit]"), pa = e.target.closest("[data-pavail]");
@@ -810,6 +1169,326 @@ function wireGlobalOffers() {
     catch (e) { out.textContent = "⚠️ " + e.message; }
   };
 }
+function wireDefinitions() {
+  const $id = i => document.getElementById(i);
+  const modal = $id("defModal");
+  $id("newDef").onclick = () => { $id("defTitle").textContent = "Define Entity"; $id("defKey").value = ""; $id("defLabel").value = ""; $id("defIcon").value = ""; $id("defFields").value = ""; modal.style.display = "block"; };
+  $id("cancelDef").onclick = () => { modal.style.display = "none"; };
+  $id("saveDef").onclick = async () => {
+    const key = $id("defKey").value.trim();
+    const label = $id("defLabel").value.trim();
+    const icon = $id("defIcon").value.trim() || "🧬";
+    const fields = JSON.parse($id("defFields").value || "[]");
+    if (!key || !label || !Array.isArray(fields)) { alert("Key, label and fields required"); return; }
+    try {
+      await api("/meta/entity-def", "POST", { key, label, icon, fields });
+      toast("Entity definition saved"); modal.style.display = "none"; render();
+    } catch (e) { toast(e.message); }
+  };
+ $$("[data-edit]").forEach(b => b.onclick = async () => {
+    const key = b.dataset.edit;
+    const row = await api("/meta/entity-def");
+    const def = row.rows.find(r => r.key === key);
+    if (!def) return;
+    $id("defTitle").textContent = "Edit Entity";
+    $id("defKey").value = def.key;
+    $id("defLabel").value = JSON.parse(def.def || "{}").label;
+    $id("defIcon").value = JSON.parse(def.def || "{}").icon || "";
+    $id("defFields").value = JSON.stringify(JSON.parse(def.def || "{}").fields || [], null, 2);
+    modal.style.display = "block";
+  });
+  $$("[data-toggle-entity]").forEach(b => b.onclick = async () => {
+    const key = b.dataset.toggleEntity;
+    const tenantId = b.dataset.tenant;
+    const enabled = b.textContent === '✕';
+    try {
+      if (enabled) {
+        await api(`/meta/entity-def/${key}/disable?tenant_id=${tenantId}`, "POST");
+      } else {
+        await api(`/meta/entity-def/${key}/enable?tenant_id=${tenantId}`, "POST");
+      }
+      toast(enabled ? "Entity disabled for store" : "Entity enabled for store");
+      render();
+    } catch (e) { toast(e.message); }
+  });
+ }
+function wireStudio() {
+  const $ = s => document.getElementById(s);
+  if ($("#studioLoad")) $("#studioLoad").onclick = async () => {
+    const tenantId = $("#studioTenant").value;
+    const entity = $("#studioEntity").value;
+    try {
+      const { rows } = await api(`/meta/entity/${entity}?tenant_id=${tenantId}`);
+      const def = (await api("/meta/entity-def")).rows.find(r => r.key === entity);
+      const schema = JSON.parse(def.def || "{}");
+      const fields = schema.fields || [];
+      const tbody = rows.map(r => {
+        const cells = fields.filter(f => f.list).map(f => `<td>${esc(r[f.key] || "")}</td>`).join("");
+        return `<tr>${cells}<td><button class="p-btn sm" data-view="${r.id}">View</button></td></tr>`;
+      }).join("") || '<tr><td colspan="5" class="p-empty">No data</td></tr>';
+      $("#studioBody").innerHTML = `<div class="p-panel"><h3>${esc(schema.label || entity)} Data</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>${fields.filter(f => f.list).map(f => `<th>${esc(f.label)}</th>`).join("")}<th>Actions</th></tr></thead><tbody>${tbody}</tbody></table></div></div>`;
+    } catch (e) { toast(e.message); }
+  };
+}
+function wireUCII() {
+  const $ = s => document.querySelector(s);
+  $$("[data-action]").forEach(b => b.onclick = async () => {
+    const action = b.dataset.action;
+    try {
+      if (action === "newCap") {
+        const key = prompt("Capability key (e.g., offer_engine):");
+        if (!key) return;
+        const name = prompt("Name:", key);
+        await api("/ucii/capabilities", "POST", { key, name, category: "custom", status: "active" });
+        toast("Capability created"); render();
+      } else if (action === "newDomain") {
+        const key = prompt("Domain key (e.g., commerce):");
+        if (!key) return;
+        await api("/ucii/domains", "POST", { key, status: "active" });
+        toast("Domain created"); render();
+      } else if (action === "newPolicy") {
+        const key = prompt("Policy key (e.g., max_discount_limit):");
+        if (!key) return;
+        const domain = prompt("Domain:", "commerce");
+        await api("/ucii/policies", "POST", { key, domain, rule: "{}", status: "active" });
+        toast("Policy created"); render();
+      } else if (action === "newWorkflow") {
+        const key = prompt("Workflow key (e.g., order_fulfillment):");
+        if (!key) return;
+        const domain = prompt("Domain:", "commerce");
+        await api("/ucii/workflows", "POST", { key, domain, trigger: "event", steps: "[]", status: "active" });
+        toast("Workflow created"); render();
+      } else if (action === "newSchema") {
+        const key = prompt("Entity schema key (e.g., customer_extension):");
+        if (!key) return;
+        const label = prompt("Label:", key);
+        await api("/meta/entity-def", "POST", { key, label, icon: "📋", fields: [] });
+        toast("Schema created"); render();
+      }
+    } catch (e) { toast(e.message); }
+  });
+  
+  // Click on capability to configure
+  $$("[data-cap]").forEach(b => b.onclick = async () => {
+    const capKey = b.dataset.cap;
+    try {
+      const [cap, config] = await Promise.all([
+        api("/ucii/capabilities"),
+        api("/ucii/config", "GET", { key: capKey, scope: "platform" })
+      ]);
+      const capability = cap.capabilities.find(c => c.key === capKey);
+      if (!capability) { toast("Capability not found"); return; }
+      
+      const configData = config.config || {};
+      const configStr = JSON.stringify(configData, null, 2);
+      
+      const configBody = `
+        <div class="p-panel"><h3>Configure ${esc(capability.name)}</h3>
+          <textarea id="capConfig" rows="12" style="width:100%;font-family:monospace">${esc(configStr)}</textarea>
+          <div style="margin-top:10px">
+            <button class="p-btn primary" id="saveCapConfig">Save Configuration</button>
+            <button class="p-btn" id="cancelCapConfig">Cancel</button>
+          </div>
+        </div>`;
+      
+      const modal = document.createElement("div");
+      modal.className = "p-modal";
+      modal.id = "capConfigModal";
+      modal.innerHTML = configBody;
+      document.body.appendChild(modal);
+      modal.style.display = "block";
+      
+      document.getElementById("saveCapConfig").onclick = async () => {
+        try {
+          const newConfig = JSON.parse(document.getElementById("capConfig").value);
+          await api("/ucii/config", "POST", { key: capKey, value: newConfig, scope: "platform" });
+          toast("Configuration saved");
+          modal.remove();
+          render();
+        } catch (e) {
+          alert("Invalid JSON: " + e.message);
+        }
+      };
+      
+      document.getElementById("cancelCapConfig").onclick = () => { modal.remove(); };
+    } catch (e) { toast(e.message); }
+  });
+}
+/* UCOS Ω∞ Constitution — the two Architecture documents parsed into a canonical registry.
+   The console only ever READS the seeded tables; the documents remain the single truth. */
+async function vUCOS() {
+  const [man, docs, h] = await Promise.all([api("/ucos/manifest"), api("/ucos/docs"), api("/ucos/health").catch(() => null)]);
+  const stat = k => k.toLocaleString();
+  const hc = h || {};
+  const badge = hc.ok
+    ? '<span class="badge published">healthy</span>'
+    : '<span class="badge failed">' + esc(hc.status || "unknown") + '</span>';
+  const probs = (hc.problems || []).map(p2 => '<div class="p-tag" style="margin:3px 0">' + esc(p2.severity || "warn") + " · " + esc(p2.code) + " — " + esc(p2.detail || "") + '</div>').join("");
+  return `
+  <div class="p-panel"><h2>♾️ UCOS Ω∞ · Constitutional Registry</h2>
+    <p class="p-tag">Knowledge-Once · Configuration-Over-Code · Registry-First — the Architecture documents are parsed, never transcribed. Every row points back to its source line.</p>
+    <div style="display:flex;align-items:center;gap:8px;margin:10px 0;flex-wrap:wrap">
+      ${badge}
+      <span class="p-tag">sections ${stat((hc.counts || {}).sections || 0)} · articles ${stat((hc.counts || {}).articles || 0)} · concepts ${stat((hc.counts || {}).concepts || 0)} · edges ${stat((hc.counts || {}).edges || 0)}</span>
+      <button class="p-btn sm" id="ucosHealthBtn">↻ Health</button>
+      <button class="p-btn sm" id="ucosDriftBtn">Drift check</button>
+    </div>
+    ${probs ? '<div class="p-card" style="padding:10px;margin-bottom:10px">' + probs + '</div>' : ""}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin-top:14px">
+      ${(docs.documents || []).map(d => `
+        <div class="p-card" style="padding:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><b>${esc(d.code)} Ω∞</b><div class="p-tag" style="font-size:12px">${esc(d.kind)}</div></div>
+            <span class="badge active">${stat(d.sections + d.articles)} containers</span>
+          </div>
+          <div style="font-size:13px;margin:8px 0;color:var(--p-fg)">${esc(d.name)}</div>
+          <div class="p-tag">📄 ${esc(d.file)} · ${stat(d.lines)} lines</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+            <span class="p-tag">Parts ${stat(d.parts)}</span>
+            <span class="p-tag">Sections ${stat(d.sections)}</span>
+            <span class="p-tag">Articles ${stat(d.articles)}</span>
+            <span class="p-tag">Concepts ${stat(d.concepts)}</span>
+            <span class="p-tag">Registries ${stat(d.registries)}</span>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+            <button class="p-btn sm" data-browse="${esc(d.doc_id)}" data-kind="sections">Sections</button>
+            <button class="p-btn sm" data-browse="${esc(d.doc_id)}" data-kind="articles">Articles</button>
+            <button class="p-btn sm" data-browse="${esc(d.doc_id)}" data-kind="concepts">Concepts</button>
+            <button class="p-btn sm" data-browse="${esc(d.doc_id)}" data-kind="registries">Registries</button>
+          </div>
+        </div>`).join("")}
+    </div>
+    <div style="margin-top:16px">
+      <h3>🔎 Search the constitution</h3>
+        <div style="display:flex;gap:8px">
+          <input id="ucosQ" placeholder="e.g. quantum, entitlement, quantity…" class="p-form" style="flex:1;padding:10px 12px;border-radius:10px;border:1px solid var(--p-line);background:var(--p-bg);color:var(--p-text);font-size:13.5px">
+          <button class="p-btn primary" id="ucosGo">Search</button>
+        </div>
+      <div id="ucosResults" style="margin-top:10px"></div>
+      <div id="ucosPager" style="margin-top:6px;display:flex;gap:8px;align-items:center"></div>
+    </div>
+    <div style="margin-top:16px">
+      <button class="p-btn" data-action="ucosReparse">↻ Re-parse documents (idempotent)</button>
+      <span class="p-tag" style="margin-left:8px">Re-reads the source files; duplicates are prevented by unique keys</span>
+    </div>
+  </div>`;
+}
+function wireUCOS() {
+  const stat2 = n => Number(n || 0).toLocaleString();
+  /* registry list items render as chips, not a raw JSON blob */
+  const renderItems = items => (Array.isArray(items) ? items : [])
+    .map(i => '<span class="p-tag" style="margin:2px">' + esc(typeof i === "string" ? i : (i && i.name) || JSON.stringify(i)) + '</span>').join(" ");
+  /* a page of rows: sections/articles/concepts/registries share this renderer */
+  const renderResults = (rows, kind) => {
+    const el = document.getElementById("ucosResults");
+    if (!el) return;
+    if (!rows.length) { el.innerHTML = '<p class="p-tag">No matches.</p>'; return; }
+    el.innerHTML = rows.map(r => {
+      if (kind === "registries") return '<div class="p-card" style="padding:10px;margin:6px 0;font-size:13px">' +
+        '<b>' + esc(r.name) + '</b> <span class="p-tag">' + esc(r.container_name || "") + ' · line ' + stat2(r.line) + '</span>' +
+        '<div style="margin-top:5px">' + renderItems(r.items) + '</div></div>';
+      return '<div class="p-card" style="padding:10px;margin:6px 0;font-size:13px">' +
+        '<b>' + esc(r.name) + '</b> <span class="p-tag">' + esc(kind) + ' · line ' + stat2(r.line) + '</span>' +
+        (r.container ? '<div class="p-tag">in ' + esc(r.container) + '</div>' : "") +
+        '<button class="p-btn sm" style="margin-left:6px" data-graph="' + esc(r.doc || "") + '" data-gtype="' + esc(kind === "concepts" ? "concept" : "section") + '" data-gid="' + esc(r.qkey || r.key || "") + '" data-gname="' + esc((r.name || "").slice(0, 40)) + '" data-gcontainer="' + esc(r.container || "") + '">⌘ graph</button>' +
+        '</div>';
+    }).join("");
+    wireGraph();
+  };
+  /* paginated browser: keeps a cursor so Next/Prev walk the real total */
+  let cursor = { doc: "", kind: "", offset: 0, limit: 25, part: null, q: null };
+  const renderPager = (total, offset, limit) => {
+    const el = document.getElementById("ucosPager");
+    if (!el) return;
+    const pages = Math.ceil(total / limit) || 1;
+    const cur = Math.floor(offset / limit) + 1;
+    el.innerHTML = '<span class="p-tag">' + stat2(total) + ' rows · page ' + cur + ' / ' + pages + '</span> ' +
+      (offset > 0 ? '<button class="p-btn sm" data-pg="prev">← Prev</button>' : "") +
+      (offset + limit < total ? '<button class="p-btn sm" data-pg="next">Next →</button>' : "");
+    el.querySelectorAll("[data-pg]").forEach(b => b.onclick = () => loadPage(b.dataset.pg === "next" ? cursor.offset + cursor.limit : Math.max(0, cursor.offset - cursor.limit)));
+  };
+  const loadPage = async offset => {
+    const c = cursor;
+    try {
+      const params = { limit: c.limit, offset: offset == null ? c.offset : offset };
+      if (c.part != null) params.part = c.part;
+      if (c.q) params.q = c.q;
+      const r = await api(`/ucos/${c.doc}/${c.kind}`, "GET", params);
+      c.offset = offset == null ? c.offset : offset;
+      const rows = r[c.kind] || [];
+      renderResults(rows.map(x => Object.assign({ doc: c.doc }, x, { name: x.name || x.label || x.qkey, container: x.container_name || x.container || x.title || "" })), c.kind);
+      renderPager(Number(r.total || rows.length), Number(r.offset || 0), Number(r.limit || c.limit));
+    } catch (e) { toast(e.message); }
+  };
+  $$("[data-browse]").forEach(b => b.onclick = () => {
+    cursor = { doc: b.dataset.browse, kind: b.dataset.kind, offset: 0, limit: 25, part: null, q: null };
+    loadPage(0);
+  });
+  const go = async () => {
+    const q = (document.getElementById("ucosQ") || {}).value;
+    if (!q) return;
+    try { const r = await api("/ucos/search", "GET", { q, limit: 30 }); renderResults(r.results || [], "search"); }
+    catch (e) { toast(e.message); }
+  };
+  const btn = document.getElementById("ucosGo");
+  if (btn) btn.onclick = go;
+  const inp = document.getElementById("ucosQ");
+  if (inp) inp.onkeydown = e => { if (e.key === "Enter") go(); };
+  $$("[data-action='ucosReparse']").forEach(b => b.onclick = async () => {
+    try { const r = await api("/ucos/reparse", "POST", {}); toast(`Re-parsed: ${r.stats.sections} sections, ${r.stats.concepts} concepts, ${r.stats.edges} edges`); render(); }
+    catch (e) { toast(e.message); }
+  });
+  const hb = document.getElementById("ucosHealthBtn");
+  if (hb) hb.onclick = () => render();
+  const dbtn = document.getElementById("ucosDriftBtn");
+  if (dbtn) dbtn.onclick = async () => {
+    try { const r = await api("/ucos/drift", "GET", {}); toast(r.drifted ? "⚠ " + r.message : "✓ " + r.message); }
+    catch (e) { toast(e.message); }
+  };
+  /* graph explorer: a node and its immediate neighbourhood as radial SVG */
+  const wireGraph = () => {
+    $$("[data-graph]").forEach(b => b.onclick = async () => {
+      const doc = b.dataset.graph, type = b.dataset.gtype, id = b.dataset.gid;
+      if (!doc || !id) return;
+      try {
+        const r = await api(`/ucos/${doc}/neighbours`, "GET", { type, id, limit: 60 });
+        drawGraph(doc, type, id, b.dataset.gname || id, b.dataset.gcontainer || "", r);
+      } catch (e) { toast(e.message); }
+    });
+  };
+  const drawGraph = (doc, type, id, name, container, r) => {
+    const el = document.getElementById("ucosResults");
+    if (!el) return;
+    const edges = r.edges || [], names = r.names || {};
+    const cx = 220, cy = 180, R = 120;
+    const label = (t, i2) => names[t + "|" + i2] || i2;
+    const pts = edges.map((e, i2) => {
+      const isSrc = e.source_type === type && String(e.source_id) === String(id);
+      const other = isSrc ? { t: e.target_type, id: e.target_id, rel: e.rel } : { t: e.source_type, id: e.source_id, rel: e.rel };
+      const ang = (i2 / Math.max(1, edges.length)) * Math.PI * 2 - Math.PI / 2;
+      return { x: cx + R * Math.cos(ang), y: cy + R * Math.sin(ang), t: other.t, id: other.id, rel: other.rel, name: label(other.t, other.id) };
+    });
+    el.innerHTML = '<div class="p-card" style="padding:12px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center"><b>⌘ Knowledge graph · ' + esc(name) + '</b>' +
+      '<button class="p-btn sm" id="ucosGraphClose">close</button></div>' +
+      '<div class="p-tag">' + esc(type) + ' · ' + esc(container || doc) + ' · ' + edges.length + ' edge(s)</div>' +
+      '<svg viewBox="0 0 440 360" style="width:100%;max-width:560px;margin-top:8px">' +
+      pts.map(p2 => '<line x1="' + cx + '" y1="' + cy + '" x2="' + (+p2.x.toFixed(1)) + '" y2="' + (+p2.y.toFixed(1)) + '" stroke="var(--p-line)" stroke-width="1"/>').join("") +
+      pts.map(p2 => '<g data-node="' + esc(p2.t + "|" + p2.id) + '" style="cursor:pointer"><circle cx="' + (+p2.x.toFixed(1)) + '" cy="' + (+p2.y.toFixed(1)) + '" r="5" fill="' + (p2.t === "concept" ? "#6b8cff" : p2.t === "section" ? "#37b24d" : "#868e96") + '"/><text x="' + (+p2.x.toFixed(1)) + '" y="' + (+p2.y.toFixed(1) - 9) + '" font-size="9" text-anchor="middle" fill="var(--p-text)">' + esc((p2.name || p2.id || "").slice(0, 26)) + '</text></g>').join("") +
+      '<circle cx="' + cx + '" cy="' + cy + '" r="9" fill="var(--p-accent)"/><text x="' + cx + '" y="' + (cy - 14) + '" font-size="10" font-weight="bold" text-anchor="middle" fill="var(--p-text)">' + esc((name || id).slice(0, 30)) + '</text>' +
+      '</svg></div>';
+    const cl = document.getElementById("ucosGraphClose");
+    if (cl) cl.onclick = () => { el.innerHTML = ""; };
+    el.querySelectorAll("[data-node]").forEach(g => g.onclick = () => {
+      const parts = g.dataset.node.split("|");
+      const t = parts[0], nid = parts.slice(1).join("|");
+      if (!t || !nid) return;
+      api(`/ucos/${doc}/neighbours`, "GET", { type: t, id: nid, limit: 60 })
+        .then(rr => drawGraph(doc, t, nid, names[t + "|" + nid] || nid, "", rr))
+        .catch(e2 => toast(e2.message));
+    });
+  };
+}
 async function vRuntime() {
   const d = await api("/platform/runtime"); const [eNv, fL] = await Promise.all([api("/platform/environments"), api("/platform/flags")]);
   const rt = d.runtime, cat = d.catalog, active = d.active;
@@ -924,14 +1603,23 @@ async function render() {
     else if (view === "subs") body.innerHTML = await vSubs();
     else if (view === "invoices") body.innerHTML = await vInvoices();
     else if (view === "billing") { body.innerHTML = await vBillingOps(); wireBillingOps(); }
+    else if (view === "gproducts") { body.innerHTML = await vGproducts(); wireGproducts(); }
     else if (view === "modules") { body.innerHTML = await vModules(); await wireModules(); }
     else if (view === "providers") body.innerHTML = await vProviders();
+    else if (view === "ucii") { body.innerHTML = await vUCII(); wireUCII(); }
+    else if (view === "ucos") { body.innerHTML = await vUCOS(); wireUCOS(); }
+    else if (view === "studio") { body.innerHTML = await vStudio(); wireStudio(); }
     else if (view === "ai") body.innerHTML = await vAI();
     else if (view === "offers") { body.innerHTML = await vGlobalOffers(); wireGlobalOffers(); }
     else if (view === "runtime") { body.innerHTML = await vRuntime(); wireRuntime(); }
+    else if (view === "identity") { body.innerHTML = await viewIdentity(); wireIdentity(); }
+    else if (view === "identity-templates") { body.innerHTML = await viewIdentityTemplates(); wireIdentityTemplates(); }
+    else if (view === "definitions") { body.innerHTML = await vDefinitions(); wireDefinitions(); }
     else if (view === "geo") { body.innerHTML = await vGeo(); await wireGeoFx(); }
     else if (view === "monitor") body.innerHTML = await vMonitor();
     else if (view === "audit") body.innerHTML = await vAudit();
+    else if (view === "manual") window.open("/docs/user-manual.html", "_blank");
+    else if (view === "architecture") window.open("/docs/architecture.html", "_blank");
   } catch (e) { body.innerHTML = `<div class="p-empty">⚠️ ${esc(e.message)}</div>`; }
 }
 document.addEventListener("click", e => { if (e.target.closest("[data-mclose]")) { const mm = document.getElementById("modal"); if (mm) mm.innerHTML = ""; } }); /* __mclose */
@@ -959,3 +1647,591 @@ document.addEventListener("click", e => { if (e.target.closest("[data-mclose]"))
     render();
   } catch (e) { console.error(e); }
 })();
+
+async function vDocs() {
+  return `<div class="p-head">
+    <h2>📄 Architecture & User Manual</h2>
+    <p class="p-sub">Documentation for LUXORA Platform</p>
+  </div>
+  <div class="p-card">
+    <h3>📘 User Manual</h3>
+    <p>Comprehensive guide for all platform roles (Platform Admin, Store Admin, Customers).</p>
+    <p><a href="/docs/user-manual.html" target="_blank">View User Manual</a></p>
+    
+    <h3>🏛️ Architecture Documentation</h3>
+    <p>Technical architecture, data models, and API specifications.</p>
+    <p><a href="/docs/architecture.html" target="_blank">View Architecture</a></p>
+    
+    <h3>📚 Quick Links</h3>
+    <ul>
+      <li><a href="/GOIP-ROADMAP-2.md" target="_blank">GOIP Roadmap</a></li>
+      <li><a href="/README.md" target="_blank">README</a></li>
+      <li><a href="/USER_MANUAL.md" target="_blank">Full Manual (Source)</a></li>
+    </ul>
+  </div>
+  <div class="p-card">
+    <h3>🔗 API Reference</h3>
+    <p>See the platform API endpoints for integration.</p>
+    <ul>
+      <li><code>POST /api/goip/:capability</code> - GOIP value exchange capabilities</li>
+      <li><code>GET /api/platform/security</code> - Security scorecard</li>
+      <li><code>GET /healthz</code> - Health check</li>
+    </ul>
+  </div>`;
+}
+
+function wireDocs() {
+  // Add click handlers if needed for docs page
+}
+
+// Platform Policies
+async function vPolicies() {
+  shell('<div class="p-empty">Loading...</div>');
+  try {
+    const res = await api("/platform/policies");
+    const policiesList = res.policies || [];
+    if (policiesList.length === 0) {
+      $$("#app").innerHTML = `<div class="p-panel"><h2>🔒 Platform Policies</h2>
+        <p class="p-tag">No policies configured. Use Platform Console or API:</p>
+        <pre>curl -X PUT http://localhost:8787/api/platform/policies/seo \\\\
+  -d '{"metaDescription": "Store description"}'</pre>
+      </div>`;
+      return;
+    }
+    let html = `<div class="p-panel"><h2>🔒 Platform Policies</h2>
+      <div class="p-tablewrap"><table class="p-table"><thead>
+        <tr><th>Category</th><th>Config</th><th>Actions</th></tr>
+      </thead><tbody>`;
+    policiesList.forEach(p => {
+      try {
+        const config = JSON.parse(p.value || "{}");
+        html += `<tr>
+          <td><code>${esc(p.key.replace("policy.", ""))}</code></td>
+          <td><pre>${esc(JSON.stringify(config, null, 2))}</pre></td>
+          <td><button class="p-btn sm" onclick="editPolicy('${p.key}')">Edit</button>
+              <button class="p-btn sm danger" onclick="deletePolicy('${p.key}')">✕</button></td>
+        </tr>`;
+      } catch(e) { html += `<tr><td>${esc(p.key)}</td><td>Invalid</td><td>✕</td></tr>`; }
+    });
+    html += `</tbody></table></div>
+      <button class="p-btn primary" onclick="addPolicy()">+ Add Policy</button>
+    </div>`;
+    $$("#app").innerHTML = html;
+  } catch (e) {
+    $$("#app").innerHTML = `<div class="p-panel">Error: ${esc(e.message)}</div>`;
+  }
+}
+
+function addPolicy() {
+  const category = prompt("Policy category (seo, reviews, features):");
+  if (!category) return;
+  const configStr = prompt("JSON configuration:");
+  if (!configStr) return;
+  try {
+    const config = JSON.parse(configStr);
+    api(`/platform/policies/${category}`, "PUT", config).then(() => {
+      toast("Policy saved"); viewPolicies();
+    }).catch(e => toast(e.message));
+  } catch(e) { toast("Invalid JSON"); }
+}
+
+function editPolicy(key) {
+  const current = prompt("Update policy JSON:");
+  if (!current) return;
+  try {
+    api(`/platform/policies/${key}`, "PUT", JSON.parse(current)).then(() => {
+      toast("Policy updated"); viewPolicies();
+    }).catch(e => toast(e.message));
+  } catch(e) { toast("Invalid JSON"); }
+}
+
+function deletePolicy(key) {
+  if (confirm("Delete policy?")) {
+    api(`/platform/policies/${key}`, "DELETE").then(() => {
+      toast("Policy deleted"); viewPolicies();
+    }).catch(e => toast(e.message));
+  }
+}
+
+async function wirePolicies() {
+  // Setup policy UI listeners if needed
+}
+
+async function viewIdentity() {
+  try {
+    const [settingsRes, providersRes, templatesRes] = await Promise.all([
+      api("/admin/identity-settings").catch(() => ({ settings: {} })),
+      api("/admin/identity-providers").catch(() => ({ providers: [] })),
+      api("/platform/identity-templates").catch(() => ({ templates: [] }))
+    ]);
+    const settings = settingsRes.settings || {};
+    const providers = providersRes.providers || [];
+    const templates = templatesRes.templates || [];
+    
+    const password = settings.password || {};
+    const mfa = settings.mfa || {};
+    const session = settings.session || {};
+    const login = settings.login || {};
+    
+    return `<div class="card">
+      <h3>🔐 Identity & Authentication Configuration</h3>
+      <div class="form-group">
+        <label>Password Policy</label>
+        <div class="grid grid-2">
+          <input type="number" id="minLen" value="${password.minLength || 8}" min="6" max="64" placeholder="Min Length">
+          <input type="number" id="expiryDays" value="${password.expiryDays || 0}" min="0" max="365" placeholder="Expiry Days">
+        </div>
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+          <label class="checkbox-group"><input type="checkbox" id="reqUpper" ${password.requireUppercase ? 'checked' : ''}> Require Uppercase</label>
+          <label class="checkbox-group"><input type="checkbox" id="reqNumbers" ${password.requireNumbers ? 'checked' : ''}> Require Numbers</label>
+          <label class="checkbox-group"><input type="checkbox" id="reqSpecial" ${password.requireSpecialChars ? 'checked' : ''}> Require Special Chars</label>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Multi-Factor Authentication</label>
+        <label class="checkbox-group"><input type="checkbox" id="mfaEnabled" ${mfa.enabled ? 'checked' : ''}> Enable MFA</label>
+        <label class="checkbox-group"><input type="checkbox" id="mfaAdmin" ${mfa.requireForAdmin ? 'checked' : ''}> Require for Admins</label>
+      </div>
+      
+      <div class="form-group">
+        <label>Session Settings</label>
+        <div class="grid grid-3">
+          <input type="number" id="sessTimeout" value="${session.timeoutMinutes || 120}" min="5" max="1440" placeholder="Timeout (min)">
+          <input type="number" id="sessMax" value="${session.maxConcurrent || 3}" min="1" max="10" placeholder="Max Concurrent">
+          <input type="number" id="sessRemember" value="${session.rememberMeDays || 30}" min="1" max="365" placeholder="Remember Me">
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Login Settings</label>
+        <div class="grid grid-2">
+          <input type="number" id="maxAttempts" value="${login.maxAttempts || 5}" min="1" max="20" placeholder="Max Attempts">
+          <input type="number" id="lockout" value="${login.lockoutMinutes || 30}" min="1" max="240" placeholder="Lockout (min)">
+        </div>
+        <label class="checkbox-group" style="margin-top:8px"><input type="checkbox" id="guestCheckout" ${login.allowGuestCheckout ? 'checked' : ''}> Allow Guest Checkout</label>
+      </div>
+      
+      <button class="btn" onclick="saveIdentity()">Save Settings</button>
+    </div>
+    
+    <div class="card" style="margin-top:16px">
+      <h3>🔌 Identity Providers</h3>
+      <div id="providersList" class="grid" style="grid-template-columns:1fr">
+        ${providers.map(p => `
+          <div class="card" style="border:1px solid var(--border-color);margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <b>${esc(p.name)}</b>
+                <span class="badge" style="margin-left:8px">${esc(p.provider_type)}</span>
+                <span class="badge ${p.enabled ? 'badge-success' : ''}" style="margin-left:8px">${p.enabled ? 'Enabled' : 'Disabled'}</span>
+              </div>
+              <div>
+                <button class="btn-icon" onclick="editProvider('${esc(p.id)}')">✎</button>
+                <button class="btn-icon" style="color:var(--danger)" onclick="deleteProvider('${esc(p.id)}')">✕</button>
+              </div>
+            </div>
+          </div>
+        `).join('') || '<p class="alert alert-info">No providers configured. Click + Add Provider below.</p>'}
+      </div>
+      <button class="btn" style="margin-top:12px" onclick="addProvider()">+ Add Provider</button>
+    </div>
+    
+    <div class="card" style="margin-top:16px">
+      <h3>📋 Apply Global Template</h3>
+      <select id="tmplSelect" class="form-group">
+        <option value="">-- Select a template --</option>
+        ${templates.map(t => `<option value="${t.id}">${esc(t.name)}${t.is_default ? ' (Default)' : ''}</option>`).join('')}
+      </select>
+      <button class="btn btn-outline" onclick="applyTemplate()">Apply to this store</button>
+    </div>
+    
+    <div class="card" style="margin-top:16px">
+      <h3>🔧 Provider Types</h3>
+      <p class="p-tag">Customize available authentication types</p>
+      ${['sso','oauth','otp','magic_link','biometric'].map(type => `
+        <div class="card" style="border:1px solid var(--border-color);margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div><b>${type.toUpperCase()}</b> <span class="badge">Built-in</span></div>
+            <button class="btn-icon" onclick="editProviderType('${type}')">Configure</button>
+          </div>
+        </div>
+      `).join('')}
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div><b>Create Custom Type</b></div>
+          <button class="btn" onclick="addProviderType()">+ New</button>
+        </div>
+      </div>
+    </div>`;
+  } catch (e) {
+    return `<div class="card" style="color:var(--danger)">Error: ${esc(e.message)}</div>`;
+  }
+}
+
+async function saveIdentity() {
+  const body = {
+    password: {
+      minLength: parseInt(document.getElementById("minLen").value) || 8,
+      requireUppercase: !!document.getElementById("reqUpper").checked,
+      requireNumbers: !!document.getElementById("reqNumbers").checked,
+      requireSpecialChars: !!document.getElementById("reqSpecial").checked,
+      expiryDays: parseInt(document.getElementById("expiryDays").value) || 0
+    },
+    mfa: {
+      enabled: !!document.getElementById("mfaEnabled").checked,
+      requireForAdmin: !!document.getElementById("mfaAdmin").checked
+    },
+    session: {
+      timeoutMinutes: parseInt(document.getElementById("sessTimeout").value) || 120,
+      maxConcurrent: parseInt(document.getElementById("sessMax").value) || 3,
+      rememberMeDays: parseInt(document.getElementById("sessRemember").value) || 30
+    },
+    login: {
+      maxAttempts: parseInt(document.getElementById("maxAttempts").value) || 5,
+      lockoutMinutes: parseInt(document.getElementById("lockout").value) || 30,
+      allowGuestCheckout: !!document.getElementById("guestCheckout").checked
+    }
+  };
+  try {
+    await api("/admin/identity-settings", "PUT", body);
+    toast("Settings saved");
+    viewIdentity();
+  } catch (e) {
+    toast("Error: " + e.message);
+  }
+}
+
+async function applyTemplate() {
+  const tmplId = document.getElementById("tmplSelect").value;
+  if (!tmplId) return toast("Select a template");
+  try {
+    await api("/admin/identity-templates/apply", "POST", { template_id: tmplId });
+    toast("Template applied");
+    viewIdentity();
+  } catch (e) {
+    toast("Error: " + e.message);
+  }
+}
+
+async function addProvider() {
+  const modal = document.createElement("div");
+  modal.className = "modal-overlay";
+  modal.innerHTML = `
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Identity Provider</h3>
+        <button class="btn-icon" onclick="this.closest('.modal-overlay').remove()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Provider Type</label>
+          <select id="provTypeAdd">
+            <option value="sso">SSO (Okta, Azure AD, Google)</option>
+            <option value="oauth">OAuth/Social (Google, Facebook, Apple)</option>
+            <option value="openid">OpenID Connect</option>
+            <option value="ldap">LDAP</option>
+            <option value="otp">OTP (Email/SMS)</option>
+            <option value="magic_link">Magic Link (Passwordless Email)</option>
+            <option value="biometric">Biometric (WebAuthn)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="provNameAdd" placeholder="e.g., Company SSO">
+        </div>
+        <div id="provFieldsAdd"></div>
+        <div class="form-group checkbox-group">
+          <input type="checkbox" id="provEnabledAdd" checked>
+          <label>Enabled</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+        <button class="btn" onclick="saveProviderAdd()">Save</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  
+  const typeSelect = modal.querySelector("#provTypeAdd");
+  const fieldsDiv = modal.querySelector("#provFieldsAdd");
+  
+  typeSelect.onchange = () => {
+    const type = typeSelect.value;
+    fieldsDiv.innerHTML = _getProviderFields(type);
+  };
+  typeSelect.onchange();
+  
+  function _getProviderFields(type) {
+    switch (type) {
+      case "sso":
+        return `<div class="form-group"><label>Provider</label><select id="provProviderAdd"><option value="okta">Okta</option><option value="azure">Azure AD</option><option value="google">Google</option><option value="saml-generic">SAML Generic</option></select></div><div class="form-group"><label>SSO URL</label><input type="text" id="provUrlAdd" placeholder="https://company.okta.com/sso"></div><div class="form-group"><label>Domains</label><input type="text" id="provDomainsAdd" placeholder="company.com,acme.com"></div><div class="form-group"><label>Entity ID</label><input type="text" id="provEntityIdAdd" placeholder="urn:okta:example"></div>`;
+      case "oauth":
+        return `<div class="form-group"><label>Provider</label><select id="provProviderAdd"><option value="google">Google</option><option value="facebook">Facebook</option><option value="apple">Apple</option></select></div><div class="form-group"><label>Client ID</label><input type="text" id="provClientIdAdd"></div><div class="form-group"><label>Client Secret</label><input type="text" id="provClientSecretAdd"></div><div class="form-group"><label>Redirect URI</label><input type="text" id="provRedirectAdd"></div>`;
+      case "otp":
+        return `<div class="form-group"><label>Delivery</label><select id="provProviderAdd"><option value="email">Email</option><option value="sms">SMS</option><option value="both">Both</option></select></div><div class="form-group"><label>From</label><input type="text" id="provFromAdd" placeholder="noreply@example.com"></div>`;
+      case "magic_link":
+        return `<div class="form-group"><label>From Email</label><input type="text" id="provFromAdd" placeholder="noreply@example.com"></div><div class="form-group"><label>Base URL</label><input type="text" id="provBaseUrlAdd" placeholder="https://yourapp.com"></div>`;
+      case "openid":
+        return `<div class="form-group"><label>OpenID Provider URL</label><input type="text" id="provOpenidUrlAdd" placeholder="https://accounts.google.com"></div><div class="form-group"><label>Client ID</label><input type="text" id="provOpenidClientIdAdd"></div><div class="form-group"><label>Client Secret</label><input type="text" id="provOpenidClientSecretAdd"></div>`;
+      case "ldap":
+        return `<div class="form-group"><label>LDAP Server</label><input type="text" id="provLdapServerAdd" placeholder="ldap://ldap.example.com"></div><div class="form-group"><label>Base DN</label><input type="text" id="provLdapBaseDnAdd" placeholder="dc=example,dc=com"></div><div class="form-group"><label>Bind DN</label><input type="text" id="provLdapBindDnAdd"></div><div class="form-group"><label>Bind Password</label><input type="password" id="provLdapBindPassAdd"></div>`;
+      case "biometric":
+        return `<div class="form-group"><label>RP ID</label><input type="text" id="provRpIdAdd" placeholder="yourapp.com"></div><div class="form-group"><label>RP Name</label><input type="text" id="provRpNameAdd" placeholder="Your App"></div>`;
+      default: return "";
+    }
+  }
+  
+  window.saveProviderAdd = async () => {
+    const type = typeSelect.value;
+    const name = document.getElementById("provNameAdd")?.value.trim();
+    const enabled = document.getElementById("provEnabledAdd")?.checked;
+    if (!name) return toast("Enter provider name");
+    
+    const config = {};
+    const getVal = id => document.getElementById(id)?.value;
+    config.provider = getVal("provProviderAdd");
+    
+    if (type === "sso") {
+      config.ssoUrl = getVal("provUrlAdd");
+      config.domains = getVal("provDomainsAdd").split(",").map(s => s.trim()).filter(Boolean);
+      config.entityId = getVal("provEntityIdAdd");
+    } else if (type === "oauth") {
+      config.clientId = getVal("provClientIdAdd");
+      config.clientSecret = getVal("provClientSecretAdd");
+      config.redirectUri = getVal("provRedirectAdd");
+    } else if (type === "openid") {
+      config.providerUrl = getVal("provOpenidUrlAdd");
+      config.clientId = getVal("provOpenidClientIdAdd");
+      config.clientSecret = getVal("provOpenidClientSecretAdd");
+    } else if (type === "ldap") {
+      config.server = getVal("provLdapServerAdd");
+      config.baseDn = getVal("provLdapBaseDnAdd");
+      config.bindDn = getVal("provLdapBindDnAdd");
+      config.bindPassword = getVal("provLdapBindPassAdd");
+    } else if (type === "otp") {
+      config.from = getVal("provFromAdd");
+    } else if (type === "magic_link") {
+      config.from = getVal("provFromAdd");
+      config.baseUrl = getVal("provBaseUrlAdd");
+    } else if (type === "biometric") {
+      config.rpId = getVal("provRpIdAdd");
+      config.rpName = getVal("provRpNameAdd");
+    }
+    
+    try {
+      await api("/admin/identity-providers", "PUT", { provider_type: type, name, enabled, config });
+      toast("Provider added");
+      modal.remove();
+      viewIdentity();
+    } catch (e) {
+      toast("Error: " + e.message);
+    }
+  };
+}
+async function addProviderType() {
+  const modal = document.createElement("div");
+  modal.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:99999;"
+  modal.innerHTML = `
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Create New Provider Type</h3>
+        <button class="btn-icon" onclick="this.closest('.modal-overlay').remove()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Key (e.g., ldap, saml)</label>
+          <input type="text" id="newProvKey" placeholder="custom">
+        </div>
+        <div class="form-group">
+          <label>Label (e.g., LDAP, SAML)</label>
+          <input type="text" id="newProvLabel" placeholder="Custom Provider">
+        </div>
+        <div class="form-group">
+          <label>Fields (JSON)</label>
+          <textarea id="newProvFields" rows="5" placeholder='[{"key":"url","label":"URL","type":"text"}]'></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+        <button class="btn" onclick="saveNewProviderType()">Create</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  window.saveNewProviderType = async () => {
+    const key = document.getElementById("newProvKey").value.trim();
+    const label = document.getElementById("newProvLabel").value.trim();
+    const fields = document.getElementById("newProvFields").value.trim();
+    if (!key || !label) return toast("Enter key and label");
+    try {
+      const fieldsObj = fields ? JSON.parse(fields) : [];
+      await api("/admin/identity-provider-types", "POST", { 
+        key, label, schema: { fields: fieldsObj } 
+      });
+      toast("Provider type created");
+      modal.remove();
+      viewIdentity();
+    } catch (e) {
+      toast("Error: " + e.message);
+    }
+  };
+}
+async function viewIdentityTemplates() {
+  shell('<div class="p-empty">Loading...</div>');
+  try {
+    const res = await api("/platform/identity-templates");
+    const templates = res.templates || [];
+    
+    let html = `<div class="p-panel"><h2>📋 Global Identity Templates</h2>
+      <p class="p-tag">Centralized identity configurations for provisioning new stores</p>
+      
+      <div class="p-form">
+        <h3>Create Template</h3>
+        <label><span>Name</span><input type="text" id="tmplName" placeholder="e.g., Enterprise SSO"></label>
+        <label><span>Description</span><input type="text" id="tmplDesc" placeholder="SSO + MFA + strong passwords"></label>
+        <label><span>Set as default</span><input type="checkbox" id="tmplDefault"></label>
+        
+        <h4>Template Configuration</h4>
+        <div class="p-form">
+          <h5>Password Policy</h5>
+          <label><span>Min Length</span><input type="number" id="tmplPwdMin" value="12"></label>
+          <label><span>Require Uppercase</span><input type="checkbox" id="tmplPwdUpper" checked></label>
+          <label><span>Require Numbers</span><input type="checkbox" id="tmplPwdNum" checked></label>
+          <label><span>Require Special</span><input type="checkbox" id="tmplPwdSpec" checked></label>
+          <label><span>Expiry (days)</span><input type="number" id="tmplPwdExpiry" value="90"></label>
+          
+          <h5>MFA</h5>
+          <label><span>Enable MFA</span><input type="checkbox" id="tmplMfaEnabled"></label>
+          <label><span>Require for Admins</span><input type="checkbox" id="tmplMfaAdmin" checked></label>
+          
+          <h5>Session</h5>
+          <label><span>Timeout (minutes)</span><input type="number" id="tmplSessTimeout" value="120"></label>
+          <label><span>Max Concurrent</span><input type="number" id="tmplSessMax" value="3"></label>
+          
+          <h5>Login</h5>
+          <label><span>Max Attempts</span><input type="number" id="tmplLoginMax" value="5"></label>
+          <label><span>Lockout (minutes)</span><input type="number" id="tmplLoginLockout" value="30"></label>
+        </div>
+        
+        <button class="p-btn primary" onclick="saveTemplate()">Create Template</button>
+      </div>
+      
+      <h3>Saved Templates</h3>
+      <div class="p-tablewrap"><table class="p-table"><thead>
+        <tr><th>Name</th><th>Description</th><th>Actions</th></tr>
+      </thead><tbody>`;
+      
+    templates.forEach(t => {
+      const cfg = typeof t.config === 'string' ? JSON.parse(t.config) : t.config;
+      const def = t.is_default ? '★ Default' : '';
+      html += `<tr>
+        <td>${esc(t.name)} ${def}</td>
+        <td>${esc(t.description || '')}</td>
+        <td>
+          <button class="p-btn sm" onclick="editTemplate(${t.id})">Edit</button>
+          <button class="p-btn sm danger" onclick="deleteTemplate(${t.id})">✕</button>
+        </td>
+      </tr>`;
+    });
+    
+    html += `</tbody></table></div>
+    </div>`;
+    $$("#app").innerHTML = html;
+  } catch (e) {
+    $$("#app").innerHTML = `<div class="p-panel">Error: ${esc(e.message)}</div>`;
+  }
+}
+
+async function saveTemplate() {
+  const name = $("#tmplName").value.trim();
+  if (!name) return toast("Enter template name");
+  
+  const config = {
+    password: {
+      minLength: parseInt($("#tmplPwdMin").value) || 12,
+      requireUppercase: !!$("#tmplPwdUpper").checked,
+      requireNumbers: !!$("#tmplPwdNum").checked,
+      requireSpecialChars: !!$("#tmplPwdSpec").checked,
+      expiryDays: parseInt($("#tmplPwdExpiry").value) || 90
+    },
+    mfa: {
+      enabled: !!$("#tmplMfaEnabled").checked,
+      requireForAdmin: !!$("#tmplMfaAdmin").checked
+    },
+    session: {
+      timeoutMinutes: parseInt($("#tmplSessTimeout").value) || 120,
+      maxConcurrent: parseInt($("#tmplSessMax").value) || 3
+    },
+    login: {
+      maxAttempts: parseInt($("#tmplLoginMax").value) || 5,
+      lockoutMinutes: parseInt($("#tmplLoginLockout").value) || 30
+    }
+  };
+  
+  try {
+    await api("/platform/identity-templates", "POST", {
+      name,
+      description: $("#tmplDesc").value,
+      config,
+      is_default: !!$("#tmplDefault").checked
+    });
+    toast("Template created");
+    viewIdentityTemplates();
+  } catch (e) {
+    toast("Error: " + e.message);
+  }
+}
+
+async function editTemplate(id) {
+  try {
+    const res = await api(`/platform/identity-templates/${id}`);
+    const t = res.template;
+    const cfg = t.config || {};
+    
+    const confirm = window.confirm("Edit template: " + t.name + "\nThis will open a form to edit all settings.");
+    if (!confirm) return;
+    
+    // For now, just delete and recreate
+    if (window.confirm("Delete and recreate this template? (Simple edit for now)")) {
+      await api(`/platform/identity-templates/${id}`, "DELETE");
+      toast("Template deleted - please recreate");
+      viewIdentityTemplates();
+    }
+  } catch (e) {
+    toast("Error: " + e.message);
+  }
+}
+
+async function deleteTemplate(id) {
+  if (!confirm("Delete this template?")) return;
+  try {
+    await api(`/platform/identity-templates/${id}`, "DELETE");
+    toast("Template deleted");
+    viewIdentityTemplates();
+  } catch (e) {
+    toast("Error: " + e.message);
+  }
+}
+
+async function wireIdentityTemplates() {
+  // Add listeners if needed
+}
+
+async function applyTemplate() {
+  const tmplId = $("#tmplSelect").value;
+  if (!tmplId) return toast("Select a template");
+  
+  try {
+    await api("/platform/identity-templates/" + tmplId + "/apply", "POST", { tenant_id: 1 });
+    toast("Template applied");
+    viewIdentity();
+  } catch (e) {
+    toast("Error: " + e.message);
+  }
+}
+
+async function wireIdentity() {
+  // Wire up event listeners for the Identity page
+}
