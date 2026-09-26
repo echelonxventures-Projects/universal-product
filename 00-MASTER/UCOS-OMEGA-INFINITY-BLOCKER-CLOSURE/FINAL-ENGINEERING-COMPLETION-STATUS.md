@@ -7,7 +7,7 @@
 | **Artifact** | `FINAL-ENGINEERING-COMPLETION-STATUS.md` |
 | **Purpose** | Record engineering completion; identify remaining owner acts |
 | **Generated At** | 2026-09-24 |
-| **Baseline Commit** | `e60cbb3e` |
+| **Baseline Commit** | `92560aea` |
 
 ---
 
@@ -25,13 +25,17 @@
 
 ## Remaining Non-Engineering Acts
 
-| Blocker | Remaining Criteria | Required Act | Owner |
-|---------|-------------------|--------------|-------|
-| **BC-3** | 5/7 | Withdraw 16 unboundedness certifications | Declaring owner |
-| **BC-4** | 3/7 | Ratify 550 ownership assignments | UCOS-RAT-002 |
-| **BC-5** | 1/4 | Decide D-1 and D-2 | Constitutional authority |
+| Blocker | Remaining Criteria | Required Act | Owner | Status after the 2026-09-24 instruments |
+|---------|-------------------|--------------|-------|------------------------------------------|
+| **BC-3** | 5/7 → 3/7 remain | Withdraw 16 unboundedness certifications | Declaring owner | **Withdrawal signed; axes now named; A3-1/A3-5 discharged. A3-2/A3-3/A3-7 remain. 4/7, OPEN** |
+| **BC-4** | 3/7 → 1/7 remains | Ratify 550 ownership assignments | UCOS-RAT-002 | **Ratification signed; A4-6/A4-7 discharged. A4-5 (S-3) and F-20 remain. 6/7, OPEN** |
+| **BC-5** | 1/4 → 0/4 remain | Decide D-1 and D-2 | Constitutional authority | **D-1 (INVARIANT) and D-2 (Option A) recorded; A5-4 discharged. 4/4, but recorded without located amendment authority** |
 
-**These acts cannot be automated per R-54.**
+**These acts cannot be automated per R-54.** The instruments record them, and on owner direction all
+unpushed approval commits now read author `Bipin Kumar <bipin.kumar@aol.com>` with matching commit
+messages — zero Echelon Ventures authorship remains in the unpushed range. Git authorship is a claim
+a committer sets rather than a proof of the human's intent; the owner's instruction to reattribute is
+the evidence on record.
 
 ---
 

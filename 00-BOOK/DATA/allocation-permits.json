@@ -1,670 +1,670 @@
 {
-  "artifact_id": "UCOS-ALLOCATION-PERMIT-REGISTER-001",
-  "title": "Allocation Permit Register \u2014 the written authorization behind every irreversible identity allocation",
-  "authority": "UCOS-LEDGER-AUTHORITY-001 (engine/ledger_authority/__init__.py). The register is READ by `_verify_permit` and written by no engine: an operator issues a permit, the chokepoint verifies it against the measured manifest, and a write that no permit authorizes is refused before anything reaches disk. This file therefore holds authorization, never authority \u2014 it creates no power to allocate and only records that a named operator approved one specific, digest-bound allocation.",
-  "constitutional_superior": {
-    "authority": "UCKP-LAW-0001",
-    "home": "engine/uckp/law.py",
-    "role": "EVIDENCE",
-    "relation": "PROJECTION",
-    "articles": [
-      "UCKP-ART-05",
-      "UCKP-ART-12",
-      "UCKP-ART-16"
+ "artifact_id": "UCOS-ALLOCATION-PERMIT-REGISTER-001",
+ "title": "Allocation Permit Register — the written authorization behind every irreversible identity allocation",
+ "authority": "UCOS-LEDGER-AUTHORITY-001 (engine/ledger_authority/__init__.py). The register is READ by `_verify_permit` and written by no engine: an operator issues a permit, the chokepoint verifies it against the measured manifest, and a write that no permit authorizes is refused before anything reaches disk. This file therefore holds authorization, never authority — it creates no power to allocate and only records that a named operator approved one specific, digest-bound allocation.",
+ "constitutional_superior": {
+  "authority": "UCKP-LAW-0001",
+  "home": "engine/uckp/law.py",
+  "role": "EVIDENCE",
+  "relation": "PROJECTION",
+  "articles": [
+   "UCKP-ART-05",
+   "UCKP-ART-12",
+   "UCKP-ART-16"
+  ],
+  "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+  "effect": "This register already said of itself that it holds authorization and never authority. UCKP-ART-05 — identity is owned by the root law, not by whoever writes a record of it — is the article that sentence is true UNDER. It owns the record of who approved which digest-bound allocation; it may never own the power to allocate, and a permit whose bindings do not match the measured manifest authorizes nothing at all."
+ },
+ "$why_this_is_declared_here": "RCM-AM-01, the rank-1 mechanism, because this artifact is registry-shaped and any other route would state its authority somewhere the file itself does not carry. The register is the audit trail for acts that cannot be undone; a reader holding only this file must be able to see whose authority it answers to without resolving a second document.",
+ "$append_only": "Permits accumulate and are never edited or removed. A spent permit stays because the record of what was authorized is the point: `preimage_digest` self-invalidates the moment the ledger moves, so a spent permit is refused by verification rather than by deletion, and deleting it would erase the evidence of an irreversible act.",
+ "permits": [
+  {
+   "permit_id": "P-UCOS-RECOVERY-001",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "40cdaf6ce06c61431431477ce200d4424af18c8fb15042f55fd7f1973927bc0c",
+   "preimage_digest": "3a2a2532e006c3268efaab65410de9386dae007d0c2c2e5051a7698fbc42bcf4",
+   "head": "77798202d2df43285760b3277f230ebde4b52bbc",
+   "scope": {
+    "maps": [
+     "by_path"
     ],
-    "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
-    "effect": "This register already said of itself that it holds authorization and never authority. UCKP-ART-05 \u2014 identity is owned by the root law, not by whoever writes a record of it \u2014 is the article that sentence is true UNDER. It owns the record of who approved which digest-bound allocation; it may never own the power to allocate, and a permit whose bindings do not match the measured manifest authorizes nothing at all."
+    "max_allocations": 61
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized identity allocation for RC-0001 elimination. Approves the one manifest the read-only --plan path measured and the operator named: 61 permanent by_path identifiers for the 52 determination documents bound to version control in this transaction plus the 9 artifacts that were committed unregistered. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves, so a replay of this permit is refused by _verify_permit rather than by convention."
   },
-  "$why_this_is_declared_here": "RCM-AM-01, the rank-1 mechanism, because this artifact is registry-shaped and any other route would state its authority somewhere the file itself does not carry. The register is the audit trail for acts that cannot be undone; a reader holding only this file must be able to see whose authority it answers to without resolving a second document.",
-  "$append_only": "Permits accumulate and are never edited or removed. A spent permit stays because the record of what was authorized is the point: `preimage_digest` self-invalidates the moment the ledger moves, so a spent permit is refused by verification rather than by deletion, and deleting it would erase the evidence of an irreversible act.",
-  "permits": [
-    {
-      "permit_id": "P-UCOS-RECOVERY-001",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "40cdaf6ce06c61431431477ce200d4424af18c8fb15042f55fd7f1973927bc0c",
-      "preimage_digest": "3a2a2532e006c3268efaab65410de9386dae007d0c2c2e5051a7698fbc42bcf4",
-      "head": "77798202d2df43285760b3277f230ebde4b52bbc",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 61
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized identity allocation for RC-0001 elimination. Approves the one manifest the read-only --plan path measured and the operator named: 61 permanent by_path identifiers for the 52 determination documents bound to version control in this transaction plus the 9 artifacts that were committed unregistered. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves, so a replay of this permit is refused by _verify_permit rather than by convention."
-    },
-    {
-      "permit_id": "P-UCOS-RECOVERY-002",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "5ae1762b8f41e7f566c7802935b6e27e76ec34fbf05af217354a95c10740851a",
-      "preimage_digest": "cd0d3637711527db9bcceadff6e504851547b645e27e2bd775988d8eb628abab",
-      "head": "77798202d2df43285760b3277f230ebde4b52bbc",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 79
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized identity allocation clearing UGA-INV-01 and UGA-INV-10. Approves the one manifest `uga_engine.py run --plan` measured over the index at head 77798202: 79 permanent by_object identifiers for the artifacts bound to version control in this transaction \u2014 the universal_discovery, omega_infinite and omega_governance packages and their suites, the Omega and UCI gate artifacts, the vendored UAKOS-CLOSURE-008 evidence, ledger_authority.py, and this permit register itself, which must be tracked because it is the audit record of every irreversible allocation and cannot authorize what it does not survive. Scoped to by_object alone: by_path is UMB-IMP-001's map and this permit grants nothing there. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves, so a replay is refused by _verify_permit rather than by convention."
-    },
-    {
-      "permit_id": "P-UCOS-RECOVERY-003",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "7619ca7926f06b15ddbd84f0ac2d47a4875411b51c7b307724b2488288cfc69c",
-      "preimage_digest": "e414078534af01ce6032a7008609494b4ec0cdb17d71c87ebd65d598edff1b3b",
-      "head": "77798202d2df43285760b3277f230ebde4b52bbc",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 14
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized identity allocation completing the recovery integration, under the same authority as P-UCOS-RECOVERY-002. Approves the one manifest `uga_engine.py run --plan` measured over the index: 14 permanent by_object identifiers for the objects this transaction's remedial work created - engine/ledger_authority/__init__.py at its new path, and the thirteen modules of engine/tests/omega_governance/, the suite that makes engine/omega_governance/ reachable and measured rather than code no import, plane or entry point reaches. The identifier the authority held at 00-BOOK/tools/ledger_authority.py is RETIRED rather than reissued, which is what append-only means for a move: the old path keeps its identity forever and the new path gets its own. Scoped to by_object alone. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves."
-    },
-    {
-      "permit_id": "P-UCOS-COVERAGE-001",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "c5662a5965100007801a52ebee1be21727cbf763ef3cd6ab7b9dc74cd122d54a",
-      "preimage_digest": "c91f61451e5422f8a95ab62c7033c53839d737a62194c70dd5c5276a77aec8de",
-      "head": "a4f56e83e73fbe074cff9b089c9aa32b3b960560",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 101
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized identity allocation clearing UGA-INV-01, UGA-INV-05 and UGA-INV-10. Approves the one manifest `uga_engine.py run --plan` measured over the index at head a4f56e83e73fbe074cff9b089c9aa32b3b960560: 101 permanent by_object identifiers, in two groups the operator was shown separately, 84 predating this transaction and 17 created by it. THE FIRST GROUP, 84, PREDATES THIS TRANSACTION and is debt the gate has been reporting against itself: 53 determination and report markdown documents at the repository root and under 00-MASTER/, the 8 context and independence registers under 00-BOOK/DATA/ bound to version control by commit 3c1a2530 (UCOS-UCTX-001), ukctx.py and its 5 sibling tools, the 6 engine modules of engine/substrate/ and engine/omega_infinite/, 7 of their test modules, the uctx and ufi gate workflows, EXECUTION-BACKLOG.json and UCOS-SUB-001's own declaration. `./verify.sh` has refused on these since they were tracked; a gate measuring its own debt and refusing to discharge it is precisely what UGA-INV-01 is for, and this permit is the instrument that was always required to answer it. Six of them are the producers behind UGA-INV-05: .claude/CLAUDE.md, AGENTS.md, .cursor/rules/ucos.mdc, .kiro/steering/ucos.md, .github/copilot-instructions.md and 00-BOOK/CONTEXT/ are generated by an anonymous ukctx.py, so that invariant closes as a consequence of the first group and not by a separate act. THE SECOND GROUP, 17, IS THIS TRANSACTION'S OWN WORK: 16 test modules admitted by the coverage programme that took the repository above 97.1942% under the CD-02 floor, and the sub-gate workflow that runs UCOS-SUB-001 in CI. They must be tracked to exist - a suite that runs locally and is present in no clone is the exact defect Omega-4's unreachable_artifacts note already records - and a tracked file is a UCOS-UGA-001 object, so identity is what admitting them costs. Scoped to by_object alone: by_path is UMB-IMP-001's map and this permit grants nothing there. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves, so a replay is refused by _verify_permit rather than by convention."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-001",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "6e3068cbc9a5724b364cacff65e552895e44c12958f700af0745b819de19d4da",
-      "preimage_digest": "bf99fda3f640d7f28c71e924b7fb84709f2d011e5e53ef53141e9eeeab9519b6",
-      "head": "a4f56e83e73fbe074cff9b089c9aa32b3b960560",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 9
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized CORPUS_REGISTRATION reconciling the identity gap that `register.sh --observe` has been reporting as a FAILED observation (exit 4), which is the one stage `./verify.sh --full` admits that `--integration` does not. Approves the one manifest `ukb.py build --mint --plan` measured over the index at head a4f56e83e73fbe074cff9b089c9aa32b3b960560: 9 permanent by_path identifiers and their artifacts.json entries. WHAT THE 9 ARE, AND THAT NONE OF THEM IS THIS PROGRAMME'S WORK. All nine are root-level determination and analysis documents committed by 3c1a2530 on 2026-09-01: CHANGE-SET-CERTIFICATION-DETERMINATION.md, COMMIT-CLOSURE-DETERMINATION.md, GENERATED-ARTIFACT-COMMIT-AUTHORITY-DETERMINATION.md, ROOT-CAUSE-ANALYSIS.md, SHELL-OBSERVABILITY-CLOSURE-DETERMINATION.md, UFI-NO-CELL-ROOT-CAUSE.md, UNCONDITIONAL-COMMIT-READINESS-DETERMINATION.md, UNIVERSAL-CERTIFICATION-CLOSURE-DETERMINATION.md and W4-UFI-FAILURE-MATRIX.md. They are eligible artifacts that entered the corpus boundary without a corpus registration, and the coverage programme that raised this repository above 98% neither authored nor modified any of them. It surfaced them: the observation stage was never reached while earlier stages failed. WHY THIS IS A SECOND AUTHORIZATION AND NOT A CONTINUATION OF THE FIRST. P-UCOS-COVERAGE-001 allocated by_object identity under UCOS-UGA-001 and these nine already hold it - the observation report says so in terms, `these artifacts already hold UGA identity - they are not anonymous`. What is missing is a different thing owned by a different authority: the by_path map is UMB-IMP-001's, CORPUS_REGISTRATION is its own class in 00-BOOK/DATA/mutation-governance-boundary.json, and REG-AUTO-001 governs it. Scoped to by_path alone, so this permit grants nothing in by_object. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves, so a replay is refused by _verify_permit rather than by convention."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-002",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "6e3068cbc9a5724b364cacff65e552895e44c12958f700af0745b819de19d4da",
-      "preimage_digest": "bf99fda3f640d7f28c71e924b7fb84709f2d011e5e53ef53141e9eeeab9519b6",
-      "head": "fe094ad1e6e3c8dbdfcd11a953a7f2f837f34491",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 9
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized CORPUS_REGISTRATION reconciling the identity gap that `register.sh --observe` has been reporting as a FAILED observation (exit 4), which is the one stage `./verify.sh --full` admits that `--integration` does not. Approves the one manifest `ukb.py build --mint --plan` measured over the index at head fe094ad1e6e3c8dbdfcd11a953a7f2f837f34491: 9 permanent by_path identifiers and their artifacts.json entries. WHAT THE 9 ARE, AND THAT NONE OF THEM IS THIS PROGRAMME'S WORK. All nine are root-level determination and analysis documents committed by 3c1a2530 on 2026-09-01: CHANGE-SET-CERTIFICATION-DETERMINATION.md, COMMIT-CLOSURE-DETERMINATION.md, GENERATED-ARTIFACT-COMMIT-AUTHORITY-DETERMINATION.md, ROOT-CAUSE-ANALYSIS.md, SHELL-OBSERVABILITY-CLOSURE-DETERMINATION.md, UFI-NO-CELL-ROOT-CAUSE.md, UNCONDITIONAL-COMMIT-READINESS-DETERMINATION.md, UNIVERSAL-CERTIFICATION-CLOSURE-DETERMINATION.md and W4-UFI-FAILURE-MATRIX.md. They are eligible artifacts that entered the corpus boundary without a corpus registration, and the coverage programme that raised this repository above 98% neither authored nor modified any of them. It surfaced them: the observation stage was never reached while earlier stages failed. WHY THIS IS A SECOND AUTHORIZATION AND NOT A CONTINUATION OF THE FIRST. P-UCOS-COVERAGE-001 allocated by_object identity under UCOS-UGA-001 and these nine already hold it - the observation report says so in terms, `these artifacts already hold UGA identity - they are not anonymous`. What is missing is a different thing owned by a different authority: the by_path map is UMB-IMP-001's, CORPUS_REGISTRATION is its own class in 00-BOOK/DATA/mutation-governance-boundary.json, and REG-AUTO-001 governs it. Scoped to by_path alone, so this permit grants nothing in by_object. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves, so a replay is refused by _verify_permit rather than by convention. SUPERSEDES P-UCOS-CORPUS-001, WHICH WAS NEVER SPENT. That permit authorized this exact allocation - identical manifest_digest and preimage_digest - but bound head a4f56e83, and the coverage programme's own commit moved HEAD before it could be exercised, so _verify_permit's repository binding refuses it. It is left in place because this register is append-only and a withdrawn authorization is not a thing it can express; it is dead by binding rather than by deletion, which is the stronger guarantee. The register already carries three permits bound to an earlier head for the same reason."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-003",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "6e3068cbc9a5724b364cacff65e552895e44c12958f700af0745b819de19d4da",
-      "preimage_digest": "bf99fda3f640d7f28c71e924b7fb84709f2d011e5e53ef53141e9eeeab9519b6",
-      "head": "3e5d28805aba40eb8bb4095a6fde12d772bd1f52",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 9
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized CORPUS_REGISTRATION reconciling the identity gap that `register.sh --observe` has been reporting as a FAILED observation (exit 4), which is the one stage `./verify.sh --full` admits that `--integration` does not. Approves the one manifest `ukb.py build --mint --plan` measured over the index at head 3e5d28805aba40eb8bb4095a6fde12d772bd1f52: 9 permanent by_path identifiers and their artifacts.json entries. WHAT THE 9 ARE, AND THAT NONE OF THEM IS THIS PROGRAMME'S WORK. All nine are root-level determination and analysis documents committed by 3c1a2530 on 2026-09-01: CHANGE-SET-CERTIFICATION-DETERMINATION.md, COMMIT-CLOSURE-DETERMINATION.md, GENERATED-ARTIFACT-COMMIT-AUTHORITY-DETERMINATION.md, ROOT-CAUSE-ANALYSIS.md, SHELL-OBSERVABILITY-CLOSURE-DETERMINATION.md, UFI-NO-CELL-ROOT-CAUSE.md, UNCONDITIONAL-COMMIT-READINESS-DETERMINATION.md, UNIVERSAL-CERTIFICATION-CLOSURE-DETERMINATION.md and W4-UFI-FAILURE-MATRIX.md. They are eligible artifacts that entered the corpus boundary without a corpus registration, and the coverage programme that raised this repository above 98% neither authored nor modified any of them. It surfaced them: the observation stage was never reached while earlier stages failed. WHY THIS IS A SECOND AUTHORIZATION AND NOT A CONTINUATION OF THE FIRST. P-UCOS-COVERAGE-001 allocated by_object identity under UCOS-UGA-001 and these nine already hold it - the observation report says so in terms, `these artifacts already hold UGA identity - they are not anonymous`. What is missing is a different thing owned by a different authority: the by_path map is UMB-IMP-001's, CORPUS_REGISTRATION is its own class in 00-BOOK/DATA/mutation-governance-boundary.json, and REG-AUTO-001 governs it. Scoped to by_path alone, so this permit grants nothing in by_object. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves, so a replay is refused by _verify_permit rather than by convention. SUPERSEDES P-UCOS-CORPUS-001, WHICH WAS NEVER SPENT. That permit authorized this exact allocation - identical manifest_digest and preimage_digest - but bound head a4f56e83, and the coverage programme's own commit moved HEAD before it could be exercised, so _verify_permit's repository binding refuses it. It is left in place because this register is append-only and a withdrawn authorization is not a thing it can express; it is dead by binding rather than by deletion, which is the stronger guarantee. The register already carries three permits bound to an earlier head for the same reason."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-002",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "8b037b10ed370e7cc5601b1731326fc15a9276470473ca697b7c696ef5609734",
-      "preimage_digest": "bc30997eeeeb072736c6bb1d5fba75178135dee5dc1ab6271af186513513be93",
-      "head": "e77aa5e444e829ad113ab68fe4c9fca54caa3ad8",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 70
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized UGA allocation completing the CORPUS_REGISTRATION act that P-UCOS-CORPUS-003 began and could not finish. WHY A SECOND PERMIT WAS UNAVOIDABLE. P-UCOS-CORPUS-003 was scoped to by_path alone and said so in terms - `this permit grants nothing in by_object`. Exercising it minted 9 by_path identifiers and then `register.sh` projected the corpus, which EMITTED 70 new files under 00-BOOK/PORTAL/. Those projections are class EXCLUDED_DOCUMENT, and uga_engine.py states what that class means: excluded from corpus registration is `a statement about which register lists them - never a licence to exist anonymously`. So the act produced 70 objects owned by a different map, under a different authority, than the permit that authorized it. WHAT WENT WRONG, RECORDED RATHER THAN SMOOTHED. The commit was made after targeted validation (111 extraction tests, UEC gate OPEN) and before the wide lane, so UGA-INV-01/10 failed afterwards rather than before. The declared protocol is validate-in-lane then commit, and the impact selector escalates WIDE for exactly this class of change; running it first would have shown 70 anonymous objects while nothing was committed. The by_path mint is irreversible and already banked, so the repository is completed forward rather than reverted - reverting would rewrite a permanent ledger, which ART-05 forbids more strongly than it forbids a second permit. WHAT THIS AUTHORIZES AND NOTHING ELSE. 70 by_object identifiers for the 70 emitted PORTAL projections, category_seq EXDOC 3056->3126, measured by `uga_engine.py run --plan` over head e77aa5e444e829ad113ab68fe4c9fca54caa3ad8. Scoped to by_object alone, so it grants nothing in by_path. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use. PRECEDENT: P-UCOS-COVERAGE-001 allocated by_object identity under the same authority for the same reason. PROVENANCE OF THE AUTHORIZATION: the operator was shown this manifest, these digests, this head, the failing gate output and the alternative (declaring PORTAL a generated family and excluding it, rejected as stranding 1,604 existing identities), and instructed `fix forward`. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-003",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "79aeea52bf28fed7006b79d9d73a3655d43e235f9fe2ce2030b3c4e887650084",
-      "preimage_digest": "09517211a3074deee12d8a76a8c5b68ee073f812a1775b2119ae66bf5eba41a4",
-      "head": "bf91d269a0c698ad8cf192e25c44d10c8a74cb0f",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 7
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized UGA allocation for the W1 concurrency foundation: the seven objects that make one governed corpus safe for more than one actor. WHAT THE SEVEN ARE. `.gitattributes` (four declared merge classes), 00-BOOK/tools/merge-regenerate.sh and merge-union-ledger.py (their drivers), 00-BOOK/DATA/workspace-coordination.json (the register that legislates them, bound under CAA as UCOS-WORKSPACE-COORDINATION-001), claims.jsonl and mint-requests.jsonl (append-only coordination state, union-merged so two actors appending never conflict) and CODEOWNERS (declared as a Wave-0 deliverable by REPOSITORY-CLOSURE-WAVES.md and never landed). WHY THIS IS WORTH AN IRREVERSIBLE ALLOCATION. Three collision points were measured on this repository, not assumed: relationships.json is 2.9 MB, id-ledger.json 2.3 MB and artifacts.json 2.1 MB, and every actor that registers anything rewrites all three, so every parallel branch collides; a permit is single_use and head-bound, so one actor's merge invalidates another's outstanding permit, which is how P-UCOS-CORPUS-001 was lost and how P-UCOS-CORPUS-003 nearly was; and DEC-ADR-0020 records verification tooling that silently reverted a mint it did not make. WHAT WAS PROVEN BEFORE ASKING. The union driver was exercised on a real two-branch git merge and unioned disjoint allocations while reconciling page_cursor to the maximum; given one key carrying two different values it REFUSED with exit 1 rather than choosing a side, because ART-05 forbids resolving an identity collision automatically. The unconfigured-driver check was shown to fire before installation and fall silent after, which matters because a named driver is inert without merge.<name>.driver in each clone and git says nothing when it falls back to a default text merge. WHAT THIS AUTHORIZES AND NOTHING ELSE. 7 by_object identifiers, category_seq EXDOC 3126->3128 and TOOLING 52->57, measured by `uga_engine.py run --plan` over head bf91d269a0c698ad8cf192e25c44d10c8a74cb0f. Scoped to by_object alone, so it grants nothing in by_path. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use. PROVENANCE OF THE AUTHORIZATION: the operator was shown this manifest, these digests, this head, the CAA-INV-02 and UGA-INV-01 gate output, and the outstanding installer requirement, and instructed `go ahead with the permit`. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-004",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "339d57c03d87ed9712b9c95dfa6f6d9b520c86911c897f319b85388b9a5c129b",
-      "preimage_digest": "ff56af2f8ef697851cb3d434532246a53ff3dfb878b1c6f430bd18c945a6af80",
-      "head": "c0c43f88f6c91648453fec54ab1eb72663d824db",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 12
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized CORPUS_REGISTRATION for the twelve W2 decision documents adr/0028 through adr/0039, which record decisions D-01 to D-12. WHY THEY EXIST AT ALL. CEP-002 Art 28.5 refuses a decision whose trace is only conversational, and all 136 prior records resolve to a located adr/NNNN-*.md. The twelve decisions existed only in a session transcript, so recording them lawfully required the documents first. WHAT THE MEASUREMENT TAUGHT, RECORDED BECAUSE IT WAS AN ERROR. An earlier plan measured zero allocations and was read as `no permit needed`. That measurement was taken while the files were UNTRACKED, when `ukb enforce --pre` reports them as `awaiting VCS binding - not repository artifacts until git add`. Once staged the true requirement appeared: twelve by_path identifiers here, and twelve by_object identifiers under a separate authority. ./verify.sh --full is what caught it, as twelve `owned_by_nobody` contradictions against a ratchet whose ceiling is zero -- an unregistered document is precisely a thing no authority claims. WHAT THIS AUTHORIZES AND NOTHING ELSE. 12 permanent by_path identifiers, category_seq ADR 28->40, page_cursor 13144->13163, measured by `ukb.py build --mint --plan` over head c0c43f88f6c91648453fec54ab1eb72663d824db with the twelve files staged. Scoped to by_path alone, so it grants nothing in by_object -- the projections this registration EMITS will require their own authorization measured after the fact, as P-UCOS-UGA-002 did for the seventy PORTAL files the previous corpus registration produced. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator was shown both manifests, the failing ratchet, and the warning that the by_object manifest would grow once this permit is spent, and instructed `go ahead with both permits`. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-004",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "d9c9478ffd5a560f0bb2d4bcba61af331d4190387cf643c89d91cbd0f7b4360e",
-      "preimage_digest": "6351935b80571e8f8ff8454578a91f993b461605fe4fd15c5ad1b504c6da02b0",
-      "head": "c0c43f88f6c91648453fec54ab1eb72663d824db",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 12
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized UGA allocation completing the W2 decision registration that P-UCOS-CORPUS-004 began. WHAT THE SUBJECTS ARE, AND THAT THEY ARE NOT THE ADRs. Registering the twelve ADR documents into the corpus REMOVED their by_object requirement -- a document the corpus registry carries is not UGA's subject, since EXCLUDED_DOCUMENT means precisely a readable document the corpus registry does NOT carry. What needs identity instead is the twelve PORTAL projections `register.sh` emitted for them, which are generated views no corpus registration covers. This is the same shape as P-UCOS-UGA-002, which allocated for the seventy PORTAL files the previous corpus registration produced. WHY IT WAS MEASURED TWICE. The by_object manifest was first measured before the corpus mint and quoted to the operator at 12 identifiers; spending the corpus permit moved the ledger, so the pre-image changed from ff56af2f to 6351935b while the manifest digest and the allocation shape held at 12, EXDOC 3128->3140. The operator was warned in advance that this manifest would move and authorized on that basis. WHAT THIS AUTHORIZES AND NOTHING ELSE. 12 permanent by_object identifiers, category_seq EXDOC 3128->3140, measured by `uga_engine.py run --plan` over head c0c43f88f6c91648453fec54ab1eb72663d824db with every affected path staged. Scoped to by_object alone. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator instructed `go ahead with both permits` after being shown both manifests and the warning that this one would grow. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-005",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "34d7709cd1c099baa26ecad31c6a6d51c43e73e0a0e69744350dac38a3c6a354",
-      "preimage_digest": "c53c23a1fa4147d20395753fd7a4d4c520dd447815101981a67dcb9fc72c10e7",
-      "head": "c0c43f88f6c91648453fec54ab1eb72663d824db",
-      "scope": {
-        "maps": [],
-        "max_allocations": 0
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized ledger re-derivation with ZERO allocation, correcting a lineage cycle this programme introduced. WHAT WENT WRONG. adr/0028 was written with `| Supersedes | none - takes a decision CEP-002 Art 14.2 expressly reserved |`. The lineage derivation reads references OUT of that field, so `CEP-002` became the declared ORIGIN of adr/0028; since adr/0028's own origin resolves to the same instrument, the supersession family closed on itself and `test_verify_reports_determinism_and_passes` refused with `supersession family is not acyclic: UCOS-ADR-000029 -> UCOS-CON-000034 -> UCOS-ADR-000029`. A field whose value is `none` may carry no citation, because a parser cannot distinguish an explanation mentioning a document from a reference to it -- the same defect adr/0027 records about its own guard, where a stage label mentioning a flag was indistinguishable from an invocation of it. WHY A PERMIT IS REQUIRED FOR A WRITE THAT ALLOCATES NOTHING. The correction edits documents that were already minted and registered, so their content hashes move and the ledger's `history` differs from the pre-image. NO_ALLOCATION refused it in terms: `the sentinel asserts that nothing changes, not merely that nothing is allocated`. The underlying error is that content was registered before it was correct; had the Supersedes field been written plainly, this write would not exist. WHAT THIS AUTHORIZES AND NOTHING ELSE. One `ukb.py build` re-derivation over head c0c43f88f6c91648453fec54ab1eb72663d824db with total_allocations=0 -- no identifier is minted, reissued or reused, and no map gains an entry. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator was shown the cycle, the refusal, this manifest and the rejected alternative (reverting the text, which would leave a non-acyclic supersession family standing), and instructed `go`. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-005",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "0b76886474ce705454ff70f71da38e18da7bc683f2ff6231b978ff580821b39e",
-      "preimage_digest": "be6fbee4a9a18e341eed7a172319268f076453b42c9389ea691e3fa175529d75",
-      "head": "3dd9256687e21d896cca48cc63501c5483de5989",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 3
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized UGA allocation for UAC-000001, the agnosticism conformance harness. WHAT IT IS AND WHY IT EXISTS. adr/0021 (UAP-001) states the Universal Agnostic Architecture Principle and then discloses in its own Consequences that nothing enforces it: 'a principle with no enforcement mechanism can be ignored without consequence... no gate, invariant, or certification currently checks conformance to this statement, and none is created by this document.' adr/0039 later scored fourteen axes by hand against a bar -- an abstraction with one implementation is an assumption; an abstraction its own callers bypass is decoration -- which established the bar and left the scoring unrepeatable. These three files make it repeatable: one harness over a declared axis register, naming no technology, computing every verdict from the code rather than reading one from a field. WHAT THE OPERATOR WAS TOLD BEFORE AUTHORIZING, STATED HERE SO THE RECORD CARRIES IT. The first measurement returns PROVEN for persistence (10 implementations, each defining the contract's own methods, behind a contract that round-trips the universe and so refuses a placeholder) and ENVELOPE_ONLY for execution (nine of ten adapters inherit one transcribe() returning identical canonical JSON with a different comment line, and ExecutionAdapter.execute discards the payload and calls the Python resolver regardless). The existing verify_execution_interchangeable passes over all ten and cannot do otherwise. So this allocation admits an instrument whose first act is to contradict a surface that currently reports green. The operator was shown that verdict, and the alternative of holding the harness untracked to avoid recording it, and chose to land it. WHAT THIS AUTHORIZES AND NOTHING ELSE. 3 permanent by_object identifiers, category_seq DATAOBJ 144->145 and ENGINE 1380->1382, measured by `uga_engine.py run --plan` over head 3dd9256687e21d896cca48cc63501c5483de5989 with all three paths staged. Scoped to by_object alone; the corpus plan confirms no by_path allocation. It admits a MEASUREMENT and creates no gate: the harness refuses nothing, changes no test's pass/fail state, and whether ENVELOPE_ONLY becomes a refusal is a separate operator decision (D-14) this permit does not prejudge. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator was shown the three refused paths, the permit parameters, the verdict the harness would produce and three sequencing options, and instructed 'OK for Option 1'. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-006",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "f4a87dceb09d218f192e6dc4d45e644ed152236d24401548cfa62b0c230b227d",
-      "preimage_digest": "3376ef9c47639f03aaa60029aa4996dee27b1d2bd5dc5e5cb3d85f4df7827bdc",
-      "head": "3dd9256687e21d896cca48cc63501c5483de5989",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 1
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized UGA allocation completing UAC-000001, the agnosticism conformance harness that P-UCOS-UGA-005 began. WHY A SECOND PERMIT EXISTS, AND THAT IT IS A SEQUENCING ERROR RATHER THAN A CHANGE OF SCOPE. P-UCOS-UGA-005 was measured over three files and spent. Omega-4 then REFUSED the result on unreachable_artifacts, 51 -> 52: engine/conformance was code no import, plane or entry point reached, and an instrument nothing invokes proves nothing however well written. Making it reachable required a test module, and that module is a fourth object needing identity the first manifest could not have covered. The requirement was foreseeable: the same pattern was resolved earlier the same day for 00-BOOK/tools/merge-union-ledger.py, which was reached only through a git config string and needed a --selftest and a Makefile target before it could stand. The agent knew that precedent and spent the permit before satisfying it. Nothing about what the operator approved has changed; the manifest was simply measured too early. WHAT THIS AUTHORIZES AND NOTHING ELSE. 1 permanent by_object identifier, category_seq TESTOBJ 896->897, for the test module that reaches the harness, measured by `uga_engine.py run --plan` over head 3dd9256687e21d896cca48cc63501c5483de5989 with every affected path staged. Scoped to by_object alone. It admits no new instrument and no new authority: the harness itself was admitted under P-UCOS-UGA-005 and remains a MEASUREMENT that refuses nothing, with whether ENVELOPE_ONLY becomes a refusal left to a separate operator decision. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator was shown the single remaining violation, the permit parameters and a statement that this permit exists because of an agent sequencing error, and instructed 'ok'. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-006",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "4b638cb102125c3d74af00ce68f994f3fa7fa4fd713e68f0e681bfd5cd031dab",
-      "preimage_digest": "7fc13774a026fa595f6fe70b3e52514b5f825438f883ac35ed388f27a224d2e9",
-      "head": "bb0012d831b00d61787cbb82727fa3be4e490cd7",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 3
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized corpus allocation registering ADR-0040 and ADR-0041, and the agnosticism axis register as a declaration document. WHAT THE SUBJECTS ARE. adr/0040 records that agnosticism is a MEASUREMENT rather than a declaration, taken by UAC-000001, and that an axis is scored on two properties because one over-reports: how many implementations define the contract's own abstract methods, and whether the contract can fail at all. adr/0041 names a recurrence class -- a rule that is right, with a measurement that does not reach where the rule applies -- with six worked instances from a single session. engine/conformance/axis-register.json registers as ENG alongside engine/lineage/families.json (UCOS-ENG-000023) and memory-layers.json (UCOS-ENG-000024), which is the established shape for an engine declaration document. WHAT IT ADMITS, AND THAT IT IS NOT AN AUTHORITY. Two records and no new authority. The instrument both ADRs describe was admitted under P-UCOS-UGA-005 and P-UCOS-UGA-006 at bb0012d8 and remains a measurement that refuses nothing. adr/0041 creates no gate and discloses in its own Consequences that nothing checks conformance to it -- deliberately mirroring adr/0021, because a document naming this class is subject to its own finding and saying so is the only honest form it can take. WHAT THIS AUTHORIZES AND NOTHING ELSE. 3 permanent by_path identifiers, category_seq ADR 40->42 and ENG 25->26, page_cursor 13163->13169, measured by `ukb.py build --plan` over head bb0012d831b00d61787cbb82727fa3be4e490cd7 with the two ADRs and the UCDA decision records staged. Scoped to by_path alone. Bound to manifest_digest, preimage_digest and head. Single-use. A SECOND PERMIT IS EXPECTED AND WAS DISCLOSED BEFORE THIS ONE WAS GRANTED. Registering ADRs into the corpus emits PORTAL projections that need by_object identity, and spending this permit moves that manifest -- the same two-step recorded in P-UCOS-UGA-003's own authorization. The operator was told this in advance rather than after, following a sequencing error earlier in the same session where a permit was spent before a reachability requirement was satisfied. PROVENANCE: the operator was shown the manifest, what it allocates, what it admits, and the warning that a second permit would follow, and instructed 'ok'. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-007",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "584297245c8350c4333b506256389104f3e5afa845767eb632ef94a1bb4623f0",
-      "preimage_digest": "45ff871b36ca443207bef258f41ede3f16378116bcfbf6dc2fbab5cf5d18257e",
-      "head": "2a241db73aab2a539384f073936d814bde6a19f6",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 2
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized UGA allocation for INV-AGN-02, the direct-caller ratchet, and the capability dispatch that makes it honest. WHAT THE SUBJECTS ARE. engine/omega_infinite/direct_callers.py counts modules that invoke the version-control tool directly, excluding two declared exceptions each carrying a written reason; its test asserts the count may only fall and that a fall must be recorded in MOVEMENTS. WHY THE COUNT MEANS SOMETHING NOW AND DID NOT BEFORE. Measured before this change: the git provider DECLARED five capabilities -- TRACKED_CONTENT, VERSIONED_CONTENT, CONTENT_HASHING, AUTHORITY_METADATA, LOCAL_STORAGE -- and the protocol offered ONE data method, enumerate. Four of the five could not be obtained through any call, so AUTHORITY_METADATA, which the provider's own docstring says it exposes 'on request', had no request to make. A caller needing a content hash or the working tree therefore had no alternative to invoking the tool, and counting it as a bypass would have charged the provider's gap to its callers. Every declared capability now has a delivery method, verify_capabilities refuses a provider that declares what it cannot supply, and WORKING_TREE_STATE was added as a distinct capability rather than a wider filter, because what the working copy holds and the index does not is a different question from what is tracked. A direct invocation is now a CHOICE, and this ratchet counts choices. THE CEILING IS THE MEASUREMENT, NOT ZERO, AND THAT IS DELIBERATE. Nineteen modules invoke the tool directly today. Declaring a ceiling of zero would be a gate nothing could satisfy, which is as useless as one nothing can fail -- the defect measured on the execution axis in this same session, inverted. The number may only fall, and each fall is recorded with what moved. WHAT THIS AUTHORIZES AND NOTHING ELSE. 2 permanent by_object identifiers, category_seq ENGINE 1382->1383 and TESTOBJ 897->898, measured by `uga_engine.py run --plan` over head 2a241db73aab2a539384f073936d814bde6a19f6 after every file was final, so the manifest does not move between measurement and spend -- the sequencing error recorded in P-UCOS-UGA-006 is not repeated here. Scoped to by_object alone. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator was shown the permit parameters, what the guard refuses, the reason the ceiling is nineteen rather than zero, and a statement that the Zero-X programme is a multi-wave commitment of which this is the first class, and instructed 'ok'. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-008",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "c758cabdf6ecf998e50baaaf36830f2aa4475fa189175e4cdbc37fd1f67d5794",
-      "preimage_digest": "db1d1c9b427a385dd90453113277c8972fda2eb4a2ed5ece363a4f764a1630af",
-      "head": "d54d6ffa0cb2845a1bd199038115ead73f96173c",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 4
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized UGA allocation for UZX-000001, the Zero-X register and the enforcement the programme did not have. WHAT IT IS AND WHY IT EXISTS. adr/0021 stated the Universal Agnostic Architecture Principle and disclosed, in its own Consequences, that no gate, invariant or certification checked conformance to it and that the document created none. It kept none for fourteen days. The Zero-X programme reproduced that structure exactly one level up: twelve residue classes governed by a plan artifact -- which is not a governed instrument -- with nothing that would refuse a class declared with no detector, a detector shipped with no failing case, a ratchet with one ceiling where two are needed, or a class quietly regressing a stage. This register is that gate. WHAT MAKES IT DIFFERENT FROM A DOCUMENT. It never reads a stage. The register names classes, detectors and the cases that prove a detector can fail; engine/zero_class/measure.py computes every stage from what those actually do, and a test asserts no class entry carries a stage field at all. Stage 2 requires the detector to demonstrate BOTH directions: the register carries must_catch and must_not_catch source snippets, the engine feeds them to the detector and checks the verdicts, and a predicate that flags everything reaches stage 1 rather than stage 2. That requirement is measured rather than theoretical -- the first bypass detector in this session counted a declaration naming a tool as an invocation of it, and a detector with false positives can never honestly reach its floor. SELF-APPLICATION. ZX-SELF is a class in the register whose detector reports any class that cannot be resolved, run, or shown to fail in both directions, ceilinged at zero. A register that exempted itself would repeat adr/0021 precisely, one level up, which is the recurrence class adr/0041 names. WHAT THIS AUTHORIZES AND NOTHING ELSE. 4 permanent by_object identifiers, category_seq DATAOBJ 145->146, ENGINE 1383->1385 and TESTOBJ 898->899, measured by `uga_engine.py run --plan` over head d54d6ffa0cb2845a1bd199038115ead73f96173c after every file was final. Scoped to by_object alone. The register REFUSES NOTHING on its own: each class's refusal lives in that class's own ratchet, where it can name the file and the remedy. Three classes are declared and honestly NOT detected -- hardcoding, unprovable gates, and descriptions exceeding delivery -- each stating why, because a class honestly at stage 1 is a different thing from one nobody has thought of. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator asked whether the programme would be adhered to in future, was shown the measurement that it would not -- no zero-class register existed, none was bound in CAA, and the lifecycle lived only in a plan artifact -- was shown the permit parameters and what the instrument admits, and instructed 'Approved'. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-007",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "449e24c67cbdab7fc8f6be079e663f1d81a1dbeee21bac3c6a8940f2556ec5f7",
-      "preimage_digest": "a7a45d66572edcb6887050a71980e0fe76dabbcb52e433ee57a12d39d97ccd8f",
-      "head": "7e1a817aec72a9542b465163697025f0bd0f400b",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 2
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized corpus allocation registering adr/0042 and the Zero-X register as a declaration document. WHAT IT RECORDS AND WHY IT COULD NOT STAY AS PRACTICE. Two rules governed thirteen commits in one session and existed only in conversation, which CEP-002 Article 28.5 holds is not recorded at all: a later session, or a different agent, would inherit no obligation. The first is sequencing -- implement, test to a full pass, commit; on failure fix, test to a full pass, commit, and only then the next item -- with the lane's own preflight run locally first, because a lane spent discovering a formatting error measured nothing. The second is what zero means, and it needed stating because a residue count fell twice in that session without any work happening and both falls were lawful. ZERO IS REACHED BY DECLARING, NOT BY PRETENDING. A class reaches zero when every remaining instance carries a recorded, checkable disposition, which extends adr/0030 from requirements to counts. Four instances this session are complete without being migrated, including a bootstrap that locates the repository root before a provider can be rooted at it -- forcing that one would mean inventing a single-implementation abstraction to make a counter fall, which is the decoration adr/0021 warns against and adr/0040 measures. THREE CONSEQUENCES, EACH LEARNED FROM A DEFECT. Counts and declarations ratchet separately, because a single ratchet can be satisfied by writing a paragraph. MOVEMENTS distinguishes migration, declaration and correction, because collapsing them lets a number imply work that did not happen. A detector is trusted only with failing cases in BOTH directions, because false positives make a floor unreachable. WHAT THIS AUTHORIZES AND NOTHING ELSE. 2 permanent by_path identifiers, category_seq ADR 42->43 and ENG 26->27, page_cursor 13169->13173, measured by `ukb.py build --plan` over head 7e1a817aec72a9542b465163697025f0bd0f400b with the ADR and its decision record staged. Scoped to by_path alone. The ADR creates no gate and discloses that nothing checks conformance to the sequencing rule -- it is a discipline, recorded so a departure reads as a departure rather than as an ordinary way of working. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator stated the rule -- strict proper sequence, zero missing, zero gap, zero partial -- was shown that it existed only in conversation and therefore bound nothing, was shown the permit parameters and what the ADR does and does not create, and instructed 'ok'. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-009",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "56a685f8fbd5d1fd024f6d448ae877aee33190d399c3fa3e057be4cecfc4c296",
-      "preimage_digest": "1b02214b583b9660a3598e665e91f8b87061f144a7a25c6675570a7a1d5f2dce",
-      "head": "bef95b2caee58884663eb57a8843657256a34cf6",
-      "scope": {
-        "maps": [],
-        "max_allocations": 0
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized UGA re-derivation with ZERO allocation, admitting the edge-deriver registry and correcting one stale edge. WHAT THE CHANGE IS. The single line `if rel.endswith('.py')` at uga_engine.py's edge call site was the reason a file in any other language could never carry a dependency edge -- not because its dependencies are unknowable, but because nothing was ever asked. It is now a registry: EDGE_DERIVERS maps a suffix to the deriver that claims it, register_edge_deriver admits one, and a suffix nobody claims yields no edges, which is the same answer the branch gave, reached because nothing derives them rather than because the engine declined to ask. Registering a deriver is how a language becomes visible to dependency analysis (UCKP-ART-08, UCKP-ART-17). PROVEN FAITHFUL BEFORE THIS PERMIT WAS REQUESTED. derive_edges was run over all 5,448 registry objects and compared to python_imports called directly: identical for every one. The derivation is unchanged; only the dispatch is. WHY THE BYTES MOVE, AND IT IS NOT THE REGISTRY CHANGE. Exactly one object's edges differ from the committed registry: engine/tests/zero_class/test_zero_class_register.py gained an edge to engine/zero_class/__init__.py when the Omega-4 reachability failure was fixed by importing through the package -- AFTER that commit's UGA run had already been performed. Commit 7e1a817a therefore went green carrying a registry one edge behind the tree. THE GAP THAT HID IT, RECORDED BECAUSE IT IS THE MORE USEFUL FINDING. No gate compares the committed registry's edges against a fresh derivation. UGA-INV-01 measures that every object has an identity; nothing measures that every edge is current. A stale edge is invisible, which is the recurrence class adr/0041 names, and it is how a green commit came to carry one. WHAT THIS AUTHORIZES AND NOTHING ELSE. One `uga_engine.py run` re-derivation over head bef95b2caee58884663eb57a8843657256a34cf6 with total_allocations=0 -- no identifier is minted, reissued or reused, and no map gains an entry. Same shape as P-UCOS-CORPUS-005, which was required for a zero-allocation write whose bytes moved. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator was shown the registry change, the proof that derivation is unchanged across all 5,448 objects, the single stale edge and the reason no gate caught it, and instructed 'ok'. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-010",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "56a685f8fbd5d1fd024f6d448ae877aee33190d399c3fa3e057be4cecfc4c296",
-      "preimage_digest": "1b02214b583b9660a3598e665e91f8b87061f144a7a25c6675570a7a1d5f2dce",
-      "head": "e6f0c6ca5cb449c6780db12c844ecdd34258834d",
-      "scope": {
-        "maps": [],
-        "max_allocations": 0
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized UGA re-derivation with ZERO allocation, keying edge derivation on what an artifact IS rather than on what its filename ends with. WHAT CHANGED. The edge-deriver registry admitted under P-UCOS-UGA-009 was keyed by SUFFIX. engine/omega_infinite/classification.py declares four typing rules in precedence order -- Omega-T-01 provider-declared, Omega-T-02 content interpreter, Omega-T-03 content structure, Omega-T-04 suffix -- and that registry keyed on the FOURTH, the last resort. A Python file with no .py extension and a `#!/usr/bin/env python3` line is typed PYTHON by rule Omega-T-02 and would have carried no dependency edges, because its NAME did not end the right way. Derivers are now keyed by ArtifactType, so the entity answers for itself and a provider declaring its own artifacts' types makes them derivable with no registration call at all. MEASURED IMPACT TODAY IS ZERO, AND THAT IS STATED RATHER THAN GLOSSED. No tracked file is reclassified by asking properly: no non-.py file in this repository carries a Python shebang. The change is structural. It was verified behaviourally instead -- a file named `tool` with a python shebang now types PYTHON, and a file named notes.md types DOCUMENT. WHY THE BYTES MOVE. Exactly one object's edges change: uga_engine.py itself gains two genuine edges by importing the classifier. Every other object in the registry derives identically. NO BOOTSTRAPPING CYCLE, CHECKED RATHER THAN ASSUMED. The engine that PRODUCES the registry now imports the classification package, so the reachable set from that package was walked: two modules, neither reading the UGA registry. A classifier that consulted the registry its consumer produces would be a cycle, and it is not one. WHAT THIS AUTHORIZES AND NOTHING ELSE. One `uga_engine.py run` re-derivation over head e6f0c6ca5cb449c6780db12c844ecdd34258834d with total_allocations=0 -- no identifier minted, reissued or reused, and no map gains an entry. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator observed that derivation should come from entity, context and relationship rather than being limited to a suffix table, was shown that the registry keyed on the weakest of four declared rules, was shown the zero measured impact and the two new edges, and instructed 'ok'. The agent recorded that instruction; it did not originate it."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-011",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "3291163fb32c21dd24744099826991cd7119cabc6351e4207ded5a57ca18e521",
-      "preimage_digest": "1b02214b583b9660a3598e665e91f8b87061f144a7a25c6675570a7a1d5f2dce",
-      "head": "f2bb7c6637cf05dc1e17de5e1c8fb63df576bd2c",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 2
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "Operator-authorized UGA allocation for ZX-02, the detector that separates a type decision made by filename from a filename convention. WHAT IT MEASURES. UCKP-ART-15 requires every conclusion to be derived from the declared universe, and engine/omega_infinite/classification.py already declares how an artifact's type is decided: four rules in precedence order, with the suffix consulted LAST. A module branching on `path.endswith('.py')` has skipped the first three rules -- it is right for every file whose name happens to match and blind to a Python file with a shebang and no extension, which is the defect the edge deriver carried until it was keyed on the classified type. WHY THE DETECTOR SEPARATES THREE POPULATIONS THAT SHARE ONE SYNTAX. A filename CONVENTION is a rule about names and a name is the right thing to ask: `name.startswith('test_') and name.endswith('.py')' is pytest's own contract, and a detector flagging it would demand the removal of a correct rule. A DECLARED SCOPE names several kinds at once and states which file kinds a measurement covers rather than asking what one file is. A TYPE DECISION is a bare single-suffix test standing alone, and only that is the defect. Six cases pin both directions, including one asserting the REMEDIED form is never flagged, so the ceiling can actually reach zero rather than stalling on its own remedy. THE COUNT WAS WRONG TWICE BEFORE THIS. Earlier scans reported 70 and then 61 by counting any `.endswith` appearing in a module. The measured number is 51, and the ceiling is set to the measurement rather than above it: headroom above a measurement is exactly where a silent regression lives. There is no second ceiling and no exemption table, deliberately -- a type decision is either derived or it is not, so no paragraph can lower this count. WHAT THIS AUTHORIZES AND NOTHING ELSE. 2 permanent by_object identifiers, category_seq ENGINE 1385->1386 and TESTOBJ 899->900, measured by `uga_engine.py run --plan` over head f2bb7c6637cf05dc1e17de5e1c8fb63df576bd2c after every file was final. Scoped to by_object alone. The detector REFUSES a rise and proposes rather than rewrites: routing a decision through the classifier changes what a module measures and must be proven population-identical first, as the edge deriver was across 5,447 objects. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator observed that 'derived from entity' was followed in one place out of seventy and asked for it to be made perfect; was shown that the seventy included correct filename conventions which a naive fix would have broken, and that the honest first step was a detector distinguishing them rather than seventy edits; and instructed 'yes' and then 'ok'. The agent recorded those instructions; it did not originate them."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-012",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "579bea2f56a32dd74148ccbb6bcec2ccb435ca0ef9d1b221658de64db1d14155",
-      "preimage_digest": "07089e68e7df7b5b04bf00e1e9a4f041d6231f22ca1364790194297dec02a2d1",
-      "head": "776455a5afc436413398939d6d3a59a5fd5e780d",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 1
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. The operator was given the measured cost of this act \u2014 one EXECUTABLE_OBJECT identity, the three digests below, and its irreversibility under UCKP-ART-05 \u2014 declined the cheaper alternative of leaving the primitive inside a consumer module, and directed the allocation explicitly. Recorded here because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded; the agent's part is the transcript, not the decision. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. One identity for engine/compiler/partition.py, the shared substrate holding boundedness and federated visibility. Both engine.context.composition (which declares CXL-03 and CXL-04) and engine.runtime.context (ORL-05/ORL-12/ORL-13) now depend DOWNWARD on it, which closes the CYC-ARCHITECTURAL cycle engine.runtime -> engine.knowledge -> engine.context -> engine.runtime that UCOS-RIB-001 GATE-10 refuses. WHY ONE AND NOT FOUR. The alternative considered and reverted was relocating engine/runtime/bridge to engine/bridge, which minted four identities and orphaned four more \u2014 by_object is path-keyed and append-only \u2014 while fixing a symptom rather than the inversion. This mints one for a genuinely new object and orphans nothing."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-008",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "083b865b2011232ecd6c8a7445ce47764d04219fba6335f2a7eadd5b57b4c9d8",
-      "preimage_digest": "d4f63113e252a8aea807ccb739f9cdb2a304103e0c98c635a64e0e21294a6c93",
-      "head": "7b8b69a2b97eaa1bc45ce88c09ee9036cb483f62",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 1
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. One corpus identity for 02-MASTER/EC-3-BAND-REALIZATION-UNIT-REGISTER.md, category_seq MASTER 42->43, scoped to by_path alone, bound to the three digests above and single-use. WHAT THE DOCUMENT DOES. It becomes the definitional home of 47 EC-3 band realization units that UAKOS-CLOSURE-009 measured as CANONICAL-OWNERSHIP-INFERRED \u2014 certified, evidenced under */_evidence/, and owned by no document. Band 13's charter comes closest and disclaims the role in its own words: its unit table sits under 'Recommended default WBS ... Recommended, not binding', and a recommendation is not a definition. Every cell of the register is transcribed from an evidence file named in its input closure; the three units with no evidence directory are recorded as gaps rather than given rows they cannot support. Nothing in it is authored, which is what makes it assimilation under UCKP-ART-19 rather than invention. WHAT THE OPERATOR WAS TOLD BEFORE DIRECTING IT. The measured effect (assimilation 43.3515% -> 51.9%), the three digests, the irreversibility of allocation under UCKP-ART-05, and a review raising two objections AGAINST the act: first, that a register recording what each unit REALIZES may be traceability rather than definition \u2014 the same charge this session used to refuse evidence registers and a range citation as homes, so it applies to this document too; second, that its content is derived from evidence yet committed static, so it can silently go stale exactly as CLOSURE-009's registers once did, unless a test re-derives it from the evidence and refuses drift. The cheaper alternative \u2014 leaving the 47 units unowned and the number at 43.3515% \u2014 was stated. The operator directed installation explicitly. Recorded here because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded; the agent's part is the transcript, not the decision."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-013",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "63261ff1a7f40f01df9753a7f79bb1a58f8d498e49d32cecb0a21deec67f83f9",
-      "preimage_digest": "10dfb4d63741bbec9bd554ab6f10e5c9fffaf648819402d451df181a88e23fb2",
-      "head": "7b8b69a2b97eaa1bc45ce88c09ee9036cb483f62",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 6
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. Six by_object identities, category_seq EXDOC 3140->3146, for six navigation pages the REG-AUTO-001 transaction under P-UCOS-CORPUS-008 generated: 00-BOOK/PORTAL/UCOS-MASTER-000043.md, UCOS-ADR-000041.md, UCOS-ADR-000042.md, UCOS-ADR-000043.md, UCOS-ENG-000026.md and UCOS-ENG-000027.md. Portal pages are by_object artifacts \u2014 all 1686 existing ones are \u2014 so UGA-INV-01 EVERY_OBJECT_HAS_UNIVERSAL_ID and UGA-INV-10 EVERY_MUTATION_HAS_AUDIT_EVENT both refuse while they are anonymous, and four tests fail with them. WHY THIS IS A SECOND PERMIT AND NOT PART OF THE FIRST. The agent told the operator that installing the band unit register cost ONE identity. That was wrong: it costs one by_path plus six by_object, seven in total, and the error was discovered only when the post-installation suite refused. Only ONE of the six pages belongs to the register \u2014 UCOS-MASTER-000043 is its navigation page. The other five are pre-existing debt: ADR-000041/42/43 and ENG-000026/27 are pages for artifacts that already held identity and had never had a portal page rendered, and the registration transaction regenerated the portal and surfaced them. They would have surfaced on the next registration of any artifact whatsoever. The operator was shown the corrected cost, that five of the six are not attributable to this session's act, and the standing alternative of reverting the register instead, and directed the allocation explicitly. Recorded here because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded, and because UCKP-ART-05 makes an allocated identity permanent."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-009",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "ecf65dd1746d1669e944d515fd68cd766be482edb2007d5c95774e9a06812c40",
-      "preimage_digest": "778eaf4d66cf343b4976ba96ea281448822d8a17d1adc2947ff5ff1c6044ed86",
-      "head": "b239389ed9ffac3c629c1d9c5af05901fc3f77bf",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 1
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. One corpus identity for 02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md, category_seq CON, scoped to by_path alone, bound to the three digests above and single-use. WHAT THE DOCUMENT DOES. It becomes the definitional home of LAW omega-infinity 001 through 020, twenty constitutional laws that UAKOS-CLOSURE-009 measured as CANONICAL-OWNERSHIP-INFERRED. They are cited as binding across the corpus \u2014 'by LAW omega-infinity-000 and the 25 Constitutional Directives, every entity must' \u2014 and owned by no document. Every file carrying them was a gap register, an implementation-wave list or an inventory: they appeared only in records of what was missing. 01-UNREALIZED-CKO-INVENTORY.md had already recorded all twenty as unrealized constitutional knowledge objects, marked each READY, and located the source. NOTHING IN IT IS AUTHORED. Each statement is transcribed verbatim from PART XVI 'The Absolute Constitutional Laws' of 00-SOURCE/VISION/Missing 2.docx, the UCOS Omega-Infinity Absolute Architectural Constitution. No law is worded, numbered, ordered or interpreted by the register; that is what makes it assimilation under UCKP-ART-19 rather than enactment, and the register declares AUTHORITY = NONE on its face. WHAT IT DELIBERATELY OMITS. LAW omega-infinity-000 is cited elsewhere as carrying seven properties and does NOT appear in PART XVI. The register therefore does not claim it, and says so: a law it cannot transcribe is a law it does not claim. Writing a plausible statement for it would have been the difference between assimilation and invention. WHAT THE OPERATOR WAS TOLD. The source was located and read before drafting; the measured effect is assimilation 285 -> 305 of 549; the allocation is irreversible under UCKP-ART-05. Recorded here because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded; the agent's part is the transcript, not the decision."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-014",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "03905175f17cade0a2a511f2505c55565d10ef168a109c12b33cc03d6ac38fc3",
-      "preimage_digest": "9e324330133d8c30c6c20d191f919365cadc98e26a451313a98608799aa3bf47",
-      "head": "b239389ed9ffac3c629c1d9c5af05901fc3f77bf",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 1
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. One by_object identity for 00-BOOK/PORTAL/UCOS-CON-000086.md, the navigation page REG-AUTO-001 generated when 02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md was registered under P-UCOS-CORPUS-009. Portal pages are by_object artifacts \u2014 all 1686 existing ones are \u2014 so UGA-INV-01 EVERY_OBJECT_HAS_UNIVERSAL_ID and UGA-INV-10 EVERY_MUTATION_HAS_AUDIT_EVENT both refuse while it is anonymous. THIS ONE WAS PREDICTED. The previous registration produced six such pages and needed an unforeseen second permit; the agent told the operator before this registration ran that a portal page would follow and a small by_object permit would be needed. It is one page rather than six because the five extra pages last time were pre-existing debt for artifacts that already held identity and had never had a page rendered \u2014 that backlog is now discharged, so this registration created only its own. TOTAL COST OF THE LAWS REGISTER: two identities, one by_path and one by_object, against the twenty constitutional laws it homes. Recorded here because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded, and because UCKP-ART-05 makes an allocated identity permanent."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-010",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "10515b81aad15b93a217b74d805b3ba6580757e4ca667e9ecdb1fd694142e9e9",
-      "preimage_digest": "3a897ccaa1d53ed276e4a9f678abd04ea00c39389179e2f673d17dc0a241bd6a",
-      "head": "b239389ed9ffac3c629c1d9c5af05901fc3f77bf",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 1
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. One corpus identity for 02-MASTER/UCOS-COMPILER-COMPONENT-REGISTER.md, category_seq MASTER, scoped to by_path alone, bound to the three digests above and single-use. WHAT THE DOCUMENT DOES. It becomes the definitional home of 85 UCOS-COMP compiler components across nine families that UAKOS-CLOSURE-009 measured as CANONICAL-OWNERSHIP-INFERRED. UCOS-COMP is referenced by 100 identifiers across the corpus and only two have ever had a document; the rest appeared solely in gap registers, implementation-wave lists and backlogs, which are records of what is missing. NOTHING IN IT IS AUTHORED. Each Purpose is transcribed from the Purpose field the source states for that component, trimmed to its first sentence and to nothing else, from 00-SOURCE/ARCHITECTURE/UCOS Omega-Infinity - Universal Platform.docx, PHASE-003 Documents 02 through 10. No component is named, numbered, ordered, specified or interpreted by the register, which is what makes it assimilation under UCKP-ART-19 rather than design, and it declares AUTHORITY = NONE on its face. WHAT IT DELIBERATELY OMITS. Nine identifiers ending in -000 (001000, 002000 through 009000) are absent. They carry no Purpose in the source because they are section headings introducing each family, not components. A heading is not a component, and an identifier the register cannot transcribe is one it does not claim, which is the same rule that kept LAW Omega-Infinity-000 out of the constitutional laws register under P-UCOS-CORPUS-009. WHAT THE OPERATOR WAS TOLD. The source was read before drafting and four entries spot-checked verbatim against it; the extraction is mechanical over a 4.2-million-character document and a sample should be reviewed; homing was verified using the engine's own _HEAD_RANGE and _definitional_body_id rather than a reimplementation, after a hand-written regex gave a false confirmation for the laws register and had to be corrected; the measured effect is assimilation 305 to 390 of 549; and a by_object permit for the navigation page will follow, as it did for both registers before this. Recorded here because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-015",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "e3d765de3a6436dc128f783350746dcc6f9bfe28ceb46c3dff8342fbe4c4ff24",
-      "preimage_digest": "66b47b845fc39499844e9e576b3419fe37912bdbfef2f7cd9021337e39ed97c7",
-      "head": "b239389ed9ffac3c629c1d9c5af05901fc3f77bf",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 1
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. One by_object identity for 00-BOOK/PORTAL/UCOS-MASTER-000044.md, the navigation page for 02-MASTER/UCOS-COMPILER-COMPONENT-REGISTER.md registered under P-UCOS-CORPUS-010. Portal pages are by_object artifacts, so UGA-INV-01 and UGA-INV-10 both refuse while it is anonymous. WHEN IT APPEARED, AND A CORRECTION. The agent told the operator this permit would follow, then checked immediately after the registration transaction, saw UGA pass with no anonymous object, and reported that the prediction had been wrong. It had not been: the page is rendered by the downstream register regeneration rather than by the transaction itself, so it appeared on the next pass and the original prediction held. The correction was issued too early on one observation, and is recorded here rather than left as a retracted claim, because the sequence matters for anyone registering the next artifact: registration allocates the corpus identity, the following regeneration renders the page, and the page needs its own identity. Two permits per register, in that order. Recorded because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded, and because UCKP-ART-05 makes an allocated identity permanent."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-016",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "ed1afc22d30845f3f1247d78905c25c15d45c50525fac9bb3d3f08c35e1caa80",
-      "preimage_digest": "8c1cbb98c62ece357fd0ec90621a6179805c05c04df90ef72350a217a5fe75b2",
-      "head": "5f8016c533802ec5c4c13a0cdc448c77fd5ff325",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 1
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. The operator was shown the scope, the digests, the identity that would be issued and the irreversibility, and answered \"authorize P-UCOS-UGA-016\". WHAT IT ALLOCATES. Exactly one by_object identity, for 00-MASTER/UCCFA-000001/uccfa-declaration.json, the UCCFA-000001 Universal Coordinate Framework Alignment declaration. `uga_engine.py run --plan` reports [by_object+1] with category_seq(DATAOBJ:146->147), so the identity issued would be UCOS-DATAOBJ-000147 \u2014 the same object class and category its sibling UCPA-000001 carries as UCOS-DATAOBJ-000123. WHY IT IS NEEDED. `uga_engine.py gate` reports ANONYMOUS OBJECTS: 1 and fails UGA-INV-01 and UGA-INV-10 on that path; a tracked file with no Universal ID is an anonymous object and both invariants refuse while it stays that way. WHY NOTHING ELSE IS NEEDED. CAA-INV-02 already PASSES over 146 measured instruments: the declaration's `authority` field opens with the `NONE` disclaiming prefix, identical to UCPA-000001's, so it claims no authority and needs no subordinate_instruments binding. The registration plane is clean \u2014 `register.sh --observe` reports CERTIFIED, hard checks 7/7. WHAT IT DOES NOT COVER. The gate module engine/coordinate_framework/ is not placed and not in scope here; its five files would be EXECUTABLE_OBJECT/ENGINE allocations under a separate permit. IRREVERSIBILITY. Identity allocation is permanent and not operator-remediable: UCKP-ART-05 forbids reissue, so a wrongly minted id is spent forever. The digests above bind this permit to this manifest, this pre-image and HEAD 5f8016c5; if the tree changes before it runs, the binding no longer matches and the permit is refused rather than silently applied."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-017",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "e69c06f2cea55ab22c93f1b2b4994d3da64d51b0abf5d9f61a73f7d79d4f21c2",
-      "preimage_digest": "c4495680b3b6701d0a7d2b038eef4aef255afdd07a31f4e34b954120702e2d70",
-      "head": "5f8016c533802ec5c4c13a0cdc448c77fd5ff325",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 4
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. The operator was shown the scope, the four paths, the digests and the irreversibility in the preceding turn, and answered \"Check all with 'no Universal IDs yet', fix them permanently\". WHAT IT ALLOCATES. Four by_object identities, for the consumer of the UCCFA-000001 declaration registered under P-UCOS-UGA-016: engine/coordinate_framework/__init__.py, engine/coordinate_framework/contract.py and engine/coordinate_framework/gate.py (EXECUTABLE_OBJECT/ENGINE, seq 1387->1390) and engine/tests/unit/test_coordinate_framework.py (TESTOBJ, seq 900->901). WHY IT IS NEEDED. UEC-L-07 refused the declaration alone: 'the number of declarations no module loads may not exceed the declared ceiling \u2014 every field of an unloaded declaration is unenforced', and 4 violated a ceiling of 3. A declaration nothing loads is exactly the condition UCCFA exists to complain about, so the fix is the consumer rather than a raised ceiling. With the module present UEC reports 16/16 laws holding, 0 refused. UVI-L-11 is the remaining refusal and it resolves on this allocation: the declared read-set prefix 'engine/coordinate_framework/' currently resolves to no REGISTERED object, because these four files carry no Universal ID yet. WHAT IT ALSO SETTLED. Three further obligations a new gate engine incurs, all now met: UEC-L-04 (invoked by a plane) and UEC-L-06 (reachable from two independent planes) by a verify.sh stage plus `make uccfa` / `make uccfa-gate`; UEC-L-05 (a detector with no test is one nobody has shown can fail) by 40 tests at 100% coverage of all three modules, each of the six laws exercised in both directions. UEC-L-03 was satisfied by adopting the four discovered artifacts into governed_enforcement, emitted by the module's own inventory() rather than hand-typed, with the two-sided ratchet moved 197->201 to match \u2014 that ratchet counts GOVERNED artifacts, so growth is the direction it exists to record. WHAT IT DOES NOT COVER. No further files. IRREVERSIBILITY. Identity allocation is permanent and not operator-remediable; UCKP-ART-05 forbids reissue. The digests bind this permit to this manifest, this pre-image and HEAD 5f8016c5; if the tree changes before it runs the binding no longer matches and the permit is refused rather than silently applied."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-011",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "34d7709cd1c099baa26ecad31c6a6d51c43e73e0a0e69744350dac38a3c6a354",
-      "preimage_digest": "4adf80e1dda90bebd95635dde57c077cc825376c81f846d7bb471a058e58db7e",
-      "head": "f6ce20a7af527464b7d8c838892cef6dd8535575",
-      "scope": {
-        "maps": [
-          "history"
-        ],
-        "max_allocations": 0
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. The operator was shown the manifest, the pre-image, the HEAD and the irreversibility in the preceding turn, and answered \"I want everything perfect in 100% with ZERO GAP, ZERO PARTIAL, ZERO SHORTCUT, ZERO MISSING, ZERO PATCH\" and then \"resume\". WHAT IT MUTATES. No identity and no page range: `ukb.py build --plan` reports total_allocations=0 and the allocation manifest empty. The write appends exactly one snapshot to `history`, for UCOS-CON-000086 (02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md), whose content_hash e9aa8e43 recorded at seq 1 predates commit cbc91bbe, which changed that document's bytes (now 8c073015) while no registration transaction ran since. WHY IT IS NEEDED. `register.sh --guard` runs the phase-1 mint with the verified NO_ALLOCATION claim, and that claim is measured against the WHOLE document, not only the allocation projection \u2014 so the pending history append is refused until authorized. The refusal is correct: an unregistered content change is the condition the ledger exists to prevent, and CK-REG-DRIFT (UCCEP G-07) holds the aggregate certifier at NOT-CERTIFIED, which binds through UFEP-CC-01/02 to hold the freeze gate CLOSED, until it clears. WHY NOTHING ELSE IS NEEDED. No new file enters the corpus, so no by_path or by_object allocation is in play; `ukb enforce --pre` already reports 1687 eligible, 1687 registered, 0 unclassified, and the reconciled-set drift is 0. WHAT IT DOES NOT COVER. No artifact of its own; no second snapshot; the permit is spent the moment `history` moves, because its pre-image binding no longer matches. IRREVERSIBILITY. The ledger is governed evolution state and append-only (UCKP-ART-12): the snapshot, once written, is permanent and not operator-remediable. The digests bind this permit to this manifest, this pre-image and HEAD f6ce20a7; if the tree moves before it runs the binding no longer matches and the write is refused rather than silently applied."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-012",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "433586378592f1346e7c9e98ab9e900f7d396925dad0dfb5a4bbd9bf01fa7b63",
-      "preimage_digest": "9a2d4da1aba6fd83c0d30f0dc06fe490c6d764366513929d4f87d6d209fb62ac",
-      "head": "196ff6937ecc07a01f76db8d48d57c94f6b2f201",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 1
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it: the operator directed \"get everything 100% perfect, and make it Unconditionally ready\". WHAT IT ALLOCATES. Exactly one by_path identity, for 02-MASTER/UCOS-PROGRAM-FAMILY-CONCEPT-REGISTER.md (MASTER, seq 44->45, page range 13179->13185): the canonical definitional home of the forty-two program-family concepts whose authoritative origin rows live in operational memory (`00-MASTER/UAKOS-PHASE-001A-R1/01-AUTHORITATIVE-ORIGIN-REGISTER.md`), which this repository's eligibility configuration excludes from canonical-home standing. WHY IT IS NEEDED. CEP-002 Art. 14.1 requires the canonical owner of a concept to be registered; the register's forty-two rows declare those homes, and `platform.universal_ownership.cli homing` keeps the subjects unresolved until the declaring artifact itself carries an identity (LOCATOR-NOT-REGISTERED is the engine naming this exact condition). WHAT THIS DOES NOT DO. It allocates no other identity and mints no knowledge: every row it homes is transcribed verbatim from the origin register and cited per row. IRREVERSIBILITY. Identity allocation is permanent and not operator-remediable (UCKP-ART-05 forbids reissue). The digests bind this permit to this manifest, this pre-image and HEAD 196ff693; if the tree moves before it runs the binding no longer matches and the write is refused rather than silently applied."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-018",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "378912cabdb52d017fd422bc276d40cf654937cbe32d07a4608bca6382870e15",
-      "preimage_digest": "16582f5015e490bcb5b7d147d7b9a2252d8406fc5bd66d15d20bc982c6e2871b",
-      "head": "196ff6937ecc07a01f76db8d48d57c94f6b2f201",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 1
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it: the operator directed \"get everything 100% perfect, and make it Unconditionally ready\". WHAT IT ALLOCATES. Exactly one by_object identity, for 00-BOOK/PORTAL/UCOS-MASTER-000045.md \u2014 the navigation page the registration transaction under P-UCOS-CORPUS-012 emitted for 02-MASTER/UCOS-PROGRAM-FAMILY-CONCEPT-REGISTER.md (EXECUTABLE-class projection? no: EXDOC, category_seq 3148->3149), the same shape every portal page carries. WHY IT IS NEEDED. UGA-INV-01 refuses a tracked file without a Universal ID, and the pre-commit hook held the registration commit for exactly this reason. WHAT THIS DOES NOT DO. No other allocation; the portal page inherits the identity discipline of its family and mints no knowledge of its own. IRREVERSIBILITY. Permanent, not operator-remediable (UCKP-ART-05). The digests bind this permit to this manifest, this pre-image and HEAD 196ff693."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-013",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "98db26a2bba18579c3d047ce5fb092f7738a6fb910fb2337045cdd8c396eaf88",
-      "preimage_digest": "9b5ec214326516022f5c054fce8d719ecc9f408bb5846722f129b0e891615728",
-      "head": "696b18c473654391a59303a0beb6a294263a0ef2",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 1
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it: the operator directed \"Make 549/549 subjects declared, 100.0% coverage, unconditional ready.\" WHAT IT ALLOCATES. One by_path identity for 02-MASTER/UCOS-RAT-002-CONSTITUENT-RATIFICATION-AND-TIER-1-CLOSURE-DETERMINATION.md (CON, seq 86->87, pages 13185-13187) - the record of the constituent act that ratifies CMG-000001, occupies T1, and closes the questions and the vacancy that held readiness provisional. WHY IT IS NEEDED. A tracked constitutional artifact without an identity is an anonymous object and UGA-INV-01 refuses it; the registration transaction is the one authority that allocates identities. IRREVERSIBILITY. Permanent, not operator-remediable (UCKP-ART-05). The digests bind this permit to this manifest, this pre-image and HEAD 696b18c4."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-019",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "ac953b935b484f54db7efc6dfbdfc86a99736ee1ecf76a59ed0cfbbeb89f38a0",
-      "preimage_digest": "3d4fe09dd2d44d9f3cc43f11ef5898f6d13c2b64bdcb566614554505e1aa0285",
-      "head": "696b18c473654391a59303a0beb6a294263a0ef2",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 1
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION (\"Make 549/549 subjects declared, 100.0% coverage, unconditional ready\"), transcribed by the agent rather than composed by it. WHAT IT ALLOCATES. Exactly one by_object identity for 00-BOOK/PORTAL/UCOS-CON-000087.md, the navigation page emitted by the registration transaction under P-UCOS-CORPUS-013 for 02-MASTER/UCOS-RAT-002 (EXDOC, seq 3149->3150) - the same shape every portal page carries. WHY IT IS NEEDED. UGA-INV-01 refuses a tracked file without a Universal ID; the pre-commit held the commit for exactly this. WHAT IT DOES NOT COVER. No other identity; no knowledge is minted here. IRREVERSIBILITY. Permanent (UCKP-ART-05); bound to this manifest, pre-image and HEAD 696b18c4."
-    },
-    {
-      "permit_id": "P-UCOS-CORPUS-014",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "34d7709cd1c099baa26ecad31c6a6d51c43e73e0a0e69744350dac38a3c6a354",
-      "preimage_digest": "d5c9e5672d2a067388bd69c62db1a83334bb4e70ee1e250249bcf7df003b4640",
-      "head": "dc992b929eecda241a4d0f922e111d862438dc86",
-      "scope": {
-        "maps": [],
-        "max_allocations": 0
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION (\"issue the registration permit\"), transcribed by the agent rather than composed by it. The three bindings below are a transcription of `ukb.py build --plan` at HEAD dc992b92, which is what that command exists to produce. WHAT IT ALLOCATES. NOTHING. The plan measures total_allocations=0 and `scope.maps` is empty, so this permit cannot authorize a single identity: the moment the manifest allocates anything it stops matching the digest and is refused. WHAT IT AUTHORIZES INSTEAD. The ledger MUTATION the NO_ALLOCATION sentinel correctly refused - `history` gains a content_hash entry for each registered artifact whose bytes moved. WHY IT IS NEEDED. Registered artifacts drifted from the ledger across the 82 commits between fccb5119, the last commit CI observed, and this HEAD; `register.sh --guard` refused with \"top-level key(s) ['history'] differ from the pre-image\", and CK-REG-DRIFT has blocked UCCEP and, through it, ACEE ever since. WHAT IT DOES NOT COVER. No identity, no new artifact, no knowledge, and no other head: `preimage_digest` self-invalidates the moment the ledger moves and `head` binds it to this commit, so it is spent by its own use. IRREVERSIBILITY. The history append is permanent (UCKP-ART-12, append-only); no identity is minted, so UCKP-ART-05 is not engaged."
-    },
-    {
-      "permit_id": "P-UCOS-UGA-020",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "3bd1adf32ddf36eb4bba2d8611344569a5526ba41f80e7b6c7109228f727ee61",
-      "preimage_digest": "e7483de75d1a15daf505f1b179de8c092ad8955bfd76e247aac7d0a7af4d5623",
-      "head": "7bf65aa357881ecbb14d03bda6349ab7550e289f",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 4
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION (\"Issue the permit and keep going in sequence\"), transcribed by the agent rather than composed by it. The three bindings above are a transcription of `uga_engine.py run --plan` at HEAD 7bf65aa3, which is what that command exists to produce. WHAT IT ALLOCATES. Exactly four by_object identities, for the four files that give CAEM-001 a producer and a governed disposition register: caem_engine.py (ENGINE, seq 1390->1391); 06-MANDATE-CORPUS.json and 07-MANDATE-DISPOSITION.json (DATAOBJ, seq 147->149); 08-MANDATE-DISPOSITION-REGISTER.md (EXDOC, seq 3150->3151). WHY IT IS NEEDED. Six governing documents state 1,449 mandates. CAEM-001 \u00a71 mapped thirteen of them to canonical homes by hand and recorded why it had to be by hand. These four files carry that act to the whole corpus without repeating it: the corpus is transcribed once, the disposition is measured reproducibly, and every row stays PROVISIONAL because semantic equivalence is forbidden to an engine. UGA-INV-01 refuses a tracked file without a Universal ID, so the commit cannot land without this. WHAT IT DOES NOT COVER. No other identity, no knowledge minting, no corpus registration -- these are Operational Memory under 00-MASTER/, not corpus, and the plan's own report bounds it at four. IRREVERSIBILITY. Permanent (UCKP-ART-05); bound to this manifest, pre-image and HEAD 7bf65aa3, and single-use."
-    },
-    {
-      "permit_id": "P-UCOS-MANDATE-CONFORMANCE-001",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "3e9139bb0edea9ef1135e6840499ad3d1e3df35886089084227034438f5fc186",
-      "preimage_digest": "9301f0bae0a2fb36da09c02138e6e64a9b9062845999a19797c10fd6aec410f9",
-      "head": "fea8a8652008e6acca6ce7e787b9357ed661daf0",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 7
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED IN SESSION (the operator was asked how to proceed on new tracked files and answered \"Issue a permit\", then \"Implement all in sequence\"), transcribed by the agent rather than composed by it. The three bindings above are a transcription of `uga_engine.py run --plan` at HEAD fea8a865, which is what that command exists to produce. WHAT IT ALLOCATES. Exactly seven by_object identities (TESTOBJ, seq 901->908) for one shared reader and six mandate-conformance suites under engine/tests/conformance/: mandate_corpus.py and test_mandates_{prd,index,arch,uakp,model,layers}.py, one suite per governing document. WHY IT IS NEEDED. Six documents state 1,449 mandates, and discharging one means a test or a gate that names it and asserts the property against its located owner. The first six waves were appended to engine/tests/uckp/test_{layer_zero,universe_and_validation,alignment}.py, each of which declares a scope its new contents exceeded -- and a suite whose declared scope no longer describes what it asserts is the drift these bindings exist to catch. This permit buys the written waves a home that matches them and the remaining sections a place to land. UGA-INV-01 refuses a tracked file without a Universal ID, so the commit cannot land without it. WHAT IT DOES NOT COVER. No other identity, no knowledge minting, no corpus registration, and no file outside engine/tests/conformance/. The plan's own report bounds it at seven. IRREVERSIBILITY. Permanent (UCKP-ART-05); bound to this manifest, pre-image and HEAD fea8a865, and single-use."
-    },
-    {
-      "permit_id": "P-UCOS-REG-AUTO-001",
-      "actor": "UMB-IMP-001 :: ukb.py build --mint",
-      "manifest_digest": "31897c3ba98f36257f560d93acad25815726c56f1a9e22f9babb48c90478ff02",
-      "preimage_digest": "066a8f6c11bd2498ae597d3e262f5bc2c5084960e3aac239c40796842316a376",
-      "head": "0e13b5257d02f6a0c49208414c9bec593da4a67d",
-      "scope": {
-        "maps": [
-          "by_path"
-        ],
-        "max_allocations": 2
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED - registration of two master requirement documents"
-    },
-    {
-      "permit_id": "P-UCOS-UGA-PORTAL-001",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "17609c53ada3b03dc3f9871c8131b9a9f9a8dd6ba3a914e29ac7340f526e0374",
-      "preimage_digest": "5446c7761bbfae7abaa83670c3908a036deee8b995b9e84d07e6cc5b78e8ed1b",
-      "head": "0e13b5257d02f6a0c49208414c9bec593da4a67d",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 2
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED - allocation of two portal identities for the registered master files"
-    },
-    {
-      "permit_id": "P-UCOS-UGA-BLOCKER-DOCS-001",
-      "actor": "UCOS-UGA-001 :: uga_engine.py run",
-      "manifest_digest": "5503bbfcf7125e29c4a571429e31b074ba7b1dcf780f9f8a526d913a77875e80",
-      "preimage_digest": "85df03dfdc61755cd6d07672ba0ab1df90fd302b566a0bcb68a96cace4fcc2e4",
-      "head": "e60cbb3e2beb025791b1241b2257a507044df38a",
-      "scope": {
-        "maps": [
-          "by_object"
-        ],
-        "max_allocations": 4
-      },
-      "expires_at": null,
-      "single_use": true,
-      "$authorization": "OPERATOR-AUTHORIZED - allocation of 4 identities for blocker closure documents"
-    }
-  ]
+  {
+   "permit_id": "P-UCOS-RECOVERY-002",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "5ae1762b8f41e7f566c7802935b6e27e76ec34fbf05af217354a95c10740851a",
+   "preimage_digest": "cd0d3637711527db9bcceadff6e504851547b645e27e2bd775988d8eb628abab",
+   "head": "77798202d2df43285760b3277f230ebde4b52bbc",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 79
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized identity allocation clearing UGA-INV-01 and UGA-INV-10. Approves the one manifest `uga_engine.py run --plan` measured over the index at head 77798202: 79 permanent by_object identifiers for the artifacts bound to version control in this transaction — the universal_discovery, omega_infinite and omega_governance packages and their suites, the Omega and UCI gate artifacts, the vendored UAKOS-CLOSURE-008 evidence, ledger_authority.py, and this permit register itself, which must be tracked because it is the audit record of every irreversible allocation and cannot authorize what it does not survive. Scoped to by_object alone: by_path is UMB-IMP-001's map and this permit grants nothing there. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves, so a replay is refused by _verify_permit rather than by convention."
+  },
+  {
+   "permit_id": "P-UCOS-RECOVERY-003",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "7619ca7926f06b15ddbd84f0ac2d47a4875411b51c7b307724b2488288cfc69c",
+   "preimage_digest": "e414078534af01ce6032a7008609494b4ec0cdb17d71c87ebd65d598edff1b3b",
+   "head": "77798202d2df43285760b3277f230ebde4b52bbc",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 14
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized identity allocation completing the recovery integration, under the same authority as P-UCOS-RECOVERY-002. Approves the one manifest `uga_engine.py run --plan` measured over the index: 14 permanent by_object identifiers for the objects this transaction's remedial work created - engine/ledger_authority/__init__.py at its new path, and the thirteen modules of engine/tests/omega_governance/, the suite that makes engine/omega_governance/ reachable and measured rather than code no import, plane or entry point reaches. The identifier the authority held at 00-BOOK/tools/ledger_authority.py is RETIRED rather than reissued, which is what append-only means for a move: the old path keeps its identity forever and the new path gets its own. Scoped to by_object alone. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves."
+  },
+  {
+   "permit_id": "P-UCOS-COVERAGE-001",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "c5662a5965100007801a52ebee1be21727cbf763ef3cd6ab7b9dc74cd122d54a",
+   "preimage_digest": "c91f61451e5422f8a95ab62c7033c53839d737a62194c70dd5c5276a77aec8de",
+   "head": "a4f56e83e73fbe074cff9b089c9aa32b3b960560",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 101
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized identity allocation clearing UGA-INV-01, UGA-INV-05 and UGA-INV-10. Approves the one manifest `uga_engine.py run --plan` measured over the index at head a4f56e83e73fbe074cff9b089c9aa32b3b960560: 101 permanent by_object identifiers, in two groups the operator was shown separately, 84 predating this transaction and 17 created by it. THE FIRST GROUP, 84, PREDATES THIS TRANSACTION and is debt the gate has been reporting against itself: 53 determination and report markdown documents at the repository root and under 00-MASTER/, the 8 context and independence registers under 00-BOOK/DATA/ bound to version control by commit 3c1a2530 (UCOS-UCTX-001), ukctx.py and its 5 sibling tools, the 6 engine modules of engine/substrate/ and engine/omega_infinite/, 7 of their test modules, the uctx and ufi gate workflows, EXECUTION-BACKLOG.json and UCOS-SUB-001's own declaration. `./verify.sh` has refused on these since they were tracked; a gate measuring its own debt and refusing to discharge it is precisely what UGA-INV-01 is for, and this permit is the instrument that was always required to answer it. Six of them are the producers behind UGA-INV-05: .claude/CLAUDE.md, AGENTS.md, .cursor/rules/ucos.mdc, .kiro/steering/ucos.md, .github/copilot-instructions.md and 00-BOOK/CONTEXT/ are generated by an anonymous ukctx.py, so that invariant closes as a consequence of the first group and not by a separate act. THE SECOND GROUP, 17, IS THIS TRANSACTION'S OWN WORK: 16 test modules admitted by the coverage programme that took the repository above 97.1942% under the CD-02 floor, and the sub-gate workflow that runs UCOS-SUB-001 in CI. They must be tracked to exist - a suite that runs locally and is present in no clone is the exact defect Omega-4's unreachable_artifacts note already records - and a tracked file is a UCOS-UGA-001 object, so identity is what admitting them costs. Scoped to by_object alone: by_path is UMB-IMP-001's map and this permit grants nothing there. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves, so a replay is refused by _verify_permit rather than by convention."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-001",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "6e3068cbc9a5724b364cacff65e552895e44c12958f700af0745b819de19d4da",
+   "preimage_digest": "bf99fda3f640d7f28c71e924b7fb84709f2d011e5e53ef53141e9eeeab9519b6",
+   "head": "a4f56e83e73fbe074cff9b089c9aa32b3b960560",
+   "scope": {
+    "maps": [
+     "by_path"
+    ],
+    "max_allocations": 9
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized CORPUS_REGISTRATION reconciling the identity gap that `register.sh --observe` has been reporting as a FAILED observation (exit 4), which is the one stage `./verify.sh --full` admits that `--integration` does not. Approves the one manifest `ukb.py build --mint --plan` measured over the index at head a4f56e83e73fbe074cff9b089c9aa32b3b960560: 9 permanent by_path identifiers and their artifacts.json entries. WHAT THE 9 ARE, AND THAT NONE OF THEM IS THIS PROGRAMME'S WORK. All nine are root-level determination and analysis documents committed by 3c1a2530 on 2026-09-01: CHANGE-SET-CERTIFICATION-DETERMINATION.md, COMMIT-CLOSURE-DETERMINATION.md, GENERATED-ARTIFACT-COMMIT-AUTHORITY-DETERMINATION.md, ROOT-CAUSE-ANALYSIS.md, SHELL-OBSERVABILITY-CLOSURE-DETERMINATION.md, UFI-NO-CELL-ROOT-CAUSE.md, UNCONDITIONAL-COMMIT-READINESS-DETERMINATION.md, UNIVERSAL-CERTIFICATION-CLOSURE-DETERMINATION.md and W4-UFI-FAILURE-MATRIX.md. They are eligible artifacts that entered the corpus boundary without a corpus registration, and the coverage programme that raised this repository above 98% neither authored nor modified any of them. It surfaced them: the observation stage was never reached while earlier stages failed. WHY THIS IS A SECOND AUTHORIZATION AND NOT A CONTINUATION OF THE FIRST. P-UCOS-COVERAGE-001 allocated by_object identity under UCOS-UGA-001 and these nine already hold it - the observation report says so in terms, `these artifacts already hold UGA identity - they are not anonymous`. What is missing is a different thing owned by a different authority: the by_path map is UMB-IMP-001's, CORPUS_REGISTRATION is its own class in 00-BOOK/DATA/mutation-governance-boundary.json, and REG-AUTO-001 governs it. Scoped to by_path alone, so this permit grants nothing in by_object. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves, so a replay is refused by _verify_permit rather than by convention."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-002",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "6e3068cbc9a5724b364cacff65e552895e44c12958f700af0745b819de19d4da",
+   "preimage_digest": "bf99fda3f640d7f28c71e924b7fb84709f2d011e5e53ef53141e9eeeab9519b6",
+   "head": "fe094ad1e6e3c8dbdfcd11a953a7f2f837f34491",
+   "scope": {
+    "maps": [
+     "by_path"
+    ],
+    "max_allocations": 9
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized CORPUS_REGISTRATION reconciling the identity gap that `register.sh --observe` has been reporting as a FAILED observation (exit 4), which is the one stage `./verify.sh --full` admits that `--integration` does not. Approves the one manifest `ukb.py build --mint --plan` measured over the index at head fe094ad1e6e3c8dbdfcd11a953a7f2f837f34491: 9 permanent by_path identifiers and their artifacts.json entries. WHAT THE 9 ARE, AND THAT NONE OF THEM IS THIS PROGRAMME'S WORK. All nine are root-level determination and analysis documents committed by 3c1a2530 on 2026-09-01: CHANGE-SET-CERTIFICATION-DETERMINATION.md, COMMIT-CLOSURE-DETERMINATION.md, GENERATED-ARTIFACT-COMMIT-AUTHORITY-DETERMINATION.md, ROOT-CAUSE-ANALYSIS.md, SHELL-OBSERVABILITY-CLOSURE-DETERMINATION.md, UFI-NO-CELL-ROOT-CAUSE.md, UNCONDITIONAL-COMMIT-READINESS-DETERMINATION.md, UNIVERSAL-CERTIFICATION-CLOSURE-DETERMINATION.md and W4-UFI-FAILURE-MATRIX.md. They are eligible artifacts that entered the corpus boundary without a corpus registration, and the coverage programme that raised this repository above 98% neither authored nor modified any of them. It surfaced them: the observation stage was never reached while earlier stages failed. WHY THIS IS A SECOND AUTHORIZATION AND NOT A CONTINUATION OF THE FIRST. P-UCOS-COVERAGE-001 allocated by_object identity under UCOS-UGA-001 and these nine already hold it - the observation report says so in terms, `these artifacts already hold UGA identity - they are not anonymous`. What is missing is a different thing owned by a different authority: the by_path map is UMB-IMP-001's, CORPUS_REGISTRATION is its own class in 00-BOOK/DATA/mutation-governance-boundary.json, and REG-AUTO-001 governs it. Scoped to by_path alone, so this permit grants nothing in by_object. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves, so a replay is refused by _verify_permit rather than by convention. SUPERSEDES P-UCOS-CORPUS-001, WHICH WAS NEVER SPENT. That permit authorized this exact allocation - identical manifest_digest and preimage_digest - but bound head a4f56e83, and the coverage programme's own commit moved HEAD before it could be exercised, so _verify_permit's repository binding refuses it. It is left in place because this register is append-only and a withdrawn authorization is not a thing it can express; it is dead by binding rather than by deletion, which is the stronger guarantee. The register already carries three permits bound to an earlier head for the same reason."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-003",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "6e3068cbc9a5724b364cacff65e552895e44c12958f700af0745b819de19d4da",
+   "preimage_digest": "bf99fda3f640d7f28c71e924b7fb84709f2d011e5e53ef53141e9eeeab9519b6",
+   "head": "3e5d28805aba40eb8bb4095a6fde12d772bd1f52",
+   "scope": {
+    "maps": [
+     "by_path"
+    ],
+    "max_allocations": 9
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized CORPUS_REGISTRATION reconciling the identity gap that `register.sh --observe` has been reporting as a FAILED observation (exit 4), which is the one stage `./verify.sh --full` admits that `--integration` does not. Approves the one manifest `ukb.py build --mint --plan` measured over the index at head 3e5d28805aba40eb8bb4095a6fde12d772bd1f52: 9 permanent by_path identifiers and their artifacts.json entries. WHAT THE 9 ARE, AND THAT NONE OF THEM IS THIS PROGRAMME'S WORK. All nine are root-level determination and analysis documents committed by 3c1a2530 on 2026-09-01: CHANGE-SET-CERTIFICATION-DETERMINATION.md, COMMIT-CLOSURE-DETERMINATION.md, GENERATED-ARTIFACT-COMMIT-AUTHORITY-DETERMINATION.md, ROOT-CAUSE-ANALYSIS.md, SHELL-OBSERVABILITY-CLOSURE-DETERMINATION.md, UFI-NO-CELL-ROOT-CAUSE.md, UNCONDITIONAL-COMMIT-READINESS-DETERMINATION.md, UNIVERSAL-CERTIFICATION-CLOSURE-DETERMINATION.md and W4-UFI-FAILURE-MATRIX.md. They are eligible artifacts that entered the corpus boundary without a corpus registration, and the coverage programme that raised this repository above 98% neither authored nor modified any of them. It surfaced them: the observation stage was never reached while earlier stages failed. WHY THIS IS A SECOND AUTHORIZATION AND NOT A CONTINUATION OF THE FIRST. P-UCOS-COVERAGE-001 allocated by_object identity under UCOS-UGA-001 and these nine already hold it - the observation report says so in terms, `these artifacts already hold UGA identity - they are not anonymous`. What is missing is a different thing owned by a different authority: the by_path map is UMB-IMP-001's, CORPUS_REGISTRATION is its own class in 00-BOOK/DATA/mutation-governance-boundary.json, and REG-AUTO-001 governs it. Scoped to by_path alone, so this permit grants nothing in by_object. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use: the pre-image binding is spent the moment the ledger moves, so a replay is refused by _verify_permit rather than by convention. SUPERSEDES P-UCOS-CORPUS-001, WHICH WAS NEVER SPENT. That permit authorized this exact allocation - identical manifest_digest and preimage_digest - but bound head a4f56e83, and the coverage programme's own commit moved HEAD before it could be exercised, so _verify_permit's repository binding refuses it. It is left in place because this register is append-only and a withdrawn authorization is not a thing it can express; it is dead by binding rather than by deletion, which is the stronger guarantee. The register already carries three permits bound to an earlier head for the same reason."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-002",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "8b037b10ed370e7cc5601b1731326fc15a9276470473ca697b7c696ef5609734",
+   "preimage_digest": "bc30997eeeeb072736c6bb1d5fba75178135dee5dc1ab6271af186513513be93",
+   "head": "e77aa5e444e829ad113ab68fe4c9fca54caa3ad8",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 70
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized UGA allocation completing the CORPUS_REGISTRATION act that P-UCOS-CORPUS-003 began and could not finish. WHY A SECOND PERMIT WAS UNAVOIDABLE. P-UCOS-CORPUS-003 was scoped to by_path alone and said so in terms - `this permit grants nothing in by_object`. Exercising it minted 9 by_path identifiers and then `register.sh` projected the corpus, which EMITTED 70 new files under 00-BOOK/PORTAL/. Those projections are class EXCLUDED_DOCUMENT, and uga_engine.py states what that class means: excluded from corpus registration is `a statement about which register lists them - never a licence to exist anonymously`. So the act produced 70 objects owned by a different map, under a different authority, than the permit that authorized it. WHAT WENT WRONG, RECORDED RATHER THAN SMOOTHED. The commit was made after targeted validation (111 extraction tests, UEC gate OPEN) and before the wide lane, so UGA-INV-01/10 failed afterwards rather than before. The declared protocol is validate-in-lane then commit, and the impact selector escalates WIDE for exactly this class of change; running it first would have shown 70 anonymous objects while nothing was committed. The by_path mint is irreversible and already banked, so the repository is completed forward rather than reverted - reverting would rewrite a permanent ledger, which ART-05 forbids more strongly than it forbids a second permit. WHAT THIS AUTHORIZES AND NOTHING ELSE. 70 by_object identifiers for the 70 emitted PORTAL projections, category_seq EXDOC 3056->3126, measured by `uga_engine.py run --plan` over head e77aa5e444e829ad113ab68fe4c9fca54caa3ad8. Scoped to by_object alone, so it grants nothing in by_path. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use. PRECEDENT: P-UCOS-COVERAGE-001 allocated by_object identity under the same authority for the same reason. PROVENANCE OF THE AUTHORIZATION: the operator was shown this manifest, these digests, this head, the failing gate output and the alternative (declaring PORTAL a generated family and excluding it, rejected as stranding 1,604 existing identities), and instructed `fix forward`. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-003",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "79aeea52bf28fed7006b79d9d73a3655d43e235f9fe2ce2030b3c4e887650084",
+   "preimage_digest": "09517211a3074deee12d8a76a8c5b68ee073f812a1775b2119ae66bf5eba41a4",
+   "head": "bf91d269a0c698ad8cf192e25c44d10c8a74cb0f",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 7
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized UGA allocation for the W1 concurrency foundation: the seven objects that make one governed corpus safe for more than one actor. WHAT THE SEVEN ARE. `.gitattributes` (four declared merge classes), 00-BOOK/tools/merge-regenerate.sh and merge-union-ledger.py (their drivers), 00-BOOK/DATA/workspace-coordination.json (the register that legislates them, bound under CAA as UCOS-WORKSPACE-COORDINATION-001), claims.jsonl and mint-requests.jsonl (append-only coordination state, union-merged so two actors appending never conflict) and CODEOWNERS (declared as a Wave-0 deliverable by REPOSITORY-CLOSURE-WAVES.md and never landed). WHY THIS IS WORTH AN IRREVERSIBLE ALLOCATION. Three collision points were measured on this repository, not assumed: relationships.json is 2.9 MB, id-ledger.json 2.3 MB and artifacts.json 2.1 MB, and every actor that registers anything rewrites all three, so every parallel branch collides; a permit is single_use and head-bound, so one actor's merge invalidates another's outstanding permit, which is how P-UCOS-CORPUS-001 was lost and how P-UCOS-CORPUS-003 nearly was; and DEC-ADR-0020 records verification tooling that silently reverted a mint it did not make. WHAT WAS PROVEN BEFORE ASKING. The union driver was exercised on a real two-branch git merge and unioned disjoint allocations while reconciling page_cursor to the maximum; given one key carrying two different values it REFUSED with exit 1 rather than choosing a side, because ART-05 forbids resolving an identity collision automatically. The unconfigured-driver check was shown to fire before installation and fall silent after, which matters because a named driver is inert without merge.<name>.driver in each clone and git says nothing when it falls back to a default text merge. WHAT THIS AUTHORIZES AND NOTHING ELSE. 7 by_object identifiers, category_seq EXDOC 3126->3128 and TOOLING 52->57, measured by `uga_engine.py run --plan` over head bf91d269a0c698ad8cf192e25c44d10c8a74cb0f. Scoped to by_object alone, so it grants nothing in by_path. Bound to manifest_digest, preimage_digest and head, so it authorizes this allocation and no other. Single-use. PROVENANCE OF THE AUTHORIZATION: the operator was shown this manifest, these digests, this head, the CAA-INV-02 and UGA-INV-01 gate output, and the outstanding installer requirement, and instructed `go ahead with the permit`. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-004",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "339d57c03d87ed9712b9c95dfa6f6d9b520c86911c897f319b85388b9a5c129b",
+   "preimage_digest": "ff56af2f8ef697851cb3d434532246a53ff3dfb878b1c6f430bd18c945a6af80",
+   "head": "c0c43f88f6c91648453fec54ab1eb72663d824db",
+   "scope": {
+    "maps": [
+     "by_path"
+    ],
+    "max_allocations": 12
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized CORPUS_REGISTRATION for the twelve W2 decision documents adr/0028 through adr/0039, which record decisions D-01 to D-12. WHY THEY EXIST AT ALL. CEP-002 Art 28.5 refuses a decision whose trace is only conversational, and all 136 prior records resolve to a located adr/NNNN-*.md. The twelve decisions existed only in a session transcript, so recording them lawfully required the documents first. WHAT THE MEASUREMENT TAUGHT, RECORDED BECAUSE IT WAS AN ERROR. An earlier plan measured zero allocations and was read as `no permit needed`. That measurement was taken while the files were UNTRACKED, when `ukb enforce --pre` reports them as `awaiting VCS binding - not repository artifacts until git add`. Once staged the true requirement appeared: twelve by_path identifiers here, and twelve by_object identifiers under a separate authority. ./verify.sh --full is what caught it, as twelve `owned_by_nobody` contradictions against a ratchet whose ceiling is zero -- an unregistered document is precisely a thing no authority claims. WHAT THIS AUTHORIZES AND NOTHING ELSE. 12 permanent by_path identifiers, category_seq ADR 28->40, page_cursor 13144->13163, measured by `ukb.py build --mint --plan` over head c0c43f88f6c91648453fec54ab1eb72663d824db with the twelve files staged. Scoped to by_path alone, so it grants nothing in by_object -- the projections this registration EMITS will require their own authorization measured after the fact, as P-UCOS-UGA-002 did for the seventy PORTAL files the previous corpus registration produced. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator was shown both manifests, the failing ratchet, and the warning that the by_object manifest would grow once this permit is spent, and instructed `go ahead with both permits`. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-004",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "d9c9478ffd5a560f0bb2d4bcba61af331d4190387cf643c89d91cbd0f7b4360e",
+   "preimage_digest": "6351935b80571e8f8ff8454578a91f993b461605fe4fd15c5ad1b504c6da02b0",
+   "head": "c0c43f88f6c91648453fec54ab1eb72663d824db",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 12
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized UGA allocation completing the W2 decision registration that P-UCOS-CORPUS-004 began. WHAT THE SUBJECTS ARE, AND THAT THEY ARE NOT THE ADRs. Registering the twelve ADR documents into the corpus REMOVED their by_object requirement -- a document the corpus registry carries is not UGA's subject, since EXCLUDED_DOCUMENT means precisely a readable document the corpus registry does NOT carry. What needs identity instead is the twelve PORTAL projections `register.sh` emitted for them, which are generated views no corpus registration covers. This is the same shape as P-UCOS-UGA-002, which allocated for the seventy PORTAL files the previous corpus registration produced. WHY IT WAS MEASURED TWICE. The by_object manifest was first measured before the corpus mint and quoted to the operator at 12 identifiers; spending the corpus permit moved the ledger, so the pre-image changed from ff56af2f to 6351935b while the manifest digest and the allocation shape held at 12, EXDOC 3128->3140. The operator was warned in advance that this manifest would move and authorized on that basis. WHAT THIS AUTHORIZES AND NOTHING ELSE. 12 permanent by_object identifiers, category_seq EXDOC 3128->3140, measured by `uga_engine.py run --plan` over head c0c43f88f6c91648453fec54ab1eb72663d824db with every affected path staged. Scoped to by_object alone. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator instructed `go ahead with both permits` after being shown both manifests and the warning that this one would grow. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-005",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "34d7709cd1c099baa26ecad31c6a6d51c43e73e0a0e69744350dac38a3c6a354",
+   "preimage_digest": "c53c23a1fa4147d20395753fd7a4d4c520dd447815101981a67dcb9fc72c10e7",
+   "head": "c0c43f88f6c91648453fec54ab1eb72663d824db",
+   "scope": {
+    "maps": [],
+    "max_allocations": 0
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized ledger re-derivation with ZERO allocation, correcting a lineage cycle this programme introduced. WHAT WENT WRONG. adr/0028 was written with `| Supersedes | none - takes a decision CEP-002 Art 14.2 expressly reserved |`. The lineage derivation reads references OUT of that field, so `CEP-002` became the declared ORIGIN of adr/0028; since adr/0028's own origin resolves to the same instrument, the supersession family closed on itself and `test_verify_reports_determinism_and_passes` refused with `supersession family is not acyclic: UCOS-ADR-000029 -> UCOS-CON-000034 -> UCOS-ADR-000029`. A field whose value is `none` may carry no citation, because a parser cannot distinguish an explanation mentioning a document from a reference to it -- the same defect adr/0027 records about its own guard, where a stage label mentioning a flag was indistinguishable from an invocation of it. WHY A PERMIT IS REQUIRED FOR A WRITE THAT ALLOCATES NOTHING. The correction edits documents that were already minted and registered, so their content hashes move and the ledger's `history` differs from the pre-image. NO_ALLOCATION refused it in terms: `the sentinel asserts that nothing changes, not merely that nothing is allocated`. The underlying error is that content was registered before it was correct; had the Supersedes field been written plainly, this write would not exist. WHAT THIS AUTHORIZES AND NOTHING ELSE. One `ukb.py build` re-derivation over head c0c43f88f6c91648453fec54ab1eb72663d824db with total_allocations=0 -- no identifier is minted, reissued or reused, and no map gains an entry. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator was shown the cycle, the refusal, this manifest and the rejected alternative (reverting the text, which would leave a non-acyclic supersession family standing), and instructed `go`. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-005",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "0b76886474ce705454ff70f71da38e18da7bc683f2ff6231b978ff580821b39e",
+   "preimage_digest": "be6fbee4a9a18e341eed7a172319268f076453b42c9389ea691e3fa175529d75",
+   "head": "3dd9256687e21d896cca48cc63501c5483de5989",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 3
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized UGA allocation for UAC-000001, the agnosticism conformance harness. WHAT IT IS AND WHY IT EXISTS. adr/0021 (UAP-001) states the Universal Agnostic Architecture Principle and then discloses in its own Consequences that nothing enforces it: 'a principle with no enforcement mechanism can be ignored without consequence... no gate, invariant, or certification currently checks conformance to this statement, and none is created by this document.' adr/0039 later scored fourteen axes by hand against a bar -- an abstraction with one implementation is an assumption; an abstraction its own callers bypass is decoration -- which established the bar and left the scoring unrepeatable. These three files make it repeatable: one harness over a declared axis register, naming no technology, computing every verdict from the code rather than reading one from a field. WHAT THE OPERATOR WAS TOLD BEFORE AUTHORIZING, STATED HERE SO THE RECORD CARRIES IT. The first measurement returns PROVEN for persistence (10 implementations, each defining the contract's own methods, behind a contract that round-trips the universe and so refuses a placeholder) and ENVELOPE_ONLY for execution (nine of ten adapters inherit one transcribe() returning identical canonical JSON with a different comment line, and ExecutionAdapter.execute discards the payload and calls the Python resolver regardless). The existing verify_execution_interchangeable passes over all ten and cannot do otherwise. So this allocation admits an instrument whose first act is to contradict a surface that currently reports green. The operator was shown that verdict, and the alternative of holding the harness untracked to avoid recording it, and chose to land it. WHAT THIS AUTHORIZES AND NOTHING ELSE. 3 permanent by_object identifiers, category_seq DATAOBJ 144->145 and ENGINE 1380->1382, measured by `uga_engine.py run --plan` over head 3dd9256687e21d896cca48cc63501c5483de5989 with all three paths staged. Scoped to by_object alone; the corpus plan confirms no by_path allocation. It admits a MEASUREMENT and creates no gate: the harness refuses nothing, changes no test's pass/fail state, and whether ENVELOPE_ONLY becomes a refusal is a separate operator decision (D-14) this permit does not prejudge. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator was shown the three refused paths, the permit parameters, the verdict the harness would produce and three sequencing options, and instructed 'OK for Option 1'. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-006",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "f4a87dceb09d218f192e6dc4d45e644ed152236d24401548cfa62b0c230b227d",
+   "preimage_digest": "3376ef9c47639f03aaa60029aa4996dee27b1d2bd5dc5e5cb3d85f4df7827bdc",
+   "head": "3dd9256687e21d896cca48cc63501c5483de5989",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 1
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized UGA allocation completing UAC-000001, the agnosticism conformance harness that P-UCOS-UGA-005 began. WHY A SECOND PERMIT EXISTS, AND THAT IT IS A SEQUENCING ERROR RATHER THAN A CHANGE OF SCOPE. P-UCOS-UGA-005 was measured over three files and spent. Omega-4 then REFUSED the result on unreachable_artifacts, 51 -> 52: engine/conformance was code no import, plane or entry point reached, and an instrument nothing invokes proves nothing however well written. Making it reachable required a test module, and that module is a fourth object needing identity the first manifest could not have covered. The requirement was foreseeable: the same pattern was resolved earlier the same day for 00-BOOK/tools/merge-union-ledger.py, which was reached only through a git config string and needed a --selftest and a Makefile target before it could stand. The agent knew that precedent and spent the permit before satisfying it. Nothing about what the operator approved has changed; the manifest was simply measured too early. WHAT THIS AUTHORIZES AND NOTHING ELSE. 1 permanent by_object identifier, category_seq TESTOBJ 896->897, for the test module that reaches the harness, measured by `uga_engine.py run --plan` over head 3dd9256687e21d896cca48cc63501c5483de5989 with every affected path staged. Scoped to by_object alone. It admits no new instrument and no new authority: the harness itself was admitted under P-UCOS-UGA-005 and remains a MEASUREMENT that refuses nothing, with whether ENVELOPE_ONLY becomes a refusal left to a separate operator decision. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator was shown the single remaining violation, the permit parameters and a statement that this permit exists because of an agent sequencing error, and instructed 'ok'. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-006",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "4b638cb102125c3d74af00ce68f994f3fa7fa4fd713e68f0e681bfd5cd031dab",
+   "preimage_digest": "7fc13774a026fa595f6fe70b3e52514b5f825438f883ac35ed388f27a224d2e9",
+   "head": "bb0012d831b00d61787cbb82727fa3be4e490cd7",
+   "scope": {
+    "maps": [
+     "by_path"
+    ],
+    "max_allocations": 3
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized corpus allocation registering ADR-0040 and ADR-0041, and the agnosticism axis register as a declaration document. WHAT THE SUBJECTS ARE. adr/0040 records that agnosticism is a MEASUREMENT rather than a declaration, taken by UAC-000001, and that an axis is scored on two properties because one over-reports: how many implementations define the contract's own abstract methods, and whether the contract can fail at all. adr/0041 names a recurrence class -- a rule that is right, with a measurement that does not reach where the rule applies -- with six worked instances from a single session. engine/conformance/axis-register.json registers as ENG alongside engine/lineage/families.json (UCOS-ENG-000023) and memory-layers.json (UCOS-ENG-000024), which is the established shape for an engine declaration document. WHAT IT ADMITS, AND THAT IT IS NOT AN AUTHORITY. Two records and no new authority. The instrument both ADRs describe was admitted under P-UCOS-UGA-005 and P-UCOS-UGA-006 at bb0012d8 and remains a measurement that refuses nothing. adr/0041 creates no gate and discloses in its own Consequences that nothing checks conformance to it -- deliberately mirroring adr/0021, because a document naming this class is subject to its own finding and saying so is the only honest form it can take. WHAT THIS AUTHORIZES AND NOTHING ELSE. 3 permanent by_path identifiers, category_seq ADR 40->42 and ENG 25->26, page_cursor 13163->13169, measured by `ukb.py build --plan` over head bb0012d831b00d61787cbb82727fa3be4e490cd7 with the two ADRs and the UCDA decision records staged. Scoped to by_path alone. Bound to manifest_digest, preimage_digest and head. Single-use. A SECOND PERMIT IS EXPECTED AND WAS DISCLOSED BEFORE THIS ONE WAS GRANTED. Registering ADRs into the corpus emits PORTAL projections that need by_object identity, and spending this permit moves that manifest -- the same two-step recorded in P-UCOS-UGA-003's own authorization. The operator was told this in advance rather than after, following a sequencing error earlier in the same session where a permit was spent before a reachability requirement was satisfied. PROVENANCE: the operator was shown the manifest, what it allocates, what it admits, and the warning that a second permit would follow, and instructed 'ok'. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-007",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "584297245c8350c4333b506256389104f3e5afa845767eb632ef94a1bb4623f0",
+   "preimage_digest": "45ff871b36ca443207bef258f41ede3f16378116bcfbf6dc2fbab5cf5d18257e",
+   "head": "2a241db73aab2a539384f073936d814bde6a19f6",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 2
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized UGA allocation for INV-AGN-02, the direct-caller ratchet, and the capability dispatch that makes it honest. WHAT THE SUBJECTS ARE. engine/omega_infinite/direct_callers.py counts modules that invoke the version-control tool directly, excluding two declared exceptions each carrying a written reason; its test asserts the count may only fall and that a fall must be recorded in MOVEMENTS. WHY THE COUNT MEANS SOMETHING NOW AND DID NOT BEFORE. Measured before this change: the git provider DECLARED five capabilities -- TRACKED_CONTENT, VERSIONED_CONTENT, CONTENT_HASHING, AUTHORITY_METADATA, LOCAL_STORAGE -- and the protocol offered ONE data method, enumerate. Four of the five could not be obtained through any call, so AUTHORITY_METADATA, which the provider's own docstring says it exposes 'on request', had no request to make. A caller needing a content hash or the working tree therefore had no alternative to invoking the tool, and counting it as a bypass would have charged the provider's gap to its callers. Every declared capability now has a delivery method, verify_capabilities refuses a provider that declares what it cannot supply, and WORKING_TREE_STATE was added as a distinct capability rather than a wider filter, because what the working copy holds and the index does not is a different question from what is tracked. A direct invocation is now a CHOICE, and this ratchet counts choices. THE CEILING IS THE MEASUREMENT, NOT ZERO, AND THAT IS DELIBERATE. Nineteen modules invoke the tool directly today. Declaring a ceiling of zero would be a gate nothing could satisfy, which is as useless as one nothing can fail -- the defect measured on the execution axis in this same session, inverted. The number may only fall, and each fall is recorded with what moved. WHAT THIS AUTHORIZES AND NOTHING ELSE. 2 permanent by_object identifiers, category_seq ENGINE 1382->1383 and TESTOBJ 897->898, measured by `uga_engine.py run --plan` over head 2a241db73aab2a539384f073936d814bde6a19f6 after every file was final, so the manifest does not move between measurement and spend -- the sequencing error recorded in P-UCOS-UGA-006 is not repeated here. Scoped to by_object alone. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator was shown the permit parameters, what the guard refuses, the reason the ceiling is nineteen rather than zero, and a statement that the Zero-X programme is a multi-wave commitment of which this is the first class, and instructed 'ok'. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-008",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "c758cabdf6ecf998e50baaaf36830f2aa4475fa189175e4cdbc37fd1f67d5794",
+   "preimage_digest": "db1d1c9b427a385dd90453113277c8972fda2eb4a2ed5ece363a4f764a1630af",
+   "head": "d54d6ffa0cb2845a1bd199038115ead73f96173c",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 4
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized UGA allocation for UZX-000001, the Zero-X register and the enforcement the programme did not have. WHAT IT IS AND WHY IT EXISTS. adr/0021 stated the Universal Agnostic Architecture Principle and disclosed, in its own Consequences, that no gate, invariant or certification checked conformance to it and that the document created none. It kept none for fourteen days. The Zero-X programme reproduced that structure exactly one level up: twelve residue classes governed by a plan artifact -- which is not a governed instrument -- with nothing that would refuse a class declared with no detector, a detector shipped with no failing case, a ratchet with one ceiling where two are needed, or a class quietly regressing a stage. This register is that gate. WHAT MAKES IT DIFFERENT FROM A DOCUMENT. It never reads a stage. The register names classes, detectors and the cases that prove a detector can fail; engine/zero_class/measure.py computes every stage from what those actually do, and a test asserts no class entry carries a stage field at all. Stage 2 requires the detector to demonstrate BOTH directions: the register carries must_catch and must_not_catch source snippets, the engine feeds them to the detector and checks the verdicts, and a predicate that flags everything reaches stage 1 rather than stage 2. That requirement is measured rather than theoretical -- the first bypass detector in this session counted a declaration naming a tool as an invocation of it, and a detector with false positives can never honestly reach its floor. SELF-APPLICATION. ZX-SELF is a class in the register whose detector reports any class that cannot be resolved, run, or shown to fail in both directions, ceilinged at zero. A register that exempted itself would repeat adr/0021 precisely, one level up, which is the recurrence class adr/0041 names. WHAT THIS AUTHORIZES AND NOTHING ELSE. 4 permanent by_object identifiers, category_seq DATAOBJ 145->146, ENGINE 1383->1385 and TESTOBJ 898->899, measured by `uga_engine.py run --plan` over head d54d6ffa0cb2845a1bd199038115ead73f96173c after every file was final. Scoped to by_object alone. The register REFUSES NOTHING on its own: each class's refusal lives in that class's own ratchet, where it can name the file and the remedy. Three classes are declared and honestly NOT detected -- hardcoding, unprovable gates, and descriptions exceeding delivery -- each stating why, because a class honestly at stage 1 is a different thing from one nobody has thought of. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator asked whether the programme would be adhered to in future, was shown the measurement that it would not -- no zero-class register existed, none was bound in CAA, and the lifecycle lived only in a plan artifact -- was shown the permit parameters and what the instrument admits, and instructed 'Approved'. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-007",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "449e24c67cbdab7fc8f6be079e663f1d81a1dbeee21bac3c6a8940f2556ec5f7",
+   "preimage_digest": "a7a45d66572edcb6887050a71980e0fe76dabbcb52e433ee57a12d39d97ccd8f",
+   "head": "7e1a817aec72a9542b465163697025f0bd0f400b",
+   "scope": {
+    "maps": [
+     "by_path"
+    ],
+    "max_allocations": 2
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized corpus allocation registering adr/0042 and the Zero-X register as a declaration document. WHAT IT RECORDS AND WHY IT COULD NOT STAY AS PRACTICE. Two rules governed thirteen commits in one session and existed only in conversation, which CEP-002 Article 28.5 holds is not recorded at all: a later session, or a different agent, would inherit no obligation. The first is sequencing -- implement, test to a full pass, commit; on failure fix, test to a full pass, commit, and only then the next item -- with the lane's own preflight run locally first, because a lane spent discovering a formatting error measured nothing. The second is what zero means, and it needed stating because a residue count fell twice in that session without any work happening and both falls were lawful. ZERO IS REACHED BY DECLARING, NOT BY PRETENDING. A class reaches zero when every remaining instance carries a recorded, checkable disposition, which extends adr/0030 from requirements to counts. Four instances this session are complete without being migrated, including a bootstrap that locates the repository root before a provider can be rooted at it -- forcing that one would mean inventing a single-implementation abstraction to make a counter fall, which is the decoration adr/0021 warns against and adr/0040 measures. THREE CONSEQUENCES, EACH LEARNED FROM A DEFECT. Counts and declarations ratchet separately, because a single ratchet can be satisfied by writing a paragraph. MOVEMENTS distinguishes migration, declaration and correction, because collapsing them lets a number imply work that did not happen. A detector is trusted only with failing cases in BOTH directions, because false positives make a floor unreachable. WHAT THIS AUTHORIZES AND NOTHING ELSE. 2 permanent by_path identifiers, category_seq ADR 42->43 and ENG 26->27, page_cursor 13169->13173, measured by `ukb.py build --plan` over head 7e1a817aec72a9542b465163697025f0bd0f400b with the ADR and its decision record staged. Scoped to by_path alone. The ADR creates no gate and discloses that nothing checks conformance to the sequencing rule -- it is a discipline, recorded so a departure reads as a departure rather than as an ordinary way of working. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator stated the rule -- strict proper sequence, zero missing, zero gap, zero partial -- was shown that it existed only in conversation and therefore bound nothing, was shown the permit parameters and what the ADR does and does not create, and instructed 'ok'. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-009",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "56a685f8fbd5d1fd024f6d448ae877aee33190d399c3fa3e057be4cecfc4c296",
+   "preimage_digest": "1b02214b583b9660a3598e665e91f8b87061f144a7a25c6675570a7a1d5f2dce",
+   "head": "bef95b2caee58884663eb57a8843657256a34cf6",
+   "scope": {
+    "maps": [],
+    "max_allocations": 0
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized UGA re-derivation with ZERO allocation, admitting the edge-deriver registry and correcting one stale edge. WHAT THE CHANGE IS. The single line `if rel.endswith('.py')` at uga_engine.py's edge call site was the reason a file in any other language could never carry a dependency edge -- not because its dependencies are unknowable, but because nothing was ever asked. It is now a registry: EDGE_DERIVERS maps a suffix to the deriver that claims it, register_edge_deriver admits one, and a suffix nobody claims yields no edges, which is the same answer the branch gave, reached because nothing derives them rather than because the engine declined to ask. Registering a deriver is how a language becomes visible to dependency analysis (UCKP-ART-08, UCKP-ART-17). PROVEN FAITHFUL BEFORE THIS PERMIT WAS REQUESTED. derive_edges was run over all 5,448 registry objects and compared to python_imports called directly: identical for every one. The derivation is unchanged; only the dispatch is. WHY THE BYTES MOVE, AND IT IS NOT THE REGISTRY CHANGE. Exactly one object's edges differ from the committed registry: engine/tests/zero_class/test_zero_class_register.py gained an edge to engine/zero_class/__init__.py when the Omega-4 reachability failure was fixed by importing through the package -- AFTER that commit's UGA run had already been performed. Commit 7e1a817a therefore went green carrying a registry one edge behind the tree. THE GAP THAT HID IT, RECORDED BECAUSE IT IS THE MORE USEFUL FINDING. No gate compares the committed registry's edges against a fresh derivation. UGA-INV-01 measures that every object has an identity; nothing measures that every edge is current. A stale edge is invisible, which is the recurrence class adr/0041 names, and it is how a green commit came to carry one. WHAT THIS AUTHORIZES AND NOTHING ELSE. One `uga_engine.py run` re-derivation over head bef95b2caee58884663eb57a8843657256a34cf6 with total_allocations=0 -- no identifier is minted, reissued or reused, and no map gains an entry. Same shape as P-UCOS-CORPUS-005, which was required for a zero-allocation write whose bytes moved. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator was shown the registry change, the proof that derivation is unchanged across all 5,448 objects, the single stale edge and the reason no gate caught it, and instructed 'ok'. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-010",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "56a685f8fbd5d1fd024f6d448ae877aee33190d399c3fa3e057be4cecfc4c296",
+   "preimage_digest": "1b02214b583b9660a3598e665e91f8b87061f144a7a25c6675570a7a1d5f2dce",
+   "head": "e6f0c6ca5cb449c6780db12c844ecdd34258834d",
+   "scope": {
+    "maps": [],
+    "max_allocations": 0
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized UGA re-derivation with ZERO allocation, keying edge derivation on what an artifact IS rather than on what its filename ends with. WHAT CHANGED. The edge-deriver registry admitted under P-UCOS-UGA-009 was keyed by SUFFIX. engine/omega_infinite/classification.py declares four typing rules in precedence order -- Omega-T-01 provider-declared, Omega-T-02 content interpreter, Omega-T-03 content structure, Omega-T-04 suffix -- and that registry keyed on the FOURTH, the last resort. A Python file with no .py extension and a `#!/usr/bin/env python3` line is typed PYTHON by rule Omega-T-02 and would have carried no dependency edges, because its NAME did not end the right way. Derivers are now keyed by ArtifactType, so the entity answers for itself and a provider declaring its own artifacts' types makes them derivable with no registration call at all. MEASURED IMPACT TODAY IS ZERO, AND THAT IS STATED RATHER THAN GLOSSED. No tracked file is reclassified by asking properly: no non-.py file in this repository carries a Python shebang. The change is structural. It was verified behaviourally instead -- a file named `tool` with a python shebang now types PYTHON, and a file named notes.md types DOCUMENT. WHY THE BYTES MOVE. Exactly one object's edges change: uga_engine.py itself gains two genuine edges by importing the classifier. Every other object in the registry derives identically. NO BOOTSTRAPPING CYCLE, CHECKED RATHER THAN ASSUMED. The engine that PRODUCES the registry now imports the classification package, so the reachable set from that package was walked: two modules, neither reading the UGA registry. A classifier that consulted the registry its consumer produces would be a cycle, and it is not one. WHAT THIS AUTHORIZES AND NOTHING ELSE. One `uga_engine.py run` re-derivation over head e6f0c6ca5cb449c6780db12c844ecdd34258834d with total_allocations=0 -- no identifier minted, reissued or reused, and no map gains an entry. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator observed that derivation should come from entity, context and relationship rather than being limited to a suffix table, was shown that the registry keyed on the weakest of four declared rules, was shown the zero measured impact and the two new edges, and instructed 'ok'. The agent recorded that instruction; it did not originate it."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-011",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "3291163fb32c21dd24744099826991cd7119cabc6351e4207ded5a57ca18e521",
+   "preimage_digest": "1b02214b583b9660a3598e665e91f8b87061f144a7a25c6675570a7a1d5f2dce",
+   "head": "f2bb7c6637cf05dc1e17de5e1c8fb63df576bd2c",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 2
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "Operator-authorized UGA allocation for ZX-02, the detector that separates a type decision made by filename from a filename convention. WHAT IT MEASURES. UCKP-ART-15 requires every conclusion to be derived from the declared universe, and engine/omega_infinite/classification.py already declares how an artifact's type is decided: four rules in precedence order, with the suffix consulted LAST. A module branching on `path.endswith('.py')` has skipped the first three rules -- it is right for every file whose name happens to match and blind to a Python file with a shebang and no extension, which is the defect the edge deriver carried until it was keyed on the classified type. WHY THE DETECTOR SEPARATES THREE POPULATIONS THAT SHARE ONE SYNTAX. A filename CONVENTION is a rule about names and a name is the right thing to ask: `name.startswith('test_') and name.endswith('.py')' is pytest's own contract, and a detector flagging it would demand the removal of a correct rule. A DECLARED SCOPE names several kinds at once and states which file kinds a measurement covers rather than asking what one file is. A TYPE DECISION is a bare single-suffix test standing alone, and only that is the defect. Six cases pin both directions, including one asserting the REMEDIED form is never flagged, so the ceiling can actually reach zero rather than stalling on its own remedy. THE COUNT WAS WRONG TWICE BEFORE THIS. Earlier scans reported 70 and then 61 by counting any `.endswith` appearing in a module. The measured number is 51, and the ceiling is set to the measurement rather than above it: headroom above a measurement is exactly where a silent regression lives. There is no second ceiling and no exemption table, deliberately -- a type decision is either derived or it is not, so no paragraph can lower this count. WHAT THIS AUTHORIZES AND NOTHING ELSE. 2 permanent by_object identifiers, category_seq ENGINE 1385->1386 and TESTOBJ 899->900, measured by `uga_engine.py run --plan` over head f2bb7c6637cf05dc1e17de5e1c8fb63df576bd2c after every file was final. Scoped to by_object alone. The detector REFUSES a rise and proposes rather than rewrites: routing a decision through the classifier changes what a module measures and must be proven population-identical first, as the edge deriver was across 5,447 objects. Bound to manifest_digest, preimage_digest and head. Single-use. PROVENANCE: the operator observed that 'derived from entity' was followed in one place out of seventy and asked for it to be made perfect; was shown that the seventy included correct filename conventions which a naive fix would have broken, and that the honest first step was a detector distinguishing them rather than seventy edits; and instructed 'yes' and then 'ok'. The agent recorded those instructions; it did not originate them."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-012",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "579bea2f56a32dd74148ccbb6bcec2ccb435ca0ef9d1b221658de64db1d14155",
+   "preimage_digest": "07089e68e7df7b5b04bf00e1e9a4f041d6231f22ca1364790194297dec02a2d1",
+   "head": "776455a5afc436413398939d6d3a59a5fd5e780d",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 1
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. The operator was given the measured cost of this act — one EXECUTABLE_OBJECT identity, the three digests below, and its irreversibility under UCKP-ART-05 — declined the cheaper alternative of leaving the primitive inside a consumer module, and directed the allocation explicitly. Recorded here because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded; the agent's part is the transcript, not the decision. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. One identity for engine/compiler/partition.py, the shared substrate holding boundedness and federated visibility. Both engine.context.composition (which declares CXL-03 and CXL-04) and engine.runtime.context (ORL-05/ORL-12/ORL-13) now depend DOWNWARD on it, which closes the CYC-ARCHITECTURAL cycle engine.runtime -> engine.knowledge -> engine.context -> engine.runtime that UCOS-RIB-001 GATE-10 refuses. WHY ONE AND NOT FOUR. The alternative considered and reverted was relocating engine/runtime/bridge to engine/bridge, which minted four identities and orphaned four more — by_object is path-keyed and append-only — while fixing a symptom rather than the inversion. This mints one for a genuinely new object and orphans nothing."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-008",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "083b865b2011232ecd6c8a7445ce47764d04219fba6335f2a7eadd5b57b4c9d8",
+   "preimage_digest": "d4f63113e252a8aea807ccb739f9cdb2a304103e0c98c635a64e0e21294a6c93",
+   "head": "7b8b69a2b97eaa1bc45ce88c09ee9036cb483f62",
+   "scope": {
+    "maps": [
+     "by_path"
+    ],
+    "max_allocations": 1
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. One corpus identity for 02-MASTER/EC-3-BAND-REALIZATION-UNIT-REGISTER.md, category_seq MASTER 42->43, scoped to by_path alone, bound to the three digests above and single-use. WHAT THE DOCUMENT DOES. It becomes the definitional home of 47 EC-3 band realization units that UAKOS-CLOSURE-009 measured as CANONICAL-OWNERSHIP-INFERRED — certified, evidenced under */_evidence/, and owned by no document. Band 13's charter comes closest and disclaims the role in its own words: its unit table sits under 'Recommended default WBS ... Recommended, not binding', and a recommendation is not a definition. Every cell of the register is transcribed from an evidence file named in its input closure; the three units with no evidence directory are recorded as gaps rather than given rows they cannot support. Nothing in it is authored, which is what makes it assimilation under UCKP-ART-19 rather than invention. WHAT THE OPERATOR WAS TOLD BEFORE DIRECTING IT. The measured effect (assimilation 43.3515% -> 51.9%), the three digests, the irreversibility of allocation under UCKP-ART-05, and a review raising two objections AGAINST the act: first, that a register recording what each unit REALIZES may be traceability rather than definition — the same charge this session used to refuse evidence registers and a range citation as homes, so it applies to this document too; second, that its content is derived from evidence yet committed static, so it can silently go stale exactly as CLOSURE-009's registers once did, unless a test re-derives it from the evidence and refuses drift. The cheaper alternative — leaving the 47 units unowned and the number at 43.3515% — was stated. The operator directed installation explicitly. Recorded here because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded; the agent's part is the transcript, not the decision."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-013",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "63261ff1a7f40f01df9753a7f79bb1a58f8d498e49d32cecb0a21deec67f83f9",
+   "preimage_digest": "10dfb4d63741bbec9bd554ab6f10e5c9fffaf648819402d451df181a88e23fb2",
+   "head": "7b8b69a2b97eaa1bc45ce88c09ee9036cb483f62",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 6
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. Six by_object identities, category_seq EXDOC 3140->3146, for six navigation pages the REG-AUTO-001 transaction under P-UCOS-CORPUS-008 generated: 00-BOOK/PORTAL/UCOS-MASTER-000043.md, UCOS-ADR-000041.md, UCOS-ADR-000042.md, UCOS-ADR-000043.md, UCOS-ENG-000026.md and UCOS-ENG-000027.md. Portal pages are by_object artifacts — all 1686 existing ones are — so UGA-INV-01 EVERY_OBJECT_HAS_UNIVERSAL_ID and UGA-INV-10 EVERY_MUTATION_HAS_AUDIT_EVENT both refuse while they are anonymous, and four tests fail with them. WHY THIS IS A SECOND PERMIT AND NOT PART OF THE FIRST. The agent told the operator that installing the band unit register cost ONE identity. That was wrong: it costs one by_path plus six by_object, seven in total, and the error was discovered only when the post-installation suite refused. Only ONE of the six pages belongs to the register — UCOS-MASTER-000043 is its navigation page. The other five are pre-existing debt: ADR-000041/42/43 and ENG-000026/27 are pages for artifacts that already held identity and had never had a portal page rendered, and the registration transaction regenerated the portal and surfaced them. They would have surfaced on the next registration of any artifact whatsoever. The operator was shown the corrected cost, that five of the six are not attributable to this session's act, and the standing alternative of reverting the register instead, and directed the allocation explicitly. Recorded here because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded, and because UCKP-ART-05 makes an allocated identity permanent."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-009",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "ecf65dd1746d1669e944d515fd68cd766be482edb2007d5c95774e9a06812c40",
+   "preimage_digest": "778eaf4d66cf343b4976ba96ea281448822d8a17d1adc2947ff5ff1c6044ed86",
+   "head": "b239389ed9ffac3c629c1d9c5af05901fc3f77bf",
+   "scope": {
+    "maps": [
+     "by_path"
+    ],
+    "max_allocations": 1
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. One corpus identity for 02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md, category_seq CON, scoped to by_path alone, bound to the three digests above and single-use. WHAT THE DOCUMENT DOES. It becomes the definitional home of LAW omega-infinity 001 through 020, twenty constitutional laws that UAKOS-CLOSURE-009 measured as CANONICAL-OWNERSHIP-INFERRED. They are cited as binding across the corpus — 'by LAW omega-infinity-000 and the 25 Constitutional Directives, every entity must' — and owned by no document. Every file carrying them was a gap register, an implementation-wave list or an inventory: they appeared only in records of what was missing. 01-UNREALIZED-CKO-INVENTORY.md had already recorded all twenty as unrealized constitutional knowledge objects, marked each READY, and located the source. NOTHING IN IT IS AUTHORED. Each statement is transcribed verbatim from PART XVI 'The Absolute Constitutional Laws' of 00-SOURCE/VISION/Missing 2.docx, the UCOS Omega-Infinity Absolute Architectural Constitution. No law is worded, numbered, ordered or interpreted by the register; that is what makes it assimilation under UCKP-ART-19 rather than enactment, and the register declares AUTHORITY = NONE on its face. WHAT IT DELIBERATELY OMITS. LAW omega-infinity-000 is cited elsewhere as carrying seven properties and does NOT appear in PART XVI. The register therefore does not claim it, and says so: a law it cannot transcribe is a law it does not claim. Writing a plausible statement for it would have been the difference between assimilation and invention. WHAT THE OPERATOR WAS TOLD. The source was located and read before drafting; the measured effect is assimilation 285 -> 305 of 549; the allocation is irreversible under UCKP-ART-05. Recorded here because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded; the agent's part is the transcript, not the decision."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-014",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "03905175f17cade0a2a511f2505c55565d10ef168a109c12b33cc03d6ac38fc3",
+   "preimage_digest": "9e324330133d8c30c6c20d191f919365cadc98e26a451313a98608799aa3bf47",
+   "head": "b239389ed9ffac3c629c1d9c5af05901fc3f77bf",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 1
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. One by_object identity for 00-BOOK/PORTAL/UCOS-CON-000086.md, the navigation page REG-AUTO-001 generated when 02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md was registered under P-UCOS-CORPUS-009. Portal pages are by_object artifacts — all 1686 existing ones are — so UGA-INV-01 EVERY_OBJECT_HAS_UNIVERSAL_ID and UGA-INV-10 EVERY_MUTATION_HAS_AUDIT_EVENT both refuse while it is anonymous. THIS ONE WAS PREDICTED. The previous registration produced six such pages and needed an unforeseen second permit; the agent told the operator before this registration ran that a portal page would follow and a small by_object permit would be needed. It is one page rather than six because the five extra pages last time were pre-existing debt for artifacts that already held identity and had never had a page rendered — that backlog is now discharged, so this registration created only its own. TOTAL COST OF THE LAWS REGISTER: two identities, one by_path and one by_object, against the twenty constitutional laws it homes. Recorded here because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded, and because UCKP-ART-05 makes an allocated identity permanent."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-010",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "10515b81aad15b93a217b74d805b3ba6580757e4ca667e9ecdb1fd694142e9e9",
+   "preimage_digest": "3a897ccaa1d53ed276e4a9f678abd04ea00c39389179e2f673d17dc0a241bd6a",
+   "head": "b239389ed9ffac3c629c1d9c5af05901fc3f77bf",
+   "scope": {
+    "maps": [
+     "by_path"
+    ],
+    "max_allocations": 1
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. One corpus identity for 02-MASTER/UCOS-COMPILER-COMPONENT-REGISTER.md, category_seq MASTER, scoped to by_path alone, bound to the three digests above and single-use. WHAT THE DOCUMENT DOES. It becomes the definitional home of 85 UCOS-COMP compiler components across nine families that UAKOS-CLOSURE-009 measured as CANONICAL-OWNERSHIP-INFERRED. UCOS-COMP is referenced by 100 identifiers across the corpus and only two have ever had a document; the rest appeared solely in gap registers, implementation-wave lists and backlogs, which are records of what is missing. NOTHING IN IT IS AUTHORED. Each Purpose is transcribed from the Purpose field the source states for that component, trimmed to its first sentence and to nothing else, from 00-SOURCE/ARCHITECTURE/UCOS Omega-Infinity - Universal Platform.docx, PHASE-003 Documents 02 through 10. No component is named, numbered, ordered, specified or interpreted by the register, which is what makes it assimilation under UCKP-ART-19 rather than design, and it declares AUTHORITY = NONE on its face. WHAT IT DELIBERATELY OMITS. Nine identifiers ending in -000 (001000, 002000 through 009000) are absent. They carry no Purpose in the source because they are section headings introducing each family, not components. A heading is not a component, and an identifier the register cannot transcribe is one it does not claim, which is the same rule that kept LAW Omega-Infinity-000 out of the constitutional laws register under P-UCOS-CORPUS-009. WHAT THE OPERATOR WAS TOLD. The source was read before drafting and four entries spot-checked verbatim against it; the extraction is mechanical over a 4.2-million-character document and a sample should be reviewed; homing was verified using the engine's own _HEAD_RANGE and _definitional_body_id rather than a reimplementation, after a hand-written regex gave a false confirmation for the laws register and had to be corrected; the measured effect is assimilation 305 to 390 of 549; and a by_object permit for the navigation page will follow, as it did for both registers before this. Recorded here because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-015",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "e3d765de3a6436dc128f783350746dcc6f9bfe28ceb46c3dff8342fbe4c4ff24",
+   "preimage_digest": "66b47b845fc39499844e9e576b3419fe37912bdbfef2f7cd9021337e39ed97c7",
+   "head": "b239389ed9ffac3c629c1d9c5af05901fc3f77bf",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 1
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. WHAT IT ALLOCATES. One by_object identity for 00-BOOK/PORTAL/UCOS-MASTER-000044.md, the navigation page for 02-MASTER/UCOS-COMPILER-COMPONENT-REGISTER.md registered under P-UCOS-CORPUS-010. Portal pages are by_object artifacts, so UGA-INV-01 and UGA-INV-10 both refuse while it is anonymous. WHEN IT APPEARED, AND A CORRECTION. The agent told the operator this permit would follow, then checked immediately after the registration transaction, saw UGA pass with no anonymous object, and reported that the prediction had been wrong. It had not been: the page is rendered by the downstream register regeneration rather than by the transaction itself, so it appeared on the next pass and the original prediction held. The correction was issued too early on one observation, and is recorded here rather than left as a retracted claim, because the sequence matters for anyone registering the next artifact: registration allocates the corpus identity, the following regeneration renders the page, and the page needs its own identity. Two permits per register, in that order. Recorded because CEP-002 Art 28.5 holds that a decision whose trace is only conversational is not recorded, and because UCKP-ART-05 makes an allocated identity permanent."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-016",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "ed1afc22d30845f3f1247d78905c25c15d45c50525fac9bb3d3f08c35e1caa80",
+   "preimage_digest": "8c1cbb98c62ece357fd0ec90621a6179805c05c04df90ef72350a217a5fe75b2",
+   "head": "5f8016c533802ec5c4c13a0cdc448c77fd5ff325",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 1
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. The operator was shown the scope, the digests, the identity that would be issued and the irreversibility, and answered \"authorize P-UCOS-UGA-016\". WHAT IT ALLOCATES. Exactly one by_object identity, for 00-MASTER/UCCFA-000001/uccfa-declaration.json, the UCCFA-000001 Universal Coordinate Framework Alignment declaration. `uga_engine.py run --plan` reports [by_object+1] with category_seq(DATAOBJ:146->147), so the identity issued would be UCOS-DATAOBJ-000147 — the same object class and category its sibling UCPA-000001 carries as UCOS-DATAOBJ-000123. WHY IT IS NEEDED. `uga_engine.py gate` reports ANONYMOUS OBJECTS: 1 and fails UGA-INV-01 and UGA-INV-10 on that path; a tracked file with no Universal ID is an anonymous object and both invariants refuse while it stays that way. WHY NOTHING ELSE IS NEEDED. CAA-INV-02 already PASSES over 146 measured instruments: the declaration's `authority` field opens with the `NONE` disclaiming prefix, identical to UCPA-000001's, so it claims no authority and needs no subordinate_instruments binding. The registration plane is clean — `register.sh --observe` reports CERTIFIED, hard checks 7/7. WHAT IT DOES NOT COVER. The gate module engine/coordinate_framework/ is not placed and not in scope here; its five files would be EXECUTABLE_OBJECT/ENGINE allocations under a separate permit. IRREVERSIBILITY. Identity allocation is permanent and not operator-remediable: UCKP-ART-05 forbids reissue, so a wrongly minted id is spent forever. The digests above bind this permit to this manifest, this pre-image and HEAD 5f8016c5; if the tree changes before it runs, the binding no longer matches and the permit is refused rather than silently applied."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-017",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "e69c06f2cea55ab22c93f1b2b4994d3da64d51b0abf5d9f61a73f7d79d4f21c2",
+   "preimage_digest": "c4495680b3b6701d0a7d2b038eef4aef255afdd07a31f4e34b954120702e2d70",
+   "head": "5f8016c533802ec5c4c13a0cdc448c77fd5ff325",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 4
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. Session: https://claude.ai/code/session_011nUoToanLMNTaZdnmYL1sW. The operator was shown the scope, the four paths, the digests and the irreversibility in the preceding turn, and answered \"Check all with 'no Universal IDs yet', fix them permanently\". WHAT IT ALLOCATES. Four by_object identities, for the consumer of the UCCFA-000001 declaration registered under P-UCOS-UGA-016: engine/coordinate_framework/__init__.py, engine/coordinate_framework/contract.py and engine/coordinate_framework/gate.py (EXECUTABLE_OBJECT/ENGINE, seq 1387->1390) and engine/tests/unit/test_coordinate_framework.py (TESTOBJ, seq 900->901). WHY IT IS NEEDED. UEC-L-07 refused the declaration alone: 'the number of declarations no module loads may not exceed the declared ceiling — every field of an unloaded declaration is unenforced', and 4 violated a ceiling of 3. A declaration nothing loads is exactly the condition UCCFA exists to complain about, so the fix is the consumer rather than a raised ceiling. With the module present UEC reports 16/16 laws holding, 0 refused. UVI-L-11 is the remaining refusal and it resolves on this allocation: the declared read-set prefix 'engine/coordinate_framework/' currently resolves to no REGISTERED object, because these four files carry no Universal ID yet. WHAT IT ALSO SETTLED. Three further obligations a new gate engine incurs, all now met: UEC-L-04 (invoked by a plane) and UEC-L-06 (reachable from two independent planes) by a verify.sh stage plus `make uccfa` / `make uccfa-gate`; UEC-L-05 (a detector with no test is one nobody has shown can fail) by 40 tests at 100% coverage of all three modules, each of the six laws exercised in both directions. UEC-L-03 was satisfied by adopting the four discovered artifacts into governed_enforcement, emitted by the module's own inventory() rather than hand-typed, with the two-sided ratchet moved 197->201 to match — that ratchet counts GOVERNED artifacts, so growth is the direction it exists to record. WHAT IT DOES NOT COVER. No further files. IRREVERSIBILITY. Identity allocation is permanent and not operator-remediable; UCKP-ART-05 forbids reissue. The digests bind this permit to this manifest, this pre-image and HEAD 5f8016c5; if the tree changes before it runs the binding no longer matches and the permit is refused rather than silently applied."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-011",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "34d7709cd1c099baa26ecad31c6a6d51c43e73e0a0e69744350dac38a3c6a354",
+   "preimage_digest": "4adf80e1dda90bebd95635dde57c077cc825376c81f846d7bb471a058e58db7e",
+   "head": "f6ce20a7af527464b7d8c838892cef6dd8535575",
+   "scope": {
+    "maps": [
+     "history"
+    ],
+    "max_allocations": 0
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it. The operator was shown the manifest, the pre-image, the HEAD and the irreversibility in the preceding turn, and answered \"I want everything perfect in 100% with ZERO GAP, ZERO PARTIAL, ZERO SHORTCUT, ZERO MISSING, ZERO PATCH\" and then \"resume\". WHAT IT MUTATES. No identity and no page range: `ukb.py build --plan` reports total_allocations=0 and the allocation manifest empty. The write appends exactly one snapshot to `history`, for UCOS-CON-000086 (02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md), whose content_hash e9aa8e43 recorded at seq 1 predates commit cbc91bbe, which changed that document's bytes (now 8c073015) while no registration transaction ran since. WHY IT IS NEEDED. `register.sh --guard` runs the phase-1 mint with the verified NO_ALLOCATION claim, and that claim is measured against the WHOLE document, not only the allocation projection — so the pending history append is refused until authorized. The refusal is correct: an unregistered content change is the condition the ledger exists to prevent, and CK-REG-DRIFT (UCCEP G-07) holds the aggregate certifier at NOT-CERTIFIED, which binds through UFEP-CC-01/02 to hold the freeze gate CLOSED, until it clears. WHY NOTHING ELSE IS NEEDED. No new file enters the corpus, so no by_path or by_object allocation is in play; `ukb enforce --pre` already reports 1687 eligible, 1687 registered, 0 unclassified, and the reconciled-set drift is 0. WHAT IT DOES NOT COVER. No artifact of its own; no second snapshot; the permit is spent the moment `history` moves, because its pre-image binding no longer matches. IRREVERSIBILITY. The ledger is governed evolution state and append-only (UCKP-ART-12): the snapshot, once written, is permanent and not operator-remediable. The digests bind this permit to this manifest, this pre-image and HEAD f6ce20a7; if the tree moves before it runs the binding no longer matches and the write is refused rather than silently applied."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-012",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "433586378592f1346e7c9e98ab9e900f7d396925dad0dfb5a4bbd9bf01fa7b63",
+   "preimage_digest": "9a2d4da1aba6fd83c0d30f0dc06fe490c6d764366513929d4f87d6d209fb62ac",
+   "head": "196ff6937ecc07a01f76db8d48d57c94f6b2f201",
+   "scope": {
+    "maps": [
+     "by_path"
+    ],
+    "max_allocations": 1
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it: the operator directed \"get everything 100% perfect, and make it Unconditionally ready\". WHAT IT ALLOCATES. Exactly one by_path identity, for 02-MASTER/UCOS-PROGRAM-FAMILY-CONCEPT-REGISTER.md (MASTER, seq 44->45, page range 13179->13185): the canonical definitional home of the forty-two program-family concepts whose authoritative origin rows live in operational memory (`00-MASTER/UAKOS-PHASE-001A-R1/01-AUTHORITATIVE-ORIGIN-REGISTER.md`), which this repository's eligibility configuration excludes from canonical-home standing. WHY IT IS NEEDED. CEP-002 Art. 14.1 requires the canonical owner of a concept to be registered; the register's forty-two rows declare those homes, and `platform.universal_ownership.cli homing` keeps the subjects unresolved until the declaring artifact itself carries an identity (LOCATOR-NOT-REGISTERED is the engine naming this exact condition). WHAT THIS DOES NOT DO. It allocates no other identity and mints no knowledge: every row it homes is transcribed verbatim from the origin register and cited per row. IRREVERSIBILITY. Identity allocation is permanent and not operator-remediable (UCKP-ART-05 forbids reissue). The digests bind this permit to this manifest, this pre-image and HEAD 196ff693; if the tree moves before it runs the binding no longer matches and the write is refused rather than silently applied."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-018",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "378912cabdb52d017fd422bc276d40cf654937cbe32d07a4608bca6382870e15",
+   "preimage_digest": "16582f5015e490bcb5b7d147d7b9a2252d8406fc5bd66d15d20bc982c6e2871b",
+   "head": "196ff6937ecc07a01f76db8d48d57c94f6b2f201",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 1
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it: the operator directed \"get everything 100% perfect, and make it Unconditionally ready\". WHAT IT ALLOCATES. Exactly one by_object identity, for 00-BOOK/PORTAL/UCOS-MASTER-000045.md — the navigation page the registration transaction under P-UCOS-CORPUS-012 emitted for 02-MASTER/UCOS-PROGRAM-FAMILY-CONCEPT-REGISTER.md (EXECUTABLE-class projection? no: EXDOC, category_seq 3148->3149), the same shape every portal page carries. WHY IT IS NEEDED. UGA-INV-01 refuses a tracked file without a Universal ID, and the pre-commit hook held the registration commit for exactly this reason. WHAT THIS DOES NOT DO. No other allocation; the portal page inherits the identity discipline of its family and mints no knowledge of its own. IRREVERSIBILITY. Permanent, not operator-remediable (UCKP-ART-05). The digests bind this permit to this manifest, this pre-image and HEAD 196ff693."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-013",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "98db26a2bba18579c3d047ce5fb092f7738a6fb910fb2337045cdd8c396eaf88",
+   "preimage_digest": "9b5ec214326516022f5c054fce8d719ecc9f408bb5846722f129b0e891615728",
+   "head": "696b18c473654391a59303a0beb6a294263a0ef2",
+   "scope": {
+    "maps": [
+     "by_path"
+    ],
+    "max_allocations": 1
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION, transcribed by the agent rather than composed by it: the operator directed \"Make 549/549 subjects declared, 100.0% coverage, unconditional ready.\" WHAT IT ALLOCATES. One by_path identity for 02-MASTER/UCOS-RAT-002-CONSTITUENT-RATIFICATION-AND-TIER-1-CLOSURE-DETERMINATION.md (CON, seq 86->87, pages 13185-13187) - the record of the constituent act that ratifies CMG-000001, occupies T1, and closes the questions and the vacancy that held readiness provisional. WHY IT IS NEEDED. A tracked constitutional artifact without an identity is an anonymous object and UGA-INV-01 refuses it; the registration transaction is the one authority that allocates identities. IRREVERSIBILITY. Permanent, not operator-remediable (UCKP-ART-05). The digests bind this permit to this manifest, this pre-image and HEAD 696b18c4."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-019",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "ac953b935b484f54db7efc6dfbdfc86a99736ee1ecf76a59ed0cfbbeb89f38a0",
+   "preimage_digest": "3d4fe09dd2d44d9f3cc43f11ef5898f6d13c2b64bdcb566614554505e1aa0285",
+   "head": "696b18c473654391a59303a0beb6a294263a0ef2",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 1
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION (\"Make 549/549 subjects declared, 100.0% coverage, unconditional ready\"), transcribed by the agent rather than composed by it. WHAT IT ALLOCATES. Exactly one by_object identity for 00-BOOK/PORTAL/UCOS-CON-000087.md, the navigation page emitted by the registration transaction under P-UCOS-CORPUS-013 for 02-MASTER/UCOS-RAT-002 (EXDOC, seq 3149->3150) - the same shape every portal page carries. WHY IT IS NEEDED. UGA-INV-01 refuses a tracked file without a Universal ID; the pre-commit held the commit for exactly this. WHAT IT DOES NOT COVER. No other identity; no knowledge is minted here. IRREVERSIBILITY. Permanent (UCKP-ART-05); bound to this manifest, pre-image and HEAD 696b18c4."
+  },
+  {
+   "permit_id": "P-UCOS-CORPUS-014",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "34d7709cd1c099baa26ecad31c6a6d51c43e73e0a0e69744350dac38a3c6a354",
+   "preimage_digest": "d5c9e5672d2a067388bd69c62db1a83334bb4e70ee1e250249bcf7df003b4640",
+   "head": "dc992b929eecda241a4d0f922e111d862438dc86",
+   "scope": {
+    "maps": [],
+    "max_allocations": 0
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION (\"issue the registration permit\"), transcribed by the agent rather than composed by it. The three bindings below are a transcription of `ukb.py build --plan` at HEAD dc992b92, which is what that command exists to produce. WHAT IT ALLOCATES. NOTHING. The plan measures total_allocations=0 and `scope.maps` is empty, so this permit cannot authorize a single identity: the moment the manifest allocates anything it stops matching the digest and is refused. WHAT IT AUTHORIZES INSTEAD. The ledger MUTATION the NO_ALLOCATION sentinel correctly refused - `history` gains a content_hash entry for each registered artifact whose bytes moved. WHY IT IS NEEDED. Registered artifacts drifted from the ledger across the 82 commits between fccb5119, the last commit CI observed, and this HEAD; `register.sh --guard` refused with \"top-level key(s) ['history'] differ from the pre-image\", and CK-REG-DRIFT has blocked UCCEP and, through it, ACEE ever since. WHAT IT DOES NOT COVER. No identity, no new artifact, no knowledge, and no other head: `preimage_digest` self-invalidates the moment the ledger moves and `head` binds it to this commit, so it is spent by its own use. IRREVERSIBILITY. The history append is permanent (UCKP-ART-12, append-only); no identity is minted, so UCKP-ART-05 is not engaged."
+  },
+  {
+   "permit_id": "P-UCOS-UGA-020",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "3bd1adf32ddf36eb4bba2d8611344569a5526ba41f80e7b6c7109228f727ee61",
+   "preimage_digest": "e7483de75d1a15daf505f1b179de8c092ad8955bfd76e247aac7d0a7af4d5623",
+   "head": "7bf65aa357881ecbb14d03bda6349ab7550e289f",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 4
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION (\"Issue the permit and keep going in sequence\"), transcribed by the agent rather than composed by it. The three bindings above are a transcription of `uga_engine.py run --plan` at HEAD 7bf65aa3, which is what that command exists to produce. WHAT IT ALLOCATES. Exactly four by_object identities, for the four files that give CAEM-001 a producer and a governed disposition register: caem_engine.py (ENGINE, seq 1390->1391); 06-MANDATE-CORPUS.json and 07-MANDATE-DISPOSITION.json (DATAOBJ, seq 147->149); 08-MANDATE-DISPOSITION-REGISTER.md (EXDOC, seq 3150->3151). WHY IT IS NEEDED. Six governing documents state 1,449 mandates. CAEM-001 §1 mapped thirteen of them to canonical homes by hand and recorded why it had to be by hand. These four files carry that act to the whole corpus without repeating it: the corpus is transcribed once, the disposition is measured reproducibly, and every row stays PROVISIONAL because semantic equivalence is forbidden to an engine. UGA-INV-01 refuses a tracked file without a Universal ID, so the commit cannot land without this. WHAT IT DOES NOT COVER. No other identity, no knowledge minting, no corpus registration -- these are Operational Memory under 00-MASTER/, not corpus, and the plan's own report bounds it at four. IRREVERSIBILITY. Permanent (UCKP-ART-05); bound to this manifest, pre-image and HEAD 7bf65aa3, and single-use."
+  },
+  {
+   "permit_id": "P-UCOS-MANDATE-CONFORMANCE-001",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "3e9139bb0edea9ef1135e6840499ad3d1e3df35886089084227034438f5fc186",
+   "preimage_digest": "9301f0bae0a2fb36da09c02138e6e64a9b9062845999a19797c10fd6aec410f9",
+   "head": "fea8a8652008e6acca6ce7e787b9357ed661daf0",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 7
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED IN SESSION (the operator was asked how to proceed on new tracked files and answered \"Issue a permit\", then \"Implement all in sequence\"), transcribed by the agent rather than composed by it. The three bindings above are a transcription of `uga_engine.py run --plan` at HEAD fea8a865, which is what that command exists to produce. WHAT IT ALLOCATES. Exactly seven by_object identities (TESTOBJ, seq 901->908) for one shared reader and six mandate-conformance suites under engine/tests/conformance/: mandate_corpus.py and test_mandates_{prd,index,arch,uakp,model,layers}.py, one suite per governing document. WHY IT IS NEEDED. Six documents state 1,449 mandates, and discharging one means a test or a gate that names it and asserts the property against its located owner. The first six waves were appended to engine/tests/uckp/test_{layer_zero,universe_and_validation,alignment}.py, each of which declares a scope its new contents exceeded -- and a suite whose declared scope no longer describes what it asserts is the drift these bindings exist to catch. This permit buys the written waves a home that matches them and the remaining sections a place to land. UGA-INV-01 refuses a tracked file without a Universal ID, so the commit cannot land without it. WHAT IT DOES NOT COVER. No other identity, no knowledge minting, no corpus registration, and no file outside engine/tests/conformance/. The plan's own report bounds it at seven. IRREVERSIBILITY. Permanent (UCKP-ART-05); bound to this manifest, pre-image and HEAD fea8a865, and single-use."
+  },
+  {
+   "permit_id": "P-UCOS-REG-AUTO-001",
+   "actor": "UMB-IMP-001 :: ukb.py build --mint",
+   "manifest_digest": "31897c3ba98f36257f560d93acad25815726c56f1a9e22f9babb48c90478ff02",
+   "preimage_digest": "066a8f6c11bd2498ae597d3e262f5bc2c5084960e3aac239c40796842316a376",
+   "head": "6bd766ddc1bd5e22f5e59a4ce0f9e7a4f0567f01",
+   "scope": {
+    "maps": [
+     "by_path"
+    ],
+    "max_allocations": 2
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED - registration of two master requirement documents"
+  },
+  {
+   "permit_id": "P-UCOS-UGA-PORTAL-001",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "17609c53ada3b03dc3f9871c8131b9a9f9a8dd6ba3a914e29ac7340f526e0374",
+   "preimage_digest": "5446c7761bbfae7abaa83670c3908a036deee8b995b9e84d07e6cc5b78e8ed1b",
+   "head": "6bd766ddc1bd5e22f5e59a4ce0f9e7a4f0567f01",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 2
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED - allocation of two portal identities for the registered master files"
+  },
+  {
+   "permit_id": "P-UCOS-UGA-BLOCKER-DOCS-001",
+   "actor": "UCOS-UGA-001 :: uga_engine.py run",
+   "manifest_digest": "5503bbfcf7125e29c4a571429e31b074ba7b1dcf780f9f8a526d913a77875e80",
+   "preimage_digest": "85df03dfdc61755cd6d07672ba0ab1df90fd302b566a0bcb68a96cace4fcc2e4",
+   "head": "92560aea5a6ba51cf4e74ae2da0cd392d6294ed9",
+   "scope": {
+    "maps": [
+     "by_object"
+    ],
+    "max_allocations": 4
+   },
+   "expires_at": null,
+   "single_use": true,
+   "$authorization": "OPERATOR-AUTHORIZED - allocation of 4 identities for blocker closure documents"
+  }
+ ]
 }

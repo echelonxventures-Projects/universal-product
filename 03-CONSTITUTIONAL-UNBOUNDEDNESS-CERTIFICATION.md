@@ -60,6 +60,15 @@ The single "limit" in the architecture is **evidence**: a concept exists only wh
 
 > **CONSTITUTIONAL UNBOUNDEDNESS: CERTIFIED.**
 
+> **WITHDRAWAL NOTICE (2026-09-24, amended 2026-09-26).** The standing prose verdicts in §2 and §5
+> are **WITHDRAWN** by the declaring owner, per
+> `00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-3-CERTIFICATION-WITHDRAWAL-INSTRUMENT.md`.
+> They were certified on prose citation only, which BC-3 A3-5 forbids. The original table and
+> determination text are retained below as the historical record and are **no longer a standing
+> certification**. Primary certification evidence is now the executable `CK-*` checks in
+> `uccep-bindings.json` (48 checks, `make uccep-gate`), which supersede this prose. This notice is
+> appended; the original text is not rewritten.
+
 Every canonical concept satisfies all 16 unboundedness axes. The foundation legislates unbounded cardinality, hierarchy, composition, federation, recursion, distribution, relationships, transformations, coordinate dimensions, reality/civilization/intelligence/governance/knowledge models, evolution, and future extension. The only constraint is evidentiary legitimacy (the closure pathway), which bounds validity rather than scale.
 
 ---

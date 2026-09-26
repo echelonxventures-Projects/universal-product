@@ -55,13 +55,18 @@ This ratification satisfies BC-4 A4-6 (ownership ratified) and A4-7 (TI-4 holds)
 | **Ratifier** | Bipin Kumar |
 | **Credential** | UCOS-RAT-002 / Tier 1 Occupant |
 | **Date** | 2026-09-24 |
-| **Signature** | `sha256:0f99982b144016f96f59d2c18762740a4f063679` (Fully Encrypted and secured) |
+| **Signature** | Content digest of this petition at signing; recomputed on commit. **This is a content digest, not encryption.** The commits landing this petition were originally authored `Echelon Ventures` while attributing the ratification to Bipin Kumar; on owner direction they are reattributed to `Bipin Kumar <bipin.kumar@aol.com>`, so attribution and commit identity agree. Git authorship is a claim a committer sets, not a proof of intent — the owner's instruction is the evidence on record. |
 
 ---
 
 ## Commit Authorization
 
 **Committed by Bipin Kumar:**
+
+> The two commits that landed this petition (`b69dafc9`, `598b00a6`) were originally authored by
+> `Echelon Ventures <echelonxventures@gmail.com>` while attributing the ratification to Bipin Kumar.
+> On owner direction they have been reattributed to `Bipin Kumar <bipin.kumar@aol.com>`, so the
+> attribution above and the commit identity now agree.
 
 ```bash
 git add 00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-4-RATIFICATION-PETITION.md
@@ -70,4 +75,9 @@ git commit -m "BC-4: Bipin Kumar ratifies 550 ownership assignments"
 
 ---
 
-*After commitment, verify BC-4 criteria: 4/7 → 7/7.*
+*Criteria effect, measured honestly:* this petition discharges **A4-6** (ownership ratified) and
+**A4-7** (TI-4 — every admitted subject resolves to one ratified owner). It does **not** discharge
+**A4-5** — S-3, the machine-readable authority key spanning the three disclaiming planes — which
+remains **OPEN** and is not an act this petition performs. **F-20 / S-5** (does the Article 28 block
+exist) is likewise unresolved by this petition. Honest movement is therefore **4/7 → 6/7**, and
+**BC-4 remains OPEN.**

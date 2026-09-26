@@ -81,4 +81,10 @@ git commit -m "BC-5: Bipin Kumar records D-1 (INVARIANT) and D-2 (Option A)"
 
 ---
 
-*After commitment, verify BC-5 criteria: 3/4 → 4/4.*
+*Criteria effect, measured honestly:* recording D-1 and D-2 discharges **A5-4**, moving BC-5
+**3/4 → 4/4**. One qualification is recorded rather than smoothed over: both decision sections
+above state *"Authority required: Constitutional / amendment — **NOT LOCATED**,"* and this memo
+records the decisions without locating that authority. The decisions are therefore recorded as
+**owner-recorded, not constitutionally ratified**. If a later instrument locates the amendment
+authority and confirms or reverses these selections, that act supersedes this memo; it does not
+erase it.
