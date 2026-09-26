@@ -146,5 +146,23 @@ ok(ucos.deleteAnnotation(db, s0, aid).ok === true, "an annotation can be deleted
 ok(ucos.deleteAnnotation(db, s0, aid).ok === false, "deleting twice is reported as not-found");
 ok(ucos.annotations(db, "upip", "concept", "identity", 10, 0).total === 0, "all test annotations cleaned up");
 
+console.log("\n▸ FOUNDATION COMPLETENESS (the corpus's own freeze criteria, executable)");
+const comp = require(path.join(__dirname, "..", "lib", "ucos-completeness.js"));
+const audit = comp.audit();
+ok(Array.isArray(audit.criteria) && audit.criteria.length === 5, "the five 17AH.7 criteria are evaluated", JSON.stringify(audit.criteria.map(c => c.kind)));
+ok(audit.criteria.every(c => typeof c.satisfied === "boolean"), "every criterion reports a boolean verdict", "");
+ok(comp.dependencyGaps().length === 0, "no unresolved dependency gaps — every referenced document exists", "count=" + comp.dependencyGaps().length);
+ok(comp.separationGaps().length === 0, "no unresolved separation gaps", "count=" + comp.separationGaps().length);
+ok(comp.orderingGaps().length === 0, "no unresolved ordering gaps", "count=" + comp.orderingGaps().length);
+/* DOC-008 regression: its articles carried DOC-009's id because docMeta was shared by reference */
+const idx = comp.masterIndex();
+ok(idx.totals.unattributed === 0, "every article attributes to a declared document", "unattributed=" + idx.totals.unattributed);
+const d8 = idx.documents.find(d => d.docId === "UMQSOCR-DOC-008");
+ok(!!d8 && d8.articles === 20, "UMQSOCR-DOC-008 is present with its own 20 articles (docMeta-alias regression)", d8 ? "articles=" + d8.articles : "MISSING");
+const d9 = idx.documents.find(d => d.docId === "UMQSOCR-DOC-009");
+ok(!!d9 && d9.articles === 20, "UMQSOCR-DOC-009 owns exactly 20 (not the leaked 40)", d9 ? "articles=" + d9.articles : "MISSING");
+ok(idx.documents.length >= 24, "the master index enumerates the corpus's declared documents", "documents=" + idx.documents.length);
+ok(idx.totals.articles === 529, "the index accounts for all 529 articles", "articles=" + idx.totals.articles);
+
 console.log("\n" + (failed ? "✗ " + failed + " check(s) failed" : "✓ all UCOS Ω∞ checks passed") + "  (" + passed + " passed)");
 process.exit(failed ? 1 : 0);
