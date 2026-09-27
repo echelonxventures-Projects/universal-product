@@ -220,17 +220,29 @@ function renderModals() {
 function updateChrome() { renderHeader(); renderSidebar(); renderModals(); wireChrome(); }
 
 /* ============ cards ============ */
+/* a card is ADAPTIVE: its affordances are derived from the product's own type and
+   universe fields (registry data), not from a fixed template. A digital good shows
+   instant delivery, a subscription shows its cycle, a service shows booking — each
+   shape comes from the record itself, so a new product type needs no new card code. */
+function typeMeta(p) {
+  const t = META && META.productTypes.find(x => x.key === p.type);
+  const isSub = p.type === "subscription", isRental = p.type === "rental";
+  const isService = ["service", "appointment"].includes(p.type);
+  const isDigital = ["digital", "license", "course"].includes(p.type);
+  return { t, isSub, isRental, isService, isDigital, isPhygital: isSub || isRental || isService || isDigital };
+}
 function card(p) {
   const d = discount(p);
-  return `<div class="pcard" data-id="${p.id}">
+  const tm = typeMeta(p);
+  return `<div class="pcard ${tm.isPhygital ? "pcard-domain" : ""}" data-id="${p.id}">
     <a class="pc-imgwrap" href="${prodLink(p)}">${img(p, "big")}${d ? `<span class="pc-deal">−${d}%</span>` : ""}${p.fl.includes("ac") ? `<span class="pc-choice">${esc(CFG.brand.name)} Pick</span>` : ""}</a>
     <div class="pc-body">
       ${p.type && p.type !== "physical" ? `<span class="pc-type">${esc(typeIcon(p.type))}</span>` : ""}
       <a class="pc-title" href="${prodLink(p)}">${esc(p.t)}</a>
       <div class="pc-rate">${starsHtml(p.r)}<a class="pc-count">${p.c.toLocaleString(CFG.commerce.locale)}</a></div>
-      <div class="pc-price">${priceHtml(p.p)}${p.l > p.p ? `<span class="pc-list">${money(p.l)}</span>` : ""}</div>
+      <div class="pc-price">${priceHtml(p.p)}${tm.isSub ? '<span class="pc-cycle">/mo</span>' : tm.isRental ? '<span class="pc-cycle">/period</span>' : ""}${p.l > p.p ? `<span class="pc-list">${money(p.l)}</span>` : ""}</div>
       ${p.pricing_rules && p.pricing_rules.tiers ? `<div class="pc-tier">Volume pricing available</div>` : ""}
-      <div class="pc-del">${p.pr ? `${prioBadge()} <b>${dShort(daysP())}</b>` : `<b>${dShort(daysS())}</b>`}</div>
+      <div class="pc-del">${tm.isDigital ? `<span class="pc-now">⚡ Instant access</span>` : tm.isService ? `<span class="pc-now">📅 Bookable</span>` : (p.pr ? `${prioBadge()} <b>${dShort(daysP())}</b>` : `<b>${dShort(daysS())}</b>`)}</div>
       ${stockText(p)}
       ${p.st ? `<button class="btn-yellow pc-btn" data-act="add" data-id="${p.id}">${esc(T("addToCart"))}</button>` : `<button class="btn-yellow pc-btn" disabled>${esc(T("outOfStock"))}</button>`}
     </div>

@@ -56,6 +56,12 @@ ok(indAfter.some(i => i.key === "space"), "an operator's console-added industry 
 ok(indAfter.length === extended.length, "no registry rows were lost or duplicated by the re-seed", indAfter.length + " vs " + extended.length);
 
 console.log("\n▸ PUBLISH: a universe record becomes a catalog row");
+/* the flagship now ships with the corpus ACTIVATED (the honest default), so a universe
+   may already carry a canonical offering from boot. This test asserts on exact counts, so
+   it resets the one universe it exercises to a clean state first — the point under test is
+   the publish path, not the boot activation, and a clean slate keeps both honest. */
+cat.withdrawUniverse(1, "uv_insurance");
+db.run("DELETE FROM entity_data WHERE entity='uv_insurance'");
 const rec = entity.createEntity(1, "uv_insurance", { name: "Travel Shield Plus", price: 129, stock: 500, brand: "Aegis", emoji: "🛡️", type: "insurance" });
 ok(!rec.error && rec.id > 0, "a universe record exists to publish", JSON.stringify(rec));
 const pub = cat.publishUniverse(1, "uv_insurance");
@@ -64,8 +70,11 @@ const row = db.get("SELECT * FROM products WHERE tenant_id=1 AND source_universe
 ok(!!row, "the catalog row carries its source universe (traceability, never a second copy)", row ? row.source_universe : "MISSING");
 ok(row && Number(row.price) === 129, "the projection carries the record's price", row ? row.price : "MISSING");
 ok(row && String(row.type) === "insurance", "the projection carries the record's product type");
-ok(cnt("SELECT COUNT(*) c FROM skus WHERE tenant_id=1 AND product_id LIKE 'UV-%'") === 1, "a default SKU exists so cart and checkout work");
-ok(cnt("SELECT COUNT(*) c FROM inventory WHERE tenant_id=1 AND sku_id IN (SELECT id FROM skus WHERE product_id LIKE 'UV-%')") === 1, "an inventory row backs the SKU");
+ok(cnt("SELECT COUNT(*) c FROM skus WHERE tenant_id=1 AND product_id LIKE 'UV-%'") >= 1, "a default SKU exists so cart and checkout work", "n=" + cnt("SELECT COUNT(*) c FROM skus WHERE tenant_id=1 AND product_id LIKE 'UV-%'"));
+/* the SKU backs THIS universe's projection specifically — the corpus is activated by
+   default now, so a global UV-% count includes other universes' SKUs by design */
+ok(cnt("SELECT COUNT(*) c FROM skus WHERE tenant_id=1 AND product_id=(SELECT id FROM products WHERE source_universe='uv_insurance')") === 1, "exactly one SKU backs this universe's offering");
+ok(cnt("SELECT COUNT(*) c FROM inventory WHERE tenant_id=1 AND sku_id IN (SELECT id FROM skus WHERE product_id=(SELECT id FROM products WHERE source_universe='uv_insurance'))") === 1, "an inventory row backs the SKU");
 
 console.log("\n▸ IDEMPOTENCE (zero duplicates, zero overlap)");
 cat.publishUniverse(1, "uv_insurance"); cat.publishUniverse(1, "uv_insurance");
@@ -82,8 +91,8 @@ ok(overlap === 0, "zero id overlap between universe projections and seeded produ
 const wd = cat.withdrawUniverse(1, "uv_insurance");
 ok(wd.ok === true && wd.removed === 1, "a universe can be withdrawn from a tenant catalog", JSON.stringify(wd));
 ok(cnt("SELECT COUNT(*) c FROM products WHERE source_universe='uv_insurance'") === 0, "withdrawal removes the catalog row");
-ok(cnt("SELECT COUNT(*) c FROM skus WHERE product_id LIKE 'UV-%'") === 0, "withdrawal removes the orphaned SKU");
-ok(cnt("SELECT COUNT(*) c FROM inventory WHERE sku_id IN (SELECT id FROM skus WHERE product_id LIKE 'UV-%')") === 0, "withdrawal removes the orphaned inventory");
+ok(cnt("SELECT COUNT(*) c FROM skus WHERE product_id=(SELECT id FROM products WHERE source_universe='uv_insurance')") === 0, "withdrawal removes the orphaned SKU");
+ok(cnt("SELECT COUNT(*) c FROM inventory WHERE sku_id IN (SELECT id FROM skus WHERE product_id=(SELECT id FROM products WHERE source_universe='uv_insurance'))") === 0, "withdrawal removes the orphaned inventory");
 
 console.log("\n▸ THE COMPLETE SHOPPER PATH (catalog → cart → checkout)");
 /* re-publish and exercise the real transaction path the storefront uses */

@@ -236,6 +236,95 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(/all invariants hold/.test(page.doc.body.textContent), "foundations console reports the Article 3.2/8.2 invariants holding");
     ok(/foundations/.test(page.doc.body.textContent), "foundations console shows the registry population");
 
+    console.log("▸ PLATFORM: universal themes — data-driven skins, cascade assignment");
+    {
+      const thBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "themes");
+      click(page.win, thBtn); await sleep(1000);
+      ok(page.doc.body.textContent.includes("Themes"), "the themes console renders");
+      ok(/quantum-glass|neon-noir|aurum/i.test(page.doc.body.textContent), "the seeded futurist presets are listed");
+      ok(page.doc.querySelectorAll("[data-thassign]").length >= 8, "every preset offers an assignment action", page.doc.querySelectorAll("[data-thassign]").length);
+      /* the generative dial: preview a hue, then save it as a permanent preset */
+      const hueInp = page.doc.getElementById("thHue");
+      ok(!!hueInp, "the hue dial renders");
+      if (hueInp) {
+        hueInp.value = "266";
+        click(page.win, page.doc.getElementById("thPreview")); await sleep(700);
+        ok(page.doc.getElementById("thVars").textContent.includes("hsl("), "a hue preview resolves to generated CSS vars");
+        /* a unique name per run so the registry test is idempotent across smoke passes */
+        const thName = "Smoke " + Date.now();
+        page.doc.getElementById("thName").value = thName;
+        click(page.win, page.doc.getElementById("thSave")); await sleep(900);
+        const saved = await f("/api/themes");
+        ok((saved.presets || []).some(p => p.name === thName), "an operator theme dialed from a hue is saved to the registry",
+          (saved.presets || []).filter(p => !p.built_in).map(p => p.name).join(",") || "no operator presets");
+      }
+    }
+
+    console.log("▸ PLATFORM: per-domain record engine (corpus-declared state machine)");
+    {
+      const dmBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "domains");
+      click(page.win, dmBtn); await sleep(1200);
+      ok(page.doc.body.textContent.includes("Domains"), "the domains console renders");
+      ok(/Proposed/.test(page.doc.body.textContent) && /Canonical/.test(page.doc.body.textContent), "the board shows the corpus's lifecycle states (UCOS 5.1)");
+      ok(page.doc.body.textContent.includes("Transition grammar"), "the Art. 10 transition grammar is surfaced");
+      ok(!!page.doc.getElementById("dmSel"), "the domain picker lists every universe");
+      /* create a record in the domain the board is showing, so there is something to
+         advance — the record's journey IS the per-domain workflow */
+      const dmSel = page.doc.getElementById("dmSel");
+      const shown = dmSel ? dmSel.value : null;
+      ok(!!shown, "the board has a selected domain");
+      if (shown) {
+        await f("/api/meta/entity/" + shown, "POST", { name: "Console domain probe", code: "CDP", status: "proposed" });
+        await sleep(300); click(page.win, dmBtn); await sleep(1000);
+        const advBtn = page.doc.querySelector("[data-dmfire]");
+        if (advBtn) {
+          click(page.win, advBtn); await sleep(900);
+          ok(true, "the board's advance action fires a corpus transition");
+        } else ok(false, "the board offers an advance action on the created record");
+      }
+    }
+
+    console.log("▸ PLATFORM: traceability + activation consoles");
+    {
+      const trBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "trace");
+      click(page.win, trBtn); await sleep(1000);
+      ok(page.doc.body.textContent.includes("Traceability"), "the traceability console renders");
+      ok(/concepts ·/.test(page.doc.body.textContent), "the matrix reports the corpus totals");
+      ok(page.doc.querySelectorAll("table tbody tr").length >= 3, "the matrix lists all three corpora", page.doc.querySelectorAll("table tbody tr").length);
+      /* trace a real key: every layer is reported, present or absent */
+      const inp = page.doc.getElementById("trKey");
+      ok(!!inp, "the trace input renders");
+      if (inp) { inp.value = "Insurance"; click(page.win, page.doc.getElementById("trGo")); await sleep(900);
+        ok(page.doc.body.textContent.includes("Insurance"), "a traced key renders its layer map");
+        ok(/partially wired|fully wired/.test(page.doc.body.textContent), "the trace reports a wiring verdict");
+      }
+    }
+
+    console.log("▸ PLATFORM: global products carry the constitution's product universe");
+    /* UPIP §1 declares the vocabulary; the console's picker reads it from the registry, so
+       the front-end holds no universe list of its own (Article 4.2) */
+    const gp = await f("/api/platform/global-products", "POST", { sku: "GPU-UNIV-1", name: "Universe Probe", category: "probes", universe: "quantum_products", price: 1, tax_class: "standard" });
+    ok(gp.ok === true, "a global product is created with a declared universe", JSON.stringify(gp));
+    const gpBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "gproducts");
+    click(page.win, gpBtn); await sleep(1200);
+    ok(page.doc.body.textContent.includes("Quantum Products"), "the row's universe renders by name, not by raw key");
+    const gpF = page.doc.getElementById("gpUniv");
+    ok(!!gpF && gpF.options.length >= 26, "the universe filter offers the corpus's whole vocabulary", gpF && gpF.options.length);
+    /* create through the modal, choosing a universe the picker itself offered */
+    click(page.win, page.doc.getElementById("gpNew")); await sleep(300);
+    const gpPick = page.doc.getElementById("gpUnivSel");
+    ok(!!gpPick && gpPick.options.length >= 26, "the modal's picker is registry-driven, not a front-end list", gpPick && gpPick.options.length);
+    gpPick.value = "ott_platforms";
+    page.doc.getElementById("gpSku").value = "GPU-OTT-1";
+    page.doc.getElementById("gpName").value = "OTT Probe";
+    click(page.win, page.doc.getElementById("gpSave")); await sleep(1000);
+    const gpl = await f("/api/platform/global-products");
+    ok(gpl.products.some(p => p.sku === "GPU-OTT-1" && p.universe === "ott_platforms"), "a product created through the modal keeps its chosen universe", (gpl.products.find(p => p.sku === "GPU-OTT-1") || {}).universe);
+    ok(Array.isArray(gpl.universes) && gpl.universes.length >= 26, "the list response carries the vocabulary for the picker", (gpl.universes || []).length);
+    const pSrc = require("fs").readFileSync(path.join(__dirname, "..", "public", "js", "platform.js"), "utf8");
+    ok(!/"Physical Products"|"Digital Products"|"Quantum Products"/.test(pSrc), "the console asserts no universe names — the vocabulary is the registry's (Article 4.2)");
+    ok(page.errs.length === 0, "global-products console no JS errors", page.errs.slice(0, 2).join("|"));
+
     console.log("▸ GOVERNANCE: store admin cannot reach platform-only config — and the server survives");
     /* an unauthorized request to a platform endpoint used to write the 403 twice
        (requirePlatform already writes, then the caller wrote again) and the double
@@ -638,8 +727,11 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const bodyTxt = um.doc.body.textContent;
       ok(um.errs.length === 0, "product page (serialized) loads with no JS errors", um.errs.slice(0, 2).join("|"));
       ok(/serialized/i.test(bodyTxt), "storefront shows serialization trust line");
-      // variant-group SKUs are real and SKU-authoritative in the cart (not just listed)
-      const sku1tb = ((await A("/api/meta/entity/sku")).rows || []).find(k => k.product_id === "VR-ELEC-01" && /1TB/.test(k.name || ""));
+      // variant-group SKUs are real and SKU-authoritative in the cart (not just listed).
+      // the query is server-side-filtered (product_id=…) because the corpus activation
+      // puts ~1,877 universe SKUs on this tenant's shelf — an unfiltered browse cannot be
+      // relied on to surface a specific seeded SKU, and neither should it have to be.
+      const sku1tb = ((await A("/api/meta/entity/sku?product_id=VR-ELEC-01")).rows || []).find(k => /1TB/.test(k.name || ""));
       ok(!!sku1tb && Number(sku1tb.price) > 1099, "seeded variant-group SKU with delta price", sku1tb && sku1tb.price);
       await U("/api/cart", "POST", { id: "VR-ELEC-01", qty: 1, sku_id: sku1tb.id });
       const vline = ((await U("/api/cart")).items || []).find(i => i.product.id === "VR-ELEC-01");
@@ -1610,8 +1702,11 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const list = await A("/api/admin/planning");
       ok(list.status === 200 && list.body.stats.total > 0, "planning list + stats", JSON.stringify(list.body.stats));
       ok(list.body.statuses.length >= 5 && list.body.priorities.length >= 4, "statuses + priorities registries", list.body.statuses.length + "/" + list.body.priorities.length);
-      /* the bought SKU must appear with non-zero demand */
-      const hit = (list.body.replenishments || []).find(r => r.product_id === "LX-CMP-005");
+      /* the bought SKU must appear with non-zero demand. The corpus is activated on this
+         tenant by default (~1,877 universes → ~2,000 planned SKUs), so the planning list
+         is queried for THIS product instead of scanning a ranked page — a healthy seeded
+         SKU sorts behind every urgent universe offering. */
+      const hit = (await A("/api/admin/planning?product_id=LX-CMP-005")).body.replenishments[0];
       ok(!!hit && hit.forecast_30d > 0 && hit.avg_daily > 0, "bought SKU has a forecast", hit && JSON.stringify({ avg: hit.avg_daily, f30: hit.forecast_30d, avail: hit.available }));
       ok(hit && hit.reorder_point >= 0 && hit.safety_stock >= 0 && hit.min_qty >= 1, "reorder math present", hit && hit.reorder_point);
       /* force a shortage on the bought SKU and re-plan → must become a suggestion */

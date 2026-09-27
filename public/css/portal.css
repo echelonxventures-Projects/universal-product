@@ -125,3 +125,20 @@ body.portal { margin: 0; font: 14px/1.5 "Inter", "Segoe UI", Arial, sans-serif; 
   color: var(--p-red);
 }
 
+
+/* Universal dashboard engine (Architecture1 §394) — widget cards & visualizations.
+   Every visualization is drawn from one of two engine outputs: a scalar value or a
+   list of buckets; the styles below dress them, nothing more. */
+.p-input { width: 100%; box-sizing: border-box; background: var(--p-bg); color: var(--p-text);
+  border: 1px solid var(--p-line); border-radius: 8px; padding: 8px 10px; font: 13px/1.4 inherit; }
+.p-input:focus { outline: none; border-color: var(--p-accent); }
+.db-card { background: var(--p-card); border: 1px solid var(--p-line); border-radius: 12px; padding: 14px 16px; min-width: 0; }
+.db-kpi-label { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--p-muted); margin-bottom: 6px; }
+.db-kpi-value { font-size: 26px; font-weight: 700; color: var(--p-text); font-variant-numeric: tabular-nums; }
+.db-bars { display: flex; flex-direction: column; gap: 7px; margin-top: 8px; }
+.db-bar-row { display: flex; align-items: center; gap: 9px; font-size: 12px; }
+.db-bar-k { width: 96px; flex: none; color: var(--p-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.db-bar-track { flex: 1; height: 9px; background: var(--p-bg); border-radius: 99px; overflow: hidden; }
+.db-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--p-accent2), var(--p-accent)); }
+.db-bar-v { width: 64px; flex: none; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+@media (max-width: 900px) { .db-grid { grid-template-columns: repeat(2, 1fr) !important; } .db-card { grid-column: span 2 !important; } }

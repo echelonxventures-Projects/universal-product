@@ -14,7 +14,7 @@ The complete **pictorial flow** of the whole platform — three planes, the 10�
 npm start                    # http://localhost:3000
 PORT=8787 ./serve.sh         # supervised (auto-restart), writes .luxora.pid
 ./stop.sh                    # clean stop
-npm test                     # syntax + 421-assertion jsdom E2E suite (+197-check GOIP conformance audit) (own DB/port)
+npm test                     # syntax + 620-assertion jsdom E2E suite (+197 GOIP + 585 UCOS Ω∞/theme audits + 68 dashboard/reporting: 100% universe instantiation, freeze criteria, catalog activation to 100% across 267 families, per-domain state machines, universal theming, the §394/§395 dashboard & reporting engines) (own DB/port)
 ```
 
 Env: `PORT`, `LX_DB` (db path), `LUX_TLS=1` (HTTPS; self-signed generated via openssl, or supply `LUX_TLS_KEY`/`LUX_TLS_CERT`), `LUXORA_MASTER_KEY`, `LUXORA_PEPPER`, `LUXORA_DEMO_HINT=0`, `LX_OFFLINE=1` (force all outbound payments/notifications/AI to the offline-simulated path — CI/no-secrets), seed overrides `PLATFORM_EMAIL/PLATFORM_PASSWORD/ADMIN_EMAIL/ADMIN_PASSWORD/DEMO_PASSWORD`.
@@ -27,7 +27,7 @@ Runtime backends are **config**, not code — default to in-process (SQLite + me
 |---|---|
 | `/` | Storefront (per tenant). `?store=<slug>` or subdomain `<slug>.localhost` switches |
 | `/admin.html` | **Store console**: dashboard, catalog+full product editor, SKUs/inventory, orders, returns, RFQs, sellers, settlements, **contracts & tenders (B2B)**, suppliers & **serialized items**, **compliance & certs**, **localizations (i18n)**, **AI Studio**, promotions, content, taxonomy, attributes, payments, settings, analytics, audit, monitor, Data Studio, **Team & Roles (RBAC staff roles)** |
-| `/platform.html` | **Platform console**: provisioning policy, stores (launch wizard: owner, jurisdiction, taxation, categories, gateways, plan), Geo (countries/currencies/tax modes/providers+availability), plans, subscriptions, invoices, provider registry, **AI providers & plans (product + billing)**, **Ω∞ GOIP — the value-exchange control plane**, monitoring, global audit |
+| `/platform.html` | **Platform console**: provisioning policy, stores (launch wizard: owner, jurisdiction, taxation, categories, gateways, plan), Geo (countries/currencies/tax modes/providers+availability), plans, subscriptions, invoices, provider registry, **AI providers & plans (product + billing)**, **Ω∞ GOIP — the value-exchange control plane**, **📊 Dashboards (§394 universal dashboard engine + §395 reporting)**, monitoring, global audit |
 
 Seed accounts (env-overridable; hints auto-hide when passwords change): platform `platform@luxora.shop/platform123` · store admins `admin@luxora.shop/admin123`, `admin@aurum.shop/aurum123` (INR/GST/Razorpay/UPI/Delhivery), `admin@velora.shop/velora123` (AED/VAT/Tabby, brand mode) · customer `demo@luxora.shop/demo123`.
 
@@ -97,9 +97,15 @@ lib/providers.js     seed definitions (countries, providers, currencies) — dat
 lib/goip.js          GOIP Ω∞ — the value-exchange constitution: capability router, context/
                      temporal/spatial/economic/reality domains, 67-domain map, fabrics, graph
 lib/offers.js        the ONE benefit-math engine GOIP resolves benefits through
-lib/api.js           ~125 REST routes (incl. /api/goip/*); lib/uid.js UUID triggers; lib/metrics.js live traffic
+lib/api.js           ~140 REST routes (incl. /api/goip/*, /api/dashboards/*, /api/reports/*); lib/uid.js UUID triggers; lib/metrics.js live traffic
+lib/dashboards.js    Architecture1 §394/§395 — the universal dashboard & reporting engine:
+                     dashboards, widgets and reports are rows; one generic aggregate
+                     computes any metric over native entities or corpus universes
 public/              storefront + store console + platform console (no frameworks, no CDN)
 data/                luxora.db + master.json (created at first boot)
 ```
+
+*The flagship store ships with the whole corpus activated — all 1,877 universes are
+shopper-transactable on first boot (idempotent; other stores opt in with one call).*
 
 *This is an educational demo project; it is not affiliated with any retailer.*

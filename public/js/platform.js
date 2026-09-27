@@ -41,7 +41,7 @@ function toast(msg, type = "info") {
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3200);
 }
 const NAV = [["dash", "◈ Command"], ["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["geo", "🌍 Geo · Countries · Taxes"], ["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"],
-["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"], ["gproducts", "🌐 Global Products"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["ucii", "🌀 UCII Ω∞ Registry"], ["ucos", "♾️ UCOS Ω∞ Constitution"], ["universes", "🧬 Universes"], ["foundations", "🏛️ Foundations"], ["studio", "🛠️ Data Studio"], ["definitions", "📐 Entities"], ["offers", "Ω∞ GOIP · Value Exchange"], ["runtime", "🧩 Runtime · Infra"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"], ["identity", "🔐 Identity"], ["identity-templates", "📋 Identity Templates"], ["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]];
+["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"], ["gproducts", "🌐 Global Products"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["ucii", "🌀 UCII Ω∞ Registry"], ["ucos", "♾️ UCOS Ω∞ Constitution"], ["universes", "🧬 Universes"], ["domains", "🔀 Domains"], ["foundations", "🏛️ Foundations"], ["trace", "🧭 Traceability"], ["studio", "🛠️ Data Studio"], ["definitions", "📐 Entities"], ["offers", "Ω∞ GOIP · Value Exchange"], ["runtime", "🧩 Runtime · Infra"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"], ["identity", "🔐 Identity"], ["identity-templates", "📋 Identity Templates"], ["themes", "🎨 Themes"], ["dashboards", "📊 Dashboards"], ["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]];
 let view = "dash";
 const P = { user: null, tenants: [], plans: [] };
 
@@ -384,32 +384,44 @@ async function wireGeoFx() {
   g("cxGo").onclick = async () => { try { const r = await api("/fx?amount=" + encodeURIComponent(g("cxAmount").value || 1) + "&from=" + g("cxFrom").value + "&to=" + g("cxTo").value); g("cxOut").textContent = `= ${r.result.toLocaleString()} ${r.to} (rate ${r.rate})`; } catch (e) { g("cxOut").textContent = e.message; } };
 }
 /* ============ GLOBAL PRODUCTS: platform-level master catalog tenants subscribe to ============ */
-let gpFilter = "";
+let gpFilter = "", gpUniverse = "", gpUniverses = [];
 async function vGproducts() {
-  const { products } = await api("/platform/global-products" + (gpFilter ? ("?category=" + encodeURIComponent(gpFilter)) : ""));
+  const q = new URLSearchParams();
+  if (gpFilter) q.set("category", gpFilter);
+  if (gpUniverse) q.set("universe", gpUniverse);
+  const { products, universes } = await api("/platform/global-products" + (q.toString() ? "?" + q.toString() : ""));
+  gpUniverses = universes || [];
   const cats = [...new Set(products.map(p => p.category).filter(Boolean))];
+  const uOf = p => (gpUniverses.find(u => u.key === p.universe) || {});
   return `
   <div class="p-panel"><div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap">
     <h2 style="margin:0">Global Products (${products.length})</h2>
     <select id="gpCat" style="padding:6px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg)">
       <option value="">All categories</option>${cats.map(c => `<option value="${esc(c)}" ${c === gpFilter ? "selected" : ""}>${esc(c)}</option>`).join("")}
     </select>
+    <select id="gpUniv" style="padding:6px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg)" title="The product universes the constitution declares (UPIP §1 VISION)">
+      <option value="">All universes</option>${gpUniverses.map(u => `<option value="${esc(u.key)}" ${u.key === gpUniverse ? "selected" : ""}>${esc(u.icon || "🧩")} ${esc(u.name)}</option>`).join("")}
+    </select>
     <span style="flex:1"></span>
     <button class="p-btn primary sm" id="gpNew">+ New global product</button></div>
-    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Platform-level master products. Stores subscribe to these via <b>Store Product Config</b> (permissions per store), so one catalog feeds every tenant.</p>
-    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>SKU</th><th>Name</th><th>Category</th><th class="num">Price</th><th>Tax class</th><th>Type</th><th>Status</th><th></th></tr></thead>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Platform-level master products. Stores subscribe to these via <b>Store Product Config</b> (permissions per store), so one catalog feeds every tenant. The universe vocabulary is the constitution's own declaration (UPIP §1), never a front-end list.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Universe</th><th class="num">Price</th><th>Tax class</th><th>Type</th><th>Status</th><th></th></tr></thead>
     <tbody>${products.map(p => `<tr><td><b>${esc(p.sku)}</b></td><td>${esc(p.name)}</td><td class="p-tag">${esc(p.category || "—")}</td>
+      <td><span title="${esc(p.universe || "physical_products")}">${esc(uOf(p).icon || "🧩")} ${esc(uOf(p).name || p.universe)}</span></td>
       <td class="num">${money(p.price)}</td><td>${esc(p.tax_class)}</td><td>${p.is_service ? "Service" : "Physical"}</td>
       <td><span class="badge ${esc(p.status)}">${esc(p.status)}</span></td>
       <td style="white-space:nowrap"><button class="p-btn sm" data-gpedit="${p.id}">Edit</button>
-        <button class="p-btn sm danger" data-gpdel="${p.id}">✕</button></td></tr>`).join("") || '<tr><td colspan="8" class="p-empty">No global products yet</td></tr>'}</tbody></table></div></div>`;
+        <button class="p-btn sm danger" data-gpdel="${p.id}">✕</button></td></tr>`).join("") || '<tr><td colspan="9" class="p-empty">No global products yet</td></tr>'}</tbody></table></div></div>`;
 }
 function wireGproducts() {
   const cat = document.getElementById("gpCat");
   if (cat) cat.onchange = () => { gpFilter = cat.value; render(); };
+  const univ = document.getElementById("gpUniv");
+  if (univ) univ.onchange = () => { gpUniverse = univ.value; render(); };
   document.getElementById("gpNew").onclick = () => gpModal(null);
   $$("[data-gpedit]").forEach(b => b.onclick = () => {
-    api("/platform/global-products").then(({ products }) => {
+    api("/platform/global-products").then(({ products, universes }) => {
+      gpUniverses = universes || [];
       const p = products.find(x => String(x.id) === b.dataset.gpedit);
       if (p) gpModal(p);
     }).catch(e => toast(e.message));
@@ -435,6 +447,7 @@ function gpModal(p) {
         <label><span>Price</span><input id="gpPrice" type="number" step="0.01" min="0" value="${p ? p.price : 0}"></label>
         <label><span>Tax class</span><select id="gpTax">${["standard", "reduced", "zero", "exempt"].map(t => `<option value="${t}" ${p && p.tax_class === t ? "selected" : ""}>${t}</option>`).join("")}</select></label>
       </div>
+      <label><span>Product universe</span><select id="gpUnivSel">${gpUniverses.map(u => `<option value="${esc(u.key)}" ${p && p.universe === u.key ? "selected" : ""}>${esc(u.icon || "🧩")} ${esc(u.name)}</option>`).join("")}</select></label>
       <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="gpService" ${p && p.is_service ? "checked" : ""}> Is a service (not a physical good)</label>
       <label><span>Status</span><select id="gpStatus">${["draft", "active", "retired"].map(s => `<option value="${s}" ${p && p.status === s ? "selected" : ""}>${s}</option>`).join("")}</select></label>
       <label><span>Attributes (JSON)</span><textarea id="gpAttrs" rows="3" class="p-code">${esc(attrs)}</textarea></label>
@@ -453,7 +466,7 @@ function gpModal(p) {
     try { parsedMedia = JSON.parse(val("#gpMedia") || "[]"); } catch (e) { err.textContent = "Media must be a valid JSON array"; err.classList.remove("hidden"); return; }
     if (!val("#gpSku").trim() || !val("#gpName").trim()) { err.textContent = "SKU and name are required"; err.classList.remove("hidden"); return; }
     const body = { sku: val("#gpSku").trim(), name: val("#gpName").trim(), description: val("#gpDesc"), category: val("#gpCatIn").trim(),
-      price: Number(val("#gpPrice")) || 0, tax_class: val("#gpTax"), is_service: m.querySelector("#gpService").checked,
+      universe: val("#gpUnivSel"), price: Number(val("#gpPrice")) || 0, tax_class: val("#gpTax"), is_service: m.querySelector("#gpService").checked,
       attributes: parsedAttrs, media: parsedMedia, status: val("#gpStatus") };
     try {
       if (isEdit) await api("/platform/global-products/" + p.id, "PUT", body);
@@ -1574,6 +1587,7 @@ async function vUniverses() {
       ${badge}
       <span class="p-tag">${stat2(st.declared || 0)} declared · ${stat2(st.instantiated || 0)} instantiated · ${stat2(st.live || 0)} canonical · ${stat2(st.records || 0)} records created</span>
       <button class="p-btn sm" id="uvRefresh">↻ Re-instantiate</button>
+      <button class="p-btn sm primary" id="uvActivateAll">⚡ Activate all → storefront</button>
     </div>
     <div style="max-height:60vh;overflow:auto;border:1px solid var(--p-line);border-radius:10px">
       <table style="width:100%;border-collapse:collapse;font-size:13px">
@@ -1592,6 +1606,20 @@ function wireUniverses() {
       render();
     } catch (e) { toast(e.message); }
   };
+  /* ACTIVATE ALL: materialize every universe's canonical offering and publish it into
+     the current tenant's catalog, so the whole constitution becomes shopper-
+     transactable in one action. Bounded and idempotent — a warm pass skips what is
+     already on the shelf. */
+  const actAll = document.getElementById("uvActivateAll");
+  if (actAll) actAll.onclick = async () => {
+    if (!confirm("Publish a canonical offering for every universe into this store's catalog? Existing records are kept; already-published universes are skipped.")) return;
+    try {
+      const r = await api("/ucos/catalog/activate?tenant_id=" + (window.__tenantId || 1), "POST", { limit: 250 });
+      if (r.ok) toast("Activated " + stat2(r.activated) + " universes · " + stat2(r.published) + " offerings published" + (r.remaining ? " · " + stat2(r.remaining) + " remain (activate again)" : " · complete"));
+      else toast("Activated " + stat2(r.activated) + " · " + stat2(r.failed) + " failed");
+      render();
+    } catch (e) { toast(e.message); }
+  };
   /* publish a universe's records into the current tenant's storefront — the record
      becomes shopper-transactable through the standard catalog/cart/checkout path */
   /* open this universe's records in the Data Studio, pre-selected and auto-loaded —
@@ -1604,8 +1632,10 @@ function wireUniverses() {
   document.querySelectorAll("[data-uvpub]").forEach(b => b.onclick = async () => {
     const key = b.dataset.uvpub;
     try {
-      const r = await api("/ucos/catalog/" + key + "/publish?tenant_id=" + (window.__tenantId || 1), "POST", {});
-      toast(r.ok ? "Published " + r.published + " record(s) to the storefront" : (r.error || "publish failed"));
+      /* activate, not just publish: if the universe has no offering yet, its canonical
+         one is materialized first, so the button is never a silent no-op */
+      const r = await api("/ucos/catalog/" + key + "/activate?tenant_id=" + (window.__tenantId || 1), "POST", {});
+      toast(r.ok ? "Published " + r.published + " record(s) to the storefront" + (r.materialized ? " (canonical offering created)" : "") : (r.error || "publish failed"));
       render();
     } catch (e) { toast(e.message); }
   });
@@ -1672,6 +1702,99 @@ function wireFoundations() {
       alert("Append-only audit ledger (Article 6)\n\n" + (r.events || []).slice(0, 20).map(e => e.at + "  " + e.event + "  " + e.foundation).join("\n"));
     } catch (e) { toast(e.message); }
   };
+}
+/* Traceability — where is each corpus declaration implemented? The matrix at a
+   glance, and a per-key trace through every runtime layer. */
+let trKey = "";
+async function vTrace() {
+  const m = await api("/ucos/matrix");
+  const t = trKey ? await api("/ucos/trace?key=" + encodeURIComponent(trKey)).catch(() => null) : null;
+  const docRows = (m.perDocument || []).map(d => `<tr><td><b>${esc(d.doc)}</b></td><td class="p-tag">${esc(d.file)}</td><td class="num">${stat2(d.concepts)}</td><td class="num">${stat2(d.foundations)}</td><td class="num">${stat2(d.universes)}</td><td class="num">${d.conceptCoverage}%</td></tr>`).join("");
+  const layerRow = l => `<tr><td style="padding:6px 8px">${l.present ? "✓" : "✗"}</td><td><b>${esc(l.layer)}</b></td><td class="num">${stat2(l.n)}</td>
+    <td class="p-tag" style="max-width:420px;word-break:break-word">${esc(JSON.stringify(l.artifacts).slice(0, 300))}</td></tr>`;
+  return `
+  <div class="p-panel"><h2>🧭 Traceability · corpus → runtime</h2>
+    <p class="p-tag">Every declaration maps to runtime artifacts: registry concept → foundation → universe → live entity → records → catalog projection → API → console. Absent layers are reported, not hidden.</p>
+    <div style="display:flex;gap:8px;align-items:center;margin:10px 0;flex-wrap:wrap">
+      <span class="badge published">${stat2((m.corpus || {}).concepts || 0)} concepts · ${stat2((m.corpus || {}).documents || 0)} documents</span>
+      <span class="badge published">${stat2((m.implementation || {}).universes || 0)} universes · ${stat2((m.implementation || {}).liveEntities || 0)} live entities</span>
+      <span class="badge ${((m.implementation || {}).catalogProjections || 0) ? "published" : "draft"}">${stat2((m.implementation || {}).catalogProjections || 0)} catalog projections</span>
+    </div>
+    <div class="p-scroll-x" style="margin-bottom:14px"><table class="p-table"><thead><tr><th>Doc</th><th>File</th><th>Concepts</th><th>Foundations</th><th>Universes</th><th>Concept→foundation</th></tr></thead>
+      <tbody>${docRows || '<tr><td colspan="6" class="p-empty">no documents</td></tr>'}</tbody></table></div>
+    ${(m.notes || []).map(x2 => `<p class="p-tag" style="margin:2px 0">· ${esc(x2)}</p>`).join("")}
+    <h3 style="margin-top:16px">Trace a key</h3>
+    <div style="display:flex;gap:8px;margin:8px 0">
+      <input id="trKey" value="${esc(trKey)}" placeholder="e.g. Insurance, uv_streaming_product, Streaming Product" style="flex:1;padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg)">
+      <button class="p-btn primary sm" id="trGo">Trace</button>
+    </div>
+    ${t ? `<p style="margin:6px 0"><b>${esc(t.key)}</b> — ${esc(t.verdict)}</p>
+      <div class="p-scroll-x"><table class="p-table"><thead><tr><th></th><th>Layer</th><th>n</th><th>Artifacts</th></tr></thead>
+      <tbody>${(t.layers || []).map(layerRow).join("")}</tbody></table></div>`
+      : '<p class="p-tag">Enter a key to see every runtime layer it resolves to.</p>'}
+  </div>`;
+}
+function wireTrace() {
+  const go = document.getElementById("trGo");
+  if (go) go.onclick = () => { trKey = document.getElementById("trKey").value.trim(); render(); };
+  const inp = document.getElementById("trKey");
+  if (inp) inp.onkeydown = e => { if (e.key === "Enter") { trKey = inp.value.trim(); render(); } };
+}
+/* Domains — every universe's records move through the corpus's own state machine
+   (UCOS 5.1 states + 5.2 rules, UMQSOCR Art. 10 components). Rendered as a board:
+   one column per state, records advance by rule-gated transitions. Zero per-domain
+   code — the machine is derived from the constitution for all 1,877 universes. */
+let dmKey = "";
+async function vDomains() {
+  const all = await api("/ucos/domains");
+  const list = all.domains || [];
+  if (!dmKey && list.length) dmKey = list[0].entityKey;
+  const d = dmKey ? await api("/ucos/domain/" + encodeURIComponent(dmKey)).catch(() => null) : null;
+  const cols = (d ? d.states : []).map(st => {
+    const n = (d && d.byState && d.byState[st]) || 0;
+    return `<div style="flex:1;min-width:110px;background:var(--p-bg);border:1px solid var(--p-line);border-radius:10px;padding:8px">
+      <div style="font-size:12px;font-weight:600;color:var(--p-fg)">${esc(st)}</div>
+      <div style="font-size:20px;font-weight:700;margin:4px 0;color:var(--p-fg)">${n}</div>
+      <div style="height:4px;border-radius:2px;background:var(--p-line);overflow:hidden"><div style="height:100%;width:${d && d.records ? Math.min(100, Math.round(n / d.records * 100)) : 0}%;background:var(--p-accent)"></div></div>
+    </div>`;
+  }).join("");
+  const recRows = d ? (d.records_ || []) : [];
+  return `
+  <div class="p-panel"><h2>🔀 Domains · corpus-declared state machines</h2>
+    <p class="p-tag">Each universe is a domain: its records advance through the lifecycle the constitution declares — states (UCOS 5.1), rules (5.2), and the Art. 10 transition grammar. Transitions are refused unless the rule holds, and every move is append-audited (Art. 6). No per-domain code.</p>
+    <div style="display:flex;gap:8px;align-items:center;margin:10px 0;flex-wrap:wrap">
+      <select id="dmSel" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);max-width:340px">
+        ${list.map(x => `<option value="${esc(x.entityKey)}" ${x.entityKey === dmKey ? "selected" : ""}>${esc(x.universe)} · ${x.records} records</option>`).join("")}
+      </select>
+      <span class="p-tag">${d ? stat2(d.records) + " records · " + stat2(d.transitions) + " transitions logged" : ""}</span>
+      <span class="p-tag">source ${d ? esc(d.source) : "—"}</span>
+    </div>
+    <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:8px">${cols || '<div class="p-empty">No universe selected</div>'}</div>
+    <h3 style="margin-top:12px">Records</h3>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Record</th><th>State</th><th>Next transition</th><th>Rule</th><th></th></tr></thead>
+    <tbody>${recRows.length ? recRows.map(r => {
+      const av = r.available ? r.available[0] : null;
+      return `<tr><td><b>${esc(r.name)}</b><div class="p-tag" style="font-size:11px">#${r.id}</div></td>
+        <td><span class="badge ${esc(String(r.status || d.states[0]).toLowerCase())}">${esc(r.status || d.states[0])}</span></td>
+        <td class="p-tag">${av ? esc(av.from) + " → " + esc(av.to) : "terminal"}</td>
+        <td class="p-tag">${av && av.blocked ? '<span style="color:var(--p-red)">⛔ ' + esc(av.blocked) + '</span>' : (av && av.condition ? '<span style="color:var(--p-green)">✓ ' + esc(av.condition) + '</span>' : "—")}</td>
+        <td>${av ? `<button class="p-btn sm ${av.blocked ? "" : "primary"}" data-dmfire="${r.id}">${av.blocked ? "Blocked" : "Advance"}</button>` : ""}</td></tr>`;
+    }).join("") : '<tr><td colspan="5" class="p-empty">No records yet — create some in the Data Studio, or activate the universe.</td></tr>'}</tbody></table></div>
+    <p class="p-tag" style="margin-top:10px">Transition grammar (UMQSOCR Art. 10): ${d ? d.grammar.map(g => "<code>" + esc(g) + "</code>").join(" · ") : ""}</p>
+  </div>`;
+}
+function wireDomains() {
+  const sel = document.getElementById("dmSel");
+  if (sel) sel.onchange = () => { dmKey = sel.value; render(); };
+  document.querySelectorAll("[data-dmfire]").forEach(b => b.onclick = async () => {
+    const rid = b.dataset.dmfire;
+    try {
+      const r = await api("/ucos/domain/" + encodeURIComponent(dmKey) + "/fire", "POST", { record_id: Number(rid) });
+      if (r.ok) toast((r.from || "") + " → " + (r.to || "") + (r.rule ? "  [" + r.rule + "]" : ""));
+      else toast(r.error || "transition refused");
+      render();
+    } catch (e) { toast(e.message); }
+  });
 }
 async function vRuntime() {
   const d = await api("/platform/runtime"); const [eNv, fL] = await Promise.all([api("/platform/environments"), api("/platform/flags")]);
@@ -1793,7 +1916,9 @@ async function render() {
     else if (view === "ucii") { body.innerHTML = await vUCII(); wireUCII(); }
     else if (view === "ucos") { body.innerHTML = await vUCOS(); wireUCOS(); }
     else if (view === "universes") { body.innerHTML = await vUniverses(); wireUniverses(); }
+    else if (view === "domains") { body.innerHTML = await vDomains(); wireDomains(); }
     else if (view === "foundations") { body.innerHTML = await vFoundations(); wireFoundations(); }
+    else if (view === "trace") { body.innerHTML = await vTrace(); wireTrace(); }
     else if (view === "studio") {
       /* the universe Records button hands the entity over through __entityJump; consume
          it here (never in wireStudio, where a repeat render would re-trigger the load) */
@@ -1806,7 +1931,9 @@ async function render() {
     else if (view === "offers") { body.innerHTML = await vGlobalOffers(); wireGlobalOffers(); }
     else if (view === "runtime") { body.innerHTML = await vRuntime(); wireRuntime(); }
     else if (view === "identity") { body.innerHTML = await viewIdentity(); wireIdentity(); }
-    else if (view === "identity-templates") { body.innerHTML = await viewIdentityTemplates(); wireIdentityTemplates(); }
+     else if (view === "identity-templates") { body.innerHTML = await viewIdentityTemplates(); wireIdentityTemplates(); }
+     else if (view === "themes") { body.innerHTML = await vThemes(); wireThemes(); }
+     else if (view === "dashboards") { body.innerHTML = await vDashboards(); wireDashboards(); }
     else if (view === "definitions") { body.innerHTML = await vDefinitions(); wireDefinitions(); }
     else if (view === "geo") { body.innerHTML = await vGeo(); await wireGeoFx(); }
     else if (view === "monitor") body.innerHTML = await vMonitor();
@@ -1948,6 +2075,248 @@ function deletePolicy(key) {
 
 async function wirePolicies() {
   // Setup policy UI listeners if needed
+}
+
+/* Themes — every skin the storefront can wear. Presets are data (infinitely
+   extendable: an operator dials a hue and names it, and it becomes a reusable
+   theme), and any scope can override: platform → tenant → department → product. */
+let thHue = 210, thDark = true;
+async function vThemes() {
+  const d = await api("/themes");
+  const presets = d.presets || [];
+  const assigns = (d.assignments || []).filter(a => a.scope !== "platform" || a.scope_key === "*");
+  const swatch = p => `<div style="width:34px;height:34px;border-radius:9px;background:${p.preview || "linear-gradient(135deg,#999,#333)"};border:1px solid var(--p-line);flex:none"></div>`;
+  const presetRows = presets.map(p => `<tr>
+    <td>${swatch(p)}</td>
+    <td><b>${esc(p.name)}</b><div class="p-tag" style="font-size:11px">${esc(p.key)} · ${p.built_in ? "built-in" : "operator"}</div></td>
+    <td><span class="badge ${p.mood === "futurist" ? "failed" : "published"}">${esc(p.mood || "—")}</span></td>
+    <td class="p-tag">${Object.keys(p.vars || {}).length} vars</td>
+    <td style="white-space:nowrap">
+      <button class="p-btn sm" data-thprev="${esc(p.key)}">Preview vars</button>
+      <button class="p-btn sm primary" data-thassign="${esc(p.key)}">Assign…</button>
+    </td></tr>`).join("");
+  const assignRows = assigns.map(a => `<tr>
+    <td><span class="badge published">${esc(a.scope)}</span></td>
+    <td class="p-tag">${esc(a.scope_key)}</td>
+    <td>${esc(a.theme_name || a.theme_key || "—")}</td>
+    <td><button class="p-btn sm danger" data-thun="${a.scope}|${esc(a.scope_key)}">Clear</button></td></tr>`).join("");
+  const live = await api("/themes/resolve").catch(() => ({}));
+  return `
+  <div class="p-panel"><h2>🎨 Themes · universal, data-driven skins</h2>
+    <p class="p-tag">Every theme is a row in a registry — create one from any hue and it is live, no deploy. Assignments cascade: <b>product → department → tenant → platform</b>; the most specific wins. A live store's own settings remain the default unless a preset is assigned.</p>
+    <div style="display:flex;gap:8px;align-items:center;margin:10px 0;flex-wrap:wrap">
+      <span class="badge published">live skin: ${esc((live.theme && live.theme.name) || "store settings")}</span>
+      <span class="p-tag">${live.via ? "via " + esc(live.via) : "tenant settings.theme"}</span>
+    </div>
+    <div class="p-scroll-x" style="margin-bottom:14px"><table class="p-table"><thead><tr><th></th><th>Theme</th><th>Mood</th><th>Vars</th><th></th></tr></thead>
+      <tbody>${presetRows || '<tr><td colspan="5" class="p-empty">No themes seeded yet</td></tr>'}</tbody></table></div>
+    <h3>Generative studio — dial a hue, name it, keep it</h3>
+    <p class="p-tag">The palette is a function of a hue, so the theme space is unbounded: the gallery above is finite, this dial is not. Preview live, then save the result as a permanent preset.</p>
+    <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin:10px 0">
+      <label style="display:flex;flex-direction:column;gap:4px"><span class="p-tag">Hue <b id="thHueVal">${thHue}°</b></span>
+        <input type="range" id="thHue" min="0" max="359" value="${thHue}" style="width:220px;accent-color:var(--p-accent)"></label>
+      <label style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="thDark" ${thDark ? "checked" : ""}> Dark mode</label>
+      <button class="p-btn sm" id="thPreview">⚡ Preview</button>
+      <span style="flex:1"></span>
+      <input id="thName" placeholder="Theme name…" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:200px">
+      <button class="p-btn sm primary" id="thSave">★ Save as preset</button>
+    </div>
+    <div id="thVars" class="p-tag" style="margin-top:6px">— press Preview —</div>
+    <h3 style="margin-top:16px">Active assignments</h3>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Scope</th><th>Key</th><th>Theme</th><th></th></tr></thead>
+      <tbody>${assignRows || '<tr><td colspan="4" class="p-empty">No overrides — the store wears its own settings.theme</td></tr>'}</tbody></table></div>
+  </div>`;
+}
+function wireThemes() {
+  const hue = document.getElementById("thHue");
+  if (hue) hue.oninput = () => { document.getElementById("thHueVal").textContent = hue.value + "°"; thHue = Number(hue.value); };
+  const dk = document.getElementById("thDark");
+  if (dk) dk.onchange = () => { thDark = dk.checked; };
+  const prev = document.getElementById("thPreview");
+  if (prev) prev.onclick = async () => {
+    try {
+      const r = await api("/themes/preview?hue=" + thHue + (thDark ? "" : "&light=1"));
+      const v = r.vars || {};
+      document.getElementById("thVars").innerHTML = Object.keys(v).slice(0, 10)
+        .map(k => "<code>" + k + "</code>=" + String(v[k]).slice(0, 28)).join(" · ") + " …";
+      /* live-dress this console so the operator sees the skin in situ */
+      const root = document.documentElement.style;
+      for (const [k, val] of Object.entries(v)) if (k.startsWith("--")) root.setProperty(k, val);
+    } catch (e) { toast(e.message); }
+  };
+  const save = document.getElementById("thSave");
+  if (save) save.onclick = async () => {
+    const name = document.getElementById("thName").value.trim();
+    if (!name) return toast("name the theme first");
+    try {
+      const r = await api("/themes", "POST", { key: name.toLowerCase().replace(/[^a-z0-9-]+/g, "-"), name, hue: thHue, dark: thDark });
+      if (r.ok) { toast("Theme '" + name + "' saved — assignable everywhere"); render(); }
+      else toast(r.error || "save failed");
+    } catch (e) { toast(e.message); }
+  };
+  document.querySelectorAll("[data-thassign]").forEach(b => b.onclick = async () => {
+    const key = b.dataset.thassign;
+    const scope = prompt("Scope for '" + key + "': platform | tenant | dept | product", "tenant");
+    if (!scope) return;
+    const scopeKey = prompt("Scope key (tenant id / dept key / product id; '*' for platform)", scope === "platform" ? "*" : String(window.__tenantId || 1));
+    if (scopeKey == null) return;
+    try {
+      const r = await api("/themes/assign", "POST", { scope, scope_key: scopeKey, theme_key: key });
+      toast(r.ok ? "Assigned " + key + " to " + scope + ":" + scopeKey : (r.error || "assign failed"));
+      render();
+    } catch (e) { toast(e.message); }
+  });
+  document.querySelectorAll("[data-thprev]").forEach(b => b.onclick = () => {
+    const p = (document.__presets || []).find(x => x.key === b.dataset.thprev);
+    if (!p) return;
+    const root = document.documentElement.style;
+    for (const [k, v] of Object.entries(p.vars || {})) if (k.startsWith("--")) root.setProperty(k, v);
+    toast("Previewing " + p.name + " on this console");
+  });
+  document.querySelectorAll("[data-thun]").forEach(b => b.onclick = async () => {
+    const [scope, scopeKey] = b.dataset.thun.split("|");
+    try { await api("/themes/unassign", "POST", { scope, scope_key: scopeKey }); toast("Override cleared"); render(); }
+    catch (e) { toast(e.message); }
+  });
+}
+
+/* Dashboards & Reports — Architecture1 §394/§395 made visible. A dashboard is a runtime
+   object: pick one and the engine renders every widget it declares, computed live from the
+   entity each widget points at. The picker below is derived from the engine itself
+   (entities, metrics, visualization kinds), and the "＋ widget" action is one row — the
+   operator never writes code to get a new KPI. Reports (§395) run the same data through
+   Data → Analytics → Visualization → Report on demand. */
+let dbSel = null, dbEntities = [], dbWidgetDash = null;
+async function vDashboards() {
+  const [listRes, entRes, repRes] = await Promise.all([
+    api("/dashboards").catch(() => ({ dashboards: [] })),
+    api("/dashboards/entities").catch(() => ({ entities: [], metrics: [], kinds: [] })),
+    api("/reports").catch(() => ({ reports: [] }))
+  ]);
+  const ds = listRes.dashboards || [];
+  dbEntities = entRes.entities || [];
+  const metrics = entRes.metrics || [], kinds = entRes.kinds || [];
+  if (!dbSel || !ds.some(d => d.key === dbSel)) dbSel = ds.length ? ds[0].key : null;
+  const active = dbSel ? await api("/dashboards/" + encodeURIComponent(dbSel)).catch(() => ({ widgets: [] })) : { widgets: [] };
+  const renderWidget = w => {
+    if (w.error) return `<div class="db-card" style="grid-column:span ${w.span || 3}"><div class="db-kpi-label">${esc(w.label)}</div><div class="p-tag" style="color:var(--p-danger)">⚠ ${esc(w.error)}</div></div>`;
+    if (w.kind === "kpi") return `<div class="db-card" style="grid-column:span ${w.span || 3}">
+      <div class="db-kpi-label">${esc(w.label)}</div>
+      <div class="db-kpi-value">${fmtNum(w.value)}</div>
+      <div class="p-tag">${esc(w.metric)}${w.column ? " · " + esc(w.column) : ""} · ${esc(w.entity)}</div></div>`;
+    const buckets = w.buckets || [];
+    const max = Math.max(1, ...buckets.map(b => Math.abs(Number(b.value) || 0)));
+    if (w.kind === "bar") return `<div class="db-card" style="grid-column:span ${w.span || 3}">
+      <div class="db-kpi-label">${esc(w.label)}</div>
+      <div class="db-bars">${buckets.map(b => `<div class="db-bar-row"><span class="db-bar-k">${esc(String(b.key).slice(0, 22))}</span>
+        <div class="db-bar-track"><div class="db-bar-fill" style="width:${Math.max(2, Math.abs(Number(b.value) || 0) / max * 100)}%"></div></div>
+        <span class="db-bar-v">${fmtNum(b.value)}</span></div>`).join("") || '<div class="p-empty">no data</div>'}</div></div>`;
+    if (w.kind === "donut") { const tot = buckets.reduce((a, b) => a + (Number(b.value) || 0), 0) || 1;
+      let acc = 0;
+      const segs = buckets.map((b, i) => { const frac = (Number(b.value) || 0) / tot; const seg = `<circle cx="32" cy="32" r="26" fill="none" stroke="hsl(${(i * 67 + 190) % 360} 70% 55%)" stroke-width="12" stroke-dasharray="${(frac * 163).toFixed(1)} 163" stroke-dashoffset="${(-acc * 163).toFixed(1)}" transform="rotate(-90 32 32)"></circle>`; acc += frac; return seg; }).join("");
+      return `<div class="db-card" style="grid-column:span ${w.span || 3}"><div class="db-kpi-label">${esc(w.label)}</div>
+        <div style="display:flex;gap:14px;align-items:center"><svg width="64" height="64" viewBox="0 0 64 64">${segs || '<circle cx="32" cy="32" r="26" fill="none" stroke="var(--p-line)" stroke-width="12"/>'}</svg>
+        <div style="flex:1;min-width:0">${buckets.slice(0, 6).map((b, i) => `<div style="display:flex;justify-content:space-between;font-size:12px;padding:1px 0"><span style="color:var(--p-muted)"><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:hsl(${(i * 67 + 190) % 360} 70% 55%);margin-right:5px"></i>${esc(String(b.key).slice(0, 18))}</span><b>${fmtNum(b.value)}</b></div>`).join("") || '<div class="p-empty">no data</div>'}</div></div></div>`; }
+    if (w.kind === "line") { const vals = buckets.map(b => Number(b.value) || 0); const mx = Math.max(1, ...vals), mn = Math.min(0, ...vals);
+      const pts = vals.map((v, i) => `${(i / Math.max(1, vals.length - 1) * 100).toFixed(1)},${(100 - (v - mn) / Math.max(1, mx - mn) * 92).toFixed(1)}`).join(" ");
+      return `<div class="db-card" style="grid-column:span ${w.span || 3}"><div class="db-kpi-label">${esc(w.label)}</div>
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:120px">${vals.length > 1 ? `<polyline points="${pts}" fill="none" stroke="var(--p-accent)" stroke-width="2.5" vector-effect="non-scaling-stroke"/>` : '<text x="50" y="50" text-anchor="middle" fill="var(--p-muted)" font-size="9">need 2+ points</text>'}</svg>
+        <div class="p-tag">${buckets.length} groups · ${esc(w.dimension || "")}</div></div>`; }
+    /* table */
+    return `<div class="db-card" style="grid-column:span ${w.span || 3}"><div class="db-kpi-label">${esc(w.label)}</div>
+      <table class="p-table" style="font-size:12px"><thead><tr><th>${esc(w.dimension || "group")}</th><th style="text-align:right">${esc(w.metric)}${w.column ? "(" + esc(w.column) + ")" : ""}</th></tr></thead>
+      <tbody>${buckets.map(b => `<tr><td>${esc(String(b.key).slice(0, 30))}</td><td style="text-align:right"><b>${fmtNum(b.value)}</b></td></tr>`).join("") || '<tr><td colspan="2" class="p-empty">no data</td></tr>'}</tbody></table></div>`;
+  };
+  const entOpts = dbEntities.map(e => `<option value="${esc(e.key)}">${esc(e.icon || "🧩")} ${esc(e.label)}</option>`).join("");
+  const widgetForm = `<details style="margin-top:14px"><summary style="cursor:pointer;padding:8px 0"><b>＋ Add a widget</b> <span class="p-tag">— a KPI is one row, computed by the engine</span></summary>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;padding:12px 0">
+      <label><span class="p-tag">Label</span><input id="dwLabel" class="p-input" placeholder="e.g. Revenue this month"></label>
+      <label><span class="p-tag">Visualization</span><select id="dwKind" class="p-input">${kinds.map(k => `<option value="${k}">${k}</option>`).join("")}</select></label>
+      <label><span class="p-tag">Entity</span><select id="dwEntity" class="p-input">${entOpts}</select></label>
+      <label><span class="p-tag">Metric</span><select id="dwMetric" class="p-input">${metrics.map(m => `<option value="${m}">${m}</option>`).join("")}</select></label>
+      <label><span class="p-tag">Column (sum/avg/…)</span><input id="dwColumn" class="p-input" placeholder="total"></label>
+      <label><span class="p-tag">Group by</span><input id="dwDim" class="p-input" placeholder="status"></label>
+      <label><span class="p-tag">Span (1-6)</span><input id="dwSpan" class="p-input" type="number" min="1" max="6" value="3"></label>
+      <button class="p-btn primary" id="dwAdd" style="align-self:end">＋ Add widget</button>
+    </div>
+    <div id="dwFields" class="p-tag"></div></details>`;
+  const tabs = ds.map(d => `<button class="p-btn sm ${d.key === dbSel ? "primary" : ""}" data-dbtab="${esc(d.key)}">${esc(d.icon || "📊")} ${esc(d.name)}</button>`).join("")
+    || '<span class="p-empty">No dashboards yet</span>';
+  const reps = repRes.reports || [];
+  const repRows = reps.map(r => `<tr>
+    <td><b>${esc(r.name)}</b><div class="p-tag">${esc(r.key)} · ${esc(r.entity)}</div></td>
+    <td><span class="badge ${r.kind === "Regulatory" ? "failed" : "published"}">${esc(r.kind)}</span></td>
+    <td class="p-tag">${esc(r.schedule)}</td>
+    <td class="p-tag">${esc(r.last_run ? String(r.last_run).slice(0, 16) : "never")}</td>
+    <td style="white-space:nowrap"><button class="p-btn sm" data-reprun="${esc(r.key)}">▶ Run</button>
+      <button class="p-btn sm danger" data-repdel="${esc(r.key)}">Delete</button></td></tr>`).join("");
+  return `
+  <div class="p-panel"><h2>📊 Dashboards · the universal dashboard engine (Architecture1 §394)</h2>
+    <p class="p-tag">A dashboard is a <b>runtime object</b>: each widget below is a row pointing at an entity and a metric, computed live by one generic engine — no per-dashboard code, no deploy. Add a KPI with the form under any board; a new dashboard is a POST to <code>/api/dashboards</code>. Every visualization here (KPI · bars · donut · line · table) is drawn from the same two engine outputs: a scalar <code>value</code> or a list of <code>buckets</code>.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">${tabs}</div>
+    ${active.widgets && active.widgets.length ? `<div class="db-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px">${(active.widgets || []).map(renderWidget).join("")}</div>`
+      : '<div class="p-empty" style="padding:20px">This dashboard has no widgets yet — add the first one below.</div>'}
+    ${widgetForm}
+    <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+      <button class="p-btn sm" id="dbNew">＋ New dashboard</button>
+      ${dbSel ? `<button class="p-btn sm danger" id="dbDel">Delete this dashboard</button>` : ""}
+    </div>
+  </div>
+  <div class="p-panel" style="margin-top:14px"><h2>📄 Reports · the reporting engine (Architecture1 §395)</h2>
+    <p class="p-tag">A report is the pipeline the constitution names — <b>Data → Analytics → Visualization → Report</b> — declared as a row: entity, metrics, dimensions, cadence. Scheduled reports run when read; run any report on demand. Output is columns + rows, so a downstream tool or the <b>Data Studio</b> can dress it.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Report</th><th>Kind</th><th>Schedule</th><th>Last run</th><th></th></tr></thead>
+      <tbody>${repRows || '<tr><td colspan="5" class="p-empty">No reports declared</td></tr>'}</tbody></table></div>
+    <div id="repOut" style="margin-top:10px"></div>
+  </div>`;
+}
+function fmtNum(v) { const n = Number(v); if (!isFinite(n)) return "—"; return Math.abs(n) >= 1000 ? n.toLocaleString(undefined, { maximumFractionDigits: 1 }) : String(Math.round(n * 100) / 100); }
+function wireDashboards() {
+  document.querySelectorAll("[data-dbtab]").forEach(b => b.onclick = () => { dbSel = b.dataset.dbtab; render(); });
+  document.querySelectorAll("[data-reprun]").forEach(b => b.onclick = async () => {
+    try {
+      const r = await api("/reports/" + encodeURIComponent(b.dataset.reprun) + "/run");
+      const el = document.getElementById("repOut");
+      if (r.error) { el.innerHTML = '<div class="p-tag" style="color:var(--p-danger)">⚠ ' + esc(r.error) + '</div>'; return; }
+      const cols = r.columns || [];
+      el.innerHTML = `<h3 style="margin:10px 0 4px">${esc(r.report.name)} <span class="p-tag">${r.rows.length} rows · ${esc(new Date(r.generatedAt).toLocaleString())}</span></h3>
+        <div class="p-scroll-x"><table class="p-table" style="font-size:12px"><thead><tr>${cols.map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead>
+        <tbody>${r.rows.slice(0, 25).map(row => `<tr>${cols.map(c => `<td>${esc(fmtNum(row[c]))}</td>`).join("")}</tr>`).join("") || '<tr><td colspan="' + cols.length + '" class="p-empty">no rows</td></tr>'}</tbody></table></div>`;
+    } catch (e) { toast(e.message); }
+  });
+  document.querySelectorAll("[data-repdel]").forEach(b => b.onclick = async () => {
+    try { await api("/reports/" + encodeURIComponent(b.dataset.repdel), "DELETE"); toast("Report deleted"); render(); }
+    catch (e) { toast(e.message); }
+  });
+  const add = document.getElementById("dwAdd");
+  if (add) add.onclick = async () => {
+    const g = id => (document.getElementById(id) || {}).value || "";
+    try {
+      const r = await api("/dashboards/" + encodeURIComponent(dbSel) + "/widgets", "POST",
+        { label: g("dwLabel") || "New KPI", kind: g("dwKind"), entity: g("dwEntity"), metric: g("dwMetric"), column: g("dwColumn"), dimension: g("dwDim"), span: Number(g("dwSpan")) || 3 });
+      if (r.ok) { toast("Widget added — engine is computing it now"); render(); } else toast(r.error || "add failed");
+    } catch (e) { toast(e.message); }
+  };
+  const ent = document.getElementById("dwEntity");
+  if (ent) ent.onchange = () => {
+    const e = dbEntities.find(x => x.key === ent.value);
+    const el = document.getElementById("dwFields");
+    if (el && e) el.textContent = "fields: " + e.fields.map(f => f.col || f.key).join(", ");
+  };
+  const nw = document.getElementById("dbNew");
+  if (nw) nw.onclick = async () => {
+    const name = prompt("Dashboard name", "My Dashboard");
+    if (!name) return;
+    try {
+      const r = await api("/dashboards/new", "POST", { name, type: "Operational", audience: "admin" });
+      if (r.ok) { dbSel = r.key; toast("Dashboard created — add widgets"); render(); } else toast(r.error || "create failed");
+    } catch (e) { toast(e.message); }
+  };
+  const del = document.getElementById("dbDel");
+  if (del) del.onclick = async () => {
+    if (!confirm("Delete this dashboard and its widgets?")) return;
+    try { await api("/dashboards/" + encodeURIComponent(dbSel), "DELETE"); dbSel = null; toast("Deleted"); render(); }
+    catch (e) { toast(e.message); }
+  };
 }
 
 async function viewIdentity() {
