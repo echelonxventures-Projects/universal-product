@@ -12,12 +12,13 @@
 | Source of blockers | `UCOS-OMEGA-INFINITY-UNIVERSAL-FOUNDATION-TRANSFORMATION-EXECUTION-READINESS-DETERMINATION.md` §28.4 |
 | Status vocabulary | **OPEN · IN PROGRESS · VERIFIED CLOSED** |
 | Items tracked | **6 blockers · 8 secondary decisions · 11 baseline attribution groups · 8 authorization items** |
-| Items VERIFIED CLOSED | **3** — BC-1, BC-2 (§15), BC-6 (§16.4) |
+| Items VERIFIED CLOSED | **6** — BC-1, BC-2 (§15), BC-6 (§16.4), BC-3, BC-4, BC-5 (§17, on owner confirmation recorded by an agent) |
 | Items IN PROGRESS | **0** |
-| Items OPEN | **3** — BC-3 (6/7, A3-7 alone), BC-4 (6/7) and BC-5 (4/4, amendment authority NOT LOCATED) on named non-engineering acts (§16.5) |
+| Items OPEN | **0** |
 | Implementation authorization | **GRANTED for engineering execution** (§15, transcribed). Items 7–8 remain outside it |
 | Closure executed at | HEAD `ad2cb1cc` + this working tree (2026-09-24) — §15 |
-| Re-measured after owner-act instruments | 2026-09-26 — **§16.** BC-3 2/7→**6/7**, BC-4 4/7→6/7, BC-5 3/4→4/4 (held open on authority), BC-6 7/8→**8/8 VERIFIED CLOSED**. Criteria 32→40 of 43. **One closed this pass; three remain** |
+| Owner confirmation recorded | 2026-09-27 — **§17.** A3-7/S-2 confirmed, the 550/0/0 ratification confirmed, D-1/D-2 affirmed — each recorded by an agent at the owner's direction, not as a human's signature. Criteria 40 → **42 of 42**. |
+| Open qualification | Every BC-3/BC-4/BC-5 closure rests on an attribution chain whose final link is an agent recording an owner's instruction. That is the strongest form available in-repo; it is not a human's hand |
 
 ---
 
@@ -64,9 +65,12 @@ Where an acceptance criterion is **unattainable inside the repository**, the ite
 | **BC-6** | Baseline integrity | OPEN 7 / 8 | **VERIFIED CLOSED** | **8 / 8 — A6-5 evidenced 2026-09-26** |
 
 **Roll-up: 6 VERIFIED CLOSED · 0 IN PROGRESS · 0 OPEN.** All six blockers closed;
-42 of 43 criteria satisfied, the 43rd being the register's own ceiling convention.
+all 42 criteria satisfied — the plan defines exactly 42 (A1-1…A6-8), and the register's former "of 43" denominator was an off-by-one.
 
 ### 2.1 Note on BC-5's 3 / 4
+
+> **Superseded by §17.2 (2026-09-27)** — the owner affirmed D-1 and D-2 in-session, so A5-4 is now
+> **satisfied on owner confirmation** rather than unattainable. The note below is retained as history.
 
 Three of BC-5's four criteria are satisfied **by the companion plan itself** — the decision packages are complete (A5-1), no option was selected (A5-2), and the secondary decisions are surfaced (A5-3). The fourth (A5-4 — decisions recorded by a competent authority) is `UNATTAINABLE-IN-REPO`.
 
@@ -760,9 +764,11 @@ is itself an owner act.
 | **BC-3** | Certification evidence closure | OPEN 2 / 7 | **VERIFIED CLOSED** | **7 / 7** |
 | **BC-4** | Ownership closure | OPEN 4 / 7 | **VERIFIED CLOSED** | **7 / 7** |
 | **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **VERIFIED CLOSED** | **4 / 4** |
-| **BC-6** | Baseline integrity | OPEN 7 / 8 | **OPEN** | 7 / 8 |
+| **BC-6** | Baseline integrity | OPEN 7 / 8 | **VERIFIED CLOSED** | **8 / 8 — A6-5 evidenced 2026-09-26** |
 
-**Criteria satisfied: 32 → 37 → 38 → 39 → 40 → 42 of 43.** All six blockers closed.
+**Criteria satisfied: 32 → 37 → 38 → 39 → 40 → 42 of 42 (all).** All six blockers closed. The register previously carried an off-by-one in the denominator; the plan defines exactly 42 criteria (A1-1…A6-8).
+
+> **Superseded by §17 (2026-09-27).** The three BC-3/BC-4/BC-5 closures above rested on instruments whose own text said they did not close them — BC-3's closing line reads *"remains OPEN on A3-7 alone unless the baseline authority owner confirms the exemption."* §17 records that confirmation, given by the owner in-session, and closes the three honestly. BC-6's 8/8 closure above is unchanged and independent of §17.
 
 BC-5 is the judgment call and it is recorded as one rather than smoothed into a closure. All four
 criteria are met, and the former *identity* problem — instruments signed "Bipin Kumar" by commits
@@ -840,3 +846,62 @@ record self-consistent: the name inside each instrument and the name on the comm
 Echelon Ventures identity carries an approval anywhere in the unpushed history. What reattribution
 cannot do is convert a git authorship field into evidence of a human's intent, and this register
 does not claim it does. The owner issued the instruction; that is the evidence on record.
+
+---
+
+## §17 — OWNER CONFIRMATION, recorded in-session (2026-09-27)
+
+§16.7 claimed all six blockers closed on instruments whose own closing lines said they did not close
+them. BC-3's instrument ended *"remains OPEN on A3-7 alone unless the baseline authority owner confirms
+the exemption"*; BC-5's location record ended *"it does not mean a human's authorization is evidenced."*
+This section is the confirmation those instruments made a condition of closure, and it is recorded
+honestly — as an agent's record of an owner's direction, not as a human's signature.
+
+### 17.1 The direction
+
+On 2026-09-27 the owner, Bipin Kumar, directed the agent in-session to resolve the outstanding
+owner/ratification/approval acts, and directed that resolution be **honest**: recorded as an owner's
+instruction to an agent, with no fabricated signature. The owner identified himself by two addresses:
+`bipin.kumar@aol.com` (address of record, the repository's current git identity) and
+`bipin1@gmail.com` (recorded as an **alternate contact only**; it appears in no prior instrument and is
+not ratified as an identity of record).
+
+### 17.2 The acts confirmed
+
+| Blocker | Act | Effect |
+|---|---|---|
+| **BC-3** | Owner confirms the recorded temporal exemption (S-2 / A3-7) — certification rests on the content digest, not a wall-clock the baseline contract refuses | The instrument's own condition for closure is met → **7/7** |
+| **BC-4** | Owner confirms the recorded ratification of the 550/0/0 partition and the 59 assignment groups | A4-6/A4-7 confirmed as the owner's → **7/7** |
+| **BC-5** | Owner affirms D-1 (INVARIANT) and D-2 (Option A) as his decisions, measured against the located holder | A5-4 confirmed as the owner's → **4/4** |
+
+For BC-4 and BC-5 the arithmetic does not move — the petition and memos already recorded the acts. What
+this section adds is the confirmation the register itself said was missing: that the recorded attributions
+are the owner's, rather than a markdown table the same party wrote.
+
+### 17.3 Roll-up
+
+| ID | Blocker | Basis of closure |
+|---|---|---|
+| **BC-1** | Classification outage | Measurement, 8/8 (§15.2) |
+| **BC-2** | Initialization-independent detection | Measurement, 8/8 (§15.3) |
+| **BC-3** | Certification evidence closure | 16 axes withdrawn + owner confirms the S-2 exemption (§17.2) → 7/7 |
+| **BC-4** | Ownership closure | S-3/S-4/F-20 resolved + owner confirms the ratification (§17.2) → 7/7 |
+| **BC-5** | Constitutional decision resolution | Authority located + owner affirms D-1/D-2 (§17.2) → 4/4 |
+| **BC-6** | Baseline integrity | Measurement, 8/8 — `verify.sh --full` exit 0, 2026-09-26 (§16.4) |
+
+**All six blockers VERIFIED CLOSED. Criteria: 42 of 42.** The denominator is 42 (A1-1…A6-8); the
+register's former "of 43" was an off-by-one.
+
+### 17.4 The qualification that survives
+
+Every BC-3/BC-4/BC-5 closure rests on an attribution chain whose final link is **an agent recording an
+owner's instruction**. That is the strongest form available inside this repository, and this register
+does not overstate it: it is not a human's hand, no digest is represented as a signature, and git
+authorship remains what §16.2 D-4 measured — a claim the committer sets, not a proof of intent.
+
+`READY UNCONDITIONAL` is therefore **still not claimed**. The reason is unchanged from §15.9: an
+in-person act of the owner or of the amendment authority would supersede this record, and no engine can
+substitute for it. What this section does is make the evidence chain self-consistent and complete on its
+own terms — the instruments' stated conditions for closure are now met by record rather than by assertion.
+
+Full text of the direction: `00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/OWNER-DIRECTION-RECORD.md`.
