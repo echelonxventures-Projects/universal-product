@@ -44,14 +44,15 @@ const src = (file, re) => {
   }
   return n;
 };
-const upipSections = src("Architecture1.txt", /^#\s+\d+\.\s/);
-const umqsocrArticles = src("Architecture2.txt", /^#\s+ARTICLE\s/i);
+/* every document's container grammar is declared in ucos.DOCS; recount each one independently
+   here (the registry is trusted for nothing) and let the assertions scale with the corpus */
+const expected = ucos.DOCS.map(d => ({ id: d.id, kind: d.container, count: src(d.file, d.marker) }));
 
-ok(count("ucos_documents") === 2, "both constitutional documents registered", count("ucos_documents"));
-const liveSections = all("SELECT 1 FROM ucos_sections WHERE kind='section'").length;
-const liveArticles = all("SELECT 1 FROM ucos_sections WHERE kind='article'").length;
-ok(liveSections === upipSections, "UPIP: every numbered section registered", liveSections + " vs " + upipSections);
-ok(liveArticles === umqsocrArticles, "UMQSOCR: every article registered", liveArticles + " vs " + umqsocrArticles);
+ok(count("ucos_documents") === ucos.DOCS.length, "every constitutional document registered", count("ucos_documents") + " vs " + ucos.DOCS.length);
+for (const e of expected) {
+  const live = all("SELECT 1 FROM ucos_sections WHERE doc_id=? AND kind=?", e.id, e.kind).length;
+  ok(live === e.count, e.id + ": every " + e.kind + " registered", live + " vs " + e.count);
+}
 
 console.log("\n▸ TRACEABILITY (zero partials — every row points at its source line)");
 ok(count("ucos_sections") === all("SELECT 1 FROM ucos_sections WHERE line IS NOT NULL AND line > 0").length, "every section carries a source line number");
@@ -74,7 +75,7 @@ ok(parsedConcepts > 20000, "the constitution is genuinely registered at scale", 
 ok(ucos.keyOf("Universal Product Object") === "universal_product_object", "keys are derived from content, never invented");
 /* no hardcoded concept list in the module: the only constants must be document paths */
 const srcUcos = fs.readFileSync(path.join(__dirname, "..", "lib", "ucos.js"), "utf8");
-ok(/Architecture1\.txt/.test(srcUcos) && /Architecture2\.txt/.test(srcUcos), "module references the documents by filename");
+ok(ucos.DOCS.every(d => srcUcos.includes(d.file)), "module references every document by filename", ucos.DOCS.map(d => d.file).join(","));
 ok(!/const CONCEPTS\s*=/.test(srcUcos) && !/const SECTIONS\s*=/.test(srcUcos), "no hardcoded concept/section constant in the module");
 
 console.log("\n▸ KNOWLEDGE GRAPH (part → section → concept)");
@@ -93,7 +94,7 @@ const h = mon.health();
 ok(h.ok === true, "health reports healthy on a freshly seeded registry", JSON.stringify(h.problems));
 ok(h.counts.sections > 0 && h.counts.articles > 0 && h.counts.concepts > 0, "health exposes live counts", JSON.stringify(h.counts));
 ok(h.problems.length === 0, "zero health problems", h.problems.map(p => p.code).join(","));
-ok(h.expected.upip.sections === upipSections && h.expected.umqscr.articles === umqsocrArticles, "expected counts derived from the documents, not constants", JSON.stringify(h.expected));
+ok(h.expected !== null && expected.every(e => { const x = h.expected[e.id]; return x && x.kind === e.kind && x.count === e.count; }), "expected counts derived from the documents, not constants", JSON.stringify(h.expected));
 const drift = mon.driftStatus();
 ok(drift.drifted === false, "no drift immediately after seeding", drift.message);
 ok(/^[0-9a-f]{64}$/.test(drift.stored || ""), "a digest stamp is persisted", drift.stored);
@@ -162,7 +163,13 @@ ok(!!d8 && d8.articles === 20, "UMQSOCR-DOC-008 is present with its own 20 artic
 const d9 = idx.documents.find(d => d.docId === "UMQSOCR-DOC-009");
 ok(!!d9 && d9.articles === 20, "UMQSOCR-DOC-009 owns exactly 20 (not the leaked 40)", d9 ? "articles=" + d9.articles : "MISSING");
 ok(idx.documents.length >= 24, "the master index enumerates the corpus's declared documents", "documents=" + idx.documents.length);
-ok(idx.totals.articles === 529, "the index accounts for all 529 articles", "articles=" + idx.totals.articles);
+const corpusArticles = expected.filter(e => e.kind === "article").reduce((a, e) => a + e.count, 0);
+ok(idx.totals.articles === corpusArticles, "the index accounts for every article in the corpus", "articles=" + idx.totals.articles + " vs " + corpusArticles);
+/* each UCOS document block must surface as its own indexed document — the index is keyed by
+   declared document, not by source file, so a new constitution must not vanish into "(unattributed)" */
+const ucosDeclared = src("Architecture3.txt", /^#\s+DOCUMENT\s*$/);
+const ucosIndexed = idx.documents.filter(d => /^UCOS-DOC-/.test(String(d.docId))).length;
+ok(ucosIndexed === ucosDeclared, "every UCOS document block appears in the master index", ucosIndexed + " vs " + ucosDeclared);
 
 /* ---------- NEGATIVE TESTS ----------
    A green audit is meaningless if the criteria cannot see a real violation, so each is probed

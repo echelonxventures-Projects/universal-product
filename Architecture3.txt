@@ -1,0 +1,2050 @@
+
+# UCOS Ω∞
+
+# UNIVERSAL CIVILIZATION OPERATING SYSTEM (UCOS Ω∞)
+
+Version: Constitutional Foundation v1.0
+
+---
+
+# PREAMBLE
+
+UCOS Ω∞ is a universal, metadata-driven, ontology-first, registry-driven,
+industry-agnostic platform capable of modeling, governing, composing,
+executing and evolving any product, service, capability, process,
+organization, industry, marketplace, ecosystem, intelligence system or
+civilization-scale construct.
+
+The objective is not to build an e-commerce platform, ERP, CRM,
+marketplace, booking engine, offer engine, CMS, workflow engine or AI
+platform. The objective is to discover and construct the universal
+primitives from which all such systems can be composed.
+
+This constitution governs itself. Every artifact it produces is derived
+from primitives it defines, and no primitive is introduced where an
+existing one suffices.
+
+---
+
+# PART 1
+# UNIVERSAL FOUNDATION REGISTRY
+
+---
+
+# DOCUMENT
+
+```text
+Document ID:
+UCOS-DOC-001
+
+Document Name:
+Universal Foundation
+Registry Constitution
+
+Version:
+1.0
+
+Classification:
+Foundation Authority
+
+Tier:
+Tier-0
+
+Status:
+CANONICAL FOUNDATION
+```
+
+---
+
+# ARTICLE 1
+# CONSTITUTIONAL PURPOSE
+
+## 1.1 Purpose
+
+This document establishes constitutional ownership of the Foundation
+Registry: the single canonical registry from which every other registry,
+ontology, meta model, taxonomy and capability in the platform derives.
+
+```text id="ucos001foundationregistry"
+Foundation Registry
+
+Master Registry
+
+Foundation Hierarchy
+
+Dependency Graph
+
+Evolution Graph
+
+Governance Graph
+
+Registry Entry
+
+Foundation Node
+
+Foundation Edge
+
+Foundation Root
+```
+
+No artifact in the platform may exist outside the Foundation Registry.
+An artifact absent from the registry is by definition not part of the
+platform.
+
+## 1.2 Anti-Purpose
+
+This document does not define any industry, domain, vendor, technology,
+currency, geography, language or temporal artifact. It defines only the
+registry that will hold them, and only through metadata.
+
+---
+
+# ARTICLE 2
+# FOUNDATION HIERARCHY
+
+## 2.1 Structure
+
+The Foundation Registry is a directed acyclic graph, not a tree. A
+foundation may be required by many foundations and may require many.
+
+```text id="ucos001foundationhierarchy"
+Universe
+      ↓
+Domain
+      ↓
+Foundation
+      ↓
+Primitive
+      ↓
+Capability
+      ↓
+Composition
+```
+
+## 2.2 Registry Entry Canonical Form
+
+Every foundation is registered as:
+
+```text id="ucos001registryentry"
+Identity
+Parent Foundation
+Required Foundations
+Derived Foundations
+Lifecycle State
+Governance Owner
+Certification State
+Discovery Handle
+```
+
+---
+
+# ARTICLE 3
+# THE FIVE FOUNDATION GRAPHS
+
+## 3.1 Graphs
+
+```text id="ucos001foundationgraphs"
+Foundation Graph          — what exists
+Dependency Graph          — what requires what
+Evolution Graph           — what succeeded what
+Governance Graph          — who governs what
+Composition Graph         — what composes what
+```
+
+## 3.2 Invariants
+
+No foundation may participate in a cycle. This is verified at
+registration time and is a constitutional constraint, not a runtime
+check.
+
+---
+
+# ARTICLE 4
+# REGISTRY GOVERNANCE
+
+## 4.1 Admission
+
+A foundation is admitted only when:
+
+```text id="ucos001admissionrules"
+It is derived from an existing primitive or is itself primitive
+It has a canonical identity
+It declares its dependencies
+It is free of cycles
+It is certified
+```
+
+## 4.2 Prohibition
+
+No hard-coded foundation. No foundation whose existence is asserted in
+code rather than in the registry.
+
+---
+
+# ARTICLE 5
+# LIFECYCLE
+
+## 5.1 States
+
+```text id="ucos001lifecyclestates"
+Proposed
+Drafted
+Reviewed
+Certified
+Canonical
+Deprecated
+Retired
+```
+
+## 5.2 Transition Rules
+
+Transition into Canonical requires certification. Transition into
+Retired requires every dependent foundation to be retired first.
+
+---
+
+# ARTICLE 6
+# SECURITY
+
+Access to mutating the Foundation Registry requires Foundation
+Authority. The registry is append-audited: every admission, transition
+and retirement is recorded immutably.
+
+---
+
+# ARTICLE 7
+# APIS AND EVENTS
+
+## 7.1 Operations
+
+```text id="ucos001registryapis"
+Register Foundation
+Resolve Foundation
+Traverse Dependency Graph
+Traverse Evolution Graph
+Certify Foundation
+Deprecate Foundation
+```
+
+## 7.2 Events
+
+```text id="ucos001registryevents"
+Foundation Registered
+Foundation Certified
+Foundation Deprecated
+Foundation Retired
+Dependency Resolved
+Cycle Detected And Rejected
+```
+
+---
+
+# ARTICLE 8
+# DATA MODEL
+
+## 8.1 Canonical Form
+
+```text id="ucos001datamodel"
+Foundation { identity, parent, dependencies, lifecycle, governance, certification, discovery }
+```
+
+## 8.2 Validation Rules
+
+Identity must be globally unique. Dependencies must resolve. Cycles are
+rejected. Governance owner must be a registered authority.
+
+## 8.3 Evolution Rules
+
+A foundation may evolve by deprecation and succession, never by in-place
+mutation of its canonical identity.
+
+## 8.4 Compliance Rules
+
+No orphan artifacts. No circular dependencies. No hard-coded business
+logic. No duplication. No redundancy.
+
+## 8.5 Discovery And Certification
+
+Discovery is by traversal of the registry graphs. Certification is
+granted by Foundation Authority against the invariants of Article 3.
+
+---
+
+END OF UCOS-DOC-001
+
+
+
+# DOCUMENT
+
+```text
+Document ID:
+UCOS-DOC-002
+
+Document Name:
+Universal Ontology Constitution
+
+Version:
+1.0
+
+Classification:
+Ontological Authority
+
+Tier:
+Tier-0
+
+Status:
+CANONICAL FOUNDATION
+```
+
+---
+
+# ARTICLE 1
+# CONSTITUTIONAL PURPOSE
+
+## 1.1 Purpose
+
+This document establishes constitutional ownership of the Universal
+Ontology: the canonical set of concepts and primitives from which every
+model in the platform is constructed.
+
+```text id="ucos002ontologyconcepts"
+Ontology
+
+Concept
+
+Primitive
+
+Canonical Definition
+
+Ontological Relationship
+
+Meta-Ontology
+
+Universal Concept
+
+Universal Primitive
+```
+
+## 1.2 Universal Question
+
+For every design decision the platform asks:
+
+```text id="ucos002universalquestion"
+What is the more fundamental concept from which this can be derived?
+```
+
+The question is applied recursively until no further abstraction exists.
+
+## 1.3 Prohibition
+
+Never model examples. Model the concepts that make examples possible.
+
+---
+
+# ARTICLE 2
+# UNIVERSAL CONCEPTS
+
+## 2.1 Canonical Concept Set
+
+```text id="ucos002universalconcepts"
+Entity
+Identity
+Classification
+Taxonomy
+Attribute
+Relationship
+Capability
+Policy
+Rule
+Constraint
+Context
+State
+Event
+Action
+Lifecycle
+Resource
+Value
+Measurement
+Time
+Space
+Knowledge
+Intelligence
+```
+
+## 2.2 Primitives
+
+A primitive is a concept from which other concepts derive and which
+derives from nothing more fundamental. The set above is the primitive
+set of the platform.
+
+---
+
+# ARTICLE 3
+# CANONICAL DEFINITIONS
+
+## 3.1 Form
+
+Every concept carries one canonical definition. Definitions are
+registered, not asserted in code.
+
+```text id="ucos002canonicaldefinitions"
+Entity       — anything that can be identified, described and governed
+Identity     — the canonical distinguishability of an entity
+Classification — the assignment of an entity to a taxonomy node
+Taxonomy     — the hierarchy of classifications
+Attribute    — a named value of an entity
+Relationship — a registered association between entities
+Capability   — an addressable ability of the platform
+Policy       — a governance statement over the platform
+Rule         — an enforceable expression of policy
+Constraint   — a limit on valid states
+Context      — the conditions under which behavior is interpreted
+State        — a lifecycle position of an entity
+Event        — an immutable occurrence
+Action       — a state transition caused by an event
+Lifecycle    — the ordered states of an entity
+Resource     — an addressable asset of the platform
+Value        — a measurement of worth or utility
+Measurement  — a canonical quantification
+Time         — the ordering of events
+Space        — the addressing of location
+Knowledge    — registered, queryable information
+Intelligence — the application of knowledge to action
+```
+
+---
+
+# ARTICLE 4
+# ONTOLOGICAL RELATIONSHIPS
+
+## 4.1 Canonical Relationship Set
+
+```text id="ucos002ontologicalrelationships"
+Derives From
+Requires
+Composes
+Specializes
+Generalizes
+Depends On
+Succeeds
+Governs
+References
+Constrains
+```
+
+## 4.2 Meta-Ontology
+
+The ontology describes itself: Concept is itself an Entity, Identity is
+itself identified, and every relationship is itself a registered
+relationship. The ontology is therefore closed under self-description.
+
+---
+
+# ARTICLE 5
+# GOVERNANCE
+
+## 5.1 Admission Rule
+
+A concept is admitted to the Universal Ontology only when it cannot be
+derived from an existing concept. This is the constitutional expression
+of No Duplication and No Redundancy.
+
+## 5.2 Prohibition
+
+No two concepts may carry overlapping meaning. Where overlap is found,
+one must be deprecated in favour of the other.
+
+---
+
+# ARTICLE 6
+# SECURITY, APIS, EVENTS
+
+## 6.1 Operations
+
+```text id="ucos002ontologyapis"
+Resolve Concept
+Traverse Ontology
+Register Relationship
+Deprecate Concept
+```
+
+## 6.2 Events
+
+```text id="ucos002ontologyevents"
+Concept Registered
+Concept Deprecated
+Relationship Registered
+Overlap Detected
+```
+
+## 6.3 Data Model
+
+```text id="ucos002ontologydatamodel"
+Concept { identity, canonical definition, derivation, relationships, lifecycle, governance }
+```
+
+## 6.4 Validation And Compliance
+
+Canonical definition is mandatory. Derivation must resolve to a
+primitive or be primitive. Overlap is a compliance violation.
+
+## 6.5 Discovery And Certification
+
+Discovery is by traversal of ontological relationships. Certification
+confirms a concept is derived, non-duplicative and primitive-complete.
+
+---
+
+END OF UCOS-DOC-002
+
+
+
+# DOCUMENT
+
+```text
+Document ID:
+UCOS-DOC-003
+
+Document Name:
+Universal Meta Model Constitution
+
+Version:
+1.0
+
+Classification:
+Meta Model Authority
+
+Tier:
+Tier-0
+
+Status:
+CANONICAL FOUNDATION
+```
+
+---
+
+# ARTICLE 1
+# CONSTITUTIONAL PURPOSE
+
+## 1.1 Purpose
+
+This document establishes constitutional ownership of the Universal Meta
+Model: the definitions of the primitives listed in UCOS-DOC-002 Article
+2, each with its constitution, theory, ontology, taxonomy, registry,
+lifecycle and governance.
+
+```text id="ucos003metamodelprimitives"
+Meta Model
+
+Entity Meta Model
+Identity Meta Model
+Classification Meta Model
+Attribute Meta Model
+Relationship Meta Model
+Capability Meta Model
+Policy Meta Model
+Context Meta Model
+State Meta Model
+Event Meta Model
+Lifecycle Meta Model
+Resource Meta Model
+Value Meta Model
+Measurement Meta Model
+Time Meta Model
+Space Meta Model
+Knowledge Meta Model
+Intelligence Meta Model
+```
+
+## 1.2 Structural Rule
+
+Each primitive is defined by the same seven-part structure. No primitive
+receives special treatment, and no primitive may omit a part.
+
+---
+
+# ARTICLE 2
+# ENTITY
+
+## 2.1 Constitution
+
+An Entity is anything that can be identified, described and governed.
+
+## 2.2 Theory
+
+Entities are the substrate of the platform. Every object the platform
+manages is an Entity, and every Entity is registered, not hard-coded.
+
+## 2.3 Ontology And Taxonomy
+
+```text id="ucos003entityclasses"
+Entity
+Physical Entity
+Digital Entity
+Conceptual Entity
+Organizational Entity
+Intelligent Entity
+```
+
+## 2.4 Registry, Lifecycle, Governance
+
+Registered in the Entity Registry with lifecycle Proposed to Retired,
+governed by Entity Authority. All other primitives are themselves
+Entities.
+
+---
+
+# ARTICLE 3
+# IDENTITY
+
+## 3.1 Constitution
+
+Identity is the canonical distinguishability of an Entity: that which
+makes one Entity unambiguously another.
+
+## 3.2 Theory
+
+Identity is not a field. It is a registered, resolvable, immutable
+handle. An Entity may carry many identifiers but owns exactly one
+identity.
+
+## 3.3 Ontology And Taxonomy
+
+```text id="ucos003identitytypes"
+Identity
+Natural Identity
+Assigned Identity
+Composite Identity
+Derived Identity
+```
+
+## 3.4 Registry, Lifecycle, Governance
+
+Registered in the Identity Registry, immutable after certification,
+governed by Identity Authority.
+
+---
+
+# ARTICLE 4
+# CLASSIFICATION AND TAXONOMY
+
+## 4.1 Constitution
+
+Classification is the assignment of an Entity to a Taxonomy node.
+Taxonomy is the hierarchy of classifications.
+
+## 4.2 Theory
+
+Taxonomy is metadata, never code. A taxonomy node is a registered
+classification with a parent, a set of children and a scope of validity.
+
+## 4.3 Ontology And Taxonomy
+
+```text id="ucos003taxonomykinds"
+Taxonomy Node
+Root Classification
+Leaf Classification
+Polyhierarchy
+```
+
+## 4.4 Registry, Lifecycle, Governance
+
+Registered in the Taxonomy Registry. A node may have many parents
+(polyhierarchy) but no cycles.
+
+---
+
+# ARTICLE 5
+# ATTRIBUTE, RELATIONSHIP, CAPABILITY
+
+## 5.1 Attribute
+
+An Attribute is a named value of an Entity. Attributes are defined by
+metadata: name, type, cardinality, validity and default.
+
+## 5.2 Relationship
+
+A Relationship is a registered, typed association between Entities, with
+direction, cardinality and lifecycle.
+
+## 5.3 Capability
+
+A Capability is an addressable ability of the platform: a unit of
+function that is discovered, governed and composed rather than
+implemented per application.
+
+```text id="ucos003capabilitytypes"
+Capability
+Primitive Capability
+Composed Capability
+Governed Capability
+```
+
+---
+
+# ARTICLE 6
+# POLICY, RULE, CONSTRAINT
+
+## 6.1 Constitution
+
+Policy is a governance statement. Rule is its enforceable expression.
+Constraint is a limit on valid states.
+
+## 6.2 Theory
+
+Policies are data. A Rule is the machine-checkable projection of a
+Policy. A Constraint is a Rule over state rather than action.
+
+```text id="ucos003policykinds"
+Policy
+Rule
+Constraint
+Invariant
+Prohibition
+Permission
+```
+
+---
+
+# ARTICLE 7
+# CONTEXT, STATE, EVENT, ACTION, LIFECYCLE
+
+## 7.1 Context
+
+Context is the set of conditions under which behavior is interpreted.
+All platform behavior is context aware.
+
+```text id="ucos003contextdimensions"
+Identity Context
+Temporal Context
+Spatial Context
+Regulatory Context
+Security Context
+Economic Context
+Governance Context
+Linguistic Context
+Reality Context
+```
+
+## 7.2 State And Lifecycle
+
+State is a lifecycle position. Lifecycle is the ordered set of states.
+
+## 7.3 Event And Action
+
+An Event is an immutable occurrence. An Action is a state transition
+caused by an Event.
+
+---
+
+# ARTICLE 8
+# RESOURCE, VALUE, MEASUREMENT
+
+## 8.1 Resource
+
+A Resource is an addressable asset of the platform: computable,
+governable and exhaustible.
+
+## 8.2 Value And Measurement
+
+Value is a measurement of worth or utility. Measurement is a canonical
+quantification with unit and uncertainty.
+
+```text id="ucos003valuetypes"
+Value
+Measured Value
+Derived Value
+Declared Value
+```
+
+---
+
+# ARTICLE 9
+# TIME AND SPACE
+
+## 9.1 Time
+
+Time is the ordering of events. The platform models time as an ordered
+event sequence, not as a clock primitive.
+
+## 9.2 Space
+
+Space is the addressing of location: spatial, organizational and
+topological.
+
+---
+
+# ARTICLE 10
+# KNOWLEDGE AND INTELLIGENCE
+
+## 10.1 Knowledge
+
+Knowledge is registered, queryable information with provenance.
+
+## 10.2 Intelligence
+
+Intelligence is the application of knowledge to action: classification,
+reasoning, recommendation, optimization and autonomous governance.
+
+---
+
+# ARTICLE 11
+# SECURITY, APIS, EVENTS, DATA MODEL
+
+## 11.1 Operations
+
+```text id="ucos003metamodelapis"
+Register Meta Model
+Resolve Primitive Definition
+Validate Model Against Meta Model
+```
+
+## 11.2 Events
+
+```text id="ucos003metamodelevents"
+Meta Model Registered
+Primitive Certified
+Model Validation Passed
+Model Validation Failed
+```
+
+## 11.3 Data Model
+
+```text id="ucos003metamodeldata"
+Primitive { identity, constitution, theory, ontology, taxonomy, registry, lifecycle, governance }
+```
+
+## 11.4 Validation And Compliance
+
+Every primitive must define all seven parts. A primitive missing a part
+is a compliance violation and is refused certification.
+
+## 11.5 Discovery And Certification
+
+Discovery is by registry traversal. Certification confirms the
+seven-part structure is complete and non-duplicative.
+
+---
+
+END OF UCOS-DOC-003
+
+
+
+# DOCUMENT
+
+```text
+Document ID:
+UCOS-DOC-004
+
+Document Name:
+Universal Registry System Constitution
+
+Version:
+1.0
+
+Classification:
+Registry Authority
+
+Tier:
+Tier-0
+
+Status:
+CANONICAL FOUNDATION
+```
+
+---
+
+# ARTICLE 1
+# CONSTITUTIONAL PURPOSE
+
+## 1.1 Purpose
+
+This document establishes constitutional ownership of the Registry
+System itself: the framework by which registries are defined, governed,
+discovered and evolved.
+
+```text id="ucos004registrysystem"
+Registry Meta Model
+Registry Framework
+Registry Governance
+Registry Discovery
+Registry Evolution
+```
+
+## 1.2 Structural Rule
+
+Every canonical object in the platform lives in a registry. A registry
+is itself a registered artifact. Registries are thus self-describing and
+closed under registration.
+
+---
+
+# ARTICLE 2
+# REGISTRY META MODEL
+
+## 2.1 Canonical Form
+
+```text id="ucos004registrymetamodel"
+Registry { identity, domain, entry meta model, governance, lifecycle, discovery handle }
+```
+
+## 2.2 Entry Form
+
+```text id="ucos004registryentryform"
+Registry Entry { identity, canonical record, lifecycle state, governance owner, audit chain }
+```
+
+---
+
+# ARTICLE 3
+# REGISTRY GOVERNANCE
+
+## 3.1 Rules
+
+No entry may be hard-coded. No entry may exist without identity. No
+entry may duplicate another. Mutation is append-audited.
+
+## 3.2 Cross-Registry Rules
+
+Where two registries reference each other, the reference is a registered
+relationship and is validated at registration time.
+
+---
+
+# ARTICLE 4
+# DISCOVERY AND EVOLUTION
+
+## 4.1 Discovery
+
+Registries are discoverable by domain, by relationship and by traversal.
+
+## 4.2 Evolution
+
+A registry evolves by deprecating entries, never by deleting history.
+Retired entries remain queryable for audit.
+
+---
+
+# ARTICLE 5
+# SECURITY, APIS, EVENTS, DATA MODEL
+
+## 5.1 Operations
+
+```text id="ucos004registryapis"
+Register Registry
+Register Entry
+Resolve Entry
+Deprecate Entry
+Traverse Registry
+```
+
+## 5.2 Events
+
+```text id="ucos004registryevents"
+Registry Registered
+Entry Registered
+Entry Deprecated
+Duplicate Rejected
+```
+
+## 5.3 Validation And Compliance
+
+Identity uniqueness is mandatory. Duplication is a compliance
+violation. Hard-coded entries are prohibited.
+
+---
+
+END OF UCOS-DOC-004
+
+
+
+# DOCUMENT
+
+```text
+Document ID:
+UCOS-DOC-005
+
+Document Name:
+Universal Taxonomy Engine Constitution
+
+Version:
+1.0
+
+Classification:
+Taxonomy Authority
+
+Tier:
+Tier-0
+
+Status:
+CANONICAL FOUNDATION
+```
+
+---
+
+# ARTICLE 1
+# CONSTITUTIONAL PURPOSE
+
+## 1.1 Purpose
+
+This document establishes constitutional ownership of the Taxonomy
+Engine: the mechanism by which any product, service, industry,
+organization, asset or capability is classified through metadata only.
+
+```text id="ucos005taxonomyengine"
+Taxonomy Engine
+Classification Rule
+Taxonomy Node
+Classification Context
+Classification Result
+```
+
+## 1.2 Prohibition
+
+No hard-coded categories. No hard-coded industry, domain, product class
+or service class. All classification is metadata.
+
+---
+
+# ARTICLE 2
+# CAPABILITY
+
+## 2.1 What The Engine Does
+
+```text id="ucos005enginecapabilities"
+Classify Entity
+Resolve Classification
+Traverse Taxonomy
+Extend Taxonomy
+Reclassify On Drift
+```
+
+## 2.2 Classification Context
+
+Classification is always evaluated in a Context. The same entity may
+classify differently in different contexts, and every result carries its
+context.
+
+---
+
+# ARTICLE 3
+# TAXONOMY STRUCTURE
+
+## 3.1 Form
+
+```text id="ucos005taxonomystructure"
+Taxonomy Node { identity, parent set, child set, scope, validity, governance }
+```
+
+## 3.2 Constraints
+
+Polyhierarchy is permitted. Cycles are prohibited. Scope of validity is
+mandatory: a node states where it applies.
+
+---
+
+# ARTICLE 4
+# GOVERNANCE AND LIFECYCLE
+
+## 4.1 Admission
+
+A taxonomy node is admitted only when it does not duplicate an existing
+node and declares its scope.
+
+## 4.2 Lifecycle
+
+```text id="ucos005taxonomylifecycle"
+Proposed
+Accepted
+Canonical
+Deprecated
+Retired
+```
+
+---
+
+# ARTICLE 5
+# SECURITY, APIS, EVENTS, DATA MODEL
+
+## 5.1 Operations
+
+```text id="ucos005engineapis"
+Classify
+Resolve Classification
+Traverse Taxonomy
+Extend Taxonomy
+```
+
+## 5.2 Events
+
+```text id="ucos005engineevents"
+Entity Classified
+Taxonomy Extended
+Classification Conflicted
+Reclassification Triggered
+```
+
+## 5.3 Validation And Compliance
+
+Every classification must resolve to a registered node. Hard-coded
+categories are a compliance violation.
+
+---
+
+END OF UCOS-DOC-005
+
+
+
+# DOCUMENT
+
+```text
+Document ID:
+UCOS-DOC-006
+
+Document Name:
+Universal Service Product Taxonomy (USPT) Constitution
+
+Version:
+1.0
+
+Classification:
+Commerce Object Authority
+
+Tier:
+Tier-0
+
+Status:
+CANONICAL FOUNDATION
+```
+
+---
+
+# ARTICLE 1
+# CONSTITUTIONAL PURPOSE
+
+## 1.1 Purpose
+
+This document establishes constitutional ownership of the Universal
+Service Product Taxonomy: a single universal commerce object model
+capable of representing products, services, subscriptions, events,
+experiences, assets, licenses, bookings, offers and bundles without
+introducing new architectural primitives.
+
+```text id="ucos006commerceobjects"
+Commerce Object
+Offering
+Entitlement
+Fulfillment
+Commercial Classification
+```
+
+## 1.2 Unification Principle
+
+A product, a subscription and a booking are not three primitives. They
+are one Commerce Object with different lifecycle, entitlement and
+fulfillment characteristics, expressed entirely as metadata.
+
+---
+
+# ARTICLE 2
+# THE COMMERCE OBJECT
+
+## 2.1 Canonical Form
+
+```text id="ucos006commerceobjectform"
+Commerce Object { identity, classification, attributes, entitlement, fulfillment, lifecycle, value, governance }
+```
+
+## 2.2 Entitlement
+
+Entitlement is what the acquirer gains: use, access, ownership, rental,
+license or participation.
+
+```text id="ucos006entitlementtypes"
+Ownership
+Usage Right
+Access Right
+License
+Rental
+Participation
+Resale Right
+```
+
+## 2.3 Fulfillment
+
+Fulfillment is how entitlement is delivered: physically, digitally, as
+access, as attendance or as performance.
+
+```text id="ucos006fulfillmenttypes"
+Physical Delivery
+Digital Delivery
+Access Grant
+Attendance
+Performance
+Activation
+```
+
+---
+
+# ARTICLE 3
+# COMMERCIAL CLASSIFICATIONS
+
+## 3.1 Canonical Classifications
+
+```text id="ucos006commerceclassifications"
+Physical Product
+Digital Product
+Service
+Subscription
+Membership
+Event
+Experience
+Asset
+License
+Booking
+Offer
+Bundle
+```
+
+## 3.2 Derivation Rule
+
+These classifications are metadata in the Taxonomy Registry, not
+primitives. They are derived from the Commerce Object by entitling and
+fulfilling it differently.
+
+---
+
+# ARTICLE 4
+# OFFER AND BUNDLE
+
+## 4.1 Offer
+
+An Offer is a Commerce Object with pricing, validity and terms. It is
+governed by the Value and Measurement primitives of UCOS-DOC-003.
+
+## 4.2 Bundle
+
+A Bundle is a Commerce Object composed of other Commerce Objects. It is
+governed by the Composition primitive.
+
+---
+
+# ARTICLE 5
+# GOVERNANCE AND LIFECYCLE
+
+## 5.1 Lifecycle
+
+```text id="ucos006commercelifecycle"
+Defined
+Listed
+Available
+Engaged
+Fulfilled
+Closed
+Retired
+```
+
+## 5.2 Governance Rule
+
+No commerce object may exist without classification, entitlement and
+fulfillment. These three are mandatory, not optional.
+
+---
+
+# ARTICLE 6
+# SECURITY, APIS, EVENTS, DATA MODEL
+
+## 6.1 Operations
+
+```text id="ucos006commerceapis"
+Register Commerce Object
+Classify Commerce Object
+Compose Bundle
+Price Offer
+Fulfill Entitlement
+```
+
+## 6.2 Events
+
+```text id="ucos006commerceevents"
+Commerce Object Registered
+Offer Published
+Entitlement Granted
+Fulfillment Completed
+Bundle Composed
+```
+
+## 6.3 Validation And Compliance
+
+Entitlement and fulfillment are mandatory. Hard-coded commerce types are
+prohibited. All pricing is metadata.
+
+---
+
+END OF UCOS-DOC-006
+
+
+
+# DOCUMENT
+
+```text
+Document ID:
+UCOS-DOC-007
+
+Document Name:
+Universal Context Engine Constitution
+
+Version:
+1.0
+
+Classification:
+Context Authority
+
+Tier:
+Tier-0
+
+Status:
+CANONICAL FOUNDATION
+```
+
+---
+
+# ARTICLE 1
+# CONSTITUTIONAL PURPOSE
+
+## 1.1 Purpose
+
+This document establishes constitutional ownership of the Context
+Engine: the mechanism by which all platform behavior is made context
+aware.
+
+```text id="ucos007contextengine"
+Context
+Context Dimension
+Context Resolution
+Context Scope
+Context Binding
+```
+
+## 1.2 Constitutional Rule
+
+No platform behavior is interpreted outside a context. Where context is
+absent, the default context is explicit and registered, never implicit.
+
+---
+
+# ARTICLE 2
+# CONTEXT DIMENSIONS
+
+## 2.1 Canonical Dimensions
+
+```text id="ucos007contextdimensions"
+Identity Context
+Temporal Context
+Spatial Context
+Regulatory Context
+Security Context
+Economic Context
+Governance Context
+Linguistic Context
+Reality Context
+```
+
+## 2.2 Extension
+
+New dimensions are admitted only when they cannot be derived from an
+existing dimension. Extension is metadata, not code.
+
+---
+
+# ARTICLE 3
+# CONTEXT RESOLUTION
+
+## 3.1 Resolution Rule
+
+Context is resolved by binding dimensions to values at a point of
+decision. Conflicts are resolved by registered precedence, not by
+implicit priority.
+
+```text id="ucos007resolutionrules"
+Most Specific Context Wins
+Registered Precedence Resolves Conflict
+Explicit Context Overrides Default Context
+```
+
+## 3.2 Scope
+
+A context binding states its scope of validity: what it applies to, and
+for how long.
+
+---
+
+# ARTICLE 4
+# GOVERNANCE AND LIFECYCLE
+
+## 4.1 Admission
+
+A context dimension is admitted only with declared scope, precedence and
+governance owner.
+
+## 4.2 Lifecycle
+
+```text id="ucos007contextlifecycle"
+Registered
+Bound
+Active
+Superseded
+Retired
+```
+
+---
+
+# ARTICLE 5
+# SECURITY, APIS, EVENTS, DATA MODEL
+
+## 5.1 Operations
+
+```text id="ucos007contextapis"
+Bind Context
+Resolve Context
+Query Context
+Extend Context Dimensions
+```
+
+## 5.2 Events
+
+```text id="ucos007contextevents"
+Context Bound
+Context Resolved
+Context Conflict Detected
+Context Superseded
+```
+
+## 5.3 Validation And Compliance
+
+Every decision point must record its resolved context. Implicit context
+is a compliance violation.
+
+---
+
+END OF UCOS-DOC-007
+
+
+
+# DOCUMENT
+
+```text
+Document ID:
+UCOS-DOC-008
+
+Document Name:
+Universal Composition Engine Constitution
+
+Version:
+1.0
+
+Classification:
+Composition Authority
+
+Tier:
+Tier-0
+
+Status:
+CANONICAL FOUNDATION
+```
+
+---
+
+# ARTICLE 1
+# CONSTITUTIONAL PURPOSE
+
+## 1.1 Purpose
+
+This document establishes constitutional ownership of the Composition
+Engine: the mechanism by which ERP, CRM, marketplace, booking, calendar,
+offer, subscription, workflow and intelligence systems are constructed
+from reusable constitutional capabilities.
+
+```text id="ucos008compositionconcepts"
+Composition
+Composed Capability
+Composition Graph
+Composition Contract
+Composition Binding
+```
+
+## 1.2 Prohibition
+
+No dedicated application logic. An application is a composition of
+registered capabilities, expressed as metadata, not implemented as code.
+
+---
+
+# ARTICLE 2
+# COMPOSITION MODEL
+
+## 2.1 Canonical Form
+
+```text id="ucos008compositionform"
+Composition { identity, capability bindings, contracts, lifecycle, governance }
+```
+
+## 2.2 Composition Contract
+
+A contract declares what a capability requires and provides: its inputs,
+outputs, context requirements and error behavior. Contracts are
+validated at composition time.
+
+## 2.3 Binding
+
+A binding assigns a registered capability to a role in the composition.
+Bindings are resolvable and replaceable without mutating the
+composition.
+
+---
+
+# ARTICLE 3
+# COMPOSABLE SYSTEMS
+
+## 3.1 Canonical Compositions
+
+```text id="ucos008composablesystems"
+ERP Composition
+CRM Composition
+Marketplace Composition
+Booking Composition
+Calendar Composition
+Offer Engine Composition
+Subscription Engine Composition
+Workflow Engine Composition
+AI System Composition
+```
+
+## 3.2 Derivation Rule
+
+These are not primitives. Each is a registered composition of
+capabilities, and each may be re-expressed by rebinding capabilities.
+
+---
+
+# ARTICLE 4
+# GOVERNANCE AND LIFECYCLE
+
+## 4.1 Admission
+
+A composition is admitted only when its contracts validate and its
+capability bindings resolve.
+
+## 4.2 Lifecycle
+
+```text id="ucos008compositionlifecycle"
+Drafted
+Validated
+Composed
+Instantiated
+Deprecated
+Retired
+```
+
+---
+
+# ARTICLE 5
+# SECURITY, APIS, EVENTS, DATA MODEL
+
+## 5.1 Operations
+
+```text id="ucos008compositionapis"
+Compose
+Validate Contracts
+Bind Capability
+Instantiate Composition
+```
+
+## 5.2 Events
+
+```text id="ucos008compositionevents"
+Composition Validated
+Composition Instantiated
+Contract Violated
+Binding Replaced
+```
+
+## 5.3 Validation And Compliance
+
+All capability bindings must resolve. Contract violation is a compliance
+failure. Hard-coded application logic is prohibited.
+
+---
+
+END OF UCOS-DOC-008
+
+
+
+# DOCUMENT
+
+```text
+Document ID:
+UCOS-DOC-009
+
+Document Name:
+Universal Generation Engine Constitution
+
+Version:
+1.0
+
+Classification:
+Generation Authority
+
+Tier:
+Tier-0
+
+Status:
+CANONICAL FOUNDATION
+```
+
+---
+
+# ARTICLE 1
+# CONSTITUTIONAL PURPOSE
+
+## 1.1 Purpose
+
+This document establishes constitutional ownership of the Generation
+Engine: the mechanism by which database schemas, APIs, events, user
+interfaces, documentation, policies, workflows and knowledge graphs are
+generated from metadata and ontology.
+
+```text id="ucos009generationconcepts"
+Generation
+Generator
+Generation Target
+Generation Source
+Generation Trace
+```
+
+## 1.2 Principle
+
+Generation over manual construction. Anything that can be derived from
+metadata is generated; anything that must be hand-written is a candidate
+for a new primitive, and must be justified constitutionally.
+
+---
+
+# ARTICLE 2
+# GENERATORS
+
+## 2.1 Canonical Generator Set
+
+```text id="ucos009generatorset"
+Database Schema Generator
+API Generator
+Event Generator
+User Interface Generator
+Documentation Generator
+Policy Generator
+Workflow Generator
+Knowledge Graph Generator
+```
+
+## 2.2 Generator Contract
+
+Each generator declares its source meta model and its target form. A
+generator consumes registered metadata and emits a validated artifact.
+Generation is deterministic and traceable.
+
+## 2.3 Generation Trace
+
+Every generated artifact records its source metadata, generator identity
+and generation time. An artifact without a trace is not part of the
+platform.
+
+---
+
+# ARTICLE 3
+# GOVERNANCE AND LIFECYCLE
+
+## 3.1 Admission
+
+A generator is admitted only when it is deterministic, traceable and
+derived from a registered meta model.
+
+## 3.2 Lifecycle
+
+```text id="ucos009generatorlifecycle"
+Proposed
+Validated
+Canonical
+Deprecated
+Retired
+```
+
+## 3.3 Re-Generation Rule
+
+When source metadata changes, affected artifacts are regenerated. Manual
+edits to generated artifacts are prohibited and are overwritten on
+regeneration.
+
+---
+
+# ARTICLE 4
+# SECURITY, APIS, EVENTS, DATA MODEL
+
+## 4.1 Operations
+
+```text id="ucos009generationapis"
+Register Generator
+Generate Artifact
+Trace Artifact
+Regenerate On Metadata Change
+```
+
+## 4.2 Events
+
+```text id="ucos009generationevents"
+Generator Registered
+Artifact Generated
+Artifact Regenerated
+Manual Edit Rejected
+```
+
+## 4.3 Validation And Compliance
+
+Every generated artifact must carry a generation trace. Manual mutation
+of generated output is a compliance violation.
+
+---
+
+END OF UCOS-DOC-009
+
+
+
+# DOCUMENT
+
+```text
+Document ID:
+UCOS-DOC-010
+
+Document Name:
+Universal Intelligence Layer Constitution
+
+Version:
+1.0
+
+Classification:
+Intelligence Authority
+
+Tier:
+Tier-0
+
+Status:
+CANONICAL FOUNDATION
+```
+
+---
+
+# ARTICLE 1
+# CONSTITUTIONAL PURPOSE
+
+## 1.1 Purpose
+
+This document establishes constitutional ownership of the Intelligence
+Layer: the engines by which the platform applies knowledge to action.
+
+```text id="ucos010intelligenceengines"
+Knowledge Engine
+Reasoning Engine
+Discovery Engine
+Classification Engine
+Recommendation Engine
+Optimization Engine
+Autonomous Governance Engine
+```
+
+## 1.2 Principle
+
+Intelligence is a set of registered capabilities, not a subsystem. Each
+engine is composed from primitives and governed like any other
+capability.
+
+---
+
+# ARTICLE 2
+# THE ENGINES
+
+## 2.1 Knowledge Engine
+
+Registers, stores and queries knowledge with provenance. Knowledge is an
+Entity; its provenance is a registered relationship.
+
+## 2.2 Reasoning Engine
+
+Derives new knowledge from registered knowledge under registered rules.
+Reasoning outcomes are themselves registered knowledge.
+
+## 2.3 Discovery Engine
+
+Finds entities, capabilities and compositions by traversal and by
+inference over the registry graphs.
+
+## 2.4 Classification Engine
+
+Assigns entities to taxonomy nodes, governed by UCOS-DOC-005.
+
+## 2.5 Recommendation Engine
+
+Proposes compositions, classifications and actions, each as a registered
+suggestion carrying its reasoning trace.
+
+## 2.6 Optimization Engine
+
+Improves a registered objective function subject to registered
+constraints, governed by the Constraint primitives of UCOS-DOC-003.
+
+## 2.7 Autonomous Governance Engine
+
+Applies policies, monitors compliance and takes corrective action within
+governance-granted authority. Autonomous action is bounded by registered
+policy and is always audited.
+
+---
+
+# ARTICLE 3
+# GOVERNANCE OF INTELLIGENCE
+
+## 3.1 Authority Bounds
+
+An intelligence engine may act only within its registered authority.
+Action beyond that bound is a constitutional violation and is reverted.
+
+## 3.2 Audit
+
+Every intelligence action is recorded: the engine, the inputs, the
+reasoning trace, the action and the outcome.
+
+## 3.3 Lifecycle
+
+```text id="ucos010intelligencelifecycle"
+Registered
+Trained
+Certified
+Active
+Supervised
+Autonomous
+Deprecated
+```
+
+---
+
+# ARTICLE 4
+# SECURITY, APIS, EVENTS, DATA MODEL
+
+## 4.1 Operations
+
+```text id="ucos010intelligenceapis"
+Query Knowledge
+Reason
+Discover
+Classify
+Recommend
+Optimize
+Govern Autonomously
+```
+
+## 4.2 Events
+
+```text id="ucos010intelligenceevents"
+Knowledge Registered
+Reasoning Completed
+Recommendation Issued
+Optimization Applied
+Autonomous Action Taken
+Authority Breach Detected
+```
+
+## 4.3 Validation And Compliance
+
+Every autonomous action must be within registered authority and carry an
+audit record. Unaudited intelligence action is prohibited.
+
+---
+
+END OF UCOS-DOC-010
+
+
+
+# DOCUMENT
+
+```text
+Document ID:
+UCOS-DOC-011
+
+Document Name:
+UCOS Ω∞ Constitutional Closure Constitution
+
+Version:
+1.0
+
+Classification:
+Constitutional Authority
+
+Tier:
+Tier-0
+
+Status:
+CANONICAL FOUNDATION
+```
+
+---
+
+# ARTICLE 1
+# CONSTITUTIONAL PURPOSE
+
+## 1.1 Purpose
+
+This document closes the constitutional layer. It states the principles
+by which the platform remains extensible without bound while remaining
+internally consistent, and it declares this constitution subordinate to
+itself: amendment is possible only through the governance it defines.
+
+```text id="ucos011constitutionalconcepts"
+Constitutional Principle
+Constitutional Amendment
+Constitutional Compliance
+Constitutional Closure
+```
+
+## 1.2 Scope
+
+This document governs principles, not implementations. Where a principle
+and an implementation disagree, the principle prevails and the
+implementation is non-conformant.
+
+---
+
+# ARTICLE 2
+# THE CONSTITUTIONAL PRINCIPLES
+
+## 2.1 Canonical Principle Set
+
+```text id="ucos011principleset"
+Knowledge Once Principle
+Single Canonical Source Of Truth
+No Duplication
+No Redundancy
+No Orphan Artifacts
+No Circular Dependencies
+No Hard-Coded Business Logic
+No Vendor Lock-In
+No Technology Lock-In
+No Industry Lock-In
+No Geography Lock-In
+No Language Lock-In
+No Currency Lock-In
+No Domain Lock-In
+No Temporal Lock-In
+Infinite Extensibility
+Infinite Scalability
+Infinite Composability
+Infinite Discoverability
+Infinite Reusability
+Constitutional Governance
+Metadata Driven Everything
+Registry Driven Everything
+Ontology First Design
+Composition Over Implementation
+Generation Over Manual Construction
+```
+
+## 2.2 Precedence
+
+Where principles conflict, the more general principle prevails. The
+ordering above is not precedence; precedence is resolved by generality,
+which is itself a registered judgment.
+
+---
+
+# ARTICLE 3
+# AMENDMENT
+
+## 3.1 Rule
+
+The constitution is amended through registered governance: a proposed
+amendment, a review, a certification and a canonical transition. No
+amendment takes effect by implementation alone.
+
+## 3.2 Prohibition
+
+No amendment may remove a principle without replacing it with a more
+general one. The constitution may generalize; it may not forget.
+
+---
+
+# ARTICLE 4
+# COMPLIANCE
+
+## 4.1 Verification
+
+Compliance is verified by the Foundation Registry and the completeness
+audit: cycles, orphans, duplication, hard-coding and redundancy are each
+checked mechanically.
+
+## 4.2 Non-Conformance
+
+A non-conformant artifact is deprecated, not repaired in place, so that
+history remains auditable.
+
+---
+
+# ARTICLE 5
+# CLOSURE
+
+## 5.1 Statement
+
+This constitution is closed under self-description: it is itself a
+registered artifact, governed by its own principles, and it is the
+canonical source of truth for the platform's architecture.
+
+## 5.2 No Boundary
+
+The platform imposes no upper bound on the number of foundations,
+primitives, registries or compositions. Extension is a metadata
+operation. This is the constitutional guarantee of Infinite
+Extensibility.
+
+---
+
+# ARTICLE 6
+# SECURITY, APIS, EVENTS, DATA MODEL
+
+## 6.1 Operations
+
+```text id="ucos011constitutionapis"
+Register Principle
+Propose Amendment
+Certify Amendment
+Verify Compliance
+```
+
+## 6.2 Events
+
+```text id="ucos011constitutionevents"
+Principle Registered
+Amendment Proposed
+Amendment Certified
+Non-Conformance Detected
+Constitution Closed
+```
+
+## 6.3 Validation And Compliance
+
+Every artifact is checked against the principle set. Hard-coding,
+duplication, orphaning and cycling are each refusals.
+
+## 6.4 Discovery And Certification
+
+The principle registry is traversable. Certification confirms an
+artifact's conformance to every applicable principle.
+
+---
+
+END OF UCOS-DOC-011

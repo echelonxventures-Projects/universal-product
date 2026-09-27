@@ -65,7 +65,7 @@ CREATE TABLE products (
   title TEXT NOT NULL, brand TEXT NOT NULL, dept TEXT NOT NULL,
   price REAL NOT NULL, list_price REAL, rating REAL, ratings_count INTEGER,
   emoji TEXT, hue INTEGER, priority INTEGER DEFAULT 0, stock INTEGER DEFAULT 0,
-  flags TEXT, keywords TEXT, deal_pct INTEGER DEFAULT 0, position INTEGER DEFAULT 0, type TEXT DEFAULT 'physical', node_id INTEGER, lifecycle TEXT DEFAULT 'published', identity TEXT DEFAULT '{}', attrs TEXT DEFAULT '{}', vertical TEXT DEFAULT '{}', media TEXT DEFAULT '[]', seo TEXT DEFAULT '{}', tax_rule TEXT DEFAULT '{}', geo_rules TEXT DEFAULT '[]', pricing_rules TEXT DEFAULT '[]', logistics TEXT DEFAULT '{}', packaging TEXT DEFAULT '[]', docs TEXT DEFAULT '[]', supplier_id INTEGER, uom TEXT DEFAULT '{"unit":"ea"}', tax_profile TEXT DEFAULT '', invoice_profile TEXT DEFAULT '', payment_profiles TEXT DEFAULT '[]', uid TEXT,
+  flags TEXT, keywords TEXT, deal_pct INTEGER DEFAULT 0, position INTEGER DEFAULT 0, type TEXT DEFAULT 'physical', node_id INTEGER, lifecycle TEXT DEFAULT 'published', identity TEXT DEFAULT '{}', attrs TEXT DEFAULT '{}', vertical TEXT DEFAULT '{}', media TEXT DEFAULT '[]', seo TEXT DEFAULT '{}', tax_rule TEXT DEFAULT '{}', geo_rules TEXT DEFAULT '[]', pricing_rules TEXT DEFAULT '[]', logistics TEXT DEFAULT '{}', packaging TEXT DEFAULT '[]', docs TEXT DEFAULT '[]', supplier_id INTEGER, uom TEXT DEFAULT '{"unit":"ea"}', tax_profile TEXT DEFAULT '', invoice_profile TEXT DEFAULT '', payment_profiles TEXT DEFAULT '[]', source_universe TEXT, source_kind TEXT DEFAULT 'seed', uid TEXT,
   PRIMARY KEY (tenant_id, id)
 );
 CREATE TABLE product_bullets (
@@ -195,7 +195,7 @@ CREATE TABLE settlements (
   status TEXT DEFAULT 'pending', period TEXT
 );
 CREATE TABLE meta_lists (
-  name TEXT PRIMARY KEY, label TEXT, items TEXT NOT NULL
+  name TEXT PRIMARY KEY, label TEXT, items TEXT NOT NULL, seeded_from TEXT
 , uid TEXT);
 CREATE TABLE countries (
   code TEXT PRIMARY KEY, name TEXT NOT NULL, currency TEXT NOT NULL, symbol TEXT NOT NULL,
@@ -301,6 +301,71 @@ CREATE TABLE ucos_annotations (
 , uid TEXT);
 CREATE INDEX ix_ucos_ann ON ucos_annotations(doc_id, target_kind, target_key);
 CREATE INDEX ix_ucos_ann_pin ON ucos_annotations(doc_id, target_kind, target_key, pin);
+/* ---------- UCOS Ω∞ Foundation Registry (Architecture3 Articles 2-8) ----------
+   The operational half of the constitution: every universe, domain and capability
+   the corpus declares is registered here as data. No foundation may be asserted
+   in code (Article 4.2), so this table — not a JS constant — is the source of truth. */
+CREATE TABLE ucos_foundations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  key TEXT NOT NULL UNIQUE,              /* canonical identity (Article 8.2: globally unique) */
+  name TEXT NOT NULL,
+  parent TEXT,                           /* parent foundation (derivation, Article 4.1) */
+  universe TEXT,                         /* the declared universe this foundation belongs to */
+  lifecycle TEXT NOT NULL DEFAULT 'canonical',   /* Article 5.1 states */
+  governance TEXT NOT NULL DEFAULT 'Foundation Authority',  /* Article 6 */
+  classification TEXT,                   /* universe | domain | foundation | primitive | capability */
+  source_doc TEXT,                       /* traceability: which corpus document declares it */
+  source_line INTEGER,
+  discovery TEXT,                        /* Article 2.2 discovery handle */
+  created_at TEXT
+);
+CREATE INDEX ix_ucos_foundations_universe ON ucos_foundations(universe, lifecycle);
+CREATE INDEX ix_ucos_foundations_parent ON ucos_foundations(parent);
+/* dependency edges (Article 3.1 dependency graph; Article 3.2: acyclic) */
+CREATE TABLE ucos_foundation_deps (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  foundation TEXT NOT NULL,
+  dependency TEXT NOT NULL,
+  UNIQUE(foundation, dependency)
+);
+CREATE INDEX ix_ucos_foundation_deps_dep ON ucos_foundation_deps(dependency);
+/* evolution edges (Article 3.1 evolution graph; Article 8.3: succession, never in-place mutation) */
+CREATE TABLE ucos_foundation_evolution (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  foundation TEXT NOT NULL,              /* successor */
+  predecessor TEXT NOT NULL,
+  UNIQUE(foundation, predecessor)
+);
+/* composition edges (Article 3.1 composition graph: what composes what) */
+CREATE TABLE ucos_foundation_composition (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  parent TEXT NOT NULL,
+  child TEXT NOT NULL,
+  UNIQUE(parent, child)
+);
+CREATE INDEX ix_ucos_foundation_comp_child ON ucos_foundation_composition(child);
+/* Article 6: append-audited ledger of every admission, transition and retirement */
+CREATE TABLE ucos_foundation_audit (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  foundation TEXT NOT NULL,
+  event TEXT NOT NULL,                   /* Article 7.2 events */
+  detail TEXT DEFAULT '{}',
+  at TEXT NOT NULL
+);
+CREATE INDEX ix_ucos_foundation_audit_f ON ucos_foundation_audit(foundation, at);
+/* ---------- instantiated universes: each declared universe becomes a live,
+   data-defined entity (zero per-universe code; Article 4.2 compliance) ---------- */
+CREATE TABLE ucos_universes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  key TEXT NOT NULL UNIQUE,              /* universe identity = its foundation key */
+  name TEXT NOT NULL,
+  source_doc TEXT NOT NULL,              /* which corpus document declares it */
+  source_line INTEGER,
+  entity_key TEXT NOT NULL,              /* the generic entity_def key it instantiates as */
+  concepts INTEGER DEFAULT 0,            /* corpus concepts this universe governs */
+  instantiated_at TEXT,
+  UNIQUE(entity_key)
+);
 CREATE UNIQUE INDEX ux_tenants_uid ON tenants(uid);
 CREATE TRIGGER trg_tenants_uid AFTER INSERT ON tenants
                BEGIN UPDATE tenants SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;

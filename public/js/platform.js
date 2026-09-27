@@ -41,7 +41,7 @@ function toast(msg, type = "info") {
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3200);
 }
 const NAV = [["dash", "◈ Command"], ["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["geo", "🌍 Geo · Countries · Taxes"], ["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"],
-["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"], ["gproducts", "🌐 Global Products"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["ucii", "🌀 UCII Ω∞ Registry"], ["ucos", "♾️ UCOS Ω∞ Constitution"], ["studio", "🛠️ Data Studio"], ["definitions", "📐 Entities"], ["offers", "Ω∞ GOIP · Value Exchange"], ["runtime", "🧩 Runtime · Infra"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"], ["identity", "🔐 Identity"], ["identity-templates", "📋 Identity Templates"], ["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]];
+["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"], ["gproducts", "🌐 Global Products"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["ucii", "🌀 UCII Ω∞ Registry"], ["ucos", "♾️ UCOS Ω∞ Constitution"], ["universes", "🧬 Universes"], ["foundations", "🏛️ Foundations"], ["studio", "🛠️ Data Studio"], ["definitions", "📐 Entities"], ["offers", "Ω∞ GOIP · Value Exchange"], ["runtime", "🧩 Runtime · Infra"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"], ["identity", "🔐 Identity"], ["identity-templates", "📋 Identity Templates"], ["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]];
 let view = "dash";
 const P = { user: null, tenants: [], plans: [] };
 
@@ -262,21 +262,24 @@ async function vProviders() {
     </div>
   </div>`;
 }
- async function vStudio() {
+ async function vStudio(preset) {
   const tenants = await api("/platform/tenants");
   const { rows: entityDefs } = await api("/meta/entity-def");
   const entities = entityDefs.map(e => ({ ...e, ...JSON.parse(e.def || "{}") }));
+  /* a universe's Records button passes the entity to open — mark it selected in the
+     markup itself so nothing has to mutate the freshly-parsed DOM to preselect it */
+  const sel = (preset && entities.some(e => e.key === preset)) ? preset : (entities[0] && entities[0].key);
   return `
   <div class="p-panel"><h2>Platform Data Studio</h2>
     <p class="p-tag">Browse all entity data across all stores.</p>
     <div style="margin:14px 0">
       <label><span>Store</span><select id="studioTenant">${tenants.tenants.map(t => `<option value="${t.id}">${esc(t.name)} (${esc(t.slug)})</option>`).join("")}</select></label>
-      <label><span>Entity</span><select id="studioEntity">${entities.map(e => `<option value="${esc(e.key)}">${esc(e.label)}</option>`).join("")}</select></label>
+      <label><span>Entity</span><select id="studioEntity">${entities.map(e => `<option value="${esc(e.key)}" ${e.key === sel ? "selected" : ""}>${esc(e.label)}</option>`).join("")}</select></label>
       <button class="p-btn primary" id="studioLoad">Load</button>
     </div>
     <div id="studioBody"></div>
   </div>`;
-}
+ }
  async function vDefinitions() {
   const data = await api("/meta/entity-def");
   const rows = data.rows || [];
@@ -1213,7 +1216,10 @@ function wireDefinitions() {
   });
  }
 function wireStudio() {
-  const $ = s => document.getElementById(s);
+  /* getElementById is unreliable in the moment right after this view's 1,900-option
+     select is parsed (jsdom's id map lags one tick); querySelector sees the live tree
+     immediately, so every binding here resolves through it */
+  const $ = s => document.querySelector(s);
   if ($("#studioLoad")) $("#studioLoad").onclick = async () => {
     const tenantId = $("#studioTenant").value;
     const entity = $("#studioEntity").value;
@@ -1539,6 +1545,134 @@ function wireUCOS() {
     });
   };
 }
+/* Universes — every universe the corpus declares, instantiated as a live, data-defined
+   entity. Coverage is the measurable answer to "is everything implemented?" */
+const stat2 = n => Number(n || 0).toLocaleString();
+async function vUniverses() {
+  const d = await api("/ucos/universes");
+  const st = d.stats || {};
+  const cov = st.coverage || 0;
+  const badge = cov === 100 ? '<span class="badge published">100% instantiated</span>'
+    : '<span class="badge failed">' + cov + '% instantiated</span>';
+  const rows = (d.universes || []).map(u => `
+    <tr>
+      <td><b>${esc(u.name)}</b><div class="p-tag" style="font-size:11px">${esc(u.entity_key)}</div></td>
+      <td>${esc(u.source_doc)}:${u.source_line || "?"}</td>
+      <td>${stat2(u.concepts || 0)}</td>
+      <td>${stat2(u.records || 0)}</td>
+      <td><span class="badge ${u.lifecycle === "canonical" ? "active" : "failed"}">${esc(u.lifecycle || "—")}</span></td>
+      <td style="text-align:right;white-space:nowrap">
+        <button class="p-btn sm" data-uv="${esc(u.entity_key)}">Records</button>
+        <button class="p-btn sm primary" data-uvpub="${esc(u.entity_key)}">→ Storefront</button>
+        ${u.records ? '<button class="p-btn sm danger" data-uvwd="' + esc(u.entity_key) + '">Withdraw</button>' : ""}
+      </td>
+    </tr>`).join("");
+  return `
+  <div class="p-panel"><h2>🧬 Universes · instantiated from the constitution</h2>
+    <p class="p-tag">Each universe the Architecture documents declare is registered as a foundation and instantiated as a live, data-defined entity — zero per-universe code (Article 4.2). Fields are derived from the corpus itself.</p>
+    <div style="display:flex;gap:8px;align-items:center;margin:10px 0;flex-wrap:wrap">
+      ${badge}
+      <span class="p-tag">${stat2(st.declared || 0)} declared · ${stat2(st.instantiated || 0)} instantiated · ${stat2(st.live || 0)} canonical · ${stat2(st.records || 0)} records created</span>
+      <button class="p-btn sm" id="uvRefresh">↻ Re-instantiate</button>
+    </div>
+    <div style="max-height:60vh;overflow:auto;border:1px solid var(--p-line);border-radius:10px">
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="text-align:left;color:var(--p-fg)"><th style="padding:8px">Universe</th><th>Source</th><th>Concepts</th><th>Records</th><th>Lifecycle</th><th></th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="6" class="p-tag">No universes instantiated yet — run Re-instantiate.</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function wireUniverses() {
+  const refresh = document.getElementById("uvRefresh");
+  if (refresh) refresh.onclick = async () => {
+    try {
+      const r = await api("/ucos/universes/instantiate", "POST", {});
+      toast((r.stats && r.stats.coverage === 100) ? "All " + stat2(r.stats.instantiated) + " universes instantiated" : "Instantiated " + r.instantiated + " of " + r.discovered);
+      render();
+    } catch (e) { toast(e.message); }
+  };
+  /* publish a universe's records into the current tenant's storefront — the record
+     becomes shopper-transactable through the standard catalog/cart/checkout path */
+  /* open this universe's records in the Data Studio, pre-selected and auto-loaded —
+     the Studio is the console's record browser; the definitions view only lists shapes */
+  document.querySelectorAll("[data-uv]").forEach(b => b.onclick = () => {
+    window.__entityJump = b.dataset.uv;
+    view = "studio";
+    render();
+  });
+  document.querySelectorAll("[data-uvpub]").forEach(b => b.onclick = async () => {
+    const key = b.dataset.uvpub;
+    try {
+      const r = await api("/ucos/catalog/" + key + "/publish?tenant_id=" + (window.__tenantId || 1), "POST", {});
+      toast(r.ok ? "Published " + r.published + " record(s) to the storefront" : (r.error || "publish failed"));
+      render();
+    } catch (e) { toast(e.message); }
+  });
+  document.querySelectorAll("[data-uvwd]").forEach(b => b.onclick = async () => {
+    const key = b.dataset.uvwd;
+    try {
+      const r = await api("/ucos/catalog/" + key + "/withdraw?tenant_id=" + (window.__tenantId || 1), "POST", {});
+      toast(r.ok ? "Withdrew " + r.removed + " record(s) from the storefront" : (r.error || "withdraw failed"));
+      render();
+    } catch (e) { toast(e.message); }
+  });
+}
+/* Foundations — the UCOS Article 2-8 registry: canonical form, five graphs,
+   lifecycle, admission rules and the append-only audit ledger. */
+async function vFoundations() {
+  const [man, v] = await Promise.all([api("/ucos/foundations/manifest"), api("/ucos/foundations/verify").catch(() => null)]);
+  const byU = man.byUniverse || [];
+  const byL = man.byLifecycle || {};
+  const checkRow = (label, ok2) => `<div class="p-tag" style="margin:3px 0">${ok2 ? "✓" : "✗"} ${esc(label)}</div>`;
+  return `
+  <div class="p-panel"><h2>🏛️ Foundations · the operational registry</h2>
+    <p class="p-tag">Architecture3 Articles 2-8, executed: canonical form, the five graphs, admission, lifecycle and the audit ledger — all enforced in code.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;align-items:center">
+      <span class="badge ${(v && v.ok) ? "published" : "failed"}">${(v && v.ok) ? "all invariants hold" : "invariant violations"}</span>
+      <span class="p-tag">${stat2((man.populations || {}).foundations || 0)} foundations · ${stat2((man.populations || {}).dependencies || 0)} dependency edges</span>
+      <button class="p-btn sm" id="fdVerify">↻ Verify invariants</button>
+      <button class="p-btn sm" id="fdLedger">Audit ledger</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
+      <div class="p-card" style="padding:12px">
+        <b>Article 3.2 / 8.2 invariants</b>
+        <div style="margin-top:6px">
+          ${v ? ["identitiesUnique", "dependenciesResolve", "acyclic", "noOrphans"].map(k => checkRow(k + " — " + (v.checks[k] ? "ok" : "VIOLATED"), v.checks[k])).join("") : '<div class="p-tag">unavailable</div>'}
+        </div>
+      </div>
+      <div class="p-card" style="padding:12px">
+        <b>Article 5.1 lifecycle</b>
+        <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">
+          ${man.lifecycle.map(s => '<span class="p-tag">' + esc(s) + " " + stat2(byL[s] || 0) + '</span>').join("")}
+        </div>
+      </div>
+      <div class="p-card" style="padding:12px">
+        <b>Article 3.1 graphs</b>
+        <div style="margin-top:6px">${Object.entries(man.graphs || {}).map(([k, d]) => '<div class="p-tag" style="margin:3px 0">' + esc(k) + " — " + esc(d) + '</div>').join("")}</div>
+      </div>
+    </div>
+    <h3 style="margin-top:16px">Largest universes</h3>
+    <div style="max-height:34vh;overflow:auto;border:1px solid var(--p-line);border-radius:10px">
+      <table style="width:100%;border-collapse:collapse;font-size:13px">
+        <thead><tr style="text-align:left"><th style="padding:8px">Universe</th><th>Foundations</th></tr></thead>
+        <tbody>${byU.slice(0, 40).map(u => `<tr><td style="padding:6px 8px">${esc(u.universe || "(universe)")}</td><td>${stat2(u.n)}</td></tr>`).join("") || '<tr><td class="p-tag">none</td></tr>'}</tbody>
+      </table>
+    </div>
+  </div>`;
+}
+function wireFoundations() {
+  const verify = document.getElementById("fdVerify");
+  if (verify) verify.onclick = async () => { try { const r = await api("/ucos/foundations/verify"); toast(r.ok ? "Invariants hold · " + stat2(r.populations.foundations) + " foundations" : "VIOLATIONS: " + JSON.stringify(r.violations)); render(); } catch (e) { toast(e.message); } };
+  const ledger = document.getElementById("fdLedger");
+  if (ledger) ledger.onclick = async () => {
+    try {
+      const r = await api("/ucos/foundations/ledger?limit=60");
+      const evs = (r.events || []).map(e => `<tr><td style="padding:6px 8px">${esc(e.at || "")}</td><td><b>${esc(e.event)}</b></td><td>${esc(e.foundation)}</td></tr>`).join("");
+      alert("Append-only audit ledger (Article 6)\n\n" + (r.events || []).slice(0, 20).map(e => e.at + "  " + e.event + "  " + e.foundation).join("\n"));
+    } catch (e) { toast(e.message); }
+  };
+}
 async function vRuntime() {
   const d = await api("/platform/runtime"); const [eNv, fL] = await Promise.all([api("/platform/environments"), api("/platform/flags")]);
   const rt = d.runtime, cat = d.catalog, active = d.active;
@@ -1658,7 +1792,16 @@ async function render() {
     else if (view === "providers") body.innerHTML = await vProviders();
     else if (view === "ucii") { body.innerHTML = await vUCII(); wireUCII(); }
     else if (view === "ucos") { body.innerHTML = await vUCOS(); wireUCOS(); }
-    else if (view === "studio") { body.innerHTML = await vStudio(); wireStudio(); }
+    else if (view === "universes") { body.innerHTML = await vUniverses(); wireUniverses(); }
+    else if (view === "foundations") { body.innerHTML = await vFoundations(); wireFoundations(); }
+    else if (view === "studio") {
+      /* the universe Records button hands the entity over through __entityJump; consume
+         it here (never in wireStudio, where a repeat render would re-trigger the load) */
+      const preset = window.__entityJump; window.__entityJump = null;
+      body.innerHTML = await vStudio(preset);
+      wireStudio();
+      if (preset) { const b = document.querySelector("#studioLoad"); if (b) b.click(); }
+    }
     else if (view === "ai") body.innerHTML = await vAI();
     else if (view === "offers") { body.innerHTML = await vGlobalOffers(); wireGlobalOffers(); }
     else if (view === "runtime") { body.innerHTML = await vRuntime(); wireRuntime(); }

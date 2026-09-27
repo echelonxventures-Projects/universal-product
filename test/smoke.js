@@ -195,6 +195,27 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(tRows >= 3, "tenants table (3 seeded stores)", tRows);
     ok(page.errs.length === 0, "platform no JS errors", page.errs.slice(0, 2).join("|"));
 
+    console.log("▸ PLATFORM: UCOS universes & foundations consoles");
+    const uvBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "universes");
+    click(page.win, uvBtn); await sleep(1500);
+    ok(page.doc.body.textContent.includes("Universes"), "universes console renders");
+    ok(/100% instantiated/.test(page.doc.body.textContent), "the coverage badge reports 100% instantiation");
+    ok(page.doc.querySelectorAll("[data-uv]").length > 100, "the universe table lists instantiated universes", page.doc.querySelectorAll("[data-uv]").length);
+    ok(page.doc.querySelectorAll("[data-uvpub]").length === page.doc.querySelectorAll("[data-uv]").length, "every universe row offers a storefront publish action");
+    /* Records must jump into the Data Studio with that universe preselected and loaded —
+       the flag is consumed once, so the Studio is clean on a later manual visit */
+    const uvRow = page.doc.querySelector("[data-uv]");
+    const uvKey = uvRow.dataset.uv;
+    click(page.win, uvRow); await sleep(1500);
+    const sel = page.doc.getElementById("studioEntity");
+    ok(!!sel && sel.value === uvKey, "Records opens the Data Studio with the universe preselected", sel && sel.value);
+    ok(page.doc.getElementById("studioBody").innerHTML.length > 0, "the Studio auto-loads the universe's records");
+    ok(!page.win.__entityJump, "the jump flag is consumed once, not left dangling");
+    const fdBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "foundations");
+    click(page.win, fdBtn); await sleep(1200);
+    ok(/all invariants hold/.test(page.doc.body.textContent), "foundations console reports the Article 3.2/8.2 invariants holding");
+    ok(/foundations/.test(page.doc.body.textContent), "foundations console shows the registry population");
+
     console.log("▸ PLATFORM: launch store → billing → invoice collect");
     // re-establish a clean platform session (the jsdom render above rotates azs/azc)
     jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
