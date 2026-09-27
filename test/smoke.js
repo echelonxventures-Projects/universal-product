@@ -165,6 +165,26 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     const cancelBtn = page.doc.querySelector("#modal #mCancel");
     click(page.win, cancelBtn); await sleep(300);
     ok(page.doc.getElementById("modal").innerHTML.trim() === "", "modal closes on Cancel");
+
+    console.log("▸ PRODUCTS: type is honoured, not silently filed as physical");
+    /* the REST create path used to drop `type` entirely, so a service landed as a
+       physical good with no signal to the caller; it is now registry-validated */
+    const svc = await f("/api/admin/products", "POST", { title: "Smoke Boiler Service", brand: "HeatCo", dept: "services", type: "service", price: 129, stock: 8 });
+    ok(svc.product && svc.product.type === "service", "a service product is stored as a service", svc.product && svc.product.type);
+    ok(svc.product && svc.product.hue === svc.product.hue, "the row round-trips");
+    const bad = await f("/api/admin/products", "POST", { title: "Bad Type", brand: "B", price: 10, type: "banana" });
+    ok(!!bad.error && /Unknown product type/.test(bad.error), "an unregistered type is refused, not coerced", bad.error && bad.error.slice(0, 50));
+    const dflt = await f("/api/admin/products", "POST", { title: "Plain Widget", brand: "B", price: 10 });
+    ok(dflt.product && dflt.product.type === "physical", "omitting type defaults to physical", dflt.product && dflt.product.type);
+    /* the update path also wrote to a non-existent `h` column and 500'd on every call */
+    const upd = await f(`/api/admin/products/${svc.product.id}`, "PUT", { type: "subscription", hue: 200 });
+    ok(upd.product && upd.product.type === "subscription", "a product's type can be changed", upd.product && upd.product.type);
+    ok(upd.product && upd.product.hue === 200, "the update path persists hue without erroring", upd.product && upd.product.hue);
+    const updBad = await f(`/api/admin/products/${svc.product.id}`, "PUT", { type: "kiwi" });
+    ok(!!updBad.error, "an unregistered type is refused on update too", updBad.error && updBad.error.slice(0, 50));
+    await f(`/api/admin/products/${svc.product.id}`, "DELETE");
+    await f(`/api/admin/products/${dflt.product.id}`, "DELETE");
+
     click(page.win, prodBtn); await sleep(500);
     for (const v of ["contracts", "tenders", "serialized", "suppliers", "compliance", "localizations"]) {
       const nb = [...page.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === v);
@@ -215,6 +235,32 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     click(page.win, fdBtn); await sleep(1200);
     ok(/all invariants hold/.test(page.doc.body.textContent), "foundations console reports the Article 3.2/8.2 invariants holding");
     ok(/foundations/.test(page.doc.body.textContent), "foundations console shows the registry population");
+
+    console.log("▸ GOVERNANCE: store admin cannot reach platform-only config — and the server survives");
+    /* an unauthorized request to a platform endpoint used to write the 403 twice
+       (requirePlatform already writes, then the caller wrote again) and the double
+       write killed the whole process. A refusal must stay a refusal. */
+    const adm = await f("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+    ok(!!adm.user, "store admin login");
+    const platDenied = await f("/api/platform/global-products", "POST", {});
+    ok(!!platDenied.error, "store admin cannot create a global product", JSON.stringify(platDenied));
+    ok(platDenied.error === "Platform access required", "the refusal names the authority required", platDenied.error);    const stillUp = await fetch(BASE + "/healthz");
+    ok(stillUp.ok, "the server is still alive after the refused platform request");
+    /* every global registry the store's vocabulary depends on is platform-owned */
+    for (const e of ["meta_list", "country", "currency", "tax_mode", "provider_def", "provider_availability", "plan", "tenant", "module"]) {
+      const r = await f(`/api/meta/entity/${e}`, "POST", {});
+      ok(!!r.error, "store admin cannot write the global registry: " + e, JSON.stringify(r).slice(0, 60));
+    }
+    /* and cannot even see them, so no global config is offered in their console */
+    const ents = await f("/api/meta/entities");
+    const leaked = ["meta_list", "country", "currency", "tax_mode", "provider_def", "provider_availability", "plan", "tenant", "module"]
+      .filter(k => k in (ents.entities || {}));
+    ok(leaked.length === 0, "global registries are hidden from the store admin's entity list", leaked.join(","));
+    /* the guard helpers write their own refusal, so a caller that writes again after a
+       failed guard double-writes the response and kills the process — keep the pattern out */
+    const apiSrc = require("fs").readFileSync(require("path").join(__dirname, "..", "lib", "api.js"), "utf8");
+    const dbl = (apiSrc.match(/require(?:Platform|Admin|Section|Store)\(s,\s*res[^)]*\)\)\s*return\s+bad\(/g) || []).length;
+    ok(dbl === 0, "no caller re-writes a response after a failed authority guard", dbl + " site(s)");
 
     console.log("▸ PLATFORM: launch store → billing → invoice collect");
     // re-establish a clean platform session (the jsdom render above rotates azs/azc)
