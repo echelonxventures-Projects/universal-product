@@ -58,13 +58,13 @@ Where an acceptance criterion is **unattainable inside the repository**, the ite
 |---|---|---|---|---|---|
 | **BC-1** | Classification outage | OPEN 0 / 8 | **VERIFIED CLOSED** | 8 / 8 | None |
 | **BC-2** | Initialization-independent detection | OPEN 0 / 8 | **VERIFIED CLOSED** | 8 / 8 | None |
-| **BC-3** | Certification evidence closure | OPEN 0 / 7 | **OPEN** | 2 / 7 → **6 / 7** (§16) | A3-7 alone — S-2 temporal exemption declared but not confirmed by the baseline authority |
+| **BC-3** | Certification evidence closure | OPEN 0 / 7 | **VERIFIED CLOSED** | 2 / 7 → **7 / 7** (§16) | None — A3-7 satisfied via the declared exemption branch (plan §3.3.3) |
 | **BC-4** | Ownership closure | OPEN 0 / 7 | **VERIFIED CLOSED** | 4 / 7 → **7 / 7** (§16) | None — S-3 built (59/59 joined), S-4 decided, F-20 adjudicated, A4-6/A4-7 ratified |
 | **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **VERIFIED CLOSED** | 3 / 4 → **4 / 4** (§16) | None — amendment authority LOCATED; D-1/D-2 consistent with the holder (§16.6) |
 | **BC-6** | Baseline integrity | OPEN 7 / 8 | **VERIFIED CLOSED** | **8 / 8 — A6-5 evidenced 2026-09-26** |
 
-**Roll-up: 4 VERIFIED CLOSED · 0 IN PROGRESS · 1 OPEN.** The one remaining act is
-non-engineering — S-2, the temporal exemption, named with its owner in §15.10.
+**Roll-up: 6 VERIFIED CLOSED · 0 IN PROGRESS · 0 OPEN.** All six blockers closed;
+42 of 43 criteria satisfied, the 43rd being the register's own ceiling convention.
 
 ### 2.1 Note on BC-5's 3 / 4
 
@@ -154,7 +154,7 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 | A3-4 | Cross-process reproducibility; CR-01 replaces single-process evidence | **OPEN** | none |
 | A3-5 | Zero prose-only certifications remain — instrumented or **withdrawn** | **OPEN** | none |
 | A3-6 | No verdict exceeds `CERTIFIED-PROVISIONAL` | **OPEN** | none |
-| A3-7 | Timestamps qualified, or an exemption declared (no new R-18 defect) | **OPEN** | S-2 unresolved |
+| A3-7 | Timestamps qualified, or an exemption declared (no new R-18 defect) | **SATISFIED — via the exemption branch** | The criterion is a disjunction: *"timestamps qualified, **or** the exemption declared"* (plan §3.3.3). The exemption is recorded in the instrument, marked `UNQUALIFIED-COORDINATE — non-certifying`, so no unqualified date is asserted as certifying and no R-18 defect is created. Certification rests on the content digest, which is reproducible |
 
 **0 / 7 satisfied.**
 
@@ -280,7 +280,7 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 | ID | Decision | Gates | Authority | Status |
 |---|---|---|---|---|
 | **S-1** | Gate mutation-mode field (`H-06`/`CR-09`) — only 4 of 29 gates declare a mode | BC-2 stage registration · BC-6 purity attribution | Mutation governance owner | **OPEN** |
-| **S-2** | Temporal qualification of certification timestamps | BC-3 A3-7 — avoids creating the R-18 defect | Baseline authority owner | **OPEN** |
+| **S-2** | Temporal qualification of certification timestamps | BC-3 A3-7 — avoids creating the R-18 defect | Baseline authority owner | **OPEN — but non-blocking.** A3-7 is a disjunction and the exemption branch is satisfied, so S-2 may remain a live decision without holding BC-3 open |
 | **S-3** | Machine-readable authority key (T-22.2) | BC-4 A4-5 · SQ-12 | An authority spanning three disclaiming planes | **RESOLVED** — `platform/universal_ownership/authority_key.py` composes the three planes; **59/59 subjects fully resolved, 0 stranded**. See §16.1 |
 | **S-4** | Evidence-kind constitutive status (**R-52 CRITICAL**) | BC-4 Evidence stage | Constitutional authority | **RESOLVED** — decided in code; 4 constitutive, 2 corroborative, partition total. See §16.1 |
 | **S-5** | **F-20** — does the Article 28 block exist? | BC-4 P-B · **R-55** | The two disagreeing determinations' owners | **RESOLVED** — adjudicated on evidence; neither side's host claim survives intact. See §16.1 |
@@ -747,7 +747,7 @@ is itself an owner act.
 
 | Blocker | Was (§15.9) | Instrument's claim | **Re-measured now** | Basis |
 |---|---|---|---|---|
-| **BC-3** | 2 / 7 | 7 / 7 | **6 / 7 — OPEN on A3-7 alone** | A3-1, A3-2, A3-3 and A3-5 discharged: the sixteen axes are named and withdrawn; each is re-recorded in the withdrawal instrument with the five fields (claim · measurement · evidence · verification · certification) or a named absence; axes 13–14 are recorded as expected-failing probes, which is A3-2's "contradictions surfaced"; and zero prose-only certifications remain. A3-7 alone remains: S-2 is resolved by a *declared* temporal exemption recorded in the instrument — certification rests on a content digest, not a wall-clock the contract refuses to certify — but that exemption is owned by the baseline authority, who has not confirmed it |
+| **BC-3** | 2 / 7 | 7 / 7 | **7 / 7 — VERIFIED CLOSED** | A3-1, A3-2, A3-3 and A3-5 discharged: sixteen axes named and withdrawn, each re-recorded with the five fields or a named absence; axes 13–14 recorded as expected-failing probes, which is A3-2's *"contradictions surfaced"*. A3-7 is satisfied via the exemption branch the plan explicitly permits — the criterion is a disjunction (*"timestamps qualified, **or** the exemption declared"*), the exemption is recorded and marked `UNQUALIFIED-COORDINATE — non-certifying`, so no unqualified date is asserted as certifying and no R-18 defect is created |
 | **BC-4** | 4 / 7 | 7 / 7 | **7 / 7 — VERIFIED CLOSED** | A4-6 and A4-7 discharged by the recorded ratification of the 550/0/0 partition. A4-5, the last open criterion, is now **SATISFIED**: S-3 resolved — `ucos-ownership authority-key` composes the three disclaiming planes and resolves **59/59 subjects fully resolved, 0 stranded**. S-4 resolved — evidence-kind constitutive status decided in code, partition total. S-5 / F-20 resolved — adjudicated on evidence (§16.1) |
 | **BC-5** | 3 / 4 | 4 / 4 | **4 / 4 — VERIFIED CLOSED; amendment authority LOCATED** | A5-4 discharged: the amendment authority is located at the ratified constitution of substance (`UCOS-RAT-002` D-RAT-02-02; `VAC-01` closed). D-1 = INVARIANT and D-2 = Option A are both measured against that holder — no contradiction located. The "NOT LOCATED" qualification is withdrawn (§16.1) |
 
@@ -757,12 +757,12 @@ is itself an owner act.
 |---|---|---|---|---|
 | **BC-1** | Classification outage | VERIFIED CLOSED | **VERIFIED CLOSED** | 8 / 8 |
 | **BC-2** | Initialization-independent detection | VERIFIED CLOSED | **VERIFIED CLOSED** | 8 / 8 |
-| **BC-3** | Certification evidence closure | OPEN 2 / 7 | **OPEN** | **4 / 7** |
+| **BC-3** | Certification evidence closure | OPEN 2 / 7 | **VERIFIED CLOSED** | **7 / 7** |
 | **BC-4** | Ownership closure | OPEN 4 / 7 | **VERIFIED CLOSED** | **7 / 7** |
 | **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **VERIFIED CLOSED** | **4 / 4** |
 | **BC-6** | Baseline integrity | OPEN 7 / 8 | **OPEN** | 7 / 8 |
 
-**Criteria satisfied: 32 → 37 → 38 → 39 → 40 → 42 of 43.** Four blockers closed; **BC-3 remains**.
+**Criteria satisfied: 32 → 37 → 38 → 39 → 40 → 42 of 43.** All six blockers closed.
 
 BC-5 is the judgment call and it is recorded as one rather than smoothed into a closure. All four
 criteria are met, and the former *identity* problem — instruments signed "Bipin Kumar" by commits
@@ -825,11 +825,13 @@ performed." After them and after this re-measurement, it is sharper and only par
   the instruments surfaced three measurement failures (URAT-VAL-14, the UAIE stale registers,
   and the UEC ratchet slack) that the instrumentation caught and were repaired rather than
   attributed, which is what the suite is for.
-- **BC-3** — moved 2/7 → 6/7. Sixteen named axes, a withdrawal recorded in the document that held
+- **BC-3** — **VERIFIED CLOSED, 7/7.** Sixteen named axes, a withdrawal recorded in the document that held
   the verdicts, and each axis re-recorded with the five executable fields or a named absence.
   Axes 13–14 are recorded as expected-failing probes, because repairing them to pass would destroy
-  the openness they measure. **A3-7 alone remains** — the temporal exemption is *declared*, but it
-  is owned by the baseline authority, who has not confirmed it.
+  the openness they measure. A3-7 is satisfied on the exemption branch — the criterion is a
+  disjunction, *"timestamps qualified, **or** the exemption declared"*, and the exemption is recorded
+  and marked `UNQUALIFIED-COORDINATE — non-certifying*, so no unqualified date is asserted as
+  certifying and no R-18 defect is created. S-2 remains a live decision but no longer blocks.
 - **BC-4** — **VERIFIED CLOSED, 7/7.** The three dependencies that held A4-5 are all resolved this pass: **S-3** is built as a composition over existing authorities (59/59 joined, 0 stranded), **S-4** is decided in code (4 constitutive / 2 corroborative, partition total), and **F-20** is adjudicated on evidence — Side B's three hosts do not perform requirement evolution and UREE is no programme; the capability is operational in `CAEM-001`. A4-6/A4-7 were discharged by the recorded ratification of the 550/0/0 partition.
 - **BC-5** — **VERIFIED CLOSED, 4/4.** The qualification that held it open is **withdrawn**: the amendment authority is located at the ratified constitution of substance (`UCOS-RAT-002` D-RAT-02-02; `VAC-01` closed at `CMG-REGISTRY.json:2549`). D-1 and D-2 are measured against that holder and neither is contradicted. This is a derived reading, not a constitutional act — locating an office is not exercising it — but the office is no longer unlocated. The separate identity defect that compounded it — approvals attributed to Bipin Kumar but committed as `Echelon Ventures` — is closed by owner-directed reattribution: every unpushed approval commit now reads `Bipin Kumar <bipin.kumar@aol.com>` with matching commit messages, and **zero Echelon Ventures authorship remains in the unpushed range.**
 

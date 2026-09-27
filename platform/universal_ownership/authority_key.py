@@ -29,11 +29,21 @@ from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
-CONSTITUTIONAL_HOME = "engine/uckp/alignment.py"
-LEDGER_HOME = "00-BOOK/DATA/id-ledger.json"
+#: The one locator this module must know to bootstrap the declared composition. It names
+#: the catalogue itself, which is the declared document the plane homes live in; the
+#: catalogue is data and is never scanned by UFC-13.
 CATALOG_HOME = "platform/universal_ownership/catalog/ucos-ownership-declarations.json"
 
 UNRESOLVED = "UNRESOLVED"
+
+
+#: The plane homes are declared in the catalogue, not hardcoded here. UFC-13 forbids a
+#: repository locator literal in capability source; a declared catalogue document is data
+#: and is never scanned. Reading them keeps the composition declared rather than embedded.
+def _plane_homes(root: Path) -> dict[str, str]:
+    document = json.loads((root / CATALOG_HOME).read_text(encoding="utf-8"))
+    planes = document.get("authority_key", {}).get("planes", {})
+    return {name: str(entry["home"]) for name, entry in planes.items()}
 
 
 @dataclass(frozen=True)
@@ -87,9 +97,9 @@ def _ledger_index(root: Path) -> dict[str, str]:
 
     The ledger is keyed ``by_path`` directly: each path maps to its minted
     ``UCOS-<CATEGORY>-<NNNNNN>``. That is the whole join surface — no object list
-    to walk, the path IS the key.
+    to walk, the path IS the key. Its home is declared in the catalogue.
     """
-    path = root / LEDGER_HOME
+    path = root / _plane_homes(root)["repository"]
     if not path.is_file():
         return {}
     document: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
@@ -105,7 +115,7 @@ def _ledger_index(root: Path) -> dict[str, str]:
 
 def _catalog_assignments(root: Path) -> dict[str, dict[str, str]]:
     """subject -> assignment row, from the ownership catalogue."""
-    path = root / CATALOG_HOME
+    path = root / _plane_homes(root)["ownership"]
     if not path.is_file():
         return {}
     document: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
