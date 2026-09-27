@@ -5,7 +5,7 @@
   "determinism": "No wall clock. Timestamps are ledger first_seen values.",
   "epoch": "0 — Existence Discovery",
   "success_condition": "unknown_objects == 0",
-  "total_objects": 7173,
+  "total_objects": 7178,
   "unknown_objects": 0,
   "classifier_property": "TOTAL — the final branch is unconditional, so UNKNOWN is structurally unreachable.",
   "objects": [
@@ -25299,6 +25299,24 @@
       "first_seen": "commit:e60cbb3e2beb"
     },
     {
+      "path": "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-4-S-4-EVIDENCE-KIND-DECISION.md",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "lifecycle": "AUTHORED",
+      "owner": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE",
+      "identity_authority": "UCOS-UGA-001",
+      "universal_id": "UCOS-EXDOC-003158",
+      "first_seen": "commit:65aae8ae6f7d"
+    },
+    {
+      "path": "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-5-AMENDMENT-AUTHORITY-LOCATION.md",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "lifecycle": "AUTHORED",
+      "owner": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE",
+      "identity_authority": "UCOS-UGA-001",
+      "universal_id": "UCOS-EXDOC-003159",
+      "first_seen": "commit:65aae8ae6f7d"
+    },
+    {
       "path": "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-5-DECISION-MEMOS.md",
       "object_class": "EXCLUDED_DOCUMENT",
       "lifecycle": "AUTHORED",
@@ -25306,6 +25324,15 @@
       "identity_authority": "UCOS-UGA-001",
       "universal_id": "UCOS-EXDOC-003156",
       "first_seen": "commit:e60cbb3e2beb"
+    },
+    {
+      "path": "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/F-20-ADJUDICATION.md",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "lifecycle": "AUTHORED",
+      "owner": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE",
+      "identity_authority": "UCOS-UGA-001",
+      "universal_id": "UCOS-EXDOC-003160",
+      "first_seen": "commit:65aae8ae6f7d"
     },
     {
       "path": "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/FINAL-ENGINEERING-COMPLETION-STATUS.md",
@@ -55726,6 +55753,15 @@
       "first_seen": "commit:e98f59cd22e9"
     },
     {
+      "path": "platform/tests/test_authority_key.py",
+      "object_class": "TEST_OBJECT",
+      "lifecycle": "AUTHORED",
+      "owner": "platform/tests",
+      "identity_authority": "UCOS-UGA-001",
+      "universal_id": "UCOS-TESTOBJ-000909",
+      "first_seen": "commit:65aae8ae6f7d"
+    },
+    {
       "path": "platform/tests/test_blueprints_associations.py",
       "object_class": "TEST_OBJECT",
       "lifecycle": "AUTHORED",
@@ -59359,6 +59395,15 @@
       "identity_authority": "UCOS-UGA-001",
       "universal_id": "UCOS-ENGINE-000989",
       "first_seen": "commit:e98f59cd22e9"
+    },
+    {
+      "path": "platform/universal_ownership/authority_key.py",
+      "object_class": "EXECUTABLE_OBJECT",
+      "lifecycle": "AUTHORED",
+      "owner": "platform/universal_ownership",
+      "identity_authority": "UCOS-UGA-001",
+      "universal_id": "UCOS-ENGINE-001392",
+      "first_seen": "commit:65aae8ae6f7d"
     },
     {
       "path": "platform/universal_ownership/bootstrap.py",

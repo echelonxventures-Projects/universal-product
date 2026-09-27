@@ -12170,10 +12170,10 @@
     "DET": 6,
     "CONFIG": 40,
     "DATAOBJ": 149,
-    "EXDOC": 3157,
+    "EXDOC": 3160,
     "TOOLING": 57,
-    "ENGINE": 1391,
-    "TESTOBJ": 908,
+    "ENGINE": 1392,
+    "TESTOBJ": 909,
     "OBS": 7,
     "ASSESS": 2,
     "B01BIR": 1,
@@ -67533,6 +67533,36 @@
       "object_class": "EXCLUDED_DOCUMENT",
       "category": "EXDOC",
       "first_seen": "commit:e60cbb3e2beb"
+    },
+    "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-4-S-4-EVIDENCE-KIND-DECISION.md": {
+      "universal_id": "UCOS-EXDOC-003158",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "category": "EXDOC",
+      "first_seen": "commit:65aae8ae6f7d"
+    },
+    "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/BC-5-AMENDMENT-AUTHORITY-LOCATION.md": {
+      "universal_id": "UCOS-EXDOC-003159",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "category": "EXDOC",
+      "first_seen": "commit:65aae8ae6f7d"
+    },
+    "00-MASTER/UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE/F-20-ADJUDICATION.md": {
+      "universal_id": "UCOS-EXDOC-003160",
+      "object_class": "EXCLUDED_DOCUMENT",
+      "category": "EXDOC",
+      "first_seen": "commit:65aae8ae6f7d"
+    },
+    "platform/tests/test_authority_key.py": {
+      "universal_id": "UCOS-TESTOBJ-000909",
+      "object_class": "TEST_OBJECT",
+      "category": "TESTOBJ",
+      "first_seen": "commit:65aae8ae6f7d"
+    },
+    "platform/universal_ownership/authority_key.py": {
+      "universal_id": "UCOS-ENGINE-001392",
+      "object_class": "EXECUTABLE_OBJECT",
+      "category": "ENGINE",
+      "first_seen": "commit:65aae8ae6f7d"
     }
   },
   "by_observation": {

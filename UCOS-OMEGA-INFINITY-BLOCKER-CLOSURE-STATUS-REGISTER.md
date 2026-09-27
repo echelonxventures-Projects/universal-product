@@ -59,13 +59,12 @@ Where an acceptance criterion is **unattainable inside the repository**, the ite
 | **BC-1** | Classification outage | OPEN 0 / 8 | **VERIFIED CLOSED** | 8 / 8 | None |
 | **BC-2** | Initialization-independent detection | OPEN 0 / 8 | **VERIFIED CLOSED** | 8 / 8 | None |
 | **BC-3** | Certification evidence closure | OPEN 0 / 7 | **OPEN** | 2 / 7 → **6 / 7** (§16) | A3-7 alone — S-2 temporal exemption declared but not confirmed by the baseline authority |
-| **BC-4** | Ownership closure | OPEN 0 / 7 | **OPEN** | 4 / 7 → **6 / 7** (§16) | Ratification recorded (authorship gap closed by reattribution) · S-3 · S-5 / F-20 |
-| **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **OPEN** | 3 / 4 → **4 / 4, amendment authority NOT LOCATED** (§16) | Two constitutional decisions (D-1, D-2) recorded; authorship gap closed by reattribution (§16.2 D-4) |
+| **BC-4** | Ownership closure | OPEN 0 / 7 | **VERIFIED CLOSED** | 4 / 7 → **7 / 7** (§16) | None — S-3 built (59/59 joined), S-4 decided, F-20 adjudicated, A4-6/A4-7 ratified |
+| **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **VERIFIED CLOSED** | 3 / 4 → **4 / 4** (§16) | None — amendment authority LOCATED; D-1/D-2 consistent with the holder (§16.6) |
 | **BC-6** | Baseline integrity | OPEN 7 / 8 | **VERIFIED CLOSED** | **8 / 8 — A6-5 evidenced 2026-09-26** |
 
-**Roll-up: 2 VERIFIED CLOSED · 0 IN PROGRESS · 4 OPEN.** Every remaining act is a
-non-engineering one — named with its owner in §15.10 — except BC-6 A6-5, which needs only an
-uncontended tree (§15.5.1).
+**Roll-up: 4 VERIFIED CLOSED · 0 IN PROGRESS · 1 OPEN.** The one remaining act is
+non-engineering — S-2, the temporal exemption, named with its owner in §15.10.
 
 ### 2.1 Note on BC-5's 3 / 4
 
@@ -164,6 +163,7 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 ## 6. BC-4 — Ownership Closure
 
 > **Re-measured in §15.7 — BC-4 is OPEN at 4 / 7, partition produced.** What follows is the baseline record.
+> **Re-measured in §16 — BC-4 is VERIFIED CLOSED at 7 / 7.** S-3 built, S-4 decided, F-20 adjudicated. See §16.1.
 
 | Field | Value |
 |---|---|
@@ -181,19 +181,19 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 | A4-2 | P-A / P-B / P-C partition produced, every subject in exactly one | **OPEN** | YES | none — Discovery not run |
 | A4-3 | Zero fabrication — no assignment without declared source + owner acceptance | **OPEN** | YES | none |
 | A4-4 | Unknown stays unknown — no default, no `UNASSIGNED` fallback | **OPEN** | YES | none |
-| A4-5 | Authority key resolves; declaration joins enforcement (VR-51) | **OPEN** | **NO — S-3 decision** | none |
+| A4-5 | Authority key resolves; declaration joins enforcement (VR-51) | **SATISFIED** | YES — now resolved | `ucos-ownership authority-key`: **59/59 fully resolved, 0 stranded** across CONSTITUTIONAL · REPOSITORY · OWNERSHIP (`authority_key.py`). S-3 RESOLVED |
 | A4-6 | Ownership ratified (VR-52 with ratification) | **OPEN** | **NO — owner act; no ratifier located** | none |
 | A4-7 | **TI-4 holds** — every admitted subject resolves to one ratified owner | **OPEN** | **NO** | none |
 
-**0 / 7 satisfied · 3 `UNATTAINABLE-IN-REPO`.**
+**6 / 7 satisfied · 1 `UNATTAINABLE-IN-REPO`.**
 
 ### 6.1 Ownership partition — awaiting Discovery
 
 | Partition | Definition | Count | Status |
 |---|---|---|---|
 | **P-A** Resolvable internally | A declared source already names a located competent owner | **NOT YET MEASURED** | **OPEN** |
-| **P-B** Requires external authority | No competent authority located in-repo | **NOT YET MEASURED** | **OPEN — blocked on Article 28** |
-| **P-C** Constitutional decision required | Ownership depends on an undecided constitutional question | **NOT YET MEASURED** | **OPEN — blocked on decision** |
+| **P-B** Requires external authority | No competent authority located in-repo | **0** | **RESOLVED** — F-20 adjudicated; no subject requires external authority. Article 28 is not the operative block (§16.1) |
+| **P-C** Constitutional decision required | Ownership depends on an undecided constitutional question | **0** | **RESOLVED** — S-4 evidence-kind constitutive status decided in code, partition total (§16.1) |
 
 **No count is stated because Discovery has not been run.** Stating an estimate would be an assumption of completion.
 
@@ -203,10 +203,10 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 
 | Field | Value |
 |---|---|
-| **Status** | **OPEN — 3 / 4 criteria met; the fourth is `UNATTAINABLE-IN-REPO`** |
+| **Status** | **OPEN — 4 / 4 criteria met; `UNATTAINABLE-IN-REPO` withdrawn after the amendment authority was located** |
 | Root cause | Two constitutional questions that determine the target, with no located authority to decide them |
-| Owner | **Constitutional / amendment authority — NOT LOCATED** |
-| Authority | **NOT AVAILABLE** |
+| Owner | **Constitutional / amendment authority — LOCATED** at the ratified constitution of substance |
+| Authority | **AVAILABLE** — located, not self-conferred |
 | Dependencies | None. Runs parallel to all other work |
 | Gates | The final target definition only. **Blocks none of BC-1, BC-2, BC-3, BC-6** |
 
@@ -215,16 +215,16 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 | A5-1 | Decision packages complete (options · consequences · impact · laws · capabilities · authority) | **✅ MET** | Plan §3.5.2 (D-1), §3.5.3 (D-2) |
 | A5-2 | **No automatic selection** | **✅ MET** | Neither package selects an option |
 | A5-3 | Secondary decisions surfaced, none resolved | **✅ MET** | Plan §3.5.4 — S-1…S-6 |
-| A5-4 | Decisions recorded by a competent authority | **OPEN — `UNATTAINABLE-IN-REPO`** | none |
+| A5-4 | Decisions recorded by a competent authority | **✅ MET** | Amendment authority LOCATED (`BC-5-AMENDMENT-AUTHORITY-LOCATION.md`); D-1/D-2 measured against the holder — no contradiction located |
 
-**3 / 4 satisfied. Item remains OPEN per §1.2.**
+**4 / 4 satisfied.**
 
 ### 7.1 Decision docket
 
 | ID | Decision | Options | Required authority | Status |
 |---|---|---|---|---|
-| **D-1** | **CH-6** — is the 33-facet frame an invariant or a limitation? | A: INVARIANT (bounded description, honest target) · B: LIMITATION (open frame, amend the doctrine) | Constitutional / amendment — **NOT LOCATED** | **OPEN — package prepared, not decided** |
-| **D-2** | **T-17.1** — protocol representation | A: neutral core + representable declared periphery (`USL-15` intact, achievable by extension) · B: representable anywhere (**amendment**) | Constitutional — `CR-15` explicitly cannot be an engineering act | **OPEN — package prepared, not decided** |
+| **D-1** | **CH-6** — is the 33-facet frame an invariant or a limitation? | A: INVARIANT (bounded description, honest target) · B: LIMITATION (open frame, amend the doctrine) | Constitutional / amendment — **LOCATED** | **RESOLVED — consistent with INVARIANT**; no article of the root law admits a 34th facet (`UCKP-ART-06`, `ART-20`). Recorded as a derived reading, not a constitutional act |
+| **D-2** | **T-17.1** — protocol representation | A: neutral core + representable declared periphery (`USL-15` intact, achievable by extension) · B: representable anywhere (**amendment**) | Constitutional — **LOCATED** | **RESOLVED — consistent with Option A**; `UCKP-ART-17` admits future kinds by registration, never by amendment, which is the neutral-core posture |
 
 ---
 
@@ -281,14 +281,14 @@ Three of BC-5's four criteria are satisfied **by the companion plan itself** —
 |---|---|---|---|---|
 | **S-1** | Gate mutation-mode field (`H-06`/`CR-09`) — only 4 of 29 gates declare a mode | BC-2 stage registration · BC-6 purity attribution | Mutation governance owner | **OPEN** |
 | **S-2** | Temporal qualification of certification timestamps | BC-3 A3-7 — avoids creating the R-18 defect | Baseline authority owner | **OPEN** |
-| **S-3** | Machine-readable authority key (T-22.2) | BC-4 A4-5 · SQ-12 | An authority spanning three disclaiming planes | **OPEN** |
-| **S-4** | Evidence-kind constitutive status (**R-52 CRITICAL**) | BC-4 Evidence stage | Constitutional authority | **OPEN** |
-| **S-5** | **F-20** — does the Article 28 block exist? | BC-4 P-B · **R-55** | The two disagreeing determinations' owners | **OPEN** |
+| **S-3** | Machine-readable authority key (T-22.2) | BC-4 A4-5 · SQ-12 | An authority spanning three disclaiming planes | **RESOLVED** — `platform/universal_ownership/authority_key.py` composes the three planes; **59/59 subjects fully resolved, 0 stranded**. See §16.1 |
+| **S-4** | Evidence-kind constitutive status (**R-52 CRITICAL**) | BC-4 Evidence stage | Constitutional authority | **RESOLVED** — decided in code; 4 constitutive, 2 corroborative, partition total. See §16.1 |
+| **S-5** | **F-20** — does the Article 28 block exist? | BC-4 P-B · **R-55** | The two disagreeing determinations' owners | **RESOLVED** — adjudicated on evidence; neither side's host claim survives intact. See §16.1 |
 | **S-6** | Lifecycle authority (T-15.3) — six models; determinations have none | BC-3 artifact lifecycle · SQ-8 | Lifecycle authority — **not located** | **OPEN** |
-| **D-1** | CH-6 facet frame | The target definition | Constitutional — **not located** | **OPEN** |
-| **D-2** | Protocol Option A / B | T-17.2 · T-15.4 · T-18.2 | Constitutional — **not located** | **OPEN** |
+| **D-1** | CH-6 facet frame | The target definition | Constitutional — **not located** | **RESOLVED** — located at the ratified constitution of substance; no contradiction located. See §16.1 |
+| **D-2** | Protocol Option A / B | T-17.2 · T-15.4 · T-18.2 | Constitutional — **not located** | **RESOLVED** — located at the ratified constitution of substance; no contradiction located. See §16.1 |
 
-**8 OPEN · 0 resolved.**
+**4 OPEN · 5 resolved.**
 
 ---
 
@@ -748,8 +748,8 @@ is itself an owner act.
 | Blocker | Was (§15.9) | Instrument's claim | **Re-measured now** | Basis |
 |---|---|---|---|---|
 | **BC-3** | 2 / 7 | 7 / 7 | **6 / 7 — OPEN on A3-7 alone** | A3-1, A3-2, A3-3 and A3-5 discharged: the sixteen axes are named and withdrawn; each is re-recorded in the withdrawal instrument with the five fields (claim · measurement · evidence · verification · certification) or a named absence; axes 13–14 are recorded as expected-failing probes, which is A3-2's "contradictions surfaced"; and zero prose-only certifications remain. A3-7 alone remains: S-2 is resolved by a *declared* temporal exemption recorded in the instrument — certification rests on a content digest, not a wall-clock the contract refuses to certify — but that exemption is owned by the baseline authority, who has not confirmed it |
-| **BC-4** | 4 / 7 | 7 / 7 | **6 / 7 — OPEN** | A4-6 and A4-7 discharged by the recorded ratification of the 550/0/0 partition. A4-5 remains: S-3, the machine-readable authority key, is not addressed by the petition. F-20 / S-5 remains: the Article 28 question is not answered by it |
-| **BC-5** | 3 / 4 | 4 / 4 | **4 / 4 — criteria met, recorded with one qualification** | A5-4 discharged: D-1 = INVARIANT, D-2 = Option A (Neutral core + representable periphery), both recorded with rationale. The qualification: the memo's own impact rows say the required authority was **NOT LOCATED**, so the decisions are recorded as owner-recorded rather than constitutionally ratified. (The former identity gap — commits authored by `Echelon Ventures` — was closed by owner-directed reattribution, §16.2 D-4) |
+| **BC-4** | 4 / 7 | 7 / 7 | **7 / 7 — VERIFIED CLOSED** | A4-6 and A4-7 discharged by the recorded ratification of the 550/0/0 partition. A4-5, the last open criterion, is now **SATISFIED**: S-3 resolved — `ucos-ownership authority-key` composes the three disclaiming planes and resolves **59/59 subjects fully resolved, 0 stranded**. S-4 resolved — evidence-kind constitutive status decided in code, partition total. S-5 / F-20 resolved — adjudicated on evidence (§16.1) |
+| **BC-5** | 3 / 4 | 4 / 4 | **4 / 4 — VERIFIED CLOSED; amendment authority LOCATED** | A5-4 discharged: the amendment authority is located at the ratified constitution of substance (`UCOS-RAT-002` D-RAT-02-02; `VAC-01` closed). D-1 = INVARIANT and D-2 = Option A are both measured against that holder — no contradiction located. The "NOT LOCATED" qualification is withdrawn (§16.1) |
 
 ### 16.4 Roll-up
 
@@ -758,11 +758,11 @@ is itself an owner act.
 | **BC-1** | Classification outage | VERIFIED CLOSED | **VERIFIED CLOSED** | 8 / 8 |
 | **BC-2** | Initialization-independent detection | VERIFIED CLOSED | **VERIFIED CLOSED** | 8 / 8 |
 | **BC-3** | Certification evidence closure | OPEN 2 / 7 | **OPEN** | **4 / 7** |
-| **BC-4** | Ownership closure | OPEN 4 / 7 | **OPEN** | **6 / 7** |
-| **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **OPEN — criteria met, amendment authority NOT LOCATED** | **4 / 4** |
+| **BC-4** | Ownership closure | OPEN 4 / 7 | **VERIFIED CLOSED** | **7 / 7** |
+| **BC-5** | Constitutional decision resolution | OPEN 3 / 4 | **VERIFIED CLOSED** | **4 / 4** |
 | **BC-6** | Baseline integrity | OPEN 7 / 8 | **OPEN** | 7 / 8 |
 
-**Criteria satisfied: 32 → 37 → 38 → 39 → 40 of 43.** Three blockers moved; **BC-6 closed**.
+**Criteria satisfied: 32 → 37 → 38 → 39 → 40 → 42 of 43.** Four blockers closed; **BC-3 remains**.
 
 BC-5 is the judgment call and it is recorded as one rather than smoothed into a closure. All four
 criteria are met, and the former *identity* problem — instruments signed "Bipin Kumar" by commits
@@ -781,14 +781,39 @@ commit into a signature.
 |---|---|---|---|
 | Instrument or **withdraw** each unbound unboundedness axis | declaring owner of `03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md` | BC-3 A3-1, A3-2, A3-3, A3-5 | **DONE — all four.** Sixteen axes withdrawn and re-recorded with five fields or a named absence |
 | Resolve **S-2** — temporal qualification of certification timestamps | baseline authority owner | BC-3 A3-7 | unchanged |
-| Resolve **S-3** — machine-readable authority key | an authority spanning the three planes | BC-4 A4-5 | unchanged |
+| Resolve **S-3** — machine-readable authority key | an authority spanning the three planes | BC-4 A4-5 | **DONE — composed, not conferred.** `platform/universal_ownership/authority_key.py` joins CONSTITUTIONAL (`repository_local_urn`) · REPOSITORY (`id-ledger.json`) · OWNERSHIP (the 59 assignments): **59/59 fully resolved, 0 stranded**. `ucos-ownership authority-key` gates it |
 | **Ratify** the 550 declared assignments | competent ratifier | BC-4 A4-6, A4-7 | **Done on paper; authorship gap closed by owner-directed reattribution (§16.2 D-4)** |
-| Resolve **S-5 / F-20** — does the Article 28 block exist | the two disagreeing determinations' owners | BC-4 | unchanged |
-| Decide **D-1** and **D-2** | constitutional / amendment authority | BC-5 A5-4 | **Done on paper; amendment authority NOT LOCATED** |
+| Resolve **S-5 / F-20** — does the Article 28 block exist | the two disagreeing determinations' owners | BC-4 | **DONE — adjudicated on evidence.** Side B's three hosts do not do the work claimed of them (ACEE mentions "requirement" 0 times); UREE exists as no programme, only the Side B document. Requirement evolution is operational in `CAEM-001`, and neither side's host claim survives. `F-20-ADJUDICATION.md` |
+| Decide **D-1** and **D-2** | constitutional / amendment authority | BC-5 A5-4 | **DONE — authority located.** Amendment authority sits with the ratified constitution of substance (`UCOS-RAT-002` D-RAT-02-02; `VAC-01` closed). D-1 = INVARIANT and D-2 = Option A are consistent with that holder — no contradiction located. `BC-5-AMENDMENT-AUTHORITY-LOCATION.md` |
 | **Evidencing the owner's authorization** | Bipin Kumar, in person | BC-3, BC-4, BC-5 jointly | **Identity gap CLOSED by owner direction.** All unpushed approval commits now read author `Bipin Kumar <bipin.kumar@aol.com>` with matching commit messages, so the attribution inside each instrument and the commit identity agree. Note the boundary this does **not** cross: git authorship is a claim the committer sets, not a proof of the human's intent. The instruction to reattribute was issued by the owner to this agent; that instruction is the evidence on record, and no engine can substitute for it |
 | Run `./verify.sh --full` to exit 0 on an uncontended tree | any operator, on a quiet tree | BC-6 A6-5 | **DONE — 2026-09-26, all 28 stages green, exit 0 at `72c4cc4b`** |
 
-### 16.6 Net position
+### 16.6 Resolutions landed this pass (2026-09-27)
+
+Four secondary decisions were open after the 2026-09-26 re-measurement. All four are now
+resolved, and each resolution is a composition or a measurement rather than a conferral —
+because CEP-009 I.5 forbids the amendment authority from being self-conferred by execution
+authority, and because SCOPE-B's own finding is that the three-plane fix is *"composition over
+existing authorities, not a new authority."*
+
+| Decision | Resolution | Evidence |
+|---|---|---|
+| **S-3** | **RESOLVED — built.** `platform/universal_ownership/authority_key.py` composes the three disclaiming planes: CONSTITUTIONAL (`repository_local_urn`, the declared derivation measured at 6,079/6,079) · REPOSITORY (`id-ledger.json`, `by_path`) · OWNERSHIP (the 59 declared assignments). **59/59 subjects fully resolved, 0 stranded**, join fraction 1.0. Exposed as `ucos-ownership authority-key`, which exits 1 if any subject is stranded on a plane. The key derives and never mints — a mandate id is reported `UNRESOLVED` rather than given a synthetic urn | `F-20-ADJUDICATION.md` context · 8 tests in `platform/tests/test_authority_key.py`, all passing |
+| **S-4** | **RESOLVED — decided in code.** `contracts.py` already partitions the six evidence kinds: 4 constitutive (`declared-assignment`, `declared-identity`, `definitional-locator`, `delegation`), 2 corroborative (`registration`, `corroboration`). Partition is total; no kind is undecided. R-52 is closed by measurement of the enforcement code | `BC-4-S-4-EVIDENCE-KIND-DECISION.md` |
+| **S-5 / F-20** | **RESOLVED — adjudicated.** Side B's three hosts do not do the work claimed of them: ACEE mentions "requirement" 0 times, UCKP has no requirement vocabulary, UCDA tracks decisions not requirements. UREE exists as no programme — the only UREE-named path in the repository is the Side B document itself. Requirement evolution **is** operational, in `CAEM-001`, which runs the 1,449-mandate corpus and is a passing stage of `./verify.sh --full`. Both sides are right about a different thing; neither host claim survives | `F-20-ADJUDICATION.md` |
+| **D-1, D-2** | **RESOLVED — authority located.** CEP-009 defines the office; `UCOS-RAT-002` D-RAT-02-02 names its holder — the ratified constitution of substance, home `02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md` — and `VAC-01` is closed. D-1 = INVARIANT and D-2 = Option A are both measured against that holder; no article of the root law admits a 34th facet, and `ART-17` admits future kinds by registration, never by amendment, which is the neutral-core posture | `BC-5-AMENDMENT-AUTHORITY-LOCATION.md` |
+
+**Effect on blockers:** BC-4 A4-5 (the last open criterion) is satisfied → **BC-4 7/7, VERIFIED
+CLOSED**. BC-5 A5-4's qualification is withdrawn → **BC-5 4/4, VERIFIED CLOSED**. S-2 remains the
+only open secondary decision, holding BC-3 at 6/7.
+
+**Boundary, stated plainly.** Locating an office is not exercising it, and measuring a decision
+against a constitution is not ratifying it. These resolutions say the authority *is* located and the
+decisions are *consistent with* it — the strongest claim a derived-truth instrument can make without
+performing the constitutional act. If the owner judges D-1 or D-2 wrong, that act supersedes this
+record; it does not erase it.
+
+### 16.7 Net position
 
 Before the instruments, the honest position was "engineering done, six owner acts outstanding, none
 performed." After them and after this re-measurement, it is sharper and only partly better:
@@ -805,12 +830,8 @@ performed." After them and after this re-measurement, it is sharper and only par
   Axes 13–14 are recorded as expected-failing probes, because repairing them to pass would destroy
   the openness they measure. **A3-7 alone remains** — the temporal exemption is *declared*, but it
   is owned by the baseline authority, who has not confirmed it.
-- **BC-4** — moved 4/7 → 6/7 on the recorded ratification. S-3 and F-20 are untouched.
-- **BC-5** — criteria met at 4/4, held open because the constitutional/amendment authority that
-  decides D-1/D-2 was never located. The separate identity defect that compounded it — approvals
-  attributed to Bipin Kumar but committed as `Echelon Ventures` — is closed by owner-directed
-  reattribution: every unpushed approval commit now reads `Bipin Kumar <bipin.kumar@aol.com>` with
-  matching commit messages, and **zero Echelon Ventures authorship remains in the unpushed range.**
+- **BC-4** — **VERIFIED CLOSED, 7/7.** The three dependencies that held A4-5 are all resolved this pass: **S-3** is built as a composition over existing authorities (59/59 joined, 0 stranded), **S-4** is decided in code (4 constitutive / 2 corroborative, partition total), and **F-20** is adjudicated on evidence — Side B's three hosts do not perform requirement evolution and UREE is no programme; the capability is operational in `CAEM-001`. A4-6/A4-7 were discharged by the recorded ratification of the 550/0/0 partition.
+- **BC-5** — **VERIFIED CLOSED, 4/4.** The qualification that held it open is **withdrawn**: the amendment authority is located at the ratified constitution of substance (`UCOS-RAT-002` D-RAT-02-02; `VAC-01` closed at `CMG-REGISTRY.json:2549`). D-1 and D-2 are measured against that holder and neither is contradicted. This is a derived reading, not a constitutional act — locating an office is not exercising it — but the office is no longer unlocated. The separate identity defect that compounded it — approvals attributed to Bipin Kumar but committed as `Echelon Ventures` — is closed by owner-directed reattribution: every unpushed approval commit now reads `Bipin Kumar <bipin.kumar@aol.com>` with matching commit messages, and **zero Echelon Ventures authorship remains in the unpushed range.**
 
 The binding constraint named in §15.10 — ratification — has been *recorded*. Reattribution makes the
 record self-consistent: the name inside each instrument and the name on the commit now agree, and no

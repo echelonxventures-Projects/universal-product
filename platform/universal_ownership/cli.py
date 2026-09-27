@@ -27,6 +27,7 @@ import argparse
 import json
 import sys
 from collections.abc import Sequence
+from pathlib import Path
 from platform.universal_ownership.bootstrap import bootstrap_ownership
 from platform.universal_ownership.contracts import default_ownership_contract
 from platform.universal_ownership.recommendation import build_governance_reduction
@@ -43,7 +44,7 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "command",
-        choices=("contract", "providers", "homing", "recommend", "determine"),
+        choices=("contract", "providers", "homing", "recommend", "determine", "authority-key"),
         help="the operation to perform",
     )
     parser.add_argument("--policy", default=None, help="declared truth-policy document")
@@ -91,6 +92,11 @@ def _payload(args: argparse.Namespace) -> dict:
     if args.command == "contract":
         return default_ownership_contract().to_dict()
 
+    if args.command == "authority-key":
+        from platform.universal_ownership.authority_key import coverage
+
+        return coverage(root=Path(args.root))
+
     if args.command in ("homing", "recommend"):
         foundation, subjects = _specialised(args)
         determination = foundation.determine_ownership(subjects)
@@ -132,6 +138,18 @@ def _print_summary(command: str, payload: dict, stream) -> None:  # noqa: ANN001
     if command == "contract":
         for requirement in payload.get("requirements", []):
             print(f"    {requirement['requirement_id']}  {requirement['statement']}", file=stream)
+    elif command == "authority-key":
+        planes = " · ".join(payload.get("planes_composed", []))
+        print(f"  planes composed:  {planes}", file=stream)
+        print(f"  subjects:         {payload.get('subjects', 0)}", file=stream)
+        print(f"  fully resolved:   {payload.get('fully_resolved', 0)}", file=stream)
+        print(
+            f"  stranded:         {payload.get('locator_not_in_ledger', 0)} locator "
+            f"+ {payload.get('unresolved_owner', 0)} owner",
+            file=stream,
+        )
+        print(f"  join fraction:    {payload.get('fraction_fully_resolved', 0.0)}", file=stream)
+        print(f"  derivation:       {payload.get('derivation', '')}", file=stream)
     elif command == "providers":
         for provider in payload.get("providers", []):
             mark = "CONSTITUTIVE" if provider["constitutive"] else "corroborative"
@@ -199,6 +217,20 @@ def main(argv: Sequence[str] | None = None) -> int:
     _print_summary(args.command, payload, sys.stderr)
     if args.as_json:
         print(json.dumps(payload, indent=2, sort_keys=True))
+    if args.command == "authority-key":
+        # S-3: the join across the three disclaiming planes. The gate refuses a
+        # join that leaves a subject stranded on one plane.
+        if not payload.get("subjects"):
+            print("AUTHORITY KEY: no subjects measured", file=sys.stderr)
+            return 1
+        unresolved = payload.get("locator_not_in_ledger", 0) + payload.get("unresolved_owner", 0)
+        if unresolved:
+            print(
+                f"AUTHORITY KEY: {unresolved} subject(s) unresolved across planes",
+                file=sys.stderr,
+            )
+            return 1
+        return 0
     if args.gate and args.command in ("homing", "determine") and not payload.get("closed", False):
         print("CANONICAL OWNERSHIP NOT CLOSED", file=sys.stderr)
         return 1

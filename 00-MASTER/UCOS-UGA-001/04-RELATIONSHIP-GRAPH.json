@@ -244,7 +244,7 @@
       "meaning": "checks the shape of another object — the forward sense of the contract validated_by names inversely"
     }
   },
-  "count": 40029,
+  "count": 40055,
   "relationships": [
     {
       "from": "UCOS-ADR-000001",
@@ -61039,6 +61039,11 @@
     {
       "from": "UCOS-ENGINE-000991",
       "kind": "depends_on",
+      "to": "platform/universal_ownership/authority_key.py"
+    },
+    {
+      "from": "UCOS-ENGINE-000991",
+      "kind": "depends_on",
       "to": "platform/universal_ownership/bootstrap.py"
     },
     {
@@ -77043,6 +77048,31 @@
     },
     {
       "from": "UCOS-ENGINE-001391",
+      "kind": "validated_by",
+      "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-ENGINE-001392",
+      "kind": "depends_on",
+      "to": "engine/uckp/alignment.py"
+    },
+    {
+      "from": "UCOS-ENGINE-001392",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-ENGINE-001392",
+      "kind": "owned_by",
+      "to": "platform/universal_ownership"
+    },
+    {
+      "from": "UCOS-ENGINE-001392",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-ENGINE-001392",
       "kind": "validated_by",
       "to": "UCOS-UGA-001 §UGA-INV-01..10"
     },
@@ -136587,6 +136617,66 @@
       "to": "UCOS-UGA-001 §UGA-INV-01..10"
     },
     {
+      "from": "UCOS-EXDOC-003158",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-EXDOC-003158",
+      "kind": "owned_by",
+      "to": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE"
+    },
+    {
+      "from": "UCOS-EXDOC-003158",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-EXDOC-003158",
+      "kind": "validated_by",
+      "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-EXDOC-003159",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-EXDOC-003159",
+      "kind": "owned_by",
+      "to": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE"
+    },
+    {
+      "from": "UCOS-EXDOC-003159",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-EXDOC-003159",
+      "kind": "validated_by",
+      "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-EXDOC-003160",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-EXDOC-003160",
+      "kind": "owned_by",
+      "to": "UCOS-OMEGA-INFINITY-BLOCKER-CLOSURE"
+    },
+    {
+      "from": "UCOS-EXDOC-003160",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-EXDOC-003160",
+      "kind": "validated_by",
+      "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
       "from": "UCOS-EXEC-000001",
       "kind": "evidenced_by",
       "to": "VALIDATION"
@@ -194918,6 +195008,46 @@
     },
     {
       "from": "UCOS-TESTOBJ-000908",
+      "kind": "validated_by",
+      "to": "UCOS-UGA-001 §UGA-INV-01..10"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000909",
+      "kind": "depends_on",
+      "to": "engine/uckp/alignment.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000909",
+      "kind": "depends_on",
+      "to": "platform/universal_ownership/__init__.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000909",
+      "kind": "depends_on",
+      "to": "platform/universal_ownership/authority_key.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000909",
+      "kind": "depends_on",
+      "to": "platform/universal_ownership/cli.py"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000909",
+      "kind": "evidenced_by",
+      "to": "VALIDATION"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000909",
+      "kind": "owned_by",
+      "to": "platform/tests"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000909",
+      "kind": "produced_by",
+      "to": "HUMAN_AUTHORED"
+    },
+    {
+      "from": "UCOS-TESTOBJ-000909",
       "kind": "validated_by",
       "to": "UCOS-UGA-001 §UGA-INV-01..10"
     },
