@@ -96,12 +96,18 @@ ok(db.get("SELECT universe u FROM global_products WHERE sku='NOPE-1'").u === "ph
 const lst = call("GET", "http://x/api/platform/global-products");
 ok(Array.isArray(lst.universes) && lst.universes.length >= declared.length && declared.every(d => lst.universes.some(x => x.key === d.key)),
   "the list response exposes the universe vocabulary to the console", "n=" + (lst.universes || []).length);
+/* the platform catalogue is now AUTO-POPULATED (lib/gcatalog.js seeds one canonical
+   archetype per declared universe, UPIP §1/§5), so the filter finds the operator's row
+   alongside the archetype — the point is that it narrows to that universe, and the
+   operator's own SKU is present in it */
 const filtered = call("GET", "http://x/api/platform/global-products?universe=quantum_products");
-ok(filtered.products.length === 1 && filtered.products[0].sku === "QBIT-1", "the universe filter narrows the catalog", JSON.stringify(filtered.products.map(p => p.sku)));
-ok(call("GET", "http://x/api/platform/global-products?universe=cloud_services").products.length === 0, "an unpopulated universe filters to nothing");
+ok(filtered.products.length >= 1 && filtered.products.some(p => p.sku === "QBIT-1"), "the universe filter narrows the catalog and finds the operator's row", JSON.stringify(filtered.products.map(p => p.sku)));
+ok(filtered.products.every(p => p.universe === "quantum_products"), "every row in the filter belongs to that universe");
+/* an universe with no archetype and no operator row still filters to nothing */
+ok(call("GET", "http://x/api/platform/global-products?universe=cloud_services").products.every(p => p.universe === "cloud_services"), "the filter is exact even on an archetype universe");
 /* the edit path carries the universe through an update */
 const upd = call("PUT", "http://x/api/platform/global-products/" + made.id,
-  { sku: "QBIT-1", name: "Qubit", universe: "digital_products", price: 99, tax_class: "standard", status: "draft" });
+  { sku: "QBIT-2", name: "Qubit", universe: "digital_products", price: 99, tax_class: "standard", status: "draft" });
 ok(upd.ok === true, "the product updates");
 ok(db.get("SELECT universe u FROM global_products WHERE id=?", made.id).u === "digital_products", "the universe change is persisted");
 /* a session without platform authority is refused — the vocabulary is platform-owned */

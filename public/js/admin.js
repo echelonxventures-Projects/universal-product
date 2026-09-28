@@ -47,7 +47,7 @@ function toast(msg) {
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3000);
 }
 const NAV = [
-  ["dash", "◈ Dashboard"], ["products", "📦 Products"], ["skus", "🔖 SKUs & Inventory"], ["orders", "🧾 Orders"],
+  ["dash", "◈ Dashboard"], ["products", "📦 Products"], ["gcatalog", "🌐 Global Catalog"], ["skus", "🔖 SKUs & Inventory"], ["orders", "🧾 Orders"],
   ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["sellers", "🏪 Sellers"], ["settlements", "🤝 Settlements"],
   ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["suppliers", "🚚 Suppliers & Procurement"], ["serialized", "🔢 Serialized Items"], ["compliance", "✅ Compliance & Certs"], ["localizations", "🌐 Localizations"],
   ["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"], ["trash", "🗑️ Trash & Retention"], ["sso", "🔐 SSO & Integrations"],
@@ -660,6 +660,41 @@ async function vSerialized() {
     ${await entityTable("serialized")}</div>`;
 }
 function wireSerialized() { const g = $("#sbGo"); if (g) g.onclick = async () => { try { const r = await api("/admin/serialized/bulk", "POST", { product_id: $("#sbProd").value, count: Number($("#sbCount").value) || 1, prefix: $("#sbPrefix").value || undefined }); toast("Generated " + r.created + " serialized units"); render(); } catch (e) { toast(e.message); } }; }
+
+/* ---------- global catalog: platform-supplied products this store may list ----------
+   The platform populates the global catalogue automatically (one canonical product per
+   universe the constitution declares) and manually (console rows). A store admin may
+   pull one into their own catalogue ONLY IF the platform has permitted it — the gate is
+   server-side; this view never decides, it reports what the platform allows. */
+async function vGcatalog() {
+  let items = [];
+  try { ({ items } = await api("/tenant/catalog/importable")); } catch (e) { toast(e.message); }
+  const permitted = items.filter(i => i.permitted && !i.listed);
+  const listed = items.filter(i => i.listed);
+  const denied = items.filter(i => !i.permitted);
+  const row = i => `<tr><td><b>${esc(i.name)}</b><div style="font-size:12px;color:var(--p-muted)">${esc(i.sku)}</div></td>
+    <td class="p-tag">${esc(i.universe)}</td><td>${esc(i.type)}</td>
+    <td>${i.listed ? '<span class="badge active">On your shelf</span>' : i.permitted ? '<button class="p-btn primary sm" data-gimp="' + i.id + '">Add to my store</button>' : '<span class="badge">🔒 ' + esc(i.reason || "Not permitted") + '</span>'}</td></tr>`;
+  return `
+  <div class="p-panel"><h2>🌐 Global Catalog — platform products</h2>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Every product archetype the platform supports (UPIP §1: Physical, Digital, OTT, Cloud, API, AI, Financial, Quantum, Future Unknown…), populated automatically from the constitution and extended by the platform admin. You may list one here <b>only when the platform has permitted your store</b> — import is idempotent and never counts against your plan quota.</p>
+    <div class="p-stats" style="margin-bottom:14px">
+      <div class="p-stat"><em>Available to you</em><b>${permitted.length}</b></div>
+      <div class="p-stat"><em>Already on your shelf</em><b>${listed.length}</b></div>
+      <div class="p-stat"><em>Not yet permitted</em><b>${denied.length}</b><small>request from the platform admin</small></div>
+    </div>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Product</th><th>Universe</th><th>Type</th><th></th></tr></thead>
+    <tbody>${items.map(row).join("") || '<tr><td colspan="4" class="p-empty">The global catalogue is empty</td></tr>'}</tbody></table></div></div>`;
+}
+function wireGcatalog() {
+  $$("[data-gimp]").forEach(b => b.onclick = async () => {
+    try {
+      const r = await api("/tenant/catalog/import", "POST", { global_product_id: b.dataset.gimp });
+      toast("Imported as " + r.type + (r.updated ? " (refreshed)" : ""));
+      render();
+    } catch (e) { toast(e.message); }
+  });
+}
 async function vContracts() {
   const rows = (await api("/meta/entity/contract")).rows || [];
   return `<div class="p-panel"><div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px">
@@ -1088,6 +1123,7 @@ async function render() {
     if (view !== "dash" && !canSee(view)) { body.innerHTML = `<div class="p-empty">🔒 Your role (<b>${esc((A.user && A.user.staff_role) || "admin")}</b>) does not grant access to “${esc(view)}”.</div>`; return; }
     if (view === "dash") body.innerHTML = await vDash();
     else if (view === "products") body.innerHTML = await entityTable("product");
+    else if (view === "gcatalog") { body.innerHTML = await vGcatalog(); wireGcatalog(); }
     else if (view === "skus") body.innerHTML = await entityTable("sku") + await entityTable("inventory") + await entityTable("warehouse") + await entityTable("variant_group");
     else if (view === "orders") body.innerHTML = await entityTable("order");
     else if (view === "returns") body.innerHTML = await entityTable("ret");

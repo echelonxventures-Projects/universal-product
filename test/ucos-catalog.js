@@ -116,7 +116,13 @@ run("DELETE FROM entity_data WHERE entity='uv_insurance'");
 
 console.log("\n▸ PROJECTION SAFETY (missing fields degrade, never crash)");
 const p = cat.projection("uv_Insurance", "Insurance", {});
-ok(p.price === 0 && p.stock === 999 && p.type === "service", "an under-specified record degrades to sellable defaults", JSON.stringify({ pr: p.price, st: p.stock, ty: p.type }));
+ok(p.price === 0 && p.stock === 999, "an under-specified record degrades to sellable defaults", JSON.stringify({ pr: p.price, st: p.stock, ty: p.type }));
+/* the projection's TYPE is derived from the universe's own name through the productTypes
+   vocabulary (lib/gcatalog.js), so an Insurance universe activates as an insurance-type
+   listing — never a hardcoded "service". An unrecognised name still falls back to service,
+   which is what "Future Unknown Product Types must never break activation" means here. */
+ok(p.type === "insurance", "the type is derived from the universe name via the registry vocabulary", p.type);
+ok(require("../lib/gcatalog.js").typeOfUniverse("some_unmapped_concept") === "service", "an unmapped universe falls back to service", require("../lib/gcatalog.js").typeOfUniverse("some_unmapped_concept"));
 ok(String(p.id).startsWith("UV-"), "the projection id is namespaced so it can never collide with a seeded product", p.id);
 const bad = cat.publish(999, "uv_nonexistent", "Ghost", { name: null, price: "not a number" });
 ok(bad.ok === true, "publishing a malformed record still yields a valid catalog row", JSON.stringify(bad));

@@ -104,6 +104,40 @@ There is no per-dashboard code anywhere; an operator adds a KPI from the console
 - **Suite: 620 E2E + 863 audit assertions (68 new), all green.** Nothing declared in the
   architecture remains without an engine.
 
+### 2026-09-28 — the global catalog: every archetype is real, and the platform gates listing
+The requirement "products are added automatically AND manually to the global platform; a
+store admin may add them to their listings IF the Global Platform permits" was only half
+true: `global_products` CRUD existed (manual) but nothing ever seeded it (0 rows on every
+boot), and the permission table `store_product_config` existed but had no import action and
+no store-console UI — the gate was readable but had no consequence. Closed with
+`lib/gcatalog.js` (zero per-archetype code):
+
+- **Automatic**: every universe the corpus declares seeds ONE canonical platform product
+  (26 rows, `UPIP-*` SKUs), idempotently — a warm boot writes nothing and the seed never
+  clobbers an operator's edit. **Manual**: an operator row is just another row.
+- **The gate is real** (`mayList`/`importToStore`): import is refused with no permission
+  row, refused on a read-only grant, allowed on list/sell; a store can never widen its own
+  access. Retired archetypes refuse even with a grant.
+- **Import is honest**: idempotent (re-import refreshes the same row via `source_global_id`,
+  never duplicates), typed from the universe itself, creates a default SKU + inventory, and
+  is quota-exempt (`source_kind='global'`, same rule as universe activations — platform
+  supply is not the merchant's own catalogue).
+- **Activation types are derived, not hardcoded**: `projection()` in `ucos-catalog.js` had
+  `type: r.type || "service"`, so all 1,877 universes activated as "service". Now
+  `typeOfUniverse()` resolves via the productTypes registry vocabulary in three steps
+  (record's own type → the §1 archetype map → structural match like `insurance`→insurance),
+  falling back to `service` for unmapped universes so Future Unknown never breaks activation.
+- **Three latent route bugs found and fixed** (`api.js` router passes params POSITIONALLY as
+  `fn(req,res,url,session,body,params[0],params[1],metrics)`, but several route arrows did
+  `(r,re,u,s,b,p) => fn(...,p[0])`, so `p` was the string `"27"` and `p[0]` was its FIRST
+  CHARACTER `"2"` — every global-products PUT/DELETE and the store-product-config DELETE
+  silently targeted the wrong row; harmless only while the catalog was empty).
+  **When a route param lands as a single digit, check for `p[0]` on a positional arrow.**
+- Console: store console → 🌐 Global Catalog (per-product permitted/denied/imported state +
+  import); platform console → Global Products gained a "Store access" column with a
+  grant/revoke modal (read/list/sell/none per tenant).
+- **Suite: 620 E2E + 921 audit assertions, all green** (58 new global-catalog checks).
+
 ### Tooling gotcha
 macOS ships BSD grep, which does **not** support `\|` alternation in basic regex — `grep "a\|b"` silently
 returns nothing. Use `grep -E` or the Grep tool instead.

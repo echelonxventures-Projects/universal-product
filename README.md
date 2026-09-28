@@ -14,7 +14,7 @@ The complete **pictorial flow** of the whole platform — three planes, the 10�
 npm start                    # http://localhost:3000
 PORT=8787 ./serve.sh         # supervised (auto-restart), writes .luxora.pid
 ./stop.sh                    # clean stop
-npm test                     # syntax + 620-assertion jsdom E2E suite (+197 GOIP + 585 UCOS Ω∞/theme audits + 68 dashboard/reporting: 100% universe instantiation, freeze criteria, catalog activation to 100% across 267 families, per-domain state machines, universal theming, the §394/§395 dashboard & reporting engines) (own DB/port)
+npm test                     # syntax + 620-assertion jsdom E2E suite (+197 GOIP + 724 UCOS Ω∞/theme/global-catalog audits: 100% universe instantiation, freeze criteria, catalog activation to 100% across 267 families, per-domain state machines, universal theming, the §394/§395 dashboard & reporting engines, the §1/§5 global catalog & permission-gated store import) (own DB/port)
 ```
 
 Env: `PORT`, `LX_DB` (db path), `LUX_TLS=1` (HTTPS; self-signed generated via openssl, or supply `LUX_TLS_KEY`/`LUX_TLS_CERT`), `LUXORA_MASTER_KEY`, `LUXORA_PEPPER`, `LUXORA_DEMO_HINT=0`, `LX_OFFLINE=1` (force all outbound payments/notifications/AI to the offline-simulated path — CI/no-secrets), seed overrides `PLATFORM_EMAIL/PLATFORM_PASSWORD/ADMIN_EMAIL/ADMIN_PASSWORD/DEMO_PASSWORD`.
@@ -101,6 +101,9 @@ lib/api.js           ~140 REST routes (incl. /api/goip/*, /api/dashboards/*, /ap
 lib/dashboards.js    Architecture1 §394/§395 — the universal dashboard & reporting engine:
                      dashboards, widgets and reports are rows; one generic aggregate
                      computes any metric over native entities or corpus universes
+lib/gcatalog.js      UPIP §1/§5 — the universal global catalog: every product archetype
+                     (Physical…Quantum, Future Unknown) is seeded automatically from the
+                     corpus as platform data; stores import one only when permitted
 public/              storefront + store console + platform console (no frameworks, no CDN)
 data/                luxora.db + master.json (created at first boot)
 ```

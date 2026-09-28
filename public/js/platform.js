@@ -404,14 +404,15 @@ async function vGproducts() {
     </select>
     <span style="flex:1"></span>
     <button class="p-btn primary sm" id="gpNew">+ New global product</button></div>
-    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Platform-level master products. Stores subscribe to these via <b>Store Product Config</b> (permissions per store), so one catalog feeds every tenant. The universe vocabulary is the constitution's own declaration (UPIP §1), never a front-end list.</p>
-    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Universe</th><th class="num">Price</th><th>Tax class</th><th>Type</th><th>Status</th><th></th></tr></thead>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Platform-level master products, populated <b>automatically</b> from the corpus (one canonical archetype per universe UPIP §1 declares) and <b>manually</b> by you. Stores may import one into their own catalogue only when you permit it — <b>Store access</b> below is that gate (the "if the Global Platform permits" clause, as data).</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Universe</th><th class="num">Price</th><th>Tax class</th><th>Type</th><th>Status</th><th>Store access</th><th></th></tr></thead>
     <tbody>${products.map(p => `<tr><td><b>${esc(p.sku)}</b></td><td>${esc(p.name)}</td><td class="p-tag">${esc(p.category || "—")}</td>
       <td><span title="${esc(p.universe || "physical_products")}">${esc(uOf(p).icon || "🧩")} ${esc(uOf(p).name || p.universe)}</span></td>
       <td class="num">${money(p.price)}</td><td>${esc(p.tax_class)}</td><td>${p.is_service ? "Service" : "Physical"}</td>
       <td><span class="badge ${esc(p.status)}">${esc(p.status)}</span></td>
+      <td><button class="p-btn sm" data-gpacc="${p.id}" title="Grant or revoke which stores may list this product">${(p.permissions || []).length} store${(p.permissions || []).length === 1 ? "" : "s"}</button></td>
       <td style="white-space:nowrap"><button class="p-btn sm" data-gpedit="${p.id}">Edit</button>
-        <button class="p-btn sm danger" data-gpdel="${p.id}">✕</button></td></tr>`).join("") || '<tr><td colspan="9" class="p-empty">No global products yet</td></tr>'}</tbody></table></div></div>`;
+        <button class="p-btn sm danger" data-gpdel="${p.id}">✕</button></td></tr>`).join("") || '<tr><td colspan="10" class="p-empty">No global products yet</td></tr>'}</tbody></table></div></div>`;
 }
 function wireGproducts() {
   const cat = document.getElementById("gpCat");
@@ -430,6 +431,43 @@ function wireGproducts() {
     if (!confirm("Delete this global product?")) return;
     try { await api("/platform/global-products/" + b.dataset.gpdel, "DELETE", {}); toast("Deleted"); render(); }
     catch (e) { toast(e.message); }
+  });
+  $$("[data-gpacc]").forEach(b => b.onclick = async () => {
+    try { gpAccessModal(b.dataset.gpacc); } catch (e) { toast(e.message); }
+  });
+}
+/* the platform side of "if the Global Platform permits": grant or revoke a store's
+   access to list a global product. Pure data — one store_product_config row — and the
+   store console reads the consequence on its next render, never a code deployment. */
+async function gpAccessModal(productId) {
+  const [{ products }, { tenants }] = await Promise.all([
+    api("/platform/global-products"), api("/platform/tenants")]);
+  const p = products.find(x => String(x.id) === String(productId));
+  if (!p) return toast("Product not found");
+  const perms = (p.permissions || []);
+  const m = modal(`
+    <h3 style="margin:0 0 6px">Store access — ${esc(p.name)}</h3>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">A store admin can import this product into their catalogue only when granted <b>list</b> or <b>sell</b> below. Read-only lets them see it; revoking removes the grant (already-listed copies stay, as the merchant's own data).</p>
+    <div class="p-scroll-x" style="max-height:46vh;overflow:auto"><table class="p-table"><thead><tr><th>Store</th><th>Permission</th><th></th></tr></thead>
+    <tbody>${(tenants || []).map(t => {
+      const row = perms.find(x => Number(x.tenant_id) === Number(t.id));
+      return `<tr><td><b>${esc(t.name)}</b> <span style="color:var(--p-muted);font-size:12px">${esc(t.slug)}</span></td>
+        <td><select data-accsel="${t.id}" style="padding:4px 8px;border:1px solid var(--p-border);border-radius:6px;background:var(--p-bg)">
+          ${["none", "read", "list", "sell"].map(l => `<option value="${l}" ${row ? (row.permissions === l ? "selected" : "") : (l === "none" ? "selected" : "")}>${l}</option>`).join("")}
+        </select></td>
+        <td>${row ? '<span class="badge active">granted</span>' : '<span class="badge">—</span>'}</td></tr>`;
+    }).join("") || '<tr><td colspan="3" class="p-empty">No stores provisioned</td></tr>'}</tbody></table></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px">
+      <button class="p-btn" id="gpaCancel">Close</button></div>`);
+  m.querySelector("#gpaCancel").onclick = () => { m.innerHTML = ""; };
+  m.querySelectorAll("[data-accsel]").forEach(sel => sel.onchange = async () => {
+    const tenantId = sel.dataset.accsel, level = sel.value;
+    try {
+      if (level === "none") await api("/platform/store-product-config/" + tenantId + "/" + productId, "DELETE", {});
+      else await api("/platform/store-product-config", "POST", { tenant_id: Number(tenantId), global_product_id: Number(productId), permissions: level, enabled: 1 });
+      toast(level === "none" ? "Access revoked" : "Granted " + level);
+      m.innerHTML = ""; render();
+    } catch (e) { toast(e.message); }
   });
 }
 function gpModal(p) {
