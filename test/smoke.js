@@ -325,6 +325,91 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(!/"Physical Products"|"Digital Products"|"Quantum Products"/.test(pSrc), "the console asserts no universe names — the vocabulary is the registry's (Article 4.2)");
     ok(page.errs.length === 0, "global-products console no JS errors", page.errs.slice(0, 2).join("|"));
 
+    console.log("▸ PLATFORM: the product form is structured and universe-derived");
+    /* the form used to expose attributes/media as raw JSON textareas; now media is rows
+       whose kinds come from the registry, and the configuration section is what the
+       corpus declares for the chosen universe (no per-industry form code anywhere) */
+    click(page.win, page.doc.getElementById("gpNew")); await sleep(400);
+    ok(!!page.doc.getElementById("gpMedia"), "media is a structured editor, not a JSON textarea");
+    ok(!!page.doc.getElementById("gpAttrs"), "attributes are a structured key/value editor");
+    ok(page.doc.querySelectorAll("#gpMedia .mrow").length === 0, "a fresh product starts with no media rows");
+    page.doc.getElementById("gpSku").value = "GPU-STRUCT-1";
+    page.doc.getElementById("gpName").value = "Structured Probe";
+    page.doc.querySelector("#gpUnivSel").value = "insurance_products";
+    page.doc.querySelector("#gpUnivSel").dispatchEvent(new page.win.Event("change")); await sleep(600);
+    ok(page.doc.body.textContent.includes("declared by the"), "the configuration section names its source universe");
+    ok(page.doc.querySelectorAll("[data-uf]").length > 0, "the corpus's declared fields render as inputs (insurance)", page.doc.querySelectorAll("[data-uf]").length);
+    /* add a media row through the editor's own button and fill it */
+    click(page.win, page.doc.querySelector("#gpMedia [data-madd]")); await sleep(200);
+    const row = page.doc.querySelector("#gpMedia .mrow");
+    ok(!!row, "adding a media row works");
+    if (row) {
+      row.querySelector("[data-ml]").value = "Front";
+      row.querySelector("[data-mv]").value = "https://example.com/probe.jpg";
+      row.querySelector("[data-mv]").dispatchEvent(new page.win.Event("input", { bubbles: true }));
+    }
+    click(page.win, page.doc.querySelector("#gpAttrs [data-aadd]")); await sleep(200);
+    const arow = page.doc.querySelector("#gpAttrs .mrow");
+    if (arow) {
+      arow.querySelector("[data-ak]").value = "material";
+      arow.querySelector("[data-av]").value = "titanium";
+      arow.querySelector("[data-ak]").dispatchEvent(new page.win.Event("input", { bubbles: true }));
+      arow.querySelector("[data-av]").dispatchEvent(new page.win.Event("input", { bubbles: true }));
+    }
+    click(page.win, page.doc.getElementById("gpSave")); await sleep(1000);
+    const gps = await f("/api/platform/global-products");
+    const made = gps.products.find(p => p.sku === "GPU-STRUCT-1");
+    ok(!!made, "the structured product was created");
+    ok(!!made && Array.isArray(made.media) && made.media.length === 1
+      && made.media[0].url === "https://example.com/probe.jpg", "the media row round-trips as structured data", made && JSON.stringify(made.media));
+    ok(!!made && made.attributes && made.attributes.material === "titanium", "the custom attribute round-trips", made && JSON.stringify(made.attributes));
+    /* the API is the last line of defence: a bogus kind is coerced, a non-URL/empty
+       entry is dropped rather than stored as a broken asset */
+    const badm = await f("/api/platform/global-products", "POST", { sku: "GPU-BADM-1", name: "Bad Media", universe: "physical_products",
+      media: [{ kind: "nonsense", label: "coerced", url: "https://example.com/ok.jpg" }, { kind: "image", label: "", emoji: "" }] });
+    ok(badm.ok === true, "a product with malformed media is still created", JSON.stringify(badm));
+    const badRow = (await f("/api/platform/global-products")).products.find(p => p.sku === "GPU-BADM-1");
+    ok(!!badRow && Array.isArray(badRow.media) && badRow.media.length === 1 && badRow.media[0].kind === "image",
+      "the bogus kind is coerced and the empty entry dropped", badRow && JSON.stringify(badRow.media));
+    /* the universe-derived configuration endpoint resolves the corpus's mismatched keys
+       (productUniverses keys vs instantiated entity keys) and never invents fields */
+    const ins = await f("/api/platform/universe-fields/insurance_products");
+    ok(!!ins && Array.isArray(ins.fields) && ins.fields.length > 0, "insurance declares real configuration fields", ins && ins.fields.length);
+    ok(!!ins && ins.fields.every(f => !["name", "code", "status", "attrs"].includes(f.key)), "bookkeeping fields are kept out of product configuration");
+    const none = await f("/api/platform/universe-fields/subscriptions");
+    ok(!!none && Array.isArray(none.fields) && none.fields.length === 0, "a universe with no entity in the corpus declares nothing (graceful fallback)", JSON.stringify(none));
+
+    console.log("▸ PLATFORM: the form is registry-driven — no hardcoded vocabulary, no contradictory checkbox");
+    /* tax class used to be a hardcoded 4-item list; the registry ships 6 incl. digital
+       services and groceries, so the form must read them from the API, not from JS */
+    ok(Array.isArray(gps.taxClasses) && gps.taxClasses.length >= 6, "the list response carries the tax-class registry", (gps.taxClasses || []).length);
+    ok(!!gps.taxClasses.find(t => t.key === "digital"), "the registry's extra classes (digital) reach the form", JSON.stringify(gps.taxClasses.map(t => t.key)));
+    const pSrc2 = require("fs").readFileSync(path.join(__dirname, "..", "public", "js", "platform.js"), "utf8");
+    ok(!/"standard", "reduced", "zero", "exempt"/.test(pSrc2), "the form no longer hardcodes the tax-class list — it is the registry's");
+    /* category was free text; now a picker over industries + the taxonomy */
+    ok(Array.isArray(gps.categories) && gps.categories.length >= 33, "the category vocabulary comes from the registry + taxonomy", (gps.categories || []).length);
+    ok(!!gps.categories.find(c => c.key === "electronics" || c.key === "retail"), "the vocabulary includes the seeded industries", (gps.categories || []).slice(0, 3).map(c => c.key).join(","));
+    /* is_service is derived from the universe, never a checkbox: a service universe must
+       store is_service=1 even when the caller never sets it, and an edit that moves a
+       product between universes moves the type with it */
+    const svcP = await f("/api/platform/global-products", "POST", { sku: "GPU-SVC-1", name: "Service via universe", universe: "services" });
+    ok(svcP.ok === true, "a service-universe product is created", JSON.stringify(svcP));
+    const svcRow = (await f("/api/platform/global-products")).products.find(p => p.sku === "GPU-SVC-1");
+    ok(!!svcRow && svcRow.is_service === 1, "is_service is derived from the universe without any checkbox", svcRow && svcRow.is_service);
+    ok(!!svcRow && svcRow.type !== undefined, "the type badge resolves from the universe→type map", svcRow && svcRow.type);
+    /* a universe that resolves to a non-service type must store is_service=0. quantum_products
+       legitimately falls back to "service" (Future Unknown), so use a universe that maps to
+       a physical good for the negative case */
+    const phys = await f("/api/platform/global-products", "POST", { sku: "GPU-PHYS-1", name: "Physical via universe", universe: "physical_products" });
+    const physRow = (await f("/api/platform/global-products")).products.find(p => p.sku === "GPU-PHYS-1");
+    ok(!!physRow && physRow.is_service === 0 && physRow.type === "physical", "a physical universe stores is_service=0 and derives its type", physRow && physRow.type);
+    /* an edit that changes the universe changes the derived type with it */
+    const moved = await f(`/api/platform/global-products/${svcRow.id}`, "PUT", { sku: "GPU-SVC-1", name: "Moved to physical", universe: "physical_products" });
+    ok(moved.ok === true, "the product moved universes", JSON.stringify(moved));
+    const movedRow = (await f("/api/platform/global-products")).products.find(p => p.sku === "GPU-SVC-1");
+    ok(!!movedRow && movedRow.is_service === 0, "moving to a physical universe flips the derived type", movedRow && movedRow.is_service);
+    ok(page.errs.length === 0, "structured form no JS errors", page.errs.slice(0, 2).join("|"));
+
     console.log("▸ GOVERNANCE: store admin cannot reach platform-only config — and the server survives");
     /* an unauthorized request to a platform endpoint used to write the 403 twice
        (requirePlatform already writes, then the caller wrote again) and the double
@@ -796,6 +881,72 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
         const run = ap.doc.querySelector("#gzRun");
         if (run) { ap.doc.querySelector("#gzCode").value = "GOIPWELCOME"; ap.doc.querySelector("#gzOwner").value = "t1:u:999"; click(ap.win, run); await sleep(1200); ok(/discount/i.test(ap.doc.querySelector("#gzSummary").textContent || ""), "decision tester answers with a verdict", (ap.doc.querySelector("#gzSummary").textContent || "").slice(0, 60)); } else ok(false, "decision tester present");
       } else ok(false, "store GOIP nav present");
+
+      console.log("▸ STORE CONSOLE: the entity form mounts its structured editors, and the payments modal is wireable");
+      /* regression: the wireEditors(fields,row,registry) call was pasted into wirePayments(),
+         where none of those variables exist — the gateway Configure button threw a
+         ReferenceError right after opening its modal, so the close/save handlers below the
+         throw never wired (the modal opened but could not be closed or saved). The entity
+         form, which does have those variables, never got the call at all — so the media/
+         attributes host divs stayed empty, collect() read .value off a <div> and silently
+         dropped media on every save. Assert the WIRING, not the markup. */
+      const payNav = [...ap.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === "payments");
+      if (payNav) {
+        click(ap.win, payNav); await sleep(1200);
+        const gcfg = ap.doc.querySelector("[data-gwcfg]");
+        ok(!!gcfg, "the payments view lists a configurable gateway");
+        if (gcfg) {
+          click(ap.win, gcfg); await sleep(600);
+          ok(ap.doc.querySelectorAll("[data-gcfg]:not(button)").length > 0, "the gateway configuration modal opened");
+          ok(typeof ap.doc.getElementById("mClose").onclick === "function", "the modal's close handler wired (no ReferenceError before it)");
+          ok(typeof ap.doc.getElementById("mCfgSave").onclick === "function", "the modal's save handler wired");
+          click(ap.win, ap.doc.getElementById("mClose")); await sleep(200);
+          ok(ap.doc.getElementById("modal").classList.contains("hidden"), "close actually dismisses the modal");
+        }
+      } else ok(false, "payments nav present");
+      /* the generic product form must mount the structured editors inside openForm */
+      const prdNav = [...ap.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === "products");
+      click(ap.win, prdNav); await sleep(1200);
+      const editBtn = ap.doc.querySelector("[data-edit]");
+      ok(!!editBtn, "the products table offers an edit action");
+      if (editBtn) {
+        const pid = editBtn.dataset.id;
+        const before = ((await f("/api/meta/entity/product?id=" + encodeURIComponent(pid))).rows || [])[0];
+        click(ap.win, editBtn); await sleep(900);
+        ok(!!ap.doc.querySelector("#f_media [data-madd]"), "the media editor mounted inside the entity form");
+        ok(!!ap.doc.querySelector("#f_attrs [data-aadd]"), "the attributes editor mounted inside the entity form");
+        /* the served entity def used to drop a field's `options` unless it was an array, so
+           every select backed by a registry VOCABULARY (lifecycle, productTypes…) rendered
+           empty and collect() submitted "" — editing a product silently unpublished it by
+           wiping its lifecycle. The select must carry its vocabulary and be preselected */
+        const lcSel = ap.doc.getElementById("f_lifecycle");
+        ok(!!lcSel && lcSel.options.length >= 7, "a vocabulary-backed select is populated (lifecycle)", lcSel && lcSel.options.length);
+        ok(!!lcSel && lcSel.value === String(before && before.lifecycle), "the select is preselected to the record's current value", lcSel && lcSel.value);
+        click(ap.win, ap.doc.querySelector("#f_media [data-madd]")); await sleep(200);
+        const mrow = ap.doc.querySelector("#f_media .mrow");
+        if (mrow) {
+          mrow.querySelector("[data-ml]").value = "Front";
+          mrow.querySelector("[data-mv]").value = "https://example.com/regression.jpg";
+          mrow.querySelector("[data-mv]").dispatchEvent(new ap.win.Event("input", { bubbles: true }));
+        }
+        click(ap.win, ap.doc.getElementById("mSave")); await sleep(1000);
+        /* verify through the console's OWN channel: the form wrote via the meta entity
+           API, so read it back there (a filtered query is uncapped and deterministic —
+           the browse window is capped at 500 and earlier steps may have moved this row's
+           lifecycle, so the storefront detail endpoint is not a reliable witness here) */
+        const after = ((await f("/api/meta/entity/product?id=" + encodeURIComponent(pid))).rows || [])[0];
+        let afterMedia = after && after.media;
+        try { afterMedia = typeof afterMedia === "string" ? JSON.parse(afterMedia) : afterMedia; } catch (e) { afterMedia = []; }
+        ok(!!after && Array.isArray(afterMedia)
+          && afterMedia.some(m => m && m.url === "https://example.com/regression.jpg"),
+          "media entered through the structured editor round-trips through the form",
+          after && JSON.stringify(afterMedia));
+        ok(!!after && after.lifecycle === (before && before.lifecycle),
+          "an edit that never touched lifecycle leaves it intact (no silent unpublish)",
+          after && JSON.stringify(after.lifecycle));
+      }
+      ok(ap.errs.length === 0, "store console no JS errors", ap.errs.slice(0, 2).join("|"));
+
       const ppage = await (async () => { jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" }); return render("/platform.html"); })();
       const goNav = [...ppage.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "offers");
       if (goNav) {

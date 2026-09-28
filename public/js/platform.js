@@ -40,25 +40,51 @@ function toast(msg, type = "info") {
   t.innerHTML = `<div class="toast $type"><span>✅</span> </div>`; t.classList.add("show");
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3200);
 }
-const NAV = [["dash", "◈ Command"], ["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["geo", "🌍 Geo · Countries · Taxes"], ["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"],
-["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"], ["gproducts", "🌐 Global Products"], ["modules", "🧩 Module Marketplace"], ["providers", "🔌 Provider Registry"], ["ai", "🧠 AI · Providers & Plans"], ["ucii", "🌀 UCII Ω∞ Registry"], ["ucos", "♾️ UCOS Ω∞ Constitution"], ["universes", "🧬 Universes"], ["domains", "🔀 Domains"], ["foundations", "🏛️ Foundations"], ["trace", "🧭 Traceability"], ["studio", "🛠️ Data Studio"], ["definitions", "📐 Entities"], ["offers", "Ω∞ GOIP · Value Exchange"], ["runtime", "🧩 Runtime · Infra"], ["monitor", "📈 Monitoring"], ["audit", "📜 Global Audit"], ["identity", "🔐 Identity"], ["identity-templates", "📋 Identity Templates"], ["themes", "🎨 Themes"], ["dashboards", "📊 Dashboards"], ["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]];
+/* Grouped by function (Stores, Constitution, Identity…) so a platform operator
+   navigates by domain, not by a 30-item flat list. Keys are unchanged; NAVFLAT
+   drives the title lookup. */
+const NAV = [
+  { g: "Command", items: [["dash", "◈ Command"], ["monitor", "📈 Monitoring"]] },
+  { g: "Stores & Billing", items: [["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"], ["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"]] },
+  { g: "Geo & Global Catalog", items: [["geo", "🌍 Geo · Countries · Taxes"], ["gproducts", "🌐 Global Products"]] },
+  { g: "Constitution Ω∞", items: [["ucii", "🌀 UCII Ω∞ Registry"], ["ucos", "♾️ UCOS Ω∞ Constitution"], ["universes", "🧬 Universes"], ["domains", "🔀 Domains"], ["foundations", "🏛️ Foundations"], ["trace", "🧭 Traceability"], ["offers", "Ω∞ GOIP · Value Exchange"]] },
+  { g: "Identity & Theming", items: [["identity", "🔐 Identity"], ["identity-templates", "📋 Identity Templates"], ["themes", "🎨 Themes"]] },
+  { g: "Registry & Runtime", items: [["providers", "🔌 Provider Registry"], ["modules", "🧩 Module Marketplace"], ["ai", "🧠 AI · Providers & Plans"], ["runtime", "🧩 Runtime · Infra"]] },
+  { g: "Data, Insights & Audit", items: [["studio", "🛠️ Data Studio"], ["definitions", "📐 Entities"], ["dashboards", "📊 Dashboards"], ["audit", "📜 Global Audit"]] },
+  { g: "Reference", items: [["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]] }
+];
+const NAVFLAT = NAV.flatMap(g => g.items);
 let view = "dash";
 const P = { user: null, tenants: [], plans: [] };
 
 function shell(content) {
   $("#app").innerHTML = `
   <div class="p-shell">
-    <aside class="p-side">
-      <div class="p-logo"><b>LUXORA</b><small>Platform Console</small></div>
-      <nav class="p-nav">${NAV.map(([k, l]) => `<button data-v="${k}" class="${view === k ? "on" : ""}">${l}</button>`).join("")}</nav>
+    <aside class="p-side" id="pSide">
+      <div class="p-logo"><b>LUXORA</b><small>Platform Console</small>
+        <button class="p-side-close" id="pSideClose" aria-label="Close navigation">✕</button></div>
+      <nav class="p-nav">${NAV.map(grp => `<div class="p-nav-grp"><small>${grp.g}</small>${grp.items.map(([k, l]) => `<button data-v="${k}" class="${view === k ? "on" : ""}">${l}</button>`).join("")}</div>`).join("")}</nav>
     </aside>
-    <main class="p-main"><div class="p-top"><h1>${NAV.find(n => n[0] === view)[1].replace(/^\S+\s/, "")}</h1><span class="spacer"></span>
+    <div class="p-scrim" id="pScrim"></div>
+    <main class="p-main"><div class="p-top"><button class="p-hamburger" id="pBurger" aria-label="Open navigation">☰</button><h1>${NAVFLAT.find(n => n[0] === view)[1].replace(/^\S+\s/, "")}</h1><span class="spacer"></span>
       <span class="p-chip">platform</span><span class="p-user">${esc(P.user.email)}</span>
       <button class="p-btn sm" id="logoutBtn">Sign out</button></div>
       <div id="vBody">${content}</div></main>
   </div>`;
   $$(".p-nav button").forEach(b => b.onclick = () => { view = b.dataset.v; render(); });
   $("#logoutBtn").onclick = async () => { await api("/platform/logout", "POST"); location.reload(); };
+  wireDrawer();
+}
+/* the touch drawer: on tablet/phone the sidebar is off-canvas and opened by the hamburger.
+   Wired once per render (the shell is re-written each time) and closes on navigation or a
+   tap on the scrim, so a phone user never has to hunt for a close button. */
+function wireDrawer() {
+  const side = $("#pSide"), scrim = $("#pScrim"), burger = $("#pBurger"), close = $("#pSideClose");
+  if (burger) burger.onclick = () => { if (side) side.classList.add("p-side-open"); if (scrim) scrim.style.display = "block"; };
+  const shut = () => { if (side) side.classList.remove("p-side-open"); if (scrim) scrim.style.display = "none"; };
+  if (close) close.onclick = shut;
+  if (scrim) scrim.onclick = shut;
+  $$(".p-nav button").forEach(b => b.addEventListener("click", shut));
 }
 
 async function vDash() {
@@ -384,13 +410,27 @@ async function wireGeoFx() {
   g("cxGo").onclick = async () => { try { const r = await api("/fx?amount=" + encodeURIComponent(g("cxAmount").value || 1) + "&from=" + g("cxFrom").value + "&to=" + g("cxTo").value); g("cxOut").textContent = `= ${r.result.toLocaleString()} ${r.to} (rate ${r.rate})`; } catch (e) { g("cxOut").textContent = e.message; } };
 }
 /* ============ GLOBAL PRODUCTS: platform-level master catalog tenants subscribe to ============ */
-let gpFilter = "", gpUniverse = "", gpUniverses = [];
+let gpFilter = "", gpUniverse = "", gpUniverses = [], gpKinds = [], gpTaxClasses = [], gpCategories = [];
+/* universe → product type, from the registry's own map (universeProductTypes) — the form
+   shows the type as a consequence of the universe instead of a checkbox that can
+   contradict it. Filled once from the list response. */
+let gpTypeMap = null;
+function universeTypeMap() {
+  if (gpTypeMap) return gpTypeMap;
+  const rows = (window.__universeProductTypes || []);
+  gpTypeMap = Object.fromEntries(rows.map(r => [r.key, r.type]));
+  return gpTypeMap;
+}
 async function vGproducts() {
   const q = new URLSearchParams();
   if (gpFilter) q.set("category", gpFilter);
   if (gpUniverse) q.set("universe", gpUniverse);
-  const { products, universes } = await api("/platform/global-products" + (q.toString() ? "?" + q.toString() : ""));
+  const { products, universes, kinds, taxClasses, categories, universeProductTypes } = await api("/platform/global-products" + (q.toString() ? "?" + q.toString() : ""));
   gpUniverses = universes || [];
+  gpKinds = kinds || [];
+  gpTaxClasses = taxClasses || [];
+  gpCategories = categories || [];
+  gpTypeMap = null; window.__universeProductTypes = universeProductTypes || [];
   const cats = [...new Set(products.map(p => p.category).filter(Boolean))];
   const uOf = p => (gpUniverses.find(u => u.key === p.universe) || {});
   return `
@@ -408,7 +448,7 @@ async function vGproducts() {
     <div class="p-scroll-x"><table class="p-table"><thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Universe</th><th class="num">Price</th><th>Tax class</th><th>Type</th><th>Status</th><th>Store access</th><th></th></tr></thead>
     <tbody>${products.map(p => `<tr><td><b>${esc(p.sku)}</b></td><td>${esc(p.name)}</td><td class="p-tag">${esc(p.category || "—")}</td>
       <td><span title="${esc(p.universe || "physical_products")}">${esc(uOf(p).icon || "🧩")} ${esc(uOf(p).name || p.universe)}</span></td>
-      <td class="num">${money(p.price)}</td><td>${esc(p.tax_class)}</td><td>${p.is_service ? "Service" : "Physical"}</td>
+      <td class="num">${money(p.price)}</td><td>${esc(p.tax_class)}</td><td>${esc(universeTypeMap()[p.universe] || (p.is_service ? "service" : "physical"))}</td>
       <td><span class="badge ${esc(p.status)}">${esc(p.status)}</span></td>
       <td><button class="p-btn sm" data-gpacc="${p.id}" title="Grant or revoke which stores may list this product">${(p.permissions || []).length} store${(p.permissions || []).length === 1 ? "" : "s"}</button></td>
       <td style="white-space:nowrap"><button class="p-btn sm" data-gpedit="${p.id}">Edit</button>
@@ -421,8 +461,12 @@ function wireGproducts() {
   if (univ) univ.onchange = () => { gpUniverse = univ.value; render(); };
   document.getElementById("gpNew").onclick = () => gpModal(null);
   $$("[data-gpedit]").forEach(b => b.onclick = () => {
-    api("/platform/global-products").then(({ products, universes }) => {
+    api("/platform/global-products").then(({ products, universes, kinds, taxClasses, categories, universeProductTypes }) => {
       gpUniverses = universes || [];
+      gpKinds = kinds || [];
+      gpTaxClasses = taxClasses || [];
+      gpCategories = categories || [];
+      gpTypeMap = null; window.__universeProductTypes = universeProductTypes || [];
       const p = products.find(x => String(x.id) === b.dataset.gpedit);
       if (p) gpModal(p);
     }).catch(e => toast(e.message));
@@ -470,42 +514,76 @@ async function gpAccessModal(productId) {
     } catch (e) { toast(e.message); }
   });
 }
-function gpModal(p) {
+/* the product form adapts to the universe the operator picks: the corpus declares the
+   configuration fields for each universe (lib/api.js::apiUniverseFields reads them
+   structurally), so "Insurance" shows insurance's fields and "Streaming" shows
+   streaming's — no per-industry form code anywhere. `draft` carries values across a
+   universe switch so nothing an operator typed is lost. */
+async function gpModal(p, draft = {}) {
   const isEdit = !!p;
-  const attrs = isEdit ? JSON.stringify(p.attributes || {}, null, 0) : "{}";
-  const media = isEdit ? JSON.stringify(p.media || [], null, 0) : "[]";
+  const universe = draft.universe || (p ? p.universe : "physical_products");
+  const attrs = Object.assign({}, p ? (p.attributes || {}) : {}, draft.attrs || {});
+  const media = (p ? (p.media || []) : []).concat(draft.media || []);
+  let fields = [];
+  try { fields = (await api("/platform/universe-fields/" + encodeURIComponent(universe))).fields || []; }
+  catch (e) { /* unknown universe → no declared configuration, the editor still works */ }
+  const uName = (gpUniverses.find(u => u.key === universe) || {}).name || universe;
+  const declaredKeys = new Set(fields.map(f => f.key));
+  const customAttrs = Object.fromEntries(Object.entries(attrs).filter(([k]) => !declaredKeys.has(k)));
+  const typeMap = universeTypeMap();
+  const catVal = draft.category != null ? draft.category : (p ? p.category : "");
+  const taxVal = draft.tax_class != null ? draft.tax_class : (p ? p.tax_class : "standard");
+  const typeName = typeMap[universe] || "service";
   const m = modal(`
     <h3 style="margin:0 0 14px">${isEdit ? "Edit" : "New"} global product</h3>
     <div class="p-form" style="display:grid;gap:10px">
-      <label><span>SKU *</span><input id="gpSku" value="${esc(p ? p.sku : "")}" placeholder="e.g. GPU-001"></label>
-      <label><span>Name *</span><input id="gpName" value="${esc(p ? p.name : "")}"></label>
-      <label><span>Description</span><textarea id="gpDesc" rows="2">${esc(p ? p.description : "")}</textarea></label>
+      <label><span>SKU *</span><input id="gpSku" value="${esc(draft.sku != null ? draft.sku : (p ? p.sku : ""))}" placeholder="e.g. GPU-001"></label>
+      <label><span>Name *</span><input id="gpName" value="${esc(draft.name != null ? draft.name : (p ? p.name : ""))}"></label>
+      <label><span>Description</span><textarea id="gpDesc" rows="2">${esc(draft.description != null ? draft.description : (p ? p.description : ""))}</textarea></label>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
-        <label><span>Category</span><input id="gpCatIn" value="${esc(p ? p.category : "")}"></label>
-        <label><span>Price</span><input id="gpPrice" type="number" step="0.01" min="0" value="${p ? p.price : 0}"></label>
-        <label><span>Tax class</span><select id="gpTax">${["standard", "reduced", "zero", "exempt"].map(t => `<option value="${t}" ${p && p.tax_class === t ? "selected" : ""}>${t}</option>`).join("")}</select></label>
+        <label><span>Category</span><select id="gpCatSel">${gpCategories.map(c => `<option value="${esc(c.key)}" ${catVal === c.key ? "selected" : ""}>${c.icon ? esc(c.icon) + " " : ""}${esc(c.name)}</option>`).join("")}</select></label>
+        <label><span>Price</span><input id="gpPrice" type="number" step="0.01" min="0" value="${draft.price != null ? draft.price : (p ? p.price : 0)}"></label>
+        <label><span>Tax class</span><select id="gpTax">${gpTaxClasses.map(t => `<option value="${esc(t.key)}" ${taxVal === t.key ? "selected" : ""}>${esc(t.name)}</option>`).join("")}</select></label>
       </div>
-      <label><span>Product universe</span><select id="gpUnivSel">${gpUniverses.map(u => `<option value="${esc(u.key)}" ${p && p.universe === u.key ? "selected" : ""}>${esc(u.icon || "🧩")} ${esc(u.name)}</option>`).join("")}</select></label>
-      <label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="gpService" ${p && p.is_service ? "checked" : ""}> Is a service (not a physical good)</label>
-      <label><span>Status</span><select id="gpStatus">${["draft", "active", "retired"].map(s => `<option value="${s}" ${p && p.status === s ? "selected" : ""}>${s}</option>`).join("")}</select></label>
-      <label><span>Attributes (JSON)</span><textarea id="gpAttrs" rows="3" class="p-code">${esc(attrs)}</textarea></label>
-      <label><span>Media (JSON array)</span><textarea id="gpMedia" rows="2" class="p-code">${esc(media)}</textarea></label>
+      <label><span>Product universe</span><select id="gpUnivSel">${gpUniverses.map(u => `<option value="${esc(u.key)}" ${universe === u.key ? "selected" : ""}>${esc(u.icon || "🧩")} ${esc(u.name)}</option>`).join("")}</select>
+        <small class="medit-hint">Sets the product's type and the configuration section below — the universe is the authority on both.</small></label>
+      <div class="gp-derived"><span>Product type</span><b id="gpTypeBadge">${esc(typeName)}</b><small>· derived from the universe, never hand-set</small></div>
+      <label><span>Status</span><select id="gpStatus">${["draft", "active", "retired"].map(s => `<option value="${s}" ${(draft.status != null ? draft.status : (p ? p.status : "draft")) === s ? "selected" : ""}>${s}</option>`).join("")}</select></label>
+      <div class="gp-sec"><h4>Configuration <small>· declared by the ${esc(uName)} universe</small></h4>
+        ${fields.length ? fields.map(f => `<label><span>${esc(f.label)}${f.required ? " *" : ""}</span>
+          ${f.type === "select" ? `<select data-uf="${esc(f.key)}">${(f.options || []).map(o => `<option ${String(attrs[f.key] || "") === String(o) ? "selected" : ""}>${esc(o)}</option>`).join("")}</select>`
+            : `<input data-uf="${esc(f.key)}" value="${esc(attrs[f.key] != null ? attrs[f.key] : "")}" ${f.required ? "required" : ""}>`}</label>`).join("")
+          : '<p class="medit-hint">This universe declares no extra fields — the corpus keeps it open. Use custom attributes below.</p>'}</div>
+      <div class="gp-sec"><h4>Media <small>· images, videos, documents</small></h4><div id="gpMedia"></div></div>
+      <div class="gp-sec"><h4>Custom attributes <small>· anything else shoppers should know</small></h4><div id="gpAttrs"></div></div>
       <div class="p-err hidden" id="gpErr" style="color:var(--p-red);font-size:13px"></div>
       <div style="display:flex;gap:10px;justify-content:flex-end">
         <button class="p-btn" id="gpCancel">Cancel</button>
         <button class="p-btn primary" id="gpSave">${isEdit ? "Save changes" : "Create product"}</button></div>
     </div>`);
+  const getMedia = mediaEditor(m.querySelector("#gpMedia"), media, gpKinds);
+  const getAttrs = kvEditor(m.querySelector("#gpAttrs"), customAttrs);
+  m.querySelector("#gpUnivSel").onchange = e => {
+    /* swap the configuration section to the new universe, preserving everything typed */
+    const d = { sku: m.querySelector("#gpSku").value, name: m.querySelector("#gpName").value, description: m.querySelector("#gpDesc").value,
+      category: m.querySelector("#gpCatSel").value, price: m.querySelector("#gpPrice").value, tax_class: m.querySelector("#gpTax").value,
+      status: m.querySelector("#gpStatus").value, universe: e.target.value,
+      attrs: Object.assign(getAttrs(), Object.fromEntries(Array.from(m.querySelectorAll("[data-uf]")).map(el => [el.dataset.uf, el.value]))),
+      media: getMedia() };
+    m.innerHTML = ""; gpModal(p, d);
+  };
   m.querySelector("#gpCancel").onclick = () => { m.innerHTML = ""; };
   m.querySelector("#gpSave").onclick = async () => {
     const err = m.querySelector("#gpErr");
     const val = id => m.querySelector(id).value;
-    let parsedAttrs, parsedMedia;
-    try { parsedAttrs = JSON.parse(val("#gpAttrs") || "{}"); } catch (e) { err.textContent = "Attributes must be valid JSON"; err.classList.remove("hidden"); return; }
-    try { parsedMedia = JSON.parse(val("#gpMedia") || "[]"); } catch (e) { err.textContent = "Media must be a valid JSON array"; err.classList.remove("hidden"); return; }
     if (!val("#gpSku").trim() || !val("#gpName").trim()) { err.textContent = "SKU and name are required"; err.classList.remove("hidden"); return; }
-    const body = { sku: val("#gpSku").trim(), name: val("#gpName").trim(), description: val("#gpDesc"), category: val("#gpCatIn").trim(),
-      universe: val("#gpUnivSel"), price: Number(val("#gpPrice")) || 0, tax_class: val("#gpTax"), is_service: m.querySelector("#gpService").checked,
-      attributes: parsedAttrs, media: parsedMedia, status: val("#gpStatus") };
+    const declared = {};
+    m.querySelectorAll("[data-uf]").forEach(el => { declared[el.dataset.uf] = el.value; });
+    /* is_service is deliberately NOT in the body — the API derives it from the universe,
+       so the record can never contradict its own archetype */
+    const body = { sku: val("#gpSku").trim(), name: val("#gpName").trim(), description: val("#gpDesc"), category: val("#gpCatSel"),
+      universe: val("#gpUnivSel"), price: Number(val("#gpPrice")) || 0, tax_class: val("#gpTax"),
+      attributes: Object.assign(getAttrs(), declared), media: getMedia(), status: val("#gpStatus") };
     try {
       if (isEdit) await api("/platform/global-products/" + p.id, "PUT", body);
       else await api("/platform/global-products", "POST", body);

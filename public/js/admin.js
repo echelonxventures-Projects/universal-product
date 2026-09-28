@@ -46,15 +46,24 @@ function toast(msg) {
   t.textContent = msg; t.classList.add("show");
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3000);
 }
+/* The nav is grouped by function so an operator finds "Payment Gateways" under
+   Payments, not lost in a 45-item alphabet soup. Keys are unchanged — NAVSEC and
+   canSee() still key off the flat list, and NAVFLAT drives title lookup. */
 const NAV = [
-  ["dash", "◈ Dashboard"], ["products", "📦 Products"], ["gcatalog", "🌐 Global Catalog"], ["skus", "🔖 SKUs & Inventory"], ["orders", "🧾 Orders"],
-  ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["sellers", "🏪 Sellers"], ["settlements", "🤝 Settlements"],
-  ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["suppliers", "🚚 Suppliers & Procurement"], ["serialized", "🔢 Serialized Items"], ["compliance", "✅ Compliance & Certs"], ["localizations", "🌐 Localizations"],
-  ["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"], ["trash", "🗑️ Trash & Retention"], ["sso", "🔐 SSO & Integrations"],
-  ["promotions", "💸 Offers & Coupons"], ["goip", "Ω∞ GOIP"],   ["search", "🔎 Search & Discovery"],   ["logistics", "🚚 Logistics & Fulfilment"],   ["finance", "💰 Finance & Settlements"], ["marketplace", "📣 Marketplace & Ads"],   ["ugc", "⭐ Reviews & Q&A"],   ["helpdesk", "🎧 Support Helpdesk"],   ["retention", "🔁 Subscriptions & Members"], ["risk", "🛡️ Risk & Fraud"], ["experiments", "🧪 Experiments"], ["planning", "📦 Planning & Replenishment"], ["content", "🖼️ Home Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"],
-  ["payments", "💳 Payment Gateways"], ["modules", "🧩 Modules"], ["settings", "⚙️ Settings"], ["billing", "🧮 Billing"], ["analytics", "📊 Analytics"], ["audit", "📜 Audit Trail"],
-  ["monitor", "📈 Monitor"], ["team", "👥 Team & Roles"], ["studio", "🛠️ Data Studio"], ["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]
+  { g: "Overview", items: [["dash", "◈ Dashboard"], ["analytics", "📊 Analytics"], ["monitor", "📈 Monitor"]] },
+  { g: "Catalogue", items: [["products", "📦 Products"], ["gcatalog", "🌐 Global Catalog"], ["skus", "🔖 SKUs & Inventory"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["search", "🔎 Search & Discovery"], ["content", "🖼️ Home Content"]] },
+  { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"], ["planning", "📦 Planning & Replenishment"], ["suppliers", "🚚 Suppliers & Procurement"]] },
+  { g: "Marketplace & B2B", items: [["sellers", "🏪 Sellers"], ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["marketplace", "📣 Marketplace & Ads"]] },
+  { g: "Payments & Finance", items: [["payments", "💳 Payment Gateways"], ["settlements", "🤝 Settlements"], ["finance", "💰 Finance & Settlements"], ["billing", "🧮 Billing"]] },
+  { g: "Growth & Retention", items: [["promotions", "💸 Offers & Coupons"], ["ugc", "⭐ Reviews & Q&A"], ["helpdesk", "🎧 Support Helpdesk"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["goip", "Ω∞ GOIP"]] },
+  { g: "AI & Automation", items: [["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"]] },
+  { g: "Identity & Access", items: [["sso", "🔐 SSO & Integrations"], ["team", "👥 Team & Roles"]] },
+  { g: "Geo & Localization", items: [["localizations", "🌐 Localizations"]] },
+  { g: "Compliance & Risk", items: [["compliance", "✅ Compliance & Certs"], ["risk", "🛡️ Risk & Fraud"], ["audit", "📜 Audit Trail"], ["trash", "🗑️ Trash & Retention"]] },
+  { g: "Settings & Data", items: [["settings", "⚙️ Settings"], ["studio", "🛠️ Data Studio"], ["modules", "🧩 Modules"]] },
+  { g: "Reference", items: [["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]] }
 ];
+const NAVFLAT = NAV.flatMap(g => g.items);
 const NAVSEC = { promotions: "offers", goip: "offers", ai: "ai", webhooks: "webhooks", trash: "trash", team: "team", studio: "studio", sso: "settings" };
 const navSection = k => NAVSEC[k] || k;
 const canSee = k => { if (!A.allowed || A.allowed.includes("*")) return true; if (k === "dash") return true; return A.allowed.includes(navSection(k)); };
@@ -242,20 +251,37 @@ async function vPlanning() {
 }
 function shell(content) {  $("#app").innerHTML = `
   <div class="p-shell">
-    <aside class="p-side">
-      <div class="p-logo"><b>${esc(TT.brand?.name || TT.brand?.wordmark || "Store")}</b><small>Store Console · ${esc(TT.tenant.slug)}</small></div>
-      <nav class="p-nav">${NAV.filter(([k]) => canSee(k)).map(([k, l]) => `<button data-v="${k}" class="${view === k ? "on" : ""}">${l}</button>`).join("")}</nav>
-      <div style="padding:18px 22px;border-top:1px solid var(--p-line);margin-top:14px">
-        <a href="/index.html?store=${esc(TT.tenant.slug)}" target="_blank">↗ Open storefront</a>
+    <aside class="p-side" id="pSide">
+      <div class="p-logo"><b>${esc(TT.brand?.name || TT.brand?.wordmark || "Store")}</b><small>Store Console · ${esc(TT.tenant.slug)}</small>
+        <button class="p-side-close" id="pSideClose" aria-label="Close navigation">✕</button></div>
+      <nav class="p-nav">${NAV.map(grp => {
+        const items = grp.items.filter(([k]) => canSee(k));
+        if (!items.length) return "";
+        return `<div class="p-nav-grp"><small>${grp.g}</small>${items.map(([k, l]) => `<button data-v="${k}" class="${view === k ? "on" : ""}">${l}</button>`).join("")}</div>`;
+      }).join("")}</nav>
+      <div style="padding:16px 18px;border-top:1px solid rgba(255,255,255,.1);margin-top:12px">
+        <a href="/index.html?store=${esc(TT.tenant.slug)}" target="_blank" style="color:var(--p-side-text)">↗ Open storefront</a>
       </div>
     </aside>
-    <main class="p-main"><div class="p-top"><h1 id="vTitle">${NAV.find(n => n[0] === view)[1].replace(/^\S+\s/, "")}</h1><span class="spacer"></span>
+    <div class="p-scrim" id="pScrim"></div>
+    <main class="p-main"><div class="p-top"><button class="p-hamburger" id="pBurger" aria-label="Open navigation">☰</button><h1 id="vTitle">${NAVFLAT.find(n => n[0] === view)[1].replace(/^\S+\s/, "")}</h1><span class="spacer"></span>
       <span class="p-chip">${esc(TT.tenant.mode)}</span><span class="p-user">${esc(A.user.name)}</span>
       <button class="p-btn sm" id="logoutBtn">Sign out</button></div>
       <div id="vBody">${content}</div></main>
   </div>`;
   $$(".p-nav button").forEach(b => b.onclick = () => { view = b.dataset.v; render(); });
   $("#logoutBtn").onclick = async () => { await api("/auth/logout", "POST"); location.href = "/index.html"; };
+  wireDrawer();
+}
+/* the touch drawer: on tablet/phone the sidebar is off-canvas and opened by the hamburger.
+   Mirrors the platform console's wiring so both consoles behave identically on a phone. */
+function wireDrawer() {
+  const side = $("#pSide"), scrim = $("#pScrim"), burger = $("#pBurger"), close = $("#pSideClose");
+  if (burger) burger.onclick = () => { if (side) side.classList.add("p-side-open"); if (scrim) scrim.style.display = "block"; };
+  const shut = () => { if (side) side.classList.remove("p-side-open"); if (scrim) scrim.style.display = "none"; };
+  if (close) close.onclick = shut;
+  if (scrim) scrim.onclick = shut;
+  $$(".p-nav button").forEach(b => b.addEventListener("click", shut));
 }
 
 /* ---------- generic entity table/form ---------- */
@@ -308,6 +334,11 @@ async function refOptions(key) { const rows = await entityRows(key); return rows
 async function fieldInput(f, val, registry) {
   const id = "f_" + f.key;
   if (f.type === "bool") return `<label><span>${esc(f.label)}</span><input type="checkbox" id="${id}" ${val ? "checked" : ""}></label>`;
+  /* media and attributes are structured data the storefront renders directly, so they get
+     row editors (public/js/editors.js) instead of a raw JSON textarea — mounted after the
+     form is in the DOM by wireEditors(), read back by collect() */
+  if (f.key === "media") return `<div class="p-field"><span class="p-field-l">${esc(f.label)}</span><div id="${id}" data-editor="media"></div></div>`;
+  if (f.key === "attrs") return `<div class="p-field"><span class="p-field-l">${esc(f.label)}</span><div id="${id}" data-editor="attrs"></div></div>`;
   if (f.type === "json" || f.type === "multi") return `<label><span>${esc(f.label)} (JSON)</span><textarea id="${id}" rows="3">${esc(typeof val === "string" ? val : JSON.stringify(val || (f.type === "multi" ? [] : {}), null, 1))}</textarea></label>`;
   if (f.type === "select") {
     let opts = Array.isArray(f.options) ? f.options : (f.options && String(f.options).includes(".") ? String(f.options).split(".").reduce((o, k) => (o || {})[k], registry) : (registry && registry[f.options])) || [];
@@ -332,6 +363,10 @@ async function fieldInput(f, val, registry) {
 function collect(def) {
   const row = {};
   for (const f of def.fields) {
+    if (f.key === "media" || f.key === "attrs") {
+      const get = formEditors[f.key];               /* structured editors expose a value accessor */
+      if (get) { row[f.key] = get(); continue; }
+    }
     const el = $("#f_" + f.key); if (!el || f.readonly) continue;
     let v = f.type === "bool" ? el.checked : el.value;
     if ((f.type === "json" || f.type === "multi") && v !== "") { try { v = JSON.parse(v); } catch (e) { toast("Invalid JSON in " + f.label); throw e; } }
@@ -339,6 +374,21 @@ function collect(def) {
     row[f.key] = v;
   }
   return row;
+}
+/* value accessors for the structured editors a form is currently showing, so collect()
+   reads them back as objects without parsing a textarea */
+const formEditors = {};
+function wireEditors(fields, row, registry) {
+  formEditors.media = null; formEditors.attrs = null;
+  for (const f of fields) {
+    const host = document.getElementById("f_" + f.key);
+    if (!host || !host.dataset.editor) continue;
+    let val = row[f.key];
+    if (typeof val === "string") { try { val = JSON.parse(val); } catch (e) { val = f.key === "media" ? [] : {}; } }
+    formEditors[f.key] = f.key === "media"
+      ? mediaEditor(host, val, registry && registry.mediaKinds)
+      : kvEditor(host, val);
+  }
 }
 async function openForm(key, id, onDone) {
   const defs = (await api("/meta/entities")).entities;
@@ -352,6 +402,8 @@ async function openForm(key, id, onDone) {
     <div class="p-form" id="mForm">${await Promise.all(fields.map(f => fieldInput(f, row[f.key], registry))).then(a => a.join(""))}
       <div style="display:flex;gap:10px;margin-top:8px"><button class="p-btn primary" id="mSave">Save</button><button class="p-btn" id="mCancel">Cancel</button></div></div></div></div>`;
   $("#modal").classList.remove("hidden");
+  wireEditors(fields, row, registry); /* mount the structured media/attrs editors now that
+    their host divs are in the DOM — collect() reads them back via the accessors */
   const close = () => { const m = $("#modal"); m.innerHTML = ""; m.classList.add("hidden"); };
   $("#mClose").onclick = $("#mCancel").onclick = close;
   // Inline validation feedback

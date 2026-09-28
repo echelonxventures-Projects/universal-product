@@ -44,7 +44,16 @@ function typeIcon(t) { const x = META && META.productTypes.find(p => p.key === t
 function discount(p) { return p.l > p.p ? Math.round((1 - p.p / p.l) * 100) : 0; }
 function isDeal(p) { return discount(p) >= 10; }
 function prodLink(p) { return `product.html?id=${p.id}`; }
-function img(p, size) { return `<span class="pimg ${size || ""}" style="--h:${p.h}">${p.e}</span>`; }
+function img(p, size) {
+  /* a real asset URL (image/video) the catalog or operator supplied renders as the
+     actual media; an emoji stays the coloured tile. Public products carry `media` from
+     the API, lists/cards fall back to the emoji. */
+  const m = p && Array.isArray(p.media) ? p.media.find(x => x && x.url) : null;
+  if (m) return `<span class="pimg ${size || ""} pimg-url">${m.kind === "video"
+    ? `<video src="${esc(m.url)}" alt="${esc(m.label || "")}" muted playsinline></video>`
+    : `<img src="${esc(m.url)}" alt="${esc(m.label || "")}">`}</span>`;
+  return `<span class="pimg ${size || ""}" style="--h:${p.h}">${p.e}</span>`;
+}
 function dDate(days) { const d = new Date(); d.setDate(d.getDate() + days); return d; }
 function dLong(days) { return dDate(days).toLocaleDateString(CFG.commerce.locale, { weekday: "long", month: "long", day: "numeric" }); }
 function dShort(days) { return dDate(days).toLocaleDateString(CFG.commerce.locale, { month: "long", day: "numeric" }); }
@@ -368,7 +377,12 @@ async function pageProduct() {
   const subDisc = (CFG.retention && CFG.retention.subDiscount) || 10;
   const subFreq = ((CFG.retention && CFG.retention.subFrequencies) || [30])[0];
   const media = (p.media || []).length ? p.media : [{ kind: "image", label: "Front", emoji: p.e }];
-  const thumbs = media.map((m, i) => `<a class="thumb ${i === 0 ? "on" : ""}" data-e="${esc(m.emoji || p.e)}" data-h="${(p.h + i * 40) % 360}" href="#"><span class="pimg big" style="background:hsl(${(p.h + i * 40) % 360} 30% 92%)">${esc(m.emoji || p.e)}</span></a>`).join("");
+  const mediaTile = (m, i) => m.url
+    ? (m.kind === "video"
+        ? `<span class="pimg big pimg-url"><video src="${esc(m.url)}" alt="${esc(m.label || "")}" muted playsinline></video></span>`
+        : `<span class="pimg big pimg-url"><img src="${esc(m.url)}" alt="${esc(m.label || "")}"></span>`)
+    : `<span class="pimg big" style="background:hsl(${(p.h + i * 40) % 360} 30% 92%)">${esc(m.emoji || p.e)}</span>`;
+  const thumbs = media.map((m, i) => `<a class="thumb ${i === 0 ? "on" : ""}" data-i="${i}" href="#">${mediaTile(m, i)}</a>`).join("");
   const tiers = (p.pricing_rules && p.pricing_rules.tiers) || [];
   const relGroups = {};
   (relationships || []).forEach(r => { (relGroups[r.type] = relGroups[r.type] || []).push(r.to); });
@@ -381,7 +395,7 @@ async function pageProduct() {
   <div class="pp">
     <div class="crumbs"><a href="index.html">Home</a> › <a href="results.html?dept=${p.d}">${esc(deptLabel(p.d))}</a> › <a href="results.html?dept=${p.d}">${esc(p.b)}</a>${p.type !== "physical" ? ` › <span>${esc(typeIcon(p.type))}</span>` : ""}</div>
     <div class="pp-grid">
-      <div class="pp-gallery"><div class="pp-thumbs">${thumbs}</div><div class="pp-main"><span id="ppImg" class="pimg big" style="background:hsl(${p.h} 30% 92%)">${p.e}</span></div></div>
+      <div class="pp-gallery"><div class="pp-thumbs">${thumbs}</div><div class="pp-main" id="ppMain">${mediaTile(media[0], 0)}</div></div>
       <div class="pp-info">
         <h1>${esc(p.t)}</h1>
         <a class="pp-brand">${esc(p.b)} · ${esc(deptLabel(p.d))}</a>
@@ -462,8 +476,8 @@ async function pageProduct() {
   if (z) z.onclick = e => { e.preventDefault(); openModal("zipModal"); };
   $$(".pp-thumbs .thumb").forEach(t => t.onclick = e => {
     e.preventDefault();
-    const im = document.getElementById("ppImg"); if (!im) return;
-    im.textContent = t.dataset.e; im.style.background = "hsl(" + t.dataset.h + " 30% 92%)";
+    const main = document.getElementById("ppMain"); if (!main) return;
+    main.innerHTML = ""; main.appendChild(t.querySelector(".pimg").cloneNode(true));
     $$(".pp-thumbs .thumb").forEach(x => x.classList.remove("on")); t.classList.add("on");
   });
 }

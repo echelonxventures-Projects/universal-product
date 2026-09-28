@@ -55,6 +55,23 @@ const indAfter = JSON.parse((db.get("SELECT items i FROM meta_lists WHERE name='
 ok(indAfter.some(i => i.key === "space"), "an operator's console-added industry survives a re-seed (zero loss)", "n=" + indAfter.length);
 ok(indAfter.length === extended.length, "no registry rows were lost or duplicated by the re-seed", indAfter.length + " vs " + extended.length);
 
+console.log("\n▸ WARM BOOT: a database older than a vocabulary still receives it");
+/* the productUniverses list used to be refreshed only when the corpus digest moved,
+   so a database created before that feature existed never received the vocabulary —
+   the global catalogue seeded nothing, forever. The refresh now also fires when the
+   row is absent, and still never clobbers an operator's addition */
+db.run("DELETE FROM meta_lists WHERE name='productUniverses'");
+ok(cnt("SELECT COUNT(*) c FROM meta_lists WHERE name='productUniverses'") === 0, "the vocabulary row is gone (simulating an older database)");
+require(path.join(__dirname, "..", "lib", "registry.js")).seedRegistries();
+const puAfter = JSON.parse((db.get("SELECT items i FROM meta_lists WHERE name='productUniverses'") || {}).i || "[]");
+ok(puAfter.length >= 26, "a warm boot restores the corpus's product-universe vocabulary", "n=" + puAfter.length);
+ok(puAfter.some(u => u.key === "insurance_products"), "the restored vocabulary is the corpus's own (UPIP §1)", puAfter.map(u => u.key).slice(0, 4).join(","));
+/* the global catalogue seeds from that vocabulary, so it must now be populated */
+require(path.join(__dirname, "..", "lib", "gcatalog.js").replace(/gcatalog\.js$/, "gcatalog.js"));
+const gcat = require(path.join(__dirname, "..", "lib", "gcatalog.js"));
+try { gcat.seed(); } catch (e) { }
+ok(cnt("SELECT COUNT(*) c FROM global_products") >= 26, "the global catalogue populates once the vocabulary exists", "n=" + cnt("SELECT COUNT(*) c FROM global_products"));
+
 console.log("\n▸ PUBLISH: a universe record becomes a catalog row");
 /* the flagship now ships with the corpus ACTIVATED (the honest default), so a universe
    may already carry a canonical offering from boot. This test asserts on exact counts, so

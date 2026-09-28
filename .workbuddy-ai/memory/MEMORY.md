@@ -138,6 +138,134 @@ no store-console UI — the gate was readable but had no consequence. Closed wit
   grant/revoke modal (read/list/sell/none per tenant).
 - **Suite: 620 E2E + 921 audit assertions, all green** (58 new global-catalog checks).
 
+### 2026-09-28 (later) — console design system rebuilt (Amazon/AWS caliber, touch-first)
+Both consoles were described as "pathetic and cheap". Root causes found by auditing the
+CSS: the old `portal.css` was a dark gold-on-black theme, several view classes were
+**completely unstyled** (`p-sub`, `p-head`, `p-code`, `p-err`, `p-stats`, all `a-*`), the
+sidebar had no mobile story, and touch targets were ~30px.
+
+- `public/css/portal.css` rewritten as one design system for BOTH consoles: light canvas,
+  deep-navy sidebar, AWS-style blue primary, sticky table headers, 38px min touch targets,
+  visible focus rings (a11y), badge semantics extended (canonical/retired/certified…).
+  Every class name the views emit was preserved — no view JS had to change for restyling.
+- **Responsive drawer**: ≤1100px the sidebar goes off-canvas; both shells (`shell()` in
+  admin.js + platform.js) now emit a hamburger, a close button and a scrim, wired by a
+  shared `wireDrawer()` that closes on navigation or scrim tap. ≤720px grids collapse to
+  one column and `.p-user` hides.
+- Touch: `@media (hover: none) and (pointer: coarse)` adds tap highlight, press feedback,
+  momentum scrolling (`-webkit-overflow-scrolling: touch`) on every scrollable surface.
+- **Suite still 620 E2E + 921 audit, 0 failures** (the jsdom console renders are part of
+  smoke.js — they exercise the new shell markup).
+
 ### Tooling gotcha
 macOS ships BSD grep, which does **not** support `\|` alternation in basic regex — `grep "a\|b"` silently
 returns nothing. Use `grep -E` or the Grep tool instead.
+
+### 2026-09-28 (session) — nav organised, product form made structured + universe-derived
+Two console UX asks, both closed Configuration-Over-Code:
+
+**Nav grouped by function.** Both consoles had one flat list (45 store / 30 platform
+items). `NAV` in `admin.js`/`platform.js` is now an array of `{g, items:[[key,label]…]}`
+groups (store: Overview · Catalogue · Orders & Fulfilment · Marketplace & B2B · Payments &
+Finance · Growth & Retention · AI & Automation · Identity & Access · Geo & Localization ·
+Compliance & Risk · Settings & Data · Reference; platform: Command · Stores & Billing · Geo
+& Global Catalog · Constitution Ω∞ · Identity & Theming · Registry & Runtime · Data,
+Insights & Audit · Reference). A `NAVFLAT = NAV.flatMap(g => g.items)` keeps the title
+lookup working; `canSee`/`NAVSEC` key off the flat keys and are untouched. Every view key
+is byte-identical to before (verified by diffing keysets against `HEAD`). CSS: `.p-nav-grp`
+with a `<small>` label, divider between groups.
+
+**The "Add product" form was thin, and the reason was structural.** The platform
+`gpModal` (platform.js) was hand-rolled against the bare `global_products` table —
+attributes/media were raw JSON textareas. Fix, per the corpus's own declarations:
+- **`public/js/editors.js`** (new, loaded by both console shells): `mediaEditor()` and
+  `kvEditor()` mount into a host element, own their model, re-render on add/remove, sync
+  every keystroke, and return a value accessor the console reads at save time — never a
+  textarea. Media rows: kind select (options from the registry's `mediaKinds` vocabulary),
+  label, and a URL-or-emoji reference. **`esc` collision gotcha**: editors.js first
+  declared `const esc`, which is a *fatal* SyntaxError against the console scripts' own
+  global `esc` (classic scripts share one scope). Renamed to a private `escAttr`.
+  **jsdom gotcha**: an `input` event dispatched without `{bubbles:true}` never reaches a
+  listener attached on the parent row — real user input bubbles, tests must too.
+- **Universe-derived configuration**: `GET /api/platform/universe-fields/:key`
+  (`universeFieldsOf`) returns the corpus-declared fields for a universe. The corpora
+  *disagree on keys*: UPIP §1's `productUniverses` (e.g. `insurance_products`) vs the
+  instantiated `uv_*` entity keys (`uv_insurance_product`), only 1 of 26 matched exactly.
+  Resolved by normalized matching (strip punctuation/underscores, trailing `s`, filler
+  words `product`/`types`) and, on collision, preferring the entity that actually DECLARES
+  the most config fields (the bare `*_product` shells carry only name/code/status/attrs).
+  17/26 resolve; the rest (Subscriptions, OTT, API Products…) have no entity in the corpus
+  at all and the form falls back to custom attributes — never an invented field.
+- **Storefront media**: `img()` in app.js now renders a real `<img>`/`<video>` when a media
+  entry carries a `url`, and the product gallery's thumbs/main swap by cloning the tile.
+  `.pimg-url` CSS in styles.css.
+- **API is the last line of defence**: `validMedia()` coerces unknown kinds to `image` and
+  drops entries with no label/URL/emoji; `apiGlobalProductList` now PARSES the `media`/
+  `attributes` TEXT columns before returning them (the console edits structured data —
+  feeding it a JSON string it would stringify again silently wiped the field on edit).
+- **Real latent bug found**: `global_products` was empty on the live DB because
+  `registry.js` refreshed the `productUniverses` meta_lists row only when the corpus digest
+  changed (`if (!seeded.skipped)`) — a database predating the vocabulary never changes the
+  digest, so it stayed missing forever and the catalog seeded nothing. The smoke tests use
+  a throwaway DB, so they never saw it. Now also refreshes when the row is absent.
+  **When a registry list is empty on a warm DB, check whether its seed is digest-gated.**
+- **Suite: 635 E2E + 936 audit, 0 failures.** New: 15 structured-form/media assertions in
+  smoke.js and 4 warm-boot/catalog-seed checks in ucos-catalog.js (36, was 32).
+
+### 2026-09-28 (later) — the form's vocabularies are the registry's; the universe owns the type
+The rebuilt form still hardcoded three things the registry already shipped, and kept a
+checkbox that could contradict the universe selection:
+
+- **Removed "Is a service (not a physical good)"** — it duplicated the universe dropdown.
+  `universeProductTypes` (a meta_lists row gcatalog.js seeds) maps universe → product type,
+  and `typeOfUniverse()` resolves it; the seed, the store listing and the import path all
+  derive the type from there. The API now derives `is_service` on create AND update
+  (`api.js`), so a product moved between universes moves its type with it, and a caller
+  forcing `is_service:true` on a physical universe is ignored. The form shows the derived
+  type as a read-only `.gp-derived` badge instead of an editable box. **The universe is the
+  authority on type; is_service is its consequence.**
+- **Tax class** was a hardcoded 4-item list; `taxClasses` ships 6 (incl. *Digital services*,
+  *Groceries*). **Category** was free text despite a 33-entry industries registry and a
+  147-row taxonomy. Both are now registry-driven selects; the API returns them
+  (`platformCategories()` = industries + category/subcategory taxonomy keys) alongside
+  `taxClasses`, `mediaKinds` and `universeProductTypes` in the global-products response.
+- **Removed the redundant hint** ("The configuration section below is…") — the section
+  header already names the universe. The dropdown's hint now explains what the universe
+  actually governs (type + configuration).
+- **Live-DB vs throwaway-DB trap (recurring)**: three vocabularies came back empty on the
+  live server while tests stayed green, because a stale `node server.js` was still holding
+  port 8787 — the new process died with `EADDRINUSE` and my curl hit the old code. **Before
+  believing a live check, confirm `pgrep -af "node server.js"` shows ONE process and
+  `lsof -iTCP:8787` matches it; `kill` by pid, then `./serve.sh`.**
+- **Suite: 646 E2E + 936 audit, 0 failures** (11 new assertions for the vocabularies and
+  the derived type, incl. an edit that moves a product between universes).
+
+### 2026-09-29 — two real bugs found by exercising the store console's save paths
+The uncommitted console/form work was finished but never committed, and its own test
+surfaced two defects when the generic form's SAVE path (not just render) was walked:
+
+- **`wireEditors()` was pasted into the wrong function.** It belongs in `openForm()`
+  (which has `fields`/`row`/`registry` in scope and emits the `data-editor` host divs),
+  but the call landed in `wirePayments()`' gateway-Configure handler, where those names
+  do not exist → a `ReferenceError` thrown *after* the modal was shown but *before* its
+  close/save handlers were wired (the gateway modal opened and could never be closed or
+  saved). Meanwhile `openForm` never got the call, so the media/attrs host divs stayed
+  empty, `collect()` read `.value` off a `<div>` and **silently dropped media on every
+  entity-form save**. Both sides fixed; the test now asserts the handlers wire AND that a
+  media row round-trips through the form.
+- **`apiEntities` stripped string `options`, silently unpublishing products.** The served
+  entity def kept `options` only when it was an inline array; `options: "lifecycle"` /
+  `"productTypes"` are STRING registry vocabulary references, so they became `undefined`.
+  Every vocabulary-backed select rendered with **zero options**, `collect()` submitted `""`,
+  and saving any product edit wiped its `lifecycle` (draft → unpublished → invisible on the
+  storefront) and its `type`. The console's `fieldInput` has explicit `if (f.options ===
+  "lifecycle")` special cases that only work when the string survives — the strip defeated
+  them. Fix: keep options when array OR string. Guard assertions: the select is populated
+  (≥7 options) and preselected to the record's value, and an edit that never touched
+  lifecycle leaves it byte-identical.
+- **Test-writing gotcha**: verify a console write through the console's OWN channel
+  (`/api/meta/entity/product?id=X` — filtered, uncapped, no published filter). The
+  storefront `GET /api/products/:id` is a poor witness: it only serves `published` rows,
+  earlier smoke steps mutate the VR-* products, and the entity browse window is capped at
+  500 (sorted id DESC) so a storefront product may not even be in the rendered table.
+- **Suite: 659 E2E + 828 audit, 0 failures** (13 new store-console assertions).

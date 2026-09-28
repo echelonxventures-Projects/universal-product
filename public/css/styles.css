@@ -132,10 +132,12 @@ header { position: sticky; top: 0; z-index: 2000; }
 .toast a { color: var(--accent); font-weight: 600; }
 
 /* product image */
-.pimg { display: grid; place-items: center; font-size: 64px; border-radius: calc(var(--radius) - 4px); user-select: none; background: hsl(var(--h, 40) 30% 92%); }
+.pimg { display: grid; place-items: center; font-size: 64px; border-radius: calc(var(--radius) - 4px); user-select: none; background: hsl(var(--h, 40) 30% 92%); overflow: hidden; }
 .pimg.big { width: 100%; aspect-ratio: 1/1; min-width: 90px; font-size: clamp(44px, 6vw, 88px); }
 .pimg.tile { width: 100%; height: 88px; font-size: 42px; }
 .pimg.fbt { width: 110px; height: 110px; font-size: 44px; }
+.pimg-url { background: #F4F1EA; }
+.pimg-url img, .pimg-url video { width: 100%; height: 100%; object-fit: contain; display: block; }
 
 /* stars & price */
 .stars { position: relative; display: inline-block; font-size: 15px; line-height: 1; letter-spacing: 2px; vertical-align: middle; }

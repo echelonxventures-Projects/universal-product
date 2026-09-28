@@ -2,6 +2,7 @@ node_modules/
 data/*.db
 data/*.db-wal
 data/*.db-shm
+data/*.sqlite
 data/master.json
 data/master.key
 data/exports/
