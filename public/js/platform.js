@@ -49,7 +49,7 @@ const NAV = [
   { g: "Geo & Global Catalog", items: [["geo", "🌍 Geo · Countries · Taxes"], ["gproducts", "🌐 Global Products"]] },
   { g: "Constitution Ω∞", items: [["ucii", "🌀 UCII Ω∞ Registry"], ["ucos", "♾️ UCOS Ω∞ Constitution"], ["universes", "🧬 Universes"], ["domains", "🔀 Domains"], ["foundations", "🏛️ Foundations"], ["trace", "🧭 Traceability"], ["offers", "Ω∞ GOIP · Value Exchange"]] },
   { g: "Identity & Theming", items: [["identity", "🔐 Identity"], ["identity-templates", "📋 Identity Templates"], ["themes", "🎨 Themes"]] },
-  { g: "Registry & Runtime", items: [["providers", "🔌 Provider Registry"], ["modules", "🧩 Module Marketplace"], ["ai", "🧠 AI · Providers & Plans"], ["runtime", "🧩 Runtime · Infra"]] },
+  { g: "Registry & Runtime", items: [["providers", "🔌 Provider Registry"], ["modules", "🧩 Module Marketplace"], ["capabilities", "⚙️ Capabilities"], ["ai", "🧠 AI · Providers & Plans"], ["runtime", "🧩 Runtime · Infra"]] },
   { g: "Data, Insights & Audit", items: [["studio", "🛠️ Data Studio"], ["definitions", "📐 Entities"], ["dashboards", "📊 Dashboards"], ["audit", "📜 Global Audit"]] },
   { g: "Reference", items: [["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]] }
 ];
@@ -2046,6 +2046,7 @@ async function render() {
     else if (view === "ai") body.innerHTML = await vAI();
     else if (view === "offers") { body.innerHTML = await vGlobalOffers(); wireGlobalOffers(); }
     else if (view === "runtime") { body.innerHTML = await vRuntime(); wireRuntime(); }
+    else if (view === "capabilities") { body.innerHTML = await vCapabilities(); wireCapabilities(); }
     else if (view === "identity") { body.innerHTML = await viewIdentity(); wireIdentity(); }
      else if (view === "identity-templates") { body.innerHTML = await viewIdentityTemplates(); wireIdentityTemplates(); }
      else if (view === "themes") { body.innerHTML = await vThemes(); wireThemes(); }
@@ -2296,8 +2297,202 @@ function wireThemes() {
   });
 }
 
+/* Capabilities — the configuration layer. A store IS the set of capabilities it
+   has switched on; every standard, quality, feature and functionality below is a
+   row, tuned live from this console, and an archetype is a named reusable blend.
+   No vendor or brand name is baked into any definition — parity with any platform
+   is a consequence of the composition, never a label. */
+let capData = null, capTenant = null;
+async function vCapabilities() {
+  capData = await api("/capabilities" + (capTenant ? "?tenant_id=" + encodeURIComponent(capTenant) : ""));
+  capTenant = capData.tenant_id;
+  const d = capData;
+  const byDomain = {};
+  for (const c of d.catalog) (byDomain[c.domain] = byDomain[c.domain] || []).push(c);
+  const onCount = d.catalog.filter(c => c.on).length;
+  const tenantOpts = (d.tenants || []).map(t => `<option value="${t.id}" ${t.id === capTenant ? "selected" : ""}>${esc(t.name)} · ${esc(t.slug)}</option>`).join("");
+  const presetRows = (d.presets || []).map(p => `<tr>
+    <td><b>${esc(p.label)}</b><br><code>${esc(p.key)}</code></td>
+    <td class="p-tag">${esc(p.description || "—")}</td>
+    <td class="num">${Object.keys(p.capabilities || {}).length}</td>
+    <td style="white-space:nowrap">
+      <button class="p-btn sm primary" data-cappreset="${esc(p.key)}">Apply</button>
+      <button class="p-btn sm danger" data-cappdel="${esc(p.key)}">✕</button></td></tr>`).join("");
+  const DOMAINS = { marketplace: "🛒 Marketplace", qc: "⚡ Quick-commerce", fintech: "💸 Fintech", trade: "🤝 B2B trust & trade" };
+  const domLabel = dom => DOMAINS[dom] || "◈ " + esc(dom).replace(/^\w/, c => c.toUpperCase());
+  const catHtml = Object.keys(byDomain).map(dom => {
+    const rows = byDomain[dom].map(c => {
+      const ps = c.params || {}, pkeys = Object.keys(ps);
+      const pIn = pkeys.map(k => {
+        const def = ps[k], v = (c.effective && c.effective[k] !== undefined) ? c.effective[k] : def.default;
+        const lab = `<label style="display:flex;flex-direction:column;gap:2px;font-size:12px"><span class="p-tag">${esc(def.label || k)} <code style="font-size:10px">${esc(def.type)}${def.unit ? " · " + esc(def.unit) : ""}</code></span>`;
+        if (def.type === "bool") return lab + `<input type="checkbox" data-capinp="${esc(c.key)}|${esc(k)}" ${v ? "checked" : ""}></label>`;
+        if (def.type === "json") return lab + `<textarea data-capinp="${esc(c.key)}|${esc(k)}" rows="2" style="min-width:180px;font-family:monospace;font-size:12px">${esc(typeof v === "string" ? v : JSON.stringify(v))}</textarea></label>`;
+        if (def.type === "number") return lab + `<input type="number" step="any" data-capinp="${esc(c.key)}|${esc(k)}" value="${esc(v)}"></label>`;
+        return lab + `<input type="text" data-capinp="${esc(c.key)}|${esc(k)}" value="${esc(v)}"></label>`;
+      }).join("");
+      return `<tr>
+        <td style="font-size:17px">${esc(c.icon || "▪")}</td>
+        <td><b>${esc(c.label)}</b> ${c.edited ? '<span class="badge draft">edited</span>' : ""}<br><code>${esc(c.key)}</code></td>
+        <td class="p-tag">${esc(c.description || "")}</td>
+        <td style="white-space:nowrap">
+          <span class="badge ${c.enabled ? "published" : "draft"}">${c.enabled ? "platform on" : "platform off"}</span><br>
+          <button class="p-btn sm ${c.on ? "primary" : ""}" data-captoggle="${esc(c.key)}">${c.on ? "● ON for store" : "○ off"}</button></td>
+        <td>${pkeys.length ? `<button class="p-btn sm" data-capcfg="${esc(c.key)}">⚙ ${pkeys.length}</button>` : '<span class="p-tag">no params</span>'}
+          ${c.seeded_from === "operator" ? `<button class="p-btn sm danger" data-capdel="${esc(c.key)}" title="delete authored capability">✕</button>` : ""}</td></tr>
+        ${pkeys.length ? `<tr class="capcfg" id="capcfg-${esc(c.key)}" style="display:none"><td colspan="5" style="background:var(--p-bg);padding:10px">
+          <div style="display:flex;gap:14px;flex-wrap:wrap">${pIn}</div>
+          <button class="p-btn sm primary" style="margin-top:8px" data-capsave="${esc(c.key)}">Save tuning</button>
+          <span class="p-tag">defaults come from the catalog; your values override them for this store</span></td></tr>` : ""}`;
+    }).join("");
+    return `<h4 style="margin:16px 0 6px">${domLabel(dom)}</h4>
+      <div class="p-scroll-x"><table class="p-table"><thead><tr><th></th><th>Capability</th><th>What it governs</th><th>State</th><th>Tuning</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>`;
+  }).join("");
+  const checkList = d.catalog.map(c => `<label style="display:flex;gap:5px;align-items:center;font-size:12px;min-width:160px"><input type="checkbox" data-capnew="${esc(c.key)}"> ${esc(c.icon || "▪")} ${esc(c.label)}</label>`).join("");
+  return `
+  <div class="p-panel"><h2>⚙️ Capabilities · the configurable platform</h2>
+    <p class="p-tag">A platform is not a template and no vendor name defines one — it is <b>the set of capabilities a store has switched on</b>. Everything below is a row: switch a capability on, tune its standards (weights, thresholds, fees, SLAs) for one store, and compose an archetype anyone can reuse. The engines read this table at runtime and are inert while a capability is off, so changing a row is the whole deploy.</p>
+    <div style="display:flex;gap:10px;align-items:center;margin:12px 0;flex-wrap:wrap">
+      <label style="display:flex;gap:6px;align-items:center"><span class="p-tag">Store</span>
+        <select id="capTenant" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg)">${tenantOpts}</select></label>
+      <span class="badge published">${onCount} of ${d.catalog.length} on</span>
+      ${d.composition && d.composition.preset ? `<span class="p-tag">archetype: <b>${esc(d.composition.preset)}</b></span>` : '<span class="p-tag">composed capability-by-capability</span>'}
+    </div>
+    <h3>Archetypes — named, reusable compositions</h3>
+    <p class="p-tag">An archetype is a starter set. Applying one writes capability rows for the store; from that moment the store owns them and any tuning is kept.</p>
+    <div class="p-scroll-x" style="margin-bottom:14px"><table class="p-table"><thead><tr><th>Archetype</th><th>Intent</th><th>Caps</th><th></th></tr></thead>
+      <tbody>${presetRows || '<tr><td colspan="4" class="p-empty">No archetypes defined</td></tr>'}</tbody></table></div>
+    <details><summary class="p-tag" style="cursor:pointer">＋ Define a new archetype (custom platform or service)</summary>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0">
+        <input id="capNewKey" placeholder="key (e.g. blend_luxury)" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:210px">
+        <input id="capNewLabel" placeholder="Label" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:180px">
+        <button class="p-btn sm primary" id="capNewSave">Create archetype</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">${checkList}</div></details>
+    <details><summary class="p-tag" style="cursor:pointer">＋ Define a new capability (the catalog is open-ended — any platform, any domain)</summary>
+      <p class="p-tag" style="margin:8px 0">The seeded catalog covers commerce. A platform beyond that — mobility, streaming, ERP, CRM, anything not yet named — is built by <b>defining its capabilities here</b> with typed parameters. Engines read them through the same <code>cap()</code> call, so a new domain is live the moment it is saved.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0">
+        <input id="capDefKey" placeholder="key (e.g. surge_pricing)" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:190px">
+        <input id="capDefLabel" placeholder="Label (e.g. Surge pricing)" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:180px">
+        <input id="capDefDomain" placeholder="domain (e.g. mobility)" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:160px">
+        <input id="capDefIcon" placeholder="🚗" maxlength="3" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:60px">
+        <input id="capDefDesc" placeholder="what it governs" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);flex:2;min-width:220px">
+        <button class="p-btn sm primary" id="capDefSave">Create capability</button>
+      </div>
+      <div id="capDefParams" style="display:flex;flex-direction:column;gap:6px;margin:6px 0 4px"></div>
+      <button class="p-btn sm" id="capDefAddParam">＋ add parameter</button>
+      <span class="p-tag"> each parameter is typed: number · bool · text · json — the type governs the form and the coercion </span>
+    </details>
+    ${catHtml}
+  </div>`;
+}
+function wireCapabilities() {
+  const sel = document.getElementById("capTenant");
+  if (sel) sel.onchange = () => { capTenant = Number(sel.value); render(); };
+  document.querySelectorAll("[data-captoggle]").forEach(b => b.onclick = async () => {
+    const key = b.dataset.captoggle, on = /ON/.test(b.textContent);
+    try {
+      if (on) { await api("/capabilities/disable", "POST", { capability: key, tenant_id: capTenant }); toast(key + " switched off"); }
+      else { await api("/capabilities/enable", "POST", { capability: key, tenant_id: capTenant }); toast(key + " switched on"); }
+      render();
+    } catch (e) { toast(e.message); }
+  });
+  document.querySelectorAll("[data-capcfg]").forEach(b => b.onclick = () => {
+    const row = document.getElementById("capcfg-" + b.dataset.capcfg);
+    if (row) row.style.display = row.style.display === "none" ? "" : "none";
+  });
+  document.querySelectorAll("[data-capsave]").forEach(b => b.onclick = async () => {
+    const key = b.dataset.capsave;
+    const all = Array.from(document.querySelectorAll("[data-capinp]")).filter(el => el.dataset.capinp.startsWith(key + "|"));
+    if (!all.length) return toast("no parameters to save");
+    let saved = 0;
+    for (const el of all) {
+      const [, param] = el.dataset.capinp.split("|");
+      const val = el.type === "checkbox" ? el.checked : el.value;
+      try { await api("/capabilities/param", "POST", { capability: key, param, value: val, tenant_id: capTenant }); saved++; }
+      catch (e) { toast(key + "." + param + ": " + e.message); return; }
+    }
+    toast(saved + " parameter" + (saved > 1 ? "s" : "") + " saved for " + key);
+    render();
+  });
+  document.querySelectorAll("[data-cappreset]").forEach(b => b.onclick = async () => {
+    try {
+      const r = await api("/capabilities/preset/apply", "POST", { preset: b.dataset.cappreset, tenant_id: capTenant });
+      toast("Archetype applied: " + Object.keys(r.capabilities || {}).length + " capabilities");
+      render();
+    } catch (e) { toast(e.message); }
+  });
+  document.querySelectorAll("[data-cappdel]").forEach(b => b.onclick = async () => {
+    if (!confirm("Delete archetype '" + b.dataset.cappdel + "'?")) return;
+    try { await api("/capabilities/preset/delete", "POST", { preset: b.dataset.cappdel }); toast("Archetype deleted"); render(); }
+    catch (e) { toast(e.message); }
+  });
+  document.querySelectorAll("[data-capdel]").forEach(b => b.onclick = async () => {
+    if (!confirm("Delete capability '" + b.dataset.capdel + "'? A store using it must switch it off first.")) return;
+    try { await api("/capabilities/catalog/" + encodeURIComponent(b.dataset.capdel), "DELETE"); toast("Capability deleted"); render(); }
+    catch (e) { toast(e.message); }
+  });
+  const ns = document.getElementById("capNewSave");
+  if (ns) ns.onclick = async () => {
+    const key = document.getElementById("capNewKey").value.trim();
+    if (!key) return toast("give the archetype a key");
+    const capsOn = Array.from(document.querySelectorAll("[data-capnew]")).filter(c => c.checked).map(c => c.dataset.capnew);
+    if (!capsOn.length) return toast("select at least one capability");
+    try {
+      const capObj = {}; capsOn.forEach(c => capObj[c] = { enabled: true, params: {} });
+      await api("/capabilities/preset", "POST", { key, label: document.getElementById("capNewLabel").value.trim() || key, capabilities: capObj });
+      toast("Archetype '" + key + "' created — apply it to any store");
+      render();
+    } catch (e) { toast(e.message); }
+  };
+  /* ── capability authoring: the open-ended catalog ── */
+  const paramRow = (i) => `<div style="display:flex;gap:6px;flex-wrap:wrap" data-capdefrow="${i}">
+    <input placeholder="param key" data-capdef-pk style="padding:6px 9px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:150px">
+    <input placeholder="label" data-capdef-pl style="padding:6px 9px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:150px">
+    <select data-capdef-pt style="padding:6px 9px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg)">
+      <option value="number">number</option><option value="bool">bool</option><option value="text">text</option><option value="json">json</option></select>
+    <input placeholder="default value" data-capdef-pd style="padding:6px 9px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:150px"></div>`;
+  let paramRows = 0;
+  const addP = document.getElementById("capDefAddParam");
+  if (addP) addP.onclick = () => {
+    paramRows++;
+    const host = document.getElementById("capDefParams");
+    const wrap = document.createElement("div");
+    wrap.innerHTML = paramRow(paramRows);
+    host.appendChild(wrap.firstElementChild);
+  };
+  const ds = document.getElementById("capDefSave");
+  if (ds) ds.onclick = async () => {
+    const key = document.getElementById("capDefKey").value.trim();
+    const label = document.getElementById("capDefLabel").value.trim();
+    if (!key || !label) return toast("give the capability a key and a label");
+    const params = {};
+    document.querySelectorAll("[data-capdefrow]").forEach(row => {
+      const pk = row.querySelector("[data-capdef-pk]").value.trim();
+      if (!pk) return;
+      const t = row.querySelector("[data-capdef-pt]").value;
+      const raw = row.querySelector("[data-capdef-pd]").value;
+      let d = raw;
+      if (t === "number") d = raw === "" ? 0 : Number(raw);
+      else if (t === "bool") d = /^(1|true|yes|on)$/i.test(raw);
+      else if (t === "json") { try { d = raw === "" ? {} : JSON.parse(raw); } catch (e) { return toast("param '" + pk + "': invalid JSON default"); } }
+      params[pk] = { type: t, default: d, label: row.querySelector("[data-capdef-pl]").value.trim() || pk };
+    });
+    try {
+      await api("/capabilities/catalog", "POST", {
+        key, label, domain: document.getElementById("capDefDomain").value.trim() || "custom",
+        icon: document.getElementById("capDefIcon").value.trim() || "▪",
+        description: document.getElementById("capDefDesc").value.trim(), params
+      });
+      toast("Capability '" + key + "' defined — switch it on for any store");
+      render();
+    } catch (e) { toast(e.message); }
+  };
+}
+
 /* Dashboards & Reports — Architecture1 §394/§395 made visible. A dashboard is a runtime
-   object: pick one and the engine renders every widget it declares, computed live from the
+    object: pick one and the engine renders every widget it declares, computed live from the
    entity each widget points at. The picker below is derived from the engine itself
    (entities, metrics, visualization kinds), and the "＋ widget" action is one row — the
    operator never writes code to get a new KPI. Reports (§395) run the same data through

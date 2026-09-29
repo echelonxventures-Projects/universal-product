@@ -947,6 +947,24 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       }
       ok(ap.errs.length === 0, "store console no JS errors", ap.errs.slice(0, 2).join("|"));
 
+      /* the configuration layer: the platform console composes any platform from
+         rows — no vendor name is a definition, and the whole catalog is editable */
+      const cp = await (async () => { jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" }); return render("/platform.html"); })();
+      const capNav = [...cp.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "capabilities");
+      if (capNav) {
+        click(cp.win, capNav); await sleep(1600);
+        const vb = cp.doc.querySelector("#vBody");
+        ok(vb && /the configurable platform/i.test(vb.textContent), "the capabilities console renders");
+        ok(vb && /Buy-box competition/i.test(vb.textContent), "the catalog lists a capability with its declared tunables");
+        ok(vb && !/Amazon|Flipkart|Zepto|Blinkit|Paytm|Alibaba/i.test(vb.textContent),
+          "no vendor or brand name appears anywhere on the configuration surface");
+        const rows = vb ? vb.querySelectorAll("tbody tr").length : 0;
+        ok(rows >= 30, "the entire catalog renders as rows (" + rows + ")");
+        ok(!!(vb && vb.querySelector("[data-capcfg]")), "each tunable capability exposes a settings expander");
+        ok(!!(vb && vb.querySelector("[data-captoggle]")), "each capability carries a per-store on/off switch");
+        ok(cp.errs.length === 0, "capabilities console no JS errors", cp.errs.slice(0, 2).join("|"));
+      } else ok(false, "platform capabilities nav present");
+
       const ppage = await (async () => { jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" }); return render("/platform.html"); })();
       const goNav = [...ppage.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "offers");
       if (goNav) {
