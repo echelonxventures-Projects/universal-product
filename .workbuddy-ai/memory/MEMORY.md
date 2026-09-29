@@ -432,3 +432,44 @@ and "and many more" was a promise, not a feature. Closed:
 - **Test gotcha**: `cap()` answers `{}` while a capability is OFF — assert DEFAULTS through
   `params()`, and reserve `cap()` for the on-state. My first assertion used `cap()` for a
   default and read it as an engine bug.
+
+### 2026-09-29 (session 6) — the parity layer became operable: Commerce Ops + two real bugs
+The parity layer was committed but unreachable: `dark_store`, `rider`, `upi_handle`,
+`escrow_hold`, `seller_offer`, `trade_assurance`, `letter_of_credit`, `rfq_quote` etc.
+returned **0 references** in either console script. An operator could toggle a capability
+but could not create or operate a single record. Closed with a "Commerce Ops" nav group
+in the store console, one view per domain, gated on the store's OWN composition:
+
+- **The gate is the view.** Each view calls `/api/capabilities` first; a domain whose
+  capabilities are all off renders ONE line ("switch it on in ⚙️ Capabilities", with a
+  `co-cap` button that navigates there) instead of empty tables — an inert engine has no
+  records to show, and showing them would be a lie. Live: QC + Trade show the panel,
+  Fintech + Marketplace render real records. The action surfaces (escrow-hold form,
+  buy-box recompute, onboarding approve/reject, health recompute) render ONLY for the
+  capabilities that are on.
+- **RBAC was the hidden gate.** The four new nav keys were invisible because
+  `SECTIONS` in `lib/rbac.js` is the master allowlist and `canSee()` filters the nav by
+  `allowedSections` — a section not in `SECTIONS` is never granted, even by `*: write`.
+  Added `qcops`/`finops`/`mktops`/`tradeops` to `SECTIONS`, granted them per role, and
+  mapped every parity ENTITY to its section in `KEY_SECTION` (generic entity CRUD reads
+  this map, so `dark_store`→`qcops` etc. is what authorises `/meta/entity/dark_store`).
+  **When a nav item is missing for a full-access admin, check `SECTIONS` first.**
+- **`rbac.seed()` was never called at boot**, and `INSERT OR IGNORE` meant a warm DB kept
+  the old role list forever — so a shipped section/role never reached a live operator.
+  Now revisioned (`rb_v2`): an unedited row follows the code, an edited one is stamped and
+  never clobbered (same "operator owns the row" rule as capabilities). Column migration
+  `meta_lists.edited`. **`INSERT OR IGNORE` seeds silently freeze on warm DBs — revision
+  them or they can never evolve.**
+- **Real CSRF bug found while testing writes**: `azc` was sent only when the token was
+  FIRST minted (`if (!session.csrf)`), so a page loaded from a warm session that never
+  held the cookie read an empty `document.cookie` and EVERY POST 403'd — the session
+  cookie is HttpOnly so it cannot supply the token. The console's POSTs only worked
+  because the first page load of a fresh session happened to receive it. Now `azc` is
+  re-sent on every response. **The double-submit token must be re-sent, not just minted.**
+- **jsdom testing gotcha (recurring)**: jsdom does NOT persist cookies into
+  `document.cookie` from `beforeParse` fetch — a console POST tested through jsdom needs
+  the `x-csrf` header injected in the shim (that's how smoke.js' `render()` does it),
+  never `document.cookie`. The CSRF failure looked like an engine bug until I traced it.
+- **Suite: 683 E2E + 231 parity + 197 conformance, 0 failures** (14 new Commerce Ops
+  assertions: nav present, an ON domain renders without the inert panel, the escrow write
+  path lands a row, and BOTH off-states show the compose panel).

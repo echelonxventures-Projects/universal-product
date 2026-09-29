@@ -54,6 +54,7 @@ const NAV = [
   { g: "Catalogue", items: [["products", "📦 Products"], ["gcatalog", "🌐 Global Catalog"], ["skus", "🔖 SKUs & Inventory"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["search", "🔎 Search & Discovery"], ["content", "🖼️ Home Content"]] },
   { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"], ["planning", "📦 Planning & Replenishment"], ["suppliers", "🚚 Suppliers & Procurement"]] },
   { g: "Marketplace & B2B", items: [["sellers", "🏪 Sellers"], ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["marketplace", "📣 Marketplace & Ads"]] },
+  { g: "Commerce Ops", items: [["qcops", "⚡ Quick-commerce"], ["finops", "💸 Fintech Ops"], ["mktops", "🏪 Marketplace Ops"], ["tradeops", "🤝 Trade Ops"]] },
   { g: "Payments & Finance", items: [["payments", "💳 Payment Gateways"], ["settlements", "🤝 Settlements"], ["finance", "💰 Finance & Settlements"], ["billing", "🧮 Billing"]] },
   { g: "Growth & Retention", items: [["promotions", "💸 Offers & Coupons"], ["ugc", "⭐ Reviews & Q&A"], ["helpdesk", "🎧 Support Helpdesk"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["goip", "Ω∞ GOIP"]] },
   { g: "AI & Automation", items: [["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"]] },
@@ -179,6 +180,246 @@ async function vHelpdesk() {
       <tbody>${(sla.agents || []).map(a => `<tr><td>${esc(a.assignee)}</td><td>${a.tickets}</td><td>${a.responded}</td><td>${a.csat ? a.csat + " / 5" : "—"}</td></tr>`).join("") || '<tr><td colspan="4">No agent activity.</td></tr>'}</tbody></table></div>
   </div>`;
 }
+/* ---------- Commerce Ops — the parity layer, surfaced. Each view reads this
+   store's own capability composition first: a domain whose capabilities are all
+   off shows one line ("switch it on in Capabilities") instead of empty tables,
+   because an inert engine has no records to show. No vendor name appears — the
+   domain declares what it does, never whose it is. ---------- */
+let coCap = null;
+async function coCaps() {
+  if (!coCap) coCap = (await api("/capabilities")).catalog;
+  return coCap;
+}
+async function coGate(caps, keys) {
+  const all = await coCaps();
+  const have = k => { const c = all.find(x => x.key === k); return !!(c && c.on); };
+  const on = keys.filter(have);
+  return { on, off: keys.filter(k => !have(k)), any: on.length > 0 };
+}
+function coOff(dom, label, off) {
+  return `<div class="p-panel"><div class="a-head"><h2>${esc(label)}</h2>
+    <p class="a-sub">This store has not switched on the ${esc(dom)} capabilities — the engines are inert and hold no records. <button class="p-btn sm" data-act="co-cap">Open ⚙️ Capabilities</button> to compose one.</p></div></div>`;
+}
+function coBadge(v) { return v == null || v === "" ? '<span class="p-tag">—</span>' : `<span class="a-chip">${esc(v)}</span>`; }
+function coChips(rows, f) { const by = {}; rows.forEach(r => { const k = f(r); by[k] = (by[k] || 0) + 1; }); return Object.entries(by).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join(" ") || "none"; }
+function coTbl(head, rows, cols, empty) {
+  return `<div class="a-tablewrap"><table class="a-table"><thead><tr>${head.map(h => `<th>${h}</th>`).join("")}</tr></thead>
+    <tbody>${rows.slice(0, 25).map(r => `<tr>${cols(r).map(c => `<td>${c}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${head.length}">${empty}</td></tr>`}</tbody></table></div>`;
+}
+
+/* ---------- Quick-commerce: dark stores, slots, serviceability, dispatch ---------- */
+async function vQcOps() {
+  const gate = await coGate(null, ["instant_delivery", "store_inventory", "dispatch_batching"]);
+  if (!gate.any) return coOff("quick-commerce", "⚡ Quick-commerce", gate.off);
+  const d = await api("/qc/stores", {});
+  const stores = d.stores || [], riders = d.riders || [];
+  const runs = (await api("/qc/runs", {})).runs || [];
+  const slots = await Promise.all((stores.slice(0, 4)).map(s => api("/qc/slots", { store: s.id, day: 0 }).then(x => x.slots || []).catch(() => [])));
+  const flat = slots.flatMap((sl, i) => sl.map(x => ({ ...x, store: stores[i] && stores[i].name })));
+  return `<div class="a-head"><h2>⚡ Quick-commerce Ops</h2>
+    <p class="a-sub">Dark stores, delivery slots, per-store inventory pinning, riders and dispatch runs closed with a proof-of-delivery OTP. The promise a store advertises is its own minutes plus prep time, resolved per pincode. Kinds, statuses and vehicles are Data Studio registries: <code>qcStoreKinds</code>, <code>qcSlotStatuses</code>, <code>qcVehicles</code>.</p>
+    <p class="a-sub"><b>On for this store:</b> ${gate.on.map(k => `<span class="a-chip">${esc(k)}</span>`).join(" ")}${gate.off.length ? ` <span class="p-tag">off: ${esc(gate.off.join(", "))}</span>` : ""}</p></div>
+  <div class="a-card"><h3>Dark stores · ${stores.length}</h3>
+    <p class="a-sub">${coChips(stores, s => s.kind || "dark_store")}</p>
+    ${coTbl(["store", "code", "kind", "city", "pincode", "radius", "promise", "min order", "fee", "status"],
+      stores, s => [esc(s.name), `<code>${esc(s.code)}</code>`, esc(s.kind), esc(s.city), esc(s.pincode), (s.service_radius_km || 0) + " km", (s.promise_minutes || 0) + " min", money(s.min_order), money(s.delivery_fee), coBadge(s.status)])}
+    <button class="p-btn sm primary" data-act="co-new" data-key="dark_store">+ New dark store</button>
+    <button class="p-btn sm" data-act="co-new" data-key="rider">+ New rider</button></div>
+  <div class="a-card"><h3>Today's delivery slots</h3>
+    ${coTbl(["window", "store", "capacity", "booked", "fee", "status"], flat,
+      s => [`${esc(s.window_start)}–${esc(s.window_end)}`, esc(s.store || "—"), s.capacity, s.booked, s.fee ? money(s.fee) : "—", coBadge(s.status)],
+      "No open slots today — create one from the dark store.")}</div>
+  <div class="a-card"><h3>Riders · ${riders.length}</h3>
+    ${coTbl(["rider", "phone", "vehicle", "city", "status", "rating", "deliveries"], riders,
+      r => [esc(r.name), esc(r.phone || "—"), esc(r.vehicle || "—"), esc(r.city || "—"), coBadge(r.status), r.rating || "—", r.deliveries || 0])}</div>
+  <div class="a-card"><h3>Dispatch runs · ${runs.length}</h3>
+    <p class="a-sub">${coChips(runs, r => r.status)}</p>
+    ${coTbl(["run", "store", "rider", "batch", "orders", "PoD OTP", "status"], runs,
+      r => [`<code>${esc(r.ref)}</code>`, esc(String(r.store_id || "—")), esc(String(r.rider_id || "—")), r.batch_count || 0, (r.order_ids || []).length, `<code>${esc(r.pod_otp || "—")}</code>`, coBadge(r.status)])}
+    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><label><span>Store</span><select id="qcRunStore">${stores.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></label>
+      <label><span>Rider</span><select id="qcRunRider">${riders.map(r => `<option value="${r.id}">${esc(r.name)}</option>`).join("")}</select></label>
+      <label><span>Order ids (CSV)</span><input id="qcRunOrders" placeholder="101,102"></label>
+      <button class="p-btn sm primary" id="qcRunGo">Create run</button></div></div>`;
+}
+function wireQcOps() {
+  const g = $("#qcRunGo"); if (g) g.onclick = async () => {
+    try {
+      const orders = String($("#qcRunOrders").value || "").split(",").map(x => Number(x.trim())).filter(Boolean);
+      const r = await api("/qc/runs", "POST", { store_id: Number($("#qcRunStore").value), rider_id: Number($("#qcRunRider").value), order_ids: orders, batch_count: orders.length });
+      toast("Dispatch run " + (r.run && r.run.ref)); render();
+    } catch (e) { toast(e.message); }
+  };
+}
+
+/* ---------- Fintech Ops: UPI, QR, links, mandates, escrow, KYC, credit, payouts ---------- */
+async function vFinOps() {
+  const gate = await coGate(null, ["upi_collect", "qr_pay", "payment_links", "mandates", "escrow", "split_payments", "kyc", "bnpl", "lending", "bank_payouts", "bbps", "recharge", "p2p_transfer", "insurance", "gift_vouchers"]);
+  if (!gate.any) return coOff("fintech", "💸 Fintech Ops", gate.off);
+  const upi = (await api("/fintech/upi", {})).upi || [];
+  const billers = (await api("/fintech/billers", {})).billers || [];
+  const plans = (await api("/fintech/plans", {})).plans || [];
+  const [escrowR, kycR, payoutR, loanR, polR, vchR] = await Promise.all([
+    api("/meta/entity/escrow_hold", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/kyc_profile", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/bank_payout", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/loan", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/payment_link", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/gift_voucher", {}).catch(() => ({ rows: [] })),
+  ]);
+  const escrows = escrowR.rows || [], kycs = kycR.rows || [], payouts = payoutR.rows || [],
+    loans = loanR.rows || [], pols = polR.rows || [], vchs = vchR.rows || [];
+  return `<div class="a-head"><h2>💸 Fintech Ops</h2>
+    <p class="a-sub">The payment rails: UPI collect, QR scan-pay, tokenised links, auto-debit mandates, escrow hold/release, split settlements, KYC-gated credit (BNPL, loans), bank payouts, bills, recharge, P2P, insurance and gift vouchers. Money never leaves the single wallet ledger. Statuses, kinds and frequencies are registries: <code>finUpiStatuses</code>, <code>finLinkStatuses</code>, <code>finEscrowStatuses</code>.</p>
+    <p class="a-sub"><b>On for this store:</b> ${gate.on.map(k => `<span class="a-chip">${esc(k)}</span>`).join(" ")}${gate.off.length ? ` <span class="p-tag">${esc(gate.off.length)} off</span>` : ""}</p></div>
+  <div class="a-card"><h3>Escrow holds · ${escrows.length}</h3>
+    <p class="a-sub">${coChips(escrows, e => e.status)}</p>
+    ${coTbl(["escrow", "order", "buyer", "seller", "held", "status"], escrows,
+      e => [`<code>${esc(e.ref)}</code>`, e.order_id || "—", esc(e.buyer), esc(e.seller), money(e.amount), coBadge(e.status)])}
+    ${gate.on.includes("escrow") ? `<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><label><span>Order id</span><input id="finEscOrder" placeholder="101"></label>
+      <label><span>Seller</span><input id="finEscSeller" placeholder="s:acme"></label><label><span>Amount</span><input id="finEscAmt" type="number" step="0.01" placeholder="50.00"></label>
+      <button class="p-btn sm primary" id="finEscGo">Hold in escrow</button></div>` : ""}</div>
+  <div class="a-card"><h3>KYC profiles · ${kycs.length}</h3>
+    <p class="a-sub">${coChips(kycs, k => k.status)}</p>
+    ${coTbl(["owner", "kind", "name", "company", "docs", "status"], kycs,
+      k => [esc(k.owner), esc(k.kind), esc(k.full_name || "—"), esc(k.company || "—"), esc(k.doc_status || "—"), coBadge(k.status)])}
+    ${gate.on.includes("kyc") ? `<button class="p-btn sm primary" data-act="co-new" data-key="kyc_profile">+ Submit KYC</button>` : ""}</div>
+  <div class="a-cap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px">
+    <div class="a-card"><h3>Payment links · ${pols.length}</h3>
+      ${coTbl(["link", "title", "amount", "status"], pols, p => [`<code>${esc(p.ref)}</code>`, esc(p.title), money(p.amount), coBadge(p.status)], "No links issued.")}</div>
+    <div class="a-card"><h3>Bank payouts · ${payouts.length}</h3>
+      ${coTbl(["payout", "payee", "amount", "status"], payouts, p => [`<code>${esc(p.ref)}</code>`, esc(p.payee), money(p.amount), coBadge(p.status)], "No payouts queued.")}
+      ${gate.on.includes("bank_payouts") ? `<button class="p-btn sm primary" data-act="co-new" data-key="bank_payout">+ Queue payout</button>` : ""}</div>
+    <div class="a-card"><h3>Loans · ${loans.length}</h3>
+      ${coTbl(["loan", "owner", "principal", "emi", "status"], loans, l => [`<code>${esc(l.ref)}</code>`, esc(l.owner), money(l.principal), l.emi ? money(l.emi) : "—", coBadge(l.status)], "No credit issued.")}</div>
+    <div class="a-card"><h3>Gift vouchers · ${vchs.length}</h3>
+      ${coTbl(["code", "amount", "buyer", "status"], vchs, v => [`<code>${esc(v.code)}</code>`, money(v.amount), esc(v.buyer || "—"), coBadge(v.status)], "No vouchers issued.")}</div>
+  </div>
+  <div class="a-card"><h3>UPI handles · ${upi.length}</h3>
+    ${coTbl(["owner", "vpa", "verified", "default", "status"], upi,
+      u => [esc(u.owner), `<code>${esc(u.vpa)}</code>`, u.verified ? "✓" : "—", u.is_default ? "✓" : "—", coBadge(u.status)], "No VPA saved.")}</div>
+  <div class="a-card"><h3>Billers · ${billers.length} · recharge plans · ${plans.length}</h3>
+    <p class="a-sub">${(billers.slice(0, 12)).map(b => `<span class="a-chip">${esc(b.category)}·${esc(b.name)}</span>`).join(" ") || "no billers registered"}</p>
+    <p class="a-sub">${plans.slice(0, 12).map(p => `<span class="a-chip">${esc(p.operator)}·${money(p.amount)}/${esc(p.validity || "")}</span>`).join(" ") || "no plans registered"}</p></div>`;
+}
+function wireFinOps() {
+  const g = $("#finEscGo"); if (g) g.onclick = async () => {
+    try {
+      const r = await api("/fintech/escrow", "POST", { order_id: Number($("#finEscOrder").value), seller: $("#finEscSeller").value, amount: Number($("#finEscAmt").value) });
+      toast("Escrow " + (r.escrow && r.escrow.ref)); render();
+    } catch (e) { toast(e.message); }
+  };
+}
+
+/* ---------- Marketplace Ops: onboarding, buy-box, FBA, health, claims ---------- */
+async function vMktOps() {
+  const gate = await coGate(null, ["buy_box", "seller_health", "buyer_protection", "smart_fulfilment", "fba_inbound"]);
+  if (!gate.any) return coOff("marketplace", "🏪 Marketplace Ops", gate.off);
+  const [onb, perf, claim, fba, smart] = await Promise.all([
+    api("/meta/entity/seller_onboarding", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/seller_performance", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/buyer_claim", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/fba_inbound", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/smart_fulfilment", {}).catch(() => ({ rows: [] })),
+  ]);
+  const onbs = onb.rows || [], perfs = perf.rows || [], claims = claim.rows || [],
+    fbas = fba.rows || [], smarts = smart.rows || [];
+  const prod = $("#f_product") ? $("#f_product").value : "";
+  const bb = prod ? await api("/marketplace/offers/" + encodeURIComponent(prod), {}).catch(() => ({ offers: [], buybox: null })) : { offers: [], buybox: null };
+  return `<div class="a-head"><h2>🏪 Marketplace Ops</h2>
+    <p class="a-sub">Seller onboarding and review, multi-seller offers competing for one product's featured offer, fulfilment-centre inbound, account health that decides tier and suspension, buyer-protection claims and smart-fulfilment grading. The buy-box winner is the best composite of price, fulfilment speed and seller trust — each weight tunable in ⚙️ Capabilities.</p>
+    <p class="a-sub"><b>On for this store:</b> ${gate.on.map(k => `<span class="a-chip">${esc(k)}</span>`).join(" ")}</p></div>
+  <div class="a-card"><h3>Seller onboarding · ${onbs.length}</h3>
+    <p class="a-sub">${coChips(onbs, o => o.status)}</p>
+    ${coTbl(["business", "type", "gstin", "status", "review"], onbs,
+      o => [esc(o.business_name), esc(o.business_type || "—"), `<code>${esc(o.gstin || "—")}</code>`, coBadge(o.status),
+        o.status === "submitted" ? `<button class="p-btn sm primary" data-mktapp="${o.id}" data-v="approved">Approve</button> <button class="p-btn sm danger" data-mktapp="${o.id}" data-v="rejected">Reject</button>` : esc(o.reviewed_by || "—")])}
+    <button class="p-btn sm primary" data-act="co-new" data-key="seller_onboarding">+ Apply as seller</button></div>
+  <div class="a-card"><h3>Buy-box · product offers</h3>
+    <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap"><label><span>Product id</span><input id="mktProd" placeholder="VR-ELEC-01" value="${esc(prod)}"></label>
+      <button class="p-btn sm" id="mktLoad">Load offers</button>
+      <button class="p-btn sm primary" id="mktBb">Recompute buy-box</button></div>
+    ${coTbl(["seller", "price", "condition", "fulfilment", "score", "winner"], bb.offers || [],
+      o => [esc(String(o.seller_id)), money(o.price), esc(o.condition || "new"), esc(o.fulfillment || "fbm"), (o.buybox_score || 0).toFixed(2), o.buybox ? '<span class="a-chip">★ featured</span>' : ""])}</div>
+  <div class="a-cap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px">
+    <div class="a-card"><h3>Account health · ${perfs.length}</h3>
+      ${coTbl(["seller", "period", "ODR", "late", "cancel", "score", "tier"], perfs,
+        p => [esc(String(p.seller_id)), esc(p.period), (p.odr || 0).toFixed(2) + "%", (p.late_ship_rate || 0).toFixed(1) + "%", (p.cancel_rate || 0).toFixed(1) + "%", (p.health_score || 0).toFixed(0), coBadge(p.tier)], "No health computed.")}
+      <button class="p-btn sm" data-act="co-mktperf">Recompute health</button></div>
+    <div class="a-card"><h3>FBA inbound · ${fbas.length}</h3>
+      ${coTbl(["ref", "units", "status"], fbas, f => [`<code>${esc(f.ref)}</code>`, f.units, coBadge(f.status)], "No inbound shipments.")}</div>
+    <div class="a-card"><h3>Claims (A-to-z) · ${claims.length}</h3>
+      ${coTbl(["ref", "order", "kind", "amount", "status"], claims,
+        c => [`<code>${esc(c.ref)}</code>`, c.order_id || "—", esc(c.kind), c.amount ? money(c.amount) : "—", coBadge(c.status)], "No claims open.")}</div>
+    <div class="a-card"><h3>Smart fulfilment · ${smarts.length}</h3>
+      ${coTbl(["ref", "grade", "SLA", "status"], smarts, s => [`<code>${esc(s.ref)}</code>`, coBadge(s.grade), (s.sla_hours || 0) + " h", coBadge(s.status)], "Not enrolled.")}</div>
+  </div>`;
+}
+function wireMktOps() {
+  const load = $("#mktLoad"); if (load) load.onclick = () => render();
+  const bb = $("#mktBb"); if (bb) bb.onclick = async () => {
+    const p = $("#mktProd").value.trim(); if (!p) return toast("Enter a product id");
+    try { const r = await api("/marketplace/buybox/" + encodeURIComponent(p), "POST", {}); toast("Buy-box recomputed · winner " + (r.winner ? r.winner.seller_id : "none")); render(); }
+    catch (e) { toast(e.message); }
+  };
+  $$("[data-mktapp]").forEach(b => b.onclick = async () => {
+    try { await api("/marketplace/onboarding/" + b.dataset.mktapp + "/review", "POST", { decision: b.dataset.v }); toast("Onboarding " + b.dataset.v); render(); }
+    catch (e) { toast(e.message); }
+  });
+}
+
+/* ---------- Trade Ops: assurance, gold suppliers, verification, LCs, RFQs ---------- */
+async function vTradeOps() {
+  const gate = await coGate(null, ["trade_assurance", "gold_supplier", "company_verification", "export_documents", "letters_of_credit", "rfq_bidding", "reverse_auction", "segment_pricing", "moq_enforcement"]);
+  if (!gate.any) return coOff("B2B trade", "🤝 Trade Ops", gate.off);
+  const [ta, gold, ver, lc, quo, pl, doc] = await Promise.all([
+    api("/meta/entity/trade_assurance", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/gold_supplier", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/company_verification", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/letter_of_credit", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/rfq_quote", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/price_list", {}).catch(() => ({ rows: [] })),
+    api("/meta/entity/export_document", {}).catch(() => ({ rows: [] })),
+  ]);
+  const tas = ta.rows || [], golds = gold.rows || [], vers = ver.rows || [], lcs = lc.rows || [],
+    quos = quo.rows || [], pls = pl.rows || [], docs = doc.rows || [];
+  return `<div class="a-head"><h2>🤝 Trade Ops</h2>
+    <p class="a-sub">B2B trust and trade: order-level escrow with milestones, paid supplier memberships, company-verification audits, export/customs documents generated from an order's own fields, letters of credit, multi-seller RFQ bidding ranked by price then lead time, sealed-bid tender reverse auctions and per-segment price lists with MOQ enforcement.</p>
+    <p class="a-sub"><b>On for this store:</b> ${gate.on.map(k => `<span class="a-chip">${esc(k)}</span>`).join(" ")}${gate.off.length ? ` <span class="p-tag">${esc(gate.off.length)} off</span>` : ""}</p></div>
+  <div class="a-card"><h3>Trade assurance · ${tas.length}</h3>
+    <p class="a-sub">${coChips(tas, t => t.status)}</p>
+    ${coTbl(["ref", "order", "buyer", "seller", "amount", "milestone", "status"], tas,
+      t => [`<code>${esc(t.ref)}</code>`, t.order_id || "—", esc(t.buyer), esc(t.seller), money(t.amount), esc(t.current_milestone || "—"), coBadge(t.status)])}
+    ${gate.on.includes("trade_assurance") ? `<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><label><span>Order id</span><input id="trAsOrder" placeholder="101"></label>
+      <label><span>Seller</span><input id="trAsSeller" placeholder="s:acme"></label><label><span>Amount</span><input id="trAsAmt" type="number" step="0.01" placeholder="500.00"></label>
+      <button class="p-btn sm primary" id="trAsGo">Create assurance</button></div>` : ""}</div>
+  <div class="a-cap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px">
+    <div class="a-card"><h3>Gold suppliers · ${golds.length}</h3>
+      ${coTbl(["supplier", "tier", "verified", "status"], golds, g => [esc(String(g.supplier_id)), coBadge(g.tier), g.verified ? "✓" : "—", coBadge(g.status)], "No memberships.")}
+      ${gate.on.includes("gold_supplier") ? `<button class="p-btn sm primary" data-act="co-new" data-key="gold_supplier">+ Enrol supplier</button>` : ""}</div>
+    <div class="a-card"><h3>Company verification · ${vers.length}</h3>
+      ${coTbl(["company", "country", "audit", "status"], vers, v => [esc(v.company_name), esc(v.country || "—"), esc(v.audit_by || "—"), coBadge(v.verification_status)], "No audits filed.")}
+      ${gate.on.includes("company_verification") ? `<button class="p-btn sm primary" data-act="co-new" data-key="company_verification">+ Submit audit</button>` : ""}</div>
+    <div class="a-card"><h3>Letters of credit · ${lcs.length}</h3>
+      ${coTbl(["ref", "buyer", "seller", "amount", "status"], lcs, l => [`<code>${esc(l.lc_number || l.ref)}</code>`, esc(l.buyer), esc(l.seller), money(l.amount), coBadge(l.status)], "No LCs issued.")}</div>
+    <div class="a-card"><h3>RFQ quotes · ${quos.length}</h3>
+      ${coTbl(["rfq", "supplier", "unit price", "MOQ", "lead", "rank", "status"], quos,
+        q => [esc(String(q.rfq_id)), esc(String(q.supplier_id)), money(q.unit_price), q.moq || "—", q.lead_days || "—", q.rank || "—", coBadge(q.status)], "No quotes yet.")}</div>
+    <div class="a-card"><h3>Price lists · ${pls.length}</h3>
+      ${coTbl(["name", "segment", "status"], pls, p => [esc(p.name), esc(p.segment || "—"), coBadge(p.status)], "No price lists.")}</div>
+    <div class="a-card"><h3>Export documents · ${docs.length}</h3>
+      ${coTbl(["ref", "kind", "dest", "value", "status"], docs,
+        d => [`<code>${esc(d.ref)}</code>`, esc(d.doc_kind), esc(d.dest_country || "—"), d.total_value ? money(d.total_value) : "—", coBadge(d.status)], "No documents generated.")}</div>
+  </div>`;
+}
+function wireTradeOps() {
+  const g = $("#trAsGo"); if (g) g.onclick = async () => {
+    try {
+      const r = await api("/trade/assurance", "POST", { order_id: Number($("#trAsOrder").value), seller: $("#trAsSeller").value, amount: Number($("#trAsAmt").value) });
+      toast("Assurance " + (r.assurance && r.assurance.ref)); render();
+    } catch (e) { toast(e.message); }
+  };
+}
+
 async function vRetention() {
   const [rec, mem] = await Promise.all([api("/admin/recurring", {}), api("/admin/memberships", {})]);
   const scheds = rec.schedules || [];
@@ -486,6 +727,14 @@ document.addEventListener("click", async e => {
     if (act && act.dataset.act === "plan-approve") {
       const r = await api(`/admin/planning/${act.dataset.id}`, "PUT", { status: "approved" });
       toast(`Approved ${r.replenishment.po_ref}`); render();
+    }
+    if (act && act.dataset.act === "co-new") openForm(act.dataset.key, null, render);
+    if (act && act.dataset.act === "co-cap") { view = "settings"; coCap = null; render(); }
+    if (act && act.dataset.act === "co-mktperf") {
+      const rows = await api("/meta/entity/seller", {});
+      let n = 0;
+      for (const s of (rows.rows || [])) { try { await api("/marketplace/performance/" + s.id, "POST", {}); n++; } catch (e) { } }
+      toast(`Health recomputed for ${n} seller(s)`); render();
     }
     if (nb) openForm(nb.dataset.new, null, render);
     if (eb) openForm(eb.dataset.edit, eb.dataset.id, render);
@@ -1205,6 +1454,10 @@ async function render() {
     else if (view === "audit") { body.innerHTML = await vAudit(); wireAudit(); }
     else if (view === "marketplace") body.innerHTML = await vMarketplace();
     else if (view === "ugc") body.innerHTML = await vUgc();
+    else if (view === "qcops") { body.innerHTML = await vQcOps(); wireQcOps(); }
+    else if (view === "finops") { body.innerHTML = await vFinOps(); wireFinOps(); }
+    else if (view === "mktops") { body.innerHTML = await vMktOps(); wireMktOps(); }
+    else if (view === "tradeops") { body.innerHTML = await vTradeOps(); wireTradeOps(); }
     else if (view === "helpdesk") { body.innerHTML = await vHelpdesk(); wireHelpdesk(); } else if (view === "affiliate") renderAffiliate(); else if (view === "sitemap") renderSitemap(); else if (view === "shipping") renderShipping();
     else if (view === "retention") body.innerHTML = await vRetention();
     else if (view === "risk") body.innerHTML = await vRisk();

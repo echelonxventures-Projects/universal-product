@@ -947,6 +947,70 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       }
       ok(ap.errs.length === 0, "store console no JS errors", ap.errs.slice(0, 2).join("|"));
 
+      /* Commerce Ops — the parity layer is reachable from the store console. Each
+         view reads this store's capability composition first: a domain that is off
+         shows the "switch it on" line instead of empty tables, and a domain that is
+         on renders its real records and its write path. */
+      const coList = [["qcops", /Quick-commerce Ops/], ["finops", /Fintech Ops/], ["mktops", /Marketplace Ops/], ["tradeops", /Trade Ops/]];
+      const coNavPresent = {};
+      for (const [k] of coList) coNavPresent[k] = !![...ap.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === k);
+      ok(Object.values(coNavPresent).every(Boolean), "the Commerce Ops nav group is present for a full-access admin", JSON.stringify(coNavPresent));
+
+      const onNow = (await f("/api/capabilities")).catalog || [];
+      const qcOn = onNow.some(c => c.domain === "qc" && c.on);
+      const tradeOn = onNow.some(c => c.domain === "trade" && c.on);
+      const finOn = onNow.some(c => c.domain === "fintech" && c.on);
+      const mktOn = onNow.some(c => c.domain === "marketplace" && c.on);
+
+      const openCo = async k => { const n = [...ap.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === k); click(ap.win, n); await sleep(1700); return ap.doc.querySelector("#vBody"); };
+      const coWrite = async () => { const t = ap.doc.querySelector("#ptoast"); return t ? t.textContent : ""; };
+
+      if (finOn) {
+        const vb = await openCo("finops");
+        ok(vb && /Fintech Ops/i.test(vb.textContent), "fintech ops renders when its capabilities are on");
+        ok(vb && /Escrow holds/i.test(vb.textContent), "fintech ops lists the escrow surface");
+        ok(vb && !/switch it on/i.test(vb.textContent), "an ON domain does not show the inert panel");
+        ok(!!ap.doc.querySelector("#finEscGo"), "the escrow hold form is reachable (escrow capability on)");
+        const before = ((await f("/api/meta/entity/escrow_hold")).rows || []).length;
+        ap.doc.querySelector("#finEscOrder").value = "9001";
+        ap.doc.querySelector("#finEscSeller").value = "s:probe";
+        ap.doc.querySelector("#finEscAmt").value = "12.5";
+        click(ap.win, ap.doc.querySelector("#finEscGo")); await sleep(1200);
+        const after = ((await f("/api/meta/entity/escrow_hold")).rows || []).length;
+        ok(after === before + 1, "an escrow hold created from the console lands in the table", `${before}→${after}`);
+        ok(/Escrow ESC-/i.test(await coWrite()), "the console reports the new escrow ref", await coWrite());
+        ok(ap.errs.length === 0, "fintech ops no JS errors", ap.errs.slice(0, 2).join("|"));
+      } else ok(false, "fintech capability on for the flagship store (test precondition)");
+
+      if (mktOn) {
+        const vb = await openCo("mktops");
+        ok(vb && /Marketplace Ops/i.test(vb.textContent), "marketplace ops renders when its capabilities are on");
+        ok(vb && /Seller onboarding/i.test(vb.textContent), "marketplace ops lists the onboarding surface");
+        ok(!!ap.doc.querySelector("#mktBb"), "the buy-box recompute action is reachable");
+        ok(vb && !/Amazon|Flipkart|Zepto|Blinkit|Paytm|Alibaba/i.test(vb.textContent),
+          "no vendor name appears on the marketplace ops surface");
+        ok(ap.errs.length === 0, "marketplace ops no JS errors", ap.errs.slice(0, 2).join("|"));
+      } else ok(false, "marketplace capability on for the flagship store (test precondition)");
+
+      if (qcOn) {
+        const vb = await openCo("qcops");
+        ok(vb && /Quick-commerce Ops/i.test(vb.textContent), "quick-commerce ops renders when its capabilities are on");
+      } else {
+        const vb = await openCo("qcops");
+        ok(vb && /has not switched on the quick-commerce capabilities/i.test(vb.textContent),
+          "a domain whose capabilities are all off shows the compose panel, not empty tables", vb && vb.textContent.slice(0, 90));
+        ok(vb && !!vb.querySelector('[data-act="co-cap"]'), "the inert panel links into capabilities");
+      }
+      if (tradeOn) {
+        const vb = await openCo("tradeops");
+        ok(vb && /Trade Ops/i.test(vb.textContent), "trade ops renders when its capabilities are on");
+      } else {
+        const vb = await openCo("tradeops");
+        ok(vb && /has not switched on the B2B trade capabilities/i.test(vb.textContent),
+          "the trade domain shows its compose panel while inert", vb && vb.textContent.slice(0, 90));
+      }
+      ok(ap.errs.length === 0, "commerce ops views no JS errors", ap.errs.slice(0, 2).join("|"));
+
       /* the configuration layer: the platform console composes any platform from
          rows — no vendor name is a definition, and the whole catalog is editable */
       const cp = await (async () => { jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" }); return render("/platform.html"); })();

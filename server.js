@@ -150,12 +150,17 @@ const handler = async (req, res) => {
       }
       if (!session) return api.bad(res, "No store configured", 500);
       res.__tenantId = session.tenant.id;
-      /* L2: CSRF double-submit for cookie-carrying mutations */
+      /* L2: CSRF double-submit for cookie-carrying mutations. The azc cookie is
+         re-sent on EVERY response, not just when the token is first minted: the
+         console reads it from document.cookie on each POST, so a page loaded from
+         a warm session that never received it would send an empty x-csrf and every
+         write would 403 (the session cookie itself is HttpOnly, so it cannot serve
+         as the source of the token). */
       if (!session.csrf) {
         session.csrf = sec.csrfToken();
         run("UPDATE sessions SET csrf=? WHERE sid=?", session.csrf, session.sid);
-        res.appendHeader("Set-Cookie", `azc=${session.csrf}; Path=/; SameSite=Lax; Max-Age=2592000${IS_TLS ? "; Secure" : ""}`);
       }
+      res.appendHeader("Set-Cookie", `azc=${session.csrf}; Path=/; SameSite=Lax; Max-Age=2592000${IS_TLS ? "; Secure" : ""}`);
       if (sec.policy().csrfEnabled && ["POST", "PUT", "DELETE"].includes(req.method) && cookies.azs && !sec.csrfOk({ headers: { "x-csrf": req.headers["x-csrf"] || req.headers["x-csrf-token"] } }, session)) {
         res.writeHead(403, { "Content-Type": "application/json" }); return res.end(JSON.stringify({ error: "Missing or invalid CSRF token" }));
       }
