@@ -56,10 +56,10 @@ const NAV = [
   { g: "Marketplace & B2B", items: [["sellers", "🏪 Sellers"], ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["marketplace", "📣 Marketplace & Ads"]] },
   { g: "Commerce Ops", items: [["qcops", "⚡ Quick-commerce"], ["finops", "💸 Fintech Ops"], ["mktops", "🏪 Marketplace Ops"], ["tradeops", "🤝 Trade Ops"]] },
   { g: "Payments & Finance", items: [["payments", "💳 Payment Gateways"], ["settlements", "🤝 Settlements"], ["finance", "💰 Finance & Settlements"], ["billing", "🧮 Billing"]] },
-  { g: "Growth & Retention", items: [["promotions", "💸 Offers & Coupons"], ["ugc", "⭐ Reviews & Q&A"], ["helpdesk", "🎧 Support Helpdesk"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["goip", "Ω∞ GOIP"]] },
+  { g: "Growth & Retention", items: [["promotions", "💸 Offers & Coupons"], ["ugc", "⭐ Reviews & Q&A"], ["helpdesk", "🎧 Support Helpdesk"], ["affiliate", "🤝 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["goip", "Ω∞ GOIP"]] },
   { g: "AI & Automation", items: [["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"]] },
   { g: "Identity & Access", items: [["sso", "🔐 SSO & Integrations"], ["team", "👥 Team & Roles"]] },
-  { g: "Geo & Localization", items: [["localizations", "🌐 Localizations"]] },
+  { g: "Geo & Localization", items: [["localizations", "🌐 Localizations"], ["shipping", "📦 Shipping & Tracking"], ["sitemap", "🔍 Sitemap & SEO"]] },
   { g: "Compliance & Risk", items: [["compliance", "✅ Compliance & Certs"], ["risk", "🛡️ Risk & Fraud"], ["audit", "📜 Audit Trail"], ["trash", "🗑️ Trash & Retention"]] },
   { g: "Settings & Data", items: [["settings", "⚙️ Settings"], ["studio", "🛠️ Data Studio"], ["modules", "🧩 Modules"]] },
   { g: "Reference", items: [["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]] }
@@ -1544,6 +1544,16 @@ document.addEventListener("click", e => { const close = e.target.closest("[data-
     const [sess, cfg] = await Promise.all([api("/session"), api("/config")]);
     TT = cfg;
     if (!sess.user || sess.user.role !== "admin") {
+      /* the platform console hands over here with ?token= (Stores → Catalogs →
+         impersonate). The token is single-use and scoped to this store; redeeming
+         it promotes this session to that store's admin without a password. */
+      const t = new URLSearchParams(location.search).get("token");
+      if (t) {
+        try {
+          const r = await api("/auth/token-exchange", "POST", { token: t });
+          if (r.ok) { boot(); return; }
+        } catch (e) { /* expired or issued for another store → fall through to the form */ }
+      }
       const already = sess.user ? `<p class="m-help">Signed in as <b>${esc(sess.user.email)}</b> — a customer account, not a store admin. <a href="#" id="swAcct">Sign out</a></p>` : "";
       $("#app").innerHTML = `<div class="p-login"><div class="p-login-box"><h1>LUXORA</h1><p>Store Console</p>${already}
         <form id="lf" class="p-form"><label><span>Email</span><input id="le" type="email" required></label>
@@ -1607,9 +1617,11 @@ function wireDocs() {
 
 /* ========== Affiliate Network UI ========== */
 function renderAffiliate() {
+  /* a view renders INTO #vBody like every other view — writing to #app directly
+     painted outside the console shell and left the nav's selected state stale */
   const html = `
     <div class="a-head">
-      <h2>🤝 Affiliate Network</h2>
+      <h2>🤝 Influencers &amp; Affiliates</h2>
       <p class="a-sub">Manage affiliates, tracking, commissions, and payouts</p>
     </div>
     <div class="a-card">
@@ -1620,11 +1632,13 @@ function renderAffiliate() {
       <h3>My Affiliates</h3>
       <p class="a-sub">Affiliates tracking and converting for your store</p>
       <div id="affiliateList"></div>
-      <button class="p-btn" onclick="createAffiliateModal()">+ Add Affiliate</button>
+      <button class="p-btn" id="affAdd">+ Add Affiliate</button>
     </div>
   `;
-  $$(".a-card").forEach(c => c.remove());
-  $$("#app").innerHTML += html;
+  const body = $("#vBody");
+  if (body) body.innerHTML = html;
+  else $$("#app").innerHTML += html;
+  const add = $("#affAdd"); if (add) add.onclick = () => createAffiliateModal();
   loadAffiliateStats();
   loadAffiliates();
 }
@@ -1710,15 +1724,17 @@ function renderSitemap() {
     <div class="a-card">
       <h3>Generate Sitemap</h3>
       <p class="a-sub">Creates XML sitemap for submission to Google, Bing, etc.</p>
-      <button class="p-btn primary" onclick="generateSitemap()">🔄 Generate Now</button>
+      <button class="p-btn primary" id="smGen">🔄 Generate Now</button>
     </div>
     <div class="a-card">
       <h3>Last Generated</h3>
       <div id="sitemapLast"></div>
     </div>
   `;
-  $$(".a-card").forEach(c => c.remove());
-  $$("#app").innerHTML += html;
+  const body = $("#vBody");
+  if (body) body.innerHTML = html;
+  else $$("#app").innerHTML += html;
+  const g = $("#smGen"); if (g) g.onclick = () => generateSitemap();
   loadSitemapConfig();
 }
 
@@ -1777,13 +1793,15 @@ function renderShipping() {
       <p class="a-sub">Enter tracking number to see real-time status</p>
       <div class="p-form">
         <input type="text" id="trackNumber" placeholder="Tracking number" style="flex:1">
-        <button class="p-btn" onclick="trackShipment()">Track</button>
+        <button class="p-btn" id="shTrack">Track</button>
       </div>
       <div id="trackResult"></div>
     </div>
   `;
-  $$(".a-card").forEach(c => c.remove());
-  $$("#app").innerHTML += html;
+  const body = $("#vBody");
+  if (body) body.innerHTML = html;
+  else $$("#app").innerHTML += html;
+  const tr = $("#shTrack"); if (tr) tr.onclick = () => trackShipment();
   loadShippingProviders();
 }
 

@@ -1011,6 +1011,49 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       }
       ok(ap.errs.length === 0, "commerce ops views no JS errors", ap.errs.slice(0, 2).join("|"));
 
+      /* the platform→store bridge: the platform console's Stores · Catalogs impersonates
+         a tenant with a single-use token, and the store console must REDEEM it on load
+         (no password) — that is how the platform owner reaches Products, Sellers, Users
+         and every other store-level surface. The token is scoped to one store and dies
+         after one use. Needs a PLATFORM session, so re-auth as the platform owner. */
+      await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      const impUrl = (await f("/api/platform/tenants/2/impersonate", "POST")).url;
+      ok(impUrl && /admin\.html\?store=aurum&token=/.test(impUrl), "impersonate returns a store-console url", impUrl);
+      /* a fresh tab for the target store: capture ITS cookies, because token-exchange
+         refuses a token whose tenant is not the session's tenant (the azs cookie must
+         travel with the request, or the server builds an unrelated session) */
+      const impJar = new Map();
+      const impFetch = async (p, o = {}) => {
+        const r = await fetch(BASE + p, { ...o, headers: { Cookie: [...impJar].map(([k, v]) => k + "=" + v).join("; "), ...(o.headers || {}) } });
+        (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(c => { const [kv] = c.split(";"); const i = kv.indexOf("="); impJar.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); });
+        return r;
+      };
+      const impSess = await (async () => { const r = await impFetch("/api/session?store=aurum"); return r.json(); })();
+      ok(!impSess.user, "the impersonation tab starts unauthenticated", impSess.user);
+      const impToken = impUrl.split("token=")[1];
+      const exchanged = await (async () => {
+        const r = await impFetch("/api/auth/token-exchange", { method: "POST", headers: { "Content-Type": "application/json", "x-csrf": impJar.get("azc") || "" }, body: JSON.stringify({ token: impToken }) });
+        return r.json();
+      })();
+      ok(!!exchanged.ok && exchanged.user.role === "admin", "the single-use token promotes the session to store admin", exchanged.user && exchanged.user.email);
+      ok((await (async () => { const r = await impFetch("/api/admin/stats"); return r.json(); })()).products > 0, "the promoted session can read the store admin API");
+      /* a second use of the same token must fail (it was consumed) */
+      const replay = await (async () => {
+        const r = await impFetch("/api/auth/token-exchange", { method: "POST", headers: { "Content-Type": "application/json", "x-csrf": impJar.get("azc") || "" }, body: JSON.stringify({ token: impToken }) });
+        return r.json();
+      })();
+      ok(!replay.ok, "the token is single-use (replay refused)", replay.error || "");
+
+      /* the influencer/affiliate surface has a view; it must be reachable from the nav */
+      const affNav = [...ap.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "affiliate");
+      ok(!!affNav, "the store console nav exposes Influencers & Affiliates");
+      if (affNav) {
+        click(ap.win, affNav); await sleep(1600);
+        const vb = ap.doc.querySelector("#vBody");
+        ok(vb && /affiliat/i.test(vb.textContent), "the affiliate view renders");
+        ok(ap.errs.length === 0, "affiliate view no JS errors", ap.errs.slice(0, 2).join("|"));
+      }
+
       /* the configuration layer: the platform console composes any platform from
          rows — no vendor name is a definition, and the whole catalog is editable */
       const cp = await (async () => { jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" }); return render("/platform.html"); })();

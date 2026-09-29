@@ -473,3 +473,38 @@ in the store console, one view per domain, gated on the store's OWN composition:
 - **Suite: 683 E2E + 231 parity + 197 conformance, 0 failures** (14 new Commerce Ops
   assertions: nav present, an ON domain renders without the inert panel, the escrow write
   path lands a row, and BOTH off-states show the compose panel).
+
+### 2026-09-29 (session 7) — the platform→store bridge was broken; 3 views painted outside the shell
+The owner asked where Products/Sellers/Users are managed from the platform console. The
+platform console is intentionally a *governance* surface (stores, plans, constitution,
+capabilities) — store-level data is reached by impersonating a tenant, which hands back
+`/admin.html?store=X&token=T`. Two real defects made that bridge dead, and a third left
+three store views unreachable:
+
+- **The impersonation token was never redeemed.** `apiPlatformImpersonate` writes a
+  single-use `tokens` row and returns the URL, and `apiTokenExchange` (`POST
+  /api/auth/token-exchange`) existed to consume it — but NOTHING called it. `admin.js`'s
+  boot block saw no admin session and rendered the login form, so the platform owner
+  landed as a guest and every store API said "Store administrator access required". The
+  bridge is now wired: boot reads `?token=`, POSTs it once, and the session becomes that
+  store's admin with no password. Verified in jsdom end-to-end (Dashboard, 37 nav buttons).
+  **The endpoint name is `token-exchange`, not `token`** — my first call used the wrong
+  route and got "No such API endpoint".
+- **Three views wrote to `#app` instead of `#vBody`**: `renderAffiliate`,
+  `renderSitemap`, `renderShipping` did `$$("#app").innerHTML += html` and even
+  `$$(".a-card").forEach(c => c.remove())` — they painted OUTSIDE the console shell,
+  clobbered other cards, and left the nav's selected state stale. Every other view
+  returns a string into `#vBody`. All three fixed (and their inline `onclick=` handlers
+  moved to wired handlers — CSP-inline-safe now). **A view that writes to `#app` is a
+  defect; the shell owns `#vBody`.**
+- **Affiliate/sitemap/shipping had views but no nav entry** (and `affiliate` wasn't in
+  RBAC `SECTIONS`, so `canSee()` hid it even after adding the nav item). All three now
+  in the nav (Growth & Retention / Geo & Localization) and in `SECTIONS`.
+- **Test-harness lesson**: a "fresh tab" that sends NO cookies makes the server build a
+  session whose tenant is unknown, and `token-exchange` then correctly refuses with
+  "Token issued for a different store". The fix was the test's — a fresh tab must still
+  carry its OWN `azs` cookie. Same shape as the jsdom cookie lesson: **cookies must be
+  sent with the request; `fetch` with no header is not a browser tab.**
+- **Suite: 691 E2E + 231 parity + 197 conformance, 0 failures** (8 new assertions:
+  impersonate URL, unauthenticated tab, single-use promotion, admin API readable,
+  replay refused, affiliate nav + view render).
