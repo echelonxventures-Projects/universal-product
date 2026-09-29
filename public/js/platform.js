@@ -28,13 +28,16 @@ function linkify(m) {
 function money(n) { return "$" + (+n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 let toastT;
 function toast(msg, type = "info") {
-  const container = document.getElementById("toastContainer");
-  if (!container) { const div = document.createElement("div"); div.id = "toastContainer"; document.body.appendChild(div); }
-  const toast = document.createElement("div");
-  toast.className = "toast " + (type === "error" ? "error" : "success");
-  toast.textContent = msg;
-  container.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
+  /* re-query after the fallback create: render() may have replaced the shell, leaving
+     the earlier lookup stale — appending to a detached node silently swallows the toast
+     (and, in newer engines, throws). */
+  let container = document.getElementById("toastContainer");
+  if (!container) { container = document.createElement("div"); container.id = "toastContainer"; document.body.appendChild(container); }
+  const toastEl = document.createElement("div");
+  toastEl.className = "toast " + (type === "error" ? "error" : "success");
+  toastEl.textContent = msg;
+  container.appendChild(toastEl);
+  setTimeout(() => toastEl.remove(), 3000);
   let t = $("#ptoast");
   if (!t) { t = document.createElement("div"); t.id = "ptoast"; t.className = "p-toast"; document.body.appendChild(t); }
   t.innerHTML = `<div class="toast $type"><span>✅</span> </div>`; t.classList.add("show");
@@ -44,7 +47,7 @@ function toast(msg, type = "info") {
    navigates by domain, not by a 30-item flat list. Keys are unchanged; NAVFLAT
    drives the title lookup. */
 const NAV = [
-  { g: "Command", items: [["dash", "◈ Command"], ["monitor", "📈 Monitoring"]] },
+  { g: "Command", items: [["dash", "◈ Command"], ["setup", "🧭 Setup Wizard"], ["monitor", "📈 Monitoring"]] },
   { g: "Stores & Billing", items: [["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"], ["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"]] },
   { g: "Geo & Global Catalog", items: [["geo", "🌍 Geo · Countries · Taxes"], ["gproducts", "🌐 Global Products"]] },
   { g: "Constitution Ω∞", items: [["ucii", "🌀 UCII Ω∞ Registry"], ["ucos", "♾️ UCOS Ω∞ Constitution"], ["universes", "🧬 Universes"], ["domains", "🔀 Domains"], ["foundations", "🏛️ Foundations"], ["trace", "🧭 Traceability"], ["offers", "Ω∞ GOIP · Value Exchange"]] },
@@ -120,7 +123,7 @@ async function vTenants() {
       <td class="num">${t.products}</td><td class="num">${t.orders}</td><td class="num">${money(t.gmv)}</td>
       <td>${esc(t.plan || "—")}</td><td><span class="badge ${esc(t.status)}">${esc(t.status)}</span></td>
       <td style="white-space:nowrap"><button class="p-btn sm" data-open="${t.id}">Open</button>
-        <button class="p-btn sm" data-tedit="${t.id}">Edit</button>
+        <button class="p-btn sm" data-tedit="${t.id}" title="Re-open the guided setup wizard for this store">Setup</button>
         <button class="p-btn sm primary" data-imp="${t.id}" title="Enter this store's Store Console — Products, SKUs, Orders and more">Manage · Catalog</button>
         <button class="p-btn sm" data-susp="${t.id}">${t.status === "active" ? "Suspend" : "Resume"}</button>
         <button class="p-btn sm" data-inv="${t.id}">Invoice</button>
@@ -707,9 +710,9 @@ document.addEventListener("click", async e => {
       };
     }
     if (delprov) { await api("/platform/custom-providers/" + delprov.dataset.delprov, "DELETE", {}); render(); }
-    if (e.target.id === "newTenant") return openTenantWizard(null);
+    if (e.target.id === "newTenant") return openSetupWizard(null);
     const edit = e.target.closest("[data-tedit]");
-    if (edit) return openTenantWizard(Number(edit.dataset.tedit));
+    if (edit) return openSetupWizard(Number(edit.dataset.tedit));
     if (e.target.id === "newPlan") {
       const mm = modal(`<div class="p-modal-head"><h3>New plan</h3><button data-mclose>✕</button></div>
         <div class="p-form"><div class="row"><label><span>Name</span><input id="npName"></label><label><span>Price/mo</span><input id="npPrice" type="number" step="any"></label></div>
@@ -899,94 +902,351 @@ document.addEventListener("click", async e => {
   } catch (err) { toast(err.message); }
 });
 
-/* ============ STORE PROVISIONING WIZARD: owner · jurisdiction · taxation · categories · gateways · plan ============ */
-async function openTenantWizard(editId) {
+/* ============ GUIDED SETUP WIZARD — one screen, every store decision in one walk ============
+   The single "simple global console" entry point: identity → owner → jurisdiction & tax →
+   payments → shipping → catalogue → features → launch. A draft lives in `WZ` so the operator
+   can step back and forth without losing what they typed; finished stores re-open in edit
+   mode (same steps, pre-filled, "Save changes" instead of "Launch"). */
+const WZ_STEPS = [
+  ["identity", "Store", "🏪"], ["owner", "Owner", "👤"], ["jurisdiction", "Jurisdiction & tax", "🧾"],
+  ["payments", "Payments", "💳"], ["shipping", "Shipping", "🚚"], ["catalogue", "Catalogue", "📦"],
+  ["features", "Features", "⭐"], ["plan", "Plan & launch", "🚀"]
+];
+let WZ = null; /* { editId, step, data } — data is the accumulated payload */
+
+function wzFresh(editId) {
+  return { editId: editId || null, step: 0, data: { mode: "marketplace", industries: [], gateways: [], shippingCarriers: [] } };
+}
+async function wzHydrate(wz) {
+  /* edit mode: pull the live store back into the draft so every step shows its current value */
+  const r = await api(`/platform/tenants/${wz.editId}/setup`);
+  const t = r.tenant, c = r.settings || {}, prof = t.profile || {};
+  if (t.country) wz.data.country = t.country;
+  wz.data.name = t.name; wz.data.slug = t.slug;
+  wz.data.tagline = (c.brand && c.brand.tagline) || "";
+  wz.data.mode = t.mode;
+  wz.data.owner = { name: prof.ownerName || "", email: prof.ownerEmail || "", phone: prof.ownerPhone || "" };
+  wz.data.jurisdiction = { state: prof.state || "", legalName: prof.legalName || "", taxId: prof.taxId || "", registrationAddress: prof.registrationAddress || "" };
+  wz.data.tax = c.commerce && c.commerce.taxMode ? { mode: c.commerce.taxMode, rate: c.commerce.taxRate } : { rate: c.commerce ? c.commerce.taxRate : undefined };
+  wz.data.shipping = c.commerce ? { freeShipThreshold: c.commerce.freeShipThreshold, shipFee: c.commerce.shipFee, daysPriority: c.commerce.daysPriority, daysStandard: c.commerce.daysStandard } : {};
+  wz.data.features = c.features || {};
+  wz.data.brand = { colors: (c.brand && c.brand.colors) || {} };
+  wz.data.gateways = (r.gateways && r.gateways.pay) || (r.available && r.available.payments) || [];
+  wz.data.shippingCarriers = (r.gateways && r.gateways.ship) || (r.available && r.available.shipping) || [];
+  wz.data.plan_id = t.plan_id || undefined;
+  wz.data.seedCatalog = false;
+  return r;
+}
+async function openSetupWizard(editId) {
+  WZ = wzFresh(editId);
+  if (editId) { try { await wzHydrate(WZ); } catch (e) { toast(e.message); } }
+  view = "setup"; render();
+}
+function wzStepDone(wz, i) {
+  const d = wz.data, key = WZ_STEPS[i][0];
+  if (key === "identity") return !!(d.name && d.slug);
+  if (key === "owner") return !!(d.owner && d.owner.email);
+  if (key === "jurisdiction") return !!d.country;
+  if (key === "payments") return !!(d.gateways && d.gateways.length);
+  if (key === "shipping") return !!(d.shipping && d.shipping.freeShipThreshold > 0);
+  if (key === "catalogue") return wz.editId ? true : (d.industries && d.industries.length > 0) || d.mode === "marketplace";
+  if (key === "features") return true;
+  return true;
+}
+async function vSetup() {
+  if (!WZ) WZ = wzFresh(null);
   const [meta, cp, plans, tenants] = await Promise.all([api("/meta"), api("/platform/custom-providers"), api("/platform/plans"), api("/platform/tenants")]);
   const countries = meta.countries, industries = meta.industries, taxModes = meta.taxModes;
   const availBy = {};
   (cp.availability || []).forEach(a => (availBy[a.provider_id] = availBy[a.provider_id] || new Set()).add(a.country_code));
   const payProviders = cp.builtIn.payment;
-  const t = editId ? tenants.tenants.find(x => x.id === editId) : null;
-  const prof = t ? (typeof t.profile === "string" ? JSON.parse(t.profile || "{}") : (t.profile || {})) : {};
-  let cur = t ? t.country : "US";
+  const shipProviders = cp.builtIn.shipping || [];
+  const wz = WZ, d = wz.data, editing = !!wz.editId;
+  const t = editing ? tenants.tenants.find(x => x.id === wz.editId) : null;
+  if (editing && !t) { WZ = wzFresh(null); return `<div class="p-empty">Store not found — <button class="p-btn sm" id="wzNew">start a new one</button></div>`; }
+  const cur = d.country || "US";
   const countryOf = code => countries.find(c => c.code === code) || countries[0];
-  const defaultsFor = code => payProviders.filter(p => (availBy[p.id] || new Set()).has(code)).map(p => p.id).slice(0, 2).concat("cod");
-  const m = modal(`
-    <div class="p-modal-head"><h3>${t ? "Edit store — " + esc(t.name) : "Launch a new store"}</h3><button data-mclose>✕</button></div>
-    <div class="p-form">
-      <fieldset><legend>Store</legend>
-        <div class="row"><label><span>Store name *</span><input id="wName" value="${t ? esc(t.name) : ""}" ${t ? "disabled" : ""} placeholder="NOVA MART"></label>
-        <label><span>Slug *</span><input id="wSlug" value="${t ? esc(t.slug) : ""}" ${t ? "disabled" : ""} placeholder="nova"></label></div>
-        <label><span>Tagline</span><input id="wTag" placeholder="Curated essentials, delivered"></label>
-        <label><span>Deployment mode</span><select id="wMode">${meta.deployModes.map(x => `<option value="${x.key}" ${t && t.mode === x.key ? "selected" : ""}>${x.name} — ${x.desc}</option>`).join("")}</select></label>
-      </fieldset>
-      <fieldset><legend>Owner / operator account (store admin)</legend>
-        <div class="row3"><label><span>Full name *</span><input id="wOwnName" value="${esc(prof.ownerName || "")}" placeholder="Nora Vey"></label>
-        <label><span>Email *</span><input id="wOwnEmail" type="email" value="${esc(prof.ownerEmail || "")}" placeholder="owner@nova.shop"></label>
-        <label><span>Phone</span><input id="wOwnPhone" value="${esc(prof.ownerPhone || "")}" placeholder="+1…"></label></div>
-        <label><span>Password ${t ? "(leave blank to keep current)" : "* (min 6 chars)"}</span><input id="wOwnPass" type="password"></label>
-      </fieldset>
-      <fieldset><legend>Jurisdiction &amp; legal identity</legend>
-        <div class="row3"><label><span>Country (tax + currency + gateways derive from this) *</span><select id="wCountry">${countries.map(c => `<option value="${c.code}" ${(t ? t.country : "US") === c.code ? "selected" : ""}>${esc(c.name)} (${c.code})</option>`).join("")}</select></label>
-        <label><span>State / Province</span><input id="wState" value="${esc(prof.state || "")}"></label>
-        <label><span>Tax / GST / VAT ID</span><input id="wTaxId" value="${esc(prof.taxId || "")}" placeholder="27AAAAA0000A1Z5"></label></div>
-        <label><span>Registered legal entity name</span><input id="wLegal" value="${esc(prof.legalName || "")}" placeholder="Nova Mart Pvt Ltd"></label>
-        <label><span>Registered address</span><input id="wReg" value="${esc(prof.registrationAddress || "")}"></label>
-      </fieldset>
-      <fieldset><legend>Taxation <span class="p-tag" id="wTaxHint"></span></legend>
-        <div class="row"><label><span>Tax mode (blank = country default)</span><select id="wTaxMode"><option value="">— country default —</option>${taxModes.map(tm => `<option value="${tm.key}">${esc(tm.label)}</option>`).join("")}</select></label>
-        <label><span>Tax rate 0-1 (blank = country default)</span><input id="wTaxRate" type="number" step="0.001" min="0" max="1"></label></div>
-      </fieldset>
-      <fieldset><legend>Product categories (industries this store sells)</legend>
-        <p class="p-tag"><label style="display:inline"><input type="checkbox" id="wAllInd" checked> All industries (universal marketplace)</label></p>
-        <div id="wIndGrid" class="ind-grid">${industries.map(i => `<label><input type="checkbox" data-ind="${i.key}"> ${i.icon} ${esc(i.name)}</label>`).join("")}</div>
-      </fieldset>
-      <fieldset><legend>Payment gateways <span class="p-tag" id="wGwHint"></span></legend>
-        <div id="wGwGrid">${payProviders.map(p => `<label><input type="checkbox" data-gw="${p.id}" data-countries="${[...(availBy[p.id] || [])].join(" ")}"> ${p.emoji} ${esc(p.name)} <span class="p-tag">${p.feePct}%</span></label>`).join("")}</div>
-      </fieldset>
-      <div class="row"><label><span>Plan</span><select id="wPlan">${plans.plans.map(x => `<option value="${x.id}">${esc(x.name)} — ${x.price_month}/mo</option>`).join("")}</select></label>
-      <label style="display:flex;gap:8px;align-items:center;align-self:end"><input type="checkbox" id="wSeed" checked> Seed demo catalog for selected industries</label></div>
-      <button class="p-btn primary" id="wGo">${t ? "Save changes" : "Launch store"}</button>
-    </div>`);
-  const w = x => m.querySelector(x);
-  function syncCountry() {
-    cur = w("#wCountry").value;
-    const c = countryOf(cur);
-    w("#wTaxHint").textContent = "country default: " + c.tax_mode + " @ " + (c.tax_rate * 100).toFixed(1) + "%";
-    const avail = payProviders.filter(p => (availBy[p.id] || new Set()).has(cur)).map(p => p.id);
-    m.querySelectorAll("[data-gw]").forEach(cb => {
-      const supported = cb.dataset.countries.split(" ").includes(cur);
-      cb.closest("label").style.opacity = supported ? "1" : ".35";
-      cb.disabled = !supported;
-      if (!supported) cb.checked = false;
-    });
-    if (!t) avail.slice(0, 2).concat("cod").forEach(id => { const cb = m.querySelector('[data-gw="' + id + '"]'); if (cb && !cb.disabled) cb.checked = true; });
-    w("#wGwHint").textContent = avail.length + " available in " + cur;
-  }
-  w("#wCountry").onchange = syncCountry;
-  function syncAll() { const allOn = w("#wAllInd").checked; m.querySelectorAll("[data-ind]").forEach(c => { c.disabled = allOn; c.closest("label").style.opacity = allOn ? ".4" : "1"; }); }
-  w("#wAllInd").onchange = syncAll; syncAll();
-  if (t) { m.querySelectorAll("[data-gw]").forEach(cb => cb.checked = true); }
-  syncCountry();
-  w("#wGo").onclick = async () => {
-    try {
-      const inds = w("#wAllInd").checked ? [] : [...m.querySelectorAll("[data-ind]:checked")].map(c => c.dataset.ind);
-      const pays = [...m.querySelectorAll("[data-gw]:checked")].map(c => c.dataset.gw);
-      const payload = {
-        name: w("#wName").value, slug: w("#wSlug").value, tagline: w("#wTag").value, mode: w("#wMode").value,
-        owner: { name: w("#wOwnName").value, email: w("#wOwnEmail").value, password: w("#wOwnPass").value, phone: w("#wOwnPhone").value },
-        jurisdiction: { country: cur, state: w("#wState").value, legalName: w("#wLegal").value, taxId: w("#wTaxId").value, registrationAddress: w("#wReg").value },
-        tax: { mode: w("#wTaxMode").value || null, rate: w("#wTaxRate").value === "" ? null : Number(w("#wTaxRate").value) },
-        industries: inds, gateways: pays.length ? pays : null, plan_id: Number(w("#wPlan").value), seedCatalog: w("#wSeed").checked
-      };
-      if (t && !payload.owner.password) delete payload.owner;
-      if (t && !payload.owner.email) delete payload.owner;
-      if (t) await api("/platform/tenants/" + t.id, "PUT", payload);
-      else await api("/platform/tenants", "POST", payload);
-      m.innerHTML = ""; toast(t ? "Store updated" : "Store launched"); render();
-    } catch (e) { toast(e.message); }
-  };
+  const availPay = payProviders.filter(p => (availBy[p.id] || new Set()).has(cur));
+  const availShip = shipProviders.filter(p => (availBy[p.id] || new Set()).has(cur) || p.id === "house-std");
+  const stepName = WZ_STEPS[wz.step][0];
+  const pct = Math.round((wz.step / (WZ_STEPS.length - 1)) * 100);
+
+  const stepper = `<div class="wz-steps">${WZ_STEPS.map((s, i) => {
+    const done = wzStepDone(wz, i);
+    return `<button class="wz-step ${i === wz.step ? "on" : ""} ${i < wz.step ? "past" : ""}" data-goto="${i}">
+      <span class="wz-dot">${i < wz.step ? "✓" : i + 1}</span><span class="wz-lbl">${s[2]} ${s[1]}</span>
+      ${done && i !== wz.step ? '<span class="wz-ok" title="configured">●</span>' : ""}</button>`;
+  }).join("")}</div>`;
+
+  let body = "";
+  if (stepName === "identity") body = `
+    <fieldset><legend>Store identity</legend>
+      <div class="row"><label><span>Store name *</span><input id="wName" value="${esc(d.name || "")}" placeholder="NOVA MART"></label>
+      <label><span>Slug (web address) *</span><input id="wSlug" value="${esc(d.slug || "")}" ${editing ? "disabled" : ""} placeholder="nova"></label></div>
+      <label><span>Tagline</span><input id="wTag" value="${esc(d.tagline || "")}" placeholder="Everything you need, delivered fast"></label>
+      <label><span>Deployment mode</span><select id="wMode">${meta.deployModes.map(x => `<option value="${x.key}" ${d.mode === x.key ? "selected" : ""}>${x.name} — ${x.desc}</option>`).join("")}</select></label>
+    </fieldset>
+    <fieldset><legend>Brand colours</legend>
+      <div class="row3"><label><span>Primary</span><input id="wCol1" type="color" value="${esc((d.brand && d.brand.colors && d.brand.colors.primary) || "#FF9900")}"></label>
+      <label><span>Secondary</span><input id="wCol2" type="color" value="${esc((d.brand && d.brand.colors && d.brand.colors.secondary) || "#007185")}"></label>
+      <label><span>Accent</span><input id="wCol3" type="color" value="${esc((d.brand && d.brand.colors && d.brand.colors.accent) || "#FFD700")}"></label></div>
+      <p class="p-tag">Colours apply to the storefront header, buttons and badges immediately after launch.</p>
+    </fieldset>`;
+  else if (stepName === "owner") body = `
+    <fieldset><legend>Owner / operator account</legend>
+      <p class="p-tag">This person becomes the store's first administrator and receives the sign-in details.</p>
+      <div class="row3"><label><span>Full name *</span><input id="wOwnName" value="${esc(d.owner && d.owner.name || "")}" placeholder="Nora Vey"></label>
+      <label><span>Email *</span><input id="wOwnEmail" type="email" value="${esc(d.owner && d.owner.email || "")}" placeholder="owner@nova.shop"></label>
+      <label><span>Phone</span><input id="wOwnPhone" value="${esc(d.owner && d.owner.phone || "")}" placeholder="+1…"></label></div>
+      <label><span>Password ${editing ? "(leave blank to keep the current one)" : "* (min 6 chars)"}</span><input id="wOwnPass" type="password" placeholder="······"></label>
+    </fieldset>`;
+  else if (stepName === "jurisdiction") body = `
+    <fieldset><legend>Where the store operates</legend>
+      <label><span>Country (sets currency, language and tax rules automatically) *</span><select id="wCountry">${countries.map(c => `<option value="${c.code}" ${cur === c.code ? "selected" : ""}>${esc(c.name)} (${c.code})</option>`).join("")}</select></label>
+      <div class="p-tag" id="wTaxHint"></div>
+    </fieldset>
+    <fieldset><legend>Legal identity</legend>
+      <div class="row3"><label><span>State / Province</span><input id="wState" value="${esc(d.jurisdiction && d.jurisdiction.state || "")}"></label>
+      <label><span>Tax / GST / VAT ID</span><input id="wTaxId" value="${esc(d.jurisdiction && d.jurisdiction.taxId || "")}" placeholder="27AAAAA0000A1Z5"></label>
+      <label><span>Registered legal entity</span><input id="wLegal" value="${esc(d.jurisdiction && d.jurisdiction.legalName || "")}" placeholder="Nova Mart Pvt Ltd"></label></div>
+      <label><span>Registered address</span><input id="wReg" value="${esc(d.jurisdiction && d.jurisdiction.registrationAddress || "")}"></label>
+    </fieldset>
+    <fieldset><legend>Taxation</legend>
+      <div class="row"><label><span>Tax mode (blank = country default)</span><select id="wTaxMode"><option value="">— country default —</option>${taxModes.map(tm => `<option value="${tm.key}" ${d.tax && d.tax.mode === tm.key ? "selected" : ""}>${esc(tm.label)}</option>`).join("")}</select></label>
+      <label><span>Tax rate 0–1 (blank = country default)</span><input id="wTaxRate" type="number" step="0.001" min="0" max="1" value="${d.tax && d.tax.rate != null ? d.tax.rate : ""}"></label></div>
+    </fieldset>`;
+  else if (stepName === "payments") body = `
+    <fieldset><legend>Payment gateways <span class="p-tag" id="wGwHint"></span></legend>
+      <p class="p-tag">Shoppers can pay with the methods you enable. Cash on delivery is always available; the rest need API keys from the provider (add them later in the store console).</p>
+      <div id="wGwGrid">${payProviders.map(p => `<label><input type="checkbox" data-gw="${p.id}" data-countries="${[...(availBy[p.id] || [])].join(" ")}" ${d.gateways && d.gateways.includes(p.id) ? "checked" : ""}> ${p.emoji} ${esc(p.name)} <span class="p-tag">${p.feePct}%</span></label>`).join("")}</div>
+    </fieldset>`;
+  else if (stepName === "shipping") body = `
+    <fieldset><legend>Carriers <span class="p-tag" id="wShipHint"></span></legend>
+      <p class="p-tag">Pick the carriers that deliver your orders. In-house shipping is always on.</p>
+      <div id="wShipGrid">${shipProviders.map(p => `<label><input type="checkbox" data-ship="${p.id}" data-countries="${[...(availBy[p.id] || [])].join(" ")}" ${d.shippingCarriers && d.shippingCarriers.includes(p.id) ? "checked" : ""}> ${p.emoji || "📦"} ${esc(p.name)}</label>`).join("")}</div>
+    </fieldset>
+    <fieldset><legend>Delivery promise</legend>
+      <div class="row3"><label><span>Free shipping over</span><input id="wFreeShip" type="number" step="any" min="0" value="${d.shipping && d.shipping.freeShipThreshold != null ? d.shipping.freeShipThreshold : 35}"></label>
+      <label><span>Standard shipping fee</span><input id="wShipFee" type="number" step="any" min="0" value="${d.shipping && d.shipping.shipFee != null ? d.shipping.shipFee : 5.99}"></label>
+      <label><span>Priority days</span><input id="wDaysP" type="number" min="0" value="${d.shipping && d.shipping.daysPriority != null ? d.shipping.daysPriority : 2}"></label></div>
+      <label><span>Standard delivery days</span><input id="wDaysS" type="number" min="0" value="${d.shipping && d.shipping.daysStandard != null ? d.shipping.daysStandard : 5}"></label>
+    </fieldset>`;
+  else if (stepName === "catalogue") body = `
+    <fieldset><legend>Product categories</legend>
+      <p class="p-tag"><label style="display:inline"><input type="checkbox" id="wAllInd" ${(!d.industries || !d.industries.length) ? "checked" : ""}> All categories (universal marketplace)</label></p>
+      <div id="wIndGrid" class="ind-grid">${industries.map(i => `<label><input type="checkbox" data-ind="${i.key}" ${d.industries && d.industries.includes(i.key) ? "checked" : ""}> ${i.icon} ${esc(i.name)}</label>`).join("")}</div>
+    </fieldset>
+    ${editing ? "" : `<fieldset><legend>Seed catalogue</legend>
+      <p class="p-tag">A demo catalogue lets you see the storefront working right away — you can replace every product later.</p>
+      <div class="row3"><label><span>Catalogue size</span><select id="wSeedSize">
+        <option value="0" ${!d.seedCatalog ? "selected" : ""}>Empty — no products</option>
+        <option value="25" ${d.seedSize == 25 ? "selected" : ""}>Small · ~25 products</option>
+        <option value="75" ${d.seedSize == 75 ? "selected" : ""}>Medium · ~75 products</option>
+        <option value="200" ${d.seedSize == 200 ? "selected" : ""}>Large · ~200 products</option></select></label>
+        <label><span>Min price</span><input id="wPMin" type="number" step="1" min="0" placeholder="5" value="${d.seedPrice && d.seedPrice.min != null ? d.seedPrice.min : ""}"></label>
+        <label><span>Max price</span><input id="wPMax" type="number" step="1" min="0" placeholder="2000" value="${d.seedPrice && d.seedPrice.max != null ? d.seedPrice.max : ""}"></label></div>
+      <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="wSeedBrands" ${d.seedBrands !== false ? "checked" : ""}> also seed the brands on those products</label>
+    </fieldset>`}`;
+  else if (stepName === "features") body = `
+    <fieldset><legend>Shopper features</legend>
+      <p class="p-tag">Switch on the experiences your store should offer. Everything here can be changed later from the store console.</p>
+      ${[["reviews", "⭐ Reviews & ratings"], ["deals", "🏷️ Deals & coupons"], ["giftCards", "🎁 Gift cards"], ["subscribeSave", "🔁 Subscribe & Save"],
+         ["membership", "👑 Membership program"], ["qna", "💬 Questions & Answers"], ["saveForLater", "💖 Wishlists"], ["buyNow", "⚡ Buy now"],
+         ["countdown", "⏳ Deal countdowns"], ["suggestions", "🧠 Product suggestions"], ["customerService", "🎧 Customer service desk"], ["fraudScreen", "🛡️ Fraud screening"]]
+        .map(([k, l]) => `<label class="chk"><input type="checkbox" data-feat="${k}" ${d.features && d.features[k] ? "checked" : ""}> ${l}</label>`).join("")}
+    </fieldset>`;
+  else body = `
+    <fieldset><legend>Subscription plan</legend>
+      <label><span>Plan</span><select id="wPlan">${plans.plans.map(x => `<option value="${x.id}" ${d.plan_id == x.id ? "selected" : ""}>${esc(x.name)} — ${x.price_month}/mo</option>`).join("")}</select></label>
+    </fieldset>
+    <div class="p-panel"><h2>Ready to ${editing ? "save" : "launch"}</h2>
+      <div class="p-kv">
+        <em>Store</em><span>${esc(d.name || "—")} <code>${esc(d.slug || "—")}</code></span>
+        <em>Owner</em><span>${esc(d.owner && d.owner.email || "—")}</span>
+        <em>Country</em><span>${esc(d.country || "—")}</span>
+        <em>Payments</em><span>${(d.gateways || []).join(", ") || "—"}</span>
+        <em>Carriers</em><span>${(d.shippingCarriers || []).join(", ") || "house only"}</span>
+        <em>Free ship over</em><span>${(d.shipping && d.shipping.freeShipThreshold) || 0}</span>
+        <em>Features</em><span>${d.features ? Object.keys(d.features).filter(k => d.features[k]).join(", ") || "none" : "default"}</span>
+      </div></div>`;
+
+  return `<div class="p-head"><h2>🧭 Setup Wizard ${editing ? "— " + esc(t.name) : ""}</h2>
+    <p class="p-sub">${editing ? "Every step shows the store's current values — change what you need and save." : "One walk, one store: identity → owner → jurisdiction → payments → shipping → catalogue → features → launch. Nothing is committed until you press the final button."}</p></div>
+  <div class="wz-bar"><div class="wz-fill" style="width:${pct}%"></div></div>
+  ${stepper}
+  <div class="p-panel wz-panel">${body}</div>
+  <div class="wz-nav">
+    ${wz.step > 0 ? '<button class="p-btn" data-wz="back">← Back</button>' : ""}
+    <span style="flex:1"></span>
+    ${wz.step < WZ_STEPS.length - 1
+      ? '<button class="p-btn primary" data-wz="next">Next →</button>'
+      : `<button class="p-btn primary" id="wzGo">${editing ? "Save changes" : "🚀 Launch store"}</button>`}
+  </div>`;
 }
+
+/* wizard state moves: gather the current step into the draft, validate, then re-render.
+   Field reads are guarded so a step never crashes on a missing input. */
+function wzRead(wz) {
+  const d = wz.data, g = id => { const el = document.getElementById(id); return el ? el.value : undefined; };
+  const key = WZ_STEPS[wz.step][0];
+  if (key === "identity") {
+    d.name = g("wName"); d.slug = g("wSlug"); d.tagline = g("wTag"); d.mode = g("wMode");
+    d.brand = { colors: { primary: g("wCol1"), secondary: g("wCol2"), accent: g("wCol3") } };
+  } else if (key === "owner") {
+    d.owner = { name: g("wOwnName"), email: g("wOwnEmail"), phone: g("wOwnPhone"), password: g("wOwnPass") };
+  } else if (key === "jurisdiction") {
+    d.country = g("wCountry");
+    d.jurisdiction = { state: g("wState"), legalName: g("wLegal"), taxId: g("wTaxId"), registrationAddress: g("wReg") };
+    d.tax = { mode: g("wTaxMode") || null, rate: g("wTaxRate") === "" || g("wTaxRate") == null ? null : Number(g("wTaxRate")) };
+  } else if (key === "payments") {
+    d.gateways = Array.from(document.querySelectorAll("[data-gw]:checked")).map(x => x.dataset.gw);
+  } else if (key === "shipping") {
+    d.shippingCarriers = Array.from(document.querySelectorAll("[data-ship]:checked")).map(x => x.dataset.ship);
+    d.shipping = { freeShipThreshold: Number(g("wFreeShip")) || 0, shipFee: Number(g("wShipFee")) || 0, daysPriority: Number(g("wDaysP")) || 2, daysStandard: Number(g("wDaysS")) || 5 };
+  } else if (key === "catalogue") {
+    d.industries = document.getElementById("wAllInd") && document.getElementById("wAllInd").checked ? [] : Array.from(document.querySelectorAll("[data-ind]:checked")).map(x => x.dataset.ind);
+    if (!wz.editId) {
+      d.seedCatalog = !!document.getElementById("wSeedSize") && Number(document.getElementById("wSeedSize").value) > 0;
+      d.seedSize = document.getElementById("wSeedSize") ? Number(document.getElementById("wSeedSize").value) : 0;
+      d.seedBrands = document.getElementById("wSeedBrands") ? document.getElementById("wSeedBrands").checked : true;
+      const mn = g("wPMin"), mx = g("wPMax");
+      d.seedPrice = { min: mn === "" || mn == null ? null : Number(mn), max: mx === "" || mx == null ? null : Number(mx) };
+    }
+  } else if (key === "features") {
+    d.features = {}; Array.from(document.querySelectorAll("[data-feat]")).forEach(x => d.features[x.dataset.feat] = x.checked);
+  } else if (key === "plan") {
+    d.plan_id = g("wPlan") ? Number(g("wPlan")) : d.plan_id;
+  }
+}
+function wzValidate(wz) {
+  const d = wz.data, key = WZ_STEPS[wz.step][0];
+  if (key === "identity") {
+    if (!String(d.name || "").trim()) return "Give the store a name";
+    if (!wz.editId && !String(d.slug || "").trim()) return "Give the store a slug (web address)";
+  }
+  if (key === "owner") {
+    const o = d.owner || {};
+    if (String(o.name || "").trim().length < 2) return "The owner needs a full name";
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(o.email || "")) return "The owner email is not valid";
+    if (!wz.editId && String(o.password || "").length < 6) return "The owner password must be at least 6 characters";
+  }
+  if (key === "jurisdiction" && !d.country) return "Pick the country the store operates in";
+  return null;
+}
+/* /meta carries the country rows the wizard needs for tax/currency hints; cache them once
+   so re-rendering a step never re-fetches. */
+let _metaCountries = null;
+function countryHint(code) { return _metaCountries ? (_metaCountries.find(c => c.code === code) || null) : null; }
+function wzSyncCountry() {
+  const sel = document.getElementById("wCountry");
+  /* the payments/shipping steps have no country select — filter against the draft's
+     chosen country so a store can never offer a gateway its jurisdiction forbids */
+  const code = sel ? sel.value : (WZ && WZ.data && WZ.data.country) || "US";
+  const c = countryHint(code);
+  const hint = document.getElementById("wTaxHint");
+  if (hint && c) hint.textContent = "default tax: " + c.tax_mode + " @ " + ((c.tax_rate || 0) * 100).toFixed(1) + "% · currency " + (c.currency || "?");
+  const grid = document.getElementById("wGwGrid");
+  if (grid) {
+    grid.querySelectorAll("[data-gw]").forEach(cb => {
+      const ok = cb.dataset.countries.split(" ").includes(code);
+      cb.closest("label").style.opacity = ok ? "1" : ".35"; cb.disabled = !ok;
+      if (!ok) cb.checked = false;
+    });
+    const n = Array.from(grid.querySelectorAll("[data-gw]:not([disabled])")).length;
+    const h = document.getElementById("wGwHint"); if (h) h.textContent = n + " available in " + code;
+  }
+  const sg = document.getElementById("wShipGrid");
+  if (sg) {
+    sg.querySelectorAll("[data-ship]").forEach(cb => {
+      const ok = cb.dataset.countries.split(" ").includes(code);
+      cb.closest("label").style.opacity = ok ? "1" : ".35"; cb.disabled = !ok;
+      if (!ok) cb.checked = false;
+    });
+    const n = Array.from(sg.querySelectorAll("[data-ship]:not([disabled])")).length;
+    const h = document.getElementById("wShipHint"); if (h) h.textContent = n + " available in " + code;
+  }
+}
+function wzSyncAll() {
+  const all = document.getElementById("wAllInd");
+  if (all) { const on = all.checked; document.querySelectorAll("[data-ind]").forEach(c => { c.disabled = on; c.closest("label").style.opacity = on ? ".4" : "1"; }); }
+}
+function wireSetup() {
+  const b = $("#vBody"); if (!b) return;
+  const countrySel = document.getElementById("wCountry");
+  if (countrySel) {
+    if (!_metaCountries) api("/meta").then(m => { _metaCountries = m.countries || []; wzSyncCountry(); }).catch(() => {});
+    else wzSyncCountry();
+    countrySel.onchange = wzSyncCountry;
+  }
+  wzSyncCountry(); /* payments/shipping steps: apply the draft's country to availability */
+  const allInd = document.getElementById("wAllInd");
+  if (allInd) { allInd.onchange = wzSyncAll; wzSyncAll(); }
+  b.querySelectorAll("[data-goto]").forEach(btn => btn.onclick = () => {
+    const i = Number(btn.dataset.goto);
+    /* always harvest the visible step first: an operator who typed a value and then
+       tapped a later step in the rail would otherwise lose it */
+    wzRead(WZ);
+    if (i > WZ.step) { const err = wzValidate(WZ); if (err) { toast(err); return; } }
+    WZ.step = i; render();
+  });
+  b.querySelectorAll("[data-wz]").forEach(btn => btn.onclick = () => {
+    const dir = btn.dataset.wz;
+    wzRead(WZ);
+    if (dir === "next") { const err = wzValidate(WZ); if (err) { toast(err); return; } WZ.step = Math.min(WZ_STEPS.length - 1, WZ.step + 1); }
+    else WZ.step = Math.max(0, WZ.step - 1);
+    render();
+  });
+  const go = document.getElementById("wzGo");
+  if (go) go.onclick = async () => {
+    wzRead(WZ);
+    const err = wzValidate(WZ); if (err) { toast(err); return; }
+    const d = WZ.data, editing = !!WZ.editId;
+    if ((d.mode === "industry" || d.mode === "brand") && !(d.industries || []).length) { toast("Pick at least one category for an industry/brand store"); WZ.step = 5; render(); return; }
+    if (!editing && !(d.gateways || []).length) d.gateways = null;
+    const payload = {
+      name: d.name, slug: d.slug, tagline: d.tagline, mode: d.mode,
+      brand: { name: d.name, tagline: d.tagline || undefined, colors: d.brand && d.brand.colors || {} },
+      /* the wizard carries the chosen country apart from the jurisdiction object (the
+         payments/shipping steps filter availability off it); the API reads jurisdiction.country */
+      owner: d.owner, jurisdiction: { ...(d.jurisdiction || {}), country: d.country }, tax: d.tax, industries: d.industries || [],
+      gateways: d.gateways, shippingCarriers: d.shippingCarriers, shipping: d.shipping, features: d.features,
+      plan_id: d.plan_id, seedCatalog: editing ? false : !!d.seedCatalog,
+      seedSize: d.seedSize || 0, seedBrands: d.seedBrands, seedPrice: d.seedPrice || {}
+    };
+    if (editing) { delete payload.slug; delete payload.seedCatalog; delete payload.seedSize; delete payload.seedPrice; delete payload.seedBrands; }
+    if (editing && d.owner && !d.owner.password) delete payload.owner;
+    go.disabled = true; go.textContent = "Saving…";
+    try {
+      const r = editing
+        ? await api("/platform/tenants/" + WZ.editId, "PUT", payload)
+        : await api("/platform/tenants", "POST", payload);
+      toast(editing ? "Store updated" : "Store launched");
+      const launched = r.tenant;
+      WZ = null; view = "tenants"; render();
+      setTimeout(() => openSetupDone(launched.id, launched.slug), 60);
+    } catch (e) { toast(e.message); go.disabled = false; go.textContent = editing ? "Save changes" : "🚀 Launch store"; }
+  };
+  const nw = document.getElementById("wzNew");
+  if (nw) nw.onclick = () => { WZ = wzFresh(null); render(); };
+}
+/* post-launch checklist: what the operator has configured, and what's still open */
+async function openSetupDone(tid, slug) {
+  try {
+    const r = await api(`/platform/tenants/${tid}/setup`);
+    const rows = r.steps.map(s => `<tr><td>${s.done ? "✅" : "◻️"}</td><td><b>${esc(s.label)}</b></td><td class="p-tag">${esc(s.note || "")}</td>
+      <td>${s.done ? "" : `<button class="p-btn sm" data-fix="${s.key}">Configure</button>`}</td></tr>`).join("");
+    const m = modal(`<div class="p-modal-head"><h3>${r.done}/${r.total} configured — ${esc(r.tenant.name)}</h3><button data-mclose>✕</button></div>
+      <p class="p-sub">Steps you skip now can be finished any time from this wizard or the store console.</p>
+      <table class="p-table"><thead><tr><th></th><th>Step</th><th>Status</th><th></th></tr></thead><tbody>${rows}</tbody></table>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <a class="p-btn primary" href="/index.html?store=${esc(slug)}" target="_blank">View storefront</a>
+        <a class="p-btn" href="/admin.html?store=${esc(slug)}" target="_blank">Open store console</a>
+        <button class="p-btn" data-wzclose>Done</button></div>`);
+    m.querySelectorAll("[data-fix]").forEach(b => b.onclick = () => { m.innerHTML = ""; openSetupWizard(tid); });
+    const c = m.querySelector("[data-wzclose]"); if (c) c.onclick = () => { m.innerHTML = ""; };
+  } catch (e) { toast(e.message); }
+}
+
 async function vAI() {
   const d = await api("/platform/ai");
   const cap = d.capabilities || [], prov = d.providers || [], plans = d.plans || [], tiers = d.tierByTenant || [];
@@ -2020,6 +2280,7 @@ async function render() {
   const body = $("#vBody");
   try {
     if (view === "dash") body.innerHTML = await vDash();
+    else if (view === "setup") { body.innerHTML = await vSetup(); wireSetup(); }
     else if (view === "provisioning") body.innerHTML = await vProvisioning();
     else if (view === "tenants") body.innerHTML = await vTenants();
     else if (view === "plans") body.innerHTML = await vPlans();

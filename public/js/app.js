@@ -60,6 +60,7 @@ function dShort(days) { return dDate(days).toLocaleDateString(CFG.commerce.local
 function daysP() { return CFG.commerce.daysPriority; }
 function daysS() { return CFG.commerce.daysStandard; }
 function deptLabel(d) { const x = CFG.departments.find(z => z.key === d); return x ? x.label : d; }
+function brandLabel(b) { const x = (CFG.brands || []).find(z => z.key === b || z.label === b); return x ? x.label : b; }
 function humanize(k) { return String(k).replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()); }
 function stockText(p) {
   if (!p.st) return `<span class="oos">${esc(T("outOfStock"))}</span>`;
@@ -315,19 +316,24 @@ async function pageResults() {
   const q = u.get("q") || "", dept = u.get("dept") || "all", sort = u.get("sort") || "featured", node = u.get("node") || "", ptype = u.get("type") || "";
   const page = Math.max(1, Number(u.get("page") || 1));
   const rating = Number(u.get("rating") || 0);
+  const brand = u.get("brand") || "";
   const pmin = Number(u.get("pmin") || 0), pmax = Number(u.get("pmax") || 0);
   const prio = u.get("prio") ? 1 : 0, deal = u.get("deal") ? 1 : 0;
   const main = $("#page");
   main.innerHTML = `<div class="loading">Searching…</div>`;
-  const res = await api(`/products?${qs({ q, dept: dept === "all" ? "" : dept, sort, page, rating, pmin, pmax, prio, deal, node, type: ptype })}`);
+  const res = await api(`/products?${qs({ q, dept: dept === "all" ? "" : dept, sort, page, rating, pmin, pmax, prio, deal, node, type: ptype, brand })}`);
   document.title = (q ? `${q} — ` : "") + CFG.brand.name;
-  const mk = over => "results.html?" + qs({ q, dept, sort, page, rating, pmin, pmax, prio, deal, node, type: ptype, ...over });
+  const mk = over => "results.html?" + qs({ q, dept, sort, page, rating, pmin, pmax, prio, deal, node, type: ptype, brand, ...over });
   const chip = (label, url, on) => `<a class="${on ? "fchip on" : "fchip"}" href="${url}">${label}${on ? " ✕" : ""}</a>`;
   const buckets = [[0, 25], [25, 50], [50, 100], [100, 200], [200, 0]];
   const nodeInfo = node ? (await api("/taxonomy")).flat.find(n => String(n.id) === node) : null;
+  /* the brand facet counts come from the search engine, which already indexes brand;
+     unknown keys (a product whose brand is not yet a brands row) still count under
+     their own key so the facet never hides matching products */
+  const brandCounts = Object.entries(res.facets || {}).filter(([k]) => k.startsWith("brand:")).map(([k, v]) => [k.slice(6), v]).sort((a, b) => b[1] - a[1]);
   main.innerHTML = `
   <div class="r-top"><span>${nodeInfo ? "Category: <b>" + esc(nodeInfo.name) + "</b>" : "Department: <b>" + esc(deptLabel(dept) || "All") + "</b>"}</span>
-    <div class="r-fchips">${q ? chip(`"${esc(q)}"`, mk({ q: "" }), false) : ""}${deal ? chip("Offers", mk({ deal: "" }), true) : ""}${prio ? chip(T("priorityBadge"), mk({ prio: "" }), true) : ""}${rating ? chip(rating + "★ & up", mk({ rating: "" }), true) : ""}${ptype ? chip(humanize(ptype), mk({ type: "" }), true) : ""}</div></div>
+    <div class="r-fchips">${q ? chip(`"${esc(q)}"`, mk({ q: "" }), false) : ""}${deal ? chip("Offers", mk({ deal: "" }), true) : ""}${prio ? chip(T("priorityBadge"), mk({ prio: "" }), true) : ""}${rating ? chip(rating + "★ & up", mk({ rating: "" }), true) : ""}${ptype ? chip(humanize(ptype), mk({ type: "" }), true) : ""}${brand ? chip(brandLabel(brand), mk({ brand: "" }), true) : ""}</div></div>
   <div class="r-toolbar"><span class="r-count">${res.total ? `${(res.page - 1) * res.per + 1}–${Math.min(res.page * res.per, res.total)} of ${res.total}` : "0"} results${q ? ` for "<i>${esc(q)}</i>"` : ""}</span>
     <select id="sortSel">${[["featured", "Featured"], ["price-asc", "Price · Low to High"], ["price-desc", "Price · High to Low"], ["rating", "Most Praised"], ["new", "Newest"], ["discount", "Biggest Offers"], ["best", "Best Sellers"]].map(([v, l]) => `<option value="${v}" ${sort === v ? "selected" : ""}>${l}</option>`).join("")}</select></div>
   <div class="r-cols">
@@ -335,6 +341,7 @@ async function pageResults() {
       <div class="r-sec"><h4>Department</h4><a class="${dept === "all" && !node ? "on" : ""}" href="${mk({ dept: "all", node: "" })}">All</a>
         ${Object.entries(res.deptCounts).sort((a, b) => b[1] - a[1]).map(([d, c]) => `<a class="${dept === d ? "on" : ""}" href="${mk({ dept: d, node: "" })}">${esc(deptLabel(d))} (${c})</a>`).join("")}</div>
       <div class="r-sec"><h4>Product Type</h4>${META.productTypes.slice(0, 10).map(t => `<a class="${ptype === t.key ? "on" : ""}" href="${mk({ type: ptype === t.key ? "" : t.key })}">${t.icon} ${esc(t.name)}</a>`).join("")}</div>
+      ${brandCounts.length ? `<div class="r-sec"><h4>Brand</h4>${brandCounts.slice(0, 12).map(([b, c]) => `<a class="${brand === b ? "on" : ""}" href="${mk({ brand: brand === b ? "" : b, page: 1 })}">${esc(brandLabel(b))} (${c})</a>`).join("")}</div>` : ""}
       <div class="r-sec"><h4>Rating</h4>${[4, 3, 2].map(n => `<a href="${mk({ rating: rating === n ? "" : n })}" class="${rating === n ? "on" : ""}">${starsHtml(n)} ${n}★ & up</a>`).join("")}</div>
       <div class="r-sec"><h4>Price</h4>${buckets.map(([a, b]) => `<a class="${pmin === a && pmax === b ? "on" : ""}" href="${mk({ pmin: a, pmax: b || "" })}">${b ? `${money(a)} – ${money(b)}` : `${money(a)} & above`}</a>`).join("")}</div>
       <div class="r-sec"><h4>Offers</h4>${CFG.features.deals ? `<a class="${deal ? "on" : ""}" href="${mk({ deal: deal ? "" : 1 })}">The Edit · offers</a>` : ""}<a class="${prio ? "on" : ""}" href="${mk({ prio: prio ? "" : 1 })}">${prioBadge()}</a></div>
@@ -393,12 +400,12 @@ async function pageProduct() {
 
   main.innerHTML = `
   <div class="pp">
-    <div class="crumbs"><a href="index.html">Home</a> › <a href="results.html?dept=${p.d}">${esc(deptLabel(p.d))}</a> › <a href="results.html?dept=${p.d}">${esc(p.b)}</a>${p.type !== "physical" ? ` › <span>${esc(typeIcon(p.type))}</span>` : ""}</div>
+    <div class="crumbs"><a href="index.html">Home</a> › <a href="results.html?dept=${p.d}">${esc(deptLabel(p.d))}</a> › <a href="results.html?dept=${p.d}&brand=${encodeURIComponent(p.b)}">${esc(brandLabel(p.b))}</a>${p.type !== "physical" ? ` › <span>${esc(typeIcon(p.type))}</span>` : ""}</div>
     <div class="pp-grid">
       <div class="pp-gallery"><div class="pp-thumbs">${thumbs}</div><div class="pp-main" id="ppMain">${mediaTile(media[0], 0)}</div></div>
       <div class="pp-info">
         <h1>${esc(p.t)}</h1>
-        <a class="pp-brand">${esc(p.b)} · ${esc(deptLabel(p.d))}</a>
+        <a class="pp-brand" href="results.html?brand=${encodeURIComponent(p.b)}">${esc(brandLabel(p.b))} · ${esc(deptLabel(p.d))}</a>
         <div class="pp-rate">${starsHtml(p.r)}<a class="pp-rcount">${p.c.toLocaleString(CFG.commerce.locale)} ratings</a>${p.fl.includes("bs") ? `<span class="pp-bestsell">House Favourite</span>` : ""}${p.fl.includes("new") ? `<span class="pp-new">New Season</span>` : ""}</div>
         <hr><div class="pp-price-row">${priceHtml(p.p)}${p.l > p.p ? `<span class="pp-off">−${discount(p)}%</span> <s class="pp-list">${money(p.l)}</s>` : ""}${isRental ? '<span class="pp-cycle">/ rental period</span>' : ""}${isSub ? '<span class="pp-cycle">/ month</span>' : ""}</div>
         ${tiers.length ? `<table class="pp-tiers"><tr><th>Qty</th><th>Unit Price</th></tr>${tiers.map(t => `<tr><td>${t.qty}+</td><td>${money(t.price)}</td></tr>`).join("")}</table><p class="pp-b2b">B2B volume pricing — <a href="#" data-act="rfq-open" data-id="${p.id}">submit an RFQ</a> for larger lots.</p>` : ""}

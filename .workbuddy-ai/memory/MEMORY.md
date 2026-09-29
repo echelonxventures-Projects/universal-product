@@ -505,6 +505,47 @@ three store views unreachable:
   "Token issued for a different store". The fix was the test's — a fresh tab must still
   carry its OWN `azs` cookie. Same shape as the jsdom cookie lesson: **cookies must be
   sent with the request; `fetch` with no header is not a browser tab.**
-- **Suite: 691 E2E + 231 parity + 197 conformance, 0 failures** (8 new assertions:
-  impersonate URL, unauthenticated tab, single-use promotion, admin API readable,
-  replay refused, affiliate nav + view render).
+  - **Suite: 691 E2E + 231 parity + 197 conformance + 31 wizard, 0 failures** (8 new assertions:
+    impersonate URL, unauthenticated tab, single-use promotion, admin API readable,
+    replay refused, affiliate nav + view render).
+
+### 2026-09-29 (session 8) — resuming the wizard + brands work; the brand ref silently blocked every product save
+The uncommitted tree held the **guided setup wizard** (platform console → 🧭 Setup Wizard:
+identity → owner → jurisdiction & tax → payments → shipping → catalogue → features → plan)
+and **brands as first-class data** (`brands` table + entity + RBAC `brands` section +
+storefront brand facet). The wizard's own suite (`test/wizard.js`, 31 assertions, wired into
+`npm test`) passed, but the main suite had **one real failure**: a media row entered through
+the structured editor never round-tripped — because **the form never saved at all**.
+
+- **Root cause was the brand ref, not the media editor.** `entity.js` changed product
+  `brand` to `ref:brand`, but the brands universe and the product's brand column speak two
+  different alphabets: `refOptions()` derives option values from `r.id != null ? r.id : r.key`
+  — for brand rows that's the numeric row id, while `products.brand` holds the brand's
+  DISPLAY NAME ("Volt Motors"). The select matched nothing, rendered empty, and since brand
+  is `required`, `validateRow()` refused the save with a toast the test couldn't see —
+  every product edit was silently dead. The media editor's own model was provably correct
+  (`formEditors.media()` returned the URL row via `window.eval`); the write never fired.
+  **The failing assertion was a symptom; verify the save itself before debugging the editor.**
+- Fix (two layers): `refOptions` maps `ref:brand` to its LABEL (what the catalogue, search
+  facets, order snapshots and CSV exports all carry — same alphabet the rest of the system
+  has always used), AND every `ref:` select now appends the record's current value as a
+  fallback option when nothing matches — a renamed/deleted/legacy reference must stay
+  *representable* or a required ref blocks every save of that record forever.
+  `brandLabel()` on the storefront resolves key OR label, so both representations display.
+- **Boot-order note**: `bootstrap()` ran `seedTenantBrands(t1)` BEFORE `seedTenantCatalog(t1)`,
+  so the flagship's demo products were seeded after their brands; the boot-tail backfill is
+  what promotes them (fine — it's idempotent and boot-only).
+- **Live verification (8787, restarted)**: the flagship has 1,980 brand rows (honest data —
+  activated universe offerings carry the universe name as their brand, `ucos-catalog.js:41`,
+  and the backfill promotes whatever distinct strings products carry), `volt-motors` exists,
+  VR-VEHI-01 saves round-trip, `/api/platform/tenants/1/setup` reports 6/9 (identity /
+  jurisdiction / tax honestly pending — the flagship predates the wizard). The generic
+  entity read is capped at 500 rows, so a brand select can list ~500 options for a wide
+  catalogue — acceptable, it's real data.
+- **Open, deliberately not started**: `lib/tenancy.js` (untracked) — the Platform → Tenant →
+  Org → BU → Brand → Store → Channel hierarchy with a config cascade — is written but wired
+  to nothing (no route, no console, no seed). `dbg12.mjs` is scratch from the brand debugging.
+  The deeper end-state (products referencing brands by KEY so renames propagate, à la
+  `department`) was declined as feature-sized: ~10 storefront `p.b` render sites plus
+  CSV/AI/order-snapshot surfaces would need `brandLabel()` wrapping, and the current label
+  alphabet has zero regression surface.

@@ -194,7 +194,27 @@ body.portal { margin: 0; font: 14px/1.5 var(--p-font); background: var(--p-bg); 
 .p-form .chk input { width: 18px; height: 18px; accent-color: var(--p-accent); min-height: 0; }
 .p-form label em.p-tag { display: block; font-style: normal; }
 
-/* ---------- validation ---------- */
+/* ---------- guided setup wizard ---------- */
+.wz-bar { height: 6px; background: var(--p-line); border-radius: 99px; overflow: hidden; margin: 0 0 16px; }
+.wz-fill { height: 100%; background: linear-gradient(90deg, var(--p-accent), var(--p-accent-deep)); border-radius: 99px; transition: width .3s ease; }
+.wz-steps { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+.wz-step { display: inline-flex; align-items: center; gap: 7px; background: var(--p-panel); border: 1px solid var(--p-line-strong); color: var(--p-muted); border-radius: 99px; padding: 6px 13px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s; }
+.wz-step:hover { border-color: var(--p-accent); color: var(--p-accent-deep); }
+.wz-step.on { background: var(--p-accent); border-color: var(--p-accent); color: #fff; box-shadow: 0 1px 3px rgba(11, 99, 206, .35); }
+.wz-step.past { color: var(--p-green); border-color: #BFDCC9; }
+.wz-dot { display: inline-grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; background: rgba(0,0,0,.06); font-size: 11px; }
+.wz-step.on .wz-dot { background: rgba(255,255,255,.25); }
+.wz-ok { color: var(--p-green); font-size: 8px; }
+.wz-nav { display: flex; align-items: center; gap: 10px; margin-top: 4px; }
+.wz-panel { min-height: 220px; }
+.wz-panel .p-kv { grid-template-columns: 130px 1fr; }
+
+@media (max-width: 768px) {
+  .wz-steps { gap: 5px; }
+  .wz-step { padding: 5px 9px; font-size: 11px; }
+  .wz-step .wz-lbl { max-width: 92px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+
 .p-form input.field-invalid, .p-form select.field-invalid, .p-form textarea.field-invalid { border-color: var(--p-red); background: var(--p-red-soft); }
 .p-form input.field-valid, .p-form select.field-valid, .p-form textarea.field-valid { border-color: #9CC7AE; background: #F2FAF5; }
 .p-form label:has(.field-invalid) span { color: var(--p-red); }

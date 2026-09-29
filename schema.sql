@@ -1214,6 +1214,20 @@ CREATE TABLE IF NOT EXISTS departments (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS ix_dept_tenant ON departments(tenant_id, key);
 
+CREATE TABLE IF NOT EXISTS brands (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tenant_id INTEGER NOT NULL,
+  key TEXT NOT NULL UNIQUE,
+  label TEXT NOT NULL,
+  icon TEXT,
+  logo TEXT,
+  story TEXT,
+  country TEXT,
+  active INTEGER NOT NULL DEFAULT 1,
+  position INTEGER NOT NULL DEFAULT 0
+);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_brand_tenant ON brands(tenant_id, key);
+
 CREATE TABLE IF NOT EXISTS attribute_defs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   tenant_id INTEGER NOT NULL,

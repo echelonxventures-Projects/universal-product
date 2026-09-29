@@ -51,7 +51,7 @@ function toast(msg) {
    canSee() still key off the flat list, and NAVFLAT drives title lookup. */
 const NAV = [
   { g: "Overview", items: [["dash", "◈ Dashboard"], ["analytics", "📊 Analytics"], ["monitor", "📈 Monitor"]] },
-  { g: "Catalogue", items: [["products", "📦 Products"], ["gcatalog", "🌐 Global Catalog"], ["skus", "🔖 SKUs & Inventory"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["search", "🔎 Search & Discovery"], ["content", "🖼️ Home Content"]] },
+  { g: "Catalogue", items: [["products", "📦 Products"], ["brands", "🏷️ Brands"], ["gcatalog", "🌐 Global Catalog"], ["skus", "🔖 SKUs & Inventory"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["search", "🔎 Search & Discovery"], ["content", "🖼️ Home Content"]] },
   { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"], ["planning", "📦 Planning & Replenishment"], ["suppliers", "🚚 Suppliers & Procurement"]] },
   { g: "Marketplace & B2B", items: [["sellers", "🏪 Sellers"], ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["marketplace", "📣 Marketplace & Ads"]] },
   { g: "Commerce Ops", items: [["qcops", "⚡ Quick-commerce"], ["finops", "💸 Fintech Ops"], ["mktops", "🏪 Marketplace Ops"], ["tradeops", "🤝 Trade Ops"]] },
@@ -571,7 +571,17 @@ function validateRow(row, def) {
   return errors;
 }
 async function entityRows(key) { try { return (await api("/meta/entity/" + key)).rows; } catch (e) { return []; } }
-async function refOptions(key) { const rows = await entityRows(key); return rows.map(r => ({ v: r.id != null ? r.id : r.key, l: r.title || r.name || r.label || r.code || r.ref || String(r.id || r.key) })); }
+async function refOptions(key) {
+  const rows = await entityRows(key);
+  return rows.map(r => {
+    /* products carry their brand as the brand's DISPLAY NAME (the string the catalogue,
+       search facets, order snapshots and CSV exports all read), so the option value must
+       be the label — the numeric row id would never match a real product and the form
+       would render an empty required select and refuse every save. */
+    if (key === "brand" && r.label != null) return { v: r.label, l: r.label };
+    return { v: r.id != null ? r.id : r.key, l: r.title || r.name || r.label || r.code || r.ref || String(r.id || r.key) };
+  });
+}
 async function fieldInput(f, val, registry) {
   const id = "f_" + f.key;
   if (f.type === "bool") return `<label><span>${esc(f.label)}</span><input type="checkbox" id="${id}" ${val ? "checked" : ""}></label>`;
@@ -592,7 +602,12 @@ async function fieldInput(f, val, registry) {
   }
   if (f.type.startsWith("ref:")) {
     const opts = await refOptions(f.type.slice(4));
-    return `<label><span>${esc(f.label)}</span><select id="${id}"><option value="">—</option>${opts.map(o => `<option value="${esc(o.v)}" ${String(o.v) === String(val) ? "selected" : ""}>${esc(o.l)}</option>`).join("")}</select></label>`;
+    /* a record holding a value the registry no longer lists (a brand renamed or deleted
+       underneath it, a legacy free-text value) must still be *representable*: without a
+       matching option the select renders empty, and a REQUIRED ref then fails validation
+       and silently blocks every save of that record — the value survives, unseen. */
+    const unmatched = val != null && val !== "" && !opts.some(o => String(o.v) === String(val));
+    return `<label><span>${esc(f.label)}</span><select id="${id}"><option value="">—</option>${unmatched ? `<option value="${esc(val)}" selected>${esc(val)}</option>` : ""}${opts.map(o => `<option value="${esc(o.v)}" ${String(o.v) === String(val) ? "selected" : ""}>${esc(o.l)}</option>`).join("")}</select></label>`;
   }
   const t = f.type === "money" || f.type === "number" ? "number" : f.type === "date" ? "date" : "text";
   const minAttr = f.min !== undefined ? `min="${f.min}"` : "";
@@ -1446,6 +1461,7 @@ async function render() {
     else if (view === "goip") { body.innerHTML = await vGoip(); wireGoip(); }
     else if (view === "content") body.innerHTML = await entityTable("banner") + await entityTable("card") + await entityTable("department");
     else if (view === "taxonomy") body.innerHTML = await entityTable("taxonomy");
+    else if (view === "brands") body.innerHTML = await entityTable("brand");
     else if (view === "attributes") body.innerHTML = await entityTable("attribute");
     else if (view === "payments") { body.innerHTML = await vPayments(); wirePayments(); }
     else if (view === "settings") { body.innerHTML = await vSettings(); wireSettings(); }
