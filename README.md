@@ -27,7 +27,7 @@ Runtime backends are **config**, not code — default to in-process (SQLite + me
 |---|---|
 | `/` | Storefront (per tenant). `?store=<slug>` or subdomain `<slug>.localhost` switches |
 | `/admin.html` | **Store console**: dashboard, catalog+full product editor, SKUs/inventory, orders, returns, RFQs, sellers, settlements, **contracts & tenders (B2B)**, suppliers & **serialized items**, **compliance & certs**, **localizations (i18n)**, **AI Studio**, promotions, content, taxonomy, attributes, payments, settings, analytics, audit, monitor, Data Studio, **Team & Roles (RBAC staff roles)** |
-| `/platform.html` | **Platform console**: provisioning policy, stores (launch wizard: owner, jurisdiction, taxation, categories, gateways, plan), Geo (countries/currencies/tax modes/providers+availability), plans, subscriptions, invoices, provider registry, **AI providers & plans (product + billing)**, **Ω∞ GOIP — the value-exchange control plane**, **📊 Dashboards (§394 universal dashboard engine + §395 reporting)**, monitoring, global audit |
+| `/platform.html` | **Platform console** — opens on the **🏬 Store & Service Hub** (one front door: stores · services · settings · monitor per store). Nav groups: **Store & Service Setup** (guided store wizard, provisioning policy, stores, provider registry, modules, geo, runtime), Billing (plans, subscriptions, invoices, billing ops), Constitution Ω∞, Identity & Theming, Registry & Runtime, Global Catalog, **🧭 Global Operations** (every store capability read across all stores), Data/Insights/Audit, Reference |
 
 Seed accounts (env-overridable; hints auto-hide when passwords change): platform `platform@luxora.shop/platform123` · store admins `admin@luxora.shop/admin123`, `admin@aurum.shop/aurum123` (INR/GST/Razorpay/UPI/Delhivery), `admin@velora.shop/velora123` (AED/VAT/Tabby, brand mode) · customer `demo@luxora.shop/demo123`.
 
@@ -108,7 +108,28 @@ public/              storefront + store console + platform console (no framework
 data/                luxora.db + master.json (created at first boot)
 ```
 
-*The flagship store ships with the whole corpus activated — all 1,877 universes are
+**Global Operations — one cross-store surface, zero duplicated logic.** The Store Console
+edits one tenant; the Platform Console watches all of them. Two generic primitives back it
+(`test/gops.js`, 66 assertions):
+
+- **The cross-tenant reader** — `entity.listEntitiesGlobal` runs the *same* entity
+  definitions, field whitelist and parameterized predicates as the store reader
+  (`/api/meta/entity/:key`), only with `tenant_id` SELECTed and the tenant predicate
+  optional, behind `GET /api/platform/data/:key`. An unfiltered browse bounds *per store*
+  so a large catalogue never crowds the other stores out.
+- **The fan-out executor** — `GET /api/platform/fanout?path=<route>` resolves an existing
+  read-only Store Console route from the *same* route table and runs it once per store
+  under a scoped synthetic session, then merges (arrays concatenate with the store stamped
+  on every row, numbers sum). Not one composite handler is re-implemented, so the platform
+  and the store cannot drift. The allowlist is the security boundary and is data — a
+  `meta_lists` row `platformFanout` opens or closes a capability from Data Studio.
+
+Building it surfaced and fixed three latent defects that were silently breaking the Store
+Console too: `view_history` queried for a non-existent `tenant_id` (analytics), a stray
+`GROUP BY` returning no row for an order-less store (seller KPIs), and a bound-but-unused
+period placeholder ("column index out of range").
+
+*The flagship store ships with the whole corpus activated — every universe is
 shopper-transactable on first boot (idempotent; other stores opt in with one call).*
 
 *This is an educational demo project; it is not affiliated with any retailer.*

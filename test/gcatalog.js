@@ -113,11 +113,71 @@ const retired = gcat.importToStore(2, appt.id);
 ok(!retired.ok && /retired/i.test(retired.error || ""), "a retired archetype refuses to import even when permitted", JSON.stringify(retired));
 db.run("UPDATE global_products SET status='active' WHERE id=?", appt.id);
 
+console.log("\n▸ THE PLATFORM AUTHORS THE WHOLE PRODUCT (nothing a store carries is platform-untouchable)");
+/* a global product carries the FULL definition: the store product's own fields in
+   `profile`, plus media, attributes, description and tax class. Every one of these must
+   land on the store row at import — that is "the Global Platform permits each and
+   everything what store will have or not" */
+const fullBody = {
+  sku: "FULL-1", name: "Complete Product", description: "Authored once at the platform.",
+  universe: "physical_products", price: 199, tax_class: "reduced",
+  media: [{ kind: "image", label: "Front", url: "https://example.com/full.jpg" }],
+  attributes: { color: "sand" },
+  profile: {
+    brand: "Nova Atelier", dept: "home", list: 249, hue: 35, emoji: "🛋️", flags: "bs new", keywords: "sofa bouclé curated",
+    vertical: { material: "Bouclé", room: "living" },
+    pricing_rules: { tiers: [{ qty: 2, price: 185 }], b2b: true },
+    logistics: { shippingClass: "white_glove" },
+    packaging: [{ level: "primary", unit: "carton", qty: 1 }],
+    uom: { unit: "ea" },
+  },
+};
+const full = call("POST", "http://x/api/platform/global-products", fullBody, platSess);
+ok(!!full.id, "a complete product is authored at the platform", JSON.stringify(full));
+/* the entity declaration is the authority on what a product may carry — bogus or
+   malformed fields are refused by name rather than silently dropped or stored */
+const bogus = call("POST", "http://x/api/platform/global-products", { sku: "BOGUS-1", name: "x", profile: { dimensiones: 3 } }, platSess);
+ok(!!bogus.error && /dimensiones/i.test(bogus.error), "an undeclared profile field is rejected by name", JSON.stringify(bogus));
+const badJson = call("POST", "http://x/api/platform/global-products", { sku: "BADJ-1", name: "x", profile: { vertical: "not-json{" } }, platSess);
+ok(!!badJson.error && /vertical/i.test(badJson.error), "malformed JSON in a profile field is rejected", JSON.stringify(badJson));
+/* the bridge must be LOSSLESS: media used to be dropped on import, and brand/dept were
+   hardcoded — every authored value must now reach the store row */
+grant(full.id, "sell");
+const imp = gcat.importToStore(1, full.id);
+ok(!!imp.ok, "the complete product imports", JSON.stringify(imp));
+const store = q("SELECT * FROM products WHERE source_global_id=?", String(full.id))[0];
+ok(!!store, "the store row exists");
+ok(store.brand === "Nova Atelier", "the authored brand reaches the store (was hardcoded 'Platform Catalog')", store.brand);
+ok(store.dept === "home", "the authored department reaches the store (was hardcoded 'global')", store.dept);
+ok(Number(store.list_price) === 249, "the list price reaches the store", store.list_price);
+ok(/bouclé/i.test(store.keywords || ""), "keywords reach the store", store.keywords);
+ok(store.lifecycle === "published", "an imported product is visible by default", store.lifecycle);
+ok(JSON.parse(store.media || "[]").some(m => m && m.url === "https://example.com/full.jpg"), "media reaches the store (it used to be dropped)", store.media);
+ok(JSON.parse(store.identity || "{}").sku === "FULL-1", "the platform SKU becomes the product identity", store.identity);
+ok(JSON.parse(store.attributes || store.attrs || "{}").color === "sand", "custom attributes reach the store", store.attrs);
+const tiers = JSON.parse(store.pricing_rules || "{}").tiers;
+ok(Array.isArray(tiers) && tiers[0] && tiers[0].price === 185, "pricing rules (B2B tiers) reach the store", store.pricing_rules);
+ok(JSON.parse(store.logistics || "{}").shippingClass === "white_glove", "logistics reach the store", store.logistics);
+ok(JSON.parse(store.packaging || "[]").length === 1, "packaging reaches the store", store.packaging);
+ok(JSON.parse(store.tax_rule || "{}").class === "reduced", "the tax class becomes the store tax rule", store.tax_rule);
+ok(JSON.parse(store.vertical || "{}").material === "Bouclé", "the vertical profile reaches the store", store.vertical);
+ok(q("SELECT text FROM product_bullets WHERE product_id='" + store.id + "'").length === 1, "the description becomes the store's sales copy");
+/* the store owns its OPERATIONS: a re-import propagates the platform's definition but
+   never resets stock, lifecycle or the merchant's bullets */
+db.run("UPDATE products SET stock=7, lifecycle='draft' WHERE id=?", store.id);
+db.run("UPDATE global_products SET price=77, name='Complete Product v2' WHERE id=?", full.id);
+const imp2 = gcat.importToStore(1, full.id);
+ok(!!imp2.ok && imp2.id === imp.id && imp2.updated === true, "re-import refreshes the same row (idempotent)", JSON.stringify(imp2));
+const store2 = q("SELECT * FROM products WHERE source_global_id=?", String(full.id))[0];
+ok(Number(store2.price) === 77 && store2.title === "Complete Product v2", "the platform's edit reaches the store row", store2.price + "/" + store2.title);
+ok(Number(store2.stock) === 7 && store2.lifecycle === "draft", "the store's operations are never reset (stock, lifecycle)", store2.stock + "/" + store2.lifecycle);
+ok(q("SELECT text FROM product_bullets WHERE product_id='" + store2.id + "'").length === 1, "the store's bullets are never rewritten");
+
 console.log("\n▸ THE API SURFACE IS GATED, NOT TRUSTING");
 const apiDeny = call("POST", "http://x/api/tenant/catalog/import", { global_product_id: q("SELECT id FROM global_products WHERE universe='ott_platforms'")[0].id }, merchantSess);
 ok(!!apiDeny.error, "the store-admin API refuses an unpermitted import", JSON.stringify(apiDeny));
 const apiList = call("GET", "http://x/api/tenant/catalog/importable", null, merchantSess);
-ok(Array.isArray(apiList.items) && apiList.items.length === ARCHETYPES.length + 1, "the importable list reports every global product", apiList.items && apiList.items.length);
+ok(Array.isArray(apiList.items) && apiList.items.length === ARCHETYPES.length + 2, "the importable list reports every global product", apiList.items && apiList.items.length);
 ok(apiList.items.every(i => i.permitted === false || i.permitted === true), "each item reports its permission honestly (no silent grant)");
 const ott = apiList.items.find(i => i.universe === "ott_platforms");
 ok(!!ott && !ott.permitted && !!ott.reason, "an unpermitted product carries the reason the merchant can act on", ott && ott.reason);
@@ -147,6 +207,7 @@ try {
   ok(/tenant\/catalog\/importable|tenant\/catalog\/import/.test(js), "the store console consumes the gated import API");
   const plat = fs.readFileSync(path.join(__dirname, "..", "public", "js", "platform.js"), "utf8");
   ok(/gpAccessModal|data-gpacc/.test(plat), "the platform console ships the store-access grant UI");
+  ok(/data-pf=/.test(plat), "the platform product form renders the full store-product detail (data-pf profile fields)");
 } catch (e) { errs.push(e.message); }
 ok(!errs.length, "console sources read cleanly", errs.join("|"));
 

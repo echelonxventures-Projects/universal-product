@@ -207,7 +207,8 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     const pl = await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
     ok(!!pl.admin, "platform login");
     page = await render("/platform.html");
-    ok(page.doc.body.textContent.includes("MRR"), "revenue command center");
+    ok(/Store & Service/i.test(page.doc.body.textContent), "console lands on the centralized Store & Service hub");
+    ok(page.doc.querySelectorAll("[data-hubtab]").length === 4, "hub carries stores · services · settings · monitor tabs", page.doc.querySelectorAll("[data-hubtab]").length);
     ok(page.doc.querySelectorAll("[data-v]").length >= 8, "platform nav ≥8 sections");
     const tBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "tenants");
     click(page.win, tBtn); await sleep(900);
@@ -814,7 +815,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(/serialized/i.test(bodyTxt), "storefront shows serialization trust line");
       // variant-group SKUs are real and SKU-authoritative in the cart (not just listed).
       // the query is server-side-filtered (product_id=…) because the corpus activation
-      // puts ~1,877 universe SKUs on this tenant's shelf — an unfiltered browse cannot be
+      // puts the corpus's universe SKUs (~2,000) on this tenant's shelf — an unfiltered browse cannot be
       // relied on to surface a specific seeded SKU, and neither should it have to be.
       const sku1tb = ((await A("/api/meta/entity/sku?product_id=VR-ELEC-01")).rows || []).find(k => /1TB/.test(k.name || ""));
       ok(!!sku1tb && Number(sku1tb.price) > 1099, "seeded variant-group SKU with delta price", sku1tb && sku1tb.price);
@@ -1979,7 +1980,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(list.status === 200 && list.body.stats.total > 0, "planning list + stats", JSON.stringify(list.body.stats));
       ok(list.body.statuses.length >= 5 && list.body.priorities.length >= 4, "statuses + priorities registries", list.body.statuses.length + "/" + list.body.priorities.length);
       /* the bought SKU must appear with non-zero demand. The corpus is activated on this
-         tenant by default (~1,877 universes → ~2,000 planned SKUs), so the planning list
+         tenant by default (the whole corpus → ~2,000 planned SKUs), so the planning list
          is queried for THIS product instead of scanning a ranked page — a healthy seeded
          SKU sorts behind every urgent universe offering. */
       const hit = (await A("/api/admin/planning?product_id=LX-CMP-005")).body.replenishments[0];

@@ -219,6 +219,15 @@ body.portal { margin: 0; font: 14px/1.5 var(--p-font); background: var(--p-bg); 
 .p-form input.field-valid, .p-form select.field-valid, .p-form textarea.field-valid { border-color: #9CC7AE; background: #F2FAF5; }
 .p-form label:has(.field-invalid) span { color: var(--p-red); }
 
+/* ---------- global product authoring: the deep profile blocks stay collapsed so the
+   complete form stays scannable; opening one gives the JSON editor room ---------- */
+.gp-sec details.gp-deep { margin-top: 6px; border: 1px solid var(--p-line); border-radius: 10px; padding: 8px 12px; background: var(--p-panel); }
+.gp-sec details.gp-deep summary { cursor: pointer; font-weight: 600; font-size: 13px; color: var(--p-accent-deep); }
+.gp-sec .gp-deep-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.gp-sec .gp-deep-grid label { display: grid; gap: 4px; }
+.gp-sec .gp-deep-grid textarea { font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; }
+@media (max-width: 768px) { .gp-sec .gp-deep-grid { grid-template-columns: 1fr; } }
+
 /* ---------- analytics view (formerly unstyled a-*) ---------- */
 .a-head { margin-bottom: 16px; }
 .a-head h2 { margin: 0 0 4px; font-size: 16px; font-weight: 700; }

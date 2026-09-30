@@ -1198,6 +1198,7 @@ CREATE TABLE IF NOT EXISTS global_products (
   is_service INTEGER DEFAULT 0,
   attributes TEXT DEFAULT '{}',
   media TEXT DEFAULT '[]',
+  profile TEXT DEFAULT '{}',
   status TEXT DEFAULT 'draft',
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT

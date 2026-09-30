@@ -1,6 +1,7 @@
 /* UCOS Ω∞ · activation & breadth audit.
    --------------------------------------------------------------------------
-   The corpus declares 1,877 universes. test/ucos-universes.js proves they are all
+   The corpus declares 1,947 universes (1,733 UPIP + 144 UMQSOCR + 70 UPCE), a count that
+   moves when a corpus lands — the engine never holds it. test/ucos-universes.js proves they are all
    INSTANTIATED; test/ucos-catalog.js proves ONE of them (Insurance) is
    TRANSACTABLE. That leaves the honest question open: does the generic engine
    actually serve every FAMILY, or did Insurance get special treatment?
@@ -93,7 +94,7 @@ const n2 = cnt("SELECT COUNT(*) c FROM products WHERE tenant_id=1 AND source_kin
 ok(n1 > 0, "bulk activation populated the catalog", "n=" + n1);
 ok(cnt("SELECT COUNT(*) c FROM products WHERE tenant_id=1 AND source_kind='universe' GROUP BY tenant_id, id HAVING COUNT(*) > 1") === 0, "no duplicate catalog rows across re-activations");
 ok(cnt("SELECT COUNT(*) c FROM skus WHERE tenant_id=1 AND product_id LIKE 'UV-%' GROUP BY tenant_id, product_id, code HAVING COUNT(*) > 1") === 0, "no duplicate SKUs across re-activations");
-/* the limit is a real bound, not a hint: a corpus of 1,877 must not saturate a request */
+/* the limit is a real bound, not a hint: a corpus of ~1,900 universes must not saturate a request */
 const bounded = cat.activateAll(1, { limit: 5 });
 ok(bounded.activated <= 5, "activateAll respects its limit on a cold pass", bounded.activated);
 /* the remaining-count must be HONEST: `skipped` is a subset of `already`, so subtracting
@@ -144,7 +145,7 @@ const notFound = trace.trace("zzz_not_a_real_concept_qqq");
 ok(/not found in the corpus/.test(notFound.verdict), "a nonsense key is reported as absent, not silently empty", notFound.verdict);
 const m = trace.matrix();
 ok(m.implementation.universes === all.length, "the matrix reports every universe as a live entity", m.implementation.universes);
-ok(m.perDocument.length === 3, "the matrix covers all three corpora", m.perDocument.map(d => d.doc).join(","));
+ok(m.perDocument.length === ucos.DOCS.length, "the matrix covers every corpus", m.perDocument.map(d => d.doc).join(","));
 
 console.log("\n▸ AUTHORITY: activation is a platform action (a store admin cannot activate)");
 const call = (method, urlStr, body, sess) => {

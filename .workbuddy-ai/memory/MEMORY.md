@@ -549,3 +549,175 @@ the structured editor never round-tripped — because **the form never saved at 
   `department`) was declined as feature-sized: ~10 storefront `p.b` render sites plus
   CSV/AI/order-snapshot surfaces would need `brandLabel()` wrapping, and the current label
   alphabet has zero regression surface.
+
+### 2026-09-30 (session 9) — the Global Platform authors the WHOLE product (the authoring gap closed)
+The owner's mandate: "the Global Platform permits each and everything what store will
+have or not." Auditing against it found the asymmetry was WORSE than the earlier
+description: the global offering captured media/attributes/description/tax_class, but the
+import bridge **dropped all of them on the floor** and hardcoded `brand='Platform Catalog'`
+and `dept='global'` (gcatalog.js), and none of the deep profiles (vertical, pricing_rules,
+logistics, packaging, uom, tax_rule, geo_rules, seo, docs) existed at platform level at
+all. The platform governed stores (impersonation, gates, capabilities, policy) but could
+not centrally author a complete product. Closed Configuration-Over-Code:
+
+- **The offering carries the full definition.** New `global_products.profile` JSON column
+  (db.js migration + schema.sql). `validProfile()` (api.js) accepts ONLY fields the
+  products ENTITY declares — entity.js stays the single source of "what a product has" —
+  coercing per declared type and rejecting unknown/malformed keys BY NAME (HTTP 400).
+  The list endpoint ships `profileFields`, so the console section is GENERATED from the
+  API's own declaration and can never offer a field the validator refuses.
+- **Console**: gpModal gained "Store catalogue details" — 16 fields: 7 scalars (brand,
+  dept, list, emoji, hue, flags, keywords) in a grid + 9 deep JSON blocks in a collapsed
+  `<details>` (vertical, seo, pricing_rules, logistics, packaging, uom, tax_rule,
+  geo_rules, docs), client-side JSON validation, universe-swap draft preservation
+  (`collectProfile`).
+- **The bridge is lossless and declares OWNERSHIP**. `importToStore` writes every authored
+  field onto the store row — media, attributes, description (→ `product_bullets`, i.e. the
+  storefront's `about`), `identity {sku}`, tax_class → `tax_rule.class`, and all nine deep
+  profiles. The platform owns the product's DEFINITION (a re-import propagates its edits:
+  name, price, profiles); the store owns its OPERATIONS — stock, ratings, lifecycle and
+  bullets are seeded ONCE and never rewritten, so a re-import can reprice without resetting
+  a merchant's shop floor or unpublishing their work. (The old refresh clobbered
+  stock/rating/lifecycle with 999/4.5 each time.)
+- **Tests**: test/gcatalog.js 58 → 82 (a full-detail product round-trips through import
+  with every deep field asserted, bogus and malformed profile fields rejected by name,
+  media no longer dropped, and a re-import that propagates the platform's edit while
+  preserving stock/lifecycle/bullets).
+- **Live proof (8787, restarted)**: authored a complete product from the console modal
+  (16 profile fields rendered), granted sell to the flagship, imported — brand, dept,
+  list_price, vertical, pricing_rules, logistics, identity, lifecycle all on the store
+  row and the storefront served `about` from the platform's description. Proof rows then
+  deleted via the API.
+- **Suite: 691 E2E + 31 wizard + 231 parity + 197 conformance + 82 gcatalog, 0 failures.**
+- **Open** (deliberately not started): `lib/tenancy.js` remains unwired; `dbg12.mjs` is
+  still scratch.
+
+### 2026-09-30 (session 10) — the fourth corpus + Global Operations; the tree is green but uncommitted
+Resumed on an uncommitted tree holding two features memory had not recorded yet. Both were
+already test-green; this pass verified them on the LIVE DB (which had NOT seen them — the
+server at 8787 was started 11:55, before the code landed at 14:37/14:42).
+
+**Architecture4 — the UPCE corpus (`Architecture4.txt`, 806 lines).** A fourth document
+declaring 70 universes (Foundation / Business / Declared Universes). It needed almost no
+code because the corpus reuses the UPIP section grammar — one `DOCS` row in `ucos.js`
+(`upce`, container `section`) and the existing parser finds it. The one structural addition:
+**an explicit universe-declaration path** (`ucos-universes.js`). The three constitutional
+corpora name universes implicitly (a label containing "Universe" whose items are prose);
+UPCE declares them outright ("## Business Universes" whose items ARE universes). New
+`DECLARATION_LABEL` / `isDeclaredUniverse()`: a list whose label ends in "Universes" admits
+its items directly, skipping the stopword/prose filter (which would have rejected
+"Order to Cash Universe" as a sentence) while keeping structural sanity (capitalized noun
+phrase, no digits, no sentence punctuation, no tree-drawing characters). The label itself
+is NOT registered as a universe, which is what keeps "Business Universes" from becoming a
+universe named "Business". Verified `test/ucos-upce.js` (170 checks): ZERO MISSING / ZERO
+DUPLICATE / ZERO PARTIAL / ZERO OVERLAP / 100% CONFIGURABLE / DEEPLINKABLE, and disjoint
+from the three existing corpora.
+
+**Global Operations — one cross-store surface, zero duplicated logic.** The platform console
+edits governance; it had NO way to READ store-level data across stores. Two generic
+primitives (`test/gops.js`, 66 assertions):
+- **Cross-tenant reader** — `entity.listEntitiesGlobal` runs the SAME entity definitions,
+  field whitelist and parameterized predicates as the store reader, with `tenant_id`
+  SELECTed and the tenant predicate optional, behind `GET /api/platform/data/:key`
+  (platform-only). An unfiltered browse bounds PER STORE so a large catalogue never crowds
+  the others out.
+- **Fan-out executor** — `GET /api/platform/fanout?path=<route>` resolves an existing
+  read-only Store Console route from the SAME route table and runs it once per store under
+  a scoped synthetic session, then merges (arrays concatenate with the store stamped on
+  every row, numbers sum). Not one composite handler is re-implemented, so platform and
+  store cannot drift. The allowlist is the security boundary AND is data — `FANOUT_DEFAULT`
+  in api.js is the shipped set, a `meta_lists` row `platformFanout` overrides it from Data
+  Studio. Live: `/api/admin/stats` fanned across all 6 stores; `/api/products` correctly
+  refused (not allowlisted).
+- Building it surfaced **three latent defects** that were silently breaking the STORE
+  console too: `view_history` selected a non-existent `tenant_id` (analytics), a stray
+  `GROUP BY` returned no row for an order-less store (seller KPIs), and a bound-but-unused
+  period placeholder ("column index out of range").
+- Platform console front door became the **🏬 Store & Service Hub**; `public/js/platform.js`
+  +450 lines for the 🧭 Global Operations views.
+
+**Live verification (8787, stopped + served fresh)** — the recurring warm-DB trap applied:
+the running server predated the code, so the corpus was not seeded until the restart.
+After: `ucos_universes` = 1,947 (upip 1,733 · umqscr 144 · **upce 70**, exactly +70, no
+duplicates); `entity_data` = 1,947 `uv_*` rows (one per universe, instantiation 100%);
+flagship universe offerings = 1,947, **all 70 UPCE universes activated AND published**;
+storefront serves `UV-BILLING_UNIVERSE-1882` / `UV-LOGISTICS-1029` directly.
+
+**Key-alphabet trap (recurring, cost two false alarms):** `ucos_universes.key` is
+`order_to_cash_universe` while the entity/storefront key is `uv_order_to_cash_universe`
+and `products.source_universe` holds the `uv_` form. Joining universes to entity_data or
+products must compose `'uv_' || key`, and probing a universe by a hand-slugged name will
+report a false "not instantiated". Count totals first (1,947 = 1,947) before believing a
+per-key miss. Also: macOS `node -e` with a double-quoted SQL literal inside a double-quoted
+shell string silently mangles `"uv_"` into a column name — write the probe to a file.
+
+**README defect fixed here:** the gops prose had been pasted BEFORE the directory-layout
+fence's closing ```` ``` ````, leaving a stray fence opener that rendered the last two
+lines as code; and it said "54 assertions" / "all 1,877 universes", both now stale (66 /
+1,947 → "every universe").
+
+**Suite (all green, exit 0):** 692 E2E + 31 wizard + 231 parity + 197 conformance + 82
+gcatalog + 66 gops + 170 upce + 65/64/36/25/329/46/68/46 ucos checks.
+**Still open:** `lib/tenancy.js` unwired (deliberate), `dbg12.mjs` scratch, and the whole
+session-9/10 worktree is UNCOMMITTED (16 modified + 5 untracked incl. `Architecture4.txt`).
+
+### 2026-09-30 (session 11) — resumed to a red tree: three real defects, all found by the suite
+Resumed on the uncommitted session-9/10 tree. The memory said green; `npm test` was NOT —
+it died in `test/wizard.js` and, once that was fixed, `test/smoke.js`. Neither failure was a
+test bug. The suite is now genuinely green again (exit 0, same counts as session 10).
+
+The uncommitted tree also holds a feature memory never recorded: **`lib/compliance.js`**
+(untracked, 381 lines) — Compliance-as-Data. It is already WIRED (`api.js` requires it,
+routes `/api/admin/compliance/*` + `/api/admin/privacy/*`, `seed()` in its own boot block),
+and the corpus declares the regulations (GDPR · CCPA · DPDP · HIPAA · PCI-DSS · SOC 2 ·
+ISO 27001 · NIST · FedRAMP · SEBI · RBI · TRAI). Everything is a `meta_lists` registry row —
+regulations, control statuses, privacy purposes, DSR states/kinds — and `evaluate()` COMPUTES
+a regulation's verdict from control rows every call (never stored), so an unaudited posture
+reads `partial`, never compliant. Consent is grant/withdraw per subject+purpose (required
+purposes pass on a contractual basis; `mayProcess()` is the gate every marketing send keys
+off); DSRs run an append-only state machine where verification must precede fulfilment and
+erasure executes on fulfilment (the audit chain is deliberately KEPT — erasing it would itself
+be a violation). It had three latent defects:
+
+- **Two entities had NO `perm`, which crashed the whole console.** `consent` and
+  `privacy_request` in `entity.js` were added without a `perm` block. `entityPerm()`
+  (`api.js:3112`) reads `def.perm.read` → `TypeError: Cannot read properties of undefined`,
+  thrown from `apiEntities` on `GET /api/meta/entities` — ONE bad definition takes down the
+  ENTIRE entity list, so the store console's Products table never rendered and the smoke
+  step after it crashed on a null element. Every other entity declares `perm`; gave both
+  `{read:["admin","platform"], write:["admin","platform"]}` (store-scoped, matching
+  `compliance_records` — NOT platform-only like `compliance_controls`, which holds the shared
+  template framework). **Every entity MUST declare perm; one omission 500s the whole list.**
+- **The same two entities had no RBAC section mapping.** `KEY_SECTION` in `rbac.js` lacked
+  them → `sectionForEntity()` fell back to `"studio"`, so they would authorise against the
+  wrong section despite a dedicated `privacy` section existing in `SECTIONS` and being
+  granted `write` to the Support role ("act on returns + privacy requests", `rb_v3`). Mapped
+  both to `privacy`. **A section that exists but is never referenced by KEY_SECTION is dead.**
+- **The live DB had 312 `reports` rows for 3 reports, and it blocked its own next boot.**
+  The sentinel index `ux_reports_platform_key` (`db.js`) was added to stop `INSERT OR IGNORE`
+  re-seeding the tenant_id-NULL templates every boot (SQLite treats NULLs as DISTINCT under
+  `UNIQUE(tenant_id,key)`), but a DB that pre-dates the index already carries the duplicates —
+  so `CREATE UNIQUE INDEX` throws `UNIQUE constraint failed` and the boot DIES. Added a
+  one-line self-heal before the CREATE: `DELETE ... WHERE id NOT IN (SELECT MIN(id) ...
+  GROUP BY key, ifnull(tenant_id,0))` — idempotent (a clean DB deletes nothing), collapses
+  each group to its oldest row. Proven on a copy of the live DB (312 → 3, boot OK). **A
+  constraint added after the rows exist needs a self-heal, or the fix itself becomes the
+  outage.** The running server at 8787 predates all of this and still needs a restart.
+
+- **The wizard test was racing the boot, not testing it.** It did `await sleep(7000)` after
+  spawning the server; cold boot is 7.2s (it grew with the corpora), so the first fetch
+  failed and the abort's `process.exit(1)` killed the chain — `smoke.js` (692 assertions)
+  never ran at all, which is why the previous session recorded green. Replaced with the
+  healthz readiness poll `gops.js`/`smoke.js` already use. **A fixed sleep after a spawn is
+  a latent flake; poll `/healthz`. And an abort in a mid-chain test hides every suite after it.**
+
+- **Gotcha that cost a broken file:** the schema is one JS template literal, and a comment I
+  added used backticks around `UNIQUE constraint failed` — inside `exec(\`…\`)` a backtick
+  TERMINATES the literal → `SyntaxError: missing ) after argument list` reported at the
+  literal's OPENING line (db.js:55), nowhere near the actual typo. **No backticks in the
+  schema template's comments; when a template-literal error points at the opening backtick,
+  hunt for a stray one below.**
+
+**Suite: 692 E2E + 31 wizard + 231 parity + 197 conformance + 82 gcatalog + 66 gops + 170
+upce + ucos checks, exit 0.** Still open (unchanged): `lib/tenancy.js` unwired (deliberate),
+`dbg12.mjs` scratch, the live 8787 server on stale code, and the whole worktree UNCOMMITTED.

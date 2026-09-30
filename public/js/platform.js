@@ -47,17 +47,27 @@ function toast(msg, type = "info") {
    navigates by domain, not by a 30-item flat list. Keys are unchanged; NAVFLAT
    drives the title lookup. */
 const NAV = [
-  { g: "Command", items: [["dash", "◈ Command"], ["setup", "🧭 Setup Wizard"], ["monitor", "📈 Monitoring"]] },
-  { g: "Stores & Billing", items: [["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"], ["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"]] },
-  { g: "Geo & Global Catalog", items: [["geo", "🌍 Geo · Countries · Taxes"], ["gproducts", "🌐 Global Products"]] },
+  { g: "Command", items: [["dash", "◈ Command"], ["monitor", "📈 Monitoring"]] },
+  /* One front door for everything about a store and its services: guided authoring
+     (setup), governance (provisioning, tenants) and the service registry (providers,
+     modules, geo, runtime). Create it here, manage it here, watch it here. */
+  { g: "Store & Service Setup", items: [["hub", "🏬 Store & Service Hub"], ["setup", "🧭 Store Wizard"], ["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["providers", "🔌 Provider Registry"], ["modules", "🧩 Module Marketplace"], ["geo", "🌍 Geo · Countries · Taxes"], ["runtime", "🧩 Runtime · Infra"]] },
+  { g: "Billing", items: [["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"], ["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"]] },
+  /* Global Operations: every store capability read across ALL stores. Entity-backed
+     capabilities resolve through the generic /api/platform/data reader; composite ones
+     through the fan-out that runs the store's own handler per store. No capability is
+     re-implemented here and none is missing from the platform. */
+  { g: "Global Operations", items: [["gops", "🧭 Ops Hub"], ["gorders", "🧾 Orders · Fulfilment"], ["gcatalog", "📦 Catalog · SKUs"], ["gb2b", "🤝 Sellers · B2B · Trade"], ["gmarket", "📣 Ads · Marketplace"], ["gfinance", "💸 Finance · Payments"], ["goffers", "🏷️ Offers · Affiliates"], ["gsupport", "🎧 Support · SLA"], ["gcontent", "🖼️ Content · UGC"], ["grisk", "🛡️ Risk · Compliance · Trash"], ["gteam", "👥 Team · Access · Settings"], ["ganalytics", "📊 Analytics · A/B"], ["gdata", "🧬 Data Explorer"]] },
+  { g: "Global Catalog", items: [["gproducts", "🌐 Global Products"]] },
   { g: "Constitution Ω∞", items: [["ucii", "🌀 UCII Ω∞ Registry"], ["ucos", "♾️ UCOS Ω∞ Constitution"], ["universes", "🧬 Universes"], ["domains", "🔀 Domains"], ["foundations", "🏛️ Foundations"], ["trace", "🧭 Traceability"], ["offers", "Ω∞ GOIP · Value Exchange"]] },
   { g: "Identity & Theming", items: [["identity", "🔐 Identity"], ["identity-templates", "📋 Identity Templates"], ["themes", "🎨 Themes"]] },
-  { g: "Registry & Runtime", items: [["providers", "🔌 Provider Registry"], ["modules", "🧩 Module Marketplace"], ["capabilities", "⚙️ Capabilities"], ["ai", "🧠 AI · Providers & Plans"], ["runtime", "🧩 Runtime · Infra"]] },
+  { g: "Registry & Runtime", items: [["capabilities", "⚙️ Capabilities"], ["ai", "🧠 AI · Providers & Plans"]] },
   { g: "Data, Insights & Audit", items: [["studio", "🛠️ Data Studio"], ["definitions", "📐 Entities"], ["dashboards", "📊 Dashboards"], ["audit", "📜 Global Audit"]] },
   { g: "Reference", items: [["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]] }
 ];
 const NAVFLAT = NAV.flatMap(g => g.items);
-let view = "dash";
+/* the console opens on the centralized store & service hub — the platform's front door */
+let view = "hub";
 const P = { user: null, tenants: [], plans: [] };
 
 function shell(content) {
@@ -413,7 +423,7 @@ async function wireGeoFx() {
   g("cxGo").onclick = async () => { try { const r = await api("/fx?amount=" + encodeURIComponent(g("cxAmount").value || 1) + "&from=" + g("cxFrom").value + "&to=" + g("cxTo").value); g("cxOut").textContent = `= ${r.result.toLocaleString()} ${r.to} (rate ${r.rate})`; } catch (e) { g("cxOut").textContent = e.message; } };
 }
 /* ============ GLOBAL PRODUCTS: platform-level master catalog tenants subscribe to ============ */
-let gpFilter = "", gpUniverse = "", gpUniverses = [], gpKinds = [], gpTaxClasses = [], gpCategories = [];
+let gpFilter = "", gpUniverse = "", gpUniverses = [], gpKinds = [], gpTaxClasses = [], gpCategories = [], gpProfileFields = [];
 /* universe → product type, from the registry's own map (universeProductTypes) — the form
    shows the type as a consequence of the universe instead of a checkbox that can
    contradict it. Filled once from the list response. */
@@ -428,11 +438,12 @@ async function vGproducts() {
   const q = new URLSearchParams();
   if (gpFilter) q.set("category", gpFilter);
   if (gpUniverse) q.set("universe", gpUniverse);
-  const { products, universes, kinds, taxClasses, categories, universeProductTypes } = await api("/platform/global-products" + (q.toString() ? "?" + q.toString() : ""));
+  const { products, universes, kinds, taxClasses, categories, universeProductTypes, profileFields } = await api("/platform/global-products" + (q.toString() ? "?" + q.toString() : ""));
   gpUniverses = universes || [];
   gpKinds = kinds || [];
   gpTaxClasses = taxClasses || [];
   gpCategories = categories || [];
+  gpProfileFields = profileFields || [];
   gpTypeMap = null; window.__universeProductTypes = universeProductTypes || [];
   const cats = [...new Set(products.map(p => p.category).filter(Boolean))];
   const uOf = p => (gpUniverses.find(u => u.key === p.universe) || {});
@@ -464,11 +475,12 @@ function wireGproducts() {
   if (univ) univ.onchange = () => { gpUniverse = univ.value; render(); };
   document.getElementById("gpNew").onclick = () => gpModal(null);
   $$("[data-gpedit]").forEach(b => b.onclick = () => {
-    api("/platform/global-products").then(({ products, universes, kinds, taxClasses, categories, universeProductTypes }) => {
+    api("/platform/global-products").then(({ products, universes, kinds, taxClasses, categories, universeProductTypes, profileFields }) => {
       gpUniverses = universes || [];
       gpKinds = kinds || [];
       gpTaxClasses = taxClasses || [];
       gpCategories = categories || [];
+      gpProfileFields = profileFields || [];
       gpTypeMap = null; window.__universeProductTypes = universeProductTypes || [];
       const p = products.find(x => String(x.id) === b.dataset.gpedit);
       if (p) gpModal(p);
@@ -522,11 +534,34 @@ async function gpAccessModal(productId) {
    structurally), so "Insurance" shows insurance's fields and "Streaming" shows
    streaming's — no per-industry form code anywhere. `draft` carries values across a
    universe switch so nothing an operator typed is lost. */
+/* harvest the visible profile fields; a JSON block that won't parse rides along raw —
+   the save handler re-parses and reports the error to the operator */
+function collectProfile(m) {
+  const out = {};
+  m.querySelectorAll("[data-pf]").forEach(el => {
+    const k = el.dataset.pf;
+    if (el.dataset.pfjson) { try { out[k] = JSON.parse(el.value); } catch (e) { out[k] = el.value; } }
+    else out[k] = el.value;
+  });
+  return out;
+}
 async function gpModal(p, draft = {}) {
   const isEdit = !!p;
   const universe = draft.universe || (p ? p.universe : "physical_products");
   const attrs = Object.assign({}, p ? (p.attributes || {}) : {}, draft.attrs || {});
   const media = (p ? (p.media || []) : []).concat(draft.media || []);
+  /* the platform authors the WHOLE product: `profile` carries every authorable field of
+     the store product (declared once, in the products entity, and shipped by the API as
+     profileFields — so this form can never offer a field the validator would refuse) */
+  const prof = Object.assign({}, p ? (p.profile || {}) : {}, draft.profile || {});
+  const pfScalar = (gpProfileFields || []).filter(f => f.type !== "json");
+  const pfJson = (gpProfileFields || []).filter(f => f.type === "json");
+  const pfVal = f => { const v = prof[f.key]; return v == null ? "" : (typeof v === "string" ? v : JSON.stringify(v, null, 1)); };
+  const pfScalarHtml = pfScalar.map(f => {
+    const isNum = f.type === "number" || f.type === "money";
+    return `<label><span>${esc(f.label)}</span><input data-pf="${esc(f.key)}" ${isNum ? 'type="number" step="any"' : 'type="text"'} value="${esc(f.type === "number" || f.type === "money" ? (pfVal(f) === "" ? "" : pfVal(f)) : pfVal(f))}"></label>`;
+  }).join("");
+  const pfJsonHtml = pfJson.map(f => `<label><span>${esc(f.label)}</span><textarea data-pf="${esc(f.key)}" data-pfjson="1" rows="3" placeholder="{} or []">${esc(pfVal(f))}</textarea>${f.hint ? `<small class="medit-hint">${esc(f.hint)}</small>` : ""}</label>`).join("");
   let fields = [];
   try { fields = (await api("/platform/universe-fields/" + encodeURIComponent(universe))).fields || []; }
   catch (e) { /* unknown universe → no declared configuration, the editor still works */ }
@@ -557,6 +592,10 @@ async function gpModal(p, draft = {}) {
           ${f.type === "select" ? `<select data-uf="${esc(f.key)}">${(f.options || []).map(o => `<option ${String(attrs[f.key] || "") === String(o) ? "selected" : ""}>${esc(o)}</option>`).join("")}</select>`
             : `<input data-uf="${esc(f.key)}" value="${esc(attrs[f.key] != null ? attrs[f.key] : "")}" ${f.required ? "required" : ""}>`}</label>`).join("")
           : '<p class="medit-hint">This universe declares no extra fields — the corpus keeps it open. Use custom attributes below.</p>'}</div>
+      <div class="gp-sec"><h4>Store catalogue details <small>· what every importing store receives</small></h4>
+        <p class="medit-hint">The platform defines the product completely — these are the store product's own fields, written onto the store row at import. The store keeps only its operations: stock, ratings, lifecycle and its sales copy.</p>
+        <div class="row3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">${pfScalarHtml}</div>
+        ${pfJson.length ? `<details class="gp-deep"><summary>Deep configuration · ${pfJson.length} profile${pfJson.length === 1 ? "" : "s"}</summary><div class="gp-deep-grid">${pfJsonHtml}</div></details>` : ""}</div>
       <div class="gp-sec"><h4>Media <small>· images, videos, documents</small></h4><div id="gpMedia"></div></div>
       <div class="gp-sec"><h4>Custom attributes <small>· anything else shoppers should know</small></h4><div id="gpAttrs"></div></div>
       <div class="p-err hidden" id="gpErr" style="color:var(--p-red);font-size:13px"></div>
@@ -572,7 +611,7 @@ async function gpModal(p, draft = {}) {
       category: m.querySelector("#gpCatSel").value, price: m.querySelector("#gpPrice").value, tax_class: m.querySelector("#gpTax").value,
       status: m.querySelector("#gpStatus").value, universe: e.target.value,
       attrs: Object.assign(getAttrs(), Object.fromEntries(Array.from(m.querySelectorAll("[data-uf]")).map(el => [el.dataset.uf, el.value]))),
-      media: getMedia() };
+      media: getMedia(), profile: collectProfile(m) };
     m.innerHTML = ""; gpModal(p, d);
   };
   m.querySelector("#gpCancel").onclick = () => { m.innerHTML = ""; };
@@ -582,11 +621,21 @@ async function gpModal(p, draft = {}) {
     if (!val("#gpSku").trim() || !val("#gpName").trim()) { err.textContent = "SKU and name are required"; err.classList.remove("hidden"); return; }
     const declared = {};
     m.querySelectorAll("[data-uf]").forEach(el => { declared[el.dataset.uf] = el.value; });
+    /* the profile is the store product's full definition — invalid JSON is caught here so
+      the operator fixes the field instead of the server rejecting the whole save */
+    const profOut = {};
+    let profErr = "";
+    m.querySelectorAll("[data-pf]").forEach(el => {
+      const k = el.dataset.pf, raw = String(el.value || "");
+      if (el.dataset.pfjson) { if (!raw.trim()) return; try { profOut[k] = JSON.parse(raw); } catch (e) { profErr = k + " is not valid JSON"; } }
+      else if (raw !== "") profOut[k] = raw;
+    });
+    if (profErr) { err.textContent = profErr; err.classList.remove("hidden"); return; }
     /* is_service is deliberately NOT in the body — the API derives it from the universe,
        so the record can never contradict its own archetype */
     const body = { sku: val("#gpSku").trim(), name: val("#gpName").trim(), description: val("#gpDesc"), category: val("#gpCatSel"),
       universe: val("#gpUnivSel"), price: Number(val("#gpPrice")) || 0, tax_class: val("#gpTax"),
-      attributes: Object.assign(getAttrs(), declared), media: getMedia(), status: val("#gpStatus") };
+      attributes: Object.assign(getAttrs(), declared), media: getMedia(), profile: profOut, status: val("#gpStatus") };
     try {
       if (isEdit) await api("/platform/global-products/" + p.id, "PUT", body);
       else await api("/platform/global-products", "POST", body);
@@ -2275,11 +2324,376 @@ function wireBillingOps() {
   if ($("#usGo")) $("#usGo").onclick = async () => { try { await api("/platform/usage", "POST", { tenant_id: Number($("#usTenant").value), kind: $("#usKind").value, description: $("#usDesc").value || $("#usKind").value, qty: Number($("#usQty").value) || 1, unit_amount: Number($("#usUnit").value) || 0 }); toast("Usage recorded"); render(); } catch (e) { toast(e.message); } };
   document.querySelectorAll("[data-ref]").forEach(b => b.onclick = async () => { const amt = prompt("Refund amount (blank = full)"); try { await api("/platform/invoices/" + b.dataset.ref + "/refund", "POST", { amount: amt ? Number(amt) : undefined, to_wallet: confirm("Credit to the store's customer wallet? (OK) or log a credit note only (Cancel)") }); toast("Credit note issued"); render(); } catch (e) { toast(e.message); } });
 }
+/* ============================================================
+   GLOBAL OPERATIONS — every store capability, read across ALL stores
+   ------------------------------------------------------------
+   The Store Console edits ONE store; this surface watches every store at once. Two
+   generic primitives back every view, so no capability is re-implemented and none is
+   missing:
+     • gTable(key)    — the generic cross-tenant entity reader (/api/platform/data/:key),
+                        built on the same definitions the Store Console uses
+     • gFan(path)     — the fan-out that runs the store's OWN read-only handler once per
+                        store and merges, so the business logic lives exactly once
+   The store keeps read+write; the platform gets oversight — zero overlap, zero duplicate. */
+const G = { entities: null, tmap: {}, q: "", tenantId: "", entity: "order" };
+async function gMeta() {
+  if (!G.entities) {
+    const m = await api("/platform/data");
+    G.entities = m.entities || [];
+    G.tmap = {};
+    for (const t of (m.tenants || [])) G.tmap[String(t.id)] = t;
+  }
+  return G;
+}
+const gStore = id => { const t = G.tmap[String(id)]; return t ? esc(t.name) : ("store " + esc(id)); };
+function gCell(v, f) {
+  if (v == null) return "";
+  if (f.type === "bool") return v ? "✓" : "—";
+  if (f.type === "money") return money(v);
+  const badge = ["status", "lifecycle", "state", "priority", "kind"];
+  if (badge.includes(f.key)) return `<span class="badge ${esc(v)}">${esc(v)}</span>`;
+  return esc(String(v).slice(0, 64));
+}
+/* the shared store-filter + search bar. Both apply to every dataset on the view, and the
+   search re-renders debounced with focus restored, so typing never fights the console. */
+function gBar(title, icon, sub, datasets) {
+  const opts = Object.values(G.tmap).map(t => `<option value="${t.id}" ${String(G.tenantId) === String(t.id) ? "selected" : ""}>${esc(t.name)}</option>`).join("");
+  return `<div class="p-head"><h2>${icon} ${esc(title)}</h2><p class="p-sub">${sub}</p></div>
+  <div class="p-panel" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px">
+    <label style="font-size:13px;color:var(--p-muted)">Store</label>
+    <select id="gTenant" style="min-width:170px"><option value="">All stores</option>${opts}</select>
+    <input class="p-search" id="gQ" placeholder="Search across stores…" value="${esc(G.q)}" style="flex:1;min-width:220px">
+    <span class="p-tag">${datasets} dataset${datasets === 1 ? "" : "s"} · read-only oversight</span>
+  </div>`;
+}
+function wireG() {
+  const t = $("#gTenant");
+  if (t) t.onchange = () => { G.tenantId = t.value; render(); };
+  const q = $("#gQ");
+  if (q) {
+    let tm;
+    q.oninput = () => { clearTimeout(tm); const pos = q.selectionStart; tm = setTimeout(() => { render().then(() => { const n = $("#gQ"); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) { } } }); }, 400); };
+    q.onkeydown = e => { if (e.key === "Enter") { clearTimeout(tm); render(); } };
+  }
+}
+/* one cross-tenant table per entity — columns come straight from the entity's own
+   list-visible fields (the same defs the Store Console renders), never hardcoded here */
+async function gTable(key, opts = {}) {
+  await gMeta();
+  const def = (G.entities || []).find(e => e.key === key);
+  if (!def) return `<div class="p-empty">Dataset <code>${esc(key)}</code> is not served across stores.</div>`;
+  const p = new URLSearchParams();
+  if (G.q) p.set("q", G.q);
+  if (G.tenantId) p.set("tenant_id", G.tenantId);
+  if (opts.trash) p.set("trash", "1");
+  const qs = p.toString();
+  let rows = [];
+  try { rows = (await api("/platform/data/" + encodeURIComponent(key) + (qs ? "?" + qs : ""))).rows || []; }
+  catch (e) { return `<div class="p-empty">⚠️ ${esc(e.message)}</div>`; }
+  const fields = (def.fields || []).slice(0, 7);
+  const span = fields.length + (def.tenantScoped ? 1 : 0) || 1;
+  return `<div class="p-panel"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+    <h2 style="margin:0">${esc(def.name || key)}</h2><span class="p-tag">${rows.length}${def.tenantScoped ? " across stores" : ""}</span></div>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr>${def.tenantScoped ? "<th>Store</th>" : ""}${fields.map(f => `<th>${esc(f.label)}</th>`).join("")}</tr></thead>
+    <tbody>${rows.slice(0, 200).map(r => `<tr>${def.tenantScoped ? `<td>${gStore(r.tenant_id)}</td>` : ""}${fields.map(f => `<td>${gCell(r[f.key], f)}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${span}" class="p-empty">No records</td></tr>`}</tbody></table></div></div>`;
+}
+/* a fan-out panel: when columns are omitted they are derived from the payload itself, so a
+   view stays correct even if the store handler's shape grows (zero hard-coding, zero partial) */
+async function gFan(path) {
+  const p = new URLSearchParams({ path, flat: "1" });
+  if (G.tenantId) p.set("tenant_id", G.tenantId);
+  try { return await api("/platform/fanout?" + p.toString()); } catch (e) { return { results: [], merged: {} }; }
+}
+function gRows(title, icon, rows, cols, opts = {}) {
+  const r = rows || [];
+  const c = cols || (r.length ? Object.keys(r[0]).filter(k => k !== "tenant_id" && k !== "store").slice(0, 7).map(k => ({ l: k, k })) : []);
+  const f = x => c.map(col => `<td>${col.f ? col.f(x) : esc(String(x[col.k] ?? "").slice(0, 60))}</td>`).join("");
+  return `<div class="p-panel"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+    <h2 style="margin:0">${icon} ${esc(title)}</h2><span class="p-tag">${r.length} across stores</span></div>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Store</th>${c.map(col => `<th>${esc(col.l)}</th>`).join("")}</tr></thead>
+    <tbody>${r.slice(0, opts.cap || 150).map(x => `<tr><td>${gStore(x.tenant_id)}</td>${f(x)}</tr>`).join("") || `<tr><td colspan="${c.length + 1}" class="p-empty">No records across stores</td></tr>`}</tbody></table></div></div>`;
+}
+/* ---------- the views ---------- */
+async function vGops() {
+  await gMeta();
+  const st = await gFan("/api/admin/stats");
+  const m = st.merged || {};
+  const per = (st.results || []).filter(r => r.ok && r.data).map(r => ({
+    tenant_id: r.tenant_id, store: r.name, revenue: r.data.revenue, orders: r.data.orders,
+    pending: r.data.pending, customers: r.data.customers, products: r.data.products,
+    plan: (r.data.plan || {}).name
+  }));
+  return gBar("Operations Hub", "🧭", "Cross-store health from each store's own stats handler — one fan-out, zero duplicated logic.", 4)
+    + `<div class="p-cards">
+      <div class="p-stat"><em>Platform GMV</em><b>${money(m.revenue || 0)}</b><small>summed across stores</small></div>
+      <div class="p-stat"><em>Orders</em><b>${m.orders || 0}</b><small>${m.pending || 0} open</small></div>
+      <div class="p-stat"><em>Customers</em><b>${m.customers || 0}</b></div>
+      <div class="p-stat"><em>Products</em><b>${(m.products || 0).toLocaleString()}</b><small>across all catalogs</small></div>
+    </div>`
+    + gRows("Store comparison", "🏬", per, [
+      { l: "Store", k: "store" }, { l: "Revenue", k: "revenue", f: x => money(x.revenue || 0) },
+      { l: "Orders", k: "orders" }, { l: "Open", k: "pending" }, { l: "Customers", k: "customers" },
+      { l: "Products", k: "products" }, { l: "Plan", k: "plan" }
+    ])
+    + gRows("Low stock — all stores", "⚠️", m.lowStock, [
+      { l: "Product", f: x => esc(String(x.title || x.id).slice(0, 56)) }, { l: "Stock", k: "stock" }
+    ])
+    + gRows("Recent orders — all stores", "🧾", m.recent, [
+      { l: "Order #", k: "num" }, { l: "Customer", k: "name" }, { l: "Total", k: "total", f: x => money(x.total) },
+      { l: "Status", k: "status", f: x => `<span class="badge ${esc(x.status)}">${esc(x.status)}</span>` }
+    ]);
+}
+async function vGorders() {
+  await gMeta();
+  const ships = await gFan("/api/shipments");
+  return gBar("Orders · Returns · RFQs", "🧾", "Every store's orders, returns, B2B requests, fulfilment, serialized goods and quick-commerce dispatch — the same records the Store Console edits, read across stores.", 3)
+    + await gTable("order") + await gTable("ret") + await gTable("rfq")
+    + gRows("Shipments & fulfilment", "🚚", (ships.merged || {}).shipments, [
+      { l: "Ref", k: "tracking_ref" }, { l: "Order", k: "order_id" }, { l: "Carrier", k: "carrier" },
+      { l: "Status", k: "status" }, { l: "Warehouse", k: "warehouse_id" }
+    ])
+    + await gTable("serialized")
+    + gRows("Quick-commerce dispatch runs", "⚡", await gFanRows("/api/qc/runs"))
+    + gRows("Riders", "🛵", await gFanRows("/api/qc/riders"));
+}
+/* helper for the quick-commerce fan-out lists (the store endpoint returns its rows under a
+   domain key, so the auto-column renderer just needs the merged payload's array) */
+async function gFanRows(path, key) {
+  const j = await gFan(path);
+  const m = j.merged || {};
+  return m[key] || m.runs || m.riders || m.rows || [];
+}
+async function vGcatalog() {
+  await gMeta();
+  const plan = await gFan("/api/admin/planning");
+  return gBar("Catalog · Products · SKUs", "📦", "Products, variants/SKUs, inventory, warehousing and replenishment planning for every store — inventory counts are the platform's goods view.", 5)
+    + await gTable("product") + await gTable("sku") + await gTable("inventory") + await gTable("variant_group") + await gTable("warehouse")
+    + gRows("Replenishment plan", "📦", (plan.merged || {}).replenishments)
+    + gRows("Planning stats — per store", "📈", (plan.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...(r.data.stats || {}) })));
+}
+async function vGb2b() {
+  await gMeta();
+  return gBar("Sellers · Suppliers · B2B", "🤝", "Marketplace sellers & onboarding, suppliers and procurement, B2B contracts/tenders, FBA and smart fulfilment, buyer claims, and trade trust (assurance, verification, letters of credit) across every store.", 11)
+    + await gTable("seller") + await gTable("supplier") + await gTable("product_supplier")
+    + await gTable("contract") + await gTable("tender")
+    + await gTable("seller_onboarding") + await gTable("seller_offer") + await gTable("seller_performance")
+    + await gTable("fba_inbound") + await gTable("smart_fulfilment") + await gTable("buyer_claim")
+    + await gTable("trade_assurance") + await gTable("company_verification") + await gTable("letter_of_credit");
+}
+async function vGmarket() {
+  await gMeta();
+  const [ads, kpi] = await Promise.all([gFan("/api/marketplace/ads"), gFan("/api/admin/marketplace/metrics")]);
+  return gBar("Ads · Marketplace", "📣", "Sponsored inventory, auctions and seller KPIs — GSP bidding, take rate and settlement across stores.", 2)
+    + gRows("Ad inventory", "📣", (ads.merged || {}).ads, [
+      { l: "Name", k: "name" }, { l: "Seller", k: "seller_id" }, { l: "Model", k: "bid_model" },
+      { l: "Bid", k: "bid_amount", f: x => money(x.bid_amount) }, { l: "Spent", k: "spent", f: x => money(x.spent) },
+      { l: "Status", k: "status" }
+    ])
+    + gRows("Seller KPIs", "📊", (kpi.merged || {}).sellers, [
+      { l: "Seller", k: "seller_id" }, { l: "Orders", k: "orders" }, { l: "Revenue", k: "revenue", f: x => money(x.revenue) },
+      { l: "Take", k: "take_rate", f: x => ((x.take_rate || 0) * 100).toFixed(0) + "%" },
+      { l: "Commission", k: "commission", f: x => money(x.commission) }, { l: "Ad spend", k: "ads_spend", f: x => money(x.ads_spend) },
+      { l: "Ad ROI", k: "ad_roi" }
+    ]);
+}
+async function vGfinance() {
+  await gMeta();
+  const [disp, pays, bill, xfer, paym, gw] = await Promise.all([
+    gFan("/api/admin/fin/disputes"), gFan("/api/admin/fin/payouts"), gFan("/api/admin/billing"),
+    gFan("/api/admin/transfers"), gFan("/api/admin/payments"), gFan("/api/admin/gateways")
+  ]);
+  return gBar("Finance · Payments", "💸", "Disputes, payout runs, billing, wallets, gateway turnover and each store's configured payment/shipping/notify providers — plus the fintech rails (UPI, escrow, splits, mandates, BNPL, KYC).", 5)
+    + gRows("Disputes / chargebacks", "⚖️", (disp.merged || {}).disputes, [
+      { l: "Ref", k: "ref" }, { l: "Amount", k: "amount", f: x => money(x.amount) + " " + esc(x.currency || "") }, { l: "State", k: "state" }
+    ])
+    + gRows("Payout runs", "🏦", (pays.merged || {}).payouts, [
+      { l: "Ref", k: "ref" }, { l: "Kind", k: "kind" }, { l: "Gross", k: "gross", f: x => money(x.gross) },
+      { l: "Net", k: "net", f: x => money(x.net) }, { l: "Status", k: "status" }
+    ])
+    + gRows("Billing — per store", "🧮", (bill.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...r.data })))
+    + gRows("Wallet transfers", "🔁", (xfer.merged || {}).transfers || (xfer.merged || {}).rows || (xfer.merged || {}).entries)
+    + gRows("Gateway turnover", "💳", (paym.merged || {}).payments, [
+      { l: "Gateway", k: "gateway" }, { l: "Count", k: "c" }, { l: "Amount", k: "amt", f: x => money(x.amt) }, { l: "Fee", k: "fee", f: x => money(x.fee) }
+    ])
+    + gRows("Configured providers — per store", "🔌", (gw.results || []).filter(r => r.ok && r.data).map(r => {
+      const d = r.data;
+      return { tenant_id: r.tenant_id, store: r.name, gateways: (d.gateways || []).map(x => x.id).join(", "), carriers: (d.carriers || []).map(x => x.id).join(", "), notifiers: (d.notifiers || []).map(x => x.id).join(", "), country: (d.country || {}).code };
+    }))
+    + await gTable("settlement")
+    + await gTable("upi_handle") + await gTable("escrow_hold") + await gTable("split_payment")
+    + await gTable("mandate") + await gTable("bnpl_account") + await gTable("kyc_profile");
+}
+async function vGoffers() {
+  await gMeta();
+  const [promos, ret, rec, mem, aff, affPayout] = await Promise.all([
+    gFan("/api/admin/promotions"), gFan("/api/admin/retention"), gFan("/api/admin/recurring"), gFan("/api/admin/memberships"),
+    gFan("/api/affiliate/affiliates"), gFan("/api/affiliate/payouts")
+  ]);
+  return gBar("Offers · Subscriptions · Affiliates", "🏷️", "Promotions, retention policy, recurring/membership programmes and the affiliate network across every store.", 4)
+    + gRows("Promotions & coupons", "🏷️", (promos.merged || {}).promotions, [
+      { l: "Name", k: "name" }, { l: "Type", k: "type" }, { l: "Value", k: "value" }, { l: "Code", k: "code" },
+      { l: "Status", k: "status", f: x => `<span class="badge ${esc(x.status)}">${esc(x.status)}</span>` }
+    ])
+    + gRows("Recurring schedules", "🔁", (rec.merged || {}).recurring || (rec.merged || {}).schedules)
+    + gRows("Memberships", "🏅", (mem.merged || {}).memberships)
+    + gRows("Retention policy — per store", "🗑️", (ret.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...(r.data.retention || r.data.defaults || {}) })))
+    + gRows("Affiliates & influencers", "🤝", (aff.merged || {}).affiliates)
+    + gRows("Affiliate payouts", "💸", (affPayout.merged || {}).payouts);
+}
+async function vGsupport() {
+  await gMeta();
+  const [tk, sla] = await Promise.all([gFan("/api/admin/helpdesk/tickets"), gFan("/api/admin/helpdesk/sla")]);
+  return gBar("Support · SLA", "🎧", "Every store's support queue and SLA health — cases, agents and breaches, cross-store.", 2)
+    + gRows("Support queue", "🎧", (tk.merged || {}).tickets, [
+      { l: "Ref", k: "ref" }, { l: "Subject", k: "subject" }, { l: "Customer", k: "owner_name" },
+      { l: "Priority", k: "priority" }, { l: "Status", k: "status" }, { l: "Agent", k: "assignee" }, { l: "CSAT", k: "csat" }
+    ])
+    + gRows("SLA health", "⏱️", (sla.merged || {}).health || (sla.merged || {}).breaches, [
+      { l: "Ref", k: "ref" }, { l: "Priority", k: "priority" }, { l: "Status", k: "status" },
+      { l: "Breach", k: "breach", f: x => x.breach ? `<span class="badge suspended">⚠ ${esc(x.breach)}</span>` : "on schedule" }
+    ]);
+}
+async function vGcontent() {
+  await gMeta();
+  const [rev, queue] = await Promise.all([gFan("/api/admin/reviews"), gFan("/api/admin/ugc/queue")]);
+  return gBar("Content · Brands · UGC", "🖼️", "Home content (banners/cards/departments), brands, taxonomy, the EAV attribute catalogue, and reviews/Q&A moderation across every store.", 6)
+    + await gTable("brand") + await gTable("banner") + await gTable("card") + await gTable("department")
+    + await gTable("taxonomy") + await gTable("attribute")
+    + gRows("Latest reviews", "⭐", (rev.merged || {}).reviews, [
+      { l: "Product", k: "product_id" }, { l: "Author", k: "name" }, { l: "Rating", k: "rating" },
+      { l: "State", k: "state" }, { l: "Helpful", k: "votes_helpful" }
+    ])
+    + gRows("Moderation queue", "🧹", (queue.merged || {}).reviews
+      ? [...(queue.merged || {}).reviews, ...(queue.merged || {}).questions, ...(queue.merged || {}).answers]
+      : (queue.merged || {}).queue);
+}
+async function vGrisk() {
+  await gMeta();
+  const [risk, trash, tax] = await Promise.all([gFan("/api/admin/risk/queue"), gFan("/api/admin/trash"), gFan("/api/admin/tax/report")]);
+  return gBar("Risk · Compliance · Trash", "🛡️", "Fraud queue, soft-delete/retention and tax exposure across every store, plus compliance & localization records.", 3)
+    + gRows("Risk / fraud queue", "🛡️", (risk.merged || {}).queue)
+    + gRows("Trash — per store", "🗑️", (trash.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...(r.data.counts || {}) })))
+    + gRows("Tax report", "🧾", (tax.merged || {}).rows || (tax.merged || {}).report || (tax.merged || {}).lines)
+    + await gTable("compliance") + await gTable("localization");
+}
+async function vGteam() {
+  await gMeta();
+  const [staff, roles, sso, hooks, set] = await Promise.all([
+    gFan("/api/admin/staff"), gFan("/api/admin/roles"), gFan("/api/admin/sso"), gFan("/api/admin/webhooks"), gFan("/api/admin/settings")
+  ]);
+  return gBar("Team · SSO · Webhooks · Settings", "👥", "Staff & RBAC roles, SSO configuration, webhook deliveries and each store's settings across every store.", 4)
+    + gRows("Staff", "👥", (staff.merged || {}).staff, [
+      { l: "Name", k: "name" }, { l: "Email", k: "email" }, { l: "Role", k: "staff_role" },
+      { l: "Disabled", k: "disabled", f: x => x.disabled ? "✓" : "—" }
+    ])
+    + gRows("RBAC roles", "🔐", (roles.merged || {}).roles)
+    + gRows("SSO — per store", "🔑", (sso.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...r.data })))
+    + gRows("Webhooks", "🔗", (hooks.merged || {}).webhooks)
+    + gRows("Webhook deliveries", "📨", (hooks.merged || {}).deliveries)
+    + gRows("Store settings — per store", "⚙️", (set.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...r.data })));
+}
+async function vGanalytics() {
+  await gMeta();
+  const [an, mon] = await Promise.all([gFan("/api/admin/analytics"), gFan("/api/admin/monitor")]);
+  const a = an.merged || {};
+  return gBar("Analytics", "📊", "Revenue mix, top products, funnel and inventory value aggregated across every store.", 2)
+    + `<div class="p-cards">
+      <div class="p-stat"><em>Inventory value</em><b>${money(a.invValue || 0)}</b><small>across stores</small></div>
+      <div class="p-stat"><em>Funnel views</em><b>${((a.funnel || {}).views) || 0}</b></div>
+      <div class="p-stat"><em>Funnel carts</em><b>${((a.funnel || {}).carts) || 0}</b></div>
+      <div class="p-stat"><em>Funnel orders</em><b>${((a.funnel || {}).orders) || 0}</b></div>
+    </div>`
+    + gRows("Top products", "🛒", a.topProducts, [
+      { l: "Product", f: x => esc(String(x.title || x.product_id).slice(0, 56)) }, { l: "Units", k: "units" }, { l: "Revenue", k: "rev", f: x => money(x.rev) }
+    ])
+    + gRows("Revenue by industry", "🏭", a.byIndustry, [{ l: "Industry", k: "industry" }, { l: "Revenue", k: "rev", f: x => money(x.rev) }])
+    + gRows("Product types", "🗂️", a.byType, [{ l: "Type", k: "type" }, { l: "Count", k: "c" }])
+    + gRows("Experiments (A/B)", "🧪", ((await gFan("/api/admin/experiments")).merged || {}).experiments)
+    + gRows("Monitoring — per store", "📈", (mon.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...r.data })));
+}
+/* ---------- the hub: stores & services, centralised ---------- */
+/* One front door for everything about a store and its services. Rather than re-listing
+   capabilities that already have their own surfaces, the hub reads each store's live
+   service/monitor profile through the fan-out and shows, per store: what it is, which
+   services it uses, its health, and its settings — then points into the dedicated surfaces
+   (Wizard, Stores, Provider Registry, Provisioning, Monitoring) for the actual edits.
+   Centralisation of *view*, not duplication of *logic*. */
+const HUB = { tab: "stores" };
+function hubTabs() {
+  const tabs = [["stores", "🏬 Stores"], ["services", "🔌 Services"], ["settings", "⚙️ Settings"], ["monitor", "📈 Monitor"]];
+  return `<div class="p-panel" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 14px">
+    <b style="font-size:14px">Store &amp; Service Setup</b>
+    ${tabs.map(([k, l]) => `<button class="p-btn sm ${HUB.tab === k ? "primary" : ""}" data-hubtab="${k}">${l}</button>`).join("")}
+    <span style="flex:1"></span><span class="p-tag">author · manage · configure · monitor — in one place</span></div>`;
+}
+function wireHubTabs() {
+  $$("[data-hubtab]").forEach(b => b.onclick = () => { HUB.tab = b.dataset.hubtab; render(); });
+}
+const hubServicesOf = d => (arr, key) => ((d && d[arr]) || []).filter(x => x[key]).map(x => x.id).join(", ") || "—";
+async function vHub() {
+  await gMeta();
+  const { tenants } = await api("/platform/tenants");
+  P.tenants = tenants;
+  let body = "";
+  if (HUB.tab === "stores") {
+    body = `<div class="p-panel"><h2>Stores (${tenants.length})</h2>
+      <p style="margin:0 0 12px;color:var(--p-muted);font-size:13px">Author a new store with the guided wizard, or govern an existing one — suspend, invoice, impersonate its Store Console. The wizard is the single authoring path; every store below was created by it.</p>
+      <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Store</th><th>Slug</th><th>Country</th><th>Mode</th><th>Plan</th><th>Status</th><th></th></tr></thead>
+      <tbody>${tenants.map(t => `<tr><td><b>${esc(t.name)}</b></td><td>${esc(t.slug)}</td><td>${esc(t.country || "—")}</td><td>${esc(t.mode)}</td><td>${esc(t.plan || "—")}</td>
+        <td><span class="badge ${esc(t.status)}">${esc(t.status)}</span></td>
+        <td style="white-space:nowrap"><button class="p-btn sm" data-tedit="${t.id}">Setup</button>
+        <button class="p-btn sm primary" data-imp="${t.id}">Manage · Catalog</button>
+        <button class="p-btn sm" data-susp="${t.id}">${t.status === "active" ? "Suspend" : "Resume"}</button></td></tr>`).join("") || '<tr><td colspan="7" class="p-empty">No stores yet</td></tr>'}</tbody></table></div></div>`;
+  } else if (HUB.tab === "services" || HUB.tab === "settings" || HUB.tab === "monitor") {
+    const path = HUB.tab === "services" ? "/api/admin/gateways" : HUB.tab === "settings" ? "/api/admin/settings" : "/api/admin/monitor";
+    const j = await gFan(path);
+    const rows = (j.results || []).filter(r => r.ok && r.data).map(r => {
+      const d = r.data;
+      if (HUB.tab === "services") return { tenant_id: r.tenant_id, store: r.name, country: (d.country || {}).code, payments: hubServicesOf(d)("gateways", "enabled"), shipping: hubServicesOf(d)("carriers", "enabled"), notifications: hubServicesOf(d)("notifiers", "enabled") };
+      if (HUB.tab === "monitor") { const t2 = d.totals || {}; return { tenant_id: r.tenant_id, store: r.name, req: t2.req, err: t2.err, avgMs: t2.avgMs }; }
+      const s = d.settings || d.brand || d;
+      return { tenant_id: r.tenant_id, store: r.name, mode: s.mode || (s.commerce && s.commerce.mode) || "—", currency: (s.commerce && s.commerce.currency) || "—", features: Object.keys(s.features || {}).filter(k => s.features[k]).length };
+    });
+    const cols = HUB.tab === "services" ? ["country", "payments", "shipping", "notifications"]
+      : HUB.tab === "monitor" ? ["req", "err", "avgMs"]
+        : ["mode", "currency", "features"];
+    const heads = HUB.tab === "services" ? ["Country", "Payment gateways", "Shipping carriers", "Notifications"]
+      : HUB.tab === "monitor" ? ["Requests", "Errors", "Avg ms"]
+        : ["Deployment mode", "Currency", "Features on"];
+    const title = HUB.tab === "services" ? "Services configured per store" : HUB.tab === "monitor" ? "Health per store" : "Settings per store";
+    const sub = HUB.tab === "services" ? "Which payment, shipping and notification providers each store has enabled — the registry of available services is Provider Registry; a store's own overrides live in its Store Console."
+      : HUB.tab === "monitor" ? "Live traffic per store from each store's own monitor handler — the platform-wide view is Monitoring."
+        : "Each store's commerce settings (read-only here) — platform defaults are set in Provisioning.";
+    body = `<div class="p-panel"><h2>${esc(title)}</h2><p style="margin:0 0 12px;color:var(--p-muted);font-size:13px">${sub}</p>
+      <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Store</th>${heads.map(h => `<th>${h}</th>`).join("")}</tr></thead>
+      <tbody>${rows.map(r => `<tr><td>${gStore(r.tenant_id)}</td>${cols.map(c => `<td>${esc(String(r[c] ?? ""))}</td>`).join("")}</tr>`).join("") || '<tr><td colspan="4" class="p-empty">No data yet</td></tr>'}</tbody></table></div></div>`;
+  }
+  return hubTabs() + body;
+}
+function wireHub() { wireHubTabs(); }
+/* ---------- end hub ---------- */
+async function vGdata() {
+  await gMeta();
+  const entities = G.entities || [];
+  const opts = entities.map(e => `<option value="${esc(e.key)}" ${G.entity === e.key ? "selected" : ""}>${esc(e.key)}</option>`).join("");
+  return gBar("Data Explorer", "🧬", "Every entity the platform serves, across every store — pick a dataset and filter. The menu is generated from live entity metadata, not a fixed list.", 1)
+    + `<div class="p-panel" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px">
+      <label style="font-size:13px;color:var(--p-muted)">Dataset</label>
+      <select id="gEntity" style="min-width:220px">${opts}</select>
+      <span class="p-tag">${entities.length} entities available</span></div>`
+    + await gTable(G.entity);
+}
+function wireGdata() {
+  const sel = $("#gEntity");
+  if (sel) sel.onchange = () => { G.entity = sel.value; render(); };
+}
+/* ---------- end Global Operations ---------- */
 async function render() {
   shell('<div class="p-empty">Loading…</div>');
   const body = $("#vBody");
   try {
-    if (view === "dash") body.innerHTML = await vDash();
+    if (view === "hub") { body.innerHTML = await vHub(); wireHub(); }
+    else if (view === "dash") body.innerHTML = await vDash();
     else if (view === "setup") { body.innerHTML = await vSetup(); wireSetup(); }
     else if (view === "provisioning") body.innerHTML = await vProvisioning();
     else if (view === "tenants") body.innerHTML = await vTenants();
@@ -2316,6 +2730,20 @@ async function render() {
     else if (view === "geo") { body.innerHTML = await vGeo(); await wireGeoFx(); }
     else if (view === "monitor") body.innerHTML = await vMonitor();
     else if (view === "audit") body.innerHTML = await vAudit();
+    /* Global Operations: the store capabilities, read across every store */
+    else if (view === "gops") { body.innerHTML = await vGops(); wireG(); }
+    else if (view === "gorders") { body.innerHTML = await vGorders(); wireG(); }
+    else if (view === "gcatalog") { body.innerHTML = await vGcatalog(); wireG(); }
+    else if (view === "gb2b") { body.innerHTML = await vGb2b(); wireG(); }
+    else if (view === "gmarket") { body.innerHTML = await vGmarket(); wireG(); }
+    else if (view === "gfinance") { body.innerHTML = await vGfinance(); wireG(); }
+    else if (view === "goffers") { body.innerHTML = await vGoffers(); wireG(); }
+    else if (view === "gsupport") { body.innerHTML = await vGsupport(); wireG(); }
+    else if (view === "gcontent") { body.innerHTML = await vGcontent(); wireG(); }
+    else if (view === "grisk") { body.innerHTML = await vGrisk(); wireG(); }
+    else if (view === "gteam") { body.innerHTML = await vGteam(); wireG(); }
+    else if (view === "ganalytics") { body.innerHTML = await vGanalytics(); wireG(); }
+    else if (view === "gdata") { body.innerHTML = await vGdata(); wireG(); wireGdata(); }
     else if (view === "manual") window.open("/docs/user-manual.html", "_blank");
     else if (view === "architecture") window.open("/docs/architecture.html", "_blank");
   } catch (e) { body.innerHTML = `<div class="p-empty">⚠️ ${esc(e.message)}</div>`; }
