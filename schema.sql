@@ -1345,3 +1345,12 @@ CREATE INDEX IF NOT EXISTS ix_capvals_tenant ON capability_values(tenant_id, cap
 CREATE TABLE IF NOT EXISTS capability_presets (id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL UNIQUE, label TEXT NOT NULL, description TEXT, capabilities TEXT NOT NULL DEFAULT '{}', created_at TEXT NOT NULL DEFAULT (datetime('now')));
 CREATE INDEX IF NOT EXISTS ix_cappreset_key ON capability_presets(key);
 CREATE TABLE IF NOT EXISTS capability_preset_assignments (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, preset_key TEXT NOT NULL, UNIQUE(tenant_id, preset_key));
+
+/* THE TENANCY HIERARCHY — Platform → Tenant → Organization → Business Unit → Brand →
+   Store → Channel. One row per node; the materialized `path` makes a subtree a LIKE away,
+   and the tree doubles as the CONFIG CASCADE (a key resolved at a Store inherits up the
+   chain, deepest wins). Mirrored from lib/db.js. */
+CREATE TABLE IF NOT EXISTS tenancy_nodes (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, kind TEXT NOT NULL, parent_id INTEGER, slug TEXT NOT NULL, name TEXT NOT NULL, path TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'active', profile TEXT DEFAULT '{}', config TEXT DEFAULT '{}', uid TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(tenant_id, path));
+CREATE INDEX IF NOT EXISTS ix_tenancy_parent ON tenancy_nodes(tenant_id, parent_id);
+CREATE INDEX IF NOT EXISTS ix_tenancy_kind ON tenancy_nodes(tenant_id, kind);
+CREATE TABLE IF NOT EXISTS tenancy_config (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, node_id INTEGER NOT NULL, key TEXT NOT NULL, value TEXT DEFAULT '{}', updated_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(tenant_id, node_id, key));

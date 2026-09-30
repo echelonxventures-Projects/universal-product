@@ -292,3 +292,17 @@ body.portal { margin: 0; font: 14px/1.5 var(--p-font); background: var(--p-bg); 
   .p-btn:active { transform: translateY(1px); }
   .p-nav button:active, .p-nav a:active { background: rgba(11, 99, 206, .28); }
 }
+
+/* ---------- tenancy hierarchy ----------
+   An indented business tree: each row is a node, the indentation encodes depth, and the
+   selected row is highlighted because it drives the configuration inspector below it. */
+.tn-tree { border: 1px solid var(--p-border, #dbe3ee); border-radius: 10px; overflow: hidden; }
+.tn-row { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-top: 1px solid var(--p-border, #dbe3ee); flex-wrap: wrap; }
+.tn-row:first-child { border-top: none; }
+.tn-row:nth-child(even) { background: rgba(11, 99, 206, .025); }
+.tn-row.tn-sel { background: rgba(11, 99, 206, .1); box-shadow: inset 3px 0 0 var(--p-primary, #0b63ce); }
+.tn-name { display: inline-flex; align-items: center; gap: 7px; background: none; border: none; padding: 4px 6px; border-radius: 6px; font-size: 13.5px; color: var(--p-ink, #16233a); cursor: pointer; }
+.tn-name:hover { background: rgba(11, 99, 206, .08); }
+.tn-path { font-size: 11.5px; color: var(--p-muted, #64748b); background: rgba(15, 23, 42, .04); padding: 2px 7px; border-radius: 5px; }
+.tn-acts { display: inline-flex; gap: 6px; margin-left: auto; }
+@media (hover: none) and (pointer: coarse) { .tn-name { min-height: 38px; } .tn-row { padding: 10px 12px; } }

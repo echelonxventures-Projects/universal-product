@@ -58,14 +58,14 @@ const NAV = [
   { g: "Payments & Finance", items: [["payments", "💳 Payment Gateways"], ["settlements", "🤝 Settlements"], ["finance", "💰 Finance & Settlements"], ["billing", "🧮 Billing"]] },
   { g: "Growth & Retention", items: [["promotions", "💸 Offers & Coupons"], ["ugc", "⭐ Reviews & Q&A"], ["helpdesk", "🎧 Support Helpdesk"], ["affiliate", "🤝 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["goip", "Ω∞ GOIP"]] },
   { g: "AI & Automation", items: [["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"]] },
-  { g: "Identity & Access", items: [["sso", "🔐 SSO & Integrations"], ["team", "👥 Team & Roles"]] },
+  { g: "Identity & Access", items: [["sso", "🔐 SSO & Integrations"], ["structure", "🏢 Org Structure"], ["team", "👥 Team & Roles"]] },
   { g: "Geo & Localization", items: [["localizations", "🌐 Localizations"], ["shipping", "📦 Shipping & Tracking"], ["sitemap", "🔍 Sitemap & SEO"]] },
   { g: "Compliance & Risk", items: [["compliance", "✅ Compliance & Certs"], ["risk", "🛡️ Risk & Fraud"], ["audit", "📜 Audit Trail"], ["trash", "🗑️ Trash & Retention"]] },
   { g: "Settings & Data", items: [["settings", "⚙️ Settings"], ["studio", "🛠️ Data Studio"], ["modules", "🧩 Modules"]] },
   { g: "Reference", items: [["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]] }
 ];
 const NAVFLAT = NAV.flatMap(g => g.items);
-const NAVSEC = { promotions: "offers", goip: "offers", ai: "ai", webhooks: "webhooks", trash: "trash", team: "team", studio: "studio", sso: "settings" };
+const NAVSEC = { promotions: "offers", goip: "offers", ai: "ai", webhooks: "webhooks", trash: "trash", team: "team", studio: "studio", sso: "settings", structure: "tenancy" };
 const navSection = k => NAVSEC[k] || k;
 const canSee = k => { if (!A.allowed || A.allowed.includes("*")) return true; if (k === "dash") return true; return A.allowed.includes(navSection(k)); };
 let view = "dash";
@@ -754,6 +754,32 @@ document.addEventListener("click", async e => {
     if (nb) openForm(nb.dataset.new, null, render);
     if (eb) openForm(eb.dataset.edit, eb.dataset.id, render);
     if (db) { if (!confirm("Delete this record?")) return; await api(`/meta/entity/${db.dataset.del}/${encodeURIComponent(db.dataset.id)}`, "DELETE"); toast("Deleted"); render(); }
+    /* tenancy hierarchy: select a node for the config inspector, suspend/activate, delete a
+       subtree, open the new-node form, and set a config override on the selected node */
+    if (act && act.dataset.act === "tn-sel") { if ($("#tnKeyIn")) tnKey = $("#tnKeyIn").value.trim(); tnSel = Number(act.dataset.id); render(); }
+    if (act && act.dataset.act === "tn-toggle") { const t = await api(`/tenancy/node/${act.dataset.id}`, "PUT", { status: act.dataset.to }); toast(t.error || `Node ${act.dataset.to}`); render(); }
+    if (act && act.dataset.act === "tn-del") {
+      const n = act.dataset.id;
+      if (!confirm("Delete this node and everything beneath it?")) return;
+      const t = await api(`/tenancy/node/${n}`, "DELETE");
+      if (tnSel === Number(n)) tnSel = null;
+      toast(t.error || `Removed ${t.removed} node(s)`); render();
+    }
+    if (act && act.dataset.act === "tn-new") { const h = $("#tnModalHost"); if (h) { h.classList.remove("hidden"); h.querySelector(".p-modal").style.display = "flex"; } }
+    if (act && act.dataset.act === "tn-create") {
+      const parent = $("#tnParent") ? Number($("#tnParent").value) : null;
+      const t = await api("/tenancy/node", "POST", { parent_id: parent, kind: $("#tnKind") ? $("#tnKind").value : "organization", name: $("#tnName") ? $("#tnName").value.trim() : "" });
+      if (t.error) { toast(t.error); return; }
+      toast(`Created ${t.path}`); render();
+    }
+    if (act && act.dataset.act === "tn-cfg-set") {
+      tnKey = $("#tnKeyIn") ? $("#tnKeyIn").value.trim() : tnKey;
+      const raw = $("#tnValIn") ? $("#tnValIn").value.trim() : "";
+      let val = {};
+      if (raw) { try { val = JSON.parse(raw); } catch (e) { toast("Value must be valid JSON"); return; } }
+      const t = await api(`/tenancy/config/${act.dataset.id}/${encodeURIComponent(tnKey)}`, "POST", val);
+      toast(t.error || "Configuration saved"); render();
+    }
   } catch (err) { toast(err.message); }
 });
 document.addEventListener("input", e => {
@@ -1432,6 +1458,66 @@ function wireSso() {
   if ($("#scimTok")) $("#scimTok").onclick = async () => { try { const r = await api("/admin/scim/token", "POST", { label: $("#scimLbl").value || "default" }); $("#scimOut").innerHTML = "Token (shown once): <code>" + esc(r.token) + "</code>"; } catch (e) { toast(e.message); } };
   if ($("#trGo")) $("#trGo").onclick = async () => { try { await api("/admin/transfers", "POST", { sku_id: Number($("#trSku").value), from_warehouse: Number($("#trFrom").value), to_warehouse: Number($("#trTo").value), qty: Number($("#trQty").value) || 1 }); toast("Transferred"); render(); } catch (e) { toast(e.message); } };
 }
+/* ── tenancy hierarchy ── the tenant's own org tree (org → BU → brand → store → channel).
+   Every node is data; the path is materialized so a subtree is one LIKE away, and the tree
+   doubles as the CONFIG CASCADE — the inspector shows which node a resolved value came from. */
+let tnSel = null, tnKey = "";
+const TN_ICON = { tenant: "🏬", organization: "🏢", business_unit: "🧱", brand: "🏷️", store: "🏪", channel: "📡", website: "🌐", mobile_app: "📱", marketplace: "🛒", social: "💬", pos: "🧾", api_commerce: "🔌", region: "🗺️" };
+function flatten(n, out = []) { out.push(n); (n.children || []).forEach(c => flatten(c, out)); return out; }
+async function renderStructure() {
+  const r = await api("/tenancy/tree");
+  const kinds = r.kinds || [];
+  const walk = (n, depth) => {
+    const kids = (n.children || []).map(c => walk(c, depth + 1)).join("");
+    const isRoot = n.parent_id == null;
+    const st = n.status === "active" ? "canonical" : "retired";
+    return `<div class="tn-row${tnSel === n.id ? " tn-sel" : ""}" style="margin-left:${depth * 20}px">
+        <button class="tn-name" data-act="tn-sel" data-id="${n.id}" title="Inspect configuration">
+          <span>${TN_ICON[n.kind] || "▪️"}</span><b>${esc(n.name)}</b></button>
+        <code class="tn-path">${esc(n.path)}</code>
+        <span class="badge ${st}">${esc(n.status)}</span>
+        ${isRoot ? `<span class="p-sub">tenant root</span>` : `<span class="tn-acts">
+          <button class="p-btn sm" data-act="tn-toggle" data-id="${n.id}" data-to="${n.status === "active" ? "suspended" : "active"}">${n.status === "active" ? "Suspend" : "Activate"}</button>
+          <button class="p-btn sm danger" data-act="tn-del" data-id="${n.id}">✕</button></span>`}
+      </div>${kids}`;
+  };
+  const treeHtml = r.tree ? walk(r.tree, 0) : `<div class="p-empty">No hierarchy yet</div>`;
+  const nodes = r.tree ? flatten(r.tree) : [];
+  if (tnSel != null && !nodes.some(n => n.id === tnSel)) tnSel = null;
+  const sel = nodes.find(n => n.id === tnSel) || (r.tree || null);
+  let inspector = "";
+  if (sel) {
+    let resolved = null;
+    try { resolved = await api(`/tenancy/resolve/${sel.id}?key=${encodeURIComponent(tnKey)}`); } catch (e) { }
+    const chain = (resolved && resolved.chain) || [];
+    inspector = `<div class="p-panel" style="margin-top:16px">
+      <div class="p-head"><b>${TN_ICON[sel.kind] || "▪️"} ${esc(sel.name)}</b><span class="p-sub">configuration cascade — deepest wins</span></div>
+      <div class="p-form" style="grid-template-columns:1fr 2fr auto;align-items:end">
+        <label>Key<input id="tnKeyIn" value="${esc(tnKey)}" placeholder="e.g. checkout.defaultCurrency"></label>
+        <label>Value (JSON)<input id="tnValIn" placeholder='{"currency":"USD"}'></label>
+        <button class="p-btn primary" data-act="tn-cfg-set" data-id="${sel.id}">Set on this node</button>
+      </div>
+      <div class="p-scroll-x" style="margin-top:12px"><table class="p-table"><thead><tr><th>Node</th><th>Kind</th><th>Own value for “${esc(tnKey || "all config")}”</th></tr></thead>
+        <tbody>${chain.map(c => `<tr><td><code>${esc(c.path)}</code></td><td>${esc(c.kind)}</td><td><code>${esc(c.value == null || (typeof c.value === "object" && !Object.keys(c.value).length) ? "—" : JSON.stringify(c.value))}</code></td></tr>`).join("") || '<tr><td colspan="3" class="p-empty">no config set on the chain</td></tr>'}</tbody></table></div>
+      ${tnKey ? `<div class="p-note">Resolved <b>${esc(tnKey)}</b> → <code>${esc(JSON.stringify(resolved && resolved.resolved))}</code></div>` : ""}
+    </div>`;
+  }
+  const newForm = `<div class="p-modal"><div class="p-modal-box"><div class="p-modal-head"><h3>New node</h3><button data-mclose>✕</button></div>
+    <div class="p-form">
+      <label>Parent<select id="tnParent">${nodes.map(n => `<option value="${n.id}">${esc(n.path)}</option>`).join("")}</select></label>
+      <label>Kind<select id="tnKind">${kinds.map(k => `<option value="${k}">${k}</option>`).join("")}</select></label>
+      <label>Name<input id="tnName" placeholder="e.g. North America"></label>
+    </div>
+    <div style="margin-top:14px;text-align:right"><button class="p-btn primary" data-act="tn-create">Create node</button></div></div></div>`;
+  return `<div class="p-panel">
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">
+        <span class="p-tag">${nodes.length} node${nodes.length === 1 ? "" : "s"}</span><span style="flex:1"></span>
+        <button class="p-btn primary sm" data-act="tn-new">+ New node</button></div>
+      <div class="tn-tree">${treeHtml}</div>
+    </div>${inspector}
+    <div id="tnModalHost" class="hidden">${newForm}</div>`;
+}
+
 async function render() {
   shell('<div class="p-empty">Loading…</div>');
   const body = $("#vBody");
@@ -1451,6 +1537,7 @@ async function render() {
     else if (view === "suppliers") body.innerHTML = await entityTable("supplier") + await entityTable("product_supplier");
     else if (view === "serialized") { body.innerHTML = await vSerialized(); wireSerialized(); }
     else if (view === "compliance") body.innerHTML = await entityTable("compliance");
+    else if (view === "structure") body.innerHTML = await renderStructure();
     else if (view === "localizations") body.innerHTML = await entityTable("localization");
     else if (view === "ai") { body.innerHTML = await vAI(); wireAI(); }
     else if (view === "webhooks") { body.innerHTML = await vWebhooks(); wireWebhooks(); }

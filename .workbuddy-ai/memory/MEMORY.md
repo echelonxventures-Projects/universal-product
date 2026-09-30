@@ -721,3 +721,50 @@ be a violation). It had three latent defects:
 **Suite: 692 E2E + 31 wizard + 231 parity + 197 conformance + 82 gcatalog + 66 gops + 170
 upce + ucos checks, exit 0.** Still open (unchanged): `lib/tenancy.js` unwired (deliberate),
 `dbg12.mjs` scratch, the live 8787 server on stale code, and the whole worktree UNCOMMITTED.
+
+### 2026-09-30 (session 12) — tenancy wired at last; two latent bugs the unwired module hid
+The owner's last open item: `lib/tenancy.js` was written (182 lines) but wired to nothing —
+no tables in the schema, no route, no console, no RBAC section, no test. Wired it end-to-end,
+Configuration-Over-Code, and the act of exercising it found two real defects that the dead
+module could never have revealed.
+
+**The wiring (all data; no node is code):**
+- **Tables** declared in the `db.js` schema block + `schema.sql` (`tenancy_nodes` +
+  `tenancy_config`); `registry.js::seedRegistries()` calls `ensureTables()` at boot, and the
+  per-call `ensureTables()` was removed from every read/write so the hot path stopped creating
+  tables on each request (that is the compliance/dashboards convention — the schema owns them).
+- **API** (`/api/tenancy/*`, store-admin scoped to the session's own tenant): `tree` · `nodes` ·
+  `POST node` · `PUT node/:id` · `DELETE node/:id` · `GET resolve/:id?key=` ·
+  `POST config/:id/:key`. `resolve` also returns the per-node chain so the console's inspector
+  shows an operator WHICH node a value came from, not just the merged answer.
+- **Console**: store console → 🏢 Org Structure (Identity & Access), an indented tree (kind
+  icon, materialized path, status badge), per-node suspend/activate + subtree delete, a
+  new-node modal (parent + kind from the vocabulary + name), and a config inspector. CSS
+  `.tn-*` in portal.css.
+- **RBAC**: a `tenancy` section was added to `SECTIONS` and the stamp bumped `rb_v3 → rb_v4`
+  — owner/manager inherit it via `*: write`. This is the session-6 lesson again: **a nav item
+  without a SECTIONS entry is invisible even to a full-access admin, and a warm DB keeps the
+  old role list forever unless the stamp moves.**
+
+**The two latent bugs (found by `test/tenancy.js`, not by reading):**
+- **`create()`'s INSERT had 8 placeholders for 9 columns.** Columns
+  `(tenant_id,kind,parent_id,slug,name,path,profile,config,uid)` vs `VALUES(?,?,?,?,?,?,?,?)`
+  → `SQLite SQL logic error: 8 values for 9 columns`. Every node create was dead — the module
+  had never once executed its own write path. **This is the session-3 class verbatim: count
+  columns vs `?` when an INSERT is hand-written; `node --check` sees a string and passes.**
+- **`resolve()` indexed the merged value by the key name.** With a key it correctly deep-merged
+  each node's `getConfig(key)` into an accumulator, then returned `key in acc ? acc[key] :
+  undefined` — but `acc` IS the merged value, so `acc[key]` looked for a property NAMED after
+  the key and every keyed resolve answered `undefined`: the cascade appeared empty. Returns
+  `acc` now (or `undefined` when nothing is set). **The read path looked sane and was silently
+  useless; a cascade nobody queries resolves to nothing.**
+
+**Test**: `test/tenancy.js` (32 assertions, wired into `npm test`) walks the real contracts —
+root auto-created on first access, a 6-deep chain with derived paths, unknown kind and
+duplicate path refused, a suspended chain blocking creates beneath it (and reactivating),
+deepest-wins with a sibling key surviving a deep-merge, subtree delete + immortal root, and
+the console rendering the tree + inspector with no JS errors. Proven live on 8787 too (chain
+built, `{a:1,b:{x:1}}` + `{b:{y:2}}` → `{a:1,b:{x:1,y:2}}`, probe subtree cleaned up).
+**Suite: 692 E2E + 31 wizard + 32 tenancy + 231 parity + 197 conformance + 82 gcatalog + 66
+gops + 170 upce + ucos checks, exit 0.** Live box restarted twice this session and verified
+both times. `dbg12.mjs` is the only remaining scratch file.
