@@ -130,7 +130,9 @@ async function render(p, wait = 1800) {
     console.log(failed ? `\n${passed} passed, ${failed} failed` : `\n${passed} passed, 0 failed`);
   } finally {
     try { srv.kill("SIGKILL"); } catch (e) { }
-    try { require("fs").rmSync(db, { force: true }); } catch (e) { }
+    /* the main db alone — a SIGKILLed server leaves the WAL/SHM sidecars behind (a clean
+       checkpoint removes them; a kill does not), and they would accumulate in test/ */
+    for (const s of ["", "-wal", "-shm"]) { try { require("fs").rmSync(db + s, { force: true }); } catch (e) { } }
   }
   process.exit(failed ? 1 : 0);
 })().catch(e => { console.log("ABORT", e.message); process.exit(1); });

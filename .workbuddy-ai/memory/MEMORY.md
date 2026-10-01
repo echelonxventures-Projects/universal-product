@@ -768,3 +768,66 @@ built, `{a:1,b:{x:1}}` + `{b:{y:2}}` → `{a:1,b:{x:1,y:2}}`, probe subtree clea
 **Suite: 692 E2E + 31 wizard + 32 tenancy + 231 parity + 197 conformance + 82 gcatalog + 66
 gops + 170 upce + ucos checks, exit 0.** Live box restarted twice this session and verified
 both times. `dbg12.mjs` is the only remaining scratch file.
+
+### 2026-10-01 (session 13) — three more corpora; a substring false positive in the trace map
+Resumed to an uncommitted worktree holding three new corpora and a red chain: the corpus work
+itself was done, but one latent defect it exposed had stopped `npm test` before
+`ucos-master.js`/`smoke.js` could ever run.
+
+**The corpora (all data; one parser, three new grammars):**
+- **`ucosm`** (Architecture5.txt, the master architecture reference — 188 universes) reuses
+  UPIP's `# <n>. TITLE` grammar: a DOCS row and nothing else.
+- **`ucoso`** (UCOS_Omega…v1.0.md, Omega — 552 universes) is MARKDOWN: no fences at all. Its
+  containers are `## <n> TITLE` (28) and its structure lives in tables. A table grammar turns
+  each table into a registry under the nearest heading at ANY level (the §9.2 index sits under
+  a `###`), a "Universe"/"Name" column carries the declaration, and the corpus's own
+  `declare: /Universe Index/i` names which registries are declarations — so a new corpus's
+  declaration vocabulary is data in its DOCS row, and `discover()` learns no corpus rule.
+- **`ucosu`** (UCOS-Universal-Capability-Operating-System.md, 59 universes) is PDF-derived
+  TEXT: no fences, no tables. Containers are lettered headings (`D1. Identity Universe`),
+  content is labelled bullet lists (`• A · B`), and universes are declared by the HEADINGS
+  themselves. It opens with a table of contents that repeats the body's headings, so
+  `bodyStart: /^PART [A-L]$/` gates content extraction while containers still register from
+  both (220 registrations = 110 real sections; zero concepts above the body line).
+- **Canonical names**: a declaration's gloss and subtitle are commentary, never identity —
+  `declarationName()` strips them: "Spatial Existence (Geography)" → "Spatial Existence",
+  "Temporal Universe — the Constitutional Owner of Time" → "Temporal Universe".
+- **Declaration vs reconstruction**: the declaration channel admits registry words
+  ("Identity", "Security", "Evolution") that `REGISTRY_MACHINERY` keeps out of reconstructed
+  lists — `isExplicitDeclaration` deliberately drops that blocklist, because in a declaration
+  channel the corpus is pairing an id with a canonical universe, not labelling a list.
+- **The corpora are consolidated re-statements of the same capability set**, so 18 of Omega's
+  78 index universes share keys with UPIP/Architecture5 ("Pricing", "Agent"). The registry
+  de-duplicates first-wins — one universe, one key, one foundation — unlike Architecture5,
+  which was authored disjoint from UPCE by construction. Zero-missing is therefore "every
+  declared key is discovered", not "every doc wins attribution".
+
+**The latent defect the bigger corpus exposed (`lib/ucos-trace.js`):**
+- **The route layer matched keys by bare substring.** `new RegExp("agi", "i")` over route paths
+  hit `/api/auth/login/magic` and `/api/platform/billing/aging`, so the AGI universe reported
+  2 API routes and traced 8/8 "fully wired" — wired to routes that never heard of it. Any short
+  key was one substring away from a spurious layer (and from hiding the absent-by-design route
+  layer Article 4.2 promises). Now the key must bound a whole path segment (or the tail of one,
+  as in `uv_<key>`); the legitimate matches survive (`/api/fintech/insurance` still wires
+  Insurance), the substrings do not.
+- **`ucos-activation.js` was asserting the property on one member.** `sample[0].some(!present)`
+  broke the moment `sample[0]` became a universe that resolves everywhere — it was testing
+  "this universe is incomplete", not "the trace reports incompleteness". Rewritten to test the
+  property itself: every trace lists all eight layers, and across the sampled set absent ones
+  are reported (including the absent-by-design route layer), never omitted.
+
+**Also fixed:** `publish()` in `ucos-catalog.js` keyed its idempotent UPDATE on
+`source_universe`, so a universe with N records clobbered the first record's row on every
+re-publish — orphaning the SKU and inventory keyed to that id. The identity key is the catalog
+row id, which embeds the record id: one record is one sellable, N records occupy N rows.
+And `test/tenancy.js` cleaned only `tenancy.db` in its `finally`, leaving the WAL/SHM sidecars
+a SIGKILLed server drops — they accumulated untracked in `test/`; now all three are removed.
+
+**Tests**: `test/ucos-master.js` (257 checks — Architecture5's six criteria) and
+`test/ucos-omega.js` (166 checks — both markdown corpora: table grammar, §9.2's 78, canonical
+naming, declaration-vs-reconstruction, 220/110 registrations, the bodyStart boundary, and a
+transmissibility probe per corpus), both wired into `npm test`.
+**Suite: 692 E2E + 31 wizard + 32 tenancy + 231 parity + 197 conformance + 82 gcatalog + 66
+gops + 170 upce + 257 master + 166 omega + ucos checks, exit 0.** Still open: `dbg12.mjs`
+scratch, `Conversation1txt.md` (the pasted requirements source for these corpora), the live
+8787 server on stale code, and the whole worktree UNCOMMITTED.

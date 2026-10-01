@@ -140,7 +140,16 @@ console.log("\n▸ TRACEABILITY REPORTS EVERY LAYER — INCLUDING ABSENT-BY-DESI
 const tr = trace.trace(sample[0].name);
 ok(tr.layers.length === 8, "a trace covers all eight runtime layers", tr.layers.length);
 ok(tr.layers.filter(l => l.present).length >= 6, "a sampled universe is wired through most layers", tr.layers.filter(l => l.present).length + "/8");
-ok(tr.layers.some(l => !l.present), "trace reports the layers that are absent, rather than hiding them");
+/* absent layers must be REPORTED, never dropped: every trace lists all eight layers,
+   each honestly present or absent — including the ones absent by design (Article 4.2:
+   no per-universe route exists). A universe that happens to resolve at every layer would
+   still list all eight, so the property is proven across the sampled set, not on one
+   member that might be fully wired */
+const sampled = sample.map(u => trace.trace(u.name));
+ok(sampled.every(t => t.layers.length === 8), "every trace lists all eight layers, present or absent");
+ok(sampled.some(t => t.layers.some(l => !l.present)), "a trace reports its absent layers rather than hiding them");
+ok(sampled.some(t => t.layers.some(l => !l.present && l.layer === "api routes")),
+  "the absent-by-design route layer is reported as absent, not omitted");
 const notFound = trace.trace("zzz_not_a_real_concept_qqq");
 ok(/not found in the corpus/.test(notFound.verdict), "a nonsense key is reported as absent, not silently empty", notFound.verdict);
 const m = trace.matrix();
