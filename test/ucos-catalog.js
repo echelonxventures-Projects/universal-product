@@ -150,5 +150,36 @@ const st = cat.catalogStats();
 ok(Array.isArray(st.tenants), "catalog stats enumerate active tenants", "tenants=" + (st.tenants || []).length);
 ok(st.tenants.every(t => typeof t.records === "number"), "every tenant reports its published universe records");
 
+console.log("\n▸ CROSS-TENANT ISOLATION (one store's records never reach another store's catalog)");
+/* the composition layer serves any platform on any store, so a universe activated on two
+   stores must carry each store's own records plus the shared canonical offering — never the
+   other store's. publishUniverse/activate once read entity_data with no tenant filter, which
+   republished every store's rows into whichever store activated the universe */
+const tenants = db.all("SELECT id, slug FROM tenants WHERE status='active' ORDER BY id");
+ok(tenants.length >= 2, "the platform has at least two active stores to compose on", tenants.map(t => t.slug).join(","));
+const tA = Number(tenants[1].id), tB = Number(tenants[2] ? tenants[2].id : tenants[0].id);
+const probe = univ.list().find(u => u.name === "Insurance") || univ.list()[0];
+const ekp = probe.entity_key;
+cat.withdrawUniverse(tA, ekp); cat.withdrawUniverse(tB, ekp);   /* a clean slate on both stores */
+/* store A activates the universe and then authors its own record inside it */
+const aAct = cat.activate(tA, ekp);
+ok(aAct.ok === true, "store A activates the universe", JSON.stringify(aAct));
+const aRec = entity.createEntity(tA, ekp, { name: "Store A exclusive", code: "A-1", status: "canonical" });
+ok(!aRec.error && aRec.id > 0, "store A authors its own record in the universe", JSON.stringify(aRec));
+ok(cat.publishUniverse(tA, ekp).published >= 2, "store A's catalogue carries the canonical offering and its own record");
+/* store B activates the SAME universe */
+const bAct = cat.activate(tB, ekp);
+ok(bAct.ok === true, "store B activates the same universe", JSON.stringify(bAct));
+const bTitles = db.all("SELECT title FROM products WHERE tenant_id=? AND source_universe=?", tB, ekp).map(r => r.title);
+ok(!bTitles.includes("Store A exclusive"), "store B's catalogue does NOT contain store A's record", bTitles.join(","));
+ok(bTitles.length >= 1, "store B still receives the shared canonical offering", bTitles.join(","));
+ok(db.all("SELECT title FROM products WHERE tenant_id=? AND source_universe=?", tA, ekp).some(r => r.title === "Store A exclusive"),
+  "store A's own record remains on store A's shelf");
+/* withdrawal is scoped too: pulling the universe from store B leaves store A's shelf intact */
+ok(cat.withdrawUniverse(tB, ekp).ok === true, "store B withdraws the universe");
+ok(n("SELECT COUNT(*) n FROM products WHERE tenant_id=? AND source_universe=?", tB, ekp) === 0, "store B's shelf is empty of it");
+ok(n("SELECT COUNT(*) n FROM products WHERE tenant_id=? AND source_universe=?", tA, ekp) >= 2, "store A's shelf is untouched",
+  n("SELECT COUNT(*) n FROM products WHERE tenant_id=? AND source_universe=?", tA, ekp));
+
 console.log("\n" + (failed ? "✗ " + failed + " check(s) failed" : "✓ all catalog & registry-truth checks passed") + "  (" + passed + " passed)");
 process.exit(failed ? 1 : 0);
