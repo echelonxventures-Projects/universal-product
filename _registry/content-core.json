@@ -1,0 +1,953 @@
+{
+  "$schema": "https://ucos.io/registry/content-core.v1.json",
+  "registryId": "UCOS-REG-CONTENT-CORE",
+  "canonicalName": "Core Domain Content Registry",
+  "version": "Omega-1",
+  "status": "Constitutional Freeze",
+  "ownerDomain": "Constitutional Authority",
+  "law": "Knowledge Once — domain substance is defined here once and projected to every artifact.",
+  "content": {
+    "IDN": {
+      "concepts": "Identity is the constitutionally verifiable handle for any existence. It is namespace-partitioned, versioned, and lineage-carrying. External schemes (GTIN, EAN, UPC, ISBN, ISSN, IMEI, VIN, CUSIP, ISIN, HSN, SAC) and future schemes are represented WITHOUT schema change, as registry-driven fingerprints.",
+      "ontology": "Identity ⊂ Existence. Identity has exactly one Namespace. Identity ≥ 1 Fingerprint. Identity has 0..n Aliases. Identity has 1 Lineage chain. Identity is referenced by every other primitive as its anchor.",
+      "taxonomy": "By namespace: Platform / Tenant / External / Future. By strength: Provisional / Verified / Certified. By scope: Universal / Scoped / Ephemeral.",
+      "dataModel": "```yaml\nIdentity:\n  identityId: <uuid v7, sort-friendly>\n  namespace: <registry-driven, never hardcoded>\n  version: <monotonic integer>\n  lineage:\n    parentId: <Identity|null>\n    forkOf: <Identity|null>\n  aliases: [<Alias>]\n  fingerprints:\n    - scheme: <registry scheme id>   # GTIN|EAN|VIN|...|future\n      value: <normalized string>\n      checksum: <registry-validated>\n  signatures: [<Signature>]\n  temporal: {validFrom, validTo, observedAt}\n  metadata: {provenance, trustRef}\n```",
+      "graphModel": "(:Identity)-[:LINEAGE_OF]->(:Identity); (:Identity)-[:ALIAS_OF]->(:Identity); (:Identity)-[:FINGERPRINT_IN]->(:Registry); (:Identity)<-[:ANCHORS]-(:Knowledge|:Relationship|:Policy)",
+      "apis": [
+        "POST /identity.v1.create",
+        "POST /identity.v1.resolve",
+        "GET  /identity.v1/{id}",
+        "GET  /identity.v1/{id}/lineage",
+        "POST /identity.v1/{id}/alias",
+        "POST /identity.v1/{id}/verify"
+      ],
+      "commands": [
+        "identity.create",
+        "identity.resolve",
+        "identity.alias.add",
+        "identity.verify",
+        "identity.deprecate",
+        "identity.fork",
+        "identity.merge"
+      ],
+      "queries": [
+        "identity.byId",
+        "identity.byFingerprint",
+        "identity.byAlias",
+        "identity.lineage",
+        "identity.resolveBatch",
+        "identity.conflicts"
+      ],
+      "events": [
+        "IdentityCreated",
+        "IdentityResolved",
+        "IdentityVerified",
+        "IdentityAliased",
+        "IdentityDeprecated",
+        "IdentityMerged",
+        "IdentityConflictDetected"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Provisional\n    Provisional --> Verified: evidence sufficient\n    Verified --> Certified: authority attests\n    Verified --> Deprecated: superseded\n    Certified --> Deprecated: superseded\n    Provisional --> Rejected: evidence refuted\n    Deprecated --> [*]\n```",
+      "workflow": [
+        "resolve external scheme → registry lookup → fingerprint match → evidence capture → authority attestation → publish IdentityVerified"
+      ],
+      "authorities": [
+        "Platform Authority (namespace creation)",
+        "Tenant Authority (scoped identity)",
+        "External Authority (attestation of external schemes)"
+      ],
+      "permissions": [
+        "identity.create (tenant admin)",
+        "identity.verify (trusted attestor)",
+        "identity.merge (platform authority)",
+        "identity.read (any authenticated)"
+      ],
+      "privacy": "Aliases and fingerprints are pseudonymous. Direct identifiers require consent scope `identity:read`. Resolution logs are minimized and retention-governed by the Consent Architecture.",
+      "audit": "Every resolution records: who resolved, which fingerprint matched, under which authority, with what evidence, at what confidence. Immutable, append-only, cryptographically chained.",
+      "twin": "Identity Twin mirrors the real-world identifier state across registries (e.g., a GS1 GTIN changing ownership), continuously synchronized via the Twin Federation.",
+      "agent": "Identity Agent monitors fingerprint collisions, lineage forks, and stale aliases, raising IdentityConflictDetected under governance.",
+      "runtime": "Stateless resolution service with a versioned cache keyed by (namespace, normalized fingerprint). Cache invalidation on IdentityDeprecated/IdentityMerged events.",
+      "scaling": "Read-heavy (>99%). Partition by namespace; replicate globally; resolve via content-addressable fingerprint index. Write path is authority-sharded.",
+      "multiTenant": "Namespace isolation is mandatory: a tenant can never read another tenant's scoped identities unless an explicit cross-tenant Relationship + Policy permits it.",
+      "geo": "Resolution is locally served per region with fingerprint-index replicas; authoritative write quorum remains in the tenant's home jurisdiction per Data Sovereignty.",
+      "failure": "Fingerprint collision, alias loop, lineage cycle, authority unavailability, checksum drift on external scheme change.",
+      "recovery": "Lineage is an immutable append-only log; recovery = replay. Deleted aliases are reconstructable from the chain. IdentityMerged is reversible via compensating event.",
+      "certification": "Identity must pass checksum validity, lineage acyclicity, namespace ownership, and fingerprint uniqueness before it may anchor any Knowledge or Relationship.",
+      "migration": "External scheme migration (e.g., UPC→GTIN-13) is a registry-driven re-fingerprint, never a schema migration. Old fingerprints remain valid aliases.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant ID as Identity Domain\n    participant EV as Evidence\n    participant AU as Authority\n    C->>ID: identity.resolve(fingerprint)\n    ID->>EV: request attestation evidence\n    EV-->>ID: evidence + confidence\n    ID->>AU: request attestation\n    AU-->>ID: attested\n    ID-->>C: Identity (Verified)\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Resolving\n    Resolving --> Matched: fingerprint hit\n    Resolving --> Unmatched: no hit\n    Matched --> Attesting\n    Attesting --> Resolved\n    Unmatched --> Provisional\n```",
+      "blueprint": "Build order for IDN: (1) define registry entries — this domain owns by namespace: platform / tenant / external / future as registry truth, not code; (2) implement the contract surface first (identity.create, identity.resolve, identity.alias.add) and validate against IDN boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "KNW": {
+      "concepts": "Knowledge is validated understanding of reality — interpreted information with evidence and meaning. It is NOT data, NOT information, NOT evidence. It is derived from them. Every Knowledge element answers who asserted it, when, why, under which authority, based on what evidence, with what confidence.",
+      "ontology": "Knowledge ⊂ Existence. Knowledge requires ≥1 Evidence. Knowledge has 1 Authority. Knowledge has Confidence ∈ [0,1]. Knowledge Types: Fact / Assertion / Hypothesis / Model / Belief / PolicyAsKnowledge / Regulation / Learned / Derived / Future.",
+      "taxonomy": "By epistemic status: Proven / Supported / Contested / Refuted / Hypothetical. By source: Observed / Inferred / Asserted / Simulated. By volatility: Stable / Drifting / Volatile.",
+      "dataModel": "```yaml\nKnowledge:\n  knowledgeId: <Identity>\n  type: <registry-driven type>\n  assertion: <semantic statement>\n  evidence: [<Evidence>]\n  confidence: <0..1>\n  provenance:\n    assertedBy: <Authority>\n    assertedAt: <Time>\n    intent: <Intent>\n  trust: <Trust>\n  status: <Proven|Supported|Contested|Refuted|Hypothetical>\n  supersededBy: <Knowledge|null>\n```",
+      "graphModel": "(:Knowledge)-[:SUPPORTED_BY]->(:Evidence); (:Knowledge)-[:ASSERTED_BY]->(:Authority); (:Knowledge)-[:SUPERSEDES]->(:Knowledge); (:Knowledge)-[:ABOUT]->(:Identity); (:Knowledge)-[:DERIVED_FROM]->(:Observation)",
+      "apis": [
+        "POST /knowledge.v1.assert",
+        "GET  /knowledge.v1/{id}",
+        "POST /knowledge.v1/{id}/contest",
+        "GET  /knowledge.v1.query",
+        "POST /knowledge.v1/{id}/supersede"
+      ],
+      "commands": [
+        "knowledge.assert",
+        "knowledge.contest",
+        "knowledge.supersede",
+        "knowledge.refute",
+        "knowledge.revalidate",
+        "knowledge.purge"
+      ],
+      "queries": [
+        "knowledge.byId",
+        "knowledge.about",
+        "knowledge.byEvidence",
+        "knowledge.contested",
+        "knowledge.lineage",
+        "knowledge.confidenceHistogram"
+      ],
+      "events": [
+        "KnowledgeAsserted",
+        "KnowledgeContested",
+        "KnowledgeSuperseded",
+        "KnowledgeRefuted",
+        "KnowledgeConfidenceDrifted",
+        "KnowledgeRevalidated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Asserted\n    Asserted --> Supported: evidence corroborated\n    Asserted --> Contested: contradiction detected\n    Supported --> Proven: authority + evidence + high confidence\n    Contested --> Refuted: evidence outweighs\n    Contested --> Supported: contradiction resolved\n    Proven --> Superseded: better knowledge\n    Refuted --> [*]\n    Superseded --> [*]\n```",
+      "workflow": [
+        "assert → evidence binding → trust computation → contradiction check → (contest | promote) → publish event"
+      ],
+      "authorities": [
+        "Domain Authority (asserts within jurisdiction)",
+        "Peer Authority (contests)",
+        "Platform Authority (purge)"
+      ],
+      "permissions": [
+        "knowledge.assert (authenticated + scoped)",
+        "knowledge.contest (peer authority)",
+        "knowledge.purge (platform authority only)"
+      ],
+      "privacy": "Assertions about persons require consent scope `knowledge:assert:pii`. Evidence retention follows the Consent Architecture; purge is a first-class command, not an afterthought.",
+      "audit": "The seven explainability questions are mandatory fields. Knowledge chain is append-only; refutation never deletes — it supersedes, preserving history.",
+      "twin": "Knowledge Twin tracks the real-world truth state of the subject (e.g., a regulation's enactment status) and flags drift between asserted and observed reality.",
+      "agent": "Knowledge Agent continuously revalidates drifting knowledge, detects contradictions, and proposes supersessions under governance.",
+      "runtime": "Write path is evidence-verified before commit; read path serves the current non-superseded head per query context.",
+      "scaling": "Partition by subject Identity. Confidence computation is a read-side projection cached per (Knowledge, Context). Contradiction detection is a stream job.",
+      "multiTenant": "Knowledge is tenant-scoped unless explicitly published to a shared ontology. Cross-tenant assertion requires a Relationship + Policy.",
+      "geo": "Regulatory knowledge is jurisdiction-scoped; the same assertion may be Proven in one jurisdiction and Contested in another — both remain valid within Context.",
+      "failure": "Evidence detachment, confidence drift beyond threshold, authority revocation mid-attestation, contradiction avalanche.",
+      "recovery": "Never delete: supersede. Recovery = rebuild current-head projection from the append-only chain. Purge is governance-gated and leaves a tombstone.",
+      "certification": "Knowledge must carry ≥1 evidence, an active authority, and a computed trust score above domain threshold to be read as Proven.",
+      "migration": "Knowledge schema evolves by adding types to the registry; existing assertions are re-projected, never rewritten.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant A as Asserter\n    participant KN as Knowledge Domain\n    participant EV as Evidence\n    participant TR as Trust\n    A->>KN: knowledge.assert(statement, evidence)\n    KN->>EV: verify evidence chain\n    EV-->>KN: validity + provenance\n    KN->>TR: compute trust\n    TR-->>KN: score\n    KN-->>A: KnowledgeAsserted\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Drafting\n    Drafting --> Evidenced\n    Evidenced --> Scored\n    Scored --> Published\n    Published --> Superseded\n```",
+      "blueprint": "Build order for KNW: (1) define registry entries — this domain owns by epistemic status: proven / supported / contested / refuted / hypothetical as registry truth, not code; (2) implement the contract surface first (knowledge.assert, knowledge.contest, knowledge.supersede) and validate against KNW boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "REL": {
+      "concepts": "Relationship is a typed, contextualized, time-bounded connection between existences. Reality emerges through relationships, not through objects. Relationship ≠ Causality: a link is not a reason.",
+      "ontology": "Relationship has 1 source Identity, 1 target Identity, 1 RelationshipType (registry-driven), 0..n Context, temporal validity, and an Authority. Relationship types are open: Owns, Consumes, Produces, Requires, Provides, Contains, DependsOn, CompatibleWith, Replaces, Supersedes, Associates, Influences, Causes — plus unlimited future types from the registry.",
+      "taxonomy": "By direction: Directed / Undirected / Bidirectional. By strength: Structural / Behavioral / Ephemeral. By derivation: Declared / Inferred / Simulated.",
+      "dataModel": "```yaml\nRelationship:\n  relationshipId: <Identity>\n  relationshipType: <registry id>\n  source: <Identity>\n  target: <Identity>\n  context: [<Context>]\n  authority: <Authority>\n  temporal: {validFrom, validTo}\n  provenance: {declaredBy | inferredBy}\n  trust: <Trust>\n  metadata: <Metadata>\n```",
+      "graphModel": "This IS the graph. (:Identity)-[:RELATIONSHIP_TYPE {context, temporal, trust}]->(:Identity). Traversal is context-filtered at query time.",
+      "apis": [
+        "POST /relationship.v1.create",
+        "POST /relationship.v1.query",
+        "GET  /relationship.v1/{id}",
+        "POST /relationship.v1/{id}/temporal",
+        "GET  /relationship.v1.path"
+      ],
+      "commands": [
+        "relationship.create",
+        "relationship.retype",
+        "relationship.expire",
+        "relationship.reinforce",
+        "relationship.retract"
+      ],
+      "queries": [
+        "relationship.neighbors",
+        "relationship.path",
+        "relationship.byType",
+        "relationship.byContext",
+        "relationship.temporalAt",
+        "relationship.density"
+      ],
+      "events": [
+        "RelationshipCreated",
+        "RelationshipRetracted",
+        "RelationshipExpired",
+        "RelationshipReinforced",
+        "RelationshipInferred",
+        "RelationshipIntegrityViolation"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Proposed\n    Proposed --> Active: authority approves\n    Active --> Weakened: trust decay\n    Weakened --> Active: reinforced\n    Active --> Expired: temporal end\n    Active --> Retracted: governance\n    Expired --> [*]\n    Retracted --> [*]\n```",
+      "workflow": [
+        "validate endpoints exist → resolve type from registry → check authority → enforce context policy → commit → publish → integrity verify"
+      ],
+      "authorities": [
+        "Source-side Authority (declares)",
+        "Platform Authority (retracts)",
+        "Inference Authority (infers, lower trust by default)"
+      ],
+      "permissions": [
+        "relationship.create (endpoint owner or delegated)",
+        "relationship.retract (platform authority)",
+        "relationship.read (context-scoped)"
+      ],
+      "privacy": "Relationships between persons are sensitive by default; traversal requires `relationship:read` scope plus a Context policy. Hidden-edge protection enforced.",
+      "audit": "Every traversal of a sensitive edge is logged with the seven explainability fields. Inferred relationships are always marked as such, never presented as declared.",
+      "twin": "Relationship Twin mirrors real-world connections (e.g., supplier links) and flags when observed reality diverges from declared relationships.",
+      "agent": "Relationship Agent discovers latent edges via the Inference Domain and proposes them with reduced trust pending corroboration.",
+      "runtime": "Graph-native store. Context filtering at traversal time — no pre-materialized per-context graphs, which would duplicate truth.",
+      "scaling": "Shard by source Identity hash. Multi-hop traversal is bounded by policy hop-limit. Hot vertices are cached as projections, never as truth.",
+      "multiTenant": "Cross-tenant edges require an explicit published RelationshipType + Policy. Default deny.",
+      "geo": "Edge locality follows Data Sovereignty: a vertex's authoritative edges live in its jurisdiction; replicas are read-only.",
+      "failure": "Dangling endpoint, type registry drift, temporal inversion (validFrom > validTo), orphaned inferred edges after retraction.",
+      "recovery": "Edges are immutable + temporal; recovery is replay. Retraction is a tombstone, not a delete. Integrity job rebuilds dangling detection.",
+      "certification": "Relationship must pass endpoint existence, type registry validity, authority jurisdiction, and temporal sanity.",
+      "migration": "New relationship types are registry additions — zero schema migration. Retired types become non-creatable but remain queryable historically.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant RL as Relationship Domain\n    participant RG as Registry\n    participant AU as Authority\n    C->>RL: create(source, target, type)\n    RL->>RG: resolve relationship type\n    RG-->>RL: type definition\n    RL->>AU: authorize over source\n    AU-->>RL: approved\n    RL-->>C: RelationshipCreated\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Validating\n    Validating --> Authorized\n    Authorized --> Committed\n    Committed --> Verified\n```",
+      "blueprint": "Build order for REL: (1) define registry entries — this domain owns by direction: directed / undirected / bidirectional as registry truth, not code; (2) implement the contract surface first (relationship.create, relationship.retype, relationship.expire) and validate against REL boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "CTX": {
+      "concepts": "Context is the applicability boundary that changes how reality is projected. Context ≠ Perspective: a context is a scope; a perspective is an observer's interpretation. The same primitives project differently per context.",
+      "ontology": "Context is hierarchical and compositional. Context types are registry-driven: Geographical, Organizational, Commercial, Customer, Contractual, Marketplace, Legal, Regulatory, Operational, Behavioral, Temporal, Digital, Physical, Future. A context constrains which Policies and Authorities are in force.",
+      "taxonomy": "By breadth: Universal / Regional / Local / Instance. By nature: Structural (geo, org) / Temporal (time window) / Situational (session, intent).",
+      "dataModel": "```yaml\nContext:\n  contextId: <Identity>\n  contextType: <registry id>\n  hierarchy:\n    parentId: <Context|null>\n  constraints: [<constraint expressions>]\n  policies: [<Policy>]\n  authorities: [<Authority>]\n  temporal: {effectiveFrom, effectiveTo}\n  metadata: <Metadata>\n```",
+      "graphModel": "(:Context)-[:CHILD_OF*]->(:Context); (:Context)-[:IN_FORCE]->(:Policy); (:Context)-[:JURISDICTION]->(:Authority); (:Identity)-[:PROJECTED_IN]->(:Context)",
+      "apis": [
+        "POST /context.v1.create",
+        "GET  /context.v1/{id}",
+        "POST /context.v1.resolve",
+        "GET  /context.v1/{id}/policies",
+        "GET  /context.v1/{id}/ancestors"
+      ],
+      "commands": [
+        "context.create",
+        "context.attachPolicy",
+        "context.delegate",
+        "context.merge",
+        "context.expire"
+      ],
+      "queries": [
+        "context.resolve",
+        "context.effectivePolicies",
+        "context.lineage",
+        "context.overlaps",
+        "context.byType"
+      ],
+      "events": [
+        "ContextCreated",
+        "ContextPolicyAttached",
+        "ContextMerged",
+        "ContextExpired",
+        "ContextConflictDetected"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Defined\n    Defined --> Active: effectiveFrom reached\n    Active --> Suspended: governance hold\n    Suspended --> Active: released\n    Active --> Expired: effectiveTo reached\n    Expired --> [*]\n```",
+      "workflow": [
+        "define → attach policies → resolve hierarchy → detect overlap conflicts → activate → publish effective policy set"
+      ],
+      "authorities": [
+        "Jurisdiction Authority (creates contexts in its scope)",
+        "Platform Authority (universal context)"
+      ],
+      "permissions": [
+        "context.create (jurisdiction authority)",
+        "context.attachPolicy (context owner)",
+        "context.resolve (any authenticated)"
+      ],
+      "privacy": "Context may implicitly narrow data access; privacy impact is asserted on creation and re-audited on policy attachment.",
+      "audit": "Context resolution is logged: which contexts applied, in what precedence, and which policy won on conflict. Precedence is deterministic, never incidental.",
+      "twin": "Context Twin mirrors real-world scope changes (e.g., a new regulatory regime activating) and projects the change through affected artifacts.",
+      "agent": "Context Agent detects overlapping contexts with contradictory policies and escalates per the Contradiction Architecture.",
+      "runtime": "Resolution is a memoized hierarchy walk. Effective policy set = union of ancestor policies with deterministic conflict precedence (child > parent; specific > general).",
+      "scaling": "Hierarchy is shallow and cache-friendly; resolution results cached per (Identity, Context) with invalidation on ContextPolicyAttached.",
+      "multiTenant": "A tenant's contexts are isolated. Cross-context projection requires explicit delegation.",
+      "geo": "Geographical contexts are the primary sovereignty mechanism — data residency policy attaches here, not in application code.",
+      "failure": "Cycle in hierarchy, contradictory policies at same precedence, orphaned policy attachment, temporal overlap ambiguity.",
+      "recovery": "Contexts are immutable versions; recovery = repoint to prior version. Policy attachments are event-sourced and reversible.",
+      "certification": "Context must pass acyclicity, jurisdiction ownership, policy compatibility, and deterministic precedence before activation.",
+      "migration": "New context types are registry additions. Existing contexts re-project on type definition change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant CT as Context Domain\n    participant PL as Policy\n    C->>CT: resolve(identity)\n    CT->>CT: walk hierarchy\n    CT->>PL: gather effective policies\n    PL-->>CT: policy set\n    CT-->>C: resolved context\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Defining\n    Defining --> Attached\n    Attached --> Resolved\n    Resolved --> Active\n```",
+      "blueprint": "Build order for CTX: (1) define registry entries — this domain owns by breadth: universal / regional / local / instance as registry truth, not code; (2) implement the contract surface first (context.create, context.attachPolicy, context.delegate) and validate against CTX boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "POL": {
+      "concepts": "Policy is behavioral governance — the statement of what must, may, or must not happen. Policy ≠ Rule: policy is intent; the rule is its executable projection. All behavior derives from policy. Nothing executes that policy does not permit.",
+      "ontology": "Policy has Conditions, Actions, Priorities, Exceptions, and an Authority. Policy is resolved within a Context. Policy projects into Rules. Policy never executes directly — that is the Rule Domain's role.",
+      "taxonomy": "By force: Mandatory / Permissive / Prohibitive. By scope: Universal / Jurisdictional / Contextual / Instance. By origin: Constitutional / Regulatory / Organizational / Learned.",
+      "dataModel": "```yaml\nPolicy:\n  policyId: <Identity>\n  intent: <Intent>\n  conditions: [<registry expression>]\n  actions: [<registry action>]\n  priorities: [<int>]\n  exceptions: [<Policy exception>]\n  authority: <Authority>\n  context: [<Context>]\n  temporal: {effectiveFrom, effectiveTo}\n  status: <Draft|Active|Retired>\n```",
+      "graphModel": "(:Policy)-[:PROJECTS_TO]->(:Rule); (:Policy)-[:ENFORCED_IN]->(:Context); (:Policy)-[:GRANTED_BY]->(:Authority); (:Policy)-[:EXCEPTIONS]->(:Policy)",
+      "apis": [
+        "POST /policy.v1.create",
+        "POST /policy.v1.activate",
+        "POST /policy.v1.evaluate",
+        "GET  /policy.v1/{id}",
+        "POST /policy.v1/{id}/retire"
+      ],
+      "commands": [
+        "policy.create",
+        "policy.activate",
+        "policy.retire",
+        "policy.evaluate",
+        "policy.exception.add",
+        "policy.conflict.resolve"
+      ],
+      "queries": [
+        "policy.byId",
+        "policy.effectiveIn",
+        "policy.applicableTo",
+        "policy.conflicts",
+        "policy.projectionStatus"
+      ],
+      "events": [
+        "PolicyCreated",
+        "PolicyActivated",
+        "PolicyRetired",
+        "PolicyEvaluated",
+        "PolicyConflictDetected",
+        "PolicyProjectionUpdated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Draft\n    Draft --> Validated\n    Validated --> Active\n    Active --> Conflict\n    Conflict --> Active: resolved\n    Active --> Retired\n    Retired --> [*]\n```",
+      "workflow": [
+        "author intent → validate against constitution → detect conflicts → project to Rules → activate → publish → re-project on change"
+      ],
+      "authorities": [
+        "Constitutional Authority (supreme)",
+        "Jurisdiction Authority (regional)",
+        "Context Authority (scoped)"
+      ],
+      "permissions": [
+        "policy.create (authority in scope)",
+        "policy.activate (same or higher authority)",
+        "policy.evaluate (any authenticated, result scoped)"
+      ],
+      "privacy": "Policies governing personal data must reference a lawful basis via the Consent Architecture; purpose limitation is a first-class condition.",
+      "audit": "Every PolicyEvaluated records the input facts, matched conditions, chosen action, and precedence rationale. Denials carry appeal references.",
+      "twin": "Policy Twin mirrors real-world regulatory text and flags when observed regulation drifts from enacted policy.",
+      "agent": "Policy Agent detects conflicts between overlapping policies and proposes precedence resolutions under governance.",
+      "runtime": "Evaluation is a forward-chaining pass over the effective policy set for a Context; result is cached per (subject, context, fact-hash).",
+      "scaling": "Policy resolution is read-heavy and cacheable; invalidation is event-driven on PolicyActivated/PolicyRetired in the affected Context.",
+      "multiTenant": "Tenant policies cannot override constitutional policy; precedence is Constitutional > Jurisdictional > Tenant > Contextual.",
+      "geo": "Jurisdictional policy is geo-scoped; where two jurisdictions conflict, Data Sovereignty policy decides the applicable set — both are recorded, neither is silently dropped.",
+      "failure": "Conflict at equal precedence, unsatisfiable condition set, projection failure to Rules, policy storm (mass activation).",
+      "recovery": "Policies are versioned and event-sourced; retirement is reversible. Projection failures roll back to the last validated projection.",
+      "certification": "Policy must pass constitutional conformance, conflict precedence determinism, and successful rule projection before activation.",
+      "migration": "Policy language evolves by registry expression extension — never by changing the policy schema.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant PL as Policy Domain\n    participant RU as Rule Domain\n    C->>PL: policy.create(intent)\n    PL->>PL: validate constitutionality\n    PL->>RU: project to executable rules\n    RU-->>PL: rules projected\n    PL-->>C: PolicyActivated\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Authored\n    Authored --> Validated\n    Validated --> Projected\n    Projected --> Active\n    Active --> Retired\n```",
+      "blueprint": "Build order for POL: (1) define registry entries — this domain owns by force: mandatory / permissive / prohibitive as registry truth, not code; (2) implement the contract surface first (policy.create, policy.activate, policy.retire) and validate against POL boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "RUL": {
+      "concepts": "Rule is the executable constraint derived from Policy. Rule ≠ Policy and Rule ≠ Decision. Rules are the machine-runnable projection of governance intent. A rule never contradicts its parent policy.",
+      "ontology": "Rule has exactly 1 parent Policy, an executable expression, an evaluation order, and an effect. Rules are composable but never self-referential.",
+      "taxonomy": "By effect: Permit / Deny / Require / Transform / Notify / Defer. By evaluation: Boolean / Threshold / Set-membership / Registry-lookup / Composite.",
+      "dataModel": "```yaml\nRule:\n  ruleId: <Identity>\n  derivedFrom: <Policy>\n  expression: <registry expression id>\n  effect: <Permit|Deny|Require|Transform|Notify|Defer>\n  priority: <int>\n  evalOrder: <int>\n  onConflict: <registry strategy>\n  temporal: {effectiveFrom, effectiveTo}\n```",
+      "graphModel": "(:Rule)-[:DERIVED_FROM]->(:Policy); (:Rule)-[:EVALUATED_IN]->(:Evaluation); (:Rule)-[:CONFLICTS_WITH]->(:Rule)",
+      "apis": [
+        "POST /rule.v1.evaluate",
+        "GET  /rule.v1/{id}",
+        "GET  /rule.v1/byPolicy/{policyId}",
+        "POST /rule.v1.validate"
+      ],
+      "commands": [
+        "rule.evaluate",
+        "rule.validate",
+        "rule.reorder",
+        "rule.disable",
+        "rule.reconcile"
+      ],
+      "queries": [
+        "rule.byId",
+        "rule.byPolicy",
+        "rule.applicable",
+        "rule.conflicts",
+        "rule.coverage"
+      ],
+      "events": [
+        "RuleEvaluated",
+        "RuleProjectionUpdated",
+        "RuleConflictDetected",
+        "RuleDisabled",
+        "RuleReconciled"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Projected\n    Projected --> Validated\n    Validated --> Enabled\n    Enabled --> Disabled\n    Disabled --> Enabled\n    Enabled --> [*]\n```",
+      "workflow": [
+        "policy projects rule → static validation → conflict reconciliation → enable → evaluate at runtime"
+      ],
+      "authorities": [
+        "Inherits parent policy's authority; no independent authority."
+      ],
+      "permissions": [
+        "rule.evaluate (runtime, scoped)",
+        "rule.disable (parent policy authority)",
+        "rule.reorder (parent policy authority)"
+      ],
+      "privacy": "Rule expressions over personal data must carry the consent scope of their parent policy; evaluation logs minimize captured facts.",
+      "audit": "Every RuleEvaluated records input facts, matched rule, effect, and evaluation time. Deterministic replay must reproduce identical outcomes.",
+      "twin": "Rule Twin tracks real-world enforcement outcomes and flags divergence between rule effect and observed behavior.",
+      "agent": "Rule Agent detects unreachable or redundant rules and proposes pruning under governance.",
+      "runtime": "Rules compile to a decision DAG per Context; evaluation is fact-driven with short-circuit on Deny for mandatory policies.",
+      "scaling": "DAG compilation cached per policy version; runtime evaluation is sub-millisecond. Hot paths are precompiled.",
+      "multiTenant": "Rules are tenant-scoped through their parent policy; cross-tenant evaluation is constitutionally forbidden.",
+      "geo": "Rule evaluation is local per region; the compiled DAG is replicated, authoritative projection stays in jurisdiction.",
+      "failure": "Non-deterministic expression, projection drift from policy, evaluation timeout, conflicting effects at equal priority.",
+      "recovery": "Rules are derived, so recovery is re-projection from the parent policy. No rule is ever hand-restored.",
+      "certification": "Rule must pass determinism (same facts → same effect), policy conformance, and termination guarantees.",
+      "migration": "Expression language evolves by registry; existing rules re-project on language version change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant RT as Runtime\n    participant RU as Rule Domain\n    participant PL as Policy\n    RT->>RU: evaluate(facts, context)\n    RU->>RU: load compiled DAG\n    RU->>RU: evaluate rules\n    RU-->>RT: effect\n    RU->>PL: report evaluation\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Loading\n    Loading --> Evaluating\n    Evaluating --> Effect\n    Effect --> Logging\n```",
+      "blueprint": "Build order for RUL: (1) define registry entries — this domain owns by effect: permit / deny / require / transform / notify / defer as registry truth, not code; (2) implement the contract surface first (rule.evaluate, rule.validate, rule.reorder) and validate against RUL boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "AUT": {
+      "concepts": "Authority is the right to govern within a jurisdiction. Authority ≠ Ownership: authority is the right; ownership is the responsibility. Authority is delegable, revocable, and always bounded.",
+      "ontology": "Authority has a Jurisdiction, Rights, Responsibilities, and a delegating parent Authority. Types: Platform / Tenant / Country / Regulatory / Corporate / Future — all registry-driven.",
+      "taxonomy": "By scope: Universal / Jurisdictional / Organizational / Contextual. By source: Constitutional / Delegated / Assumed (weakest) / Attested.",
+      "dataModel": "```yaml\nAuthority:\n  authorityId: <Identity>\n  type: <registry id>\n  jurisdiction: <Context>\n  rights: [<registry capability>]\n  responsibilities: [<registry obligation>]\n  delegatedFrom: <Authority|null>\n  temporal: {grantedAt, revokedAt}\n  status: <Active|Revoked|Expired>\n```",
+      "graphModel": "(:Authority)-[:DELEGATED_FROM*]->(:Authority); (:Authority)-[:JURISDICTION]->(:Context); (:Authority)-[:GRANTS]->(:Policy|:Permission); (:Authority)<-[:ASSERTED_BY]-(:Knowledge)",
+      "apis": [
+        "POST /authority.v1.grant",
+        "POST /authority.v1.delegate",
+        "POST /authority.v1.revoke",
+        "GET  /authority.v1/{id}",
+        "GET  /authority.v1.resolve"
+      ],
+      "commands": [
+        "authority.grant",
+        "authority.delegate",
+        "authority.revoke",
+        "authority.attest",
+        "authority.challenge"
+      ],
+      "queries": [
+        "authority.byId",
+        "authority.resolve",
+        "authority.chain",
+        "authority.jurisdiction",
+        "authority.conflicts"
+      ],
+      "events": [
+        "AuthorityGranted",
+        "AuthorityDelegated",
+        "AuthorityRevoked",
+        "AuthorityChallenged",
+        "AuthorityExpired",
+        "AuthorityChainViolation"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Granted\n    Granted --> Delegated\n    Delegated --> Challenged\n    Challenged --> Active: upheld\n    Challenged --> Revoked: upheld challenge\n    Granted --> Revoked\n    Revoked --> [*]\n```",
+      "workflow": [
+        "grant → scope to jurisdiction → delegate with reduced rights → challenge on suspicion → revoke with cascade to derived authorities"
+      ],
+      "authorities": [
+        "Constitutional Authority is self-sovereign; all others derive from it."
+      ],
+      "permissions": [
+        "authority.grant (holder of the right being granted)",
+        "authority.delegate (holder, with rights subset)",
+        "authority.revoke (granter or higher)"
+      ],
+      "privacy": "Authority chains over personal jurisdictions are auditable but access-restricted; revocation of consent cascades to derived grants.",
+      "audit": "Every governed action records its full authority chain back to the Constitutional Authority. Untraceable chains are denied by default.",
+      "twin": "Authority Twin mirrors real-world governance changes (e.g., regulatory body restructure) and cascades them through delegations.",
+      "agent": "Authority Agent detects over-broad delegations and authority chain anomalies, challenging them under governance.",
+      "runtime": "Resolution walks the delegation chain with memoization; revocation invalidates the entire derived subtree.",
+      "scaling": "Chain depth is bounded by constitution. Resolution cached per (Authority, right); invalidation on AuthorityRevoked.",
+      "multiTenant": "Tenant authority is bounded by constitutional authority — delegation cannot exceed the granter's rights (monotone decreasing).",
+      "geo": "Jurisdictional authority is geo-scoped; cross-jurisdiction action requires authority recognized in both — or is denied.",
+      "failure": "Delegation cycle, rights inflation (child > parent), orphaned chain after revocation, jurisdiction gap.",
+      "recovery": "Chains are append-only; revocation is a terminal event. Recovery rebuilds the effective-authority projection from the chain.",
+      "certification": "Authority must pass chain traceability, rights monotonicity, jurisdiction validity, and non-expiration.",
+      "migration": "New authority types are registry additions; existing chains re-resolve on type change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant A as Actor\n    participant AU as Authority Domain\n    participant CT as Context\n    A->>AU: resolve(authority, right)\n    AU->>AU: walk delegation chain\n    AU->>CT: confirm jurisdiction\n    CT-->>AU: in jurisdiction\n    AU-->>A: decision\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Resolving\n    Resolving --> Tracing\n    Tracing --> Scoping\n    Scoping --> Decided\n```",
+      "blueprint": "Build order for AUT: (1) define registry entries — this domain owns by scope: universal / jurisdictional / organizational / contextual as registry truth, not code; (2) implement the contract surface first (authority.grant, authority.delegate, authority.revoke) and validate against AUT boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "TRS": {
+      "concepts": "Trust is computed confidence in an assertion, derived from evidence. Trust ≠ Evidence and Trust ≠ Faith: it is a score, recomputable, always current, never asserted. Trust degrades without corroboration.",
+      "ontology": "Trust is a function over (Evidence, Authority, Consistency, Provenance, Confidence). Trust has a timestamp — stale trust decays. Trust is per-Context.",
+      "taxonomy": "By subject: Identity / Knowledge / Relationship / Authority / Agent. By method: Evidence-weighted / Authority-weighted / Consistency-weighted / Consensus / Decay-based.",
+      "dataModel": "```yaml\nTrust:\n  trustId: <Identity>\n  subject: <Identity>\n  evidenceScore: <0..1>\n  authorityScore: <0..1>\n  consistencyScore: <0..1>\n  provenanceScore: <0..1>\n  confidenceScore: <0..1>\n  composite: <0..1, registry formula>\n  computedAt: <Time>\n  context: <Context>\n  decayPolicy: <Policy>\n```",
+      "graphModel": "(:Trust)-[:SCORES]->(:Identity|:Knowledge|:Relationship|:Authority); (:Trust)-[:DERIVED_FROM]->(:Evidence); (:Trust)-[:DECAYS_PER]->(:Policy)",
+      "apis": [
+        "GET  /trust.v1/{subjectId}",
+        "POST /trust.v1/recompute",
+        "GET  /trust.v1.history/{subjectId}",
+        "GET  /trust.v1.compare"
+      ],
+      "commands": [
+        "trust.recompute",
+        "trust.decay",
+        "trust.cite",
+        "trust.dispute"
+      ],
+      "queries": [
+        "trust.bySubject",
+        "trust.history",
+        "trust.distribution",
+        "trust.belowThreshold",
+        "trust.byContext"
+      ],
+      "events": [
+        "TrustComputed",
+        "TrustDecayed",
+        "TrustDisputed",
+        "TrustThresholdCrossed",
+        "TrustRecomputed"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Stale\n    Stale --> Computing\n    Computing --> Current\n    Current --> Stale: decay interval\n    Current --> Disputed\n    Disputed --> Computing\n```",
+      "workflow": [
+        "gather evidence → weight by authority → measure consistency → score provenance → apply confidence → composite → publish → schedule decay"
+      ],
+      "authorities": [
+        "Trust Domain computes; it does not assert. Authority Domain supplies the authority weight; Trust never overrides it."
+      ],
+      "permissions": [
+        "trust.read (subject owner or scoped)",
+        "trust.recompute (system)",
+        "trust.dispute (peer authority)"
+      ],
+      "privacy": "Trust over personal subjects is derived from minimized evidence; raw evidence is not exposed, only the score and its factor breakdown.",
+      "audit": "Every score is reproducible: inputs, weights, formula version, and timestamp are recorded. A score that cannot be reproduced is void.",
+      "twin": "Trust Twin tracks real-world reputation drift and flags divergence between computed trust and observed outcomes.",
+      "agent": "Trust Agent continuously recomputes decaying scores and raises TrustThresholdCrossed for governance attention.",
+      "runtime": "Scores are read-optimized projections recomputed on evidence change or decay tick; never stored as primary truth.",
+      "scaling": "Recomputation is a stream job over evidence events; composite scores cached per (subject, context) with decay-aware TTL.",
+      "multiTenant": "Trust is tenant-scoped; a subject's trust in one tenant says nothing about another unless a shared Context exists.",
+      "geo": "Trust factors are jurisdiction-weighted: an authority's weight is Context-dependent, so the same evidence yields different scores per jurisdiction — by design.",
+      "failure": "Evidence starvation, formula drift across versions, authority score corruption, decay cascade.",
+      "recovery": "Scores are recomputable from evidence history; a corrupted score is regenerated, never restored from backup.",
+      "certification": "Trust score must be reproducible, timestamped, formula-versioned, and within threshold for its subject's certifications.",
+      "migration": "Formula evolves by registry version; recomputation triggers on version change with full history replay.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant E as Evidence Event\n    participant TR as Trust Domain\n    participant AU as Authority\n    E->>TR: new evidence\n    TR->>AU: authority weight\n    AU-->>TR: weight\n    TR->>TR: compute composite\n    TR-->>E: TrustComputed\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Evidenced\n    Evidenced --> Weighted\n    Weighted --> Composed\n    Composed --> Published\n```",
+      "blueprint": "Build order for TRS: (1) define registry entries — this domain owns by subject: identity / knowledge / relationship / authority / agent as registry truth, not code; (2) implement the contract surface first (trust.recompute, trust.decay, trust.cite) and validate against TRS boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "EVD": {
+      "concepts": "Evidence is proof supporting an assertion. Evidence ≠ Knowledge and Evidence ≠ Trust: it supports knowledge and feeds trust; it is not itself understanding. Nothing exists without evidence.",
+      "ontology": "Evidence has a Source, a Proof payload, Validity, and Confidence. Evidence types: Document / Signature / Timestamp / Attestation / Observation / Receipt / Hash-witness / Future type — all registry-driven.",
+      "taxonomy": "By strength: Cryptographic / Attested / Observed / Claimed (weakest). By permanence: Immutable / Temporal / Revocable.",
+      "dataModel": "```yaml\nEvidence:\n  evidenceId: <Identity>\n  type: <registry id>\n  source: <Identity|Authority>\n  proof: <content-addressed payload reference>\n  validity: {verifiedAt, method, expiresAt}\n  confidence: <0..1>\n  chain: [parent evidence]\n  metadata: <Metadata>\n```",
+      "graphModel": "(:Evidence)-[:SUPPORTS]->(:Knowledge); (:Evidence)-[:SIGNED_BY]->(:Authority); (:Evidence)-[:DERIVED_FROM]->(:Evidence); (:Evidence)-[:REVOKED_BY]->(:Authority)",
+      "apis": [
+        "POST /evidence.v1.submit",
+        "GET  /evidence.v1/{id}",
+        "POST /evidence.v1.verify",
+        "POST /evidence.v1.revoke",
+        "GET  /evidence.v1.chain/{id}"
+      ],
+      "commands": [
+        "evidence.submit",
+        "evidence.verify",
+        "evidence.revoke",
+        "evidence.chain",
+        "evidence.archive"
+      ],
+      "queries": [
+        "evidence.byId",
+        "evidence.supporting",
+        "evidence.bySource",
+        "evidence.revoked",
+        "evidence.chain"
+      ],
+      "events": [
+        "EvidenceSubmitted",
+        "EvidenceVerified",
+        "EvidenceRevoked",
+        "EvidenceChained",
+        "EvidenceExpired"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Submitted\n    Submitted --> Verified: method passes\n    Submitted --> Rejected: method fails\n    Verified --> Revoked: authority revokes\n    Verified --> Expired: temporal end\n    Revoked --> [*]\n    Expired --> [*]\n```",
+      "workflow": [
+        "submit → select verification method from registry → verify → chain to parent evidence → publish → schedule expiry"
+      ],
+      "authorities": [
+        "Source Authority (submits)",
+        "Verification Authority (attests method)",
+        "Revocation Authority (original signer or higher)"
+      ],
+      "permissions": [
+        "evidence.submit (authenticated)",
+        "evidence.verify (verification authority)",
+        "evidence.revoke (revocation authority)"
+      ],
+      "privacy": "Proof payloads are content-addressed and access-scoped; personal evidence follows the Consent Architecture's retention and erasure policy.",
+      "audit": "Every verification records method, verifier, timestamp, and result. Revocation never deletes — it invalidates downstream support and is logged.",
+      "twin": "Evidence Twin mirrors real-world proof status (e.g., a license expiring) and propagates expiry to dependent Knowledge.",
+      "agent": "Evidence Agent detects expiring and weak-chain evidence, triggering re-verification before downstream trust degrades.",
+      "runtime": "Verification is method-dispatched from the registry; hot path caches verification results keyed by content hash.",
+      "scaling": "Payloads are stored once, content-addressed; verification results are cached and invalidated on EvidenceRevoked.",
+      "multiTenant": "Evidence is tenant-scoped; cross-tenant citation requires explicit published relationship.",
+      "geo": "Proof payloads follow Data Sovereignty residency; verification method availability varies by jurisdiction (e.g., eIDAS vs. eID).",
+      "failure": "Method unavailability, chain breakage, hash collision (mitigated by algorithm agility), revocation storm.",
+      "recovery": "Content-addressed storage is self-verifying; recovery re-verifies hashes. Revoked evidence stays invalid — integrity over recoverability.",
+      "certification": "Evidence must pass method verification, chain integrity, non-expiration, and source authority validity.",
+      "migration": "New verification methods are registry additions; existing evidence re-verifies on method activation.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant S as Submitter\n    participant EV as Evidence Domain\n    participant VA as Verification Authority\n    S->>EV: submit(proof, type)\n    EV->>EV: resolve method\n    EV->>VA: verify\n    VA-->>EV: verified\n    EV-->>S: EvidenceVerified\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Received\n    Received --> MethodResolved\n    MethodResolved --> Verified\n    Verified --> Chained\n```",
+      "blueprint": "Build order for EVD: (1) define registry entries — this domain owns by strength: cryptographic / attested / observed / claimed (weakest) as registry truth, not code; (2) implement the contract surface first (evidence.submit, evidence.verify, evidence.revoke) and validate against EVD boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "OBS": {
+      "concepts": "Observation is captured reality at a point in time. Observation ≠ Inference: it is what was sensed, never what was derived. Observations are the raw feed from which Knowledge, Trust, and Twins derive.",
+      "ontology": "Observation has a Source, a captured Payload, a Timestamp, and a Context. Sources: Transactions, Logs, Events, Documents, Images, Video, Voice, IoT, External APIs, Human Inputs, Agent Inputs — all registry-driven and extensible.",
+      "taxonomy": "By source: Machine / Human / Agent / External. By nature: Discrete / Continuous / Composite. By fidelity: Raw / Normalized / Enriched.",
+      "dataModel": "```yaml\nObservation:\n  observationId: <Identity>\n  source: <Identity>\n  sourceType: <registry id>\n  capturedAt: <Time>\n  context: <Context>\n  payload: <content-addressed>\n  fidelity: <Raw|Normalized|Enriched>\n  metadata: <Metadata>\n```",
+      "graphModel": "(:Observation)-[:CAPTURED_BY]->(:Identity); (:Observation)-[:OBSERVED_IN]->(:Context); (:Observation)-[:FEEDS]->(:Evidence|:Knowledge|:Twin)",
+      "apis": [
+        "POST /observation.v1.ingest",
+        "GET  /observation.v1/{id}",
+        "POST /observation.v1.query",
+        "GET  /observation.v1.stream"
+      ],
+      "commands": [
+        "observation.ingest",
+        "observation.normalize",
+        "observation.enrich",
+        "observation.replay",
+        "observation.quarantine"
+      ],
+      "queries": [
+        "observation.byId",
+        "observation.bySource",
+        "observation.byTimeWindow",
+        "observation.byContext",
+        "observation.stream"
+      ],
+      "events": [
+        "ObservationIngested",
+        "ObservationNormalized",
+        "ObservationEnriched",
+        "ObservationQuarantined",
+        "ObservationReplayed"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Ingested\n    Ingested --> Validated\n    Validated --> Normalized\n    Normalized --> Enriched\n    Validated --> Quarantined\n    Quarantined --> Normalized: remediated\n```",
+      "workflow": [
+        "ingest → schema-validate against source type → normalize → enrich with context → publish to stream → persist content-addressed"
+      ],
+      "authorities": [
+        "Source Authority (authorized ingest endpoint)",
+        "Platform Authority (quarantine release)"
+      ],
+      "permissions": [
+        "observation.ingest (authorized source)",
+        "observation.read (context-scoped)",
+        "observation.quarantine (platform authority)"
+      ],
+      "privacy": "Observations of persons are privacy-sensitive by default; enrichment of personal data requires consent scope and purpose limitation.",
+      "audit": "Every ingest records source, timestamp, context, and validation outcome. Quarantine reasons are mandatory and reviewable.",
+      "twin": "Observation is the primary synchronization feed into Digital Twins — the 'reality' side of the twin loop.",
+      "agent": "Observation Agent detects anomalies, drift, and source degradation, quarantining suspicious feeds under governance.",
+      "runtime": "Ingest is a high-throughput append-only stream; enrichment is a pipeline stage; replay is first-class for recovery.",
+      "scaling": "Partition by source and time bucket; retention is policy-driven per source type; cold storage is registry-configured.",
+      "multiTenant": "Observations are tenant-scoped at ingest; a source cannot write into another tenant's stream.",
+      "geo": "Ingest endpoints are region-local for latency; residency follows the source's Context, enforced at write time.",
+      "failure": "Schema violation, source spoofing, backpressure overload, clock skew, duplicate ingest.",
+      "recovery": "Idempotent ingest via source-assigned sequence numbers; replay rebuilds downstream projections exactly.",
+      "certification": "Observation must pass source authorization, schema validity, timestamp sanity, and context binding.",
+      "migration": "New source types are registry additions; the ingest pipeline dispatches by type without code change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant S as Source\n    participant OB as Observation Domain\n    participant ST as Stream\n    S->>OB: ingest(payload)\n    OB->>OB: validate + normalize\n    OB->>ST: publish\n    ST-->>OB: ack\n    OB-->>S: ObservationIngested\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Receiving\n    Receiving --> Validating\n    Validating --> Normalizing\n    Normalizing --> Streaming\n```",
+      "blueprint": "Build order for OBS: (1) define registry entries — this domain owns by source: machine / human / agent / external as registry truth, not code; (2) implement the contract surface first (observation.ingest, observation.normalize, observation.enrich) and validate against OBS boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "INF": {
+      "concepts": "Inference is derived reality — discovery without explicit definition. Inference ≠ Observation: it is what was concluded, not what was sensed. Inferences carry lower trust by default and are always labeled as derived.",
+      "ontology": "Inference has a Method, input Observations/Knowledge, a derived output, and a Confidence. Methods: Statistical / Graph / Semantic / Causal / Neural / Hybrid — registry-driven.",
+      "taxonomy": "By output: New Relationship / New Knowledge / New Risk / New Capability / New Pattern. By method: Deductive-projected / Inductive / Abductive / Analogical.",
+      "dataModel": "```yaml\nInference:\n  inferenceId: <Identity>\n  method: <registry id>\n  inputs: [<Observation|Knowledge>]\n  output: <Relationship|Knowledge|Risk|Pattern>\n  confidence: <0..1>\n  trust: <Trust, reduced by default>\n  context: <Context>\n  reproducible: <bool>\n```",
+      "graphModel": "(:Inference)-[:DERIVED_FROM]->(:Observation|:Knowledge); (:Inference)-[:PRODUCED]->(:Relationship|:Knowledge); (:Inference)-[:METHOD]->(:RegistryEntry)",
+      "apis": [
+        "POST /inference.v1.run",
+        "GET  /inference.v1/{id}",
+        "POST /inference.v1.promote",
+        "GET  /inference.v1.candidates"
+      ],
+      "commands": [
+        "inference.run",
+        "inference.promote",
+        "inference.reject",
+        "inference.explain",
+        "inference.rerun"
+      ],
+      "queries": [
+        "inference.byId",
+        "inference.candidates",
+        "inference.byMethod",
+        "inference.lowConfidence",
+        "inference.explain"
+      ],
+      "events": [
+        "InferenceProduced",
+        "InferencePromoted",
+        "InferenceRejected",
+        "InferenceConfidenceLow",
+        "InferenceReproduced"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Candidate\n    Candidate --> Promoted: corroboration\n    Candidate --> Rejected: refuted\n    Promoted --> Demoted: trust decay\n    Rejected --> [*]\n```",
+      "workflow": [
+        "select method → gather inputs within consent scope → run → assign reduced trust → present as candidate → promote on corroboration"
+      ],
+      "authorities": [
+        "Inference Authority (runs methods under governance)",
+        "Promotion Authority (domain authority in output scope)"
+      ],
+      "permissions": [
+        "inference.run (inference authority)",
+        "inference.promote (domain authority)",
+        "inference.read (context-scoped)"
+      ],
+      "privacy": "Inferences about persons are sensitive; no inference over personal data without consent scope covering the method's purpose.",
+      "audit": "Every inference records method, inputs, confidence, and is reproducible or void. Inferences are never presented as observations.",
+      "twin": "Inference feeds Twins with predicted states, clearly separated from observed twin state.",
+      "agent": "Inference Agent is the primary autonomous discovery mechanism, governed by Agent Safety and the constitution.",
+      "runtime": "Methods are registry-dispatched plugins running in a sandbox with resource limits; outputs never mutate reality directly.",
+      "scaling": "Inference is a batch/stream job; candidates queue for promotion; hot methods are pre-warmed.",
+      "multiTenant": "Inferences never cross tenant boundaries; cross-tenant inference requires published relationship and policy.",
+      "geo": "Inference over regulated data runs in-jurisdiction; method availability respects local regulation.",
+      "failure": "Method drift, input starvation, unreproducible output, confidence inflation.",
+      "recovery": "Inferences are re-derivable; promotion is reversible to candidate. Unreproducible inferences are auto-rejected.",
+      "certification": "Inference must be reproducible, method-registered, consent-scoped, and below promotion threshold until corroborated.",
+      "migration": "New methods are registry additions; rerun on method version change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant I as Inference Domain\n    participant M as Method (registry)\n    participant TR as Trust\n    I->>M: run(inputs)\n    M-->>I: derived output\n    I->>TR: assign reduced trust\n    TR-->>I: score\n    I-->>I: InferenceProduced (candidate)\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Selecting\n    Selecting --> Running\n    Running --> Scoring\n    Scoring --> Candidate\n```",
+      "blueprint": "Build order for INF: (1) define registry entries — this domain owns by output: new relationship / new knowledge / new risk / new capability / new pattern as registry truth, not code; (2) implement the contract surface first (inference.run, inference.promote, inference.reject) and validate against INF boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "RSN": {
+      "concepts": "Reasoning is the deliberate derivation of conclusions under governance. Reasoning ≠ Inference: reasoning is explainable, step-wise, and auditable; inference may be statistical and opaque. Every reasoning chain is reconstructable.",
+      "ontology": "Reasoning has a Mode (Deductive / Inductive / Abductive / Constraint / Policy / Semantic / Causal), a chain of steps, premises, and a conclusion. Each step is itself recorded.",
+      "taxonomy": "By mode: Deductive / Inductive / Abductive / Constraint-satisfaction / Policy-based / Semantic / Causal. By purpose: Explanation / Prediction / Diagnosis / Planning / Justification.",
+      "dataModel": "```yaml\nReasoning:\n  reasoningId: <Identity>\n  mode: <registry id>\n  premises: [<Knowledge|Observation>]\n  steps:\n    - stepNo: <int>\n      rule: <Rule|registry inference rule>\n      input: <facts>\n      output: <fact>\n  conclusion: <Knowledge|Decision>\n  explainable: true   # mandatory\n  context: <Context>\n```",
+      "graphModel": "(:Reasoning)-[:FROM_PREMISE]->(:Knowledge); (:Reasoning)-[:STEP*]->(:ReasoningStep); (:Reasoning)-[:CONCLUDED]->(:Knowledge|:Decision); (:Reasoning)-[:MODE]->(:RegistryEntry)",
+      "apis": [
+        "POST /reasoning.v1.run",
+        "GET  /reasoning.v1/{id}",
+        "GET  /reasoning.v1/{id}/chain",
+        "POST /reasoning.v1.explain"
+      ],
+      "commands": [
+        "reasoning.run",
+        "reasoning.explain",
+        "reasoning.validate",
+        "reasoning.replay"
+      ],
+      "queries": [
+        "reasoning.byId",
+        "reasoning.chain",
+        "reasoning.byMode",
+        "reasoning.conclusions"
+      ],
+      "events": [
+        "ReasoningCompleted",
+        "ReasoningValidated",
+        "ReasoningInvalid",
+        "ReasoningExplained"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Premised\n    Premised --> Stepping\n    Stepping --> Concluded\n    Concluded --> Validated\n    Validated --> Published\n```",
+      "workflow": [
+        "load premises within scope → apply mode → record each step → conclude → validate chain → publish with explanation"
+      ],
+      "authorities": [
+        "Reasoning Authority (runs modes); conclusion authority follows the Knowledge/Decision domain rules."
+      ],
+      "permissions": [
+        "reasoning.run (reasoning authority)",
+        "reasoning.read (context-scoped)",
+        "reasoning.explain (any stakeholder)"
+      ],
+      "privacy": "Premises containing personal data require consent scope; explanations minimize exposed facts while remaining reconstructable.",
+      "audit": "The chain is the audit. A conclusion without a reconstructable chain is constitutionally void.",
+      "twin": "Reasoning produces explanations for twin state divergence — why the twin differs from observed reality.",
+      "agent": "Reasoning Agent is the explainable counterpart to the Inference Agent, justifying autonomous conclusions.",
+      "runtime": "Step-wise execution with checkpointing; long chains are resumable. Every step is persisted before the next runs.",
+      "scaling": "Chains are partitioned by conclusion subject; step storage is append-only and deduplicated by hash.",
+      "multiTenant": "Reasoning never mixes premises across tenants.",
+      "geo": "Reasoning over jurisdiction-scoped knowledge stays in jurisdiction.",
+      "failure": "Step invalidation, premise revocation mid-chain, mode unavailability, unbounded chain length.",
+      "recovery": "Chains are replayable; a revoked premise invalidates downstream steps deterministically and re-triggers reasoning.",
+      "certification": "Reasoning must be fully reconstructable, mode-registered, scope-valid, and step-auditable.",
+      "migration": "New modes are registry additions; existing chains preserve their mode version.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant R as Reasoner\n    participant RS as Reasoning Domain\n    participant KN as Knowledge\n    R->>RS: run(mode, premises)\n    RS->>RS: step, persist, step\n    RS->>KN: conclude\n    KN-->>RS: KnowledgeAsserted\n    RS-->>R: ReasoningCompleted + chain\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Loading\n    Loading --> Stepping\n    Stepping --> Concluding\n    Concluding --> Explaining\n```",
+      "blueprint": "Build order for RSN: (1) define registry entries — this domain owns by mode: deductive / inductive / abductive / constraint-satisfaction / policy-based / semantic / causal as registry truth, not code; (2) implement the contract surface first (reasoning.run, reasoning.explain, reasoning.validate) and validate against RSN boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "SIM": {
+      "concepts": "Simulation is possible reality. Simulation ≠ Reality: it never mutates actual reality, never approves policy, and never spends money. Simulations are throwaway, reproducible, and clearly labeled.",
+      "ontology": "Simulation has a Model, input State, perturbations, and output Possibilities. Types: Pricing / Risk / Compliance / Expansion / Operational / Future Scenario / Economic — registry-driven.",
+      "taxonomy": "By horizon: Now / Near / Far. By fidelity: Order-of-magnitude / Approximate / High-fidelity. By purpose: Decision-support / Stress-test / Exploration.",
+      "dataModel": "```yaml\nSimulation:\n  simulationId: <Identity>\n  modelType: <registry id>\n  inputState: <snapshot reference>\n  perturbations: [<registry perturbation>]\n  outputs: [Possibility]\n  runs: <int>\n  reproducible: <bool>\n  temporal: {simulatedFrom, simulatedTo}\n```",
+      "graphModel": "(:Simulation)-[:MODELED_BY]->(:RegistryEntry); (:Simulation)-[:PERTURBS]->(:Context|:Policy); (:Simulation)-[:YIELDS]->(:Possibility); (:Simulation)-[:BASED_ON]->(:Knowledge|:Twin)",
+      "apis": [
+        "POST /simulation.v1.run",
+        "GET  /simulation.v1/{id}",
+        "POST /simulation.v1.compare",
+        "GET  /simulation.v1/{id}/possibilities"
+      ],
+      "commands": [
+        "simulation.run",
+        "simulation.cancel",
+        "simulation.compare",
+        "simulation.archive"
+      ],
+      "queries": [
+        "simulation.byId",
+        "simulation.possibilities",
+        "simulation.byModel",
+        "simulation.compare"
+      ],
+      "events": [
+        "SimulationStarted",
+        "SimulationProgressed",
+        "SimulationCompleted",
+        "SimulationFailed",
+        "PossibilityYielded"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Queued\n    Queued --> Running\n    Running --> Completed\n    Running --> Failed\n    Running --> Cancelled\n    Completed --> Archived\n```",
+      "workflow": [
+        "snapshot input state → select model → apply perturbations under budget → yield possibilities → label as simulated → archive"
+      ],
+      "authorities": [
+        "Simulation Authority (runs models); no authority to mutate reality — separation is constitutional."
+      ],
+      "permissions": [
+        "simulation.run (simulation authority)",
+        "simulation.read (context-scoped)"
+      ],
+      "privacy": "Simulations over personal populations use synthetic or aggregated inputs; no individual-level personal simulation without consent.",
+      "audit": "Every run records model version, inputs, perturbations, and resource cost. Outputs are watermarked as simulated in every projection.",
+      "twin": "Twins provide the initial state for simulations; simulations never write back to twins — one-directional by law.",
+      "agent": "Simulation Agent pre-runs scenarios for autonomous planning, governed by Agent Safety budgets.",
+      "runtime": "Runs in an isolated sandbox with compute/time budget enforcement; outputs are content-addressed and immutable.",
+      "scaling": "Embarrassingly parallel across perturbation grids; results cache by (model, input-hash, perturbation-hash).",
+      "multiTenant": "Simulations never mix tenant states; cross-tenant scenarios require published relationship.",
+      "geo": "Heavy compute runs in the tenant's authorized regions; regulated data never leaves jurisdiction for simulation.",
+      "failure": "Model divergence, budget exhaustion, non-convergence, input state staleness.",
+      "recovery": "Simulations are disposable; recovery is re-run. Archived results are content-addressed and self-verifying.",
+      "certification": "Simulation must be reproducible, budget-bounded, reality-isolated, and clearly labeled in all outputs.",
+      "migration": "New model types are registry additions; archived runs preserve their model version.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant SI as Simulation Domain\n    participant TW as Twin Federation\n    C->>SI: run(model, perturbations)\n    SI->>TW: snapshot current state\n    TW-->>SI: state\n    SI->>SI: run under budget\n    SI-->>C: Possibilities (simulated)\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Snapshotting\n    Snapshotting --> Modeling\n    Modeling --> Yielding\n    Yielding --> Archiving\n```",
+      "blueprint": "Build order for SIM: (1) define registry entries — this domain owns by horizon: now / near / far as registry truth, not code; (2) implement the contract surface first (simulation.run, simulation.cancel, simulation.compare) and validate against SIM boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "CAU": {
+      "concepts": "Causality is the reason one existence influences another. Causality ≠ Relationship: a link says 'connected'; causality says 'because'. Causal claims require intervention-grade evidence, not correlation.",
+      "ontology": "Causality has a Cause, an Effect, a Mechanism, and an Evidence grade. Claims are typed: Direct / Mediated / Contributory / Counterfactual.",
+      "taxonomy": "By strength: Proven (interventional) / Supported (observational + mechanism) / Hypothesized (correlational) / Refuted.",
+      "dataModel": "```yaml\nCausality:\n  causalityId: <Identity>\n  cause: <Identity|Event>\n  effect: <Identity|Event>\n  mechanism: <registry id>\n  evidenceGrade: <Proven|Supported|Hypothesized|Refuted>\n  evidence: [<Evidence>]\n  confounders: [<Identity>]\n  context: <Context>\n  trust: <Trust>\n```",
+      "graphModel": "(:Cause)-[:CAUSES {mechanism, grade}]->(:Effect); (:Causality)-[:MEDIATED_BY]->(:Identity); (:Causality)-[:CONFOUNDED_BY]->(:Identity)",
+      "apis": [
+        "POST /causality.v1.assert",
+        "GET  /causality.v1/{id}",
+        "POST /causality.v1.explain",
+        "GET  /causality.v1.impact/{id}"
+      ],
+      "commands": [
+        "causality.assert",
+        "causality.refine",
+        "causality.refute",
+        "causality.explain"
+      ],
+      "queries": [
+        "causality.byId",
+        "causality.effectsOf",
+        "causality.causesOf",
+        "causality.impact",
+        "causality.byGrade"
+      ],
+      "events": [
+        "CausalityAsserted",
+        "CausalityRefined",
+        "CausalityRefuted",
+        "ImpactAssessed"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Hypothesized\n    Hypothesized --> Supported: mechanism + obs evidence\n    Supported --> Proven: interventional evidence\n    Hypothesized --> Refuted\n    Supported --> Refuted\n    Proven --> Refined\n```",
+      "workflow": [
+        "observe correlation → propose mechanism → rule out confounders → upgrade on interventional evidence → publish grade"
+      ],
+      "authorities": [
+        "Causality Authority (asserts under evidence standards); interventional claims require elevated authority."
+      ],
+      "permissions": [
+        "causality.assert (causality authority)",
+        "causality.refute (peer authority)",
+        "causality.read (context-scoped)"
+      ],
+      "privacy": "Causal claims over persons require aggregated or consented evidence; individual-level causal claims are prohibited without consent.",
+      "audit": "Every claim records evidence grade, confounders considered, and method. Correlational claims are never projected as causal.",
+      "twin": "Causal models explain twin divergence and predict intervention outcomes on twins before reality is touched.",
+      "agent": "Causality Agent continuously downgrades unsupported claims and flags spurious correlations for review.",
+      "runtime": "Graph traversal for impact analysis; confounder sets computed at assert time and rechecked on related Knowledge change.",
+      "scaling": "Causal graphs are partitioned by subject; impact queries are bounded by policy depth.",
+      "multiTenant": "Causal claims never cross tenant boundaries without published relationship.",
+      "geo": "Evidence standards are jurisdiction-aware; a claim Proven under one regime may be Supported elsewhere — both recorded.",
+      "failure": "Confounder omission, grade inflation, mechanism invalidation, cyclic causal claims.",
+      "recovery": "Claims are versioned; refutation supersedes rather than deletes, preserving the history of what was believed and why.",
+      "certification": "Claim must pass mechanism validity, confounder enumeration, evidence-grade honesty, and acyclicity.",
+      "migration": "New mechanisms are registry additions; existing claims re-grade on mechanism version change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant A as Asserter\n    participant CA as Causality Domain\n    participant EV as Evidence\n    A->>CA: assert(cause, effect, mechanism)\n    CA->>EV: gather + grade evidence\n    EV-->>CA: grade\n    CA->>CA: enumerate confounders\n    CA-->>A: CausalityAsserted\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Correlating\n    Correlating --> Mechanizing\n    Mechanizing --> Confounding\n    Confounding --> Grading\n```",
+      "blueprint": "Build order for CAU: (1) define registry entries — this domain owns by strength: proven (interventional) / supported (observational + mechanism) / hypothesized (correlational) / refuted as registry truth, not code; (2) implement the contract surface first (causality.assert, causality.refine, causality.refute) and validate against CAU boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "EVO": {
+      "concepts": "Evolution is governed change over time that preserves history. Nothing evolves without governance; nothing that evolved is forgotten. Evolution covers Ontology, Schema, Policy, Capability, Workflow, API, Agent, and Knowledge evolution.",
+      "ontology": "Evolution has a Subject, a Change, a Rationale, an Authority, and a preserved History. Emergence is evolution's un-planned cousin: properties arising from interaction that were not present in the parts.",
+      "taxonomy": "By intent: Planned / Emergent. By impact: Additive / Breaking / Deprecated-path. By scope: Primitive-level (constitution only) / Registry-level / Projection-level.",
+      "dataModel": "```yaml\nEvolution:\n  evolutionId: <Identity>\n  subject: <Identity>\n  changeType: <registry id>\n  from: <prior version ref>\n  to: <new version ref>\n  rationale: <Knowledge>\n  authority: <Authority>\n  temporal: {effectiveAt}\n  supersession: {priorVersions: [...], historyPreserved: true}\n```",
+      "graphModel": "(:Evolution)-[:EVOLVES]->(:Identity); (:Evolution)-[:SUPERSEDES_VERSION]->(:Evolution); (:Evolution)-[:DRIVES]->(:Emergence); (:Evolution)-[:APPROVED_BY]->(:Authority)",
+      "apis": [
+        "POST /evolution.v1.propose",
+        "POST /evolution.v1.approve",
+        "GET  /evolution.v1/{id}",
+        "GET  /evolution.v1.history/{subjectId}"
+      ],
+      "commands": [
+        "evolution.propose",
+        "evolution.approve",
+        "evolution.activate",
+        "evolution.rollback",
+        "emergence.record"
+      ],
+      "queries": [
+        "evolution.history",
+        "evolution.pending",
+        "evolution.bySubject",
+        "emergence.detected",
+        "evolution.impact"
+      ],
+      "events": [
+        "EvolutionProposed",
+        "EvolutionApproved",
+        "EvolutionActivated",
+        "EvolutionRolledBack",
+        "EmergenceDetected",
+        "EmergenceRecorded"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Proposed\n    Proposed --> Approved\n    Approved --> Activated\n    Activated --> RolledBack\n    Activated --> [*]\n    RolledBack --> [*]\n```",
+      "workflow": [
+        "propose with rationale → impact analysis → approve by authority → activate with prior version preserved → publish → monitor emergence"
+      ],
+      "authorities": [
+        "Evolution Authority (registry-level); Constitutional Assembly (primitive-level only)"
+      ],
+      "permissions": [
+        "evolution.propose (any authority)",
+        "evolution.approve (subject's owning authority)",
+        "evolution.rollback (approving authority)"
+      ],
+      "privacy": "Evolution of privacy-relevant subjects triggers consent re-evaluation; changes cannot silently widen data use.",
+      "audit": "Every change records rationale, authority, impact, and prior state. History is never rewritten — only superseded.",
+      "twin": "Evolution drives twin model versioning; a twin's history is as valuable as its current state.",
+      "agent": "Evolution Agent proposes changes from observed drift; Emergence Agent detects system-level properties for governance review.",
+      "runtime": "Version resolution prefers latest activated; historical queries time-travel via the version chain.",
+      "scaling": "Version chains are append-only and shard by subject; time-travel queries are bounded by retention policy.",
+      "multiTenant": "Tenant-level evolution cannot alter shared ontology; shared changes go through the Evolution Authority.",
+      "geo": "Evolution activation is jurisdiction-aware; a change legal in one region rolls out per regional policy.",
+      "failure": "Breaking change without deprecation, orphaned version chain, emergence runaway, rollback failure.",
+      "recovery": "Rollback is a first-class command that activates the prior version — never a data restore. History remains intact either way.",
+      "certification": "Evolution must pass impact analysis, deprecation path (for breaking changes), authority jurisdiction, and history preservation.",
+      "migration": "Migration IS evolution — there is no separate migration path. All changes flow through this domain.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant P as Proposer\n    participant EV as Evolution Domain\n    participant AU as Authority\n    P->>EV: propose(change, rationale)\n    EV->>EV: impact analysis\n    EV->>AU: approve\n    AU-->>EV: approved\n    EV->>EV: activate (history preserved)\n    EV-->>P: EvolutionActivated\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Impacting\n    Impacting --> Approving\n    Approving --> Activating\n    Activating --> Monitoring\n```",
+      "blueprint": "Build order for EVO: (1) define registry entries — this domain owns by intent: planned / emergent as registry truth, not code; (2) implement the contract surface first (evolution.propose, evolution.approve, evolution.activate) and validate against EVO boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    }
+  }
+}

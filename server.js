@@ -71,7 +71,7 @@ function getSession(req, res, url, cookies) {
   const session = { sid, user_id: userTenantOk ? s.user_id : null, tenant, zip: st.zip, gift_balance: st.gift_balance, coupon: st.coupon || "", csrf: s.csrf };
   if (cookies.azp) {
     const ps = get("SELECT * FROM platform_sessions WHERE ptid=? AND expires_at > datetime('now')", cookies.azp);
-    if (ps) session.ptid = ps.ptid, session.platform_admin = get("SELECT id,name,email FROM platform_admins WHERE id=?", ps.admin_id);
+    if (ps) session.ptid = ps.ptid, session.platform_admin = get("SELECT id,name,email,role,perms FROM platform_admins WHERE id=?", ps.admin_id);
   }
   return session;
 }

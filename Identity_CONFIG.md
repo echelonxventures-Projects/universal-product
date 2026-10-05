@@ -269,22 +269,52 @@ curl -X PUT http://localhost:8787/api/admin/identity-settings \
 
 ## Infinite Extensibility
 
-New identity types can be added **without code changes**:
+New identity kinds are added **without code changes**. Every method is a provider TYPE row in
+the registry (`identityProviderTypes`), and each type names a **flow** — the one mechanic the
+login engine implements for it:
 
-1. **Define provider** via `/admin/identity-providers`
-2. **Create handler** in `lib/identity.js` (add to `initiateLogin` switch)
-3. **Register UI component** in `public/js/platform.js`
+| Flow | Mechanic | Built-in types using it |
+|---|---|---|
+| `password` | the native email + password (verified by the store's scrypt path) | `password` |
+| `challenge` | a short-lived code the user must repeat — `delivery: code` (server issues and sends it) or `delivery: authenticator` (the user's TOTP app derives it from an enrolled secret) | `otp`, `totp` |
+| `link` | a single-use passwordless link delivered out of band | `magic_link` |
+| `biometric` | a WebAuthn challenge the device signs | `biometric` |
+| `external` | an authority (IdP / directory) authenticates the user and returns an assertion; the platform verifies it with its single `verifyIdToken` primitive and provisions on return | `sso`, `oauth`, `openid`, `ldap` |
 
-Example for custom provider:
-```javascript
-// In lib/identity.js, add to initiateLogin:
-case 'custom_provider':
-  return {
-    ok: true,
-    action: "custom_redirect",
-    url: config.authUrl + "?email=" + encodeURIComponent(email)
-  };
-```
+The engine dispatches on the **flow**, never on the type key, so:
+
+1. Register the type with its config fields and flow — `POST /api/admin/identity-provider-types`
+   (or the **Provider Types** card in the console):
+   ```bash
+   curl -X POST http://localhost:8787/api/admin/identity-provider-types \
+     -H "Content-Type: application/json" \
+     -d '{ "key": "passkey", "label": "Passkey", "flow": "biometric", "fields": ["rpId", "rpName"] }'
+   ```
+2. Configure a provider of that type for a store — **Add Provider** in the console now lists
+   registry types and renders their fields automatically.
+3. That's it: `POST /api/auth/login-init { "method": "passkey" }` routes to the flow the type
+   named. No switch to edit, no second place to register it.
+
+A type naming a flow the engine doesn't know is refused at registration, so a typo can't
+produce a method that silently never works.
+
+## Roles are per-store
+
+A store's staff roles are their own data. Every store starts on the shared platform default
+and inherits it until an operator deliberately forks that store's set; the first edit forks
+the whole set (the store keeps every role it had and diverges from there), and a fork can be
+dissolved back to the default.
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /api/admin/roles` | This store's role set + whether it is forked (`ownSet`) |
+| `POST /api/admin/roles` | Create / re-scope a role in this store's own set (team:write) |
+| `DELETE /api/admin/roles/:key` | Remove a role nobody on this store holds |
+| `POST /api/admin/roles/reset` | Dissolve the fork, inherit the platform default again |
+| `POST /api/platform/roles/staff` | Platform console: edit a chosen store's set (`tenant_id`) or the shared default |
+
+A grant removed on one store is refused by that store's console and still allowed on every
+store that didn't fork — enforcement reads the requesting store's own set.
 
 ---
 

@@ -1,0 +1,611 @@
+{
+  "$schema": "https://ucos.io/registry/content-commerce.v1.json",
+  "registryId": "UCOS-REG-CONTENT-COMMERCE",
+  "canonicalName": "Commerce Content Registry",
+  "version": "Omega-1",
+  "status": "Constitutional Freeze",
+  "ownerDomain": "Constitutional Authority",
+  "law": "Knowledge Once — commerce substance defined here once, projected everywhere. Commerce objects are PROJECTIONS, never stored as truth.",
+  "content": {
+    "COM": {
+      "concepts": "Universal Commerce projects commercial reality from primitives. A commercial object = Existence + Knowledge + Meaning + Relationships + Context + Policies + Authorities + Time. Products, services, bundles, offers, subscriptions, contracts, licenses, memberships, listings, assets, and experiences are all projections — never stored, never hardcoded.",
+      "ontology": "Commerce is a Reality type (Commercial Reality), not a domain of stored objects. Commercial projection is a pure function of primitives resolved within a Context.",
+      "taxonomy": "By projection: Product / Service / Bundle / Offer / Subscription / Contract / License / Membership / Listing / Asset / Experience. By model: One-time / Recurring / Usage / Consignment / Marketplace / Hybrid. By channel: Any (channel is a Context, not a type).",
+      "dataModel": "```yaml\nCommercialProjection:\n  projectionId: <Identity>\n  existence: <Identity>\n  knowledge: [<Knowledge>]\n  meaning: <SemanticModel>\n  relationships: [<Relationship>]\n  context: <Context>\n  policies: [<Policy>]\n  authorities: [<Authority>]\n  temporal: {asOf, validIn}\n  projectionHash: <content-addressed>\n```",
+      "graphModel": "(:Projection)-[:PROJECTS]->(:Existence); (:Projection)-[:VALID_IN]->(:Context); (:Projection)-[:PRICED_BY]->(:PricingProjection); (:Projection)-[:OFFERED_AS]->(:OfferProjection)",
+      "apis": [
+        "POST /commerce.v1.project",
+        "GET  /commerce.v1/{id}",
+        "POST /commerce.v1.query",
+        "GET  /commerce.v1.byContext/{contextId}"
+      ],
+      "commands": [
+        "commerce.project",
+        "commerce.reproject",
+        "commerce.publish",
+        "commerce.withdraw"
+      ],
+      "queries": [
+        "commerce.byId",
+        "commerce.byContext",
+        "commerce.catalog",
+        "commerce.timeline"
+      ],
+      "events": [
+        "CommerceProjected",
+        "CommerceReprojected",
+        "CommercePublished",
+        "CommerceWithdrawn"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Composing\n    Composing --> Projected\n    Projected --> Published\n    Published --> Withdrawn\n    Published --> Stale: primitives changed\n    Stale --> Composing\n```",
+      "workflow": [
+        "resolve existence → gather knowledge + meaning → traverse relationships → apply context + policies → project → publish with hash"
+      ],
+      "authorities": [
+        "Context Authority (what may be projected in scope); Merchant Authority (publication)."
+      ],
+      "permissions": [
+        "commerce.project (context-scoped writer)",
+        "commerce.publish (merchant authority)",
+        "commerce.read (context-scoped)"
+      ],
+      "privacy": "Projections involving personal data minimize via Perspective before publication; commercial identity is pseudonymous by default.",
+      "audit": "Every projection records its primitive inputs and hash, so any commercial object is reproducible and its history reconstructable.",
+      "twin": "Commercial Twin mirrors the real-world commercial state (availability, status, ownership) continuously from observations.",
+      "agent": "Commerce Agent detects projection staleness when primitives change and re-projects under governance.",
+      "runtime": "Projections are computed and content-hashed; caching keyed by input primitive versions guarantees consistency.",
+      "scaling": "Projection is parallelizable per existence; catalog reads serve cached hashes with primitive-version invalidation.",
+      "multiTenant": "Commerce projections are strictly tenant-scoped; cross-tenant catalog requires published marketplace relationship.",
+      "geo": "Contextual distribution is projection-time: language, currency, tax, compliance are applied from the Context registry — never compiled in.",
+      "failure": "Primitive staleness, context policy conflict, authority gap, hash mismatch on re-projection.",
+      "recovery": "Projections are pure functions of primitives — recovery is re-derivation, never restore.",
+      "certification": "Projection must pass primitive-conformance (zero hardcoded commerce terms), context validity, and hash reproducibility.",
+      "migration": "New commercial models are registry additions to projection types; no schema migration ever touches primitives.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant CO as Commerce Engine\n    participant CT as Context\n    C->>CO: project(existence)\n    CO->>CT: resolve commercial context\n    CT-->>CO: context + policies\n    CO->>CO: compose projection\n    CO-->>C: CommerceProjected (hashed)\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Resolving\n    Resolving --> Composing\n    Composing --> Hashing\n    Hashing --> Published\n```",
+      "blueprint": "Build order for COM: (1) define registry entries — this domain owns by projection: product / service / bundle / offer / subscription / contract / license / membership / listing / asset / experience as registry truth, not code; (2) implement the contract surface first (commerce.project, commerce.reproject, commerce.publish) and validate against COM boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "GPS": {
+      "concepts": "Global Products & Services supports all industries, categories, product types, service types, business models, languages, currencies, regions, countries, territories, marketplaces, channels, and future commercial domains without redesign. This is achieved because none of those concepts exist in the platform — they are registry entries projected at runtime.",
+      "ontology": "A product or service is an Existence with commercial projections. Industry, category, brand, and channel are Context and Semantic constructs, not schema fields.",
+      "taxonomy": "By projection type: Product / Service / Digital / Physical / Hybrid / Future. By model: any registry-defined commercial model. By reach: Local / National / Global / Future.",
+      "dataModel": "```yaml\nGlobalCatalogEntry:\n  existence: <Identity>\n  semanticConcept: <SemanticModel>   # 'phone' across all languages\n  classifications: [<Taxonomy node>]\n  contexts: [<Context>]               # where it is offered\n  commercialProjections: [<CommercialProjection>]\n  localization: [{locale, projection}]\n```",
+      "graphModel": "(:Entry)-[:SEMANTIC_CONCEPT]->(:Concept); (:Entry)-[:CLASSIFIED_AS]->(:Category); (:Entry)-[:OFFERED_IN]->(:Context); (:Entry)-[:LOCALIZED_AS]->(:Localization)",
+      "apis": [
+        "GET  /catalog.v1.entry/{id}",
+        "POST /catalog.v1.query",
+        "GET  /catalog.v1.localized/{id}/{locale}",
+        "POST /catalog.v1.resolve"
+      ],
+      "commands": [
+        "catalog.resolve",
+        "catalog.localize",
+        "catalog.feature",
+        "catalog.delist"
+      ],
+      "queries": [
+        "catalog.search",
+        "catalog.byCategory",
+        "catalog.byContext",
+        "catalog.timeline"
+      ],
+      "events": [
+        "CatalogResolved",
+        "CatalogLocalized",
+        "CatalogDelisted",
+        "CatalogFeatured"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Resolved\n    Resolved --> Listed\n    Listed --> Featured\n    Listed --> Delisted\n    Delisted --> [*]\n```",
+      "workflow": [
+        "resolve existence + semantic concept → classify per context → localize per locale → list under context policy"
+      ],
+      "authorities": [
+        "Catalog Authority (listing), Locale Authority (localization validity)."
+      ],
+      "permissions": [
+        "catalog.list (catalog authority)",
+        "catalog.localize (locale authority)",
+        "catalog.read (context-scoped)"
+      ],
+      "privacy": "Catalog entries with personal attribution (e.g., artisan provenance) require consent scope.",
+      "audit": "Every listing and localization records authority, context, and semantic version.",
+      "twin": "Catalog Twin tracks real-world availability and lifecycle state across all contexts.",
+      "agent": "Catalog Agent auto-completes semantics, detects duplicates across locales, and proposes classifications.",
+      "runtime": "Resolution is locale-aware with semantic disambiguation; catalog reads are the hottest path and heavily cached.",
+      "scaling": "Globally replicated read layer; write path is authority-gated and low-throughput.",
+      "multiTenant": "Catalogs are tenant-scoped; a shared marketplace aggregates with explicit published relationship.",
+      "geo": "Localization and compliance projection are per-region; the same existence projects differently per jurisdiction.",
+      "failure": "Semantic ambiguity across locales, category orphaning, context policy conflict, stale localization.",
+      "recovery": "Entries re-project from primitives; localization history is versioned and reversible.",
+      "certification": "Entry must pass semantic uniqueness, classification validity, and localization completeness.",
+      "migration": "New locales/industries are registry additions — zero downtime, zero schema change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant GC as Catalog\n    participant SE as Semantic\n    C->>GC: resolve(surface, locale)\n    GC->>SE: disambiguate concept\n    SE-->>GC: concept\n    GC->>GC: classify + localize\n    GC-->>C: localized entry\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Disambiguating\n    Disambiguating --> Classifying\n    Classifying --> Localizing\n    Localizing --> Listed\n```",
+      "blueprint": "Build order for GPS: (1) define registry entries — this domain owns by projection type: product / service / digital / physical / hybrid / future as registry truth, not code; (2) implement the contract surface first (catalog.resolve, catalog.localize, catalog.feature) and validate against GPS boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "PRC": {
+      "concepts": "Pricing is a projection of value under context — never a stored attribute. Price depends on cost knowledge, market context, customer context, competitive relationships, time, and policy. The same existence has infinitely many valid prices across contexts.",
+      "ontology": "Price is a function: f(cost, market, customer, competitor, time, policy) → monetary expression. Currency is a Context property; tax is a Policy projection.",
+      "taxonomy": "By model: Static / Dynamic / Usage / Tiered / Negotiated / Auction / Future model (registry). By dimension: List / Spot / Contract / Promotional.",
+      "dataModel": "```yaml\nPricingProjection:\n  existence: <Identity>\n  baseExpression: <registry expression>\n  modifiers: [<registry modifier>]\n  currencyUnit: <Context-derived>\n  taxProjection: <Policy-derived>\n  context: <Context>\n  temporal: {asOf}\n  confidence: <0..1>\n```",
+      "graphModel": "(:Price)-[:PRICES]->(:Existence); (:Price)-[:MODIFIED_BY]->(:Context|:Policy); (:Price)-[:COMPETES_WITH]->(:Price); (:Price)-[:VALID_IN]->(:Context)",
+      "apis": [
+        "POST /pricing.v1.quote",
+        "GET  /pricing.v1.history/{id}",
+        "POST /pricing.v1.simulate",
+        "GET  /pricing.v1.byContext/{contextId}"
+      ],
+      "commands": [
+        "pricing.quote",
+        "pricing.adjust",
+        "pricing.simulate",
+        "pricing.freeze"
+      ],
+      "queries": [
+        "pricing.history",
+        "pricing.byContext",
+        "pricing.competitors",
+        "pricing.timeline"
+      ],
+      "events": [
+        "PricingQuoted",
+        "PricingAdjusted",
+        "PricingSimulated",
+        "PricingFrozen"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Quoting\n    Quoting --> Quoted\n    Quoted --> Frozen: committed to contract\n    Quoted --> Stale: context changed\n    Stale --> Quoting\n    Frozen --> [*]\n```",
+      "workflow": [
+        "resolve cost knowledge → apply market context → apply customer context → apply policy modifiers → project currency + tax → quote"
+      ],
+      "authorities": [
+        "Pricing Authority (model governance); merchant authority sets base within policy bounds."
+      ],
+      "permissions": [
+        "pricing.quote (any authenticated, context-scoped)",
+        "pricing.adjust (pricing authority)",
+        "pricing.simulate (simulation authority)"
+      ],
+      "privacy": "Customer-specific pricing is personal data; quotes are consent-scoped and retention-limited.",
+      "audit": "Every quote records the full input set — cost, context, policy version — so it is reproducible and explainable.",
+      "twin": "Pricing Twin mirrors real-world price observations (competitor feeds, market data) and flags drift from model output.",
+      "agent": "Pricing Agent continuously re-quotes on context change and runs simulations before applying adjustments.",
+      "runtime": "Quoting is a deterministic function evaluation cached by input hash; staleness invalidates on context/policy change.",
+      "scaling": "Quote caching is the critical path; evaluation is sub-millisecond with precompiled modifier chains.",
+      "multiTenant": "Pricing models are tenant-scoped; a shared marketplace sees only published prices, not competitor internals.",
+      "geo": "Currency, tax, and duty projection are jurisdiction-derived at quote time — never hardcoded per market.",
+      "failure": "Circular modifier dependencies, policy conflict, stale market feed, currency conversion failure.",
+      "recovery": "Quotes recompute from inputs; frozen prices are immutable contract artifacts.",
+      "certification": "Pricing model must pass determinism, policy conformance, and currency/tax projection validity.",
+      "migration": "New pricing models and modifiers are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant PR as Pricing\n    participant PL as Policy\n    C->>PR: quote(existence, context)\n    PR->>PL: resolve pricing policy\n    PL-->>PR: modifiers\n    PR->>PR: evaluate model\n    PR-->>C: quote\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Costing\n    Costing --> Contextualizing\n    Contextualizing --> Modifying\n    Modifying --> Quoting\n```",
+      "blueprint": "Build order for PRC: (1) define registry entries — this domain owns by model: static / dynamic / usage / tiered / negotiated / auction / future model (registry) as registry truth, not code; (2) implement the contract surface first (pricing.quote, pricing.adjust, pricing.simulate) and validate against PRC boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "OFR": {
+      "concepts": "An Offer is a time-bounded, context-bound commercial projection bundling existence, pricing, and terms under policy. Offers are ephemeral by nature — they are not things, they are proposals.",
+      "ontology": "Offer has a subject existence, a pricing projection, terms (policy-derived), a temporal window, and a context. Bundles are offers over multiple existences with relationship rules.",
+      "taxonomy": "By structure: Single / Bundle / Configurable / Tiered. By temporality: Flash / Standing / Seasonal / Evergreen. By targeting: Universal / Segment / Individual (consent-gated).",
+      "dataModel": "```yaml\nOfferProjection:\n  offerId: <Identity>\n  subjects: [<Identity>]\n  pricingProjection: <PricingProjection>\n  terms: [<Policy>]\n  context: <Context>\n  temporal: {startsAt, endsAt}\n  eligibility: <registry expression>\n  status: <Draft|Active|Expired|Redeemed>\n```",
+      "graphModel": "(:Offer)-[:OFFERS]->(:Existence); (:Offer)-[:PRICED_BY]->(:Price); (:Offer)-[:GOVERNED_BY]->(:Policy); (:Offer)-[:VALID_IN]->(:Context)",
+      "apis": [
+        "POST /offer.v1.create",
+        "GET  /offer.v1/{id}",
+        "POST /offer.v1.eligible",
+        "POST /offer.v1.redeem"
+      ],
+      "commands": [
+        "offer.create",
+        "offer.activate",
+        "offer.expire",
+        "offer.redeem",
+        "offer.extend"
+      ],
+      "queries": [
+        "offer.byId",
+        "offer.eligible",
+        "offer.byContext",
+        "offer.expiring"
+      ],
+      "events": [
+        "OfferCreated",
+        "OfferActivated",
+        "OfferRedeemed",
+        "OfferExpired",
+        "OfferExtended"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Draft\n    Draft --> Active: startsAt reached\n    Active --> Redeemed\n    Active --> Expired: endsAt reached\n    Active --> Extended\n    Redeemed --> [*]\n    Expired --> [*]\n```",
+      "workflow": [
+        "compose subjects + pricing → attach terms → set eligibility → activate → redeem under policy → expire"
+      ],
+      "authorities": [
+        "Merchant Authority (creation), Pricing Authority (price validity), Policy Authority (terms)."
+      ],
+      "permissions": [
+        "offer.create (merchant authority)",
+        "offer.redeem (subject of offer, policy-checked)",
+        "offer.read (context-scoped)"
+      ],
+      "privacy": "Individual-targeted offers require consent; segment targeting is aggregated only.",
+      "audit": "Every redemption records offer version, pricing inputs, and policy evaluation — the basis of revenue audit.",
+      "twin": "Offer Twin tracks real-world redemption patterns and predicts uptake for simulation.",
+      "agent": "Offer Agent proposes and tunes offers from observed demand, under pricing and policy governance.",
+      "runtime": "Eligibility is a policy evaluation cached per (offer, subject-segment); redemption is idempotent.",
+      "scaling": "Read-heavy during active windows; redemption is transactional and sharded by offer.",
+      "multiTenant": "Offers are tenant-scoped; cross-tenant offers require marketplace relationship and both merchants' authority.",
+      "geo": "Offer validity is jurisdiction-projected — terms legal in one region may not be offered in another.",
+      "failure": "Temporal inversion, eligibility policy conflict, over-redemption, pricing drift mid-offer.",
+      "recovery": "Redemptions are immutable events; expired offers are historical artifacts, never deleted.",
+      "certification": "Offer must pass temporal validity, policy conformance, pricing version pinning, and eligibility determinism.",
+      "migration": "New offer structures are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant M as Merchant\n    participant OF as Offer Domain\n    participant PL as Policy\n    M->>OF: create(subjects, terms)\n    OF->>PL: validate terms\n    PL-->>OF: compliant\n    OF->>OF: activate at startsAt\n    OF-->>M: OfferActivated\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Composing\n    Composing --> Validating\n    Validating --> Active\n    Active --> Redeemed\n```",
+      "blueprint": "Build order for OFR: (1) define registry entries — this domain owns by structure: single / bundle / configurable / tiered as registry truth, not code; (2) implement the contract surface first (offer.create, offer.activate, offer.expire) and validate against OFR boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "SUB": {
+      "concepts": "A Subscription is a temporal, policy-governed recurring relationship — not a stored object. It is the projection of an ongoing commercial relationship with entitlement, obligation, and lifecycle.",
+      "ontology": "Subscription has a subject, a subscriber, an entitlement (policy projection), a billing schedule (projection), and a lifecycle state machine. It is a specialized Relationship type projected commercially.",
+      "taxonomy": "By cadence: Fixed-period / Usage-based / Milestone / Event-driven. By commitment: Evergreen / Term / Auto-renew / Trial. By entitlement: Tiered / Per-seat / Volume / Custom.",
+      "dataModel": "```yaml\nSubscriptionProjection:\n  subscriptionId: <Identity>\n  relationship: <Relationship>   # the underlying truth\n  entitlements: [<Policy>]\n  cadence: <registry expression>\n  temporal: {startedAt, currentPeriod, renewAt}\n  lifecycleState: <registry state>\n  context: <Context>\n```",
+      "graphModel": "(:Subscription)-[:PROJECTS]->(:Relationship); (:Subscription)-[:ENTITLED_BY]->(:Policy); (:Subscription)-[:BILLED_BY]->(:BillingProjection); (:Subscription)-[:HELD_BY]->(:Identity)",
+      "apis": [
+        "POST /subscription.v1.create",
+        "GET  /subscription.v1/{id}",
+        "POST /subscription.v1/{id}/renew",
+        "POST /subscription.v1/{id}/cancel",
+        "GET  /subscription.v1.entitlements/{id}"
+      ],
+      "commands": [
+        "subscription.create",
+        "subscription.renew",
+        "subscription.cancel",
+        "subscription.upgrade",
+        "subscription.downgrade",
+        "subscription.suspend"
+      ],
+      "queries": [
+        "subscription.byId",
+        "subscription.byHolder",
+        "subscription.entitlements",
+        "subscription.expiring"
+      ],
+      "events": [
+        "SubscriptionCreated",
+        "SubscriptionRenewed",
+        "SubscriptionCancelled",
+        "SubscriptionUpgraded",
+        "SubscriptionSuspended",
+        "EntitlementChanged"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Trial\n    Trial --> Active: converted\n    Trial --> Expired\n    Active --> Suspended: payment failure\n    Suspended --> Active: recovered\n    Active --> Upgraded\n    Active --> Cancelled\n    Cancelled --> ExpiredAtTerm\n    ExpiredAtTerm --> [*]\n```",
+      "workflow": [
+        "create relationship → attach entitlement policy → schedule cadence → bill → renew/cancel per policy → expire"
+      ],
+      "authorities": [
+        "Merchant Authority (terms), Holder Authority (cancel/modify), Billing Authority (schedule)."
+      ],
+      "permissions": [
+        "subscription.create (merchant authority)",
+        "subscription.cancel (holder authority)",
+        "subscription.read (holder or merchant)"
+      ],
+      "privacy": "Subscription history is personal data; retention follows consent and legal basis (contract performance).",
+      "audit": "Every lifecycle transition records the triggering event, policy applied, and authority — full reconstructable history.",
+      "twin": "Subscription Twin mirrors real-world service delivery state against entitlement — detecting over- or under-delivery.",
+      "agent": "Subscription Agent monitors renewal risk, payment failures, and usage-vs-entitlement gaps, acting within policy.",
+      "runtime": "Lifecycle is an event-driven state machine; cadence is a scheduler projection, not a polling loop.",
+      "scaling": "Renewal waves are smoothed across periods; billing is sharded by holder.",
+      "multiTenant": "Subscriptions never cross tenants; marketplace subscriptions involve both tenants' authority.",
+      "geo": "Cancellation and renewal terms are jurisdiction-projected — consumer protection policy applies locally.",
+      "failure": "Entitlement drift, cadence slip, orphaned billing, policy conflict on upgrade.",
+      "recovery": "State machine is event-sourced; recovery replays transitions. Suspended state auto-recovers per policy.",
+      "certification": "Subscription must pass entitlement-policy conformance, cadence validity, and lifecycle determinism.",
+      "migration": "New cadences and entitlement models are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant H as Holder\n    participant SU as Subscription Domain\n    participant BL as Billing\n    H->>SU: create(subject)\n    SU->>BL: schedule cadence\n    BL-->>SU: scheduled\n    SU->>SU: activate\n    SU-->>H: SubscriptionCreated\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Entitled\n    Entitled --> Scheduled\n    Scheduled --> Active\n    Active --> Renewed\n```",
+      "blueprint": "Build order for SUB: (1) define registry entries — this domain owns by cadence: fixed-period / usage-based / milestone / event-driven as registry truth, not code; (2) implement the contract surface first (subscription.create, subscription.renew, subscription.cancel) and validate against SUB boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "CNT": {
+      "concepts": "A Contract is a projection — an agreement whose truth lives in relationships, policies, authorities, evidence, and signatures. The platform never stores 'a contract' as a business object; it stores the primitives that make one enforceable and projects the contract at runtime.",
+      "ontology": "Contract = Parties (relationships) + Terms (policies) + Signatures (evidence) + Obligations (rules) + Jurisdiction (context). Its enforceability is computed, not assumed.",
+      "taxonomy": "By formation: Signed / Implicit / Programmatic / Smart. By duration: One-time / Term / Evergreen. By enforceability: Executed / Executory / Void / Voidable.",
+      "dataModel": "```yaml\nContractProjection:\n  contractId: <Identity>\n  parties: [<Relationship>]\n  terms: [<Policy>]\n  obligations: [<Rule>]\n  signatures: [<Evidence>]\n  jurisdiction: <Context>\n  temporal: {executedAt, effectiveFrom, terminatesAt}\n  enforceability: <Trust>\n```",
+      "graphModel": "(:Contract)-[:BINDS]->(:Relationship); (:Contract)-[:TERMED_BY]->(:Policy); (:Contract)-[:SIGNED_BY]->(:Evidence); (:Contract)-[:GOVERNED_IN]->(:Context)",
+      "apis": [
+        "POST /contract.v1.form",
+        "GET  /contract.v1/{id}",
+        "POST /contract.v1/{id}/amend",
+        "POST /contract.v1/{id}/execute",
+        "GET  /contract.v1.enforceability/{id}"
+      ],
+      "commands": [
+        "contract.form",
+        "contract.amend",
+        "contract.execute",
+        "contract.terminate",
+        "contract.dispute"
+      ],
+      "queries": [
+        "contract.byId",
+        "contract.byParty",
+        "contract.enforceability",
+        "contract.obligations",
+        "contract.timeline"
+      ],
+      "events": [
+        "ContractFormed",
+        "ContractAmended",
+        "ContractExecuted",
+        "ContractTerminated",
+        "ContractDisputed",
+        "ObligationTriggered"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Drafted\n    Drafted --> Signed\n    Signed --> Executed\n    Executed --> Performed\n    Executed --> Breached\n    Executed --> Disputed\n    Disputed --> Terminated\n    Performed --> [*]\n    Terminated --> [*]\n```",
+      "workflow": [
+        "form terms → bind parties → collect signature evidence → compute enforceability → execute → trigger obligations → perform/terminate"
+      ],
+      "authorities": [
+        "Each party's authority signs; jurisdiction authority governs enforceability computation."
+      ],
+      "permissions": [
+        "contract.form (party authorities)",
+        "contract.execute (all party authorities)",
+        "contract.read (party or jurisdiction authority)"
+      ],
+      "privacy": "Contract contents are access-restricted to parties and jurisdiction authorities; metadata is auditable.",
+      "audit": "Every amendment, obligation trigger, and dispute is preserved with evidence. The contract's full lifecycle is reconstructable.",
+      "twin": "Contract Twin tracks real-world performance against obligations — delivering, delaying, breaching.",
+      "agent": "Contract Agent monitors obligation triggers, detects breach risk, and escalates disputes under governance.",
+      "runtime": "Obligation evaluation is rule-driven and event-triggered; enforceability is a trust computation over signatures.",
+      "scaling": "Contracts are low-write, high-audit; sharded by jurisdiction for sovereignty.",
+      "multiTenant": "Contracts bind tenants via relationships; cross-tenant contracts require both authorities.",
+      "geo": "Jurisdiction is a first-class field — the same terms project differently across legal systems.",
+      "failure": "Missing signature authority, term conflict, jurisdiction gap, evidence revocation.",
+      "recovery": "Amendments append; nothing is overwritten. Voiding is a recorded outcome with full history retained.",
+      "certification": "Contract must pass signature completeness, term-policy conformance, and jurisdiction validity to be enforceable.",
+      "migration": "New term types and contract kinds are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant A as Party A\n    participant CN as Contract Domain\n    participant B as Party B\n    A->>CN: draft terms\n    CN->>B: request signature\n    B->>CN: sign (evidence)\n    CN->>CN: compute enforceability\n    CN-->>A: ContractExecuted\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Drafting\n    Drafting --> Signing\n    Signing --> Executing\n    Executing --> Performing\n```",
+      "blueprint": "Build order for CNT: (1) define registry entries — this domain owns by formation: signed / implicit / programmatic / smart as registry truth, not code; (2) implement the contract surface first (contract.form, contract.amend, contract.execute) and validate against CNT boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "MKT": {
+      "concepts": "A Marketplace is a Context type — a governed environment where multiple tenants' projections are visible under a shared policy set. It is not a stored object; it is a scope in which commerce projections aggregate.",
+      "ontology": "Marketplace has Participants (tenants with published relationships), Listing policies, Discovery mechanisms, and a governing Context. Participation is governed by relationship, not by code.",
+      "taxonomy": "By model: First-party / Third-party / Hybrid / Consignment. By governance: Open / Curated / Invite-only. By scope: Local / National / Global.",
+      "dataModel": "```yaml\nMarketplaceContext:\n  marketplaceId: <Identity>\n  context: <Context>\n  participants: [<Relationship>]\n  listingPolicy: <Policy>\n  discoveryPolicy: <Policy>\n  governance: <Authority>\n  temporal: {effectiveFrom}\n```",
+      "graphModel": "(:Marketplace)-[:PARTICIPATED_IN]->(:Identity); (:Marketplace)-[:LISTED_UNDER]->(:Policy); (:Marketplace)-[:DISCOVERED_VIA]->(:Policy); (:Marketplace)-[:GOVERNED_BY]->(:Authority)",
+      "apis": [
+        "POST /marketplace.v1.join",
+        "GET  /marketplace.v1/{id}",
+        "POST /marketplace.v1.search",
+        "POST /marketplace.v1.leave"
+      ],
+      "commands": [
+        "marketplace.join",
+        "marketplace.leave",
+        "marketplace.list",
+        "marketplace.delist"
+      ],
+      "queries": [
+        "marketplace.search",
+        "marketplace.participants",
+        "marketplace.listings",
+        "marketplace.timeline"
+      ],
+      "events": [
+        "MarketplaceJoined",
+        "MarketplaceLeft",
+        "MarketplaceListed",
+        "MarketplaceDelisted"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Applicant\n    Applicant --> Participant: approved\n    Participant --> Suspended\n    Suspended --> Participant\n    Participant --> Left\n    Left --> [*]\n```",
+      "workflow": [
+        "apply under listing policy → approve via governance relationship → list projections → govern discovery → exit"
+      ],
+      "authorities": [
+        "Marketplace Authority (governance), Merchant Authority (their own listings)."
+      ],
+      "permissions": [
+        "marketplace.join (merchant authority + listing policy)",
+        "marketplace.list (participant)",
+        "marketplace.read (context-scoped)"
+      ],
+      "privacy": "Participant identity exposure follows the marketplace's published privacy policy and participant consent.",
+      "audit": "Every listing and governance action records authority and policy version.",
+      "twin": "Marketplace Twin aggregates participant twins into fleet-level health and emergence monitoring.",
+      "agent": "Marketplace Agent curates quality, detects policy violations, and proposes discovery optimizations.",
+      "runtime": "Discovery is a context-filtered search over aggregated projections; ranking is policy-driven.",
+      "scaling": "Search is the scaling bottleneck — handled by the Search Architecture with context-aware sharding.",
+      "multiTenant": "Marketplace is inherently multi-tenant — the only place projections aggregate, under explicit policy.",
+      "geo": "A marketplace spanning jurisdictions partitions by jurisdiction policy; illegal cross-listings are projected out.",
+      "failure": "Policy conflict between marketplace and participant, discovery bias, listing spam, governance deadlock.",
+      "recovery": "Participation is relationship-driven; leaving is clean and reversible by re-application.",
+      "certification": "Marketplace must publish its listing and discovery policies and prove their enforcement.",
+      "migration": "New marketplace models are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant M as Merchant\n    participant MK as Marketplace\n    participant PL as Policy\n    M->>MK: apply\n    MK->>PL: evaluate listing policy\n    PL-->>MK: approved\n    MK->>MK: index projections\n    MK-->>M: MarketplaceJoined\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Applying\n    Applying --> Vetting\n    Vetting --> Participating\n    Participating --> Indexed\n```",
+      "blueprint": "Build order for MKT: (1) define registry entries — this domain owns by model: first-party / third-party / hybrid / consignment as registry truth, not code; (2) implement the contract surface first (marketplace.join, marketplace.leave, marketplace.list) and validate against MKT boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "INV": {
+      "concepts": "Inventory is a projection of availability — the relationship between an existence and a location-context, quantified and time-stamped. It is a continuously-observed approximation, never absolute truth.",
+      "ontology": "Inventory has a subject existence, a location Context, a quantity, an observation basis, and uncertainty. Multiple inventory projections may disagree across contexts — the contradiction is preserved, not averaged away.",
+      "taxonomy": "By location: Physical / Digital / Virtual / Transit. By certainty: Observed / Computed / Projected / Unknown. By reservation: Available / Reserved / Committed / Quarantined.",
+      "dataModel": "```yaml\nInventoryProjection:\n  inventoryId: <Identity>\n  subject: <Identity>\n  location: <Context>\n  quantity: <number>\n  unit: <registry id>\n  observationBasis: <Observation|null>\n  uncertainty: <Uncertainty>\n  reservationState: <registry state>\n  temporal: {asOf}\n```",
+      "graphModel": "(:Inventory)-[:LOCATED_IN]->(:Context); (:Inventory)-[:OBSERVED_BY]->(:Observation); (:Inventory)-[:RESERVED_BY]->(:Relationship); (:Inventory)-[:CONTRADICTS]->(:Inventory)",
+      "apis": [
+        "GET  /inventory.v1/{subjectId}/{contextId}",
+        "POST /inventory.v1.observe",
+        "POST /inventory.v1.reserve",
+        "GET  /inventory.v1.timeline/{subjectId}"
+      ],
+      "commands": [
+        "inventory.observe",
+        "inventory.reserve",
+        "inventory.release",
+        "inventory.quarantine",
+        "inventory.reconcile"
+      ],
+      "queries": [
+        "inventory.bySubject",
+        "inventory.byLocation",
+        "inventory.timeline",
+        "inventory.contradictions"
+      ],
+      "events": [
+        "InventoryObserved",
+        "InventoryReserved",
+        "InventoryReleased",
+        "InventoryQuarantined",
+        "InventoryReconciled",
+        "InventoryContradicted"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Observed\n    Observed --> Available\n    Available --> Reserved\n    Reserved --> Committed\n    Reserved --> Released\n    Available --> Quarantined\n    Quarantined --> Available\n    Committed --> [*]\n```",
+      "workflow": [
+        "observe → apply uncertainty → resolve contradictions per policy → expose availability → reserve under policy → commit on fulfillment"
+      ],
+      "authorities": [
+        "Location Authority (observation validity), Merchant Authority (reservation policy)."
+      ],
+      "permissions": [
+        "inventory.observe (authorized source)",
+        "inventory.reserve (merchant authority)",
+        "inventory.read (context-scoped)"
+      ],
+      "privacy": "Inventory over personal holdings is consent-scoped; aggregate availability is public per marketplace policy.",
+      "audit": "Every observation and reservation records source, time, and uncertainty — stock claims are evidence-backed.",
+      "twin": "Inventory Twin mirrors real-world stock continuously and predicts stockout risk for simulation.",
+      "agent": "Inventory Agent detects drift between observed and computed inventory and triggers reconciliation under policy.",
+      "runtime": "Availability is a read-side projection over the observation stream; reservations are transactional and short-lived.",
+      "scaling": "Observation stream is high-throughput; availability is cached per (subject, location) with stream invalidation.",
+      "multiTenant": "Inventories are tenant-scoped; marketplace aggregates only published availability.",
+      "geo": "Location context implies residency — cross-border availability respects export and sovereignty policy.",
+      "failure": "Contradiction deadlock, observation starvation, over-reservation, unit mismatch.",
+      "recovery": "Availability recomputes from the observation stream; reservations expire safely by policy.",
+      "certification": "Inventory claim must carry observation basis and uncertainty — unsourced quantities are non-certifiable.",
+      "migration": "New units and location types are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant S as Source\n    participant IN as Inventory Domain\n    participant OB as Observation\n    S->>IN: observe(quantity, location)\n    IN->>OB: record observation\n    OB-->>IN: acknowledged\n    IN->>IN: reconcile + expose\n    IN-->>S: InventoryObserved\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Observing\n    Observing --> Reconciling\n    Reconciling --> Exposing\n    Exposing --> Reservable\n```",
+      "blueprint": "Build order for INV: (1) define registry entries — this domain owns by location: physical / digital / virtual / transit as registry truth, not code; (2) implement the contract surface first (inventory.observe, inventory.reserve, inventory.release) and validate against INV boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "ORD": {
+      "concepts": "An Order is a projection of intent — a sequence of decisions committing parties to exchanges. Its truth lives in the underlying relationships, policies, decisions, and evidence, not in a stored order object.",
+      "ontology": "Order = Intent + Parties (relationships) + Terms (policy) + Decisions (lifecycle) + Evidence (fulfillment). State transitions are governed decisions, not mutations.",
+      "taxonomy": "By fulfillment: Immediate / Scheduled / Pre-order / Backorder / Digital-instant. By origin: Direct / Marketplace / Subscription / Agent-initiated. By state: Pre-purchase / Committed / In-progress / Complete / Disrupted.",
+      "dataModel": "```yaml\nOrderProjection:\n  orderId: <Identity>\n  intent: <Intent>\n  parties: [<Relationship>]\n  lines: [{existence, quantity, pricingProjection}]\n  decisions: [<Decision>]\n  evidence: [<Evidence>]\n  lifecycleState: <registry state>\n  context: <Context>\n  temporal: {placedAt}\n```",
+      "graphModel": "(:Order)-[:COMPOSED_OF]->(:Line); (:Order)-[:DECIDED_BY]->(:Decision); (:Order)-[:EVIDENCED_BY]->(:Evidence); (:Order)-[:PLACED_IN]->(:Context); (:Order)-[:FULFILLED_BY]->(:FulfillmentProjection)",
+      "apis": [
+        "POST /order.v1.place",
+        "GET  /order.v1/{id}",
+        "POST /order.v1/{id}/transition",
+        "GET  /order.v1.timeline/{id}"
+      ],
+      "commands": [
+        "order.place",
+        "order.transition",
+        "order.cancel",
+        "order.modify",
+        "order.reroute"
+      ],
+      "queries": [
+        "order.byId",
+        "order.byParty",
+        "order.timeline",
+        "order.disrupted"
+      ],
+      "events": [
+        "OrderPlaced",
+        "OrderTransitioned",
+        "OrderCancelled",
+        "OrderModified",
+        "OrderDisrupted",
+        "OrderCompleted"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Cart\n    Cart --> Placed\n    Placed --> Confirmed: payment evidence\n    Confirmed --> InProgress\n    InProgress --> Shipped\n    Shipped --> Delivered\n    Delivered --> Completed\n    Placed --> Cancelled\n    Confirmed --> Disputed\n    Disputed --> Resolved\n    Completed --> [*]\n```",
+      "workflow": [
+        "capture intent → validate under policy → confirm with payment evidence → progress via governed decisions → complete with fulfillment evidence"
+      ],
+      "authorities": [
+        "Buyer Authority (place/cancel), Merchant Authority (fulfill), Platform Authority (dispute resolution)."
+      ],
+      "permissions": [
+        "order.place (buyer authority)",
+        "order.transition (state-owner authority per policy)",
+        "order.read (party or platform authority)"
+      ],
+      "privacy": "Orders are rich personal data — access strictly party-scoped, retention per legal basis and consent.",
+      "audit": "Every transition is a recorded decision with authority, policy, and evidence. The order's full history is an audit artifact.",
+      "twin": "Order Twin mirrors real-world fulfillment and flags disruption between committed and observed state.",
+      "agent": "Order Agent monitors progression, predicts disruption, and initiates recovery actions within policy.",
+      "runtime": "Lifecycle is an event-sourced state machine; transitions are policy-guarded and idempotent.",
+      "scaling": "Placed orders are transactional and sharded by buyer; reads are served from the event projection.",
+      "multiTenant": "Orders bind tenants via relationships; marketplace orders carry both authorities.",
+      "geo": "Order terms project per jurisdiction — tax, duty, and consumer rights applied locally.",
+      "failure": "Evidence gap at confirmation, transition policy conflict, split-brain on reroute, dispute deadlock.",
+      "recovery": "Event sourcing replays to any state; cancellations are compensating events, not deletes.",
+      "certification": "Every transition must be policy-authorized and evidence-backed — silent mutations void certification.",
+      "migration": "New lifecycle states are registry additions; existing orders keep their state-machine version.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant B as Buyer\n    participant OR as Order Domain\n    participant EV as Evidence\n    B->>OR: place(intent, lines)\n    OR->>OR: validate under policy\n    OR->>EV: bind payment evidence\n    EV-->>OR: confirmed\n    OR-->>B: OrderPlaced\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Intending\n    Intending --> Validating\n    Validating --> Evidencing\n    Evidencing --> Committed\n```",
+      "blueprint": "Build order for ORD: (1) define registry entries — this domain owns by fulfillment: immediate / scheduled / pre-order / backorder / digital-instant as registry truth, not code; (2) implement the contract surface first (order.place, order.transition, order.cancel) and validate against ORD boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "FUL": {
+      "concepts": "Fulfillment is the projection of commitment becoming reality — moving an order's promise to an observed outcome. It is the bridge between commercial projection and physical/digital reality, driven by evidence at every step.",
+      "ontology": "Fulfillment has an Order projection, a plan (workflow projection), checkpoints (decisions + evidence), and an outcome. Disruption is a first-class state, not an error.",
+      "taxonomy": "By mode: Ship / Pickup / Digital-delivery / Service-render / Return / Exchange. By stage: Planned / In-motion / Delivered / Verified / Disrupted / Recovered. By control: First-party / Third-party / Dropship / Hybrid.",
+      "dataModel": "```yaml\nFulfillmentProjection:\n  fulfillmentId: <Identity>\n  orderRef: <OrderProjection>\n  plan: <workflow projection>\n  checkpoints: [{decision, evidence, temporal}]\n  outcome: <registry state>\n  context: <Context>\n  disruption: <Contradiction|null>\n```",
+      "graphModel": "(:Fulfillment)-[:FULFILLS]->(:Order); (:Fulfillment)-[:CHECKPOINT]->(:Decision); (:Fulfillment)-[:EVIDENCED_BY]->(:Evidence); (:Fulfillment)-[:DISRUPTED_BY]->(:Contradiction)",
+      "apis": [
+        "POST /fulfillment.v1.plan",
+        "GET  /fulfillment.v1/{id}",
+        "POST /fulfillment.v1/{id}/checkpoint",
+        "POST /fulfillment.v1/{id}/recover"
+      ],
+      "commands": [
+        "fulfillment.plan",
+        "fulfillment.checkpoint",
+        "fulfillment.disrupt",
+        "fulfillment.recover",
+        "fulfillment.complete"
+      ],
+      "queries": [
+        "fulfillment.byId",
+        "fulfillment.byOrder",
+        "fulfillment.disrupted",
+        "fulfillment.timeline"
+      ],
+      "events": [
+        "FulfillmentPlanned",
+        "CheckpointRecorded",
+        "FulfillmentDisrupted",
+        "FulfillmentRecovered",
+        "FulfillmentCompleted"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Planned\n    Planned --> InMotion\n    InMotion --> Checkpointed\n    Checkpointed --> InMotion\n    Checkpointed --> Delivered\n    Delivered --> Verified: evidence matches\n    Delivered --> Disrupted: evidence contradicts\n    Disrupted --> Recovered\n    Verified --> Completed\n    Completed --> [*]\n```",
+      "workflow": [
+        "plan workflow under policy → execute → record checkpoint decisions + evidence → verify delivery against promise → complete or disrupt+recover"
+      ],
+      "authorities": [
+        "Fulfiller Authority (execution), Merchant Authority (plan), Buyer Authority (acceptance evidence)."
+      ],
+      "permissions": [
+        "fulfillment.plan (merchant authority)",
+        "fulfillment.checkpoint (fulfiller authority)",
+        "fulfillment.read (party or platform)"
+      ],
+      "privacy": "Fulfillment data is personal; tracking exposure follows consent and minimization — location granularity policy-governed.",
+      "audit": "Every checkpoint records what happened, why, who authorized, which policy allowed, and what evidence supports it.",
+      "twin": "Fulfillment Twin tracks the real-world movement and is the primary source of disruption detection.",
+      "agent": "Fulfillment Agent detects disruption early, proposes recovery (reroute, expedite, substitute), and acts within policy bounds.",
+      "runtime": "Checkpoint ingestion is a high-throughput stream; state is an event-sourced machine with idempotent checkpoints.",
+      "scaling": "Sharded by fulfiller; tracking reads are cached with stream invalidation.",
+      "multiTenant": "Third-party fulfillment is a governed relationship — data shared only within policy scope.",
+      "geo": "Cross-border fulfillment respects export controls, customs, and sovereignty policy at planning time.",
+      "failure": "Evidence contradiction, checkpoint starvation, plan policy conflict, recovery loop.",
+      "recovery": "Disruption is a state with a governed recovery workflow — not an exception path. Every recovery is audited.",
+      "certification": "Delivery claims require matching evidence; unverifiable deliveries are Disrupted, not Completed.",
+      "migration": "New fulfillment modes are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant F as Fulfiller\n    participant FU as Fulfillment Domain\n    participant TW as Twin\n    F->>FU: checkpoint(evidence)\n    FU->>TW: compare to twin state\n    TW-->>FU: match/contradiction\n    alt match\n        FU-->>F: CheckpointRecorded\n    else contradiction\n        FU-->>F: FulfillmentDisrupted\n    end\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Planning\n    Planning --> Executing\n    Executing --> Evidencing\n    Evidencing --> Verifying\n    Verifying --> Completed\n```",
+      "blueprint": "Build order for FUL: (1) define registry entries — this domain owns by mode: ship / pickup / digital-delivery / service-render / return / exchange as registry truth, not code; (2) implement the contract surface first (fulfillment.plan, fulfillment.checkpoint, fulfillment.disrupt) and validate against FUL boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    }
+  }
+}

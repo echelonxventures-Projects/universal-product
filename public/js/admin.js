@@ -1404,18 +1404,23 @@ function wireTrash() {
   if ($("#purgeNow")) $("#purgeNow").onclick = async () => { if (!confirm("Purge tombstoned rows past their retention? This is permanent.")) return; try { const r = await api("/admin/trash/purge", "POST", {}); toast("Purged " + Object.values(r.purged || {}).reduce((a, b) => a + b, 0)); render(); } catch (e) { toast(e.message); } };
 }
 /* ---------- Team & Roles (RBAC) ---------- */
+/* this store's OWN role set — roles are per-store data. A store that has never edited its
+   set inherits the platform default (ownSet false); the first edit forks it, and a fork can
+   be dissolved back to the default. Defining a role is a team:write trust. */
 async function vTeam() {
   const [r, s] = await Promise.all([api("/admin/roles"), api("/admin/staff")]);
   const roles = r.roles || [], secs = r.sections || [];
-  const isOwner = !A.allowed || A.allowed.includes("*") || (A.allowed.includes("team") && A.allowed.length > 5);
+  const canEdit = (A.allowed || []).includes("*") || (A.allowed || []).includes("team");
   const row = u => `<tr><td><b>${esc(u.name)}</b><br><span class="p-tag">${esc(u.email)}</span></td>
     <td><select data-srole="${u.id}" ${String(u.id) === String(r.me.user.id) ? "disabled" : ""}>${roles.map(rl => `<option ${u.staff_role === rl.key ? "selected" : ""}>${esc(rl.key)}</option>`).join("")}</select></td>
     <td><span class="badge ${u.disabled ? "failed" : "published"}">${u.disabled ? "disabled" : "active"}</span></td>
     <td class="p-tag">${esc((u.last_login || "").slice(0, 16) || "never")}</td>
     <td style="text-align:right;white-space:nowrap"><button class="p-btn sm" data-sperm="${u.id}" title="Per-user overrides">Perms</button> ${String(u.id) !== String(r.me.user.id) ? `<button class="p-btn sm danger" data-sdel="${u.id}">Remove</button>` : ""}</td></tr>`;
   return `<div class="p-panel"><h2>👥 Team &amp; Roles</h2>
-    <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Staff share the store-console admin login but see and can only edit the sections their <b>role</b> grants. Roles are editable data; per-user permission overrides take precedence.</p>
-    <h3>Role definitions (data)</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Role</th><th>Grants (section: access)</th></tr></thead><tbody>${roles.map(rl => `<tr><td><b>${esc(rl.name)}</b><br><code>${esc(rl.key)}</code></td><td class="p-tag">${Object.entries(rl.sections || {}).map(([k, v]) => `${esc(k)}=${esc(v)}`).join(" · ")}</td></tr>`).join("")}</tbody></table></div>
+    <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Staff share the store-console admin login but see and can only edit the sections their <b>role</b> grants. This store's roles are its own data${r.ownSet ? "" : " — it currently inherits the platform default, and the first edit forks it"}; per-user permission overrides take precedence.</p>
+    <h3>Role definitions (this store) ${r.ownSet ? '<span class="badge">forked from the platform default</span>' : '<span class="badge">platform default</span>'}</h3>
+    <div style="display:flex;gap:8px;margin-bottom:8px">${canEdit ? `<button class="p-btn primary sm" id="roleNew">+ New role</button>` : ""}${r.ownSet && canEdit ? `<button class="p-btn sm" id="roleReset">Reset to platform default</button>` : ""}</div>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Role</th><th>Grants (section: access)</th>${canEdit ? "<th></th>" : ""}</tr></thead><tbody>${roles.map(rl => `<tr><td><b>${esc(rl.name)}</b><br><code>${esc(rl.key)}</code></td><td class="p-tag">${Object.entries(rl.sections || {}).map(([k, v]) => `${esc(k)}=${esc(v)}`).join(" · ")}</td>${canEdit ? `<td style="text-align:right">${rl.key !== "owner" ? `<button class="p-btn sm" data-roleedit="${esc(rl.key)}">Edit</button>` : ""}</td>` : ""}</tr>`).join("")}</tbody></table></div>
     <h3>Members</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Member</th><th>Role</th><th>Status</th><th>Last login</th><th></th></tr></thead><tbody>${(s.staff || []).map(row).join("")}</tbody></table></div>
     <div class="p-panel" style="margin-top:10px"><b>Add staff member</b><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin-top:6px">
       <label><span>Name</span><input id="stName"></label><label><span>Email</span><input id="stEmail"></label>
@@ -1423,12 +1428,47 @@ async function vTeam() {
       <label><span>Password</span><input id="stPw" type="text" placeholder="blank = generate"></label>
       <button class="p-btn primary sm" id="stAdd">Add member</button><span id="stGen" class="p-tag"></span></div></div></div>`;
 }
+/* the per-section grant editor: one control per console section, each read/write/off.
+   It renders for create and edit from the same shape, so the two cannot drift. */
+function roleModal(role, sections) {
+  const r = role || { key: "", name: "", desc: "", sections: {} };
+  const m = modal(`<div class="p-modal-head"><h3>${role ? "Edit role" : "New role"}</h3><button data-mclose>✕</button></div>
+    <div class="p-form">
+      <label><span>Name</span><input id="rmName" value="${esc(r.name)}" ${role ? "" : 'placeholder="e.g. Order Desk"'}></label>
+      <label><span>Key (lowercase, no spaces)</span><input id="rmKey" value="${esc(r.key)}" ${role ? "disabled" : ""} placeholder="order_desk"></label>
+      <label><span>Description</span><input id="rmDesc" value="${esc(r.desc || "")}"></label>
+      <div class="p-tag">Grants — each section: write, read or off</div>
+      <div style="max-height:260px;overflow:auto;border:1px solid var(--p-border);border-radius:8px;padding:8px">
+      ${sections.map(sec => `<label style="display:flex;justify-content:space-between;align-items:center;padding:3px 0"><span>${esc(sec)}</span>
+        <select data-rmsec="${esc(sec)}"><option value="">off</option><option ${r.sections && r.sections[sec] === "read" ? "selected" : ""} value="read">read</option><option ${r.sections && r.sections[sec] === "write" ? "selected" : ""} value="write">write</option></select></label>`).join("")}
+      </div>
+      <div class="p-err hidden" id="rmErr" style="color:var(--p-red);font-size:13px"></div>
+      <button class="p-btn primary" id="rmSave">${role ? "Save role" : "Create role"}</button>
+    </div>`);
+  m.querySelector("#rmSave").onclick = async () => {
+    const sections2 = {};
+    m.querySelectorAll("[data-rmsec]").forEach(sel => { if (sel.value) sections2[sel.dataset.rmsec] = sel.value; });
+    const body = { name: m.querySelector("#rmName").value.trim(), key: m.querySelector("#rmKey").value.trim().toLowerCase(), desc: m.querySelector("#rmDesc").value, sections: sections2 };
+    try { await api("/admin/roles", "POST", body); document.getElementById("modal").innerHTML = ""; toast("Role saved"); render(); }
+    catch (e) { const err = m.querySelector("#rmErr"); err.textContent = e.message; err.classList.remove("hidden"); }
+  };
+}
 function wireTeam() {
   const $$ = s => Array.from(document.querySelectorAll(s));
   $$("[data-srole]").forEach(sel => sel.onchange = async () => { try { await api("/admin/staff/" + sel.dataset.srole, "PUT", { staff_role: sel.value }); toast("Role updated"); } catch (e) { toast(e.message); } });
   $$("[data-sdel]").forEach(b => b.onclick = async () => { if (!confirm("Disable this member?")) return; try { await api("/admin/staff/" + b.dataset.sdel, "DELETE"); render(); } catch (e) { toast(e.message); } });
   $$("[data-sperm]").forEach(b => b.onclick = async () => { const cur = prompt("Per-user overrides as JSON, e.g. {\"products\":\"read\",\"trash\":false}", "{}"); if (cur == null) return; try { await api("/admin/staff/" + b.dataset.sperm, "PUT", { perms: JSON.parse(cur) }); toast("Saved"); } catch (e) { toast(e.message); } });
   if (document.getElementById("stAdd")) document.getElementById("stAdd").onclick = async () => { try { const r = await api("/admin/staff", "POST", { name: document.getElementById("stName").value, email: document.getElementById("stEmail").value, staff_role: document.getElementById("stRole").value, password: document.getElementById("stPw").value || undefined }); if (r.generated) document.getElementById("stGen").textContent = "generated password: " + r.generated; toast("Member added"); render(); } catch (e) { toast(e.message); } };
+  /* per-store role definition: create, edit, and dissolve a fork back to the default */
+  const newBtn = document.getElementById("roleNew");
+  if (newBtn) newBtn.onclick = async () => { const all = await api("/admin/roles"); roleModal(null, all.sections || []); };
+  $$("[data-roleedit]").forEach(b => b.onclick = async () => {
+    const all = await api("/admin/roles");
+    const role = (all.roles || []).find(r => r.key === b.dataset.roleedit);
+    roleModal(role, all.sections || []);
+  });
+  const resetBtn = document.getElementById("roleReset");
+  if (resetBtn) resetBtn.onclick = async () => { if (!confirm("Discard this store's own roles and inherit the platform default again?")) return; try { await api("/admin/roles/reset", "POST", {}); toast("Reverted to the platform default"); render(); } catch (e) { toast(e.message); } };
 }
 /* ---------- SSO & Integrations (SSO/SAML, SCIM, transfers, tax) ---------- */
 async function vSso() {
@@ -1740,7 +1780,7 @@ function renderAffiliate() {
   `;
   const body = $("#vBody");
   if (body) body.innerHTML = html;
-  else $$("#app").innerHTML += html;
+  else { const a = $("#app"); if (a) a.innerHTML += html; }
   const add = $("#affAdd"); if (add) add.onclick = () => createAffiliateModal();
   loadAffiliateStats();
   loadAffiliates();
@@ -1750,7 +1790,9 @@ async function loadAffiliateStats() {
   try {
     const res = await api("/affiliate/reports");
     const s = res.summary || {};
-    $$("#affiliateStats").innerHTML = `
+    /* $() returns the element; $$() returns an ARRAY — writing .innerHTML onto the array
+       was a silent no-op, so the stats fetched here never painted at all */
+    $("#affiliateStats").innerHTML = `
       <div class="stat">
         <div class="stat-num">${s.affiliates || 0}</div>
         <div class="stat-label">Affiliates</div>
@@ -1770,7 +1812,7 @@ async function loadAffiliateStats() {
 async function loadAffiliates() {
   try {
     const res = await api("/affiliate/affiliates");
-    const list = $$("#affiliateList");
+    const list = $("#affiliateList");
     if (!res.affiliates?.length) {
       list.innerHTML = `<p class="a-sub">No affiliates yet. Add one to start tracking referrals.</p>`;
       return;
@@ -1836,7 +1878,7 @@ function renderSitemap() {
   `;
   const body = $("#vBody");
   if (body) body.innerHTML = html;
-  else $$("#app").innerHTML += html;
+  else { const a = $("#app"); if (a) a.innerHTML += html; }
   const g = $("#smGen"); if (g) g.onclick = () => generateSitemap();
   loadSitemapConfig();
 }
@@ -1845,7 +1887,7 @@ async function loadSitemapConfig() {
   try {
     const res = await api("/sitemap/config");
     const c = res.config || {};
-    $$("#sitemapConfig").innerHTML = `
+    $("#sitemapConfig").innerHTML = `
       <div class="p-form">
         <label><span>Hostname</span><input type="text" id="sitemapHost" value="${esc(c.hostname || "https://example.com")}" style="width:300px"></label>
         <label><span>Max entries per file</span>
@@ -1857,7 +1899,7 @@ async function loadSitemapConfig() {
         <button class="p-btn" onclick="saveSitemapConfig()">Save</button>
       </div>
     `;
-    $$("#sitemapLast").innerHTML = `<p>Sitemap generated: <code>${esc(c.last_generated || "Never")}</code></p>`;
+    $("#sitemapLast").innerHTML = `<p>Sitemap generated: <code>${esc(c.last_generated || "Never")}</code></p>`;
   } catch (e) { console.error(e); }
 }
 
@@ -1903,7 +1945,7 @@ function renderShipping() {
   `;
   const body = $("#vBody");
   if (body) body.innerHTML = html;
-  else $$("#app").innerHTML += html;
+  else { const a = $("#app"); if (a) a.innerHTML += html; }
   const tr = $("#shTrack"); if (tr) tr.onclick = () => trackShipment();
   loadShippingProviders();
 }
@@ -1911,7 +1953,7 @@ function renderShipping() {
 async function loadShippingProviders() {
   try {
     const res = await api("/shipping/providers");
-    const list = $$("#shippingProviders");
+    const list = $("#shippingProviders");
     if (!res.providers?.length) {
       list.innerHTML = `<p class="a-sub">Configure carrier API credentials in platform settings.</p>`;
       return;
@@ -1937,7 +1979,7 @@ async function trackShipment() {
   try {
     const res = await api("/shipping/track/" + encodeURIComponent(number));
     if (res.tracking) {
-      $$("#trackResult").innerHTML = `
+      $("#trackResult").innerHTML = `
         <div class="a-table">
           <p><strong>Status:</strong> ${esc(res.tracking.status)}</p>
           <p><strong>Estimated Delivery:</strong> ${esc(res.tracking.estimated_delivery || "Unknown")}</p>
@@ -1967,16 +2009,19 @@ function renderHelpdesk() {
       <div id="chatStatus"></div>
     </div>
   `;
-  $$(".a-card").forEach(c => c.remove());
-  $$("#app").innerHTML += html;
+  /* a view renders INTO #vBody like every other view — the old form wiped every .a-card
+     and appended to #app, painting outside the shell and leaving the nav state stale */
+  const body = $("#vBody");
+  if (body) body.innerHTML = html;
+  else { const a = $("#app"); if (a) a.innerHTML += html; }
   loadHelpdeskTickets();
   loadChatStatus();
 }
 
 async function loadHelpdeskTickets() {
   try {
-    const res = await api("/helpdesk/tickets");
-    const list = $$("#helpdeskTickets");
+    const res = await api("/admin/helpdesk/tickets");
+    const list = $("#helpdeskTickets");
     if (!res.tickets?.length) {
       list.innerHTML = `<p class="a-sub">No tickets yet. Happy customers!</p>`;
       return;
@@ -2001,7 +2046,7 @@ async function loadHelpdeskTickets() {
 async function loadChatStatus() {
   try {
     const res = await api("/helpdesk/agents/status");
-    const status = $$("#chatStatus");
+    const status = $("#chatStatus");
     if (!res.agents?.length) {
       status.innerHTML = `<p class="a-sub">No agents configured yet.</p>`;
       return;

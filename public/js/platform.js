@@ -46,41 +46,502 @@ function toast(msg, type = "info") {
 /* Grouped by function (Stores, Constitution, Identity…) so a platform operator
    navigates by domain, not by a 30-item flat list. Keys are unchanged; NAVFLAT
    drives the title lookup. */
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║  UCOS Ω∞ — THE SINGLE CANONICAL NAVIGATION MODEL                     ║
+   ╚════════════════════════════════════════════════════════════════════╝
+   The constitution declares one canonical home for every capability. This tree IS
+   that declaration, rendered as navigation: 12 sections → capability groups → leaves.
+   Order is the constitutional flow — existence first (Foundation), then knowledge,
+   then the business of commerce, then the architecture that governs it all.
+
+   ZERO-GAP RESOLUTION. Every leaf carries a resolver, so navigation can never dead-end:
+     v:<key>    → a dedicated console view
+     e:<entity> → the generic cross-entity dataset reader (any of ~3000 entities)
+     u:<uv>     → a universe registry record (any of 2831 instantiated universes)
+   The menu is not a hand-maintained list that can drift from the platform — a leaf with
+   no dedicated view resolves through the same metadata-driven readers the Data Studio
+   uses, so nothing is orphaned and nothing is duplicated. */
 const NAV = [
-  { g: "Command", items: [["dash", "◈ Command"], ["monitor", "📈 Monitoring"]] },
-  /* One front door for everything about a store and its services: guided authoring
-     (setup), governance (provisioning, tenants) and the service registry (providers,
-     modules, geo, runtime). Create it here, manage it here, watch it here. */
-  { g: "Store & Service Setup", items: [["hub", "🏬 Store & Service Hub"], ["setup", "🧭 Store Wizard"], ["provisioning", "🛡️ Provisioning"], ["tenants", "🏬 Stores · Catalogs"], ["providers", "🔌 Provider Registry"], ["modules", "🧩 Module Marketplace"], ["geo", "🌍 Geo · Countries · Taxes"], ["runtime", "🧩 Runtime · Infra"]] },
-  { g: "Billing", items: [["plans", "💼 Plans"], ["subs", "🔁 Subscriptions"], ["invoices", "🧾 Invoices"], ["billing", "💳 Billing Ops"]] },
-  /* Global Operations: every store capability read across ALL stores. Entity-backed
-     capabilities resolve through the generic /api/platform/data reader; composite ones
-     through the fan-out that runs the store's own handler per store. No capability is
-     re-implemented here and none is missing from the platform. */
-  { g: "Global Operations", items: [["gops", "🧭 Ops Hub"], ["gorders", "🧾 Orders · Fulfilment"], ["gcatalog", "📦 Catalog · SKUs"], ["gb2b", "🤝 Sellers · B2B · Trade"], ["gmarket", "📣 Ads · Marketplace"], ["gfinance", "💸 Finance · Payments"], ["goffers", "🏷️ Offers · Affiliates"], ["gsupport", "🎧 Support · SLA"], ["gcontent", "🖼️ Content · UGC"], ["grisk", "🛡️ Risk · Compliance · Trash"], ["gteam", "👥 Team · Access · Settings"], ["ganalytics", "📊 Analytics · A/B"], ["gdata", "🧬 Data Explorer"]] },
-  { g: "Global Catalog", items: [["gproducts", "🌐 Global Products"]] },
-  { g: "Constitution Ω∞", items: [["ucii", "🌀 UCII Ω∞ Registry"], ["ucos", "♾️ UCOS Ω∞ Constitution"], ["universes", "🧬 Universes"], ["domains", "🔀 Domains"], ["foundations", "🏛️ Foundations"], ["trace", "🧭 Traceability"], ["offers", "Ω∞ GOIP · Value Exchange"]] },
-  { g: "Identity & Theming", items: [["identity", "🔐 Identity"], ["identity-templates", "📋 Identity Templates"], ["themes", "🎨 Themes"]] },
-  { g: "Registry & Runtime", items: [["capabilities", "⚙️ Capabilities"], ["ai", "🧠 AI · Providers & Plans"]] },
-  { g: "Data, Insights & Audit", items: [["studio", "🛠️ Data Studio"], ["definitions", "📐 Entities"], ["dashboards", "📊 Dashboards"], ["audit", "📜 Global Audit"]] },
-  { g: "Reference", items: [["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]] }
+  { n: "01 · Foundation", g: [
+    { g: "Identity", l: [
+      ["identity", "🔐 Identity · Auth", { v: "identity" }],
+      ["identity-templates", "📋 Identity Templates", { v: "identity-templates" }],
+      ["persons", "👥 Persons", { u: "person" }],
+      ["organizations", "🏢 Organizations", { u: "organization" }],
+      ["tenants", "🏬 Tenants", { e: "tenant" }],
+      ["users", "👤 Users", { v: "users" }],
+      ["roles", "🎭 Roles", { v: "roles" }],
+      ["permissions", "🔑 Permissions", { u: "permission" }],
+      ["credentials", "🧷 Credentials", { u: "credential_chain" }],
+      ["authentication", "🔓 Authentication", { u: "authentication" }],
+      ["authorization", "🛂 Authorization", { u: "authorization" }],
+      ["trust", "🤝 Trust", { u: "trust" }],
+      ["verification", "✔️ Verification", { u: "verification_management" }],
+      ["kyc", "📄 KYC", { e: "kyc_profile" }],
+      ["kyb", "🏛️ KYB", { u: "kyb" }],
+      ["identity-graph", "🕸️ Identity Graph", { u: "identity_universe" }],
+    ] },
+    { g: "Geography", l: [
+      ["countries", "🗺️ Countries", { e: "country" }],
+      ["states", "🏞️ States · Regions", { u: "region" }],
+      ["cities", "🏙️ Cities", { u: "city" }],
+      ["jurisdictions", "⚖️ Jurisdictions", { u: "jurisdiction" }],
+      ["addresses", "📍 Addresses", { e: "address" }],
+      ["geo", "🌍 Geo Registry · Taxes", { v: "geo" }],
+      ["geography", "🌐 Geography Universe", { u: "geography" }],
+    ] },
+    { g: "Temporal", l: [
+      ["calendars", "📅 Calendars", { u: "calendars" }],
+      ["schedules", "⏱️ Schedules", { u: "schedules" }],
+      ["recurrence", "🔁 Recurrence", { e: "recurring_cycle" }],
+      ["appointments", "🗓️ Appointments", { u: "appointment" }],
+      ["reservations", "🪑 Reservations", { u: "booking" }],
+      ["time-windows", "🪟 Time Windows", { u: "time_window" }],
+      ["delivery-slots", "🚚 Delivery Slots", { e: "delivery_slot" }],
+      ["availability", "🟢 Availability", { u: "availability" }],
+      ["sla", "🛡️ SLA", { u: "sla" }],
+      ["temporal", "⏳ Temporal Universe", { u: "temporal" }],
+    ] },
+    { g: "Currency", l: [
+      ["currencies", "💰 Currencies", { e: "currency" }],
+      ["fx", "📈 Exchange Rates", { v: "geo" }],
+      ["currency-universe", "🪙 Currency Universe", { u: "currency_universe" }],
+    ] },
+    { g: "Localization", l: [
+      ["languages", "🗣️ Languages", { u: "language" }],
+      ["localization", "🌐 Localization", { e: "localization" }],
+      ["translation", "🔤 Translation Registry", { u: "translation" }],
+      ["cultural", "🌍 Cultural Context", { u: "cultural" }],
+    ] },
+  ] },
+  { n: "02 · Knowledge", g: [
+    { g: "Products", l: [
+      ["gproducts", "🌐 Global Products", { v: "gproducts" }],
+      ["product-families", "👨‍👩‍👧 Product Families", { u: "product_family" }],
+      ["product-types", "📦 Product Types", { u: "product_type" }],
+      ["variants", "🧬 Variants", { u: "product_variants" }],
+      ["attributes", "🧩 Attributes", { e: "attribute" }],
+      ["specifications", "📐 Specifications", { u: "specification" }],
+      ["bundles", "🧺 Bundles · Kits", { u: "bundle_offer" }],
+      ["collections", "📚 Collections", { u: "collection" }],
+      ["product-graph", "🕸️ Product Graph", { u: "product_ontology" }],
+      ["product-registry", "🗄️ Product Registry", { u: "global_product_registry_universe" }],
+    ] },
+    { g: "Services", l: [
+      ["global-services", "🌐 Global Services", { u: "service" }],
+      ["service-types", "🛠️ Service Types", { u: "service_type" }],
+      ["service-plans", "📜 Service Plans", { u: "subscription" }],
+      ["entitlements", "✅ Entitlements", { u: "entitlement" }],
+      ["service-registry", "🗄️ Service Registry", { u: "global_service_registry_universe" }],
+    ] },
+    { g: "Catalog & Taxonomy", l: [
+      ["gcatalog", "📦 Catalog · SKUs", { v: "gcatalog" }],
+      ["taxonomy", "🗂️ Industry · Categories", { v: "taxonomy" }],
+      ["categories", "🏷️ Category Tree", { u: "navigational_category_hierarchy" }],
+      ["taxonomy-universe", "🌳 Taxonomy Universe", { u: "universal_taxonomy_universe" }],
+    ] },
+    { g: "Provenance", l: [
+      ["brands", "🏷️ Brands · Manufacturers", { v: "brands" }],
+      ["suppliers", "🚚 Suppliers", { e: "supplier" }],
+      ["vendors", "🤝 Vendors", { u: "vendor" }],
+      ["manufacturers", "🏭 Manufacturers", { e: "brand" }],
+      ["assets", "🧱 Assets", { u: "asset" }],
+      ["documents", "📄 Documents", { u: "document" }],
+      ["media", "🎬 Media", { u: "media" }],
+      ["content", "📝 Content", { e: "banner" }],
+    ] },
+    { g: "Knowledge Graph", l: [
+      ["knowledge-graph", "🕸️ Knowledge Graph", { u: "knowledge_graph" }],
+      ["ontology", "🧠 Ontology Registry", { u: "ontology" }],
+      ["semantic", "🔗 Semantic Registry", { u: "semantic" }],
+      ["canonical-registry", "🗄️ Canonical Knowledge Registry", { u: "universal_knowledge_graph" }],
+    ] },
+  ] },
+  { n: "03 · Business", g: [
+    { g: "Parties", l: [
+      ["customers", "🧑‍🤝‍🧑 Customers", { e: "customer" }],
+      ["sellers", "🏪 Sellers", { e: "seller" }],
+      ["buyers", "🛍️ Buyers", { u: "buyer" }],
+      ["partners", "🤝 Partners", { u: "partner" }],
+      ["distributors", "🚚 Distributors", { u: "distributor" }],
+      ["dealers", "🏪 Dealers", { u: "dealer" }],
+      ["franchises", " franchises", { u: "franchise" }],
+      ["workforce", "👷 Workforce", { u: "workforce" }],
+    ] },
+    { g: "CRM", l: [
+      ["leads", "🎯 Leads", { u: "lead" }],
+      ["opportunities", "💼 Opportunities", { u: "opportunity" }],
+      ["accounts", "🗂️ Accounts", { u: "crm_account" }],
+      ["contacts", "📇 Contacts", { u: "contact" }],
+      ["activities", "📅 Activities", { u: "activity" }],
+      ["pipelines", "🧩 Pipelines", { u: "pipeline" }],
+    ] },
+    { g: "Agreements", l: [
+      ["contracts", "📜 Contracts", { e: "contract" }],
+      ["agreements", "✍️ Agreements", { u: "agreement" }],
+      ["relationships", " 🔗 Relationships", { u: "relationship" }],
+      ["business-networks", "🌐 Business Networks", { u: "business_network" }],
+      ["business-organizations", "🏢 Organizations", { u: "organization" }],
+    ] },
+  ] },
+  { n: "04 · Commerce", g: [
+    { g: "Merchandising", l: [
+      ["catalogs", "📚 Catalogs", { u: "catalog" }],
+      ["pricing", "💲 Pricing", { u: "pricing" }],
+      ["dynamic-pricing", "📊 Dynamic Pricing", { u: "dynamic_pricing" }],
+      ["price-lists", "📋 Price Lists", { e: "price_list" }],
+      ["promotions", "🎉 Promotions · Coupons", { e: "promotion" }],
+      ["merchandising", "🛍️ Merchandising", { u: "catalog_merchandising" }],
+    ] },
+    { g: "Offers & Incentives", l: [
+      ["goffers", "🏷️ Offers · Affiliates", { v: "goffers" }],
+      ["loyalty", "⭐ Loyalty", { u: "loyalty" }],
+      ["rewards", "🎁 Rewards", { u: "reward" }],
+      ["referrals", "🔗 Referrals", { u: "referral" }],
+      ["goffers-affiliates", "🏷️ Offers · Affiliates", { v: "goffers" }],
+      ["goip", "Ω∞ GOIP · Value Exchange", { v: "offers" }],
+    ] },
+    { g: "Marketplace", l: [
+      ["gmarket", "📣 Ads · Marketplace", { v: "gmarket" }],
+      ["marketplace", "🛒 Marketplace", { u: "marketplace" }],
+      ["advertising", "📢 Advertising", { u: "advertising" }],
+      ["sponsored", "📣 Sponsored Creatives", { e: "sponsored_creative" }],
+    ] },
+    { g: "Trade", l: [
+      ["gb2b", "🤝 Sellers · B2B · Trade", { v: "gb2b" }],
+      ["rfq", "📨 RFQs", { e: "rfq" }],
+      ["tenders", "🏅 Tenders", { e: "tender" }],
+      ["trade-assurance", "🛡️ Trade Assurance", { e: "trade_assurance" }],
+      ["letters-of-credit", "📜 Letters of Credit", { e: "letter_of_credit" }],
+    ] },
+    { g: "Transactions", l: [
+      ["cart", "🛒 Cart", { u: "cart" }],
+      ["checkout", "💳 Checkout", { u: "checkout" }],
+      ["gorders", "🧾 Orders · Fulfilment", { v: "gorders" }],
+      ["returns", "↩️ Returns · Exchanges", { e: "ret" }],
+      ["reviews", "⭐ Reviews · UGC", { e: "review" }],
+    ] },
+    { g: "Recurring", l: [
+      ["subs", "🔁 Subscriptions", { v: "subs" }],
+      ["memberships", "🎟️ Memberships", { e: "membership" }],
+      ["recurring-billing", "♻️ Recurring Billing", { u: "recurring_billing" }],
+    ] },
+    { g: "Billing & Payment", l: [
+      ["plans", "💼 Plans", { v: "plans" }],
+      ["subs-plans", "🔁 Subscriptions", { v: "subs" }],
+      ["invoices", "🧾 Invoices", { v: "invoices" }],
+      ["billing", "💳 Billing Ops", { v: "billing" }],
+      ["gfinance", "💸 Finance · Payments", { v: "gfinance" }],
+      ["payments", "💳 Payments", { e: "payment" }],
+      ["settlements", "🧮 Settlements", { e: "settlement" }],
+      ["escrow", "🔒 Escrow", { e: "escrow_hold" }],
+    ] },
+  ] },
+  { n: "05 · Operations", g: [
+    { g: "Overview", l: [
+      ["gops", "🧭 Ops Hub", { v: "gops" }],
+    ] },
+    { g: "Supply", l: [
+      ["inventory", "📦 Inventory", { e: "inventory" }],
+      ["warehousing", "🏬 Warehousing", { e: "warehouse" }],
+      ["procurement", "🛒 Procurement", { u: "procurement" }],
+      ["stock-transfers", "🔀 Stock Transfers", { e: "stock_transfer" }],
+      ["replenishment", "🔄 Replenishment", { e: "replenishment" }],
+    ] },
+    { g: "Fulfilment", l: [
+      ["fulfilment", "📦 Fulfilment", { e: "smart_fulfilment" }],
+      ["fba", "📦 FBA Inbound", { e: "fba_inbound" }],
+      ["logistics", "🚚 Logistics", { u: "logistics" }],
+      ["transportation", "🚛 Transportation", { u: "transportation" }],
+      ["shipping", "📮 Shipping", { e: "shipment" }],
+      ["tracking", "📍 Tracking", { u: "tracking" }],
+      ["reverse-logistics", "↩️ Reverse Logistics", { u: "returns" }],
+    ] },
+    { g: "Service Delivery", l: [
+      ["field-ops", "🧰 Field Operations", { u: "field_service_visit" }],
+      ["work-orders", "🔧 Work Orders", { u: "work_order" }],
+      ["maintenance", "🛠️ Maintenance", { u: "maintenance" }],
+      ["dark-stores", "🏬 Dark Stores", { e: "dark_store" }],
+      ["dispatch", "⚡ Dispatch Runs", { e: "dispatch_run" }],
+      ["riders", "🛵 Riders", { e: "rider" }],
+    ] },
+    { g: "Support", l: [
+      ["gsupport", "🎧 Support · SLA", { v: "gsupport" }],
+      ["tickets", "🎫 Tickets", { e: "ticket" }],
+      ["cases", "📋 Cases", { u: "support_case" }],
+      ["incidents", "🚨 Incidents", { u: "operational_incident" }],
+      ["qna", "❓ Q&A", { e: "qna_question" }],
+    ] },
+  ] },
+  { n: "06 · Experience", g: [
+    { g: "Surfaces", l: [
+      ["websites", "🌐 Websites", { u: "website" }],
+      ["mobile", "📱 Mobile Apps", { u: "mobile_app" }],
+      ["kiosks", "🛎️ Kiosks · POS", { u: "kiosk" }],
+      ["portals", "🚪 Portals", { u: "portal" }],
+    ] },
+    { g: "Presentation", l: [
+      ["gcontent", "🖼️ Content · UGC", { v: "gcontent" }],
+      ["themes", "🎨 Themes", { v: "themes" }],
+      ["branding", "🖌️ Branding", { u: "brand_skin" }],
+      ["personalization", "🎯 Personalization", { u: "personalization" }],
+      ["accessibility", "♿ Accessibility", { u: "accessibility" }],
+      ["ui-components", "🧩 UI Components", { u: "ui_component" }],
+    ] },
+    { g: "Channels", l: [
+      ["channels", "📡 Channels", { u: "channel_universe" }],
+      ["notifications", "🔔 Notifications", { e: "notification" }],
+      ["email", "✉️ Email", { u: "email" }],
+      ["social", "📱 Social", { u: "social" }],
+    ] },
+    { g: "Journeys", l: [
+      ["ux-journeys", "🧭 UX Journeys", { u: "ux_journey" }],
+      ["customer-journeys", "🛤️ Customer Journeys", { u: "customer_journey" }],
+      ["experience-registry", "🗄️ Experience Registry", { u: "experience_universe" }],
+    ] },
+  ] },
+  { n: "07 · Intelligence", g: [
+    { g: "Models & Agents", l: [
+      ["ai", "🧠 AI · Providers & Plans", { v: "ai" }],
+      ["ai-models", "🤖 AI Models", { u: "ai_model" }],
+      ["agents", "🤖 Agents", { u: "agent" }],
+      ["agent-teams", "👥 Agent Teams", { u: "agent_team" }],
+      ["prompts", "💬 Prompt Registry", { u: "prompt" }],
+    ] },
+    { g: "Engines", l: [
+      ["reasoning", "🧩 Reasoning Engine", { u: "reasoning" }],
+      ["recommendation", "🎯 Recommendation", { u: "recommendation" }],
+      ["search-intel", "🔍 Search", { u: "search" }],
+      ["personalization-intel", "🎯 Personalization Engine", { u: "personalization_engine" }],
+      ["optimization", "⚙️ Optimization", { u: "optimization" }],
+      ["simulation", "🧪 Simulation", { u: "simulation" }],
+      ["forecasting", "📈 Forecasting", { u: "forecasting" }],
+      ["digital-twins", "👯 Digital Twins", { u: "digital_twin" }],
+    ] },
+    { g: "Trust Intelligence", l: [
+      ["fraud", "🕵️ Fraud Detection", { u: "fraud_detection" }],
+      ["risk-intel", "⚠️ Risk Engine", { u: "risk" }],
+      ["knowledge-intel", "🧠 Knowledge Intelligence", { u: "knowledge_intelligence" }],
+    ] },
+    { g: "Autonomy", l: [
+      ["autonomous-planning", "🗓️ Autonomous Planning", { u: "autonomous_planning" }],
+      ["autonomous-execution", " ▶️ Autonomous Execution", { u: "autonomous_execution" }],
+      ["autonomous-verification", "✔️ Autonomous Verification", { u: "autonomous_verification" }],
+      ["learning", "📚 Learning Engine", { u: "learning" }],
+      ["evolution", "🧬 Evolution Engine", { u: "evolution" }],
+    ] },
+    { g: "Analytics", l: [
+      ["ganalytics", "📊 Analytics · A/B", { v: "ganalytics" }],
+      ["experiments", "🧪 Experiments", { e: "experiment" }],
+      ["intelligence-registry", "🗄️ Intelligence Registry", { u: "intelligence_registry" }],
+    ] },
+  ] },
+  { n: "08 · Governance", g: [
+    { g: "Policy", l: [
+      ["policies", "🔒 Policies", { v: "policies" }],
+      ["standards", "📏 Standards", { u: "standard" }],
+      ["regulations", "📜 Regulations", { u: "regulation" }],
+      ["rules", "📏 Rules", { u: "rule" }],
+      ["decisions", "⚖️ Decisions", { u: "decision" }],
+    ] },
+    { g: "Compliance", l: [
+      ["compliance", "🛡️ Compliance", { e: "compliance" }],
+      ["compliance-controls", "🛡️ Compliance Controls", { e: "compliance_control" }],
+      ["certifications", "🏅 Certifications", { u: "certification" }],
+      ["privacy", "🔒 Privacy", { e: "consent" }],
+      ["privacy-requests", "📨 Privacy Requests", { e: "privacy_request" }],
+      ["erasure", "🧹 Erasure Log", { e: "erasure_log" }],
+    ] },
+    { g: "Risk & Security", l: [
+      ["risk", "⚠️ Risk", { e: "risk_event" }],
+      ["risk-blocks", "⛔ Risk Blocks", { e: "risk_block" }],
+      ["security", "🔐 Security", { u: "security" }],
+      ["controls", "🎛️ Controls", { u: "control" }],
+      ["evidence", "🧾 Evidence", { u: "evidence" }],
+    ] },
+    { g: "Oversight", l: [
+      ["grisk", "🛡️ Risk · Compliance · Trash", { v: "grisk" }],
+      ["audit", "📜 Global Audit", { v: "audit" }],
+      ["review-governance", "🔍 Reviews", { u: "review_governance" }],
+      ["approvals", "✅ Approvals", { u: "approval" }],
+      ["change-control", "🔄 Change Control", { u: "change_control" }],
+      ["trace", "🧭 Traceability", { v: "trace" }],
+      ["ai-governance", "🧠 AI Governance", { u: "ai_governance" }],
+      ["agent-governance", "🤖 Agent Governance", { u: "agent_governance" }],
+      ["governance-graph", "🕸️ Governance Graph", { u: "governance_graph" }],
+    ] },
+  ] },
+  { n: "09 · Platform", g: [
+    { g: "Capabilities", l: [
+      ["capabilities", "⚙️ Capabilities", { v: "capabilities" }],
+      ["capability-tree", "🌳 Capability Tree", { v: "capability-tree" }],
+      ["capability-registry", "🗄️ Capability Registry", { u: "capability_registry" }],
+      ["capability-composition", "🧩 Capability Composition", { u: "capability_composition" }],
+      ["capability-discovery", "🧭 Capability Discovery", { u: "capability_discovery" }],
+    ] },
+    { g: "Composition", l: [
+      ["compose", "🧬 Composition Engine", { v: "compose" }],
+    ] },
+    { g: "Extension", l: [
+      ["providers", "🔌 Provider Registry", { v: "providers" }],
+      ["modules", "🧩 Module Marketplace", { v: "modules" }],
+      ["connectors", "🔌 Connectors", { u: "connectors" }],
+      ["integrations", "🔗 Integrations", { u: "integration" }],
+      ["extensions", "🧩 Extensions", { u: "extension" }],
+    ] },
+    { g: "Runtime", l: [
+      ["runtime", "🧩 Runtime · Infra", { v: "runtime" }],
+      ["runtime-registry", "🗄️ Runtime Registry", { u: "runtime" }],
+      ["deployment", "🚀 Deployment", { u: "deployment" }],
+      ["infrastructure", "🏗️ Infrastructure", { u: "infrastructure" }],
+      ["apis", "🔌 APIs", { u: "api_product" }],
+      ["events", "⚡ Events", { u: "event" }],
+      ["workflows", "🔀 Workflows", { u: "workflow" }],
+    ] },
+    { g: "Evolution", l: [
+      ["versioning", "🔢 Versioning", { u: "versioning" }],
+      ["migration", "🔀 Migration", { u: "migration" }],
+      ["deprecation", "🗑️ Deprecation", { u: "deprecation" }],
+      ["impact-analysis", "📊 Impact Analysis", { u: "impact_analysis" }],
+      ["self-healing", "🩹 Self Healing", { u: "self_healing" }],
+      ["self-optimization", "⚙️ Self Optimization", { u: "self_optimization" }],
+    ] },
+  ] },
+  { n: "10 · Observability", g: [
+    { g: "Telemetry", l: [
+      ["dash", "◈ Command", { v: "dash" }],
+      ["monitor", "📈 Monitoring", { v: "monitor" }],
+      ["metrics", "📊 Metrics", { u: "metrics" }],
+      ["logs", "🪵 Logs", { u: "logs" }],
+      ["traces", " 🔗 Traces", { u: "traces" }],
+      ["alerting", "🚨 Alerting", { u: "alerting" }],
+    ] },
+    { g: "Health", l: [
+      ["reliability", "🛡️ Reliability", { u: "reliability" }],
+      ["health-availability", "🟢 Availability", { u: "availability" }],
+      ["capacity", "📦 Capacity", { u: "capacity" }],
+      ["performance", "⚡ Performance", { u: "performance" }],
+      ["health", "💚 Health", { u: "health" }],
+    ] },
+    { g: "Insight", l: [
+      ["dashboards", "📊 Dashboards", { v: "dashboards" }],
+      ["gdata", "🧬 Data Explorer", { v: "gdata" }],
+      ["studio", "🛠️ Data Studio", { v: "studio" }],
+      ["definitions", "📐 Entity Definitions", { v: "definitions" }],
+      ["slo", "🎯 SLO · SLA", { u: "slo" }],
+      ["rca", "🔍 Root Cause Analysis", { u: "root_cause_analysis" }],
+      ["diagnostics", "🩺 Diagnostics", { u: "diagnostics" }],
+      ["cost", "💸 Cost · Usage", { u: "cost" }],
+    ] },
+  ] },
+  { n: "11 · Administration", g: [
+    { g: "Tenancy", l: [
+      ["tenants-admin", "🏬 Tenants", { v: "tenants" }],
+      ["companies", "🏢 Companies", { u: "company" }],
+      ["workspaces", "🗂️ Workspaces", { u: "workspace" }],
+      ["environments", "🌍 Environments", { v: "runtime" }],
+    ] },
+    { g: "Access", l: [
+      ["users-admin", "👤 Users", { v: "users" }],
+      ["roles-admin", "🎭 Roles", { v: "roles" }],
+      ["permissions-admin", "🔑 Permissions", { u: "permission" }],
+      ["padmins", "🛡️ Platform Admins", { v: "padmins" }],
+      ["licenses", "🪪 Licenses", { u: "license" }],
+      ["gteam", "👥 Team · Access · Settings", { v: "gteam" }],
+    ] },
+    { g: "Configuration", l: [
+      ["configurations", "⚙️ Configurations", { u: "configuration" }],
+      ["secrets", "保密 Secrets", { u: "secrets_management" }],
+      ["settings", "⚙️ Settings", { v: "gteam" }],
+      ["feature-flags", "🚩 Feature Flags", { v: "runtime" }],
+      ["provisioning", "🛡️ Provisioning", { v: "provisioning" }],
+    ] },
+  ] },
+  { n: "12 · Architecture", g: [
+    { g: "Constitution Ω∞", l: [
+      ["ucii", "🌀 UCII Ω∞ Registry", { v: "ucii" }],
+      ["ucos", "♾️ UCOS Ω∞ Constitution", { v: "ucos" }],
+      ["foundations", "🏛️ Foundations", { v: "foundations" }],
+      ["universes", "🧬 Universes", { v: "universes" }],
+      ["domains", "🔀 Domains", { v: "domains" }],
+    ] },
+    { g: "Canonical Model", l: [
+      ["canonical-objects", "📦 Canonical Objects", { u: "canonical_object" }],
+      ["canonical-schemas", "📐 Canonical Schemas", { u: "canonical_schema" }],
+      ["canonical-relationships", "🔗 Canonical Relationships", { u: "canonical_relationship" }],
+      ["canonical-events", "⚡ Canonical Events", { u: "canonical_event" }],
+      ["canonical-apis", "🔌 Canonical APIs", { u: "canonical_api" }],
+      ["canonical-workflows", "🔀 Canonical Workflows", { u: "canonical_workflow" }],
+    ] },
+    { g: "Graphs", l: [
+      ["capability-graph", "🕸️ Capability Graph", { u: "capability_graph" }],
+      ["knowledge-graph-arch", "🕸️ Knowledge Graph", { u: "knowledge_graph" }],
+      ["dependency-graph", "🕸️ Dependency Graph", { u: "dependency_graph" }],
+      ["traceability-graph", "🕸️ Traceability Graph", { u: "traceability_graph" }],
+    ] },
+    { g: "Reference", l: [
+      ["reference-architecture", "🏛️ Reference Architecture", { u: "reference_architecture" }],
+      ["security-architecture", "🔐 Security Architecture", { u: "security_architecture" }],
+      ["data-architecture", "🗄️ Data Architecture", { u: "data_architecture" }],
+      ["ai-architecture", "🧠 AI Architecture", { u: "ai_architecture" }],
+      ["evolution-architecture", "🧬 Evolution Architecture", { u: "evolution_architecture" }],
+    ] },
+    { g: "Documentation", l: [
+      ["manual", "📘 User Manual", { v: "manual" }],
+      ["architecture", "🏛️ Architecture", { v: "architecture" }],
+    ] },
+  ] },
 ];
-const NAVFLAT = NAV.flatMap(g => g.items);
-/* the console opens on the centralized store & service hub — the platform's front door */
-let view = "hub";
+/* NAVFLAT keeps the O(1) leaf lookup the shell's title bar needs — one pass, no per-render
+   tree walks, and the canonical home of any key is discoverable in both directions. */
+const NAVFLAT = [];
+const NAVKEY = {};
+for (const sec of NAV) for (const grp of sec.g) for (const [k, l, res] of grp.l) {
+  NAVFLAT.push([k, l, res, sec.n + " · " + grp.g]);
+  NAVKEY[k] = { label: l, res, home: sec.n + " · " + grp.g };
+}
+/* the console opens on the constitutional dashboard — the platform's front door is the
+   command view, not any single store's setup */
+let view = "dash";
 const P = { user: null, tenants: [], plans: [] };
 
+/* RBAC: a leaf is visible when its key is in the admin's grants ('*' = owner). The nav
+   is generated from the same NAV the back-end section map names, so a hidden leaf is
+   also a refused API call — the two cannot disagree. */
+const canSee = k => { if (!P.allowed || P.allowed.includes("*")) return true; if (k === "dash") return true; return P.allowed.includes(k); };
+
+/* the open-section memory: a section stays expanded while the operator works inside it,
+   so navigating between a group's leaves never collapses the tree on them. */
+const NAVOPEN = new Set();
+function navTree() {
+  return NAV.map(sec => {
+    const groups = sec.g.map(grp => {
+      const items = grp.l.filter(([k]) => canSee(k));
+      return items.length ? `<div class="p-nav-grp"><small>${esc(grp.g)}</small>${items.map(([k, l]) => `<button data-v="${k}" class="${view === k ? "on" : ""}">${l}</button>`).join("")}</div>` : "";
+    }).join("");
+    if (!groups) return "";
+    const inSec = sec.g.some(grp => grp.l.some(([k]) => k === view));
+    if (inSec) NAVOPEN.add(sec.n);
+    const open = NAVOPEN.has(sec.n);
+    return `<details class="p-nav-sec" ${open ? "open" : ""}>
+      <summary>${esc(sec.n)}</summary>${groups}
+    </details>`;
+  }).join("");
+}
 function shell(content) {
+  const meta = NAVKEY[view];
   $("#app").innerHTML = `
   <div class="p-shell">
     <aside class="p-side" id="pSide">
       <div class="p-logo"><b>LUXORA</b><small>Platform Console</small>
         <button class="p-side-close" id="pSideClose" aria-label="Close navigation">✕</button></div>
-      <nav class="p-nav">${NAV.map(grp => `<div class="p-nav-grp"><small>${grp.g}</small>${grp.items.map(([k, l]) => `<button data-v="${k}" class="${view === k ? "on" : ""}">${l}</button>`).join("")}</div>`).join("")}</nav>
+      <nav class="p-nav">${navTree()}</nav>
     </aside>
     <div class="p-scrim" id="pScrim"></div>
-    <main class="p-main"><div class="p-top"><button class="p-hamburger" id="pBurger" aria-label="Open navigation">☰</button><h1>${NAVFLAT.find(n => n[0] === view)[1].replace(/^\S+\s/, "")}</h1><span class="spacer"></span>
+    <main class="p-main"><div class="p-top"><button class="p-hamburger" id="pBurger" aria-label="Open navigation">☰</button><h1>${meta ? meta.label.replace(/^\S+\s/, "") : view}</h1><span class="spacer"></span>
+      ${meta ? `<span class="p-tag">${esc(meta.home)}</span>` : ""}
       <span class="p-chip">platform</span><span class="p-user">${esc(P.user.email)}</span>
+      <span class="p-tag">${esc((P.user && P.user.role) || "owner")}</span>
       <button class="p-btn sm" id="logoutBtn">Sign out</button></div>
       <div id="vBody">${content}</div></main>
   </div>`;
@@ -124,21 +585,58 @@ async function vTenants() {
   P.tenants = tenants;
   return `
   <div class="p-panel"><div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
-    <h2 style="margin:0">Stores (${tenants.length})</h2><span style="flex:1"></span>
-    <button class="p-btn primary sm" id="newTenant">+ Launch store</button></div>
-    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Each store's <b>Products</b>, SKUs &amp; inventory, orders, suppliers, compliance and settings live in that store's <b>Store Console</b> — click <b>Manage · Catalog</b> to open it for a store.</p>
-    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Store</th><th>Slug</th><th>Jurisdiction</th><th>Owner</th><th>Mode</th><th>Industries</th><th class="num">Products</th><th class="num">Orders</th><th class="num">GMV</th><th>Plan</th><th>Status</th><th></th></tr></thead>
+    <h2 style="margin:0">Tenants (${tenants.length})</h2><span style="flex:1"></span>
+    <button class="p-btn primary sm" id="newTenant">+ New tenant</button></div>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">The platform's tenancy registry. A tenant's <b>Products</b>, SKUs &amp; inventory, orders, suppliers, compliance and settings live in its <b>Store Console</b> — click <b>Manage · Catalog</b> to open it.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Tenant</th><th>Slug</th><th>Jurisdiction</th><th>Owner</th><th>Mode</th><th>Industries</th><th class="num">Products</th><th class="num">Orders</th><th class="num">GMV</th><th>Plan</th><th>Status</th><th></th></tr></thead>
     <tbody>${tenants.map(t => `<tr><td><b>${esc(t.name)}</b></td><td>${esc(t.slug)}</td><td>${esc(t.country || "—")}</td><td class="p-tag">${esc((t.profile && t.profile.ownerEmail) || "—")}</td><td>${esc(t.mode)}</td>
       <td class="p-tag">${esc((t.industries || "[]").replace(/["[\]]/g, "").slice(0, 40))}</td>
       <td class="num">${t.products}</td><td class="num">${t.orders}</td><td class="num">${money(t.gmv)}</td>
       <td>${esc(t.plan || "—")}</td><td><span class="badge ${esc(t.status)}">${esc(t.status)}</span></td>
       <td style="white-space:nowrap"><button class="p-btn sm" data-open="${t.id}">Open</button>
-        <button class="p-btn sm" data-tedit="${t.id}" title="Re-open the guided setup wizard for this store">Setup</button>
+        <button class="p-btn sm" data-tedit="${t.id}" title="Edit this tenant's identity">Edit</button>
         <button class="p-btn sm primary" data-imp="${t.id}" title="Enter this store's Store Console — Products, SKUs, Orders and more">Manage · Catalog</button>
         <button class="p-btn sm" data-susp="${t.id}">${t.status === "active" ? "Suspend" : "Resume"}</button>
         <button class="p-btn sm" data-inv="${t.id}">Invoice</button>
         <button class="p-btn sm danger" data-del="${t.id}">✕</button></td></tr>`).join("")}</tbody></table></div></div>`;
 }
+/* tenant authoring: a single form, no wizard. The constitutional model treats a tenant as
+   an identity record the platform provisions — name, slug, jurisdiction, owner, mode — so
+   creation is one modal, not a guided walk. */
+async function tenantModal(id) {
+  const t = id ? P.tenants.find(x => x.id === id) : null;
+  const isEdit = !!t;
+  const m = modal(`<div class="p-modal-head"><h3>${isEdit ? "Edit · " + esc(t.name) : "New tenant"}</h3><button data-mclose>✕</button></div>
+    <div class="p-form">
+      <label><span>Name</span><input id="tnName" value="${t ? esc(t.name) : ""}" placeholder="Acme Commerce"></label>
+      <label><span>Slug</span><input id="tnSlug" value="${t ? esc(t.slug) : ""}" placeholder="acme" ${isEdit ? "disabled" : ""}></label>
+      <label><span>Country</span><input id="tnCountry" value="${t ? esc(t.country || "") : ""}" placeholder="US"></label>
+      <label><span>Owner name</span><input id="tnOwnerName" value="${t && t.profile ? esc(t.profile.ownerName || "") : ""}" placeholder="Ava One"></label>
+      <label><span>Owner email</span><input id="tnOwner" value="${t && t.profile ? esc(t.profile.ownerEmail || "") : ""}" placeholder="owner@acme.com"></label>
+      ${isEdit ? "" : '<label><span>Owner password</span><input id="tnPass" type="password" placeholder="6+ characters" minlength="6"></label>'}
+      <label><span>Mode</span><select id="tnMode">${["marketplace", "industry", "brand"].map(x => `<option ${t && t.mode === x ? "selected" : ""}>${x}</option>`).join("")}</select></label>
+      <button class="p-btn primary" id="tnSave">${isEdit ? "Save changes" : "Create tenant"}</button>
+    </div>`);
+  m.querySelector("#tnSave").onclick = async () => {
+    const body = {
+      name: m.querySelector("#tnName").value.trim(),
+      slug: m.querySelector("#tnSlug").value.trim().toLowerCase(),
+      country: m.querySelector("#tnCountry").value.trim().toUpperCase(),
+      ownerName: m.querySelector("#tnOwnerName").value.trim(),
+      ownerEmail: m.querySelector("#tnOwner").value.trim(),
+      mode: m.querySelector("#tnMode").value
+    };
+    const pass = m.querySelector("#tnPass");
+    if (pass) body.ownerPassword = pass.value;
+    if (!body.name || !body.slug) return toast("Name and slug are required");
+    try {
+      if (isEdit) await api("/platform/tenants/" + t.id, "PUT", body);
+      else await api("/platform/tenants", "POST", body);
+      m.innerHTML = ""; toast(isEdit ? "Tenant updated" : "Tenant created"); render();
+    } catch (e) { toast(e.message); }
+  };
+}
+
 async function vPlans() {
   const { plans } = await api("/platform/plans");
   P.plans = plans;
@@ -759,9 +1257,9 @@ document.addEventListener("click", async e => {
       };
     }
     if (delprov) { await api("/platform/custom-providers/" + delprov.dataset.delprov, "DELETE", {}); render(); }
-    if (e.target.id === "newTenant") return openSetupWizard(null);
+    if (e.target.id === "newTenant") return tenantModal(null);
     const edit = e.target.closest("[data-tedit]");
-    if (edit) return openSetupWizard(Number(edit.dataset.tedit));
+    if (edit) return tenantModal(Number(edit.dataset.tedit));
     if (e.target.id === "newPlan") {
       const mm = modal(`<div class="p-modal-head"><h3>New plan</h3><button data-mclose>✕</button></div>
         <div class="p-form"><div class="row"><label><span>Name</span><input id="npName"></label><label><span>Price/mo</span><input id="npPrice" type="number" step="any"></label></div>
@@ -950,351 +1448,6 @@ document.addEventListener("click", async e => {
     }
   } catch (err) { toast(err.message); }
 });
-
-/* ============ GUIDED SETUP WIZARD — one screen, every store decision in one walk ============
-   The single "simple global console" entry point: identity → owner → jurisdiction & tax →
-   payments → shipping → catalogue → features → launch. A draft lives in `WZ` so the operator
-   can step back and forth without losing what they typed; finished stores re-open in edit
-   mode (same steps, pre-filled, "Save changes" instead of "Launch"). */
-const WZ_STEPS = [
-  ["identity", "Store", "🏪"], ["owner", "Owner", "👤"], ["jurisdiction", "Jurisdiction & tax", "🧾"],
-  ["payments", "Payments", "💳"], ["shipping", "Shipping", "🚚"], ["catalogue", "Catalogue", "📦"],
-  ["features", "Features", "⭐"], ["plan", "Plan & launch", "🚀"]
-];
-let WZ = null; /* { editId, step, data } — data is the accumulated payload */
-
-function wzFresh(editId) {
-  return { editId: editId || null, step: 0, data: { mode: "marketplace", industries: [], gateways: [], shippingCarriers: [] } };
-}
-async function wzHydrate(wz) {
-  /* edit mode: pull the live store back into the draft so every step shows its current value */
-  const r = await api(`/platform/tenants/${wz.editId}/setup`);
-  const t = r.tenant, c = r.settings || {}, prof = t.profile || {};
-  if (t.country) wz.data.country = t.country;
-  wz.data.name = t.name; wz.data.slug = t.slug;
-  wz.data.tagline = (c.brand && c.brand.tagline) || "";
-  wz.data.mode = t.mode;
-  wz.data.owner = { name: prof.ownerName || "", email: prof.ownerEmail || "", phone: prof.ownerPhone || "" };
-  wz.data.jurisdiction = { state: prof.state || "", legalName: prof.legalName || "", taxId: prof.taxId || "", registrationAddress: prof.registrationAddress || "" };
-  wz.data.tax = c.commerce && c.commerce.taxMode ? { mode: c.commerce.taxMode, rate: c.commerce.taxRate } : { rate: c.commerce ? c.commerce.taxRate : undefined };
-  wz.data.shipping = c.commerce ? { freeShipThreshold: c.commerce.freeShipThreshold, shipFee: c.commerce.shipFee, daysPriority: c.commerce.daysPriority, daysStandard: c.commerce.daysStandard } : {};
-  wz.data.features = c.features || {};
-  wz.data.brand = { colors: (c.brand && c.brand.colors) || {} };
-  wz.data.gateways = (r.gateways && r.gateways.pay) || (r.available && r.available.payments) || [];
-  wz.data.shippingCarriers = (r.gateways && r.gateways.ship) || (r.available && r.available.shipping) || [];
-  wz.data.plan_id = t.plan_id || undefined;
-  wz.data.seedCatalog = false;
-  return r;
-}
-async function openSetupWizard(editId) {
-  WZ = wzFresh(editId);
-  if (editId) { try { await wzHydrate(WZ); } catch (e) { toast(e.message); } }
-  view = "setup"; render();
-}
-function wzStepDone(wz, i) {
-  const d = wz.data, key = WZ_STEPS[i][0];
-  if (key === "identity") return !!(d.name && d.slug);
-  if (key === "owner") return !!(d.owner && d.owner.email);
-  if (key === "jurisdiction") return !!d.country;
-  if (key === "payments") return !!(d.gateways && d.gateways.length);
-  if (key === "shipping") return !!(d.shipping && d.shipping.freeShipThreshold > 0);
-  if (key === "catalogue") return wz.editId ? true : (d.industries && d.industries.length > 0) || d.mode === "marketplace";
-  if (key === "features") return true;
-  return true;
-}
-async function vSetup() {
-  if (!WZ) WZ = wzFresh(null);
-  const [meta, cp, plans, tenants] = await Promise.all([api("/meta"), api("/platform/custom-providers"), api("/platform/plans"), api("/platform/tenants")]);
-  const countries = meta.countries, industries = meta.industries, taxModes = meta.taxModes;
-  const availBy = {};
-  (cp.availability || []).forEach(a => (availBy[a.provider_id] = availBy[a.provider_id] || new Set()).add(a.country_code));
-  const payProviders = cp.builtIn.payment;
-  const shipProviders = cp.builtIn.shipping || [];
-  const wz = WZ, d = wz.data, editing = !!wz.editId;
-  const t = editing ? tenants.tenants.find(x => x.id === wz.editId) : null;
-  if (editing && !t) { WZ = wzFresh(null); return `<div class="p-empty">Store not found — <button class="p-btn sm" id="wzNew">start a new one</button></div>`; }
-  const cur = d.country || "US";
-  const countryOf = code => countries.find(c => c.code === code) || countries[0];
-  const availPay = payProviders.filter(p => (availBy[p.id] || new Set()).has(cur));
-  const availShip = shipProviders.filter(p => (availBy[p.id] || new Set()).has(cur) || p.id === "house-std");
-  const stepName = WZ_STEPS[wz.step][0];
-  const pct = Math.round((wz.step / (WZ_STEPS.length - 1)) * 100);
-
-  const stepper = `<div class="wz-steps">${WZ_STEPS.map((s, i) => {
-    const done = wzStepDone(wz, i);
-    return `<button class="wz-step ${i === wz.step ? "on" : ""} ${i < wz.step ? "past" : ""}" data-goto="${i}">
-      <span class="wz-dot">${i < wz.step ? "✓" : i + 1}</span><span class="wz-lbl">${s[2]} ${s[1]}</span>
-      ${done && i !== wz.step ? '<span class="wz-ok" title="configured">●</span>' : ""}</button>`;
-  }).join("")}</div>`;
-
-  let body = "";
-  if (stepName === "identity") body = `
-    <fieldset><legend>Store identity</legend>
-      <div class="row"><label><span>Store name *</span><input id="wName" value="${esc(d.name || "")}" placeholder="NOVA MART"></label>
-      <label><span>Slug (web address) *</span><input id="wSlug" value="${esc(d.slug || "")}" ${editing ? "disabled" : ""} placeholder="nova"></label></div>
-      <label><span>Tagline</span><input id="wTag" value="${esc(d.tagline || "")}" placeholder="Everything you need, delivered fast"></label>
-      <label><span>Deployment mode</span><select id="wMode">${meta.deployModes.map(x => `<option value="${x.key}" ${d.mode === x.key ? "selected" : ""}>${x.name} — ${x.desc}</option>`).join("")}</select></label>
-    </fieldset>
-    <fieldset><legend>Brand colours</legend>
-      <div class="row3"><label><span>Primary</span><input id="wCol1" type="color" value="${esc((d.brand && d.brand.colors && d.brand.colors.primary) || "#FF9900")}"></label>
-      <label><span>Secondary</span><input id="wCol2" type="color" value="${esc((d.brand && d.brand.colors && d.brand.colors.secondary) || "#007185")}"></label>
-      <label><span>Accent</span><input id="wCol3" type="color" value="${esc((d.brand && d.brand.colors && d.brand.colors.accent) || "#FFD700")}"></label></div>
-      <p class="p-tag">Colours apply to the storefront header, buttons and badges immediately after launch.</p>
-    </fieldset>`;
-  else if (stepName === "owner") body = `
-    <fieldset><legend>Owner / operator account</legend>
-      <p class="p-tag">This person becomes the store's first administrator and receives the sign-in details.</p>
-      <div class="row3"><label><span>Full name *</span><input id="wOwnName" value="${esc(d.owner && d.owner.name || "")}" placeholder="Nora Vey"></label>
-      <label><span>Email *</span><input id="wOwnEmail" type="email" value="${esc(d.owner && d.owner.email || "")}" placeholder="owner@nova.shop"></label>
-      <label><span>Phone</span><input id="wOwnPhone" value="${esc(d.owner && d.owner.phone || "")}" placeholder="+1…"></label></div>
-      <label><span>Password ${editing ? "(leave blank to keep the current one)" : "* (min 6 chars)"}</span><input id="wOwnPass" type="password" placeholder="······"></label>
-    </fieldset>`;
-  else if (stepName === "jurisdiction") body = `
-    <fieldset><legend>Where the store operates</legend>
-      <label><span>Country (sets currency, language and tax rules automatically) *</span><select id="wCountry">${countries.map(c => `<option value="${c.code}" ${cur === c.code ? "selected" : ""}>${esc(c.name)} (${c.code})</option>`).join("")}</select></label>
-      <div class="p-tag" id="wTaxHint"></div>
-    </fieldset>
-    <fieldset><legend>Legal identity</legend>
-      <div class="row3"><label><span>State / Province</span><input id="wState" value="${esc(d.jurisdiction && d.jurisdiction.state || "")}"></label>
-      <label><span>Tax / GST / VAT ID</span><input id="wTaxId" value="${esc(d.jurisdiction && d.jurisdiction.taxId || "")}" placeholder="27AAAAA0000A1Z5"></label>
-      <label><span>Registered legal entity</span><input id="wLegal" value="${esc(d.jurisdiction && d.jurisdiction.legalName || "")}" placeholder="Nova Mart Pvt Ltd"></label></div>
-      <label><span>Registered address</span><input id="wReg" value="${esc(d.jurisdiction && d.jurisdiction.registrationAddress || "")}"></label>
-    </fieldset>
-    <fieldset><legend>Taxation</legend>
-      <div class="row"><label><span>Tax mode (blank = country default)</span><select id="wTaxMode"><option value="">— country default —</option>${taxModes.map(tm => `<option value="${tm.key}" ${d.tax && d.tax.mode === tm.key ? "selected" : ""}>${esc(tm.label)}</option>`).join("")}</select></label>
-      <label><span>Tax rate 0–1 (blank = country default)</span><input id="wTaxRate" type="number" step="0.001" min="0" max="1" value="${d.tax && d.tax.rate != null ? d.tax.rate : ""}"></label></div>
-    </fieldset>`;
-  else if (stepName === "payments") body = `
-    <fieldset><legend>Payment gateways <span class="p-tag" id="wGwHint"></span></legend>
-      <p class="p-tag">Shoppers can pay with the methods you enable. Cash on delivery is always available; the rest need API keys from the provider (add them later in the store console).</p>
-      <div id="wGwGrid">${payProviders.map(p => `<label><input type="checkbox" data-gw="${p.id}" data-countries="${[...(availBy[p.id] || [])].join(" ")}" ${d.gateways && d.gateways.includes(p.id) ? "checked" : ""}> ${p.emoji} ${esc(p.name)} <span class="p-tag">${p.feePct}%</span></label>`).join("")}</div>
-    </fieldset>`;
-  else if (stepName === "shipping") body = `
-    <fieldset><legend>Carriers <span class="p-tag" id="wShipHint"></span></legend>
-      <p class="p-tag">Pick the carriers that deliver your orders. In-house shipping is always on.</p>
-      <div id="wShipGrid">${shipProviders.map(p => `<label><input type="checkbox" data-ship="${p.id}" data-countries="${[...(availBy[p.id] || [])].join(" ")}" ${d.shippingCarriers && d.shippingCarriers.includes(p.id) ? "checked" : ""}> ${p.emoji || "📦"} ${esc(p.name)}</label>`).join("")}</div>
-    </fieldset>
-    <fieldset><legend>Delivery promise</legend>
-      <div class="row3"><label><span>Free shipping over</span><input id="wFreeShip" type="number" step="any" min="0" value="${d.shipping && d.shipping.freeShipThreshold != null ? d.shipping.freeShipThreshold : 35}"></label>
-      <label><span>Standard shipping fee</span><input id="wShipFee" type="number" step="any" min="0" value="${d.shipping && d.shipping.shipFee != null ? d.shipping.shipFee : 5.99}"></label>
-      <label><span>Priority days</span><input id="wDaysP" type="number" min="0" value="${d.shipping && d.shipping.daysPriority != null ? d.shipping.daysPriority : 2}"></label></div>
-      <label><span>Standard delivery days</span><input id="wDaysS" type="number" min="0" value="${d.shipping && d.shipping.daysStandard != null ? d.shipping.daysStandard : 5}"></label>
-    </fieldset>`;
-  else if (stepName === "catalogue") body = `
-    <fieldset><legend>Product categories</legend>
-      <p class="p-tag"><label style="display:inline"><input type="checkbox" id="wAllInd" ${(!d.industries || !d.industries.length) ? "checked" : ""}> All categories (universal marketplace)</label></p>
-      <div id="wIndGrid" class="ind-grid">${industries.map(i => `<label><input type="checkbox" data-ind="${i.key}" ${d.industries && d.industries.includes(i.key) ? "checked" : ""}> ${i.icon} ${esc(i.name)}</label>`).join("")}</div>
-    </fieldset>
-    ${editing ? "" : `<fieldset><legend>Seed catalogue</legend>
-      <p class="p-tag">A demo catalogue lets you see the storefront working right away — you can replace every product later.</p>
-      <div class="row3"><label><span>Catalogue size</span><select id="wSeedSize">
-        <option value="0" ${!d.seedCatalog ? "selected" : ""}>Empty — no products</option>
-        <option value="25" ${d.seedSize == 25 ? "selected" : ""}>Small · ~25 products</option>
-        <option value="75" ${d.seedSize == 75 ? "selected" : ""}>Medium · ~75 products</option>
-        <option value="200" ${d.seedSize == 200 ? "selected" : ""}>Large · ~200 products</option></select></label>
-        <label><span>Min price</span><input id="wPMin" type="number" step="1" min="0" placeholder="5" value="${d.seedPrice && d.seedPrice.min != null ? d.seedPrice.min : ""}"></label>
-        <label><span>Max price</span><input id="wPMax" type="number" step="1" min="0" placeholder="2000" value="${d.seedPrice && d.seedPrice.max != null ? d.seedPrice.max : ""}"></label></div>
-      <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" id="wSeedBrands" ${d.seedBrands !== false ? "checked" : ""}> also seed the brands on those products</label>
-    </fieldset>`}`;
-  else if (stepName === "features") body = `
-    <fieldset><legend>Shopper features</legend>
-      <p class="p-tag">Switch on the experiences your store should offer. Everything here can be changed later from the store console.</p>
-      ${[["reviews", "⭐ Reviews & ratings"], ["deals", "🏷️ Deals & coupons"], ["giftCards", "🎁 Gift cards"], ["subscribeSave", "🔁 Subscribe & Save"],
-         ["membership", "👑 Membership program"], ["qna", "💬 Questions & Answers"], ["saveForLater", "💖 Wishlists"], ["buyNow", "⚡ Buy now"],
-         ["countdown", "⏳ Deal countdowns"], ["suggestions", "🧠 Product suggestions"], ["customerService", "🎧 Customer service desk"], ["fraudScreen", "🛡️ Fraud screening"]]
-        .map(([k, l]) => `<label class="chk"><input type="checkbox" data-feat="${k}" ${d.features && d.features[k] ? "checked" : ""}> ${l}</label>`).join("")}
-    </fieldset>`;
-  else body = `
-    <fieldset><legend>Subscription plan</legend>
-      <label><span>Plan</span><select id="wPlan">${plans.plans.map(x => `<option value="${x.id}" ${d.plan_id == x.id ? "selected" : ""}>${esc(x.name)} — ${x.price_month}/mo</option>`).join("")}</select></label>
-    </fieldset>
-    <div class="p-panel"><h2>Ready to ${editing ? "save" : "launch"}</h2>
-      <div class="p-kv">
-        <em>Store</em><span>${esc(d.name || "—")} <code>${esc(d.slug || "—")}</code></span>
-        <em>Owner</em><span>${esc(d.owner && d.owner.email || "—")}</span>
-        <em>Country</em><span>${esc(d.country || "—")}</span>
-        <em>Payments</em><span>${(d.gateways || []).join(", ") || "—"}</span>
-        <em>Carriers</em><span>${(d.shippingCarriers || []).join(", ") || "house only"}</span>
-        <em>Free ship over</em><span>${(d.shipping && d.shipping.freeShipThreshold) || 0}</span>
-        <em>Features</em><span>${d.features ? Object.keys(d.features).filter(k => d.features[k]).join(", ") || "none" : "default"}</span>
-      </div></div>`;
-
-  return `<div class="p-head"><h2>🧭 Setup Wizard ${editing ? "— " + esc(t.name) : ""}</h2>
-    <p class="p-sub">${editing ? "Every step shows the store's current values — change what you need and save." : "One walk, one store: identity → owner → jurisdiction → payments → shipping → catalogue → features → launch. Nothing is committed until you press the final button."}</p></div>
-  <div class="wz-bar"><div class="wz-fill" style="width:${pct}%"></div></div>
-  ${stepper}
-  <div class="p-panel wz-panel">${body}</div>
-  <div class="wz-nav">
-    ${wz.step > 0 ? '<button class="p-btn" data-wz="back">← Back</button>' : ""}
-    <span style="flex:1"></span>
-    ${wz.step < WZ_STEPS.length - 1
-      ? '<button class="p-btn primary" data-wz="next">Next →</button>'
-      : `<button class="p-btn primary" id="wzGo">${editing ? "Save changes" : "🚀 Launch store"}</button>`}
-  </div>`;
-}
-
-/* wizard state moves: gather the current step into the draft, validate, then re-render.
-   Field reads are guarded so a step never crashes on a missing input. */
-function wzRead(wz) {
-  const d = wz.data, g = id => { const el = document.getElementById(id); return el ? el.value : undefined; };
-  const key = WZ_STEPS[wz.step][0];
-  if (key === "identity") {
-    d.name = g("wName"); d.slug = g("wSlug"); d.tagline = g("wTag"); d.mode = g("wMode");
-    d.brand = { colors: { primary: g("wCol1"), secondary: g("wCol2"), accent: g("wCol3") } };
-  } else if (key === "owner") {
-    d.owner = { name: g("wOwnName"), email: g("wOwnEmail"), phone: g("wOwnPhone"), password: g("wOwnPass") };
-  } else if (key === "jurisdiction") {
-    d.country = g("wCountry");
-    d.jurisdiction = { state: g("wState"), legalName: g("wLegal"), taxId: g("wTaxId"), registrationAddress: g("wReg") };
-    d.tax = { mode: g("wTaxMode") || null, rate: g("wTaxRate") === "" || g("wTaxRate") == null ? null : Number(g("wTaxRate")) };
-  } else if (key === "payments") {
-    d.gateways = Array.from(document.querySelectorAll("[data-gw]:checked")).map(x => x.dataset.gw);
-  } else if (key === "shipping") {
-    d.shippingCarriers = Array.from(document.querySelectorAll("[data-ship]:checked")).map(x => x.dataset.ship);
-    d.shipping = { freeShipThreshold: Number(g("wFreeShip")) || 0, shipFee: Number(g("wShipFee")) || 0, daysPriority: Number(g("wDaysP")) || 2, daysStandard: Number(g("wDaysS")) || 5 };
-  } else if (key === "catalogue") {
-    d.industries = document.getElementById("wAllInd") && document.getElementById("wAllInd").checked ? [] : Array.from(document.querySelectorAll("[data-ind]:checked")).map(x => x.dataset.ind);
-    if (!wz.editId) {
-      d.seedCatalog = !!document.getElementById("wSeedSize") && Number(document.getElementById("wSeedSize").value) > 0;
-      d.seedSize = document.getElementById("wSeedSize") ? Number(document.getElementById("wSeedSize").value) : 0;
-      d.seedBrands = document.getElementById("wSeedBrands") ? document.getElementById("wSeedBrands").checked : true;
-      const mn = g("wPMin"), mx = g("wPMax");
-      d.seedPrice = { min: mn === "" || mn == null ? null : Number(mn), max: mx === "" || mx == null ? null : Number(mx) };
-    }
-  } else if (key === "features") {
-    d.features = {}; Array.from(document.querySelectorAll("[data-feat]")).forEach(x => d.features[x.dataset.feat] = x.checked);
-  } else if (key === "plan") {
-    d.plan_id = g("wPlan") ? Number(g("wPlan")) : d.plan_id;
-  }
-}
-function wzValidate(wz) {
-  const d = wz.data, key = WZ_STEPS[wz.step][0];
-  if (key === "identity") {
-    if (!String(d.name || "").trim()) return "Give the store a name";
-    if (!wz.editId && !String(d.slug || "").trim()) return "Give the store a slug (web address)";
-  }
-  if (key === "owner") {
-    const o = d.owner || {};
-    if (String(o.name || "").trim().length < 2) return "The owner needs a full name";
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(o.email || "")) return "The owner email is not valid";
-    if (!wz.editId && String(o.password || "").length < 6) return "The owner password must be at least 6 characters";
-  }
-  if (key === "jurisdiction" && !d.country) return "Pick the country the store operates in";
-  return null;
-}
-/* /meta carries the country rows the wizard needs for tax/currency hints; cache them once
-   so re-rendering a step never re-fetches. */
-let _metaCountries = null;
-function countryHint(code) { return _metaCountries ? (_metaCountries.find(c => c.code === code) || null) : null; }
-function wzSyncCountry() {
-  const sel = document.getElementById("wCountry");
-  /* the payments/shipping steps have no country select — filter against the draft's
-     chosen country so a store can never offer a gateway its jurisdiction forbids */
-  const code = sel ? sel.value : (WZ && WZ.data && WZ.data.country) || "US";
-  const c = countryHint(code);
-  const hint = document.getElementById("wTaxHint");
-  if (hint && c) hint.textContent = "default tax: " + c.tax_mode + " @ " + ((c.tax_rate || 0) * 100).toFixed(1) + "% · currency " + (c.currency || "?");
-  const grid = document.getElementById("wGwGrid");
-  if (grid) {
-    grid.querySelectorAll("[data-gw]").forEach(cb => {
-      const ok = cb.dataset.countries.split(" ").includes(code);
-      cb.closest("label").style.opacity = ok ? "1" : ".35"; cb.disabled = !ok;
-      if (!ok) cb.checked = false;
-    });
-    const n = Array.from(grid.querySelectorAll("[data-gw]:not([disabled])")).length;
-    const h = document.getElementById("wGwHint"); if (h) h.textContent = n + " available in " + code;
-  }
-  const sg = document.getElementById("wShipGrid");
-  if (sg) {
-    sg.querySelectorAll("[data-ship]").forEach(cb => {
-      const ok = cb.dataset.countries.split(" ").includes(code);
-      cb.closest("label").style.opacity = ok ? "1" : ".35"; cb.disabled = !ok;
-      if (!ok) cb.checked = false;
-    });
-    const n = Array.from(sg.querySelectorAll("[data-ship]:not([disabled])")).length;
-    const h = document.getElementById("wShipHint"); if (h) h.textContent = n + " available in " + code;
-  }
-}
-function wzSyncAll() {
-  const all = document.getElementById("wAllInd");
-  if (all) { const on = all.checked; document.querySelectorAll("[data-ind]").forEach(c => { c.disabled = on; c.closest("label").style.opacity = on ? ".4" : "1"; }); }
-}
-function wireSetup() {
-  const b = $("#vBody"); if (!b) return;
-  const countrySel = document.getElementById("wCountry");
-  if (countrySel) {
-    if (!_metaCountries) api("/meta").then(m => { _metaCountries = m.countries || []; wzSyncCountry(); }).catch(() => {});
-    else wzSyncCountry();
-    countrySel.onchange = wzSyncCountry;
-  }
-  wzSyncCountry(); /* payments/shipping steps: apply the draft's country to availability */
-  const allInd = document.getElementById("wAllInd");
-  if (allInd) { allInd.onchange = wzSyncAll; wzSyncAll(); }
-  b.querySelectorAll("[data-goto]").forEach(btn => btn.onclick = () => {
-    const i = Number(btn.dataset.goto);
-    /* always harvest the visible step first: an operator who typed a value and then
-       tapped a later step in the rail would otherwise lose it */
-    wzRead(WZ);
-    if (i > WZ.step) { const err = wzValidate(WZ); if (err) { toast(err); return; } }
-    WZ.step = i; render();
-  });
-  b.querySelectorAll("[data-wz]").forEach(btn => btn.onclick = () => {
-    const dir = btn.dataset.wz;
-    wzRead(WZ);
-    if (dir === "next") { const err = wzValidate(WZ); if (err) { toast(err); return; } WZ.step = Math.min(WZ_STEPS.length - 1, WZ.step + 1); }
-    else WZ.step = Math.max(0, WZ.step - 1);
-    render();
-  });
-  const go = document.getElementById("wzGo");
-  if (go) go.onclick = async () => {
-    wzRead(WZ);
-    const err = wzValidate(WZ); if (err) { toast(err); return; }
-    const d = WZ.data, editing = !!WZ.editId;
-    if ((d.mode === "industry" || d.mode === "brand") && !(d.industries || []).length) { toast("Pick at least one category for an industry/brand store"); WZ.step = 5; render(); return; }
-    if (!editing && !(d.gateways || []).length) d.gateways = null;
-    const payload = {
-      name: d.name, slug: d.slug, tagline: d.tagline, mode: d.mode,
-      brand: { name: d.name, tagline: d.tagline || undefined, colors: d.brand && d.brand.colors || {} },
-      /* the wizard carries the chosen country apart from the jurisdiction object (the
-         payments/shipping steps filter availability off it); the API reads jurisdiction.country */
-      owner: d.owner, jurisdiction: { ...(d.jurisdiction || {}), country: d.country }, tax: d.tax, industries: d.industries || [],
-      gateways: d.gateways, shippingCarriers: d.shippingCarriers, shipping: d.shipping, features: d.features,
-      plan_id: d.plan_id, seedCatalog: editing ? false : !!d.seedCatalog,
-      seedSize: d.seedSize || 0, seedBrands: d.seedBrands, seedPrice: d.seedPrice || {}
-    };
-    if (editing) { delete payload.slug; delete payload.seedCatalog; delete payload.seedSize; delete payload.seedPrice; delete payload.seedBrands; }
-    if (editing && d.owner && !d.owner.password) delete payload.owner;
-    go.disabled = true; go.textContent = "Saving…";
-    try {
-      const r = editing
-        ? await api("/platform/tenants/" + WZ.editId, "PUT", payload)
-        : await api("/platform/tenants", "POST", payload);
-      toast(editing ? "Store updated" : "Store launched");
-      const launched = r.tenant;
-      WZ = null; view = "tenants"; render();
-      setTimeout(() => openSetupDone(launched.id, launched.slug), 60);
-    } catch (e) { toast(e.message); go.disabled = false; go.textContent = editing ? "Save changes" : "🚀 Launch store"; }
-  };
-  const nw = document.getElementById("wzNew");
-  if (nw) nw.onclick = () => { WZ = wzFresh(null); render(); };
-}
-/* post-launch checklist: what the operator has configured, and what's still open */
-async function openSetupDone(tid, slug) {
-  try {
-    const r = await api(`/platform/tenants/${tid}/setup`);
-    const rows = r.steps.map(s => `<tr><td>${s.done ? "✅" : "◻️"}</td><td><b>${esc(s.label)}</b></td><td class="p-tag">${esc(s.note || "")}</td>
-      <td>${s.done ? "" : `<button class="p-btn sm" data-fix="${s.key}">Configure</button>`}</td></tr>`).join("");
-    const m = modal(`<div class="p-modal-head"><h3>${r.done}/${r.total} configured — ${esc(r.tenant.name)}</h3><button data-mclose>✕</button></div>
-      <p class="p-sub">Steps you skip now can be finished any time from this wizard or the store console.</p>
-      <table class="p-table"><thead><tr><th></th><th>Step</th><th>Status</th><th></th></tr></thead><tbody>${rows}</tbody></table>
-      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
-        <a class="p-btn primary" href="/index.html?store=${esc(slug)}" target="_blank">View storefront</a>
-        <a class="p-btn" href="/admin.html?store=${esc(slug)}" target="_blank">Open store console</a>
-        <button class="p-btn" data-wzclose>Done</button></div>`);
-    m.querySelectorAll("[data-fix]").forEach(b => b.onclick = () => { m.innerHTML = ""; openSetupWizard(tid); });
-    const c = m.querySelector("[data-wzclose]"); if (c) c.onclick = () => { m.innerHTML = ""; };
-  } catch (e) { toast(e.message); }
-}
 
 async function vAI() {
   const d = await api("/platform/ai");
@@ -2005,12 +2158,19 @@ async function vUniverses() {
         ${u.records ? '<button class="p-btn sm danger" data-uvwd="' + esc(u.entity_key) + '">Withdraw</button>' : ""}
       </td>
     </tr>`).join("");
+  /* activation publishes into ONE store's catalog — the platform console must say which.
+     No silent default: the selector remembers the operator's choice and the actions read it. */
+  if (!window.__tenantId && P.tenants.length) window.__tenantId = P.tenants[0].id;
+  const tidOpts = P.tenants.map(t => `<option value="${t.id}" ${Number(window.__tenantId) === t.id ? "selected" : ""}>${esc(t.name)} (${esc(t.slug)})</option>`).join("");
   return `
   <div class="p-panel"><h2>🧬 Universes · instantiated from the constitution</h2>
     <p class="p-tag">Each universe the Architecture documents declare is registered as a foundation and instantiated as a live, data-defined entity — zero per-universe code (Article 4.2). Fields are derived from the corpus itself.</p>
     <div style="display:flex;gap:8px;align-items:center;margin:10px 0;flex-wrap:wrap">
       ${badge}
       <span class="p-tag">${stat2(st.declared || 0)} declared · ${stat2(st.instantiated || 0)} instantiated · ${stat2(st.live || 0)} canonical · ${stat2(st.records || 0)} records created</span>
+      <label class="p-tag" style="display:flex;align-items:center;gap:6px">Target store
+        <select id="uvTenant" style="min-width:170px">${tidOpts}</select>
+      </label>
       <button class="p-btn sm" id="uvRefresh">↻ Re-instantiate</button>
       <button class="p-btn sm primary" id="uvActivateAll">⚡ Activate all → storefront</button>
     </div>
@@ -2023,6 +2183,11 @@ async function vUniverses() {
   </div>`;
 }
 function wireUniverses() {
+  /* the target store is the operator's explicit choice — never a hardcoded tenant. The
+     selector is the single source; every activation/publish/withdraw reads it here. */
+  const sel = document.getElementById("uvTenant");
+  if (sel) { sel.onchange = () => { window.__tenantId = Number(sel.value); }; window.__tenantId = Number(sel.value); }
+  const target = () => { const t = Number(window.__tenantId); if (!t) { toast("Select a target store first"); return null; } return t; };
   const refresh = document.getElementById("uvRefresh");
   if (refresh) refresh.onclick = async () => {
     try {
@@ -2031,21 +2196,22 @@ function wireUniverses() {
       render();
     } catch (e) { toast(e.message); }
   };
-  /* ACTIVATE ALL: materialize every universe's canonical offering and publish it into
-     the current tenant's catalog, so the whole constitution becomes shopper-
+  /* ACTIVATE ALL: materialize every universe's canonical offering and publish it into the
+     selected tenant's catalog, so the whole constitution becomes shopper-
      transactable in one action. Bounded and idempotent — a warm pass skips what is
      already on the shelf. */
   const actAll = document.getElementById("uvActivateAll");
   if (actAll) actAll.onclick = async () => {
+    const tid = target(); if (tid === null) return;
     if (!confirm("Publish a canonical offering for every universe into this store's catalog? Existing records are kept; already-published universes are skipped.")) return;
     try {
-      const r = await api("/ucos/catalog/activate?tenant_id=" + (window.__tenantId || 1), "POST", { limit: 250 });
+      const r = await api("/ucos/catalog/activate?tenant_id=" + tid, "POST", { limit: 250 });
       if (r.ok) toast("Activated " + stat2(r.activated) + " universes · " + stat2(r.published) + " offerings published" + (r.remaining ? " · " + stat2(r.remaining) + " remain (activate again)" : " · complete"));
       else toast("Activated " + stat2(r.activated) + " · " + stat2(r.failed) + " failed");
       render();
     } catch (e) { toast(e.message); }
   };
-  /* publish a universe's records into the current tenant's storefront — the record
+  /* publish a universe's records into the selected tenant's storefront — the record
      becomes shopper-transactable through the standard catalog/cart/checkout path */
   /* open this universe's records in the Data Studio, pre-selected and auto-loaded —
      the Studio is the console's record browser; the definitions view only lists shapes */
@@ -2055,19 +2221,21 @@ function wireUniverses() {
     render();
   });
   document.querySelectorAll("[data-uvpub]").forEach(b => b.onclick = async () => {
+    const tid = target(); if (tid === null) return;
     const key = b.dataset.uvpub;
     try {
       /* activate, not just publish: if the universe has no offering yet, its canonical
          one is materialized first, so the button is never a silent no-op */
-      const r = await api("/ucos/catalog/" + key + "/activate?tenant_id=" + (window.__tenantId || 1), "POST", {});
+      const r = await api("/ucos/catalog/" + key + "/activate?tenant_id=" + tid, "POST", {});
       toast(r.ok ? "Published " + r.published + " record(s) to the storefront" + (r.materialized ? " (canonical offering created)" : "") : (r.error || "publish failed"));
       render();
     } catch (e) { toast(e.message); }
   });
   document.querySelectorAll("[data-uvwd]").forEach(b => b.onclick = async () => {
+    const tid = target(); if (tid === null) return;
     const key = b.dataset.uvwd;
     try {
-      const r = await api("/ucos/catalog/" + key + "/withdraw?tenant_id=" + (window.__tenantId || 1), "POST", {});
+      const r = await api("/ucos/catalog/" + key + "/withdraw?tenant_id=" + tid, "POST", {});
       toast(r.ok ? "Withdrew " + r.removed + " record(s) from the storefront" : (r.error || "withdraw failed"));
       render();
     } catch (e) { toast(e.message); }
@@ -2360,10 +2528,10 @@ function gBar(title, icon, sub, datasets) {
   const opts = Object.values(G.tmap).map(t => `<option value="${t.id}" ${String(G.tenantId) === String(t.id) ? "selected" : ""}>${esc(t.name)}</option>`).join("");
   return `<div class="p-head"><h2>${icon} ${esc(title)}</h2><p class="p-sub">${sub}</p></div>
   <div class="p-panel" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px">
-    <label style="font-size:13px;color:var(--p-muted)">Store</label>
-    <select id="gTenant" style="min-width:170px"><option value="">All stores</option>${opts}</select>
-    <input class="p-search" id="gQ" placeholder="Search across stores…" value="${esc(G.q)}" style="flex:1;min-width:220px">
-    <span class="p-tag">${datasets} dataset${datasets === 1 ? "" : "s"} · read-only oversight</span>
+    <label style="font-size:13px;color:var(--p-muted)">Tenant</label>
+    <select id="gTenant" style="min-width:170px"><option value="">All tenants</option>${opts}</select>
+    <input class="p-search" id="gQ" placeholder="Search across tenants…" value="${esc(G.q)}" style="flex:1;min-width:220px">
+    <span class="p-tag">${datasets} dataset${datasets === 1 ? "" : "s"} · platform-level oversight</span>
   </div>`;
 }
 function wireG() {
@@ -2381,7 +2549,7 @@ function wireG() {
 async function gTable(key, opts = {}) {
   await gMeta();
   const def = (G.entities || []).find(e => e.key === key);
-  if (!def) return `<div class="p-empty">Dataset <code>${esc(key)}</code> is not served across stores.</div>`;
+  if (!def) return `<div class="p-empty">Dataset <code>${esc(key)}</code> is not served by the platform registry.</div>`;
   const p = new URLSearchParams();
   if (G.q) p.set("q", G.q);
   if (G.tenantId) p.set("tenant_id", G.tenantId);
@@ -2393,7 +2561,7 @@ async function gTable(key, opts = {}) {
   const fields = (def.fields || []).slice(0, 7);
   const span = fields.length + (def.tenantScoped ? 1 : 0) || 1;
   return `<div class="p-panel"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-    <h2 style="margin:0">${esc(def.name || key)}</h2><span class="p-tag">${rows.length}${def.tenantScoped ? " across stores" : ""}</span></div>
+    <h2 style="margin:0">${esc(def.name || key)}</h2><span class="p-tag">${rows.length}${def.tenantScoped ? " across tenants" : ""}</span></div>
     <div class="p-scroll-x"><table class="p-table"><thead><tr>${def.tenantScoped ? "<th>Store</th>" : ""}${fields.map(f => `<th>${esc(f.label)}</th>`).join("")}</tr></thead>
     <tbody>${rows.slice(0, 200).map(r => `<tr>${def.tenantScoped ? `<td>${gStore(r.tenant_id)}</td>` : ""}${fields.map(f => `<td>${gCell(r[f.key], f)}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${span}" class="p-empty">No records</td></tr>`}</tbody></table></div></div>`;
 }
@@ -2409,9 +2577,9 @@ function gRows(title, icon, rows, cols, opts = {}) {
   const c = cols || (r.length ? Object.keys(r[0]).filter(k => k !== "tenant_id" && k !== "store").slice(0, 7).map(k => ({ l: k, k })) : []);
   const f = x => c.map(col => `<td>${col.f ? col.f(x) : esc(String(x[col.k] ?? "").slice(0, 60))}</td>`).join("");
   return `<div class="p-panel"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-    <h2 style="margin:0">${icon} ${esc(title)}</h2><span class="p-tag">${r.length} across stores</span></div>
+    <h2 style="margin:0">${icon} ${esc(title)}</h2><span class="p-tag">${r.length} across tenants</span></div>
     <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Store</th>${c.map(col => `<th>${esc(col.l)}</th>`).join("")}</tr></thead>
-    <tbody>${r.slice(0, opts.cap || 150).map(x => `<tr><td>${gStore(x.tenant_id)}</td>${f(x)}</tr>`).join("") || `<tr><td colspan="${c.length + 1}" class="p-empty">No records across stores</td></tr>`}</tbody></table></div></div>`;
+    <tbody>${r.slice(0, opts.cap || 150).map(x => `<tr><td>${gStore(x.tenant_id)}</td>${f(x)}</tr>`).join("") || `<tr><td colspan="${c.length + 1}" class="p-empty">No records</td></tr>`}</tbody></table></div></div>`;
 }
 /* ---------- the views ---------- */
 async function vGops() {
@@ -2423,22 +2591,22 @@ async function vGops() {
     pending: r.data.pending, customers: r.data.customers, products: r.data.products,
     plan: (r.data.plan || {}).name
   }));
-  return gBar("Operations Hub", "🧭", "Cross-store health from each store's own stats handler — one fan-out, zero duplicated logic.", 4)
+  return gBar("Operations Hub", "🧭", "Platform health from each tenant's own stats handler — one fan-out, zero duplicated logic.", 4)
     + `<div class="p-cards">
-      <div class="p-stat"><em>Platform GMV</em><b>${money(m.revenue || 0)}</b><small>summed across stores</small></div>
+      <div class="p-stat"><em>Platform GMV</em><b>${money(m.revenue || 0)}</b><small>summed across tenants</small></div>
       <div class="p-stat"><em>Orders</em><b>${m.orders || 0}</b><small>${m.pending || 0} open</small></div>
       <div class="p-stat"><em>Customers</em><b>${m.customers || 0}</b></div>
-      <div class="p-stat"><em>Products</em><b>${(m.products || 0).toLocaleString()}</b><small>across all catalogs</small></div>
+      <div class="p-stat"><em>Products</em><b>${(m.products || 0).toLocaleString()}</b><small>platform-wide</small></div>
     </div>`
-    + gRows("Store comparison", "🏬", per, [
+    + gRows("Tenant comparison", "🏬", per, [
       { l: "Store", k: "store" }, { l: "Revenue", k: "revenue", f: x => money(x.revenue || 0) },
       { l: "Orders", k: "orders" }, { l: "Open", k: "pending" }, { l: "Customers", k: "customers" },
       { l: "Products", k: "products" }, { l: "Plan", k: "plan" }
     ])
-    + gRows("Low stock — all stores", "⚠️", m.lowStock, [
+    + gRows("Low stock — platform-wide", "⚠️", m.lowStock, [
       { l: "Product", f: x => esc(String(x.title || x.id).slice(0, 56)) }, { l: "Stock", k: "stock" }
     ])
-    + gRows("Recent orders — all stores", "🧾", m.recent, [
+    + gRows("Recent orders — platform-wide", "🧾", m.recent, [
       { l: "Order #", k: "num" }, { l: "Customer", k: "name" }, { l: "Total", k: "total", f: x => money(x.total) },
       { l: "Status", k: "status", f: x => `<span class="badge ${esc(x.status)}">${esc(x.status)}</span>` }
     ]);
@@ -2446,7 +2614,7 @@ async function vGops() {
 async function vGorders() {
   await gMeta();
   const ships = await gFan("/api/shipments");
-  return gBar("Orders · Returns · RFQs", "🧾", "Every store's orders, returns, B2B requests, fulfilment, serialized goods and quick-commerce dispatch — the same records the Store Console edits, read across stores.", 3)
+  return gBar("Orders · Returns · RFQs", "🧾", "Orders, returns, B2B requests, fulfilment, serialized goods and quick-commerce dispatch — the same records each tenant's console edits, read platform-wide.", 3)
     + await gTable("order") + await gTable("ret") + await gTable("rfq")
     + gRows("Shipments & fulfilment", "🚚", (ships.merged || {}).shipments, [
       { l: "Ref", k: "tracking_ref" }, { l: "Order", k: "order_id" }, { l: "Carrier", k: "carrier" },
@@ -2466,14 +2634,14 @@ async function gFanRows(path, key) {
 async function vGcatalog() {
   await gMeta();
   const plan = await gFan("/api/admin/planning");
-  return gBar("Catalog · Products · SKUs", "📦", "Products, variants/SKUs, inventory, warehousing and replenishment planning for every store — inventory counts are the platform's goods view.", 5)
+  return gBar("Catalog · Products · SKUs", "📦", "Products, variants/SKUs, inventory, warehousing and replenishment planning platform-wide — inventory counts are the platform's goods view.", 5)
     + await gTable("product") + await gTable("sku") + await gTable("inventory") + await gTable("variant_group") + await gTable("warehouse")
     + gRows("Replenishment plan", "📦", (plan.merged || {}).replenishments)
-    + gRows("Planning stats — per store", "📈", (plan.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...(r.data.stats || {}) })));
+    + gRows("Planning stats — per tenant", "📈", (plan.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...(r.data.stats || {}) })));
 }
 async function vGb2b() {
   await gMeta();
-  return gBar("Sellers · Suppliers · B2B", "🤝", "Marketplace sellers & onboarding, suppliers and procurement, B2B contracts/tenders, FBA and smart fulfilment, buyer claims, and trade trust (assurance, verification, letters of credit) across every store.", 11)
+  return gBar("Sellers · Suppliers · B2B", "🤝", "Marketplace sellers & onboarding, suppliers and procurement, B2B contracts/tenders, FBA and smart fulfilment, buyer claims, and trade trust (assurance, verification, letters of credit) — platform-wide.", 11)
     + await gTable("seller") + await gTable("supplier") + await gTable("product_supplier")
     + await gTable("contract") + await gTable("tender")
     + await gTable("seller_onboarding") + await gTable("seller_offer") + await gTable("seller_performance")
@@ -2483,7 +2651,7 @@ async function vGb2b() {
 async function vGmarket() {
   await gMeta();
   const [ads, kpi] = await Promise.all([gFan("/api/marketplace/ads"), gFan("/api/admin/marketplace/metrics")]);
-  return gBar("Ads · Marketplace", "📣", "Sponsored inventory, auctions and seller KPIs — GSP bidding, take rate and settlement across stores.", 2)
+  return gBar("Ads · Marketplace", "📣", "Sponsored inventory, auctions and seller KPIs — GSP bidding, take rate and settlement, platform-wide.", 2)
     + gRows("Ad inventory", "📣", (ads.merged || {}).ads, [
       { l: "Name", k: "name" }, { l: "Seller", k: "seller_id" }, { l: "Model", k: "bid_model" },
       { l: "Bid", k: "bid_amount", f: x => money(x.bid_amount) }, { l: "Spent", k: "spent", f: x => money(x.spent) },
@@ -2510,12 +2678,12 @@ async function vGfinance() {
       { l: "Ref", k: "ref" }, { l: "Kind", k: "kind" }, { l: "Gross", k: "gross", f: x => money(x.gross) },
       { l: "Net", k: "net", f: x => money(x.net) }, { l: "Status", k: "status" }
     ])
-    + gRows("Billing — per store", "🧮", (bill.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...r.data })))
+    + gRows("Billing — per tenant", "🧮", (bill.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...r.data })))
     + gRows("Wallet transfers", "🔁", (xfer.merged || {}).transfers || (xfer.merged || {}).rows || (xfer.merged || {}).entries)
     + gRows("Gateway turnover", "💳", (paym.merged || {}).payments, [
       { l: "Gateway", k: "gateway" }, { l: "Count", k: "c" }, { l: "Amount", k: "amt", f: x => money(x.amt) }, { l: "Fee", k: "fee", f: x => money(x.fee) }
     ])
-    + gRows("Configured providers — per store", "🔌", (gw.results || []).filter(r => r.ok && r.data).map(r => {
+    + gRows("Configured providers — per tenant", "🔌", (gw.results || []).filter(r => r.ok && r.data).map(r => {
       const d = r.data;
       return { tenant_id: r.tenant_id, store: r.name, gateways: (d.gateways || []).map(x => x.id).join(", "), carriers: (d.carriers || []).map(x => x.id).join(", "), notifiers: (d.notifiers || []).map(x => x.id).join(", "), country: (d.country || {}).code };
     }))
@@ -2529,21 +2697,21 @@ async function vGoffers() {
     gFan("/api/admin/promotions"), gFan("/api/admin/retention"), gFan("/api/admin/recurring"), gFan("/api/admin/memberships"),
     gFan("/api/affiliate/affiliates"), gFan("/api/affiliate/payouts")
   ]);
-  return gBar("Offers · Subscriptions · Affiliates", "🏷️", "Promotions, retention policy, recurring/membership programmes and the affiliate network across every store.", 4)
+  return gBar("Offers · Subscriptions · Affiliates", "🏷️", "Promotions, retention policy, recurring/membership programmes and the affiliate network, platform-wide.", 4)
     + gRows("Promotions & coupons", "🏷️", (promos.merged || {}).promotions, [
       { l: "Name", k: "name" }, { l: "Type", k: "type" }, { l: "Value", k: "value" }, { l: "Code", k: "code" },
       { l: "Status", k: "status", f: x => `<span class="badge ${esc(x.status)}">${esc(x.status)}</span>` }
     ])
     + gRows("Recurring schedules", "🔁", (rec.merged || {}).recurring || (rec.merged || {}).schedules)
     + gRows("Memberships", "🏅", (mem.merged || {}).memberships)
-    + gRows("Retention policy — per store", "🗑️", (ret.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...(r.data.retention || r.data.defaults || {}) })))
+    + gRows("Retention policy — per tenant", "🗑️", (ret.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...(r.data.retention || r.data.defaults || {}) })))
     + gRows("Affiliates & influencers", "🤝", (aff.merged || {}).affiliates)
     + gRows("Affiliate payouts", "💸", (affPayout.merged || {}).payouts);
 }
 async function vGsupport() {
   await gMeta();
   const [tk, sla] = await Promise.all([gFan("/api/admin/helpdesk/tickets"), gFan("/api/admin/helpdesk/sla")]);
-  return gBar("Support · SLA", "🎧", "Every store's support queue and SLA health — cases, agents and breaches, cross-store.", 2)
+  return gBar("Support · SLA", "🎧", "The platform's support queue and SLA health — cases, agents and breaches, cross-store.", 2)
     + gRows("Support queue", "🎧", (tk.merged || {}).tickets, [
       { l: "Ref", k: "ref" }, { l: "Subject", k: "subject" }, { l: "Customer", k: "owner_name" },
       { l: "Priority", k: "priority" }, { l: "Status", k: "status" }, { l: "Agent", k: "assignee" }, { l: "CSAT", k: "csat" }
@@ -2556,7 +2724,7 @@ async function vGsupport() {
 async function vGcontent() {
   await gMeta();
   const [rev, queue] = await Promise.all([gFan("/api/admin/reviews"), gFan("/api/admin/ugc/queue")]);
-  return gBar("Content · Brands · UGC", "🖼️", "Home content (banners/cards/departments), brands, taxonomy, the EAV attribute catalogue, and reviews/Q&A moderation across every store.", 6)
+  return gBar("Content · Brands · UGC", "🖼️", "Home content (banners/cards/departments), brands, taxonomy, the EAV attribute catalogue, and reviews/Q&A moderation, platform-wide.", 6)
     + await gTable("brand") + await gTable("banner") + await gTable("card") + await gTable("department")
     + await gTable("taxonomy") + await gTable("attribute")
     + gRows("Latest reviews", "⭐", (rev.merged || {}).reviews, [
@@ -2570,9 +2738,9 @@ async function vGcontent() {
 async function vGrisk() {
   await gMeta();
   const [risk, trash, tax] = await Promise.all([gFan("/api/admin/risk/queue"), gFan("/api/admin/trash"), gFan("/api/admin/tax/report")]);
-  return gBar("Risk · Compliance · Trash", "🛡️", "Fraud queue, soft-delete/retention and tax exposure across every store, plus compliance & localization records.", 3)
+  return gBar("Risk · Compliance · Trash", "🛡️", "Fraud queue, soft-delete/retention and tax exposure, plus compliance & localization records — platform-wide.", 3)
     + gRows("Risk / fraud queue", "🛡️", (risk.merged || {}).queue)
-    + gRows("Trash — per store", "🗑️", (trash.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...(r.data.counts || {}) })))
+    + gRows("Trash — per tenant", "🗑️", (trash.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...(r.data.counts || {}) })))
     + gRows("Tax report", "🧾", (tax.merged || {}).rows || (tax.merged || {}).report || (tax.merged || {}).lines)
     + await gTable("compliance") + await gTable("localization");
 }
@@ -2581,24 +2749,24 @@ async function vGteam() {
   const [staff, roles, sso, hooks, set] = await Promise.all([
     gFan("/api/admin/staff"), gFan("/api/admin/roles"), gFan("/api/admin/sso"), gFan("/api/admin/webhooks"), gFan("/api/admin/settings")
   ]);
-  return gBar("Team · SSO · Webhooks · Settings", "👥", "Staff & RBAC roles, SSO configuration, webhook deliveries and each store's settings across every store.", 4)
+  return gBar("Team · SSO · Webhooks · Settings", "👥", "Staff & RBAC roles, SSO configuration, webhook deliveries and tenant settings — platform-wide.", 4)
     + gRows("Staff", "👥", (staff.merged || {}).staff, [
       { l: "Name", k: "name" }, { l: "Email", k: "email" }, { l: "Role", k: "staff_role" },
       { l: "Disabled", k: "disabled", f: x => x.disabled ? "✓" : "—" }
     ])
     + gRows("RBAC roles", "🔐", (roles.merged || {}).roles)
-    + gRows("SSO — per store", "🔑", (sso.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...r.data })))
+    + gRows("SSO — per tenant", "🔑", (sso.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...r.data })))
     + gRows("Webhooks", "🔗", (hooks.merged || {}).webhooks)
     + gRows("Webhook deliveries", "📨", (hooks.merged || {}).deliveries)
-    + gRows("Store settings — per store", "⚙️", (set.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...r.data })));
+    + gRows("Tenant settings — per tenant", "⚙️", (set.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...r.data })));
 }
 async function vGanalytics() {
   await gMeta();
   const [an, mon] = await Promise.all([gFan("/api/admin/analytics"), gFan("/api/admin/monitor")]);
   const a = an.merged || {};
-  return gBar("Analytics", "📊", "Revenue mix, top products, funnel and inventory value aggregated across every store.", 2)
+  return gBar("Analytics", "📊", "Revenue mix, top products, funnel and inventory value aggregated platform-wide.", 2)
     + `<div class="p-cards">
-      <div class="p-stat"><em>Inventory value</em><b>${money(a.invValue || 0)}</b><small>across stores</small></div>
+      <div class="p-stat"><em>Inventory value</em><b>${money(a.invValue || 0)}</b><small>platform-wide</small></div>
       <div class="p-stat"><em>Funnel views</em><b>${((a.funnel || {}).views) || 0}</b></div>
       <div class="p-stat"><em>Funnel carts</em><b>${((a.funnel || {}).carts) || 0}</b></div>
       <div class="p-stat"><em>Funnel orders</em><b>${((a.funnel || {}).orders) || 0}</b></div>
@@ -2609,74 +2777,13 @@ async function vGanalytics() {
     + gRows("Revenue by industry", "🏭", a.byIndustry, [{ l: "Industry", k: "industry" }, { l: "Revenue", k: "rev", f: x => money(x.rev) }])
     + gRows("Product types", "🗂️", a.byType, [{ l: "Type", k: "type" }, { l: "Count", k: "c" }])
     + gRows("Experiments (A/B)", "🧪", ((await gFan("/api/admin/experiments")).merged || {}).experiments)
-    + gRows("Monitoring — per store", "📈", (mon.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...r.data })));
+    + gRows("Monitoring — per tenant", "📈", (mon.results || []).filter(r => r.ok && r.data).map(r => ({ tenant_id: r.tenant_id, store: r.name, ...r.data })));
 }
-/* ---------- the hub: stores & services, centralised ---------- */
-/* One front door for everything about a store and its services. Rather than re-listing
-   capabilities that already have their own surfaces, the hub reads each store's live
-   service/monitor profile through the fan-out and shows, per store: what it is, which
-   services it uses, its health, and its settings — then points into the dedicated surfaces
-   (Wizard, Stores, Provider Registry, Provisioning, Monitoring) for the actual edits.
-   Centralisation of *view*, not duplication of *logic*. */
-const HUB = { tab: "stores" };
-function hubTabs() {
-  const tabs = [["stores", "🏬 Stores"], ["services", "🔌 Services"], ["settings", "⚙️ Settings"], ["monitor", "📈 Monitor"]];
-  return `<div class="p-panel" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 14px">
-    <b style="font-size:14px">Store &amp; Service Setup</b>
-    ${tabs.map(([k, l]) => `<button class="p-btn sm ${HUB.tab === k ? "primary" : ""}" data-hubtab="${k}">${l}</button>`).join("")}
-    <span style="flex:1"></span><span class="p-tag">author · manage · configure · monitor — in one place</span></div>`;
-}
-function wireHubTabs() {
-  $$("[data-hubtab]").forEach(b => b.onclick = () => { HUB.tab = b.dataset.hubtab; render(); });
-}
-const hubServicesOf = d => (arr, key) => ((d && d[arr]) || []).filter(x => x[key]).map(x => x.id).join(", ") || "—";
-async function vHub() {
-  await gMeta();
-  const { tenants } = await api("/platform/tenants");
-  P.tenants = tenants;
-  let body = "";
-  if (HUB.tab === "stores") {
-    body = `<div class="p-panel"><h2>Stores (${tenants.length})</h2>
-      <p style="margin:0 0 12px;color:var(--p-muted);font-size:13px">Author a new store with the guided wizard, or govern an existing one — suspend, invoice, impersonate its Store Console. The wizard is the single authoring path; every store below was created by it.</p>
-      <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Store</th><th>Slug</th><th>Country</th><th>Mode</th><th>Plan</th><th>Status</th><th></th></tr></thead>
-      <tbody>${tenants.map(t => `<tr><td><b>${esc(t.name)}</b></td><td>${esc(t.slug)}</td><td>${esc(t.country || "—")}</td><td>${esc(t.mode)}</td><td>${esc(t.plan || "—")}</td>
-        <td><span class="badge ${esc(t.status)}">${esc(t.status)}</span></td>
-        <td style="white-space:nowrap"><button class="p-btn sm" data-tedit="${t.id}">Setup</button>
-        <button class="p-btn sm primary" data-imp="${t.id}">Manage · Catalog</button>
-        <button class="p-btn sm" data-susp="${t.id}">${t.status === "active" ? "Suspend" : "Resume"}</button></td></tr>`).join("") || '<tr><td colspan="7" class="p-empty">No stores yet</td></tr>'}</tbody></table></div></div>`;
-  } else if (HUB.tab === "services" || HUB.tab === "settings" || HUB.tab === "monitor") {
-    const path = HUB.tab === "services" ? "/api/admin/gateways" : HUB.tab === "settings" ? "/api/admin/settings" : "/api/admin/monitor";
-    const j = await gFan(path);
-    const rows = (j.results || []).filter(r => r.ok && r.data).map(r => {
-      const d = r.data;
-      if (HUB.tab === "services") return { tenant_id: r.tenant_id, store: r.name, country: (d.country || {}).code, payments: hubServicesOf(d)("gateways", "enabled"), shipping: hubServicesOf(d)("carriers", "enabled"), notifications: hubServicesOf(d)("notifiers", "enabled") };
-      if (HUB.tab === "monitor") { const t2 = d.totals || {}; return { tenant_id: r.tenant_id, store: r.name, req: t2.req, err: t2.err, avgMs: t2.avgMs }; }
-      const s = d.settings || d.brand || d;
-      return { tenant_id: r.tenant_id, store: r.name, mode: s.mode || (s.commerce && s.commerce.mode) || "—", currency: (s.commerce && s.commerce.currency) || "—", features: Object.keys(s.features || {}).filter(k => s.features[k]).length };
-    });
-    const cols = HUB.tab === "services" ? ["country", "payments", "shipping", "notifications"]
-      : HUB.tab === "monitor" ? ["req", "err", "avgMs"]
-        : ["mode", "currency", "features"];
-    const heads = HUB.tab === "services" ? ["Country", "Payment gateways", "Shipping carriers", "Notifications"]
-      : HUB.tab === "monitor" ? ["Requests", "Errors", "Avg ms"]
-        : ["Deployment mode", "Currency", "Features on"];
-    const title = HUB.tab === "services" ? "Services configured per store" : HUB.tab === "monitor" ? "Health per store" : "Settings per store";
-    const sub = HUB.tab === "services" ? "Which payment, shipping and notification providers each store has enabled — the registry of available services is Provider Registry; a store's own overrides live in its Store Console."
-      : HUB.tab === "monitor" ? "Live traffic per store from each store's own monitor handler — the platform-wide view is Monitoring."
-        : "Each store's commerce settings (read-only here) — platform defaults are set in Provisioning.";
-    body = `<div class="p-panel"><h2>${esc(title)}</h2><p style="margin:0 0 12px;color:var(--p-muted);font-size:13px">${sub}</p>
-      <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Store</th>${heads.map(h => `<th>${h}</th>`).join("")}</tr></thead>
-      <tbody>${rows.map(r => `<tr><td>${gStore(r.tenant_id)}</td>${cols.map(c => `<td>${esc(String(r[c] ?? ""))}</td>`).join("")}</tr>`).join("") || '<tr><td colspan="4" class="p-empty">No data yet</td></tr>'}</tbody></table></div></div>`;
-  }
-  return hubTabs() + body;
-}
-function wireHub() { wireHubTabs(); }
-/* ---------- end hub ---------- */
 async function vGdata() {
   await gMeta();
   const entities = G.entities || [];
   const opts = entities.map(e => `<option value="${esc(e.key)}" ${G.entity === e.key ? "selected" : ""}>${esc(e.key)}</option>`).join("");
-  return gBar("Data Explorer", "🧬", "Every entity the platform serves, across every store — pick a dataset and filter. The menu is generated from live entity metadata, not a fixed list.", 1)
+  return gBar("Data Explorer", "🧬", "Every entity the platform serves — pick a dataset and filter. The menu is generated from live entity metadata, not a fixed list.", 1)
     + `<div class="p-panel" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px">
       <label style="font-size:13px;color:var(--p-muted)">Dataset</label>
       <select id="gEntity" style="min-width:220px">${opts}</select>
@@ -2688,64 +2795,337 @@ function wireGdata() {
   if (sel) sel.onchange = () => { G.entity = sel.value; render(); };
 }
 /* ---------- end Global Operations ---------- */
+
+/* ════════════════════════ THE ZERO-GAP RESOLVERS ════════════════════════
+   Any NAV leaf without a dedicated view resolves here. Both reuse the same
+   metadata-driven readers the rest of the console uses, so a leaf is NEVER a dead
+   link: an entity-backed capability renders as a cross-entity dataset table, a
+   universe-backed one renders as its registry record plus its live records. This is
+   what "nothing is orphaned" means in practice — the tree is complete by construction,
+   and the data is served by the platform, never re-declared in the front-end. */
+
+/* { e: <entityKey> } → the generic platform dataset reader. Falls back to the universe
+   entity of the same name when the core registry does not serve the key, so a leaf
+   always finds its data wherever it lives. */
+async function vEntityLeaf(key, meta) {
+  await gMeta();
+  const served = (G.entities || []).some(e => e.key === key);
+  if (served) {
+    return gBar(meta.label.replace(/^\S+\s/, ""), meta.label.match(/^\S+/)?.[0] || "◈",
+      "The " + esc(meta.home) + " registry — every record the platform holds for this capability, read through the generic dataset reader.", 1)
+      + await gTable(key);
+  }
+  return vUniverseLeaf(key, meta);
+}
+/* { u: <universeKey> } → the constitutional registry record for the universe: its
+   declaration, its lifecycle state, and its instantiated records. When a universe has
+   not been instantiated, the console says so plainly and offers the instantiation path
+   rather than rendering an empty table with no explanation. */
+async function vUniverseLeaf(key, meta) {
+  await gMeta();
+  const d = await api("/ucos/universes").catch(() => null);
+  const uni = d && (d.universes || []).find(x => x.key === key || x.entity_key === key);
+  const title = meta.label.replace(/^\S+\s/, "");
+  const icon = meta.label.match(/^\S+/)?.[0] || "◈";
+  if (!uni) {
+    return gBar(title, icon, "This capability is declared in the constitutional corpus but is not yet bound to a registry record. Nothing is broken — the leaf is reached, and the platform reports the gap honestly instead of faking empty data.", 0)
+      + `<div class="p-panel"><div class="p-empty">Not instantiated in this registry.
+        <div style="margin-top:10px"><button class="p-btn sm primary" data-uvinst="1">⚡ Instantiate universes from the constitution</button></div></div></div>`;
+  }
+  const head = gBar(title, icon, "The " + esc(uni.name) + " universe — declared in " + esc(uni.source_doc) + " line " + (uni.source_line || "?") + ", registered as a foundation and instantiated as a live entity (Article 4.2). Fields are derived from the corpus itself; no per-universe code exists.", 1)
+    + `<div class="p-cards">
+      <div class="p-stat"><em>Concepts</em><b>${stat2(uni.concepts || 0)}</b></div>
+      <div class="p-stat"><em>Records</em><b>${stat2(uni.records || 0)}</b></div>
+      <div class="p-stat"><em>Lifecycle</em><b>${esc(uni.lifecycle || "—")}</b></div>
+      <div class="p-stat"><em>Entity</em><b style="font-size:13px">${esc(uni.entity_key)}</b></div>
+    </div>`;
+  const served = (G.entities || []).some(e => e.key === uni.entity_key);
+  return head
+    + (served ? await gTable(uni.entity_key)
+      : `<div class="p-panel"><div class="p-empty">Universe entity <code>${esc(uni.entity_key)}</code> holds ${stat2(uni.records || 0)} record(s). Browse them in Data Studio.</div>
+         <div style="margin-top:8px"><button class="p-btn sm primary" data-uv="${esc(uni.entity_key)}">Open in Data Studio →</button></div></div>`);
+}
+function wireLeaf() {
+  document.querySelectorAll("[data-uv]").forEach(b => b.onclick = () => { window.__entityJump = b.dataset.uv; view = "studio"; render(); });
+  const inst = document.querySelector("[data-uvinst]");
+  if (inst) inst.onclick = async () => {
+    try { const r = await api("/ucos/universes/instantiate", "POST", {}); toast((r.stats && r.stats.coverage === 100) ? "All universes instantiated" : "Instantiated " + r.instantiated + " of " + r.discovered); render(); }
+    catch (e) { toast(e.message); }
+  };
+}
+
+/* 02 · Knowledge — the industry/category tree. The taxonomy endpoint returns a nested
+   tree (industry → category → subcategory), so the view walks it recursively rather than
+   flattening the hierarchy: an operator sees the taxonomy the way it is declared. */
+async function vTaxonomy() {
+  await gMeta();
+  const t = await api("/taxonomy");
+  const renderNode = (n, d) => `<details class="p-node" ${d < 1 ? "open" : ""} style="margin-left:${d * 14}px">
+    <summary><span class="p-ico">${esc(n.icon || "📂")}</span> <b>${esc(n.name)}</b>
+      <span class="p-tag">${esc(n.level || "category")}${n.key ? " · " + esc(n.key) : ""}</span>
+      ${n.active ? "" : '<span class="p-tag" style="background:var(--p-red);color:#fff">inactive</span>'}</summary>
+    ${(n.children || []).map(c => renderNode(c, d + 1)).join("")}</details>`;
+  const roots = (t.tree || []).filter(n => n.level === "industry");
+  return gBar("Industry · Categories", "🗂️", "The platform's canonical industry → category tree. Every store inherits this taxonomy; nothing here is per-store.", roots.length)
+    + `<div class="p-panel">${roots.map(n => renderNode(n, 0)).join("") || '<div class="p-empty">No taxonomy seeded</div>'}</div>`
+    + await gTable("taxonomy");
+}
+/* 02 · Knowledge — brands & manufacturers across stores, through the generic
+   platform-data reader (both are standard entities, so no bespoke handler is needed). */
+async function vBrands() {
+  await gMeta();
+  return gBar("Brands · Manufacturers", "🏷️", "The brand and manufacturer registry — the knowledge layer a catalog's provenance resolves against, platform-wide.", 2)
+    + await gTable("brand") + await gTable("supplier");
+}
+/* 09 · Platform — the capability tree: every capability and its sub-capabilities grouped
+   by domain, showing which are enabled for the chosen tenant. The constitutional "one
+   canonical home" view of what the platform composes from. */
+async function vCapabilityTree() {
+  capData = await api("/capabilities" + (capTenant ? "?tenant_id=" + encodeURIComponent(capTenant) : ""));
+  capTenant = capData.tenant_id;
+  const d = capData;
+  const byDomain = {};
+  for (const c of d.catalog) (byDomain[c.domain] = byDomain[c.domain] || []).push(c);
+  const DOMAINS = { marketplace: "🛒 Marketplace", qc: "⚡ Quick-commerce", fintech: "💸 Fintech", trade: "🤝 B2B trust & trade" };
+  const tenantOpts = (d.tenants || []).map(t => `<option value="${t.id}" ${t.id === capTenant ? "selected" : ""}>${esc(t.name)} · ${esc(t.slug)}</option>`).join("");
+  const domHtml = Object.keys(byDomain).map(dom => {
+    const caps = byDomain[dom];
+    const on = caps.filter(c => c.on).length;
+    /* a capability's params ARE its sub-capabilities — each a tunable facet the platform
+       composes, so the tree nests them under their parent capability. */
+    const capHtml = caps.map(c => `<details class="p-node" ${c.on ? "open" : ""}>
+      <summary><span class="p-ico">${c.on ? "✅" : "⚪"}</span> <b>${esc(c.label || c.key)}</b>
+        <code style="font-size:11px">${esc(c.key)}</code>
+        <span class="p-tag">${Object.keys(c.params || {}).length} sub-capabilities</span></summary>
+      <div style="padding:6px 0 6px 18px;display:flex;flex-direction:column;gap:4px">
+        ${Object.entries(c.params || {}).map(([k, p]) => `<div class="p-tag">${esc(p.label || k)} <code style="font-size:10px">${esc(p.type)}${p.unit ? " · " + esc(p.unit) : ""}</code>${p.description ? " — " + esc(p.description) : ""}</div>`).join("") || '<div class="p-empty">No sub-capabilities declared</div>'}
+        ${c.description ? `<div style="font-size:12px;color:var(--p-muted)">${esc(c.description)}</div>` : ""}
+      </div></details>`).join("");
+    return `<div class="p-panel"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <h2 style="margin:0">${DOMAINS[dom] || "◈ " + esc(dom)}</h2>
+      <span class="p-tag">${on}/${caps.length} enabled</span></div>${capHtml}</div>`;
+  }).join("");
+  return gBar("Capability Tree", "🌳", "Every capability in the constitutional registry and its sub-capabilities, grouped by domain. Toggle and tune in Capabilities; this is the map of what composes.", d.catalog.length)
+    + `<div class="p-panel"><label style="font-size:12px">Tenant scope
+        <select id="capTenant">${tenantOpts}</select></label></div>`
+    + (domHtml || '<div class="p-empty">No capabilities registered</div>');
+}
+function wireCapabilityTree() {
+  const sel = $("#capTenant");
+  if (sel) sel.onchange = () => { capTenant = sel.value; render(); };
+}
+/* 09 · Platform — the composition engine. Application = Capability Composition: any
+   declared capability (a universe, a catalog capability, a dataset) is materialized as a
+   data model + API + workflow + UI + dashboard + security policy, derived from its own
+   declaration. This view is the platform's build surface — an operator picks a declared
+   capability and the platform composes it, never the reverse. Every row resolves to real
+   machinery; nothing here is a mock. */
+let composeFilter = "";
+async function vCompose() {
+  const c = await api("/compose/candidates");
+  const led = await api("/compose/ledger").catch(() => ({ ledger: [] }));
+  const ledger = led.ledger || [];
+  const k = composeFilter || "";
+  const match = x => !k || (x.label + " " + x.key + " " + (x.home || "") + " " + (x.source || "")).toLowerCase().includes(k.toLowerCase());
+  const CAP = 120;
+  const group = (title, icon, list, note) => {
+    const rows = list.filter(match);
+    return `<div class="p-panel"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
+      <h2 style="margin:0">${icon} ${esc(title)}</h2><span class="p-tag">${rows.length}${rows.length > CAP ? " shown of " + list.length : " · all"}</span>
+      ${note ? `<span style="font-size:12px;color:var(--p-muted)">${note}</span>` : ""}</div>
+      <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Capability</th><th>Key</th><th>Declared in</th><th>Home</th><th>Status</th><th></th></tr></thead>
+      <tbody>${rows.slice(0, CAP).map(x => `<tr>
+        <td><b>${esc(x.label)}</b>${x.concepts ? ` <span class="p-tag">${x.concepts} concepts</span>` : ""}</td>
+        <td><code style="font-size:11px">${esc(x.key)}</code></td>
+        <td><span class="p-tag">${esc(x.source || "—")}</span></td>
+        <td style="font-size:12px">${esc(x.home || "—")}</td>
+        <td>${x.composed ? '<span class="badge canonical">composed</span>' : '<span class="p-tag">declared</span>'}</td>
+        <td style="white-space:nowrap">${x.composed
+          ? `<button class="p-btn sm" data-recomp="${esc(x.key)}" title="Re-derive from the current declaration">Recompose</button>
+             <button class="p-btn sm" data-manifest="${esc(x.key)}" title="Every artifact the composition produced">Manifest</button>`
+          : `<button class="p-btn sm primary" data-comp="${esc(x.key)}" title="Materialize this capability's full application surface">Compose</button>`}</td></tr>`).join("")
+        || `<tr><td colspan="6" class="p-empty">${k ? "No match for “" + esc(k) + "”" : "Nothing declared"}</td></tr>`}</tbody></table></div></div>`;
+  };
+  return `<div class="p-head"><h2>🧬 Composition Engine</h2>
+    <p class="p-sub">The constitution's central claim, made mechanical — <b>Application = Capability Composition</b>. Compose any declared capability and the platform materializes its data model, REST API, lifecycle workflow, console UI, dashboard and security policy from the declaration itself. This path contains no per-capability code, so a capability the corpus adds tomorrow composes with no new code anywhere.</p></div>
+  <div class="p-cards">
+    <div class="p-stat"><em>Universes</em><b>${stat2(c.counts.universe)}</b><small>declared in the corpus</small></div>
+    <div class="p-stat"><em>Capabilities</em><b>${stat2(c.counts.capability)}</b><small>in the catalog</small></div>
+    <div class="p-stat"><em>Datasets</em><b>${stat2(c.counts.entity)}</b><small>declared entities</small></div>
+    <div class="p-stat"><em>Composed</em><b>${stat2(c.counts.composed)}</b><small>materialized so far</small></div>
+  </div>
+  <div class="p-panel" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px">
+    <input class="p-search" id="compQ" placeholder="Filter capabilities by name, key or source…" value="${esc(k)}" style="flex:1;min-width:240px">
+    <span class="p-tag">${stat2(ledger.length)} composition${ledger.length === 1 ? "" : "s"} in the ledger</span>
+  </div>
+  ${group("Universes", "🧬", c.universes, "the constitutional corpus's own declarations")}
+  ${group("Capabilities", "⚙️", c.capabilities, "the configurable platform's catalog")}
+  ${group("Datasets", "🧱", c.entities, "the platform's declared entities")}
+  <div class="p-panel"><h2>🧾 Composition ledger</h2>
+    <p style="margin:0 0 10px;color:var(--p-muted);font-size:13px">Append-only — every composition and recomposition is recorded with its provenance, so the platform's evolution is itself traceable (Article 7 — Evolution Governance).</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Capability</th><th>Model</th><th>Declared in</th><th class="num">Records</th><th>Composed</th></tr></thead>
+    <tbody>${ledger.map(e => `<tr>
+      <td><b>${esc(e.capability)}</b></td>
+      <td><code style="font-size:11px">${esc(e.key)}</code></td>
+      <td><span class="p-tag">${esc(e.source || "—")}</span></td>
+      <td class="num">${stat2(e.records || 0)}</td>
+      <td>${esc(String(e.composed_at || "").replace("T", " ").slice(0, 19))}</td></tr>`).join("")
+      || `<tr><td colspan="5" class="p-empty">Nothing composed yet — compose a capability above.</td></tr>`}</tbody></table></div></div>`;
+}
+function wireCompose() {
+  const q = $("#compQ");
+  if (q) {
+    let tm;
+    q.oninput = () => { clearTimeout(tm); const pos = q.selectionStart; tm = setTimeout(() => { render().then(() => { const n = $("#compQ"); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) { } } }); }, 400); };
+    q.onkeydown = e => { if (e.key === "Enter") { clearTimeout(tm); render(); } };
+  }
+  const act = async (key, path, ok) => {
+    try { const r = await api(path, "POST", {}); toast(ok + ": " + ((r.model && r.model.label) || key)); render(); }
+    catch (e) { toast(e.message); }
+  };
+  $$("#vBody [data-comp]").forEach(b => b.onclick = () => act(b.dataset.comp, "/compose/" + encodeURIComponent(b.dataset.comp), "Composed"));
+  $$("#vBody [data-recomp]").forEach(b => b.onclick = () => act(b.dataset.recomp, "/compose/" + encodeURIComponent(b.dataset.recomp) + "/recompose", "Recomposed"));
+  $$("#vBody [data-manifest]").forEach(b => b.onclick = async () => {
+    try {
+      const m = await api("/compose/" + encodeURIComponent(b.dataset.manifest));
+      const a = m.artifacts || {};
+      const row = (label, v) => `<div style="display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--p-border);font-size:13px"><span style="min-width:130px;color:var(--p-muted)">${label}</span><span>${v}</span></div>`;
+      modal(`<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><h3 style="margin:0">🧬 ${esc(m.capability)}</h3>
+        <span class="p-tag">${esc(m.key)}</span><span style="flex:1"></span>
+        <button class="p-btn sm" data-mclose>✕</button></div>
+        ${row("Declared in", `<span class="p-tag">${esc(m.source || "—")}</span>`)}
+        ${row("Records", `<b>${stat2(m.records || 0)}</b> in the composed dataset`)}
+        ${row("Data model", `<code>${esc((a.dataModel || {}).key || "—")}</code> · ${((a.dataModel || {}).fields || 0)} fields · <code>${esc((a.dataModel || {}).endpoint || "")}</code>`)}
+        ${row("API", (((a.api || {}).rest || []).map(x => `<code style="font-size:11px">${esc(x)}</code>`).join(" ") || "—"))}
+        ${row("Workflow", `<code>${esc((a.workflow || {}).key || "—")}</code> · ${(((a.workflow || {}).steps || []).length)} states · ${(((a.workflow || {}).config || {}).grammar || []).length} grammar tokens`)}
+        ${row("UI", `${(((a.ui || {}).listFields || []).length)} list fields · ${(((a.ui || {}).formFields || []).length)} form fields · ${(((a.ui || {}).surfaces || []).join(", ") || "")}`)}
+        ${row("Dashboard", `<code>${esc((a.dashboard || {}).key || "—")}</code> · ${(((a.dashboard || {}).widgets || []).length)} widgets`)}
+        ${row("Security", `read: ${esc((((a.security || {}).roles || {}).read || []).join(", "))} · write: ${esc((((a.security || {}).roles || {}).write || []).join(", "))}`)}
+        ${row("Composed", esc(String(m.composed_at || "").replace("T", " ").slice(0, 19)))}`);
+    } catch (e) { toast(e.message); }
+  });
+}
+/* the dedicated views — the console's purpose-built surfaces. Every leaf whose resolver
+   is { v: ... } lands here; the generic paths below never re-implement them. */
+/* the dedicated views — the console's purpose-built surfaces. Every leaf whose resolver
+   is { v: ... } lands here. VIEWFNS produces the HTML; WIREFNS attaches the behaviour and
+   runs strictly AFTER innerHTML is assigned, so a wiring pass never looks up a detached
+   DOM node (the order bug that made gproducts throw on a null #gpNew). */
+const VIEWFNS = {
+  dash: () => vDash(),
+  tenants: () => vTenants(),
+  plans: () => vPlans(),
+  subs: () => vSubs(),
+  invoices: () => vInvoices(),
+  billing: () => vBillingOps(),
+  gproducts: () => vGproducts(),
+  modules: () => vModules(),
+  providers: () => vProviders(),
+  ucii: () => vUCII(),
+  ucos: () => vUCOS(),
+  universes: () => vUniverses(),
+  domains: () => vDomains(),
+  foundations: () => vFoundations(),
+  trace: () => vTrace(),
+  ai: () => vAI(),
+  offers: () => vGlobalOffers(),
+  runtime: () => vRuntime(),
+  capabilities: () => vCapabilities(),
+  compose: () => vCompose(),
+  policies: () => vPolicies(),
+  identity: () => viewIdentity(),
+  "identity-templates": () => viewIdentityTemplates(),
+  themes: () => vThemes(),
+  dashboards: () => vDashboards(),
+  definitions: () => vDefinitions(),
+  geo: () => vGeo(),
+  monitor: () => vMonitor(),
+  audit: () => vAudit(),
+  gops: () => vGops(),
+  gorders: () => vGorders(),
+  gcatalog: () => vGcatalog(),
+  gb2b: () => vGb2b(),
+  gmarket: () => vGmarket(),
+  gfinance: () => vGfinance(),
+  goffers: () => vGoffers(),
+  gsupport: () => vGsupport(),
+  gcontent: () => vGcontent(),
+  grisk: () => vGrisk(),
+  gteam: () => vGteam(),
+  ganalytics: () => vGanalytics(),
+  gdata: () => vGdata(),
+  taxonomy: () => vTaxonomy(),
+  brands: () => vBrands(),
+  "capability-tree": () => vCapabilityTree(),
+  /* the Data Studio: a universe's Records button hands the entity over through
+     __entityJump; consume it here and replay the preset click in WIREFNS, once the
+     Load button actually exists in the DOM. */
+  studio: () => { window.__studioPreset = window.__entityJump; window.__entityJump = null; return vStudio(window.__studioPreset); },
+  provisioning: () => vProvisioning(),
+  padmins: () => vPAdmins(),
+  roles: () => vRoles(),
+  users: () => vUsers(),
+  manual: () => { window.open("/docs/user-manual.html", "_blank"); return Promise.resolve('<div class="p-empty">Opened the User Manual in a new tab.</div>'); },
+  architecture: () => { window.open("/docs/architecture.html", "_blank"); return Promise.resolve('<div class="p-empty">Opened the Architecture reference in a new tab.</div>'); },
+};
+const WIREFNS = {
+  billing: () => wireBillingOps(),
+  gproducts: () => wireGproducts(),
+  modules: () => wireModules(),
+  ucii: () => wireUCII(),
+  ucos: () => wireUCOS(),
+  universes: () => wireUniverses(),
+  domains: () => wireDomains(),
+  foundations: () => wireFoundations(),
+  trace: () => wireTrace(),
+  offers: () => wireGlobalOffers(),
+  runtime: () => wireRuntime(),
+  capabilities: () => wireCapabilities(),
+  compose: () => wireCompose(),
+  policies: () => wirePolicies(),
+  identity: () => wireIdentity(),
+  "identity-templates": () => wireIdentityTemplates(),
+  themes: () => wireThemes(),
+  dashboards: () => wireDashboards(),
+  definitions: () => wireDefinitions(),
+  geo: () => wireGeoFx(),
+  "capability-tree": () => wireCapabilityTree(),
+  studio: () => { wireStudio(); if (window.__studioPreset) { const b = document.querySelector("#studioLoad"); if (b) b.click(); } },
+  gops: () => wireG(),
+  gorders: () => wireG(),
+  gcatalog: () => wireG(),
+  gb2b: () => wireG(),
+  gmarket: () => wireG(),
+  gfinance: () => wireG(),
+  goffers: () => wireG(),
+  gsupport: () => wireG(),
+  gcontent: () => wireG(),
+  grisk: () => wireG(),
+  gteam: () => wireG(),
+  ganalytics: () => wireG(),
+  gdata: () => { wireG(); wireGdata(); },
+  padmins: () => wirePAdmins(),
+  roles: () => wireRoles(),
+  users: () => { wireG(); wireUsers(); },
+};
 async function render() {
   shell('<div class="p-empty">Loading…</div>');
   const body = $("#vBody");
   try {
-    if (view === "hub") { body.innerHTML = await vHub(); wireHub(); }
-    else if (view === "dash") body.innerHTML = await vDash();
-    else if (view === "setup") { body.innerHTML = await vSetup(); wireSetup(); }
-    else if (view === "provisioning") body.innerHTML = await vProvisioning();
-    else if (view === "tenants") body.innerHTML = await vTenants();
-    else if (view === "plans") body.innerHTML = await vPlans();
-    else if (view === "subs") body.innerHTML = await vSubs();
-    else if (view === "invoices") body.innerHTML = await vInvoices();
-    else if (view === "billing") { body.innerHTML = await vBillingOps(); wireBillingOps(); }
-    else if (view === "gproducts") { body.innerHTML = await vGproducts(); wireGproducts(); }
-    else if (view === "modules") { body.innerHTML = await vModules(); await wireModules(); }
-    else if (view === "providers") body.innerHTML = await vProviders();
-    else if (view === "ucii") { body.innerHTML = await vUCII(); wireUCII(); }
-    else if (view === "ucos") { body.innerHTML = await vUCOS(); wireUCOS(); }
-    else if (view === "universes") { body.innerHTML = await vUniverses(); wireUniverses(); }
-    else if (view === "domains") { body.innerHTML = await vDomains(); wireDomains(); }
-    else if (view === "foundations") { body.innerHTML = await vFoundations(); wireFoundations(); }
-    else if (view === "trace") { body.innerHTML = await vTrace(); wireTrace(); }
-    else if (view === "studio") {
-      /* the universe Records button hands the entity over through __entityJump; consume
-         it here (never in wireStudio, where a repeat render would re-trigger the load) */
-      const preset = window.__entityJump; window.__entityJump = null;
-      body.innerHTML = await vStudio(preset);
-      wireStudio();
-      if (preset) { const b = document.querySelector("#studioLoad"); if (b) b.click(); }
+    const meta = NAVKEY[view];
+    if (!meta) { body.innerHTML = await vDash(); return; }
+    /* a leaf the admin's role does not grant never renders, even by direct URL — the
+       back-end refuses the same call, so this is defence in depth, not the gate itself */
+    if (view !== "dash" && !canSee(view)) {
+      const r = meta.res || {};
+      body.innerHTML = `<div class="p-empty">🔒 Your platform role does not grant access to “${esc(meta.label.replace(/^\S+\s/, ""))}”.${P.user && P.user.role ? ` <span class="p-tag">role: ${esc(P.user.role)}</span>` : ""}</div>`;
+      return;
     }
-    else if (view === "ai") body.innerHTML = await vAI();
-    else if (view === "offers") { body.innerHTML = await vGlobalOffers(); wireGlobalOffers(); }
-    else if (view === "runtime") { body.innerHTML = await vRuntime(); wireRuntime(); }
-    else if (view === "capabilities") { body.innerHTML = await vCapabilities(); wireCapabilities(); }
-    else if (view === "identity") { body.innerHTML = await viewIdentity(); wireIdentity(); }
-     else if (view === "identity-templates") { body.innerHTML = await viewIdentityTemplates(); wireIdentityTemplates(); }
-     else if (view === "themes") { body.innerHTML = await vThemes(); wireThemes(); }
-     else if (view === "dashboards") { body.innerHTML = await vDashboards(); wireDashboards(); }
-    else if (view === "definitions") { body.innerHTML = await vDefinitions(); wireDefinitions(); }
-    else if (view === "geo") { body.innerHTML = await vGeo(); await wireGeoFx(); }
-    else if (view === "monitor") body.innerHTML = await vMonitor();
-    else if (view === "audit") body.innerHTML = await vAudit();
-    /* Global Operations: the store capabilities, read across every store */
-    else if (view === "gops") { body.innerHTML = await vGops(); wireG(); }
-    else if (view === "gorders") { body.innerHTML = await vGorders(); wireG(); }
-    else if (view === "gcatalog") { body.innerHTML = await vGcatalog(); wireG(); }
-    else if (view === "gb2b") { body.innerHTML = await vGb2b(); wireG(); }
-    else if (view === "gmarket") { body.innerHTML = await vGmarket(); wireG(); }
-    else if (view === "gfinance") { body.innerHTML = await vGfinance(); wireG(); }
-    else if (view === "goffers") { body.innerHTML = await vGoffers(); wireG(); }
-    else if (view === "gsupport") { body.innerHTML = await vGsupport(); wireG(); }
-    else if (view === "gcontent") { body.innerHTML = await vGcontent(); wireG(); }
-    else if (view === "grisk") { body.innerHTML = await vGrisk(); wireG(); }
-    else if (view === "gteam") { body.innerHTML = await vGteam(); wireG(); }
-    else if (view === "ganalytics") { body.innerHTML = await vGanalytics(); wireG(); }
-    else if (view === "gdata") { body.innerHTML = await vGdata(); wireG(); wireGdata(); }
-    else if (view === "manual") window.open("/docs/user-manual.html", "_blank");
-    else if (view === "architecture") window.open("/docs/architecture.html", "_blank");
+    const r = meta.res || {};
+    if (r.v && VIEWFNS[r.v]) { body.innerHTML = await VIEWFNS[r.v](); if (WIREFNS[r.v]) WIREFNS[r.v](); }
+    else if (r.e) { body.innerHTML = await vEntityLeaf(r.e, meta); wireLeaf(); }
+    else if (r.u) { body.innerHTML = await vUniverseLeaf(r.u, meta); wireLeaf(); }
+    else body.innerHTML = await vDash();
   } catch (e) { body.innerHTML = `<div class="p-empty">⚠️ ${esc(e.message)}</div>`; }
 }
 document.addEventListener("click", e => { if (e.target.closest("[data-mclose]")) { const mm = document.getElementById("modal"); if (mm) mm.innerHTML = ""; } }); /* __mclose */
@@ -2770,6 +3150,10 @@ document.addEventListener("click", e => { if (e.target.closest("[data-mclose]"))
       return;
     }
     P.user = me.admin;
+    /* the platform console's own RBAC: the admin's grants filter the nav, and a view
+       outside them is refused with the same voice the store console uses. An owner's
+       grant arrives as ['*'] and everything stays visible. */
+    P.allowed = Array.isArray(me.allowed) ? me.allowed : ["*"];
     render();
   } catch (e) { console.error(e); }
 })();
@@ -2810,77 +3194,76 @@ function wireDocs() {
   // Add click handlers if needed for docs page
 }
 
-// Platform Policies
+/* Platform Policies — dynamic, data-driven platform behaviour. Each policy is a
+   config_store row keyed policy.<category>; the console edits them live (no restart).
+   The table keys on the BARE category (the store strips the policy. prefix), so edit and
+   delete address the row the operator actually clicked. */
 async function vPolicies() {
-  shell('<div class="p-empty">Loading...</div>');
-  try {
-    const res = await api("/platform/policies");
-    const policiesList = res.policies || [];
-    if (policiesList.length === 0) {
-      $$("#app").innerHTML = `<div class="p-panel"><h2>🔒 Platform Policies</h2>
-        <p class="p-tag">No policies configured. Use Platform Console or API:</p>
-        <pre>curl -X PUT http://localhost:8787/api/platform/policies/seo \\\\
-  -d '{"metaDescription": "Store description"}'</pre>
-      </div>`;
-      return;
-    }
-    let html = `<div class="p-panel"><h2>🔒 Platform Policies</h2>
-      <div class="p-tablewrap"><table class="p-table"><thead>
-        <tr><th>Category</th><th>Config</th><th>Actions</th></tr>
-      </thead><tbody>`;
-    policiesList.forEach(p => {
-      try {
-        const config = JSON.parse(p.value || "{}");
-        html += `<tr>
-          <td><code>${esc(p.key.replace("policy.", ""))}</code></td>
-          <td><pre>${esc(JSON.stringify(config, null, 2))}</pre></td>
-          <td><button class="p-btn sm" onclick="editPolicy('${p.key}')">Edit</button>
-              <button class="p-btn sm danger" onclick="deletePolicy('${p.key}')">✕</button></td>
-        </tr>`;
-      } catch(e) { html += `<tr><td>${esc(p.key)}</td><td>Invalid</td><td>✕</td></tr>`; }
-    });
-    html += `</tbody></table></div>
-      <button class="p-btn primary" onclick="addPolicy()">+ Add Policy</button>
-    </div>`;
-    $$("#app").innerHTML = html;
-  } catch (e) {
-    $$("#app").innerHTML = `<div class="p-panel">Error: ${esc(e.message)}</div>`;
-  }
+  const res = await api("/platform/policies");
+  const list = res.policies || [];
+  const rows = list.map(p => {
+    let cfg = null;
+    try { cfg = JSON.parse(p.value || "{}"); } catch (e) { cfg = null; }
+    const cat = String(p.key).replace(/^policy\./, "");
+    return `<tr>
+      <td><code>${esc(cat)}</code></td>
+      <td>${cfg == null ? '<span class="badge failed">invalid JSON</span>'
+        : `<pre style="max-width:560px;max-height:180px;overflow:auto;margin:0;font-size:12px">${esc(JSON.stringify(cfg, null, 1))}</pre>`}</td>
+      <td style="white-space:nowrap">
+        <button class="p-btn sm" data-poledit="${esc(cat)}">Edit</button>
+        <button class="p-btn sm danger" data-poldel="${esc(cat)}">✕</button>
+      </td>
+    </tr>`;
+  }).join("") || '<tr><td colspan="3" class="p-empty">No policies configured — add one above, or PUT /api/platform/policies/&lt;category&gt; from an integration.</td></tr>';
+  return `<div class="p-panel"><h2>🔒 Platform Policies</h2>
+    <p class="p-tag">Runtime-configurable platform behaviour — identity, SEO, reviews, search, checkout, features, provisioning. Edits take effect immediately; no restart.</p>
+    <div style="margin:10px 0"><button class="p-btn primary" id="polAdd">+ Add Policy</button></div>
+    <div class="p-tablewrap"><table class="p-table"><thead>
+      <tr><th>Category</th><th>Configuration</th><th>Actions</th></tr>
+    </thead><tbody>${rows}</tbody></table></div>
+  </div>`;
 }
 
-function addPolicy() {
-  const category = prompt("Policy category (seo, reviews, features):");
-  if (!category) return;
-  const configStr = prompt("JSON configuration:");
-  if (!configStr) return;
-  try {
-    const config = JSON.parse(configStr);
-    api(`/platform/policies/${category}`, "PUT", config).then(() => {
-      toast("Policy saved"); viewPolicies();
-    }).catch(e => toast(e.message));
-  } catch(e) { toast("Invalid JSON"); }
-}
-
-function editPolicy(key) {
-  const current = prompt("Update policy JSON:");
-  if (!current) return;
-  try {
-    api(`/platform/policies/${key}`, "PUT", JSON.parse(current)).then(() => {
-      toast("Policy updated"); viewPolicies();
-    }).catch(e => toast(e.message));
-  } catch(e) { toast("Invalid JSON"); }
+/* one modal serves add and edit: category + a JSON editor seeded with the live value */
+function policyModal(category, current) {
+  const editing = !!category;
+  const m = modal(`<div class="p-modal-head"><h3>${editing ? "Edit policy · " + esc(category) : "Add policy"}</h3><button data-mclose>✕</button></div>
+    <div class="p-form">
+      <label><span>Category</span><input type="text" id="polCat" ${editing ? "disabled" : ""} value="${esc(category || "")}" placeholder="seo · reviews · features · checkout…"></label>
+      <label><span>Configuration (JSON)</span><textarea id="polJson" rows="10" style="font-family:ui-monospace,monospace;font-size:12px">${esc(current != null ? JSON.stringify(current, null, 2) : "{\n  \n}")}</textarea></label>
+      <div class="p-err hidden" id="polErr" style="color:var(--p-red);font-size:13px;margin:6px 0"></div>
+      <button class="p-btn primary" id="polSave">${editing ? "Save changes" : "Create policy"}</button>
+    </div>`);
+  m.querySelector("#polSave").onclick = async () => {
+    const cat = m.querySelector("#polCat").value.trim().replace(/^policy\./, "");
+    const err = m.querySelector("#polErr");
+    if (!cat) { err.textContent = "Category required"; err.classList.remove("hidden"); return; }
+    let cfg;
+    try { cfg = JSON.parse(m.querySelector("#polJson").value || "{}"); }
+    catch (e) { err.textContent = "Invalid JSON: " + e.message; err.classList.remove("hidden"); return; }
+    try {
+      await api(`/platform/policies/${encodeURIComponent(cat)}`, "PUT", cfg);
+      m.innerHTML = ""; toast("Policy saved"); render();
+    } catch (e) { err.textContent = e.message; err.classList.remove("hidden"); }
+  };
 }
 
 function deletePolicy(key) {
-  if (confirm("Delete policy?")) {
-    api(`/platform/policies/${key}`, "DELETE").then(() => {
-      toast("Policy deleted"); viewPolicies();
-    }).catch(e => toast(e.message));
-  }
+  if (!confirm("Delete the " + key + " policy?")) return;
+  api(`/platform/policies/${encodeURIComponent(key)}`, "DELETE")
+    .then(() => { toast("Policy deleted"); render(); })
+    .catch(e => toast(e.message));
 }
 
 async function wirePolicies() {
-  // Setup policy UI listeners if needed
+  const add = $("#polAdd");
+  if (add) add.onclick = () => policyModal("", null);
+  document.querySelectorAll("[data-poledit]").forEach(b => b.onclick = async () => {
+    const cat = b.dataset.poledit;
+    try { const r = await api(`/platform/policies/${encodeURIComponent(cat)}`); policyModal(cat, r.policy || {}); }
+    catch (e) { toast(e.message); }
+  });
+  document.querySelectorAll("[data-poldel]").forEach(b => b.onclick = () => deletePolicy(b.dataset.poldel));
 }
 
 /* Themes — every skin the storefront can wear. Presets are data (infinitely
@@ -3321,14 +3704,16 @@ function wireDashboards() {
 
 async function viewIdentity() {
   try {
-    const [settingsRes, providersRes, templatesRes] = await Promise.all([
+    const [settingsRes, providersRes, templatesRes, typesRes] = await Promise.all([
       api("/admin/identity-settings").catch(() => ({ settings: {} })),
       api("/admin/identity-providers").catch(() => ({ providers: [] })),
-      api("/platform/identity-templates").catch(() => ({ templates: [] }))
+      api("/platform/identity-templates").catch(() => ({ templates: [] })),
+      api("/admin/identity-provider-types").catch(() => ({ types: [] }))
     ]);
     const settings = settingsRes.settings || {};
     const providers = providersRes.providers || [];
     const templates = templatesRes.templates || [];
+    const pTypes = typesRes.types || [];
     
     const password = settings.password || {};
     const mfa = settings.mfa || {};
@@ -3401,30 +3786,30 @@ async function viewIdentity() {
     
     <div class="card" style="margin-top:16px">
       <h3>📋 Apply Global Template</h3>
-      <select id="tmplSelect" class="form-group">
-        <option value="">-- Select a template --</option>
-        ${templates.map(t => `<option value="${t.id}">${esc(t.name)}${t.is_default ? ' (Default)' : ''}</option>`).join('')}
-      </select>
-      <button class="btn btn-outline" onclick="applyTemplate()">Apply to this store</button>
+      <div class="grid grid-2">
+        <select id="tmplSelect" class="form-group">
+          <option value="">-- Select a template --</option>
+          ${templates.map(t => `<option value="${t.id}">${esc(t.name)}${t.is_default ? ' (Default)' : ''}</option>`).join('')}
+        </select>
+        <select id="tmplTenant" class="form-group">
+          ${P.tenants.map(t => `<option value="${t.id}">${esc(t.name)} (${esc(t.slug)})</option>`).join('')}
+        </select>
+      </div>
+      <button class="btn btn-outline" id="applyTmplBtn">Apply template to store</button>
     </div>
     
     <div class="card" style="margin-top:16px">
       <h3>🔧 Provider Types</h3>
-      <p class="p-tag">Customize available authentication types</p>
-      ${['sso','oauth','otp','magic_link','biometric'].map(type => `
+      <p class="p-tag">The vocabulary of authentication kinds is registry data — the flow each row names is how the login engine routes it. Add one and the Add-Provider form can use it.</p>
+      ${pTypes.map(t => `
         <div class="card" style="border:1px solid var(--border-color);margin-bottom:8px">
           <div style="display:flex;justify-content:space-between;align-items:center">
-            <div><b>${type.toUpperCase()}</b> <span class="badge">Built-in</span></div>
-            <button class="btn-icon" onclick="editProviderType('${type}')">Configure</button>
+            <div><b>${esc(t.label || t.key)}</b> <span class="badge" style="margin-left:8px">${esc(t.key)}</span>${t.flow ? ` <span class="badge" style="margin-left:4px">${esc(t.flow)} flow</span>` : ""}${t.delivery ? ` <span class="badge" style="margin-left:4px">${esc(t.delivery)}</span>` : ""}</div>
+            <span class="p-tag">${(t.fields || []).length} config field(s): ${(t.fields || []).map(esc).join(", ") || "—"}</span>
           </div>
         </div>
-      `).join('')}
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div><b>Create Custom Type</b></div>
-          <button class="btn" onclick="addProviderType()">+ New</button>
-        </div>
-      </div>
+      `).join("") || '<p class="alert alert-info">No provider types registered.</p>'}
+      <button class="btn" style="margin-top:12px" id="ptAddBtn">+ New provider type</button>
     </div>`;
   } catch (e) {
     return `<div class="card" style="color:var(--danger)">Error: ${esc(e.message)}</div>`;
@@ -3464,19 +3849,39 @@ async function saveIdentity() {
   }
 }
 
-async function applyTemplate() {
-  const tmplId = document.getElementById("tmplSelect").value;
-  if (!tmplId) return toast("Select a template");
+/* Apply a global identity template to a store — the target is ALWAYS an explicit tenant id
+   chosen in the console (a platform store selector), never a hardcoded store. Shared by the
+   Identity view's apply control and the Identity Templates view's per-row Apply action. */
+async function applyIdentityTemplate(templateId, tenantId) {
+  if (!templateId) return toast("Select a template");
+  if (!tenantId) return toast("Select a target store");
   try {
-    await api("/admin/identity-templates/apply", "POST", { template_id: tmplId });
-    toast("Template applied");
-    viewIdentity();
-  } catch (e) {
-    toast("Error: " + e.message);
-  }
+    const r = await api(`/platform/identity-templates/${templateId}/apply`, "POST", { tenant_id: Number(tenantId) });
+    toast(`Template applied to ${esc(r.slug)}${r.providers ? ` · ${r.providers} provider(s)` : ""}`);
+    render();
+  } catch (e) { toast("Error: " + e.message); }
 }
 
+/* the provider type list and the per-type config form are both DERIVED from the registry
+   (identity-provider-types), so a type created in the Provider Types card — including its
+   own config fields and the flow it routes through — is immediately selectable here with no
+   second place to maintain. The types the last render fetched are cached; a caller that
+   arrives cold (the button is on the same page) falls back to a fetch. */
+let _idpTypes = null;
+async function _providerTypes() {
+  if (_idpTypes && _idpTypes.length) return _idpTypes;
+  try { const r = await api("/admin/identity-provider-types"); _idpTypes = r.types || []; } catch (e) { _idpTypes = []; }
+  return _idpTypes;
+}
+const SECRET_FIELD_RE = /secret|password|cert/i;
+function _providerFieldInput(key) {
+  const secret = SECRET_FIELD_RE.test(key);
+  return `<div class="form-group"><label>${esc(key)}${secret ? " (sealed at rest)" : ""}</label>
+    <input type="${secret ? "password" : "text"}" id="pf_${esc(key)}" placeholder="${esc(key)}"></div>`;
+}
 async function addProvider() {
+  const types = await _providerTypes();
+  if (!types.length) return toast("Create a provider type first");
   const modal = document.createElement("div");
   modal.className = "modal-overlay";
   modal.innerHTML = `
@@ -3489,13 +3894,7 @@ async function addProvider() {
         <div class="form-group">
           <label>Provider Type</label>
           <select id="provTypeAdd">
-            <option value="sso">SSO (Okta, Azure AD, Google)</option>
-            <option value="oauth">OAuth/Social (Google, Facebook, Apple)</option>
-            <option value="openid">OpenID Connect</option>
-            <option value="ldap">LDAP</option>
-            <option value="otp">OTP (Email/SMS)</option>
-            <option value="magic_link">Magic Link (Passwordless Email)</option>
-            <option value="biometric">Biometric (WebAuthn)</option>
+            ${types.map(t => `<option value="${esc(t.key)}">${esc(t.label || t.key)} · ${esc(t.flow || "external")} flow</option>`).join("")}
           </select>
         </div>
         <div class="form-group">
@@ -3515,73 +3914,33 @@ async function addProvider() {
     </div>
   `;
   document.body.appendChild(modal);
-  
+
   const typeSelect = modal.querySelector("#provTypeAdd");
   const fieldsDiv = modal.querySelector("#provFieldsAdd");
-  
-  typeSelect.onchange = () => {
-    const type = typeSelect.value;
-    fieldsDiv.innerHTML = _getProviderFields(type);
+
+  const renderFields = () => {
+    const type = types.find(t => t.key === typeSelect.value) || {};
+    const fields = type.fields || [];
+    fieldsDiv.innerHTML = fields.length
+      ? fields.map(_providerFieldInput).join("")
+      : `<p class="p-tag">This type takes no configuration fields.</p>`;
   };
-  typeSelect.onchange();
-  
-  function _getProviderFields(type) {
-    switch (type) {
-      case "sso":
-        return `<div class="form-group"><label>Provider</label><select id="provProviderAdd"><option value="okta">Okta</option><option value="azure">Azure AD</option><option value="google">Google</option><option value="saml-generic">SAML Generic</option></select></div><div class="form-group"><label>SSO URL</label><input type="text" id="provUrlAdd" placeholder="https://company.okta.com/sso"></div><div class="form-group"><label>Domains</label><input type="text" id="provDomainsAdd" placeholder="company.com,acme.com"></div><div class="form-group"><label>Entity ID</label><input type="text" id="provEntityIdAdd" placeholder="urn:okta:example"></div>`;
-      case "oauth":
-        return `<div class="form-group"><label>Provider</label><select id="provProviderAdd"><option value="google">Google</option><option value="facebook">Facebook</option><option value="apple">Apple</option></select></div><div class="form-group"><label>Client ID</label><input type="text" id="provClientIdAdd"></div><div class="form-group"><label>Client Secret</label><input type="text" id="provClientSecretAdd"></div><div class="form-group"><label>Redirect URI</label><input type="text" id="provRedirectAdd"></div>`;
-      case "otp":
-        return `<div class="form-group"><label>Delivery</label><select id="provProviderAdd"><option value="email">Email</option><option value="sms">SMS</option><option value="both">Both</option></select></div><div class="form-group"><label>From</label><input type="text" id="provFromAdd" placeholder="noreply@example.com"></div>`;
-      case "magic_link":
-        return `<div class="form-group"><label>From Email</label><input type="text" id="provFromAdd" placeholder="noreply@example.com"></div><div class="form-group"><label>Base URL</label><input type="text" id="provBaseUrlAdd" placeholder="https://yourapp.com"></div>`;
-      case "openid":
-        return `<div class="form-group"><label>OpenID Provider URL</label><input type="text" id="provOpenidUrlAdd" placeholder="https://accounts.google.com"></div><div class="form-group"><label>Client ID</label><input type="text" id="provOpenidClientIdAdd"></div><div class="form-group"><label>Client Secret</label><input type="text" id="provOpenidClientSecretAdd"></div>`;
-      case "ldap":
-        return `<div class="form-group"><label>LDAP Server</label><input type="text" id="provLdapServerAdd" placeholder="ldap://ldap.example.com"></div><div class="form-group"><label>Base DN</label><input type="text" id="provLdapBaseDnAdd" placeholder="dc=example,dc=com"></div><div class="form-group"><label>Bind DN</label><input type="text" id="provLdapBindDnAdd"></div><div class="form-group"><label>Bind Password</label><input type="password" id="provLdapBindPassAdd"></div>`;
-      case "biometric":
-        return `<div class="form-group"><label>RP ID</label><input type="text" id="provRpIdAdd" placeholder="yourapp.com"></div><div class="form-group"><label>RP Name</label><input type="text" id="provRpNameAdd" placeholder="Your App"></div>`;
-      default: return "";
-    }
-  }
-  
+  typeSelect.onchange = renderFields;
+  renderFields();
+
   window.saveProviderAdd = async () => {
     const type = typeSelect.value;
     const name = document.getElementById("provNameAdd")?.value.trim();
     const enabled = document.getElementById("provEnabledAdd")?.checked;
     if (!name) return toast("Enter provider name");
-    
+
     const config = {};
-    const getVal = id => document.getElementById(id)?.value;
-    config.provider = getVal("provProviderAdd");
-    
-    if (type === "sso") {
-      config.ssoUrl = getVal("provUrlAdd");
-      config.domains = getVal("provDomainsAdd").split(",").map(s => s.trim()).filter(Boolean);
-      config.entityId = getVal("provEntityIdAdd");
-    } else if (type === "oauth") {
-      config.clientId = getVal("provClientIdAdd");
-      config.clientSecret = getVal("provClientSecretAdd");
-      config.redirectUri = getVal("provRedirectAdd");
-    } else if (type === "openid") {
-      config.providerUrl = getVal("provOpenidUrlAdd");
-      config.clientId = getVal("provOpenidClientIdAdd");
-      config.clientSecret = getVal("provOpenidClientSecretAdd");
-    } else if (type === "ldap") {
-      config.server = getVal("provLdapServerAdd");
-      config.baseDn = getVal("provLdapBaseDnAdd");
-      config.bindDn = getVal("provLdapBindDnAdd");
-      config.bindPassword = getVal("provLdapBindPassAdd");
-    } else if (type === "otp") {
-      config.from = getVal("provFromAdd");
-    } else if (type === "magic_link") {
-      config.from = getVal("provFromAdd");
-      config.baseUrl = getVal("provBaseUrlAdd");
-    } else if (type === "biometric") {
-      config.rpId = getVal("provRpIdAdd");
-      config.rpName = getVal("provRpNameAdd");
+    const t = types.find(x => x.key === type) || {};
+    for (const f of (t.fields || [])) {
+      const el = document.getElementById("pf_" + f);
+      if (el && el.value !== "") config[f] = el.value;
     }
-    
+
     try {
       await api("/admin/identity-providers", "PUT", { provider_type: type, name, enabled, config });
       toast("Provider added");
@@ -3593,177 +3952,144 @@ async function addProvider() {
   };
 }
 async function addProviderType() {
-  const modal = document.createElement("div");
-  modal.style.cssText = "position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:99999;"
-  modal.innerHTML = `
-    <div class="modal">
-      <div class="modal-header">
-        <h3 class="modal-title">Create New Provider Type</h3>
-        <button class="btn-icon" onclick="this.closest('.modal-overlay').remove()">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Key (e.g., ldap, saml)</label>
-          <input type="text" id="newProvKey" placeholder="custom">
-        </div>
-        <div class="form-group">
-          <label>Label (e.g., LDAP, SAML)</label>
-          <input type="text" id="newProvLabel" placeholder="Custom Provider">
-        </div>
-        <div class="form-group">
-          <label>Fields (JSON)</label>
-          <textarea id="newProvFields" rows="5" placeholder='[{"key":"url","label":"URL","type":"text"}]'></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
-        <button class="btn" onclick="saveNewProviderType()">Create</button>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-  window.saveNewProviderType = async () => {
-    const key = document.getElementById("newProvKey").value.trim();
-    const label = document.getElementById("newProvLabel").value.trim();
-    const fields = document.getElementById("newProvFields").value.trim();
-    if (!key || !label) return toast("Enter key and label");
+  /* the modal() helper owns the markup (the hand-rolled version's ✕ targeted a class the
+     overlay never had, so it could never close). The registry shape is {key, label, fields[]};
+     fields are config keys an instance of this type carries. */
+  const m = modal(`<div class="p-modal-head"><h3>Create provider type</h3><button data-mclose>✕</button></div>
+    <div class="p-form">
+      <label><span>Key (e.g. ldap, saml)</span><input type="text" id="ptKey" placeholder="custom"></label>
+      <label><span>Label (e.g. LDAP, SAML)</span><input type="text" id="ptLabel" placeholder="Custom Provider"></label>
+      <label><span>Flow — how this kind proves the claim</span><select id="ptFlow">
+        <option value="external">external — an authority (SSO/OIDC/directory) returns an assertion</option>
+        <option value="challenge">challenge — a short-lived code (OTP, authenticator)</option>
+        <option value="link">link — a passwordless link by email</option>
+        <option value="biometric">biometric — a WebAuthn challenge</option>
+        <option value="password">password — the native email+password</option>
+      </select></label>
+      <label><span>Config fields — one key per line (e.g. url, cert, ttl)</span><textarea id="ptFields" rows="4" placeholder="url&#10;cert&#10;domains"></textarea></label>
+      <div class="p-err hidden" id="ptErr" style="color:var(--p-red);font-size:13px;margin:6px 0"></div>
+      <button class="p-btn primary" id="ptGo">Create</button>
+    </div>`);
+  m.querySelector("#ptGo").onclick = async () => {
+    const key = m.querySelector("#ptKey").value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
+    const label = m.querySelector("#ptLabel").value.trim();
+    const flow = m.querySelector("#ptFlow").value;
+    const err = m.querySelector("#ptErr");
+    if (!key || !label) { err.textContent = "Key and label are required"; err.classList.remove("hidden"); return; }
+    const fields = m.querySelector("#ptFields").value.split(/[\s,]+/).map(s => s.trim()).filter(Boolean);
     try {
-      const fieldsObj = fields ? JSON.parse(fields) : [];
-      await api("/admin/identity-provider-types", "POST", { 
-        key, label, schema: { fields: fieldsObj } 
-      });
-      toast("Provider type created");
-      modal.remove();
-      viewIdentity();
-    } catch (e) {
-      toast("Error: " + e.message);
-    }
+      await api("/admin/identity-provider-types", "POST", { key, label, flow, fields });
+      _idpTypes = null;   /* the new type is pickable in the Add-Provider form immediately */
+      m.innerHTML = ""; toast("Provider type created"); render();
+    } catch (e) { err.textContent = e.message; err.classList.remove("hidden"); }
   };
 }
+/* the identity-template form's configuration fields, rendered for create AND edit so the
+   two cannot drift; p is the prefix that separates the two sets of inputs */
+function tmplConfigFields(p, c) {
+  c = c || {};
+  const pw = c.password || {}, mfa = c.mfa || {}, se = c.session || {}, lg = c.login || {};
+  return `
+  <h4>Password Policy</h4>
+  <label><span>Min Length</span><input type="number" id="${p}PwdMin" value="${pw.minLength || 12}" min="6" max="64"></label>
+  <label><span>Require Uppercase</span><input type="checkbox" id="${p}PwdUpper" ${pw.requireUppercase ? "checked" : ""}></label>
+  <label><span>Require Numbers</span><input type="checkbox" id="${p}PwdNum" ${pw.requireNumbers ? "checked" : ""}></label>
+  <label><span>Require Special</span><input type="checkbox" id="${p}PwdSpec" ${pw.requireSpecialChars ? "checked" : ""}></label>
+  <label><span>Expiry (days)</span><input type="number" id="${p}PwdExpiry" value="${pw.expiryDays != null ? pw.expiryDays : 90}" min="0" max="365"></label>
+  <h4>MFA</h4>
+  <label><span>Enable MFA</span><input type="checkbox" id="${p}MfaEnabled" ${mfa.enabled ? "checked" : ""}></label>
+  <label><span>Require for Admins</span><input type="checkbox" id="${p}MfaAdmin" ${mfa.requireForAdmin ? "checked" : ""}></label>
+  <h4>Session</h4>
+  <label><span>Timeout (minutes)</span><input type="number" id="${p}SessTimeout" value="${se.timeoutMinutes || 120}" min="5" max="1440"></label>
+  <label><span>Max Concurrent</span><input type="number" id="${p}SessMax" value="${se.maxConcurrent || 3}" min="1" max="10"></label>
+  <h4>Login</h4>
+  <label><span>Max Attempts</span><input type="number" id="${p}LoginMax" value="${lg.maxAttempts || 5}" min="1" max="20"></label>
+  <label><span>Lockout (minutes)</span><input type="number" id="${p}LoginLockout" value="${lg.lockoutMinutes || 30}" min="1" max="240"></label>`;
+}
+function collectTmplConfig(p) {
+  return {
+    password: {
+      minLength: parseInt($(`#${p}PwdMin`).value) || 12,
+      requireUppercase: !!$(`#${p}PwdUpper`).checked,
+      requireNumbers: !!$(`#${p}PwdNum`).checked,
+      requireSpecialChars: !!$(`#${p}PwdSpec`).checked,
+      expiryDays: parseInt($(`#${p}PwdExpiry`).value) || 0
+    },
+    mfa: { enabled: !!$(`#${p}MfaEnabled`).checked, requireForAdmin: !!$(`#${p}MfaAdmin`).checked },
+    session: { timeoutMinutes: parseInt($(`#${p}SessTimeout`).value) || 120, maxConcurrent: parseInt($(`#${p}SessMax`).value) || 3 },
+    login: { maxAttempts: parseInt($(`#${p}LoginMax`).value) || 5, lockoutMinutes: parseInt($(`#${p}LoginLockout`).value) || 30 }
+  };
+}
+
 async function viewIdentityTemplates() {
-  shell('<div class="p-empty">Loading...</div>');
-  try {
-    const res = await api("/platform/identity-templates");
-    const templates = res.templates || [];
-    
-    let html = `<div class="p-panel"><h2>📋 Global Identity Templates</h2>
-      <p class="p-tag">Centralized identity configurations for provisioning new stores</p>
-      
-      <div class="p-form">
-        <h3>Create Template</h3>
-        <label><span>Name</span><input type="text" id="tmplName" placeholder="e.g., Enterprise SSO"></label>
-        <label><span>Description</span><input type="text" id="tmplDesc" placeholder="SSO + MFA + strong passwords"></label>
-        <label><span>Set as default</span><input type="checkbox" id="tmplDefault"></label>
-        
-        <h4>Template Configuration</h4>
-        <div class="p-form">
-          <h5>Password Policy</h5>
-          <label><span>Min Length</span><input type="number" id="tmplPwdMin" value="12"></label>
-          <label><span>Require Uppercase</span><input type="checkbox" id="tmplPwdUpper" checked></label>
-          <label><span>Require Numbers</span><input type="checkbox" id="tmplPwdNum" checked></label>
-          <label><span>Require Special</span><input type="checkbox" id="tmplPwdSpec" checked></label>
-          <label><span>Expiry (days)</span><input type="number" id="tmplPwdExpiry" value="90"></label>
-          
-          <h5>MFA</h5>
-          <label><span>Enable MFA</span><input type="checkbox" id="tmplMfaEnabled"></label>
-          <label><span>Require for Admins</span><input type="checkbox" id="tmplMfaAdmin" checked></label>
-          
-          <h5>Session</h5>
-          <label><span>Timeout (minutes)</span><input type="number" id="tmplSessTimeout" value="120"></label>
-          <label><span>Max Concurrent</span><input type="number" id="tmplSessMax" value="3"></label>
-          
-          <h5>Login</h5>
-          <label><span>Max Attempts</span><input type="number" id="tmplLoginMax" value="5"></label>
-          <label><span>Lockout (minutes)</span><input type="number" id="tmplLoginLockout" value="30"></label>
-        </div>
-        
-        <button class="p-btn primary" onclick="saveTemplate()">Create Template</button>
-      </div>
-      
-      <h3>Saved Templates</h3>
-      <div class="p-tablewrap"><table class="p-table"><thead>
-        <tr><th>Name</th><th>Description</th><th>Actions</th></tr>
-      </thead><tbody>`;
-      
-    templates.forEach(t => {
-      const cfg = typeof t.config === 'string' ? JSON.parse(t.config) : t.config;
-      const def = t.is_default ? '★ Default' : '';
-      html += `<tr>
-        <td>${esc(t.name)} ${def}</td>
-        <td>${esc(t.description || '')}</td>
-        <td>
-          <button class="p-btn sm" onclick="editTemplate(${t.id})">Edit</button>
-          <button class="p-btn sm danger" onclick="deleteTemplate(${t.id})">✕</button>
-        </td>
-      </tr>`;
-    });
-    
-    html += `</tbody></table></div>
-    </div>`;
-    $$("#app").innerHTML = html;
-  } catch (e) {
-    $$("#app").innerHTML = `<div class="p-panel">Error: ${esc(e.message)}</div>`;
-  }
+  const res = await api("/platform/identity-templates");
+  /* the apply modal lists every tenant the platform operates — ensure the list is loaded
+     even when the operator arrives here without visiting the tenants view first */
+  if (!P.tenants.length) P.tenants = (await api("/platform/tenants")).tenants || [];
+  const templates = res.templates || [];
+  const rows = templates.map(t => `<tr>
+      <td><b>${esc(t.name)}</b> ${t.is_default ? '<span class="badge published">★ default</span>' : ""}<div class="p-tag" style="font-size:11px">${esc(t.description || "")}</div></td>
+      <td style="white-space:nowrap">
+        <button class="p-btn sm primary" data-tmplapply="${t.id}">Apply →</button>
+        <button class="p-btn sm" data-tmpledit="${t.id}">Edit</button>
+        <button class="p-btn sm danger" data-tmpldel="${t.id}">✕</button>
+      </td>
+    </tr>`).join("") || '<tr><td colspan="2" class="p-empty">No templates yet — create one above.</td></tr>';
+  return `<div class="p-panel"><h2>📋 Global Identity Templates</h2>
+    <p class="p-tag">Centralized identity configurations. Apply one to ANY store from the table — the target store is chosen per action, never assumed.</p>
+    <div class="p-form" style="max-width:520px">
+      <h3>Create Template</h3>
+      <label><span>Name</span><input type="text" id="tmplName" placeholder="e.g., Enterprise SSO"></label>
+      <label><span>Description</span><input type="text" id="tmplDesc" placeholder="SSO + MFA + strong passwords"></label>
+      <label><span>Set as default</span><input type="checkbox" id="tmplDefault"></label>
+      ${tmplConfigFields("tmpl", {})}
+      <button class="p-btn primary" id="tmplSave">Create Template</button>
+    </div>
+    <h3 style="margin-top:18px">Saved Templates</h3>
+    <div class="p-tablewrap"><table class="p-table"><thead>
+      <tr><th>Template</th><th>Actions</th></tr>
+    </thead><tbody>${rows}</tbody></table></div>
+  </div>`;
 }
 
 async function saveTemplate() {
   const name = $("#tmplName").value.trim();
   if (!name) return toast("Enter template name");
-  
-  const config = {
-    password: {
-      minLength: parseInt($("#tmplPwdMin").value) || 12,
-      requireUppercase: !!$("#tmplPwdUpper").checked,
-      requireNumbers: !!$("#tmplPwdNum").checked,
-      requireSpecialChars: !!$("#tmplPwdSpec").checked,
-      expiryDays: parseInt($("#tmplPwdExpiry").value) || 90
-    },
-    mfa: {
-      enabled: !!$("#tmplMfaEnabled").checked,
-      requireForAdmin: !!$("#tmplMfaAdmin").checked
-    },
-    session: {
-      timeoutMinutes: parseInt($("#tmplSessTimeout").value) || 120,
-      maxConcurrent: parseInt($("#tmplSessMax").value) || 3
-    },
-    login: {
-      maxAttempts: parseInt($("#tmplLoginMax").value) || 5,
-      lockoutMinutes: parseInt($("#tmplLoginLockout").value) || 30
-    }
-  };
-  
   try {
     await api("/platform/identity-templates", "POST", {
-      name,
-      description: $("#tmplDesc").value,
-      config,
-      is_default: !!$("#tmplDefault").checked
+      name, description: $("#tmplDesc").value, config: collectTmplConfig("tmpl"), is_default: !!$("#tmplDefault").checked
     });
     toast("Template created");
-    viewIdentityTemplates();
-  } catch (e) {
-    toast("Error: " + e.message);
-  }
+    render();
+  } catch (e) { toast("Error: " + e.message); }
 }
 
+/* real edit: the PUT route exists, so edit in place — never the old delete-and-recreate
+   hack that silently discarded the template and its apply history */
 async function editTemplate(id) {
   try {
     const res = await api(`/platform/identity-templates/${id}`);
     const t = res.template;
     const cfg = t.config || {};
-    
-    const confirm = window.confirm("Edit template: " + t.name + "\nThis will open a form to edit all settings.");
-    if (!confirm) return;
-    
-    // For now, just delete and recreate
-    if (window.confirm("Delete and recreate this template? (Simple edit for now)")) {
-      await api(`/platform/identity-templates/${id}`, "DELETE");
-      toast("Template deleted - please recreate");
-      viewIdentityTemplates();
-    }
-  } catch (e) {
-    toast("Error: " + e.message);
-  }
+    const m = modal(`<div class="p-modal-head"><h3>Edit · ${esc(t.name)}</h3><button data-mclose>✕</button></div>
+      <div class="p-form" style="max-width:520px">
+        <label><span>Name</span><input type="text" id="edName" value="${esc(t.name)}"></label>
+        <label><span>Description</span><input type="text" id="edDesc" value="${esc(t.description || "")}"></label>
+        <label><span>Set as default</span><input type="checkbox" id="edDefault" ${t.is_default ? "checked" : ""}></label>
+        ${tmplConfigFields("ed", cfg)}
+        <button class="p-btn primary" id="edSave">Save changes</button>
+      </div>`);
+    m.querySelector("#edSave").onclick = async () => {
+      const name = m.querySelector("#edName").value.trim();
+      if (!name) return toast("Name required");
+      try {
+        await api(`/platform/identity-templates/${id}`, "PUT", {
+          name, description: m.querySelector("#edDesc").value, config: collectTmplConfig("ed"), is_default: !!m.querySelector("#edDefault").checked
+        });
+        m.innerHTML = ""; toast("Template updated"); render();
+      } catch (e) { toast("Error: " + e.message); }
+    };
+  } catch (e) { toast("Error: " + e.message); }
 }
 
 async function deleteTemplate(id) {
@@ -3771,29 +4097,378 @@ async function deleteTemplate(id) {
   try {
     await api(`/platform/identity-templates/${id}`, "DELETE");
     toast("Template deleted");
-    viewIdentityTemplates();
-  } catch (e) {
-    toast("Error: " + e.message);
-  }
+    render();
+  } catch (e) { toast("Error: " + e.message); }
+}
+
+/* apply a template to a store: the target is an explicit per-action choice (any store the
+   platform operates), so no template is ever welded to one store */
+function applyTemplateModal(id) {
+  const m = modal(`<div class="p-modal-head"><h3>Apply identity template</h3><button data-mclose>✕</button></div>
+    <div class="p-form">
+      <label><span>Target store</span>
+        <select id="atTenant">${P.tenants.map(t => `<option value="${t.id}">${esc(t.name)} (${esc(t.slug)})</option>`).join("")}</select>
+      </label>
+      <p class="p-tag">The store's identity settings and providers are replaced by the template.</p>
+      <button class="p-btn primary" id="atGo">Apply template</button>
+    </div>`);
+  m.querySelector("#atGo").onclick = () => { const tid = m.querySelector("#atTenant").value; m.innerHTML = ""; applyIdentityTemplate(id, tid); };
 }
 
 async function wireIdentityTemplates() {
-  // Add listeners if needed
+  const save = $("#tmplSave");
+  if (save) save.onclick = () => saveTemplate();
+  document.querySelectorAll("[data-tmplapply]").forEach(b => b.onclick = () => applyTemplateModal(b.dataset.tmplapply));
+  document.querySelectorAll("[data-tmpledit]").forEach(b => b.onclick = () => editTemplate(b.dataset.tmpledit));
+  document.querySelectorAll("[data-tmpldel]").forEach(b => b.onclick = () => deleteTemplate(b.dataset.tmpldel));
 }
 
-async function applyTemplate() {
-  const tmplId = $("#tmplSelect").value;
-  if (!tmplId) return toast("Select a template");
-  
+/* ═══════════════════ PLATFORM ADMIN ACCOUNTS + ROLES ═══════════════════
+   The console's own user base, each carrying a ROLE that decides what this
+   console shows them and what the API accepts from them (lib/prbac.js).
+   The seed creates one platform owner with full access; this view is the
+   only way to add more operators and to scope what they may do.
+   Mirrors the store console's Team & Roles page: a role table (data), a
+   member table with an inline role picker, a create form, an edit modal
+   and confirm-on-delete. Self-deletion and deleting the last admin are
+   refused server-side; the UI greys them out too. */
+async function vPAdmins() {
+  const res = await api("/platform/admins");
+  const admins = res.admins || [];
+  const roles = res.roles || [];
+  const me = (P.user && P.user.id) || null;
+  const canWrite = !P.allowed || P.allowed.includes("*") || P.allowed.includes("padmins");
+  const roleTag = a => a.role ? `<span class="badge">${esc(a.role)}</span>` : '<span class="badge published">owner</span>';
+  const rows = admins.map(a => `<tr>
+      <td><b>${esc(a.name)}</b> ${a.id === me ? '<span class="badge published">you</span>' : ""}</td>
+      <td>${esc(a.email)}</td>
+      <td>${canWrite && a.id !== me
+        ? `<select data-parole="${a.id}">${roles.map(r => `<option value="${esc(r.key)}" ${a.role === r.key ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select>`
+        : roleTag(a)}</td>
+      <td class="p-tag">${esc(String(a.created_at || "").slice(0, 19))}</td>
+      <td style="white-space:nowrap">
+        <button class="p-btn sm" data-paedit="${a.id}">Edit</button>
+        <button class="p-btn sm danger" data-padel="${a.id}" ${a.id === me ? "disabled title='You cannot delete your own account'" : ""}>✕</button>
+      </td>
+    </tr>`).join("") || '<tr><td colspan="5" class="p-empty">No platform admins.</td></tr>';
+  const roleRows = roles.map(r => `<tr><td><b>${esc(r.name)}</b> <code>${esc(r.key)}</code><br><span class="p-tag">${esc(r.desc || "")}</span></td>
+      <td class="p-tag">${Object.entries(r.sections || {}).map(([k, v]) => `${esc(k)}=${esc(v)}`).join(" · ")}</td></tr>`).join("");
+  return `<div class="p-panel"><h2>🛡️ Platform Admins <span class="p-tag">${admins.length}</span></h2>
+    <p class="p-tag">Accounts that can sign in to this console, scoped by role. The platform must always keep at least one.</p>
+    <h3>Roles</h3>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Role</th><th>Grants (section: access)</th></tr></thead>
+      <tbody>${roleRows || '<tr><td colspan="2" class="p-empty">No roles.</td></tr>'}</tbody></table></div>
+    <h3 style="margin-top:18px">Administrators</h3>
+    <div class="p-scroll-x"><table class="p-table"><thead>
+      <tr><th>Name</th><th>Email</th><th>Role</th><th>Created</th><th>Actions</th></tr>
+    </thead><tbody>${rows}</tbody></table></div>
+    ${canWrite ? `<div class="p-form" style="max-width:520px;margin-top:14px">
+      <h3>Add platform admin</h3>
+      <label><span>Name</span><input type="text" id="paName" placeholder="Support Lead"></label>
+      <label><span>Email</span><input type="email" id="paEmail" placeholder="support@luxora.shop"></label>
+      <label><span>Password</span><input type="password" id="paPass" placeholder="6+ characters, letter + digit" minlength="6"></label>
+      <label><span>Role</span><select id="paRole">${roles.filter(r => r.key !== "owner").map(r => `<option value="${esc(r.key)}">${esc(r.name)}</option>`).join("")}</select></label>
+      <button class="p-btn primary" id="paSave">Create admin</button>
+    </div>` : '<p class="p-tag">Your role is read-only here.</p>'}
+  </div>`;
+}
+function wirePAdmins() {
+  const save = $("#paSave");
+  if (save) save.onclick = async () => {
+    const name = $("#paName").value.trim();
+    const email = $("#paEmail").value.trim();
+    const password = $("#paPass").value;
+    const role = $("#paRole") ? $("#paRole").value : "support";
+    if (!name || !email || !password) return toast("Name, email and password are required");
+    try {
+      await api("/platform/admins", "POST", { name, email, password, role });
+      toast("Platform admin created — they can sign in at /platform.html");
+      render();
+    } catch (e) { toast("Error: " + e.message); }
+  };
+  /* inline role change — the back-end re-checks the role exists, so a stale
+     option can never write an unknown key */
+  document.querySelectorAll("[data-parole]").forEach(sel => sel.onchange = async () => {
+    try { await api("/platform/admins/" + sel.dataset.parole, "PUT", { role: sel.value }); toast("Role updated — effective on their next sign-in"); }
+    catch (e) { toast(e.message); render(); }
+  });
+  document.querySelectorAll("[data-paedit]").forEach(b => b.onclick = () => editPAdmin(b.dataset.paedit));
+  document.querySelectorAll("[data-padel]").forEach(b => b.onclick = () => deletePAdmin(b.dataset.padel));
+}
+async function editPAdmin(id) {
   try {
-    await api("/platform/identity-templates/" + tmplId + "/apply", "POST", { tenant_id: 1 });
-    toast("Template applied");
-    viewIdentity();
-  } catch (e) {
-    toast("Error: " + e.message);
-  }
+    const res = await api("/platform/admins");
+    const admins = res.admins || [];
+    const roles = res.roles || [];
+    const a = admins.find(x => x.id === Number(id));
+    if (!a) return toast("Admin not found");
+    const m = modal(`<div class="p-modal-head"><h3>Edit · ${esc(a.name)}</h3><button data-mclose>✕</button></div>
+      <div class="p-form" style="max-width:520px">
+        <label><span>Name</span><input type="text" id="edName" value="${esc(a.name)}"></label>
+        <label><span>Email</span><input type="email" id="edEmail" value="${esc(a.email)}"></label>
+        <label><span>Role</span><select id="edRole">${roles.map(r => `<option value="${esc(r.key)}" ${(a.role || "owner") === r.key ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>
+        <label><span>New password <span class="p-tag">leave blank to keep</span></span><input type="password" id="edPass" placeholder="6+ characters" minlength="6"></label>
+        <button class="p-btn primary" id="edSave">Save changes</button>
+      </div>`);
+    m.querySelector("#edSave").onclick = async () => {
+      const name = m.querySelector("#edName").value.trim();
+      const email = m.querySelector("#edEmail").value.trim();
+      const password = m.querySelector("#edPass").value;
+      const role = m.querySelector("#edRole").value;
+      if (!name || !email) return toast("Name and email are required");
+      try {
+        await api(`/platform/admins/${id}`, "PUT", { name, email, role, password: password || undefined });
+        m.innerHTML = ""; toast("Platform admin updated" + (password ? " — sessions signed out" : "")); render();
+      } catch (e) { toast("Error: " + e.message); }
+    };
+  } catch (e) { toast("Error: " + e.message); }
 }
-
+async function deletePAdmin(id) {
+  if (!confirm("Delete this platform admin? Their console sessions are revoked immediately.")) return;
+  try {
+    await api(`/platform/admins/${id}`, "DELETE", {});
+    toast("Platform admin deleted");
+    render();
+  } catch (e) { toast("Error: " + e.message); }
+}
+/* ═══════════════════ USERS ═════════════════
+   Every account across every store, read through the generic dataset reader — and
+   creation. An account belongs to exactly one store, so the operator picks the store
+   (the domain) and a role: a store admin's authority is a staff role from the store
+   surface (rbac), a customer carries none. Writes go to the platform endpoint, which
+   runs the same password policy the storefront signup enforces. */
+async function vUsers() {
+  await gMeta();
+  const canWrite = !P.allowed || P.allowed.includes("*") || P.allowed.includes("users");
+  const staff = await gFan("/api/admin/roles").catch(() => ({}));
+  const srow = (staff.results || []).find(r => r.ok && r.data);
+  window.__userStaffRoles = srow ? (srow.data.roles || []) : [];
+  return gBar("Users", "👤", "Every account the platform holds across every store — read through the generic dataset reader.", 1)
+    + (canWrite ? `<div class="p-panel" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px">
+        <button class="p-btn sm primary" data-unew="1">＋ New user</button>
+        <span class="p-tag">a user belongs to one store — a store admin's authority is the staff role you assign</span>
+      </div>` : "")
+    + await gTable("customer");
+}
+function userFormModal() {
+  const tenants = Object.values(G.tmap || {});
+  const staffRoles = window.__userStaffRoles || [];
+  const m = modal(`<div class="p-modal-head"><h3>New user</h3><button data-mclose>✕</button></div>
+    <p class="p-tag">An account belongs to one store. A store admin's authority is the staff role you pick; a customer has none.</p>
+    <div class="p-form" style="max-width:560px">
+      <label><span>Store</span><select id="unTenant">${tenants.map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join("")}</select></label>
+      <div class="row">
+        <label><span>Name</span><input type="text" id="unName" placeholder="Alex Rao"></label>
+        <label><span>Email</span><input type="email" id="unEmail" placeholder="alex@store.shop"></label>
+      </div>
+      <label><span>Password <span class="p-tag">blank to generate</span></span><input type="password" id="unPw" placeholder="6+ characters, letter + digit"></label>
+      <label><span>Role</span><select id="unRole"><option value="customer">Customer</option><option value="admin">Store admin</option></select></label>
+      <label id="unStaffWrap"><span>Staff role</span><select id="unStaff">${/* the store surface lists owner first, but full store control is the wrong default
+          for a new admin — the platform API defaults an omitted staff role to manager */ staffRoles.map(r => `<option value="${esc(r.key)}" ${r.key === "manager" ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="p-btn primary" id="unSave">Create user</button>
+        <button class="p-btn" data-mclose>Cancel</button>
+      </div>
+      <div id="unGen" class="p-tag" style="margin-top:8px"></div>
+    </div>`);
+  const roleSel = m.querySelector("#unRole");
+  const sync = () => { m.querySelector("#unStaffWrap").style.display = roleSel.value === "admin" ? "" : "none"; };
+  roleSel.onchange = sync; sync();
+  m.querySelector("#unSave").onclick = async () => {
+    const name = m.querySelector("#unName").value.trim();
+    const email = m.querySelector("#unEmail").value.trim();
+    if (!name || !email) return toast("Name and email are required");
+    const payload = { tenant_id: m.querySelector("#unTenant").value, name, email,
+      password: m.querySelector("#unPw").value || undefined, role: roleSel.value };
+    if (roleSel.value === "admin") payload.staff_role = m.querySelector("#unStaff").value;
+    try {
+      const r = await api("/platform/users", "POST", payload);
+      /* a generated password is shown once and the modal stays open so the operator can
+         copy it — the table behind has already refreshed */
+      if (r.generated) { m.querySelector("#unGen").textContent = "generated password: " + r.generated; toast("User created — copy the password, it is shown once"); }
+      else { m.innerHTML = ""; toast("User created"); }
+      render();
+    } catch (e) { toast(e.message); }
+  };
+}
+function wireUsers() {
+  const b = document.querySelector("[data-unew]");
+  if (b) b.onclick = () => userFormModal();
+}
+/* ═══════════════════ ROLES ═════════════════
+   The platform's two live role sets — both DATA in meta_lists, never code. The
+   platform console's own operators are scoped by platformRoles (lib/prbac.js);
+   every store's staff are scoped by staffRoles (lib/rbac.js). The corpus's "Role"
+   universe is a declaration artefact (uv_role); THIS leaf is where the roles
+   actually in force are read AND defined — creating a role, describing it and
+   scoping its rights per section, platform-wide or for every store's domain,
+   without a deploy. */
+const GRANT_OPTS = [["", "inherit"], ["off", "off"], ["read", "read"], ["write", "write"]];
+async function vRoles() {
+  await gMeta();
+  const [plat, staff] = await Promise.all([
+    api("/platform/roles").catch(() => ({})),
+    gFan("/api/admin/roles")
+  ]);
+  const proles = plat.roles || [];
+  const psections = plat.sections || [];
+  /* staff roles are one platform-wide list, so the fan-out returns a copy per store —
+     dedupe by key, and take the section list from any store's copy (they are identical);
+     the store count is carried as the honest note that a role applies everywhere, not
+     that it exists many times */
+  const srows = (staff.results || []).filter(r => r.ok && r.data);
+  const ssections = srows.length ? (srows[0].data.sections || []) : [];
+  const seen = new Map();
+  for (const r of srows) for (const ro of (r.data.roles || []))
+    if (!seen.has(ro.key)) seen.set(ro.key, { ...ro, stores: srows.length });
+  const sroles = [...seen.values()];
+  /* stash the loaded sets for wireRoles — the editor needs the section list and the
+     role being edited, and the console re-fetches on every render, never holds a
+     second source of truth beyond the DOM's own lifetime */
+  window.__roleSections = { platform: psections, staff: ssections };
+  window.__roleRoles = { platform: proles, staff: sroles };
+  const canWrite = !P.allowed || P.allowed.includes("*") || P.allowed.includes("roles");
+  const grants = r => Object.entries(r.sections || {}).map(([k, v]) => `${esc(k)}=${esc(v)}`).join(" · ") || "—";
+  const table = (roles, scope) => roles.length
+    ? `<div class="p-scroll-x"><table class="p-table"><thead><tr><th>Role</th><th>Key</th><th>Grants (section: access)</th>${canWrite ? "<th></th>" : ""}</tr></thead>
+      <tbody>${roles.map(r => `<tr><td><b>${esc(r.name)}</b><br><span class="p-tag">${esc(r.desc || "")}</span></td>
+        <td><code>${esc(r.key)}</code></td><td class="p-tag">${grants(r)}</td>
+        ${canWrite ? `<td style="white-space:nowrap"><button class="p-btn sm" data-redt="${scope}" data-rekey="${esc(r.key)}">Edit</button>
+          <button class="p-btn sm danger" data-rdel="${scope}" data-rekey="${esc(r.key)}">✕</button></td>` : ""}</tr>`).join("")}</tbody></table></div>`
+    : `<div class="p-empty">No roles in scope.</div>`;
+  const newBtn = scope => canWrite
+    ? `<button class="p-btn sm primary" data-rnew="${scope}" style="margin-left:8px">＋ New role</button>` : "";
+  return gBar("Roles", "🎭", "Both role sets the platform enforces — data in meta_lists, re-scopable without code. Platform roles govern this console's operators; staff roles govern every store's team.", 2)
+    + `<div class="p-cards">
+      <div class="p-stat"><em>Platform roles</em><b>${stat2(proles.length)}</b><small>this console's operators</small></div>
+      <div class="p-stat"><em>Staff roles</em><b>${stat2(sroles.length)}</b><small>in force on ${sroles.length ? sroles[0].stores : 0} stores</small></div>
+    </div>
+    <div class="p-panel"><h2>🛡️ Platform roles <span class="p-tag">${proles.length}</span>${newBtn("platform")}
+      <p class="p-tag">Roles a platform admin may carry — platform-wide (lib/prbac.js · meta_lists 'platformRoles').</p></h2>
+      ${table(proles, "platform")}</div>
+    <div class="p-panel"><h2>🏪 Store staff roles <span class="p-tag">${sroles.length}</span>${newBtn("staff")}
+      <p class="p-tag">Roles a store admin may carry — one set, applied by every store's domain (lib/rbac.js · meta_lists 'staffRoles').</p></h2>
+      ${table(sroles, "staff")}</div>`;
+}
+/* the grant editor: one control per section the scope knows. A grant is one of
+   inherit (absent from the map — falls back to the wildcard), off (false, an explicit
+   deny that beats the wildcard), read or write. The wildcard row sets the default every
+   inherited section resolves to. A scope may carry ~200 sections, so the grid scrolls
+   and a filter plus bulk-set narrow it to the ones an operator is actually scoping. */
+function grantsEditor(sections, role) {
+  const secs = (role && role.sections) || {};
+  const wild = "*" in secs ? String(secs["*"]) : "";
+  const row = (k, label) => {
+    const v = k in secs ? String(secs[k]) : "";
+    const cur = GRANT_OPTS.some(o => o[0] === v) ? v : "off";
+    return `<label class="p-grant"><span>${esc(label || k)}</span>
+      <select data-sec="${esc(k)}">${GRANT_OPTS.map(o => `<option value="${o[0]}" ${cur === o[0] ? "selected" : ""}>${o[1]}</option>`).join("")}</select></label>`;
+  };
+  return `<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin-bottom:10px">
+      <label><span>Everything (wildcard)</span><select id="grWild">${GRANT_OPTS.map(o => `<option value="${o[0]}" ${wild === o[0] ? "selected" : ""}>${o[1]}</option>`).join("")}</select></label>
+      <input class="p-search" id="grFilter" placeholder="Filter sections…" style="flex:1;min-width:180px">
+      <button class="p-btn sm" data-grbulk="read">filtered → read</button>
+      <button class="p-btn sm" data-grbulk="write">filtered → write</button>
+      <button class="p-btn sm" data-grbulk="">filtered → inherit</button>
+    </div>
+    <div id="grGrid" class="p-scroll-y" style="max-height:340px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px 14px;padding:4px">
+      ${sections.map(k => row(k)).join("")}
+    </div>`;
+}
+/* read the editor's DOM back into a grant map; 'inherit' is absent by design, so a
+   cleared grant leaves the map and the wildcard (or nothing) decides it */
+function grantsRead(m) {
+  const secs = {};
+  const w = m.querySelector("#grWild");
+  if (w && w.value) secs["*"] = w.value;
+  m.querySelectorAll("[data-sec]").forEach(sel => {
+    const k = sel.dataset.sec;
+    if (!k) return;
+    if (sel.value === "off") secs[k] = false;
+    else if (sel.value) secs[k] = sel.value;
+  });
+  return secs;
+}
+function roleFormModal(scope, sections, role) {
+  const isNew = !role;
+  const legend = scope === "platform"
+    ? "Platform roles govern this console's own operators (platform-wide)."
+    : "Staff roles govern every store's team — one set applied on every store's domain.";
+  const m = modal(`<div class="p-modal-head"><h3>${isNew ? "New" : "Edit"} · ${scope === "platform" ? "platform" : "store staff"} role</h3><button data-mclose>✕</button></div>
+    <p class="p-tag">${esc(legend)}</p>
+    <div class="p-form" style="max-width:560px">
+      <label><span>Name</span><input type="text" id="rfName" value="${esc(role ? role.name : "")}" placeholder="Order Desk"></label>
+      ${isNew ? `<label><span>Key <span class="p-tag">a-z 0-9 _ -</span></span><input type="text" id="rfKey" placeholder="order_desk"></label>` : ""}
+      <label><span>Description</span><input type="text" id="rfDesc" value="${esc(role ? role.desc || "" : "")}" placeholder="What this role may do"></label>
+      <h4 style="margin:10px 0 4px">Rights by section</h4>
+      ${grantsEditor(sections, role)}
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button class="p-btn primary" id="rfSave">${isNew ? "Create role" : "Save changes"}</button>
+        <button class="p-btn" data-mclose>Cancel</button>
+      </div>
+    </div>`);
+  const grid = m.querySelector("#grGrid");
+  const filter = m.querySelector("#grFilter");
+  filter.oninput = () => {
+    const q = filter.value.toLowerCase();
+    [...grid.querySelectorAll(".p-grant")].forEach(l => {
+      const k = l.querySelector("span").textContent.toLowerCase();
+      l.style.display = k.includes(q) ? "" : "none";
+    });
+  };
+  m.querySelectorAll("[data-grbulk]").forEach(b => b.onclick = () => {
+    const v = b.dataset.grbulk;
+    [...grid.querySelectorAll(".p-grant")].forEach(l => { if (l.style.display !== "none") { const s = l.querySelector("select"); s.value = v; } });
+  });
+  if (isNew) m.querySelector("#rfKey").value = (m.querySelector("#rfName").value || "").toLowerCase().replace(/[^a-z0-9_-]+/g, "_").replace(/^_|_$/g, "");
+  /* derive the key from the name as the operator types it, only while untouched — an
+     edited key is an operator's explicit choice and is never overwritten */
+  if (isNew) {
+    let keyTouched = false;
+    const nameEl = m.querySelector("#rfName"), keyEl = m.querySelector("#rfKey");
+    keyEl.oninput = () => { keyTouched = true; };
+    nameEl.oninput = () => { if (keyTouched) return; keyEl.value = nameEl.value.toLowerCase().replace(/[^a-z0-9_-]+/g, "_").replace(/^_|_$/g, ""); };
+  }
+  m.querySelector("#rfSave").onclick = async () => {
+    const name = m.querySelector("#rfName").value.trim();
+    const key = isNew ? m.querySelector("#rfKey").value.trim() : role.key;
+    if (!name) return toast("A role name is required");
+    if (!/^[a-z][a-z0-9_-]{1,30}$/.test(key)) return toast("Key must be 2-31 chars, start with a letter, a-z 0-9 _ -");
+    const body = { key, name, desc: m.querySelector("#rfDesc").value.trim(), sections: grantsRead(m) };
+    try {
+      const path = scope === "platform" ? "/platform/roles" : "/platform/roles/staff";
+      await api(path, "POST", body);
+      toast((isNew ? "Role created" : "Role updated") + " — effective on the next sign-in");
+      m.innerHTML = ""; render();
+    } catch (e) { toast(e.message); }
+  };
+}
+function wireRoles() {
+  document.querySelectorAll("[data-rnew]").forEach(b => b.onclick = () => {
+    const scope = b.dataset.rnew;
+    const sections = scope === "platform" ? (window.__roleSections || {}).platform || [] : (window.__roleSections || {}).staff || [];
+    roleFormModal(scope, sections, null);
+  });
+  document.querySelectorAll("[data-redt]").forEach(b => b.onclick = () => {
+    const scope = b.dataset.redt, key = b.dataset.rekey;
+    const list = scope === "platform" ? (window.__roleRoles || {}).platform || [] : (window.__roleRoles || {}).staff || [];
+    const role = list.find(r => r.key === key);
+    if (!role) return toast("Role no longer exists — refresh");
+    const sections = scope === "platform" ? (window.__roleSections || {}).platform || [] : (window.__roleSections || {}).staff || [];
+    roleFormModal(scope, sections, role);
+  });
+  document.querySelectorAll("[data-rdel]").forEach(b => b.onclick = async () => {
+    const scope = b.dataset.rdel, key = b.dataset.rekey;
+    if (!confirm(`Delete the role '${key}'? ` + (scope === "platform"
+      ? "Operators holding it fall back to owner (full access)."
+      : "Staff holding it fall back to owner (full access)."))) return;
+    const path = scope === "platform" ? `/platform/roles/${encodeURIComponent(key)}` : `/platform/roles/staff/${encodeURIComponent(key)}`;
+    try { await api(path, "DELETE", {}); toast("Role deleted"); render(); }
+    catch (e) { toast(e.message); }
+  });
+}
 async function wireIdentity() {
-  // Wire up event listeners for the Identity page
+  /* the Identity view's apply control: template + explicit target store, wired (not inline) */
+  const btn = $("#applyTmplBtn");
+  if (btn) btn.onclick = () => applyIdentityTemplate($("#tmplSelect").value, $("#tmplTenant").value);
 }

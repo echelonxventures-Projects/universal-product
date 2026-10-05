@@ -1237,6 +1237,7 @@ CREATE TABLE IF NOT EXISTS attribute_defs (
   type TEXT NOT NULL,
   options TEXT DEFAULT '[]',
   validation TEXT DEFAULT '{}',
+  category TEXT DEFAULT '',
   position INTEGER DEFAULT 0
 );
 
@@ -1345,6 +1346,57 @@ CREATE INDEX IF NOT EXISTS ix_capvals_tenant ON capability_values(tenant_id, cap
 CREATE TABLE IF NOT EXISTS capability_presets (id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL UNIQUE, label TEXT NOT NULL, description TEXT, capabilities TEXT NOT NULL DEFAULT '{}', created_at TEXT NOT NULL DEFAULT (datetime('now')));
 CREATE INDEX IF NOT EXISTS ix_cappreset_key ON capability_presets(key);
 CREATE TABLE IF NOT EXISTS capability_preset_assignments (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, preset_key TEXT NOT NULL, UNIQUE(tenant_id, preset_key));
+
+/* THE BRANDING SYSTEM — the platform-wide base (id=1) a store inherits from, each store's
+   overrides, and the per-store grants deciding which fields that store may override.
+   Mirrored from lib/db.js. */
+CREATE TABLE IF NOT EXISTS platform_branding (id INTEGER PRIMARY KEY, name TEXT, logo TEXT, tagline TEXT, colors TEXT NOT NULL DEFAULT '{}', fonts TEXT NOT NULL DEFAULT '{}', updated_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS store_branding (tenant_id INTEGER PRIMARY KEY, name TEXT, logo TEXT, tagline TEXT, colors TEXT NOT NULL DEFAULT '{}', fonts TEXT NOT NULL DEFAULT '{}', updated_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE TABLE IF NOT EXISTS store_branding_perms (tenant_id INTEGER PRIMARY KEY, can_change_name INTEGER NOT NULL DEFAULT 0, can_change_logo INTEGER NOT NULL DEFAULT 0, can_change_colors INTEGER NOT NULL DEFAULT 0, can_change_fonts INTEGER NOT NULL DEFAULT 0, can_change_footer INTEGER NOT NULL DEFAULT 0, can_change_nav INTEGER NOT NULL DEFAULT 0);
+
+/* UCII (UNIVERSAL COMPOSITION) — the workflow registry, the knowledge graph and usage
+   metering. Columns are exactly what the /api/ucii handlers bind. Mirrored from lib/db.js. */
+CREATE TABLE IF NOT EXISTS workflows (id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL UNIQUE, domain TEXT NOT NULL, name TEXT, description TEXT DEFAULT '', trigger TEXT NOT NULL, steps TEXT NOT NULL DEFAULT '[]', config TEXT NOT NULL DEFAULT '{}', status TEXT NOT NULL DEFAULT 'active', created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT);
+CREATE INDEX IF NOT EXISTS ix_workflow_domain ON workflows(domain, status);
+CREATE TABLE IF NOT EXISTS knowledge_graph (id INTEGER PRIMARY KEY AUTOINCREMENT, source_type TEXT NOT NULL, source_id INTEGER NOT NULL, relationship TEXT NOT NULL, target_type TEXT NOT NULL, target_id INTEGER NOT NULL, weight REAL NOT NULL DEFAULT 1.0, metadata TEXT NOT NULL DEFAULT '{}', created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS ix_kg_source ON knowledge_graph(source_type, source_id);
+CREATE INDEX IF NOT EXISTS ix_kg_target ON knowledge_graph(target_type, target_id);
+CREATE TABLE IF NOT EXISTS usage_events (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER, entity TEXT NOT NULL, entity_id INTEGER, event_type TEXT NOT NULL, quantity REAL NOT NULL DEFAULT 1, unit TEXT NOT NULL DEFAULT 'count', metadata TEXT NOT NULL DEFAULT '{}', created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS ix_usage_tenant ON usage_events(tenant_id, entity, created_at);
+
+/* THE COMPOSITION LEDGER — what the platform composed, when, from what. Append-only;
+   recomposition writes a new row so evolution is traceable (Article 7). Mirrored from
+   lib/db.js. */
+CREATE TABLE IF NOT EXISTS composition_ledger (id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, capability TEXT NOT NULL, source TEXT, artifacts TEXT NOT NULL DEFAULT '{}', composed_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS ix_composition_key ON composition_ledger(key, composed_at);
+
+/* UCII DOMAIN + POLICY REGISTRIES — the vocabulary the console composes workflows against.
+   Mirrored from lib/db.js. */
+CREATE TABLE IF NOT EXISTS domains (id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL UNIQUE, name TEXT NOT NULL, description TEXT DEFAULT '', parent TEXT DEFAULT '', schema TEXT NOT NULL DEFAULT '{}', policies TEXT NOT NULL DEFAULT '[]', status TEXT NOT NULL DEFAULT 'active', created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS ix_domain_parent ON domains(parent, status);
+CREATE TABLE IF NOT EXISTS policies (id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL UNIQUE, domain TEXT, name TEXT NOT NULL, description TEXT DEFAULT '', type TEXT NOT NULL DEFAULT 'validation', priority INTEGER NOT NULL DEFAULT 0, rule TEXT NOT NULL, context TEXT NOT NULL DEFAULT '{}', status TEXT NOT NULL DEFAULT 'active', created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS ix_policy_domain ON policies(domain, priority, status);
+
+/* THE META-MODEL TAXONOMY — per-entity types and attributes, plus each tenant's per-entity
+   and per-field overrides. Mirrored from lib/db.js. */
+CREATE TABLE IF NOT EXISTS entity_types (id INTEGER PRIMARY KEY AUTOINCREMENT, entity TEXT NOT NULL, type_key TEXT NOT NULL, label TEXT NOT NULL, icon TEXT DEFAULT '📝', fields TEXT NOT NULL DEFAULT '[]', config TEXT NOT NULL DEFAULT '{}', created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE (entity, type_key));
+CREATE INDEX IF NOT EXISTS ix_etype_entity ON entity_types(entity);
+CREATE TABLE IF NOT EXISTS entity_attributes (id INTEGER PRIMARY KEY AUTOINCREMENT, attribute_key TEXT NOT NULL, entity TEXT NOT NULL, position INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE (entity, attribute_key));
+CREATE INDEX IF NOT EXISTS ix_eattr_entity ON entity_attributes(entity, position);
+CREATE TABLE IF NOT EXISTS tenant_entities (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, entity TEXT NOT NULL, enabled INTEGER NOT NULL DEFAULT 1, requirement TEXT NOT NULL DEFAULT 'optional', custom_name TEXT, config TEXT NOT NULL DEFAULT '{}', created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE (tenant_id, entity));
+CREATE INDEX IF NOT EXISTS ix_tent_tenant ON tenant_entities(tenant_id, enabled);
+CREATE TABLE IF NOT EXISTS entity_field_config (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, entity TEXT NOT NULL, field_key TEXT NOT NULL, required INTEGER NOT NULL DEFAULT 0, hidden INTEGER NOT NULL DEFAULT 0, config TEXT NOT NULL DEFAULT '{}', updated_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE (tenant_id, entity, field_key));
+
+/* THE AUTH-SIDE IDENTITY STORE — a user's linked methods and the challenge ledger for
+   OTP / magic-link / biometric login. Mirrored from lib/db.js. */
+CREATE TABLE IF NOT EXISTS user_identity_methods (user_id INTEGER NOT NULL, method_id TEXT PRIMARY KEY, method_type TEXT NOT NULL, identifier TEXT NOT NULL, metadata TEXT DEFAULT '{}', is_primary INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS ix_uim_user ON user_identity_methods(user_id, is_primary);
+CREATE TABLE IF NOT EXISTS identity_otps (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, identifier TEXT NOT NULL, otp TEXT NOT NULL, expires_at INTEGER NOT NULL, attempts INTEGER NOT NULL DEFAULT 0, verified INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS ix_otp_user ON identity_otps(user_id, identifier, verified);
+CREATE TABLE IF NOT EXISTS identity_magic_links (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, identifier TEXT NOT NULL, token TEXT NOT NULL, expires_at INTEGER NOT NULL, used_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS ix_magic_token ON identity_magic_links(token, used_at);
+CREATE TABLE IF NOT EXISTS identity_biometric_challenges (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, challenge TEXT NOT NULL, expires_at INTEGER NOT NULL, verified INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS ix_bio_challenge ON identity_biometric_challenges(user_id, challenge, verified);
 
 /* THE TENANCY HIERARCHY — Platform → Tenant → Organization → Business Unit → Brand →
    Store → Channel. One row per node; the materialized `path` makes a subtree a LIKE away,

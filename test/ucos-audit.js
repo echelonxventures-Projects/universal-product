@@ -45,8 +45,14 @@ const src = (file, re) => {
   return n;
 };
 /* every document's container grammar is declared in ucos.DOCS; recount each one independently
-   here (the registry is trusted for nothing) and let the assertions scale with the corpus */
-const expected = ucos.DOCS.map(d => ({ id: d.id, kind: d.container, count: src(d.file, d.marker) }));
+   here (the registry is trusted for nothing) and let the assertions scale with the corpus.
+   A registry document declares its containers in JSON, not text, so its recount reads the
+   same JSON source files the runtime parses — never the seeded tables. */
+const regMod = require(path.join(__dirname, "..", "lib", "ucos-registry.js"));
+const expected = ucos.DOCS.map(d => ({
+  id: d.id, kind: d.container,
+  count: d.registry ? regMod.parseRegistry().sections.length : src(d.file, d.marker)
+}));
 
 ok(count("ucos_documents") === ucos.DOCS.length, "every constitutional document registered", count("ucos_documents") + " vs " + ucos.DOCS.length);
 for (const e of expected) {

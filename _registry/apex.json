@@ -1,0 +1,43 @@
+{
+  "$schema": "https://ucos.io/registry/apex.v1.json",
+  "registryId": "UCOS-REG-APEX",
+  "canonicalName": "Apex Constitution Source",
+  "version": "Omega-Infinity",
+  "status": "Constitutional Freeze",
+  "ownerDomain": "Constitutional Authority",
+  "law": "This is the single supreme document. All other artifacts are projections beneath it.",
+  "identity": {
+    "title": "UCOS Ω∞ Apex Constitution",
+    "designation": "The Single Most Upgraded Constitutional Instrument",
+    "version": "Ω∞.1",
+    "status": "Constitutional Baseline Freeze",
+    "authority": "UCOS Ω∞ Constitutional Authority",
+    "supersedes": "All prior constitutional drafts, addenda, and master architecture documents",
+    "provenance": "_superseded/ (preserved, non-authoritative)"
+  },
+  "claims": [
+    {"id": "C1", "claim": "Zero hard coding", "evidence": "Law 001 audit passes across 97 artifacts; no prohibited business term appears as a schema type"},
+    {"id": "C2", "claim": "Zero duplication", "evidence": "Law 002 audit: 93/93 artifact IDs unique; 27 primitives unique; 31 canonical terms unique"},
+    {"id": "C3", "claim": "Zero missing", "evidence": "93/93 artifacts projected, each carrying 50/50 constitutional sections"},
+    {"id": "C4", "claim": "Zero partial", "evidence": "Zero Partial audit: no artifact contains generic filler"},
+    {"id": "C5", "claim": "Zero gap", "evidence": "Manifest integrity check reconciles declared counts with enumerated artifacts"},
+    {"id": "C6", "claim": "Explainable", "evidence": "Law 005 audit: all seven explainability questions present in every artifact"}
+  ],
+  "laws": [
+    {"lawId": "L001", "name": "Zero Hard Coding", "text": "Nothing shall be hardcoded except constitutional primitives. No business, industry, country, language, currency, or marketplace concept shall be embedded in the platform. Everything shall be derived."},
+    {"lawId": "L002", "name": "Knowledge Once", "text": "Every concept, capability, relationship, semantic meaning, policy, rule, and authority shall be defined exactly once. Duplication is prohibited."},
+    {"lawId": "L003", "name": "Projection Law", "text": "The platform stores primitives. The runtime projects realities. Business constructs, applications, interfaces, processes, and commercial objects are projections. Everything beyond primitives is derived."},
+    {"lawId": "L004", "name": "Constitutional Governance", "text": "Every capability, change, evolution, and autonomous action must be governed. No execution may bypass governance."},
+    {"lawId": "L005", "name": "Explainability", "text": "Every action must answer what happened, why, who authorized it, which policy allowed it, what evidence supports it, what confidence exists, and what alternatives were evaluated."},
+    {"lawId": "L006", "name": "Ownership", "text": "No concept may exist without ownership. No capability without boundary. No boundary without contract. No contract without governance."},
+    {"lawId": "L007", "name": "Semantic Singularity", "text": "No semantic term may exist with multiple meanings. No meaning may exist with multiple canonical definitions. No overlap may exist between constitutional domains."},
+    {"lawId": "L008", "name": "Dependency Flow", "text": "Identity to Knowledge to Relationships to Context to Policy to Trust to Projection. Circular dependencies, mutual ownership, and cross-domain state mutation are forbidden."},
+    {"lawId": "L009", "name": "Truth Ownership", "text": "No projection may own truth. Truth belongs only to constitutional domains. Products, services, offers, subscriptions, and contracts are projections."},
+    {"lawId": "L010", "name": "Architectural Freeze", "text": "Primitives, domain ownership, contract structure, governance model, dependency model, and projection model are frozen. Future changes occur through registries, policies, capabilities, contexts, relationships, knowledge, agents, and projections — never through primitive expansion."}
+  ],
+  "verification": {
+    "command": "node _registry/audit.js",
+    "exitCode": 0,
+    "enforcement": "A projection that fails audit is not a release. The audit is the constitution made executable."
+  }
+}

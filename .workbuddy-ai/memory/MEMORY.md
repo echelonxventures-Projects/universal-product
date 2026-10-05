@@ -831,3 +831,291 @@ transmissibility probe per corpus), both wired into `npm test`.
 gops + 170 upce + 257 master + 166 omega + ucos checks, exit 0.** Still open: `dbg12.mjs`
 scratch, `Conversation1txt.md` (the pasted requirements source for these corpora), the live
 8787 server on stale code, and the whole worktree UNCOMMITTED.
+
+### 2026-10-02 (session 14) — the auto-composition end-state: the spec's target is now machinery
+Resumed on the owner's framing: the canonical information architecture (the 192 universe-record
+leaves, nav with zero dead ends) was real, but the spec's actual target — "the platform
+automatically composes data models, APIs, workflows, UIs, mobile apps… without writing new
+business code" — was not implemented. `lib/compose.js` (245 lines) existed as an UNTRACKED
+ORPHAN: required by nothing, no `composition_ledger` table in the schema, no route, no console,
+no test. Wired it end-to-end this pass, and exercising it exposed **three latent defects the
+dead module could never have revealed** (the recurring lesson: an unwired module's bugs are
+invisible — `node --check` passes because the SQL is a string).
+
+**The three latent defects in `compose.js`:**
+- **`conceptNames()` indexed the parsed corpus by the universe's `source_line`, but
+  `parseAll().concepts` is keyed by a SEQUENTIAL INDEX, not a line** — and each value is a single
+  object, not an array, so `Array.isArray(want) ? want : []` always returned `[]`. Every universe
+  composed with the 4-field fallback (name/code/status/attrs) instead of its corpus-declared
+  attributes. **The concept names already live in `universes.discover()`** — that's the canonical
+  path (`ucos-universes.js` attaches each concept to the universe whose name it sits under; the
+  `ucos_universes.concepts` column stores only the COUNT). Composing `insurance` now yields 12
+  fields incl. health, life, property, cyber, coverage, premium — the corpus's own vocabulary.
+  **When deriving from a parsed corpus, use `discover()`, never a line number as an array key.**
+- **`composeDashboard()` called `dashboards.seed([board])` — but `seed()` takes NO arguments.**
+  The composed board was silently discarded and the canonical set re-seeded instead. Two further
+  errors in the same function: it declared metrics `byState`/`recent`, which are NOT in the
+  engine's vocabulary (`METRICS = count/sum/avg/min/max/distinct`), so even a saved board would
+  have rendered as error tiles. Fixed by adding `dashboards.saveBoard(board)` — the board write
+  primitive the console's widget editor duplicates inline — and declaring only valid metrics
+  (count KPI · distinct-code KPI · by-status bar). Widgets are seeded ONCE (an operator's edits
+  survive recomposition); the board's own name/description follow its declaration.
+- **`homeOf()` returned the constant `"constitution"` for every universe.** Now derived from the
+  declaration: `discover()` carries the universe's registry label ("Insurance Meta Model"), so a
+  composed universe lands in the section that declared it. Also `composeWorkflow` read the Art. 10
+  grammar from `availableTransitions()`, which needs a RECORD and so always returned `[]` — now
+  read from `ucos.transitionGrammar()` (the corpus declaration itself).
+
+**The wiring (all data; the engine owns no per-capability knowledge):**
+- **Schema**: `composition_ledger` (append-only — recomposition appends, never deletes, so
+  evolution is traceable per Article 7) in `lib/db.js` + `schema.sql`.
+- **API** (`/api/compose/*`, platform-only — composing creates platform-wide machinery):
+  `candidates` (every composable declaration with composed/uncomposed status) · `ledger` ·
+  `GET :key` (manifest + live record count) · `POST :key` (compose) · `POST :key/recompose`.
+  Route order matters: literal `candidates`/`ledger` are registered BEFORE `:key`.
+- **RBAC**: a `compose` section (`rb_v4 → rb_v5`, so a warm DB picks it up) + a **prefix rule**
+  in `sectionForEntity` — `cp_*` authorize against `compose`, because the composition engine mints
+  those keys and an exact-match map could never list them. Owner/manager inherit it via `*: write`.
+- **Console**: platform console → 🧬 Composition Engine (09 · Platform). Candidates in three
+  groups (universes · capabilities · datasets) with Compose/Recompose/Manifest per row, a filter,
+  four counters, the ledger, and a manifest modal showing all six artifact groups.
+- **Composed artifacts are LIVE, not reported**: the composed `cp_*` entity is served by the entity
+  engine (CRUD through the same generic routes), its board renders through the §394 engine (widgets
+  compute real values), its workflow lands in the UCII registry. `test/compose.js` asserts every
+  one of these through the serving machinery, not the module's own return.
+
+**Test gotcha**: `/api/meta/entities` returns `{ entities: <object map> }`, not an array — my
+first assertion used `.some(e => e.key…)` and aborted the suite. **Check the response shape before
+asserting on it; `entities` is keyed by entity key.**
+**Port-collision flake (pre-existing, not mine)**: a tool-timeout kill of an earlier `npm test`
+orphaned a test server on 8807, so the next chain's `gops.js` spawned into `EADDRINUSE` and its
+healthz poll answered the STALE server — the suite still exited 0 against wrong data. **Before
+trusting a chain run, confirm no stray `node server.js` holds a test port** (`lsof -iTCP:8807
+-sTCP:LISTEN`); kill by pid. Killed the two strays (8807, 4450), re-ran clean.
+**Live proof (8787, restarted)**: candidates 2831 universes / 32 capabilities / 113 datasets with
+0 pre-composed (composition is opt-in — nothing is auto-seeded at boot, per the OFF-by-default
+rule); composed `insurance` live (12 corpus fields, home "Insurance Meta Model", ledger entry,
+entity served). Proof rows then cleaned so the operator's DB stays opt-in.
+
+**Suite (exit 0, clean run after the stray cleanup): 692 E2E + 31 wizard + 32 tenancy + 58
+compose + 231 parity + 197 conformance + 82 gcatalog + 66 gops + 170 upce + 257 master + 166
+omega + ucos checks.** `test/compose.js` (58 assertions) wired into `npm test` after `tenancy.js`.
+Still open: `dbg12.mjs` scratch, `Conversation1txt.md`, and the whole worktree UNCOMMITTED.
+Live 8787 is now on current code (restarted this session).
+
+### 2026-10-03 (session 15) — resumed to the eighth corpus; it was wired but untested, and silent about it
+Resumed on the uncommitted tree. Baseline verified first (`npm test`, exit 0, 751 E2E). The
+uncommitted worktree also held a feature memory never recorded: **an eighth corpus,
+`Architecture6.txt` (`ucosmm`, the universal capability STACK — composition/experience/
+intelligence/operations/resilience/integration/governance/knowledge/temporal/context/evolution/
+execution-substrate + the marketplace gap-closers + the five compositions)**, added as one DOCS
+row in `lib/ucos.js:39` reusing the UPCE `# <n>. TITLE` + labelled-fence grammar. It had **no
+test of its own** — every other corpus has one — so nothing had ever exercised it, and the parse
+was quietly wrong in three ways. `test/ucos-mm.js` (326 assertions, wired into `npm test` after
+`ucos-omega.js`) now pins all of it.
+
+**Defect 1 — a fence with no heading of its own inherits the previous section's label.** §14 (the
+five compositions) and §15 (the end state) carry fences but no `##` heading; the parser sets
+`fenceLabel = lastHeading` and never resets it at a container boundary, so both borrowed §13's
+declaration label "Marketplace Composition Universes". One registry key then held three lists
+(§13's 3 real declarations, §14's 9 vendor-named equations, §15's 7 composed outputs), and because
+the label ends in "Universes" — the declaration channel — **§15's composed OUTPUTS ("Data Models",
+"Workflows", "User Interfaces"…) were declared first-class universes.** Fixed two layers: the
+document gained the two `##` headings its own grammar requires (Architecture4/5 put every fence
+under one — "## Five Compositions", "## Composed Artifacts"; those labels match no registry
+vocabulary so the fences stay illustrative diagrams, not declaration lists), and the parser now
+records `labelOwn` on every registry = "was this label declared in THIS block's container?".
+`discover()` refuses a borrowed label in every declaration channel; a corpus-level invariant in
+the test asserts **zero borrowed "Universe(s)" labels across all eight corpora** so the class
+can't recur. Blast radius measured before narrowing: the blanket skip also cost upip 188
+universes from its 395 borrowed labels (pre-existing, reconstructed admission — left untouched);
+the guard is scoped to the declaration channels only, and upip 1,733 / umqscr 144 / upce 70 /
+ucosm 188 stayed byte-identical to the recorded baselines. **When a fence's registry key
+collides, check whether it has its own `##` heading — `lastHeading` leaks across `# n.` containers.**
+
+**Defect 2 — the declaration channel kept the registry-machinery blocklist it doesn't need.**
+The corpus declares 129 universes; 4 (Authority, Registry, Discovery, Graph) were silently
+dropped because `isDeclaredUniverse` applied `REGISTRY_MACHINERY`, the blocklist the RECONSTRUCTED
+admission needs to keep registry vocabulary out. Architecture6 §8 declares them deliberately and
+distinctly — "Taxonomy, registry and classification sit here as knowledge universes, distinct from
+the registry machinery that holds them". `isExplicitDeclaration` (the other declaration channel)
+already drops that blocklist; split the structural predicate into `declaredName()` and applied it
+to the explicit-list channel too. Blast radius measured: A4/A5 declare zero machinery words in
+their declaration lists, so nothing else moved; the corpus went 125 → 129/129 discovered. Two of
+the six newly-admitted keys had been owned by ucoso (first-wins by DOCS order) — same entities,
+only `source_doc` flips, so `instantiate()` now upserts provenance (name/source_doc/source_line/
+concepts follow the corpus; `instantiated_at` is kept).
+
+**Defect 3 — a registry seeded by a defect never healed.** `instantiateAll()` only ever
+`INSERT OR IGNORE`d, so the live DB kept the 7 bogus universes after the code was corrected.
+Added `pruneStale()`: a universe the corpus no longer declares is removed with its foundation,
+platform entity definition and **derived canonical record** — but an OPERATOR record (tenant
+scope ≠ 0) is sacred, so such a universe is kept and reported instead (`pruned: {removed, kept}`).
+The canonical record is `ucos-catalog.js::canonicalRecord` (tenant 0, seeded from the universe's
+declared fields, re-materialized on activation) — the first prune draft guarded on ANY record
+and healed nothing on live because every universe carries one. **Guard prune on operator records,
+not record count; the platform's own canonical row is derived data.**
+
+**§14 is the document's own acceptance test** and is now executed: "every term in each equation
+resolves to a universe declared somewhere in the corpus — a term that resolves nowhere is a gap
+the platform measures rather than ignores". 21 distinct terms; **16 resolve by exact name, and
+the remaining 5 (Geo, Media, Analytics, AI, Communication) are pinned as the measured shorthand
+gaps** — each names a universe another corpus declares under a longer name (Geography, Media
+Universe, AI & Agentic Intelligence Universe…), so they are naming shorthand, not capability
+gaps. Declaring them would have DUPLICATED existing universes, violating the corpora's own
+zero-duplication rule — §13's Review/Rating/Matching were declared precisely because no corpus
+had them. **The vendor names in the five compositions stay**: they are the document's own
+illustrative equations, exactly like Omega's "Amazon, Uber, Netflix… become configurations of one
+platform" and "Salesforce-class CRM"; the owner's de-vendoring rule governs the platform's own
+definitions (the capability catalog, `parity.js:563`), not the corpora quoting real platforms.
+(Pre-existing, untouched, worth knowing: Omega's "Salesforce-class CRM" row reduces through
+`cleanName` to a universe literally named "Salesforce" — the only vendor-named universe in the
+registry, from a committed corpus, out of scope here.)
+
+**Live proof (8787, restarted twice)**: healthz green; after the fix `declared` = 2,828 and the
+7 bogus universes were pruned on the second restart (the first restart ran the pre-fix
+records-guard). Corpus attribution 1,733 upip · 144 umqscr · 70 upce · 188 ucosm · 96 ucosmm ·
+539 ucoso · 58 ucosu. **Suite: 751 E2E + 326 ucos-mm + 257 master + 166 omega + 231 parity + 197
+conformance + 82 gcatalog + 66 gops + 170 upce + 58 compose + 32 tenancy + 31 wizard, exit 0.**
+Still open: `dbg12.mjs` scratch, `Conversation1txt.md`, the whole worktree UNCOMMITTED, and
+(live-only) the `uv_*` universes whose `source_doc` predates the upsert.
+
+### 2026-10-04 (session 16) — resumed to a green tree carrying two features memory never recorded
+Resumed. Verified the baseline FIRST this time (`npm test`, exit 0) because this project has
+twice recorded "green" and been red — it was genuinely green: 751 E2E + 326 ucos-mm + 257
+master + 166 omega + 231 parity + 82 gcatalog + 64 gops + 170 upce + 58 compose + 32 tenancy
++ 62 padmins + 71 roles + 66 identity-modes, 0 failures. But the worktree held a whole feature
+set from the earlier hours of Oct 4 that **MEMORY did not describe at all** — found by noticing
+mtime: `lib/prbac.js` (01:36), `lib/api.js` (07:14), `lib/identity.js` (07:46) were all newer
+than the running server. Both features were already wired and tested; nothing was half-finished
+(the only "not implemented" is WebAuthn CBOR+cose math, a deliberate zero-dependency limit — the
+biometric flow verifies the assertion structurally). Recorded here so the next resume sees them.
+
+**Feature A — platform-console RBAC (`lib/prbac.js`, 183 lines, new).** The store console has
+had staff roles + per-section permissions since `rbac.js`; the platform console was
+all-or-nothing — every `platform_admins` row could launch stores, rotate keys and read every
+tenant's audit trail. This mirrors the store's conventions so the two feel like one system:
+- Roles are DATA (`meta_lists` row `platformRoles`, stamp `pb_v1`, revisioned self-heal — an
+  unedited row follows the in-code `ROLES` when the stamp moves; an operator's edit is stamped
+  `edited=1` and never clobbered). Ships 5: owner (the default an admin with no role resolves
+  to, so the seed owner keeps full access on upgrade) · support (sell and operate stores, NO
+  platform security or money plumbing — the point of the feature) · finance · catalog · auditor.
+- The grant surface `SECTIONS` is exactly the platform console's NAV leaf keys (297), so a grant
+  and the nav button it lights up can never disagree; `*` expands to the whole tree. A per-admin
+  `perms` JSON override takes precedence. `can()` is the gate; `sectionForRoute()` maps an API
+  prefix → section and **unmapped routes fall back to `dash` (broad read), never silently open**.
+- Wired: required by `api.js` (the platform authz gate at api.js:88 + `sectionForRoute` at :98),
+  seeded from the `db.js` boot block, routes `/api/platform/roles*` + `/api/platform/admins*`
+  carry role + `allowed`, console views render from `prbac.SECTIONS`/`roles()`. RBAC bump
+  `rb_v5 → rb_v6`.
+
+**Feature B — identity modes (`lib/identity.js` +599, `Identity_CONFIG.md` rewritten).**
+- **Login is per-method and registry-driven.** `identityProviderTypes` is a registry row mapping
+  a type → one of FIVE flows the engine implements: `password` · `challenge` (delivery: code, or
+  `authenticator` for TOTP) · `link` (magic link) · `biometric` (WebAuthn) · `external` (IdP
+  assertion verified by the single `verifyIdToken`, auto-provisioning on return). The engine
+  **dispatches on the flow, never the type key**, so registering a brand-new type (`passkey` →
+  `biometric`) works with zero code change; a type naming an unknown flow is refused at
+  registration so a typo can't produce a method that silently never works. 9 built-in types.
+  Client-supplied ttl/length are ignored — the store's provider row decides.
+- **The challenge ledger actually expires** (the binding bug): OTP/magic-link rows carry a real
+  future epoch-ms `expires_at`; a used code cannot be replayed. TOTP secrets are **sealed at rest**
+  (`lux.v1.` prefix), returned once at enrolment with the `otpauth://` URI.
+- **Roles are per-store.** A store inherits the shared `staffRoles` default until an operator
+  deliberately forks it to `staffRoles:t<id>`; the first edit forks the WHOLE set (the store keeps
+  every role it had and diverges from there), a fork dissolves back to the default, and `ownSet`
+  reports which. A grant removed on one store is refused by that store's console and still
+  allowed on every unforked store; a role only one store defines is assignable only there. The
+  fork is stamped `edited=1` and survives a reboot.
+- Registration is a deliberate choice — an unknown account answers `action: "register"`, never a
+  silent create; the store's enabled methods are returned so the UI never dead-ends.
+- Tests: `test/roles.js` (71) · `test/padmins.js` (62 — platform-admin CRUD, login as a created
+  support admin, rename/password-reset session revocation, self-delete + last-admin guards) ·
+  `test/identity-modes.js` (66). `test/wizard.js` was rewritten leaner (31 → 14).
+
+**The one real defect found this session was operational, not code**: the live 8787 server had
+been started Oct 3 23:59 — BEFORE the Oct 4 code (01:36–07:46) — so it served last week's
+identity surface while the suite proved the new one. This is the recurring warm-server trap.
+Restarted (kill the `node server.js` pid; `serve.sh`'s supervisor respawns in ~2s; poll
+`/healthz`), then verified live: `/api/platform/roles` → owner/support/finance/catalog/auditor
+over 297 sections; `/api/admin/identity-provider-types` → the 9 types mapping to their flows;
+`/api/admin/roles` → `ownSet: false`, 7 inherited roles. Also added `lib/prbac.js` to the
+`npm test` syntax-check list (the compose.js precedent from session 14 — a new lib file gets
+`node --check`d the day it lands).
+
+**Suite (exit 0):** 751 E2E + 326 ucos-mm + 257 master + 166 omega + 231 parity + 82 gcatalog +
+64 gops + 170 upce + 58 compose + 32 tenancy + 62 padmins + 71 roles + 66 identity-modes.
+Still open: `dbg12.mjs` scratch, `Conversation1txt.md`, the whole worktree UNCOMMITTED (now
+spanning sessions 9–16), and (live-only) the `uv_*` `source_doc` staleness.
+
+### 2026-10-05 (session 17) — the ninth corpus; resumed RED, five real defects, freeze restored
+Resumed on an uncommitted tree holding a whole feature memory had not recorded: the **frozen
+registry as a first-class corpus** (`_registry/*.json` + `lib/ucos-registry.js`, untracked).
+The `_registry` directory is the constitutional source of truth (27 primitives · 31 terms ·
+19 domains · 93 artifacts); `_registry/project.js` projects 93 markdown artifacts into the
+numbered `00-constitutions/`…`13-implementation/` tree and `_registry/audit.js` enforces Laws
+001/002/005 + 50-section completeness (all pass). The runtime half makes the 93 artifacts LIVE
+universes through one DOCS row `ureg` — the same parse contract, seed path and discovery walk
+as the text corpora. The owner's question was "real code, not just docs?" — verified, then proven.
+
+**Resumed RED again.** `npm test` died at `test/ucos-audit.js` with `EISDIR` — the `ureg` DOCS
+row points at the DIRECTORY `_registry/`, and the audit's independent marker recount
+(`src(d.file, d.marker)`) does `readFileSync` on it. `readDoc` handles registry docs; the test's
+own recount did not. **When a DOCS row points at a directory, every place that reads `d.file`
+blindly must learn the registry flag — the suite is the second reader.**
+
+**Defect 1 — the registry's containers were invisible to health/drift.** `countMarkers` returned
+0 for registry docs, so the monitor expected 0 sections while the registry seeded 97 → health
+flipped unhealthy and the audit's two expected-count assertions could not both pass. Fix:
+`countMarkers` recounts `parseRegistry().sections.length` (97) for registry docs.
+
+**Defect 2 — the artifacts' shared section template was registered as 93 competing concepts.**
+All 93 artifacts carry the same 28-key section template by the corpus's own design ("each
+artifact carries the same constitutional sections"), so emitting every section label as a
+first-class concept produced 2,604 rows over 158 distinct keys: **47 duplicate (doc_id,key)
+groups and 4 critical authority gaps** ("Certification" claimed by 98 containers). The
+authority criterion was right; the registration was wrong. Section labels are the artifact's
+STRUCTURE, not concept definitions — they now ride as `fieldLabels` on the section and become
+the universe's derived attributes through a second attach pass in `discover()` (generic: any
+section carrying fieldLabels), never entering the concept table.
+
+**Defect 3 — the registry's three vocabularies flattened one identity into three concepts.** 13
+names (Knowledge, Relationship, Context, Policy…) are a primitive AND a term AND a domain —
+the domain's `owns` array points AT the primitive, so they are one identity in three aspects.
+Registering all three gave 21 more duplicate keys. Fix: one name → one concept under its first
+layer (primitive → term → domain); all three registry LISTS still carry it (Knowledge Once is
+enforced where identity lives — the keyed concept table — not where vocabulary is listed).
+
+**Defect 4 — the reconstructed channel promoted vocabulary and section labels into universes.**
+12 extras from per-artifact "X Sections" lists (blueprint, queries, geo…) and 2 from "Domain
+Ownership" (causality, relationship), all with zero concepts. The registry's model says
+primitives are atoms and domains are ownership scopes — only the artifacts are projections.
+Fix: a `noUniverses` flag on the registry record (data, set by the parse), and `discover()`
+skips it in every channel. The registry's universe declaration is exactly ONE list.
+
+**Defect 5 — the test contradicted itself.** It asserted all 93 artifacts are `ureg`-sourced
+universes, while its own overlap section expects 2 (Agent Runtime, Agent Governance) to resolve
+first-wins to a corpus row. Now asserts every artifact HAS a universe, and 91 + 2 = 93 is the
+honest split. Also its additive-seed probe did `INSERT` into `meta_lists` — but `name` is
+UNIQUE, so it died with `UNIQUE constraint failed`; the operator path is an `UPDATE` of the
+existing row (there is one row per vocabulary).
+
+**`authorityGaps` detail said "claimed by undefined documents"** — it read `d.docs`, which the
+GROUP BY never selects. Now reports `d.owners` containers, which is the real measure.
+
+**Verification (all green, exit 0):** 751 E2E + 326 ucos-mm + 257 master + 166 omega + 231
+parity + 82 gcatalog + 64 gops + 170 upce + 58 compose + 32 tenancy + 62 padmins + 71 roles +
+66 identity-modes + **147 registry (new, wired into `npm test` with a `node --check` for
+`lib/ucos-registry.js`)**. `npm test` takes ~9 min; a 600s timeout is too short — and a killed
+run leaves its test server on 8807 (the recurring flake), so confirm `lsof -iTCP:8807` is free
+before trusting a re-run. Doc side: `project.js --check` INTEGRITY OK; `audit.js` ALL
+CONSTITUTIONAL CHECKS PASSED (93/93 artifacts × 50 sections, no filler, Law 001/002/005).
+Live 8787 restarted: **freeze verdict SATISFIED, 0 critical / 0 total gaps, health healthy,
+0 duplicate concept keys, 2,919 universes all with live `uv_*` entity defs**, 27 primitives
+seeded as platform vocabulary.
+
+**Answering the owner's bar honestly:** real code not just docs — YES (93 artifacts are operable
+universes, not markdown nothing reads). Zero duplicate / zero partial / zero overlap — YES now,
+measured by the executable criteria, not claimed. Organised — YES (14 numbered dirs,
+registry-driven, `_superseded/` preserved). **Git status clean — NO: 57 paths (27 modified, 30
+untracked) spanning sessions 9–17. That bar is still unmet and is the next thing to do.**

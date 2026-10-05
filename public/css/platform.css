@@ -99,6 +99,32 @@ footer { text-align: center; padding: 20px; color: var(--text-muted); font-size:
 .grid-2 { grid-template-columns: repeat(2, 1fr); }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
 
+/* constitutional tree views (taxonomy, capability tree): nested <details> per node.
+   The marker is hidden so the summary reads as a titled row, and the connector line
+   under an open node keeps the parent/child relationship visible at any depth. */
+.p-node { border-left: 2px solid var(--p-line); padding-left: 12px; margin-bottom: 6px; }
+.p-node > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 6px 4px; border-radius: 8px; }
+.p-node > summary:hover { background: var(--p-bg); }
+.p-node > summary::-webkit-details-marker { display: none; }
+.p-node > summary::before { content: "▸"; color: var(--p-muted); font-size: 11px; transition: transform .12s; }
+.p-node[open] > summary::before { transform: rotate(90deg); }
+.p-node .p-ico { font-size: 15px; }
+.p-node > summary b { font-size: 13.5px; }
+
+/* the canonical sidebar: 12 constitutional sections as collapsible <details>. Each section
+   keeps its own group rules, so the tree reads as one declaration per capability. */
+.p-nav-sec { border-bottom: 1px solid rgba(255, 255, 255, .08); }
+.p-nav-sec > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
+  background: none; border: none; color: #8FA1B8; padding: 11px 18px 5px; font-size: 9.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.p-nav-sec > summary::-webkit-details-marker { display: none; }
+.p-nav-sec > summary::before { content: "▸"; color: var(--p-muted); font-size: 10px; transition: transform .12s; }
+.p-nav-sec[open] > summary::before { transform: rotate(90deg); }
+.p-nav-sec > summary:hover { color: #fff; }
+.p-nav-sec .p-nav-grp { padding-top: 2px; padding-bottom: 6px; }
+.p-nav-sec .p-nav-grp > small { display: block; color: #6E8097; letter-spacing: .1em; font-size: 9px; text-transform: uppercase; padding: 4px 18px 2px; font-weight: 600; }
+.p-nav-sec .p-nav-grp + .p-nav-grp { border-top: none; margin-top: 0; }
+.p-nav-sec .p-nav button { padding: 6px 18px 6px 26px; font-size: 12.5px; }
+
 /* Responsive */
 @media (max-width: 768px) {
   .grid-2, .grid-3 { grid-template-columns: 1fr; }

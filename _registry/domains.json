@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ucos.io/registry/domains.v1.json",
+  "registryId": "UCOS-REG-DOMAINS",
+  "canonicalName": "Domain Ownership & Contract Registry",
+  "version": "Omega-1",
+  "status": "Constitutional Freeze",
+  "ownerDomain": "Constitutional Authority",
+  "law": "No concept may exist without ownership. No overlap may exist between constitutional domains. No cross-domain ownership permitted.",
+  "dependencyLaw": "Identity -> Knowledge -> Relationships -> Context -> Policy -> Trust -> Projection. Forbidden: circular dependencies, mutual ownership, cross-domain state mutation.",
+  "communication": "All cross-domain communication occurs exclusively through explicit contracts. No domain may access another domain's internals.",
+  "domains": [
+    { "domainId": "D-IDN", "name": "Identity",     "owns": ["Identity"], "responsible": ["Identity Creation","Identity Resolution","Identity Versioning","Identity Lineage"], "notResponsible": ["Knowledge","Meaning","Policy","Trust"], "contract": "UCOS-IDN-000001" },
+    { "domainId": "D-KNW", "name": "Knowledge",    "owns": ["Knowledge"], "responsible": ["Knowledge Creation","Knowledge Validation","Knowledge Provenance","Knowledge Evolution"], "notResponsible": ["Identity","Policy","Authority"], "contract": "UCOS-KNW-000001" },
+    { "domainId": "D-SEM", "name": "Semantic",     "owns": ["Meaning","Ontology","Taxonomy","Classification"], "responsible": ["Meaning","Ontology","Taxonomy","Classification"], "notResponsible": ["Knowledge Validation","Identity","Policy"], "contract": "UCOS-SEM-000001" },
+    { "domainId": "D-REL", "name": "Relationship", "owns": ["Relationship"], "responsible": ["Relationship Definition","Relationship Resolution","Relationship Integrity"], "notResponsible": ["Meaning","Trust","Authority"], "contract": "UCOS-REL-000001" },
+    { "domainId": "D-CTX", "name": "Context",      "owns": ["Context"], "responsible": ["Applicability","Scope","Boundary","Constraints"], "notResponsible": ["Meaning","Trust","Identity"], "contract": "UCOS-CTX-000001" },
+    { "domainId": "D-AUT", "name": "Authority",    "owns": ["Authority","Ownership"], "responsible": ["Governance Rights","Jurisdictions","Delegations"], "notResponsible": ["Knowledge","Meaning","Relationships"], "contract": "UCOS-AUT-000001" },
+    { "domainId": "D-POL", "name": "Policy",       "owns": ["Policy"], "responsible": ["Behavior","Governance","Enforcement"], "notResponsible": ["Knowledge","Meaning","Identity"], "contract": "UCOS-POL-000001" },
+    { "domainId": "D-RUL", "name": "Rule",         "owns": ["Rule"], "responsible": ["Executable Constraint Definition","Rule Evaluation Readiness"], "notResponsible": ["Policy Intent","Decision"], "contract": "UCOS-RUL-000001" },
+    { "domainId": "D-DEC", "name": "Decision",     "owns": ["Decision"], "responsible": ["Decision Recording","Decision Lineage"], "notResponsible": ["Rule Execution Semantics"], "contract": "UCOS-DEC-000001" },
+    { "domainId": "D-TRU", "name": "Trust",        "owns": ["Trust"], "responsible": ["Trust Computation","Trust Scores","Trust Verification"], "notResponsible": ["Evidence Generation","Policy","Identity"], "contract": "UCOS-TRS-000001" },
+    { "domainId": "D-EVD", "name": "Evidence",     "owns": ["Evidence"], "responsible": ["Evidence Capture","Evidence Validity","Evidence Chain"], "notResponsible": ["Trust Computation","Decision"], "contract": "UCOS-EVD-000001" },
+    { "domainId": "D-OBS", "name": "Observation",  "owns": ["Observation"], "responsible": ["Capture","Collection","Measurement"], "notResponsible": ["Inference","Reasoning","Decision Making"], "contract": "UCOS-OBS-000001" },
+    { "domainId": "D-INF", "name": "Inference",    "owns": ["Inference"], "responsible": ["Knowledge Discovery","Relationship Discovery","Pattern Discovery"], "notResponsible": ["Policy","Authority","Governance"], "contract": "UCOS-INF-000001" },
+    { "domainId": "D-RSN", "name": "Reasoning",    "owns": ["Reasoning"], "responsible": ["Deductive/Inductive/Abductive/Constraint/Policy/Semantic/Causal Reasoning"], "notResponsible": ["Observation Capture","Policy Approval"], "contract": "UCOS-RSN-000001" },
+    { "domainId": "D-SIM", "name": "Simulation",   "owns": ["Simulation"], "responsible": ["Future Modeling","Scenario Analysis","Prediction"], "notResponsible": ["Reality Mutation","Policy Approval"], "contract": "UCOS-SIM-000001" },
+    { "domainId": "D-CAU", "name": "Causality",    "owns": ["Causality"], "responsible": ["Cause/Effect Tracking","Impact Analysis","Consequence Modeling"], "notResponsible": ["Relationship Storage","Decision"], "contract": "UCOS-CAU-000001" },
+    { "domainId": "D-AGT", "name": "Agent",        "owns": ["Agents"], "responsible": ["Autonomous Execution","Goal Fulfillment","Task Completion"], "mustObey": ["Constitution","Authority","Policy","Trust","Evidence"], "contract": "UCOS-AGT-000001" },
+    { "domainId": "D-DTW", "name": "Twin",         "owns": ["Digital Twins"], "responsible": ["Reality Representation","Synchronization","Twin Analytics"], "notResponsible": ["Reality Governance","Policy Decisions"], "contract": "UCOS-DTW-000001" },
+    { "domainId": "D-EVO", "name": "Evolution",    "owns": ["Evolution","Emergence"], "responsible": ["Governed Change","History Preservation","Emergence Detection"], "notResponsible": ["Runtime Execution"], "contract": "UCOS-EVO-000001" }
+  ],
+  "boundaries": {
+    "noDomainMay": ["Modify another domain directly","Bypass authority","Bypass policies","Bypass trust","Bypass governance","Interpret another domain's internals"],
+    "projectionLaw": "Products, services, offers, subscriptions, contracts are projections. No projection may own truth. Truth belongs only to constitutional domains."
+  }
+}

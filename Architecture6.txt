@@ -1,0 +1,329 @@
+# UCOS Ω∞ — UNIVERSAL CAPABILITY PLATFORM · MASTER ARCHITECTURE REFERENCE
+
+Knowledge Once · Reuse Everywhere · Zero Hard Coding · Infinite Composition
+
+This document is the canonical declaration of the universal capability stack: the
+composition, experience, intelligence, operational, resilience, integration, temporal,
+context, meta-system, evolution and execution layers a platform composes from. It is
+parsed, not coded: every universe below is registered into the knowledge graph by the
+parser, instantiated as a live data-defined entity, governed through the foundation
+lifecycle, and activated into the catalog — with zero per-universe code (Architecture3
+Article 4.2).
+
+The architectural principle this document declares is:
+
+    Application = Capability Composition, NOT Application = Custom Code
+
+Everything is composed from constitutional capability universes. No application,
+industry, country, language, payment gateway, AI model, workflow, UI or deployment
+topology is hard-coded. The five compositions at the end are the document's own proof
+that every term in them resolves to a declared universe.
+
+# 1. UNIVERSAL COMPOSITION
+
+The composition layer itself: the universes that compose other universes. A composition
+is a declared relationship among capabilities — workflow, UI, policy, service, agent,
+marketplace and application composition — and each is a first-class universe so a
+platform's assembly is itself data, never code.
+
+## Composition Universes
+```text
+Capability Composition
+Workflow Composition
+UI Composition
+Policy Composition
+Service Composition
+Agent Composition
+Marketplace Composition
+Application Composition
+```
+
+# 2. UNIVERSAL EXPERIENCE
+
+The surfaces a composition is rendered onto. A universe of experience is a channel of
+presence: the device or modality a capability is delivered through, and the adaptations
+that make it fit the person and the place.
+
+## Experience Universes
+```text
+Web
+Mobile
+Tablet
+Desktop
+Television
+Watch
+Voice
+Kiosk
+Augmented Reality
+Virtual Reality
+Extended Reality
+Agent UI
+Accessibility
+Personalization
+Localization
+Internationalization
+```
+
+# 3. UNIVERSAL INTELLIGENCE
+
+The cognitive universes a platform composes for inference, prediction and autonomy. Each
+is a declared intelligence capability — model-borne, evidence-borne, or both.
+
+## Intelligence Universes
+```text
+Recommendation
+Prediction
+Optimization
+Fraud Detection
+Agent Systems
+Planning
+Reasoning
+Simulation
+Digital Twins
+Knowledge Synthesis
+Autonomous Execution
+```
+
+# 4. UNIVERSAL OPERATIONS
+
+The observation universes: what a running platform measures about itself. Telemetry,
+state and diagnostics are declared first-class so an operator composes observability
+rather than installing it.
+
+## Operations Universes
+```text
+Monitoring
+Observability
+Telemetry
+Logging
+Metrics
+Tracing
+Alerting
+Diagnostics
+Root Cause Analysis
+Anomaly Detection
+```
+
+# 5. UNIVERSAL RESILIENCE
+
+The continuity universes: how a platform survives its own failure. Backup through chaos
+engineering are declared universes so resilience is composed per platform, not assumed.
+
+## Resilience Universes
+```text
+Backup
+Restore
+Disaster Recovery
+Failover
+High Availability
+Self Healing
+Chaos Engineering
+Business Continuity
+```
+
+# 6. UNIVERSAL INTEGRATION
+
+The universes of interconnection: the rails a capability reaches other capabilities and
+the world over. Every integration form is a declared universe so a platform's connections
+are composed, not hardcoded to a vendor.
+
+## Integration Universes
+```text
+APIs
+SDKs
+Event Bus
+Streaming
+Webhooks
+Connectors
+ETL
+EDI
+Protocol Translation
+Federation
+```
+
+# 7. UNIVERSAL GOVERNANCE
+
+The authority universes: who may decide what, under whose ratification, and where
+disputes resolve. Jurisdiction and ratification are declared here so governance follows
+a platform's own law, not a default.
+
+## Governance Universes
+```text
+Authority
+Delegation
+Ownership
+Stewardship
+Certification
+Ratification
+Policy
+Regulation
+Jurisdiction
+Compliance
+Dispute Resolution
+```
+
+# 8. UNIVERSAL KNOWLEDGE
+
+The universes of knowing: the structures a platform keeps what it knows in. Taxonomy,
+registry and classification sit here as knowledge universes, distinct from the registry
+machinery that holds them.
+
+## Knowledge Universes
+```text
+Ontology
+Taxonomy
+Registry
+Knowledge Graph
+Truth Model
+Evidence
+Provenance
+Reasoning
+Inference
+Certification
+Discovery
+Classification
+```
+
+# 9. UNIVERSAL TEMPORAL
+
+The time universes: identity of an instant, context of a period, and the machinery that
+replays, forecasts and versions across time. Time is a declared universe because every
+audit, schedule and simulation depends on it.
+
+## Temporal Universes
+```text
+Time Identity
+Time Context
+Scheduling
+Recurrence
+Temporal Lineage
+Temporal Audit
+Temporal Simulation
+Forecasting
+Replay
+Versioning
+```
+
+# 10. UNIVERSAL CONTEXT
+
+The situation universes: the conditions a capability executes within. A context is a
+declared lens — identity, spatial, temporal, observer and the rest — so a platform
+behaves differently per situation because it reads the context, not because it branches.
+
+## Context Universes
+```text
+Identity Context
+Spatial Context
+Temporal Context
+Observer Context
+Governance Context
+Security Context
+Economic Context
+Linguistic Context
+Cultural Context
+Regulatory Context
+Environmental Context
+Knowledge Context
+```
+
+# 11. UNIVERSAL EVOLUTION
+
+The change universes: how a capability, schema or platform becomes its next version
+without breaking what composes it. Impact analysis and supersession are declared here so
+evolution is governed, not incidental.
+
+## Evolution Universes
+```text
+Versioning
+Migration
+Deprecation
+Supersession
+Impact Analysis
+Compatibility
+Change Management
+Evolution Governance
+```
+
+# 12. UNIVERSAL EXECUTION SUBSTRATE
+
+The compute universes: what a capability actually runs on. Substrate is declared down to
+the edge and the GPU so a platform's runtime is a composed choice, and "Future Compute
+Models" is itself a universe — the placeholder by which an unseen substrate is already
+first-class.
+
+## Execution Substrate Universes
+```text
+Compute
+Storage
+Network
+Messaging
+Search
+Graph
+Vector
+Event Processing
+Scheduling
+Runtime
+Container
+Serverless
+GPU
+Edge
+Future Compute Models
+```
+
+# 13. UNIVERSAL MARKETPLACE COMPOSITION
+
+The commerce object universes the reference's own compositions name. Review, Rating and
+Matching are declared here because the five example compositions require them and the
+corpus did not carry them: a review is a first-class universe, not a column on a product;
+a rating is a declared trust signal; a matching is a declared pairing of parties.
+
+## Marketplace Composition Universes
+```text
+Review
+Rating
+Matching
+```
+
+# 14. THE FIVE COMPOSITIONS
+
+The document's own acceptance test: every term in each equation below resolves to a
+universe declared somewhere in the corpus — this document or another. A term that
+resolves nowhere is a gap the platform measures rather than ignores.
+
+## Five Compositions
+```text
+Amazon-like Solution = Identity + Product + Catalog + Inventory + Pricing + Offer
++ Cart + Order + Payment + Logistics + Review + Recommendation + Analytics
+
+Uber-like Solution = Identity + Geo + Dispatch + Routing + Matching
++ Dynamic Pricing + Payment + Rating + Tracking
+
+Netflix-like Solution = Identity + Subscription + Media + Streaming
++ Recommendation + Billing + Analytics
+
+Salesforce-like Solution = Identity + CRM + Workflow + Analytics + AI + Communication
+
+SAP-like Solution = Identity + ERP + Finance + Procurement + Inventory
++ Manufacturing + Workforce + Analytics
+```
+
+# 15. THE END STATE
+
+A platform owner declares: Tenant, Organization, Industry, Business Model, Capabilities,
+Policies, Channels, Languages, Regions, AI Models, Integrations, Security, Compliance.
+
+The platform composes from the declared universes: Data Models, APIs, Workflows, User
+Interfaces, Reports, Dashboards, Security Controls and Operational Controls — without
+writing new business code.
+
+## Composed Artifacts
+```text
+Data Models
+APIs
+Workflows
+User Interfaces
+Reports
+Dashboards
+Security Controls
+Operational Controls
+```

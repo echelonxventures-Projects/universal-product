@@ -48,46 +48,35 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     const pl = await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
     ok(!!pl.admin, "platform login");
 
-    console.log("▸ STORE & SERVICE SETUP — centralised hub");
+    console.log("▸ TENANCY — the platform registry");
     {
       const hp = await render("/platform.html");
-      ok(/Store & Service/i.test(hp.doc.body.textContent), "the console lands on the Store & Service hub", hp.doc.body.textContent.slice(0, 60));
-      ok(hp.doc.querySelectorAll("[data-hubtab]").length === 4, "the hub carries four tabs (stores · services · settings · monitor)", hp.doc.querySelectorAll("[data-hubtab]").length);
-      ok(hp.doc.querySelectorAll("[data-tedit]").length >= 3, "hub stores tab lists every store with a Setup action", hp.doc.querySelectorAll("[data-tedit]").length);
-      ok(hp.errs.length === 0, "hub: no JS errors", hp.errs.slice(0, 2).join("|"));
-      // services tab — each store's configured providers, from the fan-out
-      const svc = hp.doc.querySelector('[data-hubtab="services"]');
-      click(hp.win, svc); await sleep(2000);
-      ok(/Payment gateways|Shipping carriers/i.test(hp.doc.body.textContent), "services tab shows per-store provider configuration");
-      ok(hp.doc.querySelectorAll("table tbody tr").length >= 3, "services tab: one row per store", hp.doc.querySelectorAll("table tbody tr").length);
-      ok(hp.errs.length === 0, "services tab: no JS errors", hp.errs.slice(0, 2).join("|"));
-      // settings + monitor tabs
-      for (const t of ["settings", "monitor"]) {
-        const b = hp.doc.querySelector(`[data-hubtab="${t}"]`);
-        click(hp.win, b); await sleep(1800);
-        ok(hp.doc.querySelectorAll("table tbody tr").length >= 3, t + " tab: one row per store", hp.doc.querySelectorAll("table tbody tr").length);
-        ok(hp.errs.length === 0, t + " tab: no JS errors", hp.errs.slice(0, 2).join("|"));
-      }
-      // the wizard is still reachable from the hub (and from its nav group)
-      const storesTab = hp.doc.querySelector('[data-hubtab="stores"]');
-      click(hp.win, storesTab); await sleep(1200);
-      const setupBtn = hp.doc.querySelector('[data-tedit]');
-      click(hp.win, setupBtn); await sleep(1500);
-      ok(!!hp.doc.getElementById("wName") || /Store Wizard|Setup/i.test(hp.doc.body.textContent), "a store's Setup re-opens the guided wizard");
+      ok(/MRR|Collected/i.test(hp.doc.body.textContent), "the console lands on the platform command dashboard", hp.doc.body.textContent.slice(0, 60));
+      ok(hp.doc.querySelectorAll(".p-nav-sec").length === 12, "the canonical 12-section tree renders", hp.doc.querySelectorAll(".p-nav-sec").length);
+      // the tenants registry is the platform's tenancy surface: every tenant listed with
+      // an edit action (the wizard is gone; authoring is a single modal now)
+      const tBtn = [...hp.doc.querySelectorAll("[data-v]")].find(x => x.dataset.v === "tenants-admin");
+      click(hp.win, tBtn); await sleep(1600);
+      ok(hp.doc.querySelectorAll("[data-tedit]").length >= 3, "tenants view lists every tenant with an Edit action", hp.doc.querySelectorAll("[data-tedit]").length);
+      ok(/Tenants \(/.test(hp.doc.body.textContent), "the surface is the tenant registry, not a store hub");
+      ok(hp.errs.length === 0, "tenants view: no JS errors", hp.errs.slice(0, 2).join("|"));
+      click(hp.win, hp.doc.querySelector("[data-tedit]")); await sleep(1200);
+      ok(!!hp.doc.getElementById("tnName"), "edit opens a single tenant modal (no guided wizard)");
+      const mc = hp.doc.querySelector("[data-mclose]"); if (mc) click(hp.win, mc);
     }
 
     console.log("▸ GLOBAL OPERATIONS views render (cross-store, no JS errors)");
     const page = await render("/platform.html");
     const nav = [...page.doc.querySelectorAll("[data-v]")];
-    ok(nav.length >= 20, "platform nav expanded", nav.length);
-    const gopsKeys = ["gops", "gorders", "gcatalog", "gb2b", "gmarket", "gfinance", "goffers", "gsupport", "gcontent", "grisk", "gteam", "ganalytics", "gdata"];
+    ok(nav.length >= 100, "canonical nav: a leaf per capability (zero-gap tree)", nav.length);
+    const gopsKeys = ["gops", "gorders", "gcatalog", "gb2b", "gmarket", "gfinance", "goffers", "gsupport", "gcontent", "grisk", "gteam", "ganalytics", "gdata", "persons", "knowledge-graph", "marketplace", "workflows"];
     for (const k of gopsKeys) ok(nav.some(b => b.dataset.v === k), "nav has " + k);
 
     // Ops Hub
     let b = nav.find(x => x.dataset.v === "gops"); click(page.win, b); await sleep(2500);
     const hub = page.doc.body.textContent;
-    ok(/Platform GMV|Store comparison/.test(hub), "ops hub renders KPIs + store comparison");
-    ok(page.doc.querySelectorAll("table tbody tr").length >= 3, "ops hub: store comparison lists every store", page.doc.querySelectorAll("table tbody tr").length);
+    ok(/Platform GMV|Tenant comparison/.test(hub), "ops hub renders KPIs + tenant comparison");
+    ok(page.doc.querySelectorAll("table tbody tr").length >= 3, "ops hub: tenant comparison lists every tenant", page.doc.querySelectorAll("table tbody tr").length);
     ok(page.errs.length === 0, "ops hub: no JS errors", page.errs.slice(0, 2).join("|"));
 
     // each remaining view: render, require tables + zero errors. The regexes pin the

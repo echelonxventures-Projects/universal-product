@@ -1,0 +1,1570 @@
+{
+  "$schema": "https://ucos.io/registry/content-sec-ops-dep-qlt.v1.json",
+  "registryId": "UCOS-REG-CONTENT-SEC-OPS-DEP-QLT",
+  "canonicalName": "Security, Operations, Deployment & Quality Content Registry",
+  "version": "Omega-1",
+  "status": "Constitutional Freeze",
+  "ownerDomain": "Constitutional Authority",
+  "law": "Knowledge Once — security, operations, deployment, and quality substance defined here once, projected everywhere.",
+  "content": {
+    "IAM": {
+      "concepts": "Identity & Access Management authenticates every actor and authorizes every action. There is no unauthenticated path and no unaudited grant. Identity (who you are), Authentication (proof), Authorization (what you may do), and Delegation (on whose behalf) are four separate, governed concerns.",
+      "ontology": "IAM binds an Identity to Authentication evidence to an Authority scope to a Permission set. Permissions are granted, never assumed; every grant is reversible and traceable to its granter.",
+      "taxonomy": "By actor: Human / Agent / Service / System. By factor: Passwordless / MFA / Hardware-key / Certificate / Token / Biometric. By scope: Platform / Tenant / Context / Instance.",
+      "dataModel": "```yaml\nAccessGrant:\n  grantId: <Identity>\n  subject: <Identity>\n  authority: <Authority>\n  permissions: [<registry permission>]\n  scope: <Context>\n  temporal: {grantedAt, expiresAt}\n  delegatedFrom: <Grant|null>\n  conditions: [<registry expression>]\n```",
+      "graphModel": "(:Grant)-[:TO]->(:Identity); (:Grant)-[:WITHIN]->(:Context); (:Grant)-[:DELEGATED_FROM]->(:Grant); (:Grant)-[:REVOKED_BY]->(:Authority)",
+      "apis": [
+        "POST /iam.v1.authenticate",
+        "POST /iam.v1.authorize",
+        "POST /iam.v1.grant",
+        "POST /iam.v1.revoke",
+        "GET  /iam.v1.grants/{subjectId}"
+      ],
+      "commands": [
+        "iam.authenticate",
+        "iam.authorize",
+        "iam.grant",
+        "iam.revoke",
+        "iam.delegate"
+      ],
+      "queries": [
+        "iam.grants",
+        "iam.subject",
+        "iam.permissions",
+        "iam.effective",
+        "iam.audit"
+      ],
+      "events": [
+        "Authenticated",
+        "Authorized",
+        "Granted",
+        "Revoked",
+        "Delegated",
+        "GrantExpired",
+        "AuthFailure"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Requested\n    Requested --> Authenticated\n    Authenticated --> Authorized\n    Authorized --> Granted\n    Granted --> Active\n    Active --> Expired\n    Active --> Revoked\n    Expired --> [*]\n    Revoked --> [*]\n```",
+      "workflow": [
+        "authenticate with registered factors → resolve authority scope → evaluate permissions under context → grant with expiry → revoke on demand or expiry"
+      ],
+      "authorities": [
+        "IAM Authority issues grants; granter's authority bounds the grant — rights are monotone-decreasing down the delegation chain."
+      ],
+      "permissions": [
+        "iam.grant (holder of the right)",
+        "iam.revoke (granter or higher)",
+        "iam.read (subject or governance)"
+      ],
+      "privacy": "Authentication evidence is never stored in plaintext; biometrics never leave the device enclave. Grants reference scopes, not personal contents.",
+      "audit": "Every authentication and authorization is logged with factor strength, grant chain, and decision rationale.",
+      "twin": "IAM twin monitors grant sprawl, stale grants, and authentication failure patterns as security signals.",
+      "agent": "Security agent detects anomalous grant patterns and over-broad delegations, revoking or escalating under policy.",
+      "runtime": "Authorization is evaluated per request, cached per (subject, permission, policy-version) with event-driven invalidation on revoke.",
+      "scaling": "Auth is the hottest security path — token verification is stateless; grant resolution is cached and short-TTL.",
+      "multiTenant": "Grants are tenant-scoped; cross-tenant grants require both tenants' authorities and are heavily audited.",
+      "geo": "Authentication evidence and grant logs reside in-jurisdiction; cross-region auth respects residency.",
+      "failure": "Grant cycle, rights inflation, stale grant after revocation storm, factor unavailability.",
+      "recovery": "Grants are event-sourced; revocation cascades to all derived grants immediately.",
+      "certification": "Every grant must be traceable to constitutional authority — untraceable grants are denied by default.",
+      "migration": "New factors and permission types are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant A as Actor\n    participant IA as IAM\n    participant AU as Authority\n    A->>IA: authenticate(factors)\n    IA-->>A: identity\n    A->>IA: authorize(action, context)\n    IA->>AU: resolve grant chain\n    AU-->>IA: scope\n    IA-->>A: decision\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Verifying\n    Verifying --> Resolving\n    Resolving --> Evaluating\n    Evaluating --> Deciding\n```",
+      "blueprint": "Build order for IAM: (1) define registry entries — this domain owns by actor: human / agent / service / system as registry truth, not code; (2) implement the contract surface first (iam.authenticate, iam.authorize, iam.grant) and validate against IAM boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "ZTA": {
+      "concepts": "Zero Trust Architecture assumes no implicit trust anywhere. Every request is authenticated, authorized, encrypted, and evidenced — regardless of network location. 'Inside the network' is not a concept the platform recognizes.",
+      "ontology": "Zero Trust is a property of every interaction: Identity verified, Context evaluated, Policy enforced, Least-privilege applied, Session bounded, and Everything logged. Trust is computed per request, never cached across sessions.",
+      "taxonomy": "By enforcement: Per-request / Per-session / Per-flow. By network: Mesh / Perimeter-less / Segmented. By evidence: Cryptographic / Behavioral / Attestation-based.",
+      "dataModel": "```yaml\nZeroTrustDecision:\n  decisionId: <Identity>\n  subject: <Identity>\n  resource: <registry resource>\n  context: <Context>\n  trustScore: <Trust>\n  policyVersion: <version>\n  decision: <Allow|Deny|StepUp|Challenge>\n  evidence: [<Evidence>]\n  temporal: {at}\n```",
+      "graphModel": "(:Decision)-[:FOR]->(:Identity); (:Decision)-[:ON]->(:Resource); (:Decision)-[:UNDER]->(:Policy); (:Decision)-[:SCORED_BY]->(:Trust)",
+      "apis": [
+        "POST /zt.v1.evaluate",
+        "POST /zt.v1.stepup",
+        "GET  /zt.v1/decision/{id}",
+        "POST /zt.v1.attest"
+      ],
+      "commands": [
+        "zt.evaluate",
+        "zt.stepUp",
+        "zt.attest",
+        "zt.quarantine"
+      ],
+      "queries": [
+        "zt.decisions",
+        "zt.denials",
+        "zt.risky",
+        "zt.attestations"
+      ],
+      "events": [
+        "ZTEvaluated",
+        "ZTDenied",
+        "StepUpRequested",
+        "AttestationVerified",
+        "ZTQuarantine"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Evaluating\n    Evaluating --> Allowed\n    Evaluating --> Denied\n    Evaluating --> StepUp: trust marginal\n    StepUp --> Allowed: factor satisfied\n    StepUp --> Denied\n    Allowed --> Quarantined: post-allow anomaly\n```",
+      "workflow": [
+        "identify → score trust in context → evaluate least-privilege policy → allow / step-up / deny → continuously verify post-allow"
+      ],
+      "authorities": [
+        "Zero Trust Authority (policy); decisions are per-request and never delegated implicitly."
+      ],
+      "permissions": [
+        "zt.evaluate (system, every request)",
+        "zt.attest (platform authority)",
+        "zt.quarantine (security authority)"
+      ],
+      "privacy": "Behavioral evidence is minimized and consent-scoped; post-allow monitoring targets patterns, not contents.",
+      "audit": "Every decision — allow and deny — is logged with trust inputs, policy version, and evidence. Denials are first-class audit artifacts.",
+      "twin": "Zero Trust twin monitors decision latency, denial rates, and step-up friction as security UX signals.",
+      "agent": "Zero Trust agent continuously re-evaluates active sessions and revokes on trust decay.",
+      "runtime": "Evaluation is in-line on every request; mTLS is mandatory service-to-service; no plaintext internal traffic exists.",
+      "scaling": "Evaluation is cached per (subject, resource, policy-version) with short TTL; trust decay invalidates.",
+      "multiTenant": "Tenant isolation is enforced at every layer — network, compute, storage — never assumed from segmentation.",
+      "geo": "Attestation and decision logs reside in-jurisdiction; cross-region requests are re-evaluated, not trusted.",
+      "failure": "Trust staleness, policy version skew, attestation failure, evaluation timeout (default deny).",
+      "recovery": "Quarantine is the safe state; recovery is governed re-attestation, never automatic.",
+      "certification": "Platform must prove no implicit-trust path exists — every flow carries a decision record.",
+      "migration": "New trust factors are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant A as Actor\n    participant ZT as Zero Trust\n    participant TR as Trust\n    A->>ZT: request(resource)\n    ZT->>TR: compute per-request trust\n    TR-->>ZT: score\n    ZT->>ZT: least-privilege policy\n    alt allow\n        ZT-->>A: allowed\n    else marginal\n        ZT-->>A: step-up required\n    end\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Identifying\n    Identifying --> TrustScoring\n    TrustScoring --> PolicyEvaluating\n    PolicyEvaluating --> Deciding\n```",
+      "blueprint": "Build order for ZTA: (1) define registry entries — this domain owns by enforcement: per-request / per-session / per-flow as registry truth, not code; (2) implement the contract surface first (zt.evaluate, zt.stepUp, zt.attest) and validate against ZTA boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "CRY": {
+      "concepts": "Cryptography Architecture provides the mathematical foundations: confidentiality, integrity, authenticity, non-repudiation. Cryptographic agility is constitutional — algorithms are registry entries, not constants, so the platform re-keys and re-algorithms without redesign.",
+      "ontology": "Cryptography has Algorithm suites (registry), Key references (never raw keys), Operations (sign/verify/encrypt/decrypt/hash/kdf/mac), and Agility policy (rotation schedule, sunset triggers).",
+      "taxonomy": "By purpose: Signing / Encryption / Hashing / KDF / MAC / Key-agreement / Zero-knowledge. By agility: Fixed-schedule / Event-triggered / Quantum-ready. By scope: Platform / Tenant / Context.",
+      "dataModel": "```yaml\nCryptoOperation:\n  opId: <Identity>\n  operation: <registry id>\n  algorithmSuite: <registry id, versioned>\n  keyRef: <KMS reference, never raw>\n  inputRef: <content-addressed>\n  outputRef: <content-addressed>\n  temporal: {at}\n  evidence: <Evidence>\n```",
+      "graphModel": "(:Operation)-[:USES_SUITE]->(:AlgorithmSuite); (:Operation)-[:REFERENCES]->(:Key); (:Suite)-[:SUNSET_PER]->(:Policy); (:Operation)-[:EVIDENCED_BY]->(:Evidence)",
+      "apis": [
+        "POST /crypto.v1.sign",
+        "POST /crypto.v1.verify",
+        "POST /crypto.v1.encrypt",
+        "POST /crypto.v1.decrypt",
+        "POST /crypto.v1.hash",
+        "GET  /crypto.v1.algorithms"
+      ],
+      "commands": [
+        "crypto.sign",
+        "crypto.verify",
+        "crypto.encrypt",
+        "crypto.decrypt",
+        "crypto.hash",
+        "crypto.rotate"
+      ],
+      "queries": [
+        "crypto.algorithms",
+        "crypto.suites",
+        "crypto.operations",
+        "crypto.sunsets"
+      ],
+      "events": [
+        "CryptoOperation",
+        "KeyRotated",
+        "AlgorithmSunset",
+        "VerificationFailed",
+        "CryptoViolation"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Requested\n    Requested --> SuiteResolved\n    SuiteResolved --> KeyResolved\n    KeyResolved --> Executed\n    Executed --> Evidenced\n    Evidenced --> [*]\n```",
+      "workflow": [
+        "resolve suite from registry → resolve key reference → execute → record evidence → never expose raw key material"
+      ],
+      "authorities": [
+        "Cryptography Authority (suite governance); keys are held by KMS and referenced, never handled."
+      ],
+      "permissions": [
+        "crypto.sign (key-authorized principal)",
+        "crypto.verify (any authenticated)",
+        "crypto.rotate (key authority)"
+      ],
+      "privacy": "Encryption is the baseline for personal data at rest and in transit; plaintext personal data must never exist outside an enclave.",
+      "audit": "Every operation records suite version, key reference, and result — without ever recording key material.",
+      "twin": "Cryptography twin monitors algorithm usage distribution and sunset exposure across the fleet.",
+      "agent": "Cryptography agent detects weak-suite usage and tracks sunset deadlines, driving rotation under governance.",
+      "runtime": "Operations are stateless and content-addressed; raw keys never enter process memory outside the KMS boundary.",
+      "scaling": "Signing/verification are the hot path — batched and hardware-accelerated where available.",
+      "multiTenant": "Keys are tenant-isolated in KMS; cryptographic separation is a boundary, not an assumption.",
+      "geo": "Key residency follows data residency; cross-region crypto respects sovereignty (e.g., sovereign-key requirements).",
+      "failure": "Suite deprecation, key compromise, verification failure storm, agility gap.",
+      "recovery": "Compromise triggers governed rotation + re-signing of affected content-addressed artifacts.",
+      "certification": "Every suite in use must be registry-approved and not sunset; raw-key exposure is a critical certification failure.",
+      "migration": "Agility is the point — new suites are registry additions, and rotation is a scheduled, not emergency, act.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant CR as Crypto\n    participant KM as KMS\n    C->>CR: sign(payload)\n    CR->>CR: resolve suite\n    CR->>KM: key reference\n    KM-->>CR: operated\n    CR->>CR: evidence\n    CR-->>C: signature\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> SuiteResolving\n    SuiteResolving --> KeyResolving\n    KeyResolving --> Operating\n    Operating --> Evidencing\n```",
+      "blueprint": "Build order for CRY: (1) define registry entries — this domain owns by purpose: signing / encryption / hashing / kdf / mac / key-agreement / zero-knowledge as registry truth, not code; (2) implement the contract surface first (crypto.sign, crypto.verify, crypto.encrypt) and validate against CRY boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "KMS": {
+      "concepts": "Key Management Architecture holds the platform's most sensitive primitive — the keys that make evidence trustworthy. Raw keys never leave KMS; everything else holds references. Key lifecycle is governed, audited, and recoverable only under quorum.",
+      "ontology": "Key has an Identity, an Algorithm suite, a Policy (usage, rotation, sunset), a State, and a Custody model. Keys are generated in KMS, referenced everywhere, rotated by policy, destroyed by quorum.",
+      "taxonomy": "By custody: Platform / Tenant / Sovereign / Customer-held / HSM-backed. By lifetime: Ephemeral / Short-lived / Long-lived / Eternal. By usage: Signing / Encryption / Wrapping / Derived.",
+      "dataModel": "```yaml\nKey:\n  keyId: <Identity>\n  algorithmSuite: <registry id>\n  custody: <registry id>\n  usagePolicy: <Policy>\n  rotationPolicy: <Policy>\n  state: <Active|Rotating|Suspended|Destroyed>\n  temporal: {createdAt, rotatesAt, sunsetsAt}\n  quorum: {destroyRequires: <n>}\n```",
+      "graphModel": "(:Key)-[:SUITE]->(:AlgorithmSuite); (:Key)-[:USED_PER]->(:Policy); (:Key)-[:ROTATES_ON]->(:Policy); (:Key)-[:REFERENCED_BY]->(:CryptoOperation)",
+      "apis": [
+        "POST /kms.v1.generate",
+        "POST /kms.v1.rotate",
+        "POST /kms.v1.destroy",
+        "GET  /kms.v1/{id}",
+        "POST /kms.v1.derive"
+      ],
+      "commands": [
+        "kms.generate",
+        "kms.rotate",
+        "kms.destroy",
+        "kms.derive",
+        "kms.suspend"
+      ],
+      "queries": [
+        "kms.byId",
+        "kms.byCustody",
+        "kms.rotationDue",
+        "kms.state"
+      ],
+      "events": [
+        "KeyGenerated",
+        "KeyRotated",
+        "KeySuspended",
+        "KeyDestroyed",
+        "KeyDerived",
+        "RotationOverdue"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Generated\n    Generated --> Active\n    Active --> Rotating: policy schedule\n    Rotating --> Active\n    Active --> Suspended: suspicion\n    Suspended --> Active: cleared\n    Suspended --> Destroyed: quorum\n    Active --> Destroyed: quorum\n    Destroyed --> [*]\n```",
+      "workflow": [
+        "generate under policy → reference-only usage → rotate per schedule → suspend on suspicion → destroy only under quorum"
+      ],
+      "authorities": [
+        "Key Authority (lifecycle); destruction requires quorum — no single principal can destroy a key."
+      ],
+      "permissions": [
+        "kms.generate (key authority)",
+        "kms.rotate (key authority or policy)",
+        "kms.destroy (quorum)",
+        "kms.use (referenced via crypto ops only)"
+      ],
+      "privacy": "Key material is the crown jewel — HSM-backed where available, never logged, never cached outside the boundary.",
+      "audit": "Every key operation (including denied ones) is logged; the audit log itself is signed by a separate key.",
+      "twin": "KMS twin monitors rotation overdue and key-usage anomalies as critical security signals.",
+      "agent": "KMS agent tracks rotation deadlines and flags overdue keys as critical governance failures.",
+      "runtime": "All crypto happens inside KMS; callers receive results and references, never material.",
+      "scaling": "KMS is the trust bottleneck — horizontally scaled with HSM-backed quorum for critical operations.",
+      "multiTenant": "Keys are tenant-isolated by custody; cross-tenant key use is impossible by construction.",
+      "geo": "Sovereign keys stay in-jurisdiction; export is prohibited where sovereignty policy forbids.",
+      "failure": "Rotation overdue, quorum deadlock, HSM unavailability, key reference leak.",
+      "recovery": "Suspended keys can be cleared by quorum; destroyed keys are unrecoverable by design — that irreversibility is the guarantee.",
+      "certification": "KMS must prove no raw-key egress path exists — formally audited boundary.",
+      "migration": "New custody models are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant A as Authority\n    participant KM as KMS\n    participant Q as Quorum\n    A->>KM: rotate(key)\n    KM->>KM: policy check\n    KM->>Q: confirm if destructive\n    Q-->>KM: ok\n    KM->>KM: rotate, keep history\n    KM-->>A: KeyRotated\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Generating\n    Generating --> Activating\n    Activating --> Serving\n    Serving --> Rotating\n```",
+      "blueprint": "Build order for KMS: (1) define registry entries — this domain owns by custody: platform / tenant / sovereign / customer-held / hsm-backed as registry truth, not code; (2) implement the contract surface first (kms.generate, kms.rotate, kms.destroy) and validate against KMS boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "SEC": {
+      "concepts": "Security Runtime Architecture enforces security as an execution-time property, not a review-time aspiration. Every request passes authentication, authorization, policy, trust, and evidence guards — in-line, on the hot path, with no bypass.",
+      "ontology": "Security Runtime composes IAM, Zero Trust, Cryptography, KMS, and Policy into a single enforcement pipeline. It is the immune system: detection, prevention, response, and recovery operate continuously.",
+      "taxonomy": "By stage: Prevention / Detection / Response / Recovery. By threat: Intrusion / Fraud / Abuse / Data-leak / Supply-chain / Insider. By response: Block / Step-up / Quarantine / Incident.",
+      "dataModel": "```yaml\nSecurityEvent:\n  securityEventId: <Identity>\n  detectedBy: <registry detector id>\n  severity: <registry level>\n  subject: <Identity|null>\n  context: <Context>\n  evidence: [<Evidence>]\n  response: <registry action>\n  temporal: {detectedAt, respondedAt}\n```",
+      "graphModel": "(:SecurityEvent)-[:DETECTED_BY]->(:Detector); (:SecurityEvent)-[:RESPONDED_WITH]->(:Response); (:SecurityEvent)-[:ESCALATED_TO]->(:Authority); (:SecurityEvent)-[:EVIDENCED_BY]->(:Evidence)",
+      "apis": [
+        "POST /sec.v1.report",
+        "GET  /sec.v1/events",
+        "POST /sec.v1/{id}/respond",
+        "POST /sec.v1.scan"
+      ],
+      "commands": [
+        "sec.report",
+        "sec.respond",
+        "sec.quarantine",
+        "sec.scan",
+        "sec.incident"
+      ],
+      "queries": [
+        "sec.events",
+        "sec.bySeverity",
+        "sec.open",
+        "sec.trends"
+      ],
+      "events": [
+        "SecurityDetected",
+        "SecurityResponded",
+        "SecurityQuarantined",
+        "IncidentDeclared",
+        "ThreatCleared"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Detected\n    Detected --> Triaged\n    Triaged --> Responded\n    Responded --> Contained\n    Contained --> Eradicated\n    Eradicated --> Recovered\n    Recovered --> [*]\n    Triaged --> FalsePositive\n```",
+      "workflow": [
+        "detect → triage severity → respond automatically within bounds → escalate beyond bounds → incident → recover with evidence"
+      ],
+      "authorities": [
+        "Security Authority (response within bounds); incidents escalate to governance authority."
+      ],
+      "permissions": [
+        "sec.report (any observer, anonymous option)",
+        "sec.respond (security authority)",
+        "sec.incident (governance)"
+      ],
+      "privacy": "Security monitoring over personal behavior is minimized and consent-scoped; detection targets patterns, never contents.",
+      "audit": "Every detection and response is evidence-backed; false positives are recorded, not deleted — they tune detectors.",
+      "twin": "Security twin monitors detection coverage and response latency as the immune system's health.",
+      "agent": "Security agents are the primary detectors — operating continuously within strict response bounds.",
+      "runtime": "Guards are in-line and mandatory; response automation is bounded — escalation is always available to humans.",
+      "scaling": "Detection is a stream job; response is synchronous for blocking severity, queued otherwise.",
+      "multiTenant": "Security events are tenant-scoped; platform-level incidents aggregate anonymized signals only.",
+      "geo": "Incident response routes to on-call in the affected jurisdiction — accountability is local.",
+      "failure": "Detector blind spot, response latency, escalation queue overflow, quarantine exhaustion.",
+      "recovery": "Recovery is a governed phase with evidence preservation — incidents end with post-mortems, not silent clears.",
+      "certification": "Every request path must carry an enforcement record — an unguarded path is a critical certification failure.",
+      "migration": "New detectors are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant D as Detector\n    participant SR as Security Runtime\n    participant A as Authority\n    D->>SR: signal\n    SR->>SR: triage severity\n    alt within bounds\n        SR->>SR: auto-respond\n    else beyond bounds\n        SR->>A: escalate\n        A-->>SR: decision\n    end\n    SR-->>D: outcome + evidence\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Detecting\n    Detecting --> Triaging\n    Triaging --> Responding\n    Responding --> Recovering\n```",
+      "blueprint": "Build order for SEC: (1) define registry entries — this domain owns by stage: prevention / detection / response / recovery as registry truth, not code; (2) implement the contract surface first (sec.report, sec.respond, sec.quarantine) and validate against SEC boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "DSP": {
+      "concepts": "Data Sovereignty Architecture ensures data is subject to the laws of the jurisdiction where it belongs. Residency is a property of the data, enforced at storage, processing, replication, and egress — not a policy document.",
+      "ontology": "Sovereignty binds a data class to a Jurisdiction context with a Residency policy, a Transfer policy, and an Egress policy. Data without a jurisdiction may not be written at all.",
+      "taxonomy": "By control: Residency / Localization / Transfer-restricted / Sovereign-key. By scope: National / Regional / Sectoral / Contractual. By enforcement: Storage / Compute / Replication / Egress.",
+      "dataModel": "```yaml\nSovereigntyBinding:\n  bindingId: <Identity>\n  dataClass: <registry id>\n  jurisdiction: <Context>\n  residencyPolicy: <Policy>\n  transferPolicy: <Policy>\n  egressPolicy: <Policy>\n  temporal: {effectiveFrom}\n```",
+      "graphModel": "(:Binding)-[:BINDS]->(:DataClass); (:Binding)-[:WITHIN]->(:Context); (:Binding)-[:ENFORCED_AT]->(:Storage|:Compute|:Egress)",
+      "apis": [
+        "POST /sovereignty.v1.bind",
+        "GET  /sovereignty.v1/{id}",
+        "POST /sovereignty.v1.transfer/check",
+        "POST /sovereignty.v1.egress/check"
+      ],
+      "commands": [
+        "sovereignty.bind",
+        "sovereignty.transfer",
+        "sovereignty.egress",
+        "sovereignty.audit"
+      ],
+      "queries": [
+        "sovereignty.byClass",
+        "sovereignty.byJurisdiction",
+        "sovereignty.violations",
+        "sovereignty.transfers"
+      ],
+      "events": [
+        "SovereigntyBound",
+        "TransferRequested",
+        "TransferDenied",
+        "EgressBlocked",
+        "SovereigntyViolation"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Bound\n    Bound --> TransferRequested\n    TransferRequested --> TransferAllowed: policy permits\n    TransferRequested --> TransferDenied\n    TransferAllowed --> Transferred\n    Transferred --> [*]\n```",
+      "workflow": [
+        "classify data → bind jurisdiction → check residency at write → check transfer at replication → block egress at boundary"
+      ],
+      "authorities": [
+        "Jurisdiction Authority (binding); sovereignty overrides availability — a denied transfer is final, not retried."
+      ],
+      "permissions": [
+        "sovereignty.bind (jurisdiction authority)",
+        "sovereignty.transfer (originating authority + policy)",
+        "sovereignty.read (governance)"
+      ],
+      "privacy": "Sovereignty is privacy's enforcement arm — residency makes legal rights practically enforceable.",
+      "audit": "Every transfer attempt — allowed and denied — is logged with class, jurisdictions, and policy version.",
+      "twin": "Sovereignty twin monitors replica placement continuously — drift triggers correction or alert.",
+      "agent": "Sovereignty agent detects placement drift and flags unclassified data before it crosses a border.",
+      "runtime": "Checks are in-line at write, replicate, and egress — sovereignty is a runtime gate, not a compliance report.",
+      "scaling": "Binding lookup is cached per data class; egress inspection is at the boundary, not per-packet deep.",
+      "multiTenant": "Tenants bind their own jurisdictions; shared infra respects every tenant's binding simultaneously — the strictest wins.",
+      "geo": "This IS the geo architecture — jurisdiction bindings are the mechanism for all cross-region behavior.",
+      "failure": "Unclassified data, binding conflict, replica drift, egress bypass attempt.",
+      "recovery": "Placement violations trigger governed migration back into jurisdiction with full audit.",
+      "certification": "Every data class must carry a binding — unbound data is uncertifiable and cannot be written.",
+      "migration": "New jurisdictions are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant SO as Sovereignty\n    participant ST as Storage\n    C->>SO: write(data, class)\n    SO->>SO: resolve binding\n    SO->>ST: route to jurisdiction\n    ST-->>SO: stored in-region\n    SO-->>C: ack\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Classifying\n    Classifying --> Binding\n    Binding --> ResidencyCheck\n    ResidencyCheck --> Stored\n```",
+      "blueprint": "Build order for DSP: (1) define registry entries — this domain owns by control: residency / localization / transfer-restricted / sovereign-key as registry truth, not code; (2) implement the contract surface first (sovereignty.bind, sovereignty.transfer, sovereignty.egress) and validate against DSP boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "CNS": {
+      "concepts": "Consent Architecture makes personal-data use a governed, revocable, auditable grant — not a clause. Consent is a first-class object with scope, purpose, duration, and a one-action revocation path.",
+      "ontology": "Consent has a Subject (person), a Scope (data classes), a Purpose, a Grantee, a Duration, and a State. Consent scopes chain: withdrawn consent invalidates everything downstream, immediately and automatically.",
+      "taxonomy": "By basis: Opt-in / Contract / Legal-obligation / Vital-interest / Legitimate-interest-governed. By scope: Broad / Purpose-specific / Narrow. By state: Given / Suspended / Withdrawn / Expired.",
+      "dataModel": "```yaml\nConsent:\n  consentId: <Identity>\n  subject: <Identity>\n  scope: [<registry data class>]\n  purpose: <registry id>\n  grantee: <Identity>\n  basis: <registry id>\n  temporal: {givenAt, expiresAt}\n  state: <Given|Suspended|Withdrawn|Expired>\n  lineage: {derivedFrom: <Consent|null>}\n```",
+      "graphModel": "(:Consent)-[:GRANTED_BY]->(:Identity); (:Consent)-[:SCOPES]->(:DataClass); (:Consent)-[:FOR_PURPOSE]->(:Purpose); (:Consent)-[:DERIVED_FROM]->(:Consent)",
+      "apis": [
+        "POST /consent.v1.give",
+        "POST /consent.v1.withdraw",
+        "GET  /consent.v1/{id}",
+        "GET  /consent.v1.bySubject/{subjectId}",
+        "POST /consent.v1.check"
+      ],
+      "commands": [
+        "consent.give",
+        "consent.withdraw",
+        "consent.suspend",
+        "consent.check",
+        "consent.propagate"
+      ],
+      "queries": [
+        "consent.bySubject",
+        "consent.byGrantee",
+        "consent.active",
+        "consent.history",
+        "consent.audit"
+      ],
+      "events": [
+        "ConsentGiven",
+        "ConsentWithdrawn",
+        "ConsentSuspended",
+        "ConsentExpired",
+        "ConsentPropagated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Requested\n    Requested --> Given: subject agrees\n    Given --> Suspended\n    Suspended --> Given\n    Given --> Withdrawn\n    Suspended --> Withdrawn\n    Given --> Expired\n    Withdrawn --> [*]\n    Expired --> [*]\n```",
+      "workflow": [
+        "request with purpose + scope → subject grants → propagate to all consumers → withdrawal cascades immediately → verify before every use"
+      ],
+      "authorities": [
+        "Subject's own authority is supreme over their consent — no platform authority overrides withdrawal."
+      ],
+      "permissions": [
+        "consent.give (subject)",
+        "consent.withdraw (subject)",
+        "consent.check (any consumer, per-use)",
+        "consent.read (subject + governance)"
+      ],
+      "privacy": "Consent IS the privacy control — purpose limitation is enforced at check time, not in policy prose.",
+      "audit": "Every grant and withdrawal is logged with scope, purpose, and basis. Use-without-consent is a logged violation, not an error.",
+      "twin": "Consent twin monitors expiry waves and withdrawal-propagation latency as privacy-health signals.",
+      "agent": "Consent agent detects scope creep (use beyond granted purpose) and flags it for governance.",
+      "runtime": "Checks are in-line before personal-data use; withdrawal invalidates caches and projections downstream.",
+      "scaling": "Check is the hot path — cached per (subject, grantee, purpose) with event-driven invalidation on withdrawal.",
+      "multiTenant": "Consent is subject-scoped, binding on all tenants holding the subject's data.",
+      "geo": "Consent follows the subject's jurisdiction — withdrawal propagates globally regardless of data location.",
+      "failure": "Withdrawal propagation gap, scope ambiguity, expiry storm, missing basis.",
+      "recovery": "Withdrawal is immediate and complete — any delayed propagation is treated as a violation with remediation.",
+      "certification": "Every personal-data use must cite a valid consent or legal basis — uncited use fails certification.",
+      "migration": "New purposes and bases are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant S as Subject\n    participant CN as Consent\n    participant U as Data Consumer\n    S->>CN: withdraw(consent)\n    CN->>CN: mark withdrawn\n    CN->>U: propagate invalidation\n    U->>U: purge + invalidate caches\n    U-->>CN: confirmed\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Requesting\n    Requesting --> Granting\n    Granting --> Propagating\n    Propagating --> Enforced\n```",
+      "blueprint": "Build order for CNS: (1) define registry entries — this domain owns by basis: opt-in / contract / legal-obligation / vital-interest / legitimate-interest-governed as registry truth, not code; (2) implement the contract surface first (consent.give, consent.withdraw, consent.suspend) and validate against CNS boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "SRE": {
+      "concepts": "Reliability Architecture treats uptime as a governed property: every capability declares an SLO, every breach burns a budget, and every recovery is rehearsed. Reliability is designed, not hoped for.",
+      "ontology": "Reliability has SLOs (targets), Error budgets (governed spend), Dependencies (relationships), Failure domains (bounded blast radius), and Recovery objectives (RTO/RPO per class).",
+      "taxonomy": "By criticality: Tier-0 (constitutional) / Tier-1 (critical) / Tier-2 (standard) / Tier-3 (best-effort). By metric: Availability / Latency / Durability / Correctness / Throughput. By recovery: RTO-immediate / RTO-hours / RTO-days.",
+      "dataModel": "```yaml\nReliabilityTarget:\n  targetId: <Identity>\n  capability: <registry capability>\n  tier: <registry level>\n  slo: {indicator, target, window}\n  errorBudget: {remaining, resetsAt}\n  dependencies: [<Relationship>]\n  recovery: {rto, rpo}\n  policy: <Policy>\n```",
+      "graphModel": "(:Target)-[:PROTECTS]->(:Capability); (:Target)-[:DEPENDS_ON]->(:Capability); (:Target)-[:BOUNDED_BY]->(:Policy); (:Target)-[:MEASURED_BY]->(:Indicator)",
+      "apis": [
+        "GET  /sre.v1/targets",
+        "POST /sre.v1/target",
+        "GET  /sre.v1/budgets",
+        "POST /sre.v1/freeze"
+      ],
+      "commands": [
+        "sre.declare",
+        "sre.freeze",
+        "sre.unfreeze",
+        "sre.rehearse",
+        "sre.burn"
+      ],
+      "queries": [
+        "sre.targets",
+        "sre.budgets",
+        "sre.dependencies",
+        "sre.blastRadius",
+        "sre.tiers"
+      ],
+      "events": [
+        "SLOBreached",
+        "BudgetExhausted",
+        "FreezeDeclared",
+        "RehearsalCompleted",
+        "DependencyFailed"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Healthy\n    Healthy --> Degraded: SLO strain\n    Degraded --> Breached: SLO breached\n    Breached --> Frozen: budget exhausted\n    Frozen --> Healthy: recovery + budget reset\n    Degraded --> Healthy\n```",
+      "workflow": [
+        "declare SLO → measure continuously → burn budget on errors → freeze on exhaustion → recover → rehearse"
+      ],
+      "authorities": [
+        "Reliability Authority (SLO governance); freeze halts non-critical change under policy."
+      ],
+      "permissions": [
+        "sre.declare (reliability authority)",
+        "sre.freeze (reliability authority)",
+        "sre.read (any)"
+      ],
+      "privacy": "Reliability metrics carry no personal data by construction — indicators are aggregate.",
+      "audit": "Every breach and freeze is logged with cause analysis and remediation; rehearsals are recorded.",
+      "twin": "Reliability twin simulates failure scenarios against live topology — chaos engineering under governance.",
+      "agent": "Reliability agent detects budget burn early and proposes freezes before exhaustion.",
+      "runtime": "Probes are continuous; circuit breakers are automatic; fallbacks degrade gracefully, never silently.",
+      "scaling": "Failure domains are bounded per tier; blast radius is a queryable property, not a guess.",
+      "multiTenant": "Tenant reliability is isolated — one tenant's storm cannot breach another's SLO.",
+      "geo": "Regional SLOs account for jurisdiction-failover constraints — sovereignty can limit recovery options, by design.",
+      "failure": "Cascading dependency failure, budget miscalculation, frozen-state deadlock, rehearsal gap.",
+      "recovery": "Recovery is rehearsed per tier; RTO/RPO are measured, not asserted. Unrehearsed paths are assumed broken.",
+      "certification": "Every capability must have a declared tier, SLO, and rehearsed recovery path.",
+      "migration": "New tiers are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant M as Monitor\n    participant SR as SRE\n    participant A as Authority\n    M->>SR: SLO strain\n    SR->>SR: burn budget\n    SR-->>A: alert\n    alt exhausted\n        SR->>SR: freeze\n        SR->>A: recovery required\n    end\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Measuring\n    Measuring --> Budgeting\n    Budgeting --> Strained\n    Strained --> Frozen\n    Frozen --> Recovering\n```",
+      "blueprint": "Build order for SRE: (1) define registry entries — this domain owns by criticality: tier-0 (constitutional) / tier-1 (critical) / tier-2 (standard) / tier-3 (best-effort) as registry truth, not code; (2) implement the contract surface first (sre.declare, sre.freeze, sre.unfreeze) and validate against SRE boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "MON": {
+      "concepts": "Monitoring Architecture observes the platform continuously and in context. Metrics, logs, traces, and events are unified as Observations — feeding Knowledge, Trust, and Twins rather than sitting in siloed dashboards.",
+      "ontology": "Monitoring has Signals (metrics/logs/traces/events), Collection points, Aggregation policy, and Routing to the Observation Domain. Monitoring is not an end — it is the platform's senses.",
+      "taxonomy": "By signal: Metric / Log / Trace / Event / Profiling / Real-user. By collection: Agent / Exporter / SDK / Probe. By cadence: Continuous / Sampled / Periodic.",
+      "dataModel": "```yaml\nMonitoringSignal:\n  signalId: <Identity>\n  signalType: <registry id>\n  source: <Identity>\n  metric: <registry metric>\n  value: <number|string>\n  context: <Context>\n  temporal: {at}\n  retention: <Policy>\n```",
+      "graphModel": "(:Signal)-[:FROM]->(:Source); (:Signal)-[:FEEDS]->(:Observation); (:Signal)-[:RETAINED_PER]->(:Policy); (:Signal)-[:ALERTS]->(:Alert)",
+      "apis": [
+        "POST /mon.v1.ingest",
+        "GET  /mon.v1/metrics",
+        "POST /mon.v1.alert",
+        "GET  /mon.v1/alerts"
+      ],
+      "commands": [
+        "mon.ingest",
+        "mon.alert",
+        "mon.acknowledge",
+        "mon.silence"
+      ],
+      "queries": [
+        "mon.metrics",
+        "mon.alerts",
+        "mon.history",
+        "mon.anomalies"
+      ],
+      "events": [
+        "SignalIngested",
+        "AlertRaised",
+        "AlertAcknowledged",
+        "AlertResolved",
+        "AnomalyDetected"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Ingested\n    Ingested --> Aggregated\n    Aggregated --> Evaluated\n    Evaluated --> Alerting: threshold\n    Evaluated --> Ingested\n    Alerting --> Acknowledged\n    Acknowledged --> Resolved\n```",
+      "workflow": [
+        "collect → validate schema → aggregate → evaluate thresholds → raise alerts → route to responders"
+      ],
+      "authorities": [
+        "Monitoring Authority (infrastructure); alert routing follows on-call authority in the acting jurisdiction."
+      ],
+      "permissions": [
+        "mon.ingest (authorized collector)",
+        "mon.alert (system)",
+        "mon.read (context-scoped)"
+      ],
+      "privacy": "Logs are the highest leak risk — personal data in logs is minimized by policy and scanned for violations.",
+      "audit": "Monitoring is itself audited — alert response times and silence windows are recorded.",
+      "twin": "Monitoring twin tracks signal coverage — a blind spot is a monitored condition, ironically and deliberately.",
+      "agent": "Monitoring agent detects anomalies beyond static thresholds and auto-correlates alert storms.",
+      "runtime": "Ingest is high-throughput with backpressure; evaluation is stream-based with windowed aggregation.",
+      "scaling": "Signals partition by source; aggregation fans out by metric; retention is tiered per policy.",
+      "multiTenant": "Signals are tenant-scoped; platform-level monitoring uses anonymized aggregates only.",
+      "geo": "Regional monitoring respects residency — signals stay in-jurisdiction, alerts route globally.",
+      "failure": "Signal loss, alert fatigue, aggregation lag, false-negative blind spot.",
+      "recovery": "Signals replay from the Observation log; alert state rebuilds from evaluations.",
+      "certification": "Critical capabilities must prove their signals reach monitoring — unmonitored critical paths fail certification.",
+      "migration": "New signal types are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant S as Source\n    participant MO as Monitoring\n    participant A as Alerting\n    S->>MO: signal\n    MO->>MO: aggregate + evaluate\n    MO->>A: threshold breached\n    A-->>MO: alert raised\n    MO-->>S: routed\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Collecting\n    Collecting --> Aggregating\n    Aggregating --> Evaluating\n    Evaluating --> Alerting\n```",
+      "blueprint": "Build order for MON: (1) define registry entries — this domain owns by signal: metric / log / trace / event / profiling / real-user as registry truth, not code; (2) implement the contract surface first (mon.ingest, mon.alert, mon.acknowledge) and validate against MON boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "OBSV": {
+      "concepts": "Observability Architecture answers 'why is this happening?' — not just 'is it up?'. Traces, structured logs, metrics, evidence, and explanations are correlated across every domain so any behavior is reconstructable end-to-end.",
+      "ontology": "Observability has Spans (units of work), Context propagation (trace identity), Correlation (causation + correlation ids), and Explanation (the seven questions). It is the introspection layer of a self-explaining system.",
+      "taxonomy": "By output: Trace / Log / Metric / Evidence / Explanation. By depth: Request-level / Flow-level / System-level / Business-level. By audience: Engineer / Operator / Auditor / Regulator / Subject.",
+      "dataModel": "```yaml\nTraceSpan:\n  spanId: <Identity>\n  traceId: <Identity>\n  parentSpanId: <Identity|null>\n  domain: <Domain>\n  action: <registry action>\n  authority: <Authority>\n  policyVersion: <version>\n  evidence: [<Evidence>]\n  temporal: {startedAt, endedAt}\n  context: <Context>\n  explanation: <the seven questions>\n```",
+      "graphModel": "(:Span)-[:CHILD_OF]->(:Span); (:Span)-[:IN_DOMAIN]->(:Domain); (:Span)-[:EVIDENCED_BY]->(:Evidence); (:Span)-[:EXPLAINS]->(:Action)",
+      "apis": [
+        "POST /obs.v1.span",
+        "GET  /obs.v1/trace/{traceId}",
+        "GET  /obs.v1/explain/{traceId}",
+        "POST /obs.v1.correlate"
+      ],
+      "commands": [
+        "obs.span.open",
+        "obs.span.close",
+        "obs.explain",
+        "obs.correlate"
+      ],
+      "queries": [
+        "obs.trace",
+        "obs.explanation",
+        "obs.criticalPaths",
+        "obs.blindSpots"
+      ],
+      "events": [
+        "SpanOpened",
+        "SpanClosed",
+        "TraceComplete",
+        "ExplanationRequested",
+        "CorrelationFound"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Open\n    Open --> Sampling\n    Sampling --> Recording\n    Recording --> Closing\n    Closing --> Correlated\n    Correlated --> [*]\n```",
+      "workflow": [
+        "open span with context → propagate trace identity → record evidence at each stage → close → correlate across domains → explain"
+      ],
+      "authorities": [
+        "Observability Authority (infrastructure); explanations are governed artifacts, not informal notes."
+      ],
+      "permissions": [
+        "obs.span (any domain, its own)",
+        "obs.read (context-scoped, auditor-elevated)",
+        "obs.explain (any stakeholder)"
+      ],
+      "privacy": "Trace contents are minimized; personal data in spans is policy-prohibited and violation-scanned.",
+      "audit": "The trace IS the audit artifact — causation chains reconstruct any decision with authority and evidence.",
+      "twin": "Observability twin monitors trace completeness — an untraced critical path is a defect, flagged automatically.",
+      "agent": "Observability agent detects trace gaps and correlates anomalies across domains into explanations.",
+      "runtime": "Context propagation is mandatory across every boundary; sampling is governed by policy with critical-path always-on.",
+      "scaling": "Trace volume is high — sampling by policy, full retention for critical tiers, tiered storage otherwise.",
+      "multiTenant": "Traces are tenant-scoped; cross-tenant traces exist only in marketplace flows with both authorities.",
+      "geo": "Trace residency follows the data's jurisdiction; cross-region correlation respects sovereignty.",
+      "failure": "Trace context loss, span drop, correlation gap, explanation void.",
+      "recovery": "Traces are Observations — replayable; the Observation log is the source of reconstruction.",
+      "certification": "Every governed action must be traceable end-to-end — an untraceable action is unconstitutional.",
+      "migration": "New span types are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant D1 as Domain A\n    participant OB as Observability\n    participant D2 as Domain B\n    D1->>OB: open span (context)\n    OB-->>D1: span\n    D1->>D2: call (trace propagated)\n    D2->>OB: child span\n    OB->>OB: correlate + explain\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Propagating\n    Propagating --> Spanning\n    Spanning --> Evidencing\n    Evidencing --> Explaining\n```",
+      "blueprint": "Build order for OBSV: (1) define registry entries — this domain owns by output: trace / log / metric / evidence / explanation as registry truth, not code; (2) implement the contract surface first (obs.span.open, obs.span.close, obs.explain) and validate against OBSV boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "AUD": {
+      "concepts": "Audit Architecture proves what happened, when, why, and under whose authority — to any stakeholder including regulators and data subjects. The audit log is append-only, cryptographically chained, and replayable.",
+      "ontology": "Audit has Records (immutable facts), Chains (hash-linked), Queries (stakeholder-scoped), and Attestations (third-party verification). Audit is a product, not a byproduct.",
+      "taxonomy": "By audience: Regulator / Data-subject / Internal / External-certifier / Court. By content: Action / Decision / Access / Change / Consent / Sovereignty. By retention: Regulated-minimum / Contractual / Eternal.",
+      "dataModel": "```yaml\nAuditRecord:\n  recordId: <Identity>\n  actor: <Identity>\n  action: <registry action>\n  authority: <Authority>\n  policyVersion: <version>\n  evidence: [<Evidence>]\n  explanation: <seven questions>\n  prevHash: <hash>\n  hash: <hash>\n  temporal: {at}\n  context: <Context>\n```",
+      "graphModel": "(:Record)-[:CHAINED_TO]->(:Record); (:Record)-[:BY_ACTOR]->(:Identity); (:Record)-[:UNDER_AUTHORITY]->(:Authority); (:Record)-[:ATTTESTED_BY]->(:Authority)",
+      "apis": [
+        "POST /aud.v1.record",
+        "GET  /aud.v1/{id}",
+        "POST /aud.v1.query",
+        "POST /aud.v1.attest",
+        "GET  /aud.v1.verify-chain"
+      ],
+      "commands": [
+        "aud.record",
+        "aud.query",
+        "aud.attest",
+        "aud.verify"
+      ],
+      "queries": [
+        "aud.byActor",
+        "aud.bySubject",
+        "aud.byAction",
+        "aud.timeline",
+        "aud.chain"
+      ],
+      "events": [
+        "AuditRecorded",
+        "ChainVerified",
+        "AttestationIssued",
+        "AuditQueryExecuted"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Composed\n    Composed --> Hashed\n    Hashed --> Chained\n    Chained --> Verified\n    Verified --> [*]\n```",
+      "workflow": [
+        "compose record with seven-question explanation → hash → chain to previous → verify → serve stakeholder queries"
+      ],
+      "authorities": [
+        "Audit Authority (record integrity); auditors query under their own scoped authority."
+      ],
+      "permissions": [
+        "aud.record (system, all governed actions)",
+        "aud.query (stakeholder-scoped)",
+        "aud.attest (certifying authority)"
+      ],
+      "privacy": "Subject access is a first-class query — data subjects see their own records in full, minimization applied elsewhere.",
+      "audit": "The chain self-verifies — a broken hash is a critical integrity event with immediate alert.",
+      "twin": "Audit twin monitors chain health and query latency as compliance signals.",
+      "agent": "Audit agent detects chain anomalies and gaps in recorded coverage automatically.",
+      "runtime": "Records append in real time; hashing is in-line; verification is a background continuous job.",
+      "scaling": "Append-only logs shard by time bucket; queries fan out with stakeholder-scope enforcement.",
+      "multiTenant": "Records are tenant-scoped; regulator queries are cross-tenant under jurisdiction authority.",
+      "geo": "Audit residency follows the action's jurisdiction; regulator access is jurisdiction-scoped.",
+      "failure": "Chain break, record gap, query-scope leak, retention violation.",
+      "recovery": "A broken chain is unrecoverable by design — integrity is proven, not repaired. Gaps trigger incident.",
+      "certification": "The chain must verify end-to-end from genesis — any break voids certification of the period.",
+      "migration": "New record types are registry additions; the chain format is frozen.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant S as System\n    participant AU as Audit\n    participant V as Verifier\n    S->>AU: record(action, explanation)\n    AU->>AU: hash + chain\n    AU-->>S: recorded\n    V->>AU: verify chain\n    AU-->>V: integrity proof\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Composing\n    Composing --> Chaining\n    Chaining --> Serving\n    Serving --> Verifying\n```",
+      "blueprint": "Build order for AUD: (1) define registry entries — this domain owns by audience: regulator / data-subject / internal / external-certifier / court as registry truth, not code; (2) implement the contract surface first (aud.record, aud.query, aud.attest) and validate against AUD boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "DR": {
+      "concepts": "Disaster Recovery Architecture ensures the constitution survives the worst. Recovery is rehearsed, measured, and governed — RTO and RPO are promises backed by tested procedure, not entries in a spreadsheet.",
+      "ontology": "DR has Scenarios (registry), Impact analyses (per capability tier), Recovery objectives (RTO/RPO), Failover paths (governed), and Rehearsal records. Truth is the registry — recovering it is recovering everything.",
+      "taxonomy": "By scenario: Region-loss / Cloud-loss / Data-corruption / Key-compromise / Supply-chain / Pandemic-capacity. By tier: Tier-0 immediate / Tier-1 hours / Tier-2 days / Tier-3 best-effort. By mechanism: Failover / Restore / Re-derive / Rebuild.",
+      "dataModel": "```yaml\nDRPlan:\n  planId: <Identity>\n  scenario: <registry id>\n  capability: <capability>\n  tier: <registry level>\n  objectives: {rto, rpo}\n  failoverPath: [<governed step>]\n  rehearsal: {lastAt, result, nextDue}\n  policy: <Policy>\n```",
+      "graphModel": "(:Plan)-[:PROTECTS]->(:Capability); (:Plan)-[:RESPONDS_TO]->(:Scenario); (:Plan)-[:REHEARSED_IN]->(:Rehearsal); (:Plan)-[:GOVERNED_BY]->(:Policy)",
+      "apis": [
+        "GET  /dr.v1/plans",
+        "POST /dr.v1/rehearse",
+        "POST /dr.v1/failover",
+        "GET  /dr.v1/rehearsals"
+      ],
+      "commands": [
+        "dr.rehearse",
+        "dr.failover",
+        "dr.failback",
+        "dr.declare-incident"
+      ],
+      "queries": [
+        "dr.plans",
+        "dr.coverage",
+        "dr.rehearsals",
+        "dr.gaps"
+      ],
+      "events": [
+        "RehearsalStarted",
+        "RehearsalCompleted",
+        "FailoverInitiated",
+        "FailoverCompleted",
+        "FailbackCompleted",
+        "DRGapDetected"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Ready\n    Ready --> Rehearsing\n    Rehearsing --> Ready: passed\n    Rehearsing --> GapFound\n    GapFound --> Ready: remediated\n    Ready --> FailingOver: incident\n    FailingOver --> DegradedOperation\n    DegradedOperation --> FailingBack\n    FailingBack --> Ready\n```",
+      "workflow": [
+        "declare plan per capability → rehearse on schedule → record results → on incident: failover under governance → failback when stable"
+      ],
+      "authorities": [
+        "DR Authority (failover decision); incident declaration escalates to governance authority."
+      ],
+      "permissions": [
+        "dr.rehearse (dr authority)",
+        "dr.failover (dr authority or automated under policy)",
+        "dr.read (any)"
+      ],
+      "privacy": "Recovery of personal data must recover consent state too — partial recovery that loses consent bindings is a violation.",
+      "audit": "Every rehearsal and failover is a fully recorded incident with timeline, decisions, and evidence.",
+      "twin": "DR twin simulates scenarios continuously against live topology — coverage gaps surface before disaster.",
+      "agent": "DR agent detects unrehearsed plans and overdue rehearsals, blocking certification drift.",
+      "runtime": "Failover is governed: health-checked, staged, and reversible. Registry truth re-derives projections on the target.",
+      "scaling": "DR scales with the platform — each domain's recovery is its own plan, coordinated by DR policy.",
+      "multiTenant": "Tenant recovery is isolated; platform recovery never depends on a single tenant's state.",
+      "geo": "Regional loss is the canonical scenario — sovereignty may constrain failover targets, and plans encode that constraint.",
+      "failure": "Unrehearsed plan, failover target unavailable, split-brain, rehearsal-failure-ignored.",
+      "recovery": "Unrehearsed paths are assumed broken — a plan without a current rehearsal is a gap, not a plan.",
+      "certification": "Every tier-0/1 capability must have a rehearsed plan within policy window.",
+      "migration": "New scenarios are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant I as Incident Trigger\n    participant DR as DR\n    participant A as Authority\n    I->>DR: scenario detected\n    DR->>A: declare incident\n    A-->>DR: failover approved\n    DR->>DR: staged failover\n    DR->>DR: verify + failback when stable\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Detecting\n    Detecting --> Declaring\n    Declaring --> FailingOver\n    FailingOver --> Stabilizing\n    Stabilizing --> Recovering\n```",
+      "blueprint": "Build order for DR: (1) define registry entries — this domain owns by scenario: region-loss / cloud-loss / data-corruption / key-compromise / supply-chain / pandemic-capacity as registry truth, not code; (2) implement the contract surface first (dr.rehearse, dr.failover, dr.failback) and validate against DR boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "BCP": {
+      "concepts": "Business Continuity Architecture keeps the mission running when the platform can't be at full strength. Continuity is degraded operation under governance — explicit degraded modes, not silent feature-drops.",
+      "ontology": "BCP has Continuity tiers (what must survive), Degraded modes (how it runs reduced), Governance-in-degradation (who decides), and Restoration paths (how it returns to full).",
+      "taxonomy": "By degradation: Read-only / Regional-isolation / Reduced-fidelity / Queue-and-defer / Manual-fallback. By duration: Minutes / Hours / Days / Weeks. By scope: Single-capability / Regional / Platform-wide.",
+      "dataModel": "```yaml\nContinuityPlan:\n  planId: <Identity>\n  capability: <capability>\n  degradedMode: <registry id>\n  triggerConditions: [<registry expression>]\n  governanceDelegation: <Authority>\n  restorationPath: [<step>]\n  temporal: {maxDuration}\n  policy: <Policy>\n```",
+      "graphModel": "(:Plan)-[:PROTECTS]->(:Capability); (:Plan)-[:DEGRADES_TO]->(:Mode); (:Plan)-[:DELEGATES_TO]->(:Authority); (:Plan)-[:RESTORES_VIA]->(:Step)",
+      "apis": [
+        "GET  /bcp.v1/plans",
+        "POST /bcp.v1/degrade",
+        "POST  /bcp.v1/restore",
+        "GET  /bcp.v1/modes"
+      ],
+      "commands": [
+        "bcp.degrade",
+        "bcp.restore",
+        "bcp.rehearse",
+        "bcp.declare"
+      ],
+      "queries": [
+        "bcp.plans",
+        "bcp.modes",
+        "bcp.active",
+        "bcp.rehearsals"
+      ],
+      "events": [
+        "DegradedModeEntered",
+        "DegradedModeExited",
+        "ContinuityRehearsed",
+        "ContinuityBreach"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Full\n    Full --> Degraded: trigger\n    Degraded --> Full: restored\n    Degraded --> Critical: exceeds maxDuration\n    Critical --> Manual: human governance\n    Manual --> Full\n```",
+      "workflow": [
+        "detect trigger → enter governed degraded mode → notify stakeholders → restore under plan → exit with evidence"
+      ],
+      "authorities": [
+        "BCP Authority (degradation decision); critical degradations escalate to human governance."
+      ],
+      "permissions": [
+        "bcp.degrade (bcp authority)",
+        "bcp.restore (bcp authority)",
+        "bcp.read (any)"
+      ],
+      "privacy": "Degraded modes must not silently widen personal-data use — privacy holds even when convenience can't.",
+      "audit": "Every degradation and restoration is recorded with trigger, duration, decisions, and evidence.",
+      "twin": "Continuity twin monitors degradation duration against plan limits — overruns are breaches.",
+      "agent": "BCP agent detects approaching triggers and proposes early degradation to avoid hard failure.",
+      "runtime": "Degraded modes are declared, not emergent — the system says 'I am degraded' to consumers honestly.",
+      "scaling": "Continuity plans scale per capability; coordination is via BCP policy across domains.",
+      "multiTenant": "Tenant degradation is isolated; platform degradation notifies affected tenants under transparency policy.",
+      "geo": "Regional isolation is a first-class degraded mode — sovereignty-compatible by construction.",
+      "failure": "Silent degradation, overrun without escalation, restoration data loss, mode conflict.",
+      "recovery": "Restoration is verified — returning to full requires evidence of consistency, not just uptime.",
+      "certification": "Critical capabilities must have declared degraded modes with rehearsed entry and exit.",
+      "migration": "New modes are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant T as Trigger\n    participant BC as BCP\n    participant S as Stakeholders\n    T->>BC: condition met\n    BC->>BC: enter degraded mode\n    BC->>S: notify honestly\n    BC->>BC: restore under plan\n    BC->>S: restored + evidence\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Monitoring\n    Monitoring --> Triggered\n    Triggered --> Degrading\n    Degrading --> Restoring\n    Restoring --> Full\n```",
+      "blueprint": "Build order for BCP: (1) define registry entries — this domain owns by degradation: read-only / regional-isolation / reduced-fidelity / queue-and-defer / manual-fallback as registry truth, not code; (2) implement the contract surface first (bcp.degrade, bcp.restore, bcp.rehearse) and validate against BCP boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "DEP": {
+      "concepts": "Deployment Architecture ships governed change. Every deployment is a versioned, policy-checked, reversible projection of the registry — the same machinery that evolves the platform is what deploys it.",
+      "ontology": "Deployment has an Artifact (content-addressed), a Target (registry-defined environment), a Policy (gate requirements), and a Rollback path. There is no out-of-band deployment path — every change is a governed event.",
+      "taxonomy": "By strategy: Canary / Blue-green / Rolling / Feature-flagged / Atomic. By target: Region / Cloud / Edge / On-prem / Sovereign. By risk: Standard / Gated / Frozen-window / Emergency.",
+      "dataModel": "```yaml\nDeployment:\n  deploymentId: <Identity>\n  artifact: <content-addressed ref>\n  target: <registry environment>\n  strategy: <registry id>\n  policyVersion: <version>\n  state: <registry state>\n  rollbackTo: <Deployment|null>\n  temporal: {at}\n  evidence: [<Evidence>]\n```",
+      "graphModel": "(:Deployment)-[:OF]->(:Artifact); (:Deployment)-[:TO]->(:Environment); (:Deployment)-[:GATED_BY]->(:Policy); (:Deployment)-[:ROLLS_BACK_TO]->(:Deployment)",
+      "apis": [
+        "POST /dep.v1.deploy",
+        "GET  /dep.v1/{id}",
+        "POST /dep.v1.rollback",
+        "GET  /dep.v1.status/{id}"
+      ],
+      "commands": [
+        "dep.deploy",
+        "dep.promote",
+        "dep.rollback",
+        "dep.freeze"
+      ],
+      "queries": [
+        "dep.history",
+        "dep.active",
+        "dep.byTarget",
+        "dep.blocked"
+      ],
+      "events": [
+        "DeploymentStarted",
+        "DeploymentPromoted",
+        "DeploymentCompleted",
+        "DeploymentRolledBack",
+        "DeploymentFrozen",
+        "GateFailed"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Validated\n    Validated --> Gated\n    Gated --> Deploying\n    Deploying --> Canary\n    Canary --> Promoted\n    Canary --> RolledBack\n    Promoted --> Completed\n    Completed --> [*]\n```",
+      "workflow": [
+        "validate artifact → evaluate gates (tests, policy, certificates) → deploy canary → observe → promote or rollback"
+      ],
+      "authorities": [
+        "Deployment Authority (promote); rollback is available to on-call under policy."
+      ],
+      "permissions": [
+        "dep.deploy (deployment authority)",
+        "dep.rollback (on-call under policy)",
+        "dep.read (any)"
+      ],
+      "privacy": "Deployments touching personal-data paths require privacy-gate pass — no shipping around privacy.",
+      "audit": "Every deployment and rollback is evidence-backed with gate results and artifact hashes.",
+      "twin": "Deployment twin tracks failure rates per target and strategy, feeding reliability budgets.",
+      "agent": "Deployment agent observes canary metrics and auto-promotes or rolls back within policy bounds.",
+      "runtime": "Artifacts are immutable and content-addressed; the runtime loads by hash — 'what's running' is always answerable.",
+      "scaling": "Deployments fan out per target region under sovereignty constraints.",
+      "multiTenant": "Platform deployment is separate from tenant configuration; tenants evolve via registry, not deploys.",
+      "geo": "Regional deployments respect sovereignty — some targets only accept sovereign artifacts.",
+      "failure": "Gate bypass, canary blindness, rollback failure, version skew across regions.",
+      "recovery": "Rollback is first-class and rehearsed; the artifact registry guarantees the previous version is retrievable.",
+      "certification": "Every gate must pass — a bypassed gate fails certification for the artifact and the process.",
+      "migration": "New strategies and targets are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant A as Artifact\n    participant DE as Deployment\n    participant G as Gates\n    A->>DE: deploy request\n    DE->>G: tests + policy + certificates\n    G-->>DE: passed\n    DE->>DE: canary\n    DE->>DE: observe\n    DE-->>A: promoted or rolled back\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Validating\n    Validating --> Gating\n    Gating --> Canaries\n    Canaries --> Observing\n    Observing --> Promoting\n```",
+      "blueprint": "Build order for DEP: (1) define registry entries — this domain owns by strategy: canary / blue-green / rolling / feature-flagged / atomic as registry truth, not code; (2) implement the contract surface first (dep.deploy, dep.promote, dep.rollback) and validate against DEP boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "CLD": {
+      "concepts": "Multi-Cloud Architecture makes the platform cloud-agnostic by constitutional design. Clouds are registry-defined targets — capabilities are cloud-portable, sovereignty is per-target, and no vendor feature is ever a dependency.",
+      "ontology": "Cloud has a Provider (registry), a Capability mapping (platform capability → cloud service), a Sovereignty binding, and an Exit path. Every capability has at least one portable implementation and a documented exit.",
+      "taxonomy": "By portability: Portable / Adapter-wrapped / Vendor-specific (discouraged). By sovereignty: General / Sovereign-certified / Air-gapped. By usage: Primary / Failover / Burst / Niche.",
+      "dataModel": "```yaml\nCloudTarget:\n  targetId: <Identity>\n  provider: <registry id>\n  capabilities: [{platformCapability, cloudService, portabilityClass}]\n  sovereignty: <registry id>\n  exitPath: <governed procedure>\n  temporal: {onboardedAt}\n```",
+      "graphModel": "(:Target)-[:PROVIDES]->(:CloudService); (:CloudService)-[:IMPLEMENTS]->(:Capability); (:Target)-[:SOVEREIGN_UNDER]->(:Jurisdiction); (:Target)-[:EXIT_VIA]->(:Procedure)",
+      "apis": [
+        "GET  /cloud.v1/targets",
+        "POST /cloud.v1/onboard",
+        "GET  /cloud.v1/mapping/{capabilityId}",
+        "POST /cloud.v1.exit-plan"
+      ],
+      "commands": [
+        "cloud.onboard",
+        "cloud.retire",
+        "cloud.map",
+        "cloud.exit"
+      ],
+      "queries": [
+        "cloud.targets",
+        "cloud.portability",
+        "cloud.sovereign",
+        "cloud.exitPaths"
+      ],
+      "events": [
+        "CloudOnboarded",
+        "CloudRetired",
+        "CapabilityMapped",
+        "ExitExecuted",
+        "PortabilityViolation"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Candidate\n    Candidate --> Onboarded: gates pass\n    Onboarded --> Active\n    Active --> Retiring\n    Retiring --> Exited\n    Exited --> [*]\n```",
+      "workflow": [
+        "onboard under gates → map capabilities to services → bind sovereignty → keep exit path tested → retire cleanly"
+      ],
+      "authorities": [
+        "Cloud Authority (onboarding); exit requires governance approval and a tested path."
+      ],
+      "permissions": [
+        "cloud.onboard (cloud authority)",
+        "cloud.map (capability owner)",
+        "cloud.exit (governance)"
+      ],
+      "privacy": "Each target carries its own privacy gates — personal data only goes where its bindings permit.",
+      "audit": "Every capability mapping records portability class — vendor-specific dependencies are audited liabilities.",
+      "twin": "Cloud twin monitors capability coverage and exit-path freshness across targets.",
+      "agent": "Cloud agent detects vendor lock-in drift and proposes adapter migration before exit becomes painful.",
+      "runtime": "Capability resolution goes through the registry mapping — code never names a cloud service directly.",
+      "scaling": "Burst across clouds is a governed strategy, not an emergency act.",
+      "multiTenant": "Tenants select targets under their sovereignty constraints; the platform enforces binding compatibility.",
+      "geo": "Sovereign clouds are first-class targets with their own certification path.",
+      "failure": "Vendor-specific drift, unmapped capability, exit-path staleness, sovereignty conflict.",
+      "recovery": "Exit is a rehearsed procedure — a cloud loss is a failover to a mapped target, not a crisis.",
+      "certification": "Every capability must declare portability class; vendor-specific use requires governance waiver.",
+      "migration": "New providers are registry additions — onboarding never touches platform code.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant GO as Governance\n    participant CL as Cloud\n    participant CP as Capability\n    GO->>CL: onboard provider\n    CL->>CP: map capabilities\n    CP-->>CL: mapping\n    CL->>CL: bind sovereignty + test exit\n    CL-->>GO: Onboarded\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Gating\n    Gating --> Mapping\n    Mapping --> SovereigntyBinding\n    SovereigntyBinding --> Active\n```",
+      "blueprint": "Build order for CLD: (1) define registry entries — this domain owns by portability: portable / adapter-wrapped / vendor-specific (discouraged) as registry truth, not code; (2) implement the contract surface first (cloud.onboard, cloud.retire, cloud.map) and validate against CLD boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "EDG": {
+      "concepts": "Edge Architecture runs governed computation where latency, sovereignty, or connectivity demand it. The edge is not a lesser platform — it is the same constitution, projected smaller, with bounded autonomy.",
+      "ontology": "Edge has a Node (registry), a Capability subset (declared), a Sync model (eventually consistent with hub), an Autonomy bound (what it may decide offline), and a Sovereignty binding (local jurisdiction).",
+      "taxonomy": "By form: Device / Appliance / Micro-datacenter / Regional-edge / On-prem. By connectivity: Always-on / Intermittent / Air-gapped. By autonomy: Full-offline / Bounded-offline / Online-only.",
+      "dataModel": "```yaml\nEdgeNode:\n  nodeId: <Identity>\n  form: <registry id>\n  capabilities: [<registry capability>]\n  syncModel: <registry id>\n  autonomyBound: <Policy>\n  sovereignty: <jurisdiction>\n  temporal: {provisionedAt}\n  state: <Provisioned|Syncing|Degraded|Quarantined>\n```",
+      "graphModel": "(:Node)-[:RUNS]->(:Capability); (:Node)-[:SYNCS_WITH]->(:Hub); (:Node)-[:BOUNDED_BY]->(:Policy); (:Node)-[:SOVEREIGN_UNDER]->(:Jurisdiction)",
+      "apis": [
+        "POST /edge.v1.provision",
+        "GET  /edge.v1/{id}",
+        "POST /edge.v1.sync",
+        "POST /edge.v1.quarantine"
+      ],
+      "commands": [
+        "edge.provision",
+        "edge.sync",
+        "edge.quarantine",
+        "edge.decommission"
+      ],
+      "queries": [
+        "edge.nodes",
+        "edge.capabilities",
+        "edge.lag",
+        "edge.degraded"
+      ],
+      "events": [
+        "EdgeProvisioned",
+        "EdgeSynced",
+        "EdgeDegraded",
+        "EdgeQuarantined",
+        "EdgeDecommissioned",
+        "AutonomyExceeded"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Provisioned\n    Provisioned --> Syncing\n    Syncing --> InSync\n    InSync --> Degraded: connectivity lost\n    Degraded --> BoundedAutonomy: offline policy\n    BoundedAutonomy --> Syncing: restored\n    InSync --> Quarantined: violation\n    Quarantined --> [*]\n```",
+      "workflow": [
+        "provision with capability subset → sync under model → operate with bounded autonomy when offline → reconcile on reconnect"
+      ],
+      "authorities": [
+        "Edge Authority (provisioning); local jurisdiction binds sovereignty."
+      ],
+      "permissions": [
+        "edge.provision (edge authority)",
+        "edge.sync (system)",
+        "edge.quarantine (security authority)"
+      ],
+      "privacy": "Edge personal data is minimized and locally sovereign — the edge holds only what its jurisdiction permits.",
+      "audit": "Every offline decision is recorded locally and reconciled on sync — the edge is never an audit gap.",
+      "twin": "Edge twin monitors sync lag and autonomy-bound breaches across the fleet.",
+      "agent": "Edge agent detects autonomy-bound approaches and escalates before offline decisions exceed bounds.",
+      "runtime": "Offline operation is bounded by the policy envelope — the edge cannot exceed what its envelope permits, even disconnected.",
+      "scaling": "Edge nodes scale by the thousands; sync is sharded per node with backpressure.",
+      "multiTenant": "Edge nodes serve tenants under their sovereignty bindings; a node's jurisdiction limits its tenants.",
+      "geo": "The edge IS the geo answer for sovereignty — data stays where the node physically sits.",
+      "failure": "Split-brain on reconnect, sync conflict, autonomy exceedance, orphaned node.",
+      "recovery": "Reconciliation is governed: conflicts resolve by policy (never last-writer-wins for governed state); orphans are reaped or adopted.",
+      "certification": "Every offline-capable edge must prove its autonomy bound is enforced — offline ≠ ungoverned.",
+      "migration": "New edge forms are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant E as Edge\n    participant H as Hub\n    E->>H: sync\n    H-->>E: delta\n    E->>E: apply\n    Note over E: connectivity lost\n    E->>E: bounded autonomy\n    E->>H: reconcile on restore\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Provisioning\n    Provisioning --> Syncing\n    Syncing --> Serving\n    Serving --> Reconciling\n```",
+      "blueprint": "Build order for EDG: (1) define registry entries — this domain owns by form: device / appliance / micro-datacenter / regional-edge / on-prem as registry truth, not code; (2) implement the contract surface first (edge.provision, edge.sync, edge.quarantine) and validate against EDG boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "GEO": {
+      "concepts": "Geo-Distribution Architecture places data and computation where law, latency, and resilience demand — by registry, not by accident. Distribution is a governed projection of sovereignty and performance requirements.",
+      "ontology": "Geo has Regions (registry), Placement policies (per data class), Replication topology (sovereignty-constrained), and Routing (context-aware). The same primitive may legitimately exist in many places under many jurisdictions.",
+      "taxonomy": "By driver: Latency / Sovereignty / Resilience / Cost. By topology: Primary-standby / Multi-master / Sovereign-isolated / Edge-augmented. By consistency: Strong-per-region / Eventual / Causal.",
+      "dataModel": "```yaml\nGeoPlacement:\n  placementId: <Identity>\n  dataClass: <registry id>\n  primaryRegion: <registry region>\n  replicaRegions: [<region with policy>]\n  consistencyModel: <registry id>\n  driver: <Latency|Sovereignty|Resilience|Cost>\n  temporal: {effectiveFrom}\n```",
+      "graphModel": "(:Placement)-[:PLACES]->(:DataClass); (:Placement)-[:PRIMARY_IN]->(:Region); (:Placement)-[:REPLICATED_IN]->(:Region); (:Placement)-[:CONSTRAINED_BY]->(:Policy)",
+      "apis": [
+        "POST /geo.v1.place",
+        "GET  /geo.v1/{id}",
+        "POST /geo.v1.route",
+        "GET  /geo.v1.placement/{dataClass}"
+      ],
+      "commands": [
+        "geo.place",
+        "geo.rebalance",
+        "geo.route",
+        "geo.relocate"
+      ],
+      "queries": [
+        "geo.placements",
+        "geo.regions",
+        "geo.residency",
+        "geo.topology"
+      ],
+      "events": [
+        "PlacementDeclared",
+        "GeoRebalanced",
+        "TrafficRouted",
+        "RelocationCompleted",
+        "ResidencyDrift"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Declared\n    Declared --> Placed\n    Placed --> Replicating\n    Replicating --> InService\n    InService --> Rebalancing: policy trigger\n    Rebalancing --> InService\n```",
+      "workflow": [
+        "classify data → declare placement under sovereignty → replicate per policy → route by context → rebalance on drift"
+      ],
+      "authorities": [
+        "Geo Authority (placement); jurisdiction authority constrains what may live where."
+      ],
+      "permissions": [
+        "geo.place (geo authority + jurisdiction pass)",
+        "geo.route (system)",
+        "geo.read (governance)"
+      ],
+      "privacy": "Placement is the physical guarantee behind privacy law — residency makes rights enforceable.",
+      "audit": "Every placement and relocation logs class, regions, and policy — regulator-queryable.",
+      "twin": "Geo twin monitors actual vs declared placement continuously — drift is an alert, not a surprise.",
+      "agent": "Geo agent detects residency drift and proposes corrections before regulators do.",
+      "runtime": "Routing is context-aware: the request's jurisdiction participates in choosing the serving region.",
+      "scaling": "Regions scale independently; rebalancing is throttled to avoid thundering herds.",
+      "multiTenant": "Tenant placements bind to their jurisdictions; shared regions respect every tenant's constraints.",
+      "geo": "This IS the geo architecture — distribution is governed, declared, and verifiable.",
+      "failure": "Residency violation, replication lag, routing error, rebalance storm.",
+      "recovery": "Drift triggers governed migration back into compliance with full audit.",
+      "certification": "Every data class must have a declared placement — undeclared data has no region and cannot be written.",
+      "migration": "New regions are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant GE as Geo\n    participant R as Region\n    C->>GE: request(context)\n    GE->>GE: resolve jurisdiction\n    GE->>R: route to compliant region\n    R-->>GE: served\n    GE-->>C: response\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Classifying\n    Classifying --> Declaring\n    Declaring --> Placing\n    Placing --> Routing\n```",
+      "blueprint": "Build order for GEO: (1) define registry entries — this domain owns by driver: latency / sovereignty / resilience / cost as registry truth, not code; (2) implement the contract surface first (geo.place, geo.rebalance, geo.route) and validate against GEO boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "TST": {
+      "concepts": "Testing Architecture proves the constitution holds. Every artifact, contract, policy, and projection is testable — and tests are themselves governed artifacts, versioned with the thing they test.",
+      "ontology": "Test has a Subject (artifact under test), a Strategy (registry), a Coverage target, an Evidence output, and a Gate binding (which deployment gate it feeds). Untested code is uncertifiable code.",
+      "taxonomy": "By level: Unit / Contract / Integration / Domain-cross / System / Chaos / Regression. By target: Primitive conformance / Contract compliance / Policy enforcement / Performance / Security / Privacy. By evidence: Pass/fail / Coverage / Mutation / Formal.",
+      "dataModel": "```yaml\nTest:\n  testId: <Identity>\n  subject: <artifact ref>\n  strategy: <registry id>\n  coverage: {target, actual}\n  evidence: <Evidence>\n  gateBinding: <registry gate>\n  temporal: {at}\n  result: <Pass|Fail|Flaky|Quarantined>\n```",
+      "graphModel": "(:Test)-[:TESTS]->(:Artifact); (:Test)-[:FEEDS]->(:Gate); (:Test)-[:EVIDENCED_BY]->(:Evidence); (:Test)-[:STRATEGY]->(:RegistryEntry)",
+      "apis": [
+        "POST /tst.v1.run",
+        "GET  /tst.v1/{id}",
+        "POST /tst.v1.suite",
+        "GET  /tst.v1.coverage/{subjectId}"
+      ],
+      "commands": [
+        "tst.run",
+        "tst.quarantine",
+        "tst.promote",
+        "tst.coverage"
+      ],
+      "queries": [
+        "tst.results",
+        "tst.coverage",
+        "tst.flaky",
+        "tst.gaps"
+      ],
+      "events": [
+        "TestRun",
+        "TestPassed",
+        "TestFailed",
+        "TestQuarantined",
+        "CoverageGap"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Scheduled\n    Scheduled --> Running\n    Running --> Passed\n    Running --> Failed\n    Running --> Flaky\n    Flaky --> Quarantined\n    Quarantined --> Running: fixed\n    Failed --> [*]\n    Passed --> [*]\n```",
+      "workflow": [
+        "select subject → run strategy → capture evidence → evaluate coverage → feed gate → quarantine flakes"
+      ],
+      "authorities": [
+        "Quality Authority (test governance); flaky quarantine requires owner accountability."
+      ],
+      "permissions": [
+        "tst.run (system or engineer)",
+        "tst.quarantine (test owner)",
+        "tst.read (any)"
+      ],
+      "privacy": "Tests over personal data use synthetic fixtures — production personal data never enters test environments.",
+      "audit": "Every gate pass cites the test evidence; a gate pass without evidence is a certification failure.",
+      "twin": "Testing twin monitors coverage drift and flake rates as quality-health signals.",
+      "agent": "Testing agent generates contract tests from registry schemas and detects coverage gaps automatically.",
+      "runtime": "Tests run in isolated fixtures; domain-cross tests use contract mocks, never live dependencies.",
+      "scaling": "Suite execution is parallel by subject; hot suites are sharded.",
+      "multiTenant": "Tests are tenant-scoped; platform tests verify tenant isolation explicitly as a first-class suite.",
+      "geo": "Regional test suites verify sovereignty and placement behavior per jurisdiction.",
+      "failure": "Flaky-masking, coverage theater, untested contract, gate bypass.",
+      "recovery": "Quarantined tests block promotion until fixed — flakes are debt, not noise to be ignored.",
+      "certification": "Every gate must cite passing test evidence — no evidence, no pass, no exception.",
+      "migration": "New strategies are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant CI as Pipeline\n    participant TS as Testing\n    participant G as Gate\n    CI->>TS: run suite(subject)\n    TS->>TS: execute + capture evidence\n    TS->>G: results + coverage\n    G-->>CI: pass/fail\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Selecting\n    Selecting --> Executing\n    Executing --> Evidencing\n    Evidencing --> Gating\n```",
+      "blueprint": "Build order for TST: (1) define registry entries — this domain owns by level: unit / contract / integration / domain-cross / system / chaos / regression as registry truth, not code; (2) implement the contract surface first (tst.run, tst.quarantine, tst.promote) and validate against TST boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "VER": {
+      "concepts": "Verification Architecture confirms that what was built is what was declared — runtime matches registry, projections match primitives, behavior matches policy. Verification is continuous, not a milestone.",
+      "ontology": "Verification has a Claim (thing asserted), a Method (registry), Evidence (proof), and a Verdict. Claims cover identity, knowledge, relationships, context, policy, authority, trust, and reality integrity.",
+      "taxonomy": "By claim: Conformance / Integrity / Compliance / Performance / Privacy. By method: Static / Dynamic / Cryptographic / Formal / Empirical. By verdict: Verified / Refuted / Unverifiable.",
+      "dataModel": "```yaml\nVerification:\n  verificationId: <Identity>\n  claim: <registry claim id>\n  subject: <artifact ref>\n  method: <registry id>\n  evidence: [<Evidence>]\n  verdict: <Verified|Refuted|Unverifiable>\n  temporal: {at, validUntil}\n```",
+      "graphModel": "(:Verification)-[:ASSERTS]->(:Claim); (:Verification)-[:METHOD]->(:RegistryEntry); (:Verification)-[:EVIDENCED_BY]->(:Evidence); (:Verification)-[:VALID_FOR]->(:Temporal)",
+      "apis": [
+        "POST /ver.v1.verify",
+        "GET  /ver.v1/{id}",
+        "POST /ver.v1.batch",
+        "GET  /ver.v1.bySubject/{subjectId}"
+      ],
+      "commands": [
+        "ver.verify",
+        "ver.batch",
+        "ver.dispute",
+        "ver.refresh"
+      ],
+      "queries": [
+        "ver.bySubject",
+        "ver.refuted",
+        "ver.stale",
+        "ver.coverage"
+      ],
+      "events": [
+        "VerificationCompleted",
+        "ClaimVerified",
+        "ClaimRefuted",
+        "VerificationStale",
+        "VerificationDisputed"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Claimed\n    Claimed --> Evidencing\n    Evidencing --> Verified\n    Evidencing --> Refuted\n    Evidencing --> Unverifiable: method limit\n    Verified --> Stale: subject changed\n    Stale --> Claimed\n```",
+      "workflow": [
+        "assert claim → gather evidence by method → verdict → bind to subject → invalidate on change"
+      ],
+      "authorities": [
+        "Quality Authority (methods); refutations route to the owning domain's governance."
+      ],
+      "permissions": [
+        "ver.verify (system)",
+        "ver.dispute (any authority)",
+        "ver.read (any)"
+      ],
+      "privacy": "Verification over personal-data handling verifies minimization and consent — privacy is a verifiable claim.",
+      "audit": "Every verdict carries evidence and method version — reproducible by construction.",
+      "twin": "Verification twin monitors stale-verdict rates as drift signals.",
+      "agent": "Verification agent continuously re-verifies stale claims and escalates refutations.",
+      "runtime": "Verification runs in-line for critical claims and in background for the rest; staleness is tracked per subject version.",
+      "scaling": "Batch verification parallelizes by subject; in-line checks are cached per claim+version.",
+      "multiTenant": "Tenant claims verify within their scope; platform claims verify isolation universally.",
+      "geo": "Regional claims verify sovereignty and placement per jurisdiction.",
+      "failure": "Method exhaustion (Unverifiable), evidence staleness, refutation backlog.",
+      "recovery": "Refuted claims block the subject's certification until the owning domain remediates.",
+      "certification": "Activation requires Verified, not Unverifiable — 'could not check' is not 'passed'.",
+      "migration": "New methods are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Claim\n    participant VE as Verification\n    participant E as Evidence\n    C->>VE: assert\n    VE->>E: gather by method\n    E-->>VE: proof\n    VE->>VE: verdict\n    VE-->>C: Verified/Refuted\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Asserting\n    Asserting --> Evidencing\n    Evidencing --> Judging\n    Judging --> Binding\n```",
+      "blueprint": "Build order for VER: (1) define registry entries — this domain owns by claim: conformance / integrity / compliance / performance / privacy as registry truth, not code; (2) implement the contract surface first (ver.verify, ver.batch, ver.dispute) and validate against VER boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "CER": {
+      "concepts": "Certification Architecture turns verification into trust signals. A certificate is a signed, expiring, revocable statement that a subject met a standard — issued by authority, verifiable by anyone, revocable on breach.",
+      "ontology": "Certificate has a Subject, a Standard (registry), Evidence (verifications), an Issuer (authority), a Validity window, and a Revocation path. Certificates are the platform's trust currency with the outside world.",
+      "taxonomy": "By standard: Security / Privacy / Sovereignty / Reliability / Accessibility / Industry-specific. By issuer: Platform / Tenant / External-certifier / Regulator. By scope: Capability / Artifact / Tenant / Platform.",
+      "dataModel": "```yaml\nCertificate:\n  certificateId: <Identity>\n  subject: <artifact ref>\n  standard: <registry id>\n  evidence: [<Verification>]\n  issuer: <Authority>\n  temporal: {issuedAt, expiresAt}\n  state: <Issued|Suspended|Revoked|Expired>\n  revocationReason: <string|null>\n```",
+      "graphModel": "(:Certificate)-[:CERTIFIES]->(:Subject); (:Certificate)-[:TO_STANDARD]->(:Standard); (:Certificate)-[:ISSUED_BY]->(:Authority); (:Certificate)-[:SUPPORTED_BY]->(:Verification)",
+      "apis": [
+        "POST /cer.v1.issue",
+        "GET  /cer.v1/{id}",
+        "POST /cer.v1.revoke",
+        "POST /cer.v1.verify",
+        "GET  /cer.v1.bySubject/{subjectId}"
+      ],
+      "commands": [
+        "cer.issue",
+        "cer.revoke",
+        "cer.suspend",
+        "cer.renew",
+        "cer.verify"
+      ],
+      "queries": [
+        "cer.bySubject",
+        "cer.byStandard",
+        "cer.revoked",
+        "cer.expiring"
+      ],
+      "events": [
+        "CertificateIssued",
+        "CertificateRevoked",
+        "CertificateSuspended",
+        "CertificateRenewed",
+        "CertificateVerified"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Applied\n    Applied --> Issued: evidence sufficient\n    Issued --> Suspended: suspicion\n    Suspended --> Issued: cleared\n    Suspended --> Revoked\n    Issued --> Revoked: breach\n    Issued --> Expired\n    Issued --> Renewed\n    Revoked --> [*]\n    Expired --> [*]\n```",
+      "workflow": [
+        "collect verification evidence → evaluate against standard → issue with validity → monitor → suspend/revoke on breach, renew on continuance"
+      ],
+      "authorities": [
+        "Certification Authority (issue); revocation requires evidence of breach and is logged publicly."
+      ],
+      "permissions": [
+        "cer.issue (certification authority)",
+        "cer.revoke (certification authority)",
+        "cer.verify (any)",
+        "cer.read (any)"
+      ],
+      "privacy": "Privacy certificates require evidence of consent handling and minimization — verified, not self-attested.",
+      "audit": "Issuance, suspension, revocation, and renewal are all public-record events with evidence.",
+      "twin": "Certification twin monitors expiring and at-risk certificates fleet-wide.",
+      "agent": "Certification agent flags evidence weakening before expiry, prompting renewal or planned revocation.",
+      "runtime": "Verification is a signature check — cheap and cacheable; revocation propagates via the event bus.",
+      "scaling": "Issuance is low-frequency; verification is the hot path and is edge-cached with short TTL.",
+      "multiTenant": "Tenant certificates bind to their scope; platform certificates assert isolation to all tenants.",
+      "geo": "Regional certificates assert sovereignty compliance per jurisdiction.",
+      "failure": "Revocation lag, evidence drift after issuance, over-issuance without verification.",
+      "recovery": "Revocation is the safety action — recovery is re-issuance after fresh evidence, never re-instatement of trust.",
+      "certification": "A certificate without evidence backing is void — self-certification is prohibited.",
+      "migration": "New standards are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant S as Subject\n    participant CE as Certification\n    participant I as Issuer\n    S->>CE: apply(standard)\n    CE->>CE: gather verification evidence\n    CE->>I: request issuance\n    I-->>CE: issued\n    CE-->>S: Certificate\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Evidencing\n    Evidencing --> Evaluating\n    Evaluating --> Issuing\n    Issuing --> Monitoring\n```",
+      "blueprint": "Build order for CER: (1) define registry entries — this domain owns by standard: security / privacy / sovereignty / reliability / accessibility / industry-specific as registry truth, not code; (2) implement the contract surface first (cer.issue, cer.revoke, cer.suspend) and validate against CER boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "FML": {
+      "concepts": "Formal Verification Architecture proves critical properties mathematically — not by testing, but by construction. The constitution's most absolute claims (no bypass, no leak, no deadlock) are formal theorems where the cost is justified.",
+      "ontology": "Formal Verification has a Specification (property in a registry logic), a Model (system abstraction), a Prover (registry tool), and a Proof (machine-checkable artifact). Proofs are content-addressed and replayable.",
+      "taxonomy": "By technique: Model-checking / Theorem-proving / Static-analysis / Type-theory / Refinement. By property: Safety / Liveness / Security / Privacy / Termination / Determinism. By scope: Function / Module / Protocol / System.",
+      "dataModel": "```yaml\nFormalProof:\n  proofId: <Identity>\n  specification: <registry spec>\n  subject: <artifact ref>\n  technique: <registry id>\n  prover: <registry tool + version>\n  artifact: <content-addressed proof>\n  verdict: <Proven|Disproven|Inconclusive>\n  temporal: {at, validFor: <subject version>]\n```",
+      "graphModel": "(:Proof)-[:PROVES]->(:Specification); (:Proof)-[:ABOUT]->(:Artifact); (:Proof)-[:USING]->(:Prover); (:Specification)-[:PROPERTY]->(:Property)",
+      "apis": [
+        "POST /fml.v1.prove",
+        "GET  /fml.v1/{id}",
+        "POST /fml.v1.check",
+        "GET  /fml.v1.bySubject/{subjectId}"
+      ],
+      "commands": [
+        "fml.prove",
+        "fml.check",
+        "fml.disprove",
+        "fml.refresh"
+      ],
+      "queries": [
+        "fml.proofs",
+        "fml.proven",
+        "fml.disproven",
+        "fml.coverage"
+      ],
+      "events": [
+        "ProofCompleted",
+        "PropertyProven",
+        "PropertyDisproven",
+        "ProofStale",
+        "ProofChecked"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Specified\n    Specified --> Modeling\n    Modeling --> Proving\n    Proving --> Proven\n    Proving --> Disproven\n    Proving --> Inconclusive: prover limit\n    Proven --> Stale: subject changed\n    Stale --> Specified\n```",
+      "workflow": [
+        "write specification in registry logic → build model → run prover → store machine-checkable proof → invalidate on subject change"
+      ],
+      "authorities": [
+        "Quality Authority (method); disproofs are critical governance events with mandatory remediation."
+      ],
+      "permissions": [
+        "fml.prove (formal authority)",
+        "fml.check (any)",
+        "fml.read (any)"
+      ],
+      "privacy": "Privacy properties (no-leak, minimization) are formally specified where personal data flows — privacy by proof, not promise.",
+      "audit": "Proofs are replayable and content-addressed — anyone can re-check with the recorded prover version.",
+      "twin": "Formal verification twin tracks proof coverage on critical paths and staleness after changes.",
+      "agent": "Formal agent selects properties worth proving by risk and cost, and re-proves on change.",
+      "runtime": "Proof checking is cheap; proving is expensive — proofs run in CI and on-demand, never in the hot path.",
+      "scaling": "Proving is compute-heavy and batched; proof checking is cached per subject version.",
+      "multiTenant": "Isolation properties are proven once for the platform, per topology change.",
+      "geo": "Sovereignty properties (residency enforcement) are formally specified per jurisdiction.",
+      "failure": "Prover unsoundness, model drift, specification gap, inconclusive on critical property.",
+      "recovery": "A disproven critical property blocks the subject — remediation or rollback, no exceptions.",
+      "certification": "Tier-0 properties (guard bypass, key egress, isolation) require formal proof — testing alone is insufficient.",
+      "migration": "New techniques and provers are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant S as Specification\n    participant FM as Formal Engine\n    participant P as Prover\n    S->>FM: property + subject\n    FM->>FM: build model\n    FM->>P: run\n    P-->>FM: proof/disproof\n    FM->>FM: store (checkable)\n    FM-->>S: verdict\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Specifying\n    Specifying --> Modeling\n    Modeling --> Proving\n    Proving -> Checking\n```",
+      "blueprint": "Build order for FML: (1) define registry entries — this domain owns by technique: model-checking / theorem-proving / static-analysis / type-theory / refinement as registry truth, not code; (2) implement the contract surface first (fml.prove, fml.check, fml.disprove) and validate against FML boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "IMP": {
+      "concepts": "The Master Implementation Blueprint is the ordered path from constitution to running platform. It sequences domain delivery by dependency law — Identity first, Knowledge next, and so on to Projection — so nothing is built on a foundation that doesn't yet exist.",
+      "ontology": "The blueprint has Phases (ordered by dependency law), Milestones (gated by certification), Dependencies (relationships), and Exit criteria (verification + certification per phase). Each phase is independently shippable.",
+      "taxonomy": "By phase: Foundation / Core domains / Reality / Commerce / Twins+Agents / Runtime+Data / Security / Operations / Deployment / Quality / Certification. By gate: Architecture-review / Test-evidence / Formal-proof / Certification-issue.",
+      "dataModel": "```yaml\nImplementationPhase:\n  phaseId: <Identity>\n  sequence: <int>\n  deliverables: [<artifact ref>]\n  dependencies: [<phaseId>]\n  exitCriteria: [<Verification|Certificate>]\n  status: <Planned|Active|Blocked|Complete>\n  temporal: {startedAt, completedAt}\n```",
+      "graphModel": "(:Phase)-[:DELIVERS]->(:Artifact); (:Phase)-[:DEPENDS_ON]->(:Phase); (:Phase)-[:GATED_BY]->(:Verification|:Certificate)",
+      "apis": [
+        "GET  /imp.v1/phases",
+        "POST /imp.v1.phase.start",
+        "POST /imp.v1.phase.complete",
+        "GET  /imp.v1.progress"
+      ],
+      "commands": [
+        "imp.phase.start",
+        "imp.phase.complete",
+        "imp.phase.block",
+        "imp.resequence"
+      ],
+      "queries": [
+        "imp.phases",
+        "imp.progress",
+        "imp.blocked",
+        "imp.next"
+      ],
+      "events": [
+        "PhaseStarted",
+        "PhaseCompleted",
+        "PhaseBlocked",
+        "GatePassed",
+        "SequenceAdjusted"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Planned\n    Planned --> Active: deps met\n    Active --> GateReview\n    GateReview --> Complete: gates pass\n    GateReview --> Blocked: gate fails\n    Blocked --> Active: remediated\n    Complete --> [*]\n```",
+      "workflow": [
+        "sequence by dependency law → build phase → run verification → pass gates → certify → proceed"
+      ],
+      "authorities": [
+        "Delivery Authority (sequencing); gates are owned by Quality and Certification authorities."
+      ],
+      "permissions": [
+        "imp.phase.start (delivery authority)",
+        "imp.phase.complete (only after gates pass)",
+        "imp.read (any)"
+      ],
+      "privacy": "Phases touching personal data require privacy-gate evidence — privacy is sequenced in, not bolted on.",
+      "audit": "Every gate pass cites evidence; every resequence records rationale. The build history is itself an audit artifact.",
+      "twin": "Delivery twin tracks phase health, gate failure rates, and dependency drift.",
+      "agent": "Delivery agent detects dependency violations (building ahead of foundation) and blocks them.",
+      "runtime": "The blueprint is executed as registry state — progress is queryable, gates are machine-checkable.",
+      "scaling": "Phases parallelize within dependency constraints; cross-phase work requires explicit dependency declaration.",
+      "multiTenant": "Platform phases deliver shared capability; tenant configuration is post-platform, not a phase.",
+      "geo": "Regional rollout is a deployment concern layered after platform phases.",
+      "failure": "Dependency violation, gate bypass attempt, phase deadlock, foundation churn.",
+      "recovery": "A failed gate blocks the phase; remediation or resequencing are the only paths — gates never weaken to ship.",
+      "certification": "No phase completes without its exit criteria met — the blueprint is the constitution's enforcement of build order.",
+      "migration": "Resequencing is governance-gated and recorded.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant D as Delivery\n    participant PH as Phase\n    participant G as Gates\n    D->>PH: start (deps verified)\n    PH->>PH: deliver\n    PH->>G: exit criteria\n    G-->>PH: pass/fail\n    PH-->>D: Complete\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Sequencing\n    Sequencing --> Building\n    Building --> Verifying\n    Verifying --> Certifying\n```",
+      "blueprint": "Build order for IMP: (1) define registry entries — this domain owns by phase: foundation / core domains / reality / commerce / twins+agents / runtime+data / security / operations / deployment / quality / certification as registry truth, not code; (2) implement the contract surface first (imp.phase.start, imp.phase.complete, imp.phase.block) and validate against IMP boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "IMP2": {
+      "concepts": "The Reference Platform is the runnable proof that the constitution is implementable — a minimal, working substrate exercising every domain contract. It exists to validate the architecture, not to be the product.",
+      "ontology": "The Reference Platform has a Domain implementation per contract, a Registry deployment, a Projection generator, a Test suite per domain, and a Certificate per gate. It is the architecture's executable specification.",
+      "taxonomy": "By completeness: Skeleton / Contract-complete / Feature-complete / Production-hardened. By purpose: Validation / Onboarding / Benchmark / Demo. By deployment: Local / Single-region / Multi-region.",
+      "dataModel": "```yaml\nReferencePlatform:\n  platformVersion: <Identity>\n  domainImplementations: [{domain, implementation ref}]\n  registryDeployment: <ref>\n  projectionGenerator: <ref>\n  testSuite: <ref>\n  certificates: [<Certificate>]\n  temporal: {builtAt}\n```",
+      "graphModel": "(:Platform)-[:IMPLEMENTS]->(:DomainContract); (:Platform)-[:GENERATES_VIA]->(:Projector); (:Platform)-[:CERTIFIED_BY]->(:Certificate); (:Platform)-[:TESTED_BY]->(:TestSuite)",
+      "apis": [
+        "GET  /ref.v1/platform",
+        "POST /ref.v1.validate",
+        "GET  /ref.v1/coverage",
+        "POST /ref.v1.provision"
+      ],
+      "commands": [
+        "ref.validate",
+        "ref.provision",
+        "ref.certify",
+        "ref.benchmark"
+      ],
+      "queries": [
+        "ref.coverage",
+        "ref.certificates",
+        "ref.conformance",
+        "ref.gaps"
+      ],
+      "events": [
+        "PlatformValidated",
+        "PlatformCertified",
+        "ConformanceGap",
+        "BenchmarkCompleted"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Provisioned\n    Provisioned --> Validated\n    Validated --> Certified\n    Certified --> Benchmarked\n    Benchmarkerd --> Maintained\n```",
+      "workflow": [
+        "provision → run conformance against every domain contract → certify → benchmark → maintain with the architecture"
+      ],
+      "authorities": [
+        "Architecture Authority (reference validity)."
+      ],
+      "permissions": [
+        "ref.provision (architect)",
+        "ref.validate (system)",
+        "ref.read (any)"
+      ],
+      "privacy": "The reference platform ships with synthetic data only — no production personal data ever.",
+      "audit": "Conformance results are evidence-backed and citable by the implementation blueprint.",
+      "twin": "Reference platform twin tracks conformance drift as the architecture evolves.",
+      "agent": "Reference agent regenerates contract tests as domains evolve, keeping the platform honest.",
+      "runtime": "The reference platform is deployable from the registry — 'opencode run' equivalent, no manual steps.",
+      "scaling": "It is intentionally minimal — scale properties are proven, not demonstrated by scale of the reference.",
+      "multiTenant": "The reference implements tenant isolation as a first-class, tested property.",
+      "geo": "Multi-region deployment of the reference validates geo and sovereignty contracts.",
+      "failure": "Conformance gap, contract drift, certificate expiry, benchmark regression.",
+      "recovery": "A conformance gap blocks certification of the phase depending on it.",
+      "certification": "The reference platform must certify against every domain contract — a gap is an architecture defect, not a late task.",
+      "migration": "The reference evolves with the registry; conformance re-runs on every architecture change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant A as Architect\n    participant RP as Reference Platform\n    participant C as Certification\n    A->>RP: provision\n    RP->>RP: conformance per contract\n    RP->>C: evidence\n    C-->>RP: certificates\n    RP-->>A: PlatformCertified\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Provisioning\n    Provisioning --> Conforming\n    Conforming --> Certifying\n    Certifying --> Benchmarking\n```",
+      "blueprint": "Build order for IMP2: (1) define registry entries — this domain owns by completeness: skeleton / contract-complete / feature-complete / production-hardened as registry truth, not code; (2) implement the contract surface first (ref.validate, ref.provision, ref.certify) and validate against IMP2 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "IMP3": {
+      "concepts": "The Engineering Playbook is how engineers work within the constitution: registry-first thinking, projection discipline, contract boundaries, and the duty to escalate rather than work around. It converts law into habit.",
+      "ontology": "The Playbook has Practices (registry-driven patterns), Anti-patterns (violations with remedies), Escalation paths, and Review gates. Every practice cites the law it serves.",
+      "taxonomy": "By activity: Design / Implement / Review / Test / Deploy / Operate. By law served: Zero-hardcoding / Knowledge-once / Projection / Governance / Explainability. By audience: Individual / Team / Architect / Governance.",
+      "dataModel": "```yaml\nPlaybookPractice:\n  practiceId: <Identity>\n  activity: <registry id>\n  law: <constitutional law id>\n  pattern: <description>\n  antiPattern: <description>\n  remedy: <description>\n  escalation: <path>\n```",
+      "graphModel": "(:Practice)-[:SERVES]->(:Law); (:Practice)-[:APPLIES_TO]->(:Activity); (:Practice)-[:ESCALATES_VIA]->(:Path)",
+      "apis": [
+        "GET  /play.v1/practices",
+        "GET  /play.v1/{id}",
+        "GET  /play.v1/byLaw/{lawId}",
+        "POST /play.v1.escalate"
+      ],
+      "commands": [
+        "play.consult",
+        "play.escalate",
+        "play.amend"
+      ],
+      "queries": [
+        "play.practices",
+        "play.byActivity",
+        "play.byLaw",
+        "play.antipatterns"
+      ],
+      "events": [
+        "PlaybookConsulted",
+        "EscalationRaised",
+        "PlaybookAmended"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Consulted\n    Consulted --> Applied\n    Applied --> Reviewed\n    Reviewed --> Adopted\n    Adopted --> Amended: law evolves\n```",
+      "workflow": [
+        "consult by activity → apply pattern → review against law → escalate on conflict → amend with the law"
+      ],
+      "authorities": [
+        "Engineering Authority (practice); amendments follow constitutional process."
+      ],
+      "permissions": [
+        "play.consult (any engineer)",
+        "play.escalate (any engineer, protected)",
+        "play.amend (engineering authority)"
+      ],
+      "privacy": "Escalations involving personal data route to privacy authority with minimized context.",
+      "audit": "Escalations are logged and reviewed — the playbook makes 'working around' harder than 'raising it'.",
+      "twin": "Playbook twin tracks escalation themes, surfacing systemic friction for amendment.",
+      "agent": "Playbook agent surfaces the relevant practice during design review, automatically.",
+      "runtime": "The playbook is registry content — consultable programmatically by tooling and agents.",
+      "scaling": "Practices scale by being consulted; no runtime cost.",
+      "multiTenant": "The playbook is platform-wide; tenants may add practices but not weaken constitutional ones.",
+      "geo": "Practices cite jurisdiction-aware laws where relevant.",
+      "failure": "Unreviewed practice, ignored escalation, unconstitutional workaround.",
+      "recovery": "An ignored escalation is a governance event with remediation — the system protects those who raise.",
+      "certification": "Every practice must cite its law — uncited practices are advisory only.",
+      "migration": "Amendments track constitutional evolution.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant E as Engineer\n    participant PL as Playbook\n    participant G as Governance\n    E->>PL: consult(activity)\n    PL-->>E: practice + law\n    E->>PL: conflict found\n    PL->>G: escalate\n    G-->>PL: ruling\n    PL-->>E: resolution\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Consulting\n    Consulting --> Applying\n    Applying --> Reviewing\n    Reviewing --> Escalating\n```",
+      "blueprint": "Build order for IMP3: (1) define registry entries — this domain owns by activity: design / implement / review / test / deploy / operate as registry truth, not code; (2) implement the contract surface first (play.consult, play.escalate, play.amend) and validate against IMP3 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "IMP4": {
+      "concepts": "The Migration Blueprint moves existing systems onto the constitutional substrate without freezing the business. Migration is evolutionary: existing truth is ingested as primitives, existing interfaces continue as projections, and cutover is per-context.",
+      "ontology": "Migration has a Source (legacy truth), an Ingestion mapping (source → primitives), a Coexistence period (both served), a Cutover (per context), and a Retirement (when the source is no longer truth).",
+      "taxonomy": "By strategy: Lift-and-project / Strangler / Parallel-run / Big-bang / Phased-per-context. By source: Database / API / Files / ERP / Legacy-platform. By risk: Low / Medium / High / Critical.",
+      "dataModel": "```yaml\nMigration:\n  migrationId: <Identity>\n  source: <system ref>\n  ingestionMapping: <registry expression>\n  coexistencePolicy: <Policy>\n  cutoverPlan: [{context, sequence}]\n  retirement: {eligibilityAt, retiredAt}\n  risk: <registry level>\n  evidence: [<Evidence>]\n```",
+      "graphModel": "(:Migration)-[:FROM]->(:Source); (:Migration)-[:INGESTS_AS]->(:Primitive); (:Migration)-[:COEXISTS_PER]->(:Policy); (:Migration)-[:CUTS_OVER]->(:Context)",
+      "apis": [
+        "POST /mig.v1.plan",
+        "POST /mig.v1.ingest",
+        "POST /mig.v1.cutover",
+        "POST /mig.v1.retire",
+        "GET  /mig.v1/{id}"
+      ],
+      "commands": [
+        "mig.plan",
+        "mig.ingest",
+        "mig.cutover",
+        "mig.rollback",
+        "mig.retire"
+      ],
+      "queries": [
+        "mig.status",
+        "mig.byContext",
+        "mig.pending",
+        "mig.retirementEligible"
+      ],
+      "events": [
+        "MigrationPlanned",
+        "DataIngested",
+        "ContextCutOver",
+        "MigrationRolledBack",
+        "SourceRetired"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Planned\n    Planned --> Ingesting\n    Ingesting --> Coexisting\n    Coexisting --> CuttingOver: per context\n    CuttingOver --> Coexisting: more contexts\n    CuttingOver --> RetiredEligible: all contexts\n    RetiredEligible --> Retired\n    Retired --> [*]\n```",
+      "workflow": [
+        "map source to primitives → ingest as knowledge-with-evidence → serve legacy as projections over primitives → cut over per context → retire source"
+      ],
+      "authorities": [
+        "Migration Authority (plan); context cutover requires the context owner's authority."
+      ],
+      "permissions": [
+        "mig.plan (migration authority)",
+        "mig.cutover (context owner)",
+        "mig.retire (governance)"
+      ],
+      "privacy": "Personal-data migration re-binds consent — ingestion without consent mapping is prohibited.",
+      "audit": "Every ingested record carries provenance evidence; cutover and rollback are fully traced events.",
+      "twin": "Migration twin tracks reconciliation between source and primitives, flagging drift during coexistence.",
+      "agent": "Migration agent reconciles source vs projection continuously and blocks cutover on unresolved divergence.",
+      "runtime": "Coexistence serves legacy interfaces as projections — the legacy system reads the new truth, transparently.",
+      "scaling": "Ingestion is batched per source; cutover is throttled per context to bound risk.",
+      "multiTenant": "Tenant migrations are independent; shared sources migrate under platform authority.",
+      "geo": "Cross-border migration respects sovereignty — data moves only where bindings permit.",
+      "failure": "Mapping drift, reconciliation gap, premature cutover, retirement of still-referenced source.",
+      "recovery": "Rollback per context restores the source as truth — reversible until retirement, irreversible after.",
+      "certification": "Cutover requires reconciliation evidence — divergence blocks it, no exceptions for schedule.",
+      "migration": "Migration IS evolution — this blueprint is an application of the Evolution Domain, not a separate mechanism.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant L as Legacy\n    participant MG as Migration\n    participant P as Platform\n    L->>MG: source truth\n    MG->>MG: map to primitives\n    MG->>P: ingest with evidence\n    MG->>MG: reconcile\n    MG->>L: legacy now reads projections\n    MG->>MG: cut over per context\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Mapping\n    Mapping --> Ingesting\n    Ingesting --> Reconciling\n    Reconciling --> Coexisting\n    Coexisting --> CuttingOver\n```",
+      "blueprint": "Build order for IMP4: (1) define registry entries — this domain owns by strategy: lift-and-project / strangler / parallel-run / big-bang / phased-per-context as registry truth, not code; (2) implement the contract surface first (mig.plan, mig.ingest, mig.cutover) and validate against IMP4 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "IMP5": {
+      "concepts": "The Delivery Roadmap converts the blueprint into time — phases to horizons, gates to milestones, dependencies to critical path. It is the artifact leadership reads and engineers trust.",
+      "ontology": "The Roadmap has Horizons (time bands), Milestones (gated completions), Critical path (dependency-ordered), Risks (with mitigations), and Capacity (what's actually possible). It is derived from the blueprint, not independent of it.",
+      "taxonomy": "By horizon: Now / Next / Later / Future. By milestone: Alpha / Beta / GA / Certified / Sovereign-ready. By risk: Schedule / Dependency / Technical / Regulatory / Resource.",
+      "dataModel": "```yaml\nRoadmap:\n  roadmapId: <Identity>\n  horizons: [{name, window, phases: [<phaseId>]}]\n  milestones: [{name, gate, target, status}]\n  criticalPath: [<phaseId>]\n  risks: [{description, mitigation, owner}]\n  temporal: {asOf}\n```",
+      "graphModel": "(:Roadmap)-[:SEQUENCES]->(:Phase); (:Roadmap)-[:GATES_AT]->(:Milestone); (:Milestone)-[:REQUIRES]->(:Verification|:Certificate); (:Roadmap)-[:RISKS]->(:Risk)",
+      "apis": [
+        "GET  /road.v1",
+        "POST /road.v1.update",
+        "GET  /road.v1.critical-path",
+        "GET  /road.v1.risks"
+      ],
+      "commands": [
+        "road.update",
+        "road.milestone.set",
+        "road.risk.raise",
+        "road.rebaseline"
+      ],
+      "queries": [
+        "road.horizons",
+        "road.milestones",
+        "road.criticalPath",
+        "road.risks",
+        "road.progress"
+      ],
+      "events": [
+        "RoadmapUpdated",
+        "MilestoneReached",
+        "MilestoneSlipped",
+        "RiskRaised",
+        "RoadmapRebaselined"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Baseline\n    Baseline --> Tracking\n    Tracking --> MilestoneReached\n    Tracking --> MilestoneSlipped\n    MilestoneSlipped --> Rebaselined\n    MilestoneReached --> Tracking\n    Rebaselined --> Tracking\n```",
+      "workflow": [
+        "derive from blueprint → sequence by dependency → set gated milestones → track → raise risks → rebaseline honestly"
+      ],
+      "authorities": [
+        "Delivery Authority (roadmap); milestone status is evidence-bound — slips are reported, not hidden."
+      ],
+      "permissions": [
+        "road.update (delivery authority)",
+        "road.risk.raise (any, protected)",
+        "road.read (any)"
+      ],
+      "privacy": "Roadmap items touching personal data cite privacy gates as milestones in their own right.",
+      "audit": "Every milestone and slip is recorded with cause; rebaselines preserve history — the roadmap never forgets a promise.",
+      "twin": "Roadmap twin predicts slips from velocity and dependency drift, early.",
+      "agent": "Roadmap agent tracks critical-path health and raises risks before they become slips.",
+      "runtime": "The roadmap is derived from blueprint state — updates propagate from phase progress automatically.",
+      "scaling": "Horizons scale by team structure; the critical path is the irreducible sequence.",
+      "multiTenant": "The roadmap is platform delivery; tenant onboarding is a consequence, not a phase.",
+      "geo": "Sovereign-ready milestones are first-class gates, not afterthoughts.",
+      "failure": "Hidden slip, dependency surprise, unraised risk, fantasy capacity.",
+      "recovery": "A slip is rebaselined with evidence and cause — the honest roadmap is the recoverable one.",
+      "certification": "GA milestones require certification evidence — a date without certificates is a target, not a milestone.",
+      "migration": "Rebaseline is the roadmap's migration mechanism.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant BP as Blueprint\n    participant RD as Roadmap\n    participant L as Leadership\n    BP->>RD: phase progress\n    RD->>RD: recompute critical path\n    RD->>L: milestone at risk\n    L->>RD: decision\n    RD->>RD: rebaseline (history kept)\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Deriving\n    Deriving --> Sequencing\n    Sequencing --> Tracking\n    Tracking --> Reporting\n```",
+      "blueprint": "Build order for IMP5: (1) define registry entries — this domain owns by horizon: now / next / later / future as registry truth, not code; (2) implement the contract surface first (road.update, road.milestone.set, road.risk.raise) and validate against IMP5 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    }
+  }
+}

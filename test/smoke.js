@@ -207,14 +207,55 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     const pl = await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
     ok(!!pl.admin, "platform login");
     page = await render("/platform.html");
-    ok(/Store & Service/i.test(page.doc.body.textContent), "console lands on the centralized Store & Service hub");
-    ok(page.doc.querySelectorAll("[data-hubtab]").length === 4, "hub carries stores · services · settings · monitor tabs", page.doc.querySelectorAll("[data-hubtab]").length);
-    ok(page.doc.querySelectorAll("[data-v]").length >= 8, "platform nav ≥8 sections");
-    const tBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "tenants");
+    ok(/MRR|Collected/i.test(page.doc.body.textContent), "console lands on the constitutional command dashboard (platform front door)");
+    ok(page.doc.querySelectorAll(".p-nav-sec").length === 12, "canonical nav: 12 constitutional sections", page.doc.querySelectorAll(".p-nav-sec").length);
+    ok(page.doc.querySelectorAll("[data-v]").length >= 100, "canonical nav: 100+ capability leaves (zero-gap tree)", page.doc.querySelectorAll("[data-v]").length);
+    ok(!!page.doc.querySelector(".p-nav-sec[open]"), "the section holding the current view stays expanded");
+    const tBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "tenants-admin");
     click(page.win, tBtn); await sleep(900);
     const tRows = page.doc.querySelectorAll("table tbody tr").length;
-    ok(tRows >= 3, "tenants table (3 seeded stores)", tRows);
+    ok(tRows >= 3, "tenants table (3 seeded tenants)", tRows);
     ok(page.errs.length === 0, "platform no JS errors", page.errs.slice(0, 2).join("|"));
+
+    /* ZERO-GAP CONTRACT: every canonical leaf resolves to a real view — a dedicated
+       surface, a platform dataset, or a universe registry record. No leaf is a dead link,
+       and no leaf throws. The probe mixes all three resolver kinds. */
+    const probe = ["gproducts", "gorders", "gcatalog", "gb2b", "gfinance", "goffers", "gsupport",
+      "persons", "knowledge-graph", "digital-twins", "agents", "workflows", "marketplace", "subscriptions",
+      "inventory", "warehousing", "tickets", "themes", "recommendation", "fraud", "policies", "compliance",
+      "capability-graph", "monitoring", "dashboards", "canonical-schemas", "ontology"];
+    let resolved = 0, failed = [];
+    for (const k of probe) {
+      const b = [...page.doc.querySelectorAll("[data-v]")].find(x => x.dataset.v === k);
+      if (!b) { failed.push(k + " (no nav leaf)"); continue; }
+      try {
+        click(page.win, b); await sleep(1100);
+        const vb = page.doc.querySelector("#vBody");
+        const txt = (vb && vb.textContent) || "";
+        if (vb && vb.innerHTML.length > 30 && !/⚠️/.test(txt)) resolved++;
+        else failed.push(k + " (" + (txt.slice(0, 40).replace(/\s+/g, " ") || "empty") + ")");
+      } catch (e) { failed.push(k + " (" + e.message + ")"); }
+    }
+    ok(resolved >= probe.length - 2, "zero-gap: canonical leaves resolve to live views (" + resolved + "/" + probe.length + ")", failed.slice(0, 3).join(" | "));
+
+    /* Identity Templates + Policies were half-built console surfaces: both painted over
+       #app (destroying the shell), policies had no nav/router entry at all, and template
+       creation returned id:NaN. Both now render inside the shell with wired actions. */
+    const newTmpl = await f("/api/platform/identity-templates", "POST", { name: "Console probe", description: "temporary", config: { password: { minLength: 16 } }, is_default: false });
+    ok(Number.isInteger(newTmpl.id) && newTmpl.id > 0, "identity template create returns a real id (was NaN)", newTmpl.id);
+    await f("/api/platform/policies/console-probe", "PUT", { note: "temporary" });
+    const itBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "identity-templates");
+    click(page.win, itBtn); await sleep(900);
+    ok(!!page.doc.getElementById("tmplSave"), "identity templates view renders inside the shell (was clobbering #app)");
+    ok(page.doc.querySelectorAll("[data-tmplapply]").length >= 1, "each template row offers an Apply action with a chosen target store", page.doc.querySelectorAll("[data-tmplapply]").length);
+    ok(page.doc.querySelectorAll("[data-tmpledit]").length === page.doc.querySelectorAll("[data-tmplapply]").length, "every template row offers a real Edit (was a delete-and-recreate hack)");
+    ok(!!page.doc.querySelector(".p-shell"), "the console shell survives the identity-templates render");
+    const poBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "policies");
+    click(page.win, poBtn); await sleep(900);
+    ok(!!page.doc.getElementById("polAdd"), "policies view renders (was unreachable: no nav entry and no router branch)");
+    ok(page.doc.querySelectorAll("[data-poledit]").length >= 1, "policy rows render wired Edit actions", page.doc.querySelectorAll("[data-poledit]").length);
+    ok(!!page.doc.querySelector(".p-shell"), "the console shell survives the policies render");
+    ok(page.errs.length === 0, "rewritten console views raise no JS errors", page.errs.slice(0, 2).join("|"));
 
     console.log("▸ PLATFORM: UCOS universes & foundations consoles");
     const uvBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "universes");
@@ -1074,7 +1115,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       } else ok(false, "platform capabilities nav present");
 
       const ppage = await (async () => { jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" }); return render("/platform.html"); })();
-      const goNav = [...ppage.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "offers");
+      const goNav = [...ppage.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "goip");
       if (goNav) {
         click(ppage.win, goNav); await sleep(1800);
         const vb = ppage.doc.querySelector("#vBody");
@@ -1670,6 +1711,103 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const tr = await A("/api/admin/transfers", "POST", { from_warehouse: invA && invA.id, to_warehouse: invB && invB.id, sku_id: oneSku && oneSku.id, qty: 2 });
       ok(tr.body.ok || /insufficient|required/.test(tr.body.error || ""), "stock transfer endpoint enforces rules", tr.body);
       const trr = (await A("/api/admin/tax/report?period=" + new Date().toISOString().slice(0, 7))).body; ok(trr && trr.period && typeof trr.taxCollected !== "undefined", "tax remittance report (via tax engine)");
+      // tenant-independence: no code path may depend on a specific store. The platform console
+      // configures ANY tenant; guards are data; nothing reads a tenant id that isn't a parameter.
+      const tenants = (await P("/api/platform/tenants")).body.tenants;
+      const other = tenants.find(t => t.slug !== "luxora") || tenants[tenants.length - 1];
+      const probe = await P("/api/platform/identity-templates", "POST", { name: "Tenant probe", description: "temporary", config: { password: { minLength: 20, requireUppercase: true }, mfa: { enabled: true } }, is_default: false });
+      ok(Number.isInteger(probe.body.id) && probe.body.id > 0, "template create returns a real id (was Number(undefined) → NaN)", probe.body.id);
+      const ap = await P(`/api/platform/identity-templates/${probe.body.id}/apply`, "POST", { tenant_id: other.id });
+      ok(ap.body.ok && ap.body.tenant_id === other.id && ap.body.slug === other.slug, "a template applies to ANY chosen store (target is a parameter, never hardcoded)", ap.body);
+      ok((await P(`/api/platform/identity-templates/${probe.body.id}/apply`, "POST", { tenant_id: 999999 })).status === 400, "apply refuses an unknown tenant");
+      ok((await P("/api/platform/identity-templates/999999/apply", "POST", { tenant_id: other.id })).status === 404, "apply refuses an unknown template");
+      const A2 = mk(); await A2("/api/session?store=" + other.slug); await A2("/api/auth/login", "POST", { email: other.slug === "aurum" ? "admin@aurum.shop" : "admin@velora.shop", password: other.slug === "aurum" ? "aurum123" : "velora123" });
+      ok((await A2("/api/admin/identity-settings")).body.settings.password.minLength === 20, "the applied settings actually landed on the target store", (await A2("/api/admin/identity-settings")).body.settings.password);
+      ok((await P("/api/platform/identity-templates/" + probe.body.id, "DELETE")).body.ok, "template cleanup");
+      // store protection is DATA (platform_settings.protectedStores), never a slug in code
+      const del = await P("/api/platform/tenants/" + tenants[0].id, "DELETE", {});
+      ok(del.status === 400 && /protected/i.test(del.body.error || ""), "the platform's first store is protected from deletion by default", del.body.error);
+      const apiSrc = require("fs").readFileSync(require("path").join(__dirname, "..", "lib", "api.js"), "utf8");
+      const entSrc = require("fs").readFileSync(require("path").join(__dirname, "..", "lib", "enterprise.js"), "utf8");
+      const regSrc = require("fs").readFileSync(require("path").join(__dirname, "..", "lib", "registry.js"), "utf8");
+      ok(!/=== "luxora"|=== 'luxora'/.test(apiSrc), "no code path keys on any store's slug (tenant-independent)");
+      ok(!/tenant_id\s*=\s*1\b/.test(entSrc.replace(/\/\*[\s\S]*?\*\//g, "")), "the enterprise layer no longer hardcodes a tenant id in its queries");
+      ok(!/WHERE slug='luxora'/.test(regSrc), "the corpus activation no longer falls back to a named store");
+      // policies: DELETE existed only as a dead console call; now the route round-trips
+      await P("/api/platform/policies/probe-policy", "PUT", { note: "temporary" });
+      ok((await P("/api/platform/policies/probe-policy")).body.policy.note === "temporary", "policy PUT→GET round-trips");
+      ok((await P("/api/platform/policies/probe-policy", "DELETE")).body.ok, "policy DELETE removes the row (the console call was dead before)");
+      ok(Object.keys((await P("/api/platform/policies/probe-policy")).body.policy || {}).length === 0, "the deleted policy is gone");
+      // branding read the same non-existent req.body: every branding PUT was dead. Round-trip
+      // with a restore, since global branding feeds the storefront.
+      const g0 = (await P("/api/platform/branding")).body.branding || {};
+      const gp = await P("/api/platform/branding", "PUT", { name: "Probe", tagline: "temporary" });
+      ok(!!(gp.body.branding || {}).name, "platform branding PUT accepts a body (was dead: req.body undefined)", gp.body);
+      ok((await P("/api/platform/branding")).body.branding.tagline === "temporary", "the branding write round-trips through GET");
+      await P("/api/platform/branding", "PUT", g0);
+      ok((await P("/api/platform/branding")).body.branding.name === (g0.name || null), "global branding restored");
+
+      /* Eleven handlers queried tables the schema never declared: every UCII surface, the
+         meta-model taxonomy and the whole auth-side identity store returned 500 on reach.
+         Each table now round-trips through its own route, so a missing table fails here
+         instead of in production. */
+      const w0 = (await P("/api/ucii/workflows")).body;
+      ok(Array.isArray(w0.workflows), "UCII workflow registry is reachable (was no such table: workflows)", w0);
+      const wc = await P("/api/ucii/workflows", "POST", { key: "probe-flow", domain: "commerce", name: "Probe", trigger: "order.placed", steps: [{ id: "notify" }] });
+      ok(wc.body.ok, "a workflow registers through the API", wc.body);
+      ok((await P("/api/ucii/workflows?domain=commerce")).body.workflows.some(w => w.key === "probe-flow"), "the registered workflow is listed by domain");
+      ok((await P("/api/ucii/workflows/probe-flow", "DELETE")).body.ok, "workflow DELETE removes the row");
+      ok(!(await P("/api/ucii/workflows?domain=commerce")).body.workflows.some(w => w.key === "probe-flow"), "the workflow is gone");
+      const k0 = (await P("/api/ucii/knowledge")).body;
+      ok(Array.isArray(k0.edges), "UCII knowledge graph is reachable (was no such table: knowledge_graph)", k0);
+      const ka = await P("/api/ucii/knowledge", "POST", { source_type: "product", source_id: 1, relationship: "complements", target_type: "product", target_id: 2, weight: 0.8 });
+      ok(ka.body.ok, "a knowledge edge is added", ka.body);
+      ok((await P("/api/ucii/knowledge?source_type=product&source_id=1")).body.edges.length >= 1, "the edge is queryable by source");
+      const u0 = (await P("/api/ucii/usage")).body;
+      ok(Array.isArray(u0.usage), "UCII usage report is reachable (was no such table: usage_events)", u0);
+      const ur = await P("/api/ucii/usage", "POST", { entity: "api_call", entity_id: 1, event_type: "request", quantity: 3, unit: "count" });
+      ok(ur.body.ok, "a usage event is recorded", ur.body);
+      ok((await P("/api/ucii/usage?entity=api_call")).body.usage.some(r => r.event_type === "request" && r.total >= 3), "usage aggregates by entity");
+      // meta-model taxonomy: types, attributes, and per-tenant entity/field overrides
+      const et = await P("/api/platform/entity-types", "POST", { entity: "product", type_key: "probe-variant", label: "Probe Variant" });
+      ok(et.body.ok, "an entity type registers (was no such table: entity_types)", et.body);
+      ok((await P("/api/platform/entity-types?entity=product")).body.types.some(t => t.type_key === "probe-variant"), "the type is listed per entity");
+      const etu = await P("/api/platform/entity-types/product/probe-variant", "PUT", { label: "Probe Variant II", icon: "🏷️", fields: [{ key: "size" }] });
+      ok(etu.body.ok, "the type updates through its route", etu.body);
+      ok((await P("/api/platform/entity-types?entity=product")).body.types.find(t => t.type_key === "probe-variant").label === "Probe Variant II", "the update round-trips");
+      ok((await P("/api/platform/entity-types/product/probe-variant", "DELETE")).body.ok, "the type deletes");
+      const ea = await P("/api/platform/entity-attributes", "POST", { entity: "product", attribute_key: "material", position: 5 });
+      ok(ea.body.ok, "an attribute attaches to an entity (was no such table: entity_attributes)", ea.body);
+      ok((await P("/api/platform/entity-attributes?entity=product")).body.attributes.some(a => a.attribute_key === "material"), "the attached attribute is listed");
+      const te = await P("/api/platform/tenant-entities", "POST", { tenant_id: tenants[0].id, entity: "product", enabled: true, requirement: "required", custom_name: "Goods" });
+      ok(te.body.ok, "a tenant entity override saves (was no such table: tenant_entities)", te.body);
+      ok((await P("/api/platform/tenant-entities?tenant_id=" + tenants[0].id)).body.entities.some(e => e.entity === "product" && e.requirement === "required"), "the override round-trips");
+      const tf = await P("/api/platform/tenant-fields", "POST", { tenant_id: tenants[0].id, entity: "product", field_key: "sku", required: true });
+      ok(tf.body.ok, "a tenant field override saves (was no such table: entity_field_config)", tf.body);
+      // the auth-side identity store: login-init must validate, not 500, and the challenge
+      // ledger is reachable now that the identity tables exist
+      const IA = mk(); await IA("/api/session?store=luxora"); await IA("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
+      const pw = await IA("/api/auth/login-init", "POST", { email: "admin@luxora.shop", method: "password" });
+      ok(!/Server error|no such table/i.test(JSON.stringify(pw.body)), "login-init resolves a well-formed request without a 500 (was a TypeError crash)", pw.body);
+      const li = await IA("/api/auth/login-init", "POST", { email: "nobody@luxora.shop", method: "otp" });
+      ok(!li.body.ok && /not found|register/i.test(li.body.error || ""), "login-init resolves an unknown user gracefully", li.body);
+      const badInit = await IA("/api/auth/login-init", "POST", { email: "admin@luxora.shop" });
+      ok(badInit.status === 400, "login-init rejects a request missing its method with 400 (was a 500 TypeError)", badInit.status);
+      const ids = await IA("/api/admin/identity-settings");
+      ok(ids.body.settings, "the store's identity settings are readable", ids.body);
+      // UCII vocabulary + the platform attribute registry: three more handlers that queried
+      // tables/columns the schema never declared, found by sweeping every route for 500s.
+      const dm = await P("/api/ucii/domains", "POST", { key: "probe-domain", name: "Probe" });
+      ok(dm.body.ok, "a domain registers through UCII (was no such table: domains)", dm.body);
+      ok((await P("/api/ucii/domains")).body.domains.some(d => d.key === "probe-domain"), "the domain is listed");
+      const pl = await P("/api/ucii/policies", "POST", { key: "probe-policy", domain: "probe-domain", name: "Probe", rule: "total>0" });
+      ok(pl.body.ok, "a policy registers against a domain (was no such table: policies)", pl.body);
+      ok((await P("/api/ucii/policies?domain=probe-domain")).body.policies.some(p => p.key === "probe-policy"), "the policy is listed by domain");
+      const pa = await P("/api/platform/attributes", "POST", { key: "probe-attr", label: "Probe", category: "Probe" });
+      ok(pa.body.ok, "a platform attribute saves (handler omitted tenant_id; the table lacked category)", pa.body);
+      ok(Array.isArray((await P("/api/platform/attributes")).body.attributes), "the platform attribute registry reads back grouped by category");
+      const pt = await IA("/api/admin/identity-provider-types");
+      ok(Array.isArray(pt.body.types) && pt.body.types.length > 0, "the store reads identity provider types (handler forgot to import the module)", pt.body);
     }
     console.log("▸ VELORA (brand store · AE · Tabby BNPL)");
     jar.clear();

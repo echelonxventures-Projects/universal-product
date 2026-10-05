@@ -1,0 +1,723 @@
+{
+  "$schema": "https://ucos.io/registry/content-runtime-data.v1.json",
+  "registryId": "UCOS-REG-CONTENT-RUNTIME-DATA",
+  "canonicalName": "Runtime & Data Content Registry",
+  "version": "Omega-1",
+  "status": "Constitutional Freeze",
+  "ownerDomain": "Constitutional Authority",
+  "law": "Knowledge Once — runtime and data substance defined here once, projected everywhere.",
+  "content": {
+    "RUN": {
+      "concepts": "The Runtime Constitution defines how derived reality executes. Constitution defines truth; Domains manage truth; Runtime derives reality; Agents execute reality; Applications consume reality. The runtime never owns truth — it computes projections of it.",
+      "ontology": "Runtime is a pure function over registry state. Inputs: primitives + registry. Outputs: projections. Side effects: only governed, evidenced actions. The runtime is stateless with respect to truth.",
+      "taxonomy": "By layer: Projection / Orchestration / Execution / Interaction. By mode: Interactive / Batch / Streaming / Event-driven. By ownership: Platform / Tenant / Edge.",
+      "dataModel": "```yaml\nRuntimeSession:\n  sessionId: <Identity>\n  inputs: {primitives: [<ref>], registryVersion: <version>}\n  projections: [<content-addressed ref>]\n  actions: [<governed action ref>]\n  temporal: {startedAt, endedAt}\n  context: <Context>\n  evidence: [<Evidence>]\n```",
+      "graphModel": "(:Session)-[:INPUTS_FROM]->(:Registry); (:Session)-[:PROJECTS]->(:Projection); (:Session)-[:EMITS]->(:Event); (:Session)-[:GOVERNED_BY]->(:Policy)",
+      "apis": [
+        "POST /runtime.v1.session",
+        "GET  /runtime.v1/{id}",
+        "POST /runtime.v1.project",
+        "POST /runtime.v1.act"
+      ],
+      "commands": [
+        "runtime.session.open",
+        "runtime.project",
+        "runtime.act",
+        "runtime.session.close"
+      ],
+      "queries": [
+        "runtime.session",
+        "runtime.projections",
+        "runtime.actions",
+        "runtime.health"
+      ],
+      "events": [
+        "SessionOpened",
+        "ProjectionComputed",
+        "ActionExecuted",
+        "SessionClosed",
+        "RuntimeViolation"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Opening\n    Opening --> Resolving\n    Resolving --> Projecting\n    Projecting --> Acting\n    Acting --> Closing\n    Closing --> [*]\n```",
+      "workflow": [
+        "open session with registry version → resolve context → compute projections → execute governed actions → close with full evidence"
+      ],
+      "authorities": [
+        "Runtime Authority (execution); every action carries the acting domain's delegated authority."
+      ],
+      "permissions": [
+        "runtime.session (authenticated)",
+        "runtime.act (action-class authority)",
+        "runtime.read (session-scoped)"
+      ],
+      "privacy": "Sessions over personal data are consent-scoped and retention-bounded by policy.",
+      "audit": "Every session is a complete audit artifact — inputs, registry version, projections, actions, and evidence form an unbroken chain.",
+      "twin": "Runtime twin monitors projection latency and violation rates as platform health.",
+      "agent": "Agents execute within the runtime; their actions are governed at the same enforcement points as everything else.",
+      "runtime": "The runtime is deliberately stateless about truth — all truth is re-derived from the registry per session, guaranteeing consistency.",
+      "scaling": "Sessions are independent and horizontally scalable; registry version pinning makes projections reproducible at any scale.",
+      "multiTenant": "Sessions are tenant-isolated; cross-tenant projection requires published relationship and both authorities.",
+      "geo": "Sessions run in-jurisdiction for regulated data; registry versions replicate for local resolution.",
+      "failure": "Registry version skew, projection timeout, evidence gap mid-session, policy version race.",
+      "recovery": "Sessions are replayable from registry state — a failed session re-derives identically. In-flight actions are idempotent.",
+      "certification": "Runtime must prove every output is a deterministic function of registry state — no hidden state, no bypass paths.",
+      "migration": "Runtime evolves by registry version; old sessions remain reproducible at their pinned version.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant RT as Runtime\n    participant RG as Registry\n    C->>RT: open session\n    RT->>RG: pin registry version\n    RG-->>RT: version\n    RT->>RT: project + act under governance\n    RT-->>C: projections + evidence\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> VersionPinning\n    VersionPinning --> ContextResolving\n    ContextResolving --> Projecting\n    Projecting --> Executing\n```",
+      "blueprint": "Build order for RUN: (1) define registry entries — this domain owns by layer: projection / orchestration / execution / interaction as registry truth, not code; (2) implement the contract surface first (runtime.session.open, runtime.project, runtime.act) and validate against RUN boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "RUN2": {
+      "concepts": "Execution Architecture defines how a single governed action runs. Every action passes authority check, policy guard, evidence binding, and trace recording — in that order, with no bypass.",
+      "ontology": "Execution is a pipeline: Authorize → Guard → Execute → Evidence → Trace. Each stage is mandatory and independently verifiable. A skipped stage is a constitutional violation.",
+      "taxonomy": "By synchronicity: Synchronous / Asynchronous / Deferred. By isolation: Shared / Isolated / Enclave. By idempotency: Idempotent / At-most-once / Compensatable.",
+      "dataModel": "```yaml\nExecution:\n  executionId: <Identity>\n  actionClass: <registry id>\n  authority: <Authority>\n  policyVersion: <version>\n  input: <content-addressed>\n  output: <content-addressed>\n  evidence: [<Evidence>]\n  trace: <append-only ref>\n  temporal: {at}\n  idempotencyKey: <hash>\n```",
+      "graphModel": "(:Execution)-[:AUTHORIZED_BY]->(:Authority); (:Execution)-[:GUARDED_BY]->(:Policy); (:Execution)-[:EVIDENCED_BY]->(:Evidence); (:Execution)-[:TRACED_IN]->(:AuditLog)",
+      "apis": [
+        "POST /execution.v1.run",
+        "GET  /execution.v1/{id}",
+        "GET  /execution.v1.trace/{id}",
+        "POST /execution.v1.compensate"
+      ],
+      "commands": [
+        "execution.run",
+        "execution.compensate",
+        "execution.replay",
+        "execution.audit"
+      ],
+      "queries": [
+        "execution.byId",
+        "execution.trace",
+        "execution.byActionClass",
+        "execution.violations"
+      ],
+      "events": [
+        "ExecutionRequested",
+        "ExecutionAuthorized",
+        "ExecutionGuarded",
+        "ExecutionCompleted",
+        "ExecutionFailed",
+        "ExecutionCompensated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Requested\n    Requested --> Authorized\n    Authorized --> Guarded\n    Guarded --> Executed\n    Executed --> Evidenced\n    Evidenced --> Traced\n    Traced --> [*]\n    Guarded --> Denied\n    Denied --> [*]\n```",
+      "workflow": [
+        "authorize (authority chain) → guard (policy evaluation) → execute (isolated) → bind evidence → append trace"
+      ],
+      "authorities": [
+        "The action class's owning authority; verified, never assumed."
+      ],
+      "permissions": [
+        "execution.run (holder of action-class authority)",
+        "execution.compensate (governance)",
+        "execution.read (auditor)"
+      ],
+      "privacy": "Traces minimize personal data; the enforcement facts are retained, subject contents are not.",
+      "audit": "The trace is the audit — every stage is a signed, timestamped, append-only entry. Replay reproduces identical outcome.",
+      "twin": "Execution twin monitors pipeline latency and denial rates as governance health.",
+      "agent": "Agent actions run through the identical pipeline — agents get no shortcut, by constitutional design.",
+      "runtime": "The pipeline is in-process for latency, with each stage writing to an append-only log before the next begins.",
+      "scaling": "Executions are independent; the append-only trace is the serialization point and is sharded by execution id.",
+      "multiTenant": "Executions are tenant-isolated; cross-tenant action classes require both authorities.",
+      "geo": "Execution locality follows data residency; traces stay in-jurisdiction.",
+      "failure": "Stage skip (must be impossible), evidence failure post-execution, trace write failure, idempotency collision.",
+      "recovery": "Failed executions compensate via recorded compensating actions — the pipeline is never left half-executed by design.",
+      "certification": "Pipeline completeness must be formally provable — a bypass path voids certification of the entire platform.",
+      "migration": "New action classes are registry additions; the pipeline schema is frozen.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant EX as Execution\n    participant AU as Authority\n    participant PL as Policy\n    C->>EX: run(action, input)\n    EX->>AU: authorize\n    AU-->>EX: ok\n    EX->>PL: guard\n    PL-->>EX: permit\n    EX->>EX: execute + evidence + trace\n    EX-->>C: result\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Authorizing\n    Authorizing --> Guarding\n    Guarding --> Executing\n    Executing --> Evidencing\n    Evidencing --> Tracing\n```",
+      "blueprint": "Build order for RUN2: (1) define registry entries — this domain owns by synchronicity: synchronous / asynchronous / deferred as registry truth, not code; (2) implement the contract surface first (execution.run, execution.compensate, execution.replay) and validate against RUN2 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "RUN3": {
+      "concepts": "Orchestration coordinates multiple governed executions into coherent outcomes without introducing a coordination truth of its own. The orchestrator holds no state — it holds a plan, and the plan is itself a governed projection.",
+      "ontology": "Orchestration has a Plan (workflow projection), Steps (executions), Dependencies (registry expressions), and Compensation logic. Sagas are first-class; distributed transactions across domains are prohibited (they'd create shared mutable truth).",
+      "taxonomy": "By pattern: Saga / Pipeline / Fan-out-fan-in / Stateful-coordination / Event-choreography. By duration: Request-scale / Minutes / Hours / Days. By failure mode: Compensatable / Retryable / Escalating.",
+      "dataModel": "```yaml\nOrchestration:\n  orchestrationId: <Identity>\n  plan: <workflow projection ref>\n  steps: [{executionRef, dependsOn}]\n  compensationPlan: [{step, compensatingAction}]\n  state: <registry state>\n  context: <Context>\n  temporal: {startedAt}\n```",
+      "graphModel": "(:Orchestration)-[:EXECUTES]->(:Execution); (:Orchestration)-[:PLAN_FROM]->(:Workflow); (:Orchestration)-[:COMPENSATES]->(:Execution); (:Orchestration)-[:SCOPED_IN]->(:Context)",
+      "apis": [
+        "POST /orchestration.v1.start",
+        "GET  /orchestration.v1/{id}",
+        "POST /orchestration.v1/{id}/compensate",
+        "GET  /orchestration.v1.status/{id}"
+      ],
+      "commands": [
+        "orchestration.start",
+        "orchestration.compensate",
+        "orchestration.suspend",
+        "orchestration.resume"
+      ],
+      "queries": [
+        "orchestration.byId",
+        "orchestration.status",
+        "orchestration.active",
+        "orchestration.timeline"
+      ],
+      "events": [
+        "OrchestrationStarted",
+        "StepCompleted",
+        "StepFailed",
+        "OrchestrationCompleted",
+        "OrchestrationCompensating",
+        "OrchestrationSuspended"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Planned\n    Planned --> Running\n    Running --> StepOk\n    StepOk --> Running\n    Running --> StepFailed\n    StepFailed --> Compensating\n    Compensating --> Compensated\n    Compensating --> Escalated: compensation fails\n    Running --> Completed\n    Completed --> [*]\n    Compensated --> [*]\n```",
+      "workflow": [
+        "materialize plan → execute steps per dependency → on failure: compensate in reverse → escalate if compensation fails"
+      ],
+      "authorities": [
+        "Orchestration Authority (coordination); each step carries its own action-class authority."
+      ],
+      "permissions": [
+        "orchestration.start (plan owner)",
+        "orchestration.compensate (governance)",
+        "orchestration.read (participant)"
+      ],
+      "privacy": "Orchestration over personal data inherits the strictest consent scope among its steps.",
+      "audit": "Every step and compensation is traced; the orchestration is replayable end-to-end from the plan + step traces.",
+      "twin": "Orchestration twin tracks in-flight plans and predicts failure cascades before compensation is needed.",
+      "agent": "Planner agents materialize plans; orchestration executes them — planning and execution are separated by constitution.",
+      "runtime": "Sagas with explicit compensation; no two-phase commit across domains — eventual consistency within a context window.",
+      "scaling": "Orchestrations are independent; long-running plans checkpoint to the event store and resume.",
+      "multiTenant": "Orchestration never crosses tenants; marketplace flows are explicit multi-party plans with both authorities.",
+      "geo": "Cross-region orchestration respects sovereignty — a step touching regulated data runs in-jurisdiction.",
+      "failure": "Step failure cascade, compensation failure, plan version drift, orphaned orchestration.",
+      "recovery": "Compensation is the recovery mechanism; escalation routes to governance. Orphaned plans are reaped by policy.",
+      "certification": "Plan must be compensatable — non-compensatable distributed steps are uncertifiable.",
+      "migration": "New patterns are registry additions to the workflow registry.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Coordinator\n    participant OR as Orchestration\n    participant E1 as Step 1\n    participant E2 as Step 2\n    C->>OR: start(plan)\n    OR->>E1: execute\n    E1-->>OR: ok\n    OR->>E2: execute\n    E2-->>OR: failed\n    OR->>E1: compensate\n    OR-->>C: compensated\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Planning\n    Planning --> Executing\n    Executing --> Checkpointing\n    Checkpointing --> Executing\n    Checkpointing --> Completing\n```",
+      "blueprint": "Build order for RUN3: (1) define registry entries — this domain owns by pattern: saga / pipeline / fan-out-fan-in / stateful-coordination / event-choreography as registry truth, not code; (2) implement the contract surface first (orchestration.start, orchestration.compensate, orchestration.suspend) and validate against RUN3 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "RUN4": {
+      "concepts": "Workflow Architecture defines process orchestration as a governed, registry-defined projection. Workflows are not code — they are declarations in the workflow registry, executed by the orchestration engine.",
+      "ontology": "Workflow has Steps (action classes), Transitions (registry expressions), Guards (policies), and a state machine. Defining a workflow is a registry act, not a deployment act.",
+      "taxonomy": "By structure: Sequential / Branching / Parallel / Loop / Event-driven / Hybrid. By mutability: Frozen-versioned / Governed-evolving. By scope: Universal / Domain / Tenant / Instance.",
+      "dataModel": "```yaml\nWorkflow:\n  workflowId: <registry id>\n  version: <int>\n  steps: [{actionClass, guards: [Policy]}]\n  transitions: [{from, to, condition}]\n  stateMachine: <registry ref>\n  compensationPlan: [{step, compensatingAction}]\n  temporal: {effectiveFrom, effectiveTo}\n```",
+      "graphModel": "(:Workflow)-[:HAS_STEP]->(:ActionClass); (:Workflow)-[:GUARDED_BY]->(:Policy); (:Workflow)-[:VERSION_OF]->(:Workflow); (:Workflow)-[:EXECUTED_AS]->(:Orchestration)",
+      "apis": [
+        "POST /workflow.v1.define",
+        "GET  /workflow.v1/{id}",
+        "GET  /workflow.v1.versions/{id}",
+        "POST /workflow.v1.validate"
+      ],
+      "commands": [
+        "workflow.define",
+        "workflow.validate",
+        "workflow.version.retire",
+        "workflow.instantiate"
+      ],
+      "queries": [
+        "workflow.byId",
+        "workflow.versions",
+        "workflow.byStep",
+        "workflow.active"
+      ],
+      "events": [
+        "WorkflowDefined",
+        "WorkflowValidated",
+        "WorkflowRetired",
+        "WorkflowInstantiated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Defined\n    Defined --> Validated\n    Validated --> Active\n    Active --> Retired\n    Retired --> [*]\n```",
+      "workflow": [
+        "define in registry → static validation (guards, compensatability, state machine sanity) → activate → instantiate per execution"
+      ],
+      "authorities": [
+        "Workflow Authority (registry governance); step authorities are inherited from action classes."
+      ],
+      "permissions": [
+        "workflow.define (workflow authority)",
+        "workflow.instantiate (plan owner)",
+        "workflow.read (any authenticated)"
+      ],
+      "privacy": "Workflows over personal data carry consent scope as a first-class guard, not an afterthought.",
+      "audit": "Every instantiation records the workflow version — history is replayable because the version is immutable.",
+      "twin": "Workflow twin tracks execution distributions and bottleneck steps across instances.",
+      "agent": "Agents may define workflow proposals, but only the Workflow Authority activates them.",
+      "runtime": "Workflow is data interpreted by the orchestration engine — the engine has zero workflow-specific code.",
+      "scaling": "Definitions are few and globally cached; instances scale with orchestration.",
+      "multiTenant": "Universal workflows are shared; tenant workflows are registry entries scoped to the tenant.",
+      "geo": "Workflow guards include jurisdiction policy — the same workflow may be legal in one region, blocked in another.",
+      "failure": "Invalid guard reference, uncompensatable step, transition deadlock, version retirement with live instances.",
+      "recovery": "Versions are immutable; retirement prevents new instances, and live ones complete on their pinned version.",
+      "certification": "Workflow must pass static validation: guard completeness, state-machine reachability, and compensatability.",
+      "migration": "Workflow evolution is versioned registry evolution — there is no separate migration path.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant D as Definer\n    participant WF as Workflow Registry\n    participant EN as Engine\n    D->>WF: define(steps, guards)\n    WF->>WF: static validation\n    WF-->>D: WorkflowDefined\n    EN->>WF: load version\n    WF-->>EN: definition\n    EN->>EN: instantiate\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Defining\n    Defining --> Validating\n    Validating --> Activating\n    Activating --> Instantiating\n```",
+      "blueprint": "Build order for RUN4: (1) define registry entries — this domain owns by structure: sequential / branching / parallel / loop / event-driven / hybrid as registry truth, not code; (2) implement the contract surface first (workflow.define, workflow.validate, workflow.version.retire) and validate against RUN4 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "RUN5": {
+      "concepts": "State Machine Architecture makes lifecycle explicit and governed. Every stateful primitive and projection carries a registry-defined state machine; transitions are policy-guarded decisions, never silent mutations.",
+      "ontology": "StateMachine has States (registry), Transitions (guarded), Events (triggers), and Invariants (must-hold per state). The current state is a projection of the transition history — never stored independently.",
+      "taxonomy": "By determinism: Deterministic / Non-deterministic-governed. By persistence: Ephemeral / Persistent / Eternal. By complexity: Flat / Nested / Hierarchical / Orthogonal.",
+      "dataModel": "```yaml\nStateMachine:\n  machineId: <registry id>\n  states: [<registry state>]\n  initialState: <registry state>\n  transitions: [{from, to, event, guard: [Policy], action}]\n  invariants: [{state, mustHold}]\n  version: <int>\n```",
+      "graphModel": "(:StateMachine)-[:HAS_STATE]->(:State); (:StateMachine)-[:TRANSITION]->(:Transition); (:Transition)-[:GUARDED_BY]->(:Policy); (:StateMachine)-[:VERSION_OF]->(:StateMachine)",
+      "apis": [
+        "POST /state-machine.v1.define",
+        "GET  /state-machine.v1/{id}",
+        "POST /state-machine.v1.evaluate",
+        "GET  /state-machine.v1.state/{subjectId}"
+      ],
+      "commands": [
+        "stateMachine.define",
+        "stateMachine.transition",
+        "stateMachine.rollback",
+        "stateMachine.validate"
+      ],
+      "queries": [
+        "stateMachine.byId",
+        "stateMachine.state",
+        "stateMachine.history",
+        "stateMachine.reachable"
+      ],
+      "events": [
+        "TransitionEvaluated",
+        "TransitionOccurred",
+        "TransitionDenied",
+        "InvariantViolated",
+        "StateMachineDefined"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Idle\n    Idle --> Evaluating: event\n    Evaluating --> Guarding\n    Guarding --> Occurred: permitted\n    Guarding --> Denied: prohibited\n    Occurred --> Idle\n    Denied --> Idle\n```",
+      "workflow": [
+        "event arrives → resolve machine version → evaluate guard → apply transition → verify invariant → append to history"
+      ],
+      "authorities": [
+        "Machine Authority (definition); transitions carry the action class's authority."
+      ],
+      "permissions": [
+        "stateMachine.define (machine authority)",
+        "stateMachine.transition (action authority)",
+        "stateMachine.read (context-scoped)"
+      ],
+      "privacy": "States over personal subjects are sensitive; transition history minimizes subject data.",
+      "audit": "State is derived from transition history — the history IS the audit; a stored state contradicting history is a violation.",
+      "twin": "State twin monitors machines for stuck states and transition hotspots.",
+      "agent": "Agents may propose transitions; guards decide — agents never bypass the machine.",
+      "runtime": "Evaluation is a function of (machine version, current state, event, guard result); idempotent by event key.",
+      "scaling": "Machines are per-subject and independent; history is append-only and sharded by subject.",
+      "multiTenant": "Machine definitions are shared or tenant-scoped via the registry; instances never cross tenants.",
+      "geo": "Guards include jurisdiction policy; a transition legal in one region may be denied in another.",
+      "failure": "Invariant violation post-transition, non-deterministic guard, history/state divergence, orphaned machine.",
+      "recovery": "Rebuild state by replaying history; rollback is a compensating transition recorded like any other.",
+      "certification": "Machine must pass reachability analysis, guard determinism, and invariant coverage.",
+      "migration": "Machines version in the registry; instances finish on their pinned version.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant E as Event\n    participant SM as State Machine\n    participant PL as Policy\n    E->>SM: transition(subject, event)\n    SM->>SM: load history → current state\n    SM->>PL: evaluate guard\n    PL-->>SM: permit/deny\n    SM->>SM: append transition or deny\n    SM-->>E: outcome\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Loading\n    Loading --> Resolving\n    Resolving --> Guarding\n    Guarding --> Appending\n```",
+      "blueprint": "Build order for RUN5: (1) define registry entries — this domain owns by determinism: deterministic / non-deterministic-governed as registry truth, not code; (2) implement the contract surface first (stateMachine.define, stateMachine.transition, stateMachine.rollback) and validate against RUN5 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "DB": {
+      "concepts": "Storage Architecture holds primitives and registry truth — nothing else. Commerce objects, products, offers, and projections are never stored; they are computed. The store is the memory of the constitution, not the memory of the business.",
+      "ontology": "Storage is partitioned by domain ownership: each domain owns its tables/shards exclusively. Cross-domain access is via contract, never via shared table. Append-only for truth; projections are cached, not stored.",
+      "taxonomy": "By truth: Authoritative (primitive/registry) / Derived (projection cache) / Ephemeral (session). By shape: Relational / Document / Graph / Blob / Time-series. By tier: Hot / Warm / Cold / Archive.",
+      "dataModel": "```yaml\nStoragePartition:\n  partitionId: <Identity>\n  ownerDomain: <Domain>\n  storeType: <registry id>\n  tier: <Hot|Warm|Cold|Archive>\n  residency: <Context jurisdiction>\n  retentionPolicy: <Policy>\n  encryptionState: <registry id>\n```",
+      "graphModel": "(:Partition)-[:OWNED_BY]->(:Domain); (:Partition)-[:RESIDES_IN]->(:Context); (:Partition)-[:RETAINED_PER]->(:Policy); (:Partition)-[:REPLICATED_TO]->(:Partition)",
+      "apis": [
+        "POST /storage.v1.partition",
+        "GET  /storage.v1/partition/{id}",
+        "POST /storage.v1.tier",
+        "GET  /storage.v1.residency/{subjectId}"
+      ],
+      "commands": [
+        "storage.partition.create",
+        "storage.tier.move",
+        "storage.archive",
+        "storage.purge",
+        "storage.replicate"
+      ],
+      "queries": [
+        "storage.partition",
+        "storage.residency",
+        "storage.retention",
+        "storage.footprint"
+      ],
+      "events": [
+        "PartitionCreated",
+        "TierMoved",
+        "Archived",
+        "Purged",
+        "ReplicaAdded",
+        "ResidencyViolation"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Provisioned\n    Provisioned --> Active\n    Active --> TiredDown\n    TiredDown --> Archived\n    Archived --> Purged\n    Purged --> [*]\n```",
+      "workflow": [
+        "provision under domain ownership → write primitives only → tier by access pattern → archive per retention → purge under governance"
+      ],
+      "authorities": [
+        "Domain Authority owns its partitions; Storage Authority governs infrastructure policy."
+      ],
+      "permissions": [
+        "storage.write (domain, to its own partition only)",
+        "storage.purge (governance authority)",
+        "storage.read (domain-scoped)"
+      ],
+      "privacy": "Retention and purge are policy-driven per data class; erasure requests execute as governed purges with certificates.",
+      "audit": "Every tier move, archive, and purge is recorded; storage operations are as audited as business actions.",
+      "twin": "Storage twin monitors capacity, tier efficacy, and purge backlog as platform health.",
+      "agent": "Storage agent proposes tiering and retention adjustments from access patterns, under governance.",
+      "runtime": "Writes are domain-scoped and schema-validated against the registry; reads route by domain contract.",
+      "scaling": "Partitions scale independently per domain — no global bottleneck, no cross-domain coupling.",
+      "multiTenant": "Tenant data isolation at the partition level; shared infrastructure never implies shared data.",
+      "geo": "Residency is a partition property — regulated data's partition physically resides in-jurisdiction.",
+      "failure": "Cross-domain write attempt (must be rejected), residency violation, retention policy conflict, tier thrash.",
+      "recovery": "Authoritative truth is append-only and replicated; projection caches are disposable and re-derived.",
+      "certification": "Partition must pass ownership binding, residency compliance, encryption state, and retention policy.",
+      "migration": "Storage engines are pluggable via the registry; migrating engines never touches domain logic.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant D as Domain\n    participant ST as Storage\n    participant PL as Policy\n    D->>ST: write primitive\n    ST->>ST: verify domain ownership\n    ST->>PL: retention + residency check\n    PL-->>ST: ok\n    ST->>ST: append\n    ST-->>D: ack\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Owning\n    Owning --> Validating\n    Validating --> Appending\n    Appending --> Replicating\n```",
+      "blueprint": "Build order for DB: (1) define registry entries — this domain owns by truth: authoritative (primitive/registry) / derived (projection cache) / ephemeral (session) as registry truth, not code; (2) implement the contract surface first (storage.partition.create, storage.tier.move, storage.archive) and validate against DB boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "GRF": {
+      "concepts": "Graph Architecture is the native shape of the platform — reality emerges through relationships. The graph stores primitives and their relationships; everything queryable about reality is a traversal.",
+      "ontology": "Graph has Nodes (primitives/projections) and Edges (typed, contextualized, temporal). Traversal is context-filtered and trust-weighted. The graph is the substrate for Relationship, Causality, Discovery, and Emergence.",
+      "taxonomy": "By content: Primitive-graph / Projection-graph / Meta-graph. By traversal: Local / Multi-hop / Global-pattern. By store: Native-graph / Relational-emulated / Distributed.",
+      "dataModel": "```yaml\nGraphPartition:\n  partitionId: <Identity>\n  shardKey: <registry expression>\n  nodes: <count>\n  edges: <count>\n  traversalPolicy: <Policy>\n  residency: <Context>\n  version: <int>\n```",
+      "graphModel": "(:Graph)-[:SHARDED_BY]->(:Expression); (:Graph)-[:TRAVERSED_PER]->(:Policy); (:Graph)-[:REPLICATED_TO]->(:Graph); (:Graph)-[:RESIDES_IN]->(:Context)",
+      "apis": [
+        "POST /graph.v1.traverse",
+        "POST /graph.v1.neighbors",
+        "GET  /graph.v1.path",
+        "POST /graph.v1.pattern"
+      ],
+      "commands": [
+        "graph.traverse",
+        "graph.neighbors",
+        "graph.path",
+        "graph.pattern.match",
+        "graph.rebalance"
+      ],
+      "queries": [
+        "graph.byId",
+        "graph.neighbors",
+        "graph.path",
+        "graph.pattern",
+        "graph.density"
+      ],
+      "events": [
+        "TraversalExecuted",
+        "HotspotDetected",
+        "PartitionRebalanced",
+        "GraphVersionChanged"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Planning\n    Planning --> Traversing\n    Traversing --> Filtering\n    Filtering --> Returning\n```",
+      "workflow": [
+        "parse query → plan traversal under policy → execute with context filter → trust-weight results → return"
+      ],
+      "authorities": [
+        "Graph Authority (infrastructure); traversal policy enforces each domain's access contract."
+      ],
+      "permissions": [
+        "graph.traverse (context-scoped, edge-policy-checked)",
+        "graph.read (domain-scoped nodes)",
+        "graph.admin (graph authority)"
+      ],
+      "privacy": "Sensitive edges are filtered at traversal — never returned then hidden. Hidden-edge traversal attempts are logged.",
+      "audit": "Every traversal records the query, context, policies applied, and edge count — the basis of data-access audit.",
+      "twin": "Graph twin monitors degree distribution and hotspot formation as structural health.",
+      "agent": "Discovery agents traverse for inference; every traversal is policy-checked like any other access.",
+      "runtime": "Traversal is bounded by policy hop-limit and trust floor; hot vertices are served from projections.",
+      "scaling": "Sharded by source-node hash; multi-hop traversals are bounded and parallel across shards.",
+      "multiTenant": "Edges never cross tenants implicitly; cross-tenant edges are explicit published relationships.",
+      "geo": "Graph residency follows node sovereignty; replicas are read-only and policy-filtered.",
+      "failure": "Hotspot overload, traversal timeout, edge-type drift, orphaned nodes.",
+      "recovery": "The graph is rebuilt from the Relationship Domain's append-only log — it is a projection, never primary truth.",
+      "certification": "Traversal must prove policy enforcement on every edge touched — no bypass, no post-filter leak.",
+      "migration": "New edge types are registry additions; the graph re-indexes without downtime.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant GR as Graph\n    participant PL as Policy\n    C->>GR: traverse(query, context)\n    GR->>PL: edge access policy\n    PL-->>GR: filter set\n    GR->>GR: bounded traversal\n    GR-->>C: results\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Parsing\n    Parsing --> PolicyBinding\n    PolicyBinding --> Traversing\n    Traversing --> TrustWeighting\n```",
+      "blueprint": "Build order for GRF: (1) define registry entries — this domain owns by content: primitive-graph / projection-graph / meta-graph as registry truth, not code; (2) implement the contract surface first (graph.traverse, graph.neighbors, graph.path) and validate against GRF boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "IDX": {
+      "concepts": "Index Architecture makes the platform queryable at scale. Indexes are derived projections — rebuilt from truth, never authoritative — and their consistency with the source is continuously verified.",
+      "ontology": "Index has a Source (domain truth), a Projection function, a Consistency model, and a Rebuild policy. An index that diverges from truth is a defect, not an optimization.",
+      "taxonomy": "By structure: Inverted / B-tree / Hash / Graph / Vector / Hybrid. By consistency: Strong / Eventually / Snapshot. By trigger: Real-time / Batch / Scheduled.",
+      "dataModel": "```yaml\nIndex:\n  indexId: <Identity>\n  source: <domain partition>\n  projectionFn: <registry expression>\n  consistencyModel: <registry id>\n  rebuildPolicy: <Policy>\n  state: <Fresh|Stale|Rebuilding|Degraded>\n  version: <int>\n```",
+      "graphModel": "(:Index)-[:DERIVED_FROM]->(:Partition); (:Index)-[:REBUILT_PER]->(:Policy); (:Index)-[:CONSISTENT_WITH]->(:Partition); (:Index)-[:SERVES]->(:Query)",
+      "apis": [
+        "POST /index.v1.define",
+        "GET  /index.v1/{id}",
+        "POST /index.v1.rebuild",
+        "GET  /index.v1.consistency/{id}"
+      ],
+      "commands": [
+        "index.define",
+        "index.rebuild",
+        "index.invalidate",
+        "index.drop"
+      ],
+      "queries": [
+        "index.byId",
+        "index.consistency",
+        "index.lag",
+        "index.coverage"
+      ],
+      "events": [
+        "IndexChanged",
+        "IndexRebuilt",
+        "IndexInvalidated",
+        "ConsistencyViolation",
+        "IndexDegraded"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Defined\n    Defined --> Fresh\n    Fresh --> Stale: source changed\n    Stale --> Rebuilding\n    Rebuilding --> Fresh\n    Fresh --> Degraded: consistency violation\n    Degraded --> Rebuilding\n```",
+      "workflow": [
+        "define projection → build → invalidate on source change → rebuild per policy → verify consistency"
+      ],
+      "authorities": [
+        "Index Authority (infrastructure); projection function must respect domain access contracts."
+      ],
+      "permissions": [
+        "index.define (index authority)",
+        "index.rebuild (system)",
+        "index.read (query-scoped, still policy-checked)"
+      ],
+      "privacy": "Indexes over personal data inherit consent scope at build time — no index of unseen data.",
+      "audit": "Consistency verification is continuous; violations are events with source and index versions recorded.",
+      "twin": "Index twin monitors lag and rebuild success rates across the fleet.",
+      "agent": "Index agent detects query patterns and proposes new indexes, and flags unused ones for retirement.",
+      "runtime": "Invalidation is event-driven from the source domain; queries to stale indexes are served with a staleness marker, never silently.",
+      "scaling": "Indexes partition alongside their sources; rebuilds are incremental where the projection permits.",
+      "multiTenant": "Indexes are tenant-scoped; a shared index over published data respects each source's policy.",
+      "geo": "Indexes replicate for read locality; the authoritative build stays in the source's jurisdiction.",
+      "failure": "Consistency violation, rebuild failure, invalidation storm, projection drift after schema evolution.",
+      "recovery": "Indexes are disposable — a corrupt index is dropped and rebuilt from truth, never repaired in place.",
+      "certification": "Index must carry a consistency guarantee level and prove verification runs on schedule.",
+      "migration": "New index types are registry additions; schema evolution triggers governed rebuilds.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant E as Source Event\n    participant IX as Index\n    participant TR as Truth\n    E->>IX: source changed\n    IX->>IX: invalidate\n    IX->>TR: rebuild projection\n    TR-->>IX: rebuilt\n    IX->>IX: verify consistency\n    IX-->>E: IndexRebuilt\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Building\n    Building --> Fresh\n    Fresh --> Invalidated\n    Invalidated --> Rebuilding\n    Rebuilding --> Verified\n```",
+      "blueprint": "Build order for IDX: (1) define registry entries — this domain owns by structure: inverted / b-tree / hash / graph / vector / hybrid as registry truth, not code; (2) implement the contract surface first (index.define, index.rebuild, index.invalidate) and validate against IDX boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "SRC": {
+      "concepts": "Search Architecture is context-aware discovery over projections. Search is not a feature bolted on — it is a governed query path respecting semantics, context policy, privacy, and perspective.",
+      "ontology": "Search has a Query (semantic + context), a Ranking policy, a Filter set (context/perspective/privacy), and a Result provenance. Ranking is policy-driven; relevance is never the only criterion.",
+      "taxonomy": "By modality: Keyword / Semantic / Faceted / Hybrid / Voice / Visual / Future. By scope: Tenant / Marketplace / Federated. By personalization: Universal / Segment / Individual (consent-gated).",
+      "dataModel": "```yaml\nSearchQuery:\n  queryId: <Identity>\n  semanticConcept: <SemanticModel|null>\n  context: <Context>\n  filters: [<Policy>]\n  rankingPolicy: <Policy>\n  perspective: <Perspective>\n  temporal: {at}\n  personalizationScope: <consent scope|null>\n```",
+      "graphModel": "(:Search)-[:QUERIES]->(:Index); (:Search)-[:RANKED_BY]->(:Policy); (:Search)-[:FILTERED_BY]->(:Policy); (:Search)-[:PROJECTED_VIA]->(:Perspective)",
+      "apis": [
+        "POST /search.v1.query",
+        "POST /search.v1.suggest",
+        "GET  /search.v1.facets",
+        "POST /search.v1.semantic"
+      ],
+      "commands": [
+        "search.query",
+        "search.suggest",
+        "search.facet",
+        "search.semantic.resolve"
+      ],
+      "queries": [
+        "search.history",
+        "search.popular",
+        "search.zeroResults",
+        "search.latency"
+      ],
+      "events": [
+        "SearchExecuted",
+        "SuggestionServed",
+        "SemanticDisambiguated",
+        "ZeroResultDetected"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Parsing\n    Parsing --> Disambiguating\n    Disambiguated: note\n    Disambiguating --> Filtering\n    Filtering --> Ranking\n    Ranking --> Serving\n    Serving --> [*]\n```",
+      "workflow": [
+        "parse query → semantic disambiguation → context + privacy filtering → policy ranking → perspective projection → serve"
+      ],
+      "authorities": [
+        "Search Authority (infrastructure); ranking and filter policies carry their own authorities."
+      ],
+      "permissions": [
+        "search.query (authenticated, context-scoped)",
+        "search.personalize (consent scope)",
+        "search.read-own-history (subject)"
+      ],
+      "privacy": "Personalization requires consent; without it, search is context-scoped only. Query logs are minimized and retention-bounded.",
+      "audit": "Every search records context, filters applied, ranking policy version — required for marketplace fairness audit.",
+      "twin": "Search twin monitors zero-result rates and latency as catalog-health signals.",
+      "agent": "Search agent detects rising unmet queries and proposes catalog or semantic gaps to the owning domains.",
+      "runtime": "Query planning fans out to indexes in parallel; results merge under ranking policy with consistent pagination.",
+      "scaling": "Search scales with index partitioning; hot queries are cached with policy-version invalidation.",
+      "multiTenant": "Search is tenant-scoped; marketplace search aggregates only published projections under marketplace policy.",
+      "geo": "Search respects geo-context — availability, language, and compliance projected per region.",
+      "failure": "Semantic ambiguity collapse, filter policy conflict, ranking bias, index staleness.",
+      "recovery": "Search is stateless over truth — results recompute from indexes; caches are disposable.",
+      "certification": "Search must prove filters were applied before ranking — privacy before relevance, always.",
+      "migration": "New modalities are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant SE as Search\n    participant IX as Index\n    participant PL as Policy\n    C->>SE: query(text, context)\n    SE->>SE: semantic disambiguation\n    SE->>IX: parallel fan-out\n    IX-->>SE: candidates\n    SE->>PL: filter + rank\n    PL-->>SE: policy\n    SE-->>C: results\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Understanding\n    Understanding --> Filtering\n    Filtering --> Ranking\n    Ranking --> Projecting\n```",
+      "blueprint": "Build order for SRC: (1) define registry entries — this domain owns by modality: keyword / semantic / faceted / hybrid / voice / visual / future as registry truth, not code; (2) implement the contract surface first (search.query, search.suggest, search.facet) and validate against SRC boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "CCH": {
+      "concepts": "Cache Architecture makes projections fast. Everything cached is derived and disposable — a cache is never a source of truth, and its consistency with the registry is a first-class concern.",
+      "ontology": "Cache has a Key (content or semantic), a Source projection, an Invalidation policy, and a Consistency level. The invariant: a cache hit must be indistinguishable from recomputation under the pinned registry version.",
+      "taxonomy": "By key: Content-addressed / Semantic / Query. By level: Request / Node / Cluster / Edge. By invalidation: Event-driven / TTL / Version-pinned / Hybrid.",
+      "dataModel": "```yaml\nCacheEntry:\n  cacheKey: <hash or semantic key>\n  sourceProjection: <content-addressed>\n  registryVersion: <version>\n  invalidationPolicy: <Policy>\n  consistency: <Strong|Eventually>\n  temporal: {cachedAt, expiresAt}\n  provenance: <computation ref>\n```",
+      "graphModel": "(:Cache)-[:DERIVED_FROM]->(:Projection); (:Cache)-[:INVALIDATED_BY]->(:Policy|:Event); (:Cache)-[:PINNED_TO]->(:RegistryVersion)",
+      "apis": [
+        "POST /cache.v1.get",
+        "POST /cache.v1.put",
+        "POST /cache.v1.invalidate",
+        "GET  /cache.v1.consistency"
+      ],
+      "commands": [
+        "cache.put",
+        "cache.invalidate",
+        "cache.warm",
+        "cache.flush"
+      ],
+      "queries": [
+        "cache.hitRate",
+        "cache.consistency",
+        "cache.size",
+        "cache.hotKeys"
+      ],
+      "events": [
+        "CacheHit",
+        "CacheMiss",
+        "CacheInvalidated",
+        "CacheWarming",
+        "ConsistencyViolation"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Empty\n    Empty --> Filled: put\n    Filled --> Valid\n    Valid --> Stale: source changed\n    Stale --> Empty: invalidated\n    Valid --> Expired: TTL\n    Expired --> Empty\n```",
+      "workflow": [
+        "compute key → check cache → on miss compute from registry → store with pinned version → invalidate on source event or TTL"
+      ],
+      "authorities": [
+        "Cache Authority (infrastructure); invalidation policy is governed per projection type."
+      ],
+      "permissions": [
+        "cache.write (system)",
+        "cache.invalidate (source domain or policy)",
+        "cache.flush (infrastructure authority)"
+      ],
+      "privacy": "Personal-data caches are consent-scoped and subject to erasure invalidation — a purge propagates to all caches.",
+      "audit": "Consistency sampling proves cache matches recomputation; violations are events, not silent corrections.",
+      "twin": "Cache twin monitors hit rates, eviction storms, and consistency-sample failures.",
+      "agent": "Cache agent warms predicted-hot keys and identifies low-value entries for eviction.",
+      "runtime": "Invalidation is event-driven from the source domains; edge caches are eventually consistent with staleness bounds.",
+      "scaling": "Multi-tier: request → node → cluster → edge; each tier bounded by its invalidation latency.",
+      "multiTenant": "Cache keys are tenant-namespaced — cross-tenant key collision is impossible by construction.",
+      "geo": "Edge caches serve locality; regulated data's caches stay in-jurisdiction per residency policy.",
+      "failure": "Stale-serve, invalidation loss, cache stampede, hot-key hotspot.",
+      "recovery": "Caches are disposable — flush and recompute is always a safe recovery; no truth is ever cached-only.",
+      "certification": "Cache must declare consistency level and prove invalidation latency within policy bound.",
+      "migration": "New invalidation strategies are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant CH as Cache\n    participant RG as Registry\n    C->>CH: get(key)\n    CH->>CH: lookup\n    alt hit\n        CH-->>C: value\n    else miss\n        CH->>RG: compute projection\n        RG-->>CH: value\n        CH->>CH: store pinned\n        CH-->>C: value\n    end\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Keying\n    Keying --> Looking\n    Looking --> Serving\n    Looking --> Computing\n    Computing --> Pinning\n```",
+      "blueprint": "Build order for CCH: (1) define registry entries — this domain owns by key: content-addressed / semantic / query as registry truth, not code; (2) implement the contract surface first (cache.put, cache.invalidate, cache.warm) and validate against CCH boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "EVT": {
+      "concepts": "Event Architecture is the platform's nervous system — every state change is an immutable, evidenced, well-schema'd event. Events are how domains communicate without coupling; they are the only legitimate cross-domain broadcast.",
+      "ontology": "Event has a Type (registry), a Payload (schema-versioned), a Causation id, a Correlation id, an Authority, and Evidence. Events are facts that occurred — immutable once published.",
+      "taxonomy": "By scope: Domain / Cross-domain / Platform / External. By delivery: At-least-once / Exactly-once (projected) / Best-effort. By tempo: Real-time / Batched / Scheduled.",
+      "dataModel": "```yaml\nEvent:\n  eventId: <Identity>\n  eventType: <registry id>\n  schemaVersion: <version>\n  payload: <schema-validated>\n  causationId: <Event|null>\n  correlationId: <Identity>\n  authority: <Authority>\n  evidence: <Evidence ref>\n  temporal: {at}\n  context: <Context>\n```",
+      "graphModel": "(:Event)-[:CAUSED_BY]->(:Event); (:Event)-[:PUBLISHED_BY]->(:Domain); (:Event)-[:SCHEMA_FROM]->(:RegistryEntry); (:Event)-[:EVIDENCED_BY]->(:Evidence)",
+      "apis": [
+        "POST /event.v1.publish",
+        "GET  /event.v1/{id}",
+        "POST /event.v1.subscribe",
+        "GET  /event.v1.replay"
+      ],
+      "commands": [
+        "event.publish",
+        "event.subscribe",
+        "event.replay",
+        "event.compact"
+      ],
+      "queries": [
+        "event.byId",
+        "event.byType",
+        "event.byCorrelation",
+        "event.timeline"
+      ],
+      "events": [
+        "EventPublished",
+        "EventSchemaChanged",
+        "EventReplayed",
+        "SubscriptionCreated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Produced\n    Produced --> Validated\n    Validated --> Published\n    Published --> Delivered\n    Delivered --> [*]\n    Validated --> Rejected: schema invalid\n```",
+      "workflow": [
+        "produce → validate against registry schema → attach evidence + authority → publish → deliver to subscribers → retain per policy"
+      ],
+      "authorities": [
+        "Publishing domain's authority; subscribers verify, never trust."
+      ],
+      "permissions": [
+        "event.publish (domain, its own types only)",
+        "event.subscribe (authenticated, topic-scoped)",
+        "event.replay (governance)"
+      ],
+      "privacy": "Event payloads minimize personal data; sensitive types carry consent scope and are redactable in projections, never in the log itself.",
+      "audit": "The event log is the audit spine — causation chains reconstruct any state of the system at any time.",
+      "twin": "Event twin monitors throughput, schema-rejection rates, and subscriber lag as platform health.",
+      "agent": "Event agents detect anomalies in event flows (drops, surges, schema drift) and alert.",
+      "runtime": "At-least-once delivery with idempotent consumers; exactly-once is projected at the consumer via dedup keys.",
+      "scaling": "Partition by event type + correlation hash; replay is a first-class operation for recovery.",
+      "multiTenant": "Events are tenant-namespaced; cross-tenant subscription requires published relationship and policy.",
+      "geo": "Event logs reside in the publishing domain's jurisdiction; cross-region replication respects residency.",
+      "failure": "Schema rejection storm, subscriber lag, causation cycle, replay divergence.",
+      "recovery": "Replay rebuilds any projection; the log is the recovery source. Compaction preserves causation, never facts.",
+      "certification": "Event must carry schema version, authority, and evidence to be published — unverifiable events are rejected.",
+      "migration": "New types are registry additions; schema evolution is versioned with backward-compatible readers.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant D as Domain\n    participant EB as Event Bus\n    participant S as Subscriber\n    D->>EB: publish(event)\n    EB->>EB: schema + evidence validate\n    EB->>S: deliver\n    S->>S: idempotent apply\n    S-->>EB: ack\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Producing\n    Producing --> Validating\n    Validating --> Publishing\n    Publishing --> Delivering\n```",
+      "blueprint": "Build order for EVT: (1) define registry entries — this domain owns by scope: domain / cross-domain / platform / external as registry truth, not code; (2) implement the contract surface first (event.publish, event.subscribe, event.replay) and validate against EVT boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "MSG": {
+      "concepts": "Messaging Architecture provides reliable, contract-governed communication between domains, services, and external systems. Messaging is the point-to-point complement to events — directed, contracted, and confirmed.",
+      "ontology": "Message has a Contract (registry), a Payload, a Delivery guarantee, and a Dead-letter path. Every queue is owned; every topic is governed; no anonymous producers or consumers exist.",
+      "taxonomy": "By pattern: Queue / Topic / Stream / Request-reply. By guarantee: At-most-once / At-least-once / Exactly-once-projected. By scope: Intra-domain / Cross-domain / External.",
+      "dataModel": "```yaml\nMessage:\n  messageId: <Identity>\n  contractId: <registry contract>\n  payload: <schema-validated>\n  deliveryGuarantee: <registry id>\n  authority: <Authority>\n  temporal: {sentAt, deliveredAt}\n  deadLetter: <DeadLetter ref|null>\n```",
+      "graphModel": "(:Message)-[:CONFORMS_TO]->(:Contract); (:Message)-[:SENT_BY]->(:Domain); (:Message)-[:DELIVERED_TO]->(:Domain); (:Message)-[:DEAD_LETTERED_TO]->(:DeadLetter)",
+      "apis": [
+        "POST /msg.v1.send",
+        "POST /msg.v1.subscribe",
+        "GET  /msg.v1/{id}",
+        "POST /msg.v1.redeliver",
+        "GET  /msg.v1.deadletter"
+      ],
+      "commands": [
+        "msg.send",
+        "msg.ack",
+        "msg.nack",
+        "msg.redeliver",
+        "msg.deadletter"
+      ],
+      "queries": [
+        "msg.byId",
+        "msg.depth",
+        "msg.lag",
+        "msg.deadletters"
+      ],
+      "events": [
+        "MessageSent",
+        "MessageDelivered",
+        "MessageAcked",
+        "MessageDeadLettered",
+        "ContractViolation"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Sent\n    Sent --> Delivered\n    Delivered --> Acked\n    Delivered --> Nacked\n    Nacked --> Redelivered\n    Nacked --> DeadLettered: retry exhausted\n    Acked --> [*]\n```",
+      "workflow": [
+        "send under contract → validate schema → deliver → ack/nack → redeliver with backoff → dead-letter on exhaustion"
+      ],
+      "authorities": [
+        "Contract Authority (defines allowed interactions); producer and consumer domains each hold authority."
+      ],
+      "permissions": [
+        "msg.send (contract-permitted producer)",
+        "msg.subscribe (contract-permitted consumer)",
+        "msg.read (participant)"
+      ],
+      "privacy": "Personal-data messages are consent-scoped; dead-letters are purged per retention policy with evidence.",
+      "audit": "Every message records contract version, authority, and delivery path — integration audit is complete.",
+      "twin": "Messaging twin monitors depth, lag, and dead-letter rates across all contracts.",
+      "agent": "Messaging agent detects contract drift and poison-message patterns, proposing contract fixes under governance.",
+      "runtime": "Consumers are idempotent by contract requirement; backoff is exponential with jitter; dead-letters alert.",
+      "scaling": "Partitions by contract; consumers scale per queue depth with policy bounds.",
+      "multiTenant": "Queues are tenant-namespaced; cross-tenant messaging requires a published contract and both authorities.",
+      "geo": "Cross-region messaging respects residency; external egress is policy-governed and audited.",
+      "failure": "Poison message, contract violation, consumer starvation, dead-letter overflow.",
+      "recovery": "Dead-letters are replayable after governed fix; acked messages are immutable facts.",
+      "certification": "Contract must exist and both parties must be authorized — unsigned traffic is dropped at the edge.",
+      "migration": "New contracts are registry additions; contract evolution is versioned with compatibility windows.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant P as Producer\n    participant MQ as Messaging\n    participant C as Consumer\n    P->>MQ: send(contract, payload)\n    MQ->>MQ: contract + schema validate\n    MQ->>C: deliver\n    C-->>MQ: ack\n    MQ-->>P: delivered\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Contracting\n    Contracting --> Validating\n    Validating --> Delivering\n    Delivering --> Settling\n```",
+      "blueprint": "Build order for MSG: (1) define registry entries — this domain owns by pattern: queue / topic / stream / request-reply as registry truth, not code; (2) implement the contract surface first (msg.send, msg.ack, msg.nack) and validate against MSG boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    }
+  }
+}

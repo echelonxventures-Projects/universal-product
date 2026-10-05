@@ -1,0 +1,529 @@
+{
+  "$schema": "https://ucos.io/registry/content-ext.v1.json",
+  "registryId": "UCOS-REG-CONTENT-EXT",
+  "canonicalName": "Extended Domain Content Registry",
+  "version": "Omega-1",
+  "status": "Constitutional Freeze",
+  "ownerDomain": "Constitutional Authority",
+  "law": "Knowledge Once — domain substance defined here once, projected everywhere.",
+  "content": {
+    "SEM": {
+      "concepts": "The Semantic System understands meaning. Phone, Mobile, Cellphone, Smartphone, and Handset are one semantic concept with many lexical surfaces. Meaning is higher-level understanding — it is not classification, not taxonomy, not ontology.",
+      "ontology": "Meaning ⊂ Existence. A Concept has 1 canonical Meaning, 0..n LexicalSurfaces, 0..n Equivalencies, and language-neutral intent. Ontology says what exists; taxonomy says how it is classified; meaning says what it signifies.",
+      "taxonomy": "By depth: Concept / Property / Relation. By status: Canonical / Equivalent / Candidate / Deprecated. By language coverage: Universal / Locale-specific.",
+      "dataModel": "```yaml\nSemanticModel:\n  conceptId: <Identity>\n  canonicalName: <string>\n  meaning: <semantic statement>\n  lexicalSurfaces: [{locale, surface, register}]\n  equivalencies: [<conceptId>]\n  synonyms: [<surface>]\n  translations: [{locale, equivalent}]\n  ontologyRef: <Ontology node>\n  status: <Canonical|Equivalent|Candidate|Deprecated>\n```",
+      "graphModel": "(:Concept)-[:EQUIVALENT_TO]->(:Concept); (:Concept)-[:SURFACE_IN]->(:Language); (:Concept)-[:MEMBER_OF]->(:Ontology); (:Concept)-[:CLASSIFIED_AS]->(:Taxonomy)",
+      "apis": [
+        "POST /semantic.v1.concept.create",
+        "POST /semantic.v1.resolve",
+        "GET  /semantic.v1/{id}",
+        "POST /semantic.v1.translate",
+        "GET  /semantic.v1.equivalents/{id}"
+      ],
+      "commands": [
+        "semantic.concept.create",
+        "semantic.resolve",
+        "semantic.equivalency.add",
+        "semantic.translate",
+        "semantic.deprecate"
+      ],
+      "queries": [
+        "semantic.bySurface",
+        "semantic.equivalents",
+        "semantic.byLocale",
+        "semantic.disambiguate"
+      ],
+      "events": [
+        "ConceptCreated",
+        "ConceptEquivalencyAdded",
+        "ConceptDeprecated",
+        "MeaningDisambiguated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Candidate\n    Candidate --> Canonical: authority confirms\n    Candidate --> Rejected\n    Canonical --> Deprecated: superseded\n```",
+      "workflow": [
+        "surface detected → disambiguate against existing concepts → propose or merge → authority confirms → publish canonical"
+      ],
+      "authorities": [
+        "Semantic Authority (canonical confirmation)",
+        "Locale Authority (translation validity)"
+      ],
+      "permissions": [
+        "semantic.concept.create (semantic authority)",
+        "semantic.resolve (any authenticated)",
+        "semantic.deprecate (semantic authority)"
+      ],
+      "privacy": "Semantic resolution does not retain query content; disambiguation logs store hashes, not surfaces.",
+      "audit": "Every equivalency records who asserted it, under which authority, with which evidence. Ambiguity is preserved, never silently resolved.",
+      "twin": "Semantic Twin tracks real-world language drift — neologisms, shifted meanings — and proposes concept updates.",
+      "agent": "Semantic Agent discovers new surfaces from observations and proposes equivalencies under governance.",
+      "runtime": "Resolution is a locale-aware disambiguation lookup; ambiguity returns candidate sets, not guesses.",
+      "scaling": "Concept index is globally replicated; locale surfaces are partitioned by locale with lazy loading.",
+      "multiTenant": "Tenants may extend semantics but cannot redefine canonical concepts — those are shared truth.",
+      "geo": "Locale resolution is region-served; canonical truth is global.",
+      "failure": "Ambiguity collapse, equivalency cycle, locale coverage gap, meaning drift undetected.",
+      "recovery": "Concepts are versioned; deprecation supersedes. Equivalency cycles are detected and rejected at write time.",
+      "certification": "Concept must pass uniqueness of canonical name, acyclicity of equivalency, and locale coverage.",
+      "migration": "New locales and registers are registry additions; no schema change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant SE as Semantic Domain\n    participant RG as Registry\n    C->>SE: resolve(surface, locale)\n    SE->>RG: lookup surfaces\n    RG-->>SE: candidates\n    SE->>SE: disambiguate\n    SE-->>C: concept or candidates\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Surfacing\n    Surfacing --> Disambiguating\n    Disambiguating --> Resolved\n    Disambiguating --> Ambiguous\n```",
+      "blueprint": "Build order for SEM: (1) define registry entries — this domain owns by depth: concept / property / relation as registry truth, not code; (2) implement the contract surface first (semantic.concept.create, semantic.resolve, semantic.equivalency.add) and validate against SEM boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "ONT": {
+      "concepts": "Ontology is what exists. It is the constitutional inventory of being — not how things are sorted (taxonomy), not what they mean (meaning). Ontology is the ground floor; everything else stands on it.",
+      "ontology": "Ontology is a directed acyclic graph of Existence kinds. Root: Existence. Each kind is a RegistryEntry. Extension is by registry, never by primitive expansion.",
+      "taxonomy": "By abstraction: Kind / Subkind / Instance-kind. By stability: Foundational / Core / Domain / Ephemeral.",
+      "dataModel": "```yaml\nOntology:\n  node: <Identity>\n  kind: <registry kind id>\n  parentKinds: [<Identity>]\n  properties: [<registry property>]\n  relationships: [<registry relation kind>]\n  source: <Primitive|Projection>\n```",
+      "graphModel": "(:Kind)-[:SUBKIND_OF*]->(:Kind); (:Kind)-[:HAS_PROPERTY]->(:Property); (:Kind)-[:HAS_RELATION]->(:RelationKind); (:Kind)-[:ROOTS_AT]->(:Existence)",
+      "apis": [
+        "GET  /ontology.v1/{node}",
+        "GET  /ontology.v1.ancestors/{node}",
+        "GET  /ontology.v1.descendants/{node}",
+        "POST /ontology.v1.kind.propose"
+      ],
+      "commands": [
+        "ontology.kind.propose",
+        "ontology.kind.approve",
+        "ontology.kind.deprecate"
+      ],
+      "queries": [
+        "ontology.ancestors",
+        "ontology.descendants",
+        "ontology.kinds",
+        "ontology.paths"
+      ],
+      "events": [
+        "OntologyKindProposed",
+        "OntologyKindApproved",
+        "OntologyKindDeprecated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Proposed\n    Proposed --> Approved\n    Approved --> Deprecated\n```",
+      "workflow": [
+        "propose kind with parent → acyclicity check → approve → publish → existing instances re-project"
+      ],
+      "authorities": [
+        "Semantic Authority (kind approval); primitive-level changes require Constitutional Assembly."
+      ],
+      "permissions": [
+        "ontology.kind.propose (semantic authority)",
+        "ontology.kind.approve (semantic authority)",
+        "ontology.read (any authenticated)"
+      ],
+      "privacy": "Ontology carries no personal data by design — it is structure, not content.",
+      "audit": "Every kind addition/deprecation is logged with rationale and authority; the full history of 'what existed when' is queryable.",
+      "twin": "Ontology versions the structure twins are built on; a twin's schema is an ontology projection.",
+      "agent": "Ontology Agent proposes new kinds from observed patterns and detects orphaned subkinds.",
+      "runtime": "Traversal is cached per node; invalidation on kind approval/deprecation.",
+      "scaling": "Small, globally replicated, read-heavy graph. Write path is authority-gated and low-frequency.",
+      "multiTenant": "Ontology is shared constitutional truth; tenants extend via projections, never by mutating the core.",
+      "geo": "Globally consistent; ontology is not jurisdiction-scoped — applications apply jurisdiction via Context.",
+      "failure": "Cycle introduction, orphaned kind, conflicting parents, primitive-level drift.",
+      "recovery": "Kinds are versioned; deprecation is reversible while no dependents remain.",
+      "certification": "Kind must pass acyclicity, parent existence, property compatibility, and naming uniqueness.",
+      "migration": "Ontology evolves only through this domain — schema migration and ontology evolution are the same act.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant P as Proposer\n    participant ON as Ontology Domain\n    P->>ON: propose(kind, parent)\n    ON->>ON: acyclicity check\n    ON-->>P: OntologyKindApproved\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Validating\n    Validating --> Acyclic\n    Acyclic --> Published\n```",
+      "blueprint": "Build order for ONT: (1) define registry entries — this domain owns by abstraction: kind / subkind / instance-kind as registry truth, not code; (2) implement the contract surface first (ontology.kind.propose, ontology.kind.approve, ontology.kind.deprecate) and validate against ONT boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "TAX": {
+      "concepts": "Taxonomy is how things are classified. Taxonomy ≠ Ontology (what exists) and ≠ Classification (the act of assigning). Taxonomy is the structure of classification.",
+      "ontology": "Taxonomy is a tree/DAG of Categories. Each Category has one canonical parent (tree) or defined parents (DAG), membership rules, and a governing Context.",
+      "taxonomy": "By structure: Tree / DAG / Facet. By mutability: Frozen / Governed / Open. By scope: Universal / Domain / Tenant.",
+      "dataModel": "```yaml\nTaxonomy:\n  categoryRef: <Identity>\n  parentCategories: [<Identity>]\n  membershipRule: <registry expression>\n  governingContext: <Context>\n  temporal: {effectiveFrom, effectiveTo}\n```",
+      "graphModel": "(:Category)-[:SUBCATEGORY_OF*]->(:Category); (:Category)-[:CLASSIFIES]->(:Existence); (:Category)-[:GOVERNED_IN]->(:Context)",
+      "apis": [
+        "POST /taxonomy.v1.category.create",
+        "GET  /taxonomy.v1/{category}",
+        "GET  /taxonomy.v1.tree",
+        "POST /taxonomy.v1.assign"
+      ],
+      "commands": [
+        "taxonomy.category.create",
+        "taxonomy.assign",
+        "taxonomy.reclassify",
+        "taxonomy.merge"
+      ],
+      "queries": [
+        "taxonomy.tree",
+        "taxonomy.path",
+        "taxonomy.members",
+        "taxonomy.byContext"
+      ],
+      "events": [
+        "TaxonomyCategoryCreated",
+        "TaxonomyAssigned",
+        "TaxonomyReclassified",
+        "TaxonomyMerged"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Defined\n    Defined --> Active\n    Active --> Deprecated\n```",
+      "workflow": [
+        "create category with rule → assign under governance → reclassify on rule change → preserve history"
+      ],
+      "authorities": [
+        "Semantic Authority (structure); Context Authority may add domain categories in scope."
+      ],
+      "permissions": [
+        "taxonomy.category.create (semantic or context authority)",
+        "taxonomy.assign (context-scoped writer)",
+        "taxonomy.read (any authenticated)"
+      ],
+      "privacy": "Classifications of persons are sensitive; category membership over personal data requires consent scope.",
+      "audit": "Every assignment and reclassification records who, under which rule, in which context, and when. Prior classifications remain queryable.",
+      "twin": "Taxonomy versions structure that classification twins mirror.",
+      "agent": "Taxonomy Agent proposes new categories from clustering observations and detects stale classifications.",
+      "runtime": "Tree traversal cached; assignment is validated against membership rule at write time.",
+      "scaling": "Read-heavy; cache per context. Write path validates full ancestor chain.",
+      "multiTenant": "Universal taxonomy is shared; tenant taxonomies are projections layered on top, never mutations of the core.",
+      "geo": "Category names are locale-resolved via the Semantic Domain; structure is global.",
+      "failure": "Cycle, orphaned category, ambiguous membership, merge conflict.",
+      "recovery": "Reclassification is versioned; merges preserve both lineages. No classification is ever lost.",
+      "certification": "Category must pass acyclicity, rule validity, context jurisdiction, and naming uniqueness.",
+      "migration": "New categories are registry additions; reclassification is governed, never bulk-rewritten.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant TA as Taxonomy Domain\n    participant CT as Context\n    C->>TA: assign(subject, category)\n    TA->>TA: validate membership rule\n    TA->>CT: confirm governing context\n    CT-->>TA: in scope\n    TA-->>C: TaxonomyAssigned\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> RuleCheck\n    RuleCheck --> ContextCheck\n    ContextCheck --> Assigned\n```",
+      "blueprint": "Build order for TAX: (1) define registry entries — this domain owns by structure: tree / dag / facet as registry truth, not code; (2) implement the contract surface first (taxonomy.category.create, taxonomy.assign, taxonomy.reclassify) and validate against TAX boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "REA": {
+      "concepts": "The platform supports simultaneous, mutually disagreeing realities that all remain valid within their Context. Physical, Digital, Commercial, Financial, Operational, Legal, Regulatory, Customer, Partner, AI, Predicted, Future, Simulated — each a first-class reality.",
+      "ontology": "Reality is a Context-scoped projection of primitives. Two realities may contradict and both be valid; resolution is governed, never automatic except by policy.",
+      "taxonomy": "By actuality: Actual (physical) / Constructed (commercial, legal) / Projected (predicted, simulated) / Consensual (financial). By persistence: Persistent / Ephemeral.",
+      "dataModel": "```yaml\nReality:\n  realityId: <Identity>\n  realityType: <registry id>\n  context: <Context>\n  subjects: [<Identity>]\n  authority: <Authority>\n  contradictionPolicy: <Policy>\n  temporal: {asOf}\n```",
+      "graphModel": "(:Reality)-[:PROJECTS]->(:Existence); (:Reality)-[:CONTRADICTS]->(:Reality); (:Reality)-[:AUTHORED_BY]->(:Authority); (:Reality)-[:SCOPED_IN]->(:Context)",
+      "apis": [
+        "POST /reality.v1.project",
+        "GET  /reality.v1/{id}",
+        "GET  /reality.v1.bySubject/{subjectId}",
+        "POST /reality.v1.contradict"
+      ],
+      "commands": [
+        "reality.project",
+        "reality.contradict",
+        "reality.reconcile",
+        "reality.fork"
+      ],
+      "queries": [
+        "reality.bySubject",
+        "reality.contradictions",
+        "reality.byType",
+        "reality.asOf"
+      ],
+      "events": [
+        "RealityProjected",
+        "RealityContradicted",
+        "RealityReconciled",
+        "RealityForked"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Projected\n    Projected --> Contradicted\n    Contradicted --> Reconciled\n    Contradicted --> Coexisting: policy allows\n    Reconciled --> [*]\n```",
+      "workflow": [
+        "project primitives into reality type → bind context → detect contradictions → apply contradiction policy → coexist or reconcile"
+      ],
+      "authorities": [
+        "Reality Authority (reconciliation); each reality's authority governs its own projection."
+      ],
+      "permissions": [
+        "reality.project (reality authority)",
+        "reality.reconcile (reality authority)",
+        "reality.read (context-scoped)"
+      ],
+      "privacy": "Realities containing personal data inherit the strictest applicable consent scope across all contributing contexts.",
+      "audit": "Every contradiction records both realities, their authorities, and the policy that decided the outcome.",
+      "twin": "Each reality type can host its own twin fleet — a subject may have distinct twins per reality.",
+      "agent": "Reality Agent detects cross-reality drift and proposes reconciliation candidates under governance.",
+      "runtime": "Projection is computed per (subject, realityType, context) and cached; contradiction detection is a stream job.",
+      "scaling": "Projections are lazily computed and cached by hash; hot subjects are pre-projected.",
+      "multiTenant": "Tenant realities are isolated; shared realities (e.g., legal) are read-only projections of authoritative domains.",
+      "geo": "Realities are jurisdiction-scoped; the same subject may have legally distinct realities per region — all valid.",
+      "failure": "Contradiction deadlock, projection staleness, authority conflict, fork divergence.",
+      "recovery": "Projections are recomputable from primitives — reality is never backed up, it is re-derived.",
+      "certification": "Reality must pass context binding, authority validity, and contradiction-policy compliance.",
+      "migration": "New reality types are registry additions; existing projections re-derive on type change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant RE as Reality Domain\n    participant CT as Context\n    C->>RE: project(subject, realityType)\n    RE->>CT: resolve scope\n    CT-->>RE: context\n    RE->>RE: derive projection\n    RE-->>C: RealityProjected\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Scoping\n    Scoping --> Deriving\n    Deriving --> ContradictionCheck\n    ContradictionCheck --> Published\n```",
+      "blueprint": "Build order for REA: (1) define registry entries — this domain owns by actuality: actual (physical) / constructed (commercial, legal) / projected (predicted, simulated) / consensual (financial) as registry truth, not code; (2) implement the contract surface first (reality.project, reality.contradict, reality.reconcile) and validate against REA boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "PER": {
+      "concepts": "Perspective is observer-specific interpretation. Perspective ≠ Context: context is the applicability boundary; perspective is who is looking. The same object projects differently to customer, merchant, partner, supplier, regulator, auditor, agent, and AI.",
+      "ontology": "Perspective has an Observer (Identity or Authority), a subject, and a projection policy. Perspectives never change the subject's truth — only its presentation.",
+      "taxonomy": "By observer class: Human-role / Organizational / Regulatory / Automated-agent / AI. By fidelity: Full / Filtered / Redacted.",
+      "dataModel": "```yaml\nPerspective:\n  perspectiveId: <Identity>\n  observer: <Identity|Authority>\n  subject: <Identity>\n  projectionPolicy: <Policy>\n  redactionPolicy: <Policy>\n  context: <Context>\n  asOf: <Time>\n```",
+      "graphModel": "(:Perspective)-[:OBSERVED_BY]->(:Identity); (:Perspective)-[:PROJECTS]->(:Identity); (:Perspective)-[:FILTERED_BY]->(:Policy); (:Perspective)-[:SCOPED_IN]->(:Context)",
+      "apis": [
+        "POST /perspective.v1.project",
+        "GET  /perspective.v1/{id}",
+        "GET  /perspective.v1.byObserver/{observerId}"
+      ],
+      "commands": [
+        "perspective.project",
+        "perspective.redact",
+        "perspective.register",
+        "perspective.invalidate"
+      ],
+      "queries": [
+        "perspective.byObserver",
+        "perspective.bySubject",
+        "perspective.diff"
+      ],
+      "events": [
+        "PerspectiveProjected",
+        "PerspectiveRedacted",
+        "PerspectiveInvalidated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Registered\n    Registered --> Projected\n    Projected --> Invalidated\n    Invalidated --> [*]\n```",
+      "workflow": [
+        "identify observer → resolve policy set → project subject → apply redaction → serve"
+      ],
+      "authorities": [
+        "Observer's Authority governs what it may see; the subject's Authority governs what may be shown."
+      ],
+      "permissions": [
+        "perspective.project (observer with read grant)",
+        "perspective.redact (subject authority)"
+      ],
+      "privacy": "Perspective is the primary privacy control surface: data minimization and redaction are projection-time, not afterthoughts.",
+      "audit": "Every projection records observer, subject, policies applied, and fields redacted — the basis of disclosure audit.",
+      "twin": "Perspective drives per-observer twin views — one underlying twin, many safe projections.",
+      "agent": "Perspective Agent verifies that no projection leaks beyond its policy — an ongoing compliance check.",
+      "runtime": "Projection is computed per request from policy; results are short-TTL cached keyed by (observer, subject, policy-version).",
+      "scaling": "Read-heavy; policy evaluation is the hot path and is compiled per policy version.",
+      "multiTenant": "Cross-tenant perspective is denied absent explicit published relationship and policy.",
+      "geo": "Observer jurisdiction policy applies at projection time — a regulator's perspective in one region is not valid in another.",
+      "failure": "Policy conflict between observer grant and subject redaction, stale policy version, projection timeout.",
+      "recovery": "Projections are recomputable; policy versioning guarantees deterministic re-projection.",
+      "certification": "Perspective must pass both observer-grant and subject-redaction policy with no unresolved conflict.",
+      "migration": "New observer classes are registry additions; projections re-derive on policy change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant O as Observer\n    participant PE as Perspective Domain\n    participant PL as Policy\n    O->>PE: project(subject)\n    PE->>PL: observer grant + subject redaction\n    PL-->>PE: effective policy\n    PE->>PE: project + redact\n    PE-->>O: filtered view\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Identifying\n    Identifying --> PolicyResolving\n    PolicyResolving --> Projecting\n    Projecting --> Serving\n```",
+      "blueprint": "Build order for PER: (1) define registry entries — this domain owns by observer class: human-role / organizational / regulatory / automated-agent / ai as registry truth, not code; (2) implement the contract surface first (perspective.project, perspective.redact, perspective.register) and validate against PER boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "UNC": {
+      "concepts": "Uncertainty is first-class. Confidence, probability, ambiguity, competing truths, incomplete knowledge, and unknown knowledge are all modeled explicitly — never hidden behind false precision.",
+      "ontology": "Uncertainty attaches to any assertion as a distribution or interval, not a point value. Unknown-ness is a state, not an error: 'we do not know' is a valid, recorded answer.",
+      "taxonomy": "By kind: Aleatoric (inherent) / Epistemic (knowledge gap) / Ambiguity (multiple readings) / Conflict (competing truths). By representation: Probability / Interval / Fuzzy / Qualitative.",
+      "dataModel": "```yaml\nUncertainty:\n  uncertaintyId: <Identity>\n  subject: <Identity>\n  kind: <registry id>\n  representation: <Probability|Interval|Fuzzy|Qualitative>\n  parameters: <registry expression>\n  confidence: <0..1>\n  alternatives: [<alternative assertions>]\n  ambiguity: <registry measure>\n  asOf: <Time>\n```",
+      "graphModel": "(:Uncertainty)-[:QUALIFIES]->(:Knowledge|:Assertion); (:Uncertainty)-[:ALTERNATIVE]->(:Knowledge); (:Uncertainty)-[:MEASURED_AT]->(:Time)",
+      "apis": [
+        "POST /uncertainty.v1.attach",
+        "GET  /uncertainty.v1/{id}",
+        "GET  /uncertainty.v1.bySubject/{subjectId}",
+        "POST /uncertainty.v1.propagate"
+      ],
+      "commands": [
+        "uncertainty.attach",
+        "uncertainty.refine",
+        "uncertainty.propagate",
+        "uncertainty.escalate"
+      ],
+      "queries": [
+        "uncertainty.bySubject",
+        "uncertainty.lowConfidence",
+        "uncertainty.alternatives",
+        "uncertainty.byKind"
+      ],
+      "events": [
+        "UncertaintyAttached",
+        "UncertaintyRefined",
+        "UncertaintyPropagated",
+        "UncertaintyEscalated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Attached\n    Attached --> Refined: new evidence\n    Attached --> Propagated: downstream impact\n    Refined --> Escalated: threshold breach\n```",
+      "workflow": [
+        "attach uncertainty to assertion → propagate through dependents → refine on evidence → escalate on threshold breach"
+      ],
+      "authorities": [
+        "Domain Authority (attachment); escalation routed to the owning domain's governance."
+      ],
+      "permissions": [
+        "uncertainty.attach (domain authority)",
+        "uncertainty.read (context-scoped)"
+      ],
+      "privacy": "Uncertainty over personal subjects uses aggregated parameters; individual-level distributions require consent.",
+      "audit": "Every refinement records the evidence that moved the estimate — uncertainty provenance is fully traceable.",
+      "twin": "Twins expose uncertainty alongside state; a twin that reports certainty without justification is non-compliant.",
+      "agent": "Uncertainty Agent monitors thresholds and escalates before downstream decisions over-trust weak assertions.",
+      "runtime": "Propagation is a graph traversal recomputing dependent confidences; cached per assertion version.",
+      "scaling": "Propagation batches on evidence events; hot assertions are pre-propagated.",
+      "multiTenant": "Uncertainty never crosses tenants; shared assertions carry shared uncertainty.",
+      "geo": "Estimation standards are jurisdiction-aware; regulatory contexts may require conservative bounds.",
+      "failure": "Propagation cycle, over-precise collapse, threshold storm, contradiction with recorded certainty.",
+      "recovery": "Estimates recompute from evidence history; attaching uncertainty is reversible by refinement.",
+      "certification": "Assertion must declare uncertainty to be used in automated decisions — silent certainty is prohibited.",
+      "migration": "New kinds/representations are registry additions; existing estimates re-propagate on kind change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant D as Domain\n    participant UN as Uncertainty Domain\n    participant KN as Knowledge\n    D->>UN: attach(assertion, distribution)\n    UN->>UN: propagate to dependents\n    UN->>KN: record uncertainty\n    KN-->>UN: acknowledged\n    UN-->>D: UncertaintyAttached\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Attaching\n    Attaching --> Propagating\n    Propagating --> Monitoring\n```",
+      "blueprint": "Build order for UNC: (1) define registry entries — this domain owns by kind: aleatoric (inherent) / epistemic (knowledge gap) / ambiguity (multiple readings) / conflict (competing truths) as registry truth, not code; (2) implement the contract surface first (uncertainty.attach, uncertainty.refine, uncertainty.propagate) and validate against UNC boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "CONTR": {
+      "concepts": "Contradiction is stored, not erased. 'Regulator: Approved' and 'Auditor: Rejected' coexist and both remain valid until governed resolution. Suppressing a contradiction destroys evidence.",
+      "ontology": "Contradiction has two or more Assertions, each with its own Authority and Context, plus a resolution state. Contradiction is a relationship among truths, not an error.",
+      "taxonomy": "By resolution state: Open / Resolved / Unresolvable-by-policy. By severity: Informational / Blocking / Critical. By scope: Local / Cross-jurisdiction / Cross-reality.",
+      "dataModel": "```yaml\nContradiction:\n  contradictionId: <Identity>\n  assertions: [{assertion, authority, context}]\n  severity: <registry level>\n  resolutionState: <Open|Resolved|Unresolvable>\n  resolution: <Policy|Decision|null>\n  detectedAt: <Time>\n  evidence: [<Evidence>]\n```",
+      "graphModel": "(:Contradiction)-[:BETWEEN]->(:Assertion); (:Contradiction)-[:DETECTED_BY]->(:Observation|:Agent); (:Contradiction)-[:RESOLVED_BY]->(:Policy|:Decision)",
+      "apis": [
+        "POST /contradiction.v1.detect",
+        "GET  /contradiction.v1/{id}",
+        "POST /contradiction.v1.resolve",
+        "GET  /contradiction.v1.open"
+      ],
+      "commands": [
+        "contradiction.detect",
+        "contradiction.resolve",
+        "contradiction.escalate",
+        "contradiction.close"
+      ],
+      "queries": [
+        "contradiction.open",
+        "contradiction.byId",
+        "contradiction.bySubject",
+        "contradiction.bySeverity"
+      ],
+      "events": [
+        "ContradictionDetected",
+        "ContradictionResolved",
+        "ContradictionEscalated",
+        "ContradictionClosed"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Open\n    Open --> Escalated\n    Escalated --> Resolved\n    Open --> Unresolvable: policy permits coexistence\n    Resolved --> [*]\n```",
+      "workflow": [
+        "detect across assertions → classify severity → route to resolver authority → resolve or declare coexistence → publish"
+      ],
+      "authorities": [
+        "Each assertion's authority stands; resolution requires an authority superior to all parties or their consent."
+      ],
+      "permissions": [
+        "contradiction.detect (any authority)",
+        "contradiction.resolve (superior or consented authority)",
+        "contradiction.read (context-scoped)"
+      ],
+      "privacy": "Contradictions involving personal data are access-restricted; the fact of contradiction is auditable, contents are scoped.",
+      "audit": "Both sides of every contradiction are preserved with full evidence, even after resolution. Resolution rationale is mandatory.",
+      "twin": "Contradiction explains twin divergence across realities — the twin system never silently picks one truth.",
+      "agent": "Contradiction Agent continuously scans for new conflicts and stale resolutions, escalating per severity policy.",
+      "runtime": "Detection is a stream over assertion events; open contradictions are cached for resolver dashboards.",
+      "scaling": "Detection batches by subject; resolution is human-or-policy gated, so write throughput is low.",
+      "multiTenant": "Contradictions are tenant-scoped unless they involve shared authoritative assertions.",
+      "geo": "Cross-jurisdiction contradictions may be declared Unresolvable — that is a valid, recorded outcome, not a failure.",
+      "failure": "Detection miss, premature auto-resolution, evidence loss on resolution.",
+      "recovery": "Resolutions are themselves recorded; reopening is first-class and restores the Open state with history.",
+      "certification": "System must prove no contradiction was silently dropped — the audit trail must reconcile with detection events.",
+      "migration": "New severity levels and resolution strategies are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant OB as Observer\n    participant CO as Contradiction Domain\n    participant AU as Authority\n    OB->>CO: detect(assertion A, assertion B)\n    CO->>CO: classify severity\n    CO->>AU: route for resolution\n    AU-->>CO: resolution or coexistence\n    CO-->>OB: ContradictionResolved\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Detecting\n    Detecting --> Classifying\n    Classifying --> Routing\n    Routing --> Resolved\n```",
+      "blueprint": "Build order for CONTR: (1) define registry entries — this domain owns by resolution state: open / resolved / unresolvable-by-policy as registry truth, not code; (2) implement the contract surface first (contradiction.detect, contradiction.resolve, contradiction.escalate) and validate against CONTR boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "POSS": {
+      "concepts": "Possibility is a realizable future state. Possibility ≠ Simulation (the method) and ≠ Reality (the present). Possibilities are the outputs of simulations and the inputs to planning.",
+      "ontology": "Possibility has an origin (Simulation or Reasoning), a subject, a plausibility, and preconditions. Possibilities never claim truth — they claim realizability under conditions.",
+      "taxonomy": "By horizon: Immediate / Near / Far. By plausibility: Likely / Possible / Unlikely / Speculative. By desirability: Desired / Neutral / Adverse.",
+      "dataModel": "```yaml\nPossibility:\n  possibilityId: <Identity>\n  subject: <Identity>\n  origin: <Simulation|Reasoning>\n  preconditions: [<registry expression>]\n  plausibility: <0..1>\n  desirability: <Desired|Neutral|Adverse>\n  temporal: {earliestRealization}\n  context: <Context>\n```",
+      "graphModel": "(:Possibility)-[:YIELDED_BY]->(:Simulation); (:Possibility)-[:PRECONDITION]->(:Knowledge|:State); (:Possibility)-[:CONCERNS]->(:Identity); (:Possibility)-[:PLANNED_IN]->(:Context)",
+      "apis": [
+        "POST /possibility.v1.register",
+        "GET  /possibility.v1/{id}",
+        "GET  /possibility.v1.bySubject/{subjectId}",
+        "POST /possibility.v1.evaluate"
+      ],
+      "commands": [
+        "possibility.register",
+        "possibility.evaluate",
+        "possibility.realize",
+        "possibility.dismiss"
+      ],
+      "queries": [
+        "possibility.bySubject",
+        "possibility.plausible",
+        "possibility.adverse",
+        "possibility.byHorizon"
+      ],
+      "events": [
+        "PossibilityRegistered",
+        "PossibilityEvaluated",
+        "PossibilityRealized",
+        "PossibilityDismissed"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Registered\n    Registered --> Evaluated\n    Evaluated --> Realized: preconditions met + decision\n    Evaluated --> Dismissed\n    Realized --> [*]\n```",
+      "workflow": [
+        "register from simulation → evaluate plausibility against current state → decide → realize or dismiss with rationale"
+      ],
+      "authorities": [
+        "Planning Authority (evaluation); realization requires the acting domain's authority."
+      ],
+      "permissions": [
+        "possibility.register (simulation/reasoning authority)",
+        "possibility.evaluate (planning authority)",
+        "possibility.read (context-scoped)"
+      ],
+      "privacy": "Possibilities about individuals require aggregated or consented inputs; speculative personal futures are prohibited.",
+      "audit": "Every possibility records origin, preconditions, and evaluation rationale. Realization links to the Decision that authorized it.",
+      "twin": "Possibilities are the forward-looking twin state — what the twin could become, kept strictly separate from what it is.",
+      "agent": "Possibility Agent ranks possibilities for planning agents and flags adverse ones for risk review.",
+      "runtime": "Evaluation is a precondition check against current state; registered lazily, cached by origin hash.",
+      "scaling": "Possibilities are numerous and low-cost; storage is time-bucketed with policy-driven pruning.",
+      "multiTenant": "Possibilities never cross tenants; shared possibilities require published relationship.",
+      "geo": "Evaluation is jurisdiction-scoped — a possibility legal in one region may be adverse in another.",
+      "failure": "Precondition staleness, plausibility inflation, unbounded possibility accumulation.",
+      "recovery": "Possibilities are disposable; dismissal is reversible while preconditions still hold.",
+      "certification": "Possibility must declare origin, preconditions, and plausibility to inform any plan.",
+      "migration": "New horizons and desirability classes are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant SI as Simulation\n    participant PO as Possibility Domain\n    participant PL as Planner\n    SI->>PO: register(future state)\n    PO->>PO: evaluate preconditions\n    PL->>PO: request candidates\n    PO-->>PL: ranked possibilities\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Registering\n    Registering --> Evaluating\n    Evaluating --> Ranking\n    Ranking --> Deciding\n```",
+      "blueprint": "Build order for POSS: (1) define registry entries — this domain owns by horizon: immediate / near / far as registry truth, not code; (2) implement the contract surface first (possibility.register, possibility.evaluate, possibility.realize) and validate against POSS boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "EMG": {
+      "concepts": "Emergence is a property of the whole that is absent from the parts. It is not designed; it is detected. The constitution does not suppress emergence — it governs it.",
+      "ontology": "Emergence has a System (a set of relationships), an EmergedProperty, a detection method, and a review state. Emergence is evidence that the system has exceeded the sum of its parts.",
+      "taxonomy": "By kind: Behavioral / Structural / Semantic / Economic / Social. By valence: Beneficial / Neutral / Adverse / Hazardous. By stability: Transient / Persistent.",
+      "dataModel": "```yaml\nEmergence:\n  emergenceId: <Identity>\n  system: [<Identity>]\n  emergedProperty: <registry id>\n  detectionMethod: <registry id>\n  evidence: [<Evidence>]\n  valence: <Beneficial|Neutral|Adverse|Hazardous>\n  stability: <Transient|Persistent>\n  reviewState: <Detected|UnderReview|Governing|Governed>\n```",
+      "graphModel": "(:Emergence)-[:ARISES_FROM]->(:Relationship); (:Emergence)-[:DETECTED_BY]->(:Observation|:Agent); (:Emergence)-[:GOVERNED_BY]->(:Policy)",
+      "apis": [
+        "POST /emergence.v1.report",
+        "GET  /emergence.v1/{id}",
+        "GET  /emergence.v1.open",
+        "POST /emergence.v1.govern"
+      ],
+      "commands": [
+        "emergence.report",
+        "emergence.review",
+        "emergence.govern",
+        "emergence.escalate"
+      ],
+      "queries": [
+        "emergence.open",
+        "emergence.byValence",
+        "emergence.bySystem",
+        "emergence.persistent"
+      ],
+      "events": [
+        "EmergenceDetected",
+        "EmergenceUnderReview",
+        "EmergenceGoverned",
+        "EmergenceEscalated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Detected\n    Detected --> UnderReview\n    UnderReview --> Governed\n    UnderReview --> Escalated\n    Escalated --> Governed\n```",
+      "workflow": [
+        "detect via observation/agent → classify valence → review → govern (adopt, counter, or monitor) → record"
+      ],
+      "authorities": [
+        "Governance Authority (adverse/hazardous); any authority may report."
+      ],
+      "permissions": [
+        "emergence.report (any authority)",
+        "emergence.govern (governance authority)",
+        "emergence.read (context-scoped)"
+      ],
+      "privacy": "Emergent properties over personal populations are aggregated; no individual inference without consent.",
+      "audit": "Every emergent property records the system that produced it, the evidence, and the governance decision.",
+      "twin": "Emergence is how twin fleets exhibit fleet-level behavior no single twin shows — monitored across the federation.",
+      "agent": "Emergence Agent is the primary detector, watching relationship graphs for properties not present in any node.",
+      "runtime": "Detection is a batch/stream analytics job; review is governance-gated.",
+      "scaling": "Detection scales with relationship volume; results are time-windowed.",
+      "multiTenant": "Emergence is detected within a tenant's system; cross-tenant emergence requires federation-level review.",
+      "geo": "Emergent behavior crossing jurisdictions triggers review in every affected region.",
+      "failure": "Detection lag, false-positive flood, hazardous emergence under-governed.",
+      "recovery": "Emergence records are permanent evidence; adverse emergence is countered by policy, not deleted.",
+      "certification": "System must demonstrate an emergence review path for any hazardous classification.",
+      "migration": "New property kinds and valences are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant AG as Agent\n    participant EM as Emergence Domain\n    participant GV as Governance\n    AG->>EM: report(emerged property)\n    EM->>EM: classify valence\n    EM->>GV: request governance\n    GV-->>EM: policy response\n    EM-->>AG: EmergenceGoverned\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Detecting\n    Detecting --> Classifying\n    Classifying --> Reviewing\n    Reviewing --> Governing\n```",
+      "blueprint": "Build order for EMG: (1) define registry entries — this domain owns by kind: behavioral / structural / semantic / economic / social as registry truth, not code; (2) implement the contract surface first (emergence.report, emergence.review, emergence.govern) and validate against EMG boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    }
+  }
+}

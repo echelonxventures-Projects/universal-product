@@ -1,0 +1,618 @@
+{
+  "$schema": "https://ucos.io/registry/content-twin-agent.v1.json",
+  "registryId": "UCOS-REG-CONTENT-TWIN-AGENT",
+  "canonicalName": "Twin & Agent Content Registry",
+  "version": "Omega-1",
+  "status": "Constitutional Freeze",
+  "ownerDomain": "Constitutional Authority",
+  "law": "Knowledge Once — twin and agent substance defined here once, projected everywhere.",
+  "content": {
+    "DTW": {
+      "concepts": "A Digital Twin is a synchronized digital representation of reality. Twin ≠ Reality. Every object may hold multiple twins — operational, financial, commercial, security, compliance, knowledge, experience, lifecycle — each a distinct projection of the same underlying existence.",
+      "ontology": "Twin has a subject Existence, a twinType (registry), a synchronization state, a fidelity level, and an observed-vs-projected divergence measure. Twins never govern reality — they represent it.",
+      "taxonomy": "By aspect: Operational / Financial / Commercial / Security / Compliance / Knowledge / Experience / Lifecycle / Future aspect. By fidelity: High-fidelity / Approximate / Indicative. By sync: Real-time / Near-real-time / Batch / Event-driven.",
+      "dataModel": "```yaml\nDigitalTwin:\n  twinId: <Identity>\n  subject: <Identity>\n  twinType: <registry id>\n  state: <projected state snapshot>\n  syncState: <registry state>\n  divergence: {measure, threshold, lastChecked}\n  fidelity: <High|Approximate|Indicative>\n  temporal: {asOf}\n  context: <Context>\n```",
+      "graphModel": "(:Twin)-[:TWIN_OF]->(:Identity); (:Twin)-[:SYNCED_FROM]->(:Observation); (:Twin)-[:DIVERGES_FROM]->(:Twin); (:Twin)-[:FED_INTO]->(:TwinFederation)",
+      "apis": [
+        "POST /twin.v1.create",
+        "GET  /twin.v1/{id}",
+        "GET  /twin.v1.bySubject/{subjectId}",
+        "POST /twin.v1.sync",
+        "GET  /twin.v1.divergence/{id}"
+      ],
+      "commands": [
+        "twin.create",
+        "twin.sync",
+        "twin.recalibrate",
+        "twin.archive",
+        "twin.fork"
+      ],
+      "queries": [
+        "twin.bySubject",
+        "twin.byType",
+        "twin.divergent",
+        "twin.timeline"
+      ],
+      "events": [
+        "TwinCreated",
+        "TwinSynced",
+        "TwinDiverged",
+        "TwinRecalibrated",
+        "TwinArchived"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Created\n    Created --> Synchronized\n    Synchronized --> Diverged: threshold exceeded\n    Diverged --> Synchronized: recalibrated\n    Synchronized --> Stale: sync timeout\n    Stale --> Synchronized\n    Synchronized --> Archived\n    Archived --> [*]\n```",
+      "workflow": [
+        "create twin type → subscribe to observation feed → apply sync policy → measure divergence → recalibrate on threshold → archive on retirement"
+      ],
+      "authorities": [
+        "Subject's Authority owns its twins; Twin Authority governs sync policy."
+      ],
+      "permissions": [
+        "twin.create (subject authority)",
+        "twin.sync (system)",
+        "twin.read (context-scoped + perspective-filtered)"
+      ],
+      "privacy": "Twins of persons are high-sensitivity; twin data minimization follows the Perspective redaction policy strictly.",
+      "audit": "Every sync records observation source, policy version, and divergence measure. Twin history is the audit of what reality was when.",
+      "twin": "Twins are the architecture's reality mirror — fleet behavior is monitored as Emergence across the federation.",
+      "agent": "Twin Agent monitors divergence and triggers recalibration or escalation when reality and representation drift.",
+      "runtime": "Sync is an event-driven projection over the observation stream; state is a versioned snapshot, never mutable in place.",
+      "scaling": "Twins are sharded by subject; sync load follows observation volume. Cold twins are tiered to cheaper storage.",
+      "multiTenant": "Twins are tenant-scoped; federated twins cross tenants only via published federation policy.",
+      "geo": "Twin data follows the subject's residency; cross-region sync is read-only replica under sovereignty policy.",
+      "failure": "Observation feed loss, divergence storm, sync conflict across replicas, twin-type drift.",
+      "recovery": "Twin state recomputes from observation history — a twin is never restored, it is re-derived.",
+      "certification": "Twin must declare fidelity, carry a divergence measure, and stay within threshold for certified use.",
+      "migration": "New twin types are registry additions; existing twins re-project on type version change.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant OB as Observation\n    participant TW as Twin Domain\n    participant PO as Policy\n    OB->>TW: observation event\n    TW->>PO: resolve sync policy\n    PO-->>TW: policy\n    TW->>TW: project + measure divergence\n    TW-->>OB: TwinSynced\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Subscribing\n    Subscribing --> Projecting\n    Projecting --> Measuring\n    Measuring --> Synchronized\n```",
+      "blueprint": "Build order for DTW: (1) define registry entries — this domain owns by aspect: operational / financial / commercial / security / compliance / knowledge / experience / lifecycle / future aspect as registry truth, not code; (2) implement the contract surface first (twin.create, twin.sync, twin.recalibrate) and validate against DTW boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "DTW2": {
+      "concepts": "Twin Federation lets independently governed twins interoperate without merging ownership. A federation is a governed relationship among twin fleets, with a shared consistency model and a sovereignty-preserving protocol.",
+      "ontology": "Federation has Member twins/fleets, a consistency model (eventual / strong-per-jurisdiction), a sovereignty policy, and a conflict protocol. Members retain authority; the federation coordinates.",
+      "taxonomy": "By topology: Hub / Mesh / Hierarchical / Hybrid. By consistency: Strong / Eventual / Causal. By openness: Closed / Open / Conditional.",
+      "dataModel": "```yaml\nTwinFederation:\n  federationId: <Identity>\n  members: [<Relationship>]\n  consistencyModel: <registry id>\n  sovereigntyPolicy: <Policy>\n  conflictProtocol: <registry id>\n  governance: <Authority>\n  temporal: {formedAt}\n```",
+      "graphModel": "(:Federation)-[:MEMBER]->(:Twin); (:Federation)-[:GOVERNED_BY]->(:Authority); (:Twin)-[:FED_PEER]->(:Twin); (:Federation)-[:CONFLICTS_HANDLED_BY]->(:Policy)",
+      "apis": [
+        "POST /federation.v1.form",
+        "POST /federation.v1.join",
+        "GET  /federation.v1/{id}",
+        "POST /federation.v1.sync",
+        "POST /federation.v1.conflict"
+      ],
+      "commands": [
+        "federation.form",
+        "federation.join",
+        "federation.leave",
+        "federation.sync",
+        "federation.resolveConflict"
+      ],
+      "queries": [
+        "federation.byId",
+        "federation.members",
+        "federation.conflicts",
+        "federation.consistency"
+      ],
+      "events": [
+        "FederationFormed",
+        "FederationJoined",
+        "FederationSynced",
+        "FederationConflictDetected",
+        "FederationMemberLeft"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Forming\n    Forming --> Active\n    Active --> Conflict\n    Conflict --> Active: resolved per protocol\n    Active --> Degraded: member leaves\n    Degraded --> Active: reconfigures\n    Active --> Dissolved\n```",
+      "workflow": [
+        "form under governance → members join via relationship → sync under consistency model → conflicts handled by protocol → dissolve cleanly"
+      ],
+      "authorities": [
+        "Federation Authority (coordination); each member retains its own twin authority — never ceded."
+      ],
+      "permissions": [
+        "federation.form (founding authorities)",
+        "federation.join (member authority + sovereignty policy)",
+        "federation.read (member-scoped)"
+      ],
+      "privacy": "Federation never pools personal data; cross-member personal data flows require consent covering every member jurisdiction.",
+      "audit": "Every cross-member sync and conflict records both sides' authority and the protocol decision.",
+      "twin": "Federation is how the system models reality at scale — no single twin holds the whole world; the federation holds it together.",
+      "agent": "Federation Agent monitors consistency health and member drift, proposing protocol tuning under governance.",
+      "runtime": "Sync is a peer protocol with per-jurisdiction quorum; conflicts are detected by vector-clock divergence, not timestamps alone.",
+      "scaling": "Federation scales horizontally by adding members; coordination cost is bounded by topology policy.",
+      "multiTenant": "Federation is the only legitimate cross-tenant twin mechanism — and only under published sovereignty policy.",
+      "geo": "Sovereignty is the joining constraint: a member may only federate where its residency policy permits.",
+      "failure": "Split-brain across jurisdictions, sovereignty violation attempt, vector-clock corruption, member silent exit.",
+      "recovery": "Conflicts resolve by protocol (last-writer-wins is prohibited for governed state); recovery is protocol-driven reconciliation.",
+      "certification": "Federation must publish consistency model, sovereignty policy, and conflict protocol, and prove their enforcement.",
+      "migration": "New consistency models and topologies are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant M1 as Member A\n    participant FE as Federation\n    participant M2 as Member B\n    M1->>FE: sync(twinState)\n    FE->>FE: vector-clock compare\n    FE->>M2: propagate\n    M2-->>FE: ack/conflict\n    FE-->>M1: FederationSynced\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Negotiating\n    Negotiating --> SovereigntyCheck\n    SovereigntyCheck --> Joined\n    Joined --> Synchronizing\n```",
+      "blueprint": "Build order for DTW2: (1) define registry entries — this domain owns by topology: hub / mesh / hierarchical / hybrid as registry truth, not code; (2) implement the contract surface first (federation.form, federation.join, federation.leave) and validate against DTW2 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "DTW3": {
+      "concepts": "Twin Synchronization is the governed process that keeps a twin aligned with observed reality. It is policy-driven, measured, and never silent: every sync is an evidence-backed, auditable event.",
+      "ontology": "Sync has a source Observation stream, a projection function, a divergence measure, and a threshold policy. Sync is continuous where the feed is live; bounded-lag where it is not.",
+      "taxonomy": "By trigger: Event-driven / Scheduled / On-demand / Hybrid. By direction: Reality→Twin (primary) / Twin→Simulation (allowed) / Twin→Reality (prohibited). By lag: Real-time / Near-real-time / Batch.",
+      "dataModel": "```yaml\nTwinSync:\n  syncId: <Identity>\n  twin: <DigitalTwin>\n  source: <Observation stream>\n  projectionFn: <registry expression>\n  divergence: {measure, threshold}\n  lag: <duration>\n  policy: <Policy>\n  temporal: {lastSyncAt}\n```",
+      "graphModel": "(:Sync)-[:SYNCS]->(:Twin); (:Sync)-[:FROM]->(:Observation); (:Sync)-[:GOVERNED_BY]->(:Policy); (:Sync)-[:MEASURED_BY]->(:DivergenceMeasure)",
+      "apis": [
+        "POST /sync.v1.trigger",
+        "GET  /sync.v1.status/{twinId}",
+        "GET  /sync.v1.lag/{twinId}",
+        "POST /sync.v1.recalibrate"
+      ],
+      "commands": [
+        "sync.trigger",
+        "sync.pause",
+        "sync.resume",
+        "sync.recalibrate",
+        "sync.replay"
+      ],
+      "queries": [
+        "sync.status",
+        "sync.lag",
+        "sync.history",
+        "sync.divergent"
+      ],
+      "events": [
+        "SyncTriggered",
+        "SyncCompleted",
+        "SyncFailed",
+        "DivergenceExceeded",
+        "SyncRecalibrated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Idle\n    Idle --> Syncing: trigger or event\n    Syncing --> Measuring\n    Measuring --> WithinThreshold\n    Measuring --> Exceeded: divergence > threshold\n    Exceeded --> Recalibrating\n    Recalibrating --> WithinThreshold\n    WithinThreshold --> Idle\n```",
+      "workflow": [
+        "receive observation → resolve sync policy → project onto twin state → measure divergence → within threshold? commit : recalibrate"
+      ],
+      "authorities": [
+        "Twin Authority (sync policy), Subject Authority (what may be projected)."
+      ],
+      "permissions": [
+        "sync.trigger (system or authorized caller)",
+        "sync.pause (twin authority)",
+        "sync.read (twin owner)"
+      ],
+      "privacy": "Sync of personal twin data minimizes at projection time — the feed may be detailed, the twin need not be.",
+      "audit": "Every sync records observation window, policy version, divergence before/after, and decision rationale.",
+      "twin": "Sync is the heartbeat of the twin architecture — the mechanism by which digital representation tracks reality.",
+      "agent": "Sync Agent tunes thresholds from divergence history and flags chronically stale feeds for review.",
+      "runtime": "Sync is a stream processor with exactly-once semantics over the observation feed; idempotent by projection hash.",
+      "scaling": "Sync parallelizes by subject; backpressure degrades lag gracefully rather than dropping fidelity silently.",
+      "multiTenant": "Sync never crosses tenants; federated sync goes through the federation protocol, not direct access.",
+      "geo": "Sync lag is measured per region; residency requires the sync to complete in-jurisdiction before propagation.",
+      "failure": "Feed interruption, projection error, threshold storm, clock skew across sources.",
+      "recovery": "Sync is replayable from the observation log — lost twin state is re-derived, never restored stale.",
+      "certification": "Sync must be evidence-backed, policy-versioned, and divergence-measured to certify twin state.",
+      "migration": "New projection functions are registry additions; replay re-derives history under the new function.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant OB as Observation\n    participant SY as Sync Engine\n    participant TW as Twin\n    OB->>SY: event batch\n    SY->>SY: project under policy\n    SY->>TW: propose state\n    TW-->>SY: divergence\n    SY-->>OB: SyncCompleted or Recalibrating\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Receiving\n    Receiving --> Projecting\n    Projecting --> Measuring\n    Measuring --> Committing\n```",
+      "blueprint": "Build order for DTW3: (1) define registry entries — this domain owns by trigger: event-driven / scheduled / on-demand / hybrid as registry truth, not code; (2) implement the contract surface first (sync.trigger, sync.pause, sync.resume) and validate against DTW3 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "AGT": {
+      "concepts": "An Agent is an autonomous actor operating under governance. Agent ≠ User, Agent ≠ Service, Agent ≠ Process. Agents are first-class citizens with identity, authority, trust, economics, and safety constraints — and they must always obey the Constitution, Authority, Policy, Trust, and Evidence.",
+      "ontology": "Agent has an Identity, a goal (Intent), capabilities (granted), a trust score, an economic account, and a safety envelope. Autonomy is bounded by policy; no agent acts outside its envelope.",
+      "taxonomy": "By role: Planner / Architect / Catalog / Pricing / Localization / Compliance / Tax / Trust / Fraud / Knowledge / Simulation / Security / Optimization / Governance / Certification / Evolution / Future role. By autonomy: Supervised / Semi-autonomous / Autonomous / Constituent-of-society.",
+      "dataModel": "```yaml\nAgent:\n  agentId: <Identity>\n  role: <registry id>\n  goals: [<Intent>]\n  capabilities: [<granted capability>]\n  trust: <Trust>\n  economics: <account reference>\n  safetyEnvelope: <Policy set>\n  authority: <Authority>\n  status: <Active|Suspended|Decommissioned>\n```",
+      "graphModel": "(:Agent)-[:CAPABLE_OF]->(:Capability); (:Agent)-[:TRUSTED_AT]->(:Trust); (:Agent)-[:BOUNDED_BY]->(:Policy); (:Agent)-[:ACTS_WITHIN]->(:Authority); (:Agent)-[:MEMBER_OF]->(:AgentSociety)",
+      "apis": [
+        "POST /agent.v1.spawn",
+        "GET  /agent.v1/{id}",
+        "POST /agent.v1/{id}/act",
+        "GET  /agent.v1/{id}/trust",
+        "POST /agent.v1/{id}/suspend"
+      ],
+      "commands": [
+        "agent.spawn",
+        "agent.act",
+        "agent.suspend",
+        "agent.decommission",
+        "agent.delegate",
+        "agent.report"
+      ],
+      "queries": [
+        "agent.byId",
+        "agent.byRole",
+        "agent.trust",
+        "agent.actions",
+        "agent.society"
+      ],
+      "events": [
+        "AgentSpawned",
+        "AgentActed",
+        "AgentSuspended",
+        "AgentDecommissioned",
+        "AgentTrustChanged",
+        "AgentEscalated"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Spawned\n    Spawned --> Active: envelope verified\n    Active --> Acting\n    Acting --> Escalated: needs human\n    Escalated --> Active: resolved\n    Active --> Suspended: trust breach\n    Suspended --> Decommissioned\n    Active --> Decommissioned\n    Decommissioned --> [*]\n```",
+      "workflow": [
+        "spawn under governance → verify safety envelope → act within authority → escalate on uncertainty → log with full explainability → suspend on breach"
+      ],
+      "authorities": [
+        "Governance Authority spawns; an agent's authority is a strict delegation, never exceeding its granter."
+      ],
+      "permissions": [
+        "agent.spawn (governance authority)",
+        "agent.act (agent's own delegated authority)",
+        "agent.suspend (governance authority)"
+      ],
+      "privacy": "Agents over personal data act only under consent scope; agent actions on individuals are auditable by the data subject.",
+      "audit": "Every agent action answers all seven explainability questions — autonomous action without explanation is unconstitutional.",
+      "twin": "Each agent has an operational twin monitoring its behavior against its envelope — drift triggers suspension.",
+      "agent": "Agents are both governed actors and the governance workforce — the system polices itself through them.",
+      "runtime": "Actions are policy-guarded at execution time; the safety envelope is enforced, not advisory.",
+      "scaling": "Agents scale horizontally; per-agent rate limits and economic budgets bound resource use.",
+      "multiTenant": "Agents are tenant-scoped; a cross-tenant agent requires both tenants' authority — rare and heavily audited.",
+      "geo": "Agent authority is jurisdiction-bound; an agent legal in one region may not act in another.",
+      "failure": "Envelope violation, trust collapse, goal conflict, resource exhaustion, society polarization.",
+      "recovery": "Suspension is safe-by-default; a suspended agent's in-flight actions are compensated, not abandoned.",
+      "certification": "Agent must pass envelope definition, authority traceability, trust threshold, and explainability verification before acting.",
+      "migration": "New agent roles are registry additions; existing agents keep their envelope version.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant G as Governor\n    participant AG as Agent Domain\n    participant PL as Policy\n    G->>AG: spawn(role, goals)\n    AG->>PL: verify safety envelope\n    PL-->>AG: envelope\n    AG->>AG: act within authority\n    AG-->>G: AgentActed + explanation\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Spawning\n    Spawning --> Enveloping\n    Enveloping --> Active\n    Active --> Acting\n    Acting --> Explaining\n```",
+      "blueprint": "Build order for AGT: (1) define registry entries — this domain owns by role: planner / architect / catalog / pricing / localization / compliance / tax / trust / fraud / knowledge / simulation / security / optimization / governance / certification / evolution / future role as registry truth, not code; (2) implement the contract surface first (agent.spawn, agent.act, agent.suspend) and validate against AGT boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "AGT2": {
+      "concepts": "Agent Runtime is the governed execution environment for autonomous actors. It enforces the safety envelope at instruction granularity — policy is a runtime guard, not a code review.",
+      "ontology": "Runtime hosts Agents, enforces envelopes, meters economics, and records full action traces. It is the boundary where intent becomes action — and where unconstitutional action is stopped.",
+      "taxonomy": "By isolation: Process / Container / VM / Enclave / Sandbox. By scheduling: Real-time / Best-effort / Batch. By tenancy: Dedicated / Shared.",
+      "dataModel": "```yaml\nAgentRuntime:\n  runtimeId: <Identity>\n  host: <Identity>\n  isolation: <registry id>\n  enforcementPoints: [pre-exec, post-exec, resource, network]\n  metering: {economic account, rate limits}\n  trace: <append-only log ref>\n  policyVersion: <version>\n```",
+      "graphModel": "(:Runtime)-[:HOSTS]->(:Agent); (:Runtime)-[:ENFORCES]->(:Policy); (:Runtime)-[:METERS]->(:EconomicAccount); (:Runtime)-[:TRACES_TO]->(:AuditLog)",
+      "apis": [
+        "POST /runtime.v1.execute",
+        "GET  /runtime.v1/trace/{agentId}",
+        "POST /runtime.v1.halt",
+        "GET  /runtime.v1.envelope/{agentId}"
+      ],
+      "commands": [
+        "runtime.execute",
+        "runtime.halt",
+        "runtime.quarantine",
+        "runtime.trace",
+        "runtime.enforce"
+      ],
+      "queries": [
+        "runtime.trace",
+        "runtime.envelope",
+        "runtime.usage",
+        "runtime.violations"
+      ],
+      "events": [
+        "ExecutionRequested",
+        "ExecutionGuarded",
+        "ExecutionHalted",
+        "EnvelopeViolated",
+        "ResourceExhausted"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Receiving\n    Receiving --> Guarding: pre-exec policy\n    Guarding --> Executing: permitted\n    Guarding --> Denied: prohibited\n    Executing --> Tracing\n    Tracing --> Done\n    Executing --> Halted: violation detected\n    Halted --> Quarantined\n```",
+      "workflow": [
+        "receive action → pre-exec policy guard → execute in isolation → meter economics → post-exec trace → halt+quarantine on violation"
+      ],
+      "authorities": [
+        "Runtime Authority (enforcement); agents carry delegated authority verified at guard time."
+      ],
+      "permissions": [
+        "runtime.execute (agent with valid envelope)",
+        "runtime.halt (governance authority)",
+        "runtime.trace (auditor)"
+      ],
+      "privacy": "Traces of personal-data actions are minimized and consent-scoped; the fact of enforcement is auditable, contents are not.",
+      "audit": "Every guarded execution records the policy evaluated, the decision, the economic charge, and the full action trace.",
+      "twin": "The runtime twin monitors enforcement latency and violation rates as system-health signals.",
+      "agent": "The runtime is what makes agents safe enough to be first-class citizens — enforcement is architectural, not procedural.",
+      "runtime": "Enforcement is in-line and mandatory; there is no code path from agent intent to effect that bypasses the guard.",
+      "scaling": "Runtimes scale horizontally; per-agent quotas prevent noisy-neighbor domination.",
+      "multiTenant": "Runtimes are tenant-isolated at the isolation boundary — no shared execution context across tenants.",
+      "geo": "Execution jurisdiction follows the data's residency; cross-region execution requires sovereignty policy pass.",
+      "failure": "Guard bypass (must be impossible by construction), quarantine overflow, trace loss, meter drift.",
+      "recovery": "Halted actions are compensatable via the event log; quarantined agents await governance review, never auto-resume.",
+      "certification": "Runtime must prove no bypass path exists — formally verified guard placement is mandatory.",
+      "migration": "New isolation types are registry additions; guard logic versioned and replayable.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant AG as Agent\n    participant RT as Runtime\n    participant PL as Policy\n    AG->>RT: execute(action)\n    RT->>PL: pre-exec guard\n    PL-->>RT: permit/deny\n    RT->>RT: execute in isolation + meter\n    RT-->>AG: result + trace\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Guarding\n    Guarding --> Isolating\n    Isolating --> Executing\n    Executing --> Tracing\n```",
+      "blueprint": "Build order for AGT2: (1) define registry entries — this domain owns by isolation: process / container / vm / enclave / sandbox as registry truth, not code; (2) implement the contract surface first (runtime.execute, runtime.halt, runtime.quarantine) and validate against AGT2 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "AGT3": {
+      "concepts": "Agent Governance ensures no autonomous actor is ungoverned. Every agent action is authorized, policy-checked, trust-scored, evidenced, explainable, and reversible-or-compensated. Governance is not oversight — it is an execution-time constraint.",
+      "ontology": "Governance binds each Agent to: an Authority chain, a Policy envelope, a Trust threshold, an Evidence requirement, and an Explainability contract. All five are checked at action time.",
+      "taxonomy": "By stage: Pre-action / In-action / Post-action / Continuous. By severity handling: Auto-permit / Auto-deny / Escalate / Quarantine. By scope: Single-agent / Multi-agent / Society-level.",
+      "dataModel": "```yaml\nAgentGovernance:\n  governanceId: <Identity>\n  agent: <Identity>\n  authorityChain: [<Authority>]\n  policyEnvelope: [<Policy>]\n  trustThreshold: <0..1>\n  evidenceRequirement: <registry id>\n  explainabilityContract: <registry id>\n  escalationPolicy: <Policy>\n```",
+      "graphModel": "(:Governance)-[:BINDS]->(:Agent); (:Governance)-[:REQUIRES]->(:Evidence); (:Governance)-[:ESCALATES_TO]->(:Authority); (:Governance)-[:GOVERNED_BY]->(:Policy)",
+      "apis": [
+        "POST /governance.v1.evaluate",
+        "GET  /governance.v1/{agentId}",
+        "POST /governance.v1.escalate",
+        "GET  /governance.v1.violations"
+      ],
+      "commands": [
+        "governance.evaluate",
+        "governance.escalate",
+        "governance.sanction",
+        "governance.remediate"
+      ],
+      "queries": [
+        "governance.byAgent",
+        "governance.violations",
+        "governance.escalations",
+        "governance.coverage"
+      ],
+      "events": [
+        "GovernanceEvaluated",
+        "GovernanceEscalated",
+        "GovernanceViolated",
+        "GovernanceRemediated",
+        "TrustThresholdBreached"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Evaluating\n    Evaluating --> Permitted\n    Evaluating --> Denied\n    Evaluating --> Escalated\n    Escalated --> Permitted: human approves\n    Escalated --> Denied: human rejects\n    Permitted --> Violated: post-action breach\n    Violated --> Sanctioned\n```",
+      "workflow": [
+        "evaluate authority + policy + trust + evidence pre-action → permit/deny/escalate → monitor in-action → post-action audit → sanction on violation"
+      ],
+      "authorities": [
+        "Governance Authority over agents; humans are the escalation target of last resort."
+      ],
+      "permissions": [
+        "governance.evaluate (runtime)",
+        "governance.escalate (any agent or observer)",
+        "governance.sanction (governance authority)"
+      ],
+      "privacy": "Governance records of personal-data actions are consent-scoped; the governance fact is auditable, subject data minimized.",
+      "audit": "The governance record IS the audit artifact — authority chain, policy version, trust score, evidence, and explanation for every action.",
+      "twin": "Governance twin monitors violation rates and trust drift across the agent fleet as an early-warning system.",
+      "agent": "Governance is what separates an agent from malware — identical capability, opposite constraint.",
+      "runtime": "Evaluation is in-line and cached per (agent, action-class, policy-version); escalation queues to humans with SLAs.",
+      "scaling": "Evaluation is sub-millisecond cached; escalations are human-paced and bounded by queue policy.",
+      "multiTenant": "Governance is tenant-scoped; constitutional governance overrides tenant policy universally.",
+      "geo": "Escalation routes to on-call humans in the acting jurisdiction — accountability is local.",
+      "failure": "Evaluation timeout (default deny), evidence starvation, escalation queue overflow, trust threshold storm.",
+      "recovery": "Sanctioned agents are compensatable via action traces; violations are never auto-forgiven — remediation is governed.",
+      "certification": "Governance must prove 100% action coverage — an ungoverned agent path is a certification failure.",
+      "migration": "New evaluation strategies are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant AG as Agent\n    participant GV as Governance\n    participant H as Human Escalation\n    AG->>GV: request(action)\n    GV->>GV: authority+policy+trust+evidence\n    alt clear\n        GV-->>AG: permitted\n    else unclear\n        GV->>H: escalate\n        H-->>GV: decision\n        GV-->>AG: decision\n    end\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> AuthorityCheck\n    AuthorityCheck --> PolicyCheck\n    PolicyCheck --> TrustCheck\n    TrustCheck --> EvidenceCheck\n    EvidenceCheck --> Decision\n```",
+      "blueprint": "Build order for AGT3: (1) define registry entries — this domain owns by stage: pre-action / in-action / post-action / continuous as registry truth, not code; (2) implement the contract surface first (governance.evaluate, governance.escalate, governance.sanction) and validate against AGT3 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "AGT4": {
+      "concepts": "Agent Trust is the computed confidence that an agent will act within its envelope. It is earned through evidenced behavior, decayed by time and violation, and never assumed from role or title.",
+      "ontology": "Agent Trust aggregates action outcomes, violation history, governance evaluations, and peer attestations into a per-context score. Trust gates autonomy: low trust means escalation, not elimination.",
+      "taxonomy": "By input: Outcome-based / Violation-weighted / Peer-attested / Authority-attested. By decay: Time-decay / Event-decay / Violation-decay. By use: Autonomy gate / Escalation trigger / Budget cap.",
+      "dataModel": "```yaml\nAgentTrust:\n  agentTrustId: <Identity>\n  agent: <Identity>\n  outcomeScore: <0..1>\n  violationPenalty: <0..1>\n  peerAttestation: <0..1>\n  authorityAttestation: <0..1>\n  composite: <0..1, registry formula>\n  decayState: {lastEvent, halfLife}\n  context: <Context>\n```",
+      "graphModel": "(:AgentTrust)-[:SCORES]->(:Agent); (:AgentTrust)-[:DERIVED_FROM]->(:GovernanceRecord); (:AgentTrust)-[:ATTESTED_BY]->(:Authority|:Agent); (:AgentTrust)-[:GATES]->(:Autonomy)",
+      "apis": [
+        "GET  /agent-trust.v1/{agentId}",
+        "POST /agent-trust.v1.attest",
+        "GET  /agent-trust.v1.history/{agentId}",
+        "POST /agent-trust.v1.recompute"
+      ],
+      "commands": [
+        "agentTrust.attest",
+        "agentTrust.recompute",
+        "agentTrust.dispute",
+        "agentTrust.reset"
+      ],
+      "queries": [
+        "agentTrust.byAgent",
+        "agentTrust.low",
+        "agentTrust.history",
+        "agentTrust.byContext"
+      ],
+      "events": [
+        "AgentTrustComputed",
+        "AgentTrustDecayed",
+        "AgentTrustBreached",
+        "AgentTrustAttested",
+        "AgentTrustReset"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Seeded\n    Seeded --> Earning\n    Earning --> Stable\n    Stable --> Decaying: no events\n    Stable --> Breached: violation\n    Breached --> Rehabilitating: remediation\n    Rehabilitating --> Earning\n```",
+      "workflow": [
+        "seed from spawn attestation → earn from evidenced outcomes → decay over time → breach on violation → rehabilitate through governed remediation"
+      ],
+      "authorities": [
+        "Trust Domain computes; Governance Authority attests; no agent attests its own trust."
+      ],
+      "permissions": [
+        "agentTrust.attest (authority or peer agent)",
+        "agentTrust.recompute (system)",
+        "agentTrust.read (governance + agent owner)"
+      ],
+      "privacy": "Trust records reference action classes, not personal data contents — minimization by construction.",
+      "audit": "Every score change records the event, formula version, and attestations — fully reproducible.",
+      "twin": "Agent trust twin tracks the fleet's trust distribution as a systemic health indicator.",
+      "agent": "Trust is the currency of autonomy — an agent with no trust escalates everything, which is safe by design.",
+      "runtime": "Trust is a read-side projection recomputed on governance events; checks are cached per (agent, action-class).",
+      "scaling": "Recomputation is a stream job over governance records; scores cached with event invalidation.",
+      "multiTenant": "Agent trust is tenant-scoped; cross-tenant attestation requires published relationship.",
+      "geo": "Trust thresholds are jurisdiction-tunable — stricter regimes demand higher autonomy gates.",
+      "failure": "Attestation cartel, decay stall, formula drift, trust inflation without evidence.",
+      "recovery": "Trust recomputes from governance history — reset is a governed fresh start, not an amnesty.",
+      "certification": "Agent trust must be evidence-backed, decay-aware, and threshold-enforced for any autonomy grant.",
+      "migration": "Formula evolves by registry version; recomputation replays history under the new formula.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant GV as Governance\n    participant AT as Agent Trust\n    participant AG as Agent\n    GV->>AT: action outcome\n    AT->>AT: recompute + decay\n    AT-->>AG: autonomy level\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Seeding\n    Seeding --> Earning\n    Earning --> Scoring\n    Scoring --> Gating\n```",
+      "blueprint": "Build order for AGT4: (1) define registry entries — this domain owns by input: outcome-based / violation-weighted / peer-attested / authority-attested as registry truth, not code; (2) implement the contract surface first (agentTrust.attest, agentTrust.recompute, agentTrust.dispute) and validate against AGT4 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "AGT5": {
+      "concepts": "Agent Safety is the guarantee that autonomous action cannot cause unconstitutional harm. Safety is architectural — enforced at execution time by the runtime — not procedural or aspirational.",
+      "ontology": "Safety has an Envelope (policy bounds), Invariants (must-hold conditions), Fail-modes (safe defaults), and Recovery (compensation paths). The default fail-mode is always the safest available state.",
+      "taxonomy": "By hazard: Physical / Financial / Reputational / Privacy / Security / Constitutional. By control: Prevention / Detection / Response / Recovery. By severity: Minor / Major / Critical / Catastrophic.",
+      "dataModel": "```yaml\nAgentSafety:\n  safetyId: <Identity>\n  agent: <Identity>\n  envelope: [<Policy>]\n  invariants: [<registry expression>]\n  failModes: [{condition, safeState}]\n  hazardClasses: [<registry id>]\n  recoveryPaths: [<compensation ref>]\n  verificationLevel: <registry level>\n```",
+      "graphModel": "(:Safety)-[:PROTECTS]->(:Agent); (:Safety)-[:ENFORCED_BY]->(:Runtime); (:Safety)-[:FAILS_TO]->(:SafeState); (:Safety)-[:RECOVERS_VIA]->(:Compensation)",
+      "apis": [
+        "GET  /agent-safety.v1/{agentId}",
+        "POST /agent-safety.v1.verify",
+        "POST /agent-safety.v1.halt",
+        "GET  /agent-safety.v1.incidents"
+      ],
+      "commands": [
+        "agentSafety.verify",
+        "agentSafety.halt",
+        "agentSafety.quarantine",
+        "agentSafety.recover",
+        "agentSafety.incident"
+      ],
+      "queries": [
+        "agentSafety.envelope",
+        "agentSafety.incidents",
+        "agentSafety.invariants",
+        "agentSafety.byHazard"
+      ],
+      "events": [
+        "SafetyVerified",
+        "EnvelopeViolated",
+        "SafetyHalt",
+        "SafetyIncident",
+        "SafetyRecovered",
+        "InvariantBreach"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Verified\n    Verified --> Operating\n    Operating --> Warned: invariant strain\n    Warned --> Operating: strain clears\n    Warned --> Halted: invariant breach\n    Operating --> Halted: envelope violation\n    Halted --> Quarantined\n    Quarantined --> Recovering: governed\n    Recovering --> Verified\n```",
+      "workflow": [
+        "verify envelope + invariants pre-spawn → monitor invariants in-action → halt on breach → quarantine → governed recovery → re-verify"
+      ],
+      "authorities": [
+        "Safety Authority (enforcement); halts are automatic, not authorized — safety overrides authority."
+      ],
+      "permissions": [
+        "agentSafety.halt (automatic + any authority)",
+        "agentSafety.recover (governance authority only)",
+        "agentSafety.read (auditor)"
+      ],
+      "privacy": "Safety envelopes over personal data include privacy invariants — privacy violations are safety incidents.",
+      "audit": "Every halt, quarantine, and recovery is a fully-evidenced incident record with root cause and remediation.",
+      "twin": "Safety twin monitors near-miss rates across the fleet — strain before breach is the goal.",
+      "agent": "Safety is why agents can be trusted at all — it is the counterweight to autonomy, applied uniformly.",
+      "runtime": "Invariant checks are in-line where cheap, sampled where costly — but envelope checks are always in-line.",
+      "scaling": "Safety monitoring scales with agent count; incident storage is append-only and time-bucketed.",
+      "multiTenant": "Safety is constitutional — tenant policy cannot weaken a safety envelope, only strengthen it.",
+      "geo": "Hazard classes are jurisdiction-aware (e.g., physical-hazard agents meet local robotics regulation).",
+      "failure": "Invariant missed, halt race, quarantine overflow, recovery loop without convergence.",
+      "recovery": "Recovery is governed and evidenced; an agent never auto-clears a Critical incident.",
+      "certification": "Agent must pass formal envelope verification, invariant coverage, and fail-mode analysis before autonomy.",
+      "migration": "New hazard classes are registry additions; existing agents re-verify on class activation.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant RT as Runtime\n    participant SF as Safety\n    participant GV as Governance\n    RT->>SF: invariant strain\n    SF->>RT: warn + tighten\n    RT->>SF: invariant breach\n    SF->>RT: HALT\n    SF->>GV: incident\n    GV-->>SF: governed recovery\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> EnvelopeCheck\n    EnvelopeCheck --> InvariantCheck\n    InvariantCheck --> Operating\n    Operating --> Monitoring\n    Monitoring --> SafeState\n```",
+      "blueprint": "Build order for AGT5: (1) define registry entries — this domain owns by hazard: physical / financial / reputational / privacy / security / constitutional as registry truth, not code; (2) implement the contract surface first (agentSafety.verify, agentSafety.halt, agentSafety.quarantine) and validate against AGT5 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "AGT6": {
+      "concepts": "Agent Economics gives every autonomous actor a bounded budget and a priced action space. Agents are economically constrained — they cannot consume without accounting, and their incentives are aligned with constitutional value, not raw throughput.",
+      "ontology": "Agent Economics has an Account, priced actions, a budget policy, a value measure, and a sustainability weight. Spending is governed; value is measured; waste is penalized by policy.",
+      "taxonomy": "By budget: Fixed / Replenishing / Performance-based / Mission-based. By pricing: Flat / Marginal / Peak / Externalized-cost-inclusive. By measure: Financial / Computational / Carbon-weighted / Value-weighted.",
+      "dataModel": "```yaml\nAgentEconomics:\n  economicsId: <Identity>\n  agent: <Identity>\n  account: <ledger ref>\n  budgetPolicy: <Policy>\n  pricedActions: [{actionClass, price}]\n  valueMeasure: <registry expression>\n  sustainabilityWeight: <registry factor>\n  period: {resetAt}\n```",
+      "graphModel": "(:Economics)-[:FUNDS]->(:Agent); (:Economics)-[:SPENDS_ON]->(:ActionClass); (:Economics)-[:PRICED_BY]->(:Policy); (:Economics)-[:MEASURED_IN]->(:ValueMeasure)",
+      "apis": [
+        "GET  /agent-economics.v1/{agentId}",
+        "POST /agent-economics.v1.charge",
+        "GET  /agent-economics.v1.budget/{agentId}",
+        "POST /agent-economics.v1.reprice"
+      ],
+      "commands": [
+        "agentEconomics.charge",
+        "agentEconomics.budget.set",
+        "agentEconomics.reprice",
+        "agentEconomics.refund"
+      ],
+      "queries": [
+        "agentEconomics.spend",
+        "agentEconomics.budget",
+        "agentEconomics.value",
+        "agentEconomics.efficiency"
+      ],
+      "events": [
+        "AgentCharged",
+        "BudgetExhausted",
+        "BudgetReplenished",
+        "AgentRepriced",
+        "ValueAssessed"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Funded\n    Funded --> Spending\n    Spending --> Constrained: budget low\n    Constrained --> Spending: replenished\n    Spending --> Exhausted\n    Exhausted --> Suspended: no budget\n    Suspended --> Funded: governed top-up\n```",
+      "workflow": [
+        "allocate budget under policy → charge per priced action → measure value created → adjust price and budget → suspend on exhaustion"
+      ],
+      "authorities": [
+        "Economic Authority (pricing policy), Agent Owner (budget allocation)."
+      ],
+      "permissions": [
+        "agentEconomics.charge (runtime metering)",
+        "agentEconomics.budget.set (agent owner)",
+        "agentEconomics.read (owner + governance)"
+      ],
+      "privacy": "Economic records are agent-scoped, not personal — charges reference action classes only.",
+      "audit": "Every charge records action class, price version, budget state — agent spending is fully reconstructable.",
+      "twin": "Economics twin tracks fleet spend efficiency and flags waste patterns for optimization agents.",
+      "agent": "Economics makes agents frugal by construction — a budgetless agent is a liability the constitution forbids.",
+      "runtime": "Charging is synchronous with execution; budget check is a pre-exec guard (zero spend beyond budget).",
+      "scaling": "Metering is a high-throughput append ledger; aggregation is a stream job.",
+      "multiTenant": "Agent economics are tenant-accounted; cross-tenant agent spending requires both owners' authority.",
+      "geo": "Pricing includes externalized costs per jurisdiction — carbon-weighted where regulated, always measured.",
+      "failure": "Meter drift, budget race, negative balance, price version skew.",
+      "recovery": "The ledger is append-only; refunds are compensating entries, never deletes. Suspend-on-exhaustion is safe by default.",
+      "certification": "Agent must have a bounded budget, priced actions, and a measured value function to operate autonomously.",
+      "migration": "New pricing models and value measures are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant AG as Agent\n    participant EC as Economics\n    participant LD as Ledger\n    AG->>EC: action request\n    EC->>EC: budget check\n    EC->>LD: charge\n    LD-->>EC: accepted\n    EC-->>AG: permitted\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Budgeting\n    Budgeting --> Pricing\n    Pricing --> Charging\n    Charging --> Measuring\n```",
+      "blueprint": "Build order for AGT6: (1) define registry entries — this domain owns by budget: fixed / replenishing / performance-based / mission-based as registry truth, not code; (2) implement the contract surface first (agentEconomics.charge, agentEconomics.budget.set, agentEconomics.reprice) and validate against AGT6 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    },
+    "AGT7": {
+      "concepts": "Agent Society is the governed ecosystem in which multiple agents cooperate, compete, negotiate, and collectively behave. Society is where emergence lives — and where emergent behavior is governed rather than suppressed.",
+      "ontology": "Society has Members (agents), Roles (registry), Interaction protocols, Norms (policies), and an Emergence monitor. Society-level behavior is monitored as Emergence and governed accordingly.",
+      "taxonomy": "By structure: Hierarchical / Flat / Market / Coalition / Hybrid. By interaction: Cooperative / Competitive / Negotiative / Delegative. By governance: Centrally-governed / Norm-governed / Constitution-first.",
+      "dataModel": "```yaml\nAgentSociety:\n  societyId: <Identity>\n  members: [<Relationship>]\n  roles: [<registry role>]\n  protocols: [<registry interaction id>]\n  norms: [<Policy>]\n  emergenceMonitor: <Emergence config>\n  governance: <Authority>\n  temporal: {formedAt}\n```",
+      "graphModel": "(:Society)-[:MEMBER]->(:Agent); (:Agent)-[:INTERACTS_WITH]->(:Agent); (:Society)-[:GOVERNED_BY]->(:Policy); (:Society)-[:MONITORED_BY]->(:Emergence)",
+      "apis": [
+        "POST /society.v1.form",
+        "POST /society.v1.admit",
+        "GET  /society.v1/{id}",
+        "POST /society.v1.mediate",
+        "GET  /society.v1.emergence/{id}"
+      ],
+      "commands": [
+        "society.form",
+        "society.admit",
+        "society.expel",
+        "society.mediate",
+        "society.dissolve"
+      ],
+      "queries": [
+        "society.byId",
+        "society.members",
+        "society.interactions",
+        "society.emergence",
+        "society.norms"
+      ],
+      "events": [
+        "SocietyFormed",
+        "MemberAdmitted",
+        "MemberExpelled",
+        "InteractionRecorded",
+        "SocietyEmergence",
+        "SocietyDissolved"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Forming\n    Forming --> Active\n    Active --> Conflict\n    Conflict --> Mediated\n    Active --> EmergentBehavior\n    EmergentBehavior --> Governed\n    Governed --> Active\n    Active --> Dissolved\n```",
+      "workflow": [
+        "form under governance → admit members by role → interactions recorded per protocol → monitor emergence → govern emergent behavior → mediate conflicts"
+      ],
+      "authorities": [
+        "Society Governance Authority; constitutional norms override all society policy."
+      ],
+      "permissions": [
+        "society.form (governance authority)",
+        "society.admit (society authority)",
+        "society.interact (member agent)"
+      ],
+      "privacy": "Society interactions over personal data require consent covering all participating agents' scopes.",
+      "audit": "Every interaction is recorded with protocol, norms applied, and outcome — multi-agent behavior is fully traceable.",
+      "twin": "Society twin monitors interaction health, conflict rates, and emergence signals across the fleet.",
+      "agent": "Society is where the system becomes more than its agents — and where that 'more' is kept safe.",
+      "runtime": "Interactions are protocol-mediated; off-protocol agent-to-agent contact is a policy violation by construction.",
+      "scaling": "Societies scale to fleet size; emergence monitoring is a stream job over interaction events.",
+      "multiTenant": "Societies are tenant-scoped; cross-tenant societies require federation-level governance.",
+      "geo": "Norms are jurisdiction-aware; a society spanning regions carries the strictest applicable norm set.",
+      "failure": "Norm conflict, emergence runaway, collusion, society polarization, protocol deadlock.",
+      "recovery": "Dissolution is clean and governed; agents return to their envelopes unchanged.",
+      "certification": "Society must publish protocols, norms, and emergence governance to operate.",
+      "migration": "New interaction protocols are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant A1 as Agent A\n    participant SO as Society\n    participant A2 as Agent B\n    A1->>SO: interaction request\n    SO->>SO: protocol + norm check\n    SO->>A2: mediate\n    A2-->>SO: response\n    SO-->>A1: outcome\n    SO->>SO: emergence monitor\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Forming\n    Forming --> Admitting\n    Admitting --> Interacting\n    Interacting --> Monitoring\n    Monitoring --> Governing\n```",
+      "blueprint": "Build order for AGT7: (1) define registry entries — this domain owns by structure: hierarchical / flat / market / coalition / hybrid as registry truth, not code; (2) implement the contract surface first (society.form, society.admit, society.expel) and validate against AGT7 boundaries; (3) event-source all state so history is reconstructable; (4) wire the enforcement points — authority check, policy guard, evidence binding, trace — in-line, with no bypass path; (5) add tests per the Testing Architecture, citing evidence per gate; (6) obtain Verification and Certification before activation. Acceptance: the Zero Partial and Law 001 audits pass, every action answers the seven explainability questions, and this domain mutates no other domain internals."
+    }
+  }
+}
