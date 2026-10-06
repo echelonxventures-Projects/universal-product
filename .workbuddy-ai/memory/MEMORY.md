@@ -1119,3 +1119,130 @@ universes, not markdown nothing reads). Zero duplicate / zero partial / zero ove
 measured by the executable criteria, not claimed. Organised — YES (14 numbered dirs,
 registry-driven, `_superseded/` preserved). **Git status clean — NO: 57 paths (27 modified, 30
 untracked) spanning sessions 9–17. That bar is still unmet and is the next thing to do.**
+
+### 2026-10-06 (session 18) — the fold is wired: universes.json IS the declaration source
+Resumed on the tree session 17's commit left plus a half-finished migration: `_registry/universes.json`
+(2,919 universes, folded) and `_registry/fold-universes.js` existed and `lib/ucos-registry.js` had gained
+`universes()` + `universeDeclarations()` — but **nothing read them**. `discover()` still re-parsed the
+corpora every boot, so the corpora remained a second declaration source, which is the very Law 002
+violation the new comments claimed was closed. The fold had captured the truth and the runtime ignored it.
+
+**The wiring.** `discover()` now reads `universeDeclarations()`; the corpus walk is `discoverFromCorpus()`
+(exported), the fallback when the file is missing/malformed and the fold's own source. The fold unlinks
+its output before discovering, so it always re-derives from the corpora and never its own last output.
+Boot no longer walks the corpora to know what exists: `discover()` 2 ms vs. the corpus walk.
+
+**Two latent bugs in the unfinished `universeDeclarations()`, both test-breaking:**
+1. `sourceDoc: "ureg"` was hard-coded for all 2,919 — erasing provenance. The console, the `source_doc`
+   DB column, `overlap()`'s corpus-vs-registry distinction and `test/ucos-registry.js`'s
+   "91 ureg-sourced + 2 corpus-resolved = 93" all depend on the real declaring doc. Now `u.sourceDoc`.
+2. It exposed `family` where every consumer reads `.registry` — `test/ucos-master.js:77` asserts every
+   universe carries its declaring registry label. Now `registry: u.family`.
+
+**Zero-loss proven, not claimed:** file vs. corpus walk compared on key/name/doc/line/concepts/registry —
+0 only-in-corpus, 0 only-in-file across 2,919. Re-folding is byte-identical (same MD5). `instantiateAll`
+2,919/2,919, coverage 100%, `pruneStale` removes nothing.
+
+**Pre-existing blocker found and fixed (owner-approved):** 7 test files aborted at their console-render
+step with `generatedInterface.install is not a function` — identical on the clean tree, so environmental:
+**jsdom 30.0.1 under Node v26**. Diagnosed the exact set of generated wrappers that lose `.install`:
+`URL`, `URLSearchParams`, `HTMLOptionsCollection`, `HTMLTableColElement`, `HTMLFrameElement`, `Range`,
+`CustomElementRegistry`. Upgraded `jsdom ^30.0.1 → ^30.1.2`; all 7 restored. Note for future diagnosis:
+requiring jsdom's generated IDL modules out of order throws a false "Class extends value undefined"
+circular-dependency error — `new JSDOM(...)` itself is the reliable probe. Also deleted the
+`package-lock.json` `npm install` created (the repo ships without one) and gitignored `.DS_Store`.
+
+**Suite, first fully-green end-to-end run on this tree:** goip 197 · ucos-audit 73 · ucos-universes 64 ·
+upce 170 · catalog 47 · product-universes 25 · activation 478 · domains 46 · dashboards 68 · themes 46 ·
+gcatalog 82 · gops 64 · parity 231 · wizard 14 · tenancy 32 · padmins 62 · roles 71 · compose 58 ·
+identity ✓ · identity-modes 66 · ucos-master 257 · ucos-omega 166 · ucos-mm 326 · ucos-registry 147 ·
+smoke 751. ~15 min; run with a ≥1200s timeout and confirm 8807 is free first.
+
+**Still uncommitted (4 modified, 2 untracked):** `lib/ucos-universes.js`, `lib/ucos-registry.js`,
+`package.json` (jsdom bump), `.gitignore` (`.DS_Store`); untracked `_registry/fold-universes.js` +
+`_registry/universes.json`. Session 17's "git status clean" bar is still open — this work is a
+candidate for the next commit.
+
+### 2026-10-06 (session 19) — the sealed registry's grant surface used the wrong namespace
+Resumed to an uncommitted tree holding a whole feature memory had not recorded: **the sealed
+canonical registry** (Law 002 by construction). Recorded below, then found it had made the suite
+RED at `test/tenancy.js` — memory had last said green (the recurring resume lesson: run `npm test`
+FIRST; it has now been wrong on resume three times).
+
+**The unrecorded feature — one compiled, sealed source of truth.** The corpora + the authored
+`_registry/*.json` + the two console navs DECLARE the constitution; `lib/canonical.js` (397 lines,
+new) COMPILES them into one artifact and the runtime reads ONLY that:
+- `compile()` → documents/parts/sections/articles/concepts/registries/universes/atoms/vocabularies
+  + the console grant surface; `seal()` is AES-256-GCM + HMAC-SHA256 over a per-input SHA-256
+  manifest (node:crypto only — the zero-dependency bar holds), keyed from `data/registry.json`
+  (gitignored, 0600) or `LX_REGISTRY_KEY`. `load()` verifies → checks the manifest → decrypts, and
+  throws rather than return a partial registry; `LX_REGISTRY_STRICT=1` refuses silent re-compile, so
+  a pinned registry is a hard gate. Provenance (doc + line) rides every row.
+- `lib/ucos.js`: `parseSources()` is the COMPILE step; `parseAll()` is now the runtime read of the
+  sealed registry; `digest()` is the manifest digest; the three vocabulary readers gained `*Src()`
+  twins (compile inputs) and return the compiled values at runtime.
+- `_registry/gate.js` makes the five criteria executable over the compiled registry — Zero
+  Duplicate / Zero Partial / Zero Overlap / Zero Missing / No Leakage, the last a byte-level
+  comparison against a FRESH independent re-parse (the compiler is what changed, so only a re-parse
+  proves no leakage). `_registry/compile.js` + `npm run registry` (compile `--gate` then `--verify`);
+  `test/registry-gate.js` (37 assertions) is now FIRST in the `npm test` chain.
+- Law-002 duplicates removed: `global.js`'s second COUNTRIES/CURRENCIES seed literals (providers.js
+  owns them), `goip.js`'s `LEGACY_BENEFIT_TYPES` (offers.js owns it), and `dashboards.js`'s
+  dashboard-types row stopped claiming `seeded_from='architecture1'` for a list §394 does not
+  declare. `_registry/domains.json`: D-AGT/D-DTW `owns` fixed to the singular primitive names the
+  gate's dangling-ownership check resolves against.
+- `_registry/apex.json` DELETED (staged): it self-proclaimed "the single supreme document" but was
+  referenced by NOTHING (grep-verified) — the sealed registry is the operable SSOT, so the claim file
+  was prose nothing read. Session-18's fold (`universes.json` + `fold-universes.js`) is superseded
+  and gone — the seal IS the folded artifact; `dbg12.mjs` and `Conversation1txt.md` are also gone
+  (two standing open items closed).
+
+**Defect 1 (the RED) — the grant surface was derived in the wrong namespace.** `rbac.SECTIONS`
+became the nav LEAVES, but the store console's `canSee()` asks for the NAVSEC-REDIRECTED section
+(`structure→tenancy`, `sso→settings`, `promotions`+`goip→offers`). `expand({*: "write"})` enumerates
+SECTIONS, so those sections never entered the owner's allowed set and the nav hid **Org Structure,
+SSO, Offers & Coupons and GOIP from the OWNER role itself**. The symptom was inverted — a scoped
+manager, granted `settings` by name, could still see SSO while the owner could not. The platform
+console has no NAVSEC (`canSee` keys off the leaf), so `prbac` was unaffected. Fix: the surface is
+now `navSection(nav leaves) ∪ Object.values(KEY_SECTION) ∪ {compose}` — resolved through the same
+map the console uses AND closed under the entity router, because `can()` is asked about both. The
+closure is load-bearing: without it, `privacy` (consent / privacy_request) and `compose` (composed
+`cp_*` records) — sections no nav leaf names — were ungrantable, even for the owner. **A grant
+surface derived from the nav must resolve through the console's own indirection and be closed under
+every router that consults it; half a derivation inverted access.**
+- The closure exposed **three inert grants** in the shipped roles: `variant_groups` (catalog),
+  `promotions` (marketing), `customers` (support) — keys no router ever asks for (those entities
+  route to `skus`/`offers`/`orders`, which each role already holds), so `validateRole` would reject
+  the role the moment an operator saved it. Removed; behaviour identical. Grep-confirmed nothing
+  consults the three names as store sections (the hits are table names and *platform* nav leaves — a
+  different console and surface).
+
+**Defect 2 — two gate checks that could not fail.** `payload.console.admin.filter(s =>
+!payload.console.admin.includes(s))` is always empty, and `platform.length > 0` is nearly vacuous —
+a filter of an array against itself asserts nothing (the "a check that cannot fail is not a check"
+class). Both now compare the surfaces the engines actually consult (`rbac.SECTIONS` /
+`prbac.SECTIONS`) against the compiled nav, so a regression to a hand-maintained list is caught by
+the gate, not only by a test.
+
+**Defect 3 — `npm run registry` deleted its own output.** `compile.js` unlinked `canonical.lxr`/
+`canonical.json` at module top for EVERY invocation, so `--gate && --verify` removed the seal the
+first half had just written and `--verify` always died "no sealed registry". Read-only modes
+(`--verify`/`--decrypt`/`--search`) no longer touch the seal.
+
+**Defect 4 — the seal did not cover the compiler.** The manifest hashed only the SOURCE files, so an
+edit to the parse code left the seal reporting clean while the runtime served a registry the current
+code would not produce — a payload field added by new code is simply absent from the sealed one, and
+the manifest cannot see it. This nearly silently defeated Defect 1's fix against the on-disk seal.
+`lib/canonical.js`, `lib/ucos.js`, `lib/ucos-registry.js`, `lib/ucos-universes.js` are now manifest
+inputs (28 sources), so a compiler edit drifts the seal and `load()` re-compiles (strict mode makes
+it a hard stop — ship the re-compile with the code). **The manifest must hash the compiler, or the
+seal proves the wrong thing about a compile the current code no longer produces.**
+
+**Suite green, exit 0** (~15 min; 8807 confirmed free first): smoke 751 · registry-gate 37 · goip 197 ·
+ucos-audit 73 · ucos-universes 64 · upce 170 · catalog 47 · product-universes 25 · activation 478 ·
+domains 46 · dashboards 68 · themes 46 · gcatalog 82 · gops 64 · parity 231 · wizard 14 · tenancy 32 ·
+padmins 62 · roles 71 · compose 58 · identity-modes 66 · ucos-master 257 · ucos-omega 166 · ucos-mm
+326 · ucos-registry 147. `npm run registry`: 15/15 gate checks green, seal verified, drift none,
+2,919 universes / 32,220 concepts / 12 documents.
+**Still open:** the whole worktree is UNCOMMITTED (now spanning sessions 9–19) — session 17's
+"git status clean" bar — and the live 8787 server was DOWN on resume (not merely stale).

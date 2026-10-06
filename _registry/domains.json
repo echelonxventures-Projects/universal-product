@@ -25,8 +25,8 @@
     { "domainId": "D-RSN", "name": "Reasoning",    "owns": ["Reasoning"], "responsible": ["Deductive/Inductive/Abductive/Constraint/Policy/Semantic/Causal Reasoning"], "notResponsible": ["Observation Capture","Policy Approval"], "contract": "UCOS-RSN-000001" },
     { "domainId": "D-SIM", "name": "Simulation",   "owns": ["Simulation"], "responsible": ["Future Modeling","Scenario Analysis","Prediction"], "notResponsible": ["Reality Mutation","Policy Approval"], "contract": "UCOS-SIM-000001" },
     { "domainId": "D-CAU", "name": "Causality",    "owns": ["Causality"], "responsible": ["Cause/Effect Tracking","Impact Analysis","Consequence Modeling"], "notResponsible": ["Relationship Storage","Decision"], "contract": "UCOS-CAU-000001" },
-    { "domainId": "D-AGT", "name": "Agent",        "owns": ["Agents"], "responsible": ["Autonomous Execution","Goal Fulfillment","Task Completion"], "mustObey": ["Constitution","Authority","Policy","Trust","Evidence"], "contract": "UCOS-AGT-000001" },
-    { "domainId": "D-DTW", "name": "Twin",         "owns": ["Digital Twins"], "responsible": ["Reality Representation","Synchronization","Twin Analytics"], "notResponsible": ["Reality Governance","Policy Decisions"], "contract": "UCOS-DTW-000001" },
+    { "domainId": "D-AGT", "name": "Agent",        "owns": ["Agent"], "responsible": ["Autonomous Execution","Goal Fulfillment","Task Completion"], "mustObey": ["Constitution","Authority","Policy","Trust","Evidence"], "contract": "UCOS-AGT-000001" },
+    { "domainId": "D-DTW", "name": "Twin",         "owns": ["Digital Twin"], "responsible": ["Reality Representation","Synchronization","Twin Analytics"], "notResponsible": ["Reality Governance","Policy Decisions"], "contract": "UCOS-DTW-000001" },
     { "domainId": "D-EVO", "name": "Evolution",    "owns": ["Evolution","Emergence"], "responsible": ["Governed Change","History Preservation","Emergence Detection"], "notResponsible": ["Runtime Execution"], "contract": "UCOS-EVO-000001" }
   ],
   "boundaries": {

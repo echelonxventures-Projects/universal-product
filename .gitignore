@@ -10,3 +10,11 @@ data/tls-*.pem
 .luxora.pid
 server.log
 /tmp
+.DS_Store
+/* the compiled single source of truth is DERIVED from the corpora + the authored
+   _registry/*.json inputs: it is sealed with a per-deployment key (data/registry.json)
+   and re-compiles deterministically, so the artifacts are never committed. The
+   sources are the authority; the seal is reproducible, verifiable, not stored. */
+_registry/canonical.json
+_registry/canonical.lxr
+data/registry.json
