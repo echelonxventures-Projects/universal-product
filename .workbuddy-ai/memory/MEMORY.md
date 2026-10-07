@@ -1365,3 +1365,14 @@ COMMITTED (the session-17 "git status clean" bar, closed): `lib/authz.js` (the o
 engine, rbac/prbac as facades), `lib/webauthn.js` (real CBOR/COSE), `public/console.html` +
 `public/js/console.js` (the one console), the `cap_v3` atom→section surface, and every suite that
 pins them. Live 8787 restarted on the committed code afterwards.
+
+**Live verification of the fix, and one honest gap that is NOT a bug.** With the CSRF dance
+(session-4 gotcha: `azc` from the jar echoed in `x-csrf`, or every live POST 403s), the flagship
+admin logs in and `GET /api/meta/entity/rfq` answers **200** — the atom-owned section that used to
+500 — with `sellers · marketplace · rfqs · tenders · contracts · mktops · tradeops · finops` all
+granted. **`qcops` is absent on live though a fresh DB grants it**: `DEMO_COMPOSITIONS`
+(db.js:2613) is first-boot-guarded (`!get("SELECT 1 FROM capability_values … LIMIT 1")`), so the
+live DB — which predates `blend_quick_commerce` — keeps the composition it had and does not gain
+the quick-commerce atoms on a restart. That is the "operator owns the row" rule, not a defect; do
+not chase it. Compose it deliberately from ⚙️ Capabilities if the live flagship should run
+quick-commerce.
