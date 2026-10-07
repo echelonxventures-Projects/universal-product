@@ -223,6 +223,7 @@ listenServer.listen(PORT, () => {
   🏬 Stores:      ${tenants.map(t => `http${IS_TLS ? "s" : ""}://${t.slug}.localhost:${PORT} (${t.slug})`).join("  |  ")}
   🧾 Store admin: http${IS_TLS ? "s" : ""}://localhost:${PORT}/admin.html      (admin@luxora.shop / admin123)
   🛰  Platform:   http${IS_TLS ? "s" : ""}://localhost:${PORT}/platform.html   (platform@luxora.shop / platform123)
+  🌐 One console: http${IS_TLS ? "s" : ""}://localhost:${PORT}/console.html    (both scopes, one sign-in)
    🔐 Scorecard:   GET /api/platform/security
 `);
   /* optional multi-node Redis queue worker (config-driven; off unless queue=redis and LX_WORKER≠0) */

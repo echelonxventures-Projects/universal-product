@@ -63,13 +63,13 @@ async function render(p, wait = 2000) {
     ok(!!ins && !ins.composed, "a universe carries its provenance home, uncomposed", ins && ins.home + " · " + ins.source);
 
     console.log("▸ AUTHORITY — only the platform composes");
-    jar.delete("azs"); jar.delete("azc");
+    jar.delete("azs"); jar.delete("azc"); jar.delete("azp");   /* drop the platform authority too: the unified console holds both, so a store-ONLY identity is the one that must be refused */
     await f("/api/session?store=luxora");
     await f("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
     const storeCompose = await f("/api/compose/insurance", "POST", {});
-    ok(!!storeCompose.error, "a store admin cannot compose (" + (storeCompose.error || "") + ")", JSON.stringify(storeCompose));
+    ok(!!storeCompose.error, "a store-only admin cannot compose (" + (storeCompose.error || "") + ")", JSON.stringify(storeCompose));
     const storeRead = await f("/api/compose/candidates");
-    ok(!!storeRead.error, "a store admin cannot read the composition surface", JSON.stringify(storeRead));
+    ok(!!storeRead.error, "a store-only admin cannot read the composition surface", JSON.stringify(storeRead));
     jar.clear();
     await f("/api/session");
     await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
@@ -149,9 +149,12 @@ async function render(p, wait = 2000) {
     ok(man2.records === 2, "the records survive recomposition (the dataset is not the declaration)", man2.records);
     const led2 = await f("/api/compose/ledger");
     const mine = (led2.ledger || []).filter(e => e.key === "cp_insurance");
-    ok(mine.length === 2, "recomposition appends to the ledger — evolution is traceable (" + mine.length + " rows)", mine.length);
+    ok(mine.length === 1, "the ledger holds one row per capability — recomposition supersedes, never duplicates (" + mine.length + " rows)", mine.length);
+    ok(mine[0] && man2.records === 2, "the superseding row reflects the live record count", man2.records);
     const dup = await f("/api/compose/insurance", "POST", {});
     ok(dup.ok, "composing an already-composed capability is idempotent, not an error", dup.error || "ok");
+    const led3 = await f("/api/compose/ledger");
+    ok((led3.ledger || []).filter(e => e.key === "cp_insurance").length === 1, "a second compose still keeps exactly one row — the ledger never accumulates duplicates");
 
     console.log("▸ CONSOLE — the platform's build surface renders and composes");
     const page = await render("/platform.html", 2600);

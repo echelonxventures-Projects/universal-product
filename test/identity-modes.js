@@ -181,7 +181,7 @@ const makeIdToken = (payload, secret) => {
     ok(!!(await f("/api/admin/identity-providers", "PUT", { provider_type: "passkey", name: "Device Passkey", enabled: true, config: { rpId: "luxora.localhost" } })).ok, "a provider of the new type is configured");
     const pk = await f("/api/auth/login-init?store=luxora", "POST", { email: "otp@luxora.shop", method: "passkey" });
     ok(!!pk.ok && pk.action === "biometric_challenge", "the new type routes to the flow it named — no code change", pk.error);
-    ok(!!(await f("/api/auth/login/biometric?store=luxora", "POST", { email: "otp@luxora.shop", challenge: pk.challenge, assertion: { clientDataJSON: "x", authenticatorData: "y", signature: "z" } })).ok, "and its challenge verifies through the existing flow");
+    ok(!!(await f("/api/auth/login/biometric?store=luxora", "POST", { email: "otp@luxora.shop", challenge: pk.challenge, assertion: { clientDataJSON: "x", authenticatorData: "y", signature: "z" } })).error, "the flow is reachable and a fabricated assertion is refused — the stub that accepted it is gone");
     await platLogin();
     ok(!!(await f("/api/admin/identity-provider-types", "POST", { key: "bogusflow", label: "Bogus", flow: "telepathy", fields: [] })).error, "a type naming an unknown flow is refused at registration");
 

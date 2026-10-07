@@ -1246,3 +1246,122 @@ padmins 62 · roles 71 · compose 58 · identity-modes 66 · ucos-master 257 · 
 2,919 universes / 32,220 concepts / 12 documents.
 **Still open:** the whole worktree is UNCOMMITTED (now spanning sessions 9–19) — session 17's
 "git status clean" bar — and the live 8787 server was DOWN on resume (not merely stale).
+
+### 2026-10-07 (session 20) — resumed GREEN; the worktree holds the one-console/authz unification
+Resumed. Ran `npm test` FIRST (the standing lesson — it has been red on resume four times now) and
+it was genuinely **green, exit 0** (~18 min): registry-gate 37 · goip 197 · ucos-audit 73 ·
+ucos-universes 64 · upce 170 · catalog 47 · product-universes 25 · activation 478 · domains 46 ·
+dashboards 68 · themes 46 · gcatalog 82 · gops 64 · parity 231 · wizard 14 · tenancy 32 · padmins 62 ·
+roles 71 · compose 60 · identity ✓ · identity-modes 66 · **webauthn 36 · authz 39 · console 31 ·
+navfit 61** (the four new suites) · ucos-master 257 · ucos-omega 166 · ucos-mm 326 · ucos-registry
+147 · smoke 751. No ✗/FAILED/ABORT anywhere in the log. The last commit is `7daf85b` (session 19's
+sealed registry); everything above is UNCOMMITTED (15 modified + 8 untracked).
+
+**The unrecorded feature the tree holds — four pieces, all wired and tested:**
+1. **`lib/authz.js` (395 lines) — the ONE authorization engine.** `lib/rbac.js` and `lib/prbac.js`
+   are now thin facades over it (rbac −239 / prbac −218 lines) that keep every legacy call shape
+   alive, so no call site, test or stored `staffRoles`/`platformRoles` row changed meaning. One
+   engine, **two namespaced surfaces**: a grant is `store:orders` or `platform:gorders`, never a bare
+   key — the two consoles share thirty section keys ("orders", "dash", "settings", "audit") that a
+   merged surface would have collided silently. `'*'` expands to the caller's scope only. An
+   identity may hold BOTH authorities (`{store?, platform?}`); each grants outside its own surface
+   never. The surfaces are read from the compiled canonical registry (`consoleSec()`), fail-closed.
+2. **`public/console.html` + `public/js/console.js` — the ONE console.** One URL, one sign-in, one
+   nav grouped by scope; it loads each bundle (`/js/admin.js`, `/js/platform.js`) **inside its own
+   function scope** so their twenty shared globals (`render`, `NAV`, `shell`…) never collide, and
+   dispatches a view to the bundle that owns it. Both bundles early-return from boot when
+   `LX_GUEST` is defined so a guest-loaded bundle never paints `#app`. `GET /api/auth/me` is the
+   unified identity. `establishSession`/`apiPlatformLogin` **no longer drop the other authority** —
+   carrying both is the point, and the scopes stay apart by namespace.
+3. **`lib/webauthn.js` + `identity.js` — real WebAuthn math.** The old `validateBiometricAssertion`
+   accepted anything shaped like an assertion; that stub is gone. `verifyAttestation` /
+   `verifyAssertion` do real CBOR decode + COSE_Key → node KeyObject + signature verification
+   (EC P-256 / Ed25519 / RSA), challenge + origin checks, sign-count replay protection, and
+   `POST /api/auth/biometric/register` enrols a verified credential. The CBOR *encoder* lives only
+   in the test (a synthetic authenticator; the platform only decodes).
+4. **NAVFIT — the tenant is what it is.** `public/js/admin.js` declares each store section's fitness
+   (deploy mode + industries) as strict JSON; `canonical.js` harvests it into the compiled registry
+   (`consoleSec().adminNavFit`); `authz.storeGrants` drops an unfit section at the ONE choke point,
+   so it hides in BOTH consoles' navs AND is refused at the API — for an owner exactly as for staff
+   ("'*' is bounded by what the tenant is"). `test/navfit.js` pins the three shapes: luxora
+   (marketplace, all industries) keeps everything; velora (brand, jewellery+luxury) loses B2B and
+   quick-commerce but KEEPS serial and planning; aurum (industry marketplace) keeps B2B + qcops,
+   drops serial.
+
+**One real gap found — the console-surface packs are declared but the runtime never reads them.**
+`lib/modules.js:69-80` ships three packs (`pack-b2b` · `pack-qcommerce` · `pack-serial`) whose
+comment claims "what a store's console shows is the sum of the capabilities the tenant holds". None
+of it is wired, and the claim is false — NAVFIT, not the packs, decides the surface:
+- `seedMarket()` (modules.js:87) writes `{capabilities, features, gateways, catalog, fields}` into
+  the manifest — **`sections` and `auto` are dropped on the floor**, so the pack's own metadata
+  never reaches the DB and no engine can read it.
+- The packs grant capabilities **`b2b` · `qcommerce` · `serial`, none of which exists in the
+  37-key catalog** (`lib/capabilities.js`). `mods.caps()` adds the name to the session's capability
+  list, but `capabilities.cap()` answers `{}` for a key the catalog doesn't define, so buying a pack
+  grants a phantom capability nothing reads. The real keys for those surfaces are in the catalog
+  (`blend_marketplace` · `blend_quick_commerce` · `blend_b2b_trade`).
+- No test references the packs, which is why the suite is green around them.
+- Noted: the packs' `auto` rules are *exactly* consistent with NAVFIT's expectations (velora keeps
+  `serialized` via jewellery/luxury and loses `qcops`; aurum keeps B2B + qcops, drops serial), so
+  they read like a second representation of one truth — making them a gate would duplicate NAVFIT
+  (a Law-002 smell), while making them an *expansion* a tenant buys (a brand buys B2B to go
+  wholesale, as the pack's own summary says) changes no seeded tenant's behaviour. Either way it is
+  an authorization-surface decision, so it was raised with the owner rather than wired unilaterally.
+
+**Live 8787 is DOWN** (no process on the port; the pid file's 36754 is stale). Start with
+`./serve.sh` when needed.
+
+### 2026-10-07 (session 21) — resumed RED again (5th time); the packs directive was already
+### the design on disk; two real defects in the composition→surface path
+Ran `npm test` FIRST (the standing lesson). It was **RED at `test/parity.js`** — memory had
+said green. The owner's packs question was raised last session as an authorization-surface
+decision; **the tree had already answered it**, in unrecorded work, exactly the way the owner's
+directive now demands ("why are you hardcoding the things… commerce is a combination of product,
+cart, billing, listing, catalog, payment gateway — each individual, reusable, billable, plug and
+play"):
+
+- **The three hardcoded bundles are gone.** `pack-serial` deleted; `pack-b2b`/`pack-qcommerce`
+  now name REAL catalog presets (`blend_marketplace` + `blend_b2b_trade`, `blend_quick_commerce`),
+  and `composeCapabilities()` (modules.js) expands a preset into its member atoms through the
+  registry's own membership — never a hardcoded list. A module is a purchasable COMPOSITION
+  (billable: price + MOD-* invoice on install); an atom is individually switchable in ⚙️
+  Capabilities (plug and play). The surface is never granted by a bundle.
+- **Each atom declares the console leaves it governs** (`SECTIONS` in capabilities.js,
+  `CATALOG_STAMP = cap_v3` — buy_box → marketplace + mktops, rfq_bidding → rfqs,
+  instant_delivery → qcops), seeded into `platform_capabilities.sections` with the same
+  self-heal/edited convention as params. The grant engine derives the surface from the LIVE
+  composition: `authz.capabilitySections()`/`tenantAtoms()`/`sectionGranted()`, applied at the
+  one choke point (`storeGrants`), so a leaf and its engine arrive together and leave together —
+  hidden in BOTH consoles' navs AND refused at the API, for an owner exactly as for staff.
+  Zero duplication: a section an atom lights is never also in NAVFIT (`test/navfit.js` §A asserts
+  it per section).
+- `test/navfit.js` (98 assertions) pins the whole thing: §H one atom on → leaf + engine + router;
+  off → both gone; §I an archetype composes atoms, install/uninstall, surface follows.
+
+**Defect 1 (the RED) — `sectionGranted` called `.some()` on a Set.** `tenantAtoms()` returns a
+`Set`, `storeGrants` passes it straight through, and `sectionGranted` did
+`(atoms || tenantAtoms(...)).some(...)` → `TypeError: ...some is not a function` thrown from
+`requireSection` on EVERY atom-owned section for a composed tenant — so `parity.js`'s
+`dark_store` (section `qcops`) 500'd, and any store with a live composition would have 500'd on
+every request touching a composed surface. `[...(atoms || tenantAtoms(...))]` before `.some`
+(also tolerates an array from a future caller). **A Set and an Array are not interchangeable —
+spread at the seam, or the choke point becomes the outage.**
+
+**Defect 2 — `test/navfit.js` read `.ok` off the wrong object, and half the writes have no `ok`
+anyway.** Its `f()` returns `{status, body}`, so `(await f(...)).ok` was always `undefined` —
+four assertions (enable/disable/install/uninstall) failing while the operations demonstrably
+succeeded (the state-change assertions right after them passed). Two layers: install/uninstall
+just needed `.body.ok`; **enable/disable legitimately return the bare composition
+(`{tenant_id, preset, capabilities}`) with no `ok` envelope**, and that is the pinned contract —
+`test/parity.js:569` reads `.capabilities` straight off the POST response, and the console
+ignores the body. So the fix was the TEST (status 200 + the atom present/absent in the returned
+composition), not the API. **Before "fixing" a response shape, grep for the callers that already
+depend on the current one — parity would have broken had I wrapped it.**
+
+**Suite green, exit 0** (the `&&` chain reached `smoke.js` last, which proves every prior suite
+passed): smoke 750 · navfit 98 · parity 231 · gops 64 · and the full chain to completion.
+~18 min; run with a ≥1200s timeout and confirm 8807 is free first. This session's work is
+COMMITTED (the session-17 "git status clean" bar, closed): `lib/authz.js` (the one authorization
+engine, rbac/prbac as facades), `lib/webauthn.js` (real CBOR/COSE), `public/console.html` +
+`public/js/console.js` (the one console), the `cap_v3` atom→section surface, and every suite that
+pins them. Live 8787 restarted on the committed code afterwards.

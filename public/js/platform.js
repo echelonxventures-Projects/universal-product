@@ -538,7 +538,7 @@ function shell(content) {
       <nav class="p-nav">${navTree()}</nav>
     </aside>
     <div class="p-scrim" id="pScrim"></div>
-    <main class="p-main"><div class="p-top"><button class="p-hamburger" id="pBurger" aria-label="Open navigation">☰</button><h1>${meta ? meta.label.replace(/^\S+\s/, "") : view}</h1><span class="spacer"></span>
+    <main class="p-main"><div class="p-top"><button class="p-hamburger" id="pBurger" aria-label="Open navigation">☰</button><h1 id="vTitle">${meta ? meta.label.replace(/^\S+\s/, "") : view}</h1><span class="spacer"></span>
       ${meta ? `<span class="p-tag">${esc(meta.home)}</span>` : ""}
       <span class="p-chip">platform</span><span class="p-user">${esc(P.user.email)}</span>
       <span class="p-tag">${esc((P.user && P.user.role) || "owner")}</span>
@@ -3130,6 +3130,10 @@ async function render() {
 }
 document.addEventListener("click", e => { if (e.target.closest("[data-mclose]")) { const mm = document.getElementById("modal"); if (mm) mm.innerHTML = ""; } }); /* __mclose */
 (async function boot() {
+  /* the unified console (/console.html) loads this bundle inside its own scope and
+     drives the views itself; a guest-loaded bundle must not paint #app or it would
+     clobber the one shell. LX_GUEST is set by that console's bundle wrapper */
+  if (typeof LX_GUEST !== "undefined" && LX_GUEST) return;
   try {
     const me = await api("/platform/me");
     if (!me.admin) {

@@ -66,6 +66,19 @@ const NAV = [
 ];
 const NAVFLAT = NAV.flatMap(g => g.items);
 const NAVSEC = { promotions: "offers", goip: "offers", ai: "ai", webhooks: "webhooks", trash: "trash", team: "team", studio: "studio", sso: "settings", structure: "tenancy" };
+/* THE TENANT IS WHAT IT IS — a section is not universal. This map is the fitness of the
+   store sections that are VERTICAL FACTS about the tenant — no capability atom owns them,
+   so the tenant's own deploy MODE and INDUSTRIES govern them instead (lib/authz.js reads
+   this through the compiled canonical registry). Serial tracking belongs to tracked-goods
+   verticals; replenishment planning belongs to physical stock. Everything else that looks
+   like a console section is lit by the capability atom that governs it — the surface is a
+   shadow of the composition, declared on the atom in the catalog, never duplicated here.
+   A section absent here applies to every tenant; an entry narrows it. The console's own
+   nav never reads this directly; written as strict JSON because the compiler parses it. */
+const NAVFIT = {
+  "serialized": { "industries": ["electronics", "automotive", "telecom", "industrial", "healthcare", "pharma", "defense", "marine", "jewellery", "luxury", "art"] },
+  "planning": { "notIndustries": ["digital", "software", "services", "subscription", "media", "education", "finance", "realestate", "travel", "energy", "telecom", "gov", "defense", "mining"] }
+};
 const navSection = k => NAVSEC[k] || k;
 const canSee = k => { if (!A.allowed || A.allowed.includes("*")) return true; if (k === "dash") return true; return A.allowed.includes(navSection(k)); };
 let view = "dash";
@@ -190,8 +203,13 @@ async function coCaps() {
   if (!coCap) coCap = (await api("/capabilities")).catalog;
   return coCap;
 }
-async function coGate(caps, keys) {
+/* the gate a domain's view reads: the atoms that govern THIS section, derived from the
+   capability catalog the platform serves (each atom declares the sections it lights).
+   The nav's visibility derives from the same declaration through lib/authz.js, so a leaf
+   and the view behind it can never disagree about whether the domain is on. */
+async function coGate(section) {
   const all = await coCaps();
+  const keys = all.filter(c => (c.sections || []).includes(section)).map(c => c.key);
   const have = k => { const c = all.find(x => x.key === k); return !!(c && c.on); };
   const on = keys.filter(have);
   return { on, off: keys.filter(k => !have(k)), any: on.length > 0 };
@@ -209,7 +227,7 @@ function coTbl(head, rows, cols, empty) {
 
 /* ---------- Quick-commerce: dark stores, slots, serviceability, dispatch ---------- */
 async function vQcOps() {
-  const gate = await coGate(null, ["instant_delivery", "store_inventory", "dispatch_batching"]);
+  const gate = await coGate("qcops");
   if (!gate.any) return coOff("quick-commerce", "⚡ Quick-commerce", gate.off);
   const d = await api("/qc/stores", {});
   const stores = d.stores || [], riders = d.riders || [];
@@ -253,7 +271,7 @@ function wireQcOps() {
 
 /* ---------- Fintech Ops: UPI, QR, links, mandates, escrow, KYC, credit, payouts ---------- */
 async function vFinOps() {
-  const gate = await coGate(null, ["upi_collect", "qr_pay", "payment_links", "mandates", "escrow", "split_payments", "kyc", "bnpl", "lending", "bank_payouts", "bbps", "recharge", "p2p_transfer", "insurance", "gift_vouchers"]);
+  const gate = await coGate("finops");
   if (!gate.any) return coOff("fintech", "💸 Fintech Ops", gate.off);
   const upi = (await api("/fintech/upi", {})).upi || [];
   const billers = (await api("/fintech/billers", {})).billers || [];
@@ -312,7 +330,7 @@ function wireFinOps() {
 
 /* ---------- Marketplace Ops: onboarding, buy-box, FBA, health, claims ---------- */
 async function vMktOps() {
-  const gate = await coGate(null, ["buy_box", "seller_health", "buyer_protection", "smart_fulfilment", "fba_inbound"]);
+  const gate = await coGate("mktops");
   if (!gate.any) return coOff("marketplace", "🏪 Marketplace Ops", gate.off);
   const [onb, perf, claim, fba, smart] = await Promise.all([
     api("/meta/entity/seller_onboarding", {}).catch(() => ({ rows: [] })),
@@ -369,7 +387,7 @@ function wireMktOps() {
 
 /* ---------- Trade Ops: assurance, gold suppliers, verification, LCs, RFQs ---------- */
 async function vTradeOps() {
-  const gate = await coGate(null, ["trade_assurance", "gold_supplier", "company_verification", "export_documents", "letters_of_credit", "rfq_bidding", "reverse_auction", "segment_pricing", "moq_enforcement"]);
+  const gate = await coGate("tradeops");
   if (!gate.any) return coOff("B2B trade", "🤝 Trade Ops", gate.off);
   const [ta, gold, ver, lc, quo, pl, doc] = await Promise.all([
     api("/meta/entity/trade_assurance", {}).catch(() => ({ rows: [] })),
@@ -1683,6 +1701,10 @@ function wireSettings() {
 const A = { user: null, gwCfg: {}, studioSel: null };
 document.addEventListener("click", e => { const close = e.target.closest("[data-mclose]") || (e.target.classList && e.target.classList.contains("p-modal")); if (close) { const mm = document.getElementById("modal"); if (mm) { mm.innerHTML = ""; mm.classList.add("hidden"); } } }); /* __mclose + backdrop */
 (async function boot() {
+  /* the unified console (/console.html) loads this bundle inside its own scope and
+     drives the views itself; a guest-loaded bundle must not paint #app or it would
+     clobber the one shell. LX_GUEST is set by that console's bundle wrapper */
+  if (typeof LX_GUEST !== "undefined" && LX_GUEST) return;
   try {
     const [sess, cfg] = await Promise.all([api("/session"), api("/config")]);
     TT = cfg;

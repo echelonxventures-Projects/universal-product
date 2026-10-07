@@ -452,10 +452,13 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(!!movedRow && movedRow.is_service === 0, "moving to a physical universe flips the derived type", movedRow && movedRow.is_service);
     ok(page.errs.length === 0, "structured form no JS errors", page.errs.slice(0, 2).join("|"));
 
-    console.log("▸ GOVERNANCE: store admin cannot reach platform-only config — and the server survives");
+    console.log("▸ GOVERNANCE: a store-ONLY admin cannot reach platform-only config — and the server survives");
     /* an unauthorized request to a platform endpoint used to write the 403 twice
        (requirePlatform already writes, then the caller wrote again) and the double
-       write killed the whole process. A refusal must stay a refusal. */
+       write killed the whole process. A refusal must stay a refusal.
+       The unified console holds both authorities on one client, so the identity that
+       must be refused here is a store-ONLY one: the platform cookie is dropped first. */
+    jar.delete("azp");
     const adm = await f("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
     ok(!!adm.user, "store admin login");
     const platDenied = await f("/api/platform/global-products", "POST", {});

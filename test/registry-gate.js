@@ -160,7 +160,7 @@ console.log("\n▸ §C THE RUNTIME — what booted IS the seal (no second source
   /* a section reached only through the entity router, never the nav, is still grantable
      and still resolves for a scoped role — the closure that keeps datasets authorisable */
   const support = rb.grant({ role: "admin", staff_role: "support" }, 1);
-  ok(support.privacy === "write", "a router-only section (privacy) is grantable and resolves", JSON.stringify(Object.keys(support).sort()));
+  ok(support["store:privacy"] === "write", "a router-only section (privacy) is grantable and resolves", JSON.stringify(Object.keys(support).sort()));
   /* every shipped role grants only real sections, so the console's role editor never
      shows a phantom checkbox that validateRole would reject the moment it is saved */
   for (const r of rb.ROLES) {
