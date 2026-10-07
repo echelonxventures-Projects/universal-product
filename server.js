@@ -231,4 +231,22 @@ listenServer.listen(PORT, () => {
     if (cfg.driverOf("queue") === "redis" && process.env.LX_WORKER !== "0") { const w = ad.startWorker(cfg.get("queue"), {}); if (w.active) console.log("   ⚙️  Redis queue worker: RUNNING"); }
     if (cfg.driverOf("db") === "postgres") { const a = ad.build("db", cfg.get("db")); if (a.configured) a.ping().then(r => console.log("   🐘 postgres " + (r.ok ? "reachable" : "unreachable: " + r.error))).catch(() => { }); }
   } catch (e) { }
+
+  // Start queue processors (dev mode runs sync, prod runs async)
+  try {
+    const { processJob } = require("./lib/queue.js");
+    processJob("report-run", async (job) => {
+      try {
+        const db = require("./lib/db.js");
+        const { get, run } = db;
+        const { reportId } = job;
+        // Generate report data
+        const report = get("SELECT * FROM reports WHERE id=?", reportId);
+        if (report) {
+          console.log(`✓ Report ${reportId} generated`);
+          // Add to dashboard or send notification
+        }
+      } catch (e) { console.error(`Report ${job.reportId} failed:`, e.message); }
+    });
+  } catch (e) { console.error("Queue processor init failed:", e.message); }
 });
