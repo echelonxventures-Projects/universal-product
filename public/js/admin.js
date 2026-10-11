@@ -55,6 +55,7 @@ const NAV = [
   { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"], ["planning", "📦 Planning & Replenishment"], ["suppliers", "🚚 Suppliers & Procurement"]] },
   { g: "Marketplace & B2B", items: [["sellers", "🏪 Sellers"], ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["marketplace", "📣 Marketplace & Ads"]] },
   { g: "Commerce Ops", items: [["qcops", "⚡ Quick-commerce"], ["finops", "💸 Fintech Ops"], ["mktops", "🏪 Marketplace Ops"], ["tradeops", "🤝 Trade Ops"]] },
+  { g: "Mobility (E17)", items: [["rides", "🚗 Rides & Dispatch"], ["fleet", "🚙 Fleet & Drivers"]] },
   { g: "Payments & Finance", items: [["payments", "💳 Payment Gateways"], ["settlements", "🤝 Settlements"], ["finance", "💰 Finance & Settlements"], ["billing", "🧮 Billing"]] },
   { g: "Growth & Retention", items: [["promotions", "💸 Offers & Coupons"], ["ugc", "⭐ Reviews & Q&A"], ["helpdesk", "🎧 Support Helpdesk"], ["affiliate", "🤝 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["goip", "Ω∞ GOIP"]] },
   { g: "AI & Automation", items: [["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"]] },
@@ -592,12 +593,16 @@ async function entityRows(key) { try { return (await api("/meta/entity/" + key))
 async function refOptions(key) {
   const rows = await entityRows(key);
   return rows.map(r => {
-    /* products carry their brand as the brand's DISPLAY NAME (the string the catalogue,
-       search facets, order snapshots and CSV exports all read), so the option value must
-       be the label — the numeric row id would never match a real product and the form
-       would render an empty required select and refuse every save. */
+    /* products carry their brand as the DISPLAY NAME (the string the catalogue, search facets,
+       order snapshots and CSV exports all read), so the option value must be the label — the
+       numeric row id would never match a real product and the form would render an empty
+       required select and refuse every save. */
     if (key === "brand" && r.label != null) return { v: r.label, l: r.label };
-    return { v: r.id != null ? r.id : r.key, l: r.title || r.name || r.label || r.code || r.ref || String(r.id || r.key) };
+    /* a platform-level master keyed by CODE (country, currency, subdivision) has no numeric id
+       — its option value is the code itself. Falling back to r.id here would drop the value
+       entirely, rendering an empty select that silently blocks every save of the record */
+    const v = r.id != null ? r.id : (r.code != null ? r.code : r.key);
+    return { v, l: r.title || r.name || r.label || r.code || r.ref || String(v) };
   });
 }
 async function fieldInput(f, val, registry) {
@@ -761,6 +766,41 @@ document.addEventListener("click", async e => {
       const r = await api(`/admin/planning/${act.dataset.id}`, "PUT", { status: "approved" });
       toast(`Approved ${r.replenishment.po_ref}`); render();
     }
+    /* E17 · mobility — the ride lifecycle advances through the engine's legal
+       transitions; the console only carries the target status the operator clicked */
+    if (act && act.dataset.act === "mob-next") {
+      const r = await api(`/admin/mobility/rides/${act.dataset.id}`, "PUT", { status: act.dataset.to });
+      if (r.error) toast(r.error); else { toast(`Ride ${r.ride.status}${r.ride.fare ? " · fare " + (+r.ride.fare).toFixed(2) : ""}`); render(); }
+    }
+    if (act && act.dataset.act === "mob-new-ride") {
+      const pickup = prompt("Pickup point", "Downtown · 5th Ave"); if (pickup == null) return;
+      const dropoff = prompt("Drop-off point", "Airport · Terminal 4"); if (dropoff == null) return;
+      const kind = prompt("Vehicle kind (car · suv · bike · auto · van)", "car") || "car";
+      const r = await api("/admin/mobility/rides", "POST", { rider: "Walk-up rider", pickup, dropoff, vehicle_kind: kind, payment_method: "cash" });
+      if (r.error) toast(r.error); else { toast(`Requested ${r.ride.ref}${r.ride.driver ? " · dispatched to " + r.ride.driver.name : " · queued for dispatch"}`); render(); }
+    }
+    if (act && act.dataset.act === "mob-new-driver") {
+      const name = prompt("Driver name"); if (!name) return;
+      const kind = prompt("Vehicle kind (car · suv · bike · auto · van)", "car") || "car";
+      const plate = prompt("Plate", "") || "";
+      const r = await api("/admin/mobility/drivers", "POST", { name, vehicle_kind: kind, plate, status: "offline" });
+      if (r.error) toast(r.error); else { toast(`Driver ${r.driver.name} added`); render(); }
+    }
+    if (act && act.dataset.act === "mob-new-vehicle") {
+      const plate = prompt("Plate"); if (!plate) return;
+      const kind = prompt("Kind (car · suv · bike · auto · van)", "car") || "car";
+      const r = await api("/admin/mobility/vehicles", "POST", { plate, kind, capacity: kind === "suv" || kind === "van" ? 6 : 4 });
+      if (r.error) toast(r.error); else { toast(`Vehicle ${r.vehicle.plate} registered`); render(); }
+    }
+    if (act && act.dataset.act === "mob-toggle-driver") {
+      const r = await api(`/admin/mobility/drivers/${act.dataset.id}/toggle`, "POST", { online: act.dataset.to === "1" });
+      if (r.error) toast(r.error); else { toast(`Driver ${r.driver.status}`); render(); }
+    }
+    if (act && act.dataset.act === "mob-deact-driver") {
+      if (!confirm("Deactivate this driver? They leave dispatch immediately.")) return;
+      const r = await api(`/admin/mobility/drivers/${act.dataset.id}/deactivate`, "POST");
+      if (r.error) toast(r.error); else { toast("Driver deactivated"); render(); }
+    }
     if (act && act.dataset.act === "co-new") openForm(act.dataset.key, null, render);
     if (act && act.dataset.act === "co-cap") { view = "settings"; coCap = null; render(); }
     if (act && act.dataset.act === "co-mktperf") {
@@ -875,6 +915,15 @@ async function vSettings() {
   const { settings: st, countries, taxModes, currencies } = await api("/admin/settings");
   const geo = { countries, taxModes, currencies };
   const reg = await api("/meta");
+  /* the feature flags ARE capability atoms — read the catalog so the settings view
+     labels each with its real name and points to where it is tuned */
+  const cat = await api("/capabilities").catch(() => ({}));
+  const capAtoms = {}; let capNote = "";
+  if (cat && cat.catalog) {
+    for (const c of cat.catalog) if (c.domain === "storefront") capAtoms[c.key] = c;
+    const n = Object.keys(capAtoms).length;
+    if (n) capNote = `The <b>${n}</b> toggles marked <span class="p-tag">atom</span> live in <b>◈ Capabilities</b> — switch and tune them there; this checkbox is the same bit.`;
+  }
   const sec = (name, title, html) => `<div class="p-panel" data-sec="${name}"><h2>${title}</h2>${html}</div>`;
   const inp = (path, label, val, type = "text") => `<label><span>${label}</span><input data-set="${path}" type="${type}" step="any" value="${esc(val)}"></label>`;
   return `
@@ -905,8 +954,11 @@ async function vSettings() {
     ${inp("commerce.perPage", "Results per page", st.commerce.perPage, "number")}${inp("commerce.cartMaxQty", "Cart max qty", st.commerce.cartMaxQty, "number")}
     </div></div>`)}
   ${sec("features", "Feature Flags", `<div class="p-form"><div class="row3">
-    ${Object.entries(st.features).map(([k, v]) => `<label style="display:flex;gap:8px;align-items:center"><input type="checkbox" data-feat="${k}" ${v ? "checked" : ""}> ${esc(k)}</label>`).join("")}
-    </div></div>`)}
+    ${Object.entries(st.features).map(([k, v]) => {
+      const atom = (capAtoms || {})[k.replace(/([A-Z])/g, (_, c) => "_" + c.toLowerCase())];
+      return `<label style="display:flex;gap:8px;align-items:center" title="${esc(atom ? atom.description : "a settings row, not yet an atom")}"><input type="checkbox" data-feat="${k}" ${v ? "checked" : ""}> ${esc(atom ? atom.label : k)}${atom ? ' <span class="p-tag">atom</span>' : ""}</label>`;
+    }).join("")}
+    </div>${capNote ? `<p class="hint" style="grid-column:1/-1">${capNote}</p>` : ""}</div>`)}
   ${sec("copy", "Copy & Wording", `<div class="p-form"><div class="row">
     ${Object.entries(st.copy).slice(0, 24).map(([k, v]) => inp("copy." + k, k, v)).join("")}</div></div>`)}
   ${sec("mode", "Deployment Mode", `<div class="p-form"><div class="row">
@@ -1624,6 +1676,8 @@ async function render() {
     else if (view === "risk") body.innerHTML = await vRisk();
     else if (view === "experiments") body.innerHTML = await vExperiments();
     else if (view === "planning") body.innerHTML = await vPlanning();
+    else if (view === "rides") body.innerHTML = await vRides();
+    else if (view === "fleet") body.innerHTML = await vFleet();
     else if (view === "finance") body.innerHTML = await vFinance();
     else if (view === "logistics") body.innerHTML = await vLogistics();
     else if (view === "search") body.innerHTML = await vSearch();
@@ -2086,6 +2140,72 @@ async function loadChatStatus() {
     html += `</tbody></div>`;
     status.innerHTML = html;
   } catch (e) { console.error(e); }
+}
+
+/* ========== E17 · the mobility universe (rides & dispatch · fleet) ==========
+   The console renders only what lib/mobility.js answered: every fare, surge
+   multiplier, ETA and cancellation fee was computed from the store's own capability
+   params. No rate is hard-coded in this file. */
+async function vRides() {
+  const d = await api("/admin/mobility", {});
+  const st = d.stats || {};
+  const rides = d.rides || [];
+  const active = rides.filter(r => !["completed", "cancelled"].includes(r.status));
+  const done = rides.filter(r => ["completed", "cancelled"].includes(r.status));
+  const NEXT = { requested: ["accepted", "Accept"], accepted: ["arrived", "Arrived"], arrived: ["trip_start", "Start trip"], trip_start: ["completed", "Complete"] };
+  const chip = s => `<span class="a-chip">${esc(s)}</span>`;
+  return `<div class="a-head"><h2>🚗 Rides &amp; Dispatch</h2><p class="a-sub">The ride lifecycle, surge pricing and live dispatch. Fares, cancellation fees and the platform commission are the store's own capability params — <code>ride_hailing</code> · <code>dynamic_pricing</code> · <code>dispatch</code> — and the legal transitions live in Data Studio (<code>mobilityTransitions</code>), so no rate or rule is hard-coded here.</p></div>
+  <div class="a-cards">
+    <div class="a-card"><h3>Live</h3>
+      <div class="a-stats">${[["Rides", st.rides || 0], ["Active now", st.active || 0], ["Drivers online", st.drivers_online || 0], ["Gross revenue", (st.gross_revenue || 0).toFixed(2)], ["Avg rating", (st.avg_rating || 0).toFixed(1)]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
+      <div style="margin-top:10px"><button class="btn-yellow" data-act="mob-new-ride">＋ Request a ride</button></div></div>
+    <div class="a-card"><h3>Surge zones</h3>
+      <div class="a-tablewrap"><table class="a-table"><thead><tr><th>zone</th><th>kind</th><th>multiplier</th><th>radius</th><th>state</th></tr></thead>
+      <tbody>${(d.zones || []).map(z => `<tr><td>${esc(z.name)}</td><td>${esc(z.kind)}</td><td><b>×${(+z.multiplier).toFixed(2)}</b></td><td>${z.radius_km} km</td><td>${chip(z.active ? "active" : "idle")}</td></tr>`).join("") || `<tr><td colspan="5">No surge zones — every ride prices at ×1.</td></tr>`}</tbody></table></div></div>
+  </div>
+  <div class="a-card"><h3>Active rides (${active.length})</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>rider</th><th>route</th><th>vehicle</th><th>driver</th><th>surge</th><th>eta</th><th>status</th><th></th></tr></thead>
+    <tbody>${active.map(r => { const nx = NEXT[r.status]; return `<tr>
+      <td><code>${esc(r.ref)}</code></td><td>${esc(r.rider || "—")}</td>
+      <td>${esc(r.pickup)} → ${esc(r.dropoff)}</td><td>${chip(r.vehicle_kind)}</td>
+      <td>${esc(r.driver_name || "unassigned")}</td>
+      <td>${(+r.surge) > 1 ? `<b>×${(+r.surge).toFixed(2)}</b>` : "—"}</td>
+      <td>${r.eta_min ? r.eta_min + " min" : "—"}</td><td>${chip(r.status)}</td>
+      <td>${nx ? `<button class="btn-white sm" data-act="mob-next" data-id="${r.id}" data-to="${nx[0]}">${nx[1]}</button>` : ""}</td>
+    </tr>`; }).join("") || `<tr><td colspan="9">No rides in flight — request one above.</td></tr>`}</tbody></table></div></div>
+  <div class="a-card"><h3>Ride history</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>rider</th><th>route</th><th>driver</th><th>distance</th><th>duration</th><th>fare</th><th>rating</th><th>status</th></tr></thead>
+    <tbody>${done.map(r => `<tr>
+      <td><code>${esc(r.ref)}</code></td><td>${esc(r.rider || "—")}</td>
+      <td>${esc(r.pickup)} → ${esc(r.dropoff)}</td><td>${esc(r.driver_name || "—")}</td>
+      <td>${(+r.distance_km).toFixed(1)} km</td><td>${(+r.duration_min).toFixed(0)} min</td>
+      <td>${r.fare ? (+r.fare).toFixed(2) : "—"}</td><td>${r.rating || "—"}</td><td>${chip(r.status)}</td>
+    </tr>`).join("") || `<tr><td colspan="9">No completed rides yet.</td></tr>`}</tbody></table></div></div>`;
+}
+async function vFleet() {
+  const d = await api("/admin/mobility", {});
+  const st = d.stats || {};
+  const chip = s => `<span class="a-chip">${esc(s)}</span>`;
+  return `<div class="a-head"><h2>🚙 Fleet &amp; Drivers</h2><p class="a-sub">Driver onboarding, online state and the vehicle registry. Dispatch ranks candidates by rating then proximity, and a driver below the configured floor (<code>fleet_management · min_rating_to_dispatch</code>) is held out of matching. Vehicle kinds are the Data Studio list <code>mobilityVehicleKinds</code>.</p></div>
+  <div class="a-cards">
+    <div class="a-card"><h3>Fleet health</h3>
+      <div class="a-stats">${[["Drivers", st.drivers || 0], ["Online", st.drivers_online || 0], ["Avg rating", (st.driver_avg_rating || 0).toFixed(2)], ["Completed", st.completed || 0], ["Cancelled", st.cancelled || 0]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn-yellow" data-act="mob-new-driver">＋ Add driver</button><button class="btn-white" data-act="mob-new-vehicle">＋ Add vehicle</button></div></div>
+    <div class="a-card"><h3>Vehicles</h3>
+      <div class="a-tablewrap"><table class="a-table"><thead><tr><th>plate</th><th>kind</th><th>capacity</th><th>driver</th><th>odometer</th><th>insurance</th><th>status</th></tr></thead>
+      <tbody>${(d.vehicles || []).map(v => `<tr><td><code>${esc(v.plate)}</code></td><td>${esc(v.kind)}</td><td>${v.capacity}</td>
+      <td>${esc(v.driver_name || "—")}</td><td>${(+v.odometer).toFixed(0)} km</td><td>${esc(v.insurance_until || "—")}</td><td>${chip(v.status)}</td></tr>`).join("") || `<tr><td colspan="7">No vehicles registered.</td></tr>`}</tbody></table></div></div>
+  </div>
+  <div class="a-card"><h3>Drivers</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>name</th><th>city</th><th>vehicle</th><th>plate</th><th>rating</th><th>rides</th><th>earnings</th><th>state</th><th></th></tr></thead>
+    <tbody>${(d.drivers || []).map(x => `<tr>
+      <td>${esc(x.name)}${x.email ? `<div class="a-sub">${esc(x.email)}</div>` : ""}</td>
+      <td>${esc(x.city || "—")}</td><td>${chip(x.vehicle_kind)}</td><td><code>${esc(x.plate || "—")}</code></td>
+      <td>${(+x.rating).toFixed(2)}</td><td>${x.rides_completed}</td><td>${(+x.earnings).toFixed(2)}</td>
+      <td>${chip(x.status)}</td>
+      <td>${x.status === "suspended" ? "" : `<button class="btn-white sm" data-act="mob-toggle-driver" data-id="${x.id}" data-to="${x.status === "online" ? "0" : "1"}">${x.status === "online" ? "Go offline" : "Go online"}</button> <button class="btn-white sm" data-act="mob-deact-driver" data-id="${x.id}">Deactivate</button>`}
+      ${x.deactivated_at ? `<span class="a-sub">since ${esc(x.deactivated_at)}</span>` : ""}</td>
+    </tr>`).join("") || `<tr><td colspan="9">No drivers yet — add one above.</td></tr>`}</tbody></table></div></div>`;
 }
 
 /* ========== Module Registration ========== */

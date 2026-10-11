@@ -1406,3 +1406,16 @@ CREATE TABLE IF NOT EXISTS tenancy_nodes (id INTEGER PRIMARY KEY AUTOINCREMENT, 
 CREATE INDEX IF NOT EXISTS ix_tenancy_parent ON tenancy_nodes(tenant_id, parent_id);
 CREATE INDEX IF NOT EXISTS ix_tenancy_kind ON tenancy_nodes(tenant_id, kind);
 CREATE TABLE IF NOT EXISTS tenancy_config (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, node_id INTEGER NOT NULL, key TEXT NOT NULL, value TEXT DEFAULT '{}', updated_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(tenant_id, node_id, key));
+
+/* E17 · MOBILITY universe (ride hailing · dispatch · fleet · surge) — mirrored from lib/db.js */
+CREATE TABLE IF NOT EXISTS drivers (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, name TEXT NOT NULL, email TEXT, phone TEXT, city TEXT DEFAULT '', vehicle_kind TEXT NOT NULL DEFAULT 'car', plate TEXT DEFAULT '', license TEXT DEFAULT '', status TEXT NOT NULL DEFAULT 'offline', rating REAL NOT NULL DEFAULT 5.0, rides_completed INTEGER NOT NULL DEFAULT 0, rides_cancelled INTEGER NOT NULL DEFAULT 0, earnings REAL NOT NULL DEFAULT 0, city_latency REAL DEFAULT 0, joined_at TEXT NOT NULL DEFAULT (datetime('now')), deactivated_at TEXT, UNIQUE (tenant_id, email));
+CREATE INDEX IF NOT EXISTS ix_drivers ON drivers(tenant_id, status, vehicle_kind);
+CREATE TABLE IF NOT EXISTS rides (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL UNIQUE, rider TEXT, rider_phone TEXT, pickup TEXT NOT NULL, dropoff TEXT NOT NULL, pickup_lat REAL, pickup_lng REAL, dropoff_lat REAL, dropoff_lng REAL, vehicle_kind TEXT NOT NULL DEFAULT 'car', driver_id INTEGER, status TEXT NOT NULL DEFAULT 'requested', fare REAL DEFAULT 0, surge REAL NOT NULL DEFAULT 1.0, distance_km REAL DEFAULT 0, duration_min REAL DEFAULT 0, eta_min REAL DEFAULT 0, payment_method TEXT DEFAULT 'cash', rating INTEGER, note TEXT DEFAULT '', requested_at TEXT NOT NULL DEFAULT (datetime('now')), accepted_at TEXT, arrived_at TEXT, started_at TEXT, completed_at TEXT, cancelled_at TEXT);
+CREATE INDEX IF NOT EXISTS ix_rides ON rides(tenant_id, status, requested_at);
+CREATE INDEX IF NOT EXISTS ix_rides_driver ON rides(driver_id, status);
+CREATE TABLE IF NOT EXISTS ride_events (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ride_id INTEGER NOT NULL, status TEXT NOT NULL, note TEXT DEFAULT '', at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS ix_ride_events ON ride_events(ride_id, at);
+CREATE TABLE IF NOT EXISTS surge_zones (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, name TEXT NOT NULL, kind TEXT NOT NULL DEFAULT 'geofence', multiplier REAL NOT NULL DEFAULT 1.0, center_lat REAL, center_lng REAL, radius_km REAL DEFAULT 3, active INTEGER NOT NULL DEFAULT 1, starts_at TEXT, ends_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS ix_surge ON surge_zones(tenant_id, active);
+CREATE TABLE IF NOT EXISTS vehicles (id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, plate TEXT NOT NULL, kind TEXT NOT NULL DEFAULT 'car', capacity INTEGER NOT NULL DEFAULT 4, status TEXT NOT NULL DEFAULT 'active', odometer REAL DEFAULT 0, insurance_until TEXT, driver_id INTEGER, created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX IF NOT EXISTS ix_vehicles ON vehicles(tenant_id, status, kind);
