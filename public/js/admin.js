@@ -802,6 +802,25 @@ document.addEventListener("click", async e => {
       const r = await api(`/admin/mobility/drivers/${act.dataset.id}/deactivate`, "POST");
       if (r.error) toast(r.error); else { toast("Driver deactivated"); render(); }
     }
+    /* surge zones: the upsert rewrites every column, so a toggle carries the row back
+       intact rather than sending the active bit alone (which would flatten the rest) */
+    if (act && act.dataset.act === "mob-new-zone") zoneModal(null);
+    if (act && act.dataset.act === "mob-edit-zone") {
+      const zd = await api("/admin/mobility", {});
+      const z = (zd.zones || []).find(x => String(x.id) === String(act.dataset.id));
+      if (z) zoneModal(z); else toast("Zone not found");
+    }
+    if (act && act.dataset.act === "mob-toggle-zone") {
+      const zd = await api("/admin/mobility", {});
+      const z = (zd.zones || []).find(x => String(x.id) === String(act.dataset.id));
+      if (!z) return toast("Zone not found");
+      const r = await api("/admin/mobility/zones", "POST", {
+        id: z.id, name: z.name, kind: z.kind, multiplier: z.multiplier,
+        center_lat: z.center_lat, center_lng: z.center_lng, radius_km: z.radius_km,
+        active: act.dataset.on === "1", starts_at: z.starts_at, ends_at: z.ends_at
+      });
+      if (r.error) toast(r.error); else { toast(`Zone ${r.zone.name} ${r.zone.active ? "active" : "paused"}`); render(); }
+    }
     /* E18 · operations — HRMS/payroll, procurement, manufacturing and projects. Every
        advance honours the engine's own flow and approval gate; the console only carries
        the target status the operator clicked */
@@ -2217,7 +2236,8 @@ async function loadChatStatus() {
    multiplier, ETA and cancellation fee was computed from the store's own capability
    params. No rate is hard-coded in this file. */
 async function vRides() {
-  const d = await api("/admin/mobility", {});
+  const [d, caps] = await Promise.all([api("/admin/mobility", {}), coCaps()]);
+  const surgeOn = !!((caps.find(c => c.key === "dynamic_pricing") || {}).on);
   const st = d.stats || {};
   const rides = d.rides || [];
   const active = rides.filter(r => !["completed", "cancelled"].includes(r.status));
@@ -2230,8 +2250,16 @@ async function vRides() {
       <div class="a-stats">${[["Rides", st.rides || 0], ["Active now", st.active || 0], ["Drivers online", st.drivers_online || 0], ["Gross revenue", (st.gross_revenue || 0).toFixed(2)], ["Avg rating", (st.avg_rating || 0).toFixed(1)]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
       <div style="margin-top:10px"><button class="btn-yellow" data-act="mob-new-ride">＋ Request a ride</button></div></div>
     <div class="a-card"><h3>Surge zones</h3>
-      <div class="a-tablewrap"><table class="a-table"><thead><tr><th>zone</th><th>kind</th><th>multiplier</th><th>radius</th><th>state</th></tr></thead>
-      <tbody>${(d.zones || []).map(z => `<tr><td>${esc(z.name)}</td><td>${esc(z.kind)}</td><td><b>×${(+z.multiplier).toFixed(2)}</b></td><td>${z.radius_km} km</td><td>${chip(z.active ? "active" : "idle")}</td></tr>`).join("") || `<tr><td colspan="5">No surge zones — every ride prices at ×1.</td></tr>`}</tbody></table></div></div>
+      ${surgeOn ? `<div style="margin-bottom:8px"><button class="btn-yellow sm" data-act="mob-new-zone">＋ New zone</button></div>`
+        : `<p class="p-tag">Switch on <code>dynamic_pricing</code> in ⚙️ Capabilities to raise a multiplier by zone.</p>`}
+      <div class="a-tablewrap"><table class="a-table"><thead><tr><th>zone</th><th>kind</th><th>multiplier</th><th>radius</th><th>state</th>${surgeOn ? "<th></th>" : ""}</tr></thead>
+      <tbody>${(d.zones || []).map(z => `<tr>
+        <td>${esc(z.name)}</td><td>${esc(z.kind)}</td><td><b>×${(+z.multiplier).toFixed(2)}</b></td><td>${z.radius_km} km</td>
+        <td>${chip(z.active ? "active" : "idle")}</td>
+        ${surgeOn ? `<td style="white-space:nowrap">
+          <button class="btn-white sm" data-act="mob-toggle-zone" data-id="${z.id}" data-on="${z.active ? 0 : 1}">${z.active ? "Pause" : "Resume"}</button>
+          <button class="btn-white sm" data-act="mob-edit-zone" data-id="${z.id}">Edit</button></td>` : ""}
+      </tr>`).join("") || `<tr><td colspan="${surgeOn ? 6 : 5}">No surge zones — every ride prices at ×1.</td></tr>`}</tbody></table></div></div>
   </div>
   <div class="a-card"><h3>Active rides (${active.length})</h3>
     <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>rider</th><th>route</th><th>vehicle</th><th>driver</th><th>surge</th><th>eta</th><th>status</th><th></th></tr></thead>
@@ -2251,6 +2279,51 @@ async function vRides() {
       <td>${(+r.distance_km).toFixed(1)} km</td><td>${(+r.duration_min).toFixed(0)} min</td>
       <td>${r.fare ? (+r.fare).toFixed(2) : "—"}</td><td>${r.rating || "—"}</td><td>${chip(r.status)}</td>
     </tr>`).join("") || `<tr><td colspan="9">No completed rides yet.</td></tr>`}</tbody></table></div></div>`;
+}
+/* a surge zone is authored as a form, not a prompt chain — eight values one question at a
+   time would be unusable, and the engine's upsertZone validates exactly these fields.
+   Editing re-sends the whole row: the upsert rewrites every column, so a partial body
+   would silently flatten the multiplier and the coordinates back to their defaults. */
+function zoneModal(z) {
+  const isEdit = !!z;
+  const v = k => (z && z[k] != null) ? z[k] : "";
+  const m = modal(`<div class="p-modal-head"><h3>${isEdit ? "Edit · " + esc(z.name) : "New surge zone"}</h3><button data-mclose>✕</button></div>
+    <div class="p-form">
+      <label><span>Name *</span><input id="znName" value="${esc(v("name"))}" placeholder="Airport surge"></label>
+      <label><span>Kind</span><select id="znKind">${["geofence", "event", "weather"].map(k => `<option ${String(v("kind")) === k ? "selected" : ""}>${k}</option>`).join("")}</select></label>
+      <label><span>Multiplier (never below 1)</span><input id="znMult" type="number" step="0.05" min="1" value="${v("multiplier") || 1.5}"></label>
+      <label><span>Centre latitude</span><input id="znLat" type="number" step="any" value="${v("center_lat")}" placeholder="optional"></label>
+      <label><span>Centre longitude</span><input id="znLng" type="number" step="any" value="${v("center_lng")}" placeholder="optional"></label>
+      <label><span>Radius (km)</span><input id="znRad" type="number" step="0.1" min="0.1" value="${v("radius_km") || 3}"></label>
+      <label class="checkbox-group"><input id="znActive" type="checkbox" ${!z || z.active ? "checked" : ""}> Active now</label>
+      <label><span>Starts (optional)</span><input id="znStart" type="datetime-local" value="${esc(String(v("starts_at")).replace(" ", "T"))}"></label>
+      <label><span>Ends (optional)</span><input id="znEnd" type="datetime-local" value="${esc(String(v("ends_at")).replace(" ", "T"))}"></label>
+      <button class="p-btn primary" id="znSave">${isEdit ? "Save zone" : "Create zone"}</button>
+    </div>`);
+  m.querySelector("#znSave").onclick = async () => {
+    const name = m.querySelector("#znName").value.trim();
+    if (!name) return toast("Zone name is required");
+    const body = {
+      name,
+      kind: m.querySelector("#znKind").value,
+      multiplier: Number(m.querySelector("#znMult").value) || 1,
+      center_lat: m.querySelector("#znLat").value,
+      center_lng: m.querySelector("#znLng").value,
+      radius_km: Number(m.querySelector("#znRad").value) || 3,
+      active: m.querySelector("#znActive").checked
+    };
+    const st = m.querySelector("#znStart").value, en = m.querySelector("#znEnd").value;
+    if (st) body.starts_at = st;
+    if (en) body.ends_at = en;
+    if (isEdit) body.id = z.id;
+    try {
+      const r = await api("/admin/mobility/zones", "POST", body);
+      if (r.error) return toast(r.error);
+      m.innerHTML = "";
+      toast(isEdit ? "Zone updated" : `Zone ${r.zone.name} created · ×${(+r.zone.multiplier).toFixed(2)}`);
+      render();
+    } catch (e) { toast(e.message); }
+  };
 }
 async function vFleet() {
   const d = await api("/admin/mobility", {});
