@@ -189,6 +189,15 @@ const handler = async (req, res) => {
       return res.end(JSON.stringify({ ok: true, tenant: t && t.slug, products: get("SELECT COUNT(*) c FROM products WHERE tenant_id=?", t.id).c, uptime: Math.floor(process.uptime()), tls: IS_TLS }));
     }
     if (url.pathname === "/metrics") {
+      /* S11: this exposed platform-wide business metrics (24h orders, revenue,
+         per-endpoint volumes) to anyone. Two ways in: a bearer token the
+         operator sets for the scraper (LX_METRICS_TOKEN), or a live platform
+         admin session — the same session the platform console holds. */
+      const token = process.env.LX_METRICS_TOKEN;
+      const bearer = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
+      const authed = (token && token.length >= 16 && bearer && crypto.timingSafeEqual(Buffer.from(bearer), Buffer.from(token)))
+        || (cookies.azp && get("SELECT 1 FROM platform_sessions WHERE ptid=? AND expires_at > datetime('now')", cookies.azp));
+      if (!authed) { res.writeHead(401, { "Content-Type": "text/plain", "WWW-Authenticate": 'Bearer realm="luxora-metrics"' }); return res.end("Unauthorized"); }
       const body = require("./lib/enterprise.js").promMetrics(metrics.snapshot(null));
       res.writeHead(200, { "Content-Type": "text/plain; version=0.0.4" });
       return res.end(body);

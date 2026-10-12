@@ -72,8 +72,17 @@ const hasLeaf = (doc, v) => [...doc.querySelectorAll(".p-nav button")].some(b =>
   for (const s of ["", "-wal", "-shm"]) { try { require("fs").rmSync(DB + s, { force: true }); } catch (e) { } }
   const boot = async () => {
     const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB }, stdio: ["ignore", "ignore", "inherit"] });
-    for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) return srv; } catch (e) { } await sleep(500); }
-    throw new Error("server failed to boot");
+    for (let i = 0; i < 120; i++) {
+      /* healthz answering is not proof OUR server booted: if a stale process from a killed
+         run still holds PORT, the child dies on EADDRINUSE and healthz is answered by that
+         stranger — and the suite would then test a server it never started. A dead child is
+         the one condition that silently corrupts every assertion after it, so it is checked
+         before every probe and again after one settles past the bind */
+      if (srv.exitCode !== null) break;
+      try { if ((await fetch(BASE + "/healthz")).ok) { await sleep(300); if (srv.exitCode === null) return srv; break; } } catch (e) { }
+      await sleep(500);
+    }
+    throw new Error("the server we spawned did not boot — port " + PORT + " is held by a stale process from a killed run (lsof -iTCP:" + PORT + " to find it, kill the pid, re-run)");
   };
   const srv = await boot();
   try {

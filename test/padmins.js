@@ -24,11 +24,24 @@ const cookies = () => [...jar].map(([k, v]) => k + "=" + v).join("; ");
 async function f(p, method = "GET", body) {
   const opt = { method, headers: { Cookie: cookies(), ...(method !== "GET" ? { "x-csrf": jar.get("azc") || "" } : {}) } };
   if (body) { opt.body = JSON.stringify(body); opt.headers["Content-Type"] = "application/json"; }
-  const r = await fetch(BASE + p, opt);
+  /* T1: a pooled socket whose server was just killed resets with ECONNRESET.
+     Retries are safe for reads; a write that died mid-flight is surfaced as an
+     error rather than re-sent (it may already have landed). */
+  let r;
+  try { r = await fetch(BASE + p, opt); }
+  catch (e) {
+    if (method === "GET" || method === "HEAD") r = await fetch(BASE + p, opt);
+    else return { error: "network: " + String(e && e.message || e) };
+  }
   (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(c => { const [kv] = c.split(";"); const i = kv.indexOf("="); jar.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); });
   return r.json().catch(() => ({}));
 }
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+/* T1: the console issues background (fire-and-forget) requests, and a test
+   server being killed resets their pooled sockets mid-flight. The resulting
+   rejection has no awaiter, so it used to abort the entire suite. Log it and
+   carry on — the assertions probe the live server, not the dead socket. */
+process.on("unhandledRejection", e => { console.log("  (ignoring unhandled rejection: " + String(e && e.message || e) + ")"); });
 const click = (w, el) => el.dispatchEvent(new w.MouseEvent("click", { bubbles: true }));
 async function render(p, wait = 1800) {
   const errs = [];
@@ -242,7 +255,10 @@ async function render(p, wait = 1800) {
 
     console.log(failed ? `\n${passed} passed, ${failed} failed` : `\n${passed} passed, 0 failed`);
   } finally {
-    try { srv.kill("SIGKILL"); } catch (e) { }
+    /* T1: SIGTERM and a wait for exit, not a SIGKILL — the process has to
+       release its sockets before this one exits, or the reset surfaces as an
+       unhandled rejection in the parent */
+    try { await new Promise(r => { srv.once("exit", r); srv.kill("SIGTERM"); setTimeout(r, 1500); }); } catch (e) { }
     for (const s of ["", "-wal", "-shm"]) { try { require("fs").rmSync(db + s, { force: true }); } catch (e) { } }
   }
   process.exit(failed ? 1 : 0);

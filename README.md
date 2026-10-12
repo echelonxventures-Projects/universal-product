@@ -2,6 +2,8 @@
 
 **Universal, white-label, multi-store commerce platform.** Zero runtime dependencies: Node.js ≥ 22.5 (`node:http`, `node:sqlite`, `node:crypto` only) + vanilla JS frontends. Everything—taxonomy, industries, product types, verticals, contexts, providers, countries, currencies, security policy—is *entity data*, never code.
 
+**Nothing is a bundle.** There is no "marketplace" or "commerce" entity — those are *compositions*. The only thing that exists is a **capability atom**: one individually switchable, individually tunable function (`buy_box`, `escrow`, `reviews`, `gift_cards`, `rfq_bidding`…) declared as a row in `platform_capabilities` with typed params and the console sections it governs. A store *is* the set of atoms it switched on (`GET /api/capabilities` → `composition`). Named blends (`blend_marketplace`, `blend_quick_commerce`…) and purchasable archetypes are convenience references to atoms — never the gate. The grant engine derives the console surface from the live composition (`lib/authz.js`), so nothing is ever granted as a package. **This holds platform-wide**: the 18 former `settings.features.*` booleans (reviews, Q&A, deals, coupons, gift cards, memberships, risk screening…) are atoms in the same catalog, switched and tuned exactly the way `buy_box` is — one switch, one vocabulary, shopper-facing *and* commerce-facing alike.
+
 ## Documentation
 
 End‑to‑end guides for every role — **Customers, Store Admins, Support, Marketplace Sellers, and Platform (Super) Admins** — live in **[USER_MANUAL.md](USER_MANUAL.md)** (roles & capability matrix, per‑surface walkthroughs, security, glossary, troubleshooting).
@@ -91,6 +93,10 @@ server.js            multi-tenant routing, security middleware, SRI, static
 lib/db.js            SQLite schema + migrations + universal-UUID triggers + seed
 lib/security.js      L1-L10 primitives (AES-GCM, scrypt, chains, limiters, policy)
 lib/entity.js        entity engine (23 entities incl. country, currency, provider, link, context_type)
+lib/capabilities.js  THE capability layer — the atom catalog (marketplace, fintech,
+                     quick-commerce, B2B-trade + the 18 storefront features that were
+                     settings booleans), blends, per-tenant composition, one gate
+lib/settings.js      per-tenant settings; `features` is DERIVED from the composition
 lib/registry.js      live registries (geo, currencies+FX, tax modes, providers, availability, meta lists)
 lib/meta.js          seed definitions (industries, types, verticals, contexts, lifecycle)
 lib/providers.js     seed definitions (countries, providers, currencies) — data, editable post-seed

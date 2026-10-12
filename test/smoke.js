@@ -7,6 +7,10 @@ const path = require("path");
 
 const PORT = 8790;
 const BASE = `http://localhost:${PORT}`;
+/* S11: /metrics is no longer anonymous — the scraper (or this test) presents a
+   bearer token the operator sets. 32 hex chars so timingSafeEqual has room and
+   the length gate (>= 16) is satisfied */
+const METRICS_TOKEN = "4f8c2b1e9d7a6053c8e2b4f60d1a9c7e";
 const jar = new Map();
 let passed = 0, failed = 0;
 function ok(cond, name, extra) { if (cond) { passed++; console.log("  ✓ " + name); } else { failed++; console.log("  ✗ " + name + (extra ? "  → " + extra : "")); } }
@@ -57,7 +61,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   const dbBase = path.join(__dirname, "..", "data", "smoke.db");
   for (const suffix of ["", "-wal", "-shm"]) { try { require("fs").rmSync(dbBase + suffix, { force: true }); } catch (e) { } }
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")],
-    { env: { ...process.env, PORT, LX_DB: dbBase }, stdio: ["ignore", "ignore", "inherit"] });
+    { env: { ...process.env, PORT, LX_DB: dbBase, LX_METRICS_TOKEN: METRICS_TOKEN }, stdio: ["ignore", "ignore", "inherit"] });
   /* first boot seeds three stores, 156 products and every registry — on a slow or network-backed
      filesystem that can take well over a minute, so wait generously rather than failing spuriously. */
   let up = false;
@@ -728,13 +732,16 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 
     console.log("▸ MODULE MARKETPLACE — capabilities as purchasable products");
     const tMap = {}; (await f("/api/platform/tenants")).tenants.forEach(t => tMap[t.slug] = t.id);
-    // wallet: purchase → giftcard works → balance binds to account across login
+    // wallet: purchase → a code is issued → redeemed for balance → binds to account across login
     const wj = new Map(); const wjf = async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: [...wj].map(x => x.join("=")).join("; ") }, m && m !== "GET" ? { "x-csrf": wj.get("azc") || "" } : {}) }; if (b) { o.body = JSON.stringify(b); o.headers["Content-Type"] = "application/json"; } const r = await fetch(BASE + p, o); (r.headers.getSetCookie() || []).forEach(c => { const kv = c.split(";")[0]; const i = kv.indexOf("="); wj.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return r.json().catch(() => ({})); };
     await wjf("/api/session");
     const buy1 = await f("/api/platform/modules/wallet/install", "POST", { tenant_id: tMap.luxora });
     ok(buy1.ok && /^MOD-/.test(buy1.invoice || ""), "wallet purchased with invoice", JSON.stringify(buy1));
-    const gf1 = await wjf("/api/giftcard", "POST", { amount: 25 });
-    ok(gf1.balance === 25, "giftcard endpoint live after purchase", JSON.stringify(gf1));
+    ok((await wjf("/api/giftcard", "POST", { amount: 25 })).error, "a giftcard top-up without a code is refused (no self-minting)", JSON.stringify(buy1));
+    const vch = await f("/api/fintech/vouchers", "POST", { amount: 25 });
+    ok(vch.voucher && vch.voucher.status === "issued" && vch.voucher.code.length === 12, "an operator issues a gift voucher with a code", JSON.stringify(vch));
+    const gf1 = await wjf("/api/giftcard", "POST", { code: vch.voucher.code });
+    ok(gf1.ok && gf1.balance === 25, "redeeming the code credits the wallet", JSON.stringify(gf1));
     await wjf("/api/auth/login", "POST", { email: "demo@luxora.shop", password: "demo123" });
     ok((await wjf("/api/session")).gift === 25, "wallet merged to the account on login");
     // offers-pro: BOGO inert before, effective after
@@ -1673,8 +1680,9 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok((await P("/api/platform/regions")).body.list.length >= 4, "region catalog (data)");
       await P("/api/platform/regions", "PUT", { list: [{ key: "global", label: "G" }, { key: "eu-west", label: "EU" }], cdn: "https://cdn.example" });
       const st = (await A("/api/session")).body; ok(st && (st.allowedSections || st.user), "session still works after region change");
-      // #5 observability
-      const mt = await fetch(BASE + "/metrics"); const mtText = await mt.text(); ok(mt.status === 200 && /luxora_http_requests_total/.test(mtText), "/metrics exposes Prometheus text");
+      // #5 observability (S11: the endpoint requires the bearer token or a platform session)
+      const mt = await fetch(BASE + "/metrics", { headers: { Authorization: "Bearer " + METRICS_TOKEN } }); const mtText = await mt.text(); ok(mt.status === 200 && /luxora_http_requests_total/.test(mtText), "/metrics exposes Prometheus text", mtText.slice(0, 80));
+      ok((await fetch(BASE + "/metrics")).status === 401, "/metrics refuses an anonymous scraper");
       // #6 feeds (public)
       const fx = await fetch(BASE + "/api/feeds/luxora.xml"); const fxt = await fx.text(); ok(fx.status === 200 && /<g:id>/.test(fxt) && /in stock|out of stock/.test(fxt), "Google/Meta Shopping XML feed");
       const fc = await (await fetch(BASE + "/api/feeds/luxora.csv")).text(); ok(/id,title,brand/.test(fc), "CSV feed");

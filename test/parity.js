@@ -311,7 +311,9 @@ console.log("\n▸ FINTECH — one ledger, escrow, KYC-gated credit");
   ok(call("POST", "/api/fintech/escrow", { amount: 10, seller: "u:s" }, GUEST).error, "the escrow-hold endpoint is admin-gated");
   ok(call("GET", "/api/fintech/billers", {}, GUEST).billers.length === 1, "GET /api/fintech/billers is public");
   ok(call("GET", "/api/fintech/plans", {}, GUEST).plans.length >= 1, "GET /api/fintech/plans is public");
-  ok(call("POST", "/api/fintech/vouchers", { amount: 5 }, GUEST).voucher.status === "issued", "a guest can issue a voucher");
+  ok(call("POST", "/api/fintech/vouchers", { amount: 5 }, GUEST).error,
+    "issuing a voucher mints spendable credit, so it is refused for an anonymous shopper");
+  ok(call("POST", "/api/fintech/vouchers", { amount: 5 }, ADMIN).voucher.status === "issued", "an operator can issue a voucher through the API");
   ok(call("POST", "/api/fintech/bnpl", { credit_limit: 10 }, { user_id: 99, tenant: { id: 1 } }).error, "BNPL via the API still requires KYC");
 }
 
@@ -636,6 +638,52 @@ console.log("\n▸ THE CONFIGURATION LAYER — any platform is composed, never t
   call("POST", "/api/capabilities/disable", { capability: "surge_pricing", tenant_id: 1 }, ADMIN);
   ok(call("DELETE", "/api/capabilities/catalog/surge_pricing", {}, PLAT).ok, "an authored capability is deleted once no store uses it");
   ok(!one("SELECT key FROM platform_capabilities WHERE key='surge_pricing'"), "deletion removes the authored row");
+}
+
+/* ----------------------------------------------------------------------------
+   FEATURES ARE CAPABILITIES — the principle is platform-wide, not commerce-only.
+   The old settings.features.* booleans are atoms in the same catalog as buy_box:
+   one switch, one vocabulary, and the console checkbox IS the composition bit.
+   ---------------------------------------------------------------------------- */
+{
+  console.log("\n▸ FEATURES ARE CAPABILITIES — every flag is an atom, platform-wide");
+  const sf = caps.catalog().filter(c => c.domain === "storefront");
+  ok(sf.length === 18, "the 18 former settings booleans are catalog atoms", sf.length);
+  ok(sf.every(c => c.label && c.description != null && c.icon), "each is a complete atom, not a bare flag");
+  ok(sf.every(c => (caps.sectionsOf(c.key, c) || []).length === 0),
+    "a storefront atom lights no store-console leaf — it governs the shopper surface, not the console");
+  /* the migration flips nothing: what was on stays on, what was off stays off */
+  ok(caps.on(T, "reviews") === true, "a feature that shipped ON is on by default");
+  ok(caps.on(T, "fiscal_selection") === false, "the one feature that shipped OFF is off by default");
+  ok(caps.tenantDefault("buy_box") === false, "a marketplace atom stays opt-in for a cold tenant (the migration widened nothing)");
+
+  /* ONE GATE: switching the atom moves the settings read and the API gate together */
+  ok(require(path.join(__dirname, "..", "lib", "settings.js")).load(T).features.reviews === true,
+    "settings.features.reviews reads the composition");
+  call("POST", "/api/capabilities/disable", { capability: "reviews", tenant_id: T }, ADMIN);
+  ok(caps.on(T, "reviews") === false, "disabling the atom is one call");
+  ok(require(path.join(__dirname, "..", "lib", "settings.js")).load(T).features.reviews === false,
+    "the settings read follows the atom (the same bit, not a copy)");
+  ok(call("POST", "/api/reviews/" + PROD, { rating: 5, title: "t", body: "b" }, ADMIN).error,
+    "the reviews API refuses while its atom is off");
+  /* qna is a different atom — switching one feature never touches another */
+  ok(!call("POST", "/api/qna/" + PROD + "/question", { question: "in stock?" }, ADMIN).error,
+    "an independent feature (qna) is untouched by reviews being off");
+  call("POST", "/api/capabilities/enable", { capability: "reviews", tenant_id: T }, ADMIN);
+
+  /* THE WRITE PATH: a settings save routes storefront keys through the composition
+     and leaves everything else on the settings row */
+  const leftover = caps.applyFeatures(T, { qna: false, aNonAtomSetting: true });
+  ok(!!leftover.aNonAtomSetting, "a key that is not an atom is returned for the settings row", JSON.stringify(leftover));
+  ok(!("qna" in leftover), "an atom key never lands back on the settings row");
+  ok(caps.on(T, "qna") === false, "the atom absorbed qna");
+  call("POST", "/api/capabilities/enable", { capability: "qna", tenant_id: T }, ADMIN);
+
+  /* SOME ATOMS CARRY REAL PARAMS — a standard is tunable, not a constant */
+  const tuned = call("POST", "/api/capabilities/param", { capability: "fraud_screen", param: "block_above", value: "75", tenant_id: T }, ADMIN);
+  ok(tuned.capabilities && tuned.capabilities.fraud_screen.params.block_above === 75,
+    "a storefront atom's param is tuned and coerced exactly like buy_box's weights");
+  call("POST", "/api/capabilities/param", { capability: "fraud_screen", param: "block_above", value: "90", tenant_id: T }, ADMIN);
 }
 
 console.log("\n" + (failed ? "✗ " + failed + " FAILED" : "✓ ALL GREEN") + " — " + passed + " passed, " + failed + " failed");

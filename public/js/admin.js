@@ -56,6 +56,7 @@ const NAV = [
   { g: "Marketplace & B2B", items: [["sellers", "🏪 Sellers"], ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["marketplace", "📣 Marketplace & Ads"]] },
   { g: "Commerce Ops", items: [["qcops", "⚡ Quick-commerce"], ["finops", "💸 Fintech Ops"], ["mktops", "🏪 Marketplace Ops"], ["tradeops", "🤝 Trade Ops"]] },
   { g: "Mobility (E17)", items: [["rides", "🚗 Rides & Dispatch"], ["fleet", "🚙 Fleet & Drivers"]] },
+  { g: "Operations (E18)", items: [["ops_hr", "🧑‍💼 People & Payroll"], ["ops_proc", "🛒 Procurement"], ["ops_mfg", "🏭 Manufacturing"], ["ops_proj", "📐 Projects & Approvals"]] },
   { g: "Payments & Finance", items: [["payments", "💳 Payment Gateways"], ["settlements", "🤝 Settlements"], ["finance", "💰 Finance & Settlements"], ["billing", "🧮 Billing"]] },
   { g: "Growth & Retention", items: [["promotions", "💸 Offers & Coupons"], ["ugc", "⭐ Reviews & Q&A"], ["helpdesk", "🎧 Support Helpdesk"], ["affiliate", "🤝 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["goip", "Ω∞ GOIP"]] },
   { g: "AI & Automation", items: [["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"]] },
@@ -800,6 +801,71 @@ document.addEventListener("click", async e => {
       if (!confirm("Deactivate this driver? They leave dispatch immediately.")) return;
       const r = await api(`/admin/mobility/drivers/${act.dataset.id}/deactivate`, "POST");
       if (r.error) toast(r.error); else { toast("Driver deactivated"); render(); }
+    }
+    /* E18 · operations — HRMS/payroll, procurement, manufacturing and projects. Every
+       advance honours the engine's own flow and approval gate; the console only carries
+       the target status the operator clicked */
+    if (act && act.dataset.act === "ops-new-employee") {
+      const name = prompt("Employee name"); if (!name) return;
+      const dept = prompt("Department", "Operations") || "";
+      const salary = Number(prompt("Base salary", "5000")) || 0;
+      const r = await api("/admin/ops/employees", "POST", { name, department: dept, base_salary: salary, status: "active" });
+      if (r.error) toast(r.error); else { toast(`Employee ${r.employee.code} added`); render(); }
+    }
+    if (act && act.dataset.act === "ops-payroll-run") {
+      const period = prompt("Period (YYYY-MM)", new Date().toISOString().slice(0, 7)) || new Date().toISOString().slice(0, 7);
+      const r = await api("/admin/ops/payroll/run", "POST", { period });
+      if (r.error) toast(r.error); else { toast(`Payroll run for ${r.run.period}: ${r.run.headcount} employees, net ${(+r.run.net).toFixed(2)}`); render(); }
+    }
+    if (act && act.dataset.act === "ops-payroll-status") {
+      const r = await api(`/admin/ops/payroll/${act.dataset.id}`, "PUT", { status: act.dataset.to });
+      if (r.error) toast(r.error); else { toast(`Payroll ${r.run.status}`); render(); }
+    }
+    if (act && act.dataset.act === "ops-new-request") {
+      const item = prompt("What do you need?"); if (!item) return;
+      const qty = Number(prompt("Quantity", "1")) || 1;
+      const cost = Number(prompt("Estimated unit cost", "10")) || 0;
+      const r = await api("/admin/ops/requests", "POST", { status: "draft", requested_by: "Console", lines: [{ item, qty, est_unit_cost: cost }] });
+      if (r.error) toast(r.error); else { toast(`Purchase request ${r.request.ref} created`); render(); }
+    }
+    if (act && act.dataset.act === "ops-pr-advance") {
+      const r = await api(`/admin/ops/requests/${act.dataset.id}`, "PUT", { status: act.dataset.to });
+      if (r.error) toast(r.error); else { toast(`Request ${r.request.status}`); render(); }
+    }
+    if (act && act.dataset.act === "ops-new-wo") {
+      const product = prompt("Product ID / SKU reference", "LX-CMP-005"); if (!product) return;
+      const qty = Number(prompt("Quantity to build", "100")) || 100;
+      const r = await api("/admin/ops/work-orders", "POST", { product_id: product, qty, status: "planned", unit_cost: 0 });
+      if (r.error) toast(r.error); else { toast(`Work order ${r.workOrder.ref} created`); render(); }
+    }
+    if (act && act.dataset.act === "ops-wo-complete") {
+      const r = await api(`/admin/ops/work-orders/${act.dataset.id}/complete`, "POST");
+      if (r.error) toast(r.error); else { toast(`Completed ${r.completed} good unit(s)${r.scrapped ? ` · ${r.scrapped} scrapped` : ""}`); render(); }
+    }
+    if (act && act.dataset.act === "ops-new-project") {
+      const name = prompt("Project name"); if (!name) return;
+      const budget = Number(prompt("Budget", "10000")) || 0;
+      const r = await api("/admin/ops/projects", "POST", { name, budget, status: "planning" });
+      if (r.error) toast(r.error); else { toast(`Project ${r.project.code} created`); render(); }
+    }
+    if (act && act.dataset.act === "ops-new-task") {
+      const title = prompt("Task title"); if (!title) return;
+      const projectId = prompt("Project ID (blank for none)") || null;
+      const r = await api("/admin/ops/tasks", "POST", { title, project_id: projectId, status: "todo" });
+      if (r.error) toast(r.error); else { toast("Task created"); render(); }
+    }
+    if (act && act.dataset.act === "ops-task-done") {
+      const r = await api("/admin/ops/tasks", "POST", { id: act.dataset.id, title: "—", status: "done" });
+      if (r.error) toast(r.error); else { toast("Task done"); render(); }
+    }
+    if (act && act.dataset.act === "ops-task-time") {
+      const h = Number(prompt("Hours to log", "1")) || 0;
+      const r = await api(`/admin/ops/tasks/${act.dataset.id}/time`, "POST", { hours: h });
+      if (r.error) toast(r.error); else { toast(`Logged ${h}h`); render(); }
+    }
+    if (act && act.dataset.act === "ops-appr") {
+      const r = await api(`/admin/ops/approvals/${act.dataset.id}`, "PUT", { status: act.dataset.to });
+      if (r.error) toast(r.error); else { toast(`Approval ${r.approval.status}`); render(); }
     }
     if (act && act.dataset.act === "co-new") openForm(act.dataset.key, null, render);
     if (act && act.dataset.act === "co-cap") { view = "settings"; coCap = null; render(); }
@@ -1678,6 +1744,10 @@ async function render() {
     else if (view === "planning") body.innerHTML = await vPlanning();
     else if (view === "rides") body.innerHTML = await vRides();
     else if (view === "fleet") body.innerHTML = await vFleet();
+    else if (view === "ops_hr") body.innerHTML = await vOpsHR();
+    else if (view === "ops_proc") body.innerHTML = await vOpsProc();
+    else if (view === "ops_mfg") body.innerHTML = await vOpsMfg();
+    else if (view === "ops_proj") body.innerHTML = await vOpsProj();
     else if (view === "finance") body.innerHTML = await vFinance();
     else if (view === "logistics") body.innerHTML = await vLogistics();
     else if (view === "search") body.innerHTML = await vSearch();
@@ -2206,6 +2276,85 @@ async function vFleet() {
       <td>${x.status === "suspended" ? "" : `<button class="btn-white sm" data-act="mob-toggle-driver" data-id="${x.id}" data-to="${x.status === "online" ? "0" : "1"}">${x.status === "online" ? "Go offline" : "Go online"}</button> <button class="btn-white sm" data-act="mob-deact-driver" data-id="${x.id}">Deactivate</button>`}
       ${x.deactivated_at ? `<span class="a-sub">since ${esc(x.deactivated_at)}</span>` : ""}</td>
     </tr>`).join("") || `<tr><td colspan="9">No drivers yet — add one above.</td></tr>`}</tbody></table></div></div>`;
+}
+
+/* ========== E18 · the operations universe (ERP · HRMS · procurement · manufacturing · projects)
+   The console renders only what lib/operations.js answered: every tax rate, overtime
+   multiple, approval threshold, yield and cost rate is a capability param, not a
+   literal in this file. */
+async function vOpsHR() {
+  const d = await api("/admin/operations", {});
+  const st = (d.stats || {}).payroll || {};
+  const chip = s => `<span class="a-chip">${esc(s)}</span>`;
+  return `<div class="a-head"><h2>🧑‍💼 People &amp; Payroll</h2><p class="a-sub">Employees, attendance and the payroll run. Overtime, allowances, deductions and tax are the store's own <code>workforce</code> params — a run is recomputed from them, never from a hard-coded rate. Attendance statuses and payroll statuses are Data Studio lists (<code>opsTaskStatuses</code> shape: editable, not code).</p></div>
+  <div class="a-cards">
+    <div class="a-card"><h3>Headcount</h3>
+      <div class="a-stats">${[["Employees", st.employees || 0], ["Active", st.active_employees || 0], ["Payroll runs", st.runs || 0], ["Paid", st.paid_runs || 0], ["Last net", (st.last ? (+st.last.net).toFixed(0) : "—")]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn-yellow" data-act="ops-new-employee">＋ Add employee</button><button class="btn-white" data-act="ops-payroll-run">▶ Run this month's payroll</button></div></div>
+    <div class="a-card"><h3>Payroll runs</h3>
+      <div class="a-tablewrap"><table class="a-table"><thead><tr><th>period</th><th>headcount</th><th>gross</th><th>deductions</th><th>net</th><th>status</th><th></th></tr></thead>
+      <tbody>${(d.payroll || []).map(p => `<tr><td><code>${esc(p.period)}</code></td><td>${p.headcount}</td><td>${(+p.gross).toFixed(2)}</td><td>${(+p.deductions).toFixed(2)}</td><td><b>${(+p.net).toFixed(2)}</b></td><td>${chip(p.status)}</td>
+      <td>${p.status !== "paid" ? `<button class="btn-white sm" data-act="ops-payroll-status" data-id="${p.id}" data-to="${p.status === "draft" ? "approved" : "paid"}">${p.status === "draft" ? "Approve" : "Mark paid"}</button>` : ""}</td></tr>`).join("") || `<tr><td colspan="7">No payroll runs yet.</td></tr>`}</tbody></table></div></div>
+  </div>
+  <div class="a-card"><h3>Employees</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>department</th><th>designation</th><th>salary</th><th>state</th></tr></thead>
+    <tbody>${(d.employees || []).map(e => `<tr><td><code>${esc(e.code)}</code></td><td>${esc(e.name)}${e.email ? `<div class="a-sub">${esc(e.email)}</div>` : ""}</td><td>${esc(e.department || "—")}</td><td>${esc(e.designation || "—")}</td><td>${(+e.base_salary).toFixed(0)}</td><td>${chip(e.status)}</td></tr>`).join("") || `<tr><td colspan="6">No employees yet — add one above.</td></tr>`}</tbody></table></div></div>`;
+}
+async function vOpsProc() {
+  const d = await api("/admin/operations", {});
+  const chip = s => `<span class="a-chip">${esc(s)}</span>`;
+  return `<div class="a-head"><h2>🛒 Procurement</h2><p class="a-sub">Purchase requests and their lines. A request above the store's configured <code>approval_threshold</code> cannot advance to approved without a sign-off — the gate is a param, not a policy written in code. Statuses are the Data Studio list <code>opsPrStatuses</code>.</p></div>
+  <div class="a-cards">
+    <div class="a-card"><h3>Requests</h3>
+      <div class="a-stats">${[["Open", (d.stats || {}).procurement ? (d.stats.procurement.open || 0) : 0], ["Shown", (d.requests || []).length]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
+      <div style="margin-top:10px"><button class="btn-yellow" data-act="ops-new-request">＋ New purchase request</button></div></div>
+  </div>
+  <div class="a-card"><h3>Purchase requests</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>requested by</th><th>department</th><th>lines</th><th>est. cost</th><th>status</th><th></th></tr></thead>
+    <tbody>${(d.requests || []).map(r => { const next = { draft: "submitted", submitted: "approved", approved: "ordered", ordered: "received" }[r.status]; return `<tr>
+      <td><code>${esc(r.ref)}</code></td><td>${esc(r.requested_by || "—")}</td><td>${esc(r.department || "—")}</td>
+      <td>${r.lines}</td><td>${(+r.est_cost).toFixed(2)}</td><td>${chip(r.status)}</td>
+      <td>${next ? `<button class="btn-white sm" data-act="ops-pr-advance" data-id="${r.id}" data-to="${next}">→ ${next}</button>` : ""}</td>
+    </tr>`; }).join("") || `<tr><td colspan="7">No purchase requests yet.</td></tr>`}</tbody></table></div></div>`;
+}
+async function vOpsMfg() {
+  const d = await api("/admin/operations", {});
+  const chip = s => `<span class="a-chip">${esc(s)}</span>`;
+  return `<div class="a-head"><h2>🏭 Manufacturing</h2><p class="a-sub">Work orders and their bills of materials. Completion consumes the BOM and posts the finished good at the configured <code>yield_pct</code> with the configured <code>scrap_pct</code> loss — the yields are params, never guesses. Statuses are the Data Studio list <code>opsWoStatuses</code>.</p></div>
+  <div class="a-cards">
+    <div class="a-card"><h3>Work orders</h3>
+      <div class="a-stats">${[["Open", (d.stats || {}).manufacturing ? (d.stats.manufacturing.open || 0) : 0], ["Shown", (d.workOrders || []).length]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
+      <div style="margin-top:10px"><button class="btn-yellow" data-act="ops-new-wo">＋ New work order</button></div></div>
+  </div>
+  <div class="a-card"><h3>Work orders</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>product</th><th>qty</th><th>completed</th><th>unit cost</th><th>status</th><th></th></tr></thead>
+    <tbody>${(d.workOrders || []).map(w => `<tr>
+      <td><code>${esc(w.ref)}</code></td><td>${esc(w.product_id || "—")}</td><td>${w.qty}</td><td>${w.completed_qty}</td>
+      <td>${(+w.unit_cost).toFixed(2)}</td><td>${chip(w.status)}</td>
+      <td>${w.status === "in_progress" ? `<button class="btn-white sm" data-act="ops-wo-complete" data-id="${w.id}">Complete</button>` : ""}</td>
+    </tr>`).join("") || `<tr><td colspan="7">No work orders yet.</td></tr>`}</tbody></table></div></div>`;
+}
+async function vOpsProj() {
+  const d = await api("/admin/operations", {});
+  const chip = s => `<span class="a-chip">${esc(s)}</span>`;
+  const st = (d.stats || {}).projects || {};
+  return `<div class="a-head"><h2>📐 Projects &amp; Approvals</h2><p class="a-sub">Projects, tasks and the approval chain. Logged hours accrue to a project's spend at the configured <code>internal_cost_per_hour</code> — the rate is a param, so the same timesheet costs what the store says it costs. Approval kinds are the Data Studio list <code>opsApprovalKinds</code>.</p></div>
+  <div class="a-cards">
+    <div class="a-card"><h3>Portfolio</h3>
+      <div class="a-stats">${[["Active projects", st.active || 0], ["Projects", (d.projects || []).length], ["Tasks", (d.tasks || []).length], ["Pending approvals", (d.approvals || []).filter(a => a.status === "pending").length]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn-yellow" data-act="ops-new-project">＋ New project</button><button class="btn-white" data-act="ops-new-task">＋ New task</button></div></div>
+    <div class="a-card"><h3>Approvals</h3>
+      <div class="a-tablewrap"><table class="a-table"><thead><tr><th>kind</th><th>ref</th><th>requester</th><th>approver</th><th>status</th><th></th></tr></thead>
+      <tbody>${(d.approvals || []).map(a => `<tr><td>${chip(a.kind)}</td><td><code>${esc(a.ref || a.ref_id)}</code></td><td>${esc(a.requester || "—")}</td><td>${esc(a.approver || "—")}</td><td>${chip(a.status)}</td>
+      <td>${a.status === "pending" ? `<button class="btn-white sm" data-act="ops-appr" data-id="${a.id}" data-to="approved">Approve</button> <button class="btn-white sm" data-act="ops-appr" data-id="${a.id}" data-to="rejected">Reject</button>` : ""}</td></tr>`).join("") || `<tr><td colspan="6">No approvals pending.</td></tr>`}</tbody></table></div></div>
+  </div>
+  <div class="a-card"><h3>Projects</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>owner</th><th>budget</th><th>spent</th><th>tasks</th><th>status</th></tr></thead>
+    <tbody>${(d.projects || []).map(p => `<tr><td><code>${esc(p.code)}</code></td><td>${esc(p.name)}</td><td>${esc(p.owner || "—")}</td><td>${(+p.budget).toFixed(0)}</td><td>${(+p.spent).toFixed(0)}</td><td>${p.tasks_done}/${p.tasks}</td><td>${chip(p.status)}</td></tr>`).join("") || `<tr><td colspan="7">No projects yet.</td></tr>`}</tbody></table></div></div>
+  <div class="a-card"><h3>Tasks</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>title</th><th>project</th><th>assignee</th><th>est</th><th>logged</th><th>due</th><th>priority</th><th>status</th><th></th></tr></thead>
+    <tbody>${(d.tasks || []).map(t => `<tr><td>${esc(t.title)}</td><td>${esc(t.project_code || "—")}</td><td>${esc(t.assignee || "—")}</td><td>${t.estimate_hours}h</td><td>${t.logged_hours}h</td><td>${esc(t.due_date || "—")}</td><td>${chip(t.priority)}</td><td>${chip(t.status)}</td>
+    <td>${t.status !== "done" ? `<button class="btn-white sm" data-act="ops-task-done" data-id="${t.id}">Done</button> <button class="btn-white sm" data-act="ops-task-time" data-id="${t.id}">Log time</button>` : ""}</td></tr>`).join("") || `<tr><td colspan="9">No tasks yet.</td></tr>`}</tbody></table></div></div>`;
 }
 
 /* ========== Module Registration ========== */

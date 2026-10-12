@@ -30,7 +30,15 @@ const cookies = () => [...jar].map(([k, v]) => k + "=" + v).join("; ");
 async function f(p, method = "GET", body) {
   const opt = { method, headers: { Cookie: cookies(), ...(method !== "GET" ? { "x-csrf": jar.get("azc") || "" } : {}) } };
   if (body) { opt.body = JSON.stringify(body); opt.headers["Content-Type"] = "application/json"; }
-  const r = await fetch(BASE + p, opt);
+  /* T1: a pooled socket whose server was just killed resets with ECONNRESET.
+     Retries are safe for reads; a write that died mid-flight is surfaced as an
+     error rather than re-sent (it may already have landed). */
+  let r;
+  try { r = await fetch(BASE + p, opt); }
+  catch (e) {
+    if (method === "GET" || method === "HEAD") r = await fetch(BASE + p, opt);
+    else return { error: "network: " + String(e && e.message || e) };
+  }
   (r.headers.getSetCookie ? r.headers.getSetCookie() : []).forEach(c => { const [kv] = c.split(";"); const i = kv.indexOf("="); jar.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); });
   return r.json().catch(() => ({}));
 }
@@ -38,6 +46,11 @@ async function f(p, method = "GET", body) {
 const fresh = (sql, ...p) => { try { return new DatabaseSync(DB, { readOnly: true }).prepare(sql).get(...p) || null; } catch (e) { return null; } };
 const freshAll = (sql, ...p) => { try { return new DatabaseSync(DB, { readOnly: true }).prepare(sql).all(...p) || []; } catch (e) { return []; } };
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+/* T1: the console issues background (fire-and-forget) requests, and a test
+   server being killed resets their pooled sockets mid-flight. The resulting
+   rejection has no awaiter, so it used to abort the entire suite. Log it and
+   carry on — the rebooted server is what the assertions actually probe. */
+process.on("unhandledRejection", e => { console.log("  (ignoring unhandled rejection: " + String(e && e.message || e) + ")"); });
 async function render(page, wait = 2000) {
   const errs = [];
   const vc = new VirtualConsole();
@@ -164,7 +177,10 @@ const navTo = async (doc, key, ms = 1800) => { const b = [...doc.querySelectorAl
     ok(freshAll("SELECT id FROM users WHERE staff_role='visual'").length === 1, "the store assignment is what blocks the delete");
 
     console.log("▸ SELF-HEAL — an operator's roles survive a reboot (the seed never reverts an edit)");
-    srv.kill(); srv = await boot();
+    /* T1: wait for the old server to actually exit before rebooting, so no pooled
+       socket is left talking to a dead peer (and the port is free for the reboot) */
+    await new Promise(r => { srv.once("exit", r); srv.kill("SIGTERM"); setTimeout(r, 1500); });
+    srv = await boot();
     /* the session lives in the DB, so the same cookie still authenticates after restart */
     const after = await f("/api/platform/roles");
     ok(!!after.roles.find(r => r.key === "restricted"), "the operator's platform role survived the reboot");
@@ -230,7 +246,10 @@ const navTo = async (doc, key, ms = 1800) => { const b = [...doc.querySelectorAl
 
     R.dom.window.close(); U.dom.window.close();
   } finally {
-    srv.kill();
+    /* T1: SIGTERM and a wait for exit, not a bare kill — the process has to
+       release its sockets before this one exits, or the reset surfaces as an
+       unhandled rejection in the parent */
+    try { await new Promise(r => { srv.once("exit", r); srv.kill("SIGTERM"); setTimeout(r, 1500); }); } catch (e) { }
     for (const s of ["", "-wal", "-shm"]) { try { require("fs").rmSync(DB + s, { force: true }); } catch (e) { } }
   }
   console.log(failed ? `\n${passed} passed, ${failed} FAILED` : `\n${passed} passed, 0 failed`);

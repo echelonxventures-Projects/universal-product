@@ -77,6 +77,15 @@ async function loadBundle(which) {
      bundle's boot sees LX_GUEST and returns without painting #app — this shell
      owns identity and mounting; the bundle contributes its views and its nav */
   const factory = new Function("LX_GUEST", "\"use strict\";" + src +
+    /* re-chrome hook: a render the bundle fires from inside a view (form save, import,
+       delete…) repaints its own single-scope shell; once it settles, the one console's
+       chrome is put back through window.__lxRechrome (a no-op when the bundle runs
+       standalone, so platform.html/admin.html are unaffected) */
+    "\n ;(function () { if (typeof render !== 'function') return; var _r = render; render = function () {" +
+    "  var out = _r.apply(this, arguments);" +
+    "  var done = function () { try { (window.__lxRechrome || function () { })(); } catch (e) { } };" +
+    "  return out && typeof out.then === 'function' ? out.then(function (v) { done(); return v; }, function (e) { done(); throw e; }) : (done(), out);" +
+    "}; })();" +
     "\n; this.nav = NAV; this.canSee = canSee; this.render = render; this.shell = shell;"
     + " this.NAVFLAT = NAVFLAT; this.NAVKEY = typeof NAVKEY === 'undefined' ? null : NAVKEY;"
     + " this.NAVSEC = typeof NAVSEC === 'undefined' ? null : NAVSEC;"
@@ -230,6 +239,12 @@ async function render() {
    the unified nav (every grant grouped by scope), the ⇄ switcher, and the sign-out
    that ends BOTH sessions. The bundle's interior — #vBody and everything a view
    wired inside it — is untouched. */
+/* a view re-renders ITSELF through the bundle's own render() (a form save, an import, a
+   delete — over a hundred call sites), and that call paints the bundle's single-scope
+   shell too, so the unified chrome would silently vanish mid-session. The bundle's render
+   is wrapped at load time to re-apply this chrome once it settles, so a re-render from
+   anywhere keeps the one console's nav and its ⇄ switcher */
+window.__lxRechrome = function () { try { afterBundleRender(); } catch (e) { } };
 function afterBundleRender() {
   const top = $(".p-top");
   if (!top) return;

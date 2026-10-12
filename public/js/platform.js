@@ -180,6 +180,8 @@ const NAV = [
       ["contracts", "📜 Contracts", { e: "contract" }],
       ["agreements", "✍️ Agreements", { u: "agreement" }],
       ["relationships", " 🔗 Relationships", { u: "relationship" }],
+      ["universal-links", "🔗 Universal Links (Primitive)", { e: "link" }],
+      ["context-types", "🧭 Context Types (Primitive)", { e: "context_type" }],
       ["business-networks", "🌐 Business Networks", { u: "business_network" }],
       ["business-organizations", "🏢 Organizations", { u: "organization" }],
     ] },
@@ -874,14 +876,21 @@ async function vProviders() {
   </div>`;
 }
 async function vGeo() {
-  const [cs, tm, pv, cy, fx] = await Promise.all([api("/meta/entity/country"), api("/meta/entity/tax_mode"), api("/meta/entity/provider_availability"), api("/meta/entity/currency"), api("/platform/fx")]);
+  const [cs, tm, pv, cy, fx, rules] = await Promise.all([api("/meta/entity/country"), api("/meta/entity/tax_mode"), api("/meta/entity/provider_availability"), api("/meta/entity/currency"), api("/platform/fx"), api("/meta/entity/taxRules")]);
   P.fx = fx;
   const cnt = {}; pv.rows.forEach(r => cnt[r.provider_id] = (cnt[r.provider_id] || 0) + 1);
+  /* tax is owned by the tax engine, so a country's rate is looked up from the engine's own
+     registry (taxRules) — never read off the country row, which would show a stale second copy
+     that drifts the moment an operator edits the rule */
+  const ruleOf = {};
+  for (const r of ((rules && rules.rows) || [])) ruleOf[r.country] = r;
+  const taxCell = code => { const r = ruleOf[code]; if (!r) return '<span class="p-tag">no rule</span>'; return `<span class="badge published">${esc(r.mode)}</span>`; };
+  const rateCell = code => { const r = ruleOf[code]; const v = r && Number(r.standard); return (v != null && v > 0) ? (v * 100).toFixed(2) + "%" : '<span class="p-tag">store rate</span>'; };
   return `
   <div class="p-panel"><h2>Countries &amp; currencies (entity: country)</h2>
-    <p class="p-tag">Storefronts derive currency, symbol, locale, decimals and default tax from these rows. Add a country → it instantly appears in every store's settings and provider availability.</p>
-    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Code</th><th>Name</th><th>Currency</th><th>Symbol</th><th>Locale</th><th class="num">Decimals</th><th>Tax mode</th><th class="num">Rate</th><th class="num">Providers</th></tr></thead>
-    <tbody>${cs.rows.map(c => `<tr><td><b>${esc(c.code)}</b></td><td>${esc(c.name)}</td><td>${esc(c.currency)}</td><td class="t-emoji" style="font-size:16px">${esc(c.symbol)}</td><td class="p-tag">${esc(c.locale)}</td><td class="num">${c.decimals}</td><td><span class="badge published">${esc(c.tax_mode)}</span></td><td class="num">${(c.tax_rate * 100).toFixed(2)}%</td><td class="num">${new Set(pv.rows.filter(x => x.country_code === c.code).map(x => x.provider_id)).size}</td></tr>`).join("")}</tbody></table></div>
+    <p class="p-tag">Storefronts derive currency, symbol, locale and decimals from these rows. Tax is owned by the tax engine (taxRules), not the country — add a country and it instantly appears in every store's settings and provider availability.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Code</th><th>Name</th><th>Currency</th><th>Symbol</th><th>Locale</th><th class="num">Decimals</th><th>Tax mode <em class="p-tag">(from taxRules)</em></th><th class="num">Rate</th><th class="num">Providers</th></tr></thead>
+    <tbody>${cs.rows.map(c => `<tr><td><b>${esc(c.code)}</b></td><td>${esc(c.name)}</td><td>${esc(c.currency)}</td><td class="t-emoji" style="font-size:16px">${esc(c.symbol)}</td><td class="p-tag">${esc(c.locale)}</td><td class="num">${c.decimals}</td><td>${taxCell(c.code)}</td><td class="num">${rateCell(c.code)}</td><td class="num">${new Set(pv.rows.filter(x => x.country_code === c.code).map(x => x.provider_id)).size}</td></tr>`).join("")}</tbody></table></div>
     <button class="p-btn primary sm" id="addCountry">+ Add country</button></div>
   <div class="p-panel"><h2>Currencies &amp; FX (entity: currency)</h2>
     <p class="p-tag">Jurisdiction sets the default; stores may override to any currency here — storefront prices, cart and checkout totals convert at these rates and snapshot them per order.</p>
@@ -1412,11 +1421,11 @@ document.addEventListener("click", async e => {
       const m = modal(`<div class="p-modal-head"><h3>New country</h3><button data-mclose>✕</button></div>
         <div class="p-form"><div class="row3"><label><span>Code</span><input id="ncCode" maxlength="4" placeholder="CH"></label><label><span>Name</span><input id="ncName"></label><label><span>Currency</span><input id="ncCur" placeholder="CHF"></label></div>
         <div class="row3"><label><span>Symbol</span><input id="ncSym"></label><label><span>Locale</span><input id="ncLoc" placeholder="de-CH"></label><label><span>Decimals</span><input id="ncDec" type="number" value="2"></label></div>
-        <div class="row"><label><span>Tax mode</span><input id="ncTm" value="vat"></label><label><span>Tax rate (0-1)</span><input id="ncTr" type="number" step="any" value="0.08"></label></div>
+        <p class="p-tag">A country is geography only — currency, symbol, locale, decimals. It carries no tax: set the jurisdiction's rates in the Tax engine (taxRules), and configure each store's tax in its Commerce settings.</p>
         <button class="p-btn primary" id="ncGo">Add</button></div>`);
       m.querySelector("#ncGo").onclick = async () => {
         const q = x => m.querySelector(x).value;
-        await api("/meta/entity/country", "POST", { code: q("#ncCode").value.toUpperCase(), name: q("#ncName").value, currency: q("#ncCur").value, symbol: q("#ncSym").value, locale: q("#ncLoc").value, decimals: Number(q("#ncDec").value), tax_mode: q("#ncTm").value, tax_rate: Number(q("#ncTr").value) });
+        await api("/meta/entity/country", "POST", { code: q("#ncCode").value.toUpperCase(), name: q("#ncName").value, currency: q("#ncCur").value, symbol: q("#ncSym").value, locale: q("#ncLoc").value, decimals: Number(q("#ncDec").value) });
         m.innerHTML = ""; toast("Country entity created — now assignable to providers"); render();
       };
     }
@@ -2545,7 +2554,24 @@ function wireG() {
   }
 }
 /* one cross-tenant table per entity — columns come straight from the entity's own
-   list-visible fields (the same defs the Store Console renders), never hardcoded here */
+   list-visible fields (the same defs the Store Console renders), never hardcoded here.
+   The toolbar is the platform's dataset surface, present wherever a dataset renders (a
+   universe's records, a capability leaf, the Global Operations views): a per-table filter,
+   New / Edit / Delete through the platform write endpoints, and CSV / JSON import-export.
+   A dataset the identity may not write hides its write buttons — the endpoints refuse the
+   same writes, so the toolbar and the API can never disagree. */
+const gq = {}, gCache = {}, gDefs = {};
+function gFilterRows(key, rows, fields) {
+  const q = String(gq[key] || "").trim().toLowerCase();
+  if (!q) return rows;
+  return rows.filter(r => fields.some(f => String(r[f.key] ?? "").toLowerCase().includes(q)) || String(r.id ?? "").toLowerCase().includes(q));
+}
+function gRowHtml(r, def, fields) {
+  const id = r[def.pk] != null ? r[def.pk] : r.id;
+  return `<tr>${def.tenantScoped ? `<td>${gStore(r.tenant_id)}</td>` : ""}${fields.map(f => `<td>${gCell(r[f.key], f)}</td>`).join("")}
+    <td style="text-align:right;white-space:nowrap"><button class="p-btn sm" data-gedit="${esc(def.key)}" data-id="${esc(id)}">Edit</button>
+    <button class="p-btn sm danger" data-gdel="${esc(def.key)}" data-id="${esc(id)}">✕</button></td></tr>`;
+}
 async function gTable(key, opts = {}) {
   await gMeta();
   const def = (G.entities || []).find(e => e.key === key);
@@ -2558,13 +2584,298 @@ async function gTable(key, opts = {}) {
   let rows = [];
   try { rows = (await api("/platform/data/" + encodeURIComponent(key) + (qs ? "?" + qs : ""))).rows || []; }
   catch (e) { return `<div class="p-empty">⚠️ ${esc(e.message)}</div>`; }
-  const fields = (def.fields || []).slice(0, 7);
-  const span = fields.length + (def.tenantScoped ? 1 : 0) || 1;
-  return `<div class="p-panel"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-    <h2 style="margin:0">${esc(def.name || key)}</h2><span class="p-tag">${rows.length}${def.tenantScoped ? " across tenants" : ""}</span></div>
-    <div class="p-scroll-x"><table class="p-table"><thead><tr>${def.tenantScoped ? "<th>Store</th>" : ""}${fields.map(f => `<th>${esc(f.label)}</th>`).join("")}</tr></thead>
-    <tbody>${rows.slice(0, 200).map(r => `<tr>${def.tenantScoped ? `<td>${gStore(r.tenant_id)}</td>` : ""}${fields.map(f => `<td>${gCell(r[f.key], f)}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${span}" class="p-empty">No records</td></tr>`}</tbody></table></div></div>`;
+  const listFields = (def.fields || []).slice(0, 7);
+  const canWrite = def.writable !== false;
+  gDefs[key] = def; gCache[key] = rows;
+  const shown = gFilterRows(key, rows, listFields);
+  const span = listFields.length + (def.tenantScoped ? 1 : 0) + (canWrite ? 1 : 0) || 1;
+  return `<div class="p-panel" data-gtable="${esc(key)}"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+    <h2 style="margin:0">${esc(def.name || key)}</h2><span class="p-tag" data-gcount>${shown.length}${def.tenantScoped ? " across tenants" : ""}</span>
+    <input class="p-search" data-gq="${esc(key)}" placeholder="Filter ${esc(String(def.name || key).toLowerCase())}…" value="${esc(gq[key] || "")}" style="min-width:150px;max-width:260px">
+    <span style="flex:1"></span>
+    ${canWrite ? `<button class="p-btn sm primary" data-gnew="${esc(key)}">+ New</button>
+    <button class="p-btn sm" data-gimport="${esc(key)}" title="Paste CSV or JSON records">⇪ Import</button>` : ""}
+    <button class="p-btn sm" data-gexport="${esc(key)}" title="Export — every format the platform can render, and the scope of the export">⇩ Export</button></div>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr>${def.tenantScoped ? "<th>Store</th>" : ""}${listFields.map(f => `<th>${esc(f.label)}</th>`).join("")}${canWrite ? "<th></th>" : ""}</tr></thead>
+    <tbody>${shown.slice(0, 200).map(r => gRowHtml(r, def, listFields)).join("") || `<tr><td colspan="${span}" class="p-empty">No records${canWrite ? " — add one with + New or ⇪ Import" : ""}</td></tr>`}</tbody></table></div></div>`;
 }
+/* ---------- the record form: built from the entity's own declaration, the same defs the
+   Store Console's editor renders — the platform never carries a second copy of a schema.
+   A platform-level registry (countries, currencies, the uv_* universes…) writes at scope
+   0 so every store inherits the row; a store-scoped dataset makes the operator name the
+   store rather than silently filing the record under whichever one was open */
+async function gFieldInput(f, val) {
+  const fid = "gf_" + f.key;
+  const req = f.required ? ' <em style="color:var(--p-red)" title="required">*</em>' : "";
+  if (f.type === "bool") return `<label class="p-check"><input type="checkbox" id="${fid}" ${val ? "checked" : ""}> <span>${esc(f.label)}${req}</span></label>`;
+  if (f.type === "textarea") return `<label><span>${esc(f.label)}${req}</span><textarea id="${fid}" rows="3">${esc(val == null ? "" : val)}</textarea></label>`;
+  if (f.type === "json" || f.type === "multi") return `<label><span>${esc(f.label)}${req} <small>(JSON)</small></span><textarea id="${fid}" rows="3" placeholder="{}">${esc(typeof val === "string" ? val : (val == null ? "" : JSON.stringify(val, null, 1)))}</textarea></label>`;
+  if (f.type === "select") {
+    const opts = Array.isArray(f.options) ? f.options : [];
+    return `<label><span>${esc(f.label)}${req}</span><select id="${fid}"><option value="">—</option>${opts.map(o => `<option ${String(o) === String(val) ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></label>`;
+  }
+  if (String(f.type || "").startsWith("ref:")) {
+    const refKey = f.type.slice(4);
+    const refDef = (G.entities || []).find(e => e.key === refKey) || {};
+    const pk = refDef.pk || "id";
+    let opts = [];
+    try { opts = (await api("/platform/data/" + encodeURIComponent(refKey))).rows || []; } catch (e) { opts = []; }
+    const items = opts.map(r => ({ v: r[pk] != null ? r[pk] : (r.code || r.id), l: r.title || r.name || r.label || r.code || String(r[pk] != null ? r[pk] : r.id) }));
+    /* a value the registry no longer lists must still be representable, or a required ref
+       renders empty and blocks every save of that record (the value survives, unseen) */
+    const unmatched = val != null && val !== "" && !items.some(o => String(o.v) === String(val));
+    return `<label><span>${esc(f.label)}${req}</span><select id="${fid}"><option value="">—</option>${unmatched ? `<option value="${esc(val)}" selected>${esc(val)}</option>` : ""}${items.map(o => `<option value="${esc(o.v)}" ${String(o.v) === String(val) ? "selected" : ""}>${esc(o.l)}</option>`).join("")}</select></label>`;
+  }
+  if (f.readonly) return `<label><span>${esc(f.label)}${req}</span><input id="${fid}" type="text" value="${esc(val == null ? "" : val)}" disabled title="managed by the platform"></label>`;
+  const t = f.type === "money" || f.type === "number" ? "number" : f.type === "date" ? "date" : "text";
+  return `<label><span>${esc(f.label)}${req}</span><input id="${fid}" type="${t}" step="any" value="${esc(val == null ? "" : val)}"></label>`;
+}
+function gCollect(def, m) {
+  const row = {};
+  for (const f of def.fields) {
+    if (f.readonly) continue;
+    const el = m.querySelector("#gf_" + f.key);
+    if (!el) continue;
+    if (f.type === "bool") { row[f.key] = el.checked ? 1 : 0; continue; }
+    let v = el.value;
+    if (f.type === "json" || f.type === "multi") {
+      if (String(v).trim() === "") { row[f.key] = null; continue; }
+      try { v = JSON.parse(v); } catch (e) { toast("Invalid JSON in " + f.label); throw e; }
+      row[f.key] = v; continue;
+    }
+    if (f.type === "money" || f.type === "number") { row[f.key] = v === "" ? null : Number(v); continue; }
+    row[f.key] = v;
+  }
+  return row;
+}
+function gScopeSelect(def, id) {
+  /* platformLevel is the /def answer; the index carries the same fact as tenantScoped
+     (inverted) — either shape decides whether a store needs naming */
+  const level = def.platformLevel != null ? def.platformLevel : !def.tenantScoped;
+  if (level) return "";
+  const tenants = Object.values(G.tmap || {});
+  const json = def.storage === "json";
+  return `<label style="max-width:280px"><span>Store ${json ? "<small>(blank = platform level)</small>" : "*"}</span>
+    <select id="${id}"><option value="">${json ? "Platform level (all stores)" : "— pick a store —"}</option>
+    ${tenants.map(t => `<option value="${t.id}" ${String(G.tenantId) === String(t.id) ? "selected" : ""}>${esc(t.name)}</option>`).join("")}</select></label>`;
+}
+async function gRecordForm(key, id) {
+  const def = await api("/platform/data/" + encodeURIComponent(key) + "/def");
+  if (!def || def.error) { toast((def && def.error) || "Dataset unavailable"); return; }
+  let row = {};
+  if (id != null) {
+    const { rows } = await api("/platform/data/" + encodeURIComponent(key));
+    row = (rows || []).find(r => String(r[def.pk] ?? r.id) === String(id)) || {};
+  }
+  const m = modal(`<div class="p-modal-head"><h3>${id != null ? "Edit" : "New"} · ${esc(def.label || def.name || key)}</h3><button data-mclose>✕</button></div>
+    <div class="p-form">${gScopeSelect(def, "gf_tenant")}
+      ${(await Promise.all(def.fields.map(f => gFieldInput(f, row[f.key])))).join("")}
+      <div style="display:flex;gap:10px;margin-top:8px"><button class="p-btn primary" id="gfSave">${id != null ? "Save" : "Create"}</button><button class="p-btn" data-mclose>Cancel</button></div></div>`);
+  m.querySelector("#gfSave").onclick = async () => {
+    try {
+      const body = gCollect(def, m);
+      const tidEl = m.querySelector("#gf_tenant");
+      if (tidEl) body.tenant_id = tidEl.value ? Number(tidEl.value) : "";
+      if (!def.platformLevel && def.storage !== "json" && !body.tenant_id) { toast("Pick a store — this dataset is store-scoped"); return; }
+      if (id != null) await api("/platform/data/" + encodeURIComponent(key) + "/" + encodeURIComponent(id), "PUT", body);
+      else await api("/platform/data/" + encodeURIComponent(key), "POST", body);
+      m.innerHTML = ""; toast(id != null ? "Saved" : "Created"); render();
+    } catch (e) { toast(e.message); }
+  };
+}
+/* import: one box, CSV or JSON (auto-detected); every row is validated exactly like a
+   hand-entered one, and each rejection comes back with its row number so the operator
+   fixes the data instead of guessing which line the engine refused */
+async function gImportForm(key) {
+  /* the store-required guard needs the entity's scope and storage kind, and the index the
+     toolbar renders from carries neither — so the declaration is read from /def (the same
+     answer the record form uses), falling back to the index if the def call fails */
+  let def = await api("/platform/data/" + encodeURIComponent(key) + "/def");
+  if (!def || def.error) def = (G.entities || []).find(e => e.key === key) || {};
+  const cols = (def.fields || []).filter(f => !f.readonly).map(f => f.key).join(", ");
+  const m = modal(`<div class="p-modal-head"><h3>⇪ Import · ${esc(def.name || key)}</h3><button data-mclose>✕</button></div>
+    <div class="p-form">
+      <p class="p-tag" style="margin:0 0 8px">Paste a JSON array, or CSV whose first row is the column headers. Only declared columns are kept; each row is validated like a hand-entered record.</p>
+      <label><span>Records</span><textarea id="giBody" rows="9" style="font-family:monospace" placeholder="${esc(cols)}&#10;…"></textarea></label>
+      <label><span>Columns</span><input value="${esc(cols)}" readonly title="the fields this entity declares"></label>
+      <div class="p-sample"><span class="p-tag" style="flex:1">Don't know the shape? Download a sample file — these exact columns plus one example row.</span>
+        <select id="giSampleFmt" style="min-height:30px"><option value="csv">CSV</option><option value="json">JSON</option></select>
+        <button class="p-btn sm" id="giSample" title="Download a sample file with this dataset's current columns">⇩ Sample file</button></div>
+      ${gScopeSelect(def, "giTenant")}
+      <div style="display:flex;gap:10px;margin-top:8px"><button class="p-btn primary" id="giGo">Import</button><button class="p-btn" data-mclose>Cancel</button></div>
+      <div id="giOut" style="margin-top:8px"></div></div>`);
+  /* the sample file: the endpoint answers this dataset's own current columns with one
+     example row, in the same CSV/JSON shape the importer accepts — so an operator fills
+     in a file they downloaded rather than guessing which headers the engine will take */
+  m.querySelector("#giSample").onclick = async () => {
+    const fmt = m.querySelector("#giSampleFmt").value;
+    try { await gDownload("/api/platform/data/" + encodeURIComponent(key) + "/sample?format=" + fmt, key + "-sample." + fmt); toast("Sample downloaded"); }
+    catch (e) { toast(e.message); }
+  };
+  m.querySelector("#giGo").onclick = async () => {
+    const body = { text: m.querySelector("#giBody").value };
+    const tid = m.querySelector("#giTenant");
+    if (tid) body.tenant_id = tid.value ? Number(tid.value) : "";
+    if (!def.platformLevel && def.storage !== "json" && !body.tenant_id) { toast("Pick a store — this dataset is store-scoped"); return; }
+    const out = m.querySelector("#giOut");
+    out.innerHTML = '<p class="p-tag">Importing…</p>';
+    try {
+      const r = await api("/platform/data/" + encodeURIComponent(key) + "/import", "POST", body);
+      out.innerHTML = `<p class="p-tag">✅ ${r.imported} imported${r.failed.length ? " · ⚠️ " + r.failed.length + " rejected" : ""}</p>`
+        + (r.failed.length ? `<div class="p-scroll-x" style="max-height:180px"><table class="p-table"><thead><tr><th>Row</th><th>Why rejected</th></tr></thead>
+          <tbody>${r.failed.slice(0, 50).map(f => `<tr><td class="num">${f.index}</td><td>${esc(f.error)}</td></tr>`).join("")}</tbody></table></div>` : "");
+      if (!r.failed.length) { m.innerHTML = ""; toast("Imported " + r.imported); render(); }
+    } catch (e) { out.innerHTML = `<p class="p-tag" style="color:var(--p-red)">⚠️ ${esc(e.message)}</p>`; }
+  };
+}
+/* the export menu: one button, every format + every scope. The format list is fetched
+   from the export endpoint itself (?format=formats), so a format registered server-side
+   appears here with no client change — the menu never carries a second list that could
+   drift from what the server can actually emit */
+const gFmtCache = {};
+/* the format list plus the reason it came back empty, so an operator is told what to fix
+   rather than just "unavailable" — the usual cause is a platform service running code older
+   than this page (it answers the export with a file instead of the registry) */
+async function gFormats(key) {
+  if (!gFmtCache[key]) {
+    let formats = [], reason = "";
+    try {
+      const r = await api("/platform/data/" + encodeURIComponent(key) + "/export?format=formats");
+      formats = r.formats || [];
+      if (!formats.length) reason = r.error || "the platform service did not answer a format list — it may be running older code than this page; restart it and retry";
+    } catch (e) { reason = e.message; }
+    gFmtCache[key] = { formats, reason };
+  }
+  return gFmtCache[key];
+}
+/* a blob download — the same path the sample file and the export use, so every format
+   lands in the downloads folder through one code path */
+function gDownload(url, filename) {
+  return fetch(url, { headers: { "x-csrf": __csrf() }, credentials: "same-origin" })
+    .then(r => { if (!r.ok) return r.json().catch(() => ({})).then(j => { throw new Error(j.error || ("HTTP " + r.status)); }); return r.blob(); })
+    .then(blob => {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    });
+}
+function gMenuClose() { const m = document.querySelector("[data-gmenu]"); if (m) m.remove(); }
+async function gExportMenu(btn, key) {
+  gMenuClose();
+  const def = gDefs[key] || {};
+  const fmts = await gFormats(key);
+  if (!fmts.formats.length) { toast(fmts.reason || "Export unavailable for this dataset"); return; }
+  const formats = fmts.formats;
+  const listFields = (def.fields || []).slice(0, 7);
+  const allRows = gCache[key] || [];
+  /* the visible page is exactly what the table is showing, so its rows are identified by
+     their primary keys and the export cannot drift from what the operator is looking at */
+  const visIds = gFilterRows(key, allRows, listFields).slice(0, 200)
+    .map(r => r[def.pk] != null ? r[def.pk] : r.id);
+  const dateCols = (def.fields || []).filter(f => f.type === "date");
+  const base = new URLSearchParams();
+  if (G.q) base.set("q", G.q);
+  if (G.tenantId) base.set("tenant_id", G.tenantId);
+  const m = document.createElement("div");
+  m.className = "p-menu";
+  m.setAttribute("data-gmenu", "1");
+  m.innerHTML = `<div class="p-menu-sec">Format</div>
+    <div class="p-fmts">${formats.map((f, i) => `<button type="button" class="p-btn sm${i === 0 ? " primary" : ""}" data-gfmt="${esc(f.key)}" title="${esc(f.label)}">${esc(f.label)}</button>`).join("")}</div>
+    <div class="p-menu-sec">Scope</div>
+    <label class="p-check"><input type="radio" name="gscope" value="all" checked><span>All matching (${allRows.length})</span></label>
+    <label class="p-check"><input type="radio" name="gscope" value="page" ${visIds.length ? "" : "disabled"}><span>Current page (${visIds.length})</span></label>
+    <label class="p-check"><input type="radio" name="gscope" value="range"><span>Rows</span>
+      <input type="number" class="p-mini" id="gxFrom" min="1" value="1" aria-label="from row"> – <input type="number" class="p-mini" id="gxTo" min="1" value="${allRows.length}" aria-label="to row"></label>
+    <label class="p-check"><input type="radio" name="gscope" value="date" ${dateCols.length ? "" : "disabled"}>
+      <span>Date</span><select class="p-mini" id="gxCol" ${dateCols.length ? "" : "disabled"} aria-label="date column">${dateCols.map(c => `<option value="${esc(c.key)}">${esc(c.label || c.key)}</option>`).join("")}</select>
+      <input type="date" class="p-mini" id="gxFromD" aria-label="from date"><input type="date" class="p-mini" id="gxToD" aria-label="to date"></label>
+    ${dateCols.length ? "" : `<span class="p-tag">no date columns on this dataset</span>`}
+    <div class="p-menu-foot"><button class="p-btn primary" id="gxGo">⇩ Download</button></div>`;
+  document.body.appendChild(m);
+  const r = btn.getBoundingClientRect();
+  m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - m.offsetWidth - 12)) + "px";
+  m.style.top = Math.min(r.bottom + 6, window.innerHeight - m.offsetHeight - 12) + "px";
+  /* a format pill selects, but does not start, the export — the scope stays the operator's */
+  m.querySelectorAll("[data-gfmt]").forEach(b => b.onclick = () => {
+    m.querySelectorAll("[data-gfmt]").forEach(x => x.classList.remove("primary"));
+    b.classList.add("primary");
+  });
+  /* touching a scope's inputs selects that scope, so the operator never exports a range
+     they set up but then forgot to pick */
+  const pickScope = s => { const x = m.querySelector(`input[name=gscope][value="${s}"]`); if (x && !x.disabled) x.checked = true; };
+  ["#gxFrom", "#gxTo"].forEach(s => { const el = m.querySelector(s); if (el) el.oninput = () => pickScope("range"); });
+  ["#gxCol", "#gxFromD", "#gxToD"].forEach(s => { const el = m.querySelector(s); if (el) el.oninput = () => pickScope("date"); });
+  m.querySelector("#gxGo").onclick = async () => {
+    const fmtEl = m.querySelector("[data-gfmt].primary");
+    const fmt = fmtEl ? fmtEl.dataset.gfmt : "csv";
+    const scope = (m.querySelector("input[name=gscope]:checked") || {}).value || "all";
+    const extra = { format: fmt };
+    if (scope === "page") extra.ids = visIds.join(",");
+    else if (scope === "range") { extra.from = m.querySelector("#gxFrom").value; extra.to = m.querySelector("#gxTo").value; }
+    else if (scope === "date") { extra.date_col = m.querySelector("#gxCol").value; extra.date_from = m.querySelector("#gxFromD").value; extra.date_to = m.querySelector("#gxToD").value; }
+    const p = new URLSearchParams(base);
+    for (const [k, v] of Object.entries(extra)) if (v != null && v !== "") p.set(k, v);
+    const ext = (formats.find(x => x.key === fmt) || {}).ext || fmt;
+    try {
+      await gDownload("/api/platform/data/" + encodeURIComponent(key) + "/export?" + p.toString(), key + "." + ext);
+      toast("Exported " + key + "." + ext);
+      gMenuClose();
+    } catch (e) { toast(e.message); }
+  };
+}
+/* the menu closes on any click outside itself (the export button itself is exempt — it
+   re-opens) and on Escape, so a menu can never be left dangling over a re-rendered view */
+document.addEventListener("click", e => {
+  if (!e.target.closest) return;
+  if (e.target.closest("[data-gmenu]") || e.target.closest("[data-gexport]")) return;
+  gMenuClose();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") gMenuClose(); });
+async function gDelete(key, id) {
+  const def = (G.entities || []).find(e => e.key === key) || {};
+  const label = String(def.name || key).toLowerCase().replace(/s$/, "");
+  if (!confirm("Delete this " + label + " record?")) return;
+  const p = new URLSearchParams();
+  if (G.tenantId) p.set("tenant_id", G.tenantId);
+  try {
+    const r = await api("/platform/data/" + encodeURIComponent(key) + "/" + encodeURIComponent(id) + (p.toString() ? "?" + p.toString() : ""), "DELETE", {});
+    toast(r.trashed ? "Moved to trash" : "Deleted"); render();
+  } catch (e) { toast(e.message); }
+}
+/* the toolbar's wiring is delegated at document level (like the store console's entity
+   buttons) so it survives every re-render without each view re-attaching it; the data-g*
+   prefixes keep these buttons clear of the store bundle's data-new/edit/del handlers when
+   the unified console has both bundles loaded */
+document.addEventListener("click", async e => {
+  const nb = e.target.closest("[data-gnew]"), eb = e.target.closest("[data-gedit]"),
+    db = e.target.closest("[data-gdel]"), ib = e.target.closest("[data-gimport]"),
+    xb = e.target.closest("[data-gexport]");
+  try {
+    if (nb) return await gRecordForm(nb.dataset.gnew, null);
+    if (eb) return await gRecordForm(eb.dataset.gedit, eb.dataset.gedit && eb.dataset.id);
+    if (db) return await gDelete(db.dataset.gdel, db.dataset.id);
+    if (ib) return gImportForm(ib.dataset.gimport);
+    if (xb) return await gExportMenu(xb, xb.dataset.gexport);
+  } catch (err) { toast(err.message); }
+});
+/* a per-table filter re-filters the rows already in hand and rewrites only its own tbody —
+   no re-render, no refetch, so typing in one table never disturbs the rest of the page */
+document.addEventListener("input", e => {
+  const q = e.target.closest && e.target.closest("[data-gq]");
+  if (!q) return;
+  const key = q.dataset.gq, def = gDefs[key], box = q.closest("[data-gtable]");
+  gq[key] = q.value;
+  if (!def || !box) return;
+  const listFields = (def.fields || []).slice(0, 7);
+  const rows = gFilterRows(key, gCache[key] || [], listFields);
+  const cnt = box.querySelector("[data-gcount]");
+  if (cnt) cnt.textContent = rows.length + (def.tenantScoped ? " across tenants" : "");
+  const tbody = box.querySelector("tbody");
+  if (tbody) tbody.innerHTML = rows.slice(0, 200).map(r => gRowHtml(r, def, listFields)).join("")
+    || `<tr><td colspan="${listFields.length + (def.tenantScoped ? 1 : 0) + 1}" class="p-empty">No records match “${esc(q.value)}”</td></tr>`;
+});
 /* a fan-out panel: when columns are omitted they are derived from the payload itself, so a
    view stays correct even if the store handler's shape grows (zero hard-coding, zero partial) */
 async function gFan(path) {
@@ -3144,7 +3455,7 @@ document.addEventListener("click", e => { if (e.target.closest("[data-mclose]"))
         <p class="p-err hidden" id="pfErr" style="color:var(--p-red);font-size:13px;margin:10px 0 0"></p>
         <p class="hint" id="pfHint"></p>
         <p class="hint" id="pfStores">Store consoles: loading…</p></div></div>`;
-      api("/stores").then(st => { const el = document.getElementById("pfStores"); if (el) el.innerHTML = "Store consoles: " + (st.stores || []).map(x => `<a href="/admin.html?store=${x.slug}">${x.name}</a>`).join(" · ") + " · <a href='/index.html'>Storefronts</a>"; }).catch(() => { });
+      api("/stores").then(st => { const el = document.getElementById("pfStores"); if (el) el.innerHTML = "Store consoles: " + (st.stores || []).map(x => `<a href="/admin.html?store=${esc(x.slug)}">${esc(x.name)}</a>`).join(" · ") + " · <a href='/index.html'>Storefronts</a>"; }).catch(() => { });
       api("/platform/hint").then(h => { const el = document.getElementById("pfHint"); if (el && h.demo && h.email) el.innerHTML = "Owner sign-in: <code>" + esc(h.email) + "</code>" + (h.password ? " / <code>" + esc(h.password) + "</code>" : "") + " — set via env PLATFORM_EMAIL / PLATFORM_PASSWORD."; }).catch(() => { });
       $("#pf").onsubmit = async e => {
         e.preventDefault();

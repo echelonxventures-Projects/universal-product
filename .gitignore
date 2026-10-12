@@ -7,7 +7,13 @@ data/master.json
 data/master.key
 data/exports/
 data/tls-*.pem
+/* a test boots its own throwaway store (test/<name>.db) and deletes it on exit; a
+   killed run leaves the file behind, so these are never committed either */
+test/*.db
+test/*.db-wal
+test/*.db-shm
 .luxora.pid
+.luxora *.pid
 server.log
 /tmp
 .DS_Store

@@ -171,6 +171,13 @@
             border-radius: 4px;
             margin: 10px 0;
         }
+        .callout {
+            border-left: 4px solid var(--primary);
+            background: #eff6ff;
+            padding: 10px 12px;
+            border-radius: 4px;
+            margin: 12px 0;
+        }
     </style>
 </head>
 <body>
@@ -287,14 +294,14 @@
             <div class="step">
                 <span class="step-number">1</span>
                 <strong>Configure Security Policy</strong>
-                <p><strong>Location:</strong> Platform Console → <strong>🛡️ Provisioning</strong></p>
-                <p><strong>Action:</strong> Set minimum password length (e.g., 12 characters)</p>
+                <p><strong>Location:</strong> Platform Console → <strong>11 Administration → Configuration → 🛡️ Provisioning</strong></p>
+                <p><strong>Action:</strong> Save the platform policy (the "Initial platform provisioning pending" banner disappears). Set minimum password length (e.g. 12 characters), rate limits, lockout, session/transport and the new-store defaults (default plan, sandbox gateways, coupon &amp; global-offer gates).</p>
             </div>
 
             <div class="step">
                 <span class="step-number">2</span>
                 <strong>Configure Countries & Taxes</strong>
-                <p><strong>Location:</strong> Platform Console → <strong>🌍 Geo · Countries · Taxes</strong></p>
+                <p><strong>Location:</strong> Platform Console → <strong>01 Foundation → Geography → 🌍 Geo Registry · Taxes</strong></p>
                 <p><strong>Action:</strong> Verify countries with currency and tax mode:</p>
                 <table>
                     <tr><th>Country</th><th>Currency</th><th>Tax Mode</th></tr>
@@ -307,14 +314,14 @@
             <div class="step">
                 <span class="step-number">3</span>
                 <strong>Create Subscription Plans</strong>
-                <p><strong>Location:</strong> Platform Console → <strong>💼 Plans</strong></p>
+                <p><strong>Location:</strong> Platform Console → <strong>04 Commerce → Billing & Payment → 💼 Plans</strong></p>
                 <p><strong>Action:</strong> Click <strong>New Plan</strong> and define price and limits</p>
             </div>
 
             <div class="step">
                 <span class="step-number">4</span>
                 <strong>Register Payment Providers</strong>
-                <p><strong>Location:</strong> Platform Console → <strong>🔌 Provider Registry</strong></p>
+                <p><strong>Location:</strong> Platform Console → <strong>09 Platform → Extension → 🔌 Provider Registry</strong></p>
                 <p><strong>Action:</strong> Add providers and enable them per country:</p>
                 <table>
                     <tr><th>Provider</th><th>Country</th><th>Type</th></tr>
@@ -327,7 +334,7 @@
             <div class="step">
                 <span class="step-number">5</span>
                 <strong>Verify GOIP Registries</strong>
-                <p><strong>Location:</strong> Platform Console → <strong>Ω∞ GOIP → 📚 Registries</strong></p>
+                <p><strong>Location:</strong> Platform Console → <strong>04 Commerce → Offers & Incentives → Ω∞ GOIP → 📚 Registries</strong></p>
                 <p><strong>Check:</strong> Calendars, Spatial Systems, Economic Units are populated</p>
             </div>
 
@@ -338,39 +345,170 @@
 
         <!-- TAB 3: PLATFORM ADMIN -->
         <div id="platform" class="tab-content">
-            <h1>🏛️ Platform (Super) Administrator Guide</h1>
-            <p><strong>URL:</strong> <a href="/platform.html" target="_blank">http://localhost:8787/platform.html</a></p>
+            <h1>🏛️ Platform Owner / Super Administrator Guide</h1>
+            <p><strong>URL:</strong> <a href="/platform.html" target="_blank">http://localhost:8787/platform.html</a> ·
+            sign in with the platform account (<code>platform@luxora.shop</code> in the seed). Platform identity is
+            separate from any store — a platform admin sees every store, a store admin sees exactly one.</p>
 
-            <h2>Console Layout</h2>
+            <div class="callout">
+                <strong>One principle:</strong> everything — every screen, dataset, provider, theme, role, capability
+                and offer — is <strong>declared data</strong>, not code. The console is organized the way the
+                architecture declares: <strong>twelve sections</strong>, one canonical home per capability, and every
+                navigation leaf resolves to a live view. Nothing is a placeholder, nothing is orphaned.
+            </div>
+
+            <h2>The twelve sections</h2>
             <table>
-                <tr><th>Section</th><th>Purpose</th></tr>
-                <tr><td>◈ Command</td><td>Platform KPIs</td></tr>
-                <tr><td>🛡️ Provisioning</td><td>Global policies</td></tr>
-                <tr><td>🏬 Stores</td><td>Launch & manage tenants</td></tr>
-                <tr><td>🌍 Geo</td><td>Countries, currencies, taxes</td></tr>
-                <tr><td>💼 Plans</td><td>Subscription tiers</td></tr>
-                <tr><td>🔌 Provider Registry</td><td>Payment/shipping providers</td></tr>
-                <tr><td>Ω∞ GOIP</td><td>Universal offers</td></tr>
-                <tr><td>📜 Global Audit</td><td>Cross-store audit</td></tr>
+                <tr><th>#</th><th>Section</th><th>What lives there</th></tr>
+                <tr><td>01</td><td>Foundation</td><td>Identity (auth, users, roles, KYC), Geography (countries, Geo Registry · Taxes), Temporal, Currency &amp; FX, Localization</td></tr>
+                <tr><td>02</td><td>Knowledge</td><td>Global Products, product types/attributes, Services, Catalog · SKUs, Industry · Categories, Brands, Knowledge Graph</td></tr>
+                <tr><td>03</td><td>Business</td><td>Parties (customers, sellers, partners), CRM, Agreements (contracts, relationships)</td></tr>
+                <tr><td>04</td><td>Commerce</td><td>Merchandising &amp; price lists, Offers &amp; Incentives (Ω∞ GOIP), Ads &amp; marketplace, Trade, Transactions, Recurring, Billing &amp; Payment</td></tr>
+                <tr><td>05</td><td>Operations</td><td>🧭 Ops Hub (fleet overview), Supply, Fulfilment, Service Delivery, Support · SLA</td></tr>
+                <tr><td>06</td><td>Experience</td><td>Surfaces, Presentation (Themes, branding), Channels &amp; notifications, Journeys</td></tr>
+                <tr><td>07</td><td>Intelligence</td><td>AI · Providers &amp; Plans, models, agents, engines, Trust (fraud, risk), Autonomy, Analytics · A/B</td></tr>
+                <tr><td>08</td><td>Governance</td><td>Policies, Compliance &amp; privacy, Risk &amp; Security, Oversight (Global Audit, Traceability, risk/trash)</td></tr>
+                <tr><td>09</td><td>Platform</td><td>Capabilities, Capability Tree, Composition Engine, Extension (Module Marketplace, Provider Registry), Runtime · Infra, Evolution</td></tr>
+                <tr><td>10</td><td>Observability</td><td>◈ Command (KPIs), Monitoring, Health, Dashboards, Data Explorer, Data Studio, Entity Definitions</td></tr>
+                <tr><td>11</td><td>Administration</td><td>Tenancy (🏬 Tenants), Access (Platform Admins, Roles, Users), Configuration (🛡️ Provisioning, settings, feature flags)</td></tr>
+                <tr><td>12</td><td>Architecture</td><td>Constitution Ω∞ (UCII, UCOS, Foundations, Universes, Domains), Canonical Model, Graphs, Reference, 📘 User Manual</td></tr>
             </table>
+
+            <h2>How any leaf resolves</h2>
+            <p>A leaf is never a dead link — it renders in exactly one of three ways:</p>
+            <ul>
+                <li><strong>A dedicated view</strong> (Tenants, Billing Ops, Ops Hub…) — purpose-built screens.</li>
+                <li><strong>An entity dataset</strong> — a cross-store table over a declared entity, built from the
+                <em>same</em> field definitions the Store Console renders.</li>
+                <li><strong>A universe dataset</strong> — a corpus-declared domain: its registry record plus its live records.</li>
+            </ul>
+
+            <h2>The dataset toolbar (used everywhere a dataset renders)</h2>
+            <ul>
+                <li><strong>Filter box</strong> — per-table; matches any visible column or the record id.</li>
+                <li><strong>+ New / Edit / ✕</strong> — records are created/changed through the platform write endpoints,
+                on a form built from the entity's own declaration. Datasets your role may not write hide the buttons —
+                and the endpoints refuse the same writes.</li>
+                <li><strong>⇪ Import</strong> — paste JSON or CSV (header row = column names); download a sample file in
+                this dataset's own columns; each rejection comes back with its row number and reason. Store-scoped
+                datasets require you to name the store.</li>
+                <li><strong>⇩ Export</strong> — every format the server can emit, scoped platform-wide or to one store.</li>
+            </ul>
+
+            <h2>Owner flows at a glance</h2>
+            <table>
+                <tr><th>If you want to…</th><th>Go to</th><th>Action</th></tr>
+                <tr><td>Configure the platform for the first time</td><td>11 → 🛡️ Provisioning</td><td>Save the policy (the "pending" banner disappears)</td></tr>
+                <tr><td>Set countries / currencies / taxes</td><td>01 → 🌍 Geo Registry · Taxes</td><td>Edit countries, FX rates, tax modes</td></tr>
+                <tr><td>Create subscription tiers</td><td>04 → 💼 Plans</td><td>+ New plan</td></tr>
+                <tr><td>Launch a store</td><td>11 → 🏬 Tenants</td><td>+ New tenant (one form: name, slug, country, owner, mode)</td></tr>
+                <tr><td>Operate a store without its password</td><td>11 → 🏬 Tenants</td><td>Manage · Catalog (impersonates the store console)</td></tr>
+                <tr><td>Suspend an abusive / non-paying store</td><td>11 → 🏬 Tenants</td><td>Suspend (kill-switch; blocks storefront/API mutations)</td></tr>
+                <tr><td>Bind a store to a plan</td><td>04 → 🔁 Subscriptions</td><td>+ Assign plan</td></tr>
+                <tr><td>Collect money / chase arrears</td><td>04 → 🧾 Invoices · 💳 Billing Ops</td><td>Collect · Run dunning sweep · Record metered usage</td></tr>
+                <tr><td>Sell an add-on to a store</td><td>09 → 🧩 Module Marketplace</td><td>Click the store's chip → Purchase &amp; install (paid modules bill invoice MOD-*)</td></tr>
+                <tr><td>Add a payment method for a country</td><td>09 → 🔌 Provider Registry</td><td>Edit → Countries (availability relation)</td></tr>
+                <tr><td>Allow a store to list a master product</td><td>02 → 🌐 Global Products</td><td>Store access</td></tr>
+                <tr><td>See every store's orders / stock / disputes</td><td>05 → 🧭 Ops Hub (+ per-domain views)</td><td>Use the shared store filter + the dataset toolbar</td></tr>
+                <tr><td>Turn a feature on for one store</td><td>09 → ⚙️ Capabilities</td><td>Pick the store → toggle / configure params / apply a preset</td></tr>
+                <tr><td>Materialize a capability's full surface</td><td>09 → 🧬 Composition Engine</td><td>Compose (data model, API, workflow, UI, dashboard, security — no per-capability code)</td></tr>
+                <tr><td>Publish the corpus into a store</td><td>12 → 🧬 Universes</td><td>Pick the target store → Activate (explicit; never a silent default)</td></tr>
+                <tr><td>Check the corpus is intact</td><td>12 → 🏛️ Foundations</td><td>Verify invariants (unique identities, dependencies resolve, acyclic, no orphans)</td></tr>
+                <tr><td>Advance a universe record's state</td><td>12 → 🔀 Domains</td><td>Advance (rule-gated; blocked transitions show why)</td></tr>
+                <tr><td>Add a console operator</td><td>11 → 🛡️ Platform Admins</td><td>Create admin with a role (you can't delete yourself; ≥1 admin always remains)</td></tr>
+                <tr><td>Scope what a role may touch</td><td>11 → 🎭 Roles</td><td>Grants editor — wildcard default + per section read / write / off / inherit</td></tr>
+                <tr><td>Change platform behaviour without a restart</td><td>08 → 🔒 Policies</td><td>Edit the category's JSON — takes effect immediately</td></tr>
+                <tr><td>Prove who did what, across stores</td><td>08 → 📜 Global Audit</td><td>Filter; verify the hash chain</td></tr>
+                <tr><td>Re-skin a store or department</td><td>06 → 🎨 Themes</td><td>Assign a preset, or dial a hue, preview live and save it</td></tr>
+                <tr><td>Swap the infra topology</td><td>09 → 🧩 Runtime · Infra</td><td>Activate a named environment (drivers + secrets + flags)</td></tr>
+                <tr><td>Check the platform's health</td><td>10 → ◈ Command · 📈 Monitoring</td><td>MRR, GMV, traffic, latency, per-store status</td></tr>
+            </table>
+
+            <h2>Cross-store oversight (Global Operations)</h2>
+            <p>The Store Console <em>edits</em> one store; the Global Operations views <em>watch</em> all of them. Two
+            primitives back every view: a cross-store dataset table (the same records each store edits, read
+            platform-wide) and a fan-out that runs each store's own read-only handler once per store and merges — so
+            business logic lives exactly once. Each view lives in its canonical section: Orders · Fulfilment
+            (04 Commerce), Catalog · SKUs (02 Knowledge), Sellers · B2B · Trade (03 Business), Ads · Marketplace (04),
+            Finance · Payments (04), Offers · Affiliates (04), Support · SLA (05 Operations), Content · UGC (06),
+            Risk · Compliance · Trash (08), Team · Access · Settings (11), Analytics · A/B (07), Data Explorer (10).
+            The 🧭 <strong>Ops Hub</strong> (05 Operations) is the fleet overview.</p>
+
+            <h2>Role gating</h2>
+            <p>If your platform role does not grant a section, that leaf is hidden <em>and</em> the view refuses to
+            render even if you reach it by URL — the back-end refuses the same call. See <strong>Roles</strong> above.</p>
+
+            <p>For the complete guide with every flow, see <strong>USER_MANUAL.md → Part E</strong> in the repository.</p>
         </div>
 
         <!-- TAB 4: STORE ADMIN -->
         <div id="store" class="tab-content">
             <h1>📦 Store Administrator Guide</h1>
-            <p><strong>URL:</strong> <a href="/admin.html" target="_blank">http://localhost:8787/admin.html</a></p>
+            <p><strong>URL:</strong> <a href="/admin.html" target="_blank">http://localhost:8787/admin.html</a> ·
+            sign in with the store's admin account. You must be pointed at the right store — use
+            <code>?store=&lt;slug&gt;</code> or the <code>&lt;slug&gt;.localhost</code> subdomain. An admin of one
+            store has no access to another store's data.</p>
 
-            <h2>Console Layout</h2>
+            <div class="callout">
+                <strong>One console, two scopes.</strong> The store console and the platform console are also reachable
+                as <strong>one app</strong> at <a href="/console.html" target="_blank"><code>/console.html</code></a>:
+                a single sign-in, one nav grouped by scope (your store sections, then any platform sections your role
+                grants), and a <strong>⇄ switch</strong> in the top bar to flip between scopes with no second login.
+                If you hold both a store and a platform role, start there.
+            </div>
+
+            <h2>Console layout</h2>
             <table>
-                <tr><th>Section</th><th>Purpose</th></tr>
-                <tr><td>◈ Dashboard</td><td>Store KPIs</td></tr>
-                <tr><td>📦 Products</td><td>Catalogue</td></tr>
-                <tr><td>🔖 SKUs & Inventory</td><td>Stock management</td></tr>
-                <tr><td>🧾 Orders</td><td>Orders & fulfilment</td></tr>
-                <tr><td>🎯 Promotions</td><td>Offers & coupons</td></tr>
-                <tr><td>💳 Payment Gateways</td><td>Payment providers</td></tr>
-                <tr><td>⚙️ Settings</td><td>Branding, tax, commerce</td></tr>
+                <tr><th>Group</th><th>Sections</th></tr>
+                <tr><td>◈ Overview</td><td>Dashboard · Analytics · Monitor</td></tr>
+                <tr><td>Catalogue</td><td>Products · Brands · Global Catalog · SKUs &amp; Inventory · Taxonomy · Attributes · Search &amp; Discovery · Home Content</td></tr>
+                <tr><td>Orders &amp; Fulfilment</td><td>Orders · Returns · RFQs (B2B) · Logistics &amp; Fulfilment · Serialized Items · Planning &amp; Replenishment · Suppliers &amp; Procurement</td></tr>
+                <tr><td>Marketplace &amp; B2B</td><td>Sellers · Contracts (B2B) · Tenders · Marketplace &amp; Ads</td></tr>
+                <tr><td>Commerce Ops</td><td>Quick-commerce · Fintech Ops · Marketplace Ops · Trade Ops</td></tr>
+                <tr><td>Payments &amp; Finance</td><td>Payment Gateways · Settlements · Finance &amp; Settlements · Billing</td></tr>
+                <tr><td>Growth &amp; Retention</td><td>Offers &amp; Coupons · Reviews &amp; Q&amp;A · Support Helpdesk · Influencers &amp; Affiliates · Subscriptions &amp; Members · Experiments · Ω∞ GOIP</td></tr>
+                <tr><td>AI &amp; Automation</td><td>AI Studio · Webhooks</td></tr>
+                <tr><td>Identity &amp; Access</td><td>SSO &amp; Integrations · Org Structure · Team &amp; Roles</td></tr>
+                <tr><td>Geo &amp; Localization</td><td>Localizations · Shipping &amp; Tracking · Sitemap &amp; SEO</td></tr>
+                <tr><td>Compliance &amp; Risk</td><td>Compliance &amp; Certs · Risk &amp; Fraud · Audit Trail · Trash &amp; Retention</td></tr>
+                <tr><td>Settings &amp; Data</td><td>Settings · Data Studio · Modules</td></tr>
+                <tr><td>Reference</td><td>📘 User Manual · Architecture</td></tr>
             </table>
+
+            <h2>Store admin flows at a glance</h2>
+            <table>
+                <tr><th>If you want to…</th><th>Go to</th><th>Action</th></tr>
+                <tr><td>See how the store is doing</td><td>Overview → ◈ Dashboard</td><td>KPIs, live traffic, what needs attention (📊 Analytics · 📈 Monitor for depth)</td></tr>
+                <tr><td>Add a product</td><td>Catalogue → 📦 Products</td><td>Full editor: identity, pricing, lifecycle, media, industry attributes — set it to <em>published</em> or customers can't see it</td></tr>
+                <tr><td>Track variants &amp; stock</td><td>Catalogue → 🔖 SKUs &amp; Inventory</td><td>Define SKU variants; record stock per warehouse</td></tr>
+                <tr><td>Track individual units</td><td>Orders &amp; Fulfilment → 🔢 Serialized Items</td><td>Serial / IMEI / batch / expiry / custody per unit (bulk-generate serials)</td></tr>
+                <tr><td>Fulfil an order</td><td>Orders &amp; Fulfilment → 🧾 Orders</td><td>Advance status, record shipping, issue refunds from a payment line</td></tr>
+                <tr><td>Handle a return</td><td>Orders &amp; Fulfilment → ↩️ Returns</td><td>Approve / reject with a reason — every decision lands in the Audit Trail</td></tr>
+                <tr><td>Quote a B2B buyer</td><td>Orders &amp; Fulfilment → 📋 RFQs</td><td>Respond to the request; an accepted RFQ converts to an order (a standing price becomes a Contract)</td></tr>
+                <tr><td>Onboard a marketplace seller</td><td>Marketplace &amp; B2B → 🏪 Sellers</td><td>Record the partner, set commission %, activate</td></tr>
+                <tr><td>Pay sellers</td><td>Payments &amp; Finance → 🤝 Settlements</td><td>Generate a period settlement (gross − commission = net), then mark pending → paid</td></tr>
+                <tr><td>Create a promotion</td><td>Growth &amp; Retention → 💸 Offers &amp; Coupons</td><td>Type (% / fixed / BOGO / free ship…), scope, dates, optional code; refunds claw back redemptions automatically</td></tr>
+                <tr><td>Take payment</td><td>Payments &amp; Finance → 💳 Payment Gateways</td><td>Enable a provider valid for your country, pick a primary, sandbox vs live, test before going live</td></tr>
+                <tr><td>Re-skin the storefront</td><td>Settings &amp; Data → ⚙️ Settings</td><td>Branding (name, colours, fonts), copy, commerce (currency, tax, shipping), deployment mode</td></tr>
+                <tr><td>Build the home page</td><td>Catalogue → 🖼️ Home Content</td><td>Banners and department cards, ordered, with active toggles</td></tr>
+                <tr><td>Add staff &amp; limit their access</td><td>Identity &amp; Access → 👥 Team &amp; Roles</td><td>Create staff, assign a role; sections a role doesn't grant disappear from their nav and are refused server-side</td></tr>
+                <tr><td>Let staff sign in via the company IdP</td><td>Identity &amp; Access → 🔐 SSO &amp; Integrations</td><td>Configure SSO (okta/entra/google/generic) + SCIM directory sync</td></tr>
+                <tr><td>Turn on a paid add-on</td><td>Settings &amp; Data → 🧩 Modules</td><td>Install a module the platform has enabled for you (bills an invoice); configure or uninstall</td></tr>
+                <tr><td>Use AI on store data</td><td>AI &amp; Automation → 🤖 AI Studio</td><td>Free built-in engine always on; premium models need a paid plan + keys, else it falls back safely</td></tr>
+                <tr><td>Prove compliance</td><td>Compliance &amp; Risk → 📜 Audit Trail</td><td>Hash-chained, append-only; <em>Verify chain</em> proves nothing was altered</td></tr>
+                <tr><td>Recover a deleted thing</td><td>Compliance &amp; Risk → 🗑️ Trash</td><td>Soft-deleted records by retention window; Restore or purge</td></tr>
+                <tr><td>Extend without code</td><td>Settings &amp; Data → 🛠️ Data Studio</td><td>Manage any entity, or declare a new one — CRUD + validation + audit + forms appear automatically</td></tr>
+            </table>
+
+            <h2>Good practice</h2>
+            <ul>
+                <li>Keep a written reason on every return, RFQ and refund — the audit trail carries it.</li>
+                <li>Prefer the guided flows over raw Data Studio edits when money or tax is involved.</li>
+                <li>If a change touches payments, taxes or store configuration and you're unsure, escalate to a senior
+                admin or the platform team (Part E of the manual covers what they can do).</li>
+            </ul>
+
+            <p>For the complete guide with every flow, see <strong>USER_MANUAL.md → Part B</strong> in the repository.</p>
         </div>
 
         <!-- TAB 5: CUSTOMER -->

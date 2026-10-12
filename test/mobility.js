@@ -2,6 +2,10 @@
 const path = require("path");
 const DB = path.join(__dirname, "mobility-tmp.db");
 process.env.LX_DB = DB; process.env.NODE_ENV="test";
+/* wipe before any lib require opens a connection: a prior run leaves drivers
+   flipped to 'busy' by auto-dispatch, which would make matchDriver return null
+   and silently change the fare/cancel behaviour under test */
+for (const s of ["", "-wal", "-shm"]) { try { require("fs").rmSync(DB + s, { force: true }); } catch (e) { } }
 require("../lib/db.js");
 const caps=require("../lib/capabilities.js");
 const mob=require("../lib/mobility.js");
@@ -74,7 +78,7 @@ const ok=(c,n,x)=>{c?(pass++,console.log("  ✓ "+n)):(fail++,console.log("  ✗
   /* ---- HTTP layer: the routes are gated and drive the real engine ---- */
   console.log("▸ HTTP LAYER (gated routes against a live server)");
   const { spawn } = require("child_process");
-  const PORT = 8871, BASE = `http://localhost:${PORT}`;
+  const PORT = 8874, BASE = `http://localhost:${PORT}`;
   const fs = require("fs");
   const httpDb = path.join(__dirname, "mobility-http.db");
   for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(httpDb + s, { force: true }); } catch (e) { } }
@@ -90,8 +94,15 @@ const ok=(c,n,x)=>{c?(pass++,console.log("  ✓ "+n)):(fail++,console.log("  ✗
     return { status: r.status, body: await r.json().catch(() => ({})) };
   };
   let up = false;
-  for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) { up = true; break; } } catch (e) { } await sleep(1000); }
-  ok(up, "the server boots with the mobility schema");
+  for (let i = 0; i < 120; i++) {
+    /* healthz answering is not proof OUR server booted: a stale process from a killed run
+       holding PORT makes the child die on EADDRINUSE while healthz is answered by that
+       stranger — the suite would then test a server it never started */
+    if (srv.exitCode !== null) break;
+    try { if ((await fetch(BASE + "/healthz")).ok) { await sleep(300); if (srv.exitCode === null) up = true; break; } } catch (e) { }
+    await sleep(1000);
+  }
+  ok(up, "the server boots with the mobility schema — port " + PORT + " must be free (a stale process from a killed run holds it if not: lsof -iTCP:" + PORT + ", kill the pid, re-run)");
   if (up) {
     await api("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
     /* the flagship store has no mobility atoms on by default — the surface must refuse */
