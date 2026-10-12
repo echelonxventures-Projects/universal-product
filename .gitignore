@@ -1,26 +1,87 @@
+/* ───────────────────────── secrets ─────────────────────────
+   The production boot reads PLATFORM_PASSWORD / ADMIN_PASSWORD / LUXORA_MASTER_KEY /
+   LUXORA_PEPPER / LX_METRICS_TOKEN from the environment; operators keep them in a .env
+   next to the repo. A dotfile with a live key in it is how a repo leaks, so every
+   spelling is ignored and the .env.example (if one ships) is kept explicitly. */
+.env
+.env.*
+.env.local
+!.env.example
+*.pem
+*.key
+
+/* the keyring (data/master.json) and the registry seal (data/registry.json) are
+   per-deployment secrets: losing the keyring loses the ability to decrypt sealed
+   gateway credentials, and the seal is reproducible from the corpora, never stored */
+data/master.json
+data/registry.json
+
+/* ───────────────────────── runtime state ───────────────────────── */
 node_modules/
+.luxora.pid
+.luxora*.pid
+*.pid
+*.sock
+server.log
+*.log
+npm-debug.log*
+yarn-debug.log*
+lerna-debug.log*
+
+/* a test boots its own throwaway store (test/<name>.db) and deletes it on exit; a
+   killed run leaves the file behind, so these are never committed either. The same
+   goes for any stray database anywhere in the tree, not just data/ and test/. */
 data/*.db
 data/*.db-wal
 data/*.db-shm
 data/*.sqlite
-data/master.json
-data/master.key
+data/*.sqlite-wal
+data/*.sqlite-shm
 data/exports/
-data/tls-*.pem
-/* a test boots its own throwaway store (test/<name>.db) and deletes it on exit; a
-   killed run leaves the file behind, so these are never committed either */
 test/*.db
 test/*.db-wal
 test/*.db-shm
-.luxora.pid
-.luxora *.pid
-server.log
-/tmp
-.DS_Store
+test/*.sqlite
+test/*.sqlite-wal
+test/*.sqlite-shm
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
 /* the compiled single source of truth is DERIVED from the corpora + the authored
-   _registry/*.json inputs: it is sealed with a per-deployment key (data/registry.json)
-   and re-compiles deterministically, so the artifacts are never committed. The
-   sources are the authority; the seal is reproducible, verifiable, not stored. */
+   _registry/*.json inputs: it is sealed with a per-deployment key and re-compiles
+   deterministically, so the artifacts are never committed. The sources are the
+   authority; the seal is reproducible, verifiable, not stored. */
 _registry/canonical.json
 _registry/canonical.lxr
-data/registry.json
+
+/* ───────────────────────── build & coverage output ───────────────────────── */
+coverage/
+dist/
+build/
+out/
+*.tsbuildinfo
+.nyc_output/
+
+/* ───────────────────────── OS junk ───────────────────────── */
+.DS_Store
+._*
+__MACOSX/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+/* ───────────────────────── editors & IDEs ───────────────────────── */
+.vscode/
+.idea/
+.history/
+*.swp
+*.swo
+*~
+
+/* ───────────────────────── scratch ───────────────────────── */
+/tmp
