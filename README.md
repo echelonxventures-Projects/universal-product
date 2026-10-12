@@ -21,6 +21,23 @@ npm test                     # syntax + 620-assertion jsdom E2E suite (+197 GOIP
 
 Env: `PORT`, `LX_DB` (db path), `LUX_TLS=1` (HTTPS; self-signed generated via openssl, or supply `LUX_TLS_KEY`/`LUX_TLS_CERT`), `LUXORA_MASTER_KEY`, `LUXORA_PEPPER`, `LUXORA_DEMO_HINT=0`, `LX_OFFLINE=1` (force all outbound payments/notifications/AI to the offline-simulated path — CI/no-secrets), seed overrides `PLATFORM_EMAIL/PLATFORM_PASSWORD/ADMIN_EMAIL/ADMIN_PASSWORD/DEMO_PASSWORD`.
 
+### Production
+
+The runtime needs **Node ≥ 22.5** — `lib/db.js` uses the built-in `node:sqlite`, which does not exist before that. The boot checks the version and exits with the required one rather than a bare module error.
+
+```bash
+docker compose up --build     # http://localhost:3000 (data/ and redis persisted as volumes)
+```
+
+Four things are required of a production boot, and two are enforced at startup:
+
+- **`PLATFORM_PASSWORD` and `ADMIN_PASSWORD` must be set.** The seed defaults (`platform123` / `admin123`) exist so a first local boot is observable; with `NODE_ENV=production` the platform **refuses to start** until both are set, printing the two accounts that would otherwise boot with a documented default. (An already-seeded DB is unaffected — the gate only blocks the first boot that would create the accounts.)
+- **Persist `data/`.** The encryption keyring (`master.json`) and the registry seal (`registry.json`) live there. A redeploy without the volume loses the ability to decrypt sealed gateway credentials and to verify the registry seal.
+- **Set `LX_METRICS_TOKEN` (≥ 16 chars)** if a scraper reads `/metrics` — otherwise the endpoint answers only to a live platform-admin session and returns 401 to everything else.
+- **Rotate the seeded passwords** even when set via env (`Platform → Administration`, `Store → Team`).
+
+`docker compose` wires all four: the two passwords are required (`${VAR:?…}`), the token is passed through, and `data/` is a named volume. `/healthz` is the container `HEALTHCHECK`.
+
 Runtime backends are **config**, not code — default to in-process (SQLite + memory + inline queue + local disk); switch any of them via `Platform → Runtime` (or `platform_settings.runtime`) / env: `LX_CACHE`, `LX_QUEUE`, `LX_STORAGE`, `LX_RATELIMIT`, `LX_SESSION`, `LX_OUTBOUND`, `LX_DB_DRIVER` (`memory|redis`, `inline|redis|webhook`, `local|s3|webhook`, `sqlite|postgres`, `auto|offline|live`) with connection params `LX_REDIS_URL`, `LX_S3_BUCKET/REGION/ACCESS/SECRET/ENDPOINT`, `LX_PG_URL`, `LX_WEBHOOK_URL/SECRET`, `LX_WORKER=1` (run a Redis queue consumer on this node), `LX_IDEMPOTENCY=0` (disable idempotency); every response carries an `X-Request-Id`/`X-Trace-Id` and mutations accept an `Idempotency-Key` for safe retries. All dependency-free (raw RESP / SigV4 / PG wire over `net`+`fetch`); unconfigured drivers fall back safely. *Note (B):* the async dual-engine + SQLite→Postgres **dialect translator, wire client (`lib/pg.js` extended protocol), and migration planner (`lib/migrate.js`)** are built and tested (`GET /api/platform/db` reports driver/health/plan). The final request-path sync→async cutover needs a live Postgres and is a runbook step (FLOWS §25) — the machinery to make it mechanical is in place.
 
 ## Surfaces

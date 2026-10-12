@@ -195,7 +195,11 @@ const handler = async (req, res) => {
          admin session — the same session the platform console holds. */
       const token = process.env.LX_METRICS_TOKEN;
       const bearer = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
-      const authed = (token && token.length >= 16 && bearer && crypto.timingSafeEqual(Buffer.from(bearer), Buffer.from(token)))
+      /* timingSafeEqual throws RangeError on mismatched lengths, which would escape to
+         the outer handler as a 500 + FATAL log — compare only on equal-length input so
+         a wrong token is a clean 401, never a crash */
+      const bt = Buffer.from(bearer), tt = Buffer.from(token || "");
+      const authed = (token && token.length >= 16 && bearer.length === token.length && crypto.timingSafeEqual(bt, tt))
         || (cookies.azp && get("SELECT 1 FROM platform_sessions WHERE ptid=? AND expires_at > datetime('now')", cookies.azp));
       if (!authed) { res.writeHead(401, { "Content-Type": "text/plain", "WWW-Authenticate": 'Bearer realm="luxora-metrics"' }); return res.end("Unauthorized"); }
       const body = require("./lib/enterprise.js").promMetrics(metrics.snapshot(null));
@@ -213,6 +217,39 @@ const handler = async (req, res) => {
 
 const server = http.createServer(handler);
 const listenServer = IS_TLS ? https.createServer(TLS, handler) : server;
+
+/* P0: node:sqlite (lib/db.js) is built in only since 22.5. On an older host the
+   process dies at require time with a bare "Cannot find module", which says nothing
+   about the fix — surface the required version instead. */
+const NV = process.versions.node.split(".").map(Number);
+if (NV[0] < 22 || (NV[0] === 22 && NV[1] < 5)) {
+  console.error(`\nFATAL  Node ${process.versions.node} is too old — the platform needs the built-in node:sqlite module (Node >= 22.5). Rebuild on node:22-alpine or upgrade the host runtime.\n`);
+  process.exit(1);
+}
+
+/* P0: the seed ships documented default passwords (admin123 / platform123) so a first
+   boot is observable. In production they are an open door — refuse to serve until the
+   operator sets them, the same way a fresh appliance behaves. Tests and dev set
+   NODE_ENV=test or leave it unset, so the guard never fires there. */
+function prodCredentialGuard() {
+  if (process.env.NODE_ENV !== "production") return;
+  const weak = [];
+  if (!process.env.PLATFORM_PASSWORD) weak.push(["PLATFORM_PASSWORD", "platform@luxora.shop", "platform123"]);
+  if (!process.env.ADMIN_PASSWORD) weak.push(["ADMIN_PASSWORD", "admin@luxora.shop", "admin123"]);
+  if (!weak.length) return;
+  console.error("\n" + "=".repeat(78));
+  console.error("REFUSING TO START IN PRODUCTION WITH SEED-DEFAULT CREDENTIALS");
+  console.error("=".repeat(78));
+  for (const [env, email, pw] of weak)
+    console.error(`  ${email} still boots with the documented default "${pw}".`);
+  console.error("  Set the environment variables and restart:");
+  for (const [env] of weak) console.error(`    ${env}=<a strong password>`);
+  console.error("  (a password already seeded into an existing DB is unaffected — this gate\n"
+    + "   only blocks a first boot that would create the accounts with a default.)");
+  console.error("=".repeat(78) + "\n");
+  process.exit(1);
+}
+prodCredentialGuard();
 
 function shutdown(sig) { console.log(`\n${sig} — closing`); sec.persistState(); server.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000); }
 process.on("SIGINT", () => shutdown("SIGINT"));

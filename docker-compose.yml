@@ -6,6 +6,11 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
 
   luxora:
     build: .
@@ -13,10 +18,25 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - REDIS_URL=redis://redis:6379
       - PORT=3000
+      # the queue/cache/ratelimit concerns all resolve LX_REDIS_URL through config.js;
+      # opting the queue in here is what makes the worker at server boot come alive
+      - LX_QUEUE=redis
+      - LX_REDIS_URL=redis://redis:6379
+      # required in production — the seed defaults below are rejected by the boot guard
+      - PLATFORM_PASSWORD=${PLATFORM_PASSWORD:?set PLATFORM_PASSWORD (the platform admin's password)}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:?set ADMIN_PASSWORD (the flagship store admin's password)}
+      # 16+ chars, or /metrics answers only to a live platform session
+      - LX_METRICS_TOKEN=${LX_METRICS_TOKEN:-}
+    volumes:
+      # the keyring + registry seal persist across redeployments; without this a new
+      # container cannot decrypt sealed gateway creds or verify the registry seal
+      - luxora_data:/app/data
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
 
 volumes:
   redis_data:
+  luxora_data:
