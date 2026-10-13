@@ -452,6 +452,7 @@ const NAV = [
       ["gteam", "👥 Team · Access · Settings", { v: "gteam" }],
     ] },
     { g: "Configuration", l: [
+      ["registries", "📚 Platform Registries", { v: "registries" }],
       ["configurations", "⚙️ Configurations", { u: "configuration" }],
       ["secrets", "保密 Secrets", { u: "secrets_management" }],
       ["settings", "⚙️ Settings", { v: "gteam" }],
@@ -1406,6 +1407,8 @@ document.addEventListener("click", async e => {
     }
     if (delprov) { await api("/platform/custom-providers/" + delprov.dataset.delprov, "DELETE", {}); render(); }
     if (e.target.id === "newTenant") return registerModal();
+    const regopen = e.target.closest("[data-regopen]");
+    if (regopen) return registryEditor(regopen.dataset.regopen);
     const edit = e.target.closest("[data-tedit]");
     if (edit) return tenantModal(Number(edit.dataset.tedit));
     if (e.target.id === "newPlan") {
@@ -3512,6 +3515,7 @@ const VIEWFNS = {
      Load button actually exists in the DOM. */
   studio: () => { window.__studioPreset = window.__entityJump; window.__entityJump = null; return vStudio(window.__studioPreset); },
   provisioning: () => vProvisioning(),
+  registries: () => vRegistries(),
   padmins: () => vPAdmins(),
   roles: () => vRoles(),
   users: () => vUsers(),
@@ -4758,6 +4762,141 @@ function wireUsers() {
    scoping its rights per section, platform-wide or for every store's domain,
    without a deploy. */
 const GRANT_OPTS = [["", "inherit"], ["off", "off"], ["read", "read"], ["write", "write"]];
+
+/* ╔════════════════════════════════════════════════════════════════════╗
+   ║  PLATFORM REGISTRIES — every vocabulary, auto-discovered             ║
+   ╚════════════════════════════════════════════════════════════════════╝
+   The list of lists is fetched from the API, never hardcoded, so a registry
+   created by any engine (or a future seed) is authorable here the moment it
+   exists. Adding a platform mode here is what makes "register an Uber-like
+   platform" a data change: the registration walk, every form select and every
+   engine read the same rows on the next request.
+
+   AUTO-RECOMMEND: an entry's fields are scaffolded from the live entries'
+   own shape — the API infers the keys and their types from the data, so the
+   authoring form never depends on a schema written in code.
+   AUTO-UPGRADE: a row an operator has edited is marked operator-owned; a
+   corpus upgrade only ADDS canonical entries the list lacks, never reverts an
+   edit (lib/registry.js mergeDefaults).                                        */
+async function vRegistries() {
+  const { registries } = await api("/platform/registries");
+  const rows = (registries || []).map(r => `<tr>
+      <td><b>${esc(r.label)}</b> <code style="font-size:10px">${esc(r.name)}</code></td>
+      <td class="num">${r.count}</td>
+      <td>${r.edited ? '<span class="a-chip">operator-owned</span>' : '<span class="a-chip" style="opacity:.55">seeded floor</span>'}</td>
+      <td><code style="font-size:10px">${esc(r.seeded_from || "—")}</code></td>
+      <td style="white-space:nowrap"><button class="p-btn sm primary" data-regopen="${esc(r.name)}">Edit entries</button></td>
+    </tr>`).join("") || '<tr><td colspan="5" class="p-empty">No registries discovered yet.</td></tr>';
+  return `<div class="p-panel"><h2>📚 Platform Registries</h2>
+    <p class="p-tag">Every vocabulary the platform reads — platform modes, industries, statuses, roles, provider kinds — is a <code>meta_lists</code> row discovered from the table itself. Add an entry and the registration walk, every form select and every engine obey it on the next request. Deleting an entry a platform still uses is refused with the platform(s) holding it.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Registry</th><th class="num">Entries</th><th>Ownership</th><th>Seeded from</th><th></th></tr></thead>
+    <tbody>${rows}</tbody></table></div></div>`;
+}
+/* the entry editor for one registry: items as rows, add/edit/delete. The add/edit form is
+   scaffolded from the registry's recommended entry (its inferred shape), so a list whose
+   shape changes in the data is reflected here without a code change. */
+async function registryEditor(name) {
+  const enc = encodeURIComponent(name);
+  const [{ items }, rec] = await Promise.all([
+    api("/platform/registries/" + enc),
+    api("/platform/registries/" + enc + "/recommend", "POST", { label: "" }).catch(() => ({ item: {} }))
+  ]);
+  const shape = (rec && rec.item) || {};
+  const keys = Object.keys(shape);
+  const cell = v => Array.isArray(v) ? "[" + v.length + "]"
+    : (v && typeof v === "object") ? "{…}"
+    : String(v == null ? "" : v).slice(0, 60);
+  const itemRows = (items || []).map((it, i) => {
+    const obj = it && typeof it === "object" ? it : { key: String(it) };
+    return `<tr><td><b>${esc(String(obj.key != null ? obj.key : ""))}</b></td>
+      <td>${keys.filter(k => k !== "key").map(k => `<span class="p-tag" style="margin-right:4px">${esc(k)}: ${esc(cell(obj[k]))}</span>`).join("") || '<span class="p-tag">—</span>'}</td>
+      <td style="white-space:nowrap">
+        <button class="p-btn sm" data-regedit="${i}">Edit</button>
+        <button class="p-btn sm danger" data-regdel="${esc(String(obj.key != null ? obj.key : ""))}">✕</button></td></tr>`;
+  }).join("") || '<tr><td colspan="3" class="p-empty">No entries yet — add the first below.</td></tr>';
+  const m = modal(`<div class="p-modal-head"><h3>📚 ${esc(name)}</h3><button data-mclose>✕</button></div>
+    <div class="p-scroll-x" style="max-height:46vh;overflow:auto;margin-bottom:12px"><table class="p-table"><thead><tr><th>Key</th><th>Fields</th><th></th></tr></thead>
+      <tbody id="regRows">${itemRows}</tbody></table></div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+      <button class="p-btn primary sm" id="regAdd">＋ Add entry</button>
+      <span class="p-tag">${(items || []).length} entries · form scaffolded from the live shape (${keys.length} fields)</span></div>`);
+  const refreshRows = () => { /* re-render rows after a save/delete without reopening */
+    api("/platform/registries/" + enc).then(({ items: its }) => {
+      m.querySelector("#regRows").innerHTML = (its || []).map((it, i) => {
+        const obj = it && typeof it === "object" ? it : { key: String(it) };
+        return `<tr><td><b>${esc(String(obj.key != null ? obj.key : ""))}</b></td>
+          <td>${keys.filter(k => k !== "key").map(k => `<span class="p-tag" style="margin-right:4px">${esc(k)}: ${esc(cell(obj[k]))}</span>`).join("") || '<span class="p-tag">—</span>'}</td>
+          <td style="white-space:nowrap">
+            <button class="p-btn sm" data-regedit="${i}">Edit</button>
+            <button class="p-btn sm danger" data-regdel="${esc(String(obj.key != null ? obj.key : ""))}">✕</button></td></tr>`;
+      }).join("") || '<tr><td colspan="3" class="p-empty">No entries yet — add the first below.</td></tr>';
+      wireRows();
+    }).catch(() => { });
+  };
+  const entryForm = prefill => {
+    /* a nested overlay with its own container: modal() reuses the single #modal element,
+       so this form must not touch it — the editor underneath stays open and restores on close */
+    const f = document.createElement("div");
+    f.className = "p-modal";
+    f.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1100;display:flex;align-items:center;justify-content:center;padding:16px";
+    f.innerHTML = `<div class="p-modal-box" style="max-width:560px;max-height:86vh;overflow:auto">
+      <div class="p-modal-head"><h3>${prefill ? "Edit" : "Add"} · ${esc(name)}</h3><button data-rfclose>✕</button></div>
+      <div class="p-form">
+      ${keys.map(k => `<label><span>${esc(k)} ${k === "key" ? "*" : ""}</span>
+        <input data-rf="${esc(k)}" value="${esc(String(prefill && prefill[k] != null ? (typeof prefill[k] === "object" ? JSON.stringify(prefill[k]) : prefill[k]) : (shape[k] != null ? shape[k] : "")))}"
+        ${k === "key" && prefill ? "disabled" : ""} placeholder="${k === "key" ? "snake_case_key" : ""}"></label>`).join("")}
+      ${keys.length ? "" : '<p class="p-tag">This registry has no items yet — a key and name are a good start.</p>'}
+      <label><span>Reset all fields from a label (auto-recommend)</span>
+        <span style="display:flex;gap:6px"><input id="rfLabel" placeholder="Hybrid Marketplace" style="flex:1">
+        <button class="p-btn sm" id="rfRec" type="button">✨ Recommend</button></span></label>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px"><button class="p-btn primary" id="rfSave">${prefill ? "Save changes" : "Add entry"}</button></div></div>`;
+    document.body.appendChild(f);
+    const close = () => { try { document.body.removeChild(f); } catch (e) { } };
+    f.addEventListener("click", e => { if (e.target === f) close(); });
+    f.querySelector("[data-rfclose]").onclick = close;
+    f.querySelector("#rfRec").onclick = async () => {
+      const label = f.querySelector("#rfLabel").value.trim();
+      const { item } = await api("/platform/registries/" + enc + "/recommend", "POST", { label });
+      if (item) for (const k of keys) {
+        const el = f.querySelector(`[data-rf="${esc(k)}"]`);
+        if (el && !el.disabled && item[k] != null) el.value = typeof item[k] === "object" ? JSON.stringify(item[k]) : item[k];
+      }
+    };
+    f.querySelector("#rfSave").onclick = async () => {
+      const item = {};
+      for (const k of keys) {
+        const el = f.querySelector(`[data-rf="${esc(k)}"]`);
+        let v = el ? el.value : "";
+        if (shape[k] === "number") v = v === "" ? 0 : Number(v);
+        else if (shape[k] === "boolean") v = /^(1|true|yes|on)$/i.test(v);
+        else if (shape[k] === "array" || shape[k] === "object") { try { v = JSON.parse(v); } catch (e) { v = shape[k] === "array" ? [] : {}; } }
+        item[k] = v;
+      }
+      if (!item.key) return toast("An entry needs a key");
+      const r = await api("/platform/registries/" + enc, "POST", { item });
+      if (r.error) return toast(r.error);
+      close();
+      toast("Entry saved · " + item.key);
+      refreshRows();
+    };
+  };
+  const wireRows = () => {
+    m.querySelectorAll("[data-regdel]").forEach(b => b.onclick = async () => {
+      const r = await api("/platform/registries/" + enc + "/" + encodeURIComponent(b.dataset.regdel), "DELETE", {});
+      if (r.error) return toast(r.error);
+      toast("Entry removed");
+      refreshRows();
+    });
+    m.querySelectorAll("[data-regedit]").forEach(b => b.onclick = () => {
+      const it = (items || [])[Number(b.dataset.regedit)];
+      entryForm(it && typeof it === "object" ? it : { key: String(it) });
+    });
+  };
+  wireRows();
+  m.querySelector("#regAdd").onclick = () => entryForm(null);
+}
+
 async function vRoles() {
   await gMeta();
   const [plat, staff] = await Promise.all([
