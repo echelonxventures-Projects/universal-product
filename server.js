@@ -13,6 +13,7 @@ const sec = require("./lib/security.js");
 sec.initDb({ get, run, all });
 const idem = require("./lib/idempotency.js");
 require("./lib/modules.js").ensureBaselines();
+try { require("./lib/identity.js").ensureIdentityTemplates(); } catch (e) { console.error("identity templates seed:", e.message); }
 try { require("./lib/env.js").boot(); } catch (e) { console.error("env boot:", e.message); }
 
 const PORT = Number(process.env.PORT || 8787);

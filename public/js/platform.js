@@ -588,7 +588,7 @@ async function vTenants() {
   return `
   <div class="p-panel"><div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
     <h2 style="margin:0">Tenants (${tenants.length})</h2><span style="flex:1"></span>
-    <button class="p-btn primary sm" id="newTenant">+ New tenant</button></div>
+    <button class="p-btn primary sm" id="newTenant">＋ Register platform</button></div>
     <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">The platform's tenancy registry. A tenant's <b>Products</b>, SKUs &amp; inventory, orders, suppliers, compliance and settings live in its <b>Store Console</b> — click <b>Manage · Catalog</b> to open it.</p>
     <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Tenant</th><th>Slug</th><th>Jurisdiction</th><th>Owner</th><th>Mode</th><th>Industries</th><th class="num">Products</th><th class="num">Orders</th><th class="num">GMV</th><th>Plan</th><th>Status</th><th></th></tr></thead>
     <tbody>${tenants.map(t => `<tr><td><b>${esc(t.name)}</b></td><td>${esc(t.slug)}</td><td>${esc(t.country || "—")}</td><td class="p-tag">${esc((t.profile && t.profile.ownerEmail) || "—")}</td><td>${esc(t.mode)}</td>
@@ -602,9 +602,148 @@ async function vTenants() {
         <button class="p-btn sm" data-inv="${t.id}">Invoice</button>
         <button class="p-btn sm danger" data-del="${t.id}">✕</button></td></tr>`).join("")}</tbody></table></div></div>`;
 }
-/* tenant authoring: a single form, no wizard. The constitutional model treats a tenant as
-   an identity record the platform provisions — name, slug, jurisdiction, owner, mode — so
-   creation is one modal, not a guided walk. */
+/* platform registration: ONE guided pass that composes a whole platform — a marketplace,
+   a ride-hailing service, an ERP — from the registries themselves. Every option below is
+   enumerated from a live registry (/api/meta, the capability presets, the identity
+   templates, the plan catalogue), so a new industry, archetype, auth policy or country
+   appears here the moment it is added anywhere; nothing in this walk is a hard-coded list
+   that can drift from the platform. Identity is part of the same pass — never deferred to
+   a separate screen — so a platform is registered complete: type, capabilities, catalogue
+   AND authentication policy.
+   The console remains the place to TUNE a platform; this is the place to REGISTER one. */
+async function registerModal() {
+  const [meta, capd, pland, idtd] = await Promise.all([api("/meta"), api("/capabilities"), api("/platform/plans"), api("/platform/identity-templates")]);
+  const industries = meta.industries || [], countries = (meta.countries || []).filter(c => c.active), modes = meta.deployModes || [];
+  const presets = (capd.presets || []).filter(p => p.key !== "blend_mixed" || true);
+  const plans = pland.plans || [];
+  /* identity policies are enumerated from the identity registry exactly like archetypes
+     from the capability registry — the default template is pre-chosen so a platform is
+     never registered without a deliberate authentication policy */
+  const idTemplates = (idtd.templates || []).slice().sort((a, b) => (b.is_default || 0) - (a.is_default || 0));
+  const defTmpl = idTemplates.find(t => t.is_default) || idTemplates[0];
+  const R = { name: "", slug: "", country: "US", mode: "marketplace", ownerName: "", ownerEmail: "", ownerPassword: "",
+    legalName: "", taxId: "", language: "", archetype: "", industries: [], seedUniverses: true, seedCatalog: false,
+    identityTemplate: defTmpl ? defTmpl.id : null, planId: plans[0] ? plans[0].id : 1 };
+  let step = 0;
+  const m = modal(`<div class="p-modal-head"><h3>Register a platform</h3><button data-mclose>✕</button></div>
+    <div id="regBody"></div>`);
+  const body = () => m.querySelector("#regBody");
+  const STEPS = ["Registration", "Identity & language", "Platform type", "Services & products", "Review"];
+  const sync = () => {
+    const g = id => { const el = m.querySelector("#" + id); return el ? el.value.trim() : undefined; };
+    const had = { name: R.name, slug: R.slug, country: R.country, mode: R.mode, language: R.language };
+    if (step > 0 || had.name !== undefined) {
+      R.name = g("rName") !== undefined ? g("rName") : R.name;
+      R.slug = g("rSlug") !== undefined ? g("rSlug") : R.slug;
+      R.country = g("rCountry") || R.country;
+      R.mode = g("rMode") || R.mode;
+      R.ownerName = g("rOwnerName") !== undefined ? g("rOwnerName") : R.ownerName;
+      R.ownerEmail = g("rOwnerEmail") !== undefined ? g("rOwnerEmail") : R.ownerEmail;
+      R.ownerPassword = g("rOwnerPass") !== undefined ? g("rOwnerPass") : R.ownerPassword;
+      R.legalName = g("rLegal") !== undefined ? g("rLegal") : R.legalName;
+      R.taxId = g("rTax") !== undefined ? g("rTax") : R.taxId;
+      R.language = g("rLang") !== undefined ? g("rLang") : R.language;
+      R.planId = m.querySelector("#rPlan") ? Number(m.querySelector("#rPlan").value) : R.planId;
+      const arch = m.querySelector("input[name='rArch']:checked"); if (arch) R.archetype = arch.value;
+      const idt = m.querySelector("input[name='rIdTmpl']:checked"); if (idt) R.identityTemplate = idt.value ? Number(idt.value) : null;
+      m.querySelectorAll("[data-ind]").forEach(c => { const k = c.dataset.ind; const on = c.classList.contains("on"); R.industries = R.industries.includes(k) ? (on ? R.industries : R.industries.filter(x => x !== k)) : (on ? R.industries.concat(k) : R.industries); });
+      const su = m.querySelector("#rSeedUv"); if (su) R.seedUniverses = su.checked;
+      const sc = m.querySelector("#rSeedCat"); if (sc) R.seedCatalog = sc.checked;
+    }
+  };
+  const stepHtml = () => {
+    const dots = STEPS.map((s, i) => `<span class="a-chip" style="${i === step ? "background:var(--p-accent);color:#111" : "opacity:.5"}">${i + 1}. ${s}</span>`).join(" ");
+    if (step === 0) return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div><div class="p-form">
+      <label><span>Platform name *</span><input id="rName" value="${esc(R.name)}" placeholder="Acme Commerce"></label>
+      <label><span>Slug (store URL) *</span><input id="rSlug" value="${esc(R.slug)}" placeholder="acme"></label>
+      <label><span>Country / jurisdiction *</span><select id="rCountry">${countries.map(c => `<option value="${c.code}" ${R.country === c.code ? "selected" : ""}>${esc(c.name)} · ${c.currency}</option>`).join("")}</select></label>
+      <label><span>Platform mode *</span><select id="rMode">${modes.map(x => `<option value="${x.key}" ${R.mode === x.key ? "selected" : ""}>${esc(x.name)} — ${esc(x.desc)}</option>`).join("")}</select></label>
+      <label><span>Admin name *</span><input id="rOwnerName" value="${esc(R.ownerName)}" placeholder="Ava One"></label>
+      <label><span>Admin email *</span><input id="rOwnerEmail" value="${esc(R.ownerEmail)}" placeholder="admin@acme.com"></label>
+      <label><span>Admin password *</span><input id="rOwnerPass" type="password" value="${esc(R.ownerPassword)}" placeholder="6+ characters"></label>
+      <label><span>Legal name (optional)</span><input id="rLegal" value="${esc(R.legalName)}" placeholder="Acme Commerce Pvt Ltd"></label>
+      <label><span>Tax ID (optional)</span><input id="rTax" value="${esc(R.taxId)}" placeholder="GSTIN / EIN"></label></div>`;
+    if (step === 1) { const ctry = countries.find(c => c.code === R.country);
+      /* a template's config arrives as a JSON string from the list endpoint */
+      const cfgOf = t => { try { return typeof t.config === "string" ? JSON.parse(t.config || "{}") : (t.config || {}); } catch (e) { return {}; } };
+      const pwOf = t => { const p = cfgOf(t).password || {}; return (p.minLength || 10) + "+ chars"
+        + (p.requireUppercase ? " · mixed case" : "") + (p.requireSpecialChars ? " · symbols" : "")
+        + (p.expiryDays ? " · expires " + p.expiryDays + "d" : " · never expires"); };
+      const mfOf = t => { const c = cfgOf(t), m = c.mfa || {}; return m.enabled ? "MFA on" + (m.requireForStaff ? " · required for all staff" : m.requireForAdmin ? " · required for admins" : "") : "no MFA"; };
+      return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div><div class="p-form">
+      <label><span>Language / locale</span><input id="rLang" value="${esc(R.language || (ctry && ctry.locale) || "en-US")}" placeholder="en-US"></label>
+      <p class="p-tag" style="margin:4px 0 2px">The locale defaults from the chosen jurisdiction (${esc(R.country)} → ${ctry ? ctry.locale : "—"}). The authentication policy is picked here from the identity registry (${idTemplates.length} templates) — a platform is never registered without one. Tune it later from <b>01 · Foundation → Identity</b>.</p>
+      <div style="display:grid;gap:8px">${idTemplates.map(t => `<label style="display:flex;gap:10px;align-items:flex-start;border:1px solid var(--p-border);border-radius:10px;padding:10px;cursor:pointer;${R.identityTemplate === t.id ? "border-color:var(--p-accent)" : ""}">
+        <input type="radio" name="rIdTmpl" value="${t.id}" ${R.identityTemplate === t.id ? "checked" : ""} style="margin-top:3px">
+        <span><b>${esc(t.name)}</b>${t.is_default ? ' <span class="a-chip">default</span>' : ""}<br>
+        <span class="p-tag">${esc(t.description || "")}</span><br>
+        <code style="font-size:10px">${pwOf(t)} · ${mfOf(t)}</code></span></label>`).join("") || '<p class="p-empty">No identity templates registered — the engine defaults will apply. Create one from 01 · Foundation → Identity Templates.</p>'}</div></div>`; }
+    if (step === 2) return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div>
+      <p class="p-tag">An archetype writes the store's capability rows in one call — this is what the platform <b>is</b>. Tuning afterwards is kept.</p>
+      <div style="display:grid;gap:8px">${presets.map(p => `<label style="display:flex;gap:10px;align-items:flex-start;border:1px solid var(--p-border);border-radius:10px;padding:10px;cursor:pointer;${R.archetype === p.key ? "border-color:var(--p-accent)" : ""}">
+        <input type="radio" name="rArch" value="${esc(p.key)}" ${R.archetype === p.key ? "checked" : ""} style="margin-top:3px">
+        <span><b>${esc(p.label)}</b> <code style="font-size:10px">${esc(p.key)}</code><br><span class="p-tag">${esc(p.description || "")}</span></span></label>`).join("")}
+      <label style="display:flex;gap:10px;align-items:center;border:1px solid var(--p-border);border-radius:10px;padding:10px;cursor:pointer;${R.archetype === "" ? "border-color:var(--p-accent)" : ""}">
+        <input type="radio" name="rArch" value="" ${R.archetype === "" ? "checked" : ""}>
+        <span><b>No archetype</b><br><span class="p-tag">Register an empty platform and compose it capability-by-capability in ⚙️ Capabilities.</span></span></label></div>`;
+    if (step === 3) return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div>
+      <p class="p-tag">Industries scope the catalogue${R.mode === "marketplace" ? "" : " — required for this mode"}. Picked from the registry (${industries.length} registered).</p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${industries.map(i => `<button class="p-btn sm ${R.industries.includes(i.key) ? "primary on" : ""}" data-ind="${esc(i.key)}" type="button">${esc(i.icon || "▪")} ${esc(i.name)}</button>`).join("")}</div>
+      <div class="p-form">
+      <label class="checkbox-group"><input type="checkbox" id="rSeedUv" ${R.seedUniverses ? "checked" : ""}> Activate the archetype's catalog content (universes publish products, SKUs and inventory)</label>
+      <label class="checkbox-group"><input type="checkbox" id="rSeedCat" ${R.seedCatalog ? "checked" : ""}> Also seed the demo product catalogue</label></div>`;
+    const arch = presets.find(p => p.key === R.archetype);
+    return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div>
+      <div class="p-form">
+      <label><span>Subscription plan</span><select id="rPlan">${plans.map(p => `<option value="${p.id}" ${R.planId === p.id ? "selected" : ""}>${esc(p.name)} — ${money(p.price_month)}/mo · ${p.max_products.toLocaleString()} products</option>`).join("")}</select></label></div>
+      <div class="a-tablewrap" style="margin-top:10px"><table class="p-table"><tbody>
+      <tr><td>Platform</td><td><b>${esc(R.name)}</b> <code>${esc(R.slug)}</code></td></tr>
+      <tr><td>Jurisdiction</td><td>${esc(R.country)}${R.legalName ? " · " + esc(R.legalName) : ""}${R.taxId ? " · " + esc(R.taxId) : ""}</td></tr>
+      <tr><td>Admin</td><td>${esc(R.ownerEmail)}</td></tr>
+      <tr><td>Mode</td><td>${esc(R.mode)}</td></tr>
+      <tr><td>Language</td><td>${esc(R.language)}</td></tr>
+      <tr><td>Identity policy</td><td>${(() => { const t = idTemplates.find(x => x.id === R.identityTemplate); return t ? "<b>" + esc(t.name) + "</b> · password &amp; MFA policy" : "engine defaults"; })()}</td></tr>
+      <tr><td>Platform type</td><td>${arch ? "<b>" + esc(arch.label) + "</b> · " + Object.keys(arch.capabilities || {}).length + " capabilities" : "no archetype — composed by hand"}</td></tr>
+      <tr><td>Industries</td><td>${R.industries.length ? R.industries.map(k => { const i = industries.find(x => x.key === k); return esc(i ? i.name : k); }).join(", ") : "—"}</td></tr>
+      <tr><td>Catalogue</td><td>${R.seedUniverses ? "universe content activated" : "no universe content"}${R.seedCatalog ? " + demo products" : ""}</td></tr>
+      </tbody></table></div>`;
+  };
+  const paint = () => {
+    body().innerHTML = stepHtml()
+      + `<div style="display:flex;gap:8px;margin-top:14px;align-items:center">
+         ${step > 0 ? '<button class="p-btn sm" id="regBack">← Back</button>' : ""}
+         ${step < STEPS.length - 1 ? '<button class="p-btn primary" id="regNext">Next →</button>' : '<button class="p-btn primary" id="regGo">⚡ Register platform</button>'}
+         <span class="p-tag">Step ${step + 1} of ${STEPS.length}</span></div>`;
+    const back = m.querySelector("#regBack"); if (back) back.onclick = () => { sync(); step--; paint(); };
+    const next = m.querySelector("#regNext"); if (next) next.onclick = () => { sync(); step++; paint(); };
+    m.querySelectorAll("[data-ind]").forEach(c => c.onclick = () => { c.classList.toggle("on"); c.classList.toggle("primary"); });
+    const go = m.querySelector("#regGo");
+    if (go) go.onclick = async () => {
+      sync();
+      if (!R.name || !R.slug) return toast("Name and slug are required");
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(R.ownerEmail) || String(R.ownerPassword).length < 6) return toast("Admin needs a valid email and a 6+ character password");
+      if ((R.mode === "industry" || R.mode === "brand") && !R.industries.length) return toast("Pick at least one industry for this mode");
+      go.disabled = true; go.textContent = "Registering…";
+      try {
+        const r = await api("/platform/tenants", "POST", {
+          name: R.name, slug: R.slug, country: R.country, mode: R.mode,
+          owner: { name: R.ownerName, email: R.ownerEmail, password: R.ownerPassword },
+          jurisdiction: { legalName: R.legalName, taxId: R.taxId, country: R.country },
+          language: R.language, archetype: R.archetype || undefined, identity_template: R.identityTemplate || undefined,
+          industries: R.industries, seedUniverses: R.seedUniverses, seedCatalog: R.seedCatalog,
+          plan_id: R.planId
+        });
+        if (r.error) { go.disabled = false; go.textContent = "⚡ Register platform"; return toast(r.error); }
+        m.innerHTML = "";
+        toast(`Registered ${r.tenant.name}${r.archetype ? " · " + r.archetype : ""}${r.identity ? " · " + r.identity.name + " identity" : ""}${(r.activated || []).length ? " · " + r.activated.length + " catalogue offerings published" : ""}`);
+        render();
+      } catch (e) { go.disabled = false; go.textContent = "⚡ Register platform"; toast(e.message); }
+    };
+  };
+  paint();
+}
+/* tenant authoring: a single form for EDIT only — registration is the guided flow above;
+   the constitutional model treats a tenant as an identity record the platform provisions */
 async function tenantModal(id) {
   const t = id ? P.tenants.find(x => x.id === id) : null;
   const isEdit = !!t;
@@ -1266,7 +1405,7 @@ document.addEventListener("click", async e => {
       };
     }
     if (delprov) { await api("/platform/custom-providers/" + delprov.dataset.delprov, "DELETE", {}); render(); }
-    if (e.target.id === "newTenant") return tenantModal(null);
+    if (e.target.id === "newTenant") return registerModal();
     const edit = e.target.closest("[data-tedit]");
     if (edit) return tenantModal(Number(edit.dataset.tedit));
     if (e.target.id === "newPlan") {

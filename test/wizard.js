@@ -1,6 +1,7 @@
-/* Platform console smoke: the canonical navigation model and tenant authoring.
-   The guided store wizard was removed — a tenant is authored in one modal, and the
-   console is now organized as the constitution declares: 12 sections, one canonical home
+/* Platform console smoke: the canonical navigation model and platform registration.
+   Registering a platform is ONE guided pass — identity, language, platform type,
+   services and geo composed from the registries — that ends where the console begins.
+   The console is organized as the constitution declares: 12 sections, one canonical home
    per capability, every leaf resolving to a live view (zero gaps). */
 "use strict";
 const { spawn } = require("child_process");
@@ -61,26 +62,71 @@ async function render(p, wait = 1800) {
     ok(!doc.querySelector("[data-hubtab]"), "the store & service hub is gone (no store-centric front door)");
     ok(/MRR|Collected/i.test(doc.body.textContent), "the console lands on the platform command dashboard");
 
-    console.log("▸ TENANT AUTHORING (the modal replaces the guided wizard)");
+    console.log("▸ PLATFORM REGISTRATION (one guided pass composes a whole platform)");
     const navBtn = [...doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "tenants-admin");
     ok(!!navBtn, "Tenants lives under 11 · Administration");
     click(win, navBtn); await sleep(1200);
     ok(/Tenants \(/.test(doc.body.textContent), "the surface is the tenant registry");
     const newBtn = doc.getElementById("newTenant");
-    ok(!!newBtn, "+ New tenant action present");
-    click(win, newBtn); await sleep(700);
-    const tnName = doc.getElementById("tnName");
-    ok(!!tnName, "the tenant modal rendered (one form, no wizard)");
-    if (tnName) {
-      tnName.value = "Acme One"; doc.getElementById("tnSlug").value = "acme1";
-      doc.getElementById("tnCountry").value = "IN";
-      doc.getElementById("tnOwnerName").value = "Ava One";
-      doc.getElementById("tnOwner").value = "owner@acme1.shop";
-      const tp = doc.getElementById("tnPass"); if (tp) tp.value = "acme1234";
-      click(win, doc.getElementById("tnSave")); await sleep(1800);
+    ok(!!newBtn && /Register platform/.test(newBtn.textContent), "the entry point is Register platform");
+    click(win, newBtn); await sleep(1000);
+    const rName = doc.getElementById("rName");
+    ok(!!rName, "the registration flow opened at step 1 (identity)");
+    if (rName) {
+      rName.value = "Acme One"; doc.getElementById("rSlug").value = "acme1";
+      doc.getElementById("rCountry").value = "IN";
+      doc.getElementById("rOwnerName").value = "Ava One";
+      doc.getElementById("rOwnerEmail").value = "owner@acme1.shop";
+      doc.getElementById("rOwnerPass").value = "acme1234";
+      click(win, doc.getElementById("regNext")); await sleep(400);
+      /* identity & language: the locale defaults from the chosen jurisdiction, and the
+         authentication policy is enumerated from the identity registry — never deferred to
+         a separate screen. Choosing a non-default template proves selection is honoured. */
+      const lang = doc.getElementById("rLang");
+      ok(!!lang && lang.value === "en-IN", "the language step defaults from the country", lang && lang.value);
+      const idOpts = [...doc.querySelectorAll("input[name='rIdTmpl']")];
+      ok(idOpts.length >= 4, "the identity policies are enumerated from the identity registry", idOpts.length);
+      ok(idOpts.some(r => r.checked), "a template is pre-selected (the registry's default)");
+      const ent = idOpts.find(r => /Enterprise/.test(r.closest("label").textContent));
+      ok(!!ent, "an Enterprise policy is a registerable choice");
+      if (ent) { ent.checked = true; ent.dispatchEvent(new win.Event("change", { bubbles: true })); }
+      click(win, doc.getElementById("regNext")); await sleep(400);
+      /* platform type: an archetype writes the composition in one call */
+      const archOpts = [...doc.querySelectorAll("input[name='rArch']")];
+      ok(archOpts.length >= 6, "the platform types are enumerated from the presets registry", archOpts.length);
+      const mobility = archOpts.find(a => a.value === "blend_mobility");
+      ok(!!mobility, "a mobility platform is a registerable type (E17)");
+      const ops = archOpts.find(a => a.value === "blend_operations");
+      ok(!!ops, "an ERP/operations platform is a registerable type (E18)");
+      if (mobility) { mobility.checked = true; mobility.dispatchEvent(new win.Event("change", { bubbles: true })); }
+      click(win, doc.getElementById("regNext")); await sleep(400);
+      ok(!!doc.getElementById("rSeedUv"), "catalog content is part of the same pass");
+      click(win, doc.getElementById("regNext")); await sleep(400);
+      ok(!!doc.getElementById("regGo"), "the review step offers one registering call");
+      click(win, doc.getElementById("regGo")); await sleep(2500);
       const cfg = await f("/api/config?store=acme1");
-      ok(cfg.brand && cfg.brand.name === "Acme One", "the new tenant's storefront resolves", cfg.brand && cfg.brand.name);
-      ok(cfg.tenant && cfg.tenant.slug === "acme1", "tenant created with the declared slug", cfg.tenant && cfg.tenant.slug);
+      ok(cfg.brand && cfg.brand.name === "Acme One", "the new platform's storefront resolves", cfg.brand && cfg.brand.name);
+      ok(cfg.tenant && cfg.tenant.slug === "acme1", "created with the declared slug", cfg.tenant && cfg.tenant.slug);
+      const comp = await f("/api/capabilities?tenant_id=" + (cfg.tenant && cfg.tenant.id));
+      const on = (comp.catalog || []).filter(c => c.on).map(c => c.key);
+      ok(["ride_hailing", "dynamic_pricing", "dispatch", "fleet_management"].every(k => on.includes(k)),
+        "the mobility archetype composed the platform's four atoms", JSON.stringify(on));
+      const prods = await f("/api/products?store=acme1&q=ride");
+      ok((comp.catalog || []).some(c => c.key === "ride_hailing"), "the composition is live on the store");
+      /* the identity half of the pass: the chosen policy actually landed on the store,
+         complete (merge over defaults — no field the engine reads went missing) */
+      const ids = await f("/api/admin/identity-settings?store=acme1");
+      ok(ids.settings && ids.settings.password && ids.settings.password.minLength === 14,
+        "the chosen Enterprise identity policy landed on the store", ids.settings && ids.settings.password && ids.settings.password.minLength);
+      ok(ids.settings && ids.settings.mfa && ids.settings.mfa.enabled === true && ids.settings.mfa.requireForStaff === true,
+        "the Enterprise MFA requirement was applied", ids.settings && ids.settings.mfa);
+      ok(ids.settings && ids.settings.mfa.methods && ids.settings.login && ids.settings.login.allowSignup === true,
+        "the policy is complete — unoverridden fields keep the engine defaults, never dropped", ids.settings && ids.settings.mfa.methods);
+      /* omitting a template applies the registry's own default — a platform is never
+         registered without a deliberate authentication policy */
+      const r2 = await f("/api/platform/tenants", "POST", { name: "Acme Default", slug: "acme-d", country: "US", mode: "marketplace",
+        owner: { name: "Ava Two", email: "owner@acme-d.shop", password: "acme1234" } });
+      ok(r2.identity && /Standard/i.test(r2.identity.name), "omitting a template applies the registry's default policy", r2.identity && r2.identity.name);
     }
 
     console.log("▸ ZERO-GAP RESOLUTION — leaves resolve across all three resolver kinds");
