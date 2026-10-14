@@ -457,6 +457,20 @@ const raw = (text) => new Promise((resolve) => {
       const draft = D.get("SELECT id FROM products WHERE tenant_id=1 AND lifecycle != 'published' LIMIT 1");
       if (draft) ok((await G("/api/cart", "POST", { id: draft.id })).status === 404, "an unpublished product cannot be added to the cart");
     }
+    console.log("▸ R1 · OUTPUT AND SPEND ONLY MOVE THROUGH THEIR TRANSITIONS");
+    {
+      const ops = require(path.join(__dirname, "..", "lib", "operations.js"));
+      const throwsLike = (fn, re) => { try { fn(); return false; } catch (e) { return re.test(e.message); } };
+      const wo = ops.upsertWorkOrder(1, { product_id: "LX-1", qty: 10, status: "done", completed_qty: 10 });
+      ok(wo.status === "planned" && wo.completed_qty === 0, "a new work order cannot start done with output claimed", wo);
+      ok(throwsLike(() => ops.upsertWorkOrder(1, { id: wo.id, status: "done" }), /complete/), "an edit cannot mark a work order done");
+      const ed = ops.upsertWorkOrder(1, { id: wo.id, completed_qty: 999, status: "in_progress" });
+      ok(ed.completed_qty === 0 && ed.status === "in_progress", "completed_qty is never written by an edit", ed);
+      const pj = ops.upsertProject(1, { name: "Spend probe", budget: 100, spent: 99999 });
+      ok(pj.spent === 0, "a new project cannot be created with spend", pj.spent);
+      const pj2 = ops.upsertProject(1, { id: pj.id, name: "Spend probe", spent: 5 });
+      ok(pj2.spent === 0, "project spend is not editable", pj2.spent);
+    }
   } catch (e) {
     failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e));
   } finally {
