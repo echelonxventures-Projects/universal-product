@@ -186,25 +186,25 @@
         
             <div class="nav-group">
             <div class="nav-header">Getting Started</div>
-            <a href="#" class="nav-item active" data-tab="welcome" onclick="switchTab('welcome')">👋 Welcome & Quick Start</a>
+            <a href="#" class="nav-item active" data-tab="welcome">👋 Welcome & Quick Start</a>
             <a href="/docs/e2e-flow.html" class="nav-item" target="_blank">✅ End-to-End Workflow</a>
-            <a href="#" class="nav-item" data-tab="setup" onclick="switchTab('setup')">⚙️ Global Configuration</a>
+            <a href="#" class="nav-item" data-tab="setup">⚙️ Global Configuration</a>
             <a href="/docs/provisioning-guide.html" class="nav-item" target="_blank">📋 Provisioning Reference</a>
-            <a href="#" class="nav-item" data-tab="platform" onclick="switchTab('platform')">🏛️ Platform Admin</a>
+            <a href="#" class="nav-item" data-tab="platform">🏛️ Platform Admin</a>
         </div>
 
         <div class="nav-group">
             <div class="nav-header">Store Operations</div>
-            <a href="#" class="nav-item" data-tab="store" onclick="switchTab('store')">📦 Store Admin</a>
-            <a href="#" class="nav-item" data-tab="customer" onclick="switchTab('customer')">🛒 Customer</a>
-            <a href="#" class="nav-item" data-tab="support" onclick="switchTab('support')">🛠️ Support & Staff</a>
+            <a href="#" class="nav-item" data-tab="store">📦 Store Admin</a>
+            <a href="#" class="nav-item" data-tab="customer">🛒 Customer</a>
+            <a href="#" class="nav-item" data-tab="support">🛠️ Support & Staff</a>
         </div>
 
         <div class="nav-group">
             <div class="nav-header">Reference</div>
             <a href="/docs/platform-reference.html" class="nav-item" target="_blank">📋 Console Reference</a>
-            <a href="#" class="nav-item" data-tab="architecture" onclick="switchTab('architecture')">🔧 Architecture</a>
-            <a href="#" class="nav-item" data-tab="security" onclick="switchTab('security')">🛡️ Security</a>
+            <a href="#" class="nav-item" data-tab="architecture">🔧 Architecture</a>
+            <a href="#" class="nav-item" data-tab="security">🛡️ Security</a>
         </div>
     </nav>
 
@@ -540,38 +540,6 @@
 
     </main>
 
-    <script>
-        // Check for tab parameter in URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const tabParam = urlParams.get('tab');
-        
-        function switchTab(tabId) {
-            // Update URL with tab parameter
-            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?tab=' + tabId;
-            window.history.pushState({path: newUrl}, '', newUrl);
-            
-            // Remove active class from all nav items
-            var navItems = document.querySelectorAll('.nav-item');
-            for (var i = 0; i < navItems.length; i++) {
-                navItems[i].classList.remove('active');
-            }
-            // Add active class to clicked item (find by data-tab attribute)
-            var clickedItem = document.querySelector('[data-tab="' + tabId + '"]');
-            if (clickedItem) clickedItem.classList.add('active');
-            
-            // Hide all tabs
-            var tabs = document.querySelectorAll('.tab-content');
-            for (var j = 0; j < tabs.length; j++) {
-                tabs[j].classList.remove('active');
-            }
-            // Show selected tab
-            document.getElementById(tabId).classList.add('active');
-        }
-        
-        // Initialize tab on page load
-        if (tabParam) {
-            switchTab(tabParam);
-        }
-    </script>
+    <script src="/docs/user-manual.js"></script>
 </body>
 </html>

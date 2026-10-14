@@ -8,8 +8,10 @@ User=www-data
 WorkingDirectory=/var/www/luxora
 Environment="NODE_ENV=production"
 Environment="PORT=3000"
-# Required: the platform uses the built-in node:sqlite (lib/db.js), which exists only
-# since Node 22.5 — /usr/bin/node must resolve to >= 22.5 or the service dies at boot.
+# Required: the platform uses the built-in node:sqlite (lib/db.js), which is unflagged only
+# since Node 22.13 — /usr/bin/node must resolve to >= 22.13 or the service dies at boot.
+# Behind nginx / a load balancer, also set Environment="LX_TRUST_PROXY=1" so rate limits
+# and audit IPs use X-Forwarded-For instead of the proxy's own address.
 # The seed-default passwords are refused in production; set both before enabling:
 #   Environment="PLATFORM_PASSWORD=..."
 #   Environment="ADMIN_PASSWORD=..."

@@ -1,6 +1,8 @@
 # LUXORA Platform
 
-**Universal, white-label, multi-store commerce platform.** Zero runtime dependencies: Node.js ≥ 22.5 (`node:http`, `node:sqlite`, `node:crypto` only) + vanilla JS frontends. Everything—taxonomy, industries, product types, verticals, contexts, providers, countries, currencies, security policy—is *entity data*, never code.
+**The Master Global Platform — one platform, configured into any platform.** The default boot is dependency-free: Node.js ≥ 22.13 (`node:http`, `node:sqlite`, `node:crypto` only) + vanilla JS frontends. The optional Redis queue (`LX_QUEUE=redis`: `bull`, `ioredis`) and Prometheus client (`prom-client`) are the only npm runtime packages, loaded only when configured; the test suite needs `npm ci` for `jsdom`. Everything—taxonomy, industries, product types, verticals, contexts, providers, countries, currencies, security policy—is *entity data*, never code.
+
+**The master is alone.** A first boot seeds exactly one deployment — the platform's own — and the platform *is* that deployment. Configuring "the 1st e-commerce platform" means switching the marketplace atoms on; the 1st ERP platform, the workforce/procurement atoms; the 1st Uber platform, ride-hailing/dispatch; the 1st consultancy platform, the consultancy atoms. Every capability lives inside the master, and because the catalog is authorable, *any* platform type is a declaration plus a composition — never new code. The demo storefronts (aurum, velora) are fixtures that illustrate what composition produces, opt-in via `LUXORA_DEMO_BRANDS=1`, never the default population. Which deployment is the master's own is a marked platform fact (`platform_settings.master_deployment`), so a bare-host request, the console and every engine resolve to it without enumerating peers.
 
 **Nothing is a bundle.** There is no "marketplace" or "commerce" entity — those are *compositions*. The only thing that exists is a **capability atom**: one individually switchable, individually tunable function (`buy_box`, `escrow`, `reviews`, `gift_cards`, `rfq_bidding`…) declared as a row in `platform_capabilities` with typed params and the console sections it governs. A store *is* the set of atoms it switched on (`GET /api/capabilities` → `composition`). Named blends (`blend_marketplace`, `blend_quick_commerce`…) and purchasable archetypes are convenience references to atoms — never the gate. The grant engine derives the console surface from the live composition (`lib/authz.js`), so nothing is ever granted as a package. **This holds platform-wide**: the 18 former `settings.features.*` booleans (reviews, Q&A, deals, coupons, gift cards, memberships, risk screening…) are atoms in the same catalog, switched and tuned exactly the way `buy_box` is — one switch, one vocabulary, shopper-facing *and* commerce-facing alike.
 
@@ -19,11 +21,13 @@ PORT=8787 ./serve.sh         # supervised (auto-restart), writes .luxora.pid
 npm test                     # syntax + 620-assertion jsdom E2E suite (+197 GOIP + 724 UCOS Ω∞/theme/global-catalog audits: 100% universe instantiation, freeze criteria, catalog activation to 100% across 267 families, per-domain state machines, universal theming, the §394/§395 dashboard & reporting engines, the §1/§5 global catalog & permission-gated store import) (own DB/port)
 ```
 
-Env: `PORT`, `LX_DB` (db path), `LUX_TLS=1` (HTTPS; self-signed generated via openssl, or supply `LUX_TLS_KEY`/`LUX_TLS_CERT`), `LUXORA_MASTER_KEY`, `LUXORA_PEPPER`, `LUXORA_DEMO_HINT=0`, `LX_OFFLINE=1` (force all outbound payments/notifications/AI to the offline-simulated path — CI/no-secrets), seed overrides `PLATFORM_EMAIL/PLATFORM_PASSWORD/ADMIN_EMAIL/ADMIN_PASSWORD/DEMO_PASSWORD`.
+Env: `PORT`, `LX_DB` (db path), `LUX_TLS=1` (HTTPS; self-signed generated via openssl, or supply `LUX_TLS_KEY`/`LUX_TLS_CERT`), `LUXORA_MASTER_KEY`, `LUXORA_PEPPER`, `LUXORA_DEMO_HINT=0`, `LUXORA_DEMO_BRANDS=1` (install the demo-brand fixtures — aurum the industry marketplace, velora the brand house — alongside the master's own deployment; a default boot seeds the master alone), `LX_OFFLINE=1` (force all outbound payments/notifications/AI to the offline-simulated path — CI/no-secrets), seed overrides `PLATFORM_EMAIL/PLATFORM_PASSWORD/ADMIN_EMAIL/ADMIN_PASSWORD/DEMO_PASSWORD`.
 
 ### Production
 
-The runtime needs **Node ≥ 22.5** — `lib/db.js` uses the built-in `node:sqlite`, which does not exist before that. The boot checks the version and exits with the required one rather than a bare module error.
+The runtime needs **Node ≥ 22.13** — `lib/db.js` uses the built-in `node:sqlite`, which is unavailable (22.5–22.12: behind `--experimental-sqlite`) before that. The boot checks the version before loading the database layer and exits with the required one rather than a bare module error.
+
+Behind a reverse proxy or load balancer, set `LX_TRUST_PROXY=1` so per-client rate limits and audit IPs use `X-Forwarded-For` (without it the header is ignored, since a client could forge it). Request bodies are capped at 1 MB (413 beyond).
 
 ```bash
 docker compose up --build     # http://localhost:3000 (data/ and redis persisted as volumes)

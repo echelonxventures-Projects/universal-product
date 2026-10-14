@@ -25,6 +25,7 @@
 "use strict";
 const DB = require("path").join(__dirname, "navfit.db");
 process.env.LX_DB = DB;
+process.env.LUXORA_DEMO_BRANDS = "1";   /* these suites exercise the demo-brand fixtures */
 const { spawn } = require("child_process");
 const { JSDOM, VirtualConsole } = require("jsdom");
 const path = require("path");

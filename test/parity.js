@@ -176,8 +176,11 @@ console.log("\n▸ QUICK-COMMERCE — serviceability, promise, stock, PoD");
     "POST /api/qc/pin is reachable (a stock or min-order refusal is an honest answer)", JSON.stringify({ ok: pinAdmin.ok, reason: pinAdmin.reason }));
   const guard = call("POST", "/api/qc/reserve", { store_id: st.id, product_id: PROD, qty: 1 }, GUEST);
   ok(guard.error, "the reserve endpoint is admin-gated (a guest is refused)");
-  const rr = call("GET", "/api/qc/runs", {}, GUEST);
-  ok(rr.runs.length >= 1, "GET /api/qc/runs lists dispatch runs for a guest");
+  /* dispatch runs carry the proof-of-delivery OTP — listing them is staff-only now */
+  ok(call("GET", "/api/qc/runs", {}, GUEST).error, "GET /api/qc/runs refuses a guest (runs carry the delivery OTP)");
+  ok(call("GET", "/api/qc/riders", {}, GUEST).error, "GET /api/qc/riders refuses a guest (rider phone numbers)");
+  const rr = call("GET", "/api/qc/runs", {}, ADMIN);
+  ok(rr.runs && rr.runs.length >= 1, "GET /api/qc/runs lists dispatch runs for store staff");
 }
 
 console.log("\n▸ FINTECH — one ledger, escrow, KYC-gated credit");
@@ -262,7 +265,9 @@ console.log("\n▸ FINTECH — one ledger, escrow, KYC-gated credit");
   ok(fin.emiFor(1200, 12, 0) === 100, "a zero-interest EMI is plain division");
   ok(Math.abs(fin.emiFor(1200, 12, 12) - 106.62) < 0.5, "an interest-bearing EMI uses the amortization formula", fin.emiFor(1200, 12, 12));
   const loan = fin.applyLoan(T, "u:2", { principal: 1000, tenure_months: 10, rate: 0 });
-  ok(loan.status === "applied" && loan.emi === 100, "a loan application computes its own EMI");
+  const credit = fin.creditPolicy(T);
+  ok(loan.status === "applied" && loan.rate === credit.loanRatePct && loan.emi === fin.emiFor(1000, 10, credit.loanRatePct),
+    "a loan application computes its EMI at the lender's policy rate (the applicant's rate:0 is ignored)", JSON.stringify({ rate: loan.rate, emi: loan.emi }));
   let notApproved = false; try { fin.disburseLoan(T, loan.id); } catch (e) { notApproved = /approved/.test(e.message); }
   ok(notApproved, "an unapproved loan cannot be disbursed");
   db.run("UPDATE loans SET status='approved' WHERE id=?", loan.id);
@@ -499,8 +504,13 @@ console.log("\n▸ B2B TRADE — assurance, trust, documents, bidding, MOQ");
   ok(call("POST", "/api/trade/assurance", { amount: 60 }, GUEST).error, "assurance via the API is admin-gated");
   const apiMs = call("POST", "/api/trade/assurance/" + apiTa.assurance.id + "/milestone", { milestone: "production" }, ADMIN);
   ok(apiMs.assurance && apiMs.assurance.current_milestone === "production", "a milestone advances via the API");
-  const apiConfirm = call("POST", "/api/trade/assurance/" + apiTa.assurance.id + "/confirm", {}, GUEST);
-  ok(apiConfirm.assurance && apiConfirm.assurance.status === "released", "the buyer can confirm delivery (theirs, not the admin's)");
+  /* confirming delivery releases the escrow — a stranger may not; the buyer or staff may */
+  const stranger = call("POST", "/api/trade/assurance/" + apiTa.assurance.id + "/confirm", {}, { tenant: { id: 1 }, sid: "stranger-session" });
+  ok(stranger.error && one("SELECT held FROM trade_assurance WHERE id=?", apiTa.assurance.id).held === 1, "a stranger cannot confirm delivery and release the escrow", JSON.stringify(stranger));
+  const buyerOwner = one("SELECT buyer FROM trade_assurance WHERE id=?", apiTa.assurance.id).buyer;
+  const buyerSess = /^t\d+:u:(\d+)$/.test(buyerOwner || "") ? { tenant: { id: 1 }, user_id: Number(buyerOwner.split(":u:")[1]) } : ADMIN;
+  const apiConfirm = call("POST", "/api/trade/assurance/" + apiTa.assurance.id + "/confirm", {}, buyerSess);
+  ok(apiConfirm.assurance && apiConfirm.assurance.status === "released", "the buyer (or staff) can confirm delivery", JSON.stringify(apiConfirm));
   ok(call("POST", "/api/trade/gold", { supplier_id: sup.id, tier: "gold" }, ADMIN).gold.tier === "gold", "gold enrolment via the API");
   const apiV = call("POST", "/api/trade/verification", { supplier_id: sup.id, company_name: "API Co" }, ADMIN);
   ok(apiV.verification.verification_status === "pending", "verification submission via the API");

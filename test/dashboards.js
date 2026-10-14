@@ -28,6 +28,7 @@ const fs = require("fs");
 
 const TMP = path.join(require("os").tmpdir(), "luxora-dash-" + process.pid + ".db");
 process.env.LX_DB = TMP;
+process.env.LUXORA_DEMO_BRANDS = "1";   /* the cross-tenant board needs the fixture deployments */
 for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP + s, { force: true }); } catch (e) { } }
 
 const silence = console.log; console.log = () => { };

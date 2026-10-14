@@ -15,6 +15,7 @@
 "use strict";
 const DB = require("path").join(__dirname, "roles.db");
 process.env.LX_DB = DB;   /* before any lib require, so a fresh connection opens this file */
+process.env.LUXORA_DEMO_BRANDS = "1";   /* these suites exercise the demo-brand fixtures */
 const { spawn } = require("child_process");
 const { JSDOM, VirtualConsole } = require("jsdom");
 const { DatabaseSync } = require("node:sqlite");
