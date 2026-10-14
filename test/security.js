@@ -471,6 +471,21 @@ const raw = (text) => new Promise((resolve) => {
       const pj2 = ops.upsertProject(1, { id: pj.id, name: "Spend probe", spent: 5 });
       ok(pj2.spent === 0, "project spend is not editable", pj2.spent);
     }
+    console.log("▸ R2 · ADDING A SIGN-IN METHOD NEEDS A RECENT SIGN-IN");
+    {
+      const D = require(path.join(__dirname, "..", "lib", "db.js"));
+      const U = mk(); await U("/api/session?store=luxora");
+      await U("/api/auth/register", "POST", { name: "Totp Probe", email: "totp-probe@sec.test", password: "Totp-Probe-Pass-123" });
+      const fresh = await U("/api/user/identity-methods", "POST", { method_type: "totp", identifier: "totp-probe@sec.test" });
+      ok(fresh.status === 200, "right after sign-in an authenticator can be enrolled", fresh.body);
+      /* age the session's proof of identity, as a stolen cookie would be */
+      D.run("UPDATE sessions SET auth_at=datetime('now','-2 hours') WHERE sid=?", U.jar.get("azs"));
+      const stale = await U("/api/user/identity-methods", "POST", { method_type: "totp", identifier: "totp-probe@sec.test" });
+      ok(stale.status === 401, "a stale session cannot add a sign-in method", stale.status);
+      const withPw = await U("/api/user/identity-methods", "POST", { method_type: "totp", identifier: "totp-probe@sec.test", current_password: "Totp-Probe-Pass-123" });
+      ok(withPw.status === 200, "…unless it confirms the current password", withPw.body);
+      ok((await U("/api/user/identity-methods", "POST", { method_type: "webauthn", identifier: "x", current_password: "Totp-Probe-Pass-123" })).status === 400, "passkeys never link as bare rows");
+    }
   } catch (e) {
     failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e));
   } finally {
