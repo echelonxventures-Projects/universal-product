@@ -424,6 +424,39 @@ const raw = (text) => new Promise((resolve) => {
         ok(D.get("SELECT spent FROM ads WHERE id=?", ad.id).spent === mid, "repeated clicks are not billed again", { before, mid });
       }
     }
+    /* ─────────── route audit · group 5: exposure + hardening ─────────── */
+    console.log("▸ H5 · NO STRANGER'S DATA, NO INTERNAL REQUESTS");
+    {
+      const G = mk(); await G("/api/session?store=luxora");
+      const led = await G("/api/admin/fin/ledger?owner=t1:u:1");
+      ok(led.body.owner !== "t1:u:1", "a guest's ?owner= is ignored — they get only their own ledger", led.body.owner);
+      const qs = await G("/api/qc/stores");
+      ok(qs.status === 200 && qs.body.riders === undefined, "the public store listing carries no rider PII");
+      ok((await G("/api/marketplace/ads")).status === 403, "the ad book is staff-only");
+      ok((await G("/api/ucos/x/annotations?kind=a&key=b")).status === 403, "operator annotations are staff-only");
+      const li = await G("/api/auth/login-init", "POST", { email: "admin@luxora.shop", method: "password" });
+      const li2 = await G("/api/auth/login-init", "POST", { email: "nobody-at-all@luxora.shop", method: "password" });
+      ok(JSON.stringify(li.body) === JSON.stringify(li2.body) && !li.body.user, "password login-init answers the same for known and unknown accounts", [li.body, li2.body]);
+      const pl = await G("/api/platform/login", "POST", { email: "admin@luxora.shop", password: "x" });
+      const pl2 = await G("/api/platform/login", "POST", { email: "nobody@nowhere.test", password: "x" });
+      ok(pl.body.error === pl2.body.error, "platform login does not reveal store accounts", [pl.body.error, pl2.body.error]);
+      const pg = (await G("/api/products?limit=-1")).body;
+      ok(pg.per >= 1 && pg.per <= 200 && pg.items.length <= 200, "a negative limit does not remove the page cap", pg.per);
+      for (const u of ["http://169.254.169.254/latest/meta-data", "https://127.0.0.1/x", "https://localhost/x", "https://10.0.0.5/hook", "https://[::1]/x", "ftp://example.com/x"]) {
+        const r = await A("/api/admin/webhooks", "POST", { url: u, events: ["*"] });
+        ok(r.status === 400, "webhook URL refused: " + u, r.status);
+      }
+      const ev = require(path.join(__dirname, "..", "lib", "events.js"));
+      ok(ev.privateAddress("192.168.1.1") && ev.privateAddress("::ffff:10.0.0.1") && !ev.privateAddress("8.8.8.8"), "the private-address check covers v4, mapped v6 and public");
+      const acct = await A("/api/admin/account", "PUT", { password: "Brand-New-Pass-123" });
+      ok(acct.status === 403, "changing the admin password needs the current password", acct.status);
+      const imp = await (async () => { const P = mk(); await P("/api/session"); await P("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" }); return P("/api/platform/tenants/987654/impersonate", "POST", {}); })();
+      ok(imp.status === 404, "impersonating an unknown store is a 404 (no orphan admin)", imp.status);
+      const D = require(path.join(__dirname, "..", "lib", "db.js"));
+      ok(!D.get("SELECT id FROM users WHERE email='impersonate+987654@luxora.shop'"), "…and no orphan user was created");
+      const draft = D.get("SELECT id FROM products WHERE tenant_id=1 AND lifecycle != 'published' LIMIT 1");
+      if (draft) ok((await G("/api/cart", "POST", { id: draft.id })).status === 404, "an unpublished product cannot be added to the cart");
+    }
   } catch (e) {
     failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e));
   } finally {
