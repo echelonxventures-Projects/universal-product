@@ -502,6 +502,30 @@ const raw = (text) => new Promise((resolve) => {
       const good = mk(); await good("/api/session?store=luxora");
       ok((await good("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" })).status === 200, "a correct password still signs in");
     }
+    console.log("▸ R4 · SIMULATED RAILS NEVER SETTLE IN PRODUCTION");
+    {
+      const fin = require(path.join(__dirname, "..", "lib", "fintech.js"));
+      const D = require(path.join(__dirname, "..", "lib", "db.js"));
+      const mods = require(path.join(__dirname, "..", "lib", "modules.js"));
+      const who = "t1:u:5555";
+      mods.walletAdd(1, who, 100);
+      const prev = { env: process.env.NODE_ENV, allow: process.env.LX_ALLOW_SIMULATED_PAYMENTS };
+      process.env.NODE_ENV = "production"; delete process.env.LX_ALLOW_SIMULATED_PAYMENTS;
+      const throwsLike = (fn, re) => { try { fn(); return false; } catch (e) { return re.test(e.message); } };
+      try {
+        ok(throwsLike(() => fin.payBill(1, who, { amount: 10 }), /simulated/), "a bill payment is refused (nothing would reach the biller)");
+        ok(throwsLike(() => fin.doRecharge(1, who, { amount: 10, number: "555" }), /simulated/), "a recharge is refused");
+        ok(mods.walletBalance(1, who) === 100, "and the wallet was not charged", mods.walletBalance(1, who));
+        const link = (() => { process.env.NODE_ENV = prev.env || "test"; const l = fin.createLink(1, { title: "x", amount: 5, owner: who }); process.env.NODE_ENV = "production"; return l; })();
+        ok(throwsLike(() => fin.payLink(1, link.token), /simulated/), "a payment link is refused");
+        process.env.LX_ALLOW_SIMULATED_PAYMENTS = "1";
+        ok(fin.payBill(1, who, { amount: 10 }).status === "success", "an operator can opt into simulated rails explicitly");
+      } finally {
+        if (prev.env === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = prev.env;
+        if (prev.allow === undefined) delete process.env.LX_ALLOW_SIMULATED_PAYMENTS; else process.env.LX_ALLOW_SIMULATED_PAYMENTS = prev.allow;
+      }
+      ok(fin.simulatedAllowed() === true, "outside production the sandbox rails still work");
+    }
   } catch (e) {
     failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e));
   } finally {
