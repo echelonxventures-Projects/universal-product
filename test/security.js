@@ -333,6 +333,60 @@ const raw = (text) => new Promise((resolve) => {
       const wl = await A("/api/admin/webhooks");
       ok(!JSON.stringify(wl.body).includes("whsec_supersecretvalue"), "webhook signing secrets are masked in listings", wh.status);
     }
+    /* ─────────── route audit · group 2: store role checks ─────────── */
+    console.log("▸ H2 · STORE STAFF ROLES ARE ENFORCED");
+    {
+      const D = require(path.join(__dirname, "..", "lib", "db.js"));
+      if (!D.get("SELECT id FROM users WHERE email='support-staff@luxora.shop'")) {
+        const id = D.newUser(1, "Support Staff", "support-staff@luxora.shop", "Staff-Pass-12345", "admin");
+        D.run("UPDATE users SET staff_role='support' WHERE id=?", id);
+      }
+      const ST = mk(); await ST("/api/session?store=luxora");
+      ok((await ST("/api/auth/login", "POST", { email: "support-staff@luxora.shop", password: "Staff-Pass-12345" })).status === 200, "a support-role staff member signs in");
+      ok((await ST("/api/admin/payments/1/refund", "POST", { amount: 1 })).status === 403, "support staff cannot issue refunds");
+      ok((await ST("/api/admin/webhooks", "POST", { url: "https://x.example/h" })).status === 403, "support staff cannot add webhooks");
+      ok((await ST("/api/admin/scim/token", "POST", { label: "x" })).status === 403, "support staff cannot mint SCIM tokens");
+      ok((await ST("/api/admin/settings/reset", "POST", {})).status === 403, "support staff cannot reset settings");
+      const me = D.get("SELECT id FROM users WHERE email='support-staff@luxora.shop'");
+      ok((await ST("/api/admin/staff/" + me.id, "PUT", { staff_role: "owner" })).status === 403, "staff cannot promote themselves");
+      /* the owner disables the account — the open session loses access immediately */
+      ok((await A("/api/admin/staff/" + me.id, "PUT", { disabled: true })).status === 200, "the owner disables the staff member");
+      const after = await ST("/api/admin/orders");
+      ok(after.status === 403 || after.status === 401, "a disabled staff member's existing session is cut off", after.status);
+      await A("/api/admin/staff/" + me.id, "PUT", { disabled: false });
+      ok((await A("/api/admin/ai-gateways", "PUT", { "payment:stripe": { apiKey: "x" } })).status === 400, "the AI-gateway route refuses non-AI providers");
+    }
+
+    /* ─────────── route audit · group 3: tenant + owner isolation ─────────── */
+    console.log("▸ H3 · ONE STORE NEVER READS OR CHANGES ANOTHER'S RECORDS");
+    {
+      const D = require(path.join(__dirname, "..", "lib", "db.js"));
+      const emp = D.run("INSERT INTO employees(tenant_id,code,name,bank_account,tax_id,base_salary) VALUES(999,'X1','Other Store Person','GB00SECRET','TAX-SECRET',99999)").lastInsertRowid;
+      const e = await A("/api/admin/ops/employees", "POST", { id: Number(emp), name: "probe", code: "P" });
+      ok(!JSON.stringify(e.body).includes("SECRET"), "an upsert with another store's employee id leaks nothing", e.body);
+      const rk = D.run("INSERT INTO risk_events(tenant_id,owner,action) VALUES(999,'t999:u:1','hold')").lastInsertRowid;
+      const rr = await A("/api/admin/risk/" + rk + "/resolve", "PUT", { decision: "approve" });
+      ok(rr.status !== 200 && !JSON.stringify(rr.body).includes("t999:u:1"), "another store's risk event is not returned", rr.body);
+      ok(D.get("SELECT resolved FROM risk_events WHERE id=?", rk).resolved !== 1, "…nor resolved");
+      const qr = D.run("INSERT INTO qr_codes(tenant_id,payload) VALUES(999,'{\"vpa\":\"other@bank\"}')").lastInsertRowid;
+      const q = await A("/api/fintech/qr/" + qr + "/scan", "POST", {});
+      ok(!JSON.stringify(q.body).includes("other@bank"), "another store's QR code is not returned", q.body);
+      const G = mk(); await G("/api/session?store=luxora");
+      ok((await G("/api/consent?subject=t1:u:1")).status === 403, "a guest cannot read someone else's consent");
+      ok((await G("/api/consent", "POST", { subject: "t1:u:1", purpose: "marketing", status: "withdrawn" })).status === 403, "…or change it");
+      const sch = D.run("INSERT INTO recurring_schedules(tenant_id,owner,product_id,next_ship_at) VALUES(1,'t1:u:424242','LX-1',datetime('now','+5 days'))").lastInsertRowid;
+      const sc = await G("/api/subscriptions/" + sch, "PUT", { action: "cancel" });
+      ok(sc.status !== 200 && D.get("SELECT status FROM recurring_schedules WHERE id=?", sch).status === "active", "a customer cannot cancel someone else's subscription", sc.status);
+      const cl = await G("/api/marketplace/claims", "POST", { order_id: 1, amount: 99999, reason: "x" });
+      ok(cl.status === 404 || cl.status === 400, "a claim on an order that isn't yours is refused", cl.status);
+      const tmpl = D.get("SELECT id FROM dashboards WHERE tenant_id IS NULL LIMIT 1");
+      if (tmpl) {
+        const del = await A("/api/dashboards/" + tmpl.id, "DELETE", {});
+        ok(del.status === 403 && D.get("SELECT id FROM dashboards WHERE id=?", tmpl.id), "a store admin cannot delete a platform template dashboard", del.status);
+      }
+      const ucat = await A("/api/ucos/catalog?tenant_id=999");
+      ok(ucat.status !== 200 || !ucat.body.published || ucat.body.published.every(p => p.tenant_id == null || p.tenant_id === 1), "a store admin's tenant_id= is ignored");
+    }
   } catch (e) {
     failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e));
   } finally {

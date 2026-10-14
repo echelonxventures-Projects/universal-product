@@ -397,7 +397,13 @@ console.log("\n▸ MARKETPLACE — onboarding, buy-box, health, claims");
   const offersApi = call("GET", "/api/marketplace/offers/" + PROD, {}, GUEST);
   ok(offersApi.offers.length === 2 && !!offersApi.buybox, "GET /api/marketplace/offers/:product lists offers + the box");
   ok(call("POST", "/api/marketplace/buybox/" + PROD, {}, ADMIN).offers.length === 2, "the buy-box recomputes via the API");
-  ok(call("POST", "/api/marketplace/claims", { order_id: 556, seller_id: LINKED, amount: 5 }, GUEST).claim.status === "opened", "a guest can open a claim");
+  /* a claim is opened by the order's buyer, for at most the order total — not by anyone on any id */
+  const BUYER = { tenant: { id: 1 }, sid: "parity-buyer" };
+  db.run("INSERT INTO orders(tenant_id,owner,num,total,status) VALUES(1,'t1:s:parity-buyer','PAR-CLAIM-1',40,'delivered')");
+  const claimOrder = one("SELECT id FROM orders WHERE num='PAR-CLAIM-1'").id;
+  ok(call("POST", "/api/marketplace/claims", { order_id: claimOrder, seller_id: LINKED, amount: 5 }, { tenant: { id: 1 }, sid: "someone-else" }).error, "a stranger cannot open a claim on another buyer's order");
+  ok(call("POST", "/api/marketplace/claims", { order_id: claimOrder, seller_id: LINKED, amount: 500 }, BUYER).error, "a claim cannot exceed the order total");
+  ok(call("POST", "/api/marketplace/claims", { order_id: claimOrder, seller_id: LINKED, amount: 5 }, BUYER).claim.status === "opened", "the buyer can open a claim on their own order");
   ok(call("POST", "/api/marketplace/claims/1/resolve", { resolution: "resolved_seller" }, GUEST).error, "claim resolution is admin-gated");
   ok(call("POST", "/api/marketplace/smart-fulfilment", { seller_id: LINKED, grade: "a" }, ADMIN).smart.grade === "a", "smart-fulfilment enrols via the API");
   ok(!!call("GET", "/api/marketplace/portal/" + LINKED, {}, ADMIN).seller, "the portal is reachable through the API");
