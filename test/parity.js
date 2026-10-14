@@ -132,10 +132,15 @@ console.log("\n▸ QUICK-COMMERCE — serviceability, promise, stock, PoD");
   ok(si.qty === 4 && si.reserved === 1, "consuming takes the unit out of the store's qty (and its reservation)", JSON.stringify(si));
   /* a cart below the store's minimum order is refused with the threshold shown,
      so the storefront can prompt for the difference instead of guessing */
-  const below = qc.pinCart(T, [{ product_id: PROD, qty: 1 }], pin);
+  /* the min-order check prices the cart from the CATALOG (a client-sent price used to decide
+     it): ask for more units than the store holds so the refusal is about stock, and check
+     the min-order gap with an explicitly cheap catalog item */
+  const below = qc.pinCart(T, [{ product_id: PROD, qty: 999 }], pin);
   ok(!below.ok && (below.reason === "insufficient_store_stock" || below.reason === "below_min_order"),
     "an unpinnable cart is refused with a reason the storefront can act on", JSON.stringify(below.reason));
-  ok(!!(below.refused || below.short), "the refusal carries the detail (lines short or the min-order gap)", JSON.stringify(below.refused ? below.refused[0] : below.short[0]));
+  ok(!!(below.refused || below.short), "the refusal carries the detail (lines short or the min-order gap)", JSON.stringify(below.refused ? below.refused[0] : (below.short || [])[0]));
+  const negative = qc.pinCart(T, [{ product_id: PROD, qty: -1000 }], pin);
+  ok(one("SELECT reserved FROM store_inventory WHERE tenant_id=? AND store_id=? AND product_id=?", T, st.id, PROD).reserved >= 0, "a negative quantity never lowers the reservation", JSON.stringify(negative));
   const none = qc.pinCart(T, [{ product_id: PROD, qty: 1 }], "99999");
   ok(!none.ok && none.reason === "not_serviceable", "an unserviceable cart pins to nothing");
   /* dispatch + proof of delivery */

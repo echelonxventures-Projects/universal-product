@@ -387,6 +387,43 @@ const raw = (text) => new Promise((resolve) => {
       const ucat = await A("/api/ucos/catalog?tenant_id=999");
       ok(ucat.status !== 200 || !ucat.body.published || ucat.body.published.every(p => p.tenant_id == null || p.tenant_id === 1), "a store admin's tenant_id= is ignored");
     }
+    /* ─────────── route audit · group 4: money + business logic ─────────── */
+    console.log("▸ H4 · NOTHING PAID IS FREE, NOTHING CREDITED TWICE");
+    {
+      const D = require(path.join(__dirname, "..", "lib", "db.js"));
+      const fin = require(path.join(__dirname, "..", "lib", "fin.js"));
+      const rec = require(path.join(__dirname, "..", "lib", "recurring.js"));
+      const throwsLike = (fn, re) => { try { fn(); return false; } catch (e) { return re.test(e.message); } };
+      ok(throwsLike(() => rec.subscribeMembership(1, "t1:u:8888", "prime"), /Insufficient/), "a paid membership needs wallet funds");
+      /* a payout disburses once */
+      const pid = D.run("INSERT INTO payouts(tenant_id,ref,seller_id,kind,period,gross,fee,net,currency,status) VALUES(1,'PO-SEC',1,'seller','2026-10',10,0,10,'USD','open')").lastInsertRowid;
+      fin.disbursePayout(1, Number(pid));
+      ok(throwsLike(() => fin.disbursePayout(1, Number(pid)), /already/), "a payout cannot be disbursed twice");
+      /* store-side module purchase bills an open invoice, never a fabricated paid one */
+      const paid = D.get("SELECT COUNT(*) c FROM payments WHERE txn_ref LIKE 'mod_sim_%'").c;
+      ok(paid === 0, "no fabricated module payments exist");
+      /* settlement generation is idempotent per period */
+      const g1 = await A("/api/admin/settlements/generate", "POST", { period: "2026-10" });
+      const g2 = await A("/api/admin/settlements/generate", "POST", { period: "2026-10" });
+      ok(g1.status === 200 && g2.status === 200 && g2.body.generated === 0, "a period settles once per seller", [g1.body, g2.body]);
+      ok((await A("/api/admin/settlements/generate", "POST", { period: "nope" })).status === 400, "a malformed period is refused");
+      /* quick-commerce pinning only reserves the caller's own cart, in positive quantities */
+      const G = mk(); await G("/api/session?store=luxora");
+      const pin = await G("/api/qc/pin", "POST", { items: [{ product_id: "LX-1", qty: -1000 }], zip: "98109" });
+      ok(pin.body.ok === false && /invalid_quantity|not_in_cart/.test(pin.body.reason || ""), "a negative or off-cart pin is refused", pin.body);
+      /* ad events: a shopper reports clicks only, once per ad per day */
+      const ad = D.get("SELECT id FROM ads WHERE tenant_id=1 ORDER BY id LIMIT 1");
+      const CU = mk(); await CU("/api/session?store=luxora");
+      await CU("/api/auth/register", "POST", { name: "Ad Clicker", email: "clicker@sec.test", password: "Clicker-Pass-12345" });
+      if (ad) {
+        ok((await CU("/api/marketplace/ads/" + ad.id + "/event", "POST", { kind: "conversion" })).status === 400, "a shopper cannot declare a billable conversion");
+        const before = D.get("SELECT spent FROM ads WHERE id=?", ad.id).spent;
+        await CU("/api/marketplace/ads/" + ad.id + "/event", "POST", { kind: "click" });
+        const mid = D.get("SELECT spent FROM ads WHERE id=?", ad.id).spent;
+        for (let i = 0; i < 3; i++) await CU("/api/marketplace/ads/" + ad.id + "/event", "POST", { kind: "click" });
+        ok(D.get("SELECT spent FROM ads WHERE id=?", ad.id).spent === mid, "repeated clicks are not billed again", { before, mid });
+      }
+    }
   } catch (e) {
     failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e));
   } finally {

@@ -1503,6 +1503,12 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(inv.ok && inv.invoice.lines.some(l => l.kind === "plan") && inv.invoice.lines.some(l => l.kind === "usage"), "invoice has plan + usage lines", inv.invoice && inv.invoice.lines.map(l => l.kind));
       ok(inv.invoice.amount > 49 && inv.invoice.tax >= 0, "invoice totals include usage + tax", { amount: inv.invoice.amount, tax: inv.invoice.tax });
       // credit note refund to wallet
+      /* refunds to a wallet need a PAID invoice, and are bounded by what is left to credit */
+      const early = await P("/api/platform/invoices/" + inv.invoice.id + "/refund", "POST", { to_wallet: true, owner: "t1:u:2" });
+      ok(early.status === 400, "an unpaid invoice cannot be refunded to a wallet", early.body);
+      await P("/api/platform/invoices/" + inv.invoice.id + "/pay", "POST", { gateway: "stripe" });
+      ok((await P("/api/platform/invoices/" + inv.invoice.id + "/refund", "POST", { amount: inv.invoice.amount + 1000 })).status === 400, "a credit note cannot exceed the invoice");
+      ok((await P("/api/platform/invoices/" + inv.invoice.id + "/refund", "POST", { to_wallet: true, owner: "t999:u:1" })).status === 400, "a refund cannot go to another store's wallet");
       const rf = (await P("/api/platform/invoices/" + inv.invoice.id + "/refund", "POST", { to_wallet: true, owner: "t1:u:2" })).body;
       ok(rf.ok && /^CN-/.test(rf.credit_note.number), "credit note issued", rf.credit_note && rf.credit_note.number);
       const wl = (await A("/api/wallet/ledger?owner=t1:u:2")).body.entries || [];
@@ -2025,6 +2031,14 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const A = mk(); await A("/api/session?store=luxora"); await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
       const mem0 = await C("/api/membership");
       ok(mem0.body.membership.tier === "plus", "seeded demo membership is Plus", JSON.stringify(mem0.body.membership));
+      /* a paid tier is charged to the member's wallet — fund it first, then show an unfunded
+         upgrade is refused */
+      { const { DatabaseSync } = require("node:sqlite"); const wdb = new DatabaseSync(dbBase);
+        const du = wdb.prepare("SELECT id, tenant_id FROM users WHERE email='demo@luxora.shop'").get();
+        wdb.prepare("INSERT INTO wallets(tenant_id,owner,balance) VALUES(?,?,0) ON CONFLICT(tenant_id,owner) DO UPDATE SET balance=0").run(du.tenant_id, "t" + du.tenant_id + ":u:" + du.id);
+        const broke = await C("/api/membership/subscribe", "POST", { tier: "prime" });
+        ok(broke.status === 400 && /Insufficient/i.test(broke.body.error || ""), "a paid membership is refused from an empty wallet", broke.body);
+        wdb.prepare("UPDATE wallets SET balance=500 WHERE tenant_id=? AND owner=?").run(du.tenant_id, "t" + du.tenant_id + ":u:" + du.id); wdb.close(); }
       const mem1 = await C("/api/membership/subscribe", "POST", { tier: "prime" });
       ok(mem1.status === 200 && mem1.body.membership.tier === "prime", "customer upgrades membership tier", JSON.stringify(mem1.body));
       const mem2 = await C("/api/membership");
