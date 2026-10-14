@@ -298,6 +298,41 @@ const raw = (text) => new Promise((resolve) => {
       const good = await A("/api/reports/ok-rep", "PUT", { name: "ok", entity: "order", metrics: [{ metric: "count", alias: "orders_n" }], dimensions: ["status"] });
       ok(good.status === 200, "a plain alias still saves");
     }
+    /* ─────────── route audit · group 1: platform role checks ─────────── */
+    console.log("▸ H1 · RESTRICTED PLATFORM ROLES STAY IN THEIR SECTIONS");
+    {
+      const D = require(path.join(__dirname, "..", "lib", "db.js"));
+      const mkAdmin = (email, role) => { if (!D.get("SELECT id FROM platform_admins WHERE email=?", email)) { const id = D.newPlatformAdmin(role, email, "Role-Pass-12345"); D.run("UPDATE platform_admins SET role=? WHERE id=?", role, id); } };
+      mkAdmin("support@sec.test", "support"); mkAdmin("auditor@sec.test", "auditor");
+      const as = async (email) => { const c = mk(); await c("/api/session?store=luxora"); await c("/api/platform/login", "POST", { email, password: email === "auditor@sec.test" ? "Auditor-Pass-1234" : "Role-Pass-12345" }); return c; };
+      const SU = await as("support@sec.test"), AU = await as("auditor@sec.test");
+      const P = mk(); await P("/api/session?store=luxora"); await P("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      ok((await SU("/api/platform/config", "PUT", { csrfEnabled: false })).status === 403, "support cannot rewrite the global security policy");
+      ok((await SU("/api/platform/runtime")).status === 403, "support cannot read infrastructure secrets");
+      ok((await SU("/api/platform/environments-import", "POST", { bundle: { environments: {} } })).status === 403, "support cannot import runtime environments");
+      ok((await SU("/api/platform/global/tenant/plan", "POST", { tenant_id: 1, plan_id: 1 })).status === 403, "support cannot reassign a store's plan");
+      ok((await SU("/api/platform/queue/drain", "POST", {})).status === 403, "support cannot drain the job queue");
+      ok((await SU("/api/platform/entity-types", "POST", { entity: "product", type_key: "x", label: "x" })).status === 403, "support cannot edit the global schema");
+      ok((await AU("/api/offers", "POST", { name: "global giveaway", scope: "global" })).status === 403, "an auditor cannot create offers");
+      ok((await AU("/api/fintech/vouchers", "POST", { amount: 1000 })).status === 403, "an auditor cannot mint vouchers");
+      ok((await AU("/api/platform/data/tenant")).status === 200 || (await AU("/api/platform/data/tenant")).status === 404, "an auditor can still read (gdata:read)");
+      const fo = await AU("/api/platform/fanout?path=/api/admin/webhooks");
+      ok(fo.status === 200, "an auditor may fan out reads (gops:read)", fo.status);
+      /* the owner keeps everything, and secrets come back masked */
+      ok((await P("/api/platform/config", "PUT", { minPasswordLength: 8 })).status === 200, "the owner can still change policy");
+      const kdf = await P("/api/platform/config", "PUT", { kdfV2: { logN: 99, r: 1, p: 50 } });
+      ok(kdf.status === 200 && kdf.body.policy.kdfV2.logN <= 20 && kdf.body.policy.kdfV2.p <= 4, "KDF cost is clamped to a safe range", kdf.body.policy && kdf.body.policy.kdfV2);
+      await P("/api/platform/runtime", "PUT", { queue: { driver: "inline", params: {} }, cache: { driver: "redis", params: { url: "redis://:hunter2secret@cache.internal:6379" } } });
+      const rt = await P("/api/platform/runtime");
+      ok(rt.status === 200 && !JSON.stringify(rt.body).includes("hunter2secret"), "runtime connection secrets are masked", JSON.stringify(rt.body.runtime && rt.body.runtime.cache));
+      await P("/api/platform/runtime", "PUT", { cache: rt.body.runtime.cache });
+      const raw = JSON.parse(D.get("SELECT value FROM platform_settings WHERE key='runtime'").value);
+      ok(raw.cache.params.url.includes("hunter2secret"), "saving the masked view back keeps the real secret");
+      await P("/api/platform/runtime", "PUT", { cache: { driver: "memory", params: {} } });
+      const wh = await A("/api/admin/webhooks", "POST", { url: "https://hooks.example.com/x", secret: "whsec_supersecretvalue", events: ["*"] });
+      const wl = await A("/api/admin/webhooks");
+      ok(!JSON.stringify(wl.body).includes("whsec_supersecretvalue"), "webhook signing secrets are masked in listings", wh.status);
+    }
   } catch (e) {
     failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e));
   } finally {
