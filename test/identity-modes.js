@@ -147,7 +147,10 @@ const makeIdToken = (payload, secret) => {
     ok(!!ml.ok && ml.action === "magic_link_sent", "a magic link is issued", ml.error);
     const mlRow = fresh("SELECT expires_at FROM identity_magic_links ORDER BY id DESC LIMIT 1");
     ok(!!mlRow && mlRow.expires_at > Date.now(), "the token's expiry is a real future timestamp", JSON.stringify(mlRow && mlRow.expires_at));
-    ok(!!(await f("/api/auth/login/magic?store=luxora", "POST", { email: "otp@luxora.shop", token: ml.token })).ok, "the link signs the user in");
+    /* the token is delivered to the account holder, never returned to the requester */
+    ok(!("token" in ml) && !("link" in ml), "the login-init response does not carry the magic-link token", JSON.stringify(ml));
+    const mlTok = (fresh("SELECT token FROM identity_magic_links ORDER BY id DESC LIMIT 1") || {}).token;
+    ok(!!(await f("/api/auth/login/magic?store=luxora", "POST", { email: "otp@luxora.shop", token: mlTok })).ok, "the link signs the user in");
     ok(!!(await f("/api/auth/login/magic?store=luxora", "POST", { email: "otp@luxora.shop", token: "totally-bogus" })).error, "a bogus token is refused");
 
     console.log("▸ B4 — AUTHENTICATOR (TOTP): enrolled once, sealed at rest, verified by the app's code");
@@ -158,8 +161,9 @@ const makeIdToken = (payload, secret) => {
     ok(!!(await f("/api/admin/identity-providers", "PUT", { provider_type: "totp", name: "Authenticator", enabled: true, config: { issuer: "LUXORA-TEST", digits: 6, step: 30 } })).ok, "a totp provider is configured");
     jar.clear(); await f("/api/session?store=luxora");
     await f("/api/auth/login-init?store=luxora", "POST", { email: "otp@luxora.shop", method: "magic_link" });
-    const ml2 = (await f("/api/auth/login-init?store=luxora", "POST", { email: "otp@luxora.shop", method: "magic_link" }));
-    await f("/api/auth/login/magic?store=luxora", "POST", { email: "otp@luxora.shop", token: ml2.token });
+    await f("/api/auth/login-init?store=luxora", "POST", { email: "otp@luxora.shop", method: "magic_link" });
+    const ml2Tok = (fresh("SELECT token FROM identity_magic_links ORDER BY id DESC LIMIT 1") || {}).token;
+    await f("/api/auth/login/magic?store=luxora", "POST", { email: "otp@luxora.shop", token: ml2Tok });
     ok(!!(await f("/api/session?store=luxora")).user, "signed back in passwordlessly to enrol");
     const enrol = await f("/api/user/identity-methods", "POST", { method_type: "totp", identifier: "otp@luxora.shop", metadata: { issuer: "LUXORA-TEST" }, is_primary: true });
     ok(!!enrol.ok && typeof enrol.secret === "string" && enrol.secret.length >= 16, "enrolment returns the provisioning secret once", enrol.error);

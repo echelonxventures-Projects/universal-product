@@ -205,6 +205,99 @@ const raw = (text) => new Promise((resolve) => {
       const missing = live.filter(t => !snap.includes(t));
       ok(missing.length === 0, "every table a boot creates is in schema.sql (npm run schema regenerates it)", missing);
     }
+
+    /* ─────────── route-audit criticals (2026-10) ─────────── */
+    console.log("▸ C1 · LOGIN HINTS NEVER DISCLOSE A CHOSEN PASSWORD");
+    {
+      const D = require(path.join(__dirname, "..", "lib", "db.js"));
+      ok(!D.get("SELECT 1 ok FROM platform_settings WHERE key='demo_passwords'"), "no plaintext password list is stored at boot");
+      const src = fs.readFileSync(path.join(__dirname, "..", "lib", "api.js"), "utf8");
+      ok(/function hintsAllowed\(\)[^}]*NODE_ENV !== "production"/.test(src), "hints are refused when NODE_ENV=production");
+      const G = mk(); await G("/api/session");
+      const ph = (await G("/api/platform/hint")).body;
+      ok(!ph.password || ph.password === "platform123", "the platform hint only ever shows the published default", ph.password);
+      /* once the owner picks a real password, the hint has nothing to show — not even the email */
+      const P = mk(); await P("/api/session");
+      await P("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      const sec = require(path.join(__dirname, "..", "lib", "security.js"));
+      const row = D.get("SELECT id,email FROM platform_admins WHERE email='platform@luxora.shop'");
+      const salt = sec.newSalt(), ver = sec.currentKdf();
+      D.run("UPDATE platform_admins SET salt=?, hash=?, kdf_version=? WHERE id=?", salt, D.hashPasswordFor("Chosen-Strong-Pass-91", salt, ver, "pa:" + row.email), ver, row.id);
+      const ph2 = (await G("/api/platform/hint")).body;
+      ok(ph2.demo === false && !ph2.password && !ph2.email, "with a chosen password the hint reveals nothing", ph2);
+      D.run("UPDATE platform_admins SET salt=?, hash=?, kdf_version=? WHERE id=?", salt, D.hashPasswordFor("platform123", salt, ver, "pa:" + row.email), ver, row.id);
+    }
+
+    console.log("▸ C2 · A MAGIC LINK GOES TO THE ACCOUNT HOLDER, NOT THE REQUESTER");
+    {
+      const ml = await A("/api/admin/identity-providers", "PUT", { provider_type: "magic_link", name: "Email Link", enabled: true, config: { ttl: 15 } });
+      ok(ml.status === 200, "store admin enables magic-link sign-in", ml.body);
+      const G = mk(); await G("/api/session?store=luxora");
+      const r = await G("/api/auth/login-init", "POST", { email: "admin@luxora.shop", method: "magic_link" });
+      ok(r.body.ok && r.body.action === "magic_link_sent" && !("token" in r.body) && !("link" in r.body), "login-init does not return the token", r.body);
+      const D = require(path.join(__dirname, "..", "lib", "db.js"));
+      const note = D.get("SELECT n.title FROM notifications n JOIN users u ON n.owner = 't' || u.tenant_id || ':u:' || u.id WHERE u.email='admin@luxora.shop' AND n.kind='identity' ORDER BY n.id DESC LIMIT 1");
+      ok(note && /sign-in link/i.test(note.title), "the link is delivered to the account holder's inbox", note);
+    }
+
+    console.log("▸ C3 · A RESTRICTED PLATFORM ROLE CANNOT REWRITE A STORE'S SIGN-IN");
+    {
+      const D = require(path.join(__dirname, "..", "lib", "db.js"));
+      if (!D.get("SELECT id FROM platform_admins WHERE email='auditor@sec.test'")) {
+        const id = D.newPlatformAdmin("Audit Only", "auditor@sec.test", "Auditor-Pass-1234");
+        D.run("UPDATE platform_admins SET role='auditor' WHERE id=?", id);
+      }
+      const AU = mk(); await AU("/api/session?store=luxora");
+      const li = await AU("/api/platform/login", "POST", { email: "auditor@sec.test", password: "Auditor-Pass-1234" });
+      ok(li.status === 200, "auditor signs in", li.body);
+      const w = await AU("/api/admin/identity-providers", "PUT", { provider_type: "oidc", name: "evil", enabled: true, config: { issuer: "https://evil", clientId: "a", clientSecret: "k" } });
+      ok(w.status === 403, "an auditor cannot install an identity provider on a store", w.status);
+      const g = await AU("/api/admin/identity-providers");
+      ok(g.status === 403, "an auditor cannot read a store's identity-provider secrets", g.status);
+      const st = await AU("/api/admin/identity-settings", "PUT", { mfa: { enabled: false } });
+      ok(st.status === 403, "an auditor cannot weaken a store's sign-in policy", st.status);
+      const P = mk(); await P("/api/session?store=luxora");
+      await P("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      ok((await P("/api/admin/identity-providers")).status === 200, "the platform owner still can");
+    }
+
+    console.log("▸ C4–C6 · NEGATIVE AMOUNTS NEVER MINT MONEY");
+    {
+      const fin = require(path.join(__dirname, "..", "lib", "fintech.js"));
+      const offers = require(path.join(__dirname, "..", "lib", "offers.js"));
+      const mods = require(path.join(__dirname, "..", "lib", "modules.js"));
+      const who = "t1:u:7777";
+      const bal = () => mods.walletBalance(1, who);
+      const throwsLike = (fn, re) => { try { fn(); return false; } catch (e) { return re.test(e.message); } };
+      ok(throwsLike(() => offers.debit(1, who, -50, "redeem", "x"), /positive/), "a negative debit is refused (it used to credit)");
+      ok(throwsLike(() => fin.quoteInsurance(1, who, { plan_name: "x", premium: -500 }), /Premium/), "a negative insurance premium is refused");
+      ok(throwsLike(() => fin.payBill(1, who, { amount: 1, convenience_fee: -500 }), /fee/i), "a negative bill convenience fee is refused");
+      ok(throwsLike(() => fin.payBill(1, who, { amount: 25 }), /Insufficient/), "a bill cannot be paid from an empty wallet");
+      ok(bal() === 0, "and no balance appeared", bal());
+      const D = require(path.join(__dirname, "..", "lib", "db.js"));
+      D.run("INSERT INTO kyc_profiles(tenant_id,owner,kind,full_name,status,doc_status) VALUES(1,?,'individual','T','full_kyc','approved')", who);
+      const acct = fin.openBnpl(1, who, { credit_limit: 100 });
+      ok(throwsLike(() => fin.spendBnpl(1, acct.id, null, -300), /positive/), "a negative BNPL spend is refused");
+      ok(bal() === 0, "the wallet is still empty", bal());
+      /* a guest end-to-end: quote with a negative premium over HTTP */
+      const G = mk(); await G("/api/session");
+      const q = await G("/api/fintech/insurance", "POST", { plan_name: "x", premium: -1000, cover: 1 });
+      ok(q.status === 400 && !q.body.policy, "the insurance API refuses a negative premium", q.body);
+    }
+
+    console.log("▸ C7 · REPORT ALIASES CANNOT INJECT SQL");
+    {
+      const bad = await A("/api/reports/inj", "PUT", { name: "inj", entity: "order", metrics: [{ metric: "count", alias: "x FROM users --" }], dimensions: ["status"] });
+      ok(bad.status === 400, "saving a report with a non-identifier alias is refused", bad.body);
+      /* a row stored before the fix (or written directly) is neutralised at run time */
+      const D = require(path.join(__dirname, "..", "lib", "db.js"));
+      D.run("INSERT INTO reports(tenant_id,key,name,kind,entity,metrics,dimensions,filter,schedule,format,active,position) VALUES(1,'inj-legacy','x','Operational','order',?,'[\"status\"]','{}','manual','table',1,0)",
+        JSON.stringify([{ metric: "count", alias: "n, (SELECT hash FROM users LIMIT 1) AS leak --" }]));
+      const run = await A("/api/reports/inj-legacy/run");
+      ok(run.status === 200 && !run.body.columns.some(c => /leak|SELECT/i.test(c)) && !JSON.stringify(run.body.rows).includes("$"), "a stored malicious alias is dropped, not executed", run.body.columns);
+      const good = await A("/api/reports/ok-rep", "PUT", { name: "ok", entity: "order", metrics: [{ metric: "count", alias: "orders_n" }], dimensions: ["status"] });
+      ok(good.status === 200, "a plain alias still saves");
+    }
   } catch (e) {
     failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e));
   } finally {
