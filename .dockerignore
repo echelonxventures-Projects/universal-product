@@ -1,0 +1,21 @@
+# The build context must never carry local state into an image: data/ holds the local
+# database(s), the keyring (data/master.json) and the registry seal — baking those into
+# an image ships one machine's secrets to every container started from it.
+data/
+node_modules/
+.git/
+.github/
+*.db
+*.db-wal
+*.db-shm
+*.sqlite*
+*.log
+*.pid
+.env
+.env.*
+test/
+_superseded/
+.workbuddy-ai/
+.vscode/
+.idea/
+.DS_Store

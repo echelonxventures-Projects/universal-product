@@ -2054,16 +2054,17 @@ async function loadSitemapConfig() {
     const c = res.config || {};
     $("#sitemapConfig").innerHTML = `
       <div class="p-form">
-        <label><span>Hostname</span><input type="text" id="sitemapHost" value="${esc(c.hostname || "https://example.com")}" style="width:300px"></label>
+        <label><span>Hostname</span><input type="text" id="sitemapHost" value="${esc(c.hostname || "")}" style="width:300px"></label>
         <label><span>Max entries per file</span>
           <select id="sitemapMax">
             <option value="50000" ${c.max_per_file == 50000 ? "selected" : ""}>50,000</option>
             <option value="10000" ${c.max_per_file == 10000 ? "selected" : ""}>10,000</option>
           </select>
         </label>
-        <button class="p-btn" onclick="saveSitemapConfig()">Save</button>
+        <button class="p-btn" id="sitemapSave">Save</button>
       </div>
     `;
+    $("#sitemapSave").onclick = saveSitemapConfig;
     $("#sitemapLast").innerHTML = `<p>Sitemap generated: <code>${esc(c.last_generated || "Never")}</code></p>`;
   } catch (e) { console.error(e); }
 }
@@ -2071,7 +2072,8 @@ async function loadSitemapConfig() {
 async function saveSitemapConfig() {
   const hostname = $("#sitemapHost").value;
   const maxPerFile = parseInt($("#sitemapMax").value);
-  await api("/sitemap/config", "PUT", { hostname, max_per_file: maxPerFile });
+  const r = await api("/sitemap/config", "PUT", { hostname, max_per_file: maxPerFile });
+  if (r && r.error) return toast("❌ " + r.error);
   toast("Sitemap config saved");
   loadSitemapConfig();
 }
@@ -2080,7 +2082,7 @@ async function generateSitemap() {
   toast("Generating sitemap...");
   const res = await api("/sitemap/generate", "POST");
   if (res.ok) {
-    toast("✅ Sitemap generated at /sitemap.xml");
+    toast("✅ Sitemap generated (" + res.entries + " URLs) — served at /api/sitemap.xml");
     loadSitemapConfig();
   } else {
     toast("❌ Error generating sitemap");

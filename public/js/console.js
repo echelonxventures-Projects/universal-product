@@ -37,7 +37,8 @@
    `render` never collide. The bundle's own boot is suppressed here — this
    shell owns identity and mounting — by giving each factory a marker it reads
    before running its IIFE. */
-const BUNDLES = { store: "/js/admin.js", platform: "/js/platform.js" };
+/* the bundles the unified console drives (served wrapped by lib/bundle.js) */
+const BUNDLES = { store: "/js/bundle/store.js", platform: "/js/bundle/platform.js" };
 const LX = { store: null, platform: null };      /* each bundle's captured surface */
 const SCOPE_LABEL = { store: "Store", platform: "Platform" };
 let scope = null;                                /* the surface a view renders in */
@@ -46,7 +47,7 @@ const me = { store: null, platform: null, tenant: null, grants: {}, storeAllowed
 
 const $ = (s, r) => (r || document).querySelector(s);
 const $$ = (s, r) => [...(r || document).querySelectorAll(s)];
-const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 let toastT;
 function toast(msg) { const t = $("#pToast"); if (!t) return; t.textContent = msg; t.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3000); }
 
@@ -70,33 +71,22 @@ async function api(path, methodOrOpts, body) {
    available for this shell to drive. */
 async function loadBundle(which) {
   if (LX[which]) return LX[which];
-  const src = await (await fetch(BUNDLES[which], { cache: "no-cache" })).text();
   const cap = { views: {}, nav: null, canSee: null, render: null, shell: null, ready: false };
   /* run the bundle in a closure of its own so its twenty shared globals (NAV,
      render, shell, canSee, view…) stay inside it and never reach window. The
      bundle's boot sees LX_GUEST and returns without painting #app — this shell
-     owns identity and mounting; the bundle contributes its views and its nav */
-  const factory = new Function("LX_GUEST", "\"use strict\";" + src +
-    /* re-chrome hook: a render the bundle fires from inside a view (form save, import,
-       delete…) repaints its own single-scope shell; once it settles, the one console's
-       chrome is put back through window.__lxRechrome (a no-op when the bundle runs
-       standalone, so platform.html/admin.html are unaffected) */
-    "\n ;(function () { if (typeof render !== 'function') return; var _r = render; render = function () {" +
-    "  var out = _r.apply(this, arguments);" +
-    "  var done = function () { try { (window.__lxRechrome || function () { })(); } catch (e) { } };" +
-    "  return out && typeof out.then === 'function' ? out.then(function (v) { done(); return v; }, function (e) { done(); throw e; }) : (done(), out);" +
-    "}; })();" +
-    "\n; this.nav = NAV; this.canSee = canSee; this.render = render; this.shell = shell;"
-    + " this.NAVFLAT = NAVFLAT; this.NAVKEY = typeof NAVKEY === 'undefined' ? null : NAVKEY;"
-    + " this.NAVSEC = typeof NAVSEC === 'undefined' ? null : NAVSEC;"
-    /* the bundle's render reads its OWN `view` global (it takes no argument) and its own
-       canSee reads A.allowed / P.allowed — both set by the boot this shell suppressed. So
-       the shell needs handles to set them: setView drives a leaf into the bundle, and A/P
-       are the state objects its boot would have filled. */
-    + " this.A = typeof A === 'undefined' ? null : A; this.P = typeof P === 'undefined' ? null : P;"
-    + " this.setView = v => { view = v; }; this.getView = () => view;"
-    + " this.setTT = typeof TT === 'undefined' ? null : (v => { TT = v; });"
-    + " this.ready = true;");
+     owns identity and mounting; the bundle contributes its views and its nav.
+     The server serves the bundle already wrapped in that closure (/js/bundle/<which>.js,
+     see lib/bundle.js), loaded as an ordinary same-origin script: compiling the fetched
+     source with the Function constructor needed 'unsafe-eval', which the CSP rightly refuses, so a
+     real browser could never open the unified console. */
+  const factory = await new Promise((resolve, reject) => {
+    const el = document.createElement("script");
+    el.src = BUNDLES[which] + "?v=" + Date.now();
+    el.onload = () => { const f = window.__lxBundle && window.__lxBundle[which]; if (f) { delete window.__lxBundle[which]; resolve(f); } else reject(new Error("bundle " + which + " did not register")); };
+    el.onerror = () => reject(new Error("bundle " + which + " failed to load"));
+    document.head.appendChild(el);
+  });
   factory.call(cap, true);
   LX[which] = cap;
   return cap;

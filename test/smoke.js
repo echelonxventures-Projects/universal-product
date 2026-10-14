@@ -61,7 +61,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   const dbBase = path.join(__dirname, "..", "data", "smoke.db");
   for (const suffix of ["", "-wal", "-shm"]) { try { require("fs").rmSync(dbBase + suffix, { force: true }); } catch (e) { } }
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")],
-    { env: { ...process.env, PORT, LX_DB: dbBase, LX_METRICS_TOKEN: METRICS_TOKEN }, stdio: ["ignore", "ignore", "inherit"] });
+    { env: { ...process.env, PORT, LX_DB: dbBase, LX_METRICS_TOKEN: METRICS_TOKEN, LUXORA_DEMO_BRANDS: "1" }, stdio: ["ignore", "ignore", "inherit"] });
   /* first boot seeds three stores, 156 products and every registry — on a slow or network-backed
      filesystem that can take well over a minute, so wait generously rather than failing spuriously. */
   let up = false;
@@ -1689,7 +1689,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       // #2 gateway preview + inbound webhook HMAC
       ok(((await A("/api/admin/gateway/preview/stripe", "POST", {})).body.url || "").includes("stripe.com"), "gateway preview shows the would-call endpoint (no network)");
       const inc = await fetch(BASE + "/api/webhooks/inbound/stripe", { method: "POST", headers: { "content-type": "application/json", "x-lux-signature": "sha256=deadbeef" }, body: JSON.stringify({ type: "charge.succeeded" }) });
-      ok(inc.status === 200 && (await inc.json()).ok === true, "inbound PSP webhook accepted (signature verified-or-rejected, never crashes)");
+      ok(inc.status === 401 && (await inc.json()).ok === false, "inbound PSP webhook with a bad signature is refused (401), never crashes");
       // #3 SSO + SCIM
       const ssoOff = await A("/api/auth/sso/start", "POST", { tenant_id: 1, email: "a@corp.com" }); ok(ssoOff.status === 400 && /not enabled/.test(ssoOff.body.error || ""), "SSO gated until configured");
       await A("/api/admin/sso", "PUT", { enabled: true, provider: "okta", entityId: "urn:okta", ssoUrl: "https://okta.example/sso", domains: ["corp.com"] });
@@ -1703,12 +1703,24 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       await A("/api/admin/sso", "PUT", { enabled: true, mode: "oidc", issuer: "https://idp.example", clientId: "cid", cert: kp.publicKey, domains: ["corp.com"], autoProvision: true, defaultRole: "manager" });
       const CB = (() => { const c = new Map(); const H = () => [...c].map(x => x[0] + "=" + x[1]).join("; "); return async (p, m, b) => { const o = { method: m || "GET", headers: Object.assign({ Cookie: H() }, m && m !== "GET" ? { "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" } : {}) }; if (b) o.body = JSON.stringify(b); const res = await fetch(BASE + p, o); (res.headers.getSetCookie ? res.headers.getSetCookie() : []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i).trim(), kv.slice(i + 1).trim()); }); return { status: res.status, body: await res.json().catch(() => ({})) }; }; })();
       await CB("/api/session?store=luxora");
-      const cbx = await CB("/api/auth/sso/callback", "POST", { tenant_id: 1, id_token: mkJwt({ sub: "u1", email: "corp.user@corp.com", exp: Math.floor(Date.now() / 1000) + 3600 }) });
+      /* the callback needs the state its own /sso/start issued, and the token must echo that
+         start's nonce — a callback without either is refused */
+      const st1 = (await CB("/api/auth/sso/start", "POST", { email: "corp.user@corp.com" })).body;
+      const noState = await CB("/api/auth/sso/callback", "POST", { id_token: mkJwt({ sub: "u1", email: "corp.user@corp.com", nonce: st1.nonce, exp: Math.floor(Date.now() / 1000) + 3600 }) });
+      ok(noState.status === 401 && /state/.test(noState.body.error || ""), "an id_token without the start's state is refused", noState.body);
+      const wrongNonce = await CB("/api/auth/sso/callback", "POST", { state: st1.state, id_token: mkJwt({ sub: "u1", email: "corp.user@corp.com", nonce: "not-the-nonce", exp: Math.floor(Date.now() / 1000) + 3600 }) });
+      ok(wrongNonce.status === 401 && /nonce/.test(wrongNonce.body.error || ""), "an id_token with the wrong nonce is refused", wrongNonce.body);
+      const st2 = (await CB("/api/auth/sso/start", "POST", { email: "corp.user@corp.com" })).body;
+      const cbx = await CB("/api/auth/sso/callback", "POST", { state: st2.state, id_token: mkJwt({ sub: "u1", email: "corp.user@corp.com", nonce: st2.nonce, exp: Math.floor(Date.now() / 1000) + 3600 }) });
       ok(cbx.body.ok && cbx.body.user.role === "admin", "OIDC id_token verified → auto-provisioned admin session", cbx.body);
+      const replay = await CB("/api/auth/sso/callback", "POST", { state: st2.state, id_token: mkJwt({ sub: "u1", email: "corp.user@corp.com", nonce: st2.nonce, exp: Math.floor(Date.now() / 1000) + 3600 }) });
+      ok(replay.status === 401, "a state is single-use (a replayed callback is refused)", replay.body);
       const ses = (await CB("/api/session")).body; ok(ses.user && ses.user.role === "admin", "SSO session is authenticated");
-      const bad2 = await CB("/api/auth/sso/callback", "POST", { tenant_id: 1, id_token: mkJwt({ sub: "x", email: "corp.user@corp.com", exp: Math.floor(Date.now() / 1000) + 3600 }).slice(0, -6) + "AAAAAA" });
+      const st3 = (await CB("/api/auth/sso/start", "POST", { email: "corp.user@corp.com" })).body;
+      const bad2 = await CB("/api/auth/sso/callback", "POST", { state: st3.state, id_token: mkJwt({ sub: "x", email: "corp.user@corp.com", nonce: st3.nonce, exp: Math.floor(Date.now() / 1000) + 3600 }).slice(0, -6) + "AAAAAA" });
       ok(bad2.status === 401 && /signature/.test(bad2.body.error || ""), "tampered id_token rejected", bad2.body);
-      const bad3 = await CB("/api/auth/sso/callback", "POST", { tenant_id: 1, id_token: mkJwt({ sub: "y", email: "corp.user@corp.com", exp: 1 }) });
+      const st4 = (await CB("/api/auth/sso/start", "POST", { email: "corp.user@corp.com" })).body;
+      const bad3 = await CB("/api/auth/sso/callback", "POST", { state: st4.state, id_token: mkJwt({ sub: "y", email: "corp.user@corp.com", nonce: st4.nonce, exp: 1 }) });
       ok(bad3.status === 401 && /expired/.test(bad3.body.error || ""), "expired id_token rejected", bad3.body);
       const tok = await A("/api/admin/scim/token", "POST", { label: "hr" }); ok(/^sc_/.test(tok.body.token), "SCIM token issued");
       const lst = await fetch(BASE + "/api/scim/Users?tenant_id=1", { headers: { Authorization: "Bearer " + tok.body.token } }); const lj = await lst.json();

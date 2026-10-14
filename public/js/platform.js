@@ -1317,7 +1317,7 @@ async function wireModules() {
       const m = modules.find(x => x.id === el.dataset.mod); const t = tenants.find(x => String(x.id) === el.dataset.tid);
       const installed = el.classList.contains("on");
       const fields = (m.manifest.fields || []);
-      const mm = modal(`<div class="p-modal-head"><h3>${esc(m.name)} → ${esc(t.name)}</h3><button onclick="document.getElementById('modal').innerHTML=''">✕</button></div>
+      const mm = modal(`<div class="p-modal-head"><h3>${esc(m.name)} → ${esc(t.name)}</h3><button data-mclose>✕</button></div>
         <div class="p-form">
         ${installed ? `<p class="p-tag">${m.price > 0 ? "Purchased (invoice on record)." : "Baseline — auto-purchased at provisioning."}</p><button class="p-btn danger" id="mUn">Uninstall / disable</button>` :
           `<p class="p-tag">${m.price > 0 ? "Price: $" + m.price + " — a paid invoice will be created and marked collected." : "Free — installs instantly."}</p>
@@ -3340,7 +3340,7 @@ async function vCapabilityTree() {
   const byDomain = {};
   for (const c of d.catalog) (byDomain[c.domain] = byDomain[c.domain] || []).push(c);
   const DOMAINS = { marketplace: "🛒 Marketplace", qc: "⚡ Quick-commerce", fintech: "💸 Fintech", trade: "🤝 B2B trust & trade" };
-  const tenantOpts = (d.tenants || []).map(t => `<option value="${t.id}" ${t.id === capTenant ? "selected" : ""}>${esc(t.name)} · ${esc(t.slug)}</option>`).join("");
+  const tenantOpts = (d.tenants || []).map(t => `<option value="${t.id}" ${t.id === capTenant ? "selected" : ""}>${t.master ? "★ Master platform" : "deployment · " + esc(t.name)} · ${esc(t.slug)}</option>`).join("");
   const domHtml = Object.keys(byDomain).map(dom => {
     const caps = byDomain[dom];
     const on = caps.filter(c => c.on).length;
@@ -3840,7 +3840,7 @@ async function vCapabilities() {
   const byDomain = {};
   for (const c of d.catalog) (byDomain[c.domain] = byDomain[c.domain] || []).push(c);
   const onCount = d.catalog.filter(c => c.on).length;
-  const tenantOpts = (d.tenants || []).map(t => `<option value="${t.id}" ${t.id === capTenant ? "selected" : ""}>${esc(t.name)} · ${esc(t.slug)}</option>`).join("");
+  const tenantOpts = (d.tenants || []).map(t => `<option value="${t.id}" ${t.id === capTenant ? "selected" : ""}>${t.master ? "★ Master platform" : "deployment · " + esc(t.name)} · ${esc(t.slug)}</option>`).join("");
   const presetRows = (d.presets || []).map(p => `<tr>
     <td><b>${esc(p.label)}</b><br><code>${esc(p.key)}</code></td>
     <td class="p-tag">${esc(p.description || "—")}</td>
@@ -3882,9 +3882,9 @@ async function vCapabilities() {
   const checkList = d.catalog.map(c => `<label style="display:flex;gap:5px;align-items:center;font-size:12px;min-width:160px"><input type="checkbox" data-capnew="${esc(c.key)}"> ${esc(c.icon || "▪")} ${esc(c.label)}</label>`).join("");
   return `
   <div class="p-panel"><h2>⚙️ Capabilities · the configurable platform</h2>
-    <p class="p-tag">A platform is not a template and no vendor name defines one — it is <b>the set of capabilities a store has switched on</b>. Everything below is a row: switch a capability on, tune its standards (weights, thresholds, fees, SLAs) for one store, and compose an archetype anyone can reuse. The engines read this table at runtime and are inert while a capability is off, so changing a row is the whole deploy.</p>
+    <p class="p-tag">A platform is not a template and no vendor name defines one — it is <b>the set of capabilities the master has switched on</b>. Everything below is a row: switch a capability on, tune its standards (weights, thresholds, fees, SLAs), and the master becomes that platform — an e-commerce platform, an ERP, a ride-hailing platform, a consultancy platform, or a type no one has named yet. The engines read this table at runtime and are inert while a capability is off, so changing a row is the whole deploy.</p>
     <div style="display:flex;gap:10px;align-items:center;margin:12px 0;flex-wrap:wrap">
-      <label style="display:flex;gap:6px;align-items:center"><span class="p-tag">Store</span>
+      <label style="display:flex;gap:6px;align-items:center"><span class="p-tag">Composing</span>
         <select id="capTenant" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg)">${tenantOpts}</select></label>
       <span class="badge published">${onCount} of ${d.catalog.length} on</span>
       ${d.composition && d.composition.preset ? `<span class="p-tag">archetype: <b>${esc(d.composition.preset)}</b></span>` : '<span class="p-tag">composed capability-by-capability</span>'}
@@ -4217,7 +4217,7 @@ async function viewIdentity() {
         <label class="checkbox-group" style="margin-top:8px"><input type="checkbox" id="guestCheckout" ${login.allowGuestCheckout ? 'checked' : ''}> Allow Guest Checkout</label>
       </div>
       
-      <button class="btn" onclick="saveIdentity()">Save Settings</button>
+      <button class="btn" data-act="save-identity">Save Settings</button>
     </div>
     
     <div class="card" style="margin-top:16px">
@@ -4232,14 +4232,14 @@ async function viewIdentity() {
                 <span class="badge ${p.enabled ? 'badge-success' : ''}" style="margin-left:8px">${p.enabled ? 'Enabled' : 'Disabled'}</span>
               </div>
               <div>
-                <button class="btn-icon" onclick="editProvider('${esc(p.id)}')">✎</button>
-                <button class="btn-icon" style="color:var(--danger)" onclick="deleteProvider('${esc(p.id)}')">✕</button>
+                <button class="btn-icon" data-act="edit-provider" data-id="${esc(p.id)}">✎</button>
+                <button class="btn-icon" style="color:var(--danger)" data-act="delete-provider" data-id="${esc(p.id)}">✕</button>
               </div>
             </div>
           </div>
         `).join('') || '<p class="alert alert-info">No providers configured. Click + Add Provider below.</p>'}
       </div>
-      <button class="btn" style="margin-top:12px" onclick="addProvider()">+ Add Provider</button>
+      <button class="btn" style="margin-top:12px" data-act="add-provider">+ Add Provider</button>
     </div>
     
     <div class="card" style="margin-top:16px">
@@ -4337,16 +4337,20 @@ function _providerFieldInput(key) {
   return `<div class="form-group"><label>${esc(key)}${secret ? " (sealed at rest)" : ""}</label>
     <input type="${secret ? "password" : "text"}" id="pf_${esc(key)}" placeholder="${esc(key)}"></div>`;
 }
-async function addProvider() {
+/* add — or, given an existing provider, edit — an identity provider. On edit the type is
+   fixed, non-secret fields are prefilled, and a secret left blank keeps its sealed value. */
+async function addProvider(existing) {
   const types = await _providerTypes();
   if (!types.length) return toast("Create a provider type first");
+  let cur = {};
+  if (existing) { try { cur = typeof existing.config === "string" ? JSON.parse(existing.config || "{}") : (existing.config || {}); } catch (e) { cur = {}; } }
   const modal = document.createElement("div");
   modal.className = "modal-overlay";
   modal.innerHTML = `
     <div class="modal">
       <div class="modal-header">
-        <h3 class="modal-title">Add Identity Provider</h3>
-        <button class="btn-icon" onclick="this.closest('.modal-overlay').remove()">✕</button>
+        <h3 class="modal-title">${existing ? "Edit" : "Add"} Identity Provider</h3>
+        <button class="btn-icon" data-act="close-overlay">✕</button>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -4366,8 +4370,8 @@ async function addProvider() {
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
-        <button class="btn" onclick="saveProviderAdd()">Save</button>
+        <button class="btn btn-outline" data-act="close-overlay">Cancel</button>
+        <button class="btn" data-act="save-provider">Save</button>
       </div>
     </div>
   `;
@@ -4384,7 +4388,16 @@ async function addProvider() {
       : `<p class="p-tag">This type takes no configuration fields.</p>`;
   };
   typeSelect.onchange = renderFields;
+  if (existing) {
+    typeSelect.value = existing.provider_type; typeSelect.disabled = true;
+    modal.querySelector("#provNameAdd").value = existing.name || "";
+    modal.querySelector("#provEnabledAdd").checked = !!existing.enabled;
+  }
   renderFields();
+  if (existing) for (const [k, v] of Object.entries(cur)) {
+    const el = modal.querySelector("#pf_" + CSS.escape(k));
+    if (el && !SECRET_FIELD_RE.test(k) && typeof v !== "object") el.value = v;
+  }
 
   window.saveProviderAdd = async () => {
     const type = typeSelect.value;
@@ -4400,8 +4413,8 @@ async function addProvider() {
     }
 
     try {
-      await api("/admin/identity-providers", "PUT", { provider_type: type, name, enabled, config });
-      toast("Provider added");
+      await api("/admin/identity-providers", "PUT", existing ? { id: existing.id, provider_type: type, name, enabled, config } : { provider_type: type, name, enabled, config });
+      toast(existing ? "Provider updated" : "Provider added");
       modal.remove();
       viewIdentity();
     } catch (e) {
@@ -4409,6 +4422,32 @@ async function addProvider() {
     }
   };
 }
+async function editProvider(id) {
+  const r = await api("/admin/identity-providers").catch(() => ({ providers: [] }));
+  const p = (r.providers || []).find(x => String(x.id) === String(id));
+  if (!p) return toast("Provider not found");
+  return addProvider(p);
+}
+async function deleteProvider(id) {
+  if (!confirm("Delete this identity provider? Users who sign in with it will need another method.")) return;
+  const r = await api("/admin/identity-providers/" + encodeURIComponent(id), "DELETE");
+  if (r && r.error) return toast("Error: " + r.error);
+  toast("Provider deleted");
+  viewIdentity();
+}
+/* the identity view's buttons are wired by delegation (data-act) — inline onclick
+   attributes need CSP 'unsafe-inline', which the platform no longer allows */
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]");
+  if (!b) return;
+  const act = b.dataset.act;
+  if (act === "save-identity") saveIdentity();
+  else if (act === "add-provider") addProvider();
+  else if (act === "edit-provider") editProvider(b.dataset.id);
+  else if (act === "delete-provider") deleteProvider(b.dataset.id);
+  else if (act === "close-overlay") { const o = b.closest(".modal-overlay"); if (o) o.remove(); }
+  else if (act === "save-provider") { if (window.saveProviderAdd) window.saveProviderAdd(); }
+});
 async function addProviderType() {
   /* the modal() helper owns the markup (the hand-rolled version's ✕ targeted a class the
      overlay never had, so it could never close). The registry shape is {key, label, fields[]};
