@@ -486,6 +486,22 @@ const raw = (text) => new Promise((resolve) => {
       ok(withPw.status === 200, "…unless it confirms the current password", withPw.body);
       ok((await U("/api/user/identity-methods", "POST", { method_type: "webauthn", identifier: "x", current_password: "Totp-Probe-Pass-123" })).status === 400, "passkeys never link as bare rows");
     }
+    console.log("▸ R3 · PASSWORD HASHING NEVER STALLS THE SERVER");
+    {
+      const sec = require(path.join(__dirname, "..", "lib", "security.js"));
+      ok(typeof sec.kdfHashAsync === "function" && (await sec.kdfVerifyAsync("x", "00", sec.kdfHash("x", "00", "v1", ""), "v1", "")) === true, "the async KDF agrees with the sync one");
+      /* a burst of anonymous logins runs on the thread pool: a health check issued in the middle
+         of it answers promptly instead of queueing behind every hash */
+      const burst = [];
+      for (let i = 0; i < 12; i++) { const B = mk(); burst.push(B("/api/session?store=luxora").then(() => B("/api/auth/login", "POST", { email: "burst" + i + "@nowhere.test", password: "wrong-" + i }))); }
+      await sleep(30);
+      const t0 = Date.now(); const hz = await fetch(BASE + "/healthz"); const dt = Date.now() - t0;
+      let burstDone = false; await Promise.all(burst).then(() => { burstDone = true; });
+      ok(burstDone, "every login in the burst completed");
+      ok(hz.ok && dt < 1500, "the server answers during a login burst (" + dt + "ms)", dt);
+      const good = mk(); await good("/api/session?store=luxora");
+      ok((await good("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" })).status === 200, "a correct password still signs in");
+    }
   } catch (e) {
     failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e));
   } finally {
