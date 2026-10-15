@@ -84,6 +84,17 @@ const NAVFIT = {
 const navSection = k => NAVSEC[k] || k;
 const canSee = k => { if (!A.allowed || A.allowed.includes("*")) return true; if (k === "dash") return true; return A.allowed.includes(navSection(k)); };
 let view = "dash";
+/* configured apps (composed capabilities, Data Studio entities) join the nav as their own
+   leaves — "app_<key>", each its own grant — under one group the console fills from the
+   identity's allowed apps. Re-registering replaces the group, so a revoked app leaves. */
+function registerApps(apps) {
+  const i = NAV.findIndex(g => g.apps);
+  if (i >= 0) NAV.splice(i, 1);
+  const list = (apps || []).filter(a => a && /^app_[A-Za-z0-9_-]+$/.test(a.section));
+  if (list.length) NAV.splice(NAV.length - 1, 0, { g: "Configured apps", apps: true, items: list.map(a => [a.section, (a.icon || "🧩") + " " + a.label]) });
+  NAVFLAT.length = 0;
+  NAV.flatMap(g => g.items).forEach(x => NAVFLAT.push(x));
+}
 
 async function vSearch() {
   const [res, rec, suggest] = await Promise.all([api("/search", { q: "home" }), api("/recommend", { anchor: "LX-ELS-007", limit: 5 }), api("/suggest", { prefix: "so" })]);
@@ -1587,7 +1598,9 @@ async function vTeam() {
 }
 /* the per-section grant editor: one control per console section, each read/write/off.
    It renders for create and edit from the same shape, so the two cannot drift. */
-function roleModal(role, sections) {
+function roleModal(role, sections, apps) {
+  const appOf = k => (apps || []).find(a => a.section === k);
+  const secLabel = k => { const a = appOf(k); return a ? (a.icon || "🧩") + " " + a.label + " · app" : k; };
   const r = role || { key: "", name: "", desc: "", sections: {} };
   const m = modal(`<div class="p-modal-head"><h3>${role ? "Edit role" : "New role"}</h3><button data-mclose>✕</button></div>
     <div class="p-form">
@@ -1596,7 +1609,7 @@ function roleModal(role, sections) {
       <label><span>Description</span><input id="rmDesc" value="${esc(r.desc || "")}"></label>
       <div class="p-tag">Grants — each section: write, read or off</div>
       <div style="max-height:260px;overflow:auto;border:1px solid var(--p-border);border-radius:8px;padding:8px">
-      ${sections.map(sec => `<label style="display:flex;justify-content:space-between;align-items:center;padding:3px 0"><span>${esc(sec)}</span>
+      ${sections.map(sec => `<label style="display:flex;justify-content:space-between;align-items:center;padding:3px 0"><span>${esc(secLabel(sec))}</span>
         <select data-rmsec="${esc(sec)}"><option value="">off</option><option ${r.sections && r.sections[sec] === "read" ? "selected" : ""} value="read">read</option><option ${r.sections && r.sections[sec] === "write" ? "selected" : ""} value="write">write</option></select></label>`).join("")}
       </div>
       <div class="p-err hidden" id="rmErr" style="color:var(--p-red);font-size:13px"></div>
@@ -1618,11 +1631,11 @@ function wireTeam() {
   if (document.getElementById("stAdd")) document.getElementById("stAdd").onclick = async () => { try { const r = await api("/admin/staff", "POST", { name: document.getElementById("stName").value, email: document.getElementById("stEmail").value, staff_role: document.getElementById("stRole").value, password: document.getElementById("stPw").value || undefined }); if (r.generated) document.getElementById("stGen").textContent = "generated password: " + r.generated; toast("Member added"); render(); } catch (e) { toast(e.message); } };
   /* per-store role definition: create, edit, and dissolve a fork back to the default */
   const newBtn = document.getElementById("roleNew");
-  if (newBtn) newBtn.onclick = async () => { const all = await api("/admin/roles"); roleModal(null, all.sections || []); };
+  if (newBtn) newBtn.onclick = async () => { const all = await api("/admin/roles"); roleModal(null, all.sections || [], all.apps); };
   $$("[data-roleedit]").forEach(b => b.onclick = async () => {
     const all = await api("/admin/roles");
     const role = (all.roles || []).find(r => r.key === b.dataset.roleedit);
-    roleModal(role, all.sections || []);
+    roleModal(role, all.sections || [], all.apps);
   });
   const resetBtn = document.getElementById("roleReset");
   if (resetBtn) resetBtn.onclick = async () => { if (!confirm("Discard this store's own roles and inherit the platform default again?")) return; try { await api("/admin/roles/reset", "POST", {}); toast("Reverted to the platform default"); render(); } catch (e) { toast(e.message); } };
@@ -1641,7 +1654,7 @@ async function vSso() {
         <label><span>SSO URL</span><input id="ssoUrl" style="min-width:240px" value="${esc(c.ssoUrl || "")}" placeholder="https://idp.example/app/sso"></label>
         <label><span>Email domains</span><input id="ssoDom" value="${esc((c.domains || []).join(","))}" placeholder="corp.com,acme.com"></label>
         <button class="p-btn primary sm" id="ssoSave">Save SSO</button></div>
-      <p class="p-tag" style="margin-top:6px">Store admins on these domains log in via <code>/admin.html → SSO</code>; the IdP redirect is built from the connection (placeholder SAMLRequest until your metadata is loaded).</p></div>
+      <p class="p-tag" style="margin-top:6px">Store admins on these domains log in via <code>/console.html → SSO</code>; the IdP redirect is built from the connection (placeholder SAMLRequest until your metadata is loaded).</p></div>
     <div class="p-panel"><b>SCIM 2.0 (directory sync)</b><div style="display:flex;gap:8px;align-items:end;margin-top:6px"><label><span>Label</span><input id="scimLbl" placeholder="okta bridge"></label><button class="p-btn sm" id="scimTok">Issue SCIM token</button></div><div id="scimOut" class="p-tag" style="margin-top:6px">Tokens: bearer at <code>/scim/Users?tenant_id=${(window.__tid || 1)}</code> — HR/IdP pushes staff here.</div></div>
     <div class="p-panel"><b>Warehouse stock transfers</b><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin-top:6px">
       <label><span>SKU</span><input id="trSku" type="number"></label><label><span>From WH</span><input id="trFrom" type="number"></label><label><span>To WH</span><input id="trTo" type="number"></label><label><span>Qty</span><input id="trQty" type="number" value="1"></label><button class="p-btn sm primary" id="trGo">Transfer</button></div>
@@ -1721,6 +1734,7 @@ async function render() {
   try {
     if (view !== "dash" && !canSee(view)) { body.innerHTML = `<div class="p-empty">🔒 Your role (<b>${esc((A.user && A.user.staff_role) || "admin")}</b>) does not grant access to “${esc(view)}”.</div>`; return; }
     if (view === "dash") body.innerHTML = await vDash();
+    else if (/^app_/.test(view)) body.innerHTML = await entityTable(view.slice(4));
     else if (view === "products") body.innerHTML = await entityTable("product");
     else if (view === "gcatalog") { body.innerHTML = await vGcatalog(); wireGcatalog(); }
     else if (view === "skus") body.innerHTML = await entityTable("sku") + await entityTable("inventory") + await entityTable("warehouse") + await entityTable("variant_group");
@@ -1872,7 +1886,7 @@ document.addEventListener("click", e => { const close = e.target.closest("[data-
         <p class="p-err hidden" id="lfErr" style="color:var(--p-red);font-size:13px;margin:10px 0 0"></p>
         <p class="hint" id="lfHint"></p>
         <p class="hint"><a href="/reset.html${TT ? "?store=" + encodeURIComponent(TT.tenant.slug) : ""}">Forgot your password?</a></p>
-        <p class="hint">Store console for ${esc(TT ? TT.tenant.slug : "this store")} · Platform owner? <a href="/platform.html">Platform console →</a> · <a href="/index.html">← Storefront</a></p></div></div>`;
+        <p class="hint">Store console for ${esc(TT ? TT.tenant.slug : "this store")} · Platform owner? <a href="/console.html?scope=platform">Platform console →</a> · <a href="/index.html">← Storefront</a></p></div></div>`;
       const sw = $("#swAcct"); if (sw) sw.onclick = async e => { e.preventDefault(); await api("/auth/logout", "POST"); boot(); };
       api("/hint").then(h => { const el = $("#lfHint"); if (el && h.demo && h.email) el.innerHTML = "This store's admin: <code>" + esc(h.email) + "</code>" + (h.password ? " / <code>" + esc(h.password) + "</code>" : ""); }).catch(() => { });
       $("#lf").onsubmit = async e => {

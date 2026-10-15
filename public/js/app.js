@@ -146,7 +146,7 @@ function renderHeader() {
               ${CFG.features.giftCards ? `<a href="gift-cards.html">Gift Balance · ${money(S.gift)}</a>` : ""}
               ${CFG.features.registry ? `<a href="registry.html">Registries</a>` : ""}
               ${CFG.features.customerService ? `<a href="customer-service.html">Client Care</a>` : ""}
-              ${u && u.role === "admin" && CFG.features.adminPortal ? `<a href="admin.html" class="adm-link">⬡ Admin Console</a>` : ""}</div>
+              ${u && u.role === "admin" && CFG.features.adminPortal ? `<a href="console.html?scope=store" class="adm-link">⬡ Admin Console</a>` : ""}</div>
           </div>
           <p class="hmenu-foot">${u ? "Signed in as <b>" + esc(u.email) + "</b>" : "New here? <a href='#' data-act='signin-open'>Create an account.</a>"}</p>
         </div>
@@ -177,7 +177,7 @@ function renderFooter(stores) {
         <div><h4>The House</h4><a href="#">About ${esc(CFG.brand.name)}</a><a href="#">Careers</a><a href="#">Journal</a></div>
         <div><h4>Shopping</h4>${CFG.features.deals ? `<a href="deals.html">${esc(T("dealsTitle"))}</a>` : ""}<a href="results.html?sort=new">New Season</a><a href="results.html?sort=best">Favourites</a><a href="results.html">All Departments</a></div>
         <div><h4>Services</h4>${CFG.features.giftCards ? `<a href="gift-cards.html">Gift Cards</a>` : ""}${CFG.features.registry ? `<a href="registry.html">Registries</a>` : ""}${CFG.features.customerService ? `<a href="customer-service.html">Client Care</a>` : ""}<a href="orders.html">Track an Order</a></div>
-        <div><h4>Legal</h4><a href="#">Conditions</a><a href="#">Privacy</a><a href="#">Accessibility</a>${S.user && S.user.role === "admin" && CFG.features.adminPortal ? `<a href="admin.html">Admin Console</a>` : ""}</div>
+        <div><h4>Legal</h4><a href="#">Conditions</a><a href="#">Privacy</a><a href="#">Accessibility</a>${S.user && S.user.role === "admin" && CFG.features.adminPortal ? `<a href="console.html?scope=store">Admin Console</a>` : ""}</div>
       </div>
     </div>
     <div class="f-bottom">
@@ -197,7 +197,7 @@ function renderSidebar() {
     <div class="sb-scroll">
       <section class="sb-sec"><h4>Departments</h4>${CFG.departments.map(d => `<a href="results.html?dept=${d.key}"><span class="sb-emoji">${d.icon}</span>${esc(d.label)}</a>`).join("")}</section>
       <section class="sb-sec"><h4>Discover</h4><a href="results.html?sort=best">✦ Favourites</a><a href="results.html?sort=new">✦ New Season</a>${CFG.features.deals ? `<a href="deals.html">✦ ${esc(T("dealsTitle"))}</a>` : ""}</section>
-      <section class="sb-sec"><h4>Account</h4><a href="orders.html">📦 ${esc(T("yourOrders"))}</a><a href="cart.html">◇ Your Bag</a>${CFG.features.giftCards ? `<a href="gift-cards.html">🎁 Gift Balance</a>` : ""}${S.user && S.user.role === "admin" && CFG.features.adminPortal ? `<a href="admin.html">⬡ Admin Console</a>` : ""}</section>
+      <section class="sb-sec"><h4>Account</h4><a href="orders.html">📦 ${esc(T("yourOrders"))}</a><a href="cart.html">◇ Your Bag</a>${CFG.features.giftCards ? `<a href="gift-cards.html">🎁 Gift Balance</a>` : ""}${S.user && S.user.role === "admin" && CFG.features.adminPortal ? `<a href="console.html?scope=store">⬡ Admin Console</a>` : ""}</section>
     </div>
   </div>`;
 }

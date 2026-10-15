@@ -43,7 +43,7 @@ const LX = { store: null, platform: null };      /* each bundle's captured surfa
 const SCOPE_LABEL = { store: "Store", platform: "Platform" };
 let scope = null;                                /* the surface a view renders in */
 let view = "dash";
-const me = { store: null, platform: null, tenant: null, grants: {}, storeAllowed: [], platformAllowed: [] };
+const me = { store: null, platform: null, tenant: null, grants: {}, storeAllowed: [], platformAllowed: [], apps: { store: [], platform: [] } };
 
 const $ = (s, r) => (r || document).querySelector(s);
 const $$ = (s, r) => [...(r || document).querySelectorAll(s)];
@@ -139,7 +139,10 @@ function navTree() {
     const store = LX.store;
     parts.push(`<div class="p-nav-scope"><small>THIS STORE · ${esc(me.tenant ? me.tenant.slug : "")}</small></div>`);
     for (const grp of store.nav) {
-      const items = (grp.items || []).filter(([k]) => me.storeAllowed.includes("*") || me.storeAllowed.includes(k) || k === "dash");
+      /* a leaf is granted through the section it maps to (promotions → offers, structure →
+         tenancy, sso → settings) — the same NAVSEC rule the store bundle's canSee applies */
+      const secOf = k => (store.NAVSEC && store.NAVSEC[k]) || k;
+      const items = (grp.items || []).filter(([k]) => me.storeAllowed.includes("*") || me.storeAllowed.includes(secOf(k)) || k === "dash");
       if (items.length)
         parts.push(`<div class="p-nav-grp"><small>${esc(grp.g)}</small>${items.map(([k, l]) =>
           `<button data-s="store" data-v="${k}" class="${scope === "store" && view === k ? "on" : ""}">${l}</button>`).join("")}</div>`);
@@ -162,7 +165,6 @@ function shell(content) {
       <nav class="p-nav">${navTree()}</nav>
       <div style="padding:12px 18px;border-top:1px solid rgba(255,255,255,.1);margin-top:12px">
         <a href="${me.tenant ? "/index.html?store=" + esc(me.tenant.slug) : "/index.html"}" target="_blank" style="color:var(--p-side-text)">↗ Open storefront</a>
-        ${me.platform && me.tenant ? ` · <a href="/platform.html" style="color:var(--p-side-text)">Legacy platform ↗</a>` : ""}
       </div>
     </aside>
     <div class="p-scrim" id="pScrim"></div>
@@ -184,7 +186,37 @@ function shell(content) {
 /* a click on the one nav sets the scope AND the leaf — the button carries both — and
    dispatches through the shell, so the bundle's view follows the shell's authority */
 function wireNav() {
-  $$(".p-nav button").forEach(b => b.onclick = () => { scope = b.dataset.s; view = b.dataset.v; render(); });
+  $$("#pSide .p-nav button").forEach(b => b.onclick = () => { scope = b.dataset.s; view = b.dataset.v; render(); });
+}
+/* the address bar names the scope and the screen, so a refresh or a shared link reopens it */
+function syncUrl() {
+  try {
+    const q = new URLSearchParams(location.search);
+    q.delete("token");
+    if (scope) q.set("scope", scope); else q.delete("scope");
+    if (view && view !== "dash") q.set("view", view); else q.delete("view");
+    const next = location.pathname + (q.toString() ? "?" + q.toString() : "") + location.hash;
+    if (next !== location.pathname + location.search + location.hash) history.replaceState(null, "", next);
+  } catch (e) { }
+}
+/* configured apps come and go (composed, granted, revoked) without a reload: the identity
+   is re-read after every render and, when the apps changed, the bundles' navs follow */
+let appsSig = "";
+function registerApps() {
+  for (const w of ["store", "platform"]) if (LX[w] && LX[w].registerApps) LX[w].registerApps(me.apps[w] || []);
+  appsSig = JSON.stringify(me.apps);
+}
+async function refreshApps() {
+  const r = await api("/api/auth/me").catch(() => null);
+  if (!r || !r.apps) return;
+  me.storeAllowed = r.allowedSections || me.storeAllowed;
+  me.platformAllowed = r.platformAllowed || me.platformAllowed;
+  me.apps = r.apps;
+  if (JSON.stringify(r.apps) === appsSig) return;
+  await seedBundles();
+  registerApps();
+  const nav = $("#pSide .p-nav");
+  if (nav) { nav.innerHTML = navTree(); wireNav(); }
 }
 function titleFor(v) {
   if (scope === "platform" && LX.platform) {
@@ -203,7 +235,7 @@ function wireDrawer() {
   const shut = () => { if (side) side.classList.remove("p-side-open"); if (scrim) scrim.style.display = "none"; };
   if (close) close.onclick = shut;
   if (scrim) scrim.onclick = shut;
-  $$(".p-nav button").forEach(b => b.addEventListener("click", shut));
+  $$("#pSide .p-nav button").forEach(b => b.addEventListener("click", shut));
 }
 
 /* ---------- rendering: dispatch a view to the bundle that owns it ----------
@@ -222,6 +254,7 @@ async function render() {
     await bundle.render();
     view = bundle.getView();        /* a view may redirect within the bundle; follow it */
     afterBundleRender();
+    syncUrl();
   } catch (e) { body.innerHTML = `<div class="p-empty">⚠️ ${esc(e.message)}</div>`; }
 }
 /* the bundle's render replaced #app with its own shell — its own nav, its own
@@ -234,11 +267,11 @@ async function render() {
    shell too, so the unified chrome would silently vanish mid-session. The bundle's render
    is wrapped at load time to re-apply this chrome once it settles, so a re-render from
    anywhere keeps the one console's nav and its ⇄ switcher */
-window.__lxRechrome = function () { try { afterBundleRender(); } catch (e) { } };
+window.__lxRechrome = function () { try { afterBundleRender(); } catch (e) { } refreshApps(); };
 function afterBundleRender() {
   const top = $(".p-top");
   if (!top) return;
-  const nav = $(".p-nav");
+  const nav = $("#pSide .p-nav");
   if (nav) { nav.innerHTML = navTree(); wireNav(); }
   const chip = top.querySelector(".p-chip");
   if (chip) chip.textContent = SCOPE_LABEL[scope];   /* the chip marks the surface, not the tenant's mode */
@@ -292,6 +325,15 @@ async function seedBundles() {
 
 /* ---------- boot ---------- */
 async function boot() {
+  const q = new URLSearchParams(location.search);
+  /* the platform hands a store over with a single-use ?token= (Tenants → Manage); it is
+     redeemed once, then dropped from the address bar */
+  const token = q.get("token");
+  if (token) {
+    await api("/api/auth/token-exchange", "POST", { token }).catch(() => null);
+    q.delete("token");
+    try { history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q.toString() : "") + location.hash); } catch (e) { }
+  }
   const r = await api("/api/auth/me");
   if (!r || (!r.hasStore && !r.hasPlatform)) return loginForm(r);
   me.store = r.identity.store || null;
@@ -300,12 +342,21 @@ async function boot() {
   me.grants = r.grants || {};
   me.storeAllowed = r.allowedSections || [];
   me.platformAllowed = r.platformAllowed || [];
-  scope = me.platform ? "platform" : "store";
+  me.apps = r.apps || { store: [], platform: [] };
+  /* a link may name the scope and the screen (?scope=store&view=orders); the legacy
+     /admin.html and /platform.html addresses redirect here with their scope */
+  const want = q.get("scope");
+  scope = want === "store" && me.store ? "store" : want === "platform" && me.platform ? "platform" : (token && me.store ? "store" : (me.platform ? "platform" : "store"));
+  if (q.get("view") && /^[A-Za-z0-9_-]{1,64}$/.test(q.get("view"))) view = q.get("view");
   /* load whichever bundles this identity can actually use */
   if (me.platform) await loadBundle("platform");
   if (me.store) await loadBundle("store");
   if (!LX[scope]) scope = me.platform ? "platform" : "store";
+  /* the store bundle's own boot created the shared #modal its forms open into; under this
+     shell that boot is suppressed, so the shell provides it (else + New / Edit throw) */
+  if (!document.getElementById("modal")) { const m = document.createElement("div"); m.id = "modal"; m.className = "hidden"; document.body.appendChild(m); }
   await seedBundles();
+  registerApps();
   render();
 }
 
@@ -318,6 +369,7 @@ function loginForm(r) {
     <label><span>Password</span><input id="lp" type="password" required></label>
     <button class="p-btn primary" style="width:100%">Sign in</button></form>
     <p class="p-err hidden" id="lfErr" style="color:var(--p-red);font-size:13px;margin:10px 0 0"></p>
+    <p class="hint"><a href="/reset.html?store=${esc(hint)}">Forgot your password?</a></p>
     <p class="hint">One sign-in for both the platform and the store console.<br>
     Store: <code>admin@${esc(hint)}.shop</code> · Platform: <code>platform@luxora.shop</code><br>
     <a href="/index.html">← Storefront</a></p></div></div>`;
@@ -330,7 +382,10 @@ function loginForm(r) {
       if (plat.ok) { boot(); return; }
       const store = await api("/api/auth/login", "POST", { email, password: pw });
       if (store.ok) { boot(); return; }
-      box.textContent = "⚠️ " + (plat.error || store.error || "Invalid credentials");
+      /* both authorities refused: a lockout or rate limit is worth saying; otherwise the
+         plain answer, since naming which console "owns" the email would leak accounts */
+      const why = [store.error, plat.error].find(m => /too many|locked|retry|disabled/i.test(m || ""));
+      box.textContent = "⚠️ " + (why || "Invalid email or password");
       box.classList.remove("hidden");
     } catch (err) { box.textContent = "⚠️ " + err.message; box.classList.remove("hidden"); }
   };

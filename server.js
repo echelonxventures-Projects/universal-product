@@ -273,6 +273,15 @@ const handler = async (req, res) => {
       res.writeHead(200, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" });
       return res.end(require("./lib/bundle.js").wrap(bm[1], PUB));
     }
+    /* one console: the old store and platform pages open /console.html in their scope,
+       keeping whatever the link carried (?store=, a hand-off ?token=, ?view=) */
+    const legacy = { "/admin.html": "store", "/platform.html": "platform" }[url.pathname];
+    if (legacy && (req.method === "GET" || req.method === "HEAD")) {
+      const q = new URLSearchParams(url.search);
+      if (!q.has("scope")) q.set("scope", legacy);
+      res.writeHead(302, { Location: "/console.html?" + q.toString(), "Cache-Control": "no-store" });
+      return res.end();
+    }
     if (url.searchParams.get("store") && SLUG_RE.test(url.searchParams.get("store"))) res.appendHeader("Set-Cookie", `store=${url.searchParams.get("store")}; Path=/; Max-Age=${365 * DAY}; SameSite=Lax${IS_TLS ? "; Secure" : ""}`);
     serveStatic(req, res, url.pathname);
   } catch (e) {
@@ -336,9 +345,7 @@ listenServer.listen(PORT, () => {
    P L A T F O R M  ·  the master global platform, configured into any platform  ·  🛡 10-layer security${IS_TLS ? " (TLS ON)" : " (HTTP — set LUX_TLS=1 for HTTPS)"}
 
    🏬 Master:      http${IS_TLS ? "s" : ""}://${(master || { slug: "luxora" }).slug}.localhost:${PORT} (the master's own deployment${fixtures.length ? `, +${fixtures.length} fixture${fixtures.length > 1 ? "s" : ""}` : ""})
-   🧾 Store admin: http${IS_TLS ? "s" : ""}://localhost:${PORT}/admin.html      (admin@luxora.shop / admin123)
-   🛰  Platform:   http${IS_TLS ? "s" : ""}://localhost:${PORT}/platform.html   (platform@luxora.shop / platform123)
-   🌐 One console: http${IS_TLS ? "s" : ""}://localhost:${PORT}/console.html    (both scopes, one sign-in)
+   🌐 Console:    http${IS_TLS ? "s" : ""}://localhost:${PORT}/console.html    (platform@luxora.shop / platform123 · store admin admin@luxora.shop / admin123)
    🔐 Scorecard:   GET /api/platform/security
 `);
   /* optional multi-node Redis queue worker (config-driven; off unless queue=redis and LX_WORKER≠0) */

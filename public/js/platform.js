@@ -503,6 +503,20 @@ for (const sec of NAV) for (const grp of sec.g) for (const [k, l, res] of grp.l)
   NAVFLAT.push([k, l, res, sec.n + " · " + grp.g]);
   NAVKEY[k] = { label: l, res, home: sec.n + " · " + grp.g };
 }
+/* configured apps (composed capabilities, platform-level Data Studio entities) join the
+   nav as their own leaves — "app_<key>", each its own grant — in one section the console
+   fills from the identity's allowed apps; each renders through the generic dataset reader */
+function registerApps(apps) {
+  const i = NAV.findIndex(sec => sec.apps);
+  if (i >= 0) NAV.splice(i, 1);
+  for (let j = NAVFLAT.length - 1; j >= 0; j--) if (/^app_/.test(NAVFLAT[j][0])) NAVFLAT.splice(j, 1);
+  for (const k of Object.keys(NAVKEY)) if (/^app_/.test(k)) delete NAVKEY[k];
+  const list = (apps || []).filter(a => a && /^app_[A-Za-z0-9_-]+$/.test(a.section));
+  if (!list.length) return;
+  const sec = { n: "Configured apps", apps: true, g: [{ g: "Apps", l: list.map(a => [a.section, (a.icon || "🧩") + " " + a.label, { e: a.key }]) }] };
+  NAV.push(sec);
+  for (const [k, l, res] of sec.g[0].l) { NAVFLAT.push([k, l, res, sec.n + " · Apps"]); NAVKEY[k] = { label: l, res, home: sec.n + " · Apps" }; }
+}
 /* the console opens on the constitutional dashboard — the platform's front door is the
    command view, not any single store's setup */
 let view = "dash";
@@ -3634,7 +3648,7 @@ document.addEventListener("click", e => { if (e.target.closest("[data-mclose]"))
         <p class="p-err hidden" id="pfErr" style="color:var(--p-red);font-size:13px;margin:10px 0 0"></p>
         <p class="hint" id="pfHint"></p>
         <p class="hint" id="pfStores">Store consoles: loading…</p></div></div>`;
-      api("/stores").then(st => { const el = document.getElementById("pfStores"); if (el) el.innerHTML = "Store consoles: " + (st.stores || []).map(x => `<a href="/admin.html?store=${esc(x.slug)}">${esc(x.name)}</a>`).join(" · ") + " · <a href='/index.html'>Storefronts</a>"; }).catch(() => { });
+      api("/stores").then(st => { const el = document.getElementById("pfStores"); if (el) el.innerHTML = "Store consoles: " + (st.stores || []).map(x => `<a href="/console.html?scope=store&store=${esc(x.slug)}">${esc(x.name)}</a>`).join(" · ") + " · <a href='/index.html'>Storefronts</a>"; }).catch(() => { });
       api("/platform/hint").then(h => { const el = document.getElementById("pfHint"); if (el && h.demo && h.email) el.innerHTML = "Owner sign-in: <code>" + esc(h.email) + "</code>" + (h.password ? " / <code>" + esc(h.password) + "</code>" : "") + " — set via env PLATFORM_EMAIL / PLATFORM_PASSWORD."; }).catch(() => { });
       $("#pf").onsubmit = async e => {
         e.preventDefault();
@@ -4715,7 +4729,7 @@ function wirePAdmins() {
     if (!name || !email || !password) return toast("Name, email and password are required");
     try {
       await api("/platform/admins", "POST", { name, email, password, role });
-      toast("Platform admin created — they can sign in at /platform.html");
+      toast("Platform admin created — they can sign in at /console.html");
       render();
     } catch (e) { toast("Error: " + e.message); }
   };
@@ -4994,6 +5008,7 @@ async function vRoles() {
      role being edited, and the console re-fetches on every render, never holds a
      second source of truth beyond the DOM's own lifetime */
   window.__roleSections = { platform: psections, staff: ssections };
+  window.__roleApps = Object.fromEntries([...(plat.apps || []), ...(srows.length ? (srows[0].data.apps || []) : [])].map(a => [a.section, a]));
   window.__roleRoles = { platform: proles, staff: sroles };
   const canWrite = !P.allowed || P.allowed.includes("*") || P.allowed.includes("roles");
   const grants = r => Object.entries(r.sections || {}).map(([k, v]) => `${esc(k)}=${esc(v)}`).join(" · ") || "—";
@@ -5040,7 +5055,7 @@ function grantsEditor(sections, role) {
       <button class="p-btn sm" data-grbulk="">filtered → inherit</button>
     </div>
     <div id="grGrid" class="p-scroll-y" style="max-height:340px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px 14px;padding:4px">
-      ${sections.map(k => row(k)).join("")}
+      ${sections.map(k => { const a = (window.__roleApps || {})[k]; return row(k, a ? (a.icon || "🧩") + " " + a.label + " · app" : null); }).join("")}
     </div>`;
 }
 /* read the editor's DOM back into a grant map; 'inherit' is absent by design, so a

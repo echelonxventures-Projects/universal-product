@@ -38,8 +38,8 @@ const PAGES = [
   ["/console.html", "() => document.body.innerText.trim().length > 20"], ["/docs/user-manual.html", "() => document.body.innerText.trim().length > 20"], ["/docs/architecture.html", "() => document.body.innerText.trim().length > 20"]
 ];
 const SIGNED_IN = [
-  { name: "store admin", login: "/api/auth/login?store=luxora", cred: { email: "admin@luxora.shop", password: "admin123" }, pages: ["/admin.html", "/console.html", "/checkout.html", "/orders.html"], walk: "/admin.html" },
-  { name: "platform admin", login: "/api/platform/login", cred: { email: "platform@luxora.shop", password: "platform123" }, pages: ["/platform.html", "/console.html"], walk: "/platform.html" }
+  { name: "store admin", login: "/api/auth/login?store=luxora", cred: { email: "admin@luxora.shop", password: "admin123" }, pages: ["/console.html", "/admin.html", "/checkout.html", "/orders.html"], walk: "/console.html?scope=store" },
+  { name: "platform admin", login: "/api/platform/login", cred: { email: "platform@luxora.shop", password: "platform123" }, pages: ["/console.html", "/platform.html"], walk: "/console.html?scope=platform" }
 ];
 
 class Tab {
@@ -129,11 +129,11 @@ if (require.main === module) (async () => {
       tab.events = [];
       await tab.send("Page.navigate", { url: BASE + signIn.walk }); await tab.once("Page.loadEventFired", 15000);
       let views = [];
-      for (let i = 0; i < 40 && !views.length; i++) { views = (await tab.eval("[...document.querySelectorAll('.p-nav button[data-v]')].map(b => b.dataset.v)").catch(() => [])) || []; if (!views.length) await sleep(150); }
+      for (let i = 0; i < 40 && !views.length; i++) { views = (await tab.eval("[...document.querySelectorAll('#pSide .p-nav button[data-v]')].map(b => b.dataset.v)").catch(() => [])) || []; if (!views.length) await sleep(150); }
       if (!views.length) report.push({ page: signIn.walk + " (sections)", who, issues: ["no section navigation found"] });
       for (const v of views) {
         tab.events = [];
-        await tab.eval(`(() => { const b = document.querySelector('.p-nav button[data-v="${v}"]'); if (b) b.click(); return !!b; })()`);
+        await tab.eval(`(() => { const b = document.querySelector('#pSide .p-nav button[data-v="${v}"]'); if (b) b.click(); return !!b; })()`);
         await sleep(900);
         const empty = await tab.eval("(() => { const m = document.querySelector('#view, .p-main, main'); return !m || m.innerText.trim().length < 5 })()").catch(() => false);
         const issues = problems(tab.events);

@@ -35,8 +35,7 @@ There are three "surfaces". Which one you use depends on your role.
 | Surface | URL (default install) | Who uses it |
 |---|---|---|
 | **Storefront** | `http://localhost:8787/` | End customers |
-| **Store Console** | `http://localhost:8787/admin.html` | Store administrators, support staff |
-| **Platform Console** | `http://localhost:8787/platform.html` | Platform (super) administrators |
+| **Console** | `http://localhost:8787/console.html` | Everyone who runs the platform or a store — one sign-in; the menu shows the store and platform sections your roles grant. The old `/admin.html` and `/platform.html` addresses redirect here. |
 | **The One Console** | `http://localhost:8787/console.html` | Anyone holding **both** a store and a platform role |
 
 > The **One Console** is the two consoles as one app: a single sign‑in, one nav grouped by
@@ -53,7 +52,7 @@ There are three "surfaces". Which one you use depends on your role.
 LUXORA serves many independent stores ("tenants") from one install. You select a store
 in three ways — all equivalent:
 
-- **Query string:** append `?store=<slug>` to any URL, e.g. `/admin.html?store=aurum`.
+- **Query string:** append `?store=<slug>` to any URL, e.g. `/console.html?store=aurum`.
 - **Subdomain:** visit `<slug>.localhost:<port>` (e.g. `aurum.localhost:8787`).
 - **Store picker cookie:** once you've used `?store=` it is remembered for later visits.
 
@@ -189,7 +188,7 @@ card. Recipients apply the code at checkout.
 # Part B — Store Administrator guide
 
 You run **one** store. Everything under this section happens in the **Store Console**
-(`admin.html`). Sign in with the store's admin account, and make sure you're pointed at the
+(`console.html`, store scope). Sign in with the store's admin account, and make sure you're pointed at the
 right store (see §1 "Switching between stores").
 
 ## B1. The console layout
@@ -404,7 +403,7 @@ on top of LUXORA (Data Studio + providers). The workflow you care about:
 
 You run the **whole platform**: you provision it once, launch stores, set the rules every
 store inherits, sell subscriptions and modules, and keep the fleet healthy, compliant and
-paid. All of it happens in the **Platform Console** (`platform.html`) — sign in with the
+paid. All of it happens in the **Platform Console** (`console.html`, platform scope) — sign in with the
 platform account (`platform@luxora.shop` in the seed).
 
 Platform identity is separate from any store. A platform admin is *not* "the admin of a
@@ -418,7 +417,7 @@ store" — you see every store, a store admin sees exactly one.
 
 ## E1. Sign in & find your way
 
-1. Open **Platform Console** → `http://localhost:8787/platform.html`.
+1. Open the console → `http://localhost:8787/console.html`.
 2. Sign in with your platform email + password (`POST /platform/login`). Repeated failures
    trigger the lockout you configure in Provisioning.
 3. The top bar shows your email, your **role**, and **Sign out**. On tablet/phone the rail
@@ -738,6 +737,15 @@ wildcard), **read**, or **write**. The **wildcard** row sets the default every i
 section resolves to. With ~200 sections possible, use the filter plus the bulk
 *filtered → read / write / inherit* buttons to scope just the ones you're editing.
 
+**Configured apps are granted here.** When you compose a capability into an application
+or define a new entity in Data Studio, it becomes its own section (listed by name, marked
+*app*) and its own entry under **Configured apps** in the console menu. Only the **Owner**
+role gets it automatically — the wildcard row of any other role does *not* reach it — so
+give each role access deliberately: pick **read** or **write** for that app in its role
+here (or in the store's *Team & Roles*). The app appears in those people's menus on their
+next screen; revoke it the same way. One store's own entities are never offered to
+another store.
+
 ### Users
 
 Every account the platform holds across every store, read through the generic dataset
@@ -1024,7 +1032,7 @@ name/wordmark once signed in — double‑check you're in the intended store bef
 | Can't enable a gateway | Provider not available in the country | Enable it in Platform → Provider Registry availability |
 
 ### F. Reference — surfaces & key endpoints
-- Surfaces: `/` (storefront), `/admin.html` (store), `/platform.html` (platform),
+- Surfaces: `/` (storefront), `/console.html` (store and platform; `/admin.html` and `/platform.html` redirect to it),
   `/console.html` (both scopes, one sign‑in).
 - Health: `GET /healthz`.
 - Security scorecard (platform admin): `GET /api/platform/security`.

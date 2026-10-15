@@ -67,8 +67,8 @@ function fakeEasyPost(url, o) {
   const until = async (tab, expr, ms) => { for (let i = 0; i < (ms || 8000) / 150; i++) { const v = await tab.eval(expr).catch(() => null); if (v) return v; await sleep(150); } return null; };
   const open = async (tab, page, view) => {
     await tab.send("Page.navigate", { url: BASE + page }); await tab.once("Page.loadEventFired", 15000);
-    await until(tab, `!!document.querySelector('.p-nav button[data-v="${view}"]')`);
-    await tab.eval(`document.querySelector('.p-nav button[data-v="${view}"]').click()`);
+    await until(tab, `!!document.querySelector('#pSide .p-nav button[data-v="${view}"]')`);
+    await tab.eval(`document.querySelector('#pSide .p-nav button[data-v="${view}"]').click()`);
   };
   const type = (tab, sel, v) => tab.eval(`(() => { const i = document.querySelector(${JSON.stringify(sel)}); i.value = ${JSON.stringify(v)}; i.dispatchEvent(new Event("input", { bubbles: true })); return true; })()`);
   const click = (tab, sel) => tab.eval(`(() => { const b = document.querySelector(${JSON.stringify(sel)}); if (b) b.click(); return !!b; })()`);
@@ -79,7 +79,7 @@ function fakeEasyPost(url, o) {
     const P = await signedIn("/api/platform/login", { email: "platform@luxora.shop", password: "platform123" });
     ok(P.st === 200, "platform admin signs in");
     P.tab.events = [];
-    await open(P.tab, "/platform.html", "providers");
+    await open(P.tab, "/console.html?scope=platform", "providers");
     ok(await until(P.tab, `!!document.querySelector("#carrierAccounts #epKey")`), "Provider Registry shows the EasyPost carrier account");
     ok(/not connected/.test(await P.tab.eval(`document.querySelector("#carrierAccounts h2").innerText`)), "it starts out not connected");
     ok(/\/api\/shipping\/webhook\/easypost$/.test(await P.tab.eval(`document.querySelector("#epHook").value`)), "the webhook URL to paste into EasyPost is shown");
@@ -97,7 +97,7 @@ function fakeEasyPost(url, o) {
     const S = await signedIn("/api/auth/login?store=luxora", { email: "admin@luxora.shop", password: "admin123" });
     ok(S.st === 200, "store admin signs in");
     S.tab.events = [];
-    await open(S.tab, "/admin.html", "shipping");
+    await open(S.tab, "/console.html?scope=store", "shipping");
     ok(await until(S.tab, `/connected/.test(document.querySelector("#shippingProviders")?.innerText || "")`), "Shipping & Tracking shows the carrier as connected");
     ok(await until(S.tab, `!!document.querySelector("#sfSave")`), "the ship-from form is shown");
     await type(S.tab, '[data-sf="street1"]', "400 Pine St");
@@ -124,7 +124,7 @@ function fakeEasyPost(url, o) {
     const o = order && order.num && db.get("SELECT id, num, status FROM orders WHERE num=?", order.num);
     ok(o && o.status === "processing", "a paid order is waiting to ship", o || order);
     S.tab.events = [];
-    await open(S.tab, "/admin.html", "orders");
+    await open(S.tab, "/console.html?scope=store", "orders");
     const shipBtn = `[data-act="ship-order"][data-id="${o && o.id}"]`;
     ok(await until(S.tab, `!!document.querySelector('${shipBtn}')`), "the order has a Ship button");
     await click(S.tab, shipBtn);
@@ -151,7 +151,7 @@ function fakeEasyPost(url, o) {
 
     console.log("▸ THE PLATFORM ADMIN DISCONNECTS EASYPOST");
     P.tab.events = [];
-    await open(P.tab, "/platform.html", "providers");
+    await open(P.tab, "/console.html?scope=platform", "providers");
     await until(P.tab, `!!document.querySelector("#epDisconnect")`);
     await click(P.tab, "#epDisconnect");
     ok(await until(P.tab, `/not connected/.test(document.querySelector("#carrierAccounts h2")?.innerText || "")`), "Disconnect returns the screen to not connected");

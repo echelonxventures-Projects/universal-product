@@ -1070,7 +1070,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
          after one use. Needs a PLATFORM session, so re-auth as the platform owner. */
       await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
       const impUrl = (await f("/api/platform/tenants/2/impersonate", "POST")).url;
-      ok(impUrl && /admin\.html\?store=aurum&token=/.test(impUrl), "impersonate returns a store-console url", impUrl);
+      ok(impUrl && /console\.html\?store=aurum&scope=store&token=/.test(impUrl), "impersonate returns a store-console url", impUrl);
       /* a fresh tab for the target store: capture ITS cookies, because token-exchange
          refuses a token whose tenant is not the session's tenant (the azs cookie must
          travel with the request, or the server builds an unrelated session) */
