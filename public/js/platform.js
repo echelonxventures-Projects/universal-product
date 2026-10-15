@@ -60,7 +60,12 @@ function toast(msg, type = "info") {
      u:<uv>     → a universe registry record (any of 2831 instantiated universes)
    The menu is not a hand-maintained list that can drift from the platform — a leaf with
    no dedicated view resolves through the same metadata-driven readers the Data Studio
-   uses, so nothing is orphaned and nothing is duplicated. */
+   uses, so nothing is orphaned and nothing is duplicated.
+
+   ALIASES. A leaf whose resolver carries a: <key> opens the same screen as that key. It
+   stays a leaf — its key is a grant section and a deep link that stored roles and the
+   route map name — but the menu shows it only when the identity cannot see <key>, so
+   no one meets the same screen twice. */
 const NAV = [
   { n: "01 · Foundation", g: [
     { g: "Identity", l: [
@@ -68,10 +73,10 @@ const NAV = [
       ["identity-templates", "📋 Identity Templates", { v: "identity-templates" }],
       ["persons", "👥 Persons", { u: "person" }],
       ["organizations", "🏢 Organizations", { u: "organization" }],
-      ["tenants", "🏬 Tenants", { e: "tenant" }],
-      ["users", "👤 Users", { v: "users" }],
-      ["roles", "🎭 Roles", { v: "roles" }],
-      ["permissions", "🔑 Permissions", { u: "permission" }],
+      ["tenants", "🏬 Tenants", { e: "tenant", a: "tenants-admin" }],
+      ["users", "👤 Users", { v: "users", a: "users-admin" }],
+      ["roles", "🎭 Roles", { v: "roles", a: "roles-admin" }],
+      ["permissions", "🔑 Permissions", { u: "permission", a: "permissions-admin" }],
       ["credentials", "🧷 Credentials", { u: "credential_chain" }],
       ["authentication", "🔓 Authentication", { u: "authentication" }],
       ["authorization", "🛂 Authorization", { u: "authorization" }],
@@ -165,7 +170,7 @@ const NAV = [
       ["partners", "🤝 Partners", { u: "partner" }],
       ["distributors", "🚚 Distributors", { u: "distributor" }],
       ["dealers", "🏪 Dealers", { u: "dealer" }],
-      ["franchises", " franchises", { u: "franchise" }],
+      ["franchises", "🏪 Franchises", { u: "franchise" }],
       ["workforce", "👷 Workforce", { u: "workforce" }],
     ] },
     { g: "CRM", l: [
@@ -179,11 +184,11 @@ const NAV = [
     { g: "Agreements", l: [
       ["contracts", "📜 Contracts", { e: "contract" }],
       ["agreements", "✍️ Agreements", { u: "agreement" }],
-      ["relationships", " 🔗 Relationships", { u: "relationship" }],
+      ["relationships", "🔗 Relationships", { u: "relationship" }],
       ["universal-links", "🔗 Universal Links (Primitive)", { e: "link" }],
       ["context-types", "🧭 Context Types (Primitive)", { e: "context_type" }],
       ["business-networks", "🌐 Business Networks", { u: "business_network" }],
-      ["business-organizations", "🏢 Organizations", { u: "organization" }],
+      ["business-organizations", "🏢 Organizations", { u: "organization", a: "organizations" }],
     ] },
   ] },
   { n: "04 · Commerce", g: [
@@ -200,7 +205,7 @@ const NAV = [
       ["loyalty", "⭐ Loyalty", { u: "loyalty" }],
       ["rewards", "🎁 Rewards", { u: "reward" }],
       ["referrals", "🔗 Referrals", { u: "referral" }],
-      ["goffers-affiliates", "🏷️ Offers · Affiliates", { v: "goffers" }],
+      ["goffers-affiliates", "🏷️ Offers · Affiliates", { v: "goffers", a: "goffers" }],
       ["goip", "Ω∞ GOIP · Value Exchange", { v: "offers" }],
     ] },
     { g: "Marketplace", l: [
@@ -230,7 +235,7 @@ const NAV = [
     ] },
     { g: "Billing & Payment", l: [
       ["plans", "💼 Plans", { v: "plans" }],
-      ["subs-plans", "🔁 Subscriptions", { v: "subs" }],
+      ["subs-plans", "🔁 Subscriptions", { v: "subs", a: "subs" }],
       ["invoices", "🧾 Invoices", { v: "invoices" }],
       ["billing", "💳 Billing Ops", { v: "billing" }],
       ["gfinance", "💸 Finance · Payments", { v: "gfinance" }],
@@ -240,10 +245,8 @@ const NAV = [
     ] },
   ] },
   { n: "05 · Operations", g: [
-    { g: "Overview", l: [
-      ["gops", "🧭 Ops Hub", { v: "gops" }],
-    ] },
     { g: "Supply", l: [
+      ["gops", "🧭 Ops Hub", { v: "gops" }],
       ["inventory", "📦 Inventory", { e: "inventory" }],
       ["warehousing", "🏬 Warehousing", { e: "warehouse" }],
       ["procurement", "🛒 Procurement", { u: "procurement" }],
@@ -327,7 +330,7 @@ const NAV = [
     ] },
     { g: "Autonomy", l: [
       ["autonomous-planning", "🗓️ Autonomous Planning", { u: "autonomous_planning" }],
-      ["autonomous-execution", " ▶️ Autonomous Execution", { u: "autonomous_execution" }],
+      ["autonomous-execution", "▶️ Autonomous Execution", { u: "autonomous_execution" }],
       ["autonomous-verification", "✔️ Autonomous Verification", { u: "autonomous_verification" }],
       ["learning", "📚 Learning Engine", { u: "learning" }],
       ["evolution", "🧬 Evolution Engine", { u: "evolution" }],
@@ -380,8 +383,6 @@ const NAV = [
       ["capability-registry", "🗄️ Capability Registry", { u: "capability_registry" }],
       ["capability-composition", "🧩 Capability Composition", { u: "capability_composition" }],
       ["capability-discovery", "🧭 Capability Discovery", { u: "capability_discovery" }],
-    ] },
-    { g: "Composition", l: [
       ["compose", "🧬 Composition Engine", { v: "compose" }],
     ] },
     { g: "Extension", l: [
@@ -415,12 +416,12 @@ const NAV = [
       ["monitor", "📈 Monitoring", { v: "monitor" }],
       ["metrics", "📊 Metrics", { u: "metrics" }],
       ["logs", "🪵 Logs", { u: "logs" }],
-      ["traces", " 🔗 Traces", { u: "traces" }],
+      ["traces", "🧵 Traces", { u: "traces" }],
       ["alerting", "🚨 Alerting", { u: "alerting" }],
     ] },
     { g: "Health", l: [
       ["reliability", "🛡️ Reliability", { u: "reliability" }],
-      ["health-availability", "🟢 Availability", { u: "availability" }],
+      ["health-availability", "🟢 Availability", { u: "availability", a: "availability" }],
       ["capacity", "📦 Capacity", { u: "capacity" }],
       ["performance", "⚡ Performance", { u: "performance" }],
       ["health", "💚 Health", { u: "health" }],
@@ -454,8 +455,8 @@ const NAV = [
     { g: "Configuration", l: [
       ["registries", "📚 Platform Registries", { v: "registries" }],
       ["configurations", "⚙️ Configurations", { u: "configuration" }],
-      ["secrets", "保密 Secrets", { u: "secrets_management" }],
-      ["settings", "⚙️ Settings", { v: "gteam" }],
+      ["secrets", "🗝️ Secrets", { u: "secrets_management" }],
+      ["settings", "⚙️ Settings", { v: "gteam", a: "gteam" }],
       ["feature-flags", "🚩 Feature Flags", { v: "runtime" }],
       ["provisioning", "🛡️ Provisioning", { v: "provisioning" }],
     ] },
@@ -478,7 +479,7 @@ const NAV = [
     ] },
     { g: "Graphs", l: [
       ["capability-graph", "🕸️ Capability Graph", { u: "capability_graph" }],
-      ["knowledge-graph-arch", "🕸️ Knowledge Graph", { u: "knowledge_graph" }],
+      ["knowledge-graph-arch", "🕸️ Knowledge Graph", { u: "knowledge_graph", a: "knowledge-graph" }],
       ["dependency-graph", "🕸️ Dependency Graph", { u: "dependency_graph" }],
       ["traceability-graph", "🕸️ Traceability Graph", { u: "traceability_graph" }],
     ] },
@@ -627,7 +628,7 @@ async function vTenants() {
    AND authentication policy.
    The console remains the place to TUNE a platform; this is the place to REGISTER one. */
 async function registerModal() {
-  const [meta, capd, pland, idtd] = await Promise.all([api("/meta"), api("/capabilities"), api("/platform/plans"), api("/platform/identity-templates")]);
+  const [meta, capd, pland, idtd, pcfg] = await Promise.all([api("/meta"), api("/capabilities"), api("/platform/plans"), api("/platform/identity-templates"), api("/platform/config").catch(() => ({}))]);
   const industries = meta.industries || [], countries = (meta.countries || []).filter(c => c.active), modes = meta.deployModes || [];
   const presets = (capd.presets || []).filter(p => p.key !== "blend_mixed" || true);
   const plans = pland.plans || [];
@@ -636,9 +637,11 @@ async function registerModal() {
      never registered without a deliberate authentication policy */
   const idTemplates = (idtd.templates || []).slice().sort((a, b) => (b.is_default || 0) - (a.is_default || 0));
   const defTmpl = idTemplates.find(t => t.is_default) || idTemplates[0];
-  const R = { name: "", slug: "", country: "US", mode: "marketplace", ownerName: "", ownerEmail: "", ownerPassword: "",
+  const polMode = pcfg && pcfg.policy && pcfg.policy.provisioning ? pcfg.policy.provisioning.defaultMode : null;
+  const R = { name: "", slug: "", country: "US", mode: modes.some(x => x.key === polMode) ? polMode : (modes[0] ? modes[0].key : ""), ownerName: "", ownerEmail: "", ownerPassword: "",
     legalName: "", taxId: "", language: "", archetype: "", industries: [], seedUniverses: true, seedCatalog: false,
     identityTemplate: defTmpl ? defTmpl.id : null, planId: plans[0] ? plans[0].id : 1 };
+  const needInd = () => { const md = modes.find(x => x.key === R.mode); return !!(md && md.needsIndustries); };
   let step = 0;
   const m = modal(`<div class="p-modal-head"><h3>Register a platform</h3><button data-mclose>✕</button></div>
     <div id="regBody"></div>`);
@@ -675,7 +678,7 @@ async function registerModal() {
       <label><span>Platform mode *</span><select id="rMode">${modes.map(x => `<option value="${x.key}" ${R.mode === x.key ? "selected" : ""}>${esc(x.name)} — ${esc(x.desc)}</option>`).join("")}</select></label>
       <label><span>Admin name *</span><input id="rOwnerName" value="${esc(R.ownerName)}" placeholder="Ava One"></label>
       <label><span>Admin email *</span><input id="rOwnerEmail" value="${esc(R.ownerEmail)}" placeholder="admin@acme.com"></label>
-      <label><span>Admin password *</span><input id="rOwnerPass" type="password" value="${esc(R.ownerPassword)}" placeholder="6+ characters"></label>
+      <label><span>Admin password *</span><input id="rOwnerPass" type="password" value="${esc(R.ownerPassword)}" placeholder="meets the platform password policy"></label>
       <label><span>Legal name (optional)</span><input id="rLegal" value="${esc(R.legalName)}" placeholder="Acme Commerce Pvt Ltd"></label>
       <label><span>Tax ID (optional)</span><input id="rTax" value="${esc(R.taxId)}" placeholder="GSTIN / EIN"></label></div>`;
     if (step === 1) { const ctry = countries.find(c => c.code === R.country);
@@ -702,7 +705,7 @@ async function registerModal() {
         <input type="radio" name="rArch" value="" ${R.archetype === "" ? "checked" : ""}>
         <span><b>No archetype</b><br><span class="p-tag">Register an empty platform and compose it capability-by-capability in ⚙️ Capabilities.</span></span></label></div>`;
     if (step === 3) return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div>
-      <p class="p-tag">Industries scope the catalogue${R.mode === "marketplace" ? "" : " — required for this mode"}. Picked from the registry (${industries.length} registered).</p>
+      <p class="p-tag">Industries scope the catalogue${needInd() ? " — required for this mode" : ""}. Picked from the registry (${industries.length} registered).</p>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${industries.map(i => `<button class="p-btn sm ${R.industries.includes(i.key) ? "primary on" : ""}" data-ind="${esc(i.key)}" type="button">${esc(i.icon || "▪")} ${esc(i.name)}</button>`).join("")}</div>
       <div class="p-form">
       <label class="checkbox-group"><input type="checkbox" id="rSeedUv" ${R.seedUniverses ? "checked" : ""}> Activate the archetype's catalog content (universes publish products, SKUs and inventory)</label>
@@ -736,8 +739,8 @@ async function registerModal() {
     if (go) go.onclick = async () => {
       sync();
       if (!R.name || !R.slug) return toast("Name and slug are required");
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(R.ownerEmail) || String(R.ownerPassword).length < 6) return toast("Admin needs a valid email and a 6+ character password");
-      if ((R.mode === "industry" || R.mode === "brand") && !R.industries.length) return toast("Pick at least one industry for this mode");
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(R.ownerEmail) || !R.ownerPassword) return toast("Admin needs a valid email and a password");
+      if (needInd() && !R.industries.length) return toast("Pick at least one industry for this mode");
       go.disabled = true; go.textContent = "Registering…";
       try {
         const r = await api("/platform/tenants", "POST", {
@@ -761,6 +764,7 @@ async function registerModal() {
    the constitutional model treats a tenant as an identity record the platform provisions */
 async function tenantModal(id) {
   const t = id ? P.tenants.find(x => x.id === id) : null;
+  const modes = ((await api("/meta").catch(() => ({}))).deployModes || []).map(x => x.key);
   const isEdit = !!t;
   const m = modal(`<div class="p-modal-head"><h3>${isEdit ? "Edit · " + esc(t.name) : "New tenant"}</h3><button data-mclose>✕</button></div>
     <div class="p-form">
@@ -769,8 +773,8 @@ async function tenantModal(id) {
       <label><span>Country</span><input id="tnCountry" value="${t ? esc(t.country || "") : ""}" placeholder="US"></label>
       <label><span>Owner name</span><input id="tnOwnerName" value="${t && t.profile ? esc(t.profile.ownerName || "") : ""}" placeholder="Ava One"></label>
       <label><span>Owner email</span><input id="tnOwner" value="${t && t.profile ? esc(t.profile.ownerEmail || "") : ""}" placeholder="owner@acme.com"></label>
-      ${isEdit ? "" : '<label><span>Owner password</span><input id="tnPass" type="password" placeholder="6+ characters" minlength="6"></label>'}
-      <label><span>Mode</span><select id="tnMode">${["marketplace", "industry", "brand"].map(x => `<option ${t && t.mode === x ? "selected" : ""}>${x}</option>`).join("")}</select></label>
+      ${isEdit ? "" : '<label><span>Owner password</span><input id="tnPass" type="password" placeholder="meets the platform password policy"></label>'}
+      <label><span>Mode</span><select id="tnMode">${modes.map(x => `<option ${t && t.mode === x ? "selected" : ""}>${esc(x)}</option>`).join("")}</select></label>
       <button class="p-btn primary" id="tnSave">${isEdit ? "Save changes" : "Create tenant"}</button>
     </div>`);
   m.querySelector("#tnSave").onclick = async () => {
@@ -3895,6 +3899,7 @@ async function vCapabilities() {
     <td><b>${esc(p.label)}</b><br><code>${esc(p.key)}</code></td>
     <td class="p-tag">${esc(p.description || "—")}</td>
     <td class="num">${Object.keys(p.capabilities || {}).length}</td>
+    <td class="p-tag">${(p.universes || []).length ? (p.universes || []).map(u => `<code>${esc(u)}</code>`).join(" ") : "—"}</td>
     <td style="white-space:nowrap">
       <button class="p-btn sm primary" data-cappreset="${esc(p.key)}">Apply</button>
       <button class="p-btn sm danger" data-cappdel="${esc(p.key)}">✕</button></td></tr>`).join("");
@@ -3941,14 +3946,18 @@ async function vCapabilities() {
     </div>
     <h3>Archetypes — named, reusable compositions</h3>
     <p class="p-tag">An archetype is a starter set. Applying one writes capability rows for the store; from that moment the store owns them and any tuning is kept.</p>
-    <div class="p-scroll-x" style="margin-bottom:14px"><table class="p-table"><thead><tr><th>Archetype</th><th>Intent</th><th>Caps</th><th></th></tr></thead>
-      <tbody>${presetRows || '<tr><td colspan="4" class="p-empty">No archetypes defined</td></tr>'}</tbody></table></div>
+    <div class="p-scroll-x" style="margin-bottom:14px"><table class="p-table"><thead><tr><th>Archetype</th><th>Intent</th><th>Caps</th><th>Opens with content</th><th></th></tr></thead>
+      <tbody>${presetRows || '<tr><td colspan="5" class="p-empty">No archetypes defined</td></tr>'}</tbody></table></div>
     <details><summary class="p-tag" style="cursor:pointer">＋ Define a new archetype (custom platform or service)</summary>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0">
         <input id="capNewKey" placeholder="key (e.g. blend_luxury)" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:210px">
         <input id="capNewLabel" placeholder="Label" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:180px">
+        <input id="capNewDesc" placeholder="What it is for" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);flex:1;min-width:200px">
         <button class="p-btn sm primary" id="capNewSave">Create archetype</button>
       </div>
+      <label style="display:flex;gap:6px;align-items:center;margin:4px 0 8px" class="p-tag"><input type="checkbox" id="capNewFromStore"> Take the capabilities <b>and their tuning</b> from the store being composed above (the ticks below are ignored)</label>
+      <label style="display:flex;flex-direction:column;gap:3px;margin-bottom:8px"><span class="p-tag">Catalogue content a new store opens with — universe keys, comma-separated (see 12 · Architecture → Universes)</span>
+        <input id="capNewUv" placeholder="uv_marketplace, uv_commerce_product" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg)"></label>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">${checkList}</div></details>
     <details><summary class="p-tag" style="cursor:pointer">＋ Define a new capability (the catalog is open-ended — any platform, any domain)</summary>
       <p class="p-tag" style="margin:8px 0">The seeded catalog covers commerce. A platform beyond that — mobility, streaming, ERP, CRM, anything not yet named — is built by <b>defining its capabilities here</b> with typed parameters. Engines read them through the same <code>cap()</code> call, so a new domain is live the moment it is saved.</p>
@@ -4017,11 +4026,15 @@ function wireCapabilities() {
   if (ns) ns.onclick = async () => {
     const key = document.getElementById("capNewKey").value.trim();
     if (!key) return toast("give the archetype a key");
-    const capsOn = Array.from(document.querySelectorAll("[data-capnew]")).filter(c => c.checked).map(c => c.dataset.capnew);
-    if (!capsOn.length) return toast("select at least one capability");
+    /* from the store: every capability it has on, with the values it is tuned to */
+    const fromStore = document.getElementById("capNewFromStore").checked;
+    const capObj = {};
+    if (fromStore) (capData.catalog || []).filter(c => c.on).forEach(c => { capObj[c.key] = { enabled: true, params: c.effective || {} }; });
+    else Array.from(document.querySelectorAll("[data-capnew]")).filter(c => c.checked).forEach(c => { capObj[c.dataset.capnew] = { enabled: true, params: {} }; });
+    if (!Object.keys(capObj).length) return toast(fromStore ? "that store has no capabilities switched on" : "select at least one capability");
+    const universes = document.getElementById("capNewUv").value.split(/[\s,]+/).map(x => x.trim()).filter(Boolean);
     try {
-      const capObj = {}; capsOn.forEach(c => capObj[c] = { enabled: true, params: {} });
-      await api("/capabilities/preset", "POST", { key, label: document.getElementById("capNewLabel").value.trim() || key, capabilities: capObj });
+      await api("/capabilities/preset", "POST", { key, label: document.getElementById("capNewLabel").value.trim() || key, description: document.getElementById("capNewDesc").value.trim(), capabilities: capObj, universes });
       toast("Archetype '" + key + "' created — apply it to any store");
       render();
     } catch (e) { toast(e.message); }

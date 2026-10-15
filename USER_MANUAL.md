@@ -500,6 +500,12 @@ pending."** Walk this path top to bottom; afterwards you can launch stores.
    - **New-store defaults** — default plan, whether new stores get a seeded demo catalogue,
      whether gateways start in **sandbox**, and the policy gates stores inherit: currency
      overrides, customer coupons, **global offers**, fiscal-context pickers.
+   - **New-store starting set** — what a store is given whenever its registration leaves
+     the choice open: the default **deploy mode** (from the `deployModes` registry), how
+     many of its country's **payment gateways** and **carriers**, the **cash / offline
+     gateway** and **house shipping method** (or *None*), and the **priority / standard
+     delivery promise** in days. Every list is read from the live registries, so a mode or
+     provider added later appears here. Saving changes only the fields you changed.
    - **Save platform policy** — the platform is now marked *Provisioned* (status card shows
      when, plus master-key version and whether the pepper is set).
    - The **Layer scorecard** at the bottom shows the live 10-layer security posture.
@@ -531,8 +537,10 @@ jurisdiction, owner, mode, industries, product/order counts, GMV, plan and statu
 
 **Launch a store.** Click **+ New tenant**. It is one form (a tenant is an identity record
 the platform provisions): name, slug, country, owner name + email + password, and the
-deployment **mode** — `marketplace` (many sellers, all industries), `industry` (one
-vertical) or `brand` (single label). Save and the store exists with its own admin account;
+deployment **mode** — from the `deployModes` registry; the shipped ones are `marketplace`
+(many sellers, all industries), `industry` (one vertical) and `brand` (single label). A
+mode flagged `needsIndustries` requires the store to name its industries. The owner's
+password must meet the platform's credential policy. Save and the store exists with its own admin account;
 hand the credentials to the owner.
 
 **Per-store actions** (row buttons):
@@ -653,8 +661,13 @@ grouped by domain (Marketplace, Quick-commerce, Fintech, B2B trust & trade…):
   default stores inherit.
 - **⚙ params** — configure each declared parameter (boolean / number / JSON / text) with
   its unit and live effective value. An **edited** badge marks overrides.
-- **Presets** — save a whole capability set as a named preset and **Apply** it to any store
-  in one click (or delete it).
+- **Archetypes (presets)** — save a whole capability set as a named archetype and **Apply**
+  it to any store in one click (or delete it). An archetype also names the **catalogue
+  content** (universe keys) a store registered from it opens with, shown in the *Opens with
+  content* column. To make your own platform type — for example a big general marketplace —
+  tune one store until it is right, then under *Define a new archetype* tick **Take the
+  capabilities and their tuning from the store being composed above**, add the content keys,
+  and save. Every store registered from it starts identical.
 
 ### Capability Tree (*09 Platform*)
 

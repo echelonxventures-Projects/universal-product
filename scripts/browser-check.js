@@ -138,6 +138,10 @@ if (require.main === module) (async () => {
         const empty = await tab.eval("(() => { const m = document.querySelector('#view, .p-main, main'); return !m || m.innerText.trim().length < 5 })()").catch(() => false);
         const issues = problems(tab.events);
         if (empty) issues.unshift("section rendered nothing");
+        /* a view's own failure is caught and printed into the page, not thrown — so a
+           missing function or a bad property read shows up only as text on screen */
+        const broke = await tab.eval("(() => { const m = document.querySelector('#vBody'); const t = m ? m.innerText : ''; return /is not defined|is not a function|Cannot read propert|Unexpected token|undefined \\(reading/.test(t) ? t.trim().slice(0, 160) : '' })()").catch(() => "");
+        if (broke) issues.unshift("view failed: " + broke);
         checked++;
         report.push({ page: signIn.walk + " › " + v, who, issues });
       }

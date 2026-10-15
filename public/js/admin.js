@@ -46,25 +46,28 @@ function toast(msg) {
   t.textContent = msg; t.classList.add("show");
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3000);
 }
-/* The nav is grouped by function so an operator finds "Payment Gateways" under
-   Payments, not lost in a 45-item alphabet soup. Keys are unchanged — NAVSEC and
-   canSee() still key off the flat list, and NAVFLAT drives title lookup. */
+/* The nav is grouped by the job an operator came to do, in the order a working day
+   meets them: sell, stock, market, serve, get paid, run the business, then the
+   store's own setup and the reference shelf. Labels are unique, so no two leaves
+   read alike. Keys are unchanged — NAVSEC and canSee() still key off the flat list
+   (every key is also a grant section), and NAVFLAT drives title lookup. */
 const NAV = [
   { g: "Overview", items: [["dash", "◈ Dashboard"], ["analytics", "📊 Analytics"], ["monitor", "📈 Monitor"]] },
-  { g: "Catalogue", items: [["products", "📦 Products"], ["brands", "🏷️ Brands"], ["gcatalog", "🌐 Global Catalog"], ["skus", "🔖 SKUs & Inventory"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["search", "🔎 Search & Discovery"], ["content", "🖼️ Home Content"]] },
-  { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["rfqs", "📋 RFQs (B2B)"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"], ["planning", "📦 Planning & Replenishment"], ["suppliers", "🚚 Suppliers & Procurement"]] },
-  { g: "Marketplace & B2B", items: [["sellers", "🏪 Sellers"], ["contracts", "📝 Contracts (B2B)"], ["tenders", "🏛️ Tenders"], ["marketplace", "📣 Marketplace & Ads"]] },
-  { g: "Commerce Ops", items: [["qcops", "⚡ Quick-commerce"], ["finops", "💸 Fintech Ops"], ["mktops", "🏪 Marketplace Ops"], ["tradeops", "🤝 Trade Ops"]] },
-  { g: "Mobility (E17)", items: [["rides", "🚗 Rides & Dispatch"], ["fleet", "🚙 Fleet & Drivers"]] },
-  { g: "Operations (E18)", items: [["ops_hr", "🧑‍💼 People & Payroll"], ["ops_proc", "🛒 Procurement"], ["ops_mfg", "🏭 Manufacturing"], ["ops_proj", "📐 Projects & Approvals"]] },
-  { g: "Payments & Finance", items: [["payments", "💳 Payment Gateways"], ["settlements", "🤝 Settlements"], ["finance", "💰 Finance & Settlements"], ["billing", "🧮 Billing"]] },
-  { g: "Growth & Retention", items: [["promotions", "💸 Offers & Coupons"], ["ugc", "⭐ Reviews & Q&A"], ["helpdesk", "🎧 Support Helpdesk"], ["affiliate", "🤝 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["goip", "Ω∞ GOIP"]] },
-  { g: "AI & Automation", items: [["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"]] },
-  { g: "Identity & Access", items: [["sso", "🔐 SSO & Integrations"], ["structure", "🏢 Org Structure"], ["team", "👥 Team & Roles"]] },
-  { g: "Geo & Localization", items: [["localizations", "🌐 Localizations"], ["shipping", "📦 Shipping & Tracking"], ["sitemap", "🔍 Sitemap & SEO"]] },
-  { g: "Compliance & Risk", items: [["compliance", "✅ Compliance & Certs"], ["risk", "🛡️ Risk & Fraud"], ["audit", "📜 Audit Trail"], ["trash", "🗑️ Trash & Retention"]] },
-  { g: "Settings & Data", items: [["settings", "⚙️ Settings"], ["studio", "🛠️ Data Studio"], ["modules", "🧩 Modules"]] },
-  { g: "Reference", items: [["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]] }
+  { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["shipping", "📮 Shipping & Tracking"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"]] },
+  { g: "Catalogue", items: [["products", "📦 Products"], ["skus", "🔖 SKUs & Inventory"], ["brands", "🏷️ Brands"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["gcatalog", "🌐 Global Catalog"]] },
+  { g: "Supply Chain", items: [["suppliers", "🏭 Suppliers"], ["ops_proc", "🛒 Purchase Requests"], ["planning", "📈 Planning & Replenishment"]] },
+  { g: "Storefront", items: [["content", "🖼️ Home Content"], ["search", "🔎 Search & Discovery"], ["sitemap", "🗺️ Sitemap & SEO"], ["localizations", "🌐 Localizations"]] },
+  { g: "Marketing & Growth", items: [["promotions", "🎟️ Offers & Coupons"], ["goip", "Ω∞ GOIP"], ["affiliate", "📣 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["marketplace", "📢 Marketplace & Ads"]] },
+  { g: "Customer Care", items: [["helpdesk", "🎧 Support Helpdesk"], ["ugc", "⭐ Reviews & Q&A"]] },
+  { g: "Sellers & B2B", items: [["sellers", "🏪 Sellers"], ["rfqs", "📋 RFQs"], ["contracts", "📝 Contracts"], ["tenders", "🏛️ Tenders"]] },
+  { g: "Payments & Finance", items: [["payments", "💳 Payment Gateways"], ["settlements", "🤝 Settlements"], ["finance", "💰 Disputes & Payouts"], ["billing", "🧮 Billing"]] },
+  { g: "Business Operations", items: [["qcops", "⚡ Quick-commerce"], ["mktops", "🏬 Marketplace Ops"], ["tradeops", "🚢 Trade Ops"], ["finops", "💸 Fintech Ops"], ["ops_hr", "🧑‍💼 People & Payroll"], ["ops_mfg", "🏭 Manufacturing"], ["ops_proj", "📐 Projects & Approvals"]] },
+  { g: "Mobility", items: [["rides", "🚗 Rides & Dispatch"], ["fleet", "🚙 Fleet & Drivers"]] },
+  { g: "Team & Access", items: [["team", "👥 Team & Roles"], ["structure", "🏢 Org Structure"], ["sso", "🔐 SSO & Integrations"]] },
+  { g: "Trust & Compliance", items: [["risk", "🛡️ Risk & Fraud"], ["compliance", "✅ Compliance & Certs"], ["audit", "📜 Audit Trail"], ["trash", "🗑️ Trash & Retention"]] },
+  { g: "Automation", items: [["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"]] },
+  { g: "Settings", items: [["settings", "⚙️ Store Settings"], ["modules", "🧩 Modules"], ["studio", "🛠️ Data Studio"]] },
+  { g: "Help", items: [["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]] }
 ];
 const NAVFLAT = NAV.flatMap(g => g.items);
 const NAVSEC = { promotions: "offers", goip: "offers", ai: "ai", webhooks: "webhooks", trash: "trash", team: "team", studio: "studio", sso: "settings", structure: "tenancy" };
@@ -1772,7 +1775,7 @@ async function render() {
     else if (view === "finops") { body.innerHTML = await vFinOps(); wireFinOps(); }
     else if (view === "mktops") { body.innerHTML = await vMktOps(); wireMktOps(); }
     else if (view === "tradeops") { body.innerHTML = await vTradeOps(); wireTradeOps(); }
-    else if (view === "helpdesk") { body.innerHTML = await vHelpdesk(); wireHelpdesk(); } else if (view === "affiliate") renderAffiliate(); else if (view === "sitemap") renderSitemap(); else if (view === "shipping") renderShipping();
+    else if (view === "helpdesk") { body.innerHTML = await vHelpdesk(); } else if (view === "affiliate") renderAffiliate(); else if (view === "sitemap") renderSitemap(); else if (view === "shipping") renderShipping();
     else if (view === "retention") body.innerHTML = await vRetention();
     else if (view === "risk") body.innerHTML = await vRisk();
     else if (view === "experiments") body.innerHTML = await vExperiments();
