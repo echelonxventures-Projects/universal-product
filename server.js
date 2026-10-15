@@ -308,6 +308,10 @@ function prodCredentialGuard() {
   process.exit(1);
 }
 prodCredentialGuard();
+/* sign-in codes, magic links and password resets reach a signed-out person only by email/SMS:
+   with no platform transport, any store that hasn't set its own can't recover an account */
+if (process.env.NODE_ENV === "production" && !require("./lib/mailer.js").transportFor(0, "email"))
+  console.warn("  ⚠️  No platform email transport (LX_MAIL_PROVIDER / LX_SMTP_URL / LX_MAIL_FROM) — password resets and sign-in codes are only delivered for stores with their own live email gateway.");
 
 function shutdown(sig) { console.log(`\n${sig} — closing`); sec.persistState(); server.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000); }
 /* a stray rejected promise in an async handler must not take the process down (Node
