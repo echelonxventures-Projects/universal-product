@@ -94,6 +94,35 @@ const mk = () => {
     ok((d.body.activated || []).some(x => x.key === "uv_marketplace"), "and the archetype's content is activated into it", d.body.activated);
     const resave = await P("/api/capabilities/preset", "POST", { key: "blend_bigstore", label: "Big store v2", capabilities: { reviews: {} } });
     ok(resave.status === 200 && JSON.stringify(resave.body.preset.universes) === '["uv_marketplace"]', "re-saving without naming content keeps the content", resave.body.preset);
+
+    console.log("▸ CHECKOUT READS PROVIDERS FROM DATA, NOT BY NAME");
+    const off = db.get("SELECT items FROM meta_lists WHERE name='offlinePaymentMethods'");
+    ok(off && /bank_transfer/.test(off.items) && /cod/.test(off.items), "offline payment methods are a registry", off && off.items);
+    const C = mk(); await C("/api/session?store=luxora");
+    ok((await C("/api/auth/login?store=luxora", "POST", { email: "demo@luxora.shop", password: "demo123" })).status === 200, "a shopper signs in");
+    const prod = db.get("SELECT id FROM products WHERE tenant_id=1 AND stock>5 ORDER BY id LIMIT 1");
+    const buy = async extra => {
+      await C("/api/cart?store=luxora", "POST", { id: prod.id, qty: 1 });
+      return C("/api/checkout?store=luxora", "POST", { name: "Pat Buyer", address: "1 Main St", city: "Portland", state: "OR", zip: "97201", ...extra });
+    };
+    const o1 = await buy({ gateway: "cod" });
+    ok(o1.status === 200, "cash on delivery checks out", o1.body.error);
+    const ord1 = db.get("SELECT id, ship_option carrier FROM orders WHERE tenant_id=1 ORDER BY id DESC LIMIT 1");
+    const pay1 = db.get("SELECT status FROM payments WHERE tenant_id=1 AND order_id=?", ord1.id);
+    ok(pay1 && pay1.status === "pending", "an offline method leaves the payment pending", pay1);
+    const primary = db.get("SELECT provider_id FROM tenant_gateways WHERE tenant_id=1 AND provider_id LIKE 'ship:%' AND enabled=1 ORDER BY is_primary DESC, position LIMIT 1").provider_id.slice(5);
+    ok(ord1.carrier === primary, "with no carrier chosen, the store's primary carrier ships it", { carrier: ord1.carrier, primary });
+    db.run("DELETE FROM provider_availability WHERE provider_id='cod' AND country_code='US'");
+    const o2 = await buy({ gateway: "cod" });
+    ok(o2.status === 422, "once cash on delivery is unlinked from the country, checkout refuses it", o2.body);
+    const prov2 = (await C("/api/providers?store=luxora")).body;
+    ok(!(prov2.gateways || []).some(g => g.id === "cod"), "and the shopper is no longer offered it", (prov2.gateways || []).map(g => g.id));
+    db.run("INSERT OR IGNORE INTO provider_availability(provider_id,country_code) VALUES('cod','US')");
+    const inv = db.get("SELECT id FROM invoices WHERE status!='paid' ORDER BY id LIMIT 1") || null;
+    if (inv) {
+      const ip = await P("/api/platform/invoices/" + inv.id + "/pay", "POST", {});
+      ok(ip.status === 422 && /gateway/i.test(ip.body.error || ""), "collecting an invoice names its gateway — none is assumed", ip.body);
+    } else ok(true, "no unpaid invoice to collect (skipped)");
   } catch (e) {
     failed++; console.error("  ✗ harness error:", e && e.stack || e);
   } finally {
