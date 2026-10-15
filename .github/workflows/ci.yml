@@ -31,3 +31,17 @@ jobs:
       - name: Docker image builds
         if: matrix.node == 22
         run: docker build -t luxora-ci .
+
+  browser:
+    # every page and console section in real Chrome under the production CSP:
+    # fails on a CSP violation, an uncaught exception, a console error or a failed load
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install
+        run: npm ci
+      - name: Real-browser check (headless Chrome)
+        run: CHROME_PATH=$(command -v google-chrome || command -v chromium) npm run check:browser

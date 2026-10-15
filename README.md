@@ -46,6 +46,8 @@ A production boot without a platform email transport logs a warning: password re
 
 **Carrier rates and labels (EasyPost).** A platform admin activates EasyPost (one API covering USPS, UPS, FedEx, DHL and ~100 more) with `POST /api/shipping/providers/config {"provider_id":"easypost","config":{"apiKey":"…","webhookSecret":"…"}}`; both values are sealed at rest. Each store sets its ship-from address (`PUT /api/admin/settings {"commerce":{"shipFrom":{"street1":…,"city":…,"zip":…,"country":…}}}`). Staff then rate a parcel (`POST /api/shipping/quote {"order_id":…,"parcel":{"weight_oz":…}}`) and buy one of the returned rates (`POST /api/shipping/label {"shipment_id":…,"rate_id":…}`). The label URL and tracking number come back, the customer is emailed, and the parcel is tracked. Point EasyPost's webhook at `https://<your-domain>/api/shipping/webhook/easypost`; only HMAC-signed tracker updates move a parcel. The shipping fee shown at checkout is still the store's own configured rate.
 
+**Browser check.** `npm run check:browser` boots a throwaway server and drives headless Chrome over the DevTools protocol through every storefront page and every section of the store and platform consoles, signed out and signed in. It fails on any CSP violation, uncaught exception, console error or failed script/stylesheet load (`CHROME_PATH` picks the binary). CI runs it on every push.
+
 ```bash
 docker compose up --build     # http://localhost:3000 (data/ and redis persisted as volumes)
 ```
