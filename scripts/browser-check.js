@@ -73,7 +73,9 @@ function problems(events) {
   return [...new Set(out)];
 }
 
-(async () => {
+/* test/shipping-ui.js drives Chrome with the same helpers */
+module.exports = { Tab, findChrome, problems };
+if (require.main === module) (async () => {
   const chrome = findChrome();
   if (!chrome) { console.error("No Chrome/Chromium found — set CHROME_PATH"); process.exit(2); }
   for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(DB + s, { force: true }); } catch (e) { } }

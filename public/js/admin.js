@@ -744,6 +744,7 @@ async function entityTable(key, opts = {}) {
         if (["status", "lifecycle"].includes(f.key)) v = `<span class="badge ${esc(v)}">${esc(v)}</span>`;
         return `<td>${v == null ? "" : v}</td>`;
       }).join("")}<td style="text-align:right;white-space:nowrap">
+        ${opts.rowExtra ? opts.rowExtra(r) : ""}
         ${def.perm.write.length ? `<button class="p-btn sm" data-edit="${key}" data-id="${esc(r[def.pk] ?? r.id)}">Edit</button>
         <button class="p-btn sm danger" data-del="${key}" data-id="${esc(r[def.pk] ?? r.id)}">✕</button>` : ""}</td></tr>`).join("")}</tbody></table></div></div>`;
 }
@@ -751,6 +752,7 @@ document.addEventListener("click", async e => {
   const nb = e.target.closest("[data-new]"), eb = e.target.closest("[data-edit]"), db = e.target.closest("[data-del]");
   const act = e.target.closest("[data-act]");
   try {
+    if (act && act.dataset.act === "ship-order") return shipModal(act.dataset.id, act.dataset.num);
     if (act && act.dataset.act === "admin-rec-process") {
       const r = await api("/admin/recurring/process", "POST");
       toast(`Processed ${r.processed.length} due shipment(s) · ${r.remaining} remaining`); render();
@@ -1722,7 +1724,7 @@ async function render() {
     else if (view === "products") body.innerHTML = await entityTable("product");
     else if (view === "gcatalog") { body.innerHTML = await vGcatalog(); wireGcatalog(); }
     else if (view === "skus") body.innerHTML = await entityTable("sku") + await entityTable("inventory") + await entityTable("warehouse") + await entityTable("variant_group");
-    else if (view === "orders") body.innerHTML = await entityTable("order");
+    else if (view === "orders") body.innerHTML = await entityTable("order", { rowExtra: r => ["processing", "shipped"].includes(r.status) ? `<button class="p-btn sm primary" data-act="ship-order" data-id="${esc(r.id)}" data-num="${esc(r.num)}">${r.status === "shipped" ? "Label" : "Ship"}</button>` : "" });
     else if (view === "returns") body.innerHTML = await entityTable("ret");
     else if (view === "rfqs") body.innerHTML = await entityTable("rfq");
     else if (view === "sellers") body.innerHTML = await entityTable("seller");
@@ -2091,15 +2093,22 @@ async function generateSitemap() {
 }
 
 /* ========== Shipping & Tracking UI ========== */
+/* the carrier account is platform-wide (Platform → Provider Registry); what a store sets is
+   its own ship-from address, the origin of every rate and label it buys */
 function renderShipping() {
   const html = `
     <div class="a-head">
       <h2>📦 Shipping & Tracking</h2>
-      <p class="a-sub">Integrate carriers, track shipments, generate labels</p>
+      <p class="a-sub">Carrier rates and labels, your ship-from address, and parcel tracking</p>
     </div>
     <div class="a-card">
-      <h3>Available Carriers</h3>
+      <h3>Carrier account</h3>
       <div id="shippingProviders"></div>
+    </div>
+    <div class="a-card">
+      <h3>Ship-from address</h3>
+      <p class="a-sub">Where your parcels leave from. Carriers price every rate from this address.</p>
+      <div id="shipFrom"></div>
     </div>
     <div class="a-card">
       <h3>Track Shipment</h3>
@@ -2116,29 +2125,51 @@ function renderShipping() {
   else { const a = $("#app"); if (a) a.innerHTML += html; }
   const tr = $("#shTrack"); if (tr) tr.onclick = () => trackShipment();
   loadShippingProviders();
+  loadShipFrom();
 }
 
 async function loadShippingProviders() {
+  const list = $("#shippingProviders");
   try {
     const res = await api("/shipping/providers");
-    const list = $("#shippingProviders");
     if (!res.providers?.length) {
-      list.innerHTML = `<p class="a-sub">Configure carrier API credentials in platform settings.</p>`;
+      list.innerHTML = `<p class="a-sub">No carrier is connected yet. A platform admin connects EasyPost in <b>Platform console → Platform → Extension → 🔌 Provider Registry</b>. Until then, orders ship at your flat shipping fee and labels are bought outside LUXORA.</p>`;
       return;
     }
-    let html = `<div class="a-table"><thead><tr>
-      <th>Provider</th><th>Type</th><th>Status</th>
-    </tr></thead><tbody>`;
-    res.providers.forEach(p => {
-      html += `<tr>
-        <td>${esc(p.name)}</td>
-        <td><code>${esc(p.carrier_type)}</code></td>
-        <td><span class="stat-badge ${p.status}">${esc(p.status)}</span></td>
-      </tr>`;
-    });
-    html += `</tbody></div>`;
-    list.innerHTML = html;
-  } catch (e) { console.error(e); }
+    list.innerHTML = `<div class="a-tablewrap"><table class="a-table"><thead><tr><th>Provider</th><th>Type</th><th>Status</th></tr></thead><tbody>${
+      res.providers.map(p => `<tr><td>${esc(p.name)}</td><td><code>${esc(p.carrier_type)}</code></td><td><span class="badge ${esc(p.status)}">${p.status === "active" ? "connected" : esc(p.status)}</span></td></tr>`).join("")
+    }</tbody></table></div>`;
+  } catch (e) { list.innerHTML = `<p class="a-sub">${esc(e.message)}</p>`; }
+}
+
+async function loadShipFrom() {
+  const box = $("#shipFrom");
+  if (!box) return;
+  let st;
+  try { st = (await api("/admin/settings")).settings; }
+  catch (e) { box.innerHTML = `<p class="a-sub">Only a store admin with Settings access can change the ship-from address.</p>`; return; }
+  const a = (st.commerce && st.commerce.shipFrom) || {};
+  const f = (k, label, ph) => `<label><span>${label}</span><input data-sf="${k}" value="${esc(a[k] || "")}" placeholder="${esc(ph || "")}"></label>`;
+  box.innerHTML = `<div class="p-form">
+    <div class="row">${f("name", "Contact name")}${f("company", "Company")}</div>
+    <div class="row">${f("street1", "Street *")}${f("street2", "Apt, suite, unit")}</div>
+    <div class="row3">${f("city", "City *")}${f("state", "State / region")}${f("zip", "Postal code *")}</div>
+    <div class="row3">${f("country", "Country * (2 letters)", (st.commerce && st.commerce.country) || "US")}${f("phone", "Phone")}${f("email", "Email")}</div>
+    <div style="display:flex;gap:8px"><button class="p-btn primary" id="sfSave">Save address</button>
+    ${a.street1 ? '<button class="p-btn" id="sfClear">Remove address</button>' : ""}</div></div>`;
+  $("#sfSave").onclick = async () => {
+    const addr = {};
+    box.querySelectorAll("[data-sf]").forEach(i => { addr[i.dataset.sf] = i.value.trim(); });
+    if (!addr.country) addr.country = (st.commerce && st.commerce.country) || "US";
+    try { await api("/admin/settings", "PUT", { commerce: { shipFrom: addr } }); toast("Ship-from address saved"); loadShipFrom(); }
+    catch (e) { toast(e.message); }
+  };
+  const clr = $("#sfClear");
+  if (clr) clr.onclick = async () => {
+    if (!confirm("Remove the ship-from address? Carrier rates need one.")) return;
+    try { await api("/admin/settings", "PUT", { commerce: { shipFrom: null } }); toast("Ship-from address removed"); loadShipFrom(); }
+    catch (e) { toast(e.message); }
+  };
 }
 
 async function trackShipment() {
@@ -2287,6 +2318,55 @@ async function vRides() {
    time would be unusable, and the engine's upsertZone validates exactly these fields.
    Editing re-sends the whole row: the upsert rewrites every column, so a partial body
    would silently flatten the multiplier and the coordinates back to their defaults. */
+/* buy a carrier label for one order: the labels it already has come first (a parcel gets
+   one label), then the parcel is weighed in, rated from the store's ship-from address, and
+   one of the returned rates is bought. Buying marks a processing order shipped. */
+async function shipModal(orderId, num) {
+  const m = modal(`<div class="p-modal-head"><h3>Ship order ${esc(num || orderId)}</h3><button data-mclose>✕</button></div><div id="shipBody"><p class="a-sub">Loading…</p></div>`);
+  const box = m.querySelector("#shipBody");
+  m.querySelector("[data-mclose]").onclick = () => { m.innerHTML = ""; };
+  const labelRow = l => `<tr><td>${esc(l.carrier || "")} ${esc(l.service || "")}</td><td><code>${esc(l.tracking_number)}</code></td><td><span class="badge ${esc(l.status)}">${esc(l.status)}</span></td><td>${/^https:\/\//.test(l.label_url || "") ? `<a href="${esc(l.label_url)}" target="_blank" rel="noopener">Print label ↗</a>` : ""}</td></tr>`;
+  let existing = [];
+  try { existing = (await api(`/shipping/orders/${encodeURIComponent(orderId)}/labels`)).labels || []; }
+  catch (e) { box.innerHTML = `<p class="a-sub">${esc(e.message)}</p>`; return; }
+  const form = () => {
+    box.innerHTML = `${existing.length ? `<p class="a-sub">This order already has ${existing.length === 1 ? "a label" : existing.length + " labels"}:</p>
+      <table class="p-table"><tbody>${existing.map(labelRow).join("")}</tbody></table>
+      <p class="a-sub" style="margin-top:12px">Buy another only if the order ships in more than one parcel.</p>` : ""}
+      <div class="p-form">
+        <div class="row"><label><span>Weight (oz) *</span><input id="shW" type="number" min="0.1" step="0.1" placeholder="e.g. 18 (16 oz = 1 lb)"></label>
+        <label><span>Length × width × height (in, optional)</span><span style="display:flex;gap:6px"><input id="shL" type="number" min="0" step="0.1" placeholder="L"><input id="shWd" type="number" min="0" step="0.1" placeholder="W"><input id="shH" type="number" min="0" step="0.1" placeholder="H"></span></label></div>
+        <button class="p-btn primary" id="shRate">Get rates</button>
+      </div><div id="shRates"></div>`;
+    box.querySelector("#shRate").onclick = rate;
+  };
+  const rate = async () => {
+    const weight = Number(box.querySelector("#shW").value);
+    if (!(weight > 0)) return toast("Enter the parcel weight in ounces");
+    const out = box.querySelector("#shRates");
+    out.innerHTML = `<p class="a-sub">Asking the carriers…</p>`;
+    let q;
+    try { q = await api("/shipping/quote", "POST", { order_id: Number(orderId), parcel: { weight_oz: weight, length: Number(box.querySelector("#shL").value) || undefined, width: Number(box.querySelector("#shWd").value) || undefined, height: Number(box.querySelector("#shH").value) || undefined } }); }
+    catch (e) { out.innerHTML = `<p class="a-sub">${esc(e.message)}${/ship-from/.test(e.message) ? ' — set it in <b>Shipping &amp; Tracking</b>.' : ""}</p>`; return; }
+    if (!q.rates.length) { out.innerHTML = `<p class="a-sub">No carrier offered a rate for this parcel.${q.messages && q.messages.length ? " " + esc(q.messages.join(" · ")) : ""}</p>`; return; }
+    out.innerHTML = `<table class="p-table" style="margin-top:12px"><thead><tr><th>Carrier</th><th>Service</th><th class="num">Days</th><th class="num">Price</th><th></th></tr></thead><tbody>${
+      q.rates.map(x => `<tr><td>${esc(x.carrier)}</td><td>${esc(x.service)}</td><td class="num">${x.days == null ? "—" : esc(x.days)}</td><td class="num">${esc(x.price.toFixed(2))} ${esc(x.currency || "")}</td><td><button class="p-btn sm primary" data-buy="${esc(x.id)}">Buy label</button></td></tr>`).join("")
+    }</tbody></table>`;
+    out.querySelectorAll("[data-buy]").forEach(b => b.onclick = async () => {
+      const x = q.rates.find(r => r.id === b.dataset.buy);
+      if (!confirm(`Buy a ${x.carrier} ${x.service} label for ${x.price.toFixed(2)} ${x.currency || ""}? Your carrier account is charged.`)) return;
+      out.querySelectorAll("[data-buy]").forEach(y => { y.disabled = true; });
+      try {
+        const l = await api("/shipping/label", "POST", { shipment_id: q.shipment_id, rate_id: x.id });
+        box.innerHTML = `<p><b>Label bought.</b> The order is marked shipped, and a customer with an account is emailed the tracking number.</p>
+          <table class="p-table"><tbody>${labelRow({ carrier: l.carrier, service: l.service, tracking_number: l.tracking_number, status: "pre_transit", label_url: l.label_url })}</tbody></table>`;
+        toast("Label bought · " + l.tracking_number);
+        render();
+      } catch (e) { toast(e.message); out.querySelectorAll("[data-buy]").forEach(y => { y.disabled = false; }); }
+    });
+  };
+  form();
+}
 function zoneModal(z) {
   const isEdit = !!z;
   const v = k => (z && z[k] != null) ? z[k] : "";

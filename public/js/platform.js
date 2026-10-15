@@ -806,6 +806,28 @@ async function vInvoices() {
       <td class="num">${money(i.amount)}</td><td><span class="badge ${esc(i.status)}">${esc(i.status)}</span></td><td class="p-tag">${esc(i.issued_at)}</td>
       <td>${i.status !== "paid" ? `<button class="p-btn sm primary" data-payinv="${i.id}">Collect</button>` : "✓"}</td></tr>`).join("")}</tbody></table></div>`;
 }
+/* live carrier accounts: the credentials every store's rates and labels use. Keys are
+   sealed on save and never come back — the form shows only whether one is on file, and a
+   blank field keeps the stored value. */
+async function vCarrierAccounts() {
+  const { providers, public_url } = await api("/platform/shipping/providers").catch(() => ({ providers: [] }));
+  const ep = providers.find(p => p.provider_id === "easypost");
+  if (!ep) return "";
+  const k = ep.keys || {};
+  const hook = (public_url || location.origin) + "/api/shipping/webhook/easypost";
+  const onFile = has => has ? '<span class="badge active">on file</span>' : '<span class="badge inactive">not set</span>';
+  return `<div class="p-panel" id="carrierAccounts"><h2>🚚 Carrier account · EasyPost <span class="badge ${esc(ep.status)}">${ep.status === "active" ? "connected" : "not connected"}</span></h2>
+    <p class="p-tag">One EasyPost account gives every store live rates, labels and tracking for USPS, UPS, FedEx, DHL and ~100 more carriers. Get the keys at <b>easypost.com → Account → API Keys</b> (a <code>EZTK…</code> test key buys free sample labels). Each store then sets its own ship-from address in <b>Store console → Shipping &amp; Tracking</b>.</p>
+    <div class="p-form">
+      <div class="row"><label><span>API key ${onFile(k.apiKey)}</span><input id="epKey" type="password" autocomplete="off" placeholder="${k.apiKey ? "•••• leave blank to keep" : "EZAK… or EZTK…"}"></label>
+      <label><span>Webhook secret ${onFile(k.webhookSecret)}</span><input id="epSecret" type="password" autocomplete="off" placeholder="${k.webhookSecret ? "•••• leave blank to keep" : "the secret you type into EasyPost's webhook form"}"></label></div>
+      <label><span>Webhook URL — add it in EasyPost → Account → Webhooks, with the secret above</span><input id="epHook" readonly value="${esc(hook)}"></label>
+      ${!public_url && /localhost|127\.0\.0\.1/.test(location.hostname) ? '<p class="p-tag">EasyPost can\'t reach localhost. Locally, tracking updates won\'t arrive unless you expose the server with a tunnel; rates and labels still work. In production set <code>LX_PUBLIC_URL</code>.</p>' : ""}
+      <div style="display:flex;gap:8px"><button class="p-btn primary" id="epSave">Save</button>
+      <button class="p-btn" id="epCopy">Copy webhook URL</button>
+      ${ep.status === "active" || k.apiKey ? '<button class="p-btn danger" id="epDisconnect">Disconnect</button>' : ""}</div>
+    </div></div>`;
+}
 async function vProviders() {
   const { custom, availability } = await api("/platform/custom-providers");
   const { providerKinds } = await api("/meta");
@@ -824,6 +846,7 @@ async function vProviders() {
   };
   return `
   <p class="p-tag" style="margin:0 0 14px">Provider catalogue is entity data — provider_def + provider_availability (countries) + country + tax_mode. Edit here or via the entity APIs; every storefront and checkout reads these live.</p>
+  ${await vCarrierAccounts()}
   ${kindTable("payment", "Payment providers")}
   <div class="p-grid2">${kindTable("shipping", "Shipping carriers")}${kindTable("notification", "Notification channels")}</div>
   <div class="p-panel"><h2>Custom providers (${custom.length})</h2>
@@ -1498,6 +1521,19 @@ document.addEventListener("click", async e => {
       }
       return { valid: true };
     };
+    if (e.target.id === "epSave") {
+      const apiKey = $("#epKey").value.trim(), webhookSecret = $("#epSecret").value.trim();
+      if (!apiKey && !webhookSecret) return toast("Enter the API key or the webhook secret to save", "error");
+      if (apiKey && !/^EZ[AT]K/.test(apiKey) && !confirm("EasyPost keys start with EZAK (live) or EZTK (test). Save this key anyway?")) return;
+      const r = await api("/shipping/providers/config", "POST", { provider_id: "easypost", config: { apiKey, webhookSecret } });
+      toast(r.provider && r.provider.status === "active" ? "EasyPost connected — every store can rate and buy labels" : "Saved — add the API key to connect"); render();
+    }
+    if (e.target.id === "epCopy") { const h = $("#epHook"); h.select(); try { await navigator.clipboard.writeText(h.value); toast("Webhook URL copied"); } catch (x) { toast("Select the URL and copy it"); } }
+    if (e.target.id === "epDisconnect") {
+      if (!confirm("Disconnect EasyPost? The stored keys are deleted and no store can rate or buy labels until it is connected again.")) return;
+      await api("/platform/shipping/providers/easypost/disconnect", "POST", {});
+      toast("EasyPost disconnected"); render();
+    }
     if (e.target.id === "cpSave") {
       const kind = $("#cpKind").value;
       const id = $("#cpId").value.trim();

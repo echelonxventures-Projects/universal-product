@@ -149,6 +149,13 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
       ok((await P("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" })).status === 200, "platform admin signs in");
       const cfg = await P("/api/shipping/providers/config", "POST", { provider_id: "easypost", config: { apiKey: "EZTK_live_key", webhookSecret: "ep_whsec" } });
       ok(cfg.status === 200 && cfg.body.provider.status === "active" && cfg.body.provider.configured && !JSON.stringify(cfg.body).includes("EZTK_live_key"), "EasyPost is activated with an API key that is never echoed back", cfg.body);
+      const listing = await P("/api/platform/shipping/providers");
+      const epRow = (listing.body.providers || []).find(x => x.provider_id === "easypost") || {};
+      ok(listing.status === 200 && epRow.keys && epRow.keys.apiKey === true && epRow.keys.webhookSecret === true && !JSON.stringify(listing.body).includes("EZTK_live_key") && !JSON.stringify(listing.body).includes("ep_whsec"), "the platform console sees which carrier keys are on file, never the keys", listing.body);
+      ok((await A("/api/platform/shipping/providers?store=luxora")).status >= 401 && (await A("/api/platform/shipping/providers/easypost/disconnect?store=luxora", "POST", {})).status >= 401, "a store admin can neither list nor disconnect the platform carrier account");
+      /* a save with only the webhook secret keeps the key on file */
+      await P("/api/shipping/providers/config", "POST", { provider_id: "easypost", config: { apiKey: "", webhookSecret: "ep_whsec" } });
+      ok((await P("/api/platform/shipping/providers")).body.providers.find(x => x.provider_id === "easypost").status === "active", "saving with a blank key keeps the stored key");
       const stored = db.get("SELECT config FROM shipping_providers WHERE provider_id='easypost'");
       ok(stored && !stored.config.includes("EZTK_live_key") && !stored.config.includes("ep_whsec"), "the carrier key and webhook secret are sealed at rest");
       const shopper = mk(); await shopper("/api/session?store=luxora");
@@ -156,6 +163,13 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
       const noFrom = await A("/api/shipping/quote?store=luxora", "POST", { order_id: row().order_id, parcel: { weight_oz: 10 } });
       ok(noFrom.status === 400 && /ship-from/.test(noFrom.body.error), "without a ship-from address the store is told to set one", noFrom.body);
       ok((await A("/api/admin/settings?store=luxora", "PUT", { commerce: { shipFrom: { name: "LUXORA Warehouse", street1: "400 Pine St", city: "Seattle", state: "WA", zip: "98101", country: "US" } } })).status === 200, "the store saves its ship-from address");
+      const badFrom = await A("/api/admin/settings?store=luxora", "PUT", { commerce: { shipFrom: { street1: "1 Nowhere", city: "Seattle", country: "US" } } });
+      ok(badFrom.status === 400 && /postal code/.test(badFrom.body.error), "a ship-from address without a postal code is refused", badFrom.body);
+      ok((await A("/api/admin/settings?store=luxora", "PUT", { commerce: { shipFrom: { street1: "1 Nowhere", city: "Seattle", zip: "98101", country: "USA" } } })).status === 400, "a ship-from country must be a 2-letter code");
+      await A("/api/admin/settings?store=luxora", "PUT", { commerce: { shipFrom: { street1: "9 Dock Rd", street2: "Bay 4", city: "Tacoma", zip: "98402", country: "us", evil: "x" } } });
+      await A("/api/admin/settings?store=luxora", "PUT", { commerce: { shipFrom: { name: "LUXORA Warehouse", street1: "400 Pine St", city: "Seattle", state: "WA", zip: "98101", country: "US" } } });
+      const savedFrom = (await A("/api/admin/settings?store=luxora")).body.settings.commerce.shipFrom;
+      ok(savedFrom.street1 === "400 Pine St" && !("street2" in savedFrom) && !("evil" in savedFrom), "a new ship-from address replaces the old one whole, keeping only address fields", savedFrom);
       const before = calls.length;
       const q = await A("/api/shipping/quote?store=luxora", "POST", { order_id: row().order_id, parcel: { weight_oz: 18, length: 10, width: 8, height: 4 } });
       const qc = calls.slice(before).find(c => c.url.endsWith("/v2/shipments"));
@@ -170,6 +184,13 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
       ok(bc && bc.json.rate.id === "rate_usps", "the chosen rate is the one bought", bc && bc.json);
       const twice = await A("/api/shipping/label?store=luxora", "POST", { shipment_id: "shp_1", rate_id: "rate_ups" });
       ok(twice.status === 409 && calls.filter(c => c.url.endsWith("/buy")).length === 1, "a shipment gets one label", twice.status);
+      ok(db.get("SELECT status FROM orders WHERE id=?", row().order_id).status === "shipped", "buying the label marks the order shipped");
+      const labels = await A("/api/shipping/orders/" + row().order_id + "/labels?store=luxora");
+      ok(labels.status === 200 && labels.body.labels.length === 1 && labels.body.labels[0].tracking_number === "9400111899223197428490" && /^https:/.test(labels.body.labels[0].label_url), "the order's label is listed for reprinting", labels.body);
+      ok((await shopper("/api/shipping/orders/" + row().order_id + "/labels?store=luxora")).status === 403, "a shopper cannot list an order's labels");
+      const fresh = await buy();
+      const unpaid = db.get("SELECT id, status FROM orders WHERE num=?", fresh.co.body.order.num);
+      ok(unpaid && unpaid.status === "pending_payment" && ((await A("/api/shipping/quote?store=luxora", "POST", { order_id: unpaid.id, parcel: { weight_oz: 10 } })).status === 409), "an unpaid order cannot be rated for shipping", unpaid);
       const tr = db.get("SELECT * FROM package_tracking WHERE tracking_number='9400111899223197428490'");
       ok(tr && tr.tenant_id === 1 && tr.order_id === row().order_id && tr.status === "pre_transit", "the parcel is registered for tracking against the order", tr);
 
@@ -179,6 +200,10 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
       const send = h => fetch(BASE + "/api/shipping/webhook/easypost", { method: "POST", headers: { "Content-Type": "application/json", "X-Hmac-Signature": h }, body: raw });
       ok((await send(sig("wrong"))).status === 401 && db.get("SELECT status FROM package_tracking WHERE id=?", tr.id).status === "pre_transit", "an unsigned or mis-signed tracking webhook changes nothing");
       ok((await send(sig("ep_whsec"))).status === 200 && db.get("SELECT status FROM package_tracking WHERE id=?", tr.id).status === "in_transit", "a signed tracker update advances the parcel");
+      const disc = await P("/api/platform/shipping/providers/easypost/disconnect", "POST", {});
+      const after = db.get("SELECT config, status FROM shipping_providers WHERE provider_id='easypost'");
+      ok(disc.status === 200 && after.status === "inactive" && after.config === "{}", "disconnecting deletes the sealed keys and takes the carrier out of service", after);
+      ok((await A("/api/shipping/quote?store=luxora", "POST", { order_id: row().order_id, parcel: { weight_oz: 10 } })).status === 501, "a disconnected carrier gives no rates");
     }
 
     console.log("▸ AMOUNTS IN CURRENCIES WITHOUT MINOR UNITS");
