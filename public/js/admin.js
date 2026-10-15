@@ -1869,6 +1869,7 @@ document.addEventListener("click", e => { const close = e.target.closest("[data-
         <button class="p-btn primary" style="width:100%">Sign in</button></form>
         <p class="p-err hidden" id="lfErr" style="color:var(--p-red);font-size:13px;margin:10px 0 0"></p>
         <p class="hint" id="lfHint"></p>
+        <p class="hint"><a href="/reset.html${TT ? "?store=" + encodeURIComponent(TT.tenant.slug) : ""}">Forgot your password?</a></p>
         <p class="hint">Store console for ${esc(TT ? TT.tenant.slug : "this store")} · Platform owner? <a href="/platform.html">Platform console →</a> · <a href="/index.html">← Storefront</a></p></div></div>`;
       const sw = $("#swAcct"); if (sw) sw.onclick = async e => { e.preventDefault(); await api("/auth/logout", "POST"); boot(); };
       api("/hint").then(h => { const el = $("#lfHint"); if (el && h.demo && h.email) el.innerHTML = "This store's admin: <code>" + esc(h.email) + "</code>" + (h.password ? " / <code>" + esc(h.password) + "</code>" : ""); }).catch(() => { });

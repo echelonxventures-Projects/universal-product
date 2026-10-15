@@ -54,7 +54,7 @@ CREATE TABLE users (
 CREATE TABLE sessions (
   sid TEXT PRIMARY KEY, user_id INTEGER REFERENCES users(id),
   created_at TEXT NOT NULL DEFAULT (datetime('now')), expires_at TEXT NOT NULL
-, csrf TEXT, uid TEXT);
+, csrf TEXT, auth_at TEXT, uid TEXT);
 CREATE TABLE tenant_state (
   sid TEXT NOT NULL, tenant_id INTEGER NOT NULL, zip TEXT NOT NULL DEFAULT '98109',
   gift_balance REAL NOT NULL DEFAULT 0, coupon TEXT DEFAULT '', uid TEXT,
@@ -1733,6 +1733,11 @@ CREATE TABLE approvals (
 CREATE INDEX ix_approvals ON approvals(tenant_id, status, kind);
 CREATE UNIQUE INDEX ux_composition_key ON composition_ledger(key);
 CREATE INDEX ix_products_source_global ON products(tenant_id, source_global_id);
+CREATE TABLE password_resets (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, user_id INTEGER NOT NULL,
+  token_hash TEXT NOT NULL UNIQUE, expires_at INTEGER NOT NULL, used_at TEXT, ip TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX ix_pwreset_user ON password_resets(user_id, created_at);
 CREATE UNIQUE INDEX ux_tenants_uid ON tenants(uid);
 CREATE TRIGGER trg_tenants_uid AFTER INSERT ON tenants
                BEGIN UPDATE tenants SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;

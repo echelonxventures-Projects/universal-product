@@ -120,6 +120,73 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
       ok(!mail.inbox.slice(b3).some(x => x.to.some(t => t.includes("nobody-here"))), "no email goes to an address with no account");
     }
 
+    console.log("▸ A FORGOTTEN PASSWORD CAN BE RESET FROM THE MAILBOX");
+    {
+      const G = mk(); await G("/api/session?store=luxora");
+      await G("/api/auth/register?store=luxora", "POST", { name: "Ray Reset", email: "ray@example.com", password: "Old-Password-77" });
+      const other = mk(); await other("/api/session?store=luxora");
+      await other("/api/auth/login?store=luxora", "POST", { email: "ray@example.com", password: "Old-Password-77" });
+      ok((await other("/api/session?store=luxora")).body.user, "the account is signed in on a second device");
+
+      const A = mk(); await A("/api/session?store=luxora");
+      const b0 = mail.inbox.length;
+      const known = await A("/api/auth/password/forgot?store=luxora", "POST", { email: "ray@example.com" });
+      const unknown = await A("/api/auth/password/forgot?store=luxora", "POST", { email: "ghost@example.com" });
+      ok(known.status === 200 && unknown.status === 200 && known.body.message === unknown.body.message, "the answer is identical for a known and an unknown email", [known.body, unknown.body]);
+      ok(!/[0-9a-f]{64}/.test(JSON.stringify(known.body)), "the response never carries the token");
+      const m = await until(() => mail.inbox.slice(b0).find(x => x.to.some(t => t.includes("ray@example.com"))));
+      const link = m && (/(http\S+reset\.html\S+)/.exec(bodyOf(m)) || [])[1];
+      const token = link && new URL(link).searchParams.get("token");
+      ok(!!token && /^[0-9a-f]{64}$/.test(token), "the reset link arrives by email", m && bodyOf(m));
+      await sleep(200);
+      ok(!mail.inbox.slice(b0).some(x => x.to.some(t => t.includes("ghost"))), "nothing is sent for an email with no account");
+      const { DatabaseSync } = require("node:sqlite");
+      const peek = new DatabaseSync(DB, { readOnly: true });
+      const stored = peek.prepare("SELECT token_hash FROM password_resets ORDER BY id DESC LIMIT 1").get();
+      peek.close();
+      ok(stored && stored.token_hash !== token && stored.token_hash.length === 64, "only a hash of the token is stored");
+
+      const hostile = await new Promise(resolve => {
+        const body = JSON.stringify({ email: "ray@example.com" });
+        const rq = http.request({ host: "127.0.0.1", port: PORT, path: "/api/auth/password/forgot?store=luxora", method: "POST",
+          headers: { Host: "evil.example", "Content-Type": "application/json", "Content-Length": Buffer.byteLength(body), Origin: "http://evil.example",
+            Cookie: [...A.jar].map(x => x[0] + "=" + x[1]).join("; "), "x-csrf": A.jar.get("azc") || "" } }, r => { r.resume(); r.on("end", () => resolve({ status: r.statusCode })); });
+        rq.on("error", () => resolve({ status: 0 })); rq.end(body);
+      });
+      const hm = await until(() => mail.inbox.slice(b0 + 1).find(x => x.to.some(t => t.includes("ray@example.com"))));
+      ok(!hm || !bodyOf(hm).includes("evil.example"), "a forged Host header never becomes the link in the email", hm && bodyOf(hm));
+      ok(hostile.status === 200 && hm && !/https?:/.test(bodyOf(hm)), "…with an untrusted Host the email carries a code, not a link", hm && bodyOf(hm));
+      const b5 = mail.inbox.length;
+      await A("/api/auth/password/forgot?store=luxora", "POST", { email: "ray@example.com" });
+      const nm = await until(() => mail.inbox.slice(b5).find(x => x.to.some(t => t.includes("ray@example.com"))));
+      const newer = nm && (/token=([0-9a-f]{64})/.exec(bodyOf(nm)) || [])[1];
+
+      const weak = await A("/api/auth/password/reset?store=luxora", "POST", { token: newer, password: "short" });
+      ok(weak.status === 422, "the password policy still applies", weak.status);
+      const stale = await A("/api/auth/password/reset?store=luxora", "POST", { token, password: "Brand-New-Pass-88" });
+      ok(stale.status === 400, "requesting a new link retires the older one", stale.status);
+      const reuse = await A("/api/auth/password/reset?store=luxora", "POST", { token: newer, password: "Old-Password-77" });
+      ok(reuse.status === 422, "the current password cannot be chosen again", reuse.status);
+      const b1 = mail.inbox.length;
+      const good = await A("/api/auth/password/reset?store=luxora", "POST", { token: newer, password: "Brand-New-Pass-88" });
+      ok(good.status === 200 && good.body.ok, "a valid link sets the new password", good.body);
+      ok(!(await other("/api/session?store=luxora")).body.user, "every session the account held is signed out");
+      const again = await A("/api/auth/password/reset?store=luxora", "POST", { token: newer, password: "Another-Pass-99" });
+      ok(again.status === 400, "a link works once", again.status);
+      const oldPw = await A("/api/auth/login?store=luxora", "POST", { email: "ray@example.com", password: "Old-Password-77" });
+      const newPw = await A("/api/auth/login?store=luxora", "POST", { email: "ray@example.com", password: "Brand-New-Pass-88" });
+      ok(oldPw.status === 401 && newPw.status === 200, "the old password stops working and the new one signs in", [oldPw.status, newPw.status]);
+      ok(!!(await until(() => mail.inbox.slice(b1).find(x => header(x, "Subject") && /password was changed/.test(header(x, "Subject"))))), "the account holder is told the password changed");
+      const elsewhere = await A("/api/auth/password/reset?store=aurum", "POST", { token: "f".repeat(64), password: "Brand-New-Pass-88" });
+      ok(elsewhere.status === 400, "a bogus token is refused", elsewhere.status);
+      let throttled = 0;
+      const b2 = mail.inbox.length;
+      for (let i = 0; i < 5; i++) await A("/api/auth/password/forgot?store=luxora", "POST", { email: "ray@example.com" });
+      await sleep(400);
+      throttled = mail.inbox.slice(b2).filter(x => x.to.some(t => t.includes("ray@example.com"))).length;
+      ok(throttled === 0, "after three reset emails in 15 minutes, further requests send nothing", throttled);
+    }
+
     console.log("▸ DELIVERY TRANSPORTS");
     {
       const mailer = require("../lib/mailer.js");

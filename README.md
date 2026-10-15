@@ -29,6 +29,19 @@ The runtime needs **Node ≥ 22.13** — `lib/db.js` uses the built-in `node:sql
 
 Behind a reverse proxy or load balancer, set `LX_TRUST_PROXY=1` so per-client rate limits and audit IPs use `X-Forwarded-For` (without it the header is ignored, since a client could forge it). Request bodies are capped at 1 MB (413 beyond).
 
+**Email and SMS.** Sign-in codes, magic links, password resets, order confirmations and shipping notices go to the person's own email/phone. Each store can use its own live notification gateway (SMTP, SendGrid, Resend, Twilio); every other store uses the platform default:
+
+| Variable | Meaning |
+|---|---|
+| `LX_MAIL_PROVIDER` | `smtp`, `sendgrid` or `resend` |
+| `LX_MAIL_FROM` | sender, e.g. `Shop <no-reply@shop.example>` |
+| `LX_SMTP_URL` | `smtps://user:pass@host:465` or `smtp://user:pass@host:587` (STARTTLS is required on 587; `LX_SMTP_ALLOW_PLAINTEXT=1` only for a local relay) |
+| `LX_MAIL_API_KEY` | API key for `sendgrid` / `resend` |
+| `LX_SMS_PROVIDER=twilio`, `LX_SMS_ACCOUNT_SID`, `LX_SMS_AUTH_TOKEN`, `LX_SMS_FROM` | SMS codes |
+| `LX_PUBLIC_URL` | the address emailed links point at, e.g. `https://shop.example` (else the store's own domain). Links are never built from the request's `Host` header in production. |
+
+A production boot without a platform email transport logs a warning: password resets then only work for stores that configured their own gateway.
+
 ```bash
 docker compose up --build     # http://localhost:3000 (data/ and redis persisted as volumes)
 ```

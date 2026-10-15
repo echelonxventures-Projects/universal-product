@@ -213,6 +213,7 @@ function renderModals() {
         <input id="authEmail" type="email" placeholder="Email" required>
         <input id="authPass" type="password" placeholder="Password" required minlength="6">
         <button class="btn-yellow w100" id="authSubmit">${esc(T("signIn"))}</button>
+        <p class="m-help auth-forgot"><a href="reset.html">Forgot your password?</a></p>
         <div class="m-or"><span>or</span></div>
         <button type="button" class="btn-white w100" data-act="auth-toggle">Create an account</button>
       </form>`}</div></div></div>
@@ -622,6 +623,41 @@ async function pageCheckout() {
   };
 }
 
+/* ============ PASSWORD RESET ============ */
+/* two steps on one page: without a token it asks for the email and sends the link; the
+   emailed link carries the token, and the page then asks for the new password */
+function pageReset() {
+  const main = $("#page");
+  const token = new URLSearchParams(location.search).get("token") || "";
+  document.title = "Reset password — " + CFG.brand.name;
+  main.innerHTML = `<div class="reset-wrap" style="max-width:420px;margin:40px auto;padding:0 16px">
+    <h2>${token ? "Choose a new password" : "Forgot your password?"}</h2>
+    <form id="resetForm" novalidate>
+      ${token ? `<input id="rpPass" type="password" placeholder="New password" required autocomplete="new-password">
+        <input id="rpPass2" type="password" placeholder="Repeat the new password" required autocomplete="new-password">`
+      : `<p class="m-help">Enter the email you shop with and we'll send you a link to choose a new password.</p>
+        <input id="rpEmail" type="email" placeholder="Email" required autocomplete="email">`}
+      <button class="btn-yellow w100" id="rpSubmit">${token ? "Save new password" : "Send reset link"}</button>
+    </form>
+    <p class="m-help" id="rpMsg" role="status"></p></div>`;
+  $("#resetForm").onsubmit = async e => {
+    e.preventDefault();
+    const btn = $("#rpSubmit"); btn.disabled = true;
+    try {
+      if (token) {
+        if ($("#rpPass").value !== $("#rpPass2").value) throw new Error("The two passwords don't match");
+        await api("/auth/password/reset", "POST", { token, password: $("#rpPass").value });
+        history.replaceState(null, "", "reset.html");
+        main.querySelector(".reset-wrap").innerHTML = `<h2>Password changed</h2><p class="m-help">Every device that was signed in has been signed out. Sign in with your new password.</p><button class="btn-yellow w100" data-act="signin-open">Sign in</button>`;
+      } else {
+        const r = await api("/auth/password/forgot", "POST", { email: $("#rpEmail").value.trim() });
+        $("#rpMsg").textContent = r.message || "Check your email for the reset link.";
+        btn.disabled = false;
+      }
+    } catch (err) { btn.disabled = false; $("#rpMsg").textContent = "⚠️ " + err.message; }
+  };
+}
+
 /* ============ ORDERS ============ */
 async function pageOrders() {
   const main = $("#page");
@@ -971,6 +1007,7 @@ async function initPage() {
     else if (p === "gift") await pageGift();
     else if (p === "cs") pageCS();
     else if (p === "registry") pageRegistry();
+    else if (p === "reset") pageReset();
   } catch (e) {
     console.error(e);
     $("#page").innerHTML = `<div class="r-empty"><h3>Something went wrong</h3><p>${esc(e.message)}</p><button class="btn-yellow" data-act="reload">Retry</button></div>`;
