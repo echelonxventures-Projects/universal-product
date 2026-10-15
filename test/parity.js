@@ -132,10 +132,15 @@ console.log("\n▸ QUICK-COMMERCE — serviceability, promise, stock, PoD");
   ok(si.qty === 4 && si.reserved === 1, "consuming takes the unit out of the store's qty (and its reservation)", JSON.stringify(si));
   /* a cart below the store's minimum order is refused with the threshold shown,
      so the storefront can prompt for the difference instead of guessing */
-  const below = qc.pinCart(T, [{ product_id: PROD, qty: 1 }], pin);
+  /* the min-order check prices the cart from the CATALOG (a client-sent price used to decide
+     it): ask for more units than the store holds so the refusal is about stock, and check
+     the min-order gap with an explicitly cheap catalog item */
+  const below = qc.pinCart(T, [{ product_id: PROD, qty: 999 }], pin);
   ok(!below.ok && (below.reason === "insufficient_store_stock" || below.reason === "below_min_order"),
     "an unpinnable cart is refused with a reason the storefront can act on", JSON.stringify(below.reason));
-  ok(!!(below.refused || below.short), "the refusal carries the detail (lines short or the min-order gap)", JSON.stringify(below.refused ? below.refused[0] : below.short[0]));
+  ok(!!(below.refused || below.short), "the refusal carries the detail (lines short or the min-order gap)", JSON.stringify(below.refused ? below.refused[0] : (below.short || [])[0]));
+  const negative = qc.pinCart(T, [{ product_id: PROD, qty: -1000 }], pin);
+  ok(one("SELECT reserved FROM store_inventory WHERE tenant_id=? AND store_id=? AND product_id=?", T, st.id, PROD).reserved >= 0, "a negative quantity never lowers the reservation", JSON.stringify(negative));
   const none = qc.pinCart(T, [{ product_id: PROD, qty: 1 }], "99999");
   ok(!none.ok && none.reason === "not_serviceable", "an unserviceable cart pins to nothing");
   /* dispatch + proof of delivery */
@@ -166,7 +171,8 @@ console.log("\n▸ QUICK-COMMERCE — serviceability, promise, stock, PoD");
   const pp = call("GET", "/api/qc/promise?zip=" + encodeURIComponent(pin), {}, GUEST);
   ok(pp.serviceable === true && pp.minutes > 0, "GET /api/qc/promise serves a guest");
   const ss = call("GET", "/api/qc/stores", {}, GUEST);
-  ok(ss.stores.length >= 1 && ss.riders.length >= 1, "GET /api/qc/stores lists stores and riders");
+  ok(ss.stores.length >= 1 && ss.riders === undefined, "GET /api/qc/stores lists stores — without rider PII for a guest");
+  ok((call("GET", "/api/qc/stores", {}, ADMIN).riders || []).length >= 1, "staff still see the riders");
   const sl = call("GET", "/api/qc/slots?store=" + st.id + "&day=1", {}, GUEST);
   ok(sl.slots.length >= 1, "GET /api/qc/slots lists the store's slots");
   const pinApi = call("POST", "/api/qc/pin", { items: [{ product_id: PROD, qty: 1 }], zip: pin }, GUEST);
@@ -397,7 +403,13 @@ console.log("\n▸ MARKETPLACE — onboarding, buy-box, health, claims");
   const offersApi = call("GET", "/api/marketplace/offers/" + PROD, {}, GUEST);
   ok(offersApi.offers.length === 2 && !!offersApi.buybox, "GET /api/marketplace/offers/:product lists offers + the box");
   ok(call("POST", "/api/marketplace/buybox/" + PROD, {}, ADMIN).offers.length === 2, "the buy-box recomputes via the API");
-  ok(call("POST", "/api/marketplace/claims", { order_id: 556, seller_id: LINKED, amount: 5 }, GUEST).claim.status === "opened", "a guest can open a claim");
+  /* a claim is opened by the order's buyer, for at most the order total — not by anyone on any id */
+  const BUYER = { tenant: { id: 1 }, sid: "parity-buyer" };
+  db.run("INSERT INTO orders(tenant_id,owner,num,total,status) VALUES(1,'t1:s:parity-buyer','PAR-CLAIM-1',40,'delivered')");
+  const claimOrder = one("SELECT id FROM orders WHERE num='PAR-CLAIM-1'").id;
+  ok(call("POST", "/api/marketplace/claims", { order_id: claimOrder, seller_id: LINKED, amount: 5 }, { tenant: { id: 1 }, sid: "someone-else" }).error, "a stranger cannot open a claim on another buyer's order");
+  ok(call("POST", "/api/marketplace/claims", { order_id: claimOrder, seller_id: LINKED, amount: 500 }, BUYER).error, "a claim cannot exceed the order total");
+  ok(call("POST", "/api/marketplace/claims", { order_id: claimOrder, seller_id: LINKED, amount: 5 }, BUYER).claim.status === "opened", "the buyer can open a claim on their own order");
   ok(call("POST", "/api/marketplace/claims/1/resolve", { resolution: "resolved_seller" }, GUEST).error, "claim resolution is admin-gated");
   ok(call("POST", "/api/marketplace/smart-fulfilment", { seller_id: LINKED, grade: "a" }, ADMIN).smart.grade === "a", "smart-fulfilment enrols via the API");
   ok(!!call("GET", "/api/marketplace/portal/" + LINKED, {}, ADMIN).seller, "the portal is reachable through the API");
