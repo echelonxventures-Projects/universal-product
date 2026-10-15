@@ -138,7 +138,7 @@ CREATE TABLE payments (
   gateway TEXT NOT NULL, method TEXT, amount REAL NOT NULL, currency TEXT,
   fee REAL DEFAULT 0, status TEXT NOT NULL DEFAULT 'initiated',
   txn_ref TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, uid TEXT);
+, provider_payment_id TEXT, live INTEGER DEFAULT 0, uid TEXT);
 CREATE TABLE custom_providers (
   id INTEGER PRIMARY KEY AUTOINCREMENT, scope TEXT NOT NULL DEFAULT 'platform',
   tenant_id INTEGER, kind TEXT NOT NULL, manifest TEXT NOT NULL,
@@ -1738,6 +1738,7 @@ CREATE TABLE password_resets (
   token_hash TEXT NOT NULL UNIQUE, expires_at INTEGER NOT NULL, used_at TEXT, ip TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')));
 CREATE INDEX ix_pwreset_user ON password_resets(user_id, created_at);
+CREATE INDEX ix_payments_ref ON payments(gateway, txn_ref);
 CREATE UNIQUE INDEX ux_tenants_uid ON tenants(uid);
 CREATE TRIGGER trg_tenants_uid AFTER INSERT ON tenants
                BEGIN UPDATE tenants SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;

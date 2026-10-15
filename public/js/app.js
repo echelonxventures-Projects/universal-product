@@ -611,6 +611,7 @@ async function pageCheckout() {
         carrier: carrier ? carrier.id : "house-std",
         contexts: Object.fromEntries($$("[data-ctx]").filter(x => x.value).map(x => [x.dataset.ctx, x.value]))
       });
+      if (r.order.payment_redirect && /^https:\/\//.test(r.order.payment_redirect)) { location.href = r.order.payment_redirect; return; }
       await refreshSession(); renderHeader(); wireChrome();
       main.innerHTML = `
       <div class="oco"><div class="oco-card"><div class="oco-check">✓</div><div><h2>${esc(T("orderPlaced"))}, ${esc($("#coName").value.split(" ")[0])}!</h2>

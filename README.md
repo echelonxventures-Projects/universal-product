@@ -42,6 +42,8 @@ Behind a reverse proxy or load balancer, set `LX_TRUST_PROXY=1` so per-client ra
 
 A production boot without a platform email transport logs a warning: password resets then only work for stores that configured their own gateway.
 
+**Card payments (Stripe).** In *Console → Payments*, enable Stripe in `live` mode with the **secret key** and the **webhook signing secret**. Checkout creates a Stripe-hosted Checkout session and sends the shopper to it, so the server never sees a card. The order waits as `pending_payment` until Stripe's signed webhook arrives. In the Stripe dashboard, point a webhook at `https://<your-domain>/api/webhooks/inbound/stripe?store=<slug>` for the events `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed` and `checkout.session.expired`. Only a correctly signed event for the exact order amount captures a payment; an expired session cancels the order and returns any store credit it used. Refunds from *Console → Payments* are issued through Stripe, and a refund Stripe refuses leaves the payment captured. Other gateways have their create-payment call wired but no hosted page or webhook mapping yet: their payments stay `pending` until confirmed, and are never marked captured on creation.
+
 ```bash
 docker compose up --build     # http://localhost:3000 (data/ and redis persisted as volumes)
 ```
