@@ -2161,7 +2161,7 @@ CREATE TABLE package_tracking (
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now')),
     uid TEXT
-  , tenant_id INTEGER);
+  , tenant_id INTEGER, label_url TEXT);
 CREATE INDEX ix_package_tracking_tenant ON package_tracking(tenant_id, tracking_number);
 CREATE TABLE shipping_quotes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -2176,4 +2176,4 @@ CREATE TABLE shipping_quotes (
     status TEXT DEFAULT 'pending',
     created_at TEXT DEFAULT (datetime('now')),
     uid TEXT
-  );
+  , tenant_id INTEGER, shipment_ref TEXT, rate_ref TEXT, carrier TEXT);

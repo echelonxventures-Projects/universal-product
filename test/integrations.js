@@ -141,6 +141,46 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
     const twice = await A("/api/admin/payments/" + pid + "/refund?store=luxora", "POST", {});
     ok(twice.status >= 400 && calls.slice(before).filter(c => c.url.endsWith("/refunds")).length === 1, "a payment is refunded once", twice.status);
 
+    console.log("▸ CARRIER RATES, LABELS AND TRACKING");
+    {
+      const none = await A("/api/shipping/quote?store=luxora", "POST", { order_id: 1, parcel: { weight_oz: 10 } });
+      ok(none.status === 501, "with no carrier key the quote says it is not integrated", none);
+      const P = mk(); await P("/api/session");
+      ok((await P("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" })).status === 200, "platform admin signs in");
+      const cfg = await P("/api/shipping/providers/config", "POST", { provider_id: "easypost", config: { apiKey: "EZTK_live_key", webhookSecret: "ep_whsec" } });
+      ok(cfg.status === 200 && cfg.body.provider.status === "active" && cfg.body.provider.configured && !JSON.stringify(cfg.body).includes("EZTK_live_key"), "EasyPost is activated with an API key that is never echoed back", cfg.body);
+      const stored = db.get("SELECT config FROM shipping_providers WHERE provider_id='easypost'");
+      ok(stored && !stored.config.includes("EZTK_live_key") && !stored.config.includes("ep_whsec"), "the carrier key and webhook secret are sealed at rest");
+      const shopper = mk(); await shopper("/api/session?store=luxora");
+      ok((await shopper("/api/shipping/quote?store=luxora", "POST", { order_id: 1, parcel: { weight_oz: 10 } })).status === 403, "a shopper cannot rate or buy labels");
+      const noFrom = await A("/api/shipping/quote?store=luxora", "POST", { order_id: row().order_id, parcel: { weight_oz: 10 } });
+      ok(noFrom.status === 400 && /ship-from/.test(noFrom.body.error), "without a ship-from address the store is told to set one", noFrom.body);
+      ok((await A("/api/admin/settings?store=luxora", "PUT", { commerce: { shipFrom: { name: "LUXORA Warehouse", street1: "400 Pine St", city: "Seattle", state: "WA", zip: "98101", country: "US" } } })).status === 200, "the store saves its ship-from address");
+      const before = calls.length;
+      const q = await A("/api/shipping/quote?store=luxora", "POST", { order_id: row().order_id, parcel: { weight_oz: 18, length: 10, width: 8, height: 4 } });
+      const qc = calls.slice(before).find(c => c.url.endsWith("/v2/shipments"));
+      ok(q.status === 200 && q.body.rates.length === 2 && q.body.rates[0].carrier === "USPS" && q.body.rates[0].price === 7.85, "live rates come back, cheapest first", q.body);
+      ok(qc && qc.headers.Authorization === "Basic " + Buffer.from("EZTK_live_key:").toString("base64"), "the carrier is called with the platform's key");
+      ok(qc && qc.json.shipment.to_address.street1 === "1 Main St" && qc.json.shipment.from_address.zip === "98101" && qc.json.shipment.parcel.weight === 18, "the order's own address and the store's origin are rated", qc && qc.json);
+      const foreign = await A("/api/shipping/label?store=luxora", "POST", { shipment_id: "shp_other", rate_id: "rate_usps" });
+      ok(foreign.status === 404, "a label can only be bought for a rate this store was quoted", foreign.status);
+      const lab = await A("/api/shipping/label?store=luxora", "POST", { shipment_id: "shp_1", rate_id: "rate_usps" });
+      const bc = calls.find(c => c.url.endsWith("/shipments/shp_1/buy"));
+      ok(lab.status === 200 && lab.body.tracking_number === "9400111899223197428490" && /^https:/.test(lab.body.label_url), "buying the rate returns the label and tracking number", lab.body);
+      ok(bc && bc.json.rate.id === "rate_usps", "the chosen rate is the one bought", bc && bc.json);
+      const twice = await A("/api/shipping/label?store=luxora", "POST", { shipment_id: "shp_1", rate_id: "rate_ups" });
+      ok(twice.status === 409 && calls.filter(c => c.url.endsWith("/buy")).length === 1, "a shipment gets one label", twice.status);
+      const tr = db.get("SELECT * FROM package_tracking WHERE tracking_number='9400111899223197428490'");
+      ok(tr && tr.tenant_id === 1 && tr.order_id === row().order_id && tr.status === "pre_transit", "the parcel is registered for tracking against the order", tr);
+
+      const evt = { object: "Event", description: "tracker.updated", result: { object: "Tracker", tracking_code: "9400111899223197428490", status: "in_transit", tracking_details: [{ message: "Departed facility", datetime: "2026-10-15T10:00:00Z", tracking_location: { city: "Seattle", state: "WA" } }] } };
+      const raw = JSON.stringify(evt);
+      const sig = s => "hmac-sha256-hex=" + crypto.createHmac("sha256", s).update(raw).digest("hex");
+      const send = h => fetch(BASE + "/api/shipping/webhook/easypost", { method: "POST", headers: { "Content-Type": "application/json", "X-Hmac-Signature": h }, body: raw });
+      ok((await send(sig("wrong"))).status === 401 && db.get("SELECT status FROM package_tracking WHERE id=?", tr.id).status === "pre_transit", "an unsigned or mis-signed tracking webhook changes nothing");
+      ok((await send(sig("ep_whsec"))).status === 200 && db.get("SELECT status FROM package_tracking WHERE id=?", tr.id).status === "in_transit", "a signed tracker update advances the parcel");
+    }
+
     console.log("▸ AMOUNTS IN CURRENCIES WITHOUT MINOR UNITS");
     const spec = require("../lib/spec.js");
     ok(spec.minorUnits(1500, "JPY") === 1500 && spec.minorUnits(12.34, "USD") === 1234 && spec.minorUnits(10, "KRW") === 10, "¥1,500 is sent as 1500, $12.34 as 1234");
