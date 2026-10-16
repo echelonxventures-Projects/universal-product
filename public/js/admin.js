@@ -89,6 +89,11 @@ const NAVFIT = {
 const navSection = k => NAVSEC[k] || k;
 const canSee = k => { if (!A.allowed || A.allowed.includes("*")) return true; if (k === "dash") return true; return A.allowed.includes(navSection(k)); };
 let view = "dash";
+/* the state machines, as /api/meta serves them: the console asks what a status means */
+let SM = null;
+async function loadSM() { if (!SM) { try { SM = (await api("/meta")).stateMachines || {}; } catch (e) { SM = {}; } } return SM; }
+const smIs = (m, st, tag) => !!(SM && SM[m] && SM[m].states[st] && SM[m].states[st].tags.includes(tag));
+const smNext = (m, st) => ((SM && SM[m] && SM[m].moves) || []).filter(x => (x.from === st || x.from === "*") && !smIs(m, x.to, "failure"));
 /* configured apps (composed capabilities, Data Studio entities) join the nav as their own
    leaves — "app_<key>", each its own grant — under one group the console fills from the
    identity's allowed apps. Re-registering replaces the group, so a revoked app leaves. */
@@ -1745,7 +1750,7 @@ async function render() {
     else if (view === "products") body.innerHTML = await entityTable("product");
     else if (view === "gcatalog") { body.innerHTML = await vGcatalog(); wireGcatalog(); }
     else if (view === "skus") body.innerHTML = await entityTable("sku") + await entityTable("inventory") + await entityTable("warehouse") + await entityTable("variant_group");
-    else if (view === "orders") body.innerHTML = await entityTable("order", { rowExtra: r => ["processing", "shipped"].includes(r.status) ? `<button class="p-btn sm primary" data-act="ship-order" data-id="${esc(r.id)}" data-num="${esc(r.num)}">${r.status === "shipped" ? "Label" : "Ship"}</button>` : "" });
+    else if (view === "orders") { await loadSM(); body.innerHTML = await entityTable("order", { rowExtra: r => smIs("order", r.status, "shippable") || smIs("order", r.status, "in_transit") ? `<button class="p-btn sm primary" data-act="ship-order" data-id="${esc(r.id)}" data-num="${esc(r.num)}">${smIs("order", r.status, "in_transit") ? "Label" : "Ship"}</button>` : "" }); }
     else if (view === "returns") body.innerHTML = await entityTable("ret");
     else if (view === "rfqs") body.innerHTML = await entityTable("rfq");
     else if (view === "sellers") body.innerHTML = await entityTable("seller");
@@ -1816,9 +1821,10 @@ async function loadPayLedger() {
   let d; try { d = await api("/admin/payments"); } catch (e) { box.innerHTML = `<p class="p-tag">${esc(e.message)}</p>`; return; }
   const rows = d.payments || [];
   if (!rows.length) { box.innerHTML = '<p class="p-empty">No payments yet</p>'; return; }
-  const act = p => p.status === "pending" && p.live ? `<button class="p-btn sm" data-payrec="${p.id}">Check with gateway</button>`
-    : p.status === "pending" && p.offline ? `<button class="p-btn sm primary" data-payrcv="${p.id}">Record received</button>`
-    : p.status === "captured" ? `<button class="p-btn sm" data-payref="${p.id}">Refund</button>` : "";
+  await loadSM();
+  const act = p => smIs("payment", p.status, "awaiting") && p.live ? `<button class="p-btn sm" data-payrec="${p.id}">Check with gateway</button>`
+    : smIs("payment", p.status, "awaiting") && p.offline ? `<button class="p-btn sm primary" data-payrcv="${p.id}">Record received</button>`
+    : smIs("payment", p.status, "refundable") ? `<button class="p-btn sm" data-payref="${p.id}">Refund</button>` : "";
   box.innerHTML = `<div class="p-scroll-x"><table class="p-table"><thead><tr><th>When</th><th>Order</th><th>Gateway</th><th>Method</th><th class="num">Amount</th><th>Status</th><th>Reference</th><th></th></tr></thead><tbody>${rows.map(p => `<tr>
     <td class="p-tag">${esc(String(p.created_at || "").slice(0, 16))}</td><td>${p.order_num ? esc(p.order_num) : (p.kind ? esc(p.kind) : "—")}</td>
     <td>${esc(p.gateway)}${p.live ? ' <span class="badge published">live</span>' : ""}</td><td class="p-tag">${esc(p.method || "")}</td>
@@ -2342,9 +2348,11 @@ async function vRides() {
   const surgeOn = !!((caps.find(c => c.key === "dynamic_pricing") || {}).on);
   const st = d.stats || {};
   const rides = d.rides || [];
-  const active = rides.filter(r => !["completed", "cancelled"].includes(r.status));
-  const done = rides.filter(r => ["completed", "cancelled"].includes(r.status));
-  const NEXT = { requested: ["accepted", "Accept"], accepted: ["arrived", "Arrived"], arrived: ["trip_start", "Start trip"], trip_start: ["completed", "Complete"] };
+  await loadSM();
+  const active = rides.filter(r => !smIs("ride", r.status, "terminal"));
+  const done = rides.filter(r => smIs("ride", r.status, "terminal"));
+  /* each ride's next step is the ride machine's next legal move (cancelling is its own button) */
+  const nextOf = st => { const mv = smNext("ride", st)[0]; return mv ? [mv.to, mv.label] : undefined; };
   const chip = s => `<span class="a-chip">${esc(s)}</span>`;
   return `<div class="a-head"><h2>🚗 Rides &amp; Dispatch</h2><p class="a-sub">The ride lifecycle, surge pricing and live dispatch. Fares, cancellation fees and the platform commission are the store's own capability params — <code>ride_hailing</code> · <code>dynamic_pricing</code> · <code>dispatch</code> — and the legal transitions live in Data Studio (<code>mobilityTransitions</code>), so no rate or rule is hard-coded here.</p></div>
   <div class="a-cards">
@@ -2365,7 +2373,7 @@ async function vRides() {
   </div>
   <div class="a-card"><h3>Active rides (${active.length})</h3>
     <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>rider</th><th>route</th><th>vehicle</th><th>driver</th><th>surge</th><th>eta</th><th>status</th><th></th></tr></thead>
-    <tbody>${active.map(r => { const nx = NEXT[r.status]; return `<tr>
+    <tbody>${active.map(r => { const nx = nextOf(r.status); return `<tr>
       <td><code>${esc(r.ref)}</code></td><td>${esc(r.rider || "—")}</td>
       <td>${esc(r.pickup)} → ${esc(r.dropoff)}</td><td>${chip(r.vehicle_kind)}</td>
       <td>${esc(r.driver_name || "unassigned")}</td>

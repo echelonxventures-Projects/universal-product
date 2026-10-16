@@ -18,42 +18,251 @@
    "meta": {
     "pending_payment": {
      "tags": [
-      "awaiting_payment"
-     ]
+      "awaiting_payment",
+      "cancellable",
+      "not_shippable"
+     ],
+     "label": "Awaiting payment",
+     "icon": "⏳",
+     "tone": "info"
     },
     "processing": {
      "tags": [
       "open",
+      "accepted",
+      "cancellable",
+      "shippable",
       "fulfilment"
-     ]
+     ],
+     "label": "Processing",
+     "icon": "⏳",
+     "tone": "info"
     },
     "shipped": {
      "tags": [
       "open",
       "fulfilment",
-      "in_transit"
-     ]
+      "in_transit",
+      "cancellable"
+     ],
+     "label": "Shipped",
+     "icon": "🚚",
+     "tone": "info"
     },
     "delivered": {
      "tags": [
       "fulfilled",
       "success",
       "fulfilment"
-     ]
+     ],
+     "label": "Delivered",
+     "icon": "✓",
+     "tone": "ok"
     },
     "cancelled": {
      "tags": [
+      "aborted",
+      "void",
       "terminal",
       "failure",
-      "void"
+      "not_shippable"
+     ],
+     "label": "Cancelled",
+     "icon": "✕",
+     "tone": "cancel"
+    },
+    "refunded": {
+     "tags": [
+      "void",
+      "terminal"
+     ],
+     "label": "Refunded",
+     "icon": "↩",
+     "tone": "cancel"
+    }
+   }
+  },
+  {
+   "key": "payment",
+   "name": "Payment",
+   "column": "status",
+   "initial": "initiated",
+   "free": true,
+   "states": [
+    "initiated",
+    "pending",
+    "approved",
+    "captured",
+    "succeeded",
+    "retrying",
+    "failed",
+    "refunded",
+    "disputed_lost",
+    "disputed_won"
+   ],
+   "meta": {
+    "initiated": {
+     "tags": [
+      "awaiting",
+      "created"
+     ]
+    },
+    "pending": {
+     "tags": [
+      "awaiting",
+      "held"
+     ]
+    },
+    "captured": {
+     "tags": [
+      "settled",
+      "refundable",
+      "booked",
+      "success"
+     ]
+    },
+    "succeeded": {
+     "tags": [
+      "settled",
+      "booked",
+      "success"
+     ]
+    },
+    "retrying": {
+     "tags": [
+      "retrying"
+     ]
+    },
+    "failed": {
+     "tags": [
+      "failure",
+      "terminal"
      ]
     },
     "refunded": {
      "tags": [
-      "terminal",
-      "void"
+      "reversed",
+      "terminal"
+     ]
+    },
+    "disputed_lost": {
+     "tags": [
+      "lost",
+      "booked"
+     ]
+    },
+    "disputed_won": {
+     "tags": [
+      "booked",
+      "settled"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "authorized",
+      "awaiting_capture"
      ]
     }
+   }
+  },
+  {
+   "key": "invoice",
+   "name": "Invoice",
+   "column": "status",
+   "initial": "draft",
+   "free": true,
+   "states": [
+    "draft",
+    "overdue",
+    "paid"
+   ],
+   "meta": {
+    "draft": {
+     "tags": [
+      "collectable",
+      "open"
+     ],
+     "label": "draft",
+     "tone": "processing"
+    },
+    "overdue": {
+     "tags": [
+      "collectable",
+      "open",
+      "late"
+     ],
+     "label": "overdue",
+     "tone": "failed"
+    },
+    "paid": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      "paid_at"
+     ],
+     "label": "paid",
+     "tone": "published"
+    }
+   }
+  },
+  {
+   "key": "credit_note",
+   "name": "Credit note",
+   "column": "status",
+   "initial": "issued",
+   "free": true,
+   "states": [
+    "issued",
+    "voided"
+   ],
+   "meta": {
+    "issued": {
+     "tags": [
+      "live"
+     ]
+    },
+    "voided": {
+     "tags": [
+      "void",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "return",
+   "name": "Return",
+   "column": "status",
+   "initial": "requested",
+   "free": true,
+   "states": [
+    "requested",
+    "approved",
+    "received",
+    "refunded",
+    "rejected"
+   ],
+   "meta": {
+    "refunded": {
+     "tags": [
+      "terminal",
+      "refunded"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   },
+   "on": {
+    "*>refunded": [
+     {
+      "run": "claw_back_offers"
+     }
+    ]
    }
   },
   {
@@ -626,6 +835,22 @@
      ],
      "stamps": [
       "disbursed_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "emi",
+   "name": "BNPL instalment (EMI)",
+   "column": "status",
+   "initial": "upcoming",
+   "free": true,
+   "states": "list:finEmiStatuses",
+   "meta": {
+    "paid": {
+     "tags": [
+      "settled",
+      "terminal"
      ]
     }
    }

@@ -696,7 +696,9 @@ async function pageOrders() {
   main.innerHTML += orders.map(o => {
     const items = o.items.filter(x => x.product);
     const created = new Date(String(o.created_at).replace(" ", "T"));
-    const st = o.status === "cancelled" ? ["✕ Cancelled", "cancel"] : o.status === "delivered" || Date.now() > created.getTime() + (o.eta_days || 5) * 864e5 ? ["✓ Delivered", "ok"] : o.status === "shipped" ? ["🚚 Shipped", "info"] : ["⏳ Processing", "info"];
+    /* the server sends how the order shows (its state machine's label, icon and tone) */
+    const d = o.display || { label: o.status, icon: "", tone: "info" };
+    const st = [((d.icon ? d.icon + " " : "") + d.label), d.tone || "info"];
     return `<div class="ord"><div class="ord-h">
       <div><em>PLACED</em><b>${created.toLocaleDateString(CFG.commerce.locale)}</b></div>
       <div><em>TOTAL</em><b>${money(o.total)}</b></div>

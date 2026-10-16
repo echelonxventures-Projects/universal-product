@@ -107,7 +107,10 @@ const mk = () => {
     console.log("▸ THE GATE: CONVERTED ENGINES NAME NO STATE");
     const BY_FILE = { mobility: ["ride", "driver", "vehicle"], operations: ["purchase_request", "approval", "payroll_run", "payroll_line", "work_order", "employee", "project", "task"],
       planning: ["replenishment"], fin: ["dispute", "seller_payout"], qcommerce: ["dispatch_run", "rider", "dark_store", "service_area", "delivery_slot"],
-      trade: ["rfq", "rfq_quote", "tender", "tender_bid", "verification", "supplier"], logistics: ["shipment"], experiments: ["experiment"], helpdesk: ["ticket", "agent"] };
+      trade: ["rfq", "rfq_quote", "tender", "tender_bid", "verification", "supplier"], logistics: ["shipment"], experiments: ["experiment"], helpdesk: ["ticket", "agent"],
+      /* the orders batch: orders, payments, invoices, credit notes and returns */
+      api: ["order", "payment", "invoice", "credit_note", "return"], billing: ["invoice", "credit_note"], marketplace: ["order"], recurring: ["payment"] };
+    BY_FILE.fin = BY_FILE.fin.concat(["payment"]); BY_FILE.planning = BY_FILE.planning.concat(["order"]); BY_FILE.qcommerce = BY_FILE.qcommerce.concat(["order"]);
     const named = [];
     for (const [f, ms] of Object.entries(BY_FILE)) {
       const vocab = new Set(ms.flatMap(m => st.vocab(m)));

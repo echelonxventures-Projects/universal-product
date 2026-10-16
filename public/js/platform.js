@@ -2759,7 +2759,9 @@ function wireRuntime() {
 async function vBillingOps() {
   const d = await api("/platform/billing/aging"); const tenants = (await api("/platform/tenants")).tenants;
   const ag = d.aging, inv = (d.all && d.all.invoices) || [], notes = (d.all && d.all.notes) || [], events = (d.all && d.all.events) || [];
-  const bStatus = s => `<span class="badge ${s === "paid" ? "published" : s === "overdue" ? "failed" : "processing"}">${esc(s)}</span>`;
+  /* an invoice's badge is its state's tone (the invoice machine's display data) */
+  const SMI = ((await api("/meta").catch(() => ({}))).stateMachines || {}).invoice || { states: {} };
+  const bStatus = s => `<span class="badge ${esc((SMI.states[s] || {}).tone || "processing")}">${esc((SMI.states[s] || {}).label || s)}</span>`;
   return `<div class="p-panel"><h2>💳 Billing Ops</h2>
     <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Line-item subscription + usage invoicing, tax (via the Tax engine), credit notes / refunds-to-wallet (via the Offers wallet), dunning, and receivables aging.</p>
     <div class="p-cards" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">

@@ -839,6 +839,7 @@ row of the `stateMachines` registry. The engines no longer name statuses; they a
 | `initial` | the status a new record starts in |
 | `meta.<status>.tags` | what the status **means** to the engines: `terminal`, `success`, `failure`, `rateable`, `available`, `committed`, `bookable`… |
 | `meta.<status>.stamps` | time columns written on entering it (`{ "col": "resolved_at", "once": true }` writes only the first time) |
+| `meta.<status>.label` · `icon` · `tone` | how the status shows: the storefront's order list, the console's badges and buttons. `/api/meta` serves every machine's statuses, meanings and labelled moves to the consoles. |
 | `on["from>to"]` | effects of a move: `set` fields, `stamp` a time, `run` a named side effect (pay the driver, claw back a chargeback, deliver the orders), or `guard` (refuse the move, e.g. above an approval threshold) |
 
 **Examples of changes that need no code:**

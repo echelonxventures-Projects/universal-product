@@ -111,6 +111,7 @@ registry, and the console renders what it's given.
 |---|---|---:|---:|
 | Baseline | — | 308 | 106 |
 | State machines, batch 1 | `lib/states.js` and 32 machines in `lib/seed/states.json`; the engines below converted | **260** | **58** |
+| State machines, batch 2 (orders) | 37 machines; orders, payments, invoices, credit notes, returns and EMIs | **246** | **44** |
 
 **Batch 1 converted these engines:**
 - rides, drivers, vehicles (`lib/mobility.js`);
@@ -125,7 +126,11 @@ registry, and the console renders what it's given.
 
 `test/states.js` gates these engines: it fails if any of them compares, filters or lists one of its machine's states by name.
 
-**Next state batch:** orders and payments (`lib/api.js`; the `order` machine already exists), compliance, GOIP, fintech instruments, and the consoles (`public/js`).
+**Batch 2 converted:**
+- orders, payments, invoices, credit notes, returns and EMIs, across `lib/api.js` (checkout, settlement, gateway webhooks and the reconcile sweep, refunds, cancellation, labels, returns, platform invoices), `lib/billing.js`, `lib/fin.js`, `lib/recurring.js`, `lib/marketplace.js` and `lib/planning.js`;
+- the storefront order list, the console's order, payment and ride actions, and invoice badges. States now carry display data (label, icon, tone), and `/api/meta` serves every machine's meanings and labelled moves, so the consoles ask by tag too.
+
+**Next state batch:** compliance, GOIP, the remaining fintech instruments, subscriptions, memberships, modules, promotions and tenants, plus the console branches that remain.
 
 ## What step 1 removed (applicability rules)
 
