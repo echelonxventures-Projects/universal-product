@@ -26,7 +26,7 @@ function priceHtml(n) {
 }
 function computeDisp() {
   S.disp = null;
-  if (!CFG.capabilities || !CFG.capabilities.includes("geoPro")) return;
+  if (!(CFG.gates || {})["storefront.currency_switch"]) return;
   const want = localStorage.getItem("azcur"); if (!want) return;
   const cs = (CFG.geo && CFG.geo.currencies) || [];
   const store = cs.find(c => c.code === CFG.commerce.currency), disp = cs.find(c => c.code === want);
@@ -168,7 +168,7 @@ function renderHeader() {
       ${CFG.features.giftCards ? `<a href="gift-cards.html">Gift Cards</a>` : ""}
       <a href="results.html?sort=new">New Season</a><a href="results.html?sort=best">Favourites</a>
       <span class="sub-spacer"></span>
-      ${(CFG.capabilities || []).includes("geoPro") ? `<select id="curSwitch" class="cur-switch" title="View prices in your currency">${[CFG.commerce.currency, ...((CFG.geo.currencies || []).map(c => c.code).filter(x => x !== CFG.commerce.currency))].map(c => `<option value="${c}" ${c === (S.disp ? S.disp.code : CFG.commerce.currency)}>${c}</option>`).join("")}</select>` : ""}
+      ${(CFG.gates || {})["storefront.currency_switch"] ? `<select id="curSwitch" class="cur-switch" title="View prices in your currency">${[CFG.commerce.currency, ...((CFG.geo.currencies || []).map(c => c.code).filter(x => x !== CFG.commerce.currency))].map(c => `<option value="${c}" ${c === (S.disp ? S.disp.code : CFG.commerce.currency)}>${c}</option>`).join("")}</select>` : ""}
       <span class="sub-mode">${esc(CFG.tenant ? CFG.tenant.mode : "")}</span>
     </nav>
   </header>`;
@@ -759,7 +759,7 @@ async function goipStrip() {
 }
 async function pageGift() {
   if (!CFG.features.giftCards) { location.href = "index.html"; return; }
-  const wallet = (CFG.capabilities || []).includes("wallet");
+  const wallet = !!(CFG.gates || {})["checkout.wallet"];
   document.title = `Gift Cards — ${CFG.brand.name}`;
   $("#page").innerHTML = `
   <div class="gc"><div class="gc-hero"><div class="gc-copy"><h1>Gift of Choice</h1><p>${wallet ? "No expiration, no minimum — delivered instantly." : "Digital wallets are not offered by this store — gift options are available in-store."}</p>

@@ -642,7 +642,8 @@
      "default": false,
      "label": "A review is published only after a moderator approves it"
     }
-   }
+   },
+   "settings_atom": true
   },
   {
    "key": "qna",
@@ -656,7 +657,8 @@
      "default": true,
      "label": "Other shoppers may answer a question, not only staff"
     }
-   }
+   },
+   "settings_atom": true
   },
   {
    "key": "deals",
@@ -664,7 +666,8 @@
    "domain": "storefront",
    "icon": "🏷️",
    "description": "The /deals page, the header deal link and the storefront offers strip.",
-   "params": {}
+   "params": {},
+   "settings_atom": true
   },
   {
    "key": "coupons",
@@ -672,7 +675,10 @@
    "domain": "storefront",
    "icon": "🎟️",
    "description": "Shopper-redeemable coupon codes at cart and checkout. Platform policy may refuse this independently.",
-   "params": {}
+   "params": {},
+   "settings_atom": true,
+   "policy": "couponsAllowed",
+   "policy_message": "Coupons are disabled by platform policy (Platform → Provisioning)"
   },
   {
    "key": "gift_cards",
@@ -680,7 +686,8 @@
    "domain": "storefront",
    "icon": "🎁",
    "description": "The gift-cards page, the gift-balance line in checkout and the wallet top-up path.",
-   "params": {}
+   "params": {},
+   "settings_atom": true
   },
   {
    "key": "registry",
@@ -688,7 +695,8 @@
    "domain": "storefront",
    "icon": "📋",
    "description": "Wish-list style product registries a shopper shares by link.",
-   "params": {}
+   "params": {},
+   "settings_atom": true
   },
   {
    "key": "customer_service",
@@ -696,7 +704,8 @@
    "domain": "storefront",
    "icon": "🎧",
    "description": "The customer-service page and the shopper-facing contact channel.",
-   "params": {}
+   "params": {},
+   "settings_atom": true
   },
   {
    "key": "save_for_later",
@@ -704,7 +713,8 @@
    "domain": "storefront",
    "icon": "📌",
    "description": "Moving a cart line to a saved list and back.",
-   "params": {}
+   "params": {},
+   "settings_atom": true
   },
   {
    "key": "countdown",
@@ -712,7 +722,8 @@
    "domain": "storefront",
    "icon": "⏳",
    "description": "A live countdown badge on time-limited offers.",
-   "params": {}
+   "params": {},
+   "settings_atom": true
   },
   {
    "key": "suggestions",
@@ -726,7 +737,8 @@
      "default": 8,
      "label": "Suggestions shown"
     }
-   }
+   },
+   "settings_atom": true
   },
   {
    "key": "buy_now",
@@ -734,7 +746,8 @@
    "domain": "storefront",
    "icon": "⚡",
    "description": "Skip the cart: a product's Buy Now goes straight to checkout.",
-   "params": {}
+   "params": {},
+   "settings_atom": true
   },
   {
    "key": "fiscal_selection",
@@ -742,7 +755,11 @@
    "domain": "storefront",
    "icon": "🧾",
    "description": "Customer-facing selection of a tax/invoice context at checkout. Platform policy may refuse this independently.",
-   "params": {}
+   "params": {},
+   "settings_atom": true,
+   "seed_enabled": false,
+   "policy": "fiscalContextsAllowed",
+   "policy_message": "Customer-facing fiscal context selection is disabled by platform policy"
   },
   {
    "key": "subscribe_save",
@@ -757,7 +774,8 @@
      "label": "Default discount for a scheduled purchase",
      "unit": "%"
     }
-   }
+   },
+   "settings_atom": true
   },
   {
    "key": "membership",
@@ -772,7 +790,8 @@
      "label": "Checkout bonus credit a member earns",
      "unit": "%"
     }
-   }
+   },
+   "settings_atom": true
   },
   {
    "key": "fraud_screen",
@@ -786,7 +805,8 @@
      "default": 90,
      "label": "A risk score above this blocks the order"
     }
-   }
+   },
+   "settings_atom": true
   },
   {
    "key": "experiments",
@@ -794,7 +814,8 @@
    "domain": "storefront",
    "icon": "🧪",
    "description": "A/B experiment assignment for storefront surfaces.",
-   "params": {}
+   "params": {},
+   "settings_atom": true
   },
   {
    "key": "planning",
@@ -802,7 +823,8 @@
    "domain": "storefront",
    "icon": "🗺️",
    "description": "Purchase suggestions, replenishment and demand planning for the store's buyers.",
-   "params": {}
+   "params": {},
+   "settings_atom": true
   },
   {
    "key": "admin_portal",
@@ -810,7 +832,8 @@
    "domain": "storefront",
    "icon": "⬡",
    "description": "The 'Admin Console' link shown to a store's own staff on the storefront.",
-   "params": {}
+   "params": {},
+   "settings_atom": true
   },
   {
    "key": "ride_hailing",

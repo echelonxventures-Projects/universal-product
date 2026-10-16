@@ -203,6 +203,22 @@ Existing installs pick the new fields up through `registry.addFields()`, which n
   - the affiliate module's tier, which has no registry;
   - column defaults in the database schema.
 
+**Finding 5 — engines ask binding points, not each other's capabilities (branches: 109 → 101):**
+- **Feature gates:** the `featureGates` registry (`lib/seed/gates.json`, `lib/gates.js`) maps each binding point to the capability that opens it, its source (module or catalogue), an optional module setting and the refusal message.
+- **Points now gated:**
+  - `checkout.wallet`: the checkout balance, the wallet API, the module-release guard and the storefront gift page;
+  - `checkout.logistics_guard`, `checkout.tax_per_line` and `checkout.login_required` (the providing module's setting);
+  - `identity.hardening`, applied on install;
+  - `seo.tools`, `reco.engine`, `listing.tools` and `billing.self_pay`;
+  - `ai.premium`, `offers.pro` and `storefront.currency_switch`.
+- **Moving a feature to another module is a row edit.** `/api/config`, `/api/session` and the store's module list serve every point's state, so the storefront and the store console ask points too.
+- **Capability catalogue rows now declare:**
+  - `settings_atom`, which replaces the `STOREFRONT_KEYS` code list;
+  - `seed_enabled`, which replaces `SEED_ENABLED`;
+  - the platform `policy` flag that must allow the feature, with its refusal. This replaces three code paths that named `coupons` and `fiscalSelection`.
+- `test/gates.js` shows that installing a module opens its points and that repointing a gate closes it. It fails if an engine or console checks a module capability by name.
+- **Identity, which stays:** an engine naming the capability it *is*, such as the ride engine's `ride_hailing` or GOIP checking its own module, and console panels for that same capability.
+
 **New registry entries now reach existing installs on every boot.** A new machine, binding or vocabulary row is appended additively, with no stamp bump needed. `test/states.js` covers this.
 
 

@@ -1132,7 +1132,7 @@ function modal(html) {
 }
 async function vBilling() {
   const [b, own] = await Promise.all([api("/admin/billing"), api("/modules")]);
-  const canPay = own.capabilities.includes("billingPro");
+  const canPay = !!(own.gates || {})["billing.self_pay"];
   let gws = [];
   if (canPay) { try { gws = (await api("/providers")).gateways; } catch (e) { } }
   return `
