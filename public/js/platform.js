@@ -637,8 +637,10 @@ async function registerModal() {
      never registered without a deliberate authentication policy */
   const idTemplates = (idtd.templates || []).slice().sort((a, b) => (b.is_default || 0) - (a.is_default || 0));
   const defTmpl = idTemplates.find(t => t.is_default) || idTemplates[0];
-  const polMode = pcfg && pcfg.policy && pcfg.policy.provisioning ? pcfg.policy.provisioning.defaultMode : null;
-  const R = { name: "", slug: "", country: "US", mode: modes.some(x => x.key === polMode) ? polMode : (modes[0] ? modes[0].key : ""), ownerName: "", ownerEmail: "", ownerPassword: "",
+  const polProv = pcfg && pcfg.policy && pcfg.policy.provisioning ? pcfg.policy.provisioning : {};
+  const polMode = polProv.defaultMode || null;
+  const polCountry = countries.some(c => c.code === polProv.defaultCountry) ? polProv.defaultCountry : (countries[0] ? countries[0].code : "");
+  const R = { name: "", slug: "", country: polCountry, mode: modes.some(x => x.key === polMode) ? polMode : (modes[0] ? modes[0].key : ""), ownerName: "", ownerEmail: "", ownerPassword: "",
     legalName: "", taxId: "", language: "", archetype: "", industries: [], seedUniverses: true, seedCatalog: false,
     identityTemplate: defTmpl ? defTmpl.id : null, planId: plans[0] ? plans[0].id : 1 };
   const needInd = () => { const md = modes.find(x => x.key === R.mode); return !!(md && md.needsIndustries); };
@@ -764,13 +766,17 @@ async function registerModal() {
    the constitutional model treats a tenant as an identity record the platform provisions */
 async function tenantModal(id) {
   const t = id ? P.tenants.find(x => x.id === id) : null;
-  const modes = ((await api("/meta").catch(() => ({}))).deployModes || []).map(x => x.key);
+  const [tmeta, tcfg] = await Promise.all([api("/meta").catch(() => ({})), api("/platform/config").catch(() => ({}))]);
+  const modes = (tmeta.deployModes || []).map(x => x.key);
+  const tCountries = (tmeta.countries || []).filter(c => c.active);
+  const tCountry = t ? (t.country || "") : ((tcfg.policy && tcfg.policy.provisioning && tcfg.policy.provisioning.defaultCountry) || "");
+  if (tCountry && !tCountries.some(c => c.code === tCountry)) tCountries.unshift({ code: tCountry, name: tCountry });
   const isEdit = !!t;
   const m = modal(`<div class="p-modal-head"><h3>${isEdit ? "Edit · " + esc(t.name) : "New tenant"}</h3><button data-mclose>✕</button></div>
     <div class="p-form">
       <label><span>Name</span><input id="tnName" value="${t ? esc(t.name) : ""}" placeholder="Acme Commerce"></label>
       <label><span>Slug</span><input id="tnSlug" value="${t ? esc(t.slug) : ""}" placeholder="acme" ${isEdit ? "disabled" : ""}></label>
-      <label><span>Country</span><input id="tnCountry" value="${t ? esc(t.country || "") : ""}" placeholder="US"></label>
+      <label><span>Country</span><select id="tnCountry">${tCountries.map(c => `<option value="${esc(c.code)}" ${c.code === tCountry ? "selected" : ""}>${esc(c.name)} (${esc(c.code)})</option>`).join("")}</select></label>
       <label><span>Owner name</span><input id="tnOwnerName" value="${t && t.profile ? esc(t.profile.ownerName || "") : ""}" placeholder="Ava One"></label>
       <label><span>Owner email</span><input id="tnOwner" value="${t && t.profile ? esc(t.profile.ownerEmail || "") : ""}" placeholder="owner@acme.com"></label>
       ${isEdit ? "" : '<label><span>Owner password</span><input id="tnPass" type="password" placeholder="meets the platform password policy"></label>'}
@@ -3393,7 +3399,7 @@ async function vCapabilityTree() {
   const d = capData;
   const byDomain = {};
   for (const c of d.catalog) (byDomain[c.domain] = byDomain[c.domain] || []).push(c);
-  const DOMAINS = { marketplace: "🛒 Marketplace", qc: "⚡ Quick-commerce", fintech: "💸 Fintech", trade: "🤝 B2B trust & trade" };
+  const DOMAINS = Object.fromEntries((capData.domains || []).map(x => [x.key, x.name]));
   const tenantOpts = (d.tenants || []).map(t => `<option value="${t.id}" ${t.id === capTenant ? "selected" : ""}>${t.master ? "★ Master platform" : "deployment · " + esc(t.name)} · ${esc(t.slug)}</option>`).join("");
   const domHtml = Object.keys(byDomain).map(dom => {
     const caps = byDomain[dom];
@@ -3409,7 +3415,7 @@ async function vCapabilityTree() {
         ${c.description ? `<div style="font-size:12px;color:var(--p-muted)">${esc(c.description)}</div>` : ""}
       </div></details>`).join("");
     return `<div class="p-panel"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-      <h2 style="margin:0">${DOMAINS[dom] || "◈ " + esc(dom)}</h2>
+      <h2 style="margin:0">${DOMAINS[dom] ? esc(DOMAINS[dom]) : "◈ " + esc(dom)}</h2>
       <span class="p-tag">${on}/${caps.length} enabled</span></div>${capHtml}</div>`;
   }).join("");
   return gBar("Capability Tree", "🌳", "Every capability in the constitutional registry and its sub-capabilities, grouped by domain. Toggle and tune in Capabilities; this is the map of what composes.", d.catalog.length)
@@ -3903,8 +3909,8 @@ async function vCapabilities() {
     <td style="white-space:nowrap">
       <button class="p-btn sm primary" data-cappreset="${esc(p.key)}">Apply</button>
       <button class="p-btn sm danger" data-cappdel="${esc(p.key)}">✕</button></td></tr>`).join("");
-  const DOMAINS = { marketplace: "🛒 Marketplace", qc: "⚡ Quick-commerce", fintech: "💸 Fintech", trade: "🤝 B2B trust & trade" };
-  const domLabel = dom => DOMAINS[dom] || "◈ " + esc(dom).replace(/^\w/, c => c.toUpperCase());
+  const DOMAINS = Object.fromEntries((capData.domains || []).map(x => [x.key, x.name]));
+  const domLabel = dom => DOMAINS[dom] ? esc(DOMAINS[dom]) : "◈ " + esc(dom).replace(/^\w/, c => c.toUpperCase());
   const catHtml = Object.keys(byDomain).map(dom => {
     const rows = byDomain[dom].map(c => {
       const ps = c.params || {}, pkeys = Object.keys(ps);

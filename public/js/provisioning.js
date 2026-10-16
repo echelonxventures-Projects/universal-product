@@ -61,6 +61,7 @@ async function vProvisioning() {
     + '</div></div></div>';
   /* what a store is given when its registration does not say — each a registry choice */
   h += '<div class="p-panel"><h2>New-store starting set</h2><p class="p-tag">Used whenever a registration leaves the choice open. Every option lists the live registries, so a mode or provider added in Data Studio or the Provider Registry appears here.</p><div class="p-form">'
+    + pol_pick("provisioning.defaultCountry", "Default country", (meta.countries || []).map(function (c) { return { key: c.code, name: c.name + " (" + c.code + ")" }; }), null, "registry: countries")
     + pol_pick("provisioning.defaultMode", "Default deploy mode", (meta.deployModes || []).map(function (m) { return { key: m.key, name: m.name || m.label || m.key }; }), null, "registry: deployModes")
     + '<div class="row3">'
     + pol_num("provisioning.paymentGatewaysPerStore", "Payment gateways from the store's country", "", 0)
@@ -71,6 +72,7 @@ async function vProvisioning() {
     + '</div><div class="row3">'
     + pol_num("provisioning.shipDaysPriority", "Priority delivery promise (days)")
     + pol_num("provisioning.shipDaysStandard", "Standard delivery promise (days)")
+    + pol_num("paymentReconcileMinutes", "Check pending gateway payments every (minutes, 0 = never)", "", 0)
     + '</div></div></div>';
   h += '<p><button class="p-btn primary" id="polSave">Save platform policy</button></p>';
   h += '<div class="p-panel"><h2>Layer scorecard</h2><div class="p-scroll-x"><table class="p-table"><thead><tr><th>#</th><th>Layer</th><th>Status</th><th>Detail</th></tr></thead><tbody>'

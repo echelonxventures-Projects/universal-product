@@ -158,7 +158,10 @@ card. Recipients apply the code at checkout.
 ## A5. Checkout
 1. Review the cart, then **Proceed to checkout**.
 2. Enter **shipping details** (name, address, city, state, ZIP, phone).
-3. Choose a **delivery option** (standard/express; cost and ETA are shown).
+3. Choose a **delivery option** (standard/express; cost and ETA are shown). On a store that
+   charges **live carrier rates**, the carriers' own rates to your address appear once the
+   address is entered — pick one; the cheapest is preselected. The order summary is priced by
+   the store itself, so the total you see is the total you are charged.
 4. Choose a **payment method**. Stores present only the rails valid for their country — for
    example card/Stripe (US), Razorpay/UPI (India), or Tabby "buy now, pay later" (UAE). Cash
    on delivery may also appear.
@@ -232,6 +235,12 @@ Left rail navigation, grouped:
 ## B3. Sell & fulfil (Orders, Returns, RFQs)
 - **Orders** — move orders through their status; record shipping; issue **refunds** from a
   payment line. Search and filter by customer, status, date.
+- **Shipping & Tracking** — the ship-from address, and **What shoppers pay for shipping**:
+  a *flat fee* (the store's fee, or the carrier's base fee) or the *live carrier rate* from
+  the connected carrier account (needs the platform's EasyPost key and a ship-from address).
+  Products are weighed from their own `weight_kg` / `weight_g`; anything without a weight
+  ships as the *weight per item* you set. The rate a shopper paid for is attached to the
+  order, so the label bought later is that rate.
 - **Returns** — review incoming requests (see Part C for the support workflow).
 - **RFQs (B2B)** — a buyer has asked for a price/quantity; respond with an offer. Accepted
   RFQs lead to an order.
@@ -260,7 +269,16 @@ Left rail navigation, grouped:
 ## B6. Money & compliance (Payments, Billing, Audit, Monitor)
 - **Payment Gateways** — enable providers available for your country, choose a **primary**,
   set **sandbox vs live** mode, and **test** a gateway before going live. Shipping and
-  notification providers appear here too.
+  notification providers appear here too. For a live gateway, **Configure** also takes its
+  webhook credential — Stripe/Razorpay *webhook secret*, Square *signature key* plus the
+  *notification URL* exactly as registered, PayPal *webhook ID* — and the provider's webhook
+  points at `/api/webhooks/inbound/<gateway>`. Only a correctly signed event moves money.
+- **Payments ledger** (same screen) — every payment with what it is waiting on. A live
+  payment still **pending** has **Check with gateway**: the gateway is asked where it stands
+  (an approved PayPal order is captured) — the platform also does this on its own every few
+  minutes, so a webhook that never arrived still settles the order. **Cash on delivery** or a
+  **bank transfer** has **Record received** once the money is in, which releases the order.
+  A captured payment has **Refund**.
 - **Billing** — see invoices issued by the platform (e.g. for paid modules) and pay them.
 - **Audit Trail** — an append‑only, **hash‑chained** log of actions in your store. Use **Verify
   chain** to prove no entry has been altered. This is your compliance record.
@@ -501,10 +519,12 @@ pending."** Walk this path top to bottom; afterwards you can launch stores.
      whether gateways start in **sandbox**, and the policy gates stores inherit: currency
      overrides, customer coupons, **global offers**, fiscal-context pickers.
    - **New-store starting set** — what a store is given whenever its registration leaves
-     the choice open: the default **deploy mode** (from the `deployModes` registry), how
+     the choice open: the **default country** (also what any address or warehouse falls
+     back to), the default **deploy mode** (from the `deployModes` registry), how
      many of its country's **payment gateways** and **carriers**, the **cash / offline
      gateway** and **house shipping method** (or *None*), and the **priority / standard
-     delivery promise** in days. Every list is read from the live registries, so a mode or
+     delivery promise** in days, and how often pending **gateway payments are checked**
+     with their gateway (0 = never). Every list is read from the live registries, so a mode or
      provider added later appears here. Saving changes only the fields you changed.
    - **Save platform policy** — the platform is now marked *Provisioned* (status card shows
      when, plus master-key version and whether the pepper is set).
@@ -664,7 +684,10 @@ grouped by domain (Marketplace, Quick-commerce, Fintech, B2B trust & trade…):
 - **Archetypes (presets)** — save a whole capability set as a named archetype and **Apply**
   it to any store in one click (or delete it). An archetype also names the **catalogue
   content** (universe keys) a store registered from it opens with, shown in the *Opens with
-  content* column. To make your own platform type — for example a big general marketplace —
+  content* column. **Everything-store blend** ships ready-made: a multi-seller marketplace
+  with the full shopper storefront (reviews, Q&A, deals and countdowns, promo codes, gift
+  cards, registries, subscribe & save, membership, buy-now, risk screening) over
+  fulfilment-centre inbound, seller payouts and pay-later. To make your own platform type,
   tune one store until it is right, then under *Define a new archetype* tick **Take the
   capabilities and their tuning from the store being composed above**, add the content keys,
   and save. Every store registered from it starts identical.

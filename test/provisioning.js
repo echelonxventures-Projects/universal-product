@@ -73,6 +73,18 @@ const mk = () => {
     ok(c.status === 400 && /industr/i.test(c.body.error || ""), "a mode that needs industries still refuses a store without them", c.body);
     await P("/api/platform/config", "PUT", { provisioning: { defaultMode: "marketplace", paymentGatewaysPerStore: 2, cashGateway: "cod", houseShipping: "house-std", carriersPerStore: 2, shipDaysPriority: 2, shipDaysStandard: 5 } });
 
+    console.log("▸ THE DEFAULT COUNTRY IS POLICY, AND A STORE KEEPS ITS OWN");
+    ok(pv.defaultCountry === "US", "the shipped default country is a policy value", pv.defaultCountry);
+    ok((await P("/api/platform/config", "PUT", { provisioning: { defaultCountry: "ZZ" } })).status === 400, "an unknown default country is refused");
+    ok((await P("/api/platform/config", "PUT", { provisioning: { defaultCountry: "gb" } })).status === 200, "the platform changes the default country");
+    const gbs = await P("/api/platform/tenants", "POST", { name: "No Country", slug: "nocountry", ...owner("nocountry") });
+    ok(gbs.status === 200 && db.get("SELECT country FROM tenants WHERE id=?", gbs.body.tenant.id).country === "GB", "a store registered without a country gets the policy's", gbs.body.error);
+    const settingsMod = require("../lib/settings.js");
+    settingsMod.reset(gbs.body.tenant.id);
+    ok(settingsMod.load(gbs.body.tenant.id).commerce.country === "GB", "resetting a store's settings keeps the store in its own country");
+    await P("/api/platform/config", "PUT", { provisioning: { defaultCountry: "US" } });
+    ok((await P("/api/platform/config", "PUT", { paymentReconcileMinutes: -1 })).status === 400 && (await P("/api/platform/config", "PUT", { paymentReconcileMinutes: 5 })).body.policy.paymentReconcileMinutes === 5, "how often pending gateway payments are checked is a validated policy value");
+
     console.log("▸ OWNER PASSWORDS MEET THE PLATFORM POLICY");
     const weak = await P("/api/platform/tenants", "POST", { name: "Weak", slug: "weak", country: "US", ownerName: "Owner Weak", ownerEmail: "o@weak.test", ownerPassword: "abcdef" });
     ok(weak.status === 400 && /Owner password/.test(weak.body.error || ""), "a password the policy refuses is refused for an owner too", weak.body);
@@ -92,6 +104,10 @@ const mk = () => {
     ok(["reviews", "qna", "deals", "membership", "subscribe_save", "buy_box"].every(k => vals.some(v => v.capability === k)), "every capability of the archetype is on", vals.map(v => v.capability));
     ok(bb && JSON.parse(bb.params).price_weight === 0.7, "with the archetype's tuning", bb && bb.params);
     ok((d.body.activated || []).some(x => x.key === "uv_marketplace"), "and the archetype's content is activated into it", d.body.activated);
+    const every = presets.find(p => p.key === "blend_everything_store");
+    ok(every && ["reviews", "qna", "deals", "coupons", "gift_cards", "registry", "subscribe_save", "membership", "buy_now", "buy_box", "fba_inbound"].every(k => k in every.capabilities) && every.universes.length > 0, "a full everything-store archetype ships as data", every && Object.keys(every.capabilities));
+    const capView = (await P("/api/capabilities")).body;
+    ok((capView.domains || []).some(x => x.key === "storefront" && x.name) && (capView.domains || []).length >= 7, "capability domains are titled from the registry", capView.domains);
     const resave = await P("/api/capabilities/preset", "POST", { key: "blend_bigstore", label: "Big store v2", capabilities: { reviews: {} } });
     ok(resave.status === 200 && JSON.stringify(resave.body.preset.universes) === '["uv_marketplace"]', "re-saving without naming content keeps the content", resave.body.preset);
 

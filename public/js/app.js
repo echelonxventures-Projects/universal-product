@@ -559,7 +559,8 @@ async function pageCheckout() {
     ${f.fiscalSelection ? `<div class="co-sec" id="coCtx" hidden><h3><span class="co-num">＋</span> Fiscal &amp; billing contexts</h3><div id="ctxPicks"></div><p class="pay-meta">Chosen contexts are validated against the platform context entities.</p></div>` : ""}
     <div class="co-sec"><h3><span class="co-num">3</span> Review items and shipping</h3>
       ${c.items.map(({ product: p, qty, unit }) => `<div class="co-item">${img(p, "tile")}<div class="co-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><span class="co-i-qty">Qty: ${qty}${unit < p.p ? " · volume price" : ""}</span></div><div class="co-i-price">${priceHtml(unit * qty)}</div></div>`).join("")}
-      ${carriers.map((x, i) => `<div class="co-del"><label><input type="radio" name="ship" value="${x.id}" ${i === 0 ? "checked" : ""}> ${x.emoji} <b>${esc(x.name)}</b> · ${x.eta[0]}–${x.eta[1]} days · ${x.baseFee ? money(x.baseFee) : (c.qualifies ? "Complimentary" : money(cm.shipFee))}</label></div>`).join("")}</div>
+      ${carriers.map((x, i) => `<div class="co-del"><label><input type="radio" name="ship" value="${x.id}" ${i === 0 ? "checked" : ""}> ${x.emoji} <b>${esc(x.name)}</b> · ${x.eta[0]}–${x.eta[1]} days · ${c.qualifies ? "Complimentary" : money(x.baseFee || cm.shipFee)}</label></div>`).join("")}
+      <div id="coRates"></div></div>
   </div>
   <aside class="co-side"><div class="co-box">
     <p class="co-order">${esc(CFG.brand.name)} · Order Summary</p>
@@ -572,18 +573,29 @@ async function pageCheckout() {
     <button id="placeOrder" class="btn-orange w100">${esc(T("placeOrder"))}</button>
     <p class="co-note">By placing your order you agree to ${esc(CFG.brand.name)}'s terms of sale.</p>
   </div></aside></div></div>`;
-  const recalc = () => {
-    const carrier = carriers.find(x => x.id === (document.querySelector('input[name=ship]:checked') || {}).value) || carriers[0];
-    const shipOpt = carrier ? (c.qualifies && carrier.id === "house-std" ? 0 : (carrier.baseFee || (c.qualifies ? 0 : cm.shipFee))) : c.shipFee;
-    const giftApplied = Math.min(S.gift, c.sub - c.discount + shipOpt);
-    const tax = +(((c.sub - c.discount + shipOpt - giftApplied) * cm.taxRate).toFixed(2));
-    const total = +(c.sub - c.discount + shipOpt + tax - giftApplied).toFixed(2);
-    $("#osShip").textContent = shipOpt ? money(shipOpt) : "Complimentary";
-    $("#osTax").textContent = money(tax);
-    const g = $("#osGift"); if (g) g.textContent = giftApplied ? `-${money(giftApplied)}` : money(0);
-    $("#osTotal").innerHTML = priceHtml(total);
-    return { carrier };
+  /* the summary is priced by the server — the same code that charges the order — so a live
+     carrier rate, a membership's free shipping or a per-line tax rule shows before paying */
+  const addr = () => ({ name: $("#coName").value, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value });
+  const pickedCarrier = () => (document.querySelector('input[name=ship]:checked') || {}).value || (carriers[0] || {}).id || "";
+  let quote = null, rateId = null, qSeq = 0;
+  const recalc = async () => {
+    const seq = ++qSeq;
+    try {
+      const q = await api("/checkout/quote", "POST", { carrier: pickedCarrier(), rate_id: rateId, ...addr() });
+      if (seq !== qSeq) return quote;
+      quote = q; rateId = q.rate_id;
+      $("#osShip").textContent = q.shipFee ? money(q.shipFee) : "Complimentary";
+      $("#osTax").textContent = money(q.tax);
+      const g = $("#osGift"); if (g) g.textContent = q.gift ? `-${money(q.gift)}` : money(0);
+      $("#osTotal").innerHTML = priceHtml(q.total);
+      $("#coRates").innerHTML = q.source === "live" && q.rates.length ? `<p class="pay-meta">Live carrier rates to your address${q.free ? " — shipping is on us" : ""}:</p>` + q.rates.map(r => `<div class="co-del"><label><input type="radio" name="rate" value="${esc(r.id)}" ${r.id === q.rate_id ? "checked" : ""}> <b>${esc(r.carrier)}</b> ${esc(r.service)}${r.days ? ` · ${r.days} days` : ""} · ${money(r.price)}</label></div>`).join("") : "";
+      $$('input[name="rate"]').forEach(el => el.onchange = () => { rateId = el.value; recalc(); });
+    } catch (e) { }
+    return quote;
   };
+  let addrTimer = null;
+  ["#coAddr", "#coCity", "#coState", "#coZip"].forEach(id => $(id).addEventListener("input", () => { clearTimeout(addrTimer); rateId = null; addrTimer = setTimeout(recalc, 600); }));
+  recalc();
   (async () => {
     try {
       if (!CFG.features.fiscalSelection) return;
@@ -598,17 +610,16 @@ async function pageCheckout() {
       }
     } catch (e) { }
   })();
-  $$('input[name="ship"]').forEach(el => el.onchange = recalc);
+  $$('input[name="ship"]').forEach(el => el.onchange = () => { rateId = null; recalc(); });
   $("#placeOrder").onclick = async () => {
     if (!$("#shipForm").reportValidity()) return;
     const btn = $("#placeOrder"); btn.disabled = true; btn.textContent = "Processing…";
     try {
-      const { carrier } = recalc();
       const r = await api("/checkout", "POST", {
         name: $("#coName").value, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value,
         gateway: (document.querySelector('input[name=pay]:checked') || {}).value || (gws[0] || {}).id,
         method: ((gws.find(g => g.id === (document.querySelector('input[name=pay]:checked') || {}).value) || {}).methods || ["card"])[0],
-        carrier: carrier ? carrier.id : "house-std",
+        carrier: pickedCarrier(), rate_id: rateId,
         contexts: Object.fromEntries($$("[data-ctx]").filter(x => x.value).map(x => [x.dataset.ctx, x.value]))
       });
       if (r.order.payment_redirect && /^https:\/\//.test(r.order.payment_redirect)) { location.href = r.order.payment_redirect; return; }

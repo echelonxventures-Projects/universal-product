@@ -1805,7 +1805,27 @@ function wireAudit() {
 function wireStudio() {
   $$("[data-studio]").forEach(b => b.onclick = () => { A.studioSel = b.dataset.studio; render(); });
 }
+/* the ledger: what each payment is waiting on, and the action that settles it */
+async function loadPayLedger() {
+  const box = $("#payLedger"); if (!box) return;
+  let d; try { d = await api("/admin/payments"); } catch (e) { box.innerHTML = `<p class="p-tag">${esc(e.message)}</p>`; return; }
+  const rows = d.payments || [];
+  if (!rows.length) { box.innerHTML = '<p class="p-empty">No payments yet</p>'; return; }
+  const act = p => p.status === "pending" && p.live ? `<button class="p-btn sm" data-payrec="${p.id}">Check with gateway</button>`
+    : p.status === "pending" && p.offline ? `<button class="p-btn sm primary" data-payrcv="${p.id}">Record received</button>`
+    : p.status === "captured" ? `<button class="p-btn sm" data-payref="${p.id}">Refund</button>` : "";
+  box.innerHTML = `<div class="p-scroll-x"><table class="p-table"><thead><tr><th>When</th><th>Order</th><th>Gateway</th><th>Method</th><th class="num">Amount</th><th>Status</th><th>Reference</th><th></th></tr></thead><tbody>${rows.map(p => `<tr>
+    <td class="p-tag">${esc(String(p.created_at || "").slice(0, 16))}</td><td>${p.order_num ? esc(p.order_num) : (p.kind ? esc(p.kind) : "—")}</td>
+    <td>${esc(p.gateway)}${p.live ? ' <span class="badge published">live</span>' : ""}</td><td class="p-tag">${esc(p.method || "")}</td>
+    <td class="num">${esc(String(p.amount))} ${esc(p.currency || "")}</td><td><span class="badge ${esc(p.status)}">${esc(p.status)}</span></td>
+    <td><code style="font-size:11px">${esc(p.txn_ref || "")}</code></td><td style="white-space:nowrap">${act(p)}</td></tr>`).join("")}</tbody></table></div>`;
+  const go = async (path, body, done) => { try { const r = await api(path, "POST", body || {}); toast(done(r)); loadPayLedger(); } catch (e) { toast(e.message); } };
+  box.querySelectorAll("[data-payrec]").forEach(b => b.onclick = () => go(`/admin/payments/${b.dataset.payrec}/reconcile`, {}, r => "Gateway says: " + ((r.result && (r.result.provider_status || r.result.status)) || r.payment.status)));
+  box.querySelectorAll("[data-payrcv]").forEach(b => b.onclick = () => { if (confirm("Record this payment as received? The order is released to fulfilment.")) go(`/admin/payments/${b.dataset.payrcv}/received`, {}, () => "Payment recorded as received"); });
+  box.querySelectorAll("[data-payref]").forEach(b => b.onclick = () => { if (confirm("Refund this payment in full?")) go(`/admin/payments/${b.dataset.payref}/refund`, {}, () => "Payment refunded"); });
+}
 function wirePayments() {
+  loadPayLedger();
   $("#gwSave").onclick = async () => {
     const gateways = $$("[data-gwen]").map(cb => {
       const id = cb.dataset.gwen;
@@ -2128,6 +2148,11 @@ function renderShipping() {
       <div id="shipFrom"></div>
     </div>
     <div class="a-card">
+      <h3>What shoppers pay for shipping</h3>
+      <p class="a-sub">A flat fee, or the connected carrier's live rate from your ship-from address to the shopper's. Free-shipping rules apply to both.</p>
+      <div id="shipRates"></div>
+    </div>
+    <div class="a-card">
       <h3>Track Shipment</h3>
       <p class="a-sub">Enter tracking number to see real-time status</p>
       <div class="p-form">
@@ -2143,6 +2168,27 @@ function renderShipping() {
   const tr = $("#shTrack"); if (tr) tr.onclick = () => trackShipment();
   loadShippingProviders();
   loadShipFrom();
+  loadShipRates();
+}
+
+async function loadShipRates() {
+  const box = $("#shipRates");
+  if (!box) return;
+  let st, prov;
+  try { [st, prov] = await Promise.all([api("/admin/settings").then(r => r.settings), api("/shipping/providers").catch(() => ({ providers: [] }))]); }
+  catch (e) { box.innerHTML = `<p class="a-sub">Only a store admin with Settings access can change this.</p>`; return; }
+  const cm = st.commerce || {};
+  const connected = (prov.providers || []).some(p => p.status === "active");
+  const ready = connected && cm.shipFrom && cm.shipFrom.street1;
+  box.innerHTML = `<div class="p-form"><div class="row">
+    <label><span>Shipping price</span><select id="srMode"><option value="fixed" ${cm.shipRates !== "live" ? "selected" : ""}>Flat fee (${esc(String(cm.shipFee))}) or the carrier's base fee</option><option value="live" ${cm.shipRates === "live" ? "selected" : ""}>Live carrier rate</option></select></label>
+    <label><span>Weight per item when a product has none (kg)</span><input id="srKg" type="number" step="0.01" min="0.01" value="${esc(String(cm.parcelWeightKg))}"></label></div>
+    ${ready ? "" : `<p class="a-sub">⚠️ Live rates need ${connected ? "" : "a connected carrier account and "}a ship-from address. Until then checkout charges the flat fee.</p>`}
+    <div><button class="p-btn primary" id="srSave">Save</button></div></div>`;
+  $("#srSave").onclick = async () => {
+    try { await api("/admin/settings", "PUT", { commerce: { shipRates: $("#srMode").value, parcelWeightKg: Number($("#srKg").value) } }); toast("Shipping pricing saved"); loadShipRates(); }
+    catch (e) { toast(e.message); }
+  };
 }
 
 async function loadShippingProviders() {
@@ -2171,13 +2217,13 @@ async function loadShipFrom() {
     <div class="row">${f("name", "Contact name")}${f("company", "Company")}</div>
     <div class="row">${f("street1", "Street *")}${f("street2", "Apt, suite, unit")}</div>
     <div class="row3">${f("city", "City *")}${f("state", "State / region")}${f("zip", "Postal code *")}</div>
-    <div class="row3">${f("country", "Country * (2 letters)", (st.commerce && st.commerce.country) || "US")}${f("phone", "Phone")}${f("email", "Email")}</div>
+    <div class="row3">${f("country", "Country * (2 letters)", st.commerce && st.commerce.country)}${f("phone", "Phone")}${f("email", "Email")}</div>
     <div style="display:flex;gap:8px"><button class="p-btn primary" id="sfSave">Save address</button>
     ${a.street1 ? '<button class="p-btn" id="sfClear">Remove address</button>' : ""}</div></div>`;
   $("#sfSave").onclick = async () => {
     const addr = {};
     box.querySelectorAll("[data-sf]").forEach(i => { addr[i.dataset.sf] = i.value.trim(); });
-    if (!addr.country) addr.country = (st.commerce && st.commerce.country) || "US";
+    if (!addr.country) addr.country = st.commerce && st.commerce.country;
     try { await api("/admin/settings", "PUT", { commerce: { shipFrom: addr } }); toast("Ship-from address saved"); loadShipFrom(); }
     catch (e) { toast(e.message); }
   };

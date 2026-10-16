@@ -327,6 +327,8 @@ function shutdown(sig) { console.log(`\n${sig} — closing`); sec.persistState()
    >= 15 exits on unhandled rejections); log it with enough context to fix the source */
 /* expired idempotency keys are swept hourly (they were only ever deleted lazily on lookup) */
 setInterval(() => { try { idem.purge(); } catch (e) { } }, 3600 * 1000).unref();
+/* live payments whose webhook never came are looked up with their gateway on a cadence */
+require("./lib/api.js").startPaymentSweep();
 process.on("unhandledRejection", (e) => { console.error("unhandledRejection:", e && e.stack || e); });
 process.on("SIGINT", () => shutdown("SIGINT"));
 process.on("SIGTERM", () => shutdown("SIGTERM"));

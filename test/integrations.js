@@ -46,6 +46,12 @@ function fakeStripe(url, o) {
   let status = 200, json;
   if (url === "https://api.stripe.com/v1/checkout/sessions") { n++; json = { id: "cs_test_" + n, object: "checkout.session", url: "https://checkout.stripe.com/c/pay/cs_test_" + n, status: "open", payment_status: "unpaid" }; }
   else if (url === "https://api.stripe.com/v1/refunds") { status = refundReply.status; json = refundReply.json; }
+  else if (url.startsWith("https://api.stripe.com/v1/checkout/sessions/")) { const id = url.split("/").pop(); json = Object.assign({ id, object: "checkout.session" }, lookupReply(id)); }
+  /* PayPal: OAuth, the webhook verify call, the order lookup and the capture */
+  else if (url === "https://api-m.paypal.com/v1/oauth2/token") json = { access_token: "pp_token" };
+  else if (url === "https://api-m.paypal.com/v1/notifications/verify-webhook-signature") { const b = JSON.parse(o.body); calls[calls.length - 1].json = b; json = { verification_status: b.transmission_sig === "good-sig" && b.webhook_id === "WH-1" ? "SUCCESS" : "FAILURE" }; }
+  else if (url === "https://api-m.paypal.com/v2/checkout/orders/PP-ORDER-1") json = { id: "PP-ORDER-1", status: "APPROVED", purchase_units: [{ amount: { value: String(ppAmount) } }] };
+  else if (url === "https://api-m.paypal.com/v2/checkout/orders/PP-ORDER-1/capture") json = { id: "PP-ORDER-1", status: "COMPLETED", purchase_units: [{ payments: { captures: [{ id: "CAP-1", amount: { value: String(ppAmount) } }] } }] };
   else if (url === "https://api.easypost.com/v2/shipments") {
     const b = JSON.parse(o.body); calls[calls.length - 1].json = b;
     json = { id: "shp_1", object: "Shipment", rates: [
@@ -56,6 +62,8 @@ function fakeStripe(url, o) {
   else { status = 404; json = { error: { message: "unexpected " + url } }; }
   return Promise.resolve({ ok: status < 300, status, text: async () => JSON.stringify(json) });
 }
+let lookupReply = () => ({ status: "open", payment_status: "unpaid" });
+let ppAmount = 0;
 const WHSEC = "whsec_test_secret";
 const signed = (payload, secret, t) => { t = t || Math.floor(Date.now() / 1000); const raw = JSON.stringify(payload); return { raw, sig: `t=${t},v1=` + crypto.createHmac("sha256", secret).update(t + "." + raw).digest("hex") }; };
 const hook = async (payload, secret, store) => {
@@ -141,6 +149,87 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
     const twice = await A("/api/admin/payments/" + pid + "/refund?store=luxora", "POST", {});
     ok(twice.status >= 400 && calls.slice(before).filter(c => c.url.endsWith("/refunds")).length === 1, "a payment is refunded once", twice.status);
 
+
+    console.log("▸ EVERY GATEWAY CONFIRMS FROM ITS SPEC, NOT FROM CODE");
+    {
+      /* many orders from one address in a minute is exactly what risk screening blocks */
+      await A("/api/admin/settings?store=luxora", "PUT", { features: { fraudScreen: false } });
+      const sec = require("../lib/security.js");
+      /* an order whose payment went to another gateway: the row is re-pointed so the event
+         under test is the only thing that can settle it */
+      const pendingOn = async (gw, ref) => {
+        const o = (await buy()).co.body.order;
+        db.run("UPDATE payments SET gateway=?, txn_ref=? WHERE order_id=(SELECT id FROM orders WHERE num=?)", gw, ref, o.num);
+        return { o, row: () => db.get("SELECT p.*, o.status ostatus FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?", o.num) };
+      };
+      const gwCfg = (id, cfg, secrets) => db.run("INSERT OR REPLACE INTO tenant_gateways(tenant_id,provider_id,enabled,mode,config) VALUES(1,?,0,'live',?)", id, sec.sealConfig(1, id, cfg, secrets));
+      const post = (prov, raw, headers) => fetch(BASE + "/api/webhooks/inbound/" + prov + "?store=luxora", { method: "POST", headers: Object.assign({ "Content-Type": "application/json" }, headers), body: raw }).then(async r => ({ status: r.status, body: await r.json().catch(() => ({})) }));
+
+      gwCfg("razorpay", { keyId: "rzp_k", keySecret: "rzp_s", webhookSecret: "rzp_whsec" }, ["keySecret", "webhookSecret"]);
+      const rz = await pendingOn("razorpay", "order_rzp_1");
+      const rzAmt = Math.round(rz.o.total * 100);
+      const rzRaw = JSON.stringify({ event: "order.paid", payload: { order: { entity: { id: "order_rzp_1", amount_paid: rzAmt } }, payment: { entity: { id: "pay_rzp_1", order_id: "order_rzp_1", amount: rzAmt } } } });
+      const rzSig = k => crypto.createHmac("sha256", k).update(rzRaw).digest("hex");
+      ok((await post("razorpay", rzRaw, { "X-Razorpay-Signature": rzSig("wrong") })).status === 401 && rz.row().status === "pending", "Razorpay: a webhook signed with the wrong secret changes nothing");
+      const rzOk = await post("razorpay", rzRaw, { "X-Razorpay-Signature": rzSig("rzp_whsec") });
+      ok(rzOk.status === 200 && rz.row().status === "captured" && rz.row().ostatus === "processing" && rz.row().provider_payment_id === "pay_rzp_1", "Razorpay: a signed order.paid captures the payment and releases the order", rzOk.body);
+
+      gwCfg("square", { appId: "sq_app", token: "sq_tok", webhookSecret: "sq_key", webhookUrl: "https://shop.example/api/webhooks/inbound/square" }, ["token", "webhookSecret"]);
+      const sq = await pendingOn("square", "sq_pay_1");
+      const sqRaw = JSON.stringify({ type: "payment.updated", data: { object: { payment: { id: "sq_pay_1", status: "COMPLETED", amount_money: { amount: Math.round(sq.o.total * 100) } } } } });
+      const sqSig = (k, u) => crypto.createHmac("sha256", k).update(u + sqRaw).digest("base64");
+      ok((await post("square", sqRaw, { "X-Square-HmacSha256-Signature": sqSig("sq_key", "https://elsewhere.example/hook") })).status === 401 && sq.row().status === "pending", "Square: a signature over a different notification URL is refused");
+      const sqOk = await post("square", sqRaw, { "X-Square-HmacSha256-Signature": sqSig("sq_key", "https://shop.example/api/webhooks/inbound/square") });
+      ok(sqOk.status === 200 && sq.row().status === "captured", "Square: the URL + body signature verifies and the completed payment captures", sqOk.body);
+
+      gwCfg("paypal", { clientId: "pp_id", secret: "pp_secret", env: "", webhookId: "WH-1" }, ["secret"]);
+      const pp = await pendingOn("paypal", "PP-ORDER-1");
+      ppAmount = pp.o.total.toFixed(2);
+      const ppRaw = JSON.stringify({ event_type: "CHECKOUT.ORDER.APPROVED", resource: { id: "PP-ORDER-1" } });
+      const ppHdr = sig => ({ "PayPal-Transmission-Id": "t1", "PayPal-Transmission-Sig": sig, "PayPal-Transmission-Time": "2026-10-16T00:00:00Z", "PayPal-Cert-Url": "https://api.paypal.com/cert", "PayPal-Auth-Algo": "SHA256withRSA" });
+      ok((await post("paypal", ppRaw, ppHdr("forged"))).status === 401 && pp.row().status === "pending", "PayPal: a webhook PayPal's own verify call rejects changes nothing");
+      const vBefore = calls.length;
+      const ppOk = await post("paypal", ppRaw, ppHdr("good-sig"));
+      const vCall = calls.slice(vBefore).find(c => c.url.endsWith("/verify-webhook-signature"));
+      ok(vCall && vCall.json.webhook_event && vCall.json.webhook_event.resource.id === "PP-ORDER-1" && vCall.json.transmission_id === "t1", "PayPal: the event and its transmission headers are sent to PayPal to verify", vCall && vCall.json);
+      ok(ppOk.status === 200 && calls.slice(vBefore).some(c => c.url.endsWith("/PP-ORDER-1/capture")), "PayPal: an approved order is captured", ppOk.body);
+      ok(pp.row().status === "captured" && pp.row().provider_payment_id === "CAP-1", "PayPal: the capture settles the payment, keeping the capture id for refunds", pp.row());
+
+      console.log("▸ A WEBHOOK THAT NEVER ARRIVES IS COVERED BY A LOOKUP");
+      const lk = await buy();
+      const lrow = () => db.get("SELECT p.*, o.status ostatus FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?", lk.co.body.order.num);
+      const lid = lrow().id;
+      lookupReply = () => ({ status: "open", payment_status: "unpaid" });
+      const still = await A("/api/admin/payments/" + lid + "/reconcile?store=luxora", "POST", {});
+      ok(still.status === 200 && lrow().status === "pending", "checking an unpaid session leaves it pending", still.body);
+      lookupReply = id => ({ status: "complete", payment_status: "paid", payment_intent: "pi_" + id, amount_total: Math.round(lk.co.body.order.total * 100) });
+      const rec = await A("/api/admin/payments/" + lid + "/reconcile?store=luxora", "POST", {});
+      ok(rec.status === 200 && lrow().status === "captured" && lrow().ostatus === "processing" && /^pi_/.test(lrow().provider_payment_id), "the console's check captures a payment the gateway reports paid", rec.body);
+      const sw = await buy();
+      const srow = () => db.get("SELECT p.*, o.status ostatus FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?", sw.co.body.order.num);
+      lookupReply = () => ({ status: "expired", payment_status: "unpaid" });
+      const swept = await require("../lib/api.js").reconcilePending(50);
+      ok(swept.ran >= 1 && srow().status === "failed" && srow().ostatus === "cancelled", "the background sweep fails an expired session and releases its order", swept);
+      lookupReply = () => ({ status: "open", payment_status: "unpaid" });
+
+      console.log("▸ MONEY TAKEN OFFLINE IS RECORDED BY THE STORE");
+      const C2 = mk(); await C2("/api/session?store=luxora");
+      await C2("/api/auth/register?store=luxora", "POST", { name: "Cash Buyer", email: "cash" + crypto.randomBytes(3).toString("hex") + "@example.com", password: "Pay-Me-Later-123" });
+      await C2("/api/cart?store=luxora", "POST", { id: product.id, qty: 1 });
+      const cod = await C2("/api/checkout?store=luxora", "POST", { name: "Cash Buyer", address: "2 Main St", city: "Seattle", state: "WA", zip: "98109", gateway: "cod" });
+      const crow = () => db.get("SELECT p.* FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?", cod.body.order.num);
+      const ledger = (await A("/api/admin/payments?store=luxora")).body.payments || [];
+      const lrowCod = ledger.find(x => x.id === crow().id);
+      ok(crow().status === "pending" && lrowCod && lrowCod.offline === true && lrowCod.order_num === cod.body.order.num, "a cash order waits, and the ledger marks it as settled offline", lrowCod);
+      ok((await A("/api/admin/payments/" + crow().id + "/reconcile?store=luxora", "POST", {})).status === 409, "there is no gateway to ask about cash");
+      const got = await A("/api/admin/payments/" + crow().id + "/received?store=luxora", "POST", { note: "paid at the door" });
+      ok(got.status === 200 && crow().status === "captured", "the store records the cash as received", got.body);
+      ok((await A("/api/admin/payments/" + crow().id + "/received?store=luxora", "POST", {})).status === 409, "and only once");
+      const live2 = await buy();
+      const l2 = db.get("SELECT p.id FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?", live2.co.body.order.num);
+      ok((await A("/api/admin/payments/" + l2.id + "/received?store=luxora", "POST", {})).status === 409, "a gateway payment cannot be marked received by hand");
+    }
+
     console.log("▸ CARRIER RATES, LABELS AND TRACKING");
     {
       const none = await A("/api/shipping/quote?store=luxora", "POST", { order_id: 1, parcel: { weight_oz: 10 } });
@@ -200,6 +289,33 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
       const send = h => fetch(BASE + "/api/shipping/webhook/easypost", { method: "POST", headers: { "Content-Type": "application/json", "X-Hmac-Signature": h }, body: raw });
       ok((await send(sig("wrong"))).status === 401 && db.get("SELECT status FROM package_tracking WHERE id=?", tr.id).status === "pre_transit", "an unsigned or mis-signed tracking webhook changes nothing");
       ok((await send(sig("ep_whsec"))).status === 200 && db.get("SELECT status FROM package_tracking WHERE id=?", tr.id).status === "in_transit", "a signed tracker update advances the parcel");
+
+      console.log("▸ CHECKOUT CHARGES THE LIVE CARRIER RATE");
+      {
+        const S = mk(); await S("/api/session?store=luxora");
+        await S("/api/auth/register?store=luxora", "POST", { name: "Rae Rates", email: "rae" + crypto.randomBytes(3).toString("hex") + "@example.com", password: "Rate-Me-Now-123" });
+        await S("/api/cart?store=luxora", "POST", { id: product.id, qty: 1 });
+        const dest = { name: "Rae Rates", address: "77 Lake Ave", city: "Portland", state: "OR", zip: "97201" };
+        ok((await A("/api/admin/settings?store=luxora", "PUT", { commerce: { shipRates: "sometimes" } })).status === 400, "the shipping price mode is validated");
+        await A("/api/admin/settings?store=luxora", "PUT", { commerce: { freeShipThreshold: 1000000 } });
+        const fixedQ = await S("/api/checkout/quote?store=luxora", "POST", dest);
+        ok(fixedQ.status === 200 && fixedQ.body.source === "fixed" && fixedQ.body.rates.length === 0, "in fixed mode no carrier is asked", fixedQ.body);
+        ok((await A("/api/admin/settings?store=luxora", "PUT", { commerce: { shipRates: "live", parcelWeightKg: 1 } })).status === 200, "the store switches to live carrier rates");
+        const qBefore = calls.length;
+        const lq = await S("/api/checkout/quote?store=luxora", "POST", dest);
+        const shipCall = calls.slice(qBefore).find(c => c.url.endsWith("/v2/shipments"));
+        ok(lq.status === 200 && lq.body.source === "live" && lq.body.rates.length === 2 && lq.body.shipFee === 7.85 && lq.body.rate_id === "rate_usps", "the quote offers the carrier's rates and starts on the cheapest", lq.body);
+        ok(shipCall && shipCall.json.shipment.to_address.street1 === "77 Lake Ave" && shipCall.json.shipment.from_address.zip === "98101" && shipCall.json.shipment.parcel.weight > 0, "the parcel is rated from the ship-from address to the shopper's", shipCall && shipCall.json);
+        const ups = await S("/api/checkout/quote?store=luxora", "POST", { ...dest, rate_id: "rate_ups" });
+        ok(ups.body.shipFee === 11.2 && ups.body.total > lq.body.total, "choosing another rate re-prices the order", ups.body);
+        const noAddr = await S("/api/checkout/quote?store=luxora", "POST", {});
+        ok(noAddr.body.source === "fixed", "without an address the flat fee is shown until one is entered", noAddr.body);
+        const co = await S("/api/checkout?store=luxora", "POST", { ...dest, gateway: "cod", rate_id: "rate_ups" });
+        const ord = db.get("SELECT * FROM orders WHERE num=?", co.body.order && co.body.order.num);
+        ok(co.status === 200 && ord && Math.abs(ord.ship_fee - 11.2) < 0.001 && ord.ship_option === "ups" && co.body.order.shipping.source === "live" && Math.abs(co.body.order.total - ups.body.total) < 0.01, "checkout charges the chosen rate — the same total the quote showed", co.body.order);
+        ok(db.get("SELECT COUNT(*) c FROM shipping_quotes WHERE order_id=? AND rate_ref='rate_ups'", ord.id).c === 1, "the rate the shopper paid for is attached to the order for the label");
+        await A("/api/admin/settings?store=luxora", "PUT", { commerce: { shipRates: "fixed", freeShipThreshold: 35 } });
+      }
       const disc = await P("/api/platform/shipping/providers/easypost/disconnect", "POST", {});
       const after = db.get("SELECT config, status FROM shipping_providers WHERE provider_id='easypost'");
       ok(disc.status === 200 && after.status === "inactive" && after.config === "{}", "disconnecting deletes the sealed keys and takes the carrier out of service", after);
@@ -208,6 +324,7 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
 
     console.log("▸ AMOUNTS IN CURRENCIES WITHOUT MINOR UNITS");
     const spec = require("../lib/spec.js");
+    ok(spec.verifyHmac({ header: "x-sig", encoding: "hex" }, "k", "body", { "x-sig": crypto.createHmac("sha256", "k").update("body").digest("hex") }) === true && spec.verifyHmac({ header: "x-sig" }, "k", "tampered", { "x-sig": crypto.createHmac("sha256", "k").update("body").digest("hex") }) === false && spec.verifyHmac(null, "k", "b", {}) === null, "a declared HMAC scheme verifies exactly the bytes signed");
     ok(spec.minorUnits(1500, "JPY") === 1500 && spec.minorUnits(12.34, "USD") === 1234 && spec.minorUnits(10, "KRW") === 10, "¥1,500 is sent as 1500, $12.34 as 1234");
   } catch (e) {
     failed++; console.error("  ✗ harness error:", e && e.stack || e);
