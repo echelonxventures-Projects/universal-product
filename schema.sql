@@ -1262,6 +1262,21 @@ CREATE TABLE bank_payouts (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_payouts_tenant ON bank_payouts(tenant_id, status);
+CREATE TABLE applicability_rules (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER,
+  subject_type TEXT NOT NULL, subject TEXT NOT NULL DEFAULT '*',
+  effect TEXT NOT NULL DEFAULT 'allow', priority INTEGER NOT NULL DEFAULT 0,
+  scope TEXT NOT NULL DEFAULT '{}', params TEXT NOT NULL DEFAULT '{}',
+  note TEXT DEFAULT '', active INTEGER NOT NULL DEFAULT 1, created_by TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT
+);
+CREATE INDEX ix_rules_subject ON applicability_rules(subject_type, tenant_id, active);
+CREATE TABLE segment_members (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
+  owner TEXT NOT NULL, segment TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE(tenant_id, owner, segment)
+);
 CREATE TABLE billers (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
   name TEXT NOT NULL, category TEXT NOT NULL, code TEXT,
@@ -1545,6 +1560,7 @@ CREATE TABLE capability_presets (
   label TEXT NOT NULL,
   description TEXT,
   capabilities TEXT NOT NULL DEFAULT '{}',  /* {key: {enabled, params}} */
+  universes TEXT,                           /* JSON [universe key] a new store opens with; NULL = none declared */
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_cappreset_key ON capability_presets(key);

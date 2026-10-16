@@ -379,6 +379,7 @@ const NAV = [
   { n: "09 · Platform", g: [
     { g: "Capabilities", l: [
       ["capabilities", "⚙️ Capabilities", { v: "capabilities" }],
+      ["applicability", "🧭 Availability Rules", { v: "applicability" }],
       ["capability-tree", "🌳 Capability Tree", { v: "capability-tree" }],
       ["capability-registry", "🗄️ Capability Registry", { u: "capability_registry" }],
       ["capability-composition", "🧩 Capability Composition", { u: "capability_composition" }],
@@ -1495,6 +1496,8 @@ function modal(html) {
   let m = $("#modal");
   if (!m) { m = document.createElement("div"); m.id = "modal"; document.body.appendChild(m); }
   m.innerHTML = `<div class="p-modal"><div class="p-modal-box">${html}</div></div>`;
+  /* the console shell creates #modal hidden (the forms that open it un-hide it), so opening must too */
+  m.classList.remove("hidden");
   m.querySelector(".p-modal").addEventListener("click", e => { if (e.target.classList.contains("p-modal")) m.innerHTML = ""; });
   return m;
 }
@@ -3613,6 +3616,8 @@ function wireCompose() {
    DOM node (the order bug that made gproducts throw on a null #gpNew). */
 const VIEWFNS = {
   dash: () => vDash(),
+  /* where, for whom and for what anything applies — the shared rules screen (js/rules-ui.js) */
+  applicability: () => `<div id="rulesRoot"></div>`,
   tenants: () => vTenants(),
   plans: () => vPlans(),
   subs: () => vSubs(),
@@ -3670,6 +3675,7 @@ const VIEWFNS = {
   architecture: () => { window.open("/docs/architecture.html", "_blank"); return Promise.resolve('<div class="p-empty">Opened the Architecture reference in a new tab.</div>'); },
 };
 const WIREFNS = {
+  applicability: () => LXRulesUI.mount($("#rulesRoot"), { api, base: "/platform/rules", scope: "platform" }),
   billing: () => wireBillingOps(),
   gproducts: () => wireGproducts(),
   modules: () => wireModules(),

@@ -68,7 +68,7 @@ const NAV = [
   { g: "Team & Access", items: [["team", "👥 Team & Roles"], ["structure", "🏢 Org Structure"], ["sso", "🔐 SSO & Integrations"]] },
   { g: "Trust & Compliance", items: [["risk", "🛡️ Risk & Fraud"], ["compliance", "✅ Compliance & Certs"], ["audit", "📜 Audit Trail"], ["trash", "🗑️ Trash & Retention"]] },
   { g: "Automation", items: [["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"]] },
-  { g: "Settings", items: [["settings", "⚙️ Settings"], ["modules", "🧩 Modules"], ["studio", "🛠️ Data Studio"]] },
+  { g: "Settings", items: [["settings", "⚙️ Settings"], ["applicability", "🧭 Availability Rules"], ["modules", "🧩 Modules"], ["studio", "🛠️ Data Studio"]] },
   { g: "Help", items: [["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]] }
 ];
 const NAVFLAT = NAV.flatMap(g => g.items);
@@ -1109,6 +1109,8 @@ function modal(html) {
   let m = document.getElementById("modal");
   if (!m) { m = document.createElement("div"); m.id = "modal"; document.body.appendChild(m); }
   m.innerHTML = `<div class="p-modal"><div class="p-modal-box">${html}</div></div>`;
+  /* the console shell creates #modal hidden (the forms that open it un-hide it), so opening must too */
+  m.classList.remove("hidden");
   return m;
 }
 async function vBilling() {
@@ -1768,6 +1770,7 @@ async function render() {
     else if (view === "attributes") body.innerHTML = await entityTable("attribute");
     else if (view === "payments") { body.innerHTML = await vPayments(); wirePayments(); }
     else if (view === "settings") { body.innerHTML = await vSettings(); wireSettings(); }
+    else if (view === "applicability") { body.innerHTML = `<div id="rulesRoot"></div>`; await LXRulesUI.mount(document.getElementById("rulesRoot"), { api, base: "/admin/rules", scope: "store" }); }
     else if (view === "billing") body.innerHTML = await vBilling();
     else if (view === "modules") { body.innerHTML = await vModules(); }
     else if (view === "audit") { body.innerHTML = await vAudit(); wireAudit(); }

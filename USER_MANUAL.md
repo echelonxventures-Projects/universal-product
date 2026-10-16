@@ -747,6 +747,73 @@ security policy. The path contains **no per-capability code**.
 
 ---
 
+## E7a. Availability Rules — where, for whom and for what anything applies (*09 Platform → 🧭 Availability Rules*)
+
+Blends and capabilities decide *what a platform has*. Availability Rules decide **where, for whom
+and for what each thing may be used**. One rule engine decides everything the platform offers, and every
+engine that makes a choice asks it.
+
+**A rule** has three parts:
+
+- **Subject** — one named thing, or ✱ every thing of a type. The types are registry rows
+  (`ruleSubjectTypes`): payment gateway, payment method, bank, shipping carrier, notification
+  channel, marketing integration, AI provider, AI model, AI capability, capability, module
+  capability, service, promotion, offer, coupon, sign-in method.
+- **Scope** — any combination of the registered dimensions (`ruleDimensions`): platform kinds,
+  platforms, countries **or country groups** (EU, GCC, APAC… — the `countryGroups` registry),
+  states/regions, currencies, services, customer segments, channels, plus an amount range (in a
+  stated currency, converted at the live FX rate) and a date window. A blank dimension means *any*.
+- **Effect** — *allow*, *deny* or *prefer* (with a priority: preferred options are offered first),
+  plus **overrides** applied when the rule matches (for example `fee_pct`, `fee_fixed`, `base_fee`, `label`, or
+  any parameter a capability reads).
+
+**How a decision is made**
+1. The most specific matching rule wins: a named subject beats ✱, then the rule with more dimensions set.
+   At a tie, deny wins.
+2. A subject with an *allow* rule is **allow-listed**: it is offered only where one of its allow
+   rules matches. A subject with no rules is open.
+3. The platform owner's rules bound every platform. A platform's own rules (store console →
+   *Settings → 🧭 Availability Rules*) can only narrow them; an allow there never lifts an owner's deny.
+4. A context that doesn't know a fact yet (no buyer signed in, no amount yet) is treated
+   optimistically for allow rules and never triggers a deny on that fact. Checkout re-decides with
+   the full context at the moment of payment.
+
+**Examples**
+
+| Goal | Rule |
+|---|---|
+| Razorpay only in India, Stripe in the US/EU | allow `razorpay` · countries IN; allow `stripe` · countries US, EU |
+| No cash on delivery above ₹5,000 | deny `cod` · min amount 5000 · currency INR |
+| HDFC may not receive payouts | deny bank `hdfc` · services payout |
+| BNPL only for premium customers in the app | allow service `bnpl` · segments premium · channels app |
+| Reviews off for every Indian marketplace | deny capability `reviews` · kinds marketplace · countries IN |
+| GPT-4o not used in the EU | deny AI model `gpt-4o` · countries EU |
+| A Diwali coupon for premium customers, 1–15 Nov | allow coupon `DIWALI10` · segments premium · from/until dates |
+| Prefer UPI for Indian orders | prefer `upi` · countries IN · priority 10 |
+
+**Segments** combine three sources: hand-assigned members (store console → *Availability Rules →
+Customer segments*), automatic ones (guest / signed in), and the offers engine's computed
+audiences (new, returning, high-value, member…). The segment list is the `segments` registry.
+
+**Banks** are the `banks` registry (key, name, country, IFSC/SWIFT prefix). A payout or mandate
+names its bank by key, or the bank is recognised from the account's IFSC or SWIFT code.
+
+**🔎 Explain** describes a context (platform, country, segment, service, channel, amount, date) and
+lists every subject of a type with its verdict (*open · allowed · conditional · blocked*) and the
+rule that decided it.
+
+**Extending it — no code**
+- *A new kind of thing becomes rule-able* by adding a `ruleSubjectTypes` row whose source is
+  `providers:<kind>`, `list:<registry list>`, `entity:<Data Studio entity>` or
+  `rows:<table>:<id column>:<label column>`.
+- *A new dimension* is a `ruleDimensions` row (`key`, `name`, `fact`, `match`: in · any · prefix ·
+  country, `options`). The request supplies its fact as `body.context.<fact>`, header
+  `x-ctx-<fact>` or query `ctx_<fact>`.
+- *Any engine or integration* can ask `POST /api/rules/check {type, id, context}`. A shopper gets
+  only the verdict; console callers also get the reasons.
+
+---
+
 ## E8. The constitution surfaces (*12 Architecture*)
 
 These screens make the declared corpus executable and inspectable.
@@ -1012,6 +1079,8 @@ double-run. Outbound webhooks are HMAC-signed, delivered through a retrying ledg
 | Allow a store to list a master product | 02 → 🌐 Global Products | Store access |
 | See every store's orders / stock / disputes | 05 → 🧭 Ops Hub (+ E6 views) | Use the store filter + toolbar |
 | Turn a feature on for one store | 09 → ⚙️ Capabilities | Pick store → toggle / params / preset |
+| Decide which gateway/bank/carrier/capability/offer/AI model applies where, for whom, for what | 09 → 🧭 Availability Rules | ＋ New rule · 🔎 Explain |
+| Restrict one platform further | Store console → Settings → 🧭 Availability Rules | ＋ New rule |
 | Materialize a capability's full surface | 09 → 🧬 Composition Engine | Compose |
 | Publish the corpus into a store | 12 → 🧬 Universes | Pick target store → Activate |
 | Check the corpus is intact | 12 → 🏛️ Foundations | Verify invariants |
