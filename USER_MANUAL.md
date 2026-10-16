@@ -826,6 +826,28 @@ rule that decided it.
 
 ---
 
+## E7b. State machines — what a status means and what it does (*Data Studio → `stateMachines`*)
+
+Every lifecycle (rides, drivers, purchase requests, payroll, work orders, replenishment,
+disputes, deliveries, RFQs, tenders, shipments, experiments, support tickets and more) is a
+row of the `stateMachines` registry. The engines no longer name statuses; they ask the machine.
+
+| Field | What it declares |
+|---|---|
+| `states` | the statuses: a registry list (`list:mobilityRideStatuses`) or an inline list |
+| `transitions` | the legal moves: a list of `from>to` keys, a `{ from: [to…] }` map, or `free: true` for any move. `*` means any status. |
+| `initial` | the status a new record starts in |
+| `meta.<status>.tags` | what the status **means** to the engines: `terminal`, `success`, `failure`, `rateable`, `available`, `committed`, `bookable`… |
+| `meta.<status>.stamps` | time columns written on entering it (`{ "col": "resolved_at", "once": true }` writes only the first time) |
+| `on["from>to"]` | effects of a move: `set` fields, `stamp` a time, `run` a named side effect (pay the driver, claw back a chargeback, deliver the orders), or `guard` (refuse the move, e.g. above an approval threshold) |
+
+**Examples of changes that need no code:**
+- **Add a status**, say an inspection hold for rides: add it to the status list, add its moves, and give it tags. Every count, filter and check that asks by meaning includes it.
+- **Change what a status means.** Tag `cancelled` as `rateable` and riders can rate cancelled trips.
+- **Re-sequence a flow:** edit `transitions`. Illegal moves are refused, and the error lists the legal next statuses.
+
+---
+
 ## E8. The constitution surfaces (*12 Architecture*)
 
 These screens make the declared corpus executable and inspectable.

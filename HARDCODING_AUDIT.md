@@ -105,6 +105,28 @@ browser.
 **Fix:** the server sends each row's display metadata (label, tone, form fields) from the
 registry, and the console renders what it's given.
 
+## Progress
+
+| Batch | What changed | Logic branches | State branches |
+|---|---|---:|---:|
+| Baseline | — | 308 | 106 |
+| State machines, batch 1 | `lib/states.js` and 32 machines in `lib/seed/states.json`; the engines below converted | **260** | **58** |
+
+**Batch 1 converted these engines:**
+- rides, drivers, vehicles (`lib/mobility.js`);
+- purchase requests, approvals, payroll runs and lines, work orders, employees, projects, tasks (`lib/operations.js`);
+- replenishment (`lib/planning.js`);
+- disputes, seller payouts (`lib/fin.js`);
+- quick-commerce dispatch, riders, dark stores, service areas, delivery slots (`lib/qcommerce.js`);
+- RFQs, quotes, tenders, bids, supplier verification, suppliers, gold memberships, price lists (`lib/trade.js`);
+- shipments (`lib/logistics.js`);
+- experiments (`lib/experiments.js`);
+- tickets and agents (`lib/helpdesk.js`).
+
+`test/states.js` gates these engines: it fails if any of them compares, filters or lists one of its machine's states by name.
+
+**Next state batch:** orders and payments (`lib/api.js`; the `order` machine already exists), compliance, GOIP, fintech instruments, and the consoles (`public/js`).
+
 ## What step 1 removed (applicability rules)
 
 - **Vocabularies are now seed data in `lib/seed/rules.json`:** subject types, dimensions,
