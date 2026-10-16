@@ -1,0 +1,496 @@
+{
+ "INDUSTRIES": [
+  {
+   "key": "retail",
+   "name": "Retail & Consumer",
+   "icon": "🛍️"
+  },
+  {
+   "key": "grocery",
+   "name": "Food & Grocery",
+   "icon": "🥦"
+  },
+  {
+   "key": "fashion",
+   "name": "Fashion & Apparel",
+   "icon": "👗"
+  },
+  {
+   "key": "furniture",
+   "name": "Furniture & Home",
+   "icon": "🛋️"
+  },
+  {
+   "key": "construction",
+   "name": "Construction & Hardware",
+   "icon": "🔩"
+  },
+  {
+   "key": "industrial",
+   "name": "Industrial & Manufacturing",
+   "icon": "🏭"
+  },
+  {
+   "key": "automotive",
+   "name": "Automotive",
+   "icon": "🚗"
+  },
+  {
+   "key": "agriculture",
+   "name": "Agriculture",
+   "icon": "🌾"
+  },
+  {
+   "key": "healthcare",
+   "name": "Healthcare",
+   "icon": "🏥"
+  },
+  {
+   "key": "pharma",
+   "name": "Pharmaceuticals",
+   "icon": "💊"
+  },
+  {
+   "key": "electronics",
+   "name": "Electronics",
+   "icon": "📺"
+  },
+  {
+   "key": "telecom",
+   "name": "Telecommunications",
+   "icon": "📡"
+  },
+  {
+   "key": "energy",
+   "name": "Energy",
+   "icon": "⚡"
+  },
+  {
+   "key": "chemicals",
+   "name": "Chemicals",
+   "icon": "🧪"
+  },
+  {
+   "key": "education",
+   "name": "Education",
+   "icon": "🎓"
+  },
+  {
+   "key": "media",
+   "name": "Books & Media",
+   "icon": "📚"
+  },
+  {
+   "key": "digital",
+   "name": "Digital Products",
+   "icon": "💾",
+   "purchase": "download"
+  },
+  {
+   "key": "software",
+   "name": "Software",
+   "icon": "🧩"
+  },
+  {
+   "key": "services",
+   "name": "Professional Services",
+   "icon": "🼻"
+  },
+  {
+   "key": "travel",
+   "name": "Travel",
+   "icon": "✈️"
+  },
+  {
+   "key": "realestate",
+   "name": "Real Estate",
+   "icon": "🏢"
+  },
+  {
+   "key": "finance",
+   "name": "Financial Products",
+   "icon": "📈"
+  },
+  {
+   "key": "rental",
+   "name": "Rental Assets",
+   "icon": "🔑",
+   "purchase": "rent"
+  },
+  {
+   "key": "subscription",
+   "name": "Subscription Products",
+   "icon": "🔁",
+   "purchase": "subscribe"
+  },
+  {
+   "key": "gov",
+   "name": "Government Procurement",
+   "icon": "🏛️"
+  },
+  {
+   "key": "defense",
+   "name": "Defense & Aerospace",
+   "icon": "🛰️"
+  },
+  {
+   "key": "marine",
+   "name": "Marine",
+   "icon": "🚢"
+  },
+  {
+   "key": "mining",
+   "name": "Mining",
+   "icon": "⛏️"
+  },
+  {
+   "key": "luxury",
+   "name": "Luxury Goods",
+   "icon": "💎"
+  },
+  {
+   "key": "art",
+   "name": "Art & Collectibles",
+   "icon": "🎨"
+  },
+  {
+   "key": "pets",
+   "name": "Pets & Veterinary",
+   "icon": "🐾"
+  },
+  {
+   "key": "sports",
+   "name": "Sports & Fitness",
+   "icon": "🏋️"
+  },
+  {
+   "key": "jewellery",
+   "name": "Jewellery & Precious Metals",
+   "icon": "💍"
+  }
+ ],
+ "PRODUCT_TYPES": [
+  {
+   "key": "physical",
+   "name": "Physical Product",
+   "icon": "📦",
+   "plain": true
+  },
+  {
+   "key": "digital",
+   "name": "Digital Product",
+   "icon": "💿"
+  },
+  {
+   "key": "service",
+   "name": "Service",
+   "icon": "🛠️",
+   "service": true,
+   "purchase": "book"
+  },
+  {
+   "key": "rental",
+   "name": "Rental Asset",
+   "icon": "🔑"
+  },
+  {
+   "key": "subscription",
+   "name": "Subscription",
+   "icon": "🔁"
+  },
+  {
+   "key": "bundle",
+   "name": "Bundle",
+   "icon": "🎁"
+  },
+  {
+   "key": "kit",
+   "name": "Kit",
+   "icon": "🧰"
+  },
+  {
+   "key": "package",
+   "name": "Package",
+   "icon": "🗃️"
+  },
+  {
+   "key": "membership",
+   "name": "Membership",
+   "icon": "🎟️"
+  },
+  {
+   "key": "warranty",
+   "name": "Warranty",
+   "icon": "🛡️"
+  },
+  {
+   "key": "insurance",
+   "name": "Insurance",
+   "icon": "☂️"
+  },
+  {
+   "key": "license",
+   "name": "License",
+   "icon": "📜",
+   "purchase": "download"
+  },
+  {
+   "key": "course",
+   "name": "Course",
+   "icon": "🎓",
+   "purchase": "download"
+  },
+  {
+   "key": "appointment",
+   "name": "Appointment",
+   "icon": "📅",
+   "purchase": "book"
+  },
+  {
+   "key": "event_ticket",
+   "name": "Event Ticket",
+   "icon": "🎫"
+  },
+  {
+   "key": "vehicle",
+   "name": "Vehicle",
+   "icon": "🚙"
+  },
+  {
+   "key": "property",
+   "name": "Property",
+   "icon": "🏠"
+  },
+  {
+   "key": "equipment",
+   "name": "Equipment",
+   "icon": "⚙️"
+  },
+  {
+   "key": "resource",
+   "name": "Resource",
+   "icon": "🌐"
+  },
+  {
+   "key": "consumable",
+   "name": "Consumable",
+   "icon": "🧻"
+  },
+  {
+   "key": "raw_material",
+   "name": "Raw Material",
+   "icon": "🪨"
+  },
+  {
+   "key": "semi_finished",
+   "name": "Semi Finished Good",
+   "icon": "🔗"
+  },
+  {
+   "key": "finished_good",
+   "name": "Finished Good",
+   "icon": "✅"
+  }
+ ],
+ "VERTICAL_CONTEXTS": {
+  "tax": [
+   {
+    "key": "gst_profile",
+    "label": "GST Profile (IN)",
+    "type": "tax",
+    "fields": [
+     {
+      "key": "rate",
+      "label": "GST Rate",
+      "type": "select",
+      "options": [
+       "0",
+       "5",
+       "12",
+       "18",
+       "28"
+      ]
+     },
+     {
+      "key": "hsn",
+      "label": "HSN Code",
+      "type": "text"
+     }
+    ]
+   },
+   {
+    "key": "vat_profile",
+    "label": "VAT Profile (EU)",
+    "type": "tax",
+    "fields": [
+     {
+      "key": "rate",
+      "label": "VAT Rate",
+      "type": "select",
+      "options": [
+       "0",
+       "7",
+       "13",
+       "19",
+       "21"
+      ]
+     },
+     {
+      "key": "reverse",
+      "label": "Reverse Charge",
+      "type": "bool"
+     }
+    ]
+   },
+   {
+    "key": "sales_tax",
+    "label": "State Sales Tax (US)",
+    "type": "tax",
+    "fields": [
+     {
+      "key": "rate",
+      "label": "Rate",
+      "type": "number"
+     },
+     {
+      "key": "nexus",
+      "label": "Nexus State",
+      "type": "text"
+     }
+    ]
+   },
+   {
+    "key": "zero_rate",
+    "label": "Zero-Rated / Exempt",
+    "type": "tax",
+    "fields": [
+     {
+      "key": "reason",
+      "label": "Exemption Reason",
+      "type": "text"
+     }
+    ]
+   }
+  ],
+  "invoice": [
+   {
+    "key": "tax_invoice",
+    "label": "Tax Invoice (GST/VAT)",
+    "type": "invoice",
+    "fields": [
+     {
+      "key": "requires_gstin",
+      "label": "Requires Buyer GSTIN/VAT ID",
+      "type": "bool"
+     },
+     {
+      "key": "e_invoice",
+      "label": "E-Invoice Mandated",
+      "type": "bool"
+     }
+    ]
+   },
+   {
+    "key": "commercial_invoice",
+    "label": "Commercial Invoice",
+    "type": "invoice",
+    "fields": [
+     {
+      "key": "incoterms",
+      "label": "Incoterms",
+      "type": "select",
+      "options": [
+       "EXW",
+       "FOB",
+       "CIF",
+       "DDP"
+      ]
+     }
+    ]
+   },
+   {
+    "key": "proforma",
+    "label": "Proforma / Quotation",
+    "type": "invoice",
+    "fields": [
+     {
+      "key": "validity_days",
+      "label": "Validity Days",
+      "type": "number"
+     }
+    ]
+   },
+   {
+    "key": "cash_receipt",
+    "label": "Cash Receipt (COD)",
+    "type": "invoice",
+    "fields": []
+   }
+  ],
+  "payment": [
+   {
+    "key": "online_capture",
+    "label": "Online Capture (Gateway)",
+    "type": "payment",
+    "fields": [
+     {
+      "key": "mandates",
+      "label": "Supports Mandates/Recurring",
+      "type": "bool"
+     }
+    ]
+   },
+   {
+    "key": "bnpl",
+    "label": "Buy Now Pay Later",
+    "type": "payment",
+    "fields": [
+     {
+      "key": "installments",
+      "label": "Installment Count",
+      "type": "number"
+     },
+     {
+      "key": "credit_check",
+      "label": "Soft Credit Check",
+      "type": "bool"
+     }
+    ]
+   },
+   {
+    "key": "cash_delivery",
+    "label": "Cash on Delivery",
+    "type": "payment",
+    "fields": [
+     {
+      "key": "handling_fee",
+      "label": "Handling Fee",
+      "type": "money"
+     },
+     {
+      "key": "requires_otp",
+      "label": "OTP at Doorstep",
+      "type": "bool"
+     }
+    ]
+   },
+   {
+    "key": "invoice_net",
+    "label": "Invoice Terms (B2B Net)",
+    "type": "payment",
+    "fields": [
+     {
+      "key": "net_days",
+      "label": "Net Days",
+      "type": "number"
+     },
+     {
+      "key": "credit_limit",
+      "label": "Credit Limit",
+      "type": "money"
+     }
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,1362 @@
+{
+ "DOMAINS": [
+  {
+   "n": 1,
+   "key": "incentive",
+   "name": "Incentive Domain",
+   "owner": "offers",
+   "discriminator": "every value-exchange row (the root record)",
+   "fabric": "capability"
+  },
+  {
+   "n": 2,
+   "key": "offer",
+   "name": "Offer Domain",
+   "owner": "offers",
+   "discriminator": "source='offer'",
+   "fabric": "capability"
+  },
+  {
+   "n": 3,
+   "key": "coupon",
+   "name": "Coupon Domain",
+   "owner": "coupons",
+   "discriminator": "coupons.kind in code/single_use/multi_use/first_order",
+   "fabric": "benefit"
+  },
+  {
+   "n": 4,
+   "key": "promotion",
+   "name": "Promotion Domain",
+   "owner": "promotions",
+   "discriminator": "legacy per-store promotions (read-through)",
+   "fabric": "benefit"
+  },
+  {
+   "n": 5,
+   "key": "discount",
+   "name": "Discount Domain",
+   "owner": "offers",
+   "discriminator": "direction='discount'",
+   "fabric": "benefit"
+  },
+  {
+   "n": 6,
+   "key": "cashback",
+   "name": "Cashback Domain",
+   "owner": "offers",
+   "discriminator": "benefit in cashback/deferred_cashback",
+   "fabric": "benefit"
+  },
+  {
+   "n": 7,
+   "key": "reward",
+   "name": "Reward Domain",
+   "owner": "offers",
+   "discriminator": "benefit in reward_points/coins",
+   "fabric": "benefit"
+  },
+  {
+   "n": 8,
+   "key": "gift_card",
+   "name": "Gift Card Domain",
+   "owner": "coupons",
+   "discriminator": "kind='gift_card'",
+   "fabric": "benefit"
+  },
+  {
+   "n": 9,
+   "key": "voucher",
+   "name": "Voucher Domain",
+   "owner": "coupons",
+   "discriminator": "kind in bank_voucher/bulk_issued",
+   "fabric": "benefit"
+  },
+  {
+   "n": 10,
+   "key": "loyalty",
+   "name": "Loyalty Domain",
+   "owner": "goip_entitlements",
+   "discriminator": "benefit='tier_upgrade'",
+   "fabric": "benefit"
+  },
+  {
+   "n": 11,
+   "key": "membership",
+   "name": "Membership Domain",
+   "owner": "goip_entitlements",
+   "discriminator": "benefit='membership_upgrade'",
+   "fabric": "benefit"
+  },
+  {
+   "n": 12,
+   "key": "referral",
+   "name": "Referral Domain",
+   "owner": "goip_touchpoints",
+   "discriminator": "party_type='referrer'",
+   "fabric": "attribution"
+  },
+  {
+   "n": 13,
+   "key": "affiliate",
+   "name": "Affiliate Domain",
+   "owner": "goip_touchpoints",
+   "discriminator": "party_type='affiliate'",
+   "fabric": "attribution"
+  },
+  {
+   "n": 14,
+   "key": "creator",
+   "name": "Creator Domain",
+   "owner": "goip_touchpoints",
+   "discriminator": "party_type='creator'",
+   "fabric": "attribution"
+  },
+  {
+   "n": 15,
+   "key": "influencer",
+   "name": "Influencer Domain",
+   "owner": "goip_touchpoints",
+   "discriminator": "party_type='influencer'",
+   "fabric": "attribution"
+  },
+  {
+   "n": 16,
+   "key": "deal",
+   "name": "Deal Domain",
+   "owner": "offers",
+   "discriminator": "campaign<>'' and distribution includes a public channel",
+   "fabric": "distribution"
+  },
+  {
+   "n": 17,
+   "key": "pricing",
+   "name": "Pricing Domain",
+   "owner": "products.pricing_rules",
+   "discriminator": "tier/B2B price rules on the product",
+   "fabric": "benefit"
+  },
+  {
+   "n": 18,
+   "key": "dynamic_pricing",
+   "name": "Dynamic Pricing Domain",
+   "owner": "offers",
+   "discriminator": "benefit='dynamic_discount'",
+   "fabric": "benefit"
+  },
+  {
+   "n": 19,
+   "key": "auction",
+   "name": "Auction Domain",
+   "owner": "tenders",
+   "discriminator": "tender lifecycle → award → contract",
+   "fabric": "benefit"
+  },
+  {
+   "n": 20,
+   "key": "subscription_benefit",
+   "name": "Subscription Benefit Domain",
+   "owner": "offers",
+   "discriminator": "channel='subscription'",
+   "fabric": "benefit"
+  },
+  {
+   "n": 21,
+   "key": "partner_benefit",
+   "name": "Partner Benefit Domain",
+   "owner": "offers",
+   "discriminator": "funder='partner'",
+   "fabric": "funding"
+  },
+  {
+   "n": 22,
+   "key": "corporate_benefit",
+   "name": "Corporate Benefit Domain",
+   "owner": "offers",
+   "discriminator": "funder='corporate'",
+   "fabric": "funding"
+  },
+  {
+   "n": 23,
+   "key": "government_benefit",
+   "name": "Government Benefit Domain",
+   "owner": "offers",
+   "discriminator": "funder='government'",
+   "fabric": "funding"
+  },
+  {
+   "n": 24,
+   "key": "employee_benefit",
+   "name": "Employee Benefit Domain",
+   "owner": "offers",
+   "discriminator": "rules.audience='employee'",
+   "fabric": "funding"
+  },
+  {
+   "n": 25,
+   "key": "gamification",
+   "name": "Gamification Domain",
+   "owner": "goip_entitlements",
+   "discriminator": "rules.game<>'' grants",
+   "fabric": "benefit"
+  },
+  {
+   "n": 26,
+   "key": "audience",
+   "name": "Audience Domain",
+   "owner": "meta_lists:goipAudiences",
+   "discriminator": "declared audience definitions",
+   "fabric": "context"
+  },
+  {
+   "n": 27,
+   "key": "segmentation",
+   "name": "Segmentation Domain",
+   "owner": "goip.personalize",
+   "discriminator": "computed segments per subject",
+   "fabric": "context"
+  },
+  {
+   "n": 28,
+   "key": "campaign",
+   "name": "Campaign Domain",
+   "owner": "offers",
+   "discriminator": "offers.campaign grouping",
+   "fabric": "distribution"
+  },
+  {
+   "n": 29,
+   "key": "discovery",
+   "name": "Discovery Domain",
+   "owner": "capability:discover",
+   "discriminator": "context-eligible set for a subject",
+   "fabric": "capability"
+  },
+  {
+   "n": 30,
+   "key": "search",
+   "name": "Search Domain",
+   "owner": "capability:search",
+   "discriminator": "text/domain/benefit query over exchanges",
+   "fabric": "capability"
+  },
+  {
+   "n": 31,
+   "key": "recommendation",
+   "name": "Recommendation Domain",
+   "owner": "engine:recommendation",
+   "discriminator": "ranked next-best exchange",
+   "fabric": "intelligence"
+  },
+  {
+   "n": 32,
+   "key": "personalization",
+   "name": "Personalization Domain",
+   "owner": "engine:personalization",
+   "discriminator": "subject-level tailoring",
+   "fabric": "intelligence"
+  },
+  {
+   "n": 33,
+   "key": "distribution",
+   "name": "Distribution Domain",
+   "owner": "offers.distribution",
+   "discriminator": "channels an exchange is published to",
+   "fabric": "distribution"
+  },
+  {
+   "n": 34,
+   "key": "syndication",
+   "name": "Syndication Domain",
+   "owner": "webhooks + feeds",
+   "discriminator": "outbound feeds of exchanges",
+   "fabric": "distribution"
+  },
+  {
+   "n": 35,
+   "key": "marketplace",
+   "name": "Marketplace Domain",
+   "owner": "tenants",
+   "discriminator": "mode='marketplace'",
+   "fabric": "context"
+  },
+  {
+   "n": 36,
+   "key": "merchant",
+   "name": "Merchant Domain",
+   "owner": "tenants",
+   "discriminator": "the operating store",
+   "fabric": "context"
+  },
+  {
+   "n": 37,
+   "key": "brand",
+   "name": "Brand Domain",
+   "owner": "offers.brand_ref",
+   "discriminator": "brand attached to an exchange",
+   "fabric": "context"
+  },
+  {
+   "n": 38,
+   "key": "provider",
+   "name": "Provider Domain",
+   "owner": "provider_defs",
+   "discriminator": "payment/shipping/notification/ai/marketing providers",
+   "fabric": "context"
+  },
+  {
+   "n": 39,
+   "key": "partner",
+   "name": "Partner Domain",
+   "owner": "suppliers",
+   "discriminator": "supply + benefit partners",
+   "fabric": "context"
+  },
+  {
+   "n": 40,
+   "key": "exchange",
+   "name": "Exchange Domain",
+   "owner": "meta_lists:goipEconomicUnits + fx_rates",
+   "discriminator": "unit → unit conversion",
+   "fabric": "economic"
+  },
+  {
+   "n": 41,
+   "key": "attribution",
+   "name": "Attribution Domain",
+   "owner": "goip_touchpoints",
+   "discriminator": "attribution model run over touchpoints",
+   "fabric": "attribution"
+  },
+  {
+   "n": 42,
+   "key": "tracking",
+   "name": "Tracking Domain",
+   "owner": "goip_touchpoints",
+   "discriminator": "raw touchpoint capture",
+   "fabric": "attribution"
+  },
+  {
+   "n": 43,
+   "key": "wallet",
+   "name": "Wallet Domain",
+   "owner": "wallets + wallet_entries",
+   "discriminator": "owner balances and entries",
+   "fabric": "settlement"
+  },
+  {
+   "n": 44,
+   "key": "treasury",
+   "name": "Treasury Domain",
+   "owner": "goip_budgets",
+   "discriminator": "aggregate position across all budgets",
+   "fabric": "funding"
+  },
+  {
+   "n": 45,
+   "key": "funding",
+   "name": "Funding Domain",
+   "owner": "goip_budgets",
+   "discriminator": "who funds an exchange (rows)",
+   "fabric": "funding"
+  },
+  {
+   "n": 46,
+   "key": "budget",
+   "name": "Budget Domain",
+   "owner": "goip_budgets",
+   "discriminator": "allocated / reserved ceilings",
+   "fabric": "funding"
+  },
+  {
+   "n": 47,
+   "key": "payment",
+   "name": "Payment Domain",
+   "owner": "payments",
+   "discriminator": "gateway money movement",
+   "fabric": "settlement"
+  },
+  {
+   "n": 48,
+   "key": "settlement",
+   "name": "Settlement Domain",
+   "owner": "goip_settlements",
+   "discriminator": "status ∈ tag:open (the goip_settlement machine)",
+   "fabric": "settlement"
+  },
+  {
+   "n": 49,
+   "key": "reconciliation",
+   "name": "Reconciliation Domain",
+   "owner": "goip_settlements",
+   "discriminator": "status ∈ tag:reconciled",
+   "fabric": "settlement"
+  },
+  {
+   "n": 50,
+   "key": "payout",
+   "name": "Payout Domain",
+   "owner": "goip_settlements",
+   "discriminator": "status ∈ tag:reconcilable",
+   "fabric": "settlement"
+  },
+  {
+   "n": 51,
+   "key": "fraud",
+   "name": "Fraud Domain",
+   "owner": "engine:fraud",
+   "discriminator": "abuse scoring",
+   "fabric": "governance"
+  },
+  {
+   "n": 52,
+   "key": "risk",
+   "name": "Risk Domain",
+   "owner": "engine:risk",
+   "discriminator": "exposure scoring",
+   "fabric": "governance"
+  },
+  {
+   "n": 53,
+   "key": "analytics",
+   "name": "Analytics Domain",
+   "owner": "coupon_redemptions",
+   "discriminator": "offers.analytics aggregates",
+   "fabric": "intelligence"
+  },
+  {
+   "n": 54,
+   "key": "forecasting",
+   "name": "Forecasting Domain",
+   "owner": "engine:forecasting",
+   "discriminator": "burn / liability projection",
+   "fabric": "intelligence"
+  },
+  {
+   "n": 55,
+   "key": "simulation",
+   "name": "Simulation Domain",
+   "owner": "engine:simulation",
+   "discriminator": "what-if runs (never writes)",
+   "fabric": "intelligence"
+  },
+  {
+   "n": 56,
+   "key": "ai",
+   "name": "AI Domain",
+   "owner": "ai.js",
+   "discriminator": "capabilities, providers, metering",
+   "fabric": "intelligence"
+  },
+  {
+   "n": 57,
+   "key": "agent",
+   "name": "Agent Domain",
+   "owner": "capability router",
+   "discriminator": "agent/MCP callers speak capabilities only",
+   "fabric": "capability"
+  },
+  {
+   "n": 58,
+   "key": "governance",
+   "name": "Governance Domain",
+   "owner": "offers.governance",
+   "discriminator": "lifecycle + approval state machine",
+   "fabric": "governance"
+  },
+  {
+   "n": 59,
+   "key": "compliance",
+   "name": "Compliance Domain",
+   "owner": "compliance_records",
+   "discriminator": "certifications, validity, jurisdiction",
+   "fabric": "governance"
+  },
+  {
+   "n": 60,
+   "key": "knowledge",
+   "name": "Knowledge Domain",
+   "owner": "goip.manifest()",
+   "discriminator": "the platform's machine-readable self-description",
+   "fabric": "governance"
+  },
+  {
+   "n": 61,
+   "key": "registry",
+   "name": "Registry Domain",
+   "owner": "meta_lists",
+   "discriminator": "every list the platform obeys",
+   "fabric": "context"
+  },
+  {
+   "n": 62,
+   "key": "universal_context",
+   "name": "Universal Context Domain",
+   "owner": "goip.resolveContext",
+   "discriminator": "the 25 resolved dimensions",
+   "fabric": "context"
+  },
+  {
+   "n": 63,
+   "key": "universal_temporal",
+   "name": "Universal Temporal Domain",
+   "owner": "meta_lists:goipCalendars",
+   "discriminator": "calendars, chronologies, units, conversions",
+   "fabric": "context"
+  },
+  {
+   "n": 64,
+   "key": "universal_spatial",
+   "name": "Universal Spatial Domain",
+   "owner": "meta_lists:goipSpatialNodes",
+   "discriminator": "systems, coordinates, hierarchy paths",
+   "fabric": "context"
+  },
+  {
+   "n": 65,
+   "key": "universal_economic",
+   "name": "Universal Economic Domain",
+   "owner": "meta_lists:goipEconomicUnits",
+   "discriminator": "units, classes, rates",
+   "fabric": "economic"
+  },
+  {
+   "n": 66,
+   "key": "universal_governance",
+   "name": "Universal Governance Domain",
+   "owner": "security.policy()",
+   "discriminator": "platform policy over every store",
+   "fabric": "governance"
+  },
+  {
+   "n": 67,
+   "key": "universal_reality",
+   "name": "Universal Reality Domain",
+   "owner": "meta_lists:goipRealities",
+   "discriminator": "reality models an exchange may bind to",
+   "fabric": "context"
+  }
+ ],
+ "CONTEXTS": [
+  {
+   "key": "reality",
+   "name": "Reality Context",
+   "source": "registry:goipRealities"
+  },
+  {
+   "key": "temporal",
+   "name": "Temporal Context",
+   "source": "registry:goipCalendars"
+  },
+  {
+   "key": "spatial",
+   "name": "Spatial Context",
+   "source": "registry:goipSpatialSystems"
+  },
+  {
+   "key": "economic",
+   "name": "Economic Context",
+   "source": "registry:goipEconomicUnits + currencies"
+  },
+  {
+   "key": "governance",
+   "name": "Governance Context",
+   "source": "security.policy()"
+  },
+  {
+   "key": "audience",
+   "name": "Audience Context",
+   "source": "orders + goip_entitlements"
+  },
+  {
+   "key": "identity",
+   "name": "Identity Context",
+   "source": "users / session owner"
+  },
+  {
+   "key": "behavioral",
+   "name": "Behavioral Context",
+   "source": "view_history + orders"
+  },
+  {
+   "key": "product",
+   "name": "Product Context",
+   "source": "products"
+  },
+  {
+   "key": "catalog",
+   "name": "Catalog Context",
+   "source": "taxonomy + departments"
+  },
+  {
+   "key": "cart",
+   "name": "Cart Context",
+   "source": "cart items passed by the caller"
+  },
+  {
+   "key": "session",
+   "name": "Session Context",
+   "source": "sessions"
+  },
+  {
+   "key": "device",
+   "name": "Device Context",
+   "source": "caller-supplied"
+  },
+  {
+   "key": "market",
+   "name": "Market Context",
+   "source": "tenants + countries"
+  },
+  {
+   "key": "inventory",
+   "name": "Inventory Context",
+   "source": "inventory + skus"
+  },
+  {
+   "key": "risk",
+   "name": "Risk Context",
+   "source": "goip.fraudScore"
+  },
+  {
+   "key": "organization",
+   "name": "Organization Context",
+   "source": "tenants"
+  },
+  {
+   "key": "merchant",
+   "name": "Merchant Context",
+   "source": "tenants + sellers"
+  },
+  {
+   "key": "provider",
+   "name": "Provider Context",
+   "source": "provider_defs"
+  },
+  {
+   "key": "partner",
+   "name": "Partner Context",
+   "source": "suppliers + links"
+  },
+  {
+   "key": "creator",
+   "name": "Creator Context",
+   "source": "goip_touchpoints (party_type=creator)"
+  },
+  {
+   "key": "channel",
+   "name": "Channel Context",
+   "source": "registry:goipDistribution"
+  },
+  {
+   "key": "event",
+   "name": "Event Context",
+   "source": "caller-supplied + events bus"
+  },
+  {
+   "key": "campaign",
+   "name": "Campaign Context",
+   "source": "offers.campaign"
+  },
+  {
+   "key": "ai",
+   "name": "AI Context",
+   "source": "ai.tierOf"
+  }
+ ],
+ "BENEFITS": [
+  {
+   "key": "percentage_discount",
+   "name": "Percentage Discount",
+   "type": "percent",
+   "direction": "discount",
+   "unit": "%",
+   "grants": ""
+  },
+  {
+   "key": "flat_discount",
+   "name": "Flat Discount",
+   "type": "fixed",
+   "direction": "discount",
+   "unit": "amount",
+   "grants": ""
+  },
+  {
+   "key": "tier_discount",
+   "name": "Tier Discount",
+   "type": "tier_qty",
+   "direction": "discount",
+   "unit": "amount",
+   "grants": ""
+  },
+  {
+   "key": "volume_discount",
+   "name": "Volume Discount",
+   "type": "multi_buy",
+   "direction": "discount",
+   "unit": "amount",
+   "grants": ""
+  },
+  {
+   "key": "dynamic_discount",
+   "name": "Dynamic Discount",
+   "type": "dynamic_discount",
+   "direction": "discount",
+   "unit": "%",
+   "grants": ""
+  },
+  {
+   "key": "cashback",
+   "name": "Cashback",
+   "type": "cashback",
+   "direction": "credit",
+   "unit": "%",
+   "grants": ""
+  },
+  {
+   "key": "deferred_cashback",
+   "name": "Deferred Cashback",
+   "type": "deferred_cashback",
+   "direction": "credit",
+   "unit": "%",
+   "grants": ""
+  },
+  {
+   "key": "reward_points",
+   "name": "Reward Points",
+   "type": "reward_points",
+   "direction": "reward",
+   "unit": "POINT",
+   "grants": ""
+  },
+  {
+   "key": "coins",
+   "name": "Coins",
+   "type": "coins",
+   "direction": "reward",
+   "unit": "COIN",
+   "grants": ""
+  },
+  {
+   "key": "credits",
+   "name": "Credits",
+   "type": "spend_get_credit",
+   "direction": "credit",
+   "unit": "amount",
+   "grants": ""
+  },
+  {
+   "key": "tokens",
+   "name": "Tokens",
+   "type": "tokens",
+   "direction": "reward",
+   "unit": "TOKEN",
+   "grants": ""
+  },
+  {
+   "key": "gift_card",
+   "name": "Gift Cards",
+   "type": "gift_card_credit",
+   "direction": "gift",
+   "unit": "amount",
+   "grants": "coupon:gift_card"
+  },
+  {
+   "key": "voucher",
+   "name": "Vouchers",
+   "type": "voucher_issue",
+   "direction": "gift",
+   "unit": "amount",
+   "grants": "coupon:bank_voucher"
+  },
+  {
+   "key": "wallet_value",
+   "name": "Wallet Value",
+   "type": "wallet_value",
+   "direction": "credit",
+   "unit": "amount",
+   "grants": ""
+  },
+  {
+   "key": "free_product",
+   "name": "Free Products",
+   "type": "free_product",
+   "direction": "discount",
+   "unit": "items",
+   "grants": ""
+  },
+  {
+   "key": "free_service",
+   "name": "Free Services",
+   "type": "free_service",
+   "direction": "discount",
+   "unit": "items",
+   "grants": ""
+  },
+  {
+   "key": "free_shipping",
+   "name": "Free Shipping",
+   "type": "free_ship",
+   "direction": "free_ship",
+   "unit": "",
+   "grants": ""
+  },
+  {
+   "key": "membership_upgrade",
+   "name": "Membership Upgrade",
+   "type": "membership_upgrade",
+   "direction": "exchange",
+   "unit": "tier",
+   "grants": "entitlement:membership"
+  },
+  {
+   "key": "tier_upgrade",
+   "name": "Tier Upgrade",
+   "type": "tier_upgrade",
+   "direction": "exchange",
+   "unit": "tier",
+   "grants": "entitlement:tier"
+  },
+  {
+   "key": "partner_benefit",
+   "name": "Partner Benefits",
+   "type": "partner_benefit",
+   "direction": "exchange",
+   "unit": "declared",
+   "grants": "entitlement:partner"
+  },
+  {
+   "key": "corporate_benefit",
+   "name": "Corporate Benefits",
+   "type": "corporate_benefit",
+   "direction": "exchange",
+   "unit": "declared",
+   "grants": "entitlement:corporate"
+  },
+  {
+   "key": "government_benefit",
+   "name": "Government Benefits",
+   "type": "government_benefit",
+   "direction": "discount",
+   "unit": "amount",
+   "grants": ""
+  },
+  {
+   "key": "digital_asset",
+   "name": "Digital Assets",
+   "type": "digital_asset",
+   "direction": "gift",
+   "unit": "TOKEN",
+   "grants": "entitlement:asset"
+  },
+  {
+   "key": "economic_asset",
+   "name": "Economic Assets",
+   "type": "economic_asset",
+   "direction": "gift",
+   "unit": "declared",
+   "grants": "entitlement:asset"
+  },
+  {
+   "key": "future_benefit",
+   "name": "Future Benefits",
+   "type": "future_benefit",
+   "direction": "exchange",
+   "unit": "declared",
+   "grants": "entitlement:declared"
+  }
+ ],
+ "DEMO_EXCHANGES": [
+  {
+   "name": "GOIP · New-customer welcome",
+   "benefit": "percentage_discount",
+   "value": 10,
+   "code": "GOIPWELCOME",
+   "domain": "offer",
+   "funder": "marketplace",
+   "funder_ref": "LUXORA",
+   "max_discount": 50,
+   "per_owner_limit": 1,
+   "summary": "10% for a subject with no prior orders — the condition engine decides, not a flag.",
+   "conditions": {
+    "audience.orders": {
+     "lte": 0
+    }
+   },
+   "distribution": [
+    "email",
+    "in_app",
+    "widget",
+    "push"
+   ],
+   "governance": {
+    "state": "published"
+   }
+  },
+  {
+   "name": "GOIP · Bank cashback (multi-party funded)",
+   "benefit": "cashback",
+   "value": 5,
+   "code": "GOIPBANK",
+   "domain": "cashback",
+   "funder": "split",
+   "funder_ref": "HDFC",
+   "min_amount": 100,
+   "summary": "5% back to the wallet, funded 70/30 by a bank and a brand and settled to both.",
+   "funding": {
+    "parties": [
+     {
+      "party": "HDFC",
+      "party_type": "bank",
+      "share": 0.7
+     },
+     {
+      "party": "NIKE",
+      "party_type": "brand",
+      "share": 0.3
+     }
+    ]
+   },
+   "spatial": {
+    "system": "earth_admin",
+    "include": [
+     "earth"
+    ]
+   },
+   "distribution": [
+    "email",
+    "bank_feed",
+    "in_app"
+   ],
+   "governance": {
+    "state": "published"
+   }
+  },
+  {
+   "name": "GOIP · Olympus Sector-7 sol offer",
+   "benefit": "percentage_discount",
+   "value": 15,
+   "code": "GOIPSOL",
+   "domain": "offer",
+   "funder": "partner",
+   "funder_ref": "olympus-coop",
+   "economic_unit": "MARS_CREDIT",
+   "summary": "Priced in Mars Credits, scoped to Olympus Territory, timed by the Darian calendar.",
+   "spatial": {
+    "system": "mars_admin",
+    "include": [
+     "mars.olympus"
+    ]
+   },
+   "temporal": {
+    "calendar": "mars_darian"
+   },
+   "distribution": [
+    "in_app",
+    "iot_feed"
+   ],
+   "governance": {
+    "state": "published"
+   }
+  },
+  {
+   "name": "GOIP · Bihar public subsidy",
+   "benefit": "government_benefit",
+   "value": 25,
+   "code": "GOIPGOV",
+   "domain": "government_benefit",
+   "funder": "government",
+   "funder_ref": "BIHAR-DEPT",
+   "summary": "A flat state subsidy, restricted by jurisdiction and spatial path.",
+   "spatial": {
+    "system": "earth_admin",
+    "include": [
+     "earth.in.bihar"
+    ]
+   },
+   "governance": {
+    "state": "published",
+    "jurisdictions": [
+     "earth.in"
+    ]
+   },
+   "distribution": [
+    "sms",
+    "whatsapp",
+    "in_app"
+   ],
+   "rules": {
+    "scheme": "BIHAR-RETAIL-2026"
+   }
+  },
+  {
+   "name": "GOIP · Points per spend",
+   "benefit": "reward_points",
+   "value": 0,
+   "code": "GOIPPOINTS",
+   "domain": "reward",
+   "funder": "self",
+   "summary": "2 points per unit spent — a non-money benefit with its own ledger, never the cash wallet.",
+   "rules": {
+    "rate": 2
+   },
+   "distribution": [
+    "in_app",
+    "creator_feed"
+   ],
+   "governance": {
+    "state": "published"
+   }
+  },
+  {
+   "name": "GOIP · Gold membership grant",
+   "benefit": "membership_upgrade",
+   "value": 1,
+   "code": "GOIPGOLD",
+   "domain": "membership",
+   "funder": "self",
+   "summary": "Grants a 365-day entitlement rather than money.",
+   "rules": {
+    "tier": "gold",
+    "days": 365
+   },
+   "distribution": [
+    "email",
+    "in_app"
+   ],
+   "governance": {
+    "state": "published"
+   }
+  },
+  {
+   "name": "GOIP · Deferred cashback (30 days)",
+   "benefit": "deferred_cashback",
+   "value": 10,
+   "code": "GOIPDEFER",
+   "domain": "cashback",
+   "funder": "brand",
+   "funder_ref": "NIKE",
+   "summary": "Value promised now, released to the wallet on its due date by the settlement run.",
+   "rules": {
+    "defer_days": 30
+   },
+   "distribution": [
+    "email",
+    "in_app"
+   ],
+   "governance": {
+    "state": "published"
+   }
+  }
+ ],
+ "CAPABILITIES": [
+  {
+   "key": "create",
+   "name": "Create Value Exchange",
+   "stage": "value_exchange",
+   "engine": "governance",
+   "writes": "offers",
+   "meter": "goip.create",
+   "scope": "tenant"
+  },
+  {
+   "key": "clone",
+   "name": "Clone Value Exchange",
+   "stage": "value_exchange",
+   "engine": "governance",
+   "writes": "offers",
+   "meter": "goip.create",
+   "scope": "tenant"
+  },
+  {
+   "key": "publish",
+   "name": "Publish Value Exchange",
+   "stage": "value_exchange",
+   "engine": "governance",
+   "writes": "offers",
+   "meter": "goip.publish",
+   "scope": "tenant"
+  },
+  {
+   "key": "discover",
+   "name": "Discover Value Exchange",
+   "stage": "context",
+   "engine": "discovery",
+   "writes": null,
+   "meter": "goip.decision",
+   "scope": "any"
+  },
+  {
+   "key": "search",
+   "name": "Search Value Exchange",
+   "stage": "context",
+   "engine": "discovery",
+   "writes": null,
+   "meter": "goip.decision",
+   "scope": "any"
+  },
+  {
+   "key": "compare",
+   "name": "Compare Value Exchange",
+   "stage": "benefit",
+   "engine": "ranking",
+   "writes": null,
+   "meter": "goip.decision",
+   "scope": "any"
+  },
+  {
+   "key": "validate",
+   "name": "Validate Value Exchange",
+   "stage": "conditions",
+   "engine": "qualification",
+   "writes": null,
+   "meter": "goip.decision",
+   "scope": "any"
+  },
+  {
+   "key": "reserve",
+   "name": "Reserve Value Exchange",
+   "stage": "execution",
+   "engine": "decision",
+   "writes": "coupon_redemptions",
+   "meter": "goip.reserve",
+   "scope": "tenant"
+  },
+  {
+   "key": "activate",
+   "name": "Activate Value Exchange",
+   "stage": "execution",
+   "engine": "governance",
+   "writes": "coupon_redemptions",
+   "meter": "goip.reserve",
+   "scope": "any"
+  },
+  {
+   "key": "issue",
+   "name": "Issue Value Exchange",
+   "stage": "execution",
+   "engine": "governance",
+   "writes": "coupons",
+   "meter": "goip.issue",
+   "scope": "tenant"
+  },
+  {
+   "key": "track",
+   "name": "Track Value Exchange",
+   "stage": "context",
+   "engine": "personalization",
+   "writes": "goip_touchpoints",
+   "meter": "goip.track",
+   "scope": "any"
+  },
+  {
+   "key": "attribute",
+   "name": "Attribute Value Exchange",
+   "stage": "settlement",
+   "engine": "decision",
+   "writes": null,
+   "meter": "goip.attribute",
+   "scope": "tenant"
+  },
+  {
+   "key": "apply",
+   "name": "Apply Value Exchange",
+   "stage": "benefit",
+   "engine": "benefit_resolution",
+   "writes": null,
+   "meter": "goip.decision",
+   "scope": "any"
+  },
+  {
+   "key": "redeem",
+   "name": "Redeem Value Exchange",
+   "stage": "execution",
+   "engine": "decision",
+   "writes": "coupon_redemptions",
+   "meter": "goip.redemption",
+   "scope": "tenant"
+  },
+  {
+   "key": "settle",
+   "name": "Settle Value Exchange",
+   "stage": "settlement",
+   "engine": "governance",
+   "writes": "goip_settlements",
+   "meter": "goip.settlement",
+   "scope": "platform"
+  },
+  {
+   "key": "fund",
+   "name": "Fund Value Exchange",
+   "stage": "settlement",
+   "engine": "governance",
+   "writes": "goip_budgets",
+   "meter": "goip.fund",
+   "scope": "tenant"
+  },
+  {
+   "key": "pay",
+   "name": "Pay Value Exchange",
+   "stage": "settlement",
+   "engine": "governance",
+   "writes": "goip_settlements",
+   "meter": "goip.payout",
+   "scope": "platform"
+  },
+  {
+   "key": "optimize",
+   "name": "Optimize Value Exchange",
+   "stage": "benefit",
+   "engine": "optimization",
+   "writes": null,
+   "meter": "goip.intelligence",
+   "scope": "tenant"
+  },
+  {
+   "key": "forecast",
+   "name": "Forecast Value Exchange",
+   "stage": "settlement",
+   "engine": "forecasting",
+   "writes": null,
+   "meter": "goip.intelligence",
+   "scope": "tenant"
+  },
+  {
+   "key": "simulate",
+   "name": "Simulate Value Exchange",
+   "stage": "benefit",
+   "engine": "simulation",
+   "writes": null,
+   "meter": "goip.intelligence",
+   "scope": "tenant"
+  },
+  {
+   "key": "govern",
+   "name": "Govern Value Exchange",
+   "stage": "audit",
+   "engine": "governance",
+   "writes": "offers",
+   "meter": "goip.govern",
+   "scope": "tenant"
+  },
+  {
+   "key": "audit",
+   "name": "Audit Value Exchange",
+   "stage": "audit",
+   "engine": "governance",
+   "writes": null,
+   "meter": "goip.govern",
+   "scope": "tenant"
+  }
+ ],
+ "ENGINES": [
+  {
+   "key": "context_resolution",
+   "name": "Context Resolution Engine",
+   "owns": "fills all 25 context dimensions",
+   "impl": "goip.resolveContext"
+  },
+  {
+   "key": "eligibility",
+   "name": "Eligibility Engine",
+   "owns": "is this exchange permitted in this context",
+   "impl": "goip.eligibility"
+  },
+  {
+   "key": "qualification",
+   "name": "Qualification Engine",
+   "owns": "declared conditions over the resolved context",
+   "impl": "goip.qualify"
+  },
+  {
+   "key": "decision",
+   "name": "Decision Engine",
+   "owns": "which qualified exchanges actually execute",
+   "impl": "offers.evaluate + goip hooks"
+  },
+  {
+   "key": "discovery",
+   "name": "Offer Discovery Engine",
+   "owns": "what is available to this subject now",
+   "impl": "goip.discover"
+  },
+  {
+   "key": "benefit_resolution",
+   "name": "Benefit Resolution Engine",
+   "owns": "benefit → concrete units",
+   "impl": "offers.HANDLERS (+GOIP handlers)"
+  },
+  {
+   "key": "conflict_resolution",
+   "name": "Conflict Resolution Engine",
+   "owns": "same-domain collisions",
+   "impl": "goip.resolveConflicts"
+  },
+  {
+   "key": "stacking",
+   "name": "Stacking Engine",
+   "owns": "stack groups / exclusivity / max count",
+   "impl": "offers.evaluate"
+  },
+  {
+   "key": "ranking",
+   "name": "Ranking Engine",
+   "owns": "order candidates by objective",
+   "impl": "goip.rank"
+  },
+  {
+   "key": "optimization",
+   "name": "Optimization Engine",
+   "owns": "parameter proposals against an objective",
+   "impl": "goip.optimize"
+  },
+  {
+   "key": "recommendation",
+   "name": "Recommendation Engine",
+   "owns": "best next exchange for a subject",
+   "impl": "goip.recommend"
+  },
+  {
+   "key": "personalization",
+   "name": "Personalization Engine",
+   "owns": "subject segments + behaviour",
+   "impl": "goip.personalize"
+  },
+  {
+   "key": "pricing",
+   "name": "Pricing Engine",
+   "owns": "net price after value exchange",
+   "impl": "goip.price"
+  },
+  {
+   "key": "simulation",
+   "name": "Simulation Engine",
+   "owns": "what-if over real or synthetic carts",
+   "impl": "goip.simulate"
+  },
+  {
+   "key": "forecasting",
+   "name": "Forecasting Engine",
+   "owns": "burn / liability projection",
+   "impl": "goip.forecast"
+  },
+  {
+   "key": "fraud",
+   "name": "Fraud Engine",
+   "owns": "abuse signals per subject/instrument",
+   "impl": "goip.fraudScore"
+  },
+  {
+   "key": "risk",
+   "name": "Risk Engine",
+   "owns": "exposure of an instrument",
+   "impl": "goip.riskScore"
+  },
+  {
+   "key": "governance",
+   "name": "Governance Engine",
+   "owns": "policy, approval, lifecycle, version, audit",
+   "impl": "goip.govern"
+  }
+ ]
+}

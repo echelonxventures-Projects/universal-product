@@ -179,6 +179,12 @@ Existing installs pick the new fields up through `registry.addFields()`, which n
 - the currency entity's delete guard;
 - the identity field shown on its own (`sku`).
 
+**Finding 3 — seed data is now data:**
+- 31 constants, about 3,100 lines, moved out of JavaScript into `lib/seed/<module>.json`, one file per module: capabilities, settings, subdivisions, entity, compliance, parity registries, GOIP, modules, providers, tax, offers, meta, authz and themes.
+- Each module now reads `const NAME = SEED_<MODULE>.NAME`. Comments that lived inside a literal are kept above that line.
+- The ten seed-sized constants that remain (355 lines) are kernel tables: implementation and handler tables, route wiring and the UID table list. Two are deliberate exceptions: `ucos.js` `DOCS`, which holds functions, and `db.js` `CATEGORY_SEED`, which belongs to the boot module.
+- `test/seeds.js` parses every seed file. It fails if a business literal of 20 or more lines reappears in `lib/` outside the declared kernel tables.
+
 **New registry entries now reach existing installs on every boot.** A new machine, binding or vocabulary row is appended additively, with no stamp bump needed. `test/states.js` covers this.
 
 
