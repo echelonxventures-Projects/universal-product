@@ -2477,6 +2477,40 @@
      ]
     }
    }
+  },
+  {
+   "key": "ad",
+   "name": "Sponsored ad",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": [
+    "draft",
+    "in_review",
+    "approved",
+    "rejected",
+    "live",
+    "active",
+    "paused",
+    "completed"
+   ],
+   "meta": {
+    "live": {
+     "tags": [
+      "serving"
+     ]
+    },
+    "active": {
+     "tags": [
+      "serving"
+     ]
+    },
+    "completed": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
   }
  ]
 }

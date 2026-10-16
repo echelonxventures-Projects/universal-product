@@ -113,6 +113,7 @@ registry, and the console renders what it's given.
 | State machines, batch 1 | `lib/states.js` and 32 machines in `lib/seed/states.json`; the engines below converted | **260** | **58** |
 | State machines, batch 2 (orders) | 37 machines; orders, payments, invoices, credit notes, returns and EMIs | **246** | **44** |
 | State machines, batch 3 | 80 machines; tenants, compliance, fintech, GOIP, marketplace extensions, foundations, subscriptions, consoles | **207** | **6**, all word collisions, no real states |
+| Declared behaviour (finding 2), server engines | vocabulary rows declare their behaviour; engines follow the row | **134** | 6 |
 
 **Batch 1 converted these engines:**
 - rides, drivers, vehicles (`lib/mobility.js`);
@@ -141,6 +142,29 @@ registry, and the console renders what it's given.
 - Subscribe & Save schedules and cycles (allowed actions are `can:<action>` tags the storefront reads), memberships, platform plan subscriptions, modules, promotions and contracts;
 - webhook deliveries;
 - the remaining console buttons (drivers, payroll, work orders, onboarding, invoices, settlements, org units).
+
+**Finding 2, server engines — vocabulary rows now declare behaviour:**
+
+| Vocabulary | What a row declares |
+|---|---|
+| AI capabilities | the engine that runs it and how its billable units are counted |
+| AI report sections | the implementation that renders it |
+| Tax classes | a fixed rate or the rule field that supplies it, the tax modes where a valid buyer VAT number reverse-charges it, the default class |
+| Offer types | pro-gated, cart-wide, currency-bound, percentage, risky when uncapped, ranking weight |
+| Offer channels and scopes | whether a channel includes promotions and gates pro types; how a scope matches items |
+| Stacking policies and coupon kinds | what a policy blocks; a new-customers-only kind |
+| Bid models | the ad event it charges on, the unit it is priced per, its ranking basis |
+| Delivery channels | its providers and transports, the address it reaches and its pattern, its environment adapter |
+| Sign-in types | which ones enrol a shared secret |
+| Risk decisions | the score threshold, the effect, whether a blocklist hit forces it |
+| Sort orders and ad event kinds | the columns or flags a sort uses; which events a shopper may report |
+| Shipping classes and product types | a surcharge setting; whether the type is a service |
+| Membership benefits | the checkout effect they grant |
+| GOIP objectives, attribution models, touchpoints, party types, asset classes, audiences, funders | the ranker, the attribution implementation, the touchpoint that carries value, uncredited parties, money classes, always-on audiences and their win-back offers, the merchant's own funder |
+
+Existing installs pick the new fields up through `registry.addFields()`, which never overwrites an operator's value, and `registry.upgradeShape()`, which turns plain-name lists into rows. `test/behaviour.js` edits rows to show the engines follow them, and fails if a converted engine compares against one of those keys.
+
+**Next for finding 2:** the consoles (`public/js/app.js`, `admin.js`, `platform.js`) and the remaining `lib/api.js` branches.
 
 **Status vocabularies are finished:** no engine branches on a status name. The six remaining audit hits are word collisions: the outbound mode `offline`, the UGC entity `review`, and the WebAuthn attestation format `packed`. The remaining work is the audit's other findings (2 to 7).
 
