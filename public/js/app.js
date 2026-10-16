@@ -40,6 +40,12 @@ function linkify(m) {
     return '<a href="' + s + '" style="text-decoration:underline">' + (s.indexOf("platform") >= 0 ? "Platform console" : "Store console") + " →</a>";
   });
 }
+/* what each vocabulary row declares: a product type's purchase mode / plainness, a media
+   kind's player, the default shipping class */
+const metaRow = (list, key) => ((META && META[list]) || []).find(x => (x && x.key) === key) || {};
+const typeRow = t => metaRow("productTypes", t);
+const isPlain = t => !t || !!typeRow(t).plain;
+const mediaPlayer = k => metaRow("mediaKinds", k).player;
 function typeIcon(t) { const x = META && META.productTypes.find(p => p.key === t); return x ? x.icon + " " + x.name : ""; }
 function discount(p) { return p.l > p.p ? Math.round((1 - p.p / p.l) * 100) : 0; }
 function isDeal(p) { return discount(p) >= 10; }
@@ -49,7 +55,7 @@ function img(p, size) {
      actual media; an emoji stays the coloured tile. Public products carry `media` from
      the API, lists/cards fall back to the emoji. */
   const m = p && Array.isArray(p.media) ? p.media.find(x => x && x.url) : null;
-  if (m) return `<span class="pimg ${size || ""} pimg-url">${m.kind === "video"
+  if (m) return `<span class="pimg ${size || ""} pimg-url">${mediaPlayer(m.kind) === "video"
     ? `<video src="${esc(m.url)}" alt="${esc(m.label || "")}" muted playsinline></video>`
     : `<img src="${esc(m.url)}" alt="${esc(m.label || "")}">`}</span>`;
   return `<span class="pimg ${size || ""}" style="--h:${p.h}">${p.e}</span>`;
@@ -237,7 +243,7 @@ function updateChrome() { renderHeader(); renderSidebar(); renderModals(); wireC
    shape comes from the record itself, so a new product type needs no new card code. */
 function typeMeta(p) {
   const t = META && META.productTypes.find(x => x.key === p.type);
-  const isSub = p.type === "subscription", isRental = p.type === "rental";
+  const isSub = typeRow(p.type).purchase === "subscribe", isRental = typeRow(p.type).purchase === "rent";
   const isService = ["service", "appointment"].includes(p.type);
   const isDigital = ["digital", "license", "course"].includes(p.type);
   return { t, isSub, isRental, isService, isDigital, isPhygital: isSub || isRental || isService || isDigital };
@@ -248,7 +254,7 @@ function card(p) {
   return `<div class="pcard ${tm.isPhygital ? "pcard-domain" : ""}" data-id="${p.id}">
     <a class="pc-imgwrap" href="${prodLink(p)}">${img(p, "big")}${d ? `<span class="pc-deal">−${d}%</span>` : ""}${p.fl.includes("ac") ? `<span class="pc-choice">${esc(CFG.brand.name)} Pick</span>` : ""}</a>
     <div class="pc-body">
-      ${p.type && p.type !== "physical" ? `<span class="pc-type">${esc(typeIcon(p.type))}</span>` : ""}
+      ${!isPlain(p.type) ? `<span class="pc-type">${esc(typeIcon(p.type))}</span>` : ""}
       <a class="pc-title" href="${prodLink(p)}">${esc(p.t)}</a>
       <div class="pc-rate">${starsHtml(p.r)}<a class="pc-count">${p.c.toLocaleString(CFG.commerce.locale)}</a></div>
       <div class="pc-price">${priceHtml(p.p)}${tm.isSub ? '<span class="pc-cycle">/mo</span>' : tm.isRental ? '<span class="pc-cycle">/period</span>' : ""}${p.l > p.p ? `<span class="pc-list">${money(p.l)}</span>` : ""}</div>
@@ -386,7 +392,7 @@ async function pageProduct() {
   const subFreq = ((CFG.retention && CFG.retention.subFrequencies) || [30])[0];
   const media = (p.media || []).length ? p.media : [{ kind: "image", label: "Front", emoji: p.e }];
   const mediaTile = (m, i) => m.url
-    ? (m.kind === "video"
+    ? (mediaPlayer(m.kind) === "video"
         ? `<span class="pimg big pimg-url"><video src="${esc(m.url)}" alt="${esc(m.label || "")}" muted playsinline></video></span>`
         : `<span class="pimg big pimg-url"><img src="${esc(m.url)}" alt="${esc(m.label || "")}"></span>`)
     : `<span class="pimg big" style="background:hsl(${(p.h + i * 40) % 360} 30% 92%)">${esc(m.emoji || p.e)}</span>`;
@@ -396,12 +402,13 @@ async function pageProduct() {
   (relationships || []).forEach(r => { (relGroups[r.type] = relGroups[r.type] || []).push(r.to); });
   const attrs = Object.entries(p.attrs || {}).filter(([, v]) => v !== "" && v != null);
   const identity = Object.entries(p.identity || {}).filter(([k, v]) => v && k !== "sku");
-  const isRental = p.type === "rental", isSub = p.type === "subscription", isService = ["service", "appointment"].includes(p.type), isDigital = ["digital", "license", "course"].includes(p.type);
+  const pm = typeRow(p.type).purchase;
+  const isRental = pm === "rent", isSub = pm === "subscribe", isService = pm === "book", isDigital = pm === "download";
   const durations = isRental && p.vertical.durations ? p.vertical.durations : null;
 
   main.innerHTML = `
   <div class="pp">
-    <div class="crumbs"><a href="index.html">Home</a> › <a href="results.html?dept=${p.d}">${esc(deptLabel(p.d))}</a> › <a href="results.html?dept=${p.d}&brand=${encodeURIComponent(p.b)}">${esc(brandLabel(p.b))}</a>${p.type !== "physical" ? ` › <span>${esc(typeIcon(p.type))}</span>` : ""}</div>
+    <div class="crumbs"><a href="index.html">Home</a> › <a href="results.html?dept=${p.d}">${esc(deptLabel(p.d))}</a> › <a href="results.html?dept=${p.d}&brand=${encodeURIComponent(p.b)}">${esc(brandLabel(p.b))}</a>${!isPlain(p.type) ? ` › <span>${esc(typeIcon(p.type))}</span>` : ""}</div>
     <div class="pp-grid">
       <div class="pp-gallery"><div class="pp-thumbs">${thumbs}</div><div class="pp-main" id="ppMain">${mediaTile(media[0], 0)}</div></div>
       <div class="pp-info">
@@ -423,7 +430,7 @@ async function pageProduct() {
         ${data.serialized ? `<p class="pp-serialized" style="font-size:13px;color:#646cff;margin:6px 0">🔢 Unit-serialized — <b>${data.serialized.total}</b> tracked item(s), ${data.serialized.by_status.in_stock || 0} in stock; warranty &amp; custody recorded per serial.</p>` : ""}
         ${data.supplier ? `<p class="pp-supplier" style="font-size:13px;color:#76777a;margin:6px 0">🚚 Backed by vetted supplier ${esc(data.supplier.supplier_name || "")}${data.supplier.lead_days ? " · typical lead " + esc(String(data.supplier.lead_days)) + "d" : ""}.</p>` : ""}
         ${p.packaging && p.packaging.length ? `<h3>Packaging</h3><table class="pp-vtable">${p.packaging.map(pk => `<tr><th>${esc(humanize(pk.level))}</th><td>${esc(pk.unit)} × ${pk.qty}</td></tr>`).join("")}</table>` : ""}
-        ${p.logistics && p.logistics.shippingClass && p.logistics.shippingClass !== "standard" ? `<p class="pp-ship-class">🚚 Shipping class: <b>${esc(humanize(p.logistics.shippingClass))}</b></p>` : ""}
+        ${p.logistics && p.logistics.shippingClass && !metaRow("shippingClasses", p.logistics.shippingClass).default ? `<p class="pp-ship-class">🚚 Shipping class: <b>${esc(humanize(p.logistics.shippingClass))}</b></p>` : ""}
         <a class="pp-report" href="#" data-act="soon">Report an issue with this piece</a>
       </div>
       <div class="buybox">
@@ -508,7 +515,7 @@ async function pageCart() {
   <div class="ci"><a class="ci-img" href="${prodLink(p)}">${img(p, "big")}</a>
     <div class="ci-mid"><a class="ci-title" href="${prodLink(p)}">${esc(p.t)}</a>
       <div class="ci-stock">${stockText(p)}</div>
-      <div class="ci-by"><span>${esc(p.b)}</span>${p.type !== "physical" ? `<span class="pc-type">${esc(typeIcon(p.type))}</span>` : ""}${p.pr ? `<span>${prioBadge()}</span>` : ""}</div>
+      <div class="ci-by"><span>${esc(p.b)}</span>${!isPlain(p.type) ? `<span class="pc-type">${esc(typeIcon(p.type))}</span>` : ""}${p.pr ? `<span>${prioBadge()}</span>` : ""}</div>
       <div class="ci-ship">${esc(T("deliverEstimate"))} <b>${p.pr ? dLong(daysP()) : dLong(daysS())}</b> · ${esc(T("deliverTo"))} ${esc(S.zip)}</div>
       <div class="ci-actions"><select class="ci-qty" data-id="${p.id}">${Array.from({ length: CFG.commerce.cartMaxQty }, (_, i) => `<option ${i + 1 === qty ? "selected" : ""}>${i + 1}</option>`).join("")}</select>
         <span class="sep">|</span><a href="#" data-act="cart-remove" data-id="${p.id}">Remove</a>
@@ -601,11 +608,13 @@ async function pageCheckout() {
       if (!CFG.features.fiscalSelection) return;
       const ds = await Promise.all(c.items.slice(0, 6).map(i => api("/products/" + encodeURIComponent(i.product.id))));
       const inter = g => { let common = null; for (const x of ds) { const arr = (x.contexts[g] || []).map(o => o.key); if (!arr.length) continue; const set = new Set(arr); common = common === null ? set : new Set([...common].filter(k => set.has(k))); } return common ? [...common] : []; };
-      const groups = { tax: inter("tax"), invoice: inter("invoice"), payment: inter("payment") };
+      /* the groups and their labels are the contextGroups registry's */
+      const cgs = (META.contextGroups && META.contextGroups.length ? META.contextGroups : Object.keys(META.verticalContexts || {}).map(k => ({ key: k, name: k })));
+      const groups = Object.fromEntries(cgs.map(g => [g.key, inter(g.key)]));
       const any = Object.values(groups).some(a => a.length);
       if (any) {
         $("#coCtx").hidden = false;
-        $("#ctxPicks").innerHTML = ["tax", "invoice", "payment"].map(g => groups[g].length ? `<label class="ctx-row"><span>${g === "tax" ? "Tax treatment" : g === "invoice" ? "Invoice type" : "Payment mode"}</span><select data-ctx="${g}"><option value="">— none —</option>${groups[g].map(k => `<option value="${k}">${esc(k.replace(/_/g, " "))}</option>`).join("")}</select></label>` : "").join("");
+        $("#ctxPicks").innerHTML = cgs.map(x => x.key).map(g => groups[g].length ? `<label class="ctx-row"><span>${esc((cgs.find(x => x.key === g) || {}).name || g)}</span><select data-ctx="${g}"><option value="">— none —</option>${groups[g].map(k => `<option value="${k}">${esc(k.replace(/_/g, " "))}</option>`).join("")}</select></label>` : "").join("");
         recalc();
       }
     } catch (e) { }
@@ -678,7 +687,7 @@ async function pageOrders() {
   document.title = `${T("yourOrders")} — ${CFG.brand.name}`;
   if (!orders.length && !(subs.schedules || []).length) { main.innerHTML = `<div class="ord-empty"><h2>${esc(T("yourOrders"))}</h2><p>No orders yet.</p><a class="btn-yellow" href="index.html">Start exploring</a></div>`; return; }
   main.innerHTML = `<h1 class="ord-h1">${esc(T("yourOrders"))}</h1>`;
-  if (CFG.features.membership && mem.membership && mem.membership.tier !== "free") {
+  if (CFG.features.membership && mem.membership && Number((mem.membership.tier_detail || {}).price) > 0) {
     const m = mem.membership;
     main.innerHTML += `<div class="ord mem-card"><div class="mem-h"><span class="mem-badge">🎟️ ${esc(m.tier_detail.name)}</span><div><em>MEMBERSHIP</em><b>Active${m.renews_at ? " · renews " + String(m.renews_at).slice(0, 10) : ""}</b></div>
       <div class="ord-h-r"><span class="a-chip">${(m.tier_detail.benefits || []).join(" · ") || "member benefits"}</span><button class="btn-white" data-act="mem-cancel">Cancel membership</button></div></div></div>`;

@@ -91,6 +91,8 @@ const canSee = k => { if (!A.allowed || A.allowed.includes("*")) return true; if
 let view = "dash";
 /* the state machines, as /api/meta serves them: the console asks what a status means */
 let SM = null;
+/* rows the AI and offer forms render from (set by their views) */
+let AI_CAPS = [], OFFER_SCOPES = [];
 async function loadSM() { if (!SM) { try { SM = (await api("/meta")).stateMachines || {}; } catch (e) { SM = {}; } } return SM; }
 const smIs = (m, st, tag) => !!(SM && SM[m] && SM[m].states[st] && SM[m].states[st].tags.includes(tag));
 const smFirst = (m, tag) => { const ss = (SM && SM[m] && SM[m].states) || {}; return Object.keys(ss).find(k => ss[k].tags.includes(tag)); };
@@ -815,8 +817,10 @@ document.addEventListener("click", async e => {
     }
     if (act && act.dataset.act === "mob-new-vehicle") {
       const plate = prompt("Plate"); if (!plate) return;
-      const kind = prompt("Kind (car · suv · bike · auto · van)", "car") || "car";
-      const r = await api("/admin/mobility/vehicles", "POST", { plate, kind, capacity: kind === "suv" || kind === "van" ? 6 : 4 });
+      /* the kinds, and each kind's capacity, are the mobilityVehicleKinds registry's */
+      const vk = ((await api("/admin/mobility", {})).vehicleKinds || []).map(k => k.key);
+      const kind = prompt("Kind (" + vk.join(" · ") + ")", vk[0] || "") || vk[0] || "";
+      const r = await api("/admin/mobility/vehicles", "POST", { plate, kind });
       if (r.error) toast(r.error); else { toast(`Vehicle ${r.vehicle.plate} registered`); render(); }
     }
     if (act && act.dataset.act === "mob-toggle-driver") {
@@ -1031,7 +1035,7 @@ async function vSettings() {
   const cat = await api("/capabilities").catch(() => ({}));
   const capAtoms = {}; let capNote = "";
   if (cat && cat.catalog) {
-    for (const c of cat.catalog) if (c.domain === "storefront") capAtoms[c.key] = c;
+    for (const c of cat.catalog) if (c.settings_atom) capAtoms[c.key] = c;
     const n = Object.keys(capAtoms).length;
     if (n) capNote = `The <b>${n}</b> toggles marked <span class="p-tag">atom</span> live in <b>◈ Capabilities</b> — switch and tune them there; this checkbox is the same bit.`;
   }
@@ -1261,6 +1265,7 @@ function wireTenders() {
 async function vAI() {
   const ov = await api("/ai");
   const cap = ov.capabilities || [];
+  AI_CAPS = cap;
   const st = ov.settings || {};
   const premProviders = (await api("/meta")).providersAi || [];
   const aiGw = await api("/admin/ai-gateways").catch(() => ({ gateways: [] }));
@@ -1279,11 +1284,11 @@ async function vAI() {
         <div style="font-size:12px">Provider: <b>${c.provider ? esc(c.provider.emoji + " " + c.provider.name) : "—"}</b> · model <code>${esc(c.model || "—")}</code></div>
         <div style="font-size:12px;color:${c.status === "premium_locked" ? "var(--p-red)" : "var(--p-muted)"}">Status: ${esc(c.status.replace("_", " "))} · ${c.remaining}/${c.limits.perDay} left today</div>
         <label style="display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px">
-          <input type="checkbox" data-aiprem="${esc(c.key)}" ${st[c.key] && st[c.key].premium ? "checked" : ""} ${c.tier === "premium" ? "" : "disabled"}> use premium model
+          <input type="checkbox" data-aiprem="${esc(c.key)}" ${st[c.key] && st[c.key].premium ? "checked" : ""} ${c.premium ? "" : "disabled"}> use premium model
         </label>
         <div style="display:flex;gap:6px;margin-top:6px">
-          <select data-aiprov="${esc(c.key)}" ${c.tier === "premium" ? "" : "disabled"}><option value="">provider…</option>${(premProviders.filter(p => (c.key)).map(p => `<option value="${esc(p.id)}" ${st[c.key] && st[c.key].provider === p.id ? "selected" : ""}>${esc(p.name)}</option>`).join(""))}</select>
-          <input data-aimodel="${esc(c.key)}" placeholder="model" value="${esc((st[c.key] || {}).model || "")}" style="flex:1" ${c.tier === "premium" ? "" : "disabled"}>
+          <select data-aiprov="${esc(c.key)}" ${c.premium ? "" : "disabled"}><option value="">provider…</option>${(premProviders.filter(p => (c.key)).map(p => `<option value="${esc(p.id)}" ${st[c.key] && st[c.key].provider === p.id ? "selected" : ""}>${esc(p.name)}</option>`).join(""))}</select>
+          <input data-aimodel="${esc(c.key)}" placeholder="model" value="${esc((st[c.key] || {}).model || "")}" style="flex:1" ${c.premium ? "" : "disabled"}>
         </div>
       </div>`).join("")}
     </div>
@@ -1310,8 +1315,7 @@ async function vAI() {
     <div class="p-panel"><h3>Run a capability</h3>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
         <label><span>Capability</span><select id="aiCapSel">${cap.map(c => `<option value="${esc(c.key)}">${esc(c.name)}</option>`).join("")}</select></label>
-        <label><span>Product id (reco/image)</span><input id="aiPid" placeholder="LX-ELS-001"></label>
-        <label><span>Columns (analysis, CSV)</span><input id="aiCols" placeholder="price,brand,rating"></label>
+        <div id="aiParams" class="row"></div>
         <button class="p-btn primary sm" id="aiRun">Run</button>
         <button class="p-btn sm" id="aiTask">Queue as task</button>
       </div>
@@ -1346,7 +1350,11 @@ function wireAI() {
   };
   if ($("#aiGwSave")) $("#aiGwSave").onclick = saveCredentials;
   if ($("#aiGwTestAll")) $("#aiGwTestAll").onclick = testAll;
-  const collect = () => { const cap = $("#aiCapSel").value, p = {}; if (cap === "product_recommendation" || cap === "image_processing") { if ($("#aiPid").value) p.product_id = $("#aiPid").value; } if (cap === "data_analysis" && $("#aiCols").value) p.columns = $("#aiCols").value.split(",").map(x => x.trim()).filter(Boolean); return { cap, p }; };
+  /* the inputs a capability takes are declared on its row (`params`) */
+  const capRows = AI_CAPS || [];
+  const drawParams = () => { const row = capRows.find(c => c.key === ($("#aiCapSel") || {}).value) || {}; const box = $("#aiParams"); if (box) box.innerHTML = (row.params || []).map(p => `<label><span>${esc(p.label || p.key)}</span><input data-aiparam="${esc(p.key)}" data-ailist="${p.list ? 1 : ""}" placeholder="${esc(p.placeholder || "")}"></label>`).join(""); };
+  if ($("#aiCapSel")) { $("#aiCapSel").onchange = drawParams; drawParams(); }
+  const collect = () => { const cap = $("#aiCapSel").value, p = {}; $$("[data-aiparam]").forEach(el => { const v = el.value.trim(); if (!v) return; p[el.dataset.aiparam] = el.dataset.ailist ? v.split(",").map(x => x.trim()).filter(Boolean) : v; }); return { cap, p }; };
   const run = async () => { const { cap, p } = collect(); try { const r = await api("/ai/run/" + encodeURIComponent(cap), "POST", p); $("#aiOut").textContent = JSON.stringify(r, null, 1); toast(cap + " · " + (r.tier || "") + " · " + money(r.cost || 0)); } catch (e) { $("#aiOut").textContent = "⚠ " + e.message; toast(e.message); } };
   const task = async () => { const { cap, p } = collect(); try { const r = await api("/ai/tasks", "POST", { capability: cap, params: p, runNow: true }); $("#aiOut").textContent = JSON.stringify(r.tasks.slice(0, 6), null, 1); toast("Queued"); render(); } catch (e) { toast(e.message); } };
   if ($("#aiRun")) $("#aiRun").onclick = run; if ($("#aiTask")) $("#aiTask").onclick = task;
@@ -1448,6 +1456,7 @@ function wireGoip() {
 async function vOffers() {
   const meta = await api("/meta");
   const [off, cp, an] = await Promise.all([api("/offers"), api("/offers/coupons"), api("/offers/analytics")]);
+  OFFER_SCOPES = meta.offerScopes || [];
   const types = meta.offerTypes || [], chans = meta.offerChannels || [], dirs = meta.offerDirections || [], scopes = meta.offerScopes || [], funders = meta.offerFunders || [], stacks = meta.stackingPolicies || [], cKinds = meta.couponKinds || [];
   const opt = (arr, lblFn) => arr.map(x => `<option value="${esc(x.key || x)}">${esc(lblFn ? lblFn(x) : (x.name || x))}</option>`).join("");
   const statusBadge = st => `<span class="badge ${st === "active" ? "published" : "draft"}">${esc(st)}</span>`;
@@ -1524,7 +1533,8 @@ async function vOffers() {
 }
 function wireOffers() {
   const $ = s => document.querySelector(s); const $$ = s => Array.from(document.querySelectorAll(s));
-  const readScope = () => { const st = $("#oScope").value, csv = $("#oScopeVal").value.split(",").map(x => x.trim()).filter(Boolean); if (st === "product") return { products: csv }; if (st === "category") return { categories: csv }; if (st === "brand") return { brands: csv }; if (st === "node") return { node: csv[0] || "" }; return {}; };
+  /* a scope's value goes in the field its offerScopes row declares (a taxonomy scope takes one node) */
+  const readScope = () => { const st = $("#oScope").value, csv = $("#oScopeVal").value.split(",").map(x => x.trim()).filter(Boolean); const row = (OFFER_SCOPES || []).find(r => (r.key || r) === st) || {}; const f = (row.scope || [])[0]; if (!f) return {}; return { [f]: row.match === "taxonomy" ? (csv[0] || "") : csv }; };
   const save = async (id) => {
     const body = { name: $("#oName").value, type: $("#oType").value, value: Number($("#oValue").value), code: $("#oCode").value, channel: $("#oChan").value, scope_type: $("#oScope").value, scope: readScope(), funder: $("#oFunder").value, funder_ref: $("#oFunderRef").value, brand_ref: "", direction: $("#oDir").value, stack_policy: $("#oStack").value, max_discount: Number($("#oMax").value) || 0, min_amount: Number($("#oMin").value) || 0, currency: ($("#oCur") || {}).value || "USD", usage_limit: Number($("#oUse").value) || 0, per_owner_limit: Number(($("#oOwner") || {}).value) || 0, priority: Number($("#oPri").value) || 0, starts: $("#oStart").value || null, ends: $("#oEnd").value || null, status: $("#oStatus").value };
     try { await api("/offers" + (id ? "/" + id : ""), id ? "PUT" : "POST", body); toast("Offer saved"); render(); } catch (e) { toast(e.message); }

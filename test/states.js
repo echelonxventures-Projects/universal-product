@@ -129,6 +129,11 @@ const mk = () => {
       for (const re of pats) { let m; while ((m = re.exec(src))) for (const lit of (m[1].match(/[a-z_]+/g) || [])) if (vocab.has(lit)) named.push(f + ": " + lit); }
     }
     ok(named.length === 0, "no converted engine compares, filters or lists one of its machine's states by name", [...new Set(named)]);
+    console.log("▸ A MACHINE THE SEED ADDS REACHES AN EXISTING INSTALL");
+    const stored = reg.list("stateMachines");
+    db.run("UPDATE meta_lists SET items=? WHERE name='stateMachines'", JSON.stringify(stored.filter(m => m.key !== "tenant")));
+    reg.seedRegistries(); st.bust();
+    ok(reg.list("stateMachines").some(m => m.key === "tenant"), "a machine missing from the stored list is appended on the next boot, without a version bump");
     const kernel = fs.readFileSync(path.join(__dirname, "..", "lib", "states.js"), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
     ok(!/"(completed|cancelled|paid|delivered|approved|ride|ticket|terminal|success)"/.test(kernel), "the kernel names no machine, state or tag");
   } catch (e) { failed++; console.log("  ✗ threw: " + (e && e.stack || e)); }

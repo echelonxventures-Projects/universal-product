@@ -1167,7 +1167,7 @@ async function vGeo() {
     <button class="p-btn primary sm" id="addCur">+ Add currency</button></div>
   <div class="p-panel"><h2>Conversions &amp; FX feed</h2>
     <div class="row3" style="display:grid;grid-template-columns:1fr 2fr auto;gap:12px;align-items:end">
-      <label><span>Rate source</span><select id="fxProv"><option value="manual" ${(fx.provider.provider||"manual")==="manual"?"selected":""}>Manual (offline)</option><option value="feed" ${fx.provider.provider==="feed"?"selected":""}>HTTP JSON feed</option></select></label>
+      <label><span>Rate source</span><select id="fxProv">${(fx.sources || []).map(x => `<option value="${esc(x.key)}" ${fx.provider.provider === x.key ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
       <label><span>Feed URL — JSON of {"CODE": usdValue}</span><input id="fxUrl" value="${esc(fx.provider.url||"")}" placeholder="https://your-fx-provider.example/rates.json"></label>
       <span><button class="p-btn sm" id="fxProvSave">Save</button> <button class="p-btn sm primary" id="fxSync">⟳ Sync now</button></span></div>
     <p class="p-tag">Last sync: ${fx.lastSync ? esc(fx.lastSync.at)+" — applied "+fx.lastSync.applied.length+(fx.lastSync.skipped.length?" skipped "+fx.lastSync.skipped.join(","):"") : "never"} · USD is always the 1.0 anchor.</p>
@@ -1886,7 +1886,7 @@ function gExchanges(m, d) {
       <label><span>Code (optional)</span><input id="gCode" placeholder="GLOBAL10"></label>
       <label><span>Domain</span><select id="gDomain">${opt(domains, "incentive")}</select></label>
       <label><span>Channel</span><select id="gChan"><option>commerce</option><option>subscription</option><option>ai</option><option>any</option></select></label>
-      <label><span>Funder</span><select id="gFunder">${opt(m.fabrics.funding.filter(f => f.kind === "source").map(f => ({ key: f.party_type === "split" ? "split" : f.key, name: f.name })))}</select></label>
+      <label><span>Funder</span><select id="gFunder">${opt(m.fabrics.funding.filter(f => f.selectable).map(f => ({ key: f.funder || f.key, name: f.name })))}</select></label>
       <label><span>Funder ref</span><input id="gFunderRef" placeholder="HDFC / Nike / Ministry"></label>
       <label><span>Economic unit</span><select id="gUnit"><option value="">store currency</option>${opt(units)}</select></label>
       <label><span>Reality</span><select id="gReality">${opt(m.realities, "any")}</select></label>
@@ -1941,7 +1941,7 @@ function gFunding(m, d) {
         <label><span>Funder</span><select id="fFunder">${(m.fabrics.funding.filter(f => f.kind === "source")).map(f => `<option value="${esc(f.party_type === "split" ? "split" : f.key)}">${esc(f.name)}</option>`).join("")}</select></label>
         <label><span>Funder ref</span><input id="fRef" placeholder="HDFC"></label>
         <label><span>Unit</span><select id="fUnit">${m.economic.units.map(u => `<option value="${esc(u.key)}">${esc(u.key)}</option>`).join("")}</select></label>
-        <label><span>Domain</span><select id="fDomain">${m.domains.map(x => `<option value="${esc(x.key)}" ${x.key === "incentive" ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
+        <label><span>Domain</span><select id="fDomain">${m.domains.map(x => `<option value="${esc(x.key)}" ${x === m.domains[0] ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
         <label><span>Amount</span><input id="fAmount" type="number" value="1000"></label>
         <button class="p-btn primary sm" id="fGo">Allocate</button>
       </div></div>
@@ -1975,7 +1975,7 @@ async function gAttribution(m, d) {
     <pre id="aOut" class="p-scroll-x" style="background:var(--p-bg2,#0b1020);color:#9ae6b4;padding:10px;border-radius:8px;margin-top:8px;max-height:260px;overflow:auto;font-size:12px">—</pre>
   </div>
   <div class="p-panel"><h3>Recent touchpoints</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>When</th><th>Kind</th><th>Party</th><th>Channel</th><th>Subject</th><th class="num">Value</th></tr></thead><tbody>
-    ${(tp.touchpoints || []).slice(-25).reverse().map(t => `<tr><td class="p-tag">${esc(String(t.created_at || "").slice(0, 19))}</td><td><span class="badge ${t.kind === "conversion" ? "published" : "draft"}">${esc(t.kind)}</span></td><td>${esc(t.party)}<div class="p-tag">${esc(t.party_type)}</div></td><td class="p-tag">${esc(t.channel)} · ${esc(t.distribution)}</td><td class="p-tag">${esc((t.owner || "").slice(0, 22))}</td><td class="num">${t.value}</td></tr>`).join("") || '<tr><td colspan="6">No touchpoints recorded yet.</td></tr>'}
+    ${(tp.touchpoints || []).slice(-25).reverse().map(t => `<tr><td class="p-tag">${esc(String(t.created_at || "").slice(0, 19))}</td><td><span class="badge ${t.carries_value ? "published" : "draft"}">${esc(t.kind)}</span></td><td>${esc(t.party)}<div class="p-tag">${esc(t.party_type)}</div></td><td class="p-tag">${esc(t.channel)} · ${esc(t.distribution)}</td><td class="p-tag">${esc((t.owner || "").slice(0, 22))}</td><td class="num">${t.value}</td></tr>`).join("") || '<tr><td colspan="6">No touchpoints recorded yet.</td></tr>'}
   </tbody></table></div></div>
   <div class="p-panel"><h3>Universal incentive graph</h3>
     <p class="p-tag">${m.graph.nodes.length} node kinds · ${m.graph.edges.length} relationships, projected onto the platform's existing <code>links</code> table — every edge is queryable with <code>GET /api/goip/exchanges/:id</code>.</p>

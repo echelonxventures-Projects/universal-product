@@ -114,6 +114,7 @@ registry, and the console renders what it's given.
 | State machines, batch 2 (orders) | 37 machines; orders, payments, invoices, credit notes, returns and EMIs | **246** | **44** |
 | State machines, batch 3 | 80 machines; tenants, compliance, fintech, GOIP, marketplace extensions, foundations, subscriptions, consoles | **207** | **6**, all word collisions, no real states |
 | Declared behaviour (finding 2), server engines | vocabulary rows declare their behaviour; engines follow the row | **134** | 6 |
+| Declared behaviour (finding 2), consoles | storefront, store and platform consoles read the same rows | **109** | 6 |
 
 **Batch 1 converted these engines:**
 - rides, drivers, vehicles (`lib/mobility.js`);
@@ -164,7 +165,23 @@ registry, and the console renders what it's given.
 
 Existing installs pick the new fields up through `registry.addFields()`, which never overwrites an operator's value, and `registry.upgradeShape()`, which turns plain-name lists into rows. `test/behaviour.js` edits rows to show the engines follow them, and fails if a converted engine compares against one of those keys.
 
-**Next for finding 2:** the consoles (`public/js/app.js`, `admin.js`, `platform.js`) and the remaining `lib/api.js` branches.
+**Finding 2, consoles:**
+- The storefront reads each product type's `purchase` mode and `plain` flag, each media kind's `player`, the default shipping class, the `contextGroups` registry for checkout contexts, and a membership tier's price.
+- The store console takes vehicle kinds and capacities from the registry, marks storefront feature toggles by the catalogue's `settings_atom`, reads the AI tier from a `premium` flag, renders each AI capability's form from its row's `params`, and writes an offer scope's value into the field its row declares.
+- The platform console draws FX rate sources from a `fxSources` registry (the sync accepts a source that `fetches`), offers funders from funding rows marked `selectable`, and badges touchpoints that carry value.
+
+**What remains in the 66 registry hits is not business vocabulary:**
+- page routes and UI action names (`home`, `product`, `gift`, `track`);
+- dashboard widget renderers (`bar`, `line`);
+- form field keys (`media`, `title`);
+- the kernel effect names that rows now declare (`block`, `hold`, `free_shipping`);
+- the guest owner-id prefix;
+- the currency entity's delete guard;
+- the identity field shown on its own (`sku`).
+
+**New registry entries now reach existing installs on every boot.** A new machine, binding or vocabulary row is appended additively, with no stamp bump needed. `test/states.js` covers this.
+
+
 
 **Status vocabularies are finished:** no engine branches on a status name. The six remaining audit hits are word collisions: the outbound mode `offline`, the UGC entity `review`, and the WebAuthn attestation format `packed`. The remaining work is the audit's other findings (2 to 7).
 
