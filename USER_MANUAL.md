@@ -774,7 +774,11 @@ engine that makes a choice asks it.
    rules matches. A subject with no rules is open.
 3. The platform owner's rules bound every platform. A platform's own rules (store console →
    *Settings → 🧭 Availability Rules*) can only narrow them; an allow there never lifts an owner's deny.
-4. A context that doesn't know a fact yet (no buyer signed in, no amount yet) is treated
+4. Rules also apply when a platform is launched. Registration starts a platform with its
+   country's own gateways and carriers, ranked ahead of worldwide ones. So an Indian platform gets
+   Razorpay and UPI, and a US one gets Stripe. A provider an owner's rule denies for that kind or
+   country is never provisioned, and a *preferred* one is provisioned first.
+5. A context that doesn't know a fact yet (no buyer signed in, no amount yet) is treated
    optimistically for allow rules and never triggers a deny on that fact. Checkout re-decides with
    the full context at the moment of payment.
 
@@ -804,10 +808,18 @@ rule that decided it.
 
 **Extending it — no code**
 - *A new kind of thing becomes rule-able* by adding a `ruleSubjectTypes` row whose source is
-  `providers:<kind>`, `list:<registry list>`, `entity:<Data Studio entity>` or
-  `rows:<table>:<id column>:<label column>`.
+  `list:<registry list>`, `entity:<Data Studio entity>`,
+  `rows:<table>:<id column>:<label column>[:<column>=<value>]` or
+  `values:<table>:<JSON column>[.<path>]`. Sources can be joined with `+`. A row's `params`
+  maps a rule's overrides onto the fields the engine reads.
+- *Where each engine asks* is a `ruleBindings` row. A row names the decision point
+  (`checkout.gateways`, `fintech.payout`…), the subject type it decides, the facts it sets
+  (its service) and, for a guarded entry point, the checks it runs and which input fields feed
+  which facts. Engines name only their point, so re-pointing one (say, dropping the bank check
+  on payouts) is a data edit.
 - *A new dimension* is a `ruleDimensions` row (`key`, `name`, `fact`, `match`: in · any · prefix ·
-  country, `options`). The request supplies its fact as `body.context.<fact>`, header
+  group, `options`, and where the fact comes from: `source` platform with a `column` or
+  `derive` lookup, request with an optional `header`, binding, or computed). The request supplies its fact as `body.context.<fact>`, header
   `x-ctx-<fact>` or query `ctx_<fact>`.
 - *Any engine or integration* can ask `POST /api/rules/check {type, id, context}`. A shopper gets
   only the verdict; console callers also get the reasons.

@@ -68,7 +68,7 @@ const LXRulesUI = (() => {
         <div class="p-card"><h3 style="margin-top:0">Customer segments</h3>
           <p style="color:var(--p-muted);font-size:13px;margin-top:0">Segments like new, returning and high-value customers are computed automatically. Put a customer in any other segment by hand here.</p>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px"><input id="smEmail" type="email" placeholder="customer@email" style="flex:1;min-width:180px">
-            <select id="smSeg">${(d.schema.dimensions.find(x => x.key === "segments") || { options: [] }).options.map(o => `<option value="${e(o.key)}">${e(o.name)}</option>`).join("")}</select>
+            <select id="smSeg">${(d.schema.segmentOptions || []).map(o => `<option value="${e(o.key)}">${e(o.name)}</option>`).join("")}</select>
             <button class="p-btn sm primary" id="smAdd">Add</button></div>
           <table class="p-table"><thead><tr><th>Segment</th><th>Customer</th><th></th></tr></thead><tbody>
           ${(d.members || []).length ? d.members.map(m => `<tr><td>${e(m.segment)}</td><td>${e(m.owner)}</td><td><button class="p-btn sm danger" data-smdel="${m.id}">✕</button></td></tr>`).join("") : `<tr><td colspan="3" style="color:var(--p-muted)">No hand-assigned members.</td></tr>`}
@@ -163,7 +163,7 @@ const LXRulesUI = (() => {
           <label><span>Subject type</span><select id="exType">${d.schema.subjectTypes.map(t => `<option value="${e(t.key)}" ${t.key === (st.type || "gateway") ? "selected" : ""}>${e(t.name)}</option>`).join("")}</select></label>
           ${dims.map(dm => {
             const multi = dm.match === "any";
-            if (dm.options && dm.options.length) return `<label><span>${e(dm.name)}</span><select data-xf="${e(dm.fact)}" ${multi ? "multiple size=4" : ""}>${multi ? "" : `<option value="">(${scope === "platform" || !["kind", "platform"].includes(dm.fact) ? "not known" : "this platform"})</option>`}${dm.options.filter(o => dm.fact !== "country" || !/^🌐/.test(o.name)).map(o => `<option value="${e(o.key)}">${e(o.name)}</option>`).join("")}</select></label>`;
+            if (dm.options && dm.options.length) return `<label><span>${e(dm.name)}</span><select data-xf="${e(dm.fact)}" ${multi ? "multiple size=4" : ""}>${multi ? "" : `<option value="">(${dm.source === "platform" ? "this platform's own" : "not known"})</option>`}${dm.options.map(o => `<option value="${e(o.key)}">${e(o.name)}</option>`).join("")}</select></label>`;
             return `<label><span>${e(dm.name)}</span><input data-xf="${e(dm.fact)}" placeholder="(not known)"></label>`;
           }).join("")}
           <div class="row"><label><span>Amount</span><input id="exAmt" type="number" step="any" placeholder="(not known)"></label><label><span>Date</span><input id="exAt" type="date"></label></div>

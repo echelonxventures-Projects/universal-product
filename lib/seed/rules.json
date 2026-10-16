@@ -1,0 +1,895 @@
+{
+ "$comment": "Seed data for the applicability rules (lib/rules.js). Each top-level key becomes a registry list (meta_lists) on first boot and is edited in the console from then on; lib/rules.js reads the registry, never this file at decision time. Sources (subject types, dimension options) use one grammar: list:<registry list> · rows:<table>:<id col>:<label col>[:<col>=<value>] · values:<table>:<json col>[.<path>][:<col>=<value>] · entity:<Data Studio entity>, joined with '+'.",
+ "ruleSubjectTypes": [
+  {
+   "key": "gateway",
+   "name": "Payment gateway",
+   "source": "rows:provider_defs:id:name:kind=payment",
+   "params": {
+    "fee_pct": "feePct",
+    "fee_fixed": "feeFixed",
+    "label": "name"
+   }
+  },
+  {
+   "key": "method",
+   "name": "Payment method",
+   "source": "list:paymentMethods+list:offlinePaymentMethods+values:provider_defs:methods:kind=payment"
+  },
+  {
+   "key": "bank",
+   "name": "Bank",
+   "source": "list:banks"
+  },
+  {
+   "key": "carrier",
+   "name": "Shipping carrier",
+   "source": "rows:provider_defs:id:name:kind=shipping",
+   "params": {
+    "base_fee": "baseFee",
+    "free_over": "freeOver",
+    "eta": "eta",
+    "label": "name"
+   }
+  },
+  {
+   "key": "notifier",
+   "name": "Notification channel",
+   "source": "rows:provider_defs:id:name:kind=notification"
+  },
+  {
+   "key": "marketing",
+   "name": "Marketing integration",
+   "source": "rows:provider_defs:id:name:kind=marketing"
+  },
+  {
+   "key": "ai",
+   "name": "AI provider",
+   "source": "rows:provider_defs:id:name:kind=ai"
+  },
+  {
+   "key": "capability",
+   "name": "Capability",
+   "source": "rows:platform_capabilities:key:label"
+  },
+  {
+   "key": "module",
+   "name": "Module capability",
+   "source": "values:modules:manifest.capabilities"
+  },
+  {
+   "key": "service",
+   "name": "Service",
+   "source": "list:services"
+  },
+  {
+   "key": "ai_capability",
+   "name": "AI capability",
+   "source": "list:aiCapabilities"
+  },
+  {
+   "key": "ai_model",
+   "name": "AI model",
+   "source": "list:aiModels"
+  },
+  {
+   "key": "promotion",
+   "name": "Promotion",
+   "source": "entity:promotion"
+  },
+  {
+   "key": "offer",
+   "name": "Offer / exchange",
+   "source": "rows:offers:id:name"
+  },
+  {
+   "key": "coupon",
+   "name": "Coupon code",
+   "source": "rows:coupons:code:code"
+  },
+  {
+   "key": "login_method",
+   "name": "Sign-in method",
+   "source": "list:identityProviderTypes"
+  }
+ ],
+ "ruleDimensions": [
+  {
+   "key": "kinds",
+   "name": "Platform kinds",
+   "fact": "kind",
+   "match": "in",
+   "source": "platform",
+   "column": "mode",
+   "options": "list:deployModes"
+  },
+  {
+   "key": "platforms",
+   "name": "Platforms",
+   "fact": "platform",
+   "match": "in",
+   "source": "platform",
+   "column": "slug",
+   "options": "rows:tenants:slug:name"
+  },
+  {
+   "key": "countries",
+   "name": "Countries or groups",
+   "fact": "country",
+   "match": "group",
+   "groups": "countryGroups",
+   "source": "platform",
+   "column": "country",
+   "overridable": true,
+   "upper": true,
+   "options": "list:countryGroups+rows:countries:code:name",
+   "setting": "commerce.country"
+  },
+  {
+   "key": "regions",
+   "name": "States / regions",
+   "fact": "region",
+   "match": "prefix",
+   "source": "request",
+   "upper": true,
+   "options": ""
+  },
+  {
+   "key": "currencies",
+   "name": "Currencies",
+   "fact": "currency",
+   "match": "in",
+   "source": "platform",
+   "derive": {
+    "table": "countries",
+    "key": "code",
+    "value": "currency",
+    "from": "country"
+   },
+   "overridable": true,
+   "upper": true,
+   "options": "rows:currencies:code:name",
+   "setting": "commerce.currency"
+  },
+  {
+   "key": "services",
+   "name": "Services",
+   "fact": "service",
+   "match": "in",
+   "source": "binding",
+   "options": "list:services"
+  },
+  {
+   "key": "segments",
+   "name": "Customer segments",
+   "fact": "segments",
+   "match": "any",
+   "source": "computed",
+   "provider": "segments",
+   "options": "list:segments+list:goipAudiences"
+  },
+  {
+   "key": "channels",
+   "name": "Channels",
+   "fact": "channel",
+   "match": "in",
+   "source": "request",
+   "header": "x-channel",
+   "default": "first",
+   "options": "list:channels"
+  }
+ ],
+ "ruleBindings": [
+  {
+   "key": "checkout.service",
+   "name": "Checkout — the service",
+   "subject_type": "service",
+   "subject": "order",
+   "facts": {
+    "service": "order"
+   }
+  },
+  {
+   "key": "checkout.gateways",
+   "name": "Checkout — gateways offered",
+   "subject_type": "gateway",
+   "facts": {
+    "service": "order"
+   }
+  },
+  {
+   "key": "checkout.methods",
+   "name": "Checkout — payment methods",
+   "subject_type": "method",
+   "facts": {
+    "service": "order"
+   }
+  },
+  {
+   "key": "checkout.carriers",
+   "name": "Checkout — carriers",
+   "subject_type": "carrier",
+   "facts": {
+    "service": "order"
+   }
+  },
+  {
+   "key": "promotions.apply",
+   "name": "Cart — promotions",
+   "subject_type": "promotion",
+   "facts": {
+    "service": "order"
+   }
+  },
+  {
+   "key": "coupons.code",
+   "name": "Cart — coupon codes",
+   "subject_type": "coupon",
+   "facts": {
+    "service": "order"
+   }
+  },
+  {
+   "key": "coupons.offer",
+   "name": "Cart — the offer behind a code",
+   "subject_type": "offer",
+   "facts": {
+    "service": "order"
+   }
+  },
+  {
+   "key": "goip.offer",
+   "name": "Offers engine — eligibility",
+   "subject_type": "offer"
+  },
+  {
+   "key": "provision.gateways",
+   "name": "Registration — gateways provisioned",
+   "subject_type": "gateway"
+  },
+  {
+   "key": "provision.carriers",
+   "name": "Registration — carriers provisioned",
+   "subject_type": "carrier"
+  },
+  {
+   "key": "capability.on",
+   "name": "Capabilities",
+   "subject_type": "capability"
+  },
+  {
+   "key": "module.cap",
+   "name": "Module capabilities",
+   "subject_type": "module"
+  },
+  {
+   "key": "notify.send",
+   "name": "Notifications",
+   "subject_type": "notifier"
+  },
+  {
+   "key": "mailer.transport",
+   "name": "Email / SMS transport",
+   "subject_type": "notifier"
+  },
+  {
+   "key": "marketing.send",
+   "name": "Marketing sends",
+   "subject_type": "marketing"
+  },
+  {
+   "key": "ai.providers",
+   "name": "AI — providers",
+   "subject_type": "ai"
+  },
+  {
+   "key": "ai.models",
+   "name": "AI — models",
+   "subject_type": "ai_model"
+  },
+  {
+   "key": "ai.capabilities",
+   "name": "AI — capabilities",
+   "subject_type": "ai_capability"
+  },
+  {
+   "key": "login.methods",
+   "name": "Sign-in — methods offered",
+   "subject_type": "login_method"
+  },
+  {
+   "key": "login.password",
+   "name": "Sign-in — email / password",
+   "subject_type": "login_method",
+   "subject": "password",
+   "exemptRoles": [
+    "admin"
+   ]
+  },
+  {
+   "key": "fintech.upi_collect",
+   "name": "UPI collect",
+   "checks": [
+    {
+     "type": "service",
+     "value": "upi_collect"
+    },
+    {
+     "type": "method",
+     "value": "upi"
+    }
+   ],
+   "facts": {
+    "service": "upi_collect"
+   },
+   "inputs": {
+    "amount": "amount",
+    "currency": "currency"
+   }
+  },
+  {
+   "key": "fintech.payment_link",
+   "name": "Payment links",
+   "checks": [
+    {
+     "type": "service",
+     "value": "payment_link"
+    },
+    {
+     "type": "gateway",
+     "from": "gateway"
+    }
+   ],
+   "facts": {
+    "service": "payment_link"
+   },
+   "inputs": {
+    "amount": "amount",
+    "currency": "currency"
+   }
+  },
+  {
+   "key": "fintech.mandate",
+   "name": "Recurring mandates",
+   "checks": [
+    {
+     "type": "service",
+     "value": "mandate"
+    },
+    {
+     "type": "gateway",
+     "from": "gateway"
+    },
+    {
+     "type": "bank",
+     "resolve": "bank"
+    }
+   ],
+   "facts": {
+    "service": "mandate"
+   },
+   "inputs": {
+    "amount": "max_amount",
+    "currency": "currency"
+   }
+  },
+  {
+   "key": "fintech.escrow",
+   "name": "Escrow holds",
+   "facts": {
+    "service": "escrow"
+   },
+   "checks": [
+    {
+     "type": "service",
+     "value": "escrow"
+    }
+   ],
+   "inputs": {
+    "amount": "amount",
+    "currency": "currency"
+   }
+  },
+  {
+   "key": "fintech.payout",
+   "name": "Bank payouts",
+   "checks": [
+    {
+     "type": "service",
+     "value": "payout"
+    },
+    {
+     "type": "gateway",
+     "from": "gateway"
+    },
+    {
+     "type": "bank",
+     "resolve": "bank"
+    },
+    {
+     "type": "method",
+     "from": "method"
+    },
+    {
+     "type": "method",
+     "value": "upi",
+     "when": "upi_vpa",
+     "unless": "account_number"
+    }
+   ],
+   "facts": {
+    "service": "payout"
+   },
+   "inputs": {
+    "amount": "amount",
+    "currency": "currency"
+   }
+  },
+  {
+   "key": "fintech.bill_pay",
+   "name": "Bill payments",
+   "checks": [
+    {
+     "type": "service",
+     "value": "bill_pay"
+    },
+    {
+     "type": "gateway",
+     "from": "gateway"
+    }
+   ],
+   "facts": {
+    "service": "bill_pay"
+   },
+   "inputs": {
+    "amount": "amount",
+    "currency": "currency"
+   }
+  },
+  {
+   "key": "fintech.recharge",
+   "name": "Mobile recharge",
+   "checks": [
+    {
+     "type": "service",
+     "value": "recharge"
+    },
+    {
+     "type": "gateway",
+     "from": "gateway"
+    }
+   ],
+   "facts": {
+    "service": "recharge"
+   },
+   "inputs": {
+    "amount": "amount",
+    "currency": "currency"
+   }
+  },
+  {
+   "key": "fintech.transfer",
+   "name": "Wallet transfers",
+   "facts": {
+    "service": "transfer"
+   },
+   "checks": [
+    {
+     "type": "service",
+     "value": "transfer"
+    }
+   ],
+   "inputs": {
+    "amount": "amount"
+   }
+  },
+  {
+   "key": "fintech.bnpl",
+   "name": "Buy now, pay later",
+   "facts": {
+    "service": "bnpl"
+   },
+   "checks": [
+    {
+     "type": "service",
+     "value": "bnpl"
+    }
+   ],
+   "inputs": {
+    "amount": "limit",
+    "currency": "currency"
+   }
+  },
+  {
+   "key": "fintech.loan",
+   "name": "Loans",
+   "checks": [
+    {
+     "type": "service",
+     "value": "loan"
+    },
+    {
+     "type": "bank",
+     "resolve": "bank"
+    }
+   ],
+   "facts": {
+    "service": "loan"
+   },
+   "inputs": {
+    "amount": "principal|amount",
+    "currency": "currency"
+   }
+  },
+  {
+   "key": "fintech.insurance",
+   "name": "Insurance",
+   "facts": {
+    "service": "insurance"
+   },
+   "checks": [
+    {
+     "type": "service",
+     "value": "insurance"
+    }
+   ],
+   "inputs": {
+    "amount": "premium",
+    "currency": "currency"
+   }
+  },
+  {
+   "key": "mobility.ride",
+   "name": "Ride requests",
+   "checks": [
+    {
+     "type": "service",
+     "value": "ride"
+    },
+    {
+     "type": "method",
+     "from": "payment",
+     "default": "cash"
+    }
+   ],
+   "facts": {
+    "service": "ride"
+   }
+  }
+ ],
+ "services": [
+  {
+   "key": "order",
+   "name": "Shop orders"
+  },
+  {
+   "key": "subscription",
+   "name": "Subscriptions & memberships"
+  },
+  {
+   "key": "ride",
+   "name": "Ride fares"
+  },
+  {
+   "key": "bill_pay",
+   "name": "Bill payments"
+  },
+  {
+   "key": "recharge",
+   "name": "Mobile recharge"
+  },
+  {
+   "key": "payout",
+   "name": "Bank payouts"
+  },
+  {
+   "key": "transfer",
+   "name": "Wallet transfers"
+  },
+  {
+   "key": "upi_collect",
+   "name": "UPI collect requests"
+  },
+  {
+   "key": "payment_link",
+   "name": "Payment links"
+  },
+  {
+   "key": "mandate",
+   "name": "Recurring mandates"
+  },
+  {
+   "key": "escrow",
+   "name": "Escrow holds"
+  },
+  {
+   "key": "bnpl",
+   "name": "Buy now, pay later"
+  },
+  {
+   "key": "loan",
+   "name": "Loans"
+  },
+  {
+   "key": "insurance",
+   "name": "Insurance"
+  }
+ ],
+ "segments": [
+  {
+   "key": "retail",
+   "name": "Retail customers"
+  },
+  {
+   "key": "wholesale",
+   "name": "Wholesale / B2B buyers"
+  },
+  {
+   "key": "premium",
+   "name": "Premium customers"
+  },
+  {
+   "key": "corporate",
+   "name": "Corporate accounts"
+  },
+  {
+   "key": "guest",
+   "name": "Guests (not signed in)",
+   "auto": "guest"
+  },
+  {
+   "key": "signed_in",
+   "name": "Signed-in customers",
+   "auto": "signed_in"
+  }
+ ],
+ "channels": [
+  {
+   "key": "web",
+   "name": "Web"
+  },
+  {
+   "key": "app",
+   "name": "Mobile app"
+  },
+  {
+   "key": "pos",
+   "name": "Point of sale"
+  },
+  {
+   "key": "api",
+   "name": "API / partner"
+  }
+ ],
+ "banks": [
+  {
+   "key": "sbi",
+   "name": "State Bank of India",
+   "country": "IN",
+   "ifsc": "SBIN",
+   "swift": "SBIN"
+  },
+  {
+   "key": "hdfc",
+   "name": "HDFC Bank",
+   "country": "IN",
+   "ifsc": "HDFC",
+   "swift": "HDFC"
+  },
+  {
+   "key": "icici",
+   "name": "ICICI Bank",
+   "country": "IN",
+   "ifsc": "ICIC",
+   "swift": "ICIC"
+  },
+  {
+   "key": "axis",
+   "name": "Axis Bank",
+   "country": "IN",
+   "ifsc": "UTIB",
+   "swift": "AXIS"
+  },
+  {
+   "key": "kotak",
+   "name": "Kotak Mahindra Bank",
+   "country": "IN",
+   "ifsc": "KKBK",
+   "swift": "KKBK"
+  },
+  {
+   "key": "chase",
+   "name": "JPMorgan Chase",
+   "country": "US",
+   "swift": "CHAS"
+  },
+  {
+   "key": "bofa",
+   "name": "Bank of America",
+   "country": "US",
+   "swift": "BOFA"
+  },
+  {
+   "key": "wells",
+   "name": "Wells Fargo",
+   "country": "US",
+   "swift": "WFBI"
+  },
+  {
+   "key": "barclays",
+   "name": "Barclays",
+   "country": "GB",
+   "swift": "BARC"
+  },
+  {
+   "key": "hsbc",
+   "name": "HSBC",
+   "country": "GB",
+   "swift": "HBUK"
+  },
+  {
+   "key": "deutsche",
+   "name": "Deutsche Bank",
+   "country": "DE",
+   "swift": "DEUT"
+  },
+  {
+   "key": "bnp",
+   "name": "BNP Paribas",
+   "country": "FR",
+   "swift": "BNPA"
+  },
+  {
+   "key": "ing",
+   "name": "ING",
+   "country": "NL",
+   "swift": "INGB"
+  },
+  {
+   "key": "itau",
+   "name": "Itaú Unibanco",
+   "country": "BR",
+   "swift": "ITAU"
+  },
+  {
+   "key": "dbs",
+   "name": "DBS Bank",
+   "country": "SG",
+   "swift": "DBSS"
+  },
+  {
+   "key": "mufg",
+   "name": "MUFG Bank",
+   "country": "JP",
+   "swift": "BOTK"
+  },
+  {
+   "key": "enbd",
+   "name": "Emirates NBD",
+   "country": "AE",
+   "swift": "EBIL"
+  },
+  {
+   "key": "equity",
+   "name": "Equity Bank",
+   "country": "KE",
+   "swift": "EQBL"
+  }
+ ],
+ "bankIdentifiers": [
+  {
+   "key": "ifsc",
+   "name": "IFSC",
+   "length": 4
+  },
+  {
+   "key": "swift",
+   "name": "SWIFT / BIC",
+   "length": 4,
+   "aliases": [
+    "bic"
+   ]
+  }
+ ],
+ "countryGroups": [
+  {
+   "key": "EU",
+   "name": "European Union",
+   "countries": [
+    "AT",
+    "BE",
+    "BG",
+    "HR",
+    "CY",
+    "CZ",
+    "DK",
+    "EE",
+    "FI",
+    "FR",
+    "DE",
+    "GR",
+    "HU",
+    "IE",
+    "IT",
+    "LV",
+    "LT",
+    "LU",
+    "MT",
+    "NL",
+    "PL",
+    "PT",
+    "RO",
+    "SK",
+    "SI",
+    "ES",
+    "SE"
+   ]
+  },
+  {
+   "key": "GCC",
+   "name": "Gulf Cooperation Council",
+   "countries": [
+    "AE",
+    "SA",
+    "QA",
+    "KW",
+    "BH",
+    "OM"
+   ]
+  },
+  {
+   "key": "NA",
+   "name": "North America",
+   "countries": [
+    "US",
+    "CA",
+    "MX"
+   ]
+  },
+  {
+   "key": "APAC",
+   "name": "Asia-Pacific",
+   "countries": [
+    "IN",
+    "SG",
+    "JP",
+    "AU",
+    "CN",
+    "HK",
+    "KR",
+    "ID",
+    "MY",
+    "TH",
+    "PH",
+    "VN",
+    "NZ"
+   ]
+  },
+  {
+   "key": "LATAM",
+   "name": "Latin America",
+   "countries": [
+    "BR",
+    "MX",
+    "AR",
+    "CL",
+    "CO",
+    "PE"
+   ]
+  }
+ ],
+ "paymentMethods": [
+  {
+   "key": "cash",
+   "name": "Cash"
+  },
+  {
+   "key": "wallet",
+   "name": "Platform wallet"
+  },
+  {
+   "key": "card",
+   "name": "Card"
+  }
+ ]
+}

@@ -167,6 +167,31 @@ const mk = () => {
       ok(co2.status === 200, "another gateway the rules permit takes the payment", co2.body);
     }
 
+    console.log("▸ ENGINES NAME ONLY THEIR BINDING POINT — THE REST IS DATA");
+    const fee = await save(P, "/api/platform/rules", { subject_type: "gateway", subject: "paytm", effect: "allow", scope: { countries: ["IN"] }, params: { fee_pct: 0.25, label: "Paytm (promo)" } });
+    const ptOffer = ((await G("/api/providers?store=bharat")).body.gateways || []).find(g => g.id === "paytm");
+    ok(fee.status === 200 && ptOffer && ptOffer.feePct === 0.25 && ptOffer.name === "Paytm (promo)", "a rule's overrides reach the offer through the subject type's parameter map", ptOffer);
+    await P("/api/platform/rules/" + fee.body.rule.id, "DELETE");
+    const registryMod = require("../lib/registry.js");
+    const payout = registryMod.list("ruleBindings").find(b => b.key === "fintech.payout");
+    ok(payout && payout.checks.some(c => c.type === "bank"), "the payout point's checks are a registry row");
+    const rebound = await P("/api/platform/registries/ruleBindings", "POST", { item: { ...payout, checks: payout.checks.filter(c => c.type !== "bank") } });
+    rules.bust();
+    const po3 = await A("/api/fintech/payouts?store=bharat", "POST", { payee: "Vendor", amount: 100, currency: "INR", account_name: "V", account_number: "1234", ifsc: "HDFC0000123" });
+    ok(rebound.status === 200 && po3.status === 200, "re-pointing a binding (no bank check) changes the engine with no code", [rebound.body, po3.body]);
+    await P("/api/platform/registries/ruleBindings", "POST", { item: payout }); rules.bust();
+    ok((await A("/api/fintech/payouts?store=bharat", "POST", { payee: "Vendor", amount: 100, currency: "INR", account_name: "V", account_number: "1234", ifsc: "HDFC0000123" })).status >= 400, "restoring the binding restores the check");
+    const free = registryMod.list("aiPlans").find(p => Number(p.price) === 0);
+    const recCap = ((await A("/api/ai?store=bharat")).body.capabilities || []).find(c => c.key === "product_recommendation");
+    ok(free && recCap && recCap.provider && recCap.provider.id === free.provider && recCap.model === (registryMod.list("aiModels").find(m => m.provider === free.provider) || {}).key, "the always-on AI engine is the free plan's provider and its first registered model", recCap && [recCap.provider, recCap.model]);
+    /* the gate: engine code asks through binding points; a subject type or service named in a
+       rule call would be hard-coding the vocabulary back into the engine */
+    const src = ["api", "fintech", "mobility", "offers", "goip", "identity", "ai", "modules", "capabilities", "mailer", "settings"].map(f => [f, fs.readFileSync(path.join(__dirname, "..", "lib", f + ".js"), "utf8")]);
+    const named = src.flatMap(([f, t]) => (t.match(/rules\.(decide|permits|filter|guard)\(\s*"[^"]+"/g) || []).map(m => f + ": " + m).concat((t.match(/(guard|guardAt|context|at)\([^)]*service:\s*"[a-z_]+"/g) || []).map(m => f + ": " + m)));
+    ok(named.length === 0, "no engine names a subject type or service in a rule call", named);
+    const seedOnly = fs.readFileSync(path.join(__dirname, "..", "lib", "rules.js"), "utf8");
+    ok(!/"(gateway|carrier|payout|razorpay|hdfc|premium|EU|IN|web)"/.test(seedOnly.replace(/\/\*[\s\S]*?\*\//g, "")), "the rules kernel names no subject type, service, provider, bank, segment, group, country or channel");
+
     console.log("▸ REMOVING A RULE RESTORES THE DEFAULT");
     const list = (await P("/api/platform/rules")).body.rules;
     const codRule = list.find(r => r.subject === "cod");

@@ -85,6 +85,18 @@ const mk = () => {
     ok(gw(st).some(g => g.startsWith("ship:")) && JSON.stringify(whs(st)) === '["IN"]', "a marketplace still gets carriers, and one warehouse in its country (no US demo ones)", { gw: gw(st), wh: whs(st) });
     ok((await sectionsOf("shopco")).allowedSections.includes("shipping"), "and every shop screen");
 
+    console.log("▸ A PLATFORM STARTS WITH ITS COUNTRY'S OWN PROVIDERS");
+    /* the country's own providers rank ahead of worldwide ones — no provider is named in code */
+    ok(["razorpay", "upi", "cod"].every(g => gw(st).includes(g)) && !gw(st).includes("paypal") && !gw(st).includes("adyen"), "an Indian platform starts with Razorpay, UPI and cash on delivery", gw(st));
+    ok(db.get("SELECT provider_id FROM tenant_gateways WHERE tenant_id=? AND is_primary=1 AND provider_id NOT LIKE '%:%'", st).provider_id === "razorpay", "Razorpay is its primary gateway");
+    ok(gw(st).includes("ship:delhivery") && gw(st).includes("ship:bluedart"), "and Indian carriers", gw(st));
+    const us = await P("/api/platform/tenants", "POST", { name: "US Co", slug: "usco", country: "US", mode: "marketplace", ...owner("usco") });
+    ok(us.status === 200 && gw(us.body.tenant.id)[0] !== undefined && db.get("SELECT provider_id FROM tenant_gateways WHERE tenant_id=? AND is_primary=1 AND provider_id NOT LIKE '%:%'", us.body.tenant.id).provider_id === "stripe", "a US platform still starts with Stripe", gw(us.body.tenant.id));
+    const deny = await P("/api/platform/rules", "POST", { rule: { subject_type: "gateway", subject: "razorpay", effect: "deny", scope: { kinds: ["mobility"] } } });
+    const brand = await P("/api/platform/tenants", "POST", { name: "Cab Co", slug: "cabco", country: "IN", mode: "mobility", ...owner("cabco") });
+    ok(deny.status === 200 && brand.status === 200 && brand.body.tenant && !gw(brand.body.tenant.id).includes("razorpay") && gw(brand.body.tenant.id).includes("upi"), "a gateway an availability rule denies for the kind is never provisioned", gw(brand.body.tenant.id));
+    await P("/api/platform/rules/" + deny.body.rule.id, "DELETE");
+
     console.log("▸ ANY KIND, CONFIGURED FROM THE CONSOLE");
     const bad = await P("/api/platform/kinds", "POST", { kind: { key: "Bad Key", name: "x" } });
     ok(bad.status === 400, "a malformed key is refused", bad.body);
