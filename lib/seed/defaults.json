@@ -1,0 +1,28 @@
+{
+ "currency": "USD",
+ "lists": {
+  "offerChannels": "commerce",
+  "staffRoles": "manager",
+  "productTypes": "physical",
+  "dashboardTypes": "Operational",
+  "goipDomains": "incentive",
+  "mktAttribution": "last_click",
+  "goipAttributionModels": "last_touch",
+  "productSortOrders": "featured",
+  "goipObjectives": "max_benefit",
+  "incoterms": "EXW",
+  "b2bDocKinds": "commercial_invoice",
+  "b2bGoldTiers": "gold",
+  "mktFulfillment": "fbm",
+  "privacyRequestKinds": "access",
+  "finCircles": "national",
+  "uomUnits": "ea",
+  "finBillerCategories": "electricity",
+  "goipCalendars": "gregorian",
+  "goipDistribution": "in_app",
+  "ruleSubjectTypes": "gateway",
+  "offerFunders": "self",
+  "goipRealities": "physical",
+  "taxClasses": "standard"
+ }
+}

@@ -160,7 +160,7 @@ const LXRulesUI = (() => {
       const dims = d.schema.dimensions;
       const f = overlay(`<div class="p-modal-head"><h3>Explain — what is offered, and why</h3><button data-rclose>✕</button></div>
         <div class="p-form">
-          <label><span>Subject type</span><select id="exType">${d.schema.subjectTypes.map(t => `<option value="${e(t.key)}" ${t.key === (st.type || "gateway") ? "selected" : ""}>${e(t.name)}</option>`).join("")}</select></label>
+          <label><span>Subject type</span><select id="exType">${d.schema.subjectTypes.map(t => `<option value="${e(t.key)}" ${t.key === (st.type || (d.schema.subjectTypes.find(x => x.default) || d.schema.subjectTypes[0] || {}).key) ? "selected" : ""}>${e(t.name)}</option>`).join("")}</select></label>
           ${dims.map(dm => {
             const multi = dm.match === "any";
             if (dm.options && dm.options.length) return `<label><span>${e(dm.name)}</span><select data-xf="${e(dm.fact)}" ${multi ? "multiple size=4" : ""}>${multi ? "" : `<option value="">(${dm.source === "platform" ? "this platform's own" : "not known"})</option>`}${dm.options.map(o => `<option value="${e(o.key)}">${e(o.name)}</option>`).join("")}</select></label>`;

@@ -93,7 +93,10 @@ let view = "dash";
 let SM = null;
 /* rows the AI and offer forms render from (set by their views) */
 let AI_CAPS = [], OFFER_SCOPES = [];
-async function loadSM() { if (!SM) { try { SM = (await api("/meta")).stateMachines || {}; } catch (e) { SM = {}; } } return SM; }
+/* each declared list's default row and the platform currency (lib/defaults.js, served by /api/meta) */
+let DFLT = { lists: {} };
+async function loadSM() { if (!SM) { try { const m = await api("/meta"); SM = m.stateMachines || {}; DFLT = m.defaults || DFLT; } catch (e) { SM = {}; } } return SM; }
+const dfl = list => (DFLT.lists || {})[list] || "";
 const smIs = (m, st, tag) => !!(SM && SM[m] && SM[m].states[st] && SM[m].states[st].tags.includes(tag));
 const smFirst = (m, tag) => { const ss = (SM && SM[m] && SM[m].states) || {}; return Object.keys(ss).find(k => ss[k].tags.includes(tag)); };
 const smTone = (m, st) => ((SM && SM[m] && SM[m].states[st]) || {}).tone || "processing";
@@ -385,7 +388,7 @@ async function vMktOps() {
       <button class="p-btn sm" id="mktLoad">Load offers</button>
       <button class="p-btn sm primary" id="mktBb">Recompute buy-box</button></div>
     ${coTbl(["seller", "price", "condition", "fulfilment", "score", "winner"], bb.offers || [],
-      o => [esc(String(o.seller_id)), money(o.price), esc(o.condition || "new"), esc(o.fulfillment || "fbm"), (o.buybox_score || 0).toFixed(2), o.buybox ? '<span class="a-chip">★ featured</span>' : ""])}</div>
+      o => [esc(String(o.seller_id)), money(o.price), esc(o.condition || "new"), esc(o.fulfillment || dfl("mktFulfillment")), (o.buybox_score || 0).toFixed(2), o.buybox ? '<span class="a-chip">★ featured</span>' : ""])}</div>
   <div class="a-cap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px">
     <div class="a-card"><h3>Account health · ${perfs.length}</h3>
       ${coTbl(["seller", "period", "ODR", "late", "cancel", "score", "tier"], perfs,
@@ -804,13 +807,15 @@ document.addEventListener("click", async e => {
     if (act && act.dataset.act === "mob-new-ride") {
       const pickup = prompt("Pickup point", "Downtown · 5th Ave"); if (pickup == null) return;
       const dropoff = prompt("Drop-off point", "Airport · Terminal 4"); if (dropoff == null) return;
-      const kind = prompt("Vehicle kind (car · suv · bike · auto · van)", "car") || "car";
+      const vk = ((await api("/admin/mobility", {})).vehicleKinds || []); const vd = (vk.find(k => k.default) || vk[0] || {}).key || "";
+      const kind = prompt("Vehicle kind (" + vk.map(k => k.key).join(" · ") + ")", vd) || vd;
       const r = await api("/admin/mobility/rides", "POST", { rider: "Walk-up rider", pickup, dropoff, vehicle_kind: kind, payment_method: "cash" });
       if (r.error) toast(r.error); else { toast(`Requested ${r.ride.ref}${r.ride.driver ? " · dispatched to " + r.ride.driver.name : " · queued for dispatch"}`); render(); }
     }
     if (act && act.dataset.act === "mob-new-driver") {
       const name = prompt("Driver name"); if (!name) return;
-      const kind = prompt("Vehicle kind (car · suv · bike · auto · van)", "car") || "car";
+      const vk = ((await api("/admin/mobility", {})).vehicleKinds || []); const vd = (vk.find(k => k.default) || vk[0] || {}).key || "";
+      const kind = prompt("Vehicle kind (" + vk.map(k => k.key).join(" · ") + ")", vd) || vd;
       const plate = prompt("Plate", "") || "";
       const r = await api("/admin/mobility/drivers", "POST", { name, vehicle_kind: kind, plate, status: "offline" });
       if (r.error) toast(r.error); else { toast(`Driver ${r.driver.name} added`); render(); }
@@ -1372,7 +1377,7 @@ async function vGoip() {
   const opt = (a, sel) => (a || []).map(x => `<option value="${esc(x.key || x)}"${(x.key || x) === sel ? " selected" : ""}>${esc(x.name || x)}</option>`).join("");
   const rows = (ex.exchanges || []).map(o => `<tr>
     <td><b>${esc(o.name)}</b>${o.code ? ` <code>${esc(o.code)}</code>` : ""}${o.tenant_id === 0 ? ' <span class="p-tag">INHERITED</span>' : ""}</td>
-    <td class="p-tag">${esc(o.domain || "incentive")}<br>${esc(o.benefit || o.type)}</td>
+    <td class="p-tag">${esc(o.domain || dfl("goipDomains"))}<br>${esc(o.benefit || o.type)}</td>
     <td class="p-tag">${esc(o.reality || "any")} · ${esc((JSON.parse(o.spatial_spec || "{}").include || []).join(",") || "anywhere")} · ${esc(o.economic_unit || o.currency)}</td>
     <td>${esc(o.funder)}${o.funder_ref ? " " + esc(o.funder_ref) : ""}</td>
     <td class="num">${esc(o.value)}</td><td class="num">${o.used}/${o.usage_limit || "∞"}</td>
@@ -1536,11 +1541,11 @@ function wireOffers() {
   /* a scope's value goes in the field its offerScopes row declares (a taxonomy scope takes one node) */
   const readScope = () => { const st = $("#oScope").value, csv = $("#oScopeVal").value.split(",").map(x => x.trim()).filter(Boolean); const row = (OFFER_SCOPES || []).find(r => (r.key || r) === st) || {}; const f = (row.scope || [])[0]; if (!f) return {}; return { [f]: row.match === "taxonomy" ? (csv[0] || "") : csv }; };
   const save = async (id) => {
-    const body = { name: $("#oName").value, type: $("#oType").value, value: Number($("#oValue").value), code: $("#oCode").value, channel: $("#oChan").value, scope_type: $("#oScope").value, scope: readScope(), funder: $("#oFunder").value, funder_ref: $("#oFunderRef").value, brand_ref: "", direction: $("#oDir").value, stack_policy: $("#oStack").value, max_discount: Number($("#oMax").value) || 0, min_amount: Number($("#oMin").value) || 0, currency: ($("#oCur") || {}).value || "USD", usage_limit: Number($("#oUse").value) || 0, per_owner_limit: Number(($("#oOwner") || {}).value) || 0, priority: Number($("#oPri").value) || 0, starts: $("#oStart").value || null, ends: $("#oEnd").value || null, status: $("#oStatus").value };
+    const body = { name: $("#oName").value, type: $("#oType").value, value: Number($("#oValue").value), code: $("#oCode").value, channel: $("#oChan").value, scope_type: $("#oScope").value, scope: readScope(), funder: $("#oFunder").value, funder_ref: $("#oFunderRef").value, brand_ref: "", direction: $("#oDir").value, stack_policy: $("#oStack").value, max_discount: Number($("#oMax").value) || 0, min_amount: Number($("#oMin").value) || 0, currency: ($("#oCur") || {}).value || (TT && TT.commerce && TT.commerce.currency) || DFLT.currency, usage_limit: Number($("#oUse").value) || 0, per_owner_limit: Number(($("#oOwner") || {}).value) || 0, priority: Number($("#oPri").value) || 0, starts: $("#oStart").value || null, ends: $("#oEnd").value || null, status: $("#oStatus").value };
     try { await api("/offers" + (id ? "/" + id : ""), id ? "PUT" : "POST", body); toast("Offer saved"); render(); } catch (e) { toast(e.message); }
   };
   $("#oSave").onclick = () => save(window.__oeid || null);
-  $$("[data-oedit]").forEach(b => b.onclick = async () => { window.__oeid = b.dataset.oedit; const o = ((await api("/offers")).offers.find(x => String(x.id) === b.dataset.oedit) || {}); $("#oName").value = o.name || ""; $("#oType").value = o.type || "percent"; $("#oValue").value = o.value || 0; $("#oCode").value = o.code || ""; $("#oChan").value = o.channel || "commerce"; $("#oScope").value = o.scope_type || "store"; $("#oScopeVal").value = [].concat((o.scope || {}).products || (o.scope || {}).categories || (o.scope || {}).brands || (o.scope || {}).node || []).join(","); $("#oFunder").value = o.funder || "self"; $("#oFunderRef").value = o.funder_ref || ""; $("#oDir").value = o.direction || "discount"; $("#oStack").value = o.stack_policy || "stack_with_others";     $("#oMax").value = o.max_discount || ""; $("#oMin").value = o.min_amount || ""; $("#oUse").value = o.usage_limit || 0; if ($("#oCur")) $("#oCur").value = o.currency || "USD"; if ($("#oOwner")) $("#oOwner").value = o.per_owner_limit || 0; $("#oPri").value = o.priority || 0; $("#oStatus").value = o.status || "active"; $("#oEditHint").textContent = "editing #" + b.dataset.oedit; $("#oSave").textContent = "Update offer"; });
+  $$("[data-oedit]").forEach(b => b.onclick = async () => { window.__oeid = b.dataset.oedit; const o = ((await api("/offers")).offers.find(x => String(x.id) === b.dataset.oedit) || {}); $("#oName").value = o.name || ""; $("#oType").value = o.type || "percent"; $("#oValue").value = o.value || 0; $("#oCode").value = o.code || ""; $("#oChan").value = o.channel || dfl("offerChannels"); $("#oScope").value = o.scope_type || "store"; $("#oScopeVal").value = [].concat((o.scope || {}).products || (o.scope || {}).categories || (o.scope || {}).brands || (o.scope || {}).node || []).join(","); $("#oFunder").value = o.funder || "self"; $("#oFunderRef").value = o.funder_ref || ""; $("#oDir").value = o.direction || "discount"; $("#oStack").value = o.stack_policy || "stack_with_others";     $("#oMax").value = o.max_discount || ""; $("#oMin").value = o.min_amount || ""; $("#oUse").value = o.usage_limit || 0; if ($("#oCur")) $("#oCur").value = o.currency || "USD"; if ($("#oOwner")) $("#oOwner").value = o.per_owner_limit || 0; $("#oPri").value = o.priority || 0; $("#oStatus").value = o.status || "active"; $("#oEditHint").textContent = "editing #" + b.dataset.oedit; $("#oSave").textContent = "Update offer"; });
   $$("[data-oret]").forEach(b => b.onclick = async () => { try { await api("/offers/" + b.dataset.oret, "DELETE"); toast("Retired"); render(); } catch (e) { toast(e.message); } });
   $("#cCreate").onclick = async () => { try { await api("/offers/coupons", "POST", { kind: $("#cKind").value, code: $("#cCode").value, value: Number($("#cVal").value), funder: $("#cFunder").value, funder_ref: $("#cFunderRef").value, max_uses: Number($("#cMax").value) || 1, per_owner_limit: Number(($("#cOwner") || {}).value) || 1 }); toast("Coupon created"); render(); } catch (e) { toast(e.message); } };
   $("#cGen").onclick = async () => { try { const r = await api("/offers/coupons/generate", "POST", { count: 10, kind: $("#cKind").value, funder: $("#cFunder").value, funder_ref: $("#cFunderRef").value, value: Number($("#cVal").value), per_owner_limit: Number(($("#cOwner") || {}).value) || 1 }); toast(r.count + " codes (" + r.batch + ")"); render(); } catch (e) { toast(e.message); } };

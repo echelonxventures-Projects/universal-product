@@ -185,6 +185,24 @@ Existing installs pick the new fields up through `registry.addFields()`, which n
 - The ten seed-sized constants that remain (355 lines) are kernel tables: implementation and handler tables, route wiring and the UID table list. Two are deliberate exceptions: `ucos.js` `DOCS`, which holds functions, and `db.js` `CATEGORY_SEED`, which belongs to the boot module.
 - `test/seeds.js` parses every seed file. It fails if a business literal of 20 or more lines reappears in `lib/` outside the declared kernel tables.
 
+**Finding 4 — defaults are data (fallbacks: 210 → 96):**
+- `lib/defaults.js` resolves a value the caller did not give:
+  - `currency(tenantId)` returns the store's chosen currency, else its country's, else the currency of the platform's default country;
+  - `of(list)` returns the row a registry flags `default`.
+- `lib/seed/defaults.json` declares the default row for 23 lists. Boot flags that row once, after every seeder has run, and never moves an operator's own flag. `/api/meta` serves the defaults to the consoles.
+- About 60 hard-coded `"USD"` values now resolve through `currency()`: wallet, fintech, trade, billing, GOIP, module invoices and AI usage. The hard-coded list of currency codes in `lib/offers.js` now asks the currency master.
+- About 80 vocabulary fallbacks now resolve through `of()`: offer channels, staff roles, product types, dashboard types, GOIP domains, objectives, distribution, calendars and funders, sort orders, attribution models, incoterms, B2B document kinds and tiers, UoM, fintech circles and biller categories, and privacy request kinds. GOIP's own `defaultOf` now delegates to `of()`.
+- The ride and driver forms read vehicle kinds from `mobilityVehicleKinds` instead of a list in the prompt text.
+- **Bug fixed:** the store currency lookups read a `tenants.currency` column that does not exist. `billing.tenantCurrency` and `global.getTenantCurrency` would have thrown instead of returning a currency, and `global.setTenantCurrency` would have failed instead of saving it. They now use the store's commerce setting.
+- `test/defaults.js` shows that moving a list's flag, or changing a store's currency, changes what the engines fall back to. It fails if a literal fallback to a declared default or a currency code returns.
+- **What the 96 remaining hits are:**
+  - placeholder names (`"Untitled"`, `"General"`, `"Customer"`) and CSS values (`"block"`);
+  - kernel words: a ledger function's own entry kind, the GOIP benefit handlers' units, the user roles, and graph edge names;
+  - the widget endpoint's own distribution;
+  - the demo and boot seeders;
+  - the affiliate module's tier, which has no registry;
+  - column defaults in the database schema.
+
 **New registry entries now reach existing installs on every boot.** A new machine, binding or vocabulary row is appended additively, with no stamp bump needed. `test/states.js` covers this.
 
 

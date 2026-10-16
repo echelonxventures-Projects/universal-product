@@ -1876,7 +1876,7 @@ function gDomains(m, d) {
 }
 function gExchanges(m, d) {
   const opt = (arrx, val) => (arrx || []).map(x => `<option value="${esc(x.key || x)}" ${val === (x.key || x) ? "selected" : ""}>${esc(x.name || x)}</option>`).join("");
-  const benefits = m.benefits, domains = m.domains, units = m.economic.units, places = m.spatial.nodes, cals = m.temporal.calendars, dist = m.fabrics.distribution;
+  const benefits = m.benefits, domains = m.domains, dDomain = ((m.domains || []).find(x => x.default) || (m.domains || [])[0] || {}).key, units = m.economic.units, places = m.spatial.nodes, cals = m.temporal.calendars, dist = m.fabrics.distribution;
   return `<div class="p-panel"><h3>Publish a global value exchange</h3>
     <p class="p-tag">Scope = <b>global</b> — every store inherits it (bank cashbacks, brand vouchers, government subsidies, marketplace-wide sales, partner benefits). Stores honour global exchanges only while <b>Provisioning → global offers</b> allows it.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;align-items:end">
@@ -1884,7 +1884,7 @@ function gExchanges(m, d) {
       <label><span>Benefit</span><select id="gBenefit">${opt(benefits, "percentage_discount")}</select></label>
       <label><span>Value</span><input id="gValue" type="number" step="0.01" value="10"></label>
       <label><span>Code (optional)</span><input id="gCode" placeholder="GLOBAL10"></label>
-      <label><span>Domain</span><select id="gDomain">${opt(domains, "incentive")}</select></label>
+      <label><span>Domain</span><select id="gDomain">${opt(domains, dDomain)}</select></label>
       <label><span>Channel</span><select id="gChan"><option>commerce</option><option>subscription</option><option>ai</option><option>any</option></select></label>
       <label><span>Funder</span><select id="gFunder">${opt(m.fabrics.funding.filter(f => f.selectable).map(f => ({ key: f.funder || f.key, name: f.name })))}</select></label>
       <label><span>Funder ref</span><input id="gFunderRef" placeholder="HDFC / Nike / Ministry"></label>
@@ -1903,7 +1903,7 @@ function gExchanges(m, d) {
   </div>
   <div class="p-panel"><h3>Global value exchanges</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Name</th><th>Domain · Benefit</th><th>Context</th><th>Funder</th><th class="num">Value</th><th class="num">Used/Limit</th><th>State</th><th></th></tr></thead>
     <tbody>${(d.global || []).map(o => `<tr><td><b>${esc(o.name)}</b>${o.code ? ` <code>${esc(o.code)}</code>` : ""}${o.version > 1 ? ` <span class="p-tag">v${o.version}</span>` : ""}</td>
-      <td class="p-tag">${esc(o.domain || "incentive")}<br>${esc(o.benefit || o.type)}</td>
+      <td class="p-tag">${esc(o.domain || dDomain)}<br>${esc(o.benefit || o.type)}</td>
       <td class="p-tag">${esc(o.reality || "any")} · ${esc((pj(o.spatial_spec).include || []).join(",") || "anywhere")} · ${esc(pj(o.temporal_spec).calendar || "any calendar")} · ${esc(o.economic_unit || o.currency)}</td>
       <td>${esc(o.funder)}${o.funder_ref ? " " + esc(o.funder_ref) : ""}</td><td class="num">${esc(o.value)}</td><td class="num">${o.used}/${o.usage_limit || "∞"}</td>
       <td><span class="badge ${(pj(o.governance).state || o.status) === "published" || o.status === "active" ? "published" : "draft"}">${esc(pj(o.governance).state || o.status)}</span></td>
