@@ -218,7 +218,8 @@ const handler = async (req, res) => {
       if (sec.policy().csrfEnabled && ["POST", "PUT", "DELETE"].includes(req.method) && cookies.azs && !sec.csrfOk({ headers: { "x-csrf": req.headers["x-csrf"] || req.headers["x-csrf-token"] } }, session)) {
         res.writeHead(403, { "Content-Type": "application/json" }); return res.end(JSON.stringify({ error: "Missing or invalid CSRF token" }));
       }
-      if (session.tenant.status === "suspended" && !session.platform_admin) return api.bad(res, "This store is suspended", 403);
+      /* a platform whose state means "blocked" (the tenant machine, lib/states.js) is closed */
+      if (!session.platform_admin && require("./lib/states.js").has("tenant", session.tenant.status) && require("./lib/states.js").is("tenant", session.tenant.status, "blocked")) return api.bad(res, "This store is suspended", 403);
       let body = {};
       if (["POST", "PUT", "DELETE"].includes(req.method)) {
         const rb = await readBody(req);

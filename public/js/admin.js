@@ -93,6 +93,9 @@ let view = "dash";
 let SM = null;
 async function loadSM() { if (!SM) { try { SM = (await api("/meta")).stateMachines || {}; } catch (e) { SM = {}; } } return SM; }
 const smIs = (m, st, tag) => !!(SM && SM[m] && SM[m].states[st] && SM[m].states[st].tags.includes(tag));
+const smFirst = (m, tag) => { const ss = (SM && SM[m] && SM[m].states) || {}; return Object.keys(ss).find(k => ss[k].tags.includes(tag)); };
+const smTone = (m, st) => ((SM && SM[m] && SM[m].states[st]) || {}).tone || "processing";
+const smAction = (m, a) => ((SM && SM[m] && SM[m].actions) || {})[a];
 const smNext = (m, st) => ((SM && SM[m] && SM[m].moves) || []).filter(x => (x.from === st || x.from === "*") && !smIs(m, x.to, "failure"));
 /* configured apps (composed capabilities, Data Studio entities) join the nav as their own
    leaves — "app_<key>", each its own grant — under one group the console fills from the
@@ -373,7 +376,7 @@ async function vMktOps() {
     <p class="a-sub">${coChips(onbs, o => o.status)}</p>
     ${coTbl(["business", "type", "gstin", "status", "review"], onbs,
       o => [esc(o.business_name), esc(o.business_type || "—"), `<code>${esc(o.gstin || "—")}</code>`, coBadge(o.status),
-        o.status === "submitted" ? `<button class="p-btn sm primary" data-mktapp="${o.id}" data-v="approved">Approve</button> <button class="p-btn sm danger" data-mktapp="${o.id}" data-v="rejected">Reject</button>` : esc(o.reviewed_by || "—")])}
+        smIs("seller_onboarding", o.status, "awaiting_review") ? `<button class="p-btn sm primary" data-mktapp="${o.id}" data-v="${esc(smFirst("seller_onboarding", "approved"))}">Approve</button> <button class="p-btn sm danger" data-mktapp="${o.id}" data-v="${esc(smFirst("seller_onboarding", "rejected"))}">Reject</button>` : esc(o.reviewed_by || "—")])}
     <button class="p-btn sm primary" data-act="co-new" data-key="seller_onboarding">+ Apply as seller</button></div>
   <div class="a-card"><h3>Buy-box · product offers</h3>
     <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap"><label><span>Product id</span><input id="mktProd" placeholder="VR-ELEC-01" value="${esc(prod)}"></label>
@@ -1542,7 +1545,7 @@ async function vWebhooks() {
   const ev = d.events || [];
   const whRow = w => `<tr><td><code>${esc((w.url || "").slice(0, 46))}</code>${w.description ? `<br><span class="p-tag">${esc(w.description)}</span>` : ""}</td><td class="p-tag">${(w.events || []).map(e => `<code>${esc(e)}</code>`).join(" ")}</td><td><span class="badge ${w.active ? "published" : "draft"}">${w.active ? "active" : "off"}</span></td>
     <td style="text-align:right;white-space:nowrap"><button class="p-btn sm" data-wtest="${w.id}">Send test</button> <button class="p-btn sm danger" data-wwipe="${w.id}">✕</button></td></tr>`;
-  const dl = (d.deliveries || []).slice(0, 40).map(x => `<tr><td><code>${esc(x.event)}</code></td><td><span class="badge ${x.status === 'delivered' ? 'published' : x.status === 'failed' ? 'failed' : 'processing'}">${esc(x.status)}</span></td><td class="num">${x.attempts}</td><td class="p-tag">${esc((x.response || "").slice(0, 40))}</td><td>${esc((x.created_at || "").slice(0, 16))}</td></tr>`).join("");
+  const dl = (d.deliveries || []).slice(0, 40).map(x => `<tr><td><code>${esc(x.event)}</code></td><td><span class="badge ${esc(smTone("webhook_delivery", x.status))}">${esc(x.status)}</span></td><td class="num">${x.attempts}</td><td class="p-tag">${esc((x.response || "").slice(0, 40))}</td><td>${esc((x.created_at || "").slice(0, 16))}</td></tr>`).join("");
   return `<div class="p-panel"><h2>🔗 Webhooks</h2>
     <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Outbound events to your endpoints — payloads are HMAC-signed (X-Lux-Signature) and retried. Available events are a data registry; pick which ones each hook receives.</p>
     <div class="p-panel"><b>Add endpoint</b><div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin-top:6px">
@@ -1692,14 +1695,14 @@ async function renderStructure() {
   const walk = (n, depth) => {
     const kids = (n.children || []).map(c => walk(c, depth + 1)).join("");
     const isRoot = n.parent_id == null;
-    const st = n.status === "active" ? "canonical" : "retired";
+    const st = smIs("org_unit", n.status, "operating") ? "canonical" : "retired";
     return `<div class="tn-row${tnSel === n.id ? " tn-sel" : ""}" style="margin-left:${depth * 20}px">
         <button class="tn-name" data-act="tn-sel" data-id="${n.id}" title="Inspect configuration">
           <span>${TN_ICON[n.kind] || "▪️"}</span><b>${esc(n.name)}</b></button>
         <code class="tn-path">${esc(n.path)}</code>
         <span class="badge ${st}">${esc(n.status)}</span>
         ${isRoot ? `<span class="p-sub">tenant root</span>` : `<span class="tn-acts">
-          <button class="p-btn sm" data-act="tn-toggle" data-id="${n.id}" data-to="${n.status === "active" ? "suspended" : "active"}">${n.status === "active" ? "Suspend" : "Activate"}</button>
+          <button class="p-btn sm" data-act="tn-toggle" data-id="${n.id}" data-to="${esc(smFirst("org_unit", smIs("org_unit", n.status, "operating") ? "blocked" : "operating"))}">${smIs("org_unit", n.status, "operating") ? "Suspend" : "Activate"}</button>
           <button class="p-btn sm danger" data-act="tn-del" data-id="${n.id}">✕</button></span>`}
       </div>${kids}`;
   };
@@ -1744,6 +1747,8 @@ async function render() {
   shell('<div class="p-empty">Loading…</div>');
   const body = $("#vBody");
   try {
+    /* every view may ask the state machines what a status means */
+    await loadSM();
     if (view !== "dash" && !canSee(view)) { body.innerHTML = `<div class="p-empty">🔒 Your role (<b>${esc((A.user && A.user.staff_role) || "admin")}</b>) does not grant access to “${esc(view)}”.</div>`; return; }
     if (view === "dash") body.innerHTML = await vDash();
     else if (/^app_/.test(view)) body.innerHTML = await entityTable(view.slice(4));
@@ -2505,7 +2510,7 @@ async function vFleet() {
       <td>${esc(x.city || "—")}</td><td>${chip(x.vehicle_kind)}</td><td><code>${esc(x.plate || "—")}</code></td>
       <td>${(+x.rating).toFixed(2)}</td><td>${x.rides_completed}</td><td>${(+x.earnings).toFixed(2)}</td>
       <td>${chip(x.status)}</td>
-      <td>${x.status === "suspended" ? "" : `<button class="btn-white sm" data-act="mob-toggle-driver" data-id="${x.id}" data-to="${x.status === "online" ? "0" : "1"}">${x.status === "online" ? "Go offline" : "Go online"}</button> <button class="btn-white sm" data-act="mob-deact-driver" data-id="${x.id}">Deactivate</button>`}
+      <td>${smIs("driver", x.status, "blocked") ? "" : `<button class="btn-white sm" data-act="mob-toggle-driver" data-id="${x.id}" data-to="${smIs("driver", x.status, "online") ? "0" : "1"}">${smIs("driver", x.status, "online") ? "Go offline" : "Go online"}</button> <button class="btn-white sm" data-act="mob-deact-driver" data-id="${x.id}">Deactivate</button>`}
       ${x.deactivated_at ? `<span class="a-sub">since ${esc(x.deactivated_at)}</span>` : ""}</td>
     </tr>`).join("") || `<tr><td colspan="9">No drivers yet — add one above.</td></tr>`}</tbody></table></div></div>`;
 }
@@ -2526,7 +2531,7 @@ async function vOpsHR() {
     <div class="a-card"><h3>Payroll runs</h3>
       <div class="a-tablewrap"><table class="a-table"><thead><tr><th>period</th><th>headcount</th><th>gross</th><th>deductions</th><th>net</th><th>status</th><th></th></tr></thead>
       <tbody>${(d.payroll || []).map(p => `<tr><td><code>${esc(p.period)}</code></td><td>${p.headcount}</td><td>${(+p.gross).toFixed(2)}</td><td>${(+p.deductions).toFixed(2)}</td><td><b>${(+p.net).toFixed(2)}</b></td><td>${chip(p.status)}</td>
-      <td>${p.status !== "paid" ? `<button class="btn-white sm" data-act="ops-payroll-status" data-id="${p.id}" data-to="${p.status === "draft" ? "approved" : "paid"}">${p.status === "draft" ? "Approve" : "Mark paid"}</button>` : ""}</td></tr>`).join("") || `<tr><td colspan="7">No payroll runs yet.</td></tr>`}</tbody></table></div></div>
+      <td>${smIs("payroll_run", p.status, "can:approve") || smIs("payroll_run", p.status, "can:pay") ? `<button class="btn-white sm" data-act="ops-payroll-status" data-id="${p.id}" data-to="${esc(smAction("payroll_run", smIs("payroll_run", p.status, "can:approve") ? "approve" : "pay"))}">${smIs("payroll_run", p.status, "can:approve") ? "Approve" : "Mark paid"}</button>` : ""}</td></tr>`).join("") || `<tr><td colspan="7">No payroll runs yet.</td></tr>`}</tbody></table></div></div>
   </div>
   <div class="a-card"><h3>Employees</h3>
     <div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>department</th><th>designation</th><th>salary</th><th>state</th></tr></thead>
@@ -2563,7 +2568,7 @@ async function vOpsMfg() {
     <tbody>${(d.workOrders || []).map(w => `<tr>
       <td><code>${esc(w.ref)}</code></td><td>${esc(w.product_id || "—")}</td><td>${w.qty}</td><td>${w.completed_qty}</td>
       <td>${(+w.unit_cost).toFixed(2)}</td><td>${chip(w.status)}</td>
-      <td>${w.status === "in_progress" ? `<button class="btn-white sm" data-act="ops-wo-complete" data-id="${w.id}">Complete</button>` : ""}</td>
+      <td>${smIs("work_order", w.status, "completable") ? `<button class="btn-white sm" data-act="ops-wo-complete" data-id="${w.id}">Complete</button>` : ""}</td>
     </tr>`).join("") || `<tr><td colspan="7">No work orders yet.</td></tr>`}</tbody></table></div></div>`;
 }
 async function vOpsProj() {

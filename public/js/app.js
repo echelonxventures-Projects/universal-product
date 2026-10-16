@@ -689,8 +689,8 @@ async function pageOrders() {
   for (const s of (subs.schedules || [])) {
     main.innerHTML += `<div class="ord"><div class="ord-h"><div><em>NEXT DELIVERY</em><b>${String(s.next_ship_at).slice(0, 10)}</b></div>
       <div><em>EVERY</em><b>${s.frequency_days} days · save ${s.discount_pct}%</b></div><div><em>STATUS</em><b>${esc(s.status)}</b></div>
-      <div class="ord-h-r"><em>SUBSCRIPTION #${s.id}</em>${s.status === "active" ? `<button class="btn-white" data-act="sub-skip" data-id="${s.id}">Skip next</button><button class="btn-white" data-act="sub-pause" data-id="${s.id}">Pause</button>` : s.status === "paused" ? `<button class="btn-white" data-act="sub-resume" data-id="${s.id}">Resume</button>` : ""}
-      ${s.status !== "cancelled" ? `<button class="btn-white" data-act="sub-cancel" data-id="${s.id}">Cancel</button>` : ""}</div></div>
+      <div class="ord-h-r"><em>SUBSCRIPTION #${s.id}</em>${(s.can || {}).skip ? `<button class="btn-white" data-act="sub-skip" data-id="${s.id}">Skip next</button>` : ""}${(s.can || {}).pause ? `<button class="btn-white" data-act="sub-pause" data-id="${s.id}">Pause</button>` : ""}${(s.can || {}).resume ? `<button class="btn-white" data-act="sub-resume" data-id="${s.id}">Resume</button>` : ""}
+      ${(s.can || {}).cancel ? `<button class="btn-white" data-act="sub-cancel" data-id="${s.id}">Cancel</button>` : ""}</div></div>
       <div class="ord-body"><div class="ord-i">${img({ e: "📦", h: 210 }, "big")}<div class="ord-i-mid"><b>${esc(s.product_id)}</b><span>${s.cycles_completed} shipment(s) delivered</span></div><span class="ord-i-qty">Qty: ${s.qty}</span></div></div></div>`;
   }
   main.innerHTML += orders.map(o => {

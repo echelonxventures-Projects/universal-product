@@ -110,6 +110,16 @@ const mk = () => {
       trade: ["rfq", "rfq_quote", "tender", "tender_bid", "verification", "supplier"], logistics: ["shipment"], experiments: ["experiment"], helpdesk: ["ticket", "agent"],
       /* the orders batch: orders, payments, invoices, credit notes and returns */
       api: ["order", "payment", "invoice", "credit_note", "return"], billing: ["invoice", "credit_note"], marketplace: ["order"], recurring: ["payment"] };
+    /* batch 3: tenants, compliance, fintech instruments, GOIP, marketplace extensions,
+       foundations, subscriptions, webhook deliveries */
+    Object.assign(BY_FILE, {
+      tenancy: ["org_unit"], compliance: ["control", "consent", "privacy_request"], events: ["webhook_delivery"],
+      fintech: ["upi_handle", "upi_collect", "qr_code", "payment_link", "mandate", "escrow", "split_payment", "kyc", "kyc_doc", "bank_payout", "biller", "recharge_plan", "bill_payment", "recharge", "bnpl_account", "emi", "loan", "insurance_policy", "gift_voucher"],
+      goip: ["goip_settlement", "entitlement", "goip_budget", "redemption", "offer", "offer_governance"],
+      "marketplace-ext": ["seller_onboarding", "seller_offer", "fba_inbound", "buyer_claim", "smart_fulfilment", "escrow", "order", "shipment"],
+      "ucos-foundations": ["foundation"], connect: ["payment"] });
+    BY_FILE.recurring = BY_FILE.recurring.concat(["subscription_schedule", "subscription_cycle", "membership"]);
+    BY_FILE.api = BY_FILE.api.concat(["tenant", "consent"]);
     BY_FILE.fin = BY_FILE.fin.concat(["payment"]); BY_FILE.planning = BY_FILE.planning.concat(["order"]); BY_FILE.qcommerce = BY_FILE.qcommerce.concat(["order"]);
     const named = [];
     for (const [f, ms] of Object.entries(BY_FILE)) {

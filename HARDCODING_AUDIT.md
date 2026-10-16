@@ -112,6 +112,7 @@ registry, and the console renders what it's given.
 | Baseline | — | 308 | 106 |
 | State machines, batch 1 | `lib/states.js` and 32 machines in `lib/seed/states.json`; the engines below converted | **260** | **58** |
 | State machines, batch 2 (orders) | 37 machines; orders, payments, invoices, credit notes, returns and EMIs | **246** | **44** |
+| State machines, batch 3 | 80 machines; tenants, compliance, fintech, GOIP, marketplace extensions, foundations, subscriptions, consoles | **207** | **6**, all word collisions, no real states |
 
 **Batch 1 converted these engines:**
 - rides, drivers, vehicles (`lib/mobility.js`);
@@ -130,7 +131,18 @@ registry, and the console renders what it's given.
 - orders, payments, invoices, credit notes, returns and EMIs, across `lib/api.js` (checkout, settlement, gateway webhooks and the reconcile sweep, refunds, cancellation, labels, returns, platform invoices), `lib/billing.js`, `lib/fin.js`, `lib/recurring.js`, `lib/marketplace.js` and `lib/planning.js`;
 - the storefront order list, the console's order, payment and ride actions, and invoice badges. States now carry display data (label, icon, tone), and `/api/meta` serves every machine's meanings and labelled moves, so the consoles ask by tag too.
 
-**Next state batch:** compliance, GOIP, the remaining fintech instruments, subscriptions, memberships, modules, promotions and tenants, plus the console branches that remain.
+**Batch 3 converted:**
+- tenants and org units (the suspended-store gate, suspend and resume);
+- compliance: control verdicts, consent, and the data-subject request lifecycle, with erasure as a declared handler;
+- every fintech instrument: UPI handles and collects, QR codes, payment links, mandates, escrow, split payments, KYC (the requested level names a `level:<x>` tag), bank payouts, billers, recharge plans, bill payments, recharges, BNPL accounts, EMIs, loans, insurance and gift vouchers;
+- GOIP: settlements, entitlements, budgets, redemptions, offers, and offer governance, whose verbs are the machine's `actions`;
+- marketplace extensions: onboarding, seller offers, inbound shipments, buyer claims (resolutions by `resolution:<side>` tags) and smart fulfilment;
+- UCOS foundation lifecycles;
+- Subscribe & Save schedules and cycles (allowed actions are `can:<action>` tags the storefront reads), memberships, platform plan subscriptions, modules, promotions and contracts;
+- webhook deliveries;
+- the remaining console buttons (drivers, payroll, work orders, onboarding, invoices, settlements, org units).
+
+**Status vocabularies are finished:** no engine branches on a status name. The six remaining audit hits are word collisions: the outbound mode `offline`, the UGC entity `review`, and the WebAuthn attestation format `packed`. The remaining work is the audit's other findings (2 to 7).
 
 ## What step 1 removed (applicability rules)
 

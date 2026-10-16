@@ -680,7 +680,7 @@ async function vTenants() {
       <td style="white-space:nowrap"><button class="p-btn sm" data-open="${t.id}">Open</button>
         <button class="p-btn sm" data-tedit="${t.id}" title="Edit this tenant's identity">Edit</button>
         <button class="p-btn sm primary" data-imp="${t.id}" title="Open this ${esc(t.kind ? t.kind.noun : "platform")}'s own console">Manage</button>
-        <button class="p-btn sm" data-susp="${t.id}">${t.status === "active" ? "Suspend" : "Resume"}</button>
+        <button class="p-btn sm" data-susp="${t.id}">${t.operating ? "Suspend" : "Resume"}</button>
         <button class="p-btn sm" data-inv="${t.id}">Invoice</button>
         <button class="p-btn sm danger" data-del="${t.id}">✕</button></td></tr>`).join("")}</tbody></table></div></div>`;
 }
@@ -900,12 +900,14 @@ async function vSubs() {
       <td><span class="badge ${esc(s.status)}">${esc(s.status)}</span></td><td>${esc(s.started_at)}</td><td>${esc(s.renews_at)}</td></tr>`).join("")}</tbody></table></div>`;
 }
 async function vInvoices() {
+  /* collectable is what the invoice machine's states mean, served by /api/meta */
+  const SMV = ((await api("/meta").catch(() => ({}))).stateMachines || {}).invoice || { states: {} };
   const { invoices } = await api("/platform/invoices");
   return `<div class="p-panel"><h2>Invoices</h2>
     <table class="p-table"><thead><tr><th>Number</th><th>Store</th><th>Period</th><th class="num">Amount</th><th>Status</th><th>Issued</th><th></th></tr></thead>
     <tbody>${invoices.map(i => `<tr><td>${esc(i.number)}</td><td>${esc(i.tenant_name)}</td><td>${esc(i.period_start)} → ${esc(i.period_end || "")}</td>
       <td class="num">${money(i.amount)}</td><td><span class="badge ${esc(i.status)}">${esc(i.status)}</span></td><td class="p-tag">${esc(i.issued_at)}</td>
-      <td>${i.status !== "paid" ? `<button class="p-btn sm primary" data-payinv="${i.id}">Collect</button>` : "✓"}</td></tr>`).join("")}</tbody></table></div>`;
+      <td>${!((SMV.states[i.status] || {}).tags || []).includes("success") ? `<button class="p-btn sm primary" data-payinv="${i.id}">Collect</button>` : "✓"}</td></tr>`).join("")}</tbody></table></div>`;
 }
 /* live carrier accounts: the credentials every store's rates and labels use. Keys are
    sealed on save and never come back — the form shows only whether one is on file, and a
@@ -1508,7 +1510,13 @@ document.addEventListener("click", async e => {
       editp = e.target.closest("[data-editplan]"), delprov = e.target.closest("[data-delprov]");
     if (open) window.open("/index.html?store=" + P.tenants.find(t => t.id == open.dataset.open).slug, "_blank");
     if (imp) { const r = await api(`/platform/tenants/${imp.dataset.imp}/impersonate`, "POST", {}); window.open(r.url, "_blank"); }
-    if (susp) { const t = P.tenants.find(x => x.id == susp.dataset.susp); await api("/platform/tenants/" + t.id, "PUT", { status: t.status === "active" ? "suspended" : "active" }); render(); }
+    if (susp) {
+      /* suspend / resume moves between the tenant machine's "operating" and "blocked" states */
+      const t = P.tenants.find(x => x.id == susp.dataset.susp);
+      const tm = ((await api("/meta")).stateMachines || {}).tenant || { states: {} };
+      const pick = tag => Object.keys(tm.states).find(k => (tm.states[k].tags || []).includes(tag));
+      await api("/platform/tenants/" + t.id, "PUT", { status: pick(t.operating ? "blocked" : "operating") }); render();
+    }
     if (del) { if (confirm("Delete store and ALL its data?")) { await api("/platform/tenants/" + del.dataset.del, "DELETE", {}); render(); } }
     if (inv) { await api(`/platform/tenants/${inv.dataset.inv}/invoice`, "POST", {}); toast("Invoice generated"); render(); }
     if (pay) {
@@ -1948,7 +1956,7 @@ function gFunding(m, d) {
       </div>
       <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Period</th><th>Party</th><th>Type</th><th>Unit</th><th class="num">Gross</th><th class="num">Fees</th><th class="num">Net</th><th class="num">Redemptions</th><th>Status</th><th></th></tr></thead><tbody>
         ${(d.settlements || []).map(x => `<tr><td class="p-tag">${esc(x.period)}</td><td><b>${esc(x.party)}</b></td><td class="p-tag">${esc(x.party_type)}</td><td>${esc(x.unit)}</td><td class="num">${x.gross}</td><td class="num">${x.fees}</td><td class="num">${x.net}</td><td class="num">${x.redemptions}</td><td><span class="badge ${x.status === "paid" || x.status === "reconciled" ? "published" : "draft"}">${esc(x.status)}</span>${x.reference ? `<br><code>${esc(x.reference)}</code>` : ""}</td>
-          <td style="text-align:right;white-space:nowrap">${x.status === "accrued" ? `<button class="p-btn sm" data-sapprove="${x.id}" data-stenant="${x.tenant_id}">approve</button> ` : ""}${x.status === "accrued" || x.status === "approved" ? `<button class="p-btn sm primary" data-spay="${x.id}" data-stenant="${x.tenant_id}">pay</button>` : ""}${x.status === "paid" ? `<button class="p-btn sm" data-srec="${x.id}" data-stenant="${x.tenant_id}">reconcile</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="10">Nothing accrued yet — run a settlement.</td></tr>'}
+          <td style="text-align:right;white-space:nowrap">${(x.can || {}).approve ? `<button class="p-btn sm" data-sapprove="${x.id}" data-stenant="${x.tenant_id}">approve</button> ` : ""}${(x.can || {}).pay ? `<button class="p-btn sm primary" data-spay="${x.id}" data-stenant="${x.tenant_id}">pay</button>` : ""}${(x.can || {}).reconcile ? `<button class="p-btn sm" data-srec="${x.id}" data-stenant="${x.tenant_id}">reconcile</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="10">Nothing accrued yet — run a settlement.</td></tr>'}
       </tbody></table></div></div>
     <div class="p-panel"><h3>Redemption split by funder (all stores)</h3>${byFunder.length ? `<table class="p-table"><thead><tr><th>Funder</th><th class="num">Value granted</th><th class="num">Redemptions</th></tr></thead><tbody>${byFunder.map(f => `<tr><td>${esc(f.funder)}</td><td class="num">${money(f.amount)}</td><td class="num">${f.redemptions}</td></tr>`).join("")}</tbody></table>` : '<p class="p-tag">No redemptions yet.</p>'}</div>`;
 }
