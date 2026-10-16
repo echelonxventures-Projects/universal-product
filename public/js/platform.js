@@ -439,7 +439,7 @@ const NAV = [
   ] },
   { n: "11 · Administration", g: [
     { g: "Tenancy", l: [
-      ["tenants-admin", "🏬 Tenants", { v: "tenants" }],
+      ["tenants-admin", "🏬 Platforms & Kinds", { v: "tenants" }],
       ["companies", "🏢 Companies", { u: "company" }],
       ["workspaces", "🗂️ Workspaces", { u: "workspace" }],
       ["environments", "🌍 Environments", { v: "runtime" }],
@@ -598,22 +598,87 @@ async function vDash() {
   </div>
   <div class="p-panel"><h2>System</h2><div class="p-kv"><em>Uptime</em><span>${Math.floor(mon.system.uptimeSec / 60)} min</span><em>Memory</em><span>${mon.system.rssMB} MB</span><em>Database</em><span>${mon.system.dbKB} KB</span><em>Node</em><span>${esc(mon.system.node)}</span></div></div>`;
 }
+/* the kinds of platform this platform launches — each a registry row an operator adds or
+   edits here, launched any number of times. What a kind is called, the blend it starts
+   from, what it is provisioned with and which console sections apply all live on the row. */
+function kindsPanel(kd) {
+  const pre = Object.fromEntries((kd.presets || []).map(p => [p.key, p.label]));
+  const PROV = { payments: "payments", shipping: "shipping", warehouse: "warehouse", storefront: "shopfront" };
+  return `<div class="p-panel" id="kindsPanel"><div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+    <h2 style="margin:0">Platform kinds (${kd.kinds.length})</h2><span style="flex:1"></span>
+    <button class="p-btn sm" id="newKind">＋ New kind</button></div>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Every kind of platform you can launch, and how many of each exist. A kind sets what one is called, the capability blend it starts with, what is provisioned for it and which console sections it gets. Launch as many of each as you need.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Kind</th><th>One is a…</th><th>Starts with</th><th>Provisioned</th><th>Console</th><th class="num">Platforms</th><th></th></tr></thead>
+    <tbody>${kd.kinds.map(k => `<tr><td><b>${esc(k.name)}</b><br><span class="p-tag">${esc(k.desc || "")}</span></td><td>${esc(k.noun)}</td>
+      <td>${k.archetype ? esc(pre[k.archetype] || k.archetype) : '<span class="p-tag">composed by hand</span>'}</td>
+      <td>${Object.entries(PROV).filter(([x]) => k.provision[x]).map(([, l]) => `<span class="a-chip">${l}</span>`).join(" ") || '<span class="p-tag">nothing</span>'}</td>
+      <td class="p-tag">${k.sections ? k.sections.length + " sections + its capabilities" : "every section"}</td>
+      <td class="num">${k.platforms}</td>
+      <td style="white-space:nowrap"><button class="p-btn sm primary" data-klaunch="${esc(k.key)}">＋ Launch one</button>
+        <button class="p-btn sm" data-kedit="${esc(k.key)}">Edit</button>
+        <button class="p-btn sm danger" data-kdel="${esc(k.key)}" ${k.platforms ? 'disabled title="Platforms of this kind exist"' : ""}>✕</button></td></tr>`).join("")}</tbody></table></div></div>`;
+}
+/* add or edit one kind. Sections a capability owns are not on the list — the platform's
+   capabilities decide those — so the form offers the rest, all on for "every section". */
+function kindModal(kd, key) {
+  const k = key ? kd.kinds.find(x => x.key === key) : null;
+  const d = k || { key: "", name: "", desc: "", noun: kd.defaults.noun, nounPlural: kd.defaults.nounPlural, archetype: "", needsIndustries: false, provision: kd.defaults.provision, sections: null };
+  const free = kd.sections.filter(x => !x.capabilities.length), owned = kd.sections.filter(x => x.capabilities.length);
+  const on = x => !d.sections || d.sections.includes(x);
+  const PROV = [["payments", "Payment gateways"], ["shipping", "Shipping carriers"], ["warehouse", "A warehouse"], ["storefront", "A shopfront (departments, home page, demo shop products)"]];
+  const m = modal(`<div class="p-modal-head"><h3>${k ? "Edit kind · " + esc(k.name) : "New platform kind"}</h3><button data-mclose>✕</button></div>
+    <div class="p-form">
+      <div class="row"><label><span>Name *</span><input id="kdName" value="${esc(d.name)}" placeholder="Healthcare Network"></label>
+        <label><span>Key *</span><input id="kdKey" value="${esc(d.key)}" placeholder="healthcare" ${k ? "disabled" : ""}></label></div>
+      <label><span>Description</span><input id="kdDesc" value="${esc(d.desc)}" placeholder="Clinics, appointments and patient billing"></label>
+      <div class="row"><label><span>One is called a…</span><input id="kdNoun" value="${esc(d.noun)}" placeholder="clinic"></label>
+        <label><span>Many are called…</span><input id="kdNouns" value="${esc(d.nounPlural)}" placeholder="clinics"></label></div>
+      <label><span>Starts with this capability blend</span><select id="kdArch"><option value="">None — composed by hand in Capabilities</option>
+        ${kd.presets.map(p => `<option value="${esc(p.key)}" ${d.archetype === p.key ? "selected" : ""}>${esc(p.label)}</option>`).join("")}</select></label>
+      <label class="checkbox-group"><input type="checkbox" id="kdInd" ${d.needsIndustries ? "checked" : ""}> Registration must name the industries its catalogue covers</label>
+      <p class="p-tag" style="margin:8px 0 2px">Provisioned when one is registered</p>
+      ${PROV.map(([x, l]) => `<label class="checkbox-group"><input type="checkbox" data-kprov="${x}" ${d.provision[x] ? "checked" : ""}> ${esc(l)}</label>`).join("")}
+      <p class="p-tag" style="margin:8px 0 2px">Console sections · <a href="#" id="kdAll">all</a> · <a href="#" id="kdNone">none</a></p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:2px 10px">${free.map(x => `<label class="checkbox-group"><input type="checkbox" data-ksec="${esc(x.key)}" ${on(x.key) ? "checked" : ""}> ${esc(x.label)}</label>`).join("")}</div>
+      <p class="p-tag" style="margin:8px 0 2px">These follow the platform's capabilities, not the kind: ${owned.map(x => esc(x.label)).join(", ")}</p>
+      <button class="p-btn primary" id="kdSave">${k ? "Save kind" : "Add kind"}</button></div>`);
+  const all = v => m.querySelectorAll("[data-ksec]").forEach(c => c.checked = v);
+  m.querySelector("#kdAll").onclick = e => { e.preventDefault(); all(true); };
+  m.querySelector("#kdNone").onclick = e => { e.preventDefault(); all(false); };
+  m.querySelector("#kdName").oninput = e => { const kk = m.querySelector("#kdKey"); if (!k && !kk.dataset.touched) kk.value = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 40); };
+  m.querySelector("#kdKey").oninput = e => { e.target.dataset.touched = "1"; };
+  m.querySelector("#kdSave").onclick = async () => {
+    const boxes = [...m.querySelectorAll("[data-ksec]")];
+    const picked = boxes.filter(c => c.checked).map(c => c.dataset.ksec);
+    const kind = {
+      key: m.querySelector("#kdKey").value.trim(), name: m.querySelector("#kdName").value.trim(), desc: m.querySelector("#kdDesc").value.trim(),
+      noun: m.querySelector("#kdNoun").value.trim(), nounPlural: m.querySelector("#kdNouns").value.trim(), archetype: m.querySelector("#kdArch").value,
+      needsIndustries: m.querySelector("#kdInd").checked,
+      provision: Object.fromEntries([...m.querySelectorAll("[data-kprov]")].map(c => [c.dataset.kprov, c.checked])),
+      /* every box ticked is "every section" — a section added to the console later joins it too */
+      sections: picked.length === boxes.length ? null : picked
+    };
+    if (!kind.name || !kind.key) return toast("A kind needs a name and a key");
+    try { await api("/platform/kinds", "POST", { kind }); m.innerHTML = ""; toast((k ? "Saved " : "Added ") + kind.name); render(); }
+    catch (e) { toast(e.message); }
+  };
+}
 async function vTenants() {
-  const { tenants } = await api("/platform/tenants");
-  P.tenants = tenants;
-  return `
+  const [{ tenants }, kd] = await Promise.all([api("/platform/tenants"), api("/platform/kinds").catch(() => null)]);
+  P.tenants = tenants; P.kinds = kd;
+  return `${kd ? kindsPanel(kd) : ""}
   <div class="p-panel"><div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
-    <h2 style="margin:0">Tenants (${tenants.length})</h2><span style="flex:1"></span>
+    <h2 style="margin:0">Platforms (${tenants.length})</h2><span style="flex:1"></span>
     <button class="p-btn primary sm" id="newTenant">＋ Register platform</button></div>
-    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">The platform's tenancy registry. A tenant's <b>Products</b>, SKUs &amp; inventory, orders, suppliers, compliance and settings live in its <b>Store Console</b> — click <b>Manage · Catalog</b> to open it.</p>
-    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Tenant</th><th>Slug</th><th>Jurisdiction</th><th>Owner</th><th>Mode</th><th>Industries</th><th class="num">Products</th><th class="num">Orders</th><th class="num">GMV</th><th>Plan</th><th>Status</th><th></th></tr></thead>
-    <tbody>${tenants.map(t => `<tr><td><b>${esc(t.name)}</b></td><td>${esc(t.slug)}</td><td>${esc(t.country || "—")}</td><td class="p-tag">${esc((t.profile && t.profile.ownerEmail) || "—")}</td><td>${esc(t.mode)}</td>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Every platform launched on this one, of every kind. Each runs its own console — click <b>Manage</b> to open it.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Platform</th><th>Slug</th><th>Jurisdiction</th><th>Owner</th><th>Kind</th><th>Industries</th><th class="num">Products</th><th class="num">Orders</th><th class="num">GMV</th><th>Plan</th><th>Status</th><th></th></tr></thead>
+    <tbody>${tenants.map(t => `<tr><td><b>${esc(t.name)}</b></td><td>${esc(t.slug)}</td><td>${esc(t.country || "—")}</td><td class="p-tag">${esc((t.profile && t.profile.ownerEmail) || "—")}</td><td>${esc(t.kind ? t.kind.name : t.mode)}</td>
       <td class="p-tag">${esc((t.industries || "[]").replace(/["[\]]/g, "").slice(0, 40))}</td>
       <td class="num">${t.products}</td><td class="num">${t.orders}</td><td class="num">${money(t.gmv)}</td>
       <td>${esc(t.plan || "—")}</td><td><span class="badge ${esc(t.status)}">${esc(t.status)}</span></td>
       <td style="white-space:nowrap"><button class="p-btn sm" data-open="${t.id}">Open</button>
         <button class="p-btn sm" data-tedit="${t.id}" title="Edit this tenant's identity">Edit</button>
-        <button class="p-btn sm primary" data-imp="${t.id}" title="Enter this store's Store Console — Products, SKUs, Orders and more">Manage · Catalog</button>
+        <button class="p-btn sm primary" data-imp="${t.id}" title="Open this ${esc(t.kind ? t.kind.noun : "platform")}'s own console">Manage</button>
         <button class="p-btn sm" data-susp="${t.id}">${t.status === "active" ? "Suspend" : "Resume"}</button>
         <button class="p-btn sm" data-inv="${t.id}">Invoice</button>
         <button class="p-btn sm danger" data-del="${t.id}">✕</button></td></tr>`).join("")}</tbody></table></div></div>`;
@@ -627,7 +692,7 @@ async function vTenants() {
    a separate screen — so a platform is registered complete: type, capabilities, catalogue
    AND authentication policy.
    The console remains the place to TUNE a platform; this is the place to REGISTER one. */
-async function registerModal() {
+async function registerModal(kindKey) {
   const [meta, capd, pland, idtd, pcfg] = await Promise.all([api("/meta"), api("/capabilities"), api("/platform/plans"), api("/platform/identity-templates"), api("/platform/config").catch(() => ({}))]);
   const industries = meta.industries || [], countries = (meta.countries || []).filter(c => c.active), modes = meta.deployModes || [];
   const presets = (capd.presets || []).filter(p => p.key !== "blend_mixed" || true);
@@ -640,10 +705,18 @@ async function registerModal() {
   const polProv = pcfg && pcfg.policy && pcfg.policy.provisioning ? pcfg.policy.provisioning : {};
   const polMode = polProv.defaultMode || null;
   const polCountry = countries.some(c => c.code === polProv.defaultCountry) ? polProv.defaultCountry : (countries[0] ? countries[0].code : "");
-  const R = { name: "", slug: "", country: polCountry, mode: modes.some(x => x.key === polMode) ? polMode : (modes[0] ? modes[0].key : ""), ownerName: "", ownerEmail: "", ownerPassword: "",
+  /* launched from a kind's row, the walk opens on that kind; otherwise on the policy default */
+  const firstMode = modes.some(x => x.key === kindKey) ? kindKey : (modes.some(x => x.key === polMode) ? polMode : (modes[0] ? modes[0].key : ""));
+  const R = { name: "", slug: "", country: polCountry, mode: firstMode, ownerName: "", ownerEmail: "", ownerPassword: "",
     legalName: "", taxId: "", language: "", archetype: "", industries: [], seedUniverses: true, seedCatalog: false,
     identityTemplate: defTmpl ? defTmpl.id : null, planId: plans[0] ? plans[0].id : 1 };
-  const needInd = () => { const md = modes.find(x => x.key === R.mode); return !!(md && md.needsIndustries); };
+  const kindOf = () => modes.find(x => x.key === R.mode) || {};
+  /* the blend follows the kind until the operator picks one themselves */
+  let archPicked = false;
+  const followKind = () => { if (!archPicked) R.archetype = presets.some(p => p.key === kindOf().archetype) ? kindOf().archetype : ""; };
+  followKind();
+  const needInd = () => !!kindOf().needsIndustries;
+  const shopfront = () => !kindOf().provision || kindOf().provision.storefront !== false;
   let step = 0;
   const m = modal(`<div class="p-modal-head"><h3>Register a platform</h3><button data-mclose>✕</button></div>
     <div id="regBody"></div>`);
@@ -656,7 +729,9 @@ async function registerModal() {
       R.name = g("rName") !== undefined ? g("rName") : R.name;
       R.slug = g("rSlug") !== undefined ? g("rSlug") : R.slug;
       R.country = g("rCountry") || R.country;
+      const wasMode = R.mode;
       R.mode = g("rMode") || R.mode;
+      if (R.mode !== wasMode) followKind();
       R.ownerName = g("rOwnerName") !== undefined ? g("rOwnerName") : R.ownerName;
       R.ownerEmail = g("rOwnerEmail") !== undefined ? g("rOwnerEmail") : R.ownerEmail;
       R.ownerPassword = g("rOwnerPass") !== undefined ? g("rOwnerPass") : R.ownerPassword;
@@ -664,7 +739,7 @@ async function registerModal() {
       R.taxId = g("rTax") !== undefined ? g("rTax") : R.taxId;
       R.language = g("rLang") !== undefined ? g("rLang") : R.language;
       R.planId = m.querySelector("#rPlan") ? Number(m.querySelector("#rPlan").value) : R.planId;
-      const arch = m.querySelector("input[name='rArch']:checked"); if (arch) R.archetype = arch.value;
+      const arch = m.querySelector("input[name='rArch']:checked"); if (arch) { if (arch.value !== R.archetype) archPicked = true; R.archetype = arch.value; }
       const idt = m.querySelector("input[name='rIdTmpl']:checked"); if (idt) R.identityTemplate = idt.value ? Number(idt.value) : null;
       m.querySelectorAll("[data-ind]").forEach(c => { const k = c.dataset.ind; const on = c.classList.contains("on"); R.industries = R.industries.includes(k) ? (on ? R.industries : R.industries.filter(x => x !== k)) : (on ? R.industries.concat(k) : R.industries); });
       const su = m.querySelector("#rSeedUv"); if (su) R.seedUniverses = su.checked;
@@ -675,9 +750,9 @@ async function registerModal() {
     const dots = STEPS.map((s, i) => `<span class="a-chip" style="${i === step ? "background:var(--p-accent);color:#111" : "opacity:.5"}">${i + 1}. ${s}</span>`).join(" ");
     if (step === 0) return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div><div class="p-form">
       <label><span>Platform name *</span><input id="rName" value="${esc(R.name)}" placeholder="Acme Commerce"></label>
-      <label><span>Slug (store URL) *</span><input id="rSlug" value="${esc(R.slug)}" placeholder="acme"></label>
+      <label><span>Kind of platform *</span><select id="rMode">${modes.map(x => `<option value="${x.key}" ${R.mode === x.key ? "selected" : ""}>${esc(x.name)} — ${esc(x.desc)}</option>`).join("")}</select></label>
+      <label><span>Slug (web address) *</span><input id="rSlug" value="${esc(R.slug)}" placeholder="acme"></label>
       <label><span>Country / jurisdiction *</span><select id="rCountry">${countries.map(c => `<option value="${c.code}" ${R.country === c.code ? "selected" : ""}>${esc(c.name)} · ${c.currency}</option>`).join("")}</select></label>
-      <label><span>Platform mode *</span><select id="rMode">${modes.map(x => `<option value="${x.key}" ${R.mode === x.key ? "selected" : ""}>${esc(x.name)} — ${esc(x.desc)}</option>`).join("")}</select></label>
       <label><span>Admin name *</span><input id="rOwnerName" value="${esc(R.ownerName)}" placeholder="Ava One"></label>
       <label><span>Admin email *</span><input id="rOwnerEmail" value="${esc(R.ownerEmail)}" placeholder="admin@acme.com"></label>
       <label><span>Admin password *</span><input id="rOwnerPass" type="password" value="${esc(R.ownerPassword)}" placeholder="meets the platform password policy"></label>
@@ -699,7 +774,7 @@ async function registerModal() {
         <span class="p-tag">${esc(t.description || "")}</span><br>
         <code style="font-size:10px">${pwOf(t)} · ${mfOf(t)}</code></span></label>`).join("") || '<p class="p-empty">No identity templates registered — the engine defaults will apply. Create one from 01 · Foundation → Identity Templates.</p>'}</div></div>`; }
     if (step === 2) return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div>
-      <p class="p-tag">An archetype writes the store's capability rows in one call — this is what the platform <b>is</b>. Tuning afterwards is kept.</p>
+      <p class="p-tag">A blend switches on the platform's capabilities in one go${kindOf().archetype ? " — the <b>" + esc(kindOf().name || "") + "</b> kind starts with the one pre-selected" : ""}. Tuning afterwards is kept.</p>
       <div style="display:grid;gap:8px">${presets.map(p => `<label style="display:flex;gap:10px;align-items:flex-start;border:1px solid var(--p-border);border-radius:10px;padding:10px;cursor:pointer;${R.archetype === p.key ? "border-color:var(--p-accent)" : ""}">
         <input type="radio" name="rArch" value="${esc(p.key)}" ${R.archetype === p.key ? "checked" : ""} style="margin-top:3px">
         <span><b>${esc(p.label)}</b> <code style="font-size:10px">${esc(p.key)}</code><br><span class="p-tag">${esc(p.description || "")}</span></span></label>`).join("")}
@@ -711,7 +786,7 @@ async function registerModal() {
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${industries.map(i => `<button class="p-btn sm ${R.industries.includes(i.key) ? "primary on" : ""}" data-ind="${esc(i.key)}" type="button">${esc(i.icon || "▪")} ${esc(i.name)}</button>`).join("")}</div>
       <div class="p-form">
       <label class="checkbox-group"><input type="checkbox" id="rSeedUv" ${R.seedUniverses ? "checked" : ""}> Activate the archetype's catalog content (universes publish products, SKUs and inventory)</label>
-      <label class="checkbox-group"><input type="checkbox" id="rSeedCat" ${R.seedCatalog ? "checked" : ""}> Also seed the demo product catalogue</label></div>`;
+      ${shopfront() ? `<label class="checkbox-group"><input type="checkbox" id="rSeedCat" ${R.seedCatalog ? "checked" : ""}> Also seed the demo product catalogue</label>` : ""}</div>`;
     const arch = presets.find(p => p.key === R.archetype);
     return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div>
       <div class="p-form">
@@ -720,7 +795,7 @@ async function registerModal() {
       <tr><td>Platform</td><td><b>${esc(R.name)}</b> <code>${esc(R.slug)}</code></td></tr>
       <tr><td>Jurisdiction</td><td>${esc(R.country)}${R.legalName ? " · " + esc(R.legalName) : ""}${R.taxId ? " · " + esc(R.taxId) : ""}</td></tr>
       <tr><td>Admin</td><td>${esc(R.ownerEmail)}</td></tr>
-      <tr><td>Mode</td><td>${esc(R.mode)}</td></tr>
+      <tr><td>Kind</td><td>${esc(kindOf().name || R.mode)}${kindOf().noun ? " · one " + esc(kindOf().noun) : ""}</td></tr>
       <tr><td>Language</td><td>${esc(R.language)}</td></tr>
       <tr><td>Identity policy</td><td>${(() => { const t = idTemplates.find(x => x.id === R.identityTemplate); return t ? "<b>" + esc(t.name) + "</b> · password &amp; MFA policy" : "engine defaults"; })()}</td></tr>
       <tr><td>Platform type</td><td>${arch ? "<b>" + esc(arch.label) + "</b> · " + Object.keys(arch.capabilities || {}).length + " capabilities" : "no archetype — composed by hand"}</td></tr>
@@ -749,8 +824,9 @@ async function registerModal() {
           name: R.name, slug: R.slug, country: R.country, mode: R.mode,
           owner: { name: R.ownerName, email: R.ownerEmail, password: R.ownerPassword },
           jurisdiction: { legalName: R.legalName, taxId: R.taxId, country: R.country },
-          language: R.language, archetype: R.archetype || undefined, identity_template: R.identityTemplate || undefined,
-          industries: R.industries, seedUniverses: R.seedUniverses, seedCatalog: R.seedCatalog,
+          /* "" is an explicit "no blend" — omitting it would apply the kind's own */
+          language: R.language, archetype: R.archetype, identity_template: R.identityTemplate || undefined,
+          industries: R.industries, seedUniverses: R.seedUniverses, seedCatalog: shopfront() && R.seedCatalog,
           plan_id: R.planId
         });
         if (r.error) { go.disabled = false; go.textContent = "⚡ Register platform"; return toast(r.error); }
@@ -1454,6 +1530,17 @@ document.addEventListener("click", async e => {
     }
     if (delprov) { await api("/platform/custom-providers/" + delprov.dataset.delprov, "DELETE", {}); render(); }
     if (e.target.id === "newTenant") return registerModal();
+    if (e.target.id === "newKind") return kindModal(P.kinds || await api("/platform/kinds"), null);
+    const klaunch = e.target.closest("[data-klaunch]");
+    if (klaunch) return registerModal(klaunch.dataset.klaunch);
+    const kedit = e.target.closest("[data-kedit]");
+    if (kedit) return kindModal(P.kinds || await api("/platform/kinds"), kedit.dataset.kedit);
+    const kdel = e.target.closest("[data-kdel]");
+    if (kdel && !kdel.disabled) {
+      if (!confirm("Remove the kind " + kdel.dataset.kdel + "?")) return;
+      try { await api("/platform/kinds/" + encodeURIComponent(kdel.dataset.kdel), "DELETE", {}); toast("Kind removed"); render(); } catch (err) { toast(err.message); }
+      return;
+    }
     const regopen = e.target.closest("[data-regopen]");
     if (regopen) return registryEditor(regopen.dataset.regopen);
     const edit = e.target.closest("[data-tedit]");

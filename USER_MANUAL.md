@@ -458,7 +458,7 @@ view's section auto-opens.
 | **08** | Governance | Policies, Standards/Regulations, Compliance & privacy, Risk & Security, Oversight (**Global Audit**, **Traceability**, risk/compliance/trash) |
 | **09** | Platform | **Capabilities**, **Capability Tree**, **Composition Engine**, Extension (Provider Registry, **Module Marketplace**, connectors), Runtime · Infra (environments, feature flags), Evolution (versioning, migration, self-healing) |
 | **10** | Observability | **◈ Command** (KPIs), Monitoring, metrics/logs/traces, health, **Dashboards**, **Data Explorer**, **Data Studio**, Entity Definitions |
-| **11** | Administration | Tenancy (**🏬 Tenants**), Access (**Platform Admins**, Roles, Users, Licenses), Configuration (**🛡️ Provisioning**, settings, feature flags) |
+| **11** | Administration | Tenancy (**🏬 Platforms & Kinds**), Access (**Platform Admins**, Roles, Users, Licenses), Configuration (**🛡️ Provisioning**, settings, feature flags) |
 | **12** | Architecture | Constitution Ω∞ (**UCII Registry**, **UCOS Constitution**, **Foundations**, **Universes**, **Domains**), Canonical Model, Graphs, Reference architectures, **📘 User Manual** |
 
 ### How any leaf resolves
@@ -550,18 +550,50 @@ your first store.
 
 ---
 
-## E3. The tenant lifecycle — launch, manage, suspend, close
+## E3. Platform kinds — launch any kind, any number of each
 
-Work in **🏬 Tenants** (*11 Administration → Tenancy*). The table shows every store: slug,
-jurisdiction, owner, mode, industries, product/order counts, GMV, plan and status.
+This platform launches other platforms. A shop is only one kind; a ride-hailing operator, an
+ERP company or a financial-services provider is another. Work in **🏬 Platforms & Kinds**
+(*11 Administration → Tenancy*). The screen has two tables.
 
-**Launch a store.** Click **+ New tenant**. It is one form (a tenant is an identity record
-the platform provisions): name, slug, country, owner name + email + password, and the
-deployment **mode** — from the `deployModes` registry; the shipped ones are `marketplace`
-(many sellers, all industries), `industry` (one vertical) and `brand` (single label). A
-mode flagged `needsIndustries` requires the store to name its industries. The owner's
-password must meet the platform's credential policy. Save and the store exists with its own admin account;
-hand the credentials to the owner.
+**Platform kinds** lists every kind you can launch and how many of each exist. Six ship:
+
+| Kind | One is a… | Starts with | Provisioned |
+|---|---|---|---|
+| Universal Marketplace | store | composed by hand | payments, shipping, warehouse, shopfront |
+| Industry Marketplace | store | composed by hand | payments, shipping, warehouse, shopfront |
+| Brand Store | store | composed by hand | payments, shipping, warehouse, shopfront |
+| Mobility Platform | operator | Mobility blend | payments |
+| Business Operations (ERP) | company | Operations blend | payments, warehouse |
+| Financial Services | provider | Fintech rails blend | payments |
+
+**Add or edit a kind** with **＋ New kind** or a row's **Edit**. A kind is data — no code:
+
+- **Name, key, description**, and what **one** and **many** are called (*clinic / clinics*).
+  The platform's own console is titled with it ("Clinic Console").
+- **Starts with this capability blend** — the blend (⚙️ Capabilities presets, E7) a new
+  platform of this kind is switched on with, unless registration picks another.
+- **Registration must name industries** — for catalogue-scoped kinds.
+- **Provisioned when one is registered** — payment gateways, shipping carriers, a warehouse
+  (in the platform's own country), and a shopfront (departments, home page, demo shop
+  products). Anything left off is not created, and its setup step disappears.
+- **Console sections** — which of the platform console's screens apply. All ticked means
+  every section, including ones added later. Screens a capability owns (Rides, Fleet, People
+  & Payroll, Manufacturing, Marketplace Ops…) are not on this list: they appear when the
+  platform's capability is on.
+
+An edit applies at once to every platform of that kind. A kind with platforms cannot be
+removed; retire or move its platforms first.
+
+**Launch a platform.** Click a kind's **＋ Launch one**, or **＋ Register platform**. The
+guided walk asks for name, kind, slug, country and admin account; then language and the
+identity policy; then the capability blend (pre-selected from the kind — pick another or
+*No archetype*); then industries and catalogue content; then the plan. Repeat as often as
+you like — there is no limit on how many platforms of a kind exist.
+
+**Platforms** lists every platform launched, of every kind: slug, jurisdiction, owner, kind,
+industries, product/order counts, GMV, plan and status. The owner's password must meet the
+platform's credential policy; hand the credentials to the owner.
 
 **Per-store actions** (row buttons):
 
@@ -569,7 +601,7 @@ hand the credentials to the owner.
 |---|---|
 | **Open** | Opens the store's storefront in a new tab. |
 | **Edit** | Changes the tenant's identity (name, country, owner). Slug is locked after creation. |
-| **Manage · Catalog** | **Impersonates** the store — opens its *Store Console* (Part B) with full admin scope, so you can operate a store without its password. Use for support escalations and store setup. |
+| **Manage** | **Impersonates** the platform — opens its own console (Part B) with full admin scope, so you can operate it without its password. Use for support escalations and setup. |
 | **Suspend / Resume** | The kill-switch. A suspended store blocks storefront/API mutations for everyone except platform admins (abuse, non-payment). Resume restores it. |
 | **Invoice** | Issues the store's monthly + usage invoice immediately. |
 | **✕** | Deletes the store and **all** its data, after a confirm. Destructive — audit trail survives. |
@@ -969,9 +1001,10 @@ double-run. Outbound webhooks are HMAC-signed, delivered through a retrying ledg
 | Configure the platform for the first time | 11 → 🛡️ Provisioning | Save the policy (banner disappears) |
 | Set the countries / currencies / taxes | 01 → 🌍 Geo Registry · Taxes | Edit countries, FX, tax modes |
 | Create subscription tiers | 04 → 💼 Plans | + New plan |
-| Launch a store | 11 → 🏬 Tenants | + New tenant (one form) |
-| Operate a store without its password | 11 → 🏬 Tenants | Manage · Catalog (impersonate) |
-| Suspend an abusive / non-paying store | 11 → 🏬 Tenants | Suspend |
+| Add or change a kind of platform | 11 → 🏬 Platforms & Kinds | ＋ New kind / Edit |
+| Launch a platform of any kind | 11 → 🏬 Platforms & Kinds | ＋ Launch one on the kind's row |
+| Operate a platform without its password | 11 → 🏬 Platforms & Kinds | Manage (impersonate) |
+| Suspend an abusive / non-paying store | 11 → 🏬 Platforms & Kinds | Suspend |
 | Bind a store to a plan | 04 → 🔁 Subscriptions | + Assign plan |
 | Collect money / chase arrears | 04 → 🧾 Invoices · 💳 Billing Ops | Collect · Run dunning sweep |
 | Sell an add-on to a store | 09 → 🧩 Module Marketplace | Click the store's chip |

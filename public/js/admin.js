@@ -32,6 +32,8 @@ async function api(path, methodOrOpts, body) {
   return data;
 }
 let TT = null;
+/* what this platform's kind calls one of it — "Store", "Operator", "Company" */
+const kindTitle = () => { const n = (TT && TT.tenant && TT.tenant.kind && TT.tenant.kind.noun) || "store"; return n.charAt(0).toUpperCase() + n.slice(1); };
 
 function linkify(m) {
   return esc(m).replace(/\/(platform|admin)\.html(\?store=[A-Za-z0-9-]+)?/g, function (s) {
@@ -66,7 +68,7 @@ const NAV = [
   { g: "Team & Access", items: [["team", "👥 Team & Roles"], ["structure", "🏢 Org Structure"], ["sso", "🔐 SSO & Integrations"]] },
   { g: "Trust & Compliance", items: [["risk", "🛡️ Risk & Fraud"], ["compliance", "✅ Compliance & Certs"], ["audit", "📜 Audit Trail"], ["trash", "🗑️ Trash & Retention"]] },
   { g: "Automation", items: [["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"]] },
-  { g: "Settings", items: [["settings", "⚙️ Store Settings"], ["modules", "🧩 Modules"], ["studio", "🛠️ Data Studio"]] },
+  { g: "Settings", items: [["settings", "⚙️ Settings"], ["modules", "🧩 Modules"], ["studio", "🛠️ Data Studio"]] },
   { g: "Help", items: [["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]] }
 ];
 const NAVFLAT = NAV.flatMap(g => g.items);
@@ -527,7 +529,7 @@ async function vPlanning() {
 function shell(content) {  $("#app").innerHTML = `
   <div class="p-shell">
     <aside class="p-side" id="pSide">
-      <div class="p-logo"><b>${esc(TT.brand?.name || TT.brand?.wordmark || "Store")}</b><small>Store Console · ${esc(TT.tenant.slug)}</small>
+      <div class="p-logo"><b>${esc(TT.brand?.name || TT.brand?.wordmark || "Store")}</b><small>${esc(kindTitle())} Console · ${esc(TT.tenant.slug)}</small>
         <button class="p-side-close" id="pSideClose" aria-label="Close navigation">✕</button></div>
       <nav class="p-nav">${NAV.map(grp => {
         const items = grp.items.filter(([k]) => canSee(k));

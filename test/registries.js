@@ -75,14 +75,15 @@ async function render(p, wait = 1600) {
     ok(regs.length > 25, "every registry is discovered from the table (" + regs.length + ", not a hardcoded list)", regs.length);
     const dm = regs.find(r => r.name === "deployModes");
     ok(!!dm, "deployModes is among them");
-    ok(!!(dm && dm.count === 3), "the seeded floor is three platform modes", dm && dm.count);
+    const SEEDED = require("../lib/meta.js").DEPLOY_MODES.length;   /* the shipped platform kinds */
+    ok(!!(dm && dm.count === SEEDED), "the seeded floor is the shipped platform kinds (" + SEEDED + ")", dm && dm.count);
     ok(!!(dm && dm.shape && dm.shape.some(s => s.key === "key") && dm.shape.some(s => s.key === "desc")),
       "the shape is inferred from the live entries", dm && JSON.stringify(dm.shape));
     ok(regs.every(r => !/:t\d+$/i.test(r.name)), "per-tenant forks (staffRoles:t12) are excluded — they are store-scoped");
 
     console.log("▸ READ");
     const one = await f("/api/platform/registries/deployModes");
-    ok(Array.isArray(one.items) && one.items.length === 3, "the modes read back", one.items && one.items.map(i => i.key).join(","));
+    ok(Array.isArray(one.items) && one.items.length === SEEDED, "the modes read back", one.items && one.items.map(i => i.key).join(","));
     ok(one.items.some(i => i.key === "marketplace"), "marketplace is a mode");
     ok((await f("/api/platform/registries/no_such_list")).status === 404, "an unknown registry 404s");
 
@@ -96,7 +97,7 @@ async function render(p, wait = 1600) {
     const saved = await f("/api/platform/registries/deployModes", "POST", { item: { key: "hybrid_marketplace", name: "Hybrid Marketplace", desc: "Buyers, sellers and services in one platform" } });
     ok(!!saved.ok, "the entry landed", saved.error);
     const after = await f("/api/platform/registries/deployModes");
-    ok(after.items.length === 4 && after.items.some(i => i.key === "hybrid_marketplace"), "the registry now carries the new mode", after.items.length);
+    ok(after.items.length === SEEDED + 1 && after.items.some(i => i.key === "hybrid_marketplace"), "the registry now carries the new mode", after.items.length);
     const dm2 = (await f("/api/platform/registries")).registries.find(r => r.name === "deployModes");
     ok(!!dm2.edited, "the row is now marked operator-owned — the seed will not overwrite it", dm2.edited);
     /* the engines read the registry live, so the new mode is immediately a valid platform

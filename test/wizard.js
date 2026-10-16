@@ -66,7 +66,7 @@ async function render(p, wait = 1800) {
     const navBtn = [...doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "tenants-admin");
     ok(!!navBtn, "Tenants lives under 11 · Administration");
     click(win, navBtn); await sleep(1200);
-    ok(/Tenants \(/.test(doc.body.textContent), "the surface is the tenant registry");
+    ok(/Platforms \(/.test(doc.body.textContent), "the surface is the platform registry");
     const newBtn = doc.getElementById("newTenant");
     ok(!!newBtn && /Register platform/.test(newBtn.textContent), "the entry point is Register platform");
     click(win, newBtn); await sleep(1000);

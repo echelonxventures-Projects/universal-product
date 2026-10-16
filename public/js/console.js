@@ -210,7 +210,7 @@ function shell(content) {
   <div class="p-shell">
     <aside class="p-side" id="pSide">
       <div class="p-logo"><b>${esc((me.tenant && me.tenant.name) || "LUXORA")}</b>
-        <small>${scope === "platform" ? "Platform Console" : "Store Console"} · ${esc(me.tenant ? me.tenant.slug : "platform")}</small>
+        <small>${scope === "platform" ? "Platform Console" : ((me.tenant && me.tenant.kind && me.tenant.kind.noun ? me.tenant.kind.noun.charAt(0).toUpperCase() + me.tenant.kind.noun.slice(1) : "Store") + " Console")} · ${esc(me.tenant ? me.tenant.slug : "platform")}</small>
         <button class="p-side-close" id="pSideClose" aria-label="Close navigation">✕</button></div>
       <nav class="p-nav">${navTree()}</nav>
       <div style="padding:12px 18px;border-top:1px solid rgba(255,255,255,.1);margin-top:12px">
