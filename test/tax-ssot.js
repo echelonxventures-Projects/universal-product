@@ -98,7 +98,7 @@ ok(rDef && rDef.fields.some(f => f.key === "country" && f.type === "ref:country"
    The rule's country must exist first — tax_rules.country REFERENCES countries(code), so a
    jurisdiction's rates key off a real geography row (the honest operator flow: add the country,
    then set its tax) */
-ok(!entity.createEntity(0, "country", { code: "IT", name: "Italy", currency: "EUR", symbol: "€", locale: "it-IT", decimals: 2 }).error, "the country exists for the rule to key off");
+ok(db.get("SELECT 1 ok FROM countries WHERE code='IT'") || !entity.createEntity(0, "country", { code: "IT", name: "Italy", currency: "EUR", symbol: "€", locale: "it-IT", decimals: 2 }).error, "the country exists for the rule to key off");
 const made = entity.createEntity(0, "tax_rule", { country: "IT", mode: "vat", standard: 0.22, reduced: 0.1, note: "Italy VAT" });
 ok(!made.error, "a rule created through the entity layer is accepted", made.error);
 ok((tax.ruleFor("IT") || {}).standard === 0.22, "the engine resolves a rule the console wrote", JSON.stringify(tax.ruleFor("IT")));

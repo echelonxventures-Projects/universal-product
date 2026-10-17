@@ -783,6 +783,491 @@
    "symbol": "NZ$",
    "decimals": 2,
    "usd": 0.61
+  },
+  {
+   "code": "NOK",
+   "name": "Norwegian Krone",
+   "symbol": "kr",
+   "decimals": 2,
+   "usd": 0.095
+  },
+  {
+   "code": "DKK",
+   "name": "Danish Krone",
+   "symbol": "kr",
+   "decimals": 2,
+   "usd": 0.145
+  },
+  {
+   "code": "PLN",
+   "name": "Polish Złoty",
+   "symbol": "zł",
+   "decimals": 2,
+   "usd": 0.25
+  },
+  {
+   "code": "KRW",
+   "name": "South Korean Won",
+   "symbol": "₩",
+   "decimals": 0,
+   "usd": 0.00073
+  },
+  {
+   "code": "IDR",
+   "name": "Indonesian Rupiah",
+   "symbol": "Rp",
+   "decimals": 2,
+   "usd": 6.2e-05
+  },
+  {
+   "code": "MYR",
+   "name": "Malaysian Ringgit",
+   "symbol": "RM",
+   "decimals": 2,
+   "usd": 0.23
+  },
+  {
+   "code": "THB",
+   "name": "Thai Baht",
+   "symbol": "฿",
+   "decimals": 2,
+   "usd": 0.029
+  },
+  {
+   "code": "PHP",
+   "name": "Philippine Peso",
+   "symbol": "₱",
+   "decimals": 2,
+   "usd": 0.017
+  },
+  {
+   "code": "VND",
+   "name": "Vietnamese Đồng",
+   "symbol": "₫",
+   "decimals": 0,
+   "usd": 3.9e-05
+  },
+  {
+   "code": "HKD",
+   "name": "Hong Kong Dollar",
+   "symbol": "HK$",
+   "decimals": 2,
+   "usd": 0.128
+  },
+  {
+   "code": "TWD",
+   "name": "New Taiwan Dollar",
+   "symbol": "NT$",
+   "decimals": 2,
+   "usd": 0.031
+  },
+  {
+   "code": "ILS",
+   "name": "Israeli New Shekel",
+   "symbol": "₪",
+   "decimals": 2,
+   "usd": 0.27
+  },
+  {
+   "code": "EGP",
+   "name": "Egyptian Pound",
+   "symbol": "E£",
+   "decimals": 2,
+   "usd": 0.02
+  },
+  {
+   "code": "QAR",
+   "name": "Qatari Riyal",
+   "symbol": "QR",
+   "decimals": 2,
+   "usd": 0.27
+  },
+  {
+   "code": "KWD",
+   "name": "Kuwaiti Dinar",
+   "symbol": "KD",
+   "decimals": 3,
+   "usd": 3.26
+  },
+  {
+   "code": "PKR",
+   "name": "Pakistani Rupee",
+   "symbol": "Rs",
+   "decimals": 2,
+   "usd": 0.0036
+  },
+  {
+   "code": "BDT",
+   "name": "Bangladeshi Taka",
+   "symbol": "৳",
+   "decimals": 2,
+   "usd": 0.0082
+  },
+  {
+   "code": "ARS",
+   "name": "Argentine Peso",
+   "symbol": "AR$",
+   "decimals": 2,
+   "usd": 0.00085
+  },
+  {
+   "code": "CLP",
+   "name": "Chilean Peso",
+   "symbol": "CLP$",
+   "decimals": 0,
+   "usd": 0.00105
+  },
+  {
+   "code": "COP",
+   "name": "Colombian Peso",
+   "symbol": "COL$",
+   "decimals": 2,
+   "usd": 0.00025
+  }
+ ],
+ "COUNTRIES": [
+  {
+   "code": "US",
+   "name": "United States",
+   "currency": "USD",
+   "symbol": "$",
+   "locale": "en-US"
+  },
+  {
+   "code": "IN",
+   "name": "India",
+   "currency": "INR",
+   "symbol": "₹",
+   "locale": "en-IN"
+  },
+  {
+   "code": "GB",
+   "name": "United Kingdom",
+   "currency": "GBP",
+   "symbol": "£",
+   "locale": "en-GB"
+  },
+  {
+   "code": "DE",
+   "name": "Germany",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "de-DE"
+  },
+  {
+   "code": "FR",
+   "name": "France",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "fr-FR"
+  },
+  {
+   "code": "NL",
+   "name": "Netherlands",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "nl-NL"
+  },
+  {
+   "code": "BR",
+   "name": "Brazil",
+   "currency": "BRL",
+   "symbol": "R$",
+   "locale": "pt-BR"
+  },
+  {
+   "code": "KE",
+   "name": "Kenya",
+   "currency": "KES",
+   "symbol": "KSh",
+   "locale": "en-KE"
+  },
+  {
+   "code": "AE",
+   "name": "United Arab Emirates",
+   "currency": "AED",
+   "symbol": "د.إ",
+   "locale": "ar-AE"
+  },
+  {
+   "code": "JP",
+   "name": "Japan",
+   "currency": "JPY",
+   "symbol": "¥",
+   "locale": "ja-JP"
+  },
+  {
+   "code": "SG",
+   "name": "Singapore",
+   "currency": "SGD",
+   "symbol": "S$",
+   "locale": "en-SG"
+  },
+  {
+   "code": "AU",
+   "name": "Australia",
+   "currency": "AUD",
+   "symbol": "A$",
+   "locale": "en-AU"
+  },
+  {
+   "code": "CA",
+   "name": "Canada",
+   "currency": "CAD",
+   "symbol": "C$",
+   "locale": "en-CA"
+  },
+  {
+   "code": "SE",
+   "name": "Sweden",
+   "currency": "SEK",
+   "symbol": "kr",
+   "locale": "sv-SE"
+  },
+  {
+   "code": "SA",
+   "name": "Saudi Arabia",
+   "currency": "SAR",
+   "symbol": "﷼",
+   "locale": "ar-SA"
+  },
+  {
+   "code": "CN",
+   "name": "China",
+   "currency": "CNY",
+   "symbol": "¥",
+   "locale": "zh-CN"
+  },
+  {
+   "code": "CH",
+   "name": "Switzerland",
+   "currency": "CHF",
+   "symbol": "CHF",
+   "locale": "de-CH"
+  },
+  {
+   "code": "ZA",
+   "name": "South Africa",
+   "currency": "ZAR",
+   "symbol": "R",
+   "locale": "en-ZA"
+  },
+  {
+   "code": "MX",
+   "name": "Mexico",
+   "currency": "MXN",
+   "symbol": "Mex$",
+   "locale": "es-MX"
+  },
+  {
+   "code": "TR",
+   "name": "Türkiye",
+   "currency": "TRY",
+   "symbol": "₺",
+   "locale": "tr-TR"
+  },
+  {
+   "code": "NG",
+   "name": "Nigeria",
+   "currency": "NGN",
+   "symbol": "₦",
+   "locale": "en-NG"
+  },
+  {
+   "code": "NZ",
+   "name": "New Zealand",
+   "currency": "NZD",
+   "symbol": "NZ$",
+   "locale": "en-NZ"
+  },
+  {
+   "code": "IT",
+   "name": "Italy",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "it-IT"
+  },
+  {
+   "code": "ES",
+   "name": "Spain",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "es-ES"
+  },
+  {
+   "code": "IE",
+   "name": "Ireland",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "en-IE"
+  },
+  {
+   "code": "AT",
+   "name": "Austria",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "de-AT"
+  },
+  {
+   "code": "BE",
+   "name": "Belgium",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "nl-BE"
+  },
+  {
+   "code": "PT",
+   "name": "Portugal",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "pt-PT"
+  },
+  {
+   "code": "FI",
+   "name": "Finland",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "fi-FI"
+  },
+  {
+   "code": "PL",
+   "name": "Poland",
+   "currency": "PLN",
+   "symbol": "zł",
+   "locale": "pl-PL"
+  },
+  {
+   "code": "DK",
+   "name": "Denmark",
+   "currency": "DKK",
+   "symbol": "kr",
+   "locale": "da-DK"
+  },
+  {
+   "code": "NO",
+   "name": "Norway",
+   "currency": "NOK",
+   "symbol": "kr",
+   "locale": "nb-NO"
+  },
+  {
+   "code": "KR",
+   "name": "South Korea",
+   "currency": "KRW",
+   "symbol": "₩",
+   "locale": "ko-KR"
+  },
+  {
+   "code": "ID",
+   "name": "Indonesia",
+   "currency": "IDR",
+   "symbol": "Rp",
+   "locale": "id-ID"
+  },
+  {
+   "code": "MY",
+   "name": "Malaysia",
+   "currency": "MYR",
+   "symbol": "RM",
+   "locale": "ms-MY"
+  },
+  {
+   "code": "TH",
+   "name": "Thailand",
+   "currency": "THB",
+   "symbol": "฿",
+   "locale": "th-TH"
+  },
+  {
+   "code": "PH",
+   "name": "Philippines",
+   "currency": "PHP",
+   "symbol": "₱",
+   "locale": "en-PH"
+  },
+  {
+   "code": "VN",
+   "name": "Vietnam",
+   "currency": "VND",
+   "symbol": "₫",
+   "locale": "vi-VN"
+  },
+  {
+   "code": "HK",
+   "name": "Hong Kong",
+   "currency": "HKD",
+   "symbol": "HK$",
+   "locale": "zh-HK"
+  },
+  {
+   "code": "TW",
+   "name": "Taiwan",
+   "currency": "TWD",
+   "symbol": "NT$",
+   "locale": "zh-TW"
+  },
+  {
+   "code": "IL",
+   "name": "Israel",
+   "currency": "ILS",
+   "symbol": "₪",
+   "locale": "he-IL"
+  },
+  {
+   "code": "EG",
+   "name": "Egypt",
+   "currency": "EGP",
+   "symbol": "E£",
+   "locale": "ar-EG"
+  },
+  {
+   "code": "QA",
+   "name": "Qatar",
+   "currency": "QAR",
+   "symbol": "QR",
+   "locale": "ar-QA"
+  },
+  {
+   "code": "KW",
+   "name": "Kuwait",
+   "currency": "KWD",
+   "symbol": "KD",
+   "locale": "ar-KW"
+  },
+  {
+   "code": "PK",
+   "name": "Pakistan",
+   "currency": "PKR",
+   "symbol": "Rs",
+   "locale": "en-PK"
+  },
+  {
+   "code": "BD",
+   "name": "Bangladesh",
+   "currency": "BDT",
+   "symbol": "৳",
+   "locale": "bn-BD"
+  },
+  {
+   "code": "AR",
+   "name": "Argentina",
+   "currency": "ARS",
+   "symbol": "AR$",
+   "locale": "es-AR"
+  },
+  {
+   "code": "CL",
+   "name": "Chile",
+   "currency": "CLP",
+   "symbol": "CLP$",
+   "locale": "es-CL"
+  },
+  {
+   "code": "CO",
+   "name": "Colombia",
+   "currency": "COP",
+   "symbol": "COL$",
+   "locale": "es-CO"
   }
  ]
 }

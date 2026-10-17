@@ -23,7 +23,9 @@
      "type": "text",
      "required": true,
      "list": true,
-     "upper": true
+     "upper": true,
+     "pattern": "^[A-Z]{2}$",
+     "patternHint": "two letters (ISO 3166-1 alpha-2)"
     },
     {
      "key": "name",
@@ -39,7 +41,9 @@
      "type": "text",
      "required": true,
      "list": true,
-     "upper": true
+     "upper": true,
+     "pattern": "^[A-Z]{3}$",
+     "patternHint": "three letters (ISO 4217)"
     },
     {
      "key": "symbol",
@@ -53,13 +57,16 @@
      "label": "Locale",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "format": "locale"
     },
     {
      "key": "decimals",
      "label": "Decimals",
      "type": "number",
-     "list": true
+     "list": true,
+     "min": 0,
+     "max": 4
     },
     {
      "key": "position",
@@ -157,7 +164,9 @@
      "type": "text",
      "required": true,
      "list": true,
-     "upper": true
+     "upper": true,
+     "pattern": "^[A-Z]{3}$",
+     "patternHint": "three letters (ISO 4217)"
     },
     {
      "key": "name",
@@ -179,14 +188,17 @@
      "label": "Decimals",
      "type": "number",
      "required": true,
-     "list": true
+     "list": true,
+     "min": 0,
+     "max": 4
     },
     {
      "key": "usd",
      "label": "Value in USD (1 unit = x USD)",
      "type": "number",
      "required": true,
-     "list": true
+     "list": true,
+     "gt": 0
     },
     {
      "key": "position",

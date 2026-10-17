@@ -1,6 +1,6 @@
 {
  "summary": {
-  "branch": 62,
+  "branch": 61,
   "fallback": 95,
   "seedConstants": {
    "count": 8,
@@ -42,7 +42,6 @@
    "lib/operations.js · workforce": 1,
    "lib/recurring.js · early_access": 1,
    "lib/recurring.js · free_shipping": 1,
-   "lib/registry.js · JPY": 1,
    "lib/rules.js · guest": 1,
    "lib/rules.js · segments": 1,
    "lib/rules.js · signed_in": 1,
