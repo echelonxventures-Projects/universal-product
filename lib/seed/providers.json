@@ -478,6 +478,12 @@
     "amountUnit": "major"
    }
   },
+  "notification:log": {
+   "transport": "log"
+  },
+  "notification:smtp": {
+   "transport": "smtp"
+  },
   "notification:resend": {
    "method": "POST",
    "url": "https://api.resend.com/emails",

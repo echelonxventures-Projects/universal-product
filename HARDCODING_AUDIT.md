@@ -115,6 +115,8 @@ registry, and the console renders what it's given.
 | State machines, batch 3 | 80 machines; tenants, compliance, fintech, GOIP, marketplace extensions, foundations, subscriptions, consoles | **207** | **6**, all word collisions, no real states |
 | Declared behaviour (finding 2), server engines | vocabulary rows declare their behaviour; engines follow the row | **134** | 6 |
 | Declared behaviour (finding 2), consoles | storefront, store and platform consoles read the same rows | **109** | 6 |
+| Feature gates (finding 5) | engines ask binding points; catalogue rows declare policy and storefront atoms | **101** | 6 |
+| Provider transports (finding 6) | provider specs declare a kernel transport; identity types declare protocols; FX sources declare `fetches` | **93** | 6 |
 
 **Batch 1 converted these engines:**
 - rides, drivers, vehicles (`lib/mobility.js`);
@@ -218,6 +220,18 @@ Existing installs pick the new fields up through `registry.addFields()`, which n
   - the platform `policy` flag that must allow the feature, with its refusal. This replaces three code paths that named `coupons` and `fiscalSelection`.
 - `test/gates.js` shows that installing a module opens its points and that repointing a gate closes it. It fails if an engine or console checks a module capability by name.
 - **Identity, which stays:** an engine naming the capability it *is*, such as the ride engine's `ride_hailing` or GOIP checking its own module, and console panels for that same capability.
+
+**Finding 6 — engines dispatch on a provider's declared transport (branches: 101 → 93):**
+- **Notification providers:** a provider's spec (`provider_defs.spec`) either describes an HTTP request for the spec engine or declares a kernel `transport`. The seed declares `notification:smtp` → `smtp` and `notification:log` → `log`, and boot writes those declarations into `provider_defs`.
+- `lib/mailer.js` holds the kernel transports (`KERNEL`): `smtp`, which speaks SMTP directly and reads a platform default from the URL its `urlEnv` names, and `log`, which is `local` and writes to the server log. Delivery dispatches on `kernelOf(provider)` and never compares a provider's name. The provider row on file decides; the seed only stands in when there is no row.
+- **What was converted:**
+  - the mailer's send path and its platform defaults (`LX_SMTP_URL`, and `LX_SMS_PROVIDER`, which is now any provider the SMS channel lists);
+  - the store notifier in `lib/api.js`: a local provider logs, a kernel transport sends through the kernel, and anything else goes through the spec engine;
+  - provisioning: a new store starts with the first notification provider whose transport is local, not a literal `notify:log`.
+- **Identity provider types declare their `protocols`** (`sso` → saml, oidc; `oauth`, `openid` and `ldap` → oidc). The external flow runs the type's first protocol unless the provider's config picks another protocol the type declares. A new type that names a protocol the engine does not speak is refused. The field reaches operator-edited lists through `addFields`.
+- **FX sources:** the feed setting looks up the chosen `fxSources` row, and a row that `fetches` needs an http(s) URL. This replaces the `"feed"`/`"manual"` literals.
+- `test/transports.js` (13 checks) shows that a provider added as a row and declaring a transport is followed, that removing a declaration takes effect, and that protocols follow the type row. It fails if an engine compares against a notification provider, FX source or identity type by name. The `password` flow is exempt because it is the engine's own kernel flow.
+- **What stays:** `const KIND = "notification"` in the mailer (counted as one fallback, so 96 → 97) is the provider kind the mailer serves, which is identity. Boot still re-asserts every seeded spec, as it did before, so an operator's edit to a seeded provider's spec does not survive a restart.
 
 **New registry entries now reach existing installs on every boot.** A new machine, binding or vocabulary row is appended additively, with no stamp bump needed. `test/states.js` covers this.
 
