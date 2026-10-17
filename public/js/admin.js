@@ -40,7 +40,7 @@ function linkify(m) {
     return '<a href="' + s + '" style="text-decoration:underline">' + (s.indexOf("platform") >= 0 ? "Platform console" : "Store console") + " →</a>";
   });
 }
-function money(n) { const d = (TT && TT.commerce && TT.commerce.decimals != null) ? TT.commerce.decimals : 2; try { return new Intl.NumberFormat(TT.commerce.locale, { style: "currency", currency: TT.commerce.currency, minimumFractionDigits: d, maximumFractionDigits: d }).format(+n); } catch (e) { return ((TT && TT.commerce && TT.commerce.symbol) || "$") + (+n).toFixed(d); } }
+function money(n) { const d = (TT && TT.commerce && TT.commerce.decimals != null) ? TT.commerce.decimals : 2; try { return new Intl.NumberFormat(TT.commerce.locale, { style: "currency", currency: TT.commerce.currency, minimumFractionDigits: d, maximumFractionDigits: d }).format(+n); } catch (e) { return ((TT && TT.commerce && TT.commerce.symbol) || "") + (+n).toFixed(d); } }
 let toastT;
 function toast(msg) {
   let t = $("#ptoast");
@@ -1108,7 +1108,7 @@ async function vModules() {
     ${ms.map(m => {
     const on = has(m.id);
     return `<div style="display:flex;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--p-line)">
-      <div style="flex:1"><b>${esc(m.name)}</b> <span class="p-tag">${m.price > 0 ? "$" + m.price + " one-time" : "free"} · ${m.capabilities.map(esc).join(", ")}</span><br><span class="p-tag">${esc(m.summary || "")}</span></div>
+      <div style="flex:1"><b>${esc(m.name)}</b> <span class="p-tag">${m.price > 0 ? esc(m.price + " " + (m.currency || (DFLT && DFLT.currency) || "")) + " one-time" : "free"} · ${m.capabilities.map(esc).join(", ")}</span><br><span class="p-tag">${esc(m.summary || "")}</span></div>
       ${on ? `<button class="p-btn sm danger" data-rel="${esc(m.id)}">Release</button>` : `<button class="p-btn sm primary" data-buy="${esc(m.id)}">Purchase</button>`}</div>`;
   }).join("")}</div>`).join("")}`;
 }

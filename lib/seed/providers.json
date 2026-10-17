@@ -478,6 +478,12 @@
     "amountUnit": "major"
    }
   },
+  "shipping:house-std": {
+   "in_house": true
+  },
+  "shipping:house-exp": {
+   "in_house": true
+  },
   "notification:log": {
    "transport": "log"
   },

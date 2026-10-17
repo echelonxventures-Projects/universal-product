@@ -1,0 +1,178 @@
+{
+ "DOCS": [
+  {
+   "id": "upip",
+   "file": "Architecture1.txt",
+   "code": "UPIP",
+   "name": "Universal Product Intelligence Platform",
+   "kind": "architecture",
+   "container": "section",
+   "marker": {
+    "re": "^#\\s+\\d+\\.\\s",
+    "flags": ""
+   }
+  },
+  {
+   "id": "umqscr",
+   "file": "Architecture2.txt",
+   "code": "UMQSOCR",
+   "name": "Universal Mathematics, Quantitative Sciences, Optimization & Computational Reasoning",
+   "kind": "constitution",
+   "container": "article",
+   "marker": {
+    "re": "^#\\s+ARTICLE\\s",
+    "flags": "i"
+   }
+  },
+  {
+   "id": "ucos",
+   "file": "Architecture3.txt",
+   "code": "UCOS",
+   "name": "Universal Civilization Operating System",
+   "kind": "constitution",
+   "container": "article",
+   "marker": {
+    "re": "^#\\s+ARTICLE\\s",
+    "flags": "i"
+   }
+  },
+  {
+   "id": "upce",
+   "file": "Architecture4.txt",
+   "code": "UPCE",
+   "name": "Universal Industry, Product, Service & Commerce Universe",
+   "kind": "architecture",
+   "container": "section",
+   "marker": {
+    "re": "^#\\s+\\d+\\.\\s",
+    "flags": ""
+   }
+  },
+  {
+   "id": "ucosm",
+   "file": "Architecture5.txt",
+   "code": "UCOSM",
+   "name": "Universal Capability Platform — Master Architecture Reference",
+   "kind": "architecture",
+   "container": "section",
+   "marker": {
+    "re": "^#\\s+\\d+\\.\\s",
+    "flags": ""
+   }
+  },
+  {
+   "id": "ucosmm",
+   "file": "Architecture6.txt",
+   "code": "UCOSMM",
+   "name": "UCOS Ω∞ — Universal Capability Platform · Master Architecture Reference Model",
+   "kind": "architecture",
+   "container": "section",
+   "marker": {
+    "re": "^#\\s+\\d+\\.\\s",
+    "flags": ""
+   }
+  },
+  {
+   "id": "ucoso",
+   "file": "UCOS_Omega_Constitutional_Architecture_v1.0.md",
+   "code": "UCOSO",
+   "name": "UCOS Ω∞ — Constitutional Architecture & Build Specification Framework (Omega)",
+   "kind": "architecture",
+   "container": "section",
+   "marker": {
+    "re": "^##\\s+\\d+\\s",
+    "flags": ""
+   },
+   "sectionRe": {
+    "re": "^##\\s+(\\d+)\\s+(.*)$",
+    "flags": ""
+   },
+   "tables": true,
+   "declare": {
+    "re": "Universe Index",
+    "flags": "i"
+   }
+  },
+  {
+   "id": "ucosu",
+   "file": "UCOS-Universal-Capability-Operating-System.md",
+   "code": "UCOSU",
+   "name": "UCOS Ω∞ — Universal Capability Operating System: Consolidated Architecture & Requirements Reference",
+   "kind": "architecture",
+   "container": "section",
+   "marker": {
+    "re": "^[A-L]\\d+\\.\\s",
+    "flags": ""
+   },
+   "sectionRe": {
+    "re": "^[A-L](\\d+)\\.\\s+(.*)$",
+    "flags": ""
+   },
+   "lists": true,
+   "bodyStart": {
+    "re": "^PART\\s+[A-L]$",
+    "flags": ""
+   },
+   "declare": {
+    "re": "(?:Universes?|Network|Fabric|Substrate|Engine|Autonomy Layer)$",
+    "flags": "i"
+   }
+  },
+  {
+   "id": "ucrs",
+   "file": "UCRS-Zero-Hardcoding-Constitution.md",
+   "code": "UCRS",
+   "name": "UCOS Ω∞ — Universal Commercial Reality Substrate (Zero-Hardcoding Constitution)",
+   "kind": "constitution",
+   "container": "section",
+   "marker": {
+    "re": "^#\\s+\\d+\\.\\s",
+    "flags": ""
+   },
+   "noUniverses": true
+  },
+  {
+   "id": "ucosadd",
+   "file": "UCOS-Constitutional-Addendum.md",
+   "code": "UCOSADD",
+   "name": "UCOS Ω∞ — Constitutional Addendum: Canonical Terms, Overlap Resolution & Implementation Contracts",
+   "kind": "constitution",
+   "container": "section",
+   "marker": {
+    "re": "^#{1,2}\\s",
+    "flags": ""
+   },
+   "headingSections": true,
+   "noUniverses": true
+  },
+  {
+   "id": "ucosma",
+   "file": "UCOS-Constitutional-Master-Architecture.md",
+   "code": "UCOSMA",
+   "name": "UCOS Ω∞ — Constitutional Master Architecture: Existence • Reality • Knowledge • Commerce Operating System",
+   "kind": "constitution",
+   "container": "section",
+   "marker": {
+    "re": "^#{1,2}\\s",
+    "flags": ""
+   },
+   "headingSections": true,
+   "noUniverses": true
+  },
+  {
+   "id": "ureg",
+   "file": "_registry/",
+   "code": "UREG",
+   "name": "UCOS Ω∞ — Frozen Constitutional Registry (primitives · terms · domains · artifacts)",
+   "kind": "constitution",
+   "container": "section",
+   "marker": null,
+   "registry": true,
+   "declare": {
+    "re": "Declared Artifacts",
+    "flags": "i"
+   },
+   "noUniverses": false
+  }
+ ]
+}

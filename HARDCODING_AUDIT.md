@@ -118,6 +118,7 @@ registry, and the console renders what it's given.
 | Feature gates (finding 5) | engines ask binding points; catalogue rows declare policy and storefront atoms | **101** | 6 |
 | Provider transports (finding 6) | provider specs declare a kernel transport; identity types declare protocols; FX sources declare `fetches` | **93** | 6 |
 | Console metadata (finding 7) | fields declare editor, refValue and display; taxonomy levels are a registry; pre-selections are flagged rows | **62** | 6 |
+| Leftovers + ratchet | `DOCS` and `CATEGORY_SEED` are seed files; in-house carriers declared; platform money from the platform; `test/audit-gate.js` holds the counts | **62** | 6 |
 
 **Batch 1 converted these engines:**
 - rides, drivers, vehicles (`lib/mobility.js`);
@@ -257,6 +258,17 @@ Existing installs pick the new fields up through `registry.addFields()`, which n
   - the product's own `sku` row.
 - **Leftover:** the platform console's `money()` still formats in `$` / `en-US`.
 
+**Leftovers and the ratchet:**
+- **`ucos.js` `DOCS` is data now** (`lib/seed/ucos.json`). Its "functions" were regular expressions, which are stored as `{ re, flags }` and turned back into regular expressions on load. The revived table matches the old one exactly. Comments that lived inside the table now sit above its declaration, each under its document id.
+- **`db.js` `CATEGORY_SEED` is data** (`lib/seed/catalog.json`). The boot taxonomy seeder takes its levels from `taxonomyLevels`: industries at the root and starter categories at the default level. Seed-sized constants: 10 → 8 (244 lines). Both entries left `test/seeds.js`'s kernel allowlist.
+- **No `house-` prefix:** a carrier the store runs itself declares `in_house` on its spec (`shipping:house-std`, `shipping:house-exp`). Provisioning skips declared in-house carriers when it picks third-party ones, and the demo store's carriers are the declared ones.
+- **Platform amounts:**
+  - the platform console formats money in the platform's currency and its default country's locale, which `/platform/me` and `/auth/me` now serve (`defaults.platformMoney()`). This replaces `"$"` and `"en-US"`;
+  - module prices in both consoles and the provisioning locale placeholder use the same values;
+  - the store console showed module prices with `$`, although module invoices are in the platform currency. They now show the module's own currency.
+- **The ratchet (`test/audit-gate.js`, in `npm test`):** it runs this audit and compares it with `scripts/audit-baseline.json`, counting each branch and fallback per file and per value, plus every seed-sized constant. It fails when a file branches on or falls back to a registry value more often than the baseline allows, or when a seed-sized constant appears or grows. A lower count passes; `npm run audit:baseline` records it. A registry value that an existing literal happens to spell also trips the gate, so a new word collision gets reviewed.
+- **Baseline:** branches 62, fallbacks 95, seed-sized constants 8.
+
 **New registry entries now reach existing installs on every boot.** A new machine, binding or vocabulary row is appended additively, with no stamp bump needed. `test/states.js` covers this.
 
 
@@ -284,11 +296,13 @@ Existing installs pick the new fields up through `registry.addFields()`, which n
 
 **Still in code in the rules area (kernel or relationships, listed for completeness):**
 - the provider × country availability check, which reads the context's country;
-- house shipping recognised by an id prefix in provisioning;
+- ~~house shipping recognised by an id prefix in provisioning~~ (done: carriers declare `in_house`);
 - the names of the match operators (`in`, `any`, `prefix`, `group`) and of the one computed
   provider (`segments`).
 
 ## Proposed order of work
+
+All six steps below are done; the Progress section records each one.
 
 1. **State-machine registry** (finding 1). It's the largest source of logic branching and
    touches money paths, so it needs the most tests.

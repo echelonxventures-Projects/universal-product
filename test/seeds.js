@@ -15,9 +15,7 @@ process.env.LX_DB = TMP;
 /* kernel tables: code (implementations, wiring), not business data */
 const KERNEL = {
   "goip.js": ["IMPL", "GOIP_HANDLERS", "INTEL", "REGISTRIES"],
-  "authz.js": ["ROUTE_SECTION"], "api.js": ["STORE_ROUTE_SECTION"], "uid.js": ["TABLES"], "rules.js": ["PROVIDERS"],
-  /* not JSON-safe (it carries functions), and the boot module itself */
-  "ucos.js": ["DOCS"], "db.js": ["CATEGORY_SEED"]
+  "authz.js": ["ROUTE_SECTION"], "api.js": ["STORE_ROUTE_SECTION"], "uid.js": ["TABLES"], "rules.js": ["PROVIDERS"]
 };
 
 console.log("▸ SEED FILES ARE DATA");

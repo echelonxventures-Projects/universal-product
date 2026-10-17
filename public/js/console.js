@@ -411,6 +411,7 @@ async function boot() {
     try { history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q.toString() : "") + location.hash); } catch (e) { }
   }
   const r = await api("/api/auth/me");
+  if (r && r.money) window.LX_MONEY = r.money;
   if (!r || (!r.hasStore && !r.hasPlatform)) return loginForm(r);
   me.store = r.identity.store || null;
   me.platform = r.identity.platform || null;

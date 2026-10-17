@@ -25,7 +25,13 @@ function linkify(m) {
     return '<a href="' + s + '" style="text-decoration:underline">' + (s.indexOf("platform") >= 0 ? "Platform console" : "Store console") + " →</a>";
   });
 }
-function money(n) { return "$" + (+n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+/* the platform's amounts in the platform's currency and locale, which /platform/me and
+   /auth/me serve (window.LX_MONEY) — never a symbol or locale written here */
+function money(n) {
+  const m = (typeof window !== "undefined" && window.LX_MONEY) || {};
+  try { return new Intl.NumberFormat(m.locale || undefined, { style: "currency", currency: m.currency }).format(+n); }
+  catch (e) { return (+n).toFixed(2) + (m.currency ? " " + m.currency : ""); }
+}
 let toastT;
 function toast(msg, type = "info") {
   /* re-query after the fallback create: render() may have replaced the shell, leaving
@@ -767,7 +773,7 @@ async function registerModal(kindKey) {
         + (p.expiryDays ? " · expires " + p.expiryDays + "d" : " · never expires"); };
       const mfOf = t => { const c = cfgOf(t), m = c.mfa || {}; return m.enabled ? "MFA on" + (m.requireForStaff ? " · required for all staff" : m.requireForAdmin ? " · required for admins" : "") : "no MFA"; };
       return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div><div class="p-form">
-      <label><span>Language / locale</span><input id="rLang" value="${esc(R.language || (ctry && ctry.locale) || "en-US")}" placeholder="en-US"></label>
+      <label><span>Language / locale</span><input id="rLang" value="${esc(R.language || (ctry && ctry.locale) || (window.LX_MONEY || {}).locale || "")}" placeholder="${esc((window.LX_MONEY || {}).locale || "")}"></label>
       <p class="p-tag" style="margin:4px 0 2px">The locale defaults from the chosen jurisdiction (${esc(R.country)} → ${ctry ? ctry.locale : "—"}). The authentication policy is picked here from the identity registry (${idTemplates.length} templates) — a platform is never registered without one. Tune it later from <b>01 · Foundation → Identity</b>.</p>
       <div style="display:grid;gap:8px">${idTemplates.map(t => `<label style="display:flex;gap:10px;align-items:flex-start;border:1px solid var(--p-border);border-radius:10px;padding:10px;cursor:pointer;${R.identityTemplate === t.id ? "border-color:var(--p-accent)" : ""}">
         <input type="radio" name="rIdTmpl" value="${t.id}" ${R.identityTemplate === t.id ? "checked" : ""} style="margin-top:3px">
@@ -1428,7 +1434,7 @@ async function vModules() {
   ${Object.entries(cats).map(([cat, ms]) => `
   <div class="p-panel"><h2>${esc(cat)}</h2><div class="mod-grid">${ms.map(m => {
     const caps = (m.manifest.capabilities || []).join(", ");
-    return `<div class="mod-card"><div class="mod-head"><b>${esc(m.name)}</b><span class="price">${m.price > 0 ? "$" + m.price : "free"}</span></div>
+    return `<div class="mod-card"><div class="mod-head"><b>${esc(m.name)}</b><span class="price">${m.price > 0 ? money(m.price) : "free"}</span></div>
       <p class="p-tag">${esc(m.summary || "")}</p><p class="p-tag"><code>${esc(caps || m.id)}</code></p>
       <div class="mod-installs">${tenants.map(t => {
         const on = installedSet.has(t.id + "|" + m.id);
@@ -1446,7 +1452,7 @@ async function wireModules() {
       const mm = modal(`<div class="p-modal-head"><h3>${esc(m.name)} → ${esc(t.name)}</h3><button data-mclose>✕</button></div>
         <div class="p-form">
         ${installed ? `<p class="p-tag">${m.price > 0 ? "Purchased (invoice on record)." : "Baseline — auto-purchased at provisioning."}</p><button class="p-btn danger" id="mUn">Uninstall / disable</button>` :
-          `<p class="p-tag">${m.price > 0 ? "Price: $" + m.price + " — a paid invoice will be created and marked collected." : "Free — installs instantly."}</p>
+          `<p class="p-tag">${m.price > 0 ? "Price: " + money(m.price) + " — a paid invoice will be created and marked collected." : "Free — installs instantly."}</p>
            ${fields.map(f => `<label><span>${esc(f.label || f.key)}</span><input data-cfg="${esc(f.key)}" placeholder="e.g. ${esc(f.placeholder || (f.type === "bool" ? "true" : "…"))}"></label>`).join("")}
            <button class="p-btn primary" id="mBuy">Purchase & install</button>`}
         </div>`);
@@ -3754,6 +3760,7 @@ document.addEventListener("click", e => { if (e.target.closest("[data-mclose]"))
   if (typeof LX_GUEST !== "undefined" && LX_GUEST) return;
   try {
     const me = await api("/platform/me");
+    if (me.money) window.LX_MONEY = me.money;
     if (!me.admin) {
       $("#app").innerHTML = `<div class="p-login"><div class="p-login-box"><h1>LUXORA</h1><p>Platform Console</p>
         <form id="pf" class="p-form"><label><span>Email</span><input id="pe" type="email" required></label>
