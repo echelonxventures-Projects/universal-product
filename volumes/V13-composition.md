@@ -22,6 +22,7 @@
 | **Not responsible for** | Domain Truth, Offerings |
 | **Contract** | [UCOS-PKG-000001 Package Architecture](#ucos-pkg-000001) |
 | **Artifacts** | [UCOS-PKG-000001](#ucos-pkg-000001) |
+| **Code** | `lib/compose.js` |
 | **Managed in** | `_registry/domains.json` → `D-PKG` |
 
 <a id="ucos-pkg-000001"></a>

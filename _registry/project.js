@@ -30,6 +30,8 @@ const TERMS = load('terminology.json');
 const DOMAINS = load('domains.json');
 const MANIFEST = load('manifest.json');
 const CONTENT_MAP = load('content-map.json');
+const CODEBASE = load('codebase.json');
+const ROADMAP = load('roadmap.json');
 
 /* ---------- content registries ---------- */
 const CONTENT_FILE_NAMES = {
@@ -414,6 +416,7 @@ function domainCard(d, from) {
     d.notResponsible ? `| **Not responsible for** | ${d.notResponsible.join(', ')} |` : `| **Must obey** | ${(d.mustObey || []).join(', ')} |`,
     `| **Contract** | ${contract ? linkArtifact(contract, from, contract.id + ' ' + contract.title) : '—'} |`,
     `| **Artifacts** | ${arts.map(a => linkArtifact(a, from)).join(', ')} |`,
+    `| **Code** | ${CODEBASE.modules.filter(m => (m.parts || [{ owner: m.owner }]).some(p => p.owner === d.name)).map(m => '\`' + m.path + '\`').join(', ') || '—'} |`,
     `| **Managed in** | \`_registry/domains.json\` → \`${d.domainId}\` |`,
     ''
   ].join('\n');
@@ -506,14 +509,18 @@ function masterText(volumes, sizes, max) {
   L.push(`**Projected from** \`_registry/\` (the single source of truth). Never edit this file or a volume: change the registry, then run \`npm run registry\`. Last amendment: ${(DOMAINS.amendments || []).slice(-1).map(x => x.amendmentId + ' (' + x.date + ')').join('') || '—'}.`, '');
   L.push('## Contents', '',
     '1. [How to manage](#how-to-manage)', '2. [Volume register](#volume-register)', '3. [Index](#index)',
-    '4. [Constitution](#constitution)', '5. [Standard contract](#standard-contract)', '6. [Glossary](#glossary)', '7. [ID lookup](#id-lookup)', '');
+    '4. [Constitution](#constitution)', '5. [Kernel](#kernel)', '6. [Standard contract](#standard-contract)', '7. [Glossary](#glossary)',
+    '8. [Code map](#code-map)', '9. [Build path and decisions](#build-path)', '10. [ID lookup](#id-lookup)', '');
 
   L.push('<a id="how-to-manage"></a>', '## 1. How to manage', '',
     'Everything here is projected. To change it, edit the registry entry named below, then run `npm run registry`. That re-projects this document and every volume, audits them, then compiles, gates and seals the registry. `npm test` fails if any document is out of date with the registry.', '',
     '| To change | Edit |', '|---|---|',
     '| A category (add, rename, describe) | `_registry/domains.json` → `categories` |',
     '| A domain (add, owns, responsibilities, category, contract) | `_registry/domains.json` → `domains` |',
-    '| A law | `_registry/domains.json` → `laws`, with an entry in `amendments` |',
+    '| A law (statement, aliases, sources, enforcement status) | `_registry/domains.json` → `laws`, with an entry in `amendments` |',
+    '| A kernel part | `_registry/domains.json` → `kernel` |',
+    '| Which domain owns a code file | `_registry/codebase.json` → `modules` |',
+    '| A build step’s status, or a design decision | `_registry/roadmap.json` → `steps`, `decisions` |',
     '| A primitive (frozen: needs an amendment) | `_registry/primitives.json`, with an entry in `domains.json` → `amendments` |',
     '| A term (add, define) | `_registry/terminology.json`, and add it to exactly one domain’s `owns` |',
     '| An artifact (add, retitle, owner) | `_registry/manifest.json` → `artifacts`, a route in `_registry/content-map.json`, a content block in a `_registry/content-*.json` |',
@@ -546,8 +553,11 @@ function masterText(volumes, sizes, max) {
   }
 
   L.push('<a id="constitution"></a>', '## 4. Constitution', '');
-  L.push('### Laws', '', '| Law | Statement | Enforced by |', '|---|---|---|');
-  for (const l of DOMAINS.laws || []) L.push(`| <a id="${anchor(l.lawId)}"></a>${l.lawId} ${l.name} | ${l.statement} | ${l.enforcedBy} |`);
+  const laws = DOMAINS.laws || [];
+  const lawStatus = st => laws.filter(l => l.status === st).length;
+  L.push('### Laws', '', `${laws.length} laws: ${lawStatus('enforced')} enforced, ${lawStatus('partial')} partly enforced, ${lawStatus('planned')} planned. Each merges every place the corpus states it; its sources are document:line in the compiled corpus (\`node _registry/compile.js --search\` finds them).`, '',
+    '| Law | Statement | Also called | Status | Enforced by | Sources |', '|---|---|---|---|---|---|');
+  for (const l of laws) L.push(`| <a id="${anchor(l.lawId)}"></a>**${l.lawId}** ${l.name} | ${l.statement} | ${(l.aliases || []).join(', ') || '—'} | ${l.status} | ${(l.enforcedBy || []).join('; ') || '—'} | ${(l.sources || []).join(', ')} |`);
   L.push('', '### Laws of the registries', '', '| Registry | Status | Law |', '|---|---|---|');
   for (const f of ['primitives.json', 'terminology.json', 'domains.json', 'content-map.json'].concat(Object.values(CONTENT_FILE_NAMES))) {
     const j = load(f); L.push(`| \`${f}\` — ${j.canonicalName} | ${j.status} | ${j.law} |`);
@@ -561,11 +571,15 @@ function masterText(volumes, sizes, max) {
   for (const a of DOMAINS.amendments || []) L.push(`| <a id="${anchor(a.amendmentId)}"></a>${a.amendmentId} | ${a.date} | ${a.authorisedBy} | ${a.summary} |`);
   L.push('');
 
-  L.push('<a id="standard-contract"></a>', '## 5. Standard contract', '',
+  L.push('<a id="kernel"></a>', '## 5. Kernel', '', 'The parts every domain is built on. Each part has one owning domain.', '', '| Part | Name | Owner | What it is |', '|---|---|---|---|');
+  for (const k of DOMAINS.kernel || []) L.push(`| <a id="${anchor(k.partId)}"></a>${k.partId} | ${k.name} | ${linkDomain(domainByName(k.owner), from)} | ${k.statement} |`);
+  L.push('');
+
+  L.push('<a id="standard-contract"></a>', '## 6. Standard contract', '',
     'Every artifact inherits these sections. They are stated once here; `<artifact id>`, `<artifact title>` and `<owning domain>` stand for the artifact that inherits them. The ownership sections live on each domain’s card in its volume.', '');
   for (const { s, body } of genericSections()) L.push(`<a id="${anchor('standard-' + s)}"></a>`, `### ${s}`, '', body, '');
 
-  L.push('<a id="glossary"></a>', '## 6. Glossary', '', 'Every primitive and term, once, with its single owner.', '');
+  L.push('<a id="glossary"></a>', '## 7. Glossary', '', 'Every primitive and term, once, with its single owner.', '');
   const entries = new Map();
   for (const p of PRIMITIVES.primitives) entries.set(p.name, { name: p.name, prim: p });
   for (const t of TERMS.terms) entries.set(t.canonicalName, Object.assign(entries.get(t.canonicalName) || { name: t.canonicalName }, { term: t }));
@@ -581,7 +595,25 @@ function masterText(volumes, sizes, max) {
     L.push('');
   }
 
-  L.push('<a id="id-lookup"></a>', '## 7. ID lookup', '', '| ID | Kind | Name | Where |', '|---|---|---|---|');
+  L.push('<a id="code-map"></a>', '## 8. Code map', '', `Every file under ${(CODEBASE.covers || []).map(c => '\`' + c + '\`').join(', ')} and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. ${CODEBASE.modules.length} files.`, '');
+  for (const c of cats) {
+    const rows = [];
+    for (const m of CODEBASE.modules) for (const p of m.parts || [{ owner: m.owner, part: m.note }]) {
+      const d = domainByName(p.owner);
+      if (d && d.category === c.categoryId) rows.push(`| \`${m.path}\` | ${linkDomain(d, from)} | ${p.part || ''} |`);
+    }
+    if (rows.length) L.push(`### ${c.categoryId} · ${c.name}`, '', '| File | Owner | Part |', '|---|---|---|', ...rows, '');
+  }
+
+  L.push('<a id="build-path"></a>', '## 9. Build path and decisions', '');
+  const done = ROADMAP.steps.filter(st => st.status === 'done').length;
+  L.push(`${done} of ${ROADMAP.steps.length} steps done. Each step is committed only once the full test suite passes.`, '', '| Step | What | Domains | Status | Delivered by |', '|---|---|---|---|---|');
+  for (const st of ROADMAP.steps) L.push(`| <a id="${anchor(st.stepId)}"></a>${st.stepId} | ${st.title} | ${st.domains.map(n => linkDomain(domainByName(n), from)).join(', ')} | ${st.status} | ${(st.deliveredBy || []).map(a => `[${a}](#${anchor(a)})`).join(', ') || '—'} |`);
+  L.push('', '### Decisions', '', '| ID | Question | Decision |', '|---|---|---|');
+  for (const dc of ROADMAP.decisions) L.push(`| <a id="${anchor(dc.decisionId)}"></a>${dc.decisionId} | ${dc.question} | ${dc.decision} |`);
+  L.push('');
+
+  L.push('<a id="id-lookup"></a>', '## 10. ID lookup', '', '| ID | Kind | Name | Where |', '|---|---|---|---|');
   const rows = [];
   for (const c of cats) rows.push([c.categoryId, 'category', c.name, volumes.filter(v => v.category === c).map(v => `[${v.id}](${VOLUME_DIR}/${v.file})`).join(', ')]);
   for (const v of volumes) if (v.of > 1) rows.push([v.id, 'volume', `${v.category.name}, part ${v.part} of ${v.of}`, `[${v.file}](${VOLUME_DIR}/${v.file})`]);
@@ -590,6 +622,9 @@ function masterText(volumes, sizes, max) {
   for (const p of PRIMITIVES.primitives) rows.push([p.id, 'primitive', p.name, linkTerm(p.name, from)]);
   for (const t of TERMS.terms) rows.push([t.termId, 'term', t.canonicalName, linkTerm(t.canonicalName, from)]);
   for (const l of DOMAINS.laws || []) rows.push([l.lawId, 'law', l.name, `[constitution](#${anchor(l.lawId)})`]);
+  for (const k of DOMAINS.kernel || []) rows.push([k.partId, 'kernel part', k.name, `[kernel](#${anchor(k.partId)})`]);
+  for (const st of ROADMAP.steps) rows.push([st.stepId, 'build step', st.title.slice(0, 60), `[build path](#${anchor(st.stepId)})`]);
+  for (const dc of ROADMAP.decisions) rows.push([dc.decisionId, 'decision', dc.question, `[decisions](#${anchor(dc.decisionId)})`]);
   for (const a of DOMAINS.amendments || []) rows.push([a.amendmentId, 'amendment', a.summary.split(':')[0].slice(0, 60), `[constitution](#${anchor(a.amendmentId)})`]);
   rows.sort((x, y) => x[0].localeCompare(y[0]));
   for (const r of rows) L.push(`| ${r[0]} | ${r[1]} | ${r[2]} | ${r[3]} |`);

@@ -22,6 +22,7 @@
 | **Not responsible for** | Observation Capture, Simulation |
 | **Contract** | [UCOS-INS-000001 Insight Architecture](#ucos-ins-000001) |
 | **Artifacts** | [UCOS-INS-000001](#ucos-ins-000001) |
+| **Code** | `lib/dashboards.js`, `lib/experiments.js`, `lib/planning.js` |
 | **Managed in** | `_registry/domains.json` → `D-INS` |
 
 <a id="ucos-ins-000001"></a>

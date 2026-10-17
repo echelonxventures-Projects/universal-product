@@ -32,6 +32,7 @@
 | **Not responsible for** | Deployment Regions, Time, Value |
 | **Contract** | [UCOS-PLC-000001 Geo Architecture](#ucos-plc-000001) |
 | **Artifacts** | [UCOS-PLC-000001](#ucos-plc-000001) |
+| **Code** | `lib/subdivisions.js`, `lib/seed/subdivisions.json` |
 | **Managed in** | `_registry/domains.json` → `D-GEO` |
 
 <a id="ucos-plc-000001"></a>
@@ -238,6 +239,7 @@ stateDiagram-v2
 | **Not responsible for** | Event Recording, State |
 | **Contract** | [UCOS-TIM-000001 Time Architecture](#ucos-tim-000001) |
 | **Artifacts** | [UCOS-TIM-000001](#ucos-tim-000001) |
+| **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-TIM` |
 
 <a id="ucos-tim-000001"></a>
@@ -441,6 +443,7 @@ stateDiagram-v2
 | **Not responsible for** | Value Units, Time Calendars |
 | **Contract** | [UCOS-MEA-000001 Measure Architecture](#ucos-mea-000001) |
 | **Artifacts** | [UCOS-MEA-000001](#ucos-mea-000001) |
+| **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-MEA` |
 
 <a id="ucos-mea-000001"></a>
@@ -631,6 +634,7 @@ stateDiagram-v2
 | **Not responsible for** | Pricing Rules, Offerings |
 | **Contract** | [UCOS-VAL-000001 Value Architecture](#ucos-val-000001) |
 | **Artifacts** | [UCOS-VAL-000001](#ucos-val-000001) |
+| **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-VAL` |
 
 <a id="ucos-val-000001"></a>
@@ -829,6 +833,7 @@ stateDiagram-v2
 | **Not responsible for** | Meaning, Place |
 | **Contract** | [UCOS-EXR-000001 Expression Architecture](#ucos-exr-000001) |
 | **Artifacts** | [UCOS-EXR-000001](#ucos-exr-000001) |
+| **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-EXR` |
 
 <a id="ucos-exr-000001"></a>
@@ -1030,6 +1035,7 @@ stateDiagram-v2
 | **Not responsible for** | Meaning, Trust, Identity |
 | **Contract** | [UCOS-CTX-000001 Context Architecture](#ucos-ctx-000001) |
 | **Artifacts** | [UCOS-CTX-000001](#ucos-ctx-000001) |
+| **Code** | `lib/defaults.js`, `lib/settings.js`, `lib/seed/defaults.json`, `lib/seed/settings.json` |
 | **Managed in** | `_registry/domains.json` → `D-CTX` |
 
 <a id="ucos-ctx-000001"></a>

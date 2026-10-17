@@ -970,6 +970,63 @@
       "sequence": "```mermaid\nsequenceDiagram\n    participant O as Operator\n    participant P as Package\n    participant R as Registry\n    O->>P: install(Commerce)\n    P->>R: compose declarations\n    P-->>O: blueprint questions\n    O->>P: answers\n```",
       "state": "```mermaid\nstateDiagram-v2\n    [*] --> Installing\n    Installing --> Configuring\n    Configuring --> Upgrading\n    Upgrading --> [*]\n```",
       "blueprint": "Build order for PKG: (1) package declarations and composition; (2) install with shared-entity merge; (3) overlays and upgrades; (4) the package builder; (5) first packages from today's platform kinds. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "PTY": {
+      "concepts": "Party Architecture owns everyone and everything that acts: platforms, tenants and their hierarchy (organisation, business unit, brand, store, channel), organisations, people, agents and providers, and the roles they play. A customer or a seller is a party in a role, never a separate copy.",
+      "ontology": "A Party has an Identity, a kind, a place in the tenancy hierarchy and any number of Roles, each held in a Context (a store, a channel, a place) for a validity window.",
+      "taxonomy": "Kinds: platform, tenant, organisation, business unit, brand, store, channel, person, agent, provider, any declared. Roles: customer, seller, staff, carrier, partner, any declared.",
+      "dataModel": "```yaml\nParty:\n  partyId: <Identity>\n  kind: <declared kind>\n  parent: <Party> | null\n  roles: [{role, context, validFrom, validTo}]\n  temporal: {validFrom, validTo, recordedAt}\n```",
+      "graphModel": "(:Party)-[:WITHIN]->(:Party); (:Party)-[:PLAYS {context}]->(:Role); (:Party)-[:IDENTIFIED_BY]->(:Identity)",
+      "apis": [
+        "POST /pty.v1.party",
+        "GET  /pty.v1/{id}",
+        "POST /pty.v1.role",
+        "GET  /pty.v1/{id}/roles"
+      ],
+      "commands": [
+        "party.register",
+        "party.move",
+        "role.assign",
+        "role.end"
+      ],
+      "queries": [
+        "party.ancestors",
+        "party.roles",
+        "parties.inRole"
+      ],
+      "events": [
+        "PartyRegistered",
+        "RoleAssigned",
+        "RoleEnded",
+        "PartyMoved"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Registered\n    Registered --> Active\n    Active --> Suspended\n    Suspended --> Closed\n    Closed --> [*]\n```",
+      "workflow": [
+        "register party → place in the hierarchy → assign roles in contexts → act through its roles"
+      ],
+      "authorities": [
+        "The platform owner governs platforms and tenants; a tenant governs its own hierarchy and roles."
+      ],
+      "permissions": [
+        "party.register (scope owner)",
+        "role.assign (role administrator)",
+        "party.read (by view)"
+      ],
+      "privacy": "People are parties with personal data; it is declared sensitive and handled under Compliance.",
+      "audit": "Registrations, moves and role changes are recorded.",
+      "twin": "A party twin shows a party's roles and activity across contexts.",
+      "agent": "An agent is a party with its own roles; it acts only within them.",
+      "runtime": "Role checks resolve the party's roles in the current context through the resolver.",
+      "scaling": "The hierarchy is read by ancestor path; roles are indexed by context.",
+      "multiTenant": "Each tenant's parties are isolated; platform parties bound tenant parties.",
+      "geo": "A party relates to the places it serves; its place-dependent settings are inherited.",
+      "failure": "A customer copied per store, a role without a context, a cycle in the hierarchy.",
+      "recovery": "Parties are never deleted outright; they close and keep their history.",
+      "certification": "One party per real actor; roles carry their context and validity.",
+      "migration": "Today's tenancy hierarchy, users and staff move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant O as Operator\n    participant P as Party\n    O->>P: register(party, parent)\n    O->>P: assign(role, context)\n    P-->>O: party with roles\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Registering\n    Registering --> Assigning\n    Assigning --> Acting\n    Acting --> [*]\n```",
+      "blueprint": "Build order for PTY: (1) party kinds and the hierarchy; (2) roles in contexts; (3) migrate the tenancy hierarchy, users and staff; (4) tests that a customer is one party across stores. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
     }
   }
 }

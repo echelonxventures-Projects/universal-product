@@ -24,6 +24,7 @@
 | **Not responsible for** | Constitutional Law, Relationship Integrity |
 | **Contract** | [UCOS-REG-000001 Registry Architecture](#ucos-reg-000001) |
 | **Artifacts** | [UCOS-REG-000001](#ucos-reg-000001) |
+| **Code** | `lib/entity.js`, `lib/meta.js`, `lib/parity-registries.js`, `lib/registry.js`, `lib/global.js`, `lib/canonical.js`, `lib/ucos.js`, `lib/ucos-registry.js`, `lib/ucos-foundations.js`, `lib/ucos-universes.js`, `lib/ucos-domain.js`, `lib/ucos-catalog.js`, `lib/ucos-completeness.js`, `lib/db.js`, `lib/dbpool.js`, `lib/sql.js`, `lib/pg.js`, `lib/pgbridge.js`, `lib/pgworker.js`, `lib/migrate.js`, `lib/seed/entity.json`, `lib/seed/meta.json`, `lib/seed/parity-registries.json`, `lib/seed/ucos.json`, `scripts/schema-dump.js` |
 | **Managed in** | `_registry/domains.json` → `D-REG` |
 
 <a id="ucos-reg-000001"></a>
@@ -233,6 +234,7 @@ stateDiagram-v2
 | **Not responsible for** | Meaning, Trust, Authority |
 | **Contract** | [UCOS-REL-000001 Relationship Architecture](#ucos-rel-000001) |
 | **Artifacts** | [UCOS-REL-000001](#ucos-rel-000001) |
+| **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-REL` |
 
 <a id="ucos-rel-000001"></a>

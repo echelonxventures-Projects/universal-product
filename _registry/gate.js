@@ -180,7 +180,60 @@ function run(payload) {
     try { allowed = JSON.parse(require("fs").readFileSync(path.join(__dirname, "register-baseline.json"), "utf8")).domainsWithoutContract; } catch (e) { }
     record(check("zero-missing · every domain's contract is an artifact it owns (" + noContract.length + " outstanding, baseline " + allowed + ")",
       noContract.length <= allowed, noContract.join(", ")));
-    registerCounts = { categories: cats.length, domains: doms.length, owned: owners.size, domainsWithoutContract: noContract.length, outstanding: noContract };
+    /* the law register: every law stated once, sourced, and its enforcement declared. The
+       count of laws not yet fully enforced may only fall (register-baseline.json) */
+    const laws = D.laws || [];
+    const lawIds = keySet(laws, "lawId"), lawNames = keySet(laws, "name");
+    const docIds = new Set(Object.keys(P));
+    const srcOk = s => { const d = String(s).split(":")[0].split(" ")[0]; return docIds.has(d) || require("fs").existsSync(path.join(ROOT, d)); };
+    const partialLaws = laws.filter(l => !l.lawId || !l.name || !l.statement || !(l.sources || []).length || !["enforced", "partial", "planned"].includes(l.status)
+      || (l.status !== "planned" && !(l.enforcedBy || []).length)).map(l => l.lawId || l.name);
+    record(check("zero-partial · every law has a statement, a source, a status and (unless planned) its enforcement",
+      lawIds.size === laws.length && lawNames.size === laws.length && !partialLaws.length, partialLaws.join(", ")));
+    const unsourced = laws.flatMap(l => (l.sources || []).filter(x => !srcOk(x)).map(x => l.lawId + "→" + x));
+    record(check("zero-missing · every law source is a declared document or an existing file", !unsourced.length, unsourced.slice(0, 5).join(", ")));
+    const notEnforced = laws.filter(l => l.status !== "enforced").map(l => l.lawId);
+    let allowedLaws = Infinity;
+    try { allowedLaws = JSON.parse(require("fs").readFileSync(path.join(__dirname, "register-baseline.json"), "utf8")).lawsNotEnforced; } catch (e) { }
+    record(check("zero-missing · laws not yet fully enforced (" + notEnforced.length + ", baseline " + allowedLaws + ")", notEnforced.length <= allowedLaws, notEnforced.join(", ")));
+
+    /* the kernel: every part has one owning domain */
+    const kernel = D.kernel || [];
+    const badKernel = kernel.filter(k => !k.partId || !k.statement || !domNames.has(k.owner)).map(k => k.partId || k.name);
+    record(check("zero-missing · every kernel part has one owning domain", keySet(kernel, "partId").size === kernel.length && !badKernel.length, badKernel.join(", ")));
+
+    /* the code-module map: every file under the declared folders has exactly one home */
+    const cb = rf.codebase || { modules: [] };
+    const fs = require("fs");
+    const modPaths = keySet(cb.modules, "path");
+    const ownersOf = m => m.parts ? m.parts.map(p => p.owner) : [m.owner];
+    const badOwner = cb.modules.filter(m => !ownersOf(m).length || ownersOf(m).some(o => !domNames.has(o))).map(m => m.path);
+    record(check("zero-duplicate · every code module is mapped once, to declared domains",
+      modPaths.size === cb.modules.length && !badOwner.length, (cb.modules.length - modPaths.size) + " repeated; unknown owners: " + badOwner.join(", ")));
+    const onDisk = [];
+    for (const pattern of cb.covers || []) {
+      const [dir, glob] = pattern.includes("/") ? [pattern.slice(0, pattern.lastIndexOf("/")), pattern.slice(pattern.lastIndexOf("/") + 1)] : [".", pattern];
+      const re = new RegExp("^" + glob.replace(/[.]/g, "\\.").replace(/\*/g, "[^/]*") + "$");
+      let entries = [];
+      try { entries = fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true }); } catch (e) { }
+      for (const e of entries) if (e.isFile() && re.test(e.name)) onDisk.push(dir === "." ? e.name : dir + "/" + e.name);
+    }
+    const unmapped = onDisk.filter(f => !modPaths.has(f));
+    const vanished = cb.modules.map(m => m.path).filter(f => !onDisk.includes(f));
+    record(check("zero-missing · every code file has a home, and every home is a real file",
+      !unmapped.length && !vanished.length, "unmapped: " + unmapped.slice(0, 5).join(", ") + "; missing: " + vanished.slice(0, 5).join(", ")));
+
+    /* the build path: steps name declared domains; a done step names the amendments that delivered it */
+    const rm = rf.roadmap || { steps: [], decisions: [] };
+    const amdIds = new Set((D.amendments || []).map(a => a.amendmentId));
+    const badSteps = rm.steps.filter(st => !["done", "in-progress", "planned"].includes(st.status) || (st.domains || []).some(d => !domNames.has(d))
+      || (st.status === "done" && (!(st.deliveredBy || []).length || st.deliveredBy.some(a => !amdIds.has(a))))).map(st => st.stepId);
+    record(check("zero-partial · every build step names real domains, and every done step its amendments",
+      keySet(rm.steps, "stepId").size === rm.steps.length && keySet(rm.decisions, "decisionId").size === rm.decisions.length && !badSteps.length, badSteps.join(", ")));
+
+    registerCounts = { categories: cats.length, domains: doms.length, owned: owners.size, domainsWithoutContract: noContract.length, outstanding: noContract,
+      laws: laws.length, lawsNotEnforced: notEnforced.length, kernel: kernel.length, modules: cb.modules.length, steps: rm.steps.length,
+      stepsDone: rm.steps.filter(st => st.status === "done").length };
   }
 
   /* ---------- NO LEAKAGE — the compiled registry is exactly the sources ---------- */

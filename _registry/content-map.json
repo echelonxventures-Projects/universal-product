@@ -447,6 +447,10 @@
     "UCOS-PKG-000001": {
       "src": "platform",
       "key": "PKG"
+    },
+    "UCOS-PTY-000001": {
+      "src": "platform",
+      "key": "PTY"
     }
   }
 }

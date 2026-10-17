@@ -670,6 +670,12 @@
       "title": "Package Architecture",
       "status": "generated",
       "owner": "Package"
+    },
+    {
+      "id": "UCOS-PTY-000001",
+      "title": "Party Architecture",
+      "status": "generated",
+      "owner": "Party"
     }
   ]
 }

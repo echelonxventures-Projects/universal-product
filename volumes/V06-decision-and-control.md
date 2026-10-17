@@ -28,6 +28,7 @@
 | **Not responsible for** | Knowledge, Meaning, Identity |
 | **Contract** | [UCOS-POL-000001 Policy Architecture](#ucos-pol-000001) |
 | **Artifacts** | [UCOS-POL-000001](#ucos-pol-000001) |
+| **Code** | `lib/policies.js` |
 | **Managed in** | `_registry/domains.json` → `D-POL` |
 
 <a id="ucos-pol-000001"></a>
@@ -248,6 +249,7 @@ stateDiagram-v2
 | **Not responsible for** | Policy Intent, Decision |
 | **Contract** | [UCOS-RUL-000001 Rule Architecture](#ucos-rul-000001) |
 | **Artifacts** | [UCOS-RUL-000001](#ucos-rul-000001) |
+| **Code** | `lib/rules.js`, `lib/gates.js`, `lib/tax.js`, `lib/seed/gates.json`, `lib/seed/rules.json`, `lib/seed/tax.json` |
 | **Managed in** | `_registry/domains.json` → `D-RUL` |
 
 <a id="ucos-rul-000001"></a>
@@ -459,6 +461,7 @@ stateDiagram-v2
 | **Not responsible for** | Rule Execution Semantics |
 | **Contract** | [UCOS-DEC-000001 Decision Architecture](#ucos-dec-000001) |
 | **Artifacts** | [UCOS-DEC-000001](#ucos-dec-000001) |
+| **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-DEC` |
 
 <a id="ucos-dec-000001"></a>
@@ -662,6 +665,7 @@ stateDiagram-v2
 | **Not responsible for** | Knowledge, Meaning, Relationships |
 | **Contract** | [UCOS-AUT-000001 Authority Architecture](#ucos-aut-000001) |
 | **Artifacts** | [UCOS-AUT-000001](#ucos-aut-000001) |
+| **Code** | `lib/authz.js`, `lib/rbac.js`, `lib/prbac.js`, `lib/seed/authz.json` |
 | **Managed in** | `_registry/domains.json` → `D-AUT` |
 
 <a id="ucos-aut-000001"></a>

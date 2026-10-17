@@ -38,6 +38,7 @@
 | **Not responsible for** | Policy, Decision |
 | **Contract** | [UCOS-RUN-000001 Runtime Constitution](#ucos-run-000001) |
 | **Artifacts** | [UCOS-RUN-000001](#ucos-run-000001), [UCOS-RUN-000002](#ucos-run-000002), [UCOS-RUN-000003](#ucos-run-000003), [UCOS-RUN-000004](#ucos-run-000004), [UCOS-RUN-000005](#ucos-run-000005), [UCOS-EVT-000001](#ucos-evt-000001), [UCOS-MSG-000001](#ucos-msg-000001) |
+| **Code** | `lib/events.js`, `lib/states.js`, `lib/queue.js`, `lib/seed/states.json` |
 | **Managed in** | `_registry/domains.json` → `D-RUN` |
 
 <a id="ucos-run-000001"></a>
@@ -1430,6 +1431,7 @@ stateDiagram-v2
 | **Must obey** | Constitution, Authority, Policy, Trust, Evidence |
 | **Contract** | [UCOS-AGT-000001 Agent Constitution](#ucos-agt-000001) |
 | **Artifacts** | [UCOS-AGT-000001](#ucos-agt-000001), [UCOS-AGT-000002](#ucos-agt-000002), [UCOS-AGT-000003](#ucos-agt-000003), [UCOS-AGT-000004](#ucos-agt-000004), [UCOS-AGT-000005](#ucos-agt-000005), [UCOS-AGT-000006](#ucos-agt-000006), [UCOS-AGT-000007](#ucos-agt-000007) |
+| **Code** | `lib/ai.js` |
 | **Managed in** | `_registry/domains.json` → `D-AGT` |
 
 <a id="ucos-agt-000001"></a>
@@ -2838,6 +2840,7 @@ stateDiagram-v2
 | **Not responsible for** | Permissions, Communication Channels |
 | **Contract** | [UCOS-INT-000001 Integration Architecture](#ucos-int-000001) |
 | **Artifacts** | [UCOS-INT-000001](#ucos-int-000001) |
+| **Code** | `server.js`, `lib/providers.js`, `lib/api.js`, `lib/spec.js`, `lib/connect.js`, `lib/idempotency.js`, `lib/seed/providers.json` |
 | **Managed in** | `_registry/domains.json` → `D-INT` |
 
 <a id="ucos-int-000001"></a>

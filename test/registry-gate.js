@@ -40,7 +40,7 @@ console.log("\n▸ §A THE GATE — the five criteria over the compiled registry
   console.log("  the gate checked " + report.checked + " properties (" + report.passed + " passed):");
   ok(report.ok, "the compiled registry passes all five criteria", report.fails.map(f => f.name).join("; "));
   for (const f of report.fails) ok(false, "  ✗ " + f.name, f.detail);
-  ok(report.counts.universes === 2936, "the compiled registry declares the constitutional universes (2919 + the 17 contract artifacts)", report.counts.universes);
+  ok(report.counts.universes === 2937, "the compiled registry declares the constitutional universes (2919 + the 18 contract artifacts)", report.counts.universes);
   ok(report.counts.concepts > 30000, "and the full concept layer", report.counts.concepts);
 }
 
@@ -72,6 +72,23 @@ console.log("\n▸ §A1 THE REGISTER — one categorised owner for every declara
   reserved.registryFiles.terminology.terms.push({ termId: "T-X", canonicalName: rf.primitives.prohibited[0], definition: "x" });
   reserved.registryFiles.domains.domains[0].owns.push(rf.primitives.prohibited[0]);
   ok(gate.run(reserved).fails.some(f => /reserves for projections/.test(f.name)), "a term named like a projection fails the gate");
+
+  /* the law register, the kernel, the code map and the build path are gated too */
+  ok(reg.laws >= 26 && reg.kernel >= 12 && reg.modules > 100, "the register reports laws, kernel parts and code modules", JSON.stringify({ l: reg.laws, k: reg.kernel, m: reg.modules }));
+  const law = JSON.parse(JSON.stringify(payload));
+  law.registryFiles.domains.laws[0].sources = [];
+  law.registryFiles.domains.laws[1].sources = ["no-such-doc:1"];
+  const r3 = gate.run(law);
+  ok(r3.fails.some(f => /every law has a statement/.test(f.name)) && r3.fails.some(f => /law source/.test(f.name)), "a law without a source, or with a source that does not exist, fails the gate");
+  const code = JSON.parse(JSON.stringify(payload));
+  code.registryFiles.codebase.modules = code.registryFiles.codebase.modules.slice(1);
+  code.registryFiles.codebase.modules.push({ path: "lib/no-such-file.js", owner: "Registry" });
+  const r4 = gate.run(code);
+  ok(r4.fails.some(f => /every code file has a home/.test(f.name)), "an unmapped code file, or a mapping to a file that does not exist, fails the gate");
+  const step = JSON.parse(JSON.stringify(payload));
+  step.registryFiles.roadmap.steps[0].deliveredBy = ["AMD-9999"];
+  ok(gate.run(step).fails.some(f => /build step/.test(f.name)), "a done step naming an amendment that does not exist fails the gate");
+  ok(can.search("fundamental axiom", { kind: "law" })[0]?.key === "LAW-001", "a law is found by any of its names (Fundamental Axiom → LAW-001)");
 }
 
 console.log("\n▸ §A2 THE GATE REFUSES A BROKEN COMPILE");

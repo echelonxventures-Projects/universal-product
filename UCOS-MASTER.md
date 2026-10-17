@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0003 (2026-10-17).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0004 (2026-10-17).
 
 ## Contents
 
@@ -8,9 +8,12 @@
 2. [Volume register](#volume-register)
 3. [Index](#index)
 4. [Constitution](#constitution)
-5. [Standard contract](#standard-contract)
-6. [Glossary](#glossary)
-7. [ID lookup](#id-lookup)
+5. [Kernel](#kernel)
+6. [Standard contract](#standard-contract)
+7. [Glossary](#glossary)
+8. [Code map](#code-map)
+9. [Build path and decisions](#build-path)
+10. [ID lookup](#id-lookup)
 
 <a id="how-to-manage"></a>
 ## 1. How to manage
@@ -21,7 +24,10 @@ Everything here is projected. To change it, edit the registry entry named below,
 |---|---|
 | A category (add, rename, describe) | `_registry/domains.json` → `categories` |
 | A domain (add, owns, responsibilities, category, contract) | `_registry/domains.json` → `domains` |
-| A law | `_registry/domains.json` → `laws`, with an entry in `amendments` |
+| A law (statement, aliases, sources, enforcement status) | `_registry/domains.json` → `laws`, with an entry in `amendments` |
+| A kernel part | `_registry/domains.json` → `kernel` |
+| Which domain owns a code file | `_registry/codebase.json` → `modules` |
+| A build step’s status, or a design decision | `_registry/roadmap.json` → `steps`, `decisions` |
 | A primitive (frozen: needs an amendment) | `_registry/primitives.json`, with an entry in `domains.json` → `amendments` |
 | A term (add, define) | `_registry/terminology.json`, and add it to exactly one domain’s `owns` |
 | An artifact (add, retitle, owner) | `_registry/manifest.json` → `artifacts`, a route in `_registry/content-map.json`, a content block in a `_registry/content-*.json` |
@@ -37,18 +43,18 @@ The integrity gate refuses a change that leaves a name owned twice or not at all
 <a id="volume-register"></a>
 ## 2. Volume register
 
-**15 volumes** for 13 categories · 46 domains · 110 artifacts · 27 primitives · 74 terms.
+**15 volumes** for 13 categories · 47 domains · 111 artifacts · 27 primitives · 76 terms.
 
 A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A category that would pass it is split into numbered parts on the next projection, and merged back when it shrinks.
 
 | Volume | Category | Part | Domains | Artifacts | Size |
 |---|---|---|---:|---:|---:|
 | [V01](volumes/V01-constitution.md) | C01 Constitution | 1 of 1 | 1 | 10 | 70 KB |
-| [V02](volumes/V02-meaning.md) | C02 Meaning | 1 of 1 | 4 | 12 | 78 KB |
+| [V02](volumes/V02-meaning.md) | C02 Meaning | 1 of 1 | 5 | 13 | 84 KB |
 | [V03.1](volumes/V03.1-reality-and-reasoning.md) | C03 Reality and Reasoning | 1 of 2 | 9 | 13 | 88 KB |
 | [V03.2](volumes/V03.2-reality-and-reasoning.md) | C03 Reality and Reasoning | 2 of 2 | 1 | 3 | 20 KB |
 | [V04](volumes/V04-universal-dimensions.md) | C04 Universal Dimensions | 1 of 1 | 6 | 6 | 38 KB |
-| [V05](volumes/V05-structure.md) | C05 Structure | 1 of 1 | 2 | 2 | 14 KB |
+| [V05](volumes/V05-structure.md) | C05 Structure | 1 of 1 | 2 | 2 | 15 KB |
 | [V06](volumes/V06-decision-and-control.md) | C06 Decision and Control | 1 of 1 | 4 | 4 | 28 KB |
 | [V07](volumes/V07-assurance.md) | C07 Assurance | 1 of 1 | 4 | 10 | 66 KB |
 | [V08](volumes/V08-interaction.md) | C08 Interaction | 1 of 1 | 4 | 4 | 25 KB |
@@ -56,8 +62,8 @@ A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A c
 | [V10](volumes/V10-intelligence.md) | C10 Intelligence | 1 of 1 | 1 | 1 | 6 KB |
 | [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 82 KB |
 | [V11.2](volumes/V11.2-platform.md) | C11 Platform | 2 of 2 | 3 | 6 | 37 KB |
-| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 65 KB |
-| [V13](volumes/V13-composition.md) | C13 Composition | 1 of 1 | 1 | 1 | 6 KB |
+| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 66 KB |
+| [V13](volumes/V13-composition.md) | C13 Composition | 1 of 1 | 1 | 1 | 7 KB |
 
 <a id="index"></a>
 ## 3. Index
@@ -98,6 +104,8 @@ What exists, what it is called, and what is known about it. Volume: [V02](volume
   - [UCOS-IMP-000004](volumes/V02-meaning.md#ucos-imp-000004) Migration Blueprint
   - [UCOS-IMP-000005](volumes/V02-meaning.md#ucos-imp-000005) Delivery Roadmap
   - [UCOS-GDN-000001](volumes/V02-meaning.md#ucos-gdn-000001) Guidance Architecture
+- [Party](volumes/V02-meaning.md#d-pty) — owns [Party](#t-party), [Role](#t-role)
+  - [UCOS-PTY-000001](volumes/V02-meaning.md#ucos-pty-000001) Party Architecture
 
 ### C03 · Reality and Reasoning
 
@@ -288,12 +296,36 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 
 ### Laws
 
-| Law | Statement | Enforced by |
-|---|---|---|
-| <a id="law-001"></a>LAW-001 Zero Hard Coding | No product, service, offer, contract, currency, country, language, industry or marketplace concept may appear as a schema type. They are projections. | _registry/audit.js |
-| <a id="law-002"></a>LAW-002 Knowledge Once | Every concept is defined exactly once: every artifact ID, primitive, term and owner is unique, and nothing is stated twice. | _registry/gate.js, _registry/audit.js |
-| <a id="law-003"></a>LAW-003 Projection Law | Documents are projected from the registry, never authored. Editing a projected document is a violation; change the registry and re-project. | _registry/project.js, _registry/audit.js |
-| <a id="law-005"></a>LAW-005 Explainability | Every artifact answers what happened, who authorized it, which policy allowed it, what evidence supports it, and with what confidence. | _registry/audit.js |
+26 laws: 6 enforced, 9 partly enforced, 11 planned. Each merges every place the corpus states it; its sources are document:line in the compiled corpus (`node _registry/compile.js --search` finds them).
+
+| Law | Statement | Also called | Status | Enforced by | Sources |
+|---|---|---|---|---|---|
+| <a id="law-001"></a>**LAW-001** Zero Hard Coding | Only the immutable kernel is fixed in code. No business concept — product, service, offer, subscription, contract, industry, category, brand, country, currency, language, marketplace, store, tenant, organisation, person — is modelled as a primitive or a schema type; each is a projection of primitives, and the projection changes as context changes. | Fundamental Axiom, Immutable Kernel, Final UCOS Law, Final Constitutional Law | enforced | _registry/audit.js (schema types); _registry/gate.js (reserved names) | ucosma:66, ucosma:1362, ucrs:28, ucrs:137, ucrs:1357 |
+| <a id="law-002"></a>**LAW-002** Knowledge Once | Every concept, fact and capability is defined once, in one canonical source, with one owner. There are no parallel definitions, no conflicting truth, no orphans, and every code module has one home. | Knowledge Once Principle, Single Canonical Source Of Truth, Final Implementation Law, One Owner Per Concern | enforced | _registry/gate.js (zero-duplicate, register and module-map checks) | ucosma:102, ucrs:1336, upip:48, upip:4940, upip:12828, ucos:1929, ucoso:2668, ucosadd:1244, _superseded/FOUNDATIONS.md §2 rules 3 and 17 |
+| <a id="law-003"></a>**LAW-003** Projection Law | Truth lives in the registry. Documents, business objects and reality are projections derived from it, never authored and never a second source; everything that can be derived is derived, not stored. | Projection Boundary, Everything Else Is Derived | enforced | _registry/project.js; test/master-doc.js; _registry/audit.js | ucosma:132, ucosadd:1159, _superseded/FOUNDATIONS.md §2 rule 5 |
+| <a id="law-004"></a>**LAW-004** Constitutional Governance | Every capability, change, evolution and autonomous action is governed; no execution bypasses governance. | — | partial | _registry/gate.js and the amendment record (registry changes) | ucosma:162 |
+| <a id="law-005"></a>**LAW-005** Explainability | Every action answers what happened, why, who authorised it, which policy allowed it, what evidence supports it, what confidence exists and what alternatives were evaluated. | — | partial | _registry/audit.js (the standard contract carries the questions) | ucosma:183 |
+| <a id="law-006"></a>**LAW-006** Configuration Over Code | Behaviour is driven by metadata, ontologies, policies, rules, registries and configuration, never by product-specific code. Launching anywhere, extending or changing the platform is configuration that a person with the manual, or an agent, can do from the console or the API. | Configuration Only, Everything Is Configurable From The Console | partial | scripts/audit-hardcoding.js; test/audit-gate.js (ratchet) | upip:58, _superseded/FOUNDATIONS.md §2 rules 1 and 11 |
+| <a id="law-007"></a>**LAW-007** Single Ownership And Contract | No concept exists without an owner, no capability without a boundary, no boundary without a contract, no contract without governance; no term has two meanings, no meaning two definitions, and no two domains overlap. | Constitutional Law, Domain Ownership Law | enforced | _registry/gate.js (register checks) | ucosadd:33 |
+| <a id="law-008"></a>**LAW-008** Independent Authorities | No entity owns another domain's concern — identity, geography, time, value, security, knowledge, intelligence, analytics or governance. It relates to them: a place stores no currency, a store stores no country. | Root Architectural Principle, No Embedding | planned | — | upip:8356, _superseded/FOUNDATIONS.md §2 rule 4 |
+| <a id="law-009"></a>**LAW-009** Dependency Law | Dependencies run Identity → Knowledge → Relationships → Context → Policy → Trust → Projection. Circular dependencies, mutual ownership and cross-domain state mutation are forbidden. | — | planned | — | ucosadd:1123 |
+| <a id="law-010"></a>**LAW-010** Runtime Responsibility | The constitution defines truth, domains manage truth, the runtime derives reality, agents execute reality and applications consume it. | — | planned | — | ucosadd:1186 |
+| <a id="law-011"></a>**LAW-011** Architectural Freeze | Primitives, domain ownership, contract structure and the governance, dependency and projection models are frozen. Change happens through registries, policies, capabilities, contexts, relationships, knowledge, agents and projections, never by adding primitives, and only through a recorded amendment. | — | enforced | test/ucos-registry.js (the 27 primitives); _registry/domains.json → amendments | ucosadd:1207 |
+| <a id="law-012"></a>**LAW-012** Generated Platform | Everything is generated from declarations: data models, APIs, interfaces, workflows, state machines, reports, dashboards, permissions, integrations, documentation, SDKs and tests. One generated API serves everyone — the console, storefronts, apps, agents, partners — with no private back door. | One API For Everyone | partial | _registry/project.js (documentation) | ucrs:1311, _superseded/FOUNDATIONS.md §2 rule 12 |
+| <a id="law-013"></a>**LAW-013** Registry First | Everything is discoverable: if it exists it is registered, describable and searchable. | Meta-Architecture Principle, Meta Principle | partial | lib/canonical.js search (the register) | upip:73, upip:6609 |
+| <a id="law-014"></a>**LAW-014** Infinite Extensibility | Every domain is complete from zero to infinite and assumes no Earth, country, calendar, value unit, language or text direction. New kinds, places, categories and domains arrive by registration and configuration, never redesign; every concept is self-governing, self-describing, self-registering, self-validating, self-certifying, composable, replaceable and independently evolvable. | Constitutional Decomposition Principle, Zero To Infinite | planned | — | upip:93, upip:5796, _superseded/FOUNDATIONS.md §2 rule 2 |
+| <a id="law-015"></a>**LAW-015** Technology Agnostic | Nothing depends on a vendor, database, cloud or framework; each is an adapter chosen by configuration, per domain or per tenant. | Any Database | planned | — | upip:99, _superseded/FOUNDATIONS.md §2 rule 10 |
+| <a id="law-016"></a>**LAW-016** Contextual Distribution | Configuring a place projects what applies there — expression, value units, tax, compliance, catalogue, pricing — inherited down the place hierarchies, for any number of places at once. | — | planned | — | ucosma:1071 |
+| <a id="law-017"></a>**LAW-017** Platform-Owned Master Data | Master data belongs to the platform. Platforms, tenants and modules select it through views and never copy it; a tenant extends only within its own scope. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 6 |
+| <a id="law-018"></a>**LAW-018** Selection From Owners | Every choice offered anywhere is a selection from the domain that owns the subject, in any combination. Constraints are declared by the entities, and every option carries a free or paid offering. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 7 |
+| <a id="law-019"></a>**LAW-019** Nothing Invented | Creating one thing never creates another. Anything missing shows as incomplete until a person or agent completes it; nothing is filled with a placeholder. | — | partial | test/geo.js (no invented countries) | _superseded/FOUNDATIONS.md §2 rule 8 |
+| <a id="law-020"></a>**LAW-020** Rules Belong To Kinds | A format or validation rule belongs to the kind that needs it, never to a whole domain. | — | partial | lib/entity.js field declarations (pattern, format, bounds) | _superseded/FOUNDATIONS.md §2 rule 9 |
+| <a id="law-021"></a>**LAW-021** One Kernel | Every domain is built on the same kernel and receives every kernel part and shared service; no domain can lack one. | — | partial | _registry/gate.js (every domain complete, categorised and contracted) | _superseded/FOUNDATIONS.md §2 rule 10 |
+| <a id="law-022"></a>**LAW-022** Bounded Agents | An agent is a party with declared permissions, scope, budget and audit; it never exceeds the person or role it acts for, and money or irreversible actions need declared approval. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 13 |
+| <a id="law-023"></a>**LAW-023** Security Floor | Security and compliance are on by default; a tenant or operator may tighten policy but never weaken it below the platform baseline. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 14 |
+| <a id="law-024"></a>**LAW-024** Immutable Record | Every change and every access to sensitive data is recorded in an append-only, hash-chained record that no one can edit. | — | partial | lib/security.js (hash-chained audit log) | _superseded/FOUNDATIONS.md §2 rule 15 |
+| <a id="law-025"></a>**LAW-025** Packages Compose | Packages compose domains into ready-made, editable platforms; a customisation is an overlay that survives every package upgrade. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 16 |
+| <a id="law-026"></a>**LAW-026** Every Law Is Enforced | A law without an executable check is not finished; the register records each law's enforcement, and the count of laws not yet enforced may only fall. | — | enforced | _registry/gate.js (law register); _registry/register-baseline.json | _superseded/FOUNDATIONS.md §2 rule 18 |
 
 ### Laws of the registries
 
@@ -327,9 +359,30 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0001"></a>AMD-0001 | 2026-10-17 | Platform owner | Unifies the registry under one categorised ownership spine: 13 categories; every domain in exactly one category; every primitive and term owned by exactly one domain (ownership stated only here); the four undeclared owners resolved (Constitutional Authority and Runtime declared as domains, Perspective and Possibility declared, Existence owned by Identity); new domains for the platform; every artifact owned by one domain. |
 | <a id="amd-0002"></a>AMD-0002 | 2026-10-17 | Platform owner | Writes the 17 missing domain contracts (Decision, Geo, Time, Measure, Value, Expression, Registry, Compliance, Experience, Communication, Notification, Guidance, Integration, Insight, Content, Offering, Package) into the registry, replacing FOUNDATIONS.md as their source; documents are filed by the owning domain's register category, so the manifest's separate document categories are retired. |
 | <a id="amd-0003"></a>AMD-0003 | 2026-10-17 | Platform owner | One master document: the registry projects UCOS-MASTER.md and one volume per register category, replacing the per-artifact files and the repository index; the enforced laws become registry data. |
+| <a id="amd-0004"></a>AMD-0004 | 2026-10-17 | Platform owner | FOUNDATIONS.md absorbed: one law register (26 laws merging the corpus's laws and principles and the foundation rules, each with sources and enforcement status), the kernel parts K01–K12 with one owner each, the Party domain and its contract, the code-module map (codebase.json), and the build path with its decisions (roadmap.json). FOUNDATIONS.md moves to _superseded. |
+
+<a id="kernel"></a>
+## 5. Kernel
+
+The parts every domain is built on. Each part has one owning domain.
+
+| Part | Name | Owner | What it is |
+|---|---|---|---|
+| <a id="k01"></a>K01 | Kinds | [Registry](volumes/V05-structure.md#d-reg) | The kinds a domain contains, each declaring its attributes, where it may sit, its validation rules, its identifier schemes and whether it carries a shape. Users add kinds. |
+| <a id="k02"></a>K02 | Nodes | [Identity](volumes/V02-meaning.md#d-idn) | The instances of every kind, with no limit on count or depth. |
+| <a id="k03"></a>K03 | Hierarchies | [Relationship](volumes/V05-structure.md#d-rel) | Named hierarchies over shared nodes; a node may sit in many, and in more than one place within one. |
+| <a id="k04"></a>K04 | Identifiers | [Identity](volumes/V02-meaning.md#d-idn) | A universal ID for every node, plus any number of code schemes, declared as data. |
+| <a id="k05"></a>K05 | Shape | [Geo](volumes/V04-universal-dimensions.md#d-geo) | A point, area or volume in a declared coordinate system; any coordinate resolves to every node that contains it. |
+| <a id="k06"></a>K06 | Attributes | [Registry](volumes/V05-structure.md#d-reg) | Typed values declared in the registry; text is multilingual through Expression, sensitive values are encrypted through Security. |
+| <a id="k07"></a>K07 | Versions | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | Bi-temporal history: valid time and recorded time; nothing is overwritten and any past state can be queried. |
+| <a id="k08"></a>K08 | Events | [Runtime](volumes/V09-automation.md#d-run) | One event log that every change and declared occurrence is written to; workflows, notifications, analytics, webhooks and audit read it. |
+| <a id="k09"></a>K09 | Change Lifecycle | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | Draft, validate, preview, approve, publish (now or scheduled), roll back; hide is reversible; delete is archive, then purge with a separate permission. |
+| <a id="k10"></a>K10 | Views | [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per) | A platform, tenant, module or subscriber selects hierarchies, subtrees, depth, groupings and labels by reference, never by copy. |
+| <a id="k11"></a>K11 | Scope | [Context](volumes/V04-universal-dimensions.md#d-ctx) | Every declaration lives in a namespace (platform, tenant, publisher) and at a scope level (platform, tenant, store, channel, place, language, segment, device type, person). |
+| <a id="k12"></a>K12 | Resolution | [Context](volumes/V04-universal-dimensions.md#d-ctx) | One resolver answers what applies here and now from relationships, hierarchies (nearest wins), time windows, context and rules; settings and defaults are its answers, not stored copies. |
 
 <a id="standard-contract"></a>
-## 5. Standard contract
+## 6. Standard contract
 
 Every artifact inherits these sections. They are stated once here; `<artifact id>`, `<artifact title>` and `<owning domain>` stand for the artifact that inherits them. The ownership sections live on each domain’s card in its volume.
 
@@ -339,7 +392,7 @@ Every artifact inherits these sections. They are stated once here; `<artifact id
 **<artifact id> — <artifact title>**
 
 This artifact is a constitutionally governed, implementation-ready specification projected from the _UCOS Registry_ single source of truth.
-It conforms to the _Immutable Primitive Registry_ (27 frozen primitives) and the _Canonical Terminology Registry_ (74 governed terms).
+It conforms to the _Immutable Primitive Registry_ (27 frozen primitives) and the _Canonical Terminology Registry_ (76 governed terms).
 It contains no hardcoded business, industry, currency, country, or commerce concepts. All such concepts are runtime projections.
 
 <a id="standard-constitutional-purpose"></a>
@@ -540,7 +593,7 @@ graph TD
 Forbidden: circular dependencies, mutual ownership, cross-domain state mutation.
 
 <a id="glossary"></a>
-## 6. Glossary
+## 7. Glossary
 
 Every primitive and term, once, with its single owner.
 
@@ -929,6 +982,13 @@ Every primitive and term, once, with its single owner.
 - Also called: bundle
 - Never means: offering
 
+<a id="t-party"></a>
+**Party** T-PARTY — owned by [Party](volumes/V02-meaning.md#d-pty)
+
+- Term: Anyone or anything that acts: a platform, tenant, organisation, person, agent or provider.
+- Also called: actor
+- Never means: identity, role
+
 <a id="t-permission"></a>
 **Permission** T-PERMISSION — owned by [Authority](volumes/V06-decision-and-control.md#d-aut)
 
@@ -1019,6 +1079,12 @@ Every primitive and term, once, with its single owner.
 - Term: A declared view over metrics and dimensions.
 - Also called: dashboard
 - Never means: audit record
+
+<a id="t-role"></a>
+**Role** T-ROLE — owned by [Party](volumes/V02-meaning.md#d-pty)
+
+- Term: A part a party plays in a context: customer, seller, staff, carrier, partner, any declared.
+- Never means: permission, party
 
 <a id="t-rule"></a>
 **Rule** P-10 · T-RULE — owned by [Rule](volumes/V06-decision-and-control.md#d-rul)
@@ -1117,14 +1183,263 @@ Every primitive and term, once, with its single owner.
 - Term: Orchestrated process.
 - Never means: process
 
+<a id="code-map"></a>
+## 8. Code map
+
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 126 files.
+
+### C02 · Meaning
+
+| File | Owner | Part |
+|---|---|---|
+| `lib/uid.js` | [Identity](volumes/V02-meaning.md#d-idn) |  |
+| `lib/tenancy.js` | [Party](volumes/V02-meaning.md#d-pty) |  |
+| `public/docs/architecture.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
+| `public/docs/e2e-flow.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
+| `public/docs/platform-reference.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
+| `public/docs/provisioning-guide.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
+| `public/docs/user-manual.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
+| `public/docs/user-manual.js` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
+
+### C03 · Reality and Reasoning
+
+| File | Owner | Part |
+|---|---|---|
+| `lib/governance.js` | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | archive, restore, purge (K09) |
+
+### C04 · Universal Dimensions
+
+| File | Owner | Part |
+|---|---|---|
+| `lib/defaults.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | resolver answers (K12) |
+| `lib/settings.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | resolver answers (K12) |
+| `lib/subdivisions.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) |  |
+| `lib/seed/defaults.json` | [Context](volumes/V04-universal-dimensions.md#d-ctx) |  |
+| `lib/seed/settings.json` | [Context](volumes/V04-universal-dimensions.md#d-ctx) |  |
+| `lib/seed/subdivisions.json` | [Geo](volumes/V04-universal-dimensions.md#d-geo) |  |
+
+### C05 · Structure
+
+| File | Owner | Part |
+|---|---|---|
+| `lib/entity.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/meta.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/parity-registries.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/registry.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/global.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/canonical.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/ucos.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/ucos-registry.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/ucos-foundations.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/ucos-universes.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/ucos-domain.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/ucos-catalog.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/ucos-completeness.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/db.js` | [Registry](volumes/V05-structure.md#d-reg) | storage adapter: SQLite |
+| `lib/dbpool.js` | [Registry](volumes/V05-structure.md#d-reg) | storage adapter |
+| `lib/sql.js` | [Registry](volumes/V05-structure.md#d-reg) | storage adapter: dialect |
+| `lib/pg.js` | [Registry](volumes/V05-structure.md#d-reg) | storage adapter: PostgreSQL |
+| `lib/pgbridge.js` | [Registry](volumes/V05-structure.md#d-reg) | storage adapter: PostgreSQL |
+| `lib/pgworker.js` | [Registry](volumes/V05-structure.md#d-reg) | storage adapter: PostgreSQL |
+| `lib/migrate.js` | [Registry](volumes/V05-structure.md#d-reg) | migrations |
+| `lib/seed/entity.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/seed/meta.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/seed/parity-registries.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/seed/ucos.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `scripts/schema-dump.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+
+### C06 · Decision and Control
+
+| File | Owner | Part |
+|---|---|---|
+| `lib/rules.js` | [Rule](volumes/V06-decision-and-control.md#d-rul) |  |
+| `lib/policies.js` | [Policy](volumes/V06-decision-and-control.md#d-pol) |  |
+| `lib/gates.js` | [Rule](volumes/V06-decision-and-control.md#d-rul) |  |
+| `lib/tax.js` | [Rule](volumes/V06-decision-and-control.md#d-rul) |  |
+| `lib/authz.js` | [Authority](volumes/V06-decision-and-control.md#d-aut) |  |
+| `lib/rbac.js` | [Authority](volumes/V06-decision-and-control.md#d-aut) |  |
+| `lib/prbac.js` | [Authority](volumes/V06-decision-and-control.md#d-aut) |  |
+| `lib/seed/authz.json` | [Authority](volumes/V06-decision-and-control.md#d-aut) |  |
+| `lib/seed/gates.json` | [Rule](volumes/V06-decision-and-control.md#d-rul) |  |
+| `lib/seed/rules.json` | [Rule](volumes/V06-decision-and-control.md#d-rul) |  |
+| `lib/seed/tax.json` | [Rule](volumes/V06-decision-and-control.md#d-rul) |  |
+
+### C07 · Assurance
+
+| File | Owner | Part |
+|---|---|---|
+| `lib/ucos-trace.js` | [Audit](volumes/V07-assurance.md#d-aud) |  |
+| `lib/security.js` | [Security](volumes/V07-assurance.md#d-sec) | keys, encryption, credentials, threat protection |
+| `lib/security.js` | [Audit](volumes/V07-assurance.md#d-aud) | the hash-chained audit log |
+| `lib/identity.js` | [Security](volumes/V07-assurance.md#d-sec) |  |
+| `lib/webauthn.js` | [Security](volumes/V07-assurance.md#d-sec) |  |
+| `lib/risk.js` | [Security](volumes/V07-assurance.md#d-sec) | fraud screening |
+| `lib/compliance.js` | [Compliance](volumes/V07-assurance.md#d-cmp) |  |
+| `lib/seed/compliance.json` | [Compliance](volumes/V07-assurance.md#d-cmp) |  |
+
+### C08 · Interaction
+
+| File | Owner | Part |
+|---|---|---|
+| `lib/themes.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `lib/branding.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `lib/bundle.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `lib/sitemap.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `lib/mailer.js` | [Communication](volumes/V08-interaction.md#d-cmn) |  |
+| `lib/helpdesk.js` | [Communication](volumes/V08-interaction.md#d-cmn) | conversations |
+| `lib/search.js` | [Search](volumes/V08-interaction.md#d-srh) |  |
+| `lib/seed/themes.json` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `public/js/admin.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `public/js/app.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `public/js/console.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `public/js/platform.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `public/js/data.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `public/js/editors.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `public/js/provisioning.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `public/js/rules-ui.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+
+### C09 · Automation
+
+| File | Owner | Part |
+|---|---|---|
+| `server.js` | [Integration](volumes/V09-automation.md#d-int) | the HTTP entry point |
+| `lib/events.js` | [Runtime](volumes/V09-automation.md#d-run) | the event log; its outbound webhooks are Integration's |
+| `lib/providers.js` | [Integration](volumes/V09-automation.md#d-int) | provider connectors; providers as parties are Party's |
+| `lib/states.js` | [Runtime](volumes/V09-automation.md#d-run) |  |
+| `lib/queue.js` | [Runtime](volumes/V09-automation.md#d-run) | job semantics |
+| `lib/ai.js` | [Agent](volumes/V09-automation.md#d-agt) |  |
+| `lib/api.js` | [Integration](volumes/V09-automation.md#d-int) |  |
+| `lib/spec.js` | [Integration](volumes/V09-automation.md#d-int) |  |
+| `lib/connect.js` | [Integration](volumes/V09-automation.md#d-int) |  |
+| `lib/idempotency.js` | [Integration](volumes/V09-automation.md#d-int) |  |
+| `lib/seed/providers.json` | [Integration](volumes/V09-automation.md#d-int) |  |
+| `lib/seed/states.json` | [Runtime](volumes/V09-automation.md#d-run) |  |
+
+### C10 · Intelligence
+
+| File | Owner | Part |
+|---|---|---|
+| `lib/dashboards.js` | [Insight](volumes/V10-intelligence.md#d-ins) |  |
+| `lib/experiments.js` | [Insight](volumes/V10-intelligence.md#d-ins) |  |
+| `lib/planning.js` | [Insight](volumes/V10-intelligence.md#d-ins) | forecasts |
+
+### C11 · Platform
+
+| File | Owner | Part |
+|---|---|---|
+| `lib/ucos-monitor.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `lib/queue.js` | [Operations](volumes/V11.1-platform.md#d-ops) | queue runtime adapter |
+| `lib/billing.js` | [Offering](volumes/V11.2-platform.md#d-ofg) | platform subscriptions, metering, platform invoices |
+| `lib/modules.js` | [Offering](volumes/V11.2-platform.md#d-ofg) |  |
+| `lib/capabilities.js` | [Offering](volumes/V11.2-platform.md#d-ofg) |  |
+| `lib/env.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `lib/config.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `lib/adapters.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `lib/enterprise.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `lib/logger.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `lib/metrics.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `lib/ugc.js` | [Content](volumes/V11.2-platform.md#d-cnt) | uploaded media |
+| `lib/seed/capabilities.json` | [Offering](volumes/V11.2-platform.md#d-ofg) |  |
+| `lib/seed/modules.json` | [Offering](volumes/V11.2-platform.md#d-ofg) |  |
+| `scripts/audit-hardcoding.js` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
+| `scripts/audit-baseline.json` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
+| `scripts/browser-check.js` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
+| `scripts/backup.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `scripts/restore.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+
+### C12 · Business
+
+| File | Owner | Part |
+|---|---|---|
+| `lib/billing.js` | [Commerce](volumes/V12-business.md#d-biz) | customer invoices, credit notes, dunning |
+| `lib/offers.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/goip.js` | [Commerce](volumes/V12-business.md#d-biz) | its spatial, temporal, value and context registries move to Geo, Time, Value and Context |
+| `lib/shipping.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/logistics.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/fin.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/fintech.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/marketplace.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/marketplace-ext.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/affiliate.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/trade.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/qcommerce.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/mobility.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/operations.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/recurring.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/ugc.js` | [Commerce](volumes/V12-business.md#d-biz) | reviews and questions |
+| `lib/gcatalog.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/seed/catalog.json` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/seed/goip.json` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/seed/offers.json` | [Commerce](volumes/V12-business.md#d-biz) |  |
+
+### C13 · Composition
+
+| File | Owner | Part |
+|---|---|---|
+| `lib/compose.js` | [Package](volumes/V13-composition.md#d-pkg) |  |
+
+<a id="build-path"></a>
+## 9. Build path and decisions
+
+4 of 26 steps done. Each step is committed only once the full test suite passes.
+
+| Step | What | Domains | Status | Delivered by |
+|---|---|---|---|---|
+| <a id="p01"></a>P01 | The register: categories, single ownership, artifact owners | [Registry](volumes/V05-structure.md#d-reg), [Constitutional Authority](volumes/V01-constitution.md#d-con) | done | [AMD-0001](#amd-0001) |
+| <a id="p02"></a>P02 | The missing domain contracts | [Constitutional Authority](volumes/V01-constitution.md#d-con) | done | [AMD-0002](#amd-0002) |
+| <a id="p03"></a>P03 | One master document with self-splitting volumes, kept current automatically | [Guidance](volumes/V02-meaning.md#d-gdn), [Registry](volumes/V05-structure.md#d-reg) | done | [AMD-0003](#amd-0003) |
+| <a id="p04"></a>P04 | The law register, the kernel, the module map and this path in the registry; FOUNDATIONS.md superseded | [Constitutional Authority](volumes/V01-constitution.md#d-con), [Registry](volumes/V05-structure.md#d-reg) | done | [AMD-0004](#amd-0004) |
+| <a id="p05"></a>P05 | Corpus concepts placed in the register (one owner, aliases, sources) | [Registry](volumes/V05-structure.md#d-reg), [Semantic](volumes/V02-meaning.md#d-sem) | planned | — |
+| <a id="p06"></a>P06 | The other domain systems unified (GOIP's 67 domains, capability domains, the per-universe record engine) | [Registry](volumes/V05-structure.md#d-reg), [Commerce](volumes/V12-business.md#d-biz), [Offering](volumes/V11.2-platform.md#d-ofg) | planned | — |
+| <a id="p07"></a>P07 | The remaining root design documents absorbed or superseded | [Guidance](volumes/V02-meaning.md#d-gdn) | planned | — |
+| <a id="p08"></a>P08 | Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution | [Registry](volumes/V05-structure.md#d-reg), [Identity](volumes/V02-meaning.md#d-idn), [Relationship](volumes/V05-structure.md#d-rel), [Geo](volumes/V04-universal-dimensions.md#d-geo), [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo), [Runtime](volumes/V09-automation.md#d-run), [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per), [Context](volumes/V04-universal-dimensions.md#d-ctx) | planned | — |
+| <a id="p09"></a>P09 | Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships | [Geo](volumes/V04-universal-dimensions.md#d-geo) | planned | — |
+| <a id="p10"></a>P10 | Measure and Value, with GOIP's units merged | [Measure](volumes/V04-universal-dimensions.md#d-mea), [Value](volumes/V04-universal-dimensions.md#d-val) | planned | — |
+| <a id="p11"></a>P11 | Time, with GOIP's calendars merged | [Time](volumes/V04-universal-dimensions.md#d-tim) | planned | — |
+| <a id="p12"></a>P12 | Expression: languages, scripts, message catalogues | [Expression](volumes/V04-universal-dimensions.md#d-exr) | planned | — |
+| <a id="p13"></a>P13 | Classification, Context, Party and Rule on the kernel; one authorisation engine | [Semantic](volumes/V02-meaning.md#d-sem), [Context](volumes/V04-universal-dimensions.md#d-ctx), [Party](volumes/V02-meaning.md#d-pty), [Rule](volumes/V06-decision-and-control.md#d-rul), [Authority](volumes/V06-decision-and-control.md#d-aut) | planned | — |
+| <a id="p14"></a>P14 | Compliance: regulations, controls, consent, subject requests, retention | [Compliance](volumes/V07-assurance.md#d-cmp) | planned | — |
+| <a id="p15"></a>P15 | Experience: device types, themes, components, configured screens | [Experience](volumes/V08-interaction.md#d-exp) | planned | — |
+| <a id="p16"></a>P16 | Communication and Notification | [Communication](volumes/V08-interaction.md#d-cmn), [Notification](volumes/V08-interaction.md#d-ntf) | planned | — |
+| <a id="p17"></a>P17 | Runtime workflows on today's state machines | [Runtime](volumes/V09-automation.md#d-run) | planned | — |
+| <a id="p18"></a>P18 | Search, Content and Guidance; the user manual generated | [Search](volumes/V08-interaction.md#d-srh), [Content](volumes/V11.2-platform.md#d-cnt), [Guidance](volumes/V02-meaning.md#d-gdn) | planned | — |
+| <a id="p19"></a>P19 | Integration: the generated API, connectors, webhooks | [Integration](volumes/V09-automation.md#d-int) | planned | — |
+| <a id="p20"></a>P20 | Insight on today's dashboards and experiments | [Insight](volumes/V10-intelligence.md#d-ins) | planned | — |
+| <a id="p21"></a>P21 | Agent on today's AI layer | [Agent](volumes/V09-automation.md#d-agt) | planned | — |
+| <a id="p22"></a>P22 | Offering and Package: configuring by selection, blueprints, overlays, the first packages | [Offering](volumes/V11.2-platform.md#d-ofg), [Package](volumes/V13-composition.md#d-pkg) | planned | — |
+| <a id="p23"></a>P23 | Operations consolidated | [Operations](volumes/V11.1-platform.md#d-ops) | planned | — |
+| <a id="p24"></a>P24 | Business entities on the kernel; engines read the resolver; stores lose their single country and currency | [Commerce](volumes/V12-business.md#d-biz) | planned | — |
+| <a id="p25"></a>P25 | Launch by configuration, end to end, for a person with the manual and for an agent | [Package](volumes/V13-composition.md#d-pkg), [Guidance](volumes/V02-meaning.md#d-gdn) | planned | — |
+| <a id="p26"></a>P26 | More storage adapters; moving domains between databases from the console | [Registry](volumes/V05-structure.md#d-reg) | planned | — |
+
+### Decisions
+
+| ID | Question | Decision |
+|---|---|---|
+| <a id="dec-001"></a>DEC-001 | One tree or several hierarchies? | Several named hierarchies over shared nodes (K03). |
+| <a id="dec-002"></a>DEC-002 | How much real place data ships? | The core down to first-level regions; deeper levels imported on demand from declared sources. |
+| <a id="dec-003"></a>DEC-003 | What is sold to other platforms? | A mix: domains, hierarchies, depth, regions, update feeds, API usage, packages and connectors, through Offering. |
+| <a id="dec-004"></a>DEC-004 | What is sensitive by default? | Coordinates and addresses of people and private sites; public places are not. |
+| <a id="dec-005"></a>DEC-005 | Can the database and schema change without code? | Yes, through Registry and the change lifecycle; delete is archive first, purge later with a separate permission. |
+| <a id="dec-006"></a>DEC-006 | Can the interface change without code? | Yes, through Experience, on every declared device type. |
+| <a id="dec-007"></a>DEC-007 | How do agents work? | As bounded parties using only the public API, with approvals, budgets, a kill switch and Audit. |
+| <a id="dec-008"></a>DEC-008 | When is security built? | From the first kernel step; policy can only tighten. |
+| <a id="dec-009"></a>DEC-009 | Where do configuration choices come from? | The owning domain, in any combination, with declared constraints and an offering per option. |
+| <a id="dec-010"></a>DEC-010 | How are workflows, notifications and communication split? | Runtime decides what happens; Notification decides who is told and when; Communication owns channels, templates, conversations and delivery. |
+| <a id="dec-011"></a>DEC-011 | How are audit and compliance split? | Audit owns the immutable record; Compliance owns obligations, controls, evidence, consent, subject requests and retention; Security owns the security controls. |
+| <a id="dec-012"></a>DEC-012 | How is configuration made fast? | Packages: editable compositions with overlays that survive upgrades. |
+| <a id="dec-013"></a>DEC-013 | Which names do place, value and language domains take? | Geo, Value and Expression — named by what they own, because the constitution reserves Country, Currency and Language for projections. |
+| <a id="dec-014"></a>DEC-014 | How is the documentation organised? | One master document and one volume per category, split into numbered parts past a declared size, projected and checked automatically. |
+
 <a id="id-lookup"></a>
-## 7. ID lookup
+## 10. ID lookup
 
 | ID | Kind | Name | Where |
 |---|---|---|---|
 | AMD-0001 | amendment | Unifies the registry under one categorised ownership spine | [constitution](#amd-0001) |
 | AMD-0002 | amendment | Writes the 17 missing domain contracts (Decision, Geo, Time, | [constitution](#amd-0002) |
 | AMD-0003 | amendment | One master document | [constitution](#amd-0003) |
+| AMD-0004 | amendment | FOUNDATIONS.md absorbed | [constitution](#amd-0004) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |
@@ -1171,6 +1486,7 @@ Every primitive and term, once, with its single owner.
 | D-POL | domain | Policy | [Policy](volumes/V06-decision-and-control.md#d-pol) |
 | D-POS | domain | Possibility | [Possibility](volumes/V03.1-reality-and-reasoning.md#d-pos) |
 | D-PRS | domain | Persistence | [Persistence](volumes/V11.1-platform.md#d-prs) |
+| D-PTY | domain | Party | [Party](volumes/V02-meaning.md#d-pty) |
 | D-QLT | domain | Quality | [Quality](volumes/V11.2-platform.md#d-qlt) |
 | D-REG | domain | Registry | [Registry](volumes/V05-structure.md#d-reg) |
 | D-REL | domain | Relationship | [Relationship](volumes/V05-structure.md#d-rel) |
@@ -1184,10 +1500,58 @@ Every primitive and term, once, with its single owner.
 | D-TIM | domain | Time | [Time](volumes/V04-universal-dimensions.md#d-tim) |
 | D-TRU | domain | Trust | [Trust](volumes/V07-assurance.md#d-tru) |
 | D-VAL | domain | Value | [Value](volumes/V04-universal-dimensions.md#d-val) |
+| DEC-001 | decision | One tree or several hierarchies? | [decisions](#dec-001) |
+| DEC-002 | decision | How much real place data ships? | [decisions](#dec-002) |
+| DEC-003 | decision | What is sold to other platforms? | [decisions](#dec-003) |
+| DEC-004 | decision | What is sensitive by default? | [decisions](#dec-004) |
+| DEC-005 | decision | Can the database and schema change without code? | [decisions](#dec-005) |
+| DEC-006 | decision | Can the interface change without code? | [decisions](#dec-006) |
+| DEC-007 | decision | How do agents work? | [decisions](#dec-007) |
+| DEC-008 | decision | When is security built? | [decisions](#dec-008) |
+| DEC-009 | decision | Where do configuration choices come from? | [decisions](#dec-009) |
+| DEC-010 | decision | How are workflows, notifications and communication split? | [decisions](#dec-010) |
+| DEC-011 | decision | How are audit and compliance split? | [decisions](#dec-011) |
+| DEC-012 | decision | How is configuration made fast? | [decisions](#dec-012) |
+| DEC-013 | decision | Which names do place, value and language domains take? | [decisions](#dec-013) |
+| DEC-014 | decision | How is the documentation organised? | [decisions](#dec-014) |
+| K01 | kernel part | Kinds | [kernel](#k01) |
+| K02 | kernel part | Nodes | [kernel](#k02) |
+| K03 | kernel part | Hierarchies | [kernel](#k03) |
+| K04 | kernel part | Identifiers | [kernel](#k04) |
+| K05 | kernel part | Shape | [kernel](#k05) |
+| K06 | kernel part | Attributes | [kernel](#k06) |
+| K07 | kernel part | Versions | [kernel](#k07) |
+| K08 | kernel part | Events | [kernel](#k08) |
+| K09 | kernel part | Change Lifecycle | [kernel](#k09) |
+| K10 | kernel part | Views | [kernel](#k10) |
+| K11 | kernel part | Scope | [kernel](#k11) |
+| K12 | kernel part | Resolution | [kernel](#k12) |
 | LAW-001 | law | Zero Hard Coding | [constitution](#law-001) |
 | LAW-002 | law | Knowledge Once | [constitution](#law-002) |
 | LAW-003 | law | Projection Law | [constitution](#law-003) |
+| LAW-004 | law | Constitutional Governance | [constitution](#law-004) |
 | LAW-005 | law | Explainability | [constitution](#law-005) |
+| LAW-006 | law | Configuration Over Code | [constitution](#law-006) |
+| LAW-007 | law | Single Ownership And Contract | [constitution](#law-007) |
+| LAW-008 | law | Independent Authorities | [constitution](#law-008) |
+| LAW-009 | law | Dependency Law | [constitution](#law-009) |
+| LAW-010 | law | Runtime Responsibility | [constitution](#law-010) |
+| LAW-011 | law | Architectural Freeze | [constitution](#law-011) |
+| LAW-012 | law | Generated Platform | [constitution](#law-012) |
+| LAW-013 | law | Registry First | [constitution](#law-013) |
+| LAW-014 | law | Infinite Extensibility | [constitution](#law-014) |
+| LAW-015 | law | Technology Agnostic | [constitution](#law-015) |
+| LAW-016 | law | Contextual Distribution | [constitution](#law-016) |
+| LAW-017 | law | Platform-Owned Master Data | [constitution](#law-017) |
+| LAW-018 | law | Selection From Owners | [constitution](#law-018) |
+| LAW-019 | law | Nothing Invented | [constitution](#law-019) |
+| LAW-020 | law | Rules Belong To Kinds | [constitution](#law-020) |
+| LAW-021 | law | One Kernel | [constitution](#law-021) |
+| LAW-022 | law | Bounded Agents | [constitution](#law-022) |
+| LAW-023 | law | Security Floor | [constitution](#law-023) |
+| LAW-024 | law | Immutable Record | [constitution](#law-024) |
+| LAW-025 | law | Packages Compose | [constitution](#law-025) |
+| LAW-026 | law | Every Law Is Enforced | [constitution](#law-026) |
 | P-01 | primitive | Identity | [Identity](#t-identity) |
 | P-02 | primitive | Intent | [Intent](#t-intent) |
 | P-03 | primitive | Meaning | [Meaning](#t-meaning) |
@@ -1215,6 +1579,32 @@ Every primitive and term, once, with its single owner.
 | P-25 | primitive | Emergence | [Emergence](#t-emergence) |
 | P-26 | primitive | Metadata | [Metadata](#t-metadata) |
 | P-27 | primitive | Causality | [Causality](#t-causality) |
+| P01 | build step | The register: categories, single ownership, artifact owners | [build path](#p01) |
+| P02 | build step | The missing domain contracts | [build path](#p02) |
+| P03 | build step | One master document with self-splitting volumes, kept curren | [build path](#p03) |
+| P04 | build step | The law register, the kernel, the module map and this path i | [build path](#p04) |
+| P05 | build step | Corpus concepts placed in the register (one owner, aliases,  | [build path](#p05) |
+| P06 | build step | The other domain systems unified (GOIP's 67 domains, capabil | [build path](#p06) |
+| P07 | build step | The remaining root design documents absorbed or superseded | [build path](#p07) |
+| P08 | build step | Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers | [build path](#p08) |
+| P09 | build step | Geo, with GOIP's spatial systems merged; countries and subdi | [build path](#p09) |
+| P10 | build step | Measure and Value, with GOIP's units merged | [build path](#p10) |
+| P11 | build step | Time, with GOIP's calendars merged | [build path](#p11) |
+| P12 | build step | Expression: languages, scripts, message catalogues | [build path](#p12) |
+| P13 | build step | Classification, Context, Party and Rule on the kernel; one a | [build path](#p13) |
+| P14 | build step | Compliance: regulations, controls, consent, subject requests | [build path](#p14) |
+| P15 | build step | Experience: device types, themes, components, configured scr | [build path](#p15) |
+| P16 | build step | Communication and Notification | [build path](#p16) |
+| P17 | build step | Runtime workflows on today's state machines | [build path](#p17) |
+| P18 | build step | Search, Content and Guidance; the user manual generated | [build path](#p18) |
+| P19 | build step | Integration: the generated API, connectors, webhooks | [build path](#p19) |
+| P20 | build step | Insight on today's dashboards and experiments | [build path](#p20) |
+| P21 | build step | Agent on today's AI layer | [build path](#p21) |
+| P22 | build step | Offering and Package: configuring by selection, blueprints,  | [build path](#p22) |
+| P23 | build step | Operations consolidated | [build path](#p23) |
+| P24 | build step | Business entities on the kernel; engines read the resolver;  | [build path](#p24) |
+| P25 | build step | Launch by configuration, end to end, for a person with the m | [build path](#p25) |
+| P26 | build step | More storage adapters; moving domains between databases from | [build path](#p26) |
 | T-AGENT | term | Agent | [Agent](#t-agent) |
 | T-AMENDMENT | term | Amendment | [Amendment](#t-amendment) |
 | T-API | term | API | [API](#t-api) |
@@ -1265,6 +1655,7 @@ Every primitive and term, once, with its single owner.
 | T-OVERLAY | term | Overlay | [Overlay](#t-overlay) |
 | T-OWNERSHIP | term | Ownership | [Ownership](#t-ownership) |
 | T-PACKAGE | term | Package | [Package](#t-package) |
+| T-PARTY | term | Party | [Party](#t-party) |
 | T-PERMISSION | term | Permission | [Permission](#t-permission) |
 | T-PERSPECTIVE | term | Perspective | [Perspective](#t-perspective) |
 | T-PLACE | term | Place | [Place](#t-place) |
@@ -1275,6 +1666,7 @@ Every primitive and term, once, with its single owner.
 | T-QUANTITY | term | Quantity | [Quantity](#t-quantity) |
 | T-RELATIONSHIP | term | Relationship | [Relationship](#t-relationship) |
 | T-REPORT | term | Report | [Report](#t-report) |
+| T-ROLE | term | Role | [Role](#t-role) |
 | T-RULE | term | Rule | [Rule](#t-rule) |
 | T-SCRIPT | term | Script | [Script](#t-script) |
 | T-SEARCH-INDEX | term | Search Index | [Search Index](#t-search-index) |
@@ -1375,6 +1767,7 @@ Every primitive and term, once, with its single owner.
 | UCOS-POL-000001 | artifact | Policy Architecture | [UCOS-POL-000001](volumes/V06-decision-and-control.md#ucos-pol-000001) |
 | UCOS-POSS-000001 | artifact | Possibility Architecture | [UCOS-POSS-000001](volumes/V03.1-reality-and-reasoning.md#ucos-poss-000001) |
 | UCOS-PRC-000001 | artifact | Pricing Architecture | [UCOS-PRC-000001](volumes/V12-business.md#ucos-prc-000001) |
+| UCOS-PTY-000001 | artifact | Party Architecture | [UCOS-PTY-000001](volumes/V02-meaning.md#ucos-pty-000001) |
 | UCOS-REA-000001 | artifact | Multi-Reality Architecture | [UCOS-REA-000001](volumes/V03.1-reality-and-reasoning.md#ucos-rea-000001) |
 | UCOS-REG-000001 | artifact | Registry Architecture | [UCOS-REG-000001](volumes/V05-structure.md#ucos-reg-000001) |
 | UCOS-REL-000001 | artifact | Relationship Architecture | [UCOS-REL-000001](volumes/V05-structure.md#ucos-rel-000001) |

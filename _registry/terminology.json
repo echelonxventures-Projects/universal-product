@@ -81,6 +81,8 @@
     {"termId": "T-COMMERCE-PROJECTION", "canonicalName": "Commerce Projection", "definition": "A business concept (product, order, offer, …) projected from primitives; owns no truth.", "aliases": ["business entity"], "prohibitedMeanings": ["primitive"]},
     {"termId": "T-PACKAGE", "canonicalName": "Package", "definition": "A ready-made, editable composition of domains.", "aliases": ["bundle"], "prohibitedMeanings": ["offering"]},
     {"termId": "T-BLUEPRINT", "canonicalName": "Blueprint", "definition": "A package's declared setup questions and their owning domains.", "aliases": ["setup flow"], "prohibitedMeanings": ["plan"]},
-    {"termId": "T-OVERLAY", "canonicalName": "Overlay", "definition": "A platform's recorded changes on top of an installed package version.", "aliases": ["customisation"], "prohibitedMeanings": ["fork"]}
+    {"termId": "T-OVERLAY", "canonicalName": "Overlay", "definition": "A platform's recorded changes on top of an installed package version.", "aliases": ["customisation"], "prohibitedMeanings": ["fork"]},
+    {"termId": "T-PARTY", "canonicalName": "Party", "definition": "Anyone or anything that acts: a platform, tenant, organisation, person, agent or provider.", "aliases": ["actor"], "prohibitedMeanings": ["identity", "role"]},
+    {"termId": "T-ROLE", "canonicalName": "Role", "definition": "A part a party plays in a context: customer, seller, staff, carrier, partner, any declared.", "aliases": [], "prohibitedMeanings": ["permission", "party"]}
   ]
 }

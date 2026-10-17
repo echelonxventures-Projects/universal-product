@@ -22,6 +22,8 @@
   - [UCOS-IMP-000004 Migration Blueprint](#ucos-imp-000004)
   - [UCOS-IMP-000005 Delivery Roadmap](#ucos-imp-000005)
   - [UCOS-GDN-000001 Guidance Architecture](#ucos-gdn-000001)
+- [D-PTY Party](#d-pty)
+  - [UCOS-PTY-000001 Party Architecture](#ucos-pty-000001)
 
 ---
 
@@ -36,6 +38,7 @@
 | **Not responsible for** | Knowledge, Meaning, Policy, Trust |
 | **Contract** | [UCOS-IDN-000001 Identity Architecture](#ucos-idn-000001) |
 | **Artifacts** | [UCOS-IDN-000001](#ucos-idn-000001) |
+| **Code** | `lib/uid.js` |
 | **Managed in** | `_registry/domains.json` → `D-IDN` |
 
 <a id="ucos-idn-000001"></a>
@@ -268,6 +271,7 @@ stateDiagram-v2
 | **Not responsible for** | Knowledge Validation, Identity, Policy |
 | **Contract** | [UCOS-SEM-000001 Universal Semantic Architecture](#ucos-sem-000001) |
 | **Artifacts** | [UCOS-SEM-000001](#ucos-sem-000001), [UCOS-ONT-000001](#ucos-ont-000001), [UCOS-TAX-000001](#ucos-tax-000001), [UCOS-CLS-000001](#ucos-cls-000001) |
+| **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-SEM` |
 
 <a id="ucos-sem-000001"></a>
@@ -1041,6 +1045,7 @@ stateDiagram-v2
 | **Not responsible for** | Identity, Policy, Authority |
 | **Contract** | [UCOS-KNW-000001 Knowledge Architecture](#ucos-knw-000001) |
 | **Artifacts** | [UCOS-KNW-000001](#ucos-knw-000001) |
+| **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-KNW` |
 
 <a id="ucos-knw-000001"></a>
@@ -1268,6 +1273,7 @@ stateDiagram-v2
 | **Not responsible for** | Knowledge Validation, Meaning |
 | **Contract** | [UCOS-GDN-000001 Guidance Architecture](#ucos-gdn-000001) |
 | **Artifacts** | [UCOS-IMP-000001](#ucos-imp-000001), [UCOS-IMP-000002](#ucos-imp-000002), [UCOS-IMP-000003](#ucos-imp-000003), [UCOS-IMP-000004](#ucos-imp-000004), [UCOS-IMP-000005](#ucos-imp-000005), [UCOS-GDN-000001](#ucos-gdn-000001) |
+| **Code** | `public/docs/architecture.html`, `public/docs/e2e-flow.html`, `public/docs/platform-reference.html`, `public/docs/provisioning-guide.html`, `public/docs/user-manual.html`, `public/docs/user-manual.js` |
 | **Managed in** | `_registry/domains.json` → `D-GDN` |
 
 <a id="ucos-imp-000001"></a>
@@ -2414,5 +2420,206 @@ stateDiagram-v2
     Generating --> Reviewing
     Reviewing --> Publishing
     Publishing --> [*]
+```
+
+---
+
+<a id="d-pty"></a>
+### D-PTY · Party
+
+| | |
+|---|---|
+| **Category** | C02 Meaning |
+| **Owns** | [Party](../UCOS-MASTER.md#t-party), [Role](../UCOS-MASTER.md#t-role) |
+| **Responsible for** | Platforms And Tenants, Organisations, People, Agents As Actors, Providers, Roles |
+| **Not responsible for** | Identity, Permissions, Credentials |
+| **Contract** | [UCOS-PTY-000001 Party Architecture](#ucos-pty-000001) |
+| **Artifacts** | [UCOS-PTY-000001](#ucos-pty-000001) |
+| **Code** | `lib/tenancy.js` |
+| **Managed in** | `_registry/domains.json` → `D-PTY` |
+
+<a id="ucos-pty-000001"></a>
+#### UCOS-PTY-000001 · Party Architecture
+
+Owner [Party](#d-pty) · managed in `_registry/manifest.json` → `UCOS-PTY-000001`, content `_registry/content-platform.json` → `PTY` · inherits the [standard contract](../UCOS-MASTER.md#standard-contract)
+
+<a id="ucos-pty-000001-concepts"></a>
+##### Concepts
+
+Party Architecture owns everyone and everything that acts: platforms, tenants and their hierarchy (organisation, business unit, brand, store, channel), organisations, people, agents and providers, and the roles they play. A customer or a seller is a party in a role, never a separate copy.
+
+<a id="ucos-pty-000001-ontology"></a>
+##### Ontology
+
+A Party has an Identity, a kind, a place in the tenancy hierarchy and any number of Roles, each held in a Context (a store, a channel, a place) for a validity window.
+
+<a id="ucos-pty-000001-taxonomy"></a>
+##### Taxonomy
+
+Kinds: platform, tenant, organisation, business unit, brand, store, channel, person, agent, provider, any declared. Roles: customer, seller, staff, carrier, partner, any declared.
+
+<a id="ucos-pty-000001-data-model"></a>
+##### Data Model
+
+```yaml
+Party:
+  partyId: <Identity>
+  kind: <declared kind>
+  parent: <Party> | null
+  roles: [{role, context, validFrom, validTo}]
+  temporal: {validFrom, validTo, recordedAt}
+```
+
+<a id="ucos-pty-000001-graph-model"></a>
+##### Graph Model
+
+(:Party)-[:WITHIN]->(:Party); (:Party)-[:PLAYS {context}]->(:Role); (:Party)-[:IDENTIFIED_BY]->(:Identity)
+
+<a id="ucos-pty-000001-apis"></a>
+##### APIs
+
+- POST /pty.v1.party
+- GET  /pty.v1/{id}
+- POST /pty.v1.role
+- GET  /pty.v1/{id}/roles
+
+<a id="ucos-pty-000001-events"></a>
+##### Events
+
+- PartyRegistered
+- RoleAssigned
+- RoleEnded
+- PartyMoved
+
+<a id="ucos-pty-000001-commands"></a>
+##### Commands
+
+- party.register
+- party.move
+- role.assign
+- role.end
+
+<a id="ucos-pty-000001-queries"></a>
+##### Queries
+
+- party.ancestors
+- party.roles
+- parties.inRole
+
+<a id="ucos-pty-000001-state-machines"></a>
+##### State Machines
+
+```mermaid
+stateDiagram-v2
+    [*] --> Registered
+    Registered --> Active
+    Active --> Suspended
+    Suspended --> Closed
+    Closed --> [*]
+```
+
+<a id="ucos-pty-000001-workflows"></a>
+##### Workflows
+
+- register party → place in the hierarchy → assign roles in contexts → act through its roles
+
+<a id="ucos-pty-000001-authorities"></a>
+##### Authorities
+
+- The platform owner governs platforms and tenants; a tenant governs its own hierarchy and roles.
+
+<a id="ucos-pty-000001-permissions"></a>
+##### Permissions
+
+- party.register (scope owner)
+- role.assign (role administrator)
+- party.read (by view)
+
+<a id="ucos-pty-000001-privacy-model"></a>
+##### Privacy Model
+
+People are parties with personal data; it is declared sensitive and handled under Compliance.
+
+<a id="ucos-pty-000001-audit-model"></a>
+##### Audit Model
+
+Registrations, moves and role changes are recorded.
+
+<a id="ucos-pty-000001-digital-twin-model"></a>
+##### Digital Twin Model
+
+A party twin shows a party's roles and activity across contexts.
+
+<a id="ucos-pty-000001-agent-model"></a>
+##### Agent Model
+
+An agent is a party with its own roles; it acts only within them.
+
+<a id="ucos-pty-000001-runtime-model"></a>
+##### Runtime Model
+
+Role checks resolve the party's roles in the current context through the resolver.
+
+<a id="ucos-pty-000001-scaling-model"></a>
+##### Scaling Model
+
+The hierarchy is read by ancestor path; roles are indexed by context.
+
+<a id="ucos-pty-000001-multi-tenant-model"></a>
+##### Multi-Tenant Model
+
+Each tenant's parties are isolated; platform parties bound tenant parties.
+
+<a id="ucos-pty-000001-geo-distribution-model"></a>
+##### Geo-Distribution Model
+
+A party relates to the places it serves; its place-dependent settings are inherited.
+
+<a id="ucos-pty-000001-failure-model"></a>
+##### Failure Model
+
+A customer copied per store, a role without a context, a cycle in the hierarchy.
+
+<a id="ucos-pty-000001-recovery-model"></a>
+##### Recovery Model
+
+Parties are never deleted outright; they close and keep their history.
+
+<a id="ucos-pty-000001-certification-model"></a>
+##### Certification Model
+
+One party per real actor; roles carry their context and validity.
+
+<a id="ucos-pty-000001-migration-model"></a>
+##### Migration Model
+
+Today's tenancy hierarchy, users and staff move here.
+
+<a id="ucos-pty-000001-implementation-blueprint"></a>
+##### Implementation Blueprint
+
+Build order for PTY: (1) party kinds and the hierarchy; (2) roles in contexts; (3) migrate the tenancy hierarchy, users and staff; (4) tests that a customer is one party across stores. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution).
+
+<a id="ucos-pty-000001-sequence-diagrams"></a>
+##### Sequence Diagrams
+
+```mermaid
+sequenceDiagram
+    participant O as Operator
+    participant P as Party
+    O->>P: register(party, parent)
+    O->>P: assign(role, context)
+    P-->>O: party with roles
+```
+
+<a id="ucos-pty-000001-state-diagrams"></a>
+##### State Diagrams
+
+```mermaid
+stateDiagram-v2
+    [*] --> Registering
+    Registering --> Assigning
+    Assigning --> Acting
+    Acting --> [*]
 ```
 

@@ -28,6 +28,7 @@
 | **Not responsible for** | Message Delivery, Interface Text |
 | **Contract** | [UCOS-EXP-000001 Experience Architecture](#ucos-exp-000001) |
 | **Artifacts** | [UCOS-EXP-000001](#ucos-exp-000001) |
+| **Code** | `lib/themes.js`, `lib/branding.js`, `lib/bundle.js`, `lib/sitemap.js`, `lib/seed/themes.json`, `public/js/admin.js`, `public/js/app.js`, `public/js/console.js`, `public/js/platform.js`, `public/js/data.js`, `public/js/editors.js`, `public/js/provisioning.js`, `public/js/rules-ui.js` |
 | **Managed in** | `_registry/domains.json` → `D-EXP` |
 
 <a id="ucos-exp-000001"></a>
@@ -231,6 +232,7 @@ stateDiagram-v2
 | **Not responsible for** | Who Is Notified, System Event Transport |
 | **Contract** | [UCOS-CMN-000001 Communication Architecture](#ucos-cmn-000001) |
 | **Artifacts** | [UCOS-CMN-000001](#ucos-cmn-000001) |
+| **Code** | `lib/mailer.js`, `lib/helpdesk.js` |
 | **Managed in** | `_registry/domains.json` → `D-CMN` |
 
 <a id="ucos-cmn-000001"></a>
@@ -438,6 +440,7 @@ stateDiagram-v2
 | **Not responsible for** | Channels, Templates, Delivery |
 | **Contract** | [UCOS-NTF-000001 Notification Architecture](#ucos-ntf-000001) |
 | **Artifacts** | [UCOS-NTF-000001](#ucos-ntf-000001) |
+| **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-NTF` |
 
 <a id="ucos-ntf-000001"></a>
@@ -634,6 +637,7 @@ stateDiagram-v2
 | **Not responsible for** | Persistence Indexes, Meaning |
 | **Contract** | [UCOS-SRC-000001 Search Architecture](#ucos-src-000001) |
 | **Artifacts** | [UCOS-SRC-000001](#ucos-src-000001) |
+| **Code** | `lib/search.js` |
 | **Managed in** | `_registry/domains.json` → `D-SRH` |
 
 <a id="ucos-src-000001"></a>

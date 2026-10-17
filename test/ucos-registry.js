@@ -73,7 +73,7 @@ for (const name of ["Identity", "Knowledge", "Trust", "Policy", "Time", "Constit
 
 console.log("\n▸ THE 93 ARTIFACTS ARE LIVE ENGINES, NOT MARKDOWN (Law 003 projection)");
 const arts = reg.artifacts();
-ok(arts.length === 110, "the manifest declares 110 artifacts (93 + the 17 domain contracts of AMD-0002)", arts.length);
+ok(arts.length === 111, "the manifest declares 111 artifacts (93, the 17 domain contracts of AMD-0002 and Party's of AMD-0004)", arts.length);
 const artKeys = new Set(arts.map(a => key(a.title)));
 const discovered = univ.discover();
 const artUniverses = discovered.filter(u => u.sourceDoc === "ureg");
