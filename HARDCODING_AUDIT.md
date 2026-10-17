@@ -269,6 +269,15 @@ Existing installs pick the new fields up through `registry.addFields()`, which n
 - **The ratchet (`test/audit-gate.js`, in `npm test`):** it runs this audit and compares it with `scripts/audit-baseline.json`, counting each branch and fallback per file and per value, plus every seed-sized constant. It fails when a file branches on or falls back to a registry value more often than the baseline allows, or when a seed-sized constant appears or grows. A lower count passes; `npm run audit:baseline` records it. A registry value that an existing literal happens to spell also trips the gate, so a new word collision gets reviewed.
 - **Baseline:** branches 62, fallbacks 95, seed-sized constants 8.
 
+**Registry amendment AMD-0001 (word collisions, reviewed).** The unified register added terms (Cache, Storage, Plan, Message, Constitution) and the category Composition. Six existing literals spell those words but do not branch on them as registry values:
+- adapter concern names `cache` and `storage` (`lib/adapters.js`);
+- a billing line-item kind `plan` (`lib/billing.js`);
+- a foundation graph name `composition` (`lib/ucos-foundations.js`);
+- audit labels `message` (`lib/mailer.js`);
+- a console tab key `constitution` (`public/js/platform.js`).
+
+The baseline was refreshed for them, so branches are 65 and fallbacks 99.
+
 **New registry entries now reach existing installs on every boot.** A new machine, binding or vocabulary row is appended additively, with no stamp bump needed. `test/states.js` covers this.
 
 

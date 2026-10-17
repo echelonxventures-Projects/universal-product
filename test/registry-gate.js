@@ -40,8 +40,38 @@ console.log("\n▸ §A THE GATE — the five criteria over the compiled registry
   console.log("  the gate checked " + report.checked + " properties (" + report.passed + " passed):");
   ok(report.ok, "the compiled registry passes all five criteria", report.fails.map(f => f.name).join("; "));
   for (const f of report.fails) ok(false, "  ✗ " + f.name, f.detail);
-  ok(report.counts.universes === 2919, "the compiled registry declares the constitutional universes", report.counts.universes);
+  ok(report.counts.universes === 2936, "the compiled registry declares the constitutional universes (2919 + the 17 contract artifacts)", report.counts.universes);
   ok(report.counts.concepts > 30000, "and the full concept layer", report.counts.concepts);
+}
+
+console.log("\n▸ §A1 THE REGISTER — one categorised owner for every declaration");
+{
+  const payload = can.load();
+  const report = gate.run(payload);
+  const rf = payload.registryFiles, reg = report.register;
+  ok(reg && reg.categories >= 13 && reg.domains === rf.domains.domains.length, "the register reports its categories and domains", JSON.stringify(reg && { c: reg.categories, d: reg.domains }));
+  ok(rf.primitives.primitives.every(p => !("owner" in p)) && rf.terminology.terms.every(t => !("ownerDomain" in t)),
+    "ownership is declared once — primitives and terms carry no owner of their own");
+  const hits = can.search("time", { limit: 3 });
+  ok(hits[0] && hits[0].kind === "domain" && hits[0].name === "Time" && /^C04 /.test(hits[0].category), "search ranks the owning domain first, with its category", JSON.stringify(hits[0]));
+  const c04 = can.search("e", { kind: "domain", category: "C04", limit: 50 });
+  ok(c04.length > 0 && c04.every(h => h.kind === "domain" && /^C04 /.test(h.category)), "a category facet returns only that category's domains", c04.map(h => h.name).join(", "));
+  const byOwner = can.search("a", { owner: "Security", limit: 50 });
+  ok(byOwner.length > 0 && byOwner.every(h => h.owner === "Security"), "an owner facet returns only what that domain owns", byOwner.length + " hits");
+
+  const twice = JSON.parse(JSON.stringify(payload));
+  twice.registryFiles.domains.domains[1].owns.push(twice.registryFiles.domains.domains[0].owns[0]);
+  const r1 = gate.run(twice);
+  ok(r1.fails.some(f => /owned by at most one domain/.test(f.name)), "a name owned by two domains fails the gate");
+  const loose = JSON.parse(JSON.stringify(payload));
+  loose.registryFiles.domains.domains[0].category = "C99";
+  loose.registryFiles.manifest.artifacts[0].owner = "Nobody";
+  const r2 = gate.run(loose);
+  ok(r2.fails.some(f => /declared category/.test(f.name)) && r2.fails.some(f => /owning domain/.test(f.name)), "an uncategorised domain and an unowned artifact fail the gate");
+  const reserved = JSON.parse(JSON.stringify(payload));
+  reserved.registryFiles.terminology.terms.push({ termId: "T-X", canonicalName: rf.primitives.prohibited[0], definition: "x" });
+  reserved.registryFiles.domains.domains[0].owns.push(rf.primitives.prohibited[0]);
+  ok(gate.run(reserved).fails.some(f => /reserves for projections/.test(f.name)), "a term named like a projection fails the gate");
 }
 
 console.log("\n▸ §A2 THE GATE REFUSES A BROKEN COMPILE");

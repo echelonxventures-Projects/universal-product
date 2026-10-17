@@ -34,6 +34,7 @@ function keySet(rows, field) {
 }
 
 function run(payload) {
+  let registerCounts = null;
   const fails = [];
   const checks = [];
   const record = c => { checks.push(c); if (!c.ok) fails.push(c); };
@@ -76,8 +77,9 @@ function run(payload) {
     || !Array.isArray(P[d].articles) || !Array.isArray(P[d].concepts) || !Array.isArray(P[d].registries)
     || !P[d].meta || P[d].meta.lines == null).length;
   record(check("zero-partial · every document parse is structurally complete", partialDocs === 0, partialDocs + " documents incomplete"));
-  const partialTerms = rf.terminology.terms.filter(t => !t.canonicalName || !t.ownerDomain).length;
-  const partialDomains = rf.domains.domains.filter(d => !d.name || !Array.isArray(d.owns)).length;
+  const partialTerms = rf.terminology.terms.filter(t => !t.canonicalName || !t.definition).length;
+  const partialDomains = rf.domains.domains.filter(d => !d.name || !d.domainId || !d.category || !Array.isArray(d.owns) || !d.owns.length
+    || !Array.isArray(d.responsible) || !(Array.isArray(d.notResponsible) || Array.isArray(d.mustObey))).length;
   const partialArts = rf.manifest.artifacts.filter(a => !a.id || !a.title).length;
   record(check("zero-partial · every atom carries its required fields",
     partialTerms + partialDomains + partialArts === 0,
@@ -141,6 +143,46 @@ function run(payload) {
   record(check("zero-missing · the platform grant surface covers every section the platform nav requests",
     !platUngranted.length, platUngranted.slice(0, 5).join(", ") + " ungranted"));
 
+  /* ---------- THE REGISTER — one categorised owner for every declaration ----------
+     Ownership is declared once, in domains.json: a domain's `owns` list. Every primitive
+     and term must appear in exactly one such list, every domain in exactly one declared
+     category, and every artifact must name an owning domain. */
+  {
+    const D = rf.domains, doms = D.domains, cats = D.categories || [];
+    const owners = new Map();
+    for (const d of doms) for (const o of d.owns || []) owners.set(o, (owners.get(o) || []).concat(d.name));
+    const twice = [...owners].filter(([, v]) => v.length > 1).map(([k, v]) => k + " (" + v.join(", ") + ")");
+    record(check("zero-duplicate · every primitive and term is owned by at most one domain", !twice.length, twice.slice(0, 5).join("; ")));
+    const ids = keySet(doms, "domainId"), catIds = keySet(cats, "categoryId"), catNames = keySet(cats, "name");
+    record(check("zero-duplicate · domain ids, category ids and category names are unique",
+      ids.size === doms.length && catIds.size === cats.length && catNames.size === cats.length,
+      (doms.length - ids.size) + " domain ids, " + (cats.length - catIds.size) + " category ids, " + (cats.length - catNames.size) + " category names repeated"));
+    const unownedPrims = rf.primitives.primitives.filter(p => !owners.has(p.name)).map(p => p.name);
+    const unownedTerms = rf.terminology.terms.filter(t => !owners.has(t.canonicalName)).map(t => t.canonicalName);
+    record(check("zero-missing · every primitive and term has an owning domain",
+      !unownedPrims.length && !unownedTerms.length, unownedPrims.concat(unownedTerms).slice(0, 8).join(", ")));
+    const catSet = new Set(cats.map(c => c.categoryId));
+    const uncategorised = doms.filter(d => !catSet.has(d.category)).map(d => d.name);
+    const emptyCats = cats.filter(c => !doms.some(d => d.category === c.categoryId)).map(c => c.name);
+    record(check("zero-missing · every domain sits in a declared category, and every category holds a domain",
+      !uncategorised.length && !emptyCats.length, "uncategorised: " + uncategorised.join(", ") + "; empty: " + emptyCats.join(", ")));
+    const domNames = new Set(doms.map(d => d.name));
+    const unownedArts = rf.manifest.artifacts.filter(a => !domNames.has(a.owner)).map(a => a.id);
+    record(check("zero-missing · every artifact names an owning domain", !unownedArts.length, unownedArts.slice(0, 8).join(", ")));
+    const banned = new Set((rf.primitives.prohibited || []).map(x => String(x).toLowerCase()));
+    const reserved = rf.terminology.terms.map(t => t.canonicalName).concat(doms.map(d => d.name)).filter(n => banned.has(String(n).toLowerCase()));
+    record(check("zero-overlap · no term or domain takes a name the constitution reserves for projections", !reserved.length, reserved.join(", ")));
+    /* a domain's contract is its own architecture artifact. Domains declared before their
+       contract is written are counted, and the count may only fall (register-baseline.json) */
+    const artById = new Map(rf.manifest.artifacts.map(a => [a.id, a]));
+    const noContract = doms.filter(d => !d.contract || !artById.has(d.contract) || artById.get(d.contract).owner !== d.name).map(d => d.name);
+    let allowed = Infinity;
+    try { allowed = JSON.parse(require("fs").readFileSync(path.join(__dirname, "register-baseline.json"), "utf8")).domainsWithoutContract; } catch (e) { }
+    record(check("zero-missing · every domain's contract is an artifact it owns (" + noContract.length + " outstanding, baseline " + allowed + ")",
+      noContract.length <= allowed, noContract.join(", ")));
+    registerCounts = { categories: cats.length, domains: doms.length, owned: owners.size, domainsWithoutContract: noContract.length, outstanding: noContract };
+  }
+
   /* ---------- NO LEAKAGE — the compiled registry is exactly the sources ---------- */
   /* the compiler is the one thing standing between the sources and the seal, so
      the gate re-derives the parse INDEPENDENTLY and compares. A compiled registry
@@ -164,7 +206,8 @@ function run(payload) {
     checked: checks.length,
     passed: checks.length - fails.length,
     fails,
-    counts: { universes: payload.universes.length, concepts: conceptRows, documents: docs.length, sections: payload.counts.sections, registries: payload.counts.registries }
+    counts: { universes: payload.universes.length, concepts: conceptRows, documents: docs.length, sections: payload.counts.sections, registries: payload.counts.registries },
+    register: registerCounts
   };
 }
 

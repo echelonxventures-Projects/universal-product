@@ -12,7 +12,7 @@
    the primitives become platform vocabulary; the cross-source overlap stops
    being silent and becomes measured.
 
-     LAW 002   one definition per concept — the registry's own 93 artifacts do
+     LAW 002   one definition per concept — the registry's own artifacts do
                not duplicate corpus universes, and the 2 that share a key with
                a corpus universe resolve to ONE row (first-wins, provenance kept)
      LAW 003   projection — primitives/terms/domains are registered concepts;
@@ -73,7 +73,7 @@ for (const name of ["Identity", "Knowledge", "Trust", "Policy", "Time", "Constit
 
 console.log("\n▸ THE 93 ARTIFACTS ARE LIVE ENGINES, NOT MARKDOWN (Law 003 projection)");
 const arts = reg.artifacts();
-ok(arts.length === 93, "the manifest declares 93 artifacts", arts.length);
+ok(arts.length === 110, "the manifest declares 110 artifacts (93 + the 17 domain contracts of AMD-0002)", arts.length);
 const artKeys = new Set(arts.map(a => key(a.title)));
 const discovered = univ.discover();
 const artUniverses = discovered.filter(u => u.sourceDoc === "ureg");

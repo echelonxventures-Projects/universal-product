@@ -8,111 +8,445 @@
   "law": "Maps every artifact to exactly one content source. Knowledge Once — no artifact may define its own content.",
   "note": "artifactId -> {source registry file, content key}",
   "mapping": {
-    "UCOS-CON-000001": {"src": "core", "key": "IDN"},
-    "UCOS-CON-000002": {"src": "core", "key": "KNW"},
-    "UCOS-CON-000003": {"src": "core", "key": "REL"},
-    "UCOS-CON-000004": {"src": "core", "key": "CTX"},
-    "UCOS-CON-000005": {"src": "core", "key": "POL"},
-    "UCOS-CON-000006": {"src": "core", "key": "RUL"},
-    "UCOS-CON-000007": {"src": "core", "key": "AUT"},
-    "UCOS-CON-000008": {"src": "core", "key": "TRS"},
-    "UCOS-CON-000009": {"src": "core", "key": "EVO"},
-    "UCOS-CON-000010": {"src": "core", "key": "EVD"},
-
-    "UCOS-SEM-000001": {"src": "ext",  "key": "SEM"},
-    "UCOS-ONT-000001": {"src": "ext",  "key": "ONT"},
-    "UCOS-TAX-000001": {"src": "ext",  "key": "TAX"},
-    "UCOS-CLS-000001": {"src": "ext",  "key": "SEM"},
-
-    "UCOS-IDN-000001": {"src": "core", "key": "IDN"},
-    "UCOS-KNW-000001": {"src": "core", "key": "KNW"},
-    "UCOS-REL-000001": {"src": "core", "key": "REL"},
-    "UCOS-CTX-000001": {"src": "core", "key": "CTX"},
-    "UCOS-POL-000001": {"src": "core", "key": "POL"},
-    "UCOS-RUL-000001": {"src": "core", "key": "RUL"},
-    "UCOS-AUT-000001": {"src": "core", "key": "AUT"},
-    "UCOS-TRS-000001": {"src": "core", "key": "TRS"},
-    "UCOS-EVD-000001": {"src": "core", "key": "EVD"},
-    "UCOS-OBS-000001": {"src": "core", "key": "OBS"},
-    "UCOS-INF-000001": {"src": "core", "key": "INF"},
-    "UCOS-RSN-000001": {"src": "core", "key": "RSN"},
-    "UCOS-SIM-000001": {"src": "core", "key": "SIM"},
-    "UCOS-CAU-000001": {"src": "core", "key": "CAU"},
-    "UCOS-EVO-000001": {"src": "core", "key": "EVO"},
-
-    "UCOS-REA-000001":  {"src": "ext", "key": "REA"},
-    "UCOS-PER-000001":  {"src": "ext", "key": "PER"},
-    "UCOS-UNC-000001":  {"src": "ext", "key": "UNC"},
-    "UCOS-CONTR-000001":{"src": "ext", "key": "CONTR"},
-    "UCOS-POSS-000001": {"src": "ext", "key": "POSS"},
-    "UCOS-EMG-000001":  {"src": "ext", "key": "EMG"},
-
-    "UCOS-COM-000001": {"src": "commerce", "key": "COM"},
-    "UCOS-GPS-000001": {"src": "commerce", "key": "GPS"},
-    "UCOS-PRC-000001": {"src": "commerce", "key": "PRC"},
-    "UCOS-OFR-000001": {"src": "commerce", "key": "OFR"},
-    "UCOS-SUB-000001": {"src": "commerce", "key": "SUB"},
-    "UCOS-CNT-000001": {"src": "commerce", "key": "CNT"},
-    "UCOS-MKT-000001": {"src": "commerce", "key": "MKT"},
-    "UCOS-INV-000001": {"src": "commerce", "key": "INV"},
-    "UCOS-ORD-000001": {"src": "commerce", "key": "ORD"},
-    "UCOS-FUL-000001": {"src": "commerce", "key": "FUL"},
-
-    "UCOS-DTW-000001": {"src": "twin-agent", "key": "DTW"},
-    "UCOS-DTW-000002": {"src": "twin-agent", "key": "DTW2"},
-    "UCOS-DTW-000003": {"src": "twin-agent", "key": "DTW3"},
-
-    "UCOS-AGT-000001": {"src": "twin-agent", "key": "AGT"},
-    "UCOS-AGT-000002": {"src": "twin-agent", "key": "AGT2"},
-    "UCOS-AGT-000003": {"src": "twin-agent", "key": "AGT3"},
-    "UCOS-AGT-000004": {"src": "twin-agent", "key": "AGT4"},
-    "UCOS-AGT-000005": {"src": "twin-agent", "key": "AGT5"},
-    "UCOS-AGT-000006": {"src": "twin-agent", "key": "AGT6"},
-    "UCOS-AGT-000007": {"src": "twin-agent", "key": "AGT7"},
-
-    "UCOS-RUN-000001": {"src": "runtime-data", "key": "RUN"},
-    "UCOS-RUN-000002": {"src": "runtime-data", "key": "RUN2"},
-    "UCOS-RUN-000003": {"src": "runtime-data", "key": "RUN3"},
-    "UCOS-RUN-000004": {"src": "runtime-data", "key": "RUN4"},
-    "UCOS-RUN-000005": {"src": "runtime-data", "key": "RUN5"},
-
-    "UCOS-DB-000001":  {"src": "runtime-data", "key": "DB"},
-    "UCOS-GRF-000001": {"src": "runtime-data", "key": "GRF"},
-    "UCOS-IDX-000001": {"src": "runtime-data", "key": "IDX"},
-    "UCOS-SRC-000001": {"src": "runtime-data", "key": "SRC"},
-    "UCOS-CCH-000001": {"src": "runtime-data", "key": "CCH"},
-    "UCOS-EVT-000001": {"src": "runtime-data", "key": "EVT"},
-    "UCOS-MSG-000001": {"src": "runtime-data", "key": "MSG"},
-
-    "UCOS-IAM-000001": {"src": "sec-ops-dep-qlt", "key": "IAM"},
-    "UCOS-ZTA-000001": {"src": "sec-ops-dep-qlt", "key": "ZTA"},
-    "UCOS-CRY-000001": {"src": "sec-ops-dep-qlt", "key": "CRY"},
-    "UCOS-KMS-000001": {"src": "sec-ops-dep-qlt", "key": "KMS"},
-    "UCOS-SEC-000001": {"src": "sec-ops-dep-qlt", "key": "SEC"},
-    "UCOS-DSP-000001": {"src": "sec-ops-dep-qlt", "key": "DSP"},
-    "UCOS-CNS-000001": {"src": "sec-ops-dep-qlt", "key": "CNS"},
-
-    "UCOS-SRE-000001":  {"src": "sec-ops-dep-qlt", "key": "SRE"},
-    "UCOS-MON-000001":  {"src": "sec-ops-dep-qlt", "key": "MON"},
-    "UCOS-OBSV-000001": {"src": "sec-ops-dep-qlt", "key": "OBSV"},
-    "UCOS-AUD-000001":  {"src": "sec-ops-dep-qlt", "key": "AUD"},
-    "UCOS-DR-000001":   {"src": "sec-ops-dep-qlt", "key": "DR"},
-    "UCOS-BCP-000001":  {"src": "sec-ops-dep-qlt", "key": "BCP"},
-
-    "UCOS-DEP-000001": {"src": "sec-ops-dep-qlt", "key": "DEP"},
-    "UCOS-CLD-000001": {"src": "sec-ops-dep-qlt", "key": "CLD"},
-    "UCOS-EDG-000001": {"src": "sec-ops-dep-qlt", "key": "EDG"},
-    "UCOS-GEO-000001": {"src": "sec-ops-dep-qlt", "key": "GEO"},
-
-    "UCOS-TST-000001": {"src": "sec-ops-dep-qlt", "key": "TST"},
-    "UCOS-VER-000001": {"src": "sec-ops-dep-qlt", "key": "VER"},
-    "UCOS-CER-000001": {"src": "sec-ops-dep-qlt", "key": "CER"},
-    "UCOS-FML-000001": {"src": "sec-ops-dep-qlt", "key": "FML"},
-
-    "UCOS-IMP-000001": {"src": "sec-ops-dep-qlt", "key": "IMP"},
-    "UCOS-IMP-000002": {"src": "sec-ops-dep-qlt", "key": "IMP2"},
-    "UCOS-IMP-000003": {"src": "sec-ops-dep-qlt", "key": "IMP3"},
-    "UCOS-IMP-000004": {"src": "sec-ops-dep-qlt", "key": "IMP4"},
-    "UCOS-IMP-000005": {"src": "sec-ops-dep-qlt", "key": "IMP5"}
+    "UCOS-CON-000001": {
+      "src": "core",
+      "key": "IDN"
+    },
+    "UCOS-CON-000002": {
+      "src": "core",
+      "key": "KNW"
+    },
+    "UCOS-CON-000003": {
+      "src": "core",
+      "key": "REL"
+    },
+    "UCOS-CON-000004": {
+      "src": "core",
+      "key": "CTX"
+    },
+    "UCOS-CON-000005": {
+      "src": "core",
+      "key": "POL"
+    },
+    "UCOS-CON-000006": {
+      "src": "core",
+      "key": "RUL"
+    },
+    "UCOS-CON-000007": {
+      "src": "core",
+      "key": "AUT"
+    },
+    "UCOS-CON-000008": {
+      "src": "core",
+      "key": "TRS"
+    },
+    "UCOS-CON-000009": {
+      "src": "core",
+      "key": "EVO"
+    },
+    "UCOS-CON-000010": {
+      "src": "core",
+      "key": "EVD"
+    },
+    "UCOS-SEM-000001": {
+      "src": "ext",
+      "key": "SEM"
+    },
+    "UCOS-ONT-000001": {
+      "src": "ext",
+      "key": "ONT"
+    },
+    "UCOS-TAX-000001": {
+      "src": "ext",
+      "key": "TAX"
+    },
+    "UCOS-CLS-000001": {
+      "src": "ext",
+      "key": "SEM"
+    },
+    "UCOS-IDN-000001": {
+      "src": "core",
+      "key": "IDN"
+    },
+    "UCOS-KNW-000001": {
+      "src": "core",
+      "key": "KNW"
+    },
+    "UCOS-REL-000001": {
+      "src": "core",
+      "key": "REL"
+    },
+    "UCOS-CTX-000001": {
+      "src": "core",
+      "key": "CTX"
+    },
+    "UCOS-POL-000001": {
+      "src": "core",
+      "key": "POL"
+    },
+    "UCOS-RUL-000001": {
+      "src": "core",
+      "key": "RUL"
+    },
+    "UCOS-AUT-000001": {
+      "src": "core",
+      "key": "AUT"
+    },
+    "UCOS-TRS-000001": {
+      "src": "core",
+      "key": "TRS"
+    },
+    "UCOS-EVD-000001": {
+      "src": "core",
+      "key": "EVD"
+    },
+    "UCOS-OBS-000001": {
+      "src": "core",
+      "key": "OBS"
+    },
+    "UCOS-INF-000001": {
+      "src": "core",
+      "key": "INF"
+    },
+    "UCOS-RSN-000001": {
+      "src": "core",
+      "key": "RSN"
+    },
+    "UCOS-SIM-000001": {
+      "src": "core",
+      "key": "SIM"
+    },
+    "UCOS-CAU-000001": {
+      "src": "core",
+      "key": "CAU"
+    },
+    "UCOS-EVO-000001": {
+      "src": "core",
+      "key": "EVO"
+    },
+    "UCOS-REA-000001": {
+      "src": "ext",
+      "key": "REA"
+    },
+    "UCOS-PER-000001": {
+      "src": "ext",
+      "key": "PER"
+    },
+    "UCOS-UNC-000001": {
+      "src": "ext",
+      "key": "UNC"
+    },
+    "UCOS-CONTR-000001": {
+      "src": "ext",
+      "key": "CONTR"
+    },
+    "UCOS-POSS-000001": {
+      "src": "ext",
+      "key": "POSS"
+    },
+    "UCOS-EMG-000001": {
+      "src": "ext",
+      "key": "EMG"
+    },
+    "UCOS-COM-000001": {
+      "src": "commerce",
+      "key": "COM"
+    },
+    "UCOS-GPS-000001": {
+      "src": "commerce",
+      "key": "GPS"
+    },
+    "UCOS-PRC-000001": {
+      "src": "commerce",
+      "key": "PRC"
+    },
+    "UCOS-OFR-000001": {
+      "src": "commerce",
+      "key": "OFR"
+    },
+    "UCOS-SUB-000001": {
+      "src": "commerce",
+      "key": "SUB"
+    },
+    "UCOS-CNT-000001": {
+      "src": "commerce",
+      "key": "CNT"
+    },
+    "UCOS-MKT-000001": {
+      "src": "commerce",
+      "key": "MKT"
+    },
+    "UCOS-INV-000001": {
+      "src": "commerce",
+      "key": "INV"
+    },
+    "UCOS-ORD-000001": {
+      "src": "commerce",
+      "key": "ORD"
+    },
+    "UCOS-FUL-000001": {
+      "src": "commerce",
+      "key": "FUL"
+    },
+    "UCOS-DTW-000001": {
+      "src": "twin-agent",
+      "key": "DTW"
+    },
+    "UCOS-DTW-000002": {
+      "src": "twin-agent",
+      "key": "DTW2"
+    },
+    "UCOS-DTW-000003": {
+      "src": "twin-agent",
+      "key": "DTW3"
+    },
+    "UCOS-AGT-000001": {
+      "src": "twin-agent",
+      "key": "AGT"
+    },
+    "UCOS-AGT-000002": {
+      "src": "twin-agent",
+      "key": "AGT2"
+    },
+    "UCOS-AGT-000003": {
+      "src": "twin-agent",
+      "key": "AGT3"
+    },
+    "UCOS-AGT-000004": {
+      "src": "twin-agent",
+      "key": "AGT4"
+    },
+    "UCOS-AGT-000005": {
+      "src": "twin-agent",
+      "key": "AGT5"
+    },
+    "UCOS-AGT-000006": {
+      "src": "twin-agent",
+      "key": "AGT6"
+    },
+    "UCOS-AGT-000007": {
+      "src": "twin-agent",
+      "key": "AGT7"
+    },
+    "UCOS-RUN-000001": {
+      "src": "runtime-data",
+      "key": "RUN"
+    },
+    "UCOS-RUN-000002": {
+      "src": "runtime-data",
+      "key": "RUN2"
+    },
+    "UCOS-RUN-000003": {
+      "src": "runtime-data",
+      "key": "RUN3"
+    },
+    "UCOS-RUN-000004": {
+      "src": "runtime-data",
+      "key": "RUN4"
+    },
+    "UCOS-RUN-000005": {
+      "src": "runtime-data",
+      "key": "RUN5"
+    },
+    "UCOS-DB-000001": {
+      "src": "runtime-data",
+      "key": "DB"
+    },
+    "UCOS-GRF-000001": {
+      "src": "runtime-data",
+      "key": "GRF"
+    },
+    "UCOS-IDX-000001": {
+      "src": "runtime-data",
+      "key": "IDX"
+    },
+    "UCOS-SRC-000001": {
+      "src": "runtime-data",
+      "key": "SRC"
+    },
+    "UCOS-CCH-000001": {
+      "src": "runtime-data",
+      "key": "CCH"
+    },
+    "UCOS-EVT-000001": {
+      "src": "runtime-data",
+      "key": "EVT"
+    },
+    "UCOS-MSG-000001": {
+      "src": "runtime-data",
+      "key": "MSG"
+    },
+    "UCOS-IAM-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "IAM"
+    },
+    "UCOS-ZTA-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "ZTA"
+    },
+    "UCOS-CRY-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "CRY"
+    },
+    "UCOS-KMS-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "KMS"
+    },
+    "UCOS-SEC-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "SEC"
+    },
+    "UCOS-DSP-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "DSP"
+    },
+    "UCOS-CNS-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "CNS"
+    },
+    "UCOS-SRE-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "SRE"
+    },
+    "UCOS-MON-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "MON"
+    },
+    "UCOS-OBSV-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "OBSV"
+    },
+    "UCOS-AUD-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "AUD"
+    },
+    "UCOS-DR-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "DR"
+    },
+    "UCOS-BCP-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "BCP"
+    },
+    "UCOS-DEP-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "DEP"
+    },
+    "UCOS-CLD-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "CLD"
+    },
+    "UCOS-EDG-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "EDG"
+    },
+    "UCOS-GEO-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "GEO"
+    },
+    "UCOS-TST-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "TST"
+    },
+    "UCOS-VER-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "VER"
+    },
+    "UCOS-CER-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "CER"
+    },
+    "UCOS-FML-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "FML"
+    },
+    "UCOS-IMP-000001": {
+      "src": "sec-ops-dep-qlt",
+      "key": "IMP"
+    },
+    "UCOS-IMP-000002": {
+      "src": "sec-ops-dep-qlt",
+      "key": "IMP2"
+    },
+    "UCOS-IMP-000003": {
+      "src": "sec-ops-dep-qlt",
+      "key": "IMP3"
+    },
+    "UCOS-IMP-000004": {
+      "src": "sec-ops-dep-qlt",
+      "key": "IMP4"
+    },
+    "UCOS-IMP-000005": {
+      "src": "sec-ops-dep-qlt",
+      "key": "IMP5"
+    },
+    "UCOS-DEC-000001": {
+      "src": "platform",
+      "key": "DEC"
+    },
+    "UCOS-PLC-000001": {
+      "src": "platform",
+      "key": "PLC"
+    },
+    "UCOS-TIM-000001": {
+      "src": "platform",
+      "key": "TIM"
+    },
+    "UCOS-MEA-000001": {
+      "src": "platform",
+      "key": "MEA"
+    },
+    "UCOS-VAL-000001": {
+      "src": "platform",
+      "key": "VAL"
+    },
+    "UCOS-EXR-000001": {
+      "src": "platform",
+      "key": "EXR"
+    },
+    "UCOS-REG-000001": {
+      "src": "platform",
+      "key": "REG"
+    },
+    "UCOS-CMP-000001": {
+      "src": "platform",
+      "key": "CMP"
+    },
+    "UCOS-EXP-000001": {
+      "src": "platform",
+      "key": "EXP"
+    },
+    "UCOS-CMN-000001": {
+      "src": "platform",
+      "key": "CMN"
+    },
+    "UCOS-NTF-000001": {
+      "src": "platform",
+      "key": "NTF"
+    },
+    "UCOS-GDN-000001": {
+      "src": "platform",
+      "key": "GDN"
+    },
+    "UCOS-INT-000001": {
+      "src": "platform",
+      "key": "INT"
+    },
+    "UCOS-INS-000001": {
+      "src": "platform",
+      "key": "INS"
+    },
+    "UCOS-MED-000001": {
+      "src": "platform",
+      "key": "MED"
+    },
+    "UCOS-OFG-000001": {
+      "src": "platform",
+      "key": "OFG"
+    },
+    "UCOS-PKG-000001": {
+      "src": "platform",
+      "key": "PKG"
+    }
   }
 }
