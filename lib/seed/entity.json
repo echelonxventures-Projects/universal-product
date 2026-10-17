@@ -30,7 +30,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "currency",
@@ -104,7 +105,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "level",
@@ -162,7 +164,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "symbol",
@@ -227,7 +230,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "category",
@@ -278,7 +282,8 @@
      "options": [
       "active",
       "retired"
-     ]
+     ],
+     "display": "badge"
     },
     {
      "key": "position",
@@ -327,7 +332,8 @@
      "options": [
       "installed",
       "disabled"
-     ]
+     ],
+     "display": "badge"
     },
     {
      "key": "config",
@@ -364,7 +370,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "type",
@@ -438,7 +445,8 @@
       "text"
      ],
      "required": true,
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "label",
@@ -541,7 +549,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "kind",
@@ -556,7 +565,8 @@
       "ai"
      ],
      "required": true,
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "entity",
@@ -648,7 +658,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "label",
@@ -696,7 +707,8 @@
      "key": "name",
      "label": "Control name",
      "type": "text",
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "evidence",
@@ -710,7 +722,8 @@
      "type": "select",
      "options": "controlStatuses",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -755,7 +768,8 @@
       "denied"
      ],
      "required": true,
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "lawful_basis",
@@ -820,7 +834,8 @@
      "type": "select",
      "options": "privacyRequestKinds",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "status",
@@ -828,7 +843,8 @@
      "type": "select",
      "options": "privacyRequestStates",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "due_at",
@@ -1018,14 +1034,16 @@
      "type": "select",
      "options": "providerKinds",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "name",
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "emoji",
@@ -1157,14 +1175,16 @@
      "label": "Title",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "brand",
      "label": "Brand",
      "type": "ref:brand",
      "required": true,
-     "list": true
+     "list": true,
+     "refValue": "label"
     },
     {
      "key": "dept",
@@ -1227,7 +1247,8 @@
     {
      "key": "priority",
      "label": "Priority Eligible",
-     "type": "bool"
+     "type": "bool",
+     "display": "badge"
     },
     {
      "key": "flags",
@@ -1245,7 +1266,8 @@
      "label": "Lifecycle",
      "type": "select",
      "options": "lifecycle",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "identity",
@@ -1255,7 +1277,8 @@
     {
      "key": "attrs",
      "label": "Attributes",
-     "type": "json"
+     "type": "json",
+     "editor": "attrs"
     },
     {
      "key": "vertical",
@@ -1265,7 +1288,8 @@
     {
      "key": "media",
      "label": "Media",
-     "type": "json"
+     "type": "json",
+     "editor": "media"
     },
     {
      "key": "seo",
@@ -1376,7 +1400,8 @@
      "key": "name",
      "label": "Variant Name",
      "type": "text",
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "group_id",
@@ -1503,7 +1528,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "code",
@@ -1621,7 +1647,8 @@
      "label": "Status",
      "type": "select",
      "options": "serializedStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "condition",
@@ -1687,7 +1714,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "axis",
@@ -1753,7 +1781,8 @@
      "label": "Kind",
      "type": "select",
      "options": "complianceKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "code",
@@ -1780,7 +1809,8 @@
      "label": "Status",
      "type": "select",
      "options": "complianceStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "valid_from",
@@ -1831,7 +1861,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "party_role",
@@ -1905,7 +1936,8 @@
      "label": "Status",
      "type": "select",
      "options": "supplierStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "certifications",
@@ -1988,7 +2020,8 @@
      "label": "Status",
      "type": "select",
      "options": "linkStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -2040,7 +2073,8 @@
      "key": "name",
      "label": "Localized Name",
      "type": "text",
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "description",
@@ -2055,7 +2089,8 @@
     {
      "key": "attrs",
      "label": "Attributes",
-     "type": "json"
+     "type": "json",
+     "editor": "attrs"
     },
     {
      "key": "active",
@@ -2167,7 +2202,8 @@
      "label": "Status",
      "type": "select",
      "options": "contractStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "notes",
@@ -2210,7 +2246,8 @@
      "label": "Title",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "buyer_org",
@@ -2254,7 +2291,8 @@
      "label": "Status",
      "type": "select",
      "options": "tenderStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "awarded_seller_id",
@@ -2352,7 +2390,8 @@
      "key": "status",
      "label": "Status",
      "type": "text",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "actor",
@@ -2407,7 +2446,8 @@
       "done",
       "failed"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "params",
@@ -2501,7 +2541,8 @@
       "completed",
       "cancelled"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "reference",
@@ -2591,7 +2632,8 @@
       "paid",
       "amended"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "reference",
@@ -2639,7 +2681,8 @@
      "key": "name",
      "label": "Customer",
      "type": "text",
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "address",
@@ -2654,7 +2697,8 @@
     {
      "key": "state",
      "label": "State",
-     "type": "text"
+     "type": "text",
+     "display": "badge"
     },
     {
      "key": "zip",
@@ -2698,7 +2742,8 @@
       "delivered",
       "cancelled"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "pay_method",
@@ -2774,7 +2819,8 @@
       "refunded",
       "rejected"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "created_at",
@@ -2846,7 +2892,8 @@
       "rejected",
       "closed"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "quotes",
@@ -2913,7 +2960,8 @@
       "pending",
       "paid"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "period",
@@ -2942,7 +2990,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "role",
@@ -2964,7 +3013,8 @@
       "active",
       "suspended"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "commission_pct",
@@ -2993,7 +3043,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "type",
@@ -3031,7 +3082,8 @@
       "active",
       "inactive"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "rules",
@@ -3204,7 +3256,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "icon",
@@ -3214,7 +3267,8 @@
     {
      "key": "attrs",
      "label": "Attributes",
-     "type": "json"
+     "type": "json",
+     "editor": "attrs"
     },
     {
      "key": "active",
@@ -3448,7 +3502,8 @@
      "label": "Title",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "subtitle",
@@ -3502,7 +3557,8 @@
      "label": "Title",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "dept",
@@ -3552,7 +3608,8 @@
      "key": "name",
      "label": "Author",
      "type": "text",
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "rating",
@@ -3581,7 +3638,8 @@
      "label": "Moderation",
      "type": "select",
      "options": "ugcStates",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "votes_helpful",
@@ -3597,7 +3655,8 @@
     {
      "key": "media",
      "label": "Media",
-     "type": "json"
+     "type": "json",
+     "editor": "media"
     },
     {
      "key": "created_at",
@@ -3680,7 +3739,8 @@
      "key": "name",
      "label": "Asked by",
      "type": "text",
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "body",
@@ -3693,7 +3753,8 @@
      "label": "Moderation",
      "type": "select",
      "options": "ugcStates",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "votes_helpful",
@@ -3745,7 +3806,8 @@
      "key": "name",
      "label": "Answered by",
      "type": "text",
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "role",
@@ -3764,7 +3826,8 @@
      "label": "Moderation",
      "type": "select",
      "options": "ugcStates",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "votes_helpful",
@@ -3824,14 +3887,16 @@
      "label": "Priority",
      "type": "select",
      "options": "hdPriorities",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "status",
      "label": "Status",
      "type": "select",
      "options": "hdStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "assignee",
@@ -3970,7 +4035,8 @@
      "label": "Recipient",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "address",
@@ -3989,7 +4055,8 @@
     {
      "key": "state",
      "label": "State / Province",
-     "type": "ref:subdivision"
+     "type": "ref:subdivision",
+     "display": "badge"
     },
     {
      "key": "zip",
@@ -4068,7 +4135,8 @@
      "label": "Status",
      "type": "select",
      "options": "recSchedStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "cycles_completed",
@@ -4115,7 +4183,8 @@
      "label": "Status",
      "type": "select",
      "options": "recCycleStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "at",
@@ -4156,7 +4225,8 @@
      "label": "Status",
      "type": "select",
      "options": "membershipStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "started_at",
@@ -4276,7 +4346,8 @@
       "address",
       "ip"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "value",
@@ -4324,7 +4395,8 @@
      "key": "name",
      "label": "Name",
      "type": "text",
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "variants",
@@ -4336,7 +4408,8 @@
      "label": "Status",
      "type": "select",
      "options": "expStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "metric",
@@ -4465,14 +4538,16 @@
      "label": "Status",
      "type": "select",
      "options": "planStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "priority",
      "label": "Priority",
      "type": "select",
      "options": "planPriorities",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "po_ref",
@@ -4516,7 +4591,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "email",
@@ -4629,7 +4705,8 @@
       "order",
       "subscription"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "gateway",
@@ -4670,7 +4747,8 @@
       "failed",
       "refunded"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "txn_ref",
@@ -4721,7 +4799,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "domain",
@@ -4749,7 +4828,8 @@
       "active",
       "suspended"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -4773,7 +4853,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "price_month",
@@ -4844,7 +4925,8 @@
       "past_due",
       "cancelled"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "renews_at",
@@ -4912,7 +4994,8 @@
       "overdue",
       "void"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "period_start",
@@ -4968,7 +5051,8 @@
      "label": "Kind",
      "type": "select",
      "options": "providerKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "manifest",
@@ -4998,7 +5082,8 @@
      "label": "Kind",
      "type": "select",
      "options": "goipTouchpointKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "party",
@@ -5160,7 +5245,8 @@
       "exhausted",
       "closed"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "policy",
@@ -5238,7 +5324,8 @@
      "label": "Status",
      "type": "select",
      "options": "goipSettlementStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "reference",
@@ -5326,7 +5413,8 @@
      "label": "Status",
      "type": "select",
      "options": "goipEntitlementStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "source_offer",
@@ -5374,7 +5462,8 @@
      "label": "Store Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "code",
@@ -5387,7 +5476,8 @@
      "label": "Store Type",
      "type": "select",
      "options": "qcStoreKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "address",
@@ -5468,7 +5558,8 @@
      "label": "Status",
      "type": "select",
      "options": "qcStoreStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -5545,7 +5636,8 @@
      "label": "Status",
      "type": "select",
      "options": "qcSlotStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -5615,7 +5707,8 @@
      "label": "Status",
      "type": "select",
      "options": "qcAreaStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -5675,7 +5768,8 @@
      "label": "Status",
      "type": "select",
      "options": "qcInvStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -5706,7 +5800,8 @@
      "label": "Rider Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "phone",
@@ -5738,7 +5833,8 @@
      "label": "Status",
      "type": "select",
      "options": "qcRiderStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "shift_start",
@@ -5831,7 +5927,8 @@
      "label": "Status",
      "type": "select",
      "options": "qcDispatchStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "notes",
@@ -5869,7 +5966,8 @@
     {
      "key": "name",
      "label": "Name at Bank",
-     "type": "text"
+     "type": "text",
+     "display": "lead"
     },
     {
      "key": "verified",
@@ -5888,7 +5986,8 @@
      "label": "Status",
      "type": "select",
      "options": "finUpiStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -5946,7 +6045,8 @@
      "label": "Status",
      "type": "select",
      "options": "finCollectStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "txn_ref",
@@ -5989,7 +6089,8 @@
      "label": "Kind",
      "type": "select",
      "options": "finQrKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "payload",
@@ -6030,7 +6131,8 @@
      "label": "Status",
      "type": "select",
      "options": "finQrStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -6067,7 +6169,8 @@
      "label": "Title",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "amount",
@@ -6107,7 +6210,8 @@
      "label": "Status",
      "type": "select",
      "options": "finLinkStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "txn_ref",
@@ -6193,7 +6297,8 @@
      "label": "Status",
      "type": "select",
      "options": "finMandateStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -6271,7 +6376,8 @@
      "label": "Status",
      "type": "select",
      "options": "finEscrowStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "meta",
@@ -6325,7 +6431,8 @@
      "label": "Status",
      "type": "select",
      "options": "finSplitStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "settled_at",
@@ -6360,7 +6467,8 @@
      "label": "Type",
      "type": "select",
      "options": "finKycKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "full_name",
@@ -6423,7 +6531,8 @@
      "label": "Status",
      "type": "select",
      "options": "finKycStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "verified_at",
@@ -6505,7 +6614,8 @@
      "label": "Status",
      "type": "select",
      "options": "finPayoutStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "txn_ref",
@@ -6539,7 +6649,8 @@
      "label": "Biller Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "category",
@@ -6571,7 +6682,8 @@
       "active",
       "inactive"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "position",
@@ -6646,7 +6758,8 @@
      "label": "Status",
      "type": "select",
      "options": "finBillStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "txn_ref",
@@ -6724,14 +6837,16 @@
      "label": "Kind",
      "type": "select",
      "options": "finRechargeKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "status",
      "label": "Status",
      "type": "select",
      "options": "finRechargeStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "txn_ref",
@@ -6775,7 +6890,8 @@
      "label": "Kind",
      "type": "select",
      "options": "finRechargeKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "amount",
@@ -6829,7 +6945,8 @@
       "active",
       "inactive"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "position",
@@ -6891,7 +7008,8 @@
      "label": "Status",
      "type": "select",
      "options": "finBnplStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "kyc_id",
@@ -6949,7 +7067,8 @@
      "label": "Status",
      "type": "select",
      "options": "finEmiStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "paid_at",
@@ -7031,7 +7150,8 @@
      "label": "Status",
      "type": "select",
      "options": "finLoanStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "kyc_id",
@@ -7117,7 +7237,8 @@
      "label": "Status",
      "type": "select",
      "options": "finInsuranceStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -7198,7 +7319,8 @@
      "label": "Status",
      "type": "select",
      "options": "finVoucherStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -7285,7 +7407,8 @@
      "label": "Status",
      "type": "select",
      "options": "mktOnboardingStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "submitted_at",
@@ -7470,7 +7593,8 @@
      "label": "Status",
      "type": "select",
      "options": "mktFbaStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -7566,7 +7690,8 @@
       "computed",
       "archived"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -7615,7 +7740,8 @@
      "label": "Claim Type",
      "type": "select",
      "options": "mktClaimKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "reason",
@@ -7644,7 +7770,8 @@
      "label": "Status",
      "type": "select",
      "options": "mktClaimStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "resolution",
@@ -7721,7 +7848,8 @@
      "label": "Status",
      "type": "select",
      "options": "mktSmartStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -7757,7 +7885,8 @@
      "label": "Ad Type",
      "type": "select",
      "options": "mktAdKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "headline",
@@ -7804,7 +7933,8 @@
      "label": "Status",
      "type": "select",
      "options": "mktCreativeStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "start_at",
@@ -7903,7 +8033,8 @@
      "label": "Status",
      "type": "select",
      "options": "b2bAssuranceStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -7980,7 +8111,8 @@
       "expired",
       "cancelled"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -8214,7 +8346,8 @@
      "label": "Status",
      "type": "select",
      "options": "b2bDocStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -8323,7 +8456,8 @@
      "label": "Status",
      "type": "select",
      "options": "b2bLcStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -8412,7 +8546,8 @@
      "label": "Status",
      "type": "select",
      "options": "b2bQuoteStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "rank",
@@ -8483,7 +8618,8 @@
      "label": "Status",
      "type": "select",
      "options": "b2bBidStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "rank",
@@ -8513,7 +8649,8 @@
      "label": "Price List Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "currency",
@@ -8545,7 +8682,8 @@
       "active",
       "inactive"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -8608,7 +8746,8 @@
       "active",
       "inactive"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -8644,7 +8783,8 @@
      "label": "Registry Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "event",
@@ -8684,7 +8824,8 @@
      "label": "Status",
      "type": "select",
      "options": "shopRegistryStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -8712,14 +8853,16 @@
      "label": "Kind",
      "type": "select",
      "options": "shopNotifKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "title",
      "label": "Title",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "body",
@@ -8883,7 +9026,8 @@
      "label": "Status",
      "type": "select",
      "options": "shopDocStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     }
    ]
   },
@@ -8949,7 +9093,8 @@
      "label": "Status",
      "type": "select",
      "options": "mobilityRideStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "distance_km",
@@ -9028,7 +9173,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "email",
@@ -9075,7 +9221,8 @@
       "busy",
       "suspended"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "rating",
@@ -9135,7 +9282,8 @@
      "label": "Kind",
      "type": "select",
      "options": "mobilityVehicleKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "capacity",
@@ -9152,7 +9300,8 @@
       "maintenance",
       "retired"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "odometer",
@@ -9197,7 +9346,8 @@
      "label": "Zone",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "kind",
@@ -9208,7 +9358,8 @@
       "event",
       "weather"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "multiplier",
@@ -9277,7 +9428,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "email",
@@ -9305,7 +9457,8 @@
       "on_leave",
       "terminated"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "base_salary",
@@ -9392,7 +9545,8 @@
       "absent",
       "leave"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "hours",
@@ -9457,7 +9611,8 @@
       "approved",
       "paid"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "run_at",
@@ -9506,7 +9661,8 @@
      "label": "Status",
      "type": "select",
      "options": "opsPrStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "note",
@@ -9623,7 +9779,8 @@
      "label": "Status",
      "type": "select",
      "options": "opsWoStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "bom",
@@ -9680,7 +9837,8 @@
      "label": "Name",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "owner",
@@ -9710,7 +9868,8 @@
      "label": "Status",
      "type": "select",
      "options": "opsProjectStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "start_date",
@@ -9751,7 +9910,8 @@
      "label": "Title",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "display": "lead"
     },
     {
      "key": "assignee",
@@ -9764,7 +9924,8 @@
      "label": "Status",
      "type": "select",
      "options": "opsTaskStatuses",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "priority",
@@ -9776,7 +9937,8 @@
       "high",
       "urgent"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "estimate_hours",
@@ -9817,7 +9979,8 @@
      "label": "Kind",
      "type": "select",
      "options": "opsApprovalKinds",
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "ref",
@@ -9845,7 +10008,8 @@
       "approved",
       "rejected"
      ],
-     "list": true
+     "list": true,
+     "display": "badge"
     },
     {
      "key": "note",

@@ -295,7 +295,8 @@ async function pageHome() {
     <div class="tiles">${c.tiles.map((tl, i) => { const ps = all.filter(x => x.d === c.dept); const p = ps[i % ps.length]; return p ? `<a href="${prodLink(p)}"><span>${esc(tl)}</span>${img(p, "tile")}</a>` : ""; }).join("")}</div>
     <a class="see-more" href="results.html?dept=${c.dept}">${esc(T("seeMore"))} →</a></div>`).join("");
 
-  const industries = tax.tree.filter(n => n.level === "industry").slice(0, 12);
+  const root = ((tax.levels || []).find(l => l.root) || {}).key;
+  const industries = tax.tree.filter(n => n.level === root).slice(0, 12);
   main.innerHTML = `
   <div class="hero-wrap"><div class="hero-banner">${banners}</div>
     <button class="banner-arrow" id="bPrev">‹</button><button class="banner-arrow" id="bNext">›</button></div>
@@ -472,15 +473,15 @@ async function pageProduct() {
           ${rv.verified ? `<div class="rev-vp">✓ Verified Purchase</div>` : ""}
           <div class="rev-title">${esc(rv.title)}</div><p>${esc(rv.body)}</p>
           ${(rv.media || []).length ? `<div class="rev-media">${rv.media.map(m => `<span class="a-chip" title="${esc(m.label || "photo")}">${esc(m.emoji || "🖼")} ${esc(m.label || "photo")}</span>`).join("")}</div>` : ""}
-          <div class="rev-foot"><a class="rev-help" href="#" data-act="ugc-vote" data-kind="review" data-id="${rv.id}" data-dir="up">👍 Helpful</a> ${(rv.helpful || 0) ? `<span class="rev-count">${rv.helpful} people found this helpful</span>` : ""}</div>
+          <div class="rev-foot"><a class="rev-help" href="#" data-act="ugc-vote" data-vote="/reviews/${rv.id}/vote" data-dir="up">👍 Helpful</a> ${(rv.helpful || 0) ? `<span class="rev-count">${rv.helpful} people found this helpful</span>` : ""}</div>
           ${(rv.replies || []).map(rp => `<div class="rev-reply"><b>${esc(rp.author)}</b> <span class="a-chip">${esc(rp.role)}</span><p>${esc(rp.body)}</p></div>`).join("")}</div>`).join("")}</div>` : ""}
       ${f.qna ? `<div class="pp-rev-col" id="qna"><div class="rev-head"><h3>${esc(T("qnaTitle"))}</h3></div>
         <div class="qna-ask"><input id="qnaInput" placeholder="Have a question about this item?" /><button class="btn-yellow" data-act="qna-ask">Ask</button></div>
         ${(questions || []).length ? questions.map(q => `<div class="rev"><div class="rev-user"><b>Q.</b> ${esc(q.name)}</div>
           <p class="qna-q">${esc(q.body)}</p>
-          <div class="rev-foot"><a class="rev-help" href="#" data-act="ugc-vote" data-kind="question" data-id="${q.id}" data-dir="up">👍 Helpful</a> ${(q.votes_helpful || 0) ? `<span class="rev-count">${q.votes_helpful} found this useful</span>` : ""}</div>
+          <div class="rev-foot"><a class="rev-help" href="#" data-act="ugc-vote" data-vote="/qna/${q.id}/vote?kind=question" data-dir="up">👍 Helpful</a> ${(q.votes_helpful || 0) ? `<span class="rev-count">${q.votes_helpful} found this useful</span>` : ""}</div>
           ${(q.answers || []).map(a => `<div class="rev-reply"><b>${esc(a.name)}</b> <span class="a-chip">${esc(a.role)}</span><p>${esc(a.body)}</p>
-            <div class="rev-foot"><a class="rev-help" href="#" data-act="ugc-vote" data-kind="answer" data-id="${a.id}" data-dir="up">👍 Helpful</a> ${(a.votes_helpful || 0) ? `<span class="rev-count">${a.votes_helpful} found this useful</span>` : ""}</div></div>`).join("") || '<p class="a-sub">No answers yet — be the first to answer.</p>'}
+            <div class="rev-foot"><a class="rev-help" href="#" data-act="ugc-vote" data-vote="/qna/${a.id}/vote?kind=answer" data-dir="up">👍 Helpful</a> ${(a.votes_helpful || 0) ? `<span class="rev-count">${a.votes_helpful} found this useful</span>` : ""}</div></div>`).join("") || '<p class="a-sub">No answers yet — be the first to answer.</p>'}
           </div>`).join("") : '<p class="a-sub">No questions yet. Ask the first question above.</p>'}</div>` : ""}
     </div>
     ${relGroups.accessory || relGroups.compatible ? carousel("Accessories & Compatibility", relGroups.accessory || relGroups.compatible) : ""}
@@ -973,8 +974,9 @@ document.addEventListener("click", async e => {
       case "list": toast("✦ Registry created"); break;
       case "soon": toast("✦ This experience is coming soon"); break;
       case "ugc-vote": {
-        const kind = el.dataset.kind || "review", dir = el.dataset.dir || "up";
-        const v = await api(`/qna/${el.dataset.id}/vote?kind=${kind === "review" ? "review" : kind}`, "POST", { dir });
+        /* each vote button names its own endpoint (a review and a question are different records) */
+        const dir = el.dataset.dir || "up";
+        const v = await api(el.dataset.vote, "POST", { dir });
         if (v.changed !== false) { toast(dir === "up" ? "👍 Thanks for your feedback" : "Vote updated"); render(); }
         else toast("You already voted that way"); break;
       }
@@ -1020,17 +1022,10 @@ document.addEventListener("click", async e => {
 async function initPage() {
   const p = PAGE();
   try {
-    if (p === "home") await pageHome();
-    else if (p === "results") await pageResults();
-    else if (p === "product") await pageProduct();
-    else if (p === "cart") await pageCart();
-    else if (p === "checkout") await pageCheckout();
-    else if (p === "orders") await pageOrders();
-    else if (p === "deals") await pageDeals();
-    else if (p === "gift") await pageGift();
-    else if (p === "cs") pageCS();
-    else if (p === "registry") pageRegistry();
-    else if (p === "reset") pageReset();
+    /* each page of the storefront is its own entry: the page key the HTML declares picks it */
+    const PAGES = { home: pageHome, results: pageResults, product: pageProduct, cart: pageCart, checkout: pageCheckout, orders: pageOrders,
+      deals: pageDeals, gift: pageGift, cs: pageCS, registry: pageRegistry, reset: pageReset };
+    if (PAGES[p]) await PAGES[p]();
   } catch (e) {
     console.error(e);
     $("#page").innerHTML = `<div class="r-empty"><h3>Something went wrong</h3><p>${esc(e.message)}</p><button class="btn-yellow" data-act="reload">Retry</button></div>`;

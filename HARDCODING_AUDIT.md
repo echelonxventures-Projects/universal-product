@@ -117,6 +117,7 @@ registry, and the console renders what it's given.
 | Declared behaviour (finding 2), consoles | storefront, store and platform consoles read the same rows | **109** | 6 |
 | Feature gates (finding 5) | engines ask binding points; catalogue rows declare policy and storefront atoms | **101** | 6 |
 | Provider transports (finding 6) | provider specs declare a kernel transport; identity types declare protocols; FX sources declare `fetches` | **93** | 6 |
+| Console metadata (finding 7) | fields declare editor, refValue and display; taxonomy levels are a registry; pre-selections are flagged rows | **62** | 6 |
 
 **Batch 1 converted these engines:**
 - rides, drivers, vehicles (`lib/mobility.js`);
@@ -232,6 +233,29 @@ Existing installs pick the new fields up through `registry.addFields()`, which n
 - **FX sources:** the feed setting looks up the chosen `fxSources` row, and a row that `fetches` needs an http(s) URL. This replaces the `"feed"`/`"manual"` literals.
 - `test/transports.js` (13 checks) shows that a provider added as a row and declaring a transport is followed, that removing a declaration takes effect, and that protocols follow the type row. It fails if an engine compares against a notification provider, FX source or identity type by name. The `password` flow is exempt because it is the engine's own kernel flow.
 - **What stays:** `const KIND = "notification"` in the mailer (counted as one fallback, so 96 → 97) is the provider kind the mailer serves, which is identity. Boot still re-asserts every seeded spec, as it did before, so an operator's edit to a seeded provider's spec does not survive a restart.
+
+**Finding 7 — the consoles render what the server declares (branches: 93 → 62):**
+- **Entity fields declare how the console shows them**, in `lib/seed/entity.json` and in the generated fields of `compose.js` and `ucos-universes.js`:
+  - `editor` (`media`, `attrs`): the structured editor a form mounts. The console's `EDITORS` table replaces the `f.key === "media"` / `"attrs"` branches in rendering, wiring and collecting;
+  - `refValue`: the column of a referenced row the field stores. The product's brand stores the brand's label, which replaces `key === "brand"`;
+  - `display` (`lead`, `badge`): the column that carries the row's emoji, and the columns shown as a tone. This replaces the store console's title/name and status/lifecycle lists and the platform console's five-key badge list. The platform data index now serves `display`.
+- **Select options:** a select reads its registry list and offers each row's key. Five `f.options === …` special cases are gone.
+- **Taxonomy levels are a registry** (`taxonomyLevels`, seeded from `lib/seed/meta.json`): `root` marks the level a storefront browses from, `platform_catalogue` the levels a global product may be categorised by, and `category` is the flagged default. The hard-coded level list in the save handler, the `IN ('category','subcategory')` query and both consoles' `level === "industry"` checks now read it. `/api/taxonomy` serves the levels.
+- **Pre-selected options come from flagged rows:** the platform console's new-user staff role is the `staffRoles` default, which `/api/admin/roles` now serves, and the FX converter's target is no longer `INR`.
+- **Storefront:** the page router is a page table, and each vote button names its own endpoint.
+- **Capability panels** (escrow, KYC, payouts, trade assurance, gold supplier, verification, surge) are identity: each card exists to operate its own capability. They go through one `hasCap(gate, key)` helper. `dynamic_pricing` is a mobility-domain capability, the same as `ride_hailing`.
+- **Bugs fixed:**
+  - a review's "Helpful" vote posted to the Q&A endpoint, which recorded it against the *question* with the same id. Reviews now post to `/reviews/:id/vote`;
+  - the offer list showed `%` whenever an offer's currency was USD, so a $5 offer read "5%". The unit now comes from the offer type row's `unit`.
+- `test/console-meta.js` (10 checks) fails if a console branches on a field key, a taxonomy level, a currency code or a declared default again.
+- **What stays (kernel words):**
+  - the storefront's purchase modes (`rent`, `subscribe`, …), which product type rows declare;
+  - media players (`video`);
+  - the click-action keys (`gift`, `coupon`, `track`);
+  - the dashboard chart renderers (`bar`, `line`);
+  - the offer scope matcher (`taxonomy`);
+  - the product's own `sku` row.
+- **Leftover:** the platform console's `money()` still formats in `$` / `en-US`.
 
 **New registry entries now reach existing installs on every boot.** A new machine, binding or vocabulary row is appended additively, with no stamp bump needed. `test/states.js` covers this.
 

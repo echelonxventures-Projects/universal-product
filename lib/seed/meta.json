@@ -492,5 +492,40 @@
     ]
    }
   ]
- }
+ },
+ "TAXONOMY_LEVELS": [
+  {
+   "key": "domain",
+   "name": "Domain",
+   "depth": 0
+  },
+  {
+   "key": "industry",
+   "name": "Industry",
+   "depth": 1,
+   "root": true
+  },
+  {
+   "key": "category",
+   "name": "Category",
+   "depth": 2,
+   "platform_catalogue": true
+  },
+  {
+   "key": "subcategory",
+   "name": "Subcategory",
+   "depth": 3,
+   "platform_catalogue": true
+  },
+  {
+   "key": "family",
+   "name": "Family",
+   "depth": 4
+  },
+  {
+   "key": "model",
+   "name": "Model",
+   "depth": 5
+  }
+ ]
 }

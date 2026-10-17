@@ -23,6 +23,7 @@
   "ruleSubjectTypes": "gateway",
   "offerFunders": "self",
   "goipRealities": "physical",
-  "taxClasses": "standard"
+  "taxClasses": "standard",
+  "taxonomyLevels": "category"
  }
 }

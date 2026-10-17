@@ -230,6 +230,10 @@ async function vHelpdesk() {
    because an inert engine has no records to show. No vendor name appears — the
    domain declares what it does, never whose it is. ---------- */
 let coCap = null;
+/* a panel naming the capability it IS: the escrow card asks whether escrow is on. That is
+   identity, not a gate — the card exists only to operate that one capability — so it reads
+   the capability by name; a feature another engine depends on goes through a binding point */
+const hasCap = (gate, key) => !!gate && (gate.on || []).includes(key);
 async function coCaps() {
   if (!coCap) coCap = (await api("/capabilities")).catalog;
   return coCap;
@@ -324,20 +328,20 @@ async function vFinOps() {
     <p class="a-sub">${coChips(escrows, e => e.status)}</p>
     ${coTbl(["escrow", "order", "buyer", "seller", "held", "status"], escrows,
       e => [`<code>${esc(e.ref)}</code>`, e.order_id || "—", esc(e.buyer), esc(e.seller), money(e.amount), coBadge(e.status)])}
-    ${gate.on.includes("escrow") ? `<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><label><span>Order id</span><input id="finEscOrder" placeholder="101"></label>
+    ${hasCap(gate, "escrow") ? `<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><label><span>Order id</span><input id="finEscOrder" placeholder="101"></label>
       <label><span>Seller</span><input id="finEscSeller" placeholder="s:acme"></label><label><span>Amount</span><input id="finEscAmt" type="number" step="0.01" placeholder="50.00"></label>
       <button class="p-btn sm primary" id="finEscGo">Hold in escrow</button></div>` : ""}</div>
   <div class="a-card"><h3>KYC profiles · ${kycs.length}</h3>
     <p class="a-sub">${coChips(kycs, k => k.status)}</p>
     ${coTbl(["owner", "kind", "name", "company", "docs", "status"], kycs,
       k => [esc(k.owner), esc(k.kind), esc(k.full_name || "—"), esc(k.company || "—"), esc(k.doc_status || "—"), coBadge(k.status)])}
-    ${gate.on.includes("kyc") ? `<button class="p-btn sm primary" data-act="co-new" data-key="kyc_profile">+ Submit KYC</button>` : ""}</div>
+    ${hasCap(gate, "kyc") ? `<button class="p-btn sm primary" data-act="co-new" data-key="kyc_profile">+ Submit KYC</button>` : ""}</div>
   <div class="a-cap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px">
     <div class="a-card"><h3>Payment links · ${pols.length}</h3>
       ${coTbl(["link", "title", "amount", "status"], pols, p => [`<code>${esc(p.ref)}</code>`, esc(p.title), money(p.amount), coBadge(p.status)], "No links issued.")}</div>
     <div class="a-card"><h3>Bank payouts · ${payouts.length}</h3>
       ${coTbl(["payout", "payee", "amount", "status"], payouts, p => [`<code>${esc(p.ref)}</code>`, esc(p.payee), money(p.amount), coBadge(p.status)], "No payouts queued.")}
-      ${gate.on.includes("bank_payouts") ? `<button class="p-btn sm primary" data-act="co-new" data-key="bank_payout">+ Queue payout</button>` : ""}</div>
+      ${hasCap(gate, "bank_payouts") ? `<button class="p-btn sm primary" data-act="co-new" data-key="bank_payout">+ Queue payout</button>` : ""}</div>
     <div class="a-card"><h3>Loans · ${loans.length}</h3>
       ${coTbl(["loan", "owner", "principal", "emi", "status"], loans, l => [`<code>${esc(l.ref)}</code>`, esc(l.owner), money(l.principal), l.emi ? money(l.emi) : "—", coBadge(l.status)], "No credit issued.")}</div>
     <div class="a-card"><h3>Gift vouchers · ${vchs.length}</h3>
@@ -438,16 +442,16 @@ async function vTradeOps() {
     <p class="a-sub">${coChips(tas, t => t.status)}</p>
     ${coTbl(["ref", "order", "buyer", "seller", "amount", "milestone", "status"], tas,
       t => [`<code>${esc(t.ref)}</code>`, t.order_id || "—", esc(t.buyer), esc(t.seller), money(t.amount), esc(t.current_milestone || "—"), coBadge(t.status)])}
-    ${gate.on.includes("trade_assurance") ? `<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><label><span>Order id</span><input id="trAsOrder" placeholder="101"></label>
+    ${hasCap(gate, "trade_assurance") ? `<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><label><span>Order id</span><input id="trAsOrder" placeholder="101"></label>
       <label><span>Seller</span><input id="trAsSeller" placeholder="s:acme"></label><label><span>Amount</span><input id="trAsAmt" type="number" step="0.01" placeholder="500.00"></label>
       <button class="p-btn sm primary" id="trAsGo">Create assurance</button></div>` : ""}</div>
   <div class="a-cap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px">
     <div class="a-card"><h3>Gold suppliers · ${golds.length}</h3>
       ${coTbl(["supplier", "tier", "verified", "status"], golds, g => [esc(String(g.supplier_id)), coBadge(g.tier), g.verified ? "✓" : "—", coBadge(g.status)], "No memberships.")}
-      ${gate.on.includes("gold_supplier") ? `<button class="p-btn sm primary" data-act="co-new" data-key="gold_supplier">+ Enrol supplier</button>` : ""}</div>
+      ${hasCap(gate, "gold_supplier") ? `<button class="p-btn sm primary" data-act="co-new" data-key="gold_supplier">+ Enrol supplier</button>` : ""}</div>
     <div class="a-card"><h3>Company verification · ${vers.length}</h3>
       ${coTbl(["company", "country", "audit", "status"], vers, v => [esc(v.company_name), esc(v.country || "—"), esc(v.audit_by || "—"), coBadge(v.verification_status)], "No audits filed.")}
-      ${gate.on.includes("company_verification") ? `<button class="p-btn sm primary" data-act="co-new" data-key="company_verification">+ Submit audit</button>` : ""}</div>
+      ${hasCap(gate, "company_verification") ? `<button class="p-btn sm primary" data-act="co-new" data-key="company_verification">+ Submit audit</button>` : ""}</div>
     <div class="a-card"><h3>Letters of credit · ${lcs.length}</h3>
       ${coTbl(["ref", "buyer", "seller", "amount", "status"], lcs, l => [`<code>${esc(l.lc_number || l.ref)}</code>`, esc(l.buyer), esc(l.seller), money(l.amount), coBadge(l.status)], "No LCs issued.")}</div>
     <div class="a-card"><h3>RFQ quotes · ${quos.length}</h3>
@@ -620,14 +624,16 @@ function validateRow(row, def) {
   return errors;
 }
 async function entityRows(key) { try { return (await api("/meta/entity/" + key)).rows; } catch (e) { return []; } }
-async function refOptions(key) {
+async function refOptions(key, f) {
   const rows = await entityRows(key);
   return rows.map(r => {
-    /* products carry their brand as the DISPLAY NAME (the string the catalogue, search facets,
-       order snapshots and CSV exports all read), so the option value must be the label — the
-       numeric row id would never match a real product and the form would render an empty
-       required select and refuse every save. */
-    if (key === "brand" && r.label != null) return { v: r.label, l: r.label };
+    /* a field may declare which column of the referenced row it stores (`refValue`): products
+       carry their brand as the DISPLAY NAME (the string the catalogue, search facets, order
+       snapshots and CSV exports all read), so that field stores the label — the numeric row id
+       would never match a real product and the form would render an empty required select and
+       refuse every save. */
+    const rv = f && f.refValue;
+    if (rv && r[rv] != null) return { v: r[rv], l: r[rv] };
     /* a platform-level master keyed by CODE (country, currency, subdivision) has no numeric id
        — its option value is the code itself. Falling back to r.id here would drop the value
        entirely, rendering an empty select that silently blocks every save of the record */
@@ -638,23 +644,19 @@ async function refOptions(key) {
 async function fieldInput(f, val, registry) {
   const id = "f_" + f.key;
   if (f.type === "bool") return `<label><span>${esc(f.label)}</span><input type="checkbox" id="${id}" ${val ? "checked" : ""}></label>`;
-  /* media and attributes are structured data the storefront renders directly, so they get
-     row editors (public/js/editors.js) instead of a raw JSON textarea — mounted after the
-     form is in the DOM by wireEditors(), read back by collect() */
-  if (f.key === "media") return `<div class="p-field"><span class="p-field-l">${esc(f.label)}</span><div id="${id}" data-editor="media"></div></div>`;
-  if (f.key === "attrs") return `<div class="p-field"><span class="p-field-l">${esc(f.label)}</span><div id="${id}" data-editor="attrs"></div></div>`;
+  /* structured data the storefront renders directly (media, attributes) gets a row editor
+     (public/js/editors.js) instead of a raw JSON textarea: the field declares which one
+     (`editor`). Mounted after the form is in the DOM by wireEditors(), read back by collect() */
+  if (f.editor && EDITORS[f.editor]) return `<div class="p-field"><span class="p-field-l">${esc(f.label)}</span><div id="${id}" data-editor="${esc(f.editor)}"></div></div>`;
   if (f.type === "json" || f.type === "multi") return `<label><span>${esc(f.label)} (JSON)</span><textarea id="${id}" rows="3">${esc(typeof val === "string" ? val : JSON.stringify(val || (f.type === "multi" ? [] : {}), null, 1))}</textarea></label>`;
   if (f.type === "select") {
     let opts = Array.isArray(f.options) ? f.options : (f.options && String(f.options).includes(".") ? String(f.options).split(".").reduce((o, k) => (o || {})[k], registry) : (registry && registry[f.options])) || [];
-    if (f.options === "lifecycle") opts = registry.lifecycle;
-    if (f.options === "productTypes") opts = registry.productTypes.map(t => t.key);
-    if (f.options === "sellerRoles") opts = registry.sellerRoles;
-    if (f.options === "promoTypes") opts = registry.promoTypes.map(t => t.key);
-    if (f.options === "deployModes") opts = registry.deployModes.map(t => t.key);
+    /* a registry list of rows offers each row's key */
+    opts = opts.map(o => (o && typeof o === "object" ? o.key : o));
     return `<label><span>${esc(f.label)}</span><select id="${id}">${opts.map(o => `<option ${o === val ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></label>`;
   }
   if (f.type.startsWith("ref:")) {
-    const opts = await refOptions(f.type.slice(4));
+    const opts = await refOptions(f.type.slice(4), f);
     /* a record holding a value the registry no longer lists (a brand renamed or deleted
        underneath it, a legacy free-text value) must still be *representable*: without a
        matching option the select renders empty, and a REQUIRED ref then fails validation
@@ -672,7 +674,7 @@ async function fieldInput(f, val, registry) {
 function collect(def) {
   const row = {};
   for (const f of def.fields) {
-    if (f.key === "media" || f.key === "attrs") {
+    if (f.editor) {
       const get = formEditors[f.key];               /* structured editors expose a value accessor */
       if (get) { row[f.key] = get(); continue; }
     }
@@ -687,16 +689,21 @@ function collect(def) {
 /* value accessors for the structured editors a form is currently showing, so collect()
    reads them back as objects without parsing a textarea */
 const formEditors = {};
+/* the structured editors a field may declare (`editor`): each mounts on a host and says what
+   an unreadable value starts as */
+const EDITORS = {
+  media: { empty: () => [], mount: (host, val, registry) => mediaEditor(host, val, registry && registry.mediaKinds) },
+  attrs: { empty: () => ({}), mount: (host, val) => kvEditor(host, val) }
+};
 function wireEditors(fields, row, registry) {
-  formEditors.media = null; formEditors.attrs = null;
+  for (const k of Object.keys(formEditors)) formEditors[k] = null;
   for (const f of fields) {
     const host = document.getElementById("f_" + f.key);
-    if (!host || !host.dataset.editor) continue;
+    const ed = host && EDITORS[host.dataset.editor];
+    if (!ed) continue;
     let val = row[f.key];
-    if (typeof val === "string") { try { val = JSON.parse(val); } catch (e) { val = f.key === "media" ? [] : {}; } }
-    formEditors[f.key] = f.key === "media"
-      ? mediaEditor(host, val, registry && registry.mediaKinds)
-      : kvEditor(host, val);
+    if (typeof val === "string") { try { val = JSON.parse(val); } catch (e) { val = ed.empty(); } }
+    formEditors[f.key] = ed.mount(host, val, registry);
   }
 }
 async function openForm(key, id, onDone) {
@@ -769,8 +776,10 @@ async function entityTable(key, opts = {}) {
         let v = r[f.key];
         if (f.type === "bool") v = v ? "✓" : "—";
         if (f.type === "money") v = v != null ? money(v) : "";
-        if (f.key === "title" || f.key === "name") v = `<span class="t-emoji">${esc(r.emoji || "")}</span> ${esc(String(v).slice(0, 60))}`;
-        if (["status", "lifecycle"].includes(f.key)) v = `<span class="badge ${esc(v)}">${esc(v)}</span>`;
+        /* how a column shows is the field's declaration: the lead column carries the row's
+           emoji, a badge column its value as a tone */
+        if (f.display === "lead") v = `<span class="t-emoji">${esc(r.emoji || "")}</span> ${esc(String(v).slice(0, 60))}`;
+        if (f.display === "badge") v = `<span class="badge ${esc(v)}">${esc(v)}</span>`;
         return `<td>${v == null ? "" : v}</td>`;
       }).join("")}<td style="text-align:right;white-space:nowrap">
         ${opts.rowExtra ? opts.rowExtra(r) : ""}
@@ -1464,11 +1473,13 @@ async function vOffers() {
   OFFER_SCOPES = meta.offerScopes || [];
   const types = meta.offerTypes || [], chans = meta.offerChannels || [], dirs = meta.offerDirections || [], scopes = meta.offerScopes || [], funders = meta.offerFunders || [], stacks = meta.stackingPolicies || [], cKinds = meta.couponKinds || [];
   const opt = (arr, lblFn) => arr.map(x => `<option value="${esc(x.key || x)}">${esc(lblFn ? lblFn(x) : (x.name || x))}</option>`).join("");
+  /* the value's unit is the offer type's declaration: a percentage, or an amount in the offer's currency */
+  const unitOf = o => { const u = (types.find(t => t.key === o.type) || {}).unit; return u === "amount" ? " " + (o.currency || "") : (u || ""); };
   const statusBadge = st => `<span class="badge ${st === "active" ? "published" : "draft"}">${esc(st)}</span>`;
   const row = o => `<tr><td><b>${esc(o.name)}</b>${o.code ? ` <code>${esc(o.code)}</code>` : ""}${o.tenant_id === 0 ? ' <span class="p-tag">GLOBAL</span>' : ""}</td>
     <td>${esc(o.type)}</td><td><span class="p-tag">${esc(o.direction)}</span></td><td>${esc(o.channel)}</td>
     <td>${esc(o.scope_type)}${o.scope && (o.scope.products || o.scope.categories || o.scope.node || o.scope.brands) ? ` <span class="p-tag">${esc([].concat(o.scope.products || o.scope.categories || o.scope.node || o.scope.brands).join(",").slice(0, 30))}</span>` : ""}</td>
-    <td>${esc(o.funder)}${o.funder_ref ? ` ${esc(o.funder_ref)}` : ""}</td><td class="num">${esc(o.value)}${esc(o.currency === "USD" ? "%" + (o.type === "percent" || o.type === "flash_percent" ? "" : "") : "")}</td>
+    <td>${esc(o.funder)}${o.funder_ref ? ` ${esc(o.funder_ref)}` : ""}</td><td class="num">${esc(o.value)}${esc(unitOf(o))}</td>
     <td class="num">${o.usage_limit ? o.used + "/" + o.usage_limit : o.used}</td><td>${statusBadge(o.status)}</td>
     <td style="text-align:right;white-space:nowrap"><button class="p-btn sm" data-oedit="${o.id}">Edit</button><button class="p-btn sm danger" data-oret="${o.id}">Retire</button></td></tr>`;
   return `<div class="p-panel"><h2>💸 Offers & Coupons</h2>
@@ -2365,7 +2376,7 @@ async function loadChatStatus() {
    params. No rate is hard-coded in this file. */
 async function vRides() {
   const [d, caps] = await Promise.all([api("/admin/mobility", {}), coCaps()]);
-  const surgeOn = !!((caps.find(c => c.key === "dynamic_pricing") || {}).on);
+  const surgeOn = hasCap({ on: caps.filter(c => c.on).map(c => c.key) }, "dynamic_pricing");
   const st = d.stats || {};
   const rides = d.rides || [];
   await loadSM();

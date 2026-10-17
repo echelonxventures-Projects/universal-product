@@ -1177,7 +1177,7 @@ async function vGeo() {
     <div class="row3" style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:10px">
       <label><span>Convert amount</span><input id="cxAmount" type="number" step="any" value="100"></label>
       <label><span>From</span><select id="cxFrom">${cy.rows.map(x => `<option>${x.code}</option>`).join("")}</select></label>
-      <label><span>To</span><select id="cxTo">${cy.rows.map(x => `<option value="${x.code}" ${x.code==="INR"?"selected":""}>${x.code}</option>`).join("")}</select></label>
+      <label><span>To</span><select id="cxTo">${cy.rows.map(x => `<option value="${x.code}" ${x.code === (cy.rows[1] || cy.rows[0] || {}).code ? "selected" : ""}>${x.code}</option>`).join("")}</select></label>
       <button class="p-btn sm" id="cxGo">Convert →</button><div class="p-tag" id="cxOut"></div></div>
     <table class="p-table"><thead><tr><th>When</th><th>Currency</th><th class="num">USD value</th><th>Source</th><th>Detail</th></tr></thead>
     <tbody>${fx.history.slice(0, 25).map(h => `<tr><td class="p-tag">${esc(h.created_at)}</td><td><b>${esc(h.currency)}</b></td><td class="num">${h.usd}</td><td><span class="badge ${h.source==="feed"?"published":"draft"}">${esc(h.source)}</span></td><td class="p-tag">${esc((h.note||"").slice(0,48))}</td></tr>`).join("") || '<tr><td colspan="5" class="p-empty">No rate changes recorded yet — edit a rate or sync a feed</td></tr>'}</tbody></table></div>
@@ -1447,7 +1447,7 @@ async function wireModules() {
         <div class="p-form">
         ${installed ? `<p class="p-tag">${m.price > 0 ? "Purchased (invoice on record)." : "Baseline — auto-purchased at provisioning."}</p><button class="p-btn danger" id="mUn">Uninstall / disable</button>` :
           `<p class="p-tag">${m.price > 0 ? "Price: $" + m.price + " — a paid invoice will be created and marked collected." : "Free — installs instantly."}</p>
-           ${fields.map(f => `<label><span>${esc(f.label || f.key)}</span><input data-cfg="${esc(f.key)}" placeholder="e.g. ${f.key === "requireLoginCheckout" ? "true" : "…"}"></label>`).join("")}
+           ${fields.map(f => `<label><span>${esc(f.label || f.key)}</span><input data-cfg="${esc(f.key)}" placeholder="e.g. ${esc(f.placeholder || (f.type === "bool" ? "true" : "…"))}"></label>`).join("")}
            <button class="p-btn primary" id="mBuy">Purchase & install</button>`}
         </div>`);
       if (installed) mm.querySelector("#mUn").onclick = async () => {
@@ -2829,8 +2829,8 @@ function gCell(v, f) {
   if (v == null) return "";
   if (f.type === "bool") return v ? "✓" : "—";
   if (f.type === "money") return money(v);
-  const badge = ["status", "lifecycle", "state", "priority", "kind"];
-  if (badge.includes(f.key)) return `<span class="badge ${esc(v)}">${esc(v)}</span>`;
+  /* a field declares how it shows (`display`): a badge column renders its value as a tone */
+  if (f.display === "badge") return `<span class="badge ${esc(v)}">${esc(v)}</span>`;
   return esc(String(v).slice(0, 64));
 }
 /* the shared store-filter + search bar. Both apply to every dataset on the view, and the
@@ -3475,10 +3475,11 @@ async function vTaxonomy() {
   const t = await api("/taxonomy");
   const renderNode = (n, d) => `<details class="p-node" ${d < 1 ? "open" : ""} style="margin-left:${d * 14}px">
     <summary><span class="p-ico">${esc(n.icon || "📂")}</span> <b>${esc(n.name)}</b>
-      <span class="p-tag">${esc(n.level || "category")}${n.key ? " · " + esc(n.key) : ""}</span>
+      <span class="p-tag">${esc(n.level || "—")}${n.key ? " · " + esc(n.key) : ""}</span>
       ${n.active ? "" : '<span class="p-tag" style="background:var(--p-red);color:#fff">inactive</span>'}</summary>
     ${(n.children || []).map(c => renderNode(c, d + 1)).join("")}</details>`;
-  const roots = (t.tree || []).filter(n => n.level === "industry");
+  const root = ((t.levels || []).find(l => l.root) || {}).key;
+  const roots = (t.tree || []).filter(n => n.level === root);
   return gBar("Industry · Categories", "🗂️", "The platform's canonical industry → category tree. Every store inherits this taxonomy; nothing here is per-store.", roots.length)
     + `<div class="p-panel">${roots.map(n => renderNode(n, 0)).join("") || '<div class="p-empty">No taxonomy seeded</div>'}</div>`
     + await gTable("taxonomy");
@@ -4912,6 +4913,7 @@ async function vUsers() {
   const staff = await gFan("/api/admin/roles").catch(() => ({}));
   const srow = (staff.results || []).find(r => r.ok && r.data);
   window.__userStaffRoles = srow ? (srow.data.roles || []) : [];
+  window.__userStaffDefault = srow ? srow.data.defaultRole : null;
   return gBar("Users", "👤", "Every account the platform holds across every store — read through the generic dataset reader.", 1)
     + (canWrite ? `<div class="p-panel" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px">
         <button class="p-btn sm primary" data-unew="1">＋ New user</button>
@@ -4933,7 +4935,7 @@ function userFormModal() {
       <label><span>Password <span class="p-tag">blank to generate</span></span><input type="password" id="unPw" placeholder="6+ characters, letter + digit"></label>
       <label><span>Role</span><select id="unRole"><option value="customer">Customer</option><option value="admin">Store admin</option></select></label>
       <label id="unStaffWrap"><span>Staff role</span><select id="unStaff">${/* the store surface lists owner first, but full store control is the wrong default
-          for a new admin — the platform API defaults an omitted staff role to manager */ staffRoles.map(r => `<option value="${esc(r.key)}" ${r.key === "manager" ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>
+          for a new admin — the pre-selected role is the staffRoles row flagged default */ staffRoles.map(r => `<option value="${esc(r.key)}" ${r.key === window.__userStaffDefault ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>
       <div style="display:flex;gap:8px;margin-top:4px">
         <button class="p-btn primary" id="unSave">Create user</button>
         <button class="p-btn" data-mclose>Cancel</button>
