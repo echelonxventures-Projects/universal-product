@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0005 (2026-10-18).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0006 (2026-10-19).
 
 ## Contents
 
@@ -13,8 +13,9 @@
 7. [Glossary](#glossary)
 8. [Code map](#code-map)
 9. [Concept register](#concept-register)
-10. [Build path and decisions](#build-path)
-11. [ID lookup](#id-lookup)
+10. [Other domain systems](#alignment)
+11. [Build path and decisions](#build-path)
+12. [ID lookup](#id-lookup)
 
 <a id="how-to-manage"></a>
 ## 1. How to manage
@@ -29,6 +30,7 @@ Everything here is projected. To change it, edit the registry entry named below,
 | A kernel part | `_registry/domains.json` → `kernel` |
 | Which domain owns a code file | `_registry/codebase.json` → `modules` |
 | A build step’s status, or a design decision | `_registry/roadmap.json` → `steps`, `decisions` |
+| Which register domain owns a part of another domain system | `_registry/alignment.json` → `systems` |
 | A primitive (frozen: needs an amendment) | `_registry/primitives.json`, with an entry in `domains.json` → `amendments` |
 | A term (add, define) | `_registry/terminology.json`, and add it to exactly one domain’s `owns` |
 | An artifact (add, retitle, owner) | `_registry/manifest.json` → `artifacts`, a route in `_registry/content-map.json`, a content block in a `_registry/content-*.json` |
@@ -362,6 +364,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0003"></a>AMD-0003 | 2026-10-17 | Platform owner | One master document: the registry projects UCOS-MASTER.md and one volume per register category, replacing the per-artifact files and the repository index; the enforced laws become registry data. |
 | <a id="amd-0004"></a>AMD-0004 | 2026-10-17 | Platform owner | FOUNDATIONS.md absorbed: one law register (26 laws merging the corpus's laws and principles and the foundation rules, each with sources and enforcement status), the kernel parts K01–K12 with one owner each, the Party domain and its contract, the code-module map (codebase.json), and the build path with its decisions (roadmap.json). FOUNDATIONS.md moves to _superseded. |
 | <a id="amd-0005"></a>AMD-0005 | 2026-10-18 | Platform owner | The concept register: every corpus concept placed once. Kind rules and owner rules in classification.json (owned by Semantic); every concept-holding container (5,609) and every concept in a structural container (3,552) reviewed by agents with independent second opinions on low-confidence calls and a maintainer sample check; the register is derived at compile time, sealed, gated and searchable by owner and category; low-confidence decisions form the master's review queue. |
+| <a id="amd-0006"></a>AMD-0006 | 2026-10-19 | Platform owner | One set of domains: the other structures that call their parts domains are aligned to the register. GOIP's 67 incentive domains and the 7 capability domains each name their one register owner (alignment.json); every per-universe record engine takes its reviewed container's owner; the capability-domain list moves from lib/registry.js into seed data. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1826,10 +1829,160 @@ Containers reviewed: 5609 of 5609. Concepts reviewed on their own: 3552.
 | `c:vision_architecture` | Guidance | Vision document guides readers through architecture |
 | `c:zero_product_specific_logic` | Constitutional Authority | Constitutional principle forbidding product-specific code |
 
-<a id="build-path"></a>
-## 10. Build path and decisions
+<a id="alignment"></a>
+## 10. Other domain systems
 
-5 of 26 steps done. Each step is committed only once the full test suite passes.
+The platform has one set of domains, the register’s. Other structures that call their parts “domains” are aligned to it: each part names the one register domain that owns it (`_registry/alignment.json`).
+
+### GOIP incentive domains
+
+partitions of the offers and incentives engine, each a store and a discriminator. Source: `lib/seed/goip.json` → `DOMAINS`.
+
+| Part | Register owner |
+|---|---|
+| Incentive Domain (`incentive`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Offer Domain (`offer`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Coupon Domain (`coupon`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Promotion Domain (`promotion`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Discount Domain (`discount`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Cashback Domain (`cashback`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Reward Domain (`reward`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Gift Card Domain (`gift_card`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Voucher Domain (`voucher`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Loyalty Domain (`loyalty`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Membership Domain (`membership`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Referral Domain (`referral`) | [Party](volumes/V02-meaning.md#d-pty) |
+| Affiliate Domain (`affiliate`) | [Party](volumes/V02-meaning.md#d-pty) |
+| Creator Domain (`creator`) | [Party](volumes/V02-meaning.md#d-pty) |
+| Influencer Domain (`influencer`) | [Party](volumes/V02-meaning.md#d-pty) |
+| Deal Domain (`deal`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Pricing Domain (`pricing`) | [Rule](volumes/V06-decision-and-control.md#d-rul) |
+| Dynamic Pricing Domain (`dynamic_pricing`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Auction Domain (`auction`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Subscription Benefit Domain (`subscription_benefit`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Partner Benefit Domain (`partner_benefit`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Corporate Benefit Domain (`corporate_benefit`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Government Benefit Domain (`government_benefit`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Employee Benefit Domain (`employee_benefit`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Gamification Domain (`gamification`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Audience Domain (`audience`) | [Context](volumes/V04-universal-dimensions.md#d-ctx) |
+| Segmentation Domain (`segmentation`) | [Insight](volumes/V10-intelligence.md#d-ins) |
+| Campaign Domain (`campaign`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Discovery Domain (`discovery`) | [Search](volumes/V08-interaction.md#d-srh) |
+| Search Domain (`search`) | [Search](volumes/V08-interaction.md#d-srh) |
+| Recommendation Domain (`recommendation`) | [Search](volumes/V08-interaction.md#d-srh) |
+| Personalization Domain (`personalization`) | [Search](volumes/V08-interaction.md#d-srh) |
+| Distribution Domain (`distribution`) | [Integration](volumes/V09-automation.md#d-int) |
+| Syndication Domain (`syndication`) | [Integration](volumes/V09-automation.md#d-int) |
+| Marketplace Domain (`marketplace`) | [Party](volumes/V02-meaning.md#d-pty) |
+| Merchant Domain (`merchant`) | [Party](volumes/V02-meaning.md#d-pty) |
+| Brand Domain (`brand`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Provider Domain (`provider`) | [Party](volumes/V02-meaning.md#d-pty) |
+| Partner Domain (`partner`) | [Party](volumes/V02-meaning.md#d-pty) |
+| Exchange Domain (`exchange`) | [Value](volumes/V04-universal-dimensions.md#d-val) |
+| Attribution Domain (`attribution`) | [Insight](volumes/V10-intelligence.md#d-ins) |
+| Tracking Domain (`tracking`) | [Observation](volumes/V03.1-reality-and-reasoning.md#d-obs) |
+| Wallet Domain (`wallet`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Treasury Domain (`treasury`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Funding Domain (`funding`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Budget Domain (`budget`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Payment Domain (`payment`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Settlement Domain (`settlement`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Reconciliation Domain (`reconciliation`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Payout Domain (`payout`) | [Commerce](volumes/V12-business.md#d-biz) |
+| Fraud Domain (`fraud`) | [Security](volumes/V07-assurance.md#d-sec) |
+| Risk Domain (`risk`) | [Security](volumes/V07-assurance.md#d-sec) |
+| Analytics Domain (`analytics`) | [Insight](volumes/V10-intelligence.md#d-ins) |
+| Forecasting Domain (`forecasting`) | [Insight](volumes/V10-intelligence.md#d-ins) |
+| Simulation Domain (`simulation`) | [Simulation](volumes/V03.1-reality-and-reasoning.md#d-sim) |
+| AI Domain (`ai`) | [Agent](volumes/V09-automation.md#d-agt) |
+| Agent Domain (`agent`) | [Agent](volumes/V09-automation.md#d-agt) |
+| Governance Domain (`governance`) | [Policy](volumes/V06-decision-and-control.md#d-pol) |
+| Compliance Domain (`compliance`) | [Compliance](volumes/V07-assurance.md#d-cmp) |
+| Knowledge Domain (`knowledge`) | [Registry](volumes/V05-structure.md#d-reg) |
+| Registry Domain (`registry`) | [Registry](volumes/V05-structure.md#d-reg) |
+| Universal Context Domain (`universal_context`) | [Context](volumes/V04-universal-dimensions.md#d-ctx) |
+| Universal Temporal Domain (`universal_temporal`) | [Time](volumes/V04-universal-dimensions.md#d-tim) |
+| Universal Spatial Domain (`universal_spatial`) | [Geo](volumes/V04-universal-dimensions.md#d-geo) |
+| Universal Economic Domain (`universal_economic`) | [Value](volumes/V04-universal-dimensions.md#d-val) |
+| Universal Governance Domain (`universal_governance`) | [Policy](volumes/V06-decision-and-control.md#d-pol) |
+| Universal Reality Domain (`universal_reality`) | [Possibility](volumes/V03.1-reality-and-reasoning.md#d-pos) |
+
+### Capability domains
+
+console groupings of capabilities; each names a package. Source: `lib/seed/meta.json` → `CAPABILITY_DOMAINS`.
+
+| Part | Register owner |
+|---|---|
+| 🛒 Marketplace (`marketplace`) | [Package](volumes/V13-composition.md#d-pkg) |
+| 🛍️ Storefront (`storefront`) | [Package](volumes/V13-composition.md#d-pkg) |
+| ⚡ Quick-commerce (`qc`) | [Package](volumes/V13-composition.md#d-pkg) |
+| 💸 Fintech (`fintech`) | [Package](volumes/V13-composition.md#d-pkg) |
+| 🤝 B2B trust & trade (`trade`) | [Package](volumes/V13-composition.md#d-pkg) |
+| 🚗 Mobility (`mobility`) | [Package](volumes/V13-composition.md#d-pkg) |
+| 🏭 Operations (`operations`) | [Package](volumes/V13-composition.md#d-pkg) |
+
+### Per-universe record engines
+
+every corpus universe's record lifecycle (lib/ucos-domain.js); its owner is its reviewed container's. Source: `the compiled universes`.
+
+Derived from _registry/classification.json → containers (u:<universe key>): each universe takes its reviewed container’s owner.
+
+| Register owner | Universes |
+|---|---:|
+| [Knowledge](volumes/V02-meaning.md#d-knw) | 607 |
+| [Commerce](volumes/V12-business.md#d-biz) | 510 |
+| [Operations](volumes/V11.1-platform.md#d-ops) | 127 |
+| [Reasoning](volumes/V03.1-reality-and-reasoning.md#d-rsn) | 123 |
+| [Party](volumes/V02-meaning.md#d-pty) | 110 |
+| [Security](volumes/V07-assurance.md#d-sec) | 91 |
+| [Runtime](volumes/V09-automation.md#d-run) | 70 |
+| [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | 69 |
+| [Compliance](volumes/V07-assurance.md#d-cmp) | 68 |
+| [Insight](volumes/V10-intelligence.md#d-ins) | 62 |
+| [Inference](volumes/V03.1-reality-and-reasoning.md#d-inf) | 60 |
+| [Semantic](volumes/V02-meaning.md#d-sem) | 58 |
+| [Policy](volumes/V06-decision-and-control.md#d-pol) | 58 |
+| [Agent](volumes/V09-automation.md#d-agt) | 55 |
+| [Time](volumes/V04-universal-dimensions.md#d-tim) | 48 |
+| [Authority](volumes/V06-decision-and-control.md#d-aut) | 44 |
+| [Geo](volumes/V04-universal-dimensions.md#d-geo) | 44 |
+| [Constitutional Authority](volumes/V01-constitution.md#d-con) | 44 |
+| [Identity](volumes/V02-meaning.md#d-idn) | 44 |
+| [Integration](volumes/V09-automation.md#d-int) | 41 |
+| [Quality](volumes/V11.2-platform.md#d-qlt) | 39 |
+| [Relationship](volumes/V05-structure.md#d-rel) | 39 |
+| [Experience](volumes/V08-interaction.md#d-exp) | 37 |
+| [Twin](volumes/V03.2-reality-and-reasoning.md#d-dtw) | 36 |
+| [Decision](volumes/V06-decision-and-control.md#d-dec) | 36 |
+| [Simulation](volumes/V03.1-reality-and-reasoning.md#d-sim) | 34 |
+| [Trust](volumes/V07-assurance.md#d-tru) | 32 |
+| [Search](volumes/V08-interaction.md#d-srh) | 28 |
+| [Content](volumes/V11.2-platform.md#d-cnt) | 28 |
+| [Audit](volumes/V07-assurance.md#d-aud) | 27 |
+| [Observation](volumes/V03.1-reality-and-reasoning.md#d-obs) | 24 |
+| [Communication](volumes/V08-interaction.md#d-cmn) | 24 |
+| [Persistence](volumes/V11.1-platform.md#d-prs) | 23 |
+| Structural | 22 |
+| [Value](volumes/V04-universal-dimensions.md#d-val) | 22 |
+| [Registry](volumes/V05-structure.md#d-reg) | 20 |
+| [Evidence](volumes/V03.1-reality-and-reasoning.md#d-evd) | 20 |
+| [Package](volumes/V13-composition.md#d-pkg) | 17 |
+| [Rule](volumes/V06-decision-and-control.md#d-rul) | 16 |
+| [Context](volumes/V04-universal-dimensions.md#d-ctx) | 16 |
+| [Measure](volumes/V04-universal-dimensions.md#d-mea) | 14 |
+| [Expression](volumes/V04-universal-dimensions.md#d-exr) | 14 |
+| [Offering](volumes/V11.2-platform.md#d-ofg) | 13 |
+| [Guidance](volumes/V02-meaning.md#d-gdn) | 6 |
+| [Possibility](volumes/V03.1-reality-and-reasoning.md#d-pos) | 6 |
+| [Causality](volumes/V03.1-reality-and-reasoning.md#d-cau) | 5 |
+| [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per) | 5 |
+| [Notification](volumes/V08-interaction.md#d-ntf) | 1 |
+
+<a id="build-path"></a>
+## 11. Build path and decisions
+
+6 of 26 steps done. Each step is committed only once the full test suite passes.
 
 | Step | What | Domains | Status | Delivered by |
 |---|---|---|---|---|
@@ -1838,7 +1991,7 @@ Containers reviewed: 5609 of 5609. Concepts reviewed on their own: 3552.
 | <a id="p03"></a>P03 | One master document with self-splitting volumes, kept current automatically | [Guidance](volumes/V02-meaning.md#d-gdn), [Registry](volumes/V05-structure.md#d-reg) | done | [AMD-0003](#amd-0003) |
 | <a id="p04"></a>P04 | The law register, the kernel, the module map and this path in the registry; FOUNDATIONS.md superseded | [Constitutional Authority](volumes/V01-constitution.md#d-con), [Registry](volumes/V05-structure.md#d-reg) | done | [AMD-0004](#amd-0004) |
 | <a id="p05"></a>P05 | Corpus concepts placed in the register (one owner, aliases, sources) | [Registry](volumes/V05-structure.md#d-reg), [Semantic](volumes/V02-meaning.md#d-sem) | done | [AMD-0005](#amd-0005) |
-| <a id="p06"></a>P06 | The other domain systems unified (GOIP's 67 domains, capability domains, the per-universe record engine) | [Registry](volumes/V05-structure.md#d-reg), [Commerce](volumes/V12-business.md#d-biz), [Offering](volumes/V11.2-platform.md#d-ofg) | planned | — |
+| <a id="p06"></a>P06 | The other domain systems unified (GOIP's 67 domains, capability domains, the per-universe record engine) | [Registry](volumes/V05-structure.md#d-reg), [Commerce](volumes/V12-business.md#d-biz), [Offering](volumes/V11.2-platform.md#d-ofg) | done | [AMD-0006](#amd-0006) |
 | <a id="p07"></a>P07 | The remaining root design documents absorbed or superseded | [Guidance](volumes/V02-meaning.md#d-gdn) | planned | — |
 | <a id="p08"></a>P08 | Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution | [Registry](volumes/V05-structure.md#d-reg), [Identity](volumes/V02-meaning.md#d-idn), [Relationship](volumes/V05-structure.md#d-rel), [Geo](volumes/V04-universal-dimensions.md#d-geo), [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo), [Runtime](volumes/V09-automation.md#d-run), [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per), [Context](volumes/V04-universal-dimensions.md#d-ctx) | planned | — |
 | <a id="p09"></a>P09 | Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships | [Geo](volumes/V04-universal-dimensions.md#d-geo) | planned | — |
@@ -1880,7 +2033,7 @@ Containers reviewed: 5609 of 5609. Concepts reviewed on their own: 3552.
 | <a id="dec-014"></a>DEC-014 | How is the documentation organised? | One master document and one volume per category, split into numbered parts past a declared size, projected and checked automatically. |
 
 <a id="id-lookup"></a>
-## 11. ID lookup
+## 12. ID lookup
 
 | ID | Kind | Name | Where |
 |---|---|---|---|
@@ -1889,6 +2042,7 @@ Containers reviewed: 5609 of 5609. Concepts reviewed on their own: 3552.
 | AMD-0003 | amendment | One master document | [constitution](#amd-0003) |
 | AMD-0004 | amendment | FOUNDATIONS.md absorbed | [constitution](#amd-0004) |
 | AMD-0005 | amendment | The concept register | [constitution](#amd-0005) |
+| AMD-0006 | amendment | One set of domains | [constitution](#amd-0006) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

@@ -258,6 +258,24 @@ function run(payload) {
     record(check("zero-missing · unplaced concepts (" + unplaced + ", baseline " + base.conceptsUnplaced + ") and unreviewed containers (" + unreviewed + ", baseline " + base.containersUnreviewed + ")",
       unplaced <= (base.conceptsUnplaced ?? Infinity) && unreviewed <= (base.containersUnreviewed ?? Infinity)));
 
+    /* alignment: every part of another structure that calls itself a domain has exactly one
+       register owner, and no mapping names a part that no longer exists */
+    const al = rf.alignment || { systems: [] };
+    const alignProblems = [];
+    let aligned = 0;
+    for (const sys of al.systems) {
+      if (!sys.owners) continue;
+      let list = null;
+      try { list = JSON.parse(require("fs").readFileSync(path.join(ROOT, sys.source), "utf8"))[sys.list]; } catch (e) { }
+      if (!Array.isArray(list)) { alignProblems.push(sys.system + ": source missing"); continue; }
+      const keys = new Set(list.map(x => x[sys.key]));
+      for (const k of keys) { if (!sys.owners[k]) alignProblems.push(sys.system + ":" + k + " unmapped"); else if (!domNames.has(sys.owners[k])) alignProblems.push(sys.system + ":" + k + " → undeclared " + sys.owners[k]); else aligned++; }
+      for (const k of Object.keys(sys.owners)) if (!keys.has(k)) alignProblems.push(sys.system + ":" + k + " no longer exists");
+    }
+    const uniUnowned = payload.universes.filter(u => { const r = (cl.containers || {})["u:" + u.key]; return !r || (r.owner !== "Structural" && !domNames.has(r.owner)); }).map(u => u.key);
+    record(check("zero-overlap · every other domain system is aligned to one register owner per part (" + aligned + " parts, " + payload.universes.length + " universes)",
+      !alignProblems.length && !uniUnowned.length, alignProblems.concat(uniUnowned.map(k => "universe " + k)).slice(0, 6).join(", ")));
+
     registerCounts = { categories: cats.length, domains: doms.length, owned: owners.size, domainsWithoutContract: noContract.length, outstanding: noContract,
       laws: laws.length, lawsNotEnforced: notEnforced.length, kernel: kernel.length, modules: cb.modules.length, steps: rm.steps.length,
       stepsDone: rm.steps.filter(st => st.status === "done").length,

@@ -100,6 +100,17 @@ console.log("\n▸ §A1 THE REGISTER — one categorised owner for every declara
   ok(gate.run(badReview).fails.some(f => /reviewed container names a declared domain/.test(f.name)), "a review naming an undeclared domain fails the gate");
   const owned = can.search("markov", { kind: "concept", owner: "Inference", limit: 50 });
   ok(owned.length > 0 && owned.every(h => h.owner === "Inference" && /^C03 /.test(h.category)), "concepts are searchable by owner, with their category", owned.length + " hits");
+
+  /* one set of domains: every other domain system is aligned to the register */
+  const al = JSON.parse(JSON.stringify(payload));
+  const goipSys = al.registryFiles.alignment.systems.find(x => x.owners && x.list === "DOMAINS");
+  delete goipSys.owners[Object.keys(goipSys.owners)[0]];
+  goipSys.owners.no_such_goip_domain = "Commerce";
+  const r5 = gate.run(al);
+  ok(r5.fails.some(f => /aligned to one register owner/.test(f.name)), "an unmapped GOIP domain, or a mapping to one that no longer exists, fails the gate");
+  ok(can.search("cashback", { kind: "aligned" }).some(h => h.owner === "Commerce"), "a GOIP domain is found with its register owner");
+  const engines = require(path.join(__dirname, "..", "lib", "ucos-domain.js")).domains();
+  ok(engines.length > 2000 && engines.every(e => "owner" in e) && engines.filter(e => e.owner).every(e => e.category), "every per-universe record engine reports its register owner and category", engines.length + " engines, " + engines.filter(e => !e.owner).length + " structural");
 }
 
 console.log("\n▸ §A2 THE GATE REFUSES A BROKEN COMPILE");

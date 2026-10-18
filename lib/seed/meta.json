@@ -527,5 +527,35 @@
    "name": "Model",
    "depth": 5
   }
+ ],
+ "CAPABILITY_DOMAINS": [
+  {
+   "key": "marketplace",
+   "name": "🛒 Marketplace"
+  },
+  {
+   "key": "storefront",
+   "name": "🛍️ Storefront"
+  },
+  {
+   "key": "qc",
+   "name": "⚡ Quick-commerce"
+  },
+  {
+   "key": "fintech",
+   "name": "💸 Fintech"
+  },
+  {
+   "key": "trade",
+   "name": "🤝 B2B trust & trade"
+  },
+  {
+   "key": "mobility",
+   "name": "🚗 Mobility"
+  },
+  {
+   "key": "operations",
+   "name": "🏭 Operations"
+  }
  ]
 }

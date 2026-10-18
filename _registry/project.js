@@ -41,6 +41,7 @@ function conceptRegister() {
   return _register;
 }
 const ROADMAP = load('roadmap.json');
+const ALIGNMENT = load('alignment.json');
 
 /* ---------- content registries ---------- */
 const CONTENT_FILE_NAMES = {
@@ -520,7 +521,7 @@ function masterText(volumes, sizes, max) {
   L.push('## Contents', '',
     '1. [How to manage](#how-to-manage)', '2. [Volume register](#volume-register)', '3. [Index](#index)',
     '4. [Constitution](#constitution)', '5. [Kernel](#kernel)', '6. [Standard contract](#standard-contract)', '7. [Glossary](#glossary)',
-    '8. [Code map](#code-map)', '9. [Concept register](#concept-register)', '10. [Build path and decisions](#build-path)', '11. [ID lookup](#id-lookup)', '');
+    '8. [Code map](#code-map)', '9. [Concept register](#concept-register)', '10. [Other domain systems](#alignment)', '11. [Build path and decisions](#build-path)', '12. [ID lookup](#id-lookup)', '');
 
   L.push('<a id="how-to-manage"></a>', '## 1. How to manage', '',
     'Everything here is projected. To change it, edit the registry entry named below, then run `npm run registry`. That re-projects this document and every volume, audits them, then compiles, gates and seals the registry. `npm test` fails if any document is out of date with the registry.', '',
@@ -531,6 +532,7 @@ function masterText(volumes, sizes, max) {
     '| A kernel part | `_registry/domains.json` → `kernel` |',
     '| Which domain owns a code file | `_registry/codebase.json` → `modules` |',
     '| A build step’s status, or a design decision | `_registry/roadmap.json` → `steps`, `decisions` |',
+    '| Which register domain owns a part of another domain system | `_registry/alignment.json` → `systems` |',
     '| A primitive (frozen: needs an amendment) | `_registry/primitives.json`, with an entry in `domains.json` → `amendments` |',
     '| A term (add, define) | `_registry/terminology.json`, and add it to exactly one domain’s `owns` |',
     '| An artifact (add, retitle, owner) | `_registry/manifest.json` → `artifacts`, a route in `_registry/content-map.json`, a content block in a `_registry/content-*.json` |',
@@ -638,7 +640,27 @@ function masterText(volumes, sizes, max) {
     L.push('');
   } else L.push('No concept register has been compiled. Run `npm run registry`.', '');
 
-  L.push('<a id="build-path"></a>', '## 10. Build path and decisions', '');
+  L.push('<a id="alignment"></a>', '## 10. Other domain systems', '',
+    'The platform has one set of domains, the register’s. Other structures that call their parts “domains” are aligned to it: each part names the one register domain that owns it (`_registry/alignment.json`).', '');
+  for (const sys of ALIGNMENT.systems) {
+    L.push(`### ${sys.name}`, '', `${sys.means}. Source: \`${sys.source}\`${sys.list ? ' → `' + sys.list + '`' : ''}.`, '');
+    if (sys.owners) {
+      let list = [];
+      try { list = JSON.parse(fs.readFileSync(path.join(ROOT, sys.source), 'utf8'))[sys.list] || []; } catch (e) { }
+      L.push('| Part | Register owner |', '|---|---|');
+      for (const it of list) { const o = domainByName(sys.owners[it[sys.key]]); L.push(`| ${it.name || it[sys.key]} (\`${it[sys.key]}\`) | ${o ? linkDomain(o, from) : '—'} |`); }
+      L.push('');
+    } else if (reg) {
+      const CL = load('classification.json');
+      const byOwner = {};
+      for (const [id, r] of Object.entries(CL.containers || {})) if (id.startsWith('u:')) byOwner[r.owner] = (byOwner[r.owner] || 0) + 1;
+      L.push(`Derived from ${sys.derivedFrom}: each universe takes its reviewed container’s owner.`, '', '| Register owner | Universes |', '|---|---:|');
+      for (const [o, n] of Object.entries(byOwner).sort((a, b) => b[1] - a[1])) { const d = domainByName(o); L.push(`| ${d ? linkDomain(d, from) : o} | ${n} |`); }
+      L.push('');
+    }
+  }
+
+  L.push('<a id="build-path"></a>', '## 11. Build path and decisions', '');
   const done = ROADMAP.steps.filter(st => st.status === 'done').length;
   L.push(`${done} of ${ROADMAP.steps.length} steps done. Each step is committed only once the full test suite passes.`, '', '| Step | What | Domains | Status | Delivered by |', '|---|---|---|---|---|');
   for (const st of ROADMAP.steps) L.push(`| <a id="${anchor(st.stepId)}"></a>${st.stepId} | ${st.title} | ${st.domains.map(n => linkDomain(domainByName(n), from)).join(', ')} | ${st.status} | ${(st.deliveredBy || []).map(a => `[${a}](#${anchor(a)})`).join(', ') || '—'} |`);
@@ -646,7 +668,7 @@ function masterText(volumes, sizes, max) {
   for (const dc of ROADMAP.decisions) L.push(`| <a id="${anchor(dc.decisionId)}"></a>${dc.decisionId} | ${dc.question} | ${dc.decision} |`);
   L.push('');
 
-  L.push('<a id="id-lookup"></a>', '## 11. ID lookup', '', '| ID | Kind | Name | Where |', '|---|---|---|---|');
+  L.push('<a id="id-lookup"></a>', '## 12. ID lookup', '', '| ID | Kind | Name | Where |', '|---|---|---|---|');
   const rows = [];
   for (const c of cats) rows.push([c.categoryId, 'category', c.name, volumes.filter(v => v.category === c).map(v => `[${v.id}](${VOLUME_DIR}/${v.file})`).join(', ')]);
   for (const v of volumes) if (v.of > 1) rows.push([v.id, 'volume', `${v.category.name}, part ${v.part} of ${v.of}`, `[${v.file}](${VOLUME_DIR}/${v.file})`]);
