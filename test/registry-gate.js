@@ -89,6 +89,17 @@ console.log("\n▸ §A1 THE REGISTER — one categorised owner for every declara
   step.registryFiles.roadmap.steps[0].deliveredBy = ["AMD-9999"];
   ok(gate.run(step).fails.some(f => /build step/.test(f.name)), "a done step naming an amendment that does not exist fails the gate");
   ok(can.search("fundamental axiom", { kind: "law" })[0]?.key === "LAW-001", "a law is found by any of its names (Fundamental Axiom → LAW-001)");
+
+  /* the concept register: every concept placed once, every container reviewed, and the seal is exactly a derivation */
+  ok(reg.concepts > 18000 && reg.conceptsUnplaced === 0 && reg.containersUnreviewed === 0, "every corpus concept has one owner and every container is reviewed", JSON.stringify({ c: reg.concepts, u: reg.conceptsUnplaced, r: reg.containersUnreviewed }));
+  const tamper = JSON.parse(JSON.stringify(payload));
+  tamper.register.rows[0][2] = "Someone Else";
+  ok(gate.run(tamper).fails.some(f => /concept register is exactly/.test(f.name)), "an owner edited into the sealed register, not the rules or reviews, fails the gate");
+  const badReview = JSON.parse(JSON.stringify(payload));
+  badReview.registryFiles.classification.concepts[Object.keys(badReview.registryFiles.classification.concepts)[0]].owner = "Nobody";
+  ok(gate.run(badReview).fails.some(f => /reviewed container names a declared domain/.test(f.name)), "a review naming an undeclared domain fails the gate");
+  const owned = can.search("markov", { kind: "concept", owner: "Inference", limit: 50 });
+  ok(owned.length > 0 && owned.every(h => h.owner === "Inference" && /^C03 /.test(h.category)), "concepts are searchable by owner, with their category", owned.length + " hits");
 }
 
 console.log("\n▸ §A2 THE GATE REFUSES A BROKEN COMPILE");

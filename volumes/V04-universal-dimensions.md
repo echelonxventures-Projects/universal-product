@@ -32,6 +32,7 @@
 | **Not responsible for** | Deployment Regions, Time, Value |
 | **Contract** | [UCOS-PLC-000001 Geo Architecture](#ucos-plc-000001) |
 | **Artifacts** | [UCOS-PLC-000001](#ucos-plc-000001) |
+| **Concepts** | 69 — `node _registry/compile.js --search <words> --kind concept --owner "Geo"` |
 | **Code** | `lib/subdivisions.js`, `lib/seed/subdivisions.json` |
 | **Managed in** | `_registry/domains.json` → `D-GEO` |
 
@@ -239,6 +240,7 @@ stateDiagram-v2
 | **Not responsible for** | Event Recording, State |
 | **Contract** | [UCOS-TIM-000001 Time Architecture](#ucos-tim-000001) |
 | **Artifacts** | [UCOS-TIM-000001](#ucos-tim-000001) |
+| **Concepts** | 112 — `node _registry/compile.js --search <words> --kind concept --owner "Time"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-TIM` |
 
@@ -443,6 +445,7 @@ stateDiagram-v2
 | **Not responsible for** | Value Units, Time Calendars |
 | **Contract** | [UCOS-MEA-000001 Measure Architecture](#ucos-mea-000001) |
 | **Artifacts** | [UCOS-MEA-000001](#ucos-mea-000001) |
+| **Concepts** | 189 — `node _registry/compile.js --search <words> --kind concept --owner "Measure"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-MEA` |
 
@@ -634,6 +637,7 @@ stateDiagram-v2
 | **Not responsible for** | Pricing Rules, Offerings |
 | **Contract** | [UCOS-VAL-000001 Value Architecture](#ucos-val-000001) |
 | **Artifacts** | [UCOS-VAL-000001](#ucos-val-000001) |
+| **Concepts** | 149 — `node _registry/compile.js --search <words> --kind concept --owner "Value"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-VAL` |
 
@@ -833,6 +837,7 @@ stateDiagram-v2
 | **Not responsible for** | Meaning, Place |
 | **Contract** | [UCOS-EXR-000001 Expression Architecture](#ucos-exr-000001) |
 | **Artifacts** | [UCOS-EXR-000001](#ucos-exr-000001) |
+| **Concepts** | 41 — `node _registry/compile.js --search <words> --kind concept --owner "Expression"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-EXR` |
 
@@ -1035,6 +1040,7 @@ stateDiagram-v2
 | **Not responsible for** | Meaning, Trust, Identity |
 | **Contract** | [UCOS-CTX-000001 Context Architecture](#ucos-ctx-000001) |
 | **Artifacts** | [UCOS-CTX-000001](#ucos-ctx-000001) |
+| **Concepts** | 123 — `node _registry/compile.js --search <words> --kind concept --owner "Context"` |
 | **Code** | `lib/defaults.js`, `lib/settings.js`, `lib/seed/defaults.json`, `lib/seed/settings.json` |
 | **Managed in** | `_registry/domains.json` → `D-CTX` |
 

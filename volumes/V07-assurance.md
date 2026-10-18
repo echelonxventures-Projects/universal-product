@@ -34,6 +34,7 @@
 | **Not responsible for** | Trust Computation, Permissions, Audit Record |
 | **Contract** | [UCOS-SEC-000001 Security Runtime Architecture](#ucos-sec-000001) |
 | **Artifacts** | [UCOS-IAM-000001](#ucos-iam-000001), [UCOS-ZTA-000001](#ucos-zta-000001), [UCOS-CRY-000001](#ucos-cry-000001), [UCOS-KMS-000001](#ucos-kms-000001), [UCOS-SEC-000001](#ucos-sec-000001) |
+| **Concepts** | 285 — `node _registry/compile.js --search <words> --kind concept --owner "Security"` |
 | **Code** | `lib/security.js`, `lib/identity.js`, `lib/webauthn.js`, `lib/risk.js` |
 | **Managed in** | `_registry/domains.json` → `D-SEC` |
 
@@ -1055,6 +1056,7 @@ stateDiagram-v2
 | **Not responsible for** | Evidence Generation, Policy, Identity |
 | **Contract** | [UCOS-TRS-000001 Trust Architecture](#ucos-trs-000001) |
 | **Artifacts** | [UCOS-TRS-000001](#ucos-trs-000001) |
+| **Concepts** | 215 — `node _registry/compile.js --search <words> --kind concept --owner "Trust"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-TRU` |
 
@@ -1269,6 +1271,7 @@ stateDiagram-v2
 | **Not responsible for** | Evidence Validity, Obligations |
 | **Contract** | [UCOS-AUD-000001 Audit Architecture](#ucos-aud-000001) |
 | **Artifacts** | [UCOS-AUD-000001](#ucos-aud-000001) |
+| **Concepts** | 40 — `node _registry/compile.js --search <words> --kind concept --owner "Audit"` |
 | **Code** | `lib/ucos-trace.js`, `lib/security.js` |
 | **Managed in** | `_registry/domains.json` → `D-AUD` |
 
@@ -1482,6 +1485,7 @@ stateDiagram-v2
 | **Not responsible for** | Security Controls, Audit Record |
 | **Contract** | [UCOS-CMP-000001 Compliance Architecture](#ucos-cmp-000001) |
 | **Artifacts** | [UCOS-DSP-000001](#ucos-dsp-000001), [UCOS-CNS-000001](#ucos-cns-000001), [UCOS-CMP-000001](#ucos-cmp-000001) |
+| **Concepts** | 211 — `node _registry/compile.js --search <words> --kind concept --owner "Compliance"` |
 | **Code** | `lib/compliance.js`, `lib/seed/compliance.json` |
 | **Managed in** | `_registry/domains.json` → `D-CMP` |
 

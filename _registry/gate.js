@@ -231,9 +231,37 @@ function run(payload) {
     record(check("zero-partial · every build step names real domains, and every done step its amendments",
       keySet(rm.steps, "stepId").size === rm.steps.length && keySet(rm.decisions, "decisionId").size === rm.decisions.length && !badSteps.length, badSteps.join(", ")));
 
+    /* the concept register: the rules name declared domains, every reviewed container names a
+       declared domain (or Structural), each concept appears once, the sealed register is exactly
+       a fresh derivation, and unplaced concepts and unreviewed containers may only fall */
+    const cl = rf.classification || { owners: [], containers: {} };
+    const ruleOwners = (cl.owners || []).map(r => r.owner).concat(cl.subjects ? [cl.subjects.owner] : []);
+    const badRules = ruleOwners.filter(o => !domNames.has(o));
+    const badReviews = Object.entries(cl.containers || {}).filter(([, r]) => r.owner !== "Structural" && !domNames.has(r.owner)).map(([id]) => id)
+      .concat(Object.entries(cl.concepts || {}).filter(([, r]) => r.owner !== "NotAConcept" && !domNames.has(r.owner)).map(([id]) => "c:" + id));
+    record(check("zero-missing · every classification rule and reviewed container names a declared domain",
+      !badRules.length && !badReviews.length, badRules.concat(badReviews).slice(0, 5).join(", ")));
+    const levels = new Set((cl.confidenceLevels || []).map(l => l.key));
+    const badLevels = Object.entries(cl.containers || {}).concat(Object.entries(cl.concepts || {})).filter(([, r]) => !levels.has(r.confidence)).map(([id]) => id);
+    record(check("zero-missing · every review uses a declared confidence level", levels.size > 0 && !badLevels.length, badLevels.slice(0, 5).join(", ")));
+    const reg = payload.register;
+    const regKeys = reg ? keySet(reg.rows.map(r => ({ k: r[0] })), "k") : new Map();
+    record(check("zero-duplicate · every corpus concept appears once in the register", !!reg && regKeys.size === reg.rows.length, reg ? (reg.rows.length - regKeys.size) + " repeated" : "no register compiled"));
+    let fresh = null;
+    try { fresh = require(path.join(ROOT, "lib", "canonical.js")).classifyRegister(payload.parsed, payload.universes, rf); } catch (e) { }
+    record(check("no-leakage · the sealed concept register is exactly a fresh derivation from the rules and reviews",
+      !!fresh && JSON.stringify(fresh) === JSON.stringify(reg), "the register differs from a fresh derivation"));
+    let base = {};
+    try { base = JSON.parse(require("fs").readFileSync(path.join(__dirname, "register-baseline.json"), "utf8")); } catch (e) { }
+    const unplaced = reg ? reg.counts.unplaced : Infinity;
+    const unreviewed = reg ? reg.counts.containers - reg.counts.containersReviewed : Infinity;
+    record(check("zero-missing · unplaced concepts (" + unplaced + ", baseline " + base.conceptsUnplaced + ") and unreviewed containers (" + unreviewed + ", baseline " + base.containersUnreviewed + ")",
+      unplaced <= (base.conceptsUnplaced ?? Infinity) && unreviewed <= (base.containersUnreviewed ?? Infinity)));
+
     registerCounts = { categories: cats.length, domains: doms.length, owned: owners.size, domainsWithoutContract: noContract.length, outstanding: noContract,
       laws: laws.length, lawsNotEnforced: notEnforced.length, kernel: kernel.length, modules: cb.modules.length, steps: rm.steps.length,
-      stepsDone: rm.steps.filter(st => st.status === "done").length };
+      stepsDone: rm.steps.filter(st => st.status === "done").length,
+      concepts: reg ? reg.counts.concepts : 0, conceptsUnplaced: unplaced, containersUnreviewed: unreviewed };
   }
 
   /* ---------- NO LEAKAGE — the compiled registry is exactly the sources ---------- */

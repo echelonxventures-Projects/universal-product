@@ -38,6 +38,7 @@
 | **Not responsible for** | Knowledge, Meaning, Policy, Trust |
 | **Contract** | [UCOS-IDN-000001 Identity Architecture](#ucos-idn-000001) |
 | **Artifacts** | [UCOS-IDN-000001](#ucos-idn-000001) |
+| **Concepts** | 1348 — `node _registry/compile.js --search <words> --kind concept --owner "Identity"` |
 | **Code** | `lib/uid.js` |
 | **Managed in** | `_registry/domains.json` → `D-IDN` |
 
@@ -271,6 +272,7 @@ stateDiagram-v2
 | **Not responsible for** | Knowledge Validation, Identity, Policy |
 | **Contract** | [UCOS-SEM-000001 Universal Semantic Architecture](#ucos-sem-000001) |
 | **Artifacts** | [UCOS-SEM-000001](#ucos-sem-000001), [UCOS-ONT-000001](#ucos-ont-000001), [UCOS-TAX-000001](#ucos-tax-000001), [UCOS-CLS-000001](#ucos-cls-000001) |
+| **Concepts** | 314 — `node _registry/compile.js --search <words> --kind concept --owner "Semantic"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-SEM` |
 
@@ -1045,6 +1047,7 @@ stateDiagram-v2
 | **Not responsible for** | Identity, Policy, Authority |
 | **Contract** | [UCOS-KNW-000001 Knowledge Architecture](#ucos-knw-000001) |
 | **Artifacts** | [UCOS-KNW-000001](#ucos-knw-000001) |
+| **Concepts** | 2774 — `node _registry/compile.js --search <words> --kind concept --owner "Knowledge"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-KNW` |
 
@@ -1273,6 +1276,7 @@ stateDiagram-v2
 | **Not responsible for** | Knowledge Validation, Meaning |
 | **Contract** | [UCOS-GDN-000001 Guidance Architecture](#ucos-gdn-000001) |
 | **Artifacts** | [UCOS-IMP-000001](#ucos-imp-000001), [UCOS-IMP-000002](#ucos-imp-000002), [UCOS-IMP-000003](#ucos-imp-000003), [UCOS-IMP-000004](#ucos-imp-000004), [UCOS-IMP-000005](#ucos-imp-000005), [UCOS-GDN-000001](#ucos-gdn-000001) |
+| **Concepts** | 8 — `node _registry/compile.js --search <words> --kind concept --owner "Guidance"` |
 | **Code** | `public/docs/architecture.html`, `public/docs/e2e-flow.html`, `public/docs/platform-reference.html`, `public/docs/provisioning-guide.html`, `public/docs/user-manual.html`, `public/docs/user-manual.js` |
 | **Managed in** | `_registry/domains.json` → `D-GDN` |
 
@@ -2435,6 +2439,7 @@ stateDiagram-v2
 | **Not responsible for** | Identity, Permissions, Credentials |
 | **Contract** | [UCOS-PTY-000001 Party Architecture](#ucos-pty-000001) |
 | **Artifacts** | [UCOS-PTY-000001](#ucos-pty-000001) |
+| **Concepts** | 265 — `node _registry/compile.js --search <words> --kind concept --owner "Party"` |
 | **Code** | `lib/tenancy.js` |
 | **Managed in** | `_registry/domains.json` → `D-PTY` |
 

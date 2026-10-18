@@ -31,6 +31,7 @@
 | **Not responsible for** | Truth Ownership, Offerings |
 | **Contract** | [UCOS-COM-000001 Universal Commerce Architecture](#ucos-com-000001) |
 | **Artifacts** | [UCOS-COM-000001](#ucos-com-000001), [UCOS-GPS-000001](#ucos-gps-000001), [UCOS-PRC-000001](#ucos-prc-000001), [UCOS-OFR-000001](#ucos-ofr-000001), [UCOS-SUB-000001](#ucos-sub-000001), [UCOS-CNT-000001](#ucos-cnt-000001), [UCOS-MKT-000001](#ucos-mkt-000001), [UCOS-INV-000001](#ucos-inv-000001), [UCOS-ORD-000001](#ucos-ord-000001), [UCOS-FUL-000001](#ucos-ful-000001) |
+| **Concepts** | 1969 — `node _registry/compile.js --search <words> --kind concept --owner "Commerce"` |
 | **Code** | `lib/billing.js`, `lib/offers.js`, `lib/goip.js`, `lib/shipping.js`, `lib/logistics.js`, `lib/fin.js`, `lib/fintech.js`, `lib/marketplace.js`, `lib/marketplace-ext.js`, `lib/affiliate.js`, `lib/trade.js`, `lib/qcommerce.js`, `lib/mobility.js`, `lib/operations.js`, `lib/recurring.js`, `lib/ugc.js`, `lib/gcatalog.js`, `lib/seed/catalog.json`, `lib/seed/goip.json`, `lib/seed/offers.json` |
 | **Managed in** | `_registry/domains.json` → `D-BIZ` |
 

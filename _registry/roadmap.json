@@ -11,7 +11,7 @@
     {"stepId": "P02", "title": "The missing domain contracts", "domains": ["Constitutional Authority"], "status": "done", "deliveredBy": ["AMD-0002"]},
     {"stepId": "P03", "title": "One master document with self-splitting volumes, kept current automatically", "domains": ["Guidance", "Registry"], "status": "done", "deliveredBy": ["AMD-0003"]},
     {"stepId": "P04", "title": "The law register, the kernel, the module map and this path in the registry; FOUNDATIONS.md superseded", "domains": ["Constitutional Authority", "Registry"], "status": "done", "deliveredBy": ["AMD-0004"]},
-    {"stepId": "P05", "title": "Corpus concepts placed in the register (one owner, aliases, sources)", "domains": ["Registry", "Semantic"], "status": "planned", "deliveredBy": []},
+    {"stepId": "P05", "title": "Corpus concepts placed in the register (one owner, aliases, sources)", "domains": ["Registry", "Semantic"], "status": "done", "deliveredBy": ["AMD-0005"]},
     {"stepId": "P06", "title": "The other domain systems unified (GOIP's 67 domains, capability domains, the per-universe record engine)", "domains": ["Registry", "Commerce", "Offering"], "status": "planned", "deliveredBy": []},
     {"stepId": "P07", "title": "The remaining root design documents absorbed or superseded", "domains": ["Guidance"], "status": "planned", "deliveredBy": []},
     {"stepId": "P08", "title": "Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution", "domains": ["Registry", "Identity", "Relationship", "Geo", "Evolution", "Runtime", "Perspective", "Context"], "status": "planned", "deliveredBy": []},

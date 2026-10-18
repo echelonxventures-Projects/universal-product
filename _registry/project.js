@@ -31,6 +31,15 @@ const DOMAINS = load('domains.json');
 const MANIFEST = load('manifest.json');
 const CONTENT_MAP = load('content-map.json');
 const CODEBASE = load('codebase.json');
+/* the concept register is derived at compile time (lib/canonical.js) and read from the seal */
+let _register;
+function conceptRegister() {
+  if (_register === undefined) {
+    const silence = console.log; console.log = () => { };
+    try { _register = require(path.join(ROOT, 'lib', 'canonical.js')).get().register || null; } finally { console.log = silence; }
+  }
+  return _register;
+}
 const ROADMAP = load('roadmap.json');
 
 /* ---------- content registries ---------- */
@@ -416,6 +425,7 @@ function domainCard(d, from) {
     d.notResponsible ? `| **Not responsible for** | ${d.notResponsible.join(', ')} |` : `| **Must obey** | ${(d.mustObey || []).join(', ')} |`,
     `| **Contract** | ${contract ? linkArtifact(contract, from, contract.id + ' ' + contract.title) : '—'} |`,
     `| **Artifacts** | ${arts.map(a => linkArtifact(a, from)).join(', ')} |`,
+    `| **Concepts** | ${((conceptRegister() || { counts: { byOwner: {} } }).counts.byOwner[d.name] || 0)} — \`node _registry/compile.js --search <words> --kind concept --owner "${d.name}"\` |`,
     `| **Code** | ${CODEBASE.modules.filter(m => (m.parts || [{ owner: m.owner }]).some(p => p.owner === d.name)).map(m => '\`' + m.path + '\`').join(', ') || '—'} |`,
     `| **Managed in** | \`_registry/domains.json\` → \`${d.domainId}\` |`,
     ''
@@ -510,7 +520,7 @@ function masterText(volumes, sizes, max) {
   L.push('## Contents', '',
     '1. [How to manage](#how-to-manage)', '2. [Volume register](#volume-register)', '3. [Index](#index)',
     '4. [Constitution](#constitution)', '5. [Kernel](#kernel)', '6. [Standard contract](#standard-contract)', '7. [Glossary](#glossary)',
-    '8. [Code map](#code-map)', '9. [Build path and decisions](#build-path)', '10. [ID lookup](#id-lookup)', '');
+    '8. [Code map](#code-map)', '9. [Concept register](#concept-register)', '10. [Build path and decisions](#build-path)', '11. [ID lookup](#id-lookup)', '');
 
   L.push('<a id="how-to-manage"></a>', '## 1. How to manage', '',
     'Everything here is projected. To change it, edit the registry entry named below, then run `npm run registry`. That re-projects this document and every volume, audits them, then compiles, gates and seals the registry. `npm test` fails if any document is out of date with the registry.', '',
@@ -605,7 +615,30 @@ function masterText(volumes, sizes, max) {
     if (rows.length) L.push(`### ${c.categoryId} · ${c.name}`, '', '| File | Owner | Part |', '|---|---|---|', ...rows, '');
   }
 
-  L.push('<a id="build-path"></a>', '## 9. Build path and decisions', '');
+  const reg = conceptRegister();
+  L.push('<a id="concept-register"></a>', '## 9. Concept register', '');
+  if (reg) {
+    const k = reg.counts.byKind, b = reg.counts.byBasis;
+    L.push(`Every concept the corpus names, once, from \`_registry/classification.json\` (owned by Semantic). ${reg.counts.distinct} distinct names: ${k.concept || 0} concepts, ${k.statement || 0} statements, ${k.fragment || 0} parse fragments, ${k.identifier || 0} identifiers. Each concept has one owner, taken from an exact registry name, else its reviewed container, else the rules on its name. Find any of them with \`node _registry/compile.js --search <words> --kind concept [--owner …] [--category …]\`.`, '',
+      '| Basis | Concepts |', '|---|---:|');
+    for (const [basis, n] of Object.entries(b).sort((x, y) => y[1] - x[1])) L.push(`| ${basis} | ${n} |`);
+    L.push('', `Containers reviewed: ${reg.counts.containersReviewed} of ${reg.counts.containers}. Concepts reviewed on their own: ${reg.counts.conceptsReviewed || 0}.`, '', '| Category | Domain | Concepts |', '|---|---|---:|');
+    for (const c of cats) for (const d of domainsOf(c)) L.push(`| ${c.categoryId} ${c.name} | ${linkDomain(d, from)} | ${reg.counts.byOwner[d.name] || 0} |`);
+    L.push('');
+    /* the review queue: every low-confidence decision, for a person to confirm or correct */
+    const CL = load('classification.json');
+    const queue = reg.counts.reviewQueue || [];
+    L.push('<a id="review-queue"></a>', '### Review queue', '',
+      `${queue.length} decisions were made with low confidence even after a second opinion. Confirm or correct each by editing its entry in \`_registry/classification.json\` (\`containers\` or \`concepts\`): set \`owner\`, set \`confidence\` to \`high\` and \`by\` to your name, then run \`npm run registry\`.`, '',
+      '| ID | Current owner | Reviewer’s reason |', '|---|---|---|');
+    for (const id of queue) {
+      const r = id.startsWith('c:') ? (CL.concepts || {})[id.slice(2)] : (CL.containers || {})[id];
+      if (r) L.push(`| \`${id}\` | ${r.owner} | ${String(r.reason || '').replace(/\|/g, '/')} |`);
+    }
+    L.push('');
+  } else L.push('No concept register has been compiled. Run `npm run registry`.', '');
+
+  L.push('<a id="build-path"></a>', '## 10. Build path and decisions', '');
   const done = ROADMAP.steps.filter(st => st.status === 'done').length;
   L.push(`${done} of ${ROADMAP.steps.length} steps done. Each step is committed only once the full test suite passes.`, '', '| Step | What | Domains | Status | Delivered by |', '|---|---|---|---|---|');
   for (const st of ROADMAP.steps) L.push(`| <a id="${anchor(st.stepId)}"></a>${st.stepId} | ${st.title} | ${st.domains.map(n => linkDomain(domainByName(n), from)).join(', ')} | ${st.status} | ${(st.deliveredBy || []).map(a => `[${a}](#${anchor(a)})`).join(', ') || '—'} |`);
@@ -613,7 +646,7 @@ function masterText(volumes, sizes, max) {
   for (const dc of ROADMAP.decisions) L.push(`| <a id="${anchor(dc.decisionId)}"></a>${dc.decisionId} | ${dc.question} | ${dc.decision} |`);
   L.push('');
 
-  L.push('<a id="id-lookup"></a>', '## 10. ID lookup', '', '| ID | Kind | Name | Where |', '|---|---|---|---|');
+  L.push('<a id="id-lookup"></a>', '## 11. ID lookup', '', '| ID | Kind | Name | Where |', '|---|---|---|---|');
   const rows = [];
   for (const c of cats) rows.push([c.categoryId, 'category', c.name, volumes.filter(v => v.category === c).map(v => `[${v.id}](${VOLUME_DIR}/${v.file})`).join(', ')]);
   for (const v of volumes) if (v.of > 1) rows.push([v.id, 'volume', `${v.category.name}, part ${v.part} of ${v.of}`, `[${v.file}](${VOLUME_DIR}/${v.file})`]);

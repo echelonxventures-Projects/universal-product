@@ -22,6 +22,7 @@
 | **Not responsible for** | Observation Capture, Simulation |
 | **Contract** | [UCOS-INS-000001 Insight Architecture](#ucos-ins-000001) |
 | **Artifacts** | [UCOS-INS-000001](#ucos-ins-000001) |
+| **Concepts** | 596 — `node _registry/compile.js --search <words> --kind concept --owner "Insight"` |
 | **Code** | `lib/dashboards.js`, `lib/experiments.js`, `lib/planning.js` |
 | **Managed in** | `_registry/domains.json` → `D-INS` |
 

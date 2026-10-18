@@ -28,6 +28,7 @@
 | **Not responsible for** | Knowledge, Meaning, Identity |
 | **Contract** | [UCOS-POL-000001 Policy Architecture](#ucos-pol-000001) |
 | **Artifacts** | [UCOS-POL-000001](#ucos-pol-000001) |
+| **Concepts** | 342 — `node _registry/compile.js --search <words> --kind concept --owner "Policy"` |
 | **Code** | `lib/policies.js` |
 | **Managed in** | `_registry/domains.json` → `D-POL` |
 
@@ -249,6 +250,7 @@ stateDiagram-v2
 | **Not responsible for** | Policy Intent, Decision |
 | **Contract** | [UCOS-RUL-000001 Rule Architecture](#ucos-rul-000001) |
 | **Artifacts** | [UCOS-RUL-000001](#ucos-rul-000001) |
+| **Concepts** | 35 — `node _registry/compile.js --search <words> --kind concept --owner "Rule"` |
 | **Code** | `lib/rules.js`, `lib/gates.js`, `lib/tax.js`, `lib/seed/gates.json`, `lib/seed/rules.json`, `lib/seed/tax.json` |
 | **Managed in** | `_registry/domains.json` → `D-RUL` |
 
@@ -461,6 +463,7 @@ stateDiagram-v2
 | **Not responsible for** | Rule Execution Semantics |
 | **Contract** | [UCOS-DEC-000001 Decision Architecture](#ucos-dec-000001) |
 | **Artifacts** | [UCOS-DEC-000001](#ucos-dec-000001) |
+| **Concepts** | 212 — `node _registry/compile.js --search <words> --kind concept --owner "Decision"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-DEC` |
 
@@ -665,6 +668,7 @@ stateDiagram-v2
 | **Not responsible for** | Knowledge, Meaning, Relationships |
 | **Contract** | [UCOS-AUT-000001 Authority Architecture](#ucos-aut-000001) |
 | **Artifacts** | [UCOS-AUT-000001](#ucos-aut-000001) |
+| **Concepts** | 331 — `node _registry/compile.js --search <words> --kind concept --owner "Authority"` |
 | **Code** | `lib/authz.js`, `lib/rbac.js`, `lib/prbac.js`, `lib/seed/authz.json` |
 | **Managed in** | `_registry/domains.json` → `D-AUT` |
 

@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0004 (2026-10-17).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0005 (2026-10-18).
 
 ## Contents
 
@@ -12,8 +12,9 @@
 6. [Standard contract](#standard-contract)
 7. [Glossary](#glossary)
 8. [Code map](#code-map)
-9. [Build path and decisions](#build-path)
-10. [ID lookup](#id-lookup)
+9. [Concept register](#concept-register)
+10. [Build path and decisions](#build-path)
+11. [ID lookup](#id-lookup)
 
 <a id="how-to-manage"></a>
 ## 1. How to manage
@@ -50,17 +51,17 @@ A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A c
 | Volume | Category | Part | Domains | Artifacts | Size |
 |---|---|---|---:|---:|---:|
 | [V01](volumes/V01-constitution.md) | C01 Constitution | 1 of 1 | 1 | 10 | 70 KB |
-| [V02](volumes/V02-meaning.md) | C02 Meaning | 1 of 1 | 5 | 13 | 84 KB |
-| [V03.1](volumes/V03.1-reality-and-reasoning.md) | C03 Reality and Reasoning | 1 of 2 | 9 | 13 | 88 KB |
-| [V03.2](volumes/V03.2-reality-and-reasoning.md) | C03 Reality and Reasoning | 2 of 2 | 1 | 3 | 20 KB |
+| [V02](volumes/V02-meaning.md) | C02 Meaning | 1 of 1 | 5 | 13 | 85 KB |
+| [V03.1](volumes/V03.1-reality-and-reasoning.md) | C03 Reality and Reasoning | 1 of 2 | 9 | 13 | 89 KB |
+| [V03.2](volumes/V03.2-reality-and-reasoning.md) | C03 Reality and Reasoning | 2 of 2 | 1 | 3 | 21 KB |
 | [V04](volumes/V04-universal-dimensions.md) | C04 Universal Dimensions | 1 of 1 | 6 | 6 | 38 KB |
 | [V05](volumes/V05-structure.md) | C05 Structure | 1 of 1 | 2 | 2 | 15 KB |
 | [V06](volumes/V06-decision-and-control.md) | C06 Decision and Control | 1 of 1 | 4 | 4 | 28 KB |
 | [V07](volumes/V07-assurance.md) | C07 Assurance | 1 of 1 | 4 | 10 | 66 KB |
-| [V08](volumes/V08-interaction.md) | C08 Interaction | 1 of 1 | 4 | 4 | 25 KB |
+| [V08](volumes/V08-interaction.md) | C08 Interaction | 1 of 1 | 4 | 4 | 26 KB |
 | [V09](volumes/V09-automation.md) | C09 Automation | 1 of 1 | 3 | 15 | 98 KB |
 | [V10](volumes/V10-intelligence.md) | C10 Intelligence | 1 of 1 | 1 | 1 | 6 KB |
-| [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 82 KB |
+| [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 83 KB |
 | [V11.2](volumes/V11.2-platform.md) | C11 Platform | 2 of 2 | 3 | 6 | 37 KB |
 | [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 66 KB |
 | [V13](volumes/V13-composition.md) | C13 Composition | 1 of 1 | 1 | 1 | 7 KB |
@@ -360,6 +361,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0002"></a>AMD-0002 | 2026-10-17 | Platform owner | Writes the 17 missing domain contracts (Decision, Geo, Time, Measure, Value, Expression, Registry, Compliance, Experience, Communication, Notification, Guidance, Integration, Insight, Content, Offering, Package) into the registry, replacing FOUNDATIONS.md as their source; documents are filed by the owning domain's register category, so the manifest's separate document categories are retired. |
 | <a id="amd-0003"></a>AMD-0003 | 2026-10-17 | Platform owner | One master document: the registry projects UCOS-MASTER.md and one volume per register category, replacing the per-artifact files and the repository index; the enforced laws become registry data. |
 | <a id="amd-0004"></a>AMD-0004 | 2026-10-17 | Platform owner | FOUNDATIONS.md absorbed: one law register (26 laws merging the corpus's laws and principles and the foundation rules, each with sources and enforcement status), the kernel parts K01–K12 with one owner each, the Party domain and its contract, the code-module map (codebase.json), and the build path with its decisions (roadmap.json). FOUNDATIONS.md moves to _superseded. |
+| <a id="amd-0005"></a>AMD-0005 | 2026-10-18 | Platform owner | The concept register: every corpus concept placed once. Kind rules and owner rules in classification.json (owned by Semantic); every concept-holding container (5,609) and every concept in a structural container (3,552) reviewed by agents with independent second opinions on low-confidence calls and a maintainer sample check; the register is derived at compile time, sealed, gated and searchable by owner and category; low-confidence decisions form the master's review queue. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1378,10 +1380,456 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 |---|---|---|
 | `lib/compose.js` | [Package](volumes/V13-composition.md#d-pkg) |  |
 
-<a id="build-path"></a>
-## 9. Build path and decisions
+<a id="concept-register"></a>
+## 9. Concept register
 
-4 of 26 steps done. Each step is committed only once the full test suite passes.
+Every concept the corpus names, once, from `_registry/classification.json` (owned by Semantic). 28210 distinct names: 18298 concepts, 3873 statements, 4625 parse fragments, 1414 identifiers. Each concept has one owner, taken from an exact registry name, else its reviewed container, else the rules on its name. Find any of them with `node _registry/compile.js --search <words> --kind concept [--owner …] [--category …]`.
+
+| Basis | Concepts |
+|---|---:|
+| reviewed-container | 15336 |
+| reviewed-concept | 2820 |
+| exact | 142 |
+
+Containers reviewed: 5609 of 5609. Concepts reviewed on their own: 3552.
+
+| Category | Domain | Concepts |
+|---|---|---:|
+| C01 Constitution | [Constitutional Authority](volumes/V01-constitution.md#d-con) | 1379 |
+| C02 Meaning | [Identity](volumes/V02-meaning.md#d-idn) | 1348 |
+| C02 Meaning | [Semantic](volumes/V02-meaning.md#d-sem) | 314 |
+| C02 Meaning | [Knowledge](volumes/V02-meaning.md#d-knw) | 2774 |
+| C02 Meaning | [Guidance](volumes/V02-meaning.md#d-gdn) | 8 |
+| C02 Meaning | [Party](volumes/V02-meaning.md#d-pty) | 265 |
+| C03 Reality and Reasoning | [Observation](volumes/V03.1-reality-and-reasoning.md#d-obs) | 226 |
+| C03 Reality and Reasoning | [Evidence](volumes/V03.1-reality-and-reasoning.md#d-evd) | 146 |
+| C03 Reality and Reasoning | [Inference](volumes/V03.1-reality-and-reasoning.md#d-inf) | 707 |
+| C03 Reality and Reasoning | [Reasoning](volumes/V03.1-reality-and-reasoning.md#d-rsn) | 1437 |
+| C03 Reality and Reasoning | [Simulation](volumes/V03.1-reality-and-reasoning.md#d-sim) | 335 |
+| C03 Reality and Reasoning | [Causality](volumes/V03.1-reality-and-reasoning.md#d-cau) | 44 |
+| C03 Reality and Reasoning | [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per) | 94 |
+| C03 Reality and Reasoning | [Possibility](volumes/V03.1-reality-and-reasoning.md#d-pos) | 50 |
+| C03 Reality and Reasoning | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | 453 |
+| C03 Reality and Reasoning | [Twin](volumes/V03.2-reality-and-reasoning.md#d-dtw) | 395 |
+| C04 Universal Dimensions | [Geo](volumes/V04-universal-dimensions.md#d-geo) | 69 |
+| C04 Universal Dimensions | [Time](volumes/V04-universal-dimensions.md#d-tim) | 112 |
+| C04 Universal Dimensions | [Measure](volumes/V04-universal-dimensions.md#d-mea) | 189 |
+| C04 Universal Dimensions | [Value](volumes/V04-universal-dimensions.md#d-val) | 149 |
+| C04 Universal Dimensions | [Expression](volumes/V04-universal-dimensions.md#d-exr) | 41 |
+| C04 Universal Dimensions | [Context](volumes/V04-universal-dimensions.md#d-ctx) | 123 |
+| C05 Structure | [Registry](volumes/V05-structure.md#d-reg) | 327 |
+| C05 Structure | [Relationship](volumes/V05-structure.md#d-rel) | 298 |
+| C06 Decision and Control | [Policy](volumes/V06-decision-and-control.md#d-pol) | 342 |
+| C06 Decision and Control | [Rule](volumes/V06-decision-and-control.md#d-rul) | 35 |
+| C06 Decision and Control | [Decision](volumes/V06-decision-and-control.md#d-dec) | 212 |
+| C06 Decision and Control | [Authority](volumes/V06-decision-and-control.md#d-aut) | 331 |
+| C07 Assurance | [Security](volumes/V07-assurance.md#d-sec) | 285 |
+| C07 Assurance | [Trust](volumes/V07-assurance.md#d-tru) | 215 |
+| C07 Assurance | [Audit](volumes/V07-assurance.md#d-aud) | 40 |
+| C07 Assurance | [Compliance](volumes/V07-assurance.md#d-cmp) | 211 |
+| C08 Interaction | [Experience](volumes/V08-interaction.md#d-exp) | 97 |
+| C08 Interaction | [Communication](volumes/V08-interaction.md#d-cmn) | 116 |
+| C08 Interaction | [Notification](volumes/V08-interaction.md#d-ntf) | 5 |
+| C08 Interaction | [Search](volumes/V08-interaction.md#d-srh) | 99 |
+| C09 Automation | [Runtime](volumes/V09-automation.md#d-run) | 729 |
+| C09 Automation | [Agent](volumes/V09-automation.md#d-agt) | 330 |
+| C09 Automation | [Integration](volumes/V09-automation.md#d-int) | 176 |
+| C10 Intelligence | [Insight](volumes/V10-intelligence.md#d-ins) | 596 |
+| C11 Platform | [Persistence](volumes/V11.1-platform.md#d-prs) | 38 |
+| C11 Platform | [Operations](volumes/V11.1-platform.md#d-ops) | 391 |
+| C11 Platform | [Quality](volumes/V11.2-platform.md#d-qlt) | 442 |
+| C11 Platform | [Content](volumes/V11.2-platform.md#d-cnt) | 80 |
+| C11 Platform | [Offering](volumes/V11.2-platform.md#d-ofg) | 20 |
+| C12 Business | [Commerce](volumes/V12-business.md#d-biz) | 1969 |
+| C13 Composition | [Package](volumes/V13-composition.md#d-pkg) | 256 |
+
+<a id="review-queue"></a>
+### Review queue
+
+375 decisions were made with low confidence even after a second opinion. Confirm or correct each by editing its entry in `_registry/classification.json` (`containers` or `concepts`): set `owner`, set `confidence` to `high` and `by` to your name, then run `npm run registry`.
+
+| ID | Current owner | Reviewer’s reason |
+|---|---|---|
+| `u:abstraction` | Semantic | Abstraction levels of concepts fit ontology and meaning; could be philosophy. |
+| `u:agency` | Agent | Agency is the capacity of autonomous actors; Party or Knowledge plausible. |
+| `u:agi` | Agent | AGI is about artificial intelligent agents, despite sitting under Evolution. |
+| `u:agi_universe` | Agent | The subject is AGI itself; Possibility is plausible for future framing. |
+| `u:ai_object` | Inference | AI object as canonical model; machine learning belongs to Inference, Agent plausible. |
+| `u:auto_correction_universe` | Evolution | Governed self-correction of the system; Quality or Operations plausible. |
+| `u:awareness_systems` | Observation | Awareness systems sense and capture situational reality; no concepts to confirm. |
+| `u:balance` | Structural | Bare family heading of Balance Domains; no single subject. |
+| `u:boundless_advancement` | Evolution | Advancement means ongoing governed change and growth. |
+| `u:breakthrough_creation` | Knowledge | Breakthroughs are creation of new knowledge. |
+| `u:business_creativity` | Commerce | Creativity applied specifically to business; Knowledge plausible. |
+| `u:capability_balance` | Constitutional Authority | Capability is owned by Constitutional Authority. |
+| `u:capability_preservation` | Evolution | Preservation over time maps to history preservation. |
+| `u:capability_sustainability` | Evolution | Long-term sustainment of capabilities is governed change over time. |
+| `u:carbon_emission` | Compliance | Emissions tracked for sustainability obligations; Measure or Knowledge plausible. |
+| `u:computational_resources` | Operations | Compute capacity and environments; Knowledge plausible |
+| `u:continuation` | Knowledge | Lists knowledge, civilisation, existence continuation; civilisational subject, not execution. |
+| `u:coordination` | Runtime | Coordination across domains is orchestration; civilisational framing makes Knowledge plausible. |
+| `u:creates` | Relationship | Verb edge linking actors to media; a relationship type. |
+| `u:critical_infrastructure` | Commerce | Utilities, grids, transport as industry vertical, not platform operations. |
+| `u:digital_utilities` | Commerce | Utility sector as business vertical; Knowledge plausible. |
+| `u:durability` | Quality | Quality attribute in universe series; Operations reliability also plausible |
+| `u:dynamics_structures` | Evolution | Dynamics means change over time; Evolution owns change and emergence |
+| `u:effectiveness` | Insight | Effectiveness is measured outcome; metrics owned by Insight |
+| `u:element` | Semantic | Level in a structure hierarchy; a classification concept |
+| `u:environmental_risk` | Knowledge | Ecological and environmental subject matter about the world |
+| `u:environmental_threats` | Operations | Natural or environmental hazards affect continuity, not cyber protection |
+| `u:environmental_value` | Knowledge | Ecological worth is world knowledge, not value units |
+| `u:federated_behavior` | Knowledge | Collective behaviour category alongside cooperative, emergent; human behaviour. |
+| `u:federation_capabilities` | Party | Capabilities of communities, institutions, federations as collective actors. |
+| `u:federation_civilization` | Relationship | Federation between platforms/parties; civilisation index entry ambiguous. |
+| `u:freeze_status` | Evolution | Freezing a meta-model is governed change control |
+| `u:future_domains` | Measure | Placeholder within Quantitative Domains; quantities belong to Measure |
+| `u:future_risk` | Inference | Generic risk categories are uncertainty, not security threats |
+| `u:future_risks` | Inference | Generic risk categories are uncertainty, not security threats |
+| `u:future_robots` | Agent | Robots as autonomous executing actors; Knowledge plausible |
+| `u:generation_systems` | Knowledge | Likely world generation systems (e.g., energy); no platform capability |
+| `u:geopolitical_risk` | Knowledge | Geopolitics is world knowledge, not country reference data |
+| `u:grid_intelligence` | Commerce | Energy grid industry vertical, like manufacturing and mobility; Knowledge plausible. |
+| `u:harmony` | Knowledge | Societal/cultural concept with no platform capability evident. |
+| `u:ideation` | Knowledge | Idea creation as human creative behaviour; Possibility plausible. |
+| `u:incentives` | Commerce | Economic incentives fit business projections; Knowledge plausible. |
+| `u:infinite_balance` | Structural | Empty aspirational heading with no concepts; no single subject. |
+| `u:infinite_continuation` | Evolution | Continuation over time is governed change and persistence of systems. |
+| `u:infinite_domain` | Measure | Domain type (finite/infinite value range) is a measurement value-domain concept. |
+| `u:infinite_stability` | Operations | Long-run stability maps best to reliability practice. |
+| `u:informational` | Semantic | Informational dimension category concerns meaning classification. |
+| `u:institutional_prosperity` | Knowledge | Prosperity of institutions is societal subject matter. |
+| `u:interacting` | Runtime | A state category; Runtime owns state. |
+| `u:intergenerational_continuity_authority` | Evolution | Long-term continuity across generations is governed change over time. |
+| `u:intergenerational_responsibility` | Compliance | Ethics obligations toward future generations. |
+| `u:interplanetary` | Geo | Truncated heading about spatial location beyond Earth. |
+| `u:interplanetary_operations` | Knowledge | Space operations as world subject matter, not platform ops. |
+| `u:knowledge_returns` | Knowledge | Returns category about knowledge gained; not financial projection. |
+| `u:learning_universe` | Evolution | Factory learning universe concerns governed change and emergence. |
+| `u:liability` | Constitutional Authority | Liability under law within legal and jurisdiction universe. |
+| `u:lms` | Knowledge | Learning management concerns knowledge creation and transfer. |
+| `u:medical_iot` | Twin | IoT device category binding physical devices to digital representations. |
+| `u:meta_intelligence` | Knowledge | Covers awareness, consciousness, cognition, wisdom: philosophy and human behaviour. |
+| `u:model` | Semantic | Model in canonical object hierarchy suggests a meaning/schema model, not ML. |
+| `u:modeling` | Simulation | Modeling domains concern representing and projecting systems; Simulation owns modeling. |
+| `u:monolith` | Operations | Monolithic deployment architecture style; deployment topology fits Operations. |
+| `u:movement` | Commerce | Follows Movement Systems universe; mobility belongs to Commerce. |
+| `u:network_capabilities` | Integration | Network capability category suggests connectivity, protocols, connectors. |
+| `u:npu` | Knowledge | Neural processing hardware is world technical subject knowledge. |
+| `u:operational_coherence` | Operations | Consistency of operational platform state and reliability. |
+| `u:operational_consensus` | Runtime | Consensus among executing processes is runtime coordination. |
+| `u:operational_query` | Persistence | Querying operational stored data, not search ranking or discovery. |
+| `u:participation_continuity` | Knowledge | About civilisational continuity of collective existence, not platform ops continuity. |
+| `u:perpetual_viability` | Evolution | Long-term survivability and preservation across change; civilisational Knowledge also plausible. |
+| `u:perpetuity` | Evolution | Persistence of institutions and civilisation over long horizons of change. |
+| `u:platform_studio` | Experience | Studio is a builder interface surface; Package plausible. |
+| `u:preservation` | Knowledge | Heritage/cultural preservation subject; Evolution plausible for history preservation. |
+| `u:productivity` | Knowledge | Societal/economic productivity universe in existence-scale list; Commerce plausible. |
+| `u:professional_capabilities` | Party | Capabilities of professionals as actors in roles. |
+| `u:programme` | Commerce | Programme management is a business work projection; Runtime plausible. |
+| `u:project` | Commerce | Project management business universe; Runtime plausible for work execution. |
+| `u:project_portfolio` | Commerce | Portfolio management is a business projection; Insight plausible. |
+| `u:project_work_management` | Commerce | Business work-management universe projection; Runtime plausible. |
+| `u:rag` | Inference | AI engine for retrieval-augmented generation; Search plausible. |
+| `u:readiness` | Operations | Readiness principle; operational readiness; Quality plausible. |
+| `u:realities_physical` | Twin | Platform representation of physical reality; Context plausible. |
+| `u:reality` | Twin | Reality meta-model is reality representation; Knowledge plausible. |
+| `u:reality_continuation` | Evolution | Continuation of reality over time is governed change. |
+| `u:reality_coordination` | Knowledge | Existence-scale philosophical domain. |
+| `u:reality_stability` | Knowledge | Existence-scale stability subject. |
+| `u:reality_unification` | Knowledge | Unification of reality; physics/philosophy subject. |
+| `u:replaceable` | Package | Decomposition property alongside composable; composition concern, else structural. |
+| `u:research_risk` | Insight | Risk category in risk intelligence; assessed and reported analytically. |
+| `u:resource` | Commerce | Resources natural, human, financial, infrastructure as business assets. |
+| `u:resource_balance` | Knowledge | Balance among economic, civilisational resources; world-systems subject. |
+| `u:scales` | Measure | Scale levels are magnitudes; Geo or Knowledge also plausible. |
+| `u:scientific_negotiation` | Commerce | Negotiation domain concerns deals and agreements, a business projection. |
+| `u:scientific_returns` | Value | Return categories are kinds of value yielded, not product returns. |
+| `u:sentient_systems` | Knowledge | Subject-matter about sentient systems; Agent plausible if AI-focused. |
+| `u:service_request` | Commerce | Support service management is a business service projection; Runtime plausible. |
+| `u:service_system` | Commerce | Service systems are business service projections; Identity plausible. |
+| `u:stability` | Operations | No concepts given; stability most likely means system reliability. |
+| `u:strategic_systems` | Decision | Strategy is high-level decision-making; Knowledge would also fit. |
+| `u:sustainability_target` | Insight | Targets are tracked metrics; ecology knowledge is the alternative. |
+| `u:synergy` | Evolution | Synergy is emergent combined effect; Evolution owns emergence. |
+| `u:synthetic_economies_universe` | Commerce | Economies and markets are business projections; Knowledge plausible. |
+| `u:system_integrity` | Reasoning | Sits in mathematical invariance hierarchy; Rule plausible. |
+| `u:systemic_risk` | Knowledge | Societal systemic risk category; Inference or Simulation plausible. |
+| `u:systemic_stability` | Knowledge | Stability of societal systems; Evolution plausible. |
+| `u:telecommunications` | Commerce | Industry vertical like mobility or logistics; Knowledge plausible. |
+| `u:terminal_existence_governance` | Policy | Governance practice; Identity owns existence, plausible alternative. |
+| `u:ultimate_continuation` | Knowledge | Existence-scale philosophical continuity subject; no platform capability fits. |
+| `u:ultimate_equilibrium` | Knowledge | Meta-existence stability and balance; philosophical existence subject. |
+| `u:ultimate_preservation` | Knowledge | Civilisational sustainability and preservation; world/civilisation knowledge. |
+| `u:ultimate_survivability` | Knowledge | Existence-scale civilisational longevity subject, not platform reliability. |
+| `u:unification` | Knowledge | Existence coherence, harmony and synergy; philosophical subject. |
+| `u:universal_coherence` | Knowledge | Existence-scale coherence domain; philosophical subject. |
+| `u:universal_consistency` | Knowledge | Existence harmony and consistency list; philosophical subject. |
+| `u:universal_generation_engine` | Package | Generates deliverables from blueprints and contracts; composition machinery. |
+| `u:universal_homeostasis` | Knowledge | Systemic stability and equilibrium; existence-scale systems subject. |
+| `u:universal_risk_architecture` | Inference | Generic risk is quantified uncertainty; no domain owns risk outright. |
+| `u:universal_risk_universe` | Inference | Model, AI, research, future risk span beyond security; uncertainty quantification. |
+| `u:utility` | Commerce | Utilities authority (power, water, telecom) is an industry/service vertical. |
+| `u:vehicles` | Commerce | IoT device category; vehicles map to mobility, owned by Commerce. |
+| `ucos:article_ucos_doc_003_5_attribute_relationship_capability_19` | Registry | Meta-model kinds and attributes; capability declarations plausible for Constitutional Authority. |
+| `ucos:article_ucos_doc_003_9_time_and_space_23` | Time | Time-and-space meta model; Geo equally plausible, no concepts. |
+| `ucos:article_ucos_doc_009_1_constitutional_purpose_52` | Registry | Generating artifacts from registry metadata; Package plausible. |
+| `ucos:article_ucos_doc_009_2_generators_53` | Registry | Generators derive schemas/APIs/UIs from registry metadata declarations. |
+| `ucos:article_ucos_doc_009_3_governance_and_lifecycle_54` | Registry | Lifecycle of metadata-driven generators; follows parent generation document. |
+| `ucos:article_ucos_doc_009_4_security_apis_events_data_model_55` | Registry | Generator registration and regeneration on metadata change. |
+| `ucosm:completeness_rule` | Package | Composing complete platforms from requests via blueprints; Rule plausible. |
+| `ucosma:layer_29_computational_economics_engine` | Insight | Measures cost, benefit, risk per capability; metrics, not value units. |
+| `ucosma:layer_30_sustainability_engine` | Insight | Platform tracking of carbon, energy, waste metrics; not world knowledge. |
+| `ucosu:auto_correction_universe` | Operations | Self-correction aligns with reliability and recovery; Evolution plausible. |
+| `ucosu:support_universe` | Commerce | Customer support service projection: tickets, SLAs, entitlements. |
+| `ucosu:sustainability_universe` | Insight | Platform energy, carbon and efficiency tracking are metrics; Knowledge plausible. |
+| `ucosu:universal_generation_engine` | Package | Generates apps, SDKs, databases from composed definitions; Registry plausible. |
+| `umqscr:article_umqsocr_doc_019_10_system_of_systems_authority_364` | Knowledge | Systems-theory sibling; interoperability semantics makes Integration plausible |
+| `umqscr:article_umqsocr_doc_024_17V__517` | Observation | Source systems and data forms from which information is captured. |
+| `upce:final_ucos_execution_model` | Structural | End-to-end pipeline spanning knowledge, registries, relationships, twins; Runtime plausible. |
+| `upip:civilization_scale_composition` | Package | Composing blueprints for cities and governments; Knowledge plausible for civilisation subject |
+| `upip:coherence_authority` | Integration | Operational coherence across systems. |
+| `upip:cosmic_infrastructure_authority` | Knowledge | Physical habitat and transport infrastructure, not platform operations. |
+| `upip:cosmic_resource_authority` | Commerce | Rare interplanetary resources as economic assets; Knowledge plausible. |
+| `upip:dispute_authority` | Decision | Dispute initiation to closure is adjudication; Policy plausible. |
+| `upip:existence_framework_authority` | Identity | Existence frameworks; Identity owns existence, Semantic plausible. |
+| `upip:existence_harmony_authority` | Policy | Governance harmony across domains. |
+| `upip:existence_maximization_authority` | Reasoning | Maximization is optimisation. |
+| `upip:existence_unification_authority` | Integration | Unifying independent domains; Identity plausible. |
+| `upip:existential_renewal_authority` | Evolution | Perpetual renewal is governed change over time |
+| `upip:existential_stability_authority` | Operations | Stability of systems and governance is reliability. |
+| `upip:expansion_authority` | Evolution | Growth of capabilities and civilisation across boundaries is governed change. |
+| `upip:future_transmission_authority` | Evolution | Intergenerational transfer across centuries aligns with history preservation over time. |
+| `upip:harmonization_authority` | Policy | Governance harmonization across systems is governance practice. |
+| `upip:harmony_authority` | Knowledge | Civilisational and institutional harmony is societal subject. |
+| `upip:hybrid_intelligence_authority` | Party | Human plus organisation intelligence concerns actors combined; not analytics, so not Insight |
+| `upip:incentive_authority` | Commerce | Economic, market incentives and rewards; Policy (behavior) plausible |
+| `upip:infinite_balance_authority` | Knowledge | Abstract balance of power, knowledge, existence; no platform capability |
+| `upip:infinite_continuation_authority` | Knowledge | Continuation of civilisation and existence as world subject |
+| `upip:information_flow_authority` | Observation | Observation owns data and information; flow spans knowledge and communication. |
+| `upip:innovation_authority` | Evolution | Innovation is governed change and emergence across domains; Knowledge plausible |
+| `upip:intelligence_economy` | Commerce | Economies and markets for knowledge, agents, AI; Knowledge plausible. |
+| `upip:intergenerational_authority` | Knowledge | Intergenerational transfer is societal subject matter. |
+| `upip:labor_authority` | Party | Human, digital and agent labor are actors and their skills |
+| `upip:long_horizon_viability_authority` | Possibility | Viable futures over centuries are realizable-future modelling |
+| `upip:long_term_care_authority` | Knowledge | Civilisational care of knowledge and institutions. |
+| `upip:meta_existence_stability_authority` | Knowledge | Stability of civilisation, reality, existence as subject knowledge |
+| `upip:perpetual_reality_authority` | Evolution | Persistence, continuity and renewal over time is governed change |
+| `upip:perpetuity_authority` | Operations | Long-term continuity is reliability; Evolution plausible. |
+| `upip:persistence_authority` | Operations | Continuity of capabilities and infrastructure is reliability, not storage. |
+| `upip:reality_continuation_authority` | Twin | Reality state, lifecycles and future state are reality representation |
+| `upip:reality_coordination_authority` | Integration | Coordinating independent domains into unified operations. |
+| `upip:reality_federation_authority` | Integration | Federation of autonomous domains; Relationship plausible. |
+| `upip:resource_expansion_authority` | Knowledge | Resource discovery and sustainability is world subject matter. |
+| `upip:resource_preservation_authority` | Commerce | Only concept is economic resources, a business projection. |
+| `upip:risk_authority` | Inference | Risk as likelihood and uncertainty across categories; no risk domain. |
+| `upip:scientific_computing_authority` | Knowledge | Computational science as research practice; Runtime or Reasoning plausible. |
+| `upip:space_infrastructure_authority` | Knowledge | Real-world space engineering subject matter; Geo or Commerce also plausible. |
+| `upip:strategic_reserve_authority` | Operations | Capability and infrastructure reserves for future availability are continuity concerns. |
+| `upip:survival_authority` | Knowledge | Individual, institutional and knowledge survival is civilisational subject matter. |
+| `upip:sustainability_authority` | Knowledge | Environmental, social, civilisational sustainability is world knowledge; Compliance plausible. |
+| `upip:synergy_authority` | Integration | Combining independent capabilities; Evolution emergence plausible. |
+| `upip:treaty_authority` | Constitutional Authority | Treaties are binding inter-jurisdictional law across many fields, not commerce alone |
+| `upip:ultimate_equilibrium_authority` | Policy | Balancing capability and governance is governance practice |
+| `upip:ultimate_stewardship_authority` | Knowledge | Civilisation and existence stewardship is world subject matter |
+| `upip:universal_alignment_authority` | Compliance | Value and intelligence alignment are ethics obligations |
+| `upip:universal_coherence_authority` | Integration | Coherence across integrated domains; vague subject. |
+| `upip:universal_collective_structure_meta_model` | Party | Collective structures are organisations, institutions, communities as actors |
+| `upip:universal_derivation_model` | Structural | No concepts; cross-kernel derivation framing spans many subjects |
+| `upip:universal_homeostasis_authority` | Knowledge | Homeostasis is a systems-science concept applied broadly |
+| `upip:universal_intelligence_object` | Inference | Intelligence object models machine intelligence; Insight plausible but analytics-specific |
+| `upip:universal_risk_universe` | Compliance | Risk taxonomy spans domains; Compliance controls is closest, no risk owner listed |
+| `ureg:delivery_roadmap` | Guidance | Registry build path reads as implementation guidance; could be structural. |
+| `c:administration` | Policy | Administration is governance practice; subject is vague |
+| `c:affiliation` | Party | Actor membership in groups; Relationship plausible |
+| `c:ai_context` | Context | Contextual dimension for AI; Agent plausible |
+| `c:ai_platforms_research_platforms_and_future_platforms` | Package | Platform types composed from packages and blueprints |
+| `c:all_intelligence_universes` | Knowledge | Intelligence as subject matter |
+| `c:all_quantitative_universes` | Measure | Quantities owned by Measure; rule proposal accepted |
+| `c:architecture_completeness` | Quality | Verifying architecture is complete |
+| `c:autonomous_documentation_engine` | Registry | Documentation generated from declarations; Content plausible |
+| `c:bootstrap_principle` | Operations | Initial kernel construction and environment bring-up |
+| `c:canonical_object_schema_and_relationship_architecture_29_sections` | Semantic | Canonical object schema is ontology; relationships secondary |
+| `c:catastrophic_event_management` | Operations | Disaster response and continuity practice. |
+| `c:change_registry` | Evolution | Tracks changes over time; Registry or Audit plausible |
+| `c:civilization_computational_authority` | Knowledge | Civilisation-scale computation knowledge; Reasoning plausible |
+| `c:civilization_scale_composition` | Package | Composition at scale; Operations rule proposal wrong |
+| `c:collective_existence_architecture` | Knowledge | Collective existence is civilisational subject matter |
+| `c:constitutional_production_system_production_chain_levels_1_20` | Package | Production chain composes capabilities into platforms |
+| `c:coordination_structures` | Knowledge | Societal coordination structures |
+| `c:create_canonical_objects` | Registry | Execution step creating registered canonical objects |
+| `c:data_composition` | Observation | Observation owns Data; composition layer of data |
+| `c:deep_time_preservation` | Knowledge | Long-term heritage preservation; Time plausible. |
+| `c:demonstrating_ucos_completeness_by_composing_reference_platforms_without_code_28_4` | Quality | Completeness verification through composition |
+| `c:dissolution` | Party | Dissolution of organisations/institutions as actors' lifecycle |
+| `c:distributed_existence` | Knowledge | Civilisation spread across worlds; Identity plausible |
+| `c:durability` | Operations | Durability as reliability; Persistence plausible |
+| `c:dynamics_structures` | Knowledge | Social dynamics subject matter; ambiguous structural heading |
+| `c:economic_decision_systems` | Commerce | Economic/finance decision projections; Decision plausible |
+| `c:education_and_healthcare_platforms` | Package | Vertical platforms built from blueprints; Knowledge plausible |
+| `c:enterprise_systems` | Commerce | Enterprise business system sector projection |
+| `c:execution_structures` | Knowledge | Civilisational execution institutions; Runtime plausible |
+| `c:existence_closure` | Identity | About existence; rule proposal Identity accepted |
+| `c:existence_harmony` | Knowledge | Existence as philosophical subject matter |
+| `c:existence_integration` | Knowledge | Existence as philosophical subject matter |
+| `c:existence_maximization` | Knowledge | Existence as philosophical subject, not entity identity |
+| `c:existence_optimization` | Identity | Identity owns Existence; Knowledge plausible |
+| `c:existence_preservation` | Knowledge | Existential survival of civilisation; Identity plausible. |
+| `c:existence_sustainability` | Knowledge | Civilisational sustainability subject; Identity owns Existence |
+| `c:existence_synergy` | Knowledge | Existence as philosophical subject matter |
+| `c:existence_unification` | Knowledge | Existence as philosophical subject matter |
+| `c:existence_wide_coordination` | Knowledge | Existence as philosophical/civilisational subject |
+| `c:existential_balance` | Knowledge | Existence philosophy subject matter |
+| `c:existential_harmony` | Knowledge | Existence as philosophical subject matter |
+| `c:existential_stability` | Knowledge | Existence as philosophical/civilisational subject |
+| `c:federation_civilization` | Integration | Federation across platforms via protocols |
+| `c:financial_evolution` | Evolution | Evolution of financial systems; Commerce plausible |
+| `c:foundational_quantitative_economic_universe` | Knowledge | Economics as social science knowledge; Reasoning plausible |
+| `c:foundational_quantitative_universe` | Measure | Quantitative foundations are quantities and units |
+| `c:future_transmission` | Knowledge | Transmitting heritage and knowledge to future generations. |
+| `c:generation_layer` | Registry | Generating artefacts from registry declarations |
+| `c:generation_strategy` | Registry | Generating platform artefacts from registry declarations |
+| `c:government_and_industrial_platforms` | Package | Vertical platforms built from blueprints; Commerce plausible |
+| `c:hazard_analysis` | Knowledge | Natural and existential hazard science. |
+| `c:industrial_physical` | Commerce | Industrial sector category; manufacturing is Commerce; Twin plausible |
+| `c:industries_healthcare` | Package | Truncated industry-vertical entry; industry packs compose as packages |
+| `c:infinite_configurability_extensibility_scalability_and_reusability` | Registry | Declaration-driven configurability; mixed quality attributes |
+| `c:infinite_configurable_civilization_platform` | Package | Vision of configurable platform composition via blueprints and packages |
+| `c:infinite_continuity` | Knowledge | Civilisational continuity aspiration, not platform reliability |
+| `c:infinite_harmony` | Knowledge | Philosophical harmony concept |
+| `c:infinite_persistence` | Operations | Persistence-as-continuity; Operations owns continuity |
+| `c:infinite_stability` | NotAConcept | Vague slogan without concrete subject |
+| `c:infinite_sustainability` | Knowledge | Sustainability as societal/nature subject |
+| `c:intelligence_foundation_layer` | Knowledge | Intelligence as subject; Inference plausible |
+| `c:interest` | Knowledge | Community interest as social subject in context |
+| `c:intergenerational_responsibility` | Compliance | Ethical obligation to future generations |
+| `c:long_horizon_viability` | Knowledge | Civilisational long-horizon viability; Operations continuity plausible |
+| `c:long_term_survivability` | Knowledge | Civilisational survival is world subject matter |
+| `c:meta_existence_finality` | Identity | About existence, owned by Identity |
+| `c:meta_existence_governance` | Policy | Governance is Policy |
+| `c:meta_existence_stability` | Knowledge | Existence as philosophical subject matter |
+| `c:meta_reality_interaction` | Knowledge | Speculative existence and reality subject |
+| `c:meta_reality_operations` | Possibility | Operations across multiple realities |
+| `c:meta_systems` | Knowledge | Systems-theory subject matter |
+| `c:meta_universe_architecture` | Package | Composing universes into larger structures |
+| `c:negotiation_universes` | Reasoning | Negotiation as bargaining/game theory; Commerce plausible |
+| `c:no_hardcoded_technologies` | Registry | Technologies declared as registry kinds, not hard-coded |
+| `c:organizational_evolution` | Knowledge | Societal organisation change; Evolution also plausible |
+| `c:perpetual_reality` | Knowledge | Reality and existence as philosophical subject |
+| `c:perpetual_survivability` | Knowledge | Civilisational survival subject matter |
+| `c:perpetual_viability` | Knowledge | Civilisational long-term viability as world subject |
+| `c:pre_ai` | Knowledge | Historical era before AI; civilisation history |
+| `c:pre_computation` | Knowledge | Historical era before computation; civilisation history |
+| `c:pre_governance` | Policy | Governance practice; civilisational sense could be Knowledge |
+| `c:pre_ontology` | Semantic | Concept preceding ontology; Semantic owns ontology |
+| `c:project_work_management` | Runtime | Work and task process execution |
+| `c:proof_by_composition` | Quality | Verifying completeness by composing reference platforms |
+| `c:quantum_platform` | Knowledge | Quantum science subject; no specific platform domain fits |
+| `c:reality_continuation` | Knowledge | Reality as philosophical subject |
+| `c:reality_scale_coordination` | Knowledge | Speculative cosmic coordination, not platform operations |
+| `c:reality_stewardship` | Policy | Stewardship is governance practice |
+| `c:repository_structure` | Package | Layout of deliverable packages and blueprints |
+| `c:representation_types` | Authority | Representation as acting on behalf: delegation |
+| `c:self_correction` | Operations | Self-healing reliability; Evolution plausible |
+| `c:synthetic_assets` | Content | AI-generated synthetic media assets; Commerce plausible |
+| `c:systemic_stability` | Knowledge | Systems stability as world subject matter |
+| `c:talent` | Knowledge | Human talent; human behaviour subject. |
+| `c:technology_platform` | Commerce | Infrastructure sector listed alongside power and networks |
+| `c:terminal_existence_governance` | Identity | About existence, owned by Identity |
+| `c:the_canonical_structure_every_capability_fills_in_3_5` | Constitutional Authority | Constitutional Authority owns Capability and its charter structure |
+| `c:the_end_to_end_lifecycle_from_intent_to_operating` | Package | Composition lifecycle from intent to operating platform |
+| `c:the_one_time_conventional_construction_of_the_minimum_kernel` | Operations | Bootstrap kernel construction; not about time |
+| `c:ucicccc_universe` | Knowledge | Collective intelligence and cognition of society. |
+| `c:uertspls_universe` | Knowledge | Existential risk and long-term survival universe. |
+| `c:uiunp_universe` | Commerce | Infrastructure and utilities industries universe, business projection |
+| `c:ultimate_sustainability` | Knowledge | Sustainability as societal/nature subject |
+| `c:ultimate_system_loop` | Runtime | Continuous system execution loop |
+| `c:universal_adaptive_intelligence_authority` | Inference | Adaptive learning intelligence; Agent plausible |
+| `c:universal_balance_authority` | Reasoning | Balance as equilibrium/optimisation |
+| `c:universal_capability_authority` | Knowledge | Human capability within human development part. |
+| `c:universal_capability_civilization_graph` | Relationship | Graph connecting capabilities; graph structure is relationships |
+| `c:universal_capability_operating_system` | NotAConcept | Name of whole system, no single subject |
+| `c:universal_career_authority` | Knowledge | Careers as human development; Party plausible. |
+| `c:universal_civilizational_intelligence_authority` | Knowledge | Civilisation-scale intelligence subject; Insight plausible. |
+| `c:universal_coherence` | Reasoning | Coherence as logical consistency |
+| `c:universal_coherence_authority` | Reasoning | Coherence as logical consistency |
+| `c:universal_consistency` | Reasoning | Consistency as logical property |
+| `c:universal_consistency_authority` | Reasoning | Consistency as logical property |
+| `c:universal_continuity_intelligence_authority` | Operations | About continuity, which Operations owns |
+| `c:universal_coordination_authority` | Runtime | Coordination of collective processes; Agent plausible. |
+| `c:universal_development_intelligence_authority` | Knowledge | Human development knowledge; Insight plausible. |
+| `c:universal_dispute_authority` | Decision | Dispute resolution is adjudication, recorded as a decision |
+| `c:universal_distributed_existence_authority` | Knowledge | Civilisation across worlds; Identity plausible |
+| `c:universal_durability_authority` | Operations | Durability as reliability |
+| `c:universal_engagement_authority` | Insight | Engagement is mostly measured as metrics; Experience is plausible |
+| `c:universal_existence_care_authority` | Knowledge | Care for existence, civilisational subject; Identity plausible |
+| `c:universal_existence_framework_authority` | Knowledge | Existence as philosophical subject matter |
+| `c:universal_existence_harmony_authority` | Knowledge | Existence as philosophical subject matter |
+| `c:universal_existence_integration_authority` | Knowledge | Existence as philosophical subject matter |
+| `c:universal_existence_intelligence_authority` | Knowledge | About existence, a philosophical subject |
+| `c:universal_existence_maximization_authority` | Knowledge | Existence as philosophical subject matter |
+| `c:universal_existence_preservation_authority` | Knowledge | Existential survival of civilisation. |
+| `c:universal_existence_unification_authority` | Knowledge | Existence as philosophical subject matter |
+| `c:universal_existential_balance_authority` | Knowledge | Existence philosophy subject matter |
+| `c:universal_existential_renewal_authority` | Evolution | Renewal is governed change |
+| `c:universal_existential_stability_authority` | Knowledge | Existence as philosophical subject matter |
+| `c:universal_gap_discovery_completeness_universe` | Quality | Completeness verification; gap discovery not search |
+| `c:universal_harmonization_authority` | Knowledge | Harmonisation as abstract philosophical subject |
+| `c:universal_harmony` | Knowledge | Philosophical harmony concept, world subject matter |
+| `c:universal_harmony_authority` | Knowledge | Philosophical harmony concept |
+| `c:universal_harmony_intelligence_authority` | Knowledge | About harmony, a philosophical subject |
+| `c:universal_hazard_authority` | Knowledge | Hazards of the natural world. |
+| `c:universal_hybrid_intelligence_authority` | Agent | Human-AI collaboration of autonomous agents |
+| `c:universal_infinite_balance_authority` | Knowledge | Balance as systems subject matter |
+| `c:universal_infinite_continuation_authority` | Knowledge | Existential continuation, philosophical subject |
+| `c:universal_information_intelligence_authority` | Observation | Subject is information; Insight plausible |
+| `c:universal_integration_intelligence_authority` | Knowledge | Existence-integration theme; abstract world subject |
+| `c:universal_intelligence_authority` | Knowledge | Intelligence as cognitive subject; Insight is only metrics |
+| `c:universal_intergenerational_authority` | Knowledge | Intergenerational society subject; Compliance plausible |
+| `c:universal_lineage_authority` | Evolution | Lineage as history preservation; Evidence chain plausible |
+| `c:universal_long_horizon_viability_authority` | Knowledge | About long-horizon civilisational viability |
+| `c:universal_meta_existence_governance_authority` | Policy | Governance is Policy |
+| `c:universal_meta_existence_stability_authority` | Identity | About existence, which Identity owns |
+| `c:universal_meta_intelligence_authority` | Knowledge | Intelligence as a subject of knowledge |
+| `c:universal_negotiation_authority` | Knowledge | Negotiation as societal behaviour; Reasoning game theory plausible |
+| `c:universal_network_authority` | Commerce | Physical infrastructure networks industry; not graph relationships |
+| `c:universal_network_intelligence_authority` | Relationship | Intelligence emerging from relationship networks. |
+| `c:universal_organizational_evolution_authority` | Knowledge | About organisational evolution in society |
+| `c:universal_perpetual_reality_authority` | Knowledge | Reality as philosophical subject |
+| `c:universal_perpetuity_authority` | Operations | Perpetuity as continuity |
+| `c:universal_persistence_authority` | Operations | Continuity context, not storage; Persistence plausible |
+| `c:universal_preservation` | Knowledge | Civilisational preservation subject; Persistence unlikely. |
+| `c:universal_primitive_stack` | Registry | Primitives are declared kinds in the registry |
+| `c:universal_prosperity_authority` | Knowledge | Prosperity is societal/civilisational subject matter |
+| `c:universal_reality_continuation_authority` | Knowledge | Reality as philosophical subject |
+| `c:universal_reality_kernel` | Twin | Kernel representing reality; Twin owns reality representation |
+| `c:universal_records_authority` | Audit | Durable records align with immutable record; Persistence plausible |
+| `c:universal_resilience_intelligence_authority` | Operations | Resilience and recovery practice; Insight plausible. |
+| `c:universal_resource_allocation_authority` | Reasoning | Allocation is an optimisation problem |
+| `c:universal_resource_authority` | Commerce | Resources as economic business projection |
+| `c:universal_risk_mitigation_authority` | Security | Risk mitigation as protection against harm. |
+| `c:universal_safety_authority` | Security | AI safety protection; Compliance plausible |
+| `c:universal_scale_coordination` | Knowledge | Cosmic civilisational coordination, not platform operations |
+| `c:universal_strategic_reserve_authority` | Commerce | Resource reserves and stockpile logistics. |
+| `c:universal_survival_intelligence_authority` | Knowledge | Survival subject; Insight plausible. |
+| `c:universal_sustainability_authority` | Operations | Infrastructure sustainability next to economics; Knowledge is plausible |
+| `c:universal_symbol_authority` | Knowledge | Cultural symbols in culture universe; Semantic plausible. |
+| `c:universal_synergy_authority` | Reasoning | Synergy as collective optimisation |
+| `c:universal_synergy_maximization_authority` | Reasoning | Maximisation is optimisation |
+| `c:universal_systemic_stability_authority` | Knowledge | Systems stability as world subject matter |
+| `c:universal_talent_authority` | Knowledge | Human talent subject. |
+| `c:universal_terminal_existence_governance_authority` | Identity | About existence, owned by Identity |
+| `c:universal_ultimate_equilibrium_authority` | Knowledge | Equilibrium as systems-science subject |
+| `c:universal_unification_authority` | Semantic | Unification of meaning and structure |
+| `c:urcara_universe` | Operations | Resilience, continuity, recovery; civilisational Knowledge plausible. |
+| `c:urecs_universe` | NotAConcept | Opaque acronym identifier; no recognisable subject |
+| `c:usgres_universe` | Authority | Opaque acronym; stewardship as custodial authority |
+| `c:vision_architecture` | Guidance | Vision document guides readers through architecture |
+| `c:zero_product_specific_logic` | Constitutional Authority | Constitutional principle forbidding product-specific code |
+
+<a id="build-path"></a>
+## 10. Build path and decisions
+
+5 of 26 steps done. Each step is committed only once the full test suite passes.
 
 | Step | What | Domains | Status | Delivered by |
 |---|---|---|---|---|
@@ -1389,7 +1837,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | <a id="p02"></a>P02 | The missing domain contracts | [Constitutional Authority](volumes/V01-constitution.md#d-con) | done | [AMD-0002](#amd-0002) |
 | <a id="p03"></a>P03 | One master document with self-splitting volumes, kept current automatically | [Guidance](volumes/V02-meaning.md#d-gdn), [Registry](volumes/V05-structure.md#d-reg) | done | [AMD-0003](#amd-0003) |
 | <a id="p04"></a>P04 | The law register, the kernel, the module map and this path in the registry; FOUNDATIONS.md superseded | [Constitutional Authority](volumes/V01-constitution.md#d-con), [Registry](volumes/V05-structure.md#d-reg) | done | [AMD-0004](#amd-0004) |
-| <a id="p05"></a>P05 | Corpus concepts placed in the register (one owner, aliases, sources) | [Registry](volumes/V05-structure.md#d-reg), [Semantic](volumes/V02-meaning.md#d-sem) | planned | — |
+| <a id="p05"></a>P05 | Corpus concepts placed in the register (one owner, aliases, sources) | [Registry](volumes/V05-structure.md#d-reg), [Semantic](volumes/V02-meaning.md#d-sem) | done | [AMD-0005](#amd-0005) |
 | <a id="p06"></a>P06 | The other domain systems unified (GOIP's 67 domains, capability domains, the per-universe record engine) | [Registry](volumes/V05-structure.md#d-reg), [Commerce](volumes/V12-business.md#d-biz), [Offering](volumes/V11.2-platform.md#d-ofg) | planned | — |
 | <a id="p07"></a>P07 | The remaining root design documents absorbed or superseded | [Guidance](volumes/V02-meaning.md#d-gdn) | planned | — |
 | <a id="p08"></a>P08 | Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution | [Registry](volumes/V05-structure.md#d-reg), [Identity](volumes/V02-meaning.md#d-idn), [Relationship](volumes/V05-structure.md#d-rel), [Geo](volumes/V04-universal-dimensions.md#d-geo), [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo), [Runtime](volumes/V09-automation.md#d-run), [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per), [Context](volumes/V04-universal-dimensions.md#d-ctx) | planned | — |
@@ -1432,7 +1880,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | <a id="dec-014"></a>DEC-014 | How is the documentation organised? | One master document and one volume per category, split into numbered parts past a declared size, projected and checked automatically. |
 
 <a id="id-lookup"></a>
-## 10. ID lookup
+## 11. ID lookup
 
 | ID | Kind | Name | Where |
 |---|---|---|---|
@@ -1440,6 +1888,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | AMD-0002 | amendment | Writes the 17 missing domain contracts (Decision, Geo, Time, | [constitution](#amd-0002) |
 | AMD-0003 | amendment | One master document | [constitution](#amd-0003) |
 | AMD-0004 | amendment | FOUNDATIONS.md absorbed | [constitution](#amd-0004) |
+| AMD-0005 | amendment | The concept register | [constitution](#amd-0005) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |
