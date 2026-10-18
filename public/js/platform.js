@@ -3803,9 +3803,8 @@ async function vDocs() {
     
     <h3>📚 Quick Links</h3>
     <ul>
-      <li><a href="/GOIP-ROADMAP-2.md" target="_blank">GOIP Roadmap</a></li>
-      <li><a href="/README.md" target="_blank">README</a></li>
-      <li><a href="/USER_MANUAL.md" target="_blank">Full Manual (Source)</a></li>
+      <li><a href="/docs/user-manual.html" target="_blank">User manual</a></li>
+      <li><a href="/docs/platform-reference.html" target="_blank">Platform reference</a></li>
     </ul>
   </div>
   <div class="p-card">

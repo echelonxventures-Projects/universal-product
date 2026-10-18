@@ -276,6 +276,31 @@ function run(payload) {
     record(check("zero-overlap · every other domain system is aligned to one register owner per part (" + aligned + " parts, " + payload.universes.length + " universes)",
       !alignProblems.length && !uniUnowned.length, alignProblems.concat(uniUnowned.map(k => "universe " + k)).slice(0, 6).join(", ")));
 
+    /* documents: every document at the root and in _superseded/ has one registered status and
+       owner; superseded ones live under _superseded/ and name what replaced them; corpus sources
+       are exactly the documents the parser reads; projections name their generator */
+    const dr = rf.documents || { documents: [], statuses: [] };
+    const fsd = require("fs");
+    const onDiskDocs = [];
+    try { for (const f of fsd.readdirSync(ROOT)) if (/\.(md|txt)$/.test(f) && fsd.statSync(path.join(ROOT, f)).isFile()) onDiskDocs.push(f); } catch (e) { }
+    try { for (const f of fsd.readdirSync(path.join(ROOT, "_superseded"))) if (/\.md$/.test(f)) onDiskDocs.push("_superseded/" + f); } catch (e) { }
+    const docPaths = keySet(dr.documents, "path");
+    const statuses = new Set(dr.statuses || []);
+    const corpus = new Set(require(path.join(ROOT, "lib", "seed", "ucos.json")).DOCS.map(d => d.file).filter(f => !f.endsWith("/")));
+    const docProblems = [];
+    for (const f of onDiskDocs) if (!docPaths.has(f)) docProblems.push(f + " unregistered");
+    for (const d of dr.documents) {
+      if (!onDiskDocs.includes(d.path)) docProblems.push(d.path + " does not exist");
+      if (!statuses.has(d.status) || !domNames.has(d.owner)) docProblems.push(d.path + " has an undeclared status or owner");
+      if ((d.status === "superseded") !== d.path.startsWith("_superseded/")) docProblems.push(d.path + " is " + d.status + " but sits " + (d.path.startsWith("_superseded/") ? "in" : "outside") + " _superseded/");
+      if (d.status === "superseded" && !d.supersededBy) docProblems.push(d.path + " names nothing that replaced it");
+      if (d.status === "projection" && !d.generatedBy) docProblems.push(d.path + " names no generator");
+      if ((d.status === "corpus-source") !== corpus.has(d.path)) docProblems.push(d.path + " corpus status disagrees with the parser's document list");
+    }
+    for (const f of corpus) if (!dr.documents.some(d => d.path === f)) docProblems.push(f + " is parsed but unregistered");
+    record(check("zero-missing · every document has one registered status and owner, and sits where its status says (" + dr.documents.length + " documents)",
+      docPaths.size === dr.documents.length && !docProblems.length, docProblems.slice(0, 6).join("; ")));
+
     registerCounts = { categories: cats.length, domains: doms.length, owned: owners.size, domainsWithoutContract: noContract.length, outstanding: noContract,
       laws: laws.length, lawsNotEnforced: notEnforced.length, kernel: kernel.length, modules: cb.modules.length, steps: rm.steps.length,
       stepsDone: rm.steps.filter(st => st.status === "done").length,

@@ -10,7 +10,7 @@
 
 End‑to‑end guides for every role — **Customers, Store Admins, Support, Marketplace Sellers, and Platform (Super) Admins** — live in **[USER_MANUAL.md](USER_MANUAL.md)** (roles & capability matrix, per‑surface walkthroughs, security, glossary, troubleshooting).
 
-The complete **pictorial flow** of the whole platform — three planes, the 10‑layer request pipeline, multi‑tenant resolution, meta hierarchy, pricing/checkout, B2B (RFQ·Tender·Contract), supply (sellers vs suppliers), serialization, lifecycles, modules, data model and role matrix — is in **[FLOWS.md](FLOWS.md)**.
+The platform's architecture — its domains, laws, kernel, code map, concept register and build path — is in the **[master document](UCOS-MASTER.md)** and its [volumes](volumes/), projected from `_registry/` (run `npm run registry` after any registry change). Earlier guides and the pictorial flows are kept in `_superseded/`; the master's document map says what replaced each.
 
 ## Run
 

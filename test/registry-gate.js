@@ -111,6 +111,16 @@ console.log("\n▸ §A1 THE REGISTER — one categorised owner for every declara
   ok(can.search("cashback", { kind: "aligned" }).some(h => h.owner === "Commerce"), "a GOIP domain is found with its register owner");
   const engines = require(path.join(__dirname, "..", "lib", "ucos-domain.js")).domains();
   ok(engines.length > 2000 && engines.every(e => "owner" in e) && engines.filter(e => e.owner).every(e => e.category), "every per-universe record engine reports its register owner and category", engines.length + " engines, " + engines.filter(e => !e.owner).length + " structural");
+
+  /* documents: one registered status and owner each, in the place their status says */
+  const docs = JSON.parse(JSON.stringify(payload));
+  docs.registryFiles.documents.documents = docs.registryFiles.documents.documents.filter(d => d.path !== "README.md");
+  const sup = docs.registryFiles.documents.documents.find(d => d.status === "superseded");
+  sup.status = "guidance";
+  const r6 = gate.run(docs);
+  ok(r6.fails.some(f => /every document has one registered status/.test(f.name) && /README\.md unregistered/.test(f.detail) && /sits in _superseded/.test(f.detail)),
+    "an unregistered document, or a superseded one claimed as current, fails the gate", (r6.fails.find(f => /document/.test(f.name)) || {}).detail);
+  ok(Object.keys(can.liveManifest()).includes("UCRS-Zero-Hardcoding-Constitution.md"), "every parsed constitution is in the seal's manifest (the UCRS constitution was missing)");
 }
 
 console.log("\n▸ §A2 THE GATE REFUSES A BROKEN COMPILE");

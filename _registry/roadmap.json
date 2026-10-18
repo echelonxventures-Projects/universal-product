@@ -13,7 +13,7 @@
     {"stepId": "P04", "title": "The law register, the kernel, the module map and this path in the registry; FOUNDATIONS.md superseded", "domains": ["Constitutional Authority", "Registry"], "status": "done", "deliveredBy": ["AMD-0004"]},
     {"stepId": "P05", "title": "Corpus concepts placed in the register (one owner, aliases, sources)", "domains": ["Registry", "Semantic"], "status": "done", "deliveredBy": ["AMD-0005"]},
     {"stepId": "P06", "title": "The other domain systems unified (GOIP's 67 domains, capability domains, the per-universe record engine)", "domains": ["Registry", "Commerce", "Offering"], "status": "done", "deliveredBy": ["AMD-0006"]},
-    {"stepId": "P07", "title": "The remaining root design documents absorbed or superseded", "domains": ["Guidance"], "status": "planned", "deliveredBy": []},
+    {"stepId": "P07", "title": "The remaining root design documents absorbed or superseded", "domains": ["Guidance"], "status": "done", "deliveredBy": ["AMD-0007"]},
     {"stepId": "P08", "title": "Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution", "domains": ["Registry", "Identity", "Relationship", "Geo", "Evolution", "Runtime", "Perspective", "Context"], "status": "planned", "deliveredBy": []},
     {"stepId": "P09", "title": "Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships", "domains": ["Geo"], "status": "planned", "deliveredBy": []},
     {"stepId": "P10", "title": "Measure and Value, with GOIP's units merged", "domains": ["Measure", "Value"], "status": "planned", "deliveredBy": []},
