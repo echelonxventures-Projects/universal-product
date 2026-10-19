@@ -1,0 +1,27 @@
+{
+  "$comment": "The kernel's own declarations (FOUNDATIONS K01–K12), read by lib/kernel.js. Data, not code: a namespace, a value type or an event name added here needs no code change, except a value type, which also needs its check in lib/kernel.js TYPE_CHECKS.",
+  "namespaces": ["platform", "tenant", "publisher"],
+  "defaultNamespace": "platform",
+  "valueTypes": [
+    {"key": "text", "label": "Text"},
+    {"key": "number", "label": "Number"},
+    {"key": "integer", "label": "Whole number"},
+    {"key": "boolean", "label": "Yes or no"},
+    {"key": "instant", "label": "Point in time (ISO 8601)"},
+    {"key": "node", "label": "Reference to another node"},
+    {"key": "list", "label": "List of values"},
+    {"key": "record", "label": "Structured value"}
+  ],
+  "identity": {"scheme": "uid", "label": "Universal ID"},
+  "events": {
+    "kindDefined": "kernel.kind.defined",
+    "nodeCreated": "kernel.node.created",
+    "attributesRecorded": "kernel.attributes.recorded",
+    "identifierAssigned": "kernel.identifier.assigned",
+    "identifierEnded": "kernel.identifier.ended",
+    "hierarchyDefined": "kernel.hierarchy.defined",
+    "nodePlaced": "kernel.node.placed",
+    "placementEnded": "kernel.placement.ended"
+  },
+  "limits": {"keyPattern": "^[a-z][a-z0-9_.-]{0,63}$", "maxDepth": 4096, "eventPage": 500}
+}

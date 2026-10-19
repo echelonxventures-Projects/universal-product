@@ -201,6 +201,13 @@ function run(payload) {
     const kernel = D.kernel || [];
     const badKernel = kernel.filter(k => !k.partId || !k.statement || !domNames.has(k.owner)).map(k => k.partId || k.name);
     record(check("zero-missing · every kernel part has one owning domain", keySet(kernel, "partId").size === kernel.length && !badKernel.length, badKernel.join(", ")));
+    /* and a build status from the declared vocabulary; a part that runs names the amendments that delivered it */
+    const buildSt = new Set((D.buildStatuses || []).map(b => b.status));
+    const amdKnown = new Set((D.amendments || []).map(a => a.amendmentId));
+    const badKStatus = kernel.filter(k => !buildSt.has(k.status) || (k.status !== "designed" && (!(k.deliveredBy || []).length || k.deliveredBy.some(a => !amdKnown.has(a))))
+      || (k.status === "partial" && !k.note)).map(k => k.partId);
+    record(check("zero-partial · every kernel part has a build status; a running part names its amendments, a partial one what is missing (" + kernel.filter(k => k.status !== "designed").length + " of " + kernel.length + " running)",
+      !badKStatus.length, badKStatus.join(", ")));
 
     /* the code-module map: every file under the declared folders has exactly one home */
     const cb = rf.codebase || { modules: [] };

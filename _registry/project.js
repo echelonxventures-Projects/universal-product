@@ -601,8 +601,8 @@ function masterText(volumes, sizes, max) {
   for (const a of DOMAINS.amendments || []) L.push(`| <a id="${anchor(a.amendmentId)}"></a>${a.amendmentId} | ${a.date} | ${a.authorisedBy} | ${a.summary} |`);
   L.push('');
 
-  L.push('<a id="kernel"></a>', '## 5. Kernel', '', 'The parts every domain is built on. Each part has one owning domain.', '', '| Part | Name | Owner | What it is |', '|---|---|---|---|');
-  for (const k of DOMAINS.kernel || []) L.push(`| <a id="${anchor(k.partId)}"></a>${k.partId} | ${k.name} | ${linkDomain(domainByName(k.owner), from)} | ${k.statement} |`);
+  L.push('<a id="kernel"></a>', '## 5. Kernel', '', 'The parts every domain is built on. Each part has one owning domain.', '', '| Part | Name | Owner | Build status | What it is |', '|---|---|---|---|---|');
+  for (const k of DOMAINS.kernel || []) L.push(`| <a id="${anchor(k.partId)}"></a>${k.partId} | ${k.name} | ${linkDomain(domainByName(k.owner), from)} | ${k.status}${(k.deliveredBy || []).length ? ' (' + k.deliveredBy.join(', ') + ')' : ''}${k.note ? ': ' + k.note : ''} | ${k.statement} |`);
   L.push('');
 
   L.push('<a id="standard-contract"></a>', '## 6. Standard contract', '',

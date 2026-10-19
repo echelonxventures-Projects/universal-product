@@ -40,7 +40,7 @@
 | **Contract** | [UCOS-IDN-000001 Identity Architecture](#ucos-idn-000001) |
 | **Artifacts** | [UCOS-IDN-000001](#ucos-idn-000001) |
 | **Concepts** | 1348 — `node _registry/compile.js --search <words> --kind concept --owner "Identity"` |
-| **Code** | `lib/uid.js` |
+| **Code** | `lib/uid.js`, `lib/kernel.js` |
 | **Managed in** | `_registry/domains.json` → `D-IDN` |
 
 **Live routes:** none yet.

@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0008 (2026-10-19).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0009 (2026-10-19).
 
 ## Contents
 
@@ -326,11 +326,11 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="law-017"></a>**LAW-017** Platform-Owned Master Data | Master data belongs to the platform. Platforms, tenants and modules select it through views and never copy it; a tenant extends only within its own scope. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 6 |
 | <a id="law-018"></a>**LAW-018** Selection From Owners | Every choice offered anywhere is a selection from the domain that owns the subject, in any combination. Constraints are declared by the entities, and every option carries a free or paid offering. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 7 |
 | <a id="law-019"></a>**LAW-019** Nothing Invented | Creating one thing never creates another. Anything missing shows as incomplete until a person or agent completes it; nothing is filled with a placeholder. | — | partial | test/geo.js (no invented countries) | _superseded/FOUNDATIONS.md §2 rule 8 |
-| <a id="law-020"></a>**LAW-020** Rules Belong To Kinds | A format or validation rule belongs to the kind that needs it, never to a whole domain. | — | partial | lib/entity.js field declarations (pattern, format, bounds) | _superseded/FOUNDATIONS.md §2 rule 9 |
+| <a id="law-020"></a>**LAW-020** Rules Belong To Kinds | A format or validation rule belongs to the kind that needs it, never to a whole domain. | — | partial | lib/entity.js field declarations (pattern, format, bounds); lib/kernel.js (attribute values checked against the type their kind declares) | _superseded/FOUNDATIONS.md §2 rule 9 |
 | <a id="law-021"></a>**LAW-021** One Kernel | Every domain is built on the same kernel and receives every kernel part and shared service; no domain can lack one. | — | partial | _registry/gate.js (every domain complete, categorised and contracted) | _superseded/FOUNDATIONS.md §2 rule 10 |
 | <a id="law-022"></a>**LAW-022** Bounded Agents | An agent is a party with declared permissions, scope, budget and audit; it never exceeds the person or role it acts for, and money or irreversible actions need declared approval. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 13 |
 | <a id="law-023"></a>**LAW-023** Security Floor | Security and compliance are on by default; a tenant or operator may tighten policy but never weaken it below the platform baseline. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 14 |
-| <a id="law-024"></a>**LAW-024** Immutable Record | Every change and every access to sensitive data is recorded in an append-only, hash-chained record that no one can edit. | — | partial | lib/security.js (hash-chained audit log) | _superseded/FOUNDATIONS.md §2 rule 15 |
+| <a id="law-024"></a>**LAW-024** Immutable Record | Every change and every access to sensitive data is recorded in an append-only, hash-chained record that no one can edit. | — | partial | lib/security.js (hash-chained audit log); lib/kernel.js and test/kernel.js (the kernel's hash-chained event log) | _superseded/FOUNDATIONS.md §2 rule 15 |
 | <a id="law-025"></a>**LAW-025** Packages Compose | Packages compose domains into ready-made, editable platforms; a customisation is an overlay that survives every package upgrade. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 16 |
 | <a id="law-026"></a>**LAW-026** Every Law Is Enforced | A law without an executable check is not finished; the register records each law's enforcement, and the count of laws not yet enforced may only fall. | — | enforced | _registry/gate.js (law register); _registry/register-baseline.json | _superseded/FOUNDATIONS.md §2 rule 18 |
 
@@ -371,26 +371,27 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0006"></a>AMD-0006 | 2026-10-19 | Platform owner | One set of domains: the other structures that call their parts domains are aligned to the register. GOIP's 67 incentive domains and the 7 capability domains each name their one register owner (alignment.json); every per-universe record engine takes its reviewed container's owner; the capability-domain list moves from lib/registry.js into seed data. |
 | <a id="amd-0007"></a>AMD-0007 | 2026-10-19 | Platform owner | Every document has one registered status and owner (documents.json). 18 hand-written documents that the user manual, the master or the registry now cover — topic guides, flow diagrams, implementation summaries, an old code review and two roadmaps — move to _superseded with what replaced each. The compiler's corpus inputs are derived from the parser's document list, which puts the UCRS constitution in the seal's manifest for the first time. |
 | <a id="amd-0008"></a>AMD-0008 | 2026-10-19 | Platform owner | The registry tells the truth about what runs. The live API (lib/api.js, 725 routes) is registered with one owning domain per route (api.json); every domain carries a build status derived from what it owns (designed: no code and no routes); mixed modules in the code map are split so storage, links, places and value units sit with their owners; the 25 gaps the audit found are recorded with owners and status (roadmap.json → gaps). Test isolation: tests may no longer open the default database. |
+| <a id="amd-0009"></a>AMD-0009 | 2026-10-19 | Platform owner | The kernel's first slice runs (P08 in progress). lib/kernel.js holds kinds and typed attributes (K01, K06), nodes with universal IDs and identifier schemes in time windows (K02, K04), named hierarchies of any depth where one node may sit in many places (K03), bi-temporal versions where nothing is overwritten (K07) and one hash-chained event log that is the recorded time of every other table (K08). The kernel names no domain vocabulary; its namespaces, value types and event names are data (lib/seed/kernel.json). Each kernel part now carries a build status. The development server runs from the repository's new location (GAP-21 closed); the coexisting event records are recorded as GAP-27 and a one-off smoke-test connection reset as GAP-28. |
 
 <a id="kernel"></a>
 ## 5. Kernel
 
 The parts every domain is built on. Each part has one owning domain.
 
-| Part | Name | Owner | What it is |
-|---|---|---|---|
-| <a id="k01"></a>K01 | Kinds | [Registry](volumes/V05-structure.md#d-reg) | The kinds a domain contains, each declaring its attributes, where it may sit, its validation rules, its identifier schemes and whether it carries a shape. Users add kinds. |
-| <a id="k02"></a>K02 | Nodes | [Identity](volumes/V02-meaning.md#d-idn) | The instances of every kind, with no limit on count or depth. |
-| <a id="k03"></a>K03 | Hierarchies | [Relationship](volumes/V05-structure.md#d-rel) | Named hierarchies over shared nodes; a node may sit in many, and in more than one place within one. |
-| <a id="k04"></a>K04 | Identifiers | [Identity](volumes/V02-meaning.md#d-idn) | A universal ID for every node, plus any number of code schemes, declared as data. |
-| <a id="k05"></a>K05 | Shape | [Geo](volumes/V04-universal-dimensions.md#d-geo) | A point, area or volume in a declared coordinate system; any coordinate resolves to every node that contains it. |
-| <a id="k06"></a>K06 | Attributes | [Registry](volumes/V05-structure.md#d-reg) | Typed values declared in the registry; text is multilingual through Expression, sensitive values are encrypted through Security. |
-| <a id="k07"></a>K07 | Versions | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | Bi-temporal history: valid time and recorded time; nothing is overwritten and any past state can be queried. |
-| <a id="k08"></a>K08 | Events | [Runtime](volumes/V09.1-automation.md#d-run) | One event log that every change and declared occurrence is written to; workflows, notifications, analytics, webhooks and audit read it. |
-| <a id="k09"></a>K09 | Change Lifecycle | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | Draft, validate, preview, approve, publish (now or scheduled), roll back; hide is reversible; delete is archive, then purge with a separate permission. |
-| <a id="k10"></a>K10 | Views | [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per) | A platform, tenant, module or subscriber selects hierarchies, subtrees, depth, groupings and labels by reference, never by copy. |
-| <a id="k11"></a>K11 | Scope | [Context](volumes/V04-universal-dimensions.md#d-ctx) | Every declaration lives in a namespace (platform, tenant, publisher) and at a scope level (platform, tenant, store, channel, place, language, segment, device type, person). |
-| <a id="k12"></a>K12 | Resolution | [Context](volumes/V04-universal-dimensions.md#d-ctx) | One resolver answers what applies here and now from relationships, hierarchies (nearest wins), time windows, context and rules; settings and defaults are its answers, not stored copies. |
+| Part | Name | Owner | Build status | What it is |
+|---|---|---|---|---|
+| <a id="k01"></a>K01 | Kinds | [Registry](volumes/V05-structure.md#d-reg) | partial (AMD-0009): kinds, typed attributes, placement rules and identifier schemes are declared and checked; validation rules beyond the value type are not yet declarable | The kinds a domain contains, each declaring its attributes, where it may sit, its validation rules, its identifier schemes and whether it carries a shape. Users add kinds. |
+| <a id="k02"></a>K02 | Nodes | [Identity](volumes/V02-meaning.md#d-idn) | built (AMD-0009) | The instances of every kind, with no limit on count or depth. |
+| <a id="k03"></a>K03 | Hierarchies | [Relationship](volumes/V05-structure.md#d-rel) | built (AMD-0009) | Named hierarchies over shared nodes; a node may sit in many, and in more than one place within one. |
+| <a id="k04"></a>K04 | Identifiers | [Identity](volumes/V02-meaning.md#d-idn) | built (AMD-0009) | A universal ID for every node, plus any number of code schemes, declared as data. |
+| <a id="k05"></a>K05 | Shape | [Geo](volumes/V04-universal-dimensions.md#d-geo) | designed | A point, area or volume in a declared coordinate system; any coordinate resolves to every node that contains it. |
+| <a id="k06"></a>K06 | Attributes | [Registry](volumes/V05-structure.md#d-reg) | partial (AMD-0009): typed and encrypted when sensitive; multilingual text waits for Expression (P12) | Typed values declared in the registry; text is multilingual through Expression, sensitive values are encrypted through Security. |
+| <a id="k07"></a>K07 | Versions | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | built (AMD-0009) | Bi-temporal history: valid time and recorded time; nothing is overwritten and any past state can be queried. |
+| <a id="k08"></a>K08 | Events | [Runtime](volumes/V09.1-automation.md#d-run) | partial (AMD-0009): the kernel's log is hash-chained; audit_log and the webhook bus (lib/events.js) are not yet merged into it (GAP-27) | One event log that every change and declared occurrence is written to; workflows, notifications, analytics, webhooks and audit read it. |
+| <a id="k09"></a>K09 | Change Lifecycle | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | designed | Draft, validate, preview, approve, publish (now or scheduled), roll back; hide is reversible; delete is archive, then purge with a separate permission. |
+| <a id="k10"></a>K10 | Views | [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per) | designed | A platform, tenant, module or subscriber selects hierarchies, subtrees, depth, groupings and labels by reference, never by copy. |
+| <a id="k11"></a>K11 | Scope | [Context](volumes/V04-universal-dimensions.md#d-ctx) | designed | Every declaration lives in a namespace (platform, tenant, publisher) and at a scope level (platform, tenant, store, channel, place, language, segment, device type, person). |
+| <a id="k12"></a>K12 | Resolution | [Context](volumes/V04-universal-dimensions.md#d-ctx) | designed | One resolver answers what applies here and now from relationships, hierarchies (nearest wins), time windows, context and rules; settings and defaults are its answers, not stored copies. |
 
 <a id="standard-contract"></a>
 ## 6. Standard contract
@@ -1197,13 +1198,14 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 126 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 128 files.
 
 ### C02 · Meaning
 
 | File | Owner | Part |
 |---|---|---|
 | `lib/uid.js` | [Identity](volumes/V02-meaning.md#d-idn) |  |
+| `lib/kernel.js` | [Identity](volumes/V02-meaning.md#d-idn) | nodes and identifiers (K02, K04) |
 | `lib/tenancy.js` | [Party](volumes/V02-meaning.md#d-pty) |  |
 | `public/docs/architecture.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
 | `public/docs/e2e-flow.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
@@ -1216,6 +1218,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 
 | File | Owner | Part |
 |---|---|---|
+| `lib/kernel.js` | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | bi-temporal versions (K07) |
 | `lib/governance.js` | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | archive, restore, purge (K09) |
 
 ### C04 · Universal Dimensions
@@ -1252,7 +1255,10 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `lib/ucos-catalog.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/ucos-completeness.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/db.js` | [Relationship](volumes/V05-structure.md#d-rel) | the links table and addLink |
+| `lib/kernel.js` | [Registry](volumes/V05-structure.md#d-reg) | kinds and typed attributes (K01, K06) |
+| `lib/kernel.js` | [Relationship](volumes/V05-structure.md#d-rel) | hierarchies and placements (K03) |
 | `lib/seed/entity.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/seed/kernel.json` | [Registry](volumes/V05-structure.md#d-reg) | the kernel's namespaces, value types and event names |
 | `lib/seed/meta.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/seed/parity-registries.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/seed/ucos.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
@@ -1315,6 +1321,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `server.js` | [Integration](volumes/V09.2-automation.md#d-int) | the HTTP entry point |
 | `lib/registry.js` | [Integration](volumes/V09.2-automation.md#d-int) | provider definitions, availability and exemptions |
 | `lib/global.js` | [Integration](volumes/V09.2-automation.md#d-int) | providers and their availability, a store's providers |
+| `lib/kernel.js` | [Runtime](volumes/V09.1-automation.md#d-run) | the hash-chained event log (K08) |
 | `lib/events.js` | [Runtime](volumes/V09.1-automation.md#d-run) | the event log; its outbound webhooks are Integration's |
 | `lib/providers.js` | [Integration](volumes/V09.2-automation.md#d-int) | provider connectors; providers as parties are Party's |
 | `lib/states.js` | [Runtime](volumes/V09.1-automation.md#d-run) |  |
@@ -2048,7 +2055,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 <a id="gaps"></a>
 ### Gaps
 
-22 open, 4 closed. Every gap has one owning domain; a closed gap names the amendment that closed it (`_registry/roadmap.json` → `gaps`).
+23 open, 5 closed. Every gap has one owning domain; a closed gap names the amendment that closed it (`_registry/roadmap.json` → `gaps`).
 
 | Gap | Group | What | Owner | Status |
 |---|---|---|---|---|
@@ -2057,7 +2064,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="gap-03"></a>GAP-03 | truth | Contract APIs are designed interfaces, and the live API was unregistered; nothing said what is built | [Integration](volumes/V09.2-automation.md#d-int) | closed (AMD-0008) |
 | <a id="gap-04"></a>GAP-04 | truth | Domains with no code and no live route (designed only) | [Constitutional Authority](volumes/V01-constitution.md#d-con) | open |
 | <a id="gap-05"></a>GAP-05 | truth | Laws not yet fully enforced (11 planned, 9 partial) | [Constitutional Authority](volumes/V01-constitution.md#d-con) | open |
-| <a id="gap-06"></a>GAP-06 | truth | Kernel parts K01–K12 are declared, not built | [Registry](volumes/V05-structure.md#d-reg) | open |
+| <a id="gap-06"></a>GAP-06 | truth | Kernel parts K05 and K09–K12 are declared, not built; K01, K06 and K08 are partial (see each part's note) | [Registry](volumes/V05-structure.md#d-reg) | open |
 | <a id="gap-07"></a>GAP-07 | truth | 375 low-confidence classification decisions await a person | [Semantic](volumes/V02-meaning.md#d-sem) | open |
 | <a id="gap-08"></a>GAP-08 | law | Countries embed currency, symbol, locale, decimals and tax; stores embed one country and region (LAW-008) | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
 | <a id="gap-09"></a>GAP-09 | law | goip.js holds seven literal registries that belong to Time, Geo and Value | [Commerce](volumes/V12-business.md#d-biz) | open |
@@ -2072,12 +2079,14 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="gap-18"></a>GAP-18 | requirement | Launch by configuration, end to end, is not yet possible | [Package](volumes/V13-composition.md#d-pkg) | open |
 | <a id="gap-19"></a>GAP-19 | data | The development database holds test countries (XX, XY, Zamunda under ZA, Zephyria, Antarctica); awaiting the owner's go-ahead to remove | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
 | <a id="gap-20"></a>GAP-20 | process | PR #3's description does not cover its last commits | [Guidance](volumes/V02-meaning.md#d-gdn) | open |
-| <a id="gap-21"></a>GAP-21 | process | The development server is not running from the repository's new location | [Operations](volumes/V11.1-platform.md#d-ops) | open |
+| <a id="gap-21"></a>GAP-21 | process | The development server is not running from the repository's new location | [Operations](volumes/V11.1-platform.md#d-ops) | closed (AMD-0009) |
 | <a id="gap-22"></a>GAP-22 | process | Stripe and EasyPost have never been run against real sandboxes; deployment is a single node | [Operations](volumes/V11.1-platform.md#d-ops) | open |
 | <a id="gap-23"></a>GAP-23 | process | CI actions target the deprecated Node 20 runtime; the runner image moves to Ubuntu 26 | [Operations](volumes/V11.1-platform.md#d-ops) | open |
 | <a id="gap-24"></a>GAP-24 | process | USER_MANUAL.md is hand-written; nothing checks it against the code | [Guidance](volumes/V02-meaning.md#d-gdn) | open |
 | <a id="gap-25"></a>GAP-25 | process | Search filters by owner and category only for register entries, not universes or corpus documents | [Search](volumes/V08-interaction.md#d-srh) | open |
 | <a id="gap-26"></a>GAP-26 | broken | test/identity.js opened the developer's own database on every run; no guard stopped a test doing so | [Quality](volumes/V11.2-platform.md#d-qlt) | closed (AMD-0008) |
+| <a id="gap-27"></a>GAP-27 | truth | Three event records coexist — audit_log, the webhook bus (lib/events.js) and the kernel's log (k_events); K08 requires one | [Runtime](volumes/V09.1-automation.md#d-run) | open |
+| <a id="gap-28"></a>GAP-28 | process | The smoke test crashed once with ECONNRESET at its retention section (705 of 706 passed) and passed alone and on a full rerun; the cause is unproven | [Quality](volumes/V11.2-platform.md#d-qlt) | open |
 
 ### Steps
 
@@ -2092,7 +2101,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="p05"></a>P05 | Corpus concepts placed in the register (one owner, aliases, sources) | [Registry](volumes/V05-structure.md#d-reg), [Semantic](volumes/V02-meaning.md#d-sem) | done | [AMD-0005](#amd-0005) |
 | <a id="p06"></a>P06 | The other domain systems unified (GOIP's 67 domains, capability domains, the per-universe record engine) | [Registry](volumes/V05-structure.md#d-reg), [Commerce](volumes/V12-business.md#d-biz), [Offering](volumes/V11.2-platform.md#d-ofg) | done | [AMD-0006](#amd-0006) |
 | <a id="p07"></a>P07 | The remaining root design documents absorbed or superseded | [Guidance](volumes/V02-meaning.md#d-gdn) | done | [AMD-0007](#amd-0007) |
-| <a id="p08"></a>P08 | Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution | [Registry](volumes/V05-structure.md#d-reg), [Identity](volumes/V02-meaning.md#d-idn), [Relationship](volumes/V05-structure.md#d-rel), [Geo](volumes/V04-universal-dimensions.md#d-geo), [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo), [Runtime](volumes/V09.1-automation.md#d-run), [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per), [Context](volumes/V04-universal-dimensions.md#d-ctx) | planned | — |
+| <a id="p08"></a>P08 | Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution | [Registry](volumes/V05-structure.md#d-reg), [Identity](volumes/V02-meaning.md#d-idn), [Relationship](volumes/V05-structure.md#d-rel), [Geo](volumes/V04-universal-dimensions.md#d-geo), [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo), [Runtime](volumes/V09.1-automation.md#d-run), [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per), [Context](volumes/V04-universal-dimensions.md#d-ctx) | in-progress | [AMD-0009](#amd-0009) |
 | <a id="p09"></a>P09 | Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships | [Geo](volumes/V04-universal-dimensions.md#d-geo) | planned | — |
 | <a id="p10"></a>P10 | Measure and Value, with GOIP's units merged | [Measure](volumes/V04-universal-dimensions.md#d-mea), [Value](volumes/V04-universal-dimensions.md#d-val) | planned | — |
 | <a id="p11"></a>P11 | Time, with GOIP's calendars merged | [Time](volumes/V04-universal-dimensions.md#d-tim) | planned | — |
@@ -2144,6 +2153,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0006 | amendment | One set of domains | [constitution](#amd-0006) |
 | AMD-0007 | amendment | Every document has one registered status and owner (document | [constitution](#amd-0007) |
 | AMD-0008 | amendment | The registry tells the truth about what runs. The live API ( | [constitution](#amd-0008) |
+| AMD-0009 | amendment | The kernel's first slice runs (P08 in progress). lib/kernel. | [constitution](#amd-0009) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |
@@ -2223,7 +2233,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | GAP-03 | gap | Contract APIs are designed interfaces, and the live API was  | [gaps](#gap-03) |
 | GAP-04 | gap | Domains with no code and no live route (designed only) | [gaps](#gap-04) |
 | GAP-05 | gap | Laws not yet fully enforced (11 planned, 9 partial) | [gaps](#gap-05) |
-| GAP-06 | gap | Kernel parts K01–K12 are declared, not built | [gaps](#gap-06) |
+| GAP-06 | gap | Kernel parts K05 and K09–K12 are declared, not built; K01, K | [gaps](#gap-06) |
 | GAP-07 | gap | 375 low-confidence classification decisions await a person | [gaps](#gap-07) |
 | GAP-08 | gap | Countries embed currency, symbol, locale, decimals and tax;  | [gaps](#gap-08) |
 | GAP-09 | gap | goip.js holds seven literal registries that belong to Time,  | [gaps](#gap-09) |
@@ -2244,6 +2254,8 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | GAP-24 | gap | USER_MANUAL.md is hand-written; nothing checks it against th | [gaps](#gap-24) |
 | GAP-25 | gap | Search filters by owner and category only for register entri | [gaps](#gap-25) |
 | GAP-26 | gap | test/identity.js opened the developer's own database on ever | [gaps](#gap-26) |
+| GAP-27 | gap | Three event records coexist — audit_log, the webhook bus (li | [gaps](#gap-27) |
+| GAP-28 | gap | The smoke test crashed once with ECONNRESET at its retention | [gaps](#gap-28) |
 | K01 | kernel part | Kinds | [kernel](#k01) |
 | K02 | kernel part | Nodes | [kernel](#k02) |
 | K03 | kernel part | Hierarchies | [kernel](#k03) |

@@ -26,7 +26,7 @@
 | **Contract** | [UCOS-REG-000001 Registry Architecture](#ucos-reg-000001) |
 | **Artifacts** | [UCOS-REG-000001](#ucos-reg-000001) |
 | **Concepts** | 327 — `node _registry/compile.js --search <words> --kind concept --owner "Registry"` |
-| **Code** | `lib/entity.js`, `lib/meta.js`, `lib/parity-registries.js`, `lib/registry.js`, `lib/canonical.js`, `lib/ucos.js`, `lib/ucos-registry.js`, `lib/ucos-foundations.js`, `lib/ucos-universes.js`, `lib/ucos-domain.js`, `lib/ucos-catalog.js`, `lib/ucos-completeness.js`, `lib/seed/entity.json`, `lib/seed/meta.json`, `lib/seed/parity-registries.json`, `lib/seed/ucos.json` |
+| **Code** | `lib/entity.js`, `lib/meta.js`, `lib/parity-registries.js`, `lib/registry.js`, `lib/canonical.js`, `lib/ucos.js`, `lib/ucos-registry.js`, `lib/ucos-foundations.js`, `lib/ucos-universes.js`, `lib/ucos-domain.js`, `lib/ucos-catalog.js`, `lib/ucos-completeness.js`, `lib/kernel.js`, `lib/seed/entity.json`, `lib/seed/kernel.json`, `lib/seed/meta.json`, `lib/seed/parity-registries.json`, `lib/seed/ucos.json` |
 | **Managed in** | `_registry/domains.json` → `D-REG` |
 
 **Live routes (95)** — what the platform serves today for this domain:
@@ -338,7 +338,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-REL-000001 Relationship Architecture](#ucos-rel-000001) |
 | **Artifacts** | [UCOS-REL-000001](#ucos-rel-000001) |
 | **Concepts** | 298 — `node _registry/compile.js --search <words> --kind concept --owner "Relationship"` |
-| **Code** | `lib/registry.js`, `lib/db.js` |
+| **Code** | `lib/registry.js`, `lib/db.js`, `lib/kernel.js` |
 | **Managed in** | `_registry/domains.json` → `D-REL` |
 
 **Live routes (1)** — what the platform serves today for this domain:
