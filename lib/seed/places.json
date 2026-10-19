@@ -1,20 +1,58 @@
 {
-  "$comment": "Geo's declarations on the kernel (lib/places.js). The place kind, the place tree and its identifier schemes are data: a new level (a planet, an ocean, a district, a shelf) is a node of this kind or a new kind, never code. Countries and subdivisions are mirrored from their master tables until P09 moves their writes onto the kernel.",
+  "$comment": "Geo's declarations on the kernel (lib/places.js). The place kind, the place tree and its identifier schemes are data: a new level (a planet, an ocean, a district, a shelf) is a node of this kind or a new kind, never code. Countries and subdivisions are mirrored from their master tables until P09 moves their writes onto the kernel. A place's currency and locale are not facts of the place: they are settings owned by Value and Expression, assigned at the place's node and answered by the resolver; `column` names the master column the mirror reads them from until the writes move onto the kernel.",
   "namespace": "platform",
   "kind": {
-    "kind": "place", "owner": "Geo", "label": "Place", "root": true, "shape": true,
-    "parents": ["place"],
-    "schemes": ["iso3166-1", "iso3166-2"],
+    "kind": "place",
+    "owner": "Geo",
+    "label": "Place",
+    "root": true,
+    "shape": true,
+    "parents": [
+      "place"
+    ],
+    "schemes": [
+      "iso3166-1",
+      "iso3166-2"
+    ],
     "attributes": [
-      {"key": "name", "type": "text", "required": true, "label": "Name"},
-      {"key": "level", "type": "text", "label": "What this level is called"}
+      {
+        "key": "name",
+        "type": "text",
+        "required": true,
+        "label": "Name"
+      },
+      {
+        "key": "level",
+        "type": "text",
+        "label": "What this level is called"
+      }
     ]
   },
-  "hierarchy": {"hierarchy": "places", "owner": "Geo", "label": "The place tree"},
+  "hierarchy": {
+    "hierarchy": "places",
+    "owner": "Geo",
+    "label": "The place tree"
+  },
   "mirror": {
     "countryScheme": "iso3166-1",
     "subdivisionScheme": "iso3166-2",
     "countryLevel": "country",
     "actor": "geo.mirror"
-  }
+  },
+  "settings": [
+    {
+      "name": "value.currency",
+      "owner": "Value",
+      "type": "text",
+      "label": "Currency in use",
+      "column": "currency"
+    },
+    {
+      "name": "expression.locale",
+      "owner": "Expression",
+      "type": "text",
+      "label": "Locale",
+      "column": "locale"
+    }
+  ]
 }

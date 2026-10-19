@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0013 (2026-10-19).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0014 (2026-10-19).
 
 ## Contents
 
@@ -303,7 +303,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 
 ### Laws
 
-26 laws: 6 enforced, 9 partly enforced, 11 planned. Each merges every place the corpus states it; its sources are document:line in the compiled corpus (`node _registry/compile.js --search` finds them).
+26 laws: 6 enforced, 10 partly enforced, 10 planned. Each merges every place the corpus states it; its sources are document:line in the compiled corpus (`node _registry/compile.js --search` finds them).
 
 | Law | Statement | Also called | Status | Enforced by | Sources |
 |---|---|---|---|---|---|
@@ -314,7 +314,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="law-005"></a>**LAW-005** Explainability | Every action answers what happened, why, who authorised it, which policy allowed it, what evidence supports it, what confidence exists and what alternatives were evaluated. | — | partial | _registry/audit.js (the standard contract carries the questions) | ucosma:183 |
 | <a id="law-006"></a>**LAW-006** Configuration Over Code | Behaviour is driven by metadata, ontologies, policies, rules, registries and configuration, never by product-specific code. Launching anywhere, extending or changing the platform is configuration that a person with the manual, or an agent, can do from the console or the API. | Configuration Only, Everything Is Configurable From The Console | partial | scripts/audit-hardcoding.js; test/audit-gate.js (ratchet) | upip:58, _superseded/FOUNDATIONS.md §2 rules 1 and 11 |
 | <a id="law-007"></a>**LAW-007** Single Ownership And Contract | No concept exists without an owner, no capability without a boundary, no boundary without a contract, no contract without governance; no term has two meanings, no meaning two definitions, and no two domains overlap. | Constitutional Law, Domain Ownership Law | enforced | _registry/gate.js (register checks) | ucosadd:33 |
-| <a id="law-008"></a>**LAW-008** Independent Authorities | No entity owns another domain's concern — identity, geography, time, value, security, knowledge, intelligence, analytics or governance. It relates to them: a place stores no currency, a store stores no country. | Root Architectural Principle, No Embedding | planned | — | upip:8356, _superseded/FOUNDATIONS.md §2 rule 4 |
+| <a id="law-008"></a>**LAW-008** Independent Authorities | No entity owns another domain's concern — identity, geography, time, value, security, knowledge, intelligence, analytics or governance. It relates to them: a place stores no currency, a store stores no country. | Root Architectural Principle, No Embedding | partial | test/places.js (a place's currency and locale are settings owned by Value and Expression) | upip:8356, _superseded/FOUNDATIONS.md §2 rule 4 |
 | <a id="law-009"></a>**LAW-009** Dependency Law | Dependencies run Identity → Knowledge → Relationships → Context → Policy → Trust → Projection. Circular dependencies, mutual ownership and cross-domain state mutation are forbidden. | — | planned | — | ucosadd:1123 |
 | <a id="law-010"></a>**LAW-010** Runtime Responsibility | The constitution defines truth, domains manage truth, the runtime derives reality, agents execute reality and applications consume it. | — | planned | — | ucosadd:1186 |
 | <a id="law-011"></a>**LAW-011** Architectural Freeze | Primitives, domain ownership, contract structure and the governance, dependency and projection models are frozen. Change happens through registries, policies, capabilities, contexts, relationships, knowledge, agents and projections, never by adding primitives, and only through a recorded amendment. | — | enforced | test/ucos-registry.js (the 27 primitives); _registry/domains.json → amendments | ucosadd:1207 |
@@ -376,6 +376,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0011"></a>AMD-0011 | 2026-10-19 | Platform owner | The kernel's change lifecycle runs (K09, lib/kernel-lifecycle.js). A change is a list of kernel operations written as data; it is validated and previewed by dry runs that leave nothing behind, approved by someone other than its author, published now or at a scheduled time, and rolled back by closing what it recorded and reopening what it superseded — refused while a later change still builds on it. A node hides (reversibly), archives, and is purged only when archived and only with the separate purge permission, leaving a tombstone event. States, transitions, operations and the permission are data (lib/seed/kernel.json → lifecycle). Every kernel part now runs; none is fully built. |
 | <a id="amd-0012"></a>AMD-0012 | 2026-10-19 | Platform owner | Kernel follow-ups. Hidden and archived nodes drop out of every kernel listing — node lists, children, subtrees, views and coordinate lookups — unless a caller asks for them; paths, ancestors and history keep the whole structure, and hiding a node does not hide what sits under it. Approving a change needs the declared approve permission, which the caller is granted by Authority; the kernel checks grants, never role names. Node states moved into the kernel's own tables. |
 | <a id="amd-0013"></a>AMD-0013 | 2026-10-19 | Platform owner | P09 begins: places are on the kernel. Every country and subdivision is a node of the place kind (declared as data in lib/seed/places.json) in one place tree — countries at the top, nothing invented above them, subdivisions under their country or parent subdivision to any depth — with its code as an identifier in its declared scheme and its row's universal ID as its own. lib/places.js mirrors the master after every write and on every boot: a rename is a new version, a switched-off country is hidden, a re-parented subdivision moves with its past kept, a deleted row is archived; a warm pass writes nothing. The tables remain the source until the writes move onto the kernel. |
+| <a id="amd-0014"></a>AMD-0014 | 2026-10-19 | Platform owner | A place's currency and locale are no longer facts of the place. They are settings owned by Value and Expression (declared in lib/seed/places.json), assigned at the place's node on the kernel and answered by the resolver — so a subdivision inherits its country's currency, and a setting assigned at a subdivision applies there and below. registry.country(), through which the platform's readers ask, answers currency and locale from the kernel and a country's money symbol and decimals from its currency in Value's master; a country profile's tax is the tax engine's rule, no longer the country's legacy tax columns. The master's columns remain as the mirror's input until the writes move onto the kernel. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -2076,7 +2077,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="gap-05"></a>GAP-05 | truth | Laws not yet fully enforced (11 planned, 9 partial) | [Constitutional Authority](volumes/V01-constitution.md#d-con) | open |
 | <a id="gap-06"></a>GAP-06 | truth | Every kernel part runs, but K01, K05, K06 and K08–K12 are partial (see each part's note); no domain is on the kernel yet (P09 onward) | [Registry](volumes/V05-structure.md#d-reg) | open |
 | <a id="gap-07"></a>GAP-07 | truth | 375 low-confidence classification decisions await a person | [Semantic](volumes/V02-meaning.md#d-sem) | open |
-| <a id="gap-08"></a>GAP-08 | law | Countries embed currency, symbol, locale, decimals and tax; stores embed one country and region (LAW-008) | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
+| <a id="gap-08"></a>GAP-08 | law | Country rows still carry currency, symbol, locale, decimals and legacy tax columns, now only as the mirror's input (readers get currency and locale from the kernel, symbol and decimals from the currency, tax from the tax engine); stores embed one country and region (LAW-008) | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
 | <a id="gap-09"></a>GAP-09 | law | goip.js holds seven literal registries that belong to Time, Geo and Value | [Commerce](volumes/V12-business.md#d-biz) | open |
 | <a id="gap-10"></a>GAP-10 | law | The hard-coding ratchet still counts 65 branches, 99 fallbacks and 8 seed-sized constants | [Quality](volumes/V11.2-platform.md#d-qlt) | open |
 | <a id="gap-11"></a>GAP-11 | requirement | Places: only countries and one subdivision level; no place hierarchy at any scale, no coordinates | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
@@ -2114,7 +2115,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="p06"></a>P06 | The other domain systems unified (GOIP's 67 domains, capability domains, the per-universe record engine) | [Registry](volumes/V05-structure.md#d-reg), [Commerce](volumes/V12-business.md#d-biz), [Offering](volumes/V11.2-platform.md#d-ofg) | done | [AMD-0006](#amd-0006) |
 | <a id="p07"></a>P07 | The remaining root design documents absorbed or superseded | [Guidance](volumes/V02-meaning.md#d-gdn) | done | [AMD-0007](#amd-0007) |
 | <a id="p08"></a>P08 | Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution | [Registry](volumes/V05-structure.md#d-reg), [Identity](volumes/V02-meaning.md#d-idn), [Relationship](volumes/V05-structure.md#d-rel), [Geo](volumes/V04-universal-dimensions.md#d-geo), [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo), [Runtime](volumes/V09.1-automation.md#d-run), [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per), [Context](volumes/V04-universal-dimensions.md#d-ctx) | in-progress | [AMD-0009](#amd-0009), [AMD-0010](#amd-0010), [AMD-0011](#amd-0011), [AMD-0012](#amd-0012) |
-| <a id="p09"></a>P09 | Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships | [Geo](volumes/V04-universal-dimensions.md#d-geo) | in-progress | [AMD-0013](#amd-0013) |
+| <a id="p09"></a>P09 | Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships | [Geo](volumes/V04-universal-dimensions.md#d-geo) | in-progress | [AMD-0013](#amd-0013), [AMD-0014](#amd-0014) |
 | <a id="p10"></a>P10 | Measure and Value, with GOIP's units merged | [Measure](volumes/V04-universal-dimensions.md#d-mea), [Value](volumes/V04-universal-dimensions.md#d-val) | planned | — |
 | <a id="p11"></a>P11 | Time, with GOIP's calendars merged | [Time](volumes/V04-universal-dimensions.md#d-tim) | planned | — |
 | <a id="p12"></a>P12 | Expression: languages, scripts, message catalogues | [Expression](volumes/V04-universal-dimensions.md#d-exr) | planned | — |
@@ -2170,6 +2171,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0011 | amendment | The kernel's change lifecycle runs (K09, lib/kernel-lifecycl | [constitution](#amd-0011) |
 | AMD-0012 | amendment | Kernel follow-ups. Hidden and archived nodes drop out of eve | [constitution](#amd-0012) |
 | AMD-0013 | amendment | P09 begins | [constitution](#amd-0013) |
+| AMD-0014 | amendment | A place's currency and locale are no longer facts of the pla | [constitution](#amd-0014) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |
@@ -2251,7 +2253,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | GAP-05 | gap | Laws not yet fully enforced (11 planned, 9 partial) | [gaps](#gap-05) |
 | GAP-06 | gap | Every kernel part runs, but K01, K05, K06 and K08–K12 are pa | [gaps](#gap-06) |
 | GAP-07 | gap | 375 low-confidence classification decisions await a person | [gaps](#gap-07) |
-| GAP-08 | gap | Countries embed currency, symbol, locale, decimals and tax;  | [gaps](#gap-08) |
+| GAP-08 | gap | Country rows still carry currency, symbol, locale, decimals  | [gaps](#gap-08) |
 | GAP-09 | gap | goip.js holds seven literal registries that belong to Time,  | [gaps](#gap-09) |
 | GAP-10 | gap | The hard-coding ratchet still counts 65 branches, 99 fallbac | [gaps](#gap-10) |
 | GAP-11 | gap | Places: only countries and one subdivision level; no place h | [gaps](#gap-11) |

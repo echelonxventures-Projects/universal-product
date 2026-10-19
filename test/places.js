@@ -70,6 +70,28 @@ db.run("DELETE FROM subdivisions WHERE code=?", gone.code);
 P.mirror();
 ok(LC.nodeState(goneNode) === "archived" && K.history(goneNode).length > 0, "a deleted row's place is archived, never erased");
 ok(K.verifyEvents().ok, "every mirror write is in the hash-chained log");
+
+console.log("places — currency and locale are settings at the place, not columns of it (LAW-008)");
+const C = require("../lib/kernel-context.js");
+const registry = require("../lib/registry.js");
+const cIN = db.get("SELECT code, currency, locale FROM countries WHERE active=1 ORDER BY position LIMIT 1");
+const nIN = P.country(cIN.code);
+ok(C.assignedAt("value.currency", { scope: nIN }) === cIN.currency && C.assignedAt("expression.locale", { scope: nIN }) === cIN.locale, "a country's currency and locale are assigned at its node");
+const sub = db.get("SELECT code FROM subdivisions WHERE country_code=? LIMIT 1", cIN.code);
+if (sub) {
+  ok(P.facts(sub.code).currency === cIN.currency, "a subdivision resolves its country's currency, nearest up the tree");
+  C.assign("expression.locale", "xx-TEST", { scope: P.subdivision(sub.code) }, "test");
+  ok(P.facts(sub.code).locale === "xx-TEST" && P.facts(cIN.code).locale === cIN.locale, "a setting assigned at a subdivision applies there and below, not to its country");
+}
+const cur = db.get("SELECT code, symbol, decimals FROM currencies WHERE code<>? AND active=1 LIMIT 1", cIN.currency);
+globalmod.updateCountry(cIN.code, { currency: cur.code });
+const co = registry.country(cIN.code);
+ok(co.currency === cur.code && C.assignedAt("value.currency", { scope: nIN }) === cur.code, "changing the master's currency changes the assignment the readers resolve");
+ok(co.symbol === cur.symbol && co.decimals === cur.decimals, "a country's money symbol and decimals are its currency's, from Value's master");
+ok(db.all("SELECT value FROM k_assignments WHERE setting='value.currency' AND scope=? AND rec_to IS NOT NULL", nIN).some(r => JSON.parse(r.value) === cIN.currency), "the earlier currency stays on record, superseded, not overwritten");
+const tr = require("../lib/tax.js").ruleFor(cIN.code);
+const prof = registry.countryProfile(cIN.code);
+ok(tr ? prof.tax.mode === tr.mode && prof.tax.rate === tr.standard : prof.tax === null, "a country profile's tax is the tax engine's rule, not a column of the country");
 console.log("  (" + placeNodes.length + " places on the kernel)");
 
 for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP + s, { force: true }); } catch (e) { } }
