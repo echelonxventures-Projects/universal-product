@@ -14,7 +14,7 @@
     {"stepId": "P05", "title": "Corpus concepts placed in the register (one owner, aliases, sources)", "domains": ["Registry", "Semantic"], "status": "done", "deliveredBy": ["AMD-0005"]},
     {"stepId": "P06", "title": "The other domain systems unified (GOIP's 67 domains, capability domains, the per-universe record engine)", "domains": ["Registry", "Commerce", "Offering"], "status": "done", "deliveredBy": ["AMD-0006"]},
     {"stepId": "P07", "title": "The remaining root design documents absorbed or superseded", "domains": ["Guidance"], "status": "done", "deliveredBy": ["AMD-0007"]},
-    {"stepId": "P08", "title": "Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution", "domains": ["Registry", "Identity", "Relationship", "Geo", "Evolution", "Runtime", "Perspective", "Context"], "status": "in-progress", "deliveredBy": ["AMD-0009"]},
+    {"stepId": "P08", "title": "Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution", "domains": ["Registry", "Identity", "Relationship", "Geo", "Evolution", "Runtime", "Perspective", "Context"], "status": "in-progress", "deliveredBy": ["AMD-0009", "AMD-0010"]},
     {"stepId": "P09", "title": "Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships", "domains": ["Geo"], "status": "planned", "deliveredBy": []},
     {"stepId": "P10", "title": "Measure and Value, with GOIP's units merged", "domains": ["Measure", "Value"], "status": "planned", "deliveredBy": []},
     {"stepId": "P11", "title": "Time, with GOIP's calendars merged", "domains": ["Time"], "status": "planned", "deliveredBy": []},
@@ -56,7 +56,7 @@
     {"gapId": "GAP-03", "group": "truth", "title": "Contract APIs are designed interfaces, and the live API was unregistered; nothing said what is built", "owner": "Integration", "status": "closed", "closedBy": "AMD-0008"},
     {"gapId": "GAP-04", "group": "truth", "title": "Domains with no code and no live route (designed only)", "owner": "Constitutional Authority", "status": "open"},
     {"gapId": "GAP-05", "group": "truth", "title": "Laws not yet fully enforced (11 planned, 9 partial)", "owner": "Constitutional Authority", "status": "open"},
-    {"gapId": "GAP-06", "group": "truth", "title": "Kernel parts K05 and K09–K12 are declared, not built; K01, K06 and K08 are partial (see each part's note)", "owner": "Registry", "status": "open"},
+    {"gapId": "GAP-06", "group": "truth", "title": "Kernel part K09 (change lifecycle) is declared, not built; K01, K05, K06, K08, K10, K11 and K12 are partial (see each part's note)", "owner": "Registry", "status": "open"},
     {"gapId": "GAP-07", "group": "truth", "title": "375 low-confidence classification decisions await a person", "owner": "Semantic", "status": "open"},
     {"gapId": "GAP-08", "group": "law", "title": "Countries embed currency, symbol, locale, decimals and tax; stores embed one country and region (LAW-008)", "owner": "Geo", "status": "open"},
     {"gapId": "GAP-09", "group": "law", "title": "goip.js holds seven literal registries that belong to Time, Geo and Value", "owner": "Commerce", "status": "open"},
@@ -78,6 +78,7 @@
     {"gapId": "GAP-25", "group": "process", "title": "Search filters by owner and category only for register entries, not universes or corpus documents", "owner": "Search", "status": "open"},
     {"gapId": "GAP-26", "group": "broken", "title": "test/identity.js opened the developer's own database on every run; no guard stopped a test doing so", "owner": "Quality", "status": "closed", "closedBy": "AMD-0008"},
     {"gapId": "GAP-27", "group": "truth", "title": "Three event records coexist — audit_log, the webhook bus (lib/events.js) and the kernel's log (k_events); K08 requires one", "owner": "Runtime", "status": "open"},
-    {"gapId": "GAP-28", "group": "process", "title": "The smoke test crashed once with ECONNRESET at its retention section (705 of 706 passed) and passed alone and on a full rerun; the cause is unproven", "owner": "Quality", "status": "open"}
+    {"gapId": "GAP-28", "group": "process", "title": "The smoke test crashed once with ECONNRESET at its retention section (705 of 706 passed) and passed alone and on a full rerun; the cause is unproven", "owner": "Quality", "status": "open"},
+    {"gapId": "GAP-29", "group": "process", "title": "CI did not run on 3e67d62: GitHub refused to start the jobs because the account's payments failed or its spending limit is reached; every later commit is checked locally only until the owner fixes billing", "owner": "Operations", "status": "open"}
   ]
 }

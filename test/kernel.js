@@ -108,6 +108,73 @@ db.run("UPDATE k_events SET payload=? WHERE seq=?", "{}", victim.seq);
 const v = K.verifyEvents();
 ok(!v.ok && v.brokenAt === victim.seq, "an edited event breaks the chain at that event");
 
+console.log("kernel — shape: any coordinate system, any coordinate resolves to every node containing it (K05)");
+const S = require("../lib/kernel-shape.js");
+K.defineKind({ kind: "place", owner: "Geo", label: "Place", parents: ["place", "market"], schemes: ["iso2", "iau"], shape: true,
+  attributes: [{ key: "name", type: "text", required: true }, { key: "population", type: "integer" }, { key: "secret_note", type: "text", sensitive: true }] }, "test");
+S.defineSystem({ system: "geodetic", owner: "Geo", axes: [{ key: "lat", min: -90, max: 90 }, { key: "lon", min: -180, max: 180, wrap: true }] }, "test");
+S.defineSystem({ system: "galactic", owner: "Geo", axes: [{ key: "x", unit: "ly" }, { key: "y", unit: "ly" }, { key: "z", unit: "ly" }] }, "test");
+throws(() => S.defineSystem({ system: "bad", owner: "Geo", axes: [{ key: "a", wrap: true }] }), /needs both bounds/, "a wrapping axis is bounded");
+S.setShape(india, "geodetic", { type: "box", min: [6, 68], max: [36, 98] }, { validFrom: T(1947, 8) }, "test");
+S.setShape(asia, "geodetic", { type: "box", min: [-11, 25], max: [81, -170] }, { validFrom: T(1900) }, "test");
+S.setShape(site, "geodetic", { type: "polygon", ring: [[28.60, 77.20], [28.60, 77.21], [28.61, 77.21], [28.61, 77.20]] }, { validFrom: T(2020) }, "test");
+S.setShape(galaxy, "galactic", { type: "ball", center: [0, 0, 0], radius: 52850 }, { validFrom: T(1900) }, "test");
+const here = S.containing("geodetic", [28.605, 77.205]).sort();
+ok(here.length === 3 && [india, asia, site].every(u => here.includes(u)), "a coordinate resolves to the site, the country and the continent at once");
+ok(S.containing("geodetic", [60, 179]).join() === asia && S.containing("geodetic", [60, -175]).join() === asia, "a box may cross a wrapping axis's seam");
+ok(S.containing("geodetic", [0, 0]).length === 0, "a coordinate inside nothing resolves to nothing");
+ok(S.containing("galactic", [26000, 0, 20]).join() === galaxy && S.containing("galactic", [90000, 0, 0]).length === 0, "the same works for a galaxy in light-years");
+throws(() => S.containing("geodetic", [95, 0]), /outside/, "a coordinate is checked against its system's bounds");
+throws(() => S.setShape(mk, "geodetic", { type: "point", at: [0, 0] }), /carries no shape/, "only a kind that carries a shape has one");
+throws(() => S.setShape(india, "geodetic", { type: "box", min: [40, 0], max: [30, 1] }), /min is above max/, "a box runs forwards on an axis that does not wrap");
+S.setShape(india, "geodetic", { type: "box", min: [8, 68], max: [37, 97] }, { validFrom: T(2040) }, "test");
+ok(S.shapeOf(india, "geodetic", { at: T(2041) }).min[0] === 8 && S.shapeOf(india, "geodetic", { at: T(2030) }).min[0] === 6, "a shape has valid time; a new one does not erase the old");
+
+console.log("kernel — scope and resolution: nearest wins, every answer says where it came from (K11, K12)");
+const C = require("../lib/kernel-context.js");
+C.declareSetting({ name: "display.system", owner: "Measure", type: "text" }, "test");
+C.declareSetting({ name: "never.assigned", owner: "Measure", type: "text" }, "test");
+C.assign("display.system", "everywhere", {}, "test");
+C.assign("display.system", "india", { scope: india, validFrom: T(2000) }, "test");
+C.assign("display.system", "ocean", { scope: ocean, validFrom: T(2000) }, "test");
+C.assign("display.system", "acme-site", { scope: site, namespace: "tenant:acme" }, "test");
+const r1 = C.resolve("display.system", { context: { physical: site }, namespaces: ["tenant:acme", "platform"] });
+ok(r1.value === "acme-site" && r1.from.namespace === "tenant:acme" && r1.from.distance === 0, "a tenant's own assignment wins where it applies");
+const r2 = C.resolve("display.system", { context: { physical: site } });
+ok(r2.value === "india" && r2.from.node === india && r2.from.distance === 1 && !r2.ambiguous, "otherwise the nearest assignment up the hierarchy wins");
+const r3 = C.resolve("display.system", { context: { physical: site }, at: T(2024) });
+ok(r3.ambiguous && ["india", "ocean"].includes(r3.value), "a node in two places with different answers is reported as ambiguous");
+const r4 = C.resolve("display.system", { context: { physical: galaxy } });
+ok(r4.value === "everywhere" && r4.from.node === null, "with nothing nearer, the namespace-wide assignment answers");
+const r5 = C.resolve("never.assigned", { context: { physical: site } });
+ok(r5.resolved === false && r5.value === undefined && r5.tried.length > 0, "nothing assigned is unresolved — no value is invented");
+C.assign("display.system", "india-later", { scope: india, validFrom: T(2030) }, "test");
+ok(C.resolve("display.system", { context: { physical: india }, at: T(2031) }).value === "india-later" && C.resolve("display.system", { context: { physical: india }, at: T(2026) }).value === "india",
+  "assignments have valid time");
+throws(() => C.assign("display.system", 5, {}), /must be text/, "an assigned value has its declared type");
+throws(() => C.assign("display.system", "x", { scope: "not-a-node" }), /must be a node/, "a scope is a node");
+throws(() => C.assign("display.system", "x", { namespace: "galaxy:1" }), /Unknown namespace/, "a namespace has a declared type");
+C.assign("display.system", "market", { scope: mk }, "test");
+C.assign("display.system", "universe", { scope: universe }, "test");
+C.defineResolution({ name: "markets-first", owner: "Context", order: ["markets", "physical"] }, "test");
+C.defineResolution({ name: "physical-first", owner: "Context", order: ["physical", "markets"] }, "test");
+ok(C.resolve("display.system", { context: { markets: mk, physical: galaxy }, profile: "markets-first" }).value === "market"
+  && C.resolve("display.system", { context: { markets: mk, physical: galaxy }, profile: "physical-first" }).value === "universe",
+  "a resolution profile orders the hierarchies");
+
+console.log("kernel — views select by reference and are computed live (K10)");
+C.defineView({ name: "asia", owner: "Perspective", selects: [{ hierarchy: "physical", root: asia }], labels: { [india]: "Bharat" } }, "test");
+const va = C.viewNodes("asia");
+ok(va.map(n => n.uid).sort().join() === [asia, india, site].sort().join() && va.find(n => n.uid === india).label === "Bharat", "a view selects a subtree and labels it");
+C.defineView({ name: "earth-top", owner: "Perspective", selects: [{ hierarchy: "physical", root: earth, depth: 1, includeRoot: false }] }, "test");
+ok(C.viewNodes("earth-top").map(n => n.uid).sort().join() === [asia, ocean].sort().join(), "a view limits depth");
+C.defineView({ name: "markets", owner: "Perspective", selects: [{ hierarchy: "markets", root: null, kinds: ["market"] }] }, "test");
+ok(C.viewNodes("markets").map(n => n.uid).join() === mk, "a view filters by kind");
+const city = K.createNode("place", { attributes: { name: "A new city" } }, "test");
+K.place("physical", city, india, {}, "test");
+ok(C.viewNodes("asia").some(n => n.uid === city), "a node added to the master appears in the view with no change to the view");
+ok(!JSON.stringify(db.all("SELECT spec FROM k_declarations WHERE family='view'")).includes(site), "a view stores references, not copies");
+
 console.log("kernel — a failed write leaves nothing behind");
 const count = db.get("SELECT COUNT(*) AS n FROM k_nodes").n, evs = db.get("SELECT COUNT(*) AS n FROM k_events").n;
 throws(() => K.createNode("place", { attributes: { name: "Atlantis" }, identifiers: { iso2: "IN" }, validFrom: T(2032) }), /already names/, "a clashing identifier rejects the whole create");

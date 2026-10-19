@@ -34,7 +34,7 @@
 | **Contract** | [UCOS-PLC-000001 Geo Architecture](#ucos-plc-000001) |
 | **Artifacts** | [UCOS-PLC-000001](#ucos-plc-000001) |
 | **Concepts** | 69 — `node _registry/compile.js --search <words> --kind concept --owner "Geo"` |
-| **Code** | `lib/registry.js`, `lib/global.js`, `lib/subdivisions.js`, `lib/seed/subdivisions.json` |
+| **Code** | `lib/registry.js`, `lib/global.js`, `lib/kernel-shape.js`, `lib/subdivisions.js`, `lib/seed/subdivisions.json` |
 | **Managed in** | `_registry/domains.json` → `D-GEO` |
 
 **Live routes (5)** — what the platform serves today for this domain:
@@ -1084,7 +1084,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-CTX-000001 Context Architecture](#ucos-ctx-000001) |
 | **Artifacts** | [UCOS-CTX-000001](#ucos-ctx-000001) |
 | **Concepts** | 123 — `node _registry/compile.js --search <words> --kind concept --owner "Context"` |
-| **Code** | `lib/global.js`, `lib/defaults.js`, `lib/settings.js`, `lib/seed/defaults.json`, `lib/seed/settings.json` |
+| **Code** | `lib/global.js`, `lib/kernel-context.js`, `lib/defaults.js`, `lib/settings.js`, `lib/seed/defaults.json`, `lib/seed/settings.json` |
 | **Managed in** | `_registry/domains.json` → `D-CTX` |
 
 **Live routes (3)** — what the platform serves today for this domain:
