@@ -21,7 +21,7 @@ const throws = (fn, re, n) => { try { fn(); ok(false, n, "did not throw"); } cat
 const T = (y, m) => new Date(Date.UTC(y, (m || 1) - 1, 1)).toISOString();
 
 console.log("kernel — kinds (K01) and attributes (K06)");
-const place = K.defineKind({ kind: "place", owner: "Geo", label: "Place", parents: ["place", "market"], schemes: ["iso2", "iau"],
+const place = K.defineKind({ kind: "body", owner: "Geo", label: "Place", parents: ["body", "market"], schemes: ["iso2", "iau"],
   attributes: [{ key: "name", type: "text", required: true }, { key: "population", type: "integer" }, { key: "secret_note", type: "text", sensitive: true }] }, "test");
 ok(place && place.owner === "Geo" && place.attributes.length === 3, "a kind is declared as data with typed attributes");
 throws(() => K.defineKind({ kind: "x", owner: "Nobody" }), /owning domain/, "a kind's owner must be a domain in the register");
@@ -29,26 +29,26 @@ throws(() => K.defineKind({ kind: "y", owner: "Geo", attributes: [{ key: "a", ty
 throws(() => K.defineKind({ kind: "Bad Key", owner: "Geo" }), /must match/, "keys follow the declared pattern");
 throws(() => K.defineKind({ kind: "z", owner: "Geo", attributes: [{ key: "a", type: "text" }, { key: "a", type: "text" }] }), /declared twice/, "an attribute is declared once");
 K.defineKind({ kind: "market", owner: "Commerce", parents: ["market"], root: true, attributes: [{ key: "name", type: "text", required: true }] }, "test");
-ok(K.kinds().map(k => k.kind).join(",") === "market,place", "kinds are listed per namespace");
+ok(["body", "market"].every(k => K.kinds().map(x => x.kind).includes(k)), "kinds are listed per namespace");
 
 console.log("kernel — nodes (K02) and identifiers (K04)");
-const universe = K.createNode("place", { validFrom: T(1900), attributes: { name: "Observable universe" } }, "test");
-const galaxy = K.createNode("place", { validFrom: T(1900), attributes: { name: "Milky Way" } }, "test");
-const sol = K.createNode("place", { validFrom: T(1900), attributes: { name: "Solar System" } }, "test");
-const earth = K.createNode("place", { validFrom: T(1900), attributes: { name: "Earth" }, identifiers: { iau: "399" } }, "test");
-const asia = K.createNode("place", { validFrom: T(1900), attributes: { name: "Asia" } }, "test");
-const ocean = K.createNode("place", { validFrom: T(1900), attributes: { name: "Indian Ocean" } }, "test");
-const india = K.createNode("place", { validFrom: T(1947, 8), attributes: { name: "India", population: 361000000, secret_note: "sealed" }, identifiers: { iso2: "IN" } }, "test");
-const site = K.createNode("place", { validFrom: T(2020), attributes: { name: "A single site" } }, "test");
+const universe = K.createNode("body", { validFrom: T(1900), attributes: { name: "Observable universe" } }, "test");
+const galaxy = K.createNode("body", { validFrom: T(1900), attributes: { name: "Milky Way" } }, "test");
+const sol = K.createNode("body", { validFrom: T(1900), attributes: { name: "Solar System" } }, "test");
+const earth = K.createNode("body", { validFrom: T(1900), attributes: { name: "Earth" }, identifiers: { iau: "399" } }, "test");
+const asia = K.createNode("body", { validFrom: T(1900), attributes: { name: "Asia" } }, "test");
+const ocean = K.createNode("body", { validFrom: T(1900), attributes: { name: "Indian Ocean" } }, "test");
+const india = K.createNode("body", { validFrom: T(1947, 8), attributes: { name: "India", population: 361000000, secret_note: "sealed" }, identifiers: { iso2: "IN" } }, "test");
+const site = K.createNode("body", { validFrom: T(2020), attributes: { name: "A single site" } }, "test");
 ok(/^[0-9a-f-]{36}$/.test(india), "every node gets a universal ID");
-ok(K.nodes("place").length === 8, "nodes of a kind are listed with no limit on count");
+ok(K.nodes("body").length === 8, "nodes of a kind are listed with no limit on count");
 ok(K.resolveIdentifier("iso2", "IN") === india && K.resolveIdentifier("iau", "399") === earth, "a code in any declared scheme resolves to its node");
 ok(K.identifiers(india).uid === india && K.identifiers(india).iso2 === "IN", "a node's identifiers include its universal ID");
 throws(() => K.assignIdentifier(earth, "iso2", "IN"), /already names/, "one code names one node at a time");
 throws(() => K.assignIdentifier(india, "zip", "1"), /declares no identifier scheme/, "schemes are declared by the kind");
-throws(() => K.createNode("place", { attributes: {} }), /required/, "required attributes are enforced");
-throws(() => K.createNode("place", { attributes: { name: 7 } }), /must be text/, "values are type-checked");
-throws(() => K.createNode("place", { attributes: { name: "x", colour: "red" } }), /declares no attribute/, "only declared attributes are accepted");
+throws(() => K.createNode("body", { attributes: {} }), /required/, "required attributes are enforced");
+throws(() => K.createNode("body", { attributes: { name: 7 } }), /must be text/, "values are type-checked");
+throws(() => K.createNode("body", { attributes: { name: "x", colour: "red" } }), /declares no attribute/, "only declared attributes are accepted");
 K.endIdentifier(india, "iso2", "IN", T(2030));
 ok(K.resolveIdentifier("iso2", "IN", { at: T(2031) }) === null && K.resolveIdentifier("iso2", "IN", { at: T(2029) }) === india, "an identifier has a time window");
 K.assignIdentifier(earth, "iso2", "IN", { validFrom: T(2031) });
@@ -60,7 +60,7 @@ ok(!raw.includes("sealed") && /lux\.v1\./.test(raw), "a sensitive value is store
 ok(K.attributes(india).secret_note === "sealed", "and read back in the clear by the kernel");
 
 console.log("kernel — versions are bi-temporal (K07)");
-const beforeChange = K.events({ limit: 500 }).slice(-1)[0].seq;
+const beforeChange = db.get("SELECT MAX(seq) AS s FROM k_events").s;
 K.record(india, { population: 1400000000 }, { validFrom: T(2023) }, "test");
 ok(K.attributes(india, { at: T(1990) }).population === 361000000, "the past is unchanged by a later fact");
 ok(K.attributes(india, { at: T(2024) }).population === 1400000000, "the new fact holds from its valid time");
@@ -103,14 +103,14 @@ console.log("kernel — one event log, hash-chained (K08)");
 const log = K.events({ subject: india });
 ok(log.length >= 5 && log.every(e => e.subject === india), "every change to a node is in the log");
 ok(K.verifyEvents().ok, "the chain verifies");
-const victim = K.events({ limit: 3 })[1];
+const victim = K.events({ since: beforeChange, limit: 3 })[1];
 db.run("UPDATE k_events SET payload=? WHERE seq=?", "{}", victim.seq);
 const v = K.verifyEvents();
 ok(!v.ok && v.brokenAt === victim.seq, "an edited event breaks the chain at that event");
 
 console.log("kernel — shape: any coordinate system, any coordinate resolves to every node containing it (K05)");
 const S = require("../lib/kernel-shape.js");
-K.defineKind({ kind: "place", owner: "Geo", label: "Place", parents: ["place", "market"], schemes: ["iso2", "iau"], shape: true,
+K.defineKind({ kind: "body", owner: "Geo", label: "Place", parents: ["body", "market"], schemes: ["iso2", "iau"], shape: true,
   attributes: [{ key: "name", type: "text", required: true }, { key: "population", type: "integer" }, { key: "secret_note", type: "text", sensitive: true }] }, "test");
 S.defineSystem({ system: "geodetic", owner: "Geo", axes: [{ key: "lat", min: -90, max: 90 }, { key: "lon", min: -180, max: 180, wrap: true }] }, "test");
 S.defineSystem({ system: "galactic", owner: "Geo", axes: [{ key: "x", unit: "ly" }, { key: "y", unit: "ly" }, { key: "z", unit: "ly" }] }, "test");
@@ -170,7 +170,7 @@ C.defineView({ name: "earth-top", owner: "Perspective", selects: [{ hierarchy: "
 ok(C.viewNodes("earth-top").map(n => n.uid).sort().join() === [asia, ocean].sort().join(), "a view limits depth");
 C.defineView({ name: "markets", owner: "Perspective", selects: [{ hierarchy: "markets", root: null, kinds: ["market"] }] }, "test");
 ok(C.viewNodes("markets").map(n => n.uid).join() === mk, "a view filters by kind");
-const city = K.createNode("place", { attributes: { name: "A new city" } }, "test");
+const city = K.createNode("body", { attributes: { name: "A new city" } }, "test");
 K.place("physical", city, india, {}, "test");
 ok(C.viewNodes("asia").some(n => n.uid === city), "a node added to the master appears in the view with no change to the view");
 ok(!JSON.stringify(db.all("SELECT spec FROM k_declarations WHERE family='view'")).includes(site), "a view stores references, not copies");
@@ -179,7 +179,7 @@ console.log("kernel — the change lifecycle: draft, validate, preview, approve,
 const LC = require("../lib/kernel-lifecycle.js");
 const nodesBefore = db.get("SELECT COUNT(*) AS n FROM k_nodes").n;
 const ch = LC.draft({ title: "Add a district", ops: [
-  { op: "createNode", args: ["place", { attributes: { name: "A district" } }] },
+  { op: "createNode", args: ["body", { attributes: { name: "A district" } }] },
   { op: "place", args: ["physical", "$0", city] },
   { op: "record", args: [india, { population: 1450000000 }, { validFrom: T(2026) }] },
   { op: "assign", args: ["display.system", "district", { scope: "$0" }] }
@@ -217,21 +217,21 @@ const c2 = LC.draft({ ops: [{ op: "record", args: [asia, { population: 2 }] }] }
 throws(() => LC.rollback(c1, "reviewer"), /later change built on this one/, "a change a later one built on cannot be rolled back first");
 LC.rollback(c2, "reviewer"); LC.rollback(c1, "reviewer");
 ok(K.attributes(asia).population === 4800000000, "rolled back in reverse order, the earlier state returns");
-throws(() => LC.edit(ch, [{ op: "createNode", args: ["place", {}] }]), /Only a draft/, "only a draft can be edited");
+throws(() => LC.edit(ch, [{ op: "createNode", args: ["body", {}] }]), /Only a draft/, "only a draft can be edited");
 
 console.log("kernel — hide is reversible, delete is archive, purge needs its own permission (K09)");
-const temp = K.createNode("place", { attributes: { name: "Temporary", secret_note: "x" }, identifiers: {} }, "test");
+const temp = K.createNode("body", { attributes: { name: "Temporary", secret_note: "x" }, identifiers: {} }, "test");
 LC.hide(temp, "test"); ok(LC.nodeState(temp) === "hidden", "a node can be hidden");
 LC.unhide(temp, "test"); ok(LC.nodeState(temp) === "active", "and shown again");
-const hid = K.createNode("place", { attributes: { name: "Hidden town" } }, "test");
+const hid = K.createNode("body", { attributes: { name: "Hidden town" } }, "test");
 K.place("physical", hid, india, {}, "test");
 S.setShape(hid, "geodetic", { type: "point", at: [20, 80] }, {}, "test");
-const under = K.createNode("place", { attributes: { name: "Under the hidden town" } }, "test");
+const under = K.createNode("body", { attributes: { name: "Under the hidden town" } }, "test");
 K.place("physical", under, hid, {}, "test");
 LC.hide(hid, "test");
 ok(!K.children("physical", india).includes(hid) && K.children("physical", india, { includeHidden: true }).includes(hid), "a hidden node drops out of listings, unless asked for");
 ok(!C.viewNodes("asia").some(n => n.uid === hid) && C.viewNodes("asia").some(n => n.uid === under), "views leave it out; what sits under it stays");
-ok(!S.containing("geodetic", [20, 80]).includes(hid) && !K.nodes("place").includes(hid), "coordinate lookups and node lists leave it out");
+ok(!S.containing("geodetic", [20, 80]).includes(hid) && !K.nodes("body").includes(hid), "coordinate lookups and node lists leave it out");
 ok(K.ancestors("physical", under).includes(hid), "the structure itself is unchanged");
 LC.unhide(hid, "test");
 ok(K.children("physical", india).includes(hid), "unhiding brings it back");
@@ -245,7 +245,7 @@ throws(() => { LC.archive(asia, "test"); LC.purge(asia, ["kernel.purge"], "test"
 
 console.log("kernel — a failed write leaves nothing behind");
 const count = db.get("SELECT COUNT(*) AS n FROM k_nodes").n, evs = db.get("SELECT COUNT(*) AS n FROM k_events").n;
-throws(() => K.createNode("place", { attributes: { name: "Atlantis" }, identifiers: { iso2: "IN" }, validFrom: T(2032) }), /already names/, "a clashing identifier rejects the whole create");
+throws(() => K.createNode("body", { attributes: { name: "Atlantis" }, identifiers: { iso2: "IN" }, validFrom: T(2032) }), /already names/, "a clashing identifier rejects the whole create");
 ok(db.get("SELECT COUNT(*) AS n FROM k_nodes").n === count && db.get("SELECT COUNT(*) AS n FROM k_events").n === evs, "no node and no event survive the failed write");
 
 for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP + s, { force: true }); } catch (e) { } }

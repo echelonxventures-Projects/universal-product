@@ -1,0 +1,20 @@
+{
+  "$comment": "Geo's declarations on the kernel (lib/places.js). The place kind, the place tree and its identifier schemes are data: a new level (a planet, an ocean, a district, a shelf) is a node of this kind or a new kind, never code. Countries and subdivisions are mirrored from their master tables until P09 moves their writes onto the kernel.",
+  "namespace": "platform",
+  "kind": {
+    "kind": "place", "owner": "Geo", "label": "Place", "root": true, "shape": true,
+    "parents": ["place"],
+    "schemes": ["iso3166-1", "iso3166-2"],
+    "attributes": [
+      {"key": "name", "type": "text", "required": true, "label": "Name"},
+      {"key": "level", "type": "text", "label": "What this level is called"}
+    ]
+  },
+  "hierarchy": {"hierarchy": "places", "owner": "Geo", "label": "The place tree"},
+  "mirror": {
+    "countryScheme": "iso3166-1",
+    "subdivisionScheme": "iso3166-2",
+    "countryLevel": "country",
+    "actor": "geo.mirror"
+  }
+}

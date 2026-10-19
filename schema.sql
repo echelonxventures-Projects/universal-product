@@ -2070,6 +2070,62 @@ CREATE TRIGGER trg_tasks_uid AFTER INSERT ON tasks
 CREATE UNIQUE INDEX ux_approvals_uid ON approvals(uid);
 CREATE TRIGGER trg_approvals_uid AFTER INSERT ON approvals
                BEGIN UPDATE approvals SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE k_events (
+    seq INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT NOT NULL, type TEXT NOT NULL,
+    namespace TEXT NOT NULL, subject TEXT, actor TEXT, payload TEXT NOT NULL DEFAULT '{}',
+    prev_hash TEXT NOT NULL, hash TEXT NOT NULL);
+CREATE INDEX ix_k_events_subject ON k_events(subject, seq);
+CREATE INDEX ix_k_events_at ON k_events(at);
+CREATE TABLE k_kinds (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, kind TEXT NOT NULL,
+    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_kinds ON k_kinds(namespace, kind, rec_to);
+CREATE TABLE k_nodes (
+    uid TEXT PRIMARY KEY, namespace TEXT NOT NULL, kind TEXT NOT NULL, rec_from INTEGER NOT NULL);
+CREATE INDEX ix_k_nodes_kind ON k_nodes(namespace, kind);
+CREATE TABLE k_identifiers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, node TEXT NOT NULL, scheme TEXT NOT NULL, value TEXT NOT NULL,
+    valid_from TEXT NOT NULL, valid_to TEXT, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_ident_value ON k_identifiers(scheme, value, rec_to);
+CREATE INDEX ix_k_ident_node ON k_identifiers(node, rec_to);
+CREATE TABLE k_hierarchies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, hierarchy TEXT NOT NULL,
+    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_hier ON k_hierarchies(namespace, hierarchy, rec_to);
+CREATE TABLE k_placements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, hierarchy TEXT NOT NULL, node TEXT NOT NULL, parent TEXT,
+    valid_from TEXT NOT NULL, valid_to TEXT, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_place_parent ON k_placements(hierarchy, parent, rec_to);
+CREATE INDEX ix_k_place_node ON k_placements(hierarchy, node, rec_to);
+CREATE TABLE k_versions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, node TEXT NOT NULL, attrs TEXT NOT NULL,
+    valid_from TEXT NOT NULL, valid_to TEXT, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_versions ON k_versions(node, rec_to, valid_from);
+CREATE TABLE k_node_states (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, node TEXT NOT NULL, state TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_node_states ON k_node_states(node, rec_to);
+CREATE TABLE k_coord_systems (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, system TEXT NOT NULL,
+    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_coord ON k_coord_systems(namespace, system, rec_to);
+CREATE TABLE k_shapes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, node TEXT NOT NULL, system TEXT NOT NULL, geom TEXT NOT NULL,
+    valid_from TEXT NOT NULL, valid_to TEXT, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_shapes ON k_shapes(system, rec_to);
+CREATE INDEX ix_k_shapes_node ON k_shapes(node, system, rec_to);
+CREATE TABLE k_declarations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, family TEXT NOT NULL, namespace TEXT NOT NULL, name TEXT NOT NULL,
+    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_decl ON k_declarations(family, namespace, name, rec_to);
+CREATE TABLE k_assignments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, setting TEXT NOT NULL, scope TEXT,
+    value TEXT NOT NULL, valid_from TEXT NOT NULL, valid_to TEXT, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_assign ON k_assignments(setting, namespace, scope, rec_to);
+CREATE TABLE k_changes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, title TEXT NOT NULL, ops TEXT NOT NULL,
+    state TEXT NOT NULL, author TEXT, approver TEXT, publish_at TEXT, seq_from INTEGER, seq_to INTEGER,
+    rolled_back_seq INTEGER, result TEXT, report TEXT, created_at TEXT NOT NULL);
+CREATE INDEX ix_k_changes_state ON k_changes(state, publish_at);
 CREATE TABLE affiliate_networks (
     id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, slug TEXT UNIQUE, tenant_id INTEGER DEFAULT 1,
     status TEXT DEFAULT 'active', default_commission_pct REAL DEFAULT 5.0, cookie_days INTEGER DEFAULT 30,

@@ -15,7 +15,7 @@
     {"stepId": "P06", "title": "The other domain systems unified (GOIP's 67 domains, capability domains, the per-universe record engine)", "domains": ["Registry", "Commerce", "Offering"], "status": "done", "deliveredBy": ["AMD-0006"]},
     {"stepId": "P07", "title": "The remaining root design documents absorbed or superseded", "domains": ["Guidance"], "status": "done", "deliveredBy": ["AMD-0007"]},
     {"stepId": "P08", "title": "Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution", "domains": ["Registry", "Identity", "Relationship", "Geo", "Evolution", "Runtime", "Perspective", "Context"], "status": "in-progress", "deliveredBy": ["AMD-0009", "AMD-0010", "AMD-0011", "AMD-0012"]},
-    {"stepId": "P09", "title": "Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships", "domains": ["Geo"], "status": "planned", "deliveredBy": []},
+    {"stepId": "P09", "title": "Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships", "domains": ["Geo"], "status": "in-progress", "deliveredBy": ["AMD-0013"]},
     {"stepId": "P10", "title": "Measure and Value, with GOIP's units merged", "domains": ["Measure", "Value"], "status": "planned", "deliveredBy": []},
     {"stepId": "P11", "title": "Time, with GOIP's calendars merged", "domains": ["Time"], "status": "planned", "deliveredBy": []},
     {"stepId": "P12", "title": "Expression: languages, scripts, message catalogues", "domains": ["Expression"], "status": "planned", "deliveredBy": []},
