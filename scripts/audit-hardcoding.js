@@ -36,7 +36,7 @@ const J = v => { try { return JSON.parse(v); } catch (e) { return null; } };
 const vocab = new Map();   /* literal → Set(category) */
 const add = (lit, cat) => { const k = String(lit == null ? "" : lit); if (!k) return; if (!vocab.has(k)) vocab.set(k, new Set()); vocab.get(k).add(cat); };
 for (const r of db.all("SELECT id, kind FROM provider_defs")) add(r.id, "provider:" + r.kind);
-for (const r of db.all("SELECT code, currency FROM countries")) { add(r.code, "country"); add(r.currency, "currency"); }
+for (const r of require(path.join(ROOT, "lib", "registry.js")).countries()) { add(r.code, "country"); add(r.currency, "currency"); }
 for (const r of db.all("SELECT code FROM currencies")) add(r.code, "currency");
 for (const r of db.all("SELECT key FROM platform_capabilities")) add(r.key, "capability");
 try { for (const m of db.all("SELECT manifest FROM modules")) for (const c of (J(m.manifest) || {}).capabilities || []) add(c, "module-capability"); } catch (e) { }

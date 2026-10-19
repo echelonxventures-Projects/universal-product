@@ -91,7 +91,7 @@ ok(K.verifyEvents().ok, "every write is in the hash-chained log");
 console.log("places — currency and locale are settings at the place, not columns of it (LAW-008)");
 const C = require("../lib/kernel-context.js");
 const registry = require("../lib/registry.js");
-const cIN = db.get("SELECT code, currency, locale FROM countries WHERE active=1 ORDER BY position LIMIT 1");
+const cIN = registry.country(db.get("SELECT code FROM countries WHERE active=1 ORDER BY position LIMIT 1").code);
 const nIN = P.country(cIN.code);
 ok(C.assignedAt("value.currency", { scope: nIN }) === cIN.currency && C.assignedAt("expression.locale", { scope: nIN }) === cIN.locale, "a country's currency and locale are assigned at its node");
 const sub = db.get("SELECT code FROM subdivisions WHERE country_code=? LIMIT 1", cIN.code);
@@ -134,6 +134,41 @@ ok(LC.nodeState(qz1) === "archived" && !db.get("SELECT 1 AS x FROM subdivisions 
 entity.deleteEntity(0, "country", "QZ");
 ok(LC.nodeState(qz) === "archived" && !db.get("SELECT 1 AS x FROM countries WHERE code='QZ'"), "deleting a country archives its place and removes the row");
 ok(K.history(qz).length > 0 && K.verifyEvents().ok, "the archived place keeps its history in an intact log");
+
+console.log("places — the country row holds the place, not its settings (P09)");
+const colGone = c => { try { db.get(`SELECT ${c} FROM countries LIMIT 1`); return false; } catch (e) { return true; } };
+ok(require("../lib/seed/places.json").master.retiredColumns.every(colGone), "a fresh install's country table has no currency, symbol, locale, decimals or tax columns");
+const listed = entity.listEntitiesGlobal("country", {}).find(r => r.code === cIN.code);
+ok(listed && listed.currency === registry.country(cIN.code).currency && listed.symbol && listed.decimals != null && listed.locale, "the console's country list shows each country's settings from the kernel", listed);
+const cur3 = db.get("SELECT code FROM currencies WHERE code<>? AND active=1 LIMIT 1", registry.country(cIN.code).currency).code;
+const onlySetting = entity.updateEntity(0, "country", cIN.code, { currency: cur3 });
+ok(!onlySetting.error && registry.country(cIN.code).currency === cur3, "an edit that changes only a setting is recorded on the kernel", onlySetting);
+ok(entity.listEntitiesGlobal("country", { where: { currency: cur3 } }).some(r => r.code === cIN.code), "a filter on a setting finds the countries that hold it");
+ok(P.using("currency", cur3).includes(cIN.code), "the countries using a currency are answered by the kernel");
+const novel = entity.createEntity(0, "country", { code: "QV", name: "Novelland", currency: "QVQ", symbol: "◇", locale: "en-QV" });
+ok(!novel.error && registry.currency("QVQ") && registry.country("QV").symbol === "◇", "a new country naming a new currency brings it into Value's master with its symbol", novel);
+const nameless = entity.createEntity(0, "country", { code: "QU", name: "Nocurrency", currency: "QUQ", locale: "en-QU" });
+ok(nameless.error && !db.get("SELECT 1 AS x FROM countries WHERE code='QU'"), "a currency nobody holds and no symbol for it is refused", nameless);
+
+console.log("places — an install from before the place tree");
+/* the table as an older install has it: the settings still in columns, no place on the kernel */
+db.run("ALTER TABLE countries ADD COLUMN currency TEXT");
+db.run("ALTER TABLE countries ADD COLUMN locale TEXT");
+db.run("ALTER TABLE countries ADD COLUMN symbol TEXT NOT NULL DEFAULT ''");
+db.run("INSERT INTO countries(code,name,currency,locale,symbol,position) VALUES('QW','Oldland',?,'en-QW','x',900)", cur3);
+const lim = P.importRows();
+ok(P.country("QW") && registry.country("QW").currency === cur3 && registry.country("QW").locale === "en-QW" && lim.created === 1, "its rows and their settings are imported onto the kernel", lim);
+ok(!colGone("currency"), "and its columns are left alone (dropping them is the operator's call)");
+ok(registry.country("QW").symbol === registry.currency(cur3).symbol, "a legacy column is never read: the symbol is the currency's");
+const legacyNew = entity.createEntity(0, "country", { code: "QT", name: "Newer", currency: cur3, locale: "en-QT" });
+ok(!legacyNew.error && db.get("SELECT symbol FROM countries WHERE code='QT'").symbol === registry.currency(cur3).symbol, "a new row on such a table still fills the columns it requires", legacyNew);
+ok(Object.values(P.importRows()).every(v => v === 0), "a second pass imports nothing");
+const noYes = require("child_process").spawnSync(process.execPath, [path.join(__dirname, "..", "scripts", "retire-country-columns.js")], { env: { ...process.env, LX_DB: TMP }, encoding: "utf8" });
+ok(noYes.status === 2 && !colGone("currency"), "the retirement script does nothing without the operator's --yes");
+const retired = P.retireColumns();
+ok(retired.length === 3 && ["currency", "locale", "symbol"].every(colGone), "retiring drops the legacy columns once the kernel holds every setting", retired);
+ok(registry.country("QW").currency === cur3 && registry.country("QT").locale === "en-QT", "and every country still answers its settings from the kernel");
+ok(P.retireColumns().length === 0, "retiring again finds nothing to drop");
 console.log("  (" + placeNodes.length + " places on the kernel)");
 
 for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP + s, { force: true }); } catch (e) { } }

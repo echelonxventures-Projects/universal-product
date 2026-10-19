@@ -43,14 +43,16 @@
      "list": true,
      "upper": true,
      "pattern": "^[A-Z]{3}$",
-     "patternHint": "three letters (ISO 4217)"
+     "patternHint": "three letters (ISO 4217)",
+     "stored": false
     },
     {
      "key": "symbol",
-     "label": "Symbol",
+     "label": "Symbol (of a new currency)",
      "type": "text",
-     "required": true,
-     "list": true
+     "list": true,
+     "stored": false,
+     "createOnly": true
     },
     {
      "key": "locale",
@@ -58,15 +60,16 @@
      "type": "text",
      "required": true,
      "list": true,
-     "format": "locale"
+     "format": "locale",
+     "stored": false
     },
     {
      "key": "decimals",
-     "label": "Decimals",
+     "label": "Decimals (of a new currency)",
      "type": "number",
      "list": true,
-     "min": 0,
-     "max": 4
+     "stored": false,
+     "createOnly": true
     },
     {
      "key": "position",

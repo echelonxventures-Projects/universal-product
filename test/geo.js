@@ -46,7 +46,8 @@ try {
   console.log("▸ A FRESH INSTALL");
   ok(db.get("SELECT COUNT(*) n FROM countries").n === C.length, "boot seeds every declared country");
   ok(!db.get("SELECT 1 ok FROM countries WHERE name LIKE '%auto-registered%'") && !db.get("SELECT 1 ok FROM currencies WHERE length(code)<>3"), "no invented country or currency");
-  const wrongDec = db.all("SELECT c.code, c.decimals, k.decimals kd FROM countries c JOIN currencies k ON k.code=c.currency WHERE c.decimals<>k.decimals");
+  const decOf = new Map(db.all("SELECT code, decimals FROM currencies").map(k => [k.code, k.decimals]));
+  const wrongDec = registry.countries().filter(c => c.decimals !== decOf.get(c.currency)).map(c => c.code);
   ok(wrongDec.length === 0, "a country's decimals are its currency's", wrongDec);
   ok(db.get("SELECT COUNT(*) n FROM provider_availability pa LEFT JOIN countries c ON c.code=pa.country_code WHERE c.code IS NULL").n === 0, "every provider link points at a declared country");
 
@@ -54,10 +55,12 @@ try {
   const sample = C.find(c => c.currency !== c.code && !C.some(x => x.currency === c.code));
   dropCountry(sample.code);
   db.run("INSERT OR IGNORE INTO currencies(code,name,symbol,decimals,usd,position) VALUES(?,?,?,2,1,100)", sample.code, sample.code, sample.code + " ");
-  db.run("INSERT INTO countries(code,name,currency,symbol,locale,decimals,position) VALUES(?,?,?,?,?,2,100)", sample.code, sample.code + " (auto-registered)", sample.code, sample.code + " ", "en-" + sample.code);
+  /* what an earlier boot invented: a country named after its code, with a currency of the same code */
+  db.run("INSERT INTO countries(code,name,position) VALUES(?,?,100)", sample.code, sample.code + " (auto-registered)");
+  require("../lib/places.js").putCountry(sample.code, { currency: sample.code, locale: "en-" + sample.code });
   db.run("INSERT OR IGNORE INTO fx_rates(currency,usd,source,note) VALUES(?,1,'derived','x')", sample.code);
   registry.repairCountries();
-  const fixed = db.get("SELECT * FROM countries WHERE code=?", sample.code);
+  const fixed = registry.country(sample.code);
   ok(fixed.name === sample.name && fixed.currency === sample.currency && fixed.locale === sample.locale, "an auto-registered row takes the seed's geography: " + sample.code + " → " + fixed.name + ", " + fixed.currency);
   ok(!db.get("SELECT 1 ok FROM currencies WHERE code=?", sample.code) && !db.get("SELECT 1 ok FROM fx_rates WHERE currency=?", sample.code), "the invented currency and its rate are gone");
   const opName = "Operator-named " + sample.code;
@@ -71,7 +74,7 @@ try {
   const seen = JSON.parse(db.get("SELECT value v FROM platform_settings WHERE key='seed_countries_seen'").v).filter(c => c !== gained.code);
   db.run("UPDATE platform_settings SET value=? WHERE key='seed_countries_seen'", JSON.stringify(seen));
   registry.repairCountries();
-  const arrived = db.get("SELECT * FROM countries WHERE code=?", gained.code);
+  const arrived = globalmod.getCountry(gained.code);
   ok(arrived && arrived.active === 0 && arrived.currency === gained.currency, "a newly declared country is added inactive: " + gained.code);
   dropCountry(gained.code);
   registry.repairCountries();
@@ -85,7 +88,7 @@ try {
   ok(!globalmod.createCountry({ ...good, name: "" }).ok, "a country with no name is refused");
   const made = globalmod.createCountry({ ...good, code: "qz" });
   ok(made.ok && db.get("SELECT code FROM countries WHERE code='QZ'"), "a valid country is created (code upper-cased)", made);
-  ok(globalmod.createCountry({ ...good, code: "QY", currency: "JPY", symbol: "¥", locale: "ja-JP" }).ok && db.get("SELECT decimals d FROM countries WHERE code='QY'").d === 0, "a new country takes its currency's decimals (JPY: 0)");
+  ok(globalmod.createCountry({ ...good, code: "QY", currency: "JPY", symbol: "¥", locale: "ja-JP" }).ok && globalmod.getCountry("QY").decimals === 0, "a new country takes its currency's decimals (JPY: 0)");
   ok(!globalmod.updateCountry("QZ", { locale: "??" }).ok && globalmod.updateCountry("QZ", { name: "Testland II" }).ok, "a partial update is checked on the fields it sends");
   ok(!globalmod.createCurrency({ code: "QZ", name: "Q", symbol: "q", decimals: 2, usd: 1 }).ok, "a currency code that is not three letters is refused");
   ok(!globalmod.createCurrency({ code: "QZQ", name: "Q", symbol: "q", decimals: 2, usd: 0 }).ok, "a currency with no value is refused");

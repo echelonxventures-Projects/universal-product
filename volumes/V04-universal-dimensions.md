@@ -34,7 +34,7 @@
 | **Contract** | [UCOS-PLC-000001 Geo Architecture](#ucos-plc-000001) |
 | **Artifacts** | [UCOS-PLC-000001](#ucos-plc-000001) |
 | **Concepts** | 69 — `node _registry/compile.js --search <words> --kind concept --owner "Geo"` |
-| **Code** | `lib/registry.js`, `lib/global.js`, `lib/kernel-shape.js`, `lib/places.js`, `lib/subdivisions.js`, `lib/seed/places.json`, `lib/seed/subdivisions.json` |
+| **Code** | `lib/registry.js`, `lib/global.js`, `lib/kernel-shape.js`, `lib/places.js`, `lib/subdivisions.js`, `lib/seed/places.json`, `lib/seed/subdivisions.json`, `scripts/retire-country-columns.js` |
 | **Managed in** | `_registry/domains.json` → `D-GEO` |
 
 **Live routes (5)** — what the platform serves today for this domain:

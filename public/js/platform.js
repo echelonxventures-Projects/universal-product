@@ -2912,7 +2912,10 @@ async function gTable(key, opts = {}) {
    A platform-level registry (countries, currencies, the uv_* universes…) writes at scope
    0 so every store inherits the row; a store-scoped dataset makes the operator name the
    store rather than silently filing the record under whichever one was open */
-async function gFieldInput(f, val) {
+/* a field the platform manages, or one given only when its record is created (createOnly), is
+   shown but not edited */
+const gLocked = (f, editing) => f.readonly || (f.createOnly && editing);
+async function gFieldInput(f, val, editing) {
   const fid = "gf_" + f.key;
   const req = f.required ? ' <em style="color:var(--p-red)" title="required">*</em>' : "";
   if (f.type === "bool") return `<label class="p-check"><input type="checkbox" id="${fid}" ${val ? "checked" : ""}> <span>${esc(f.label)}${req}</span></label>`;
@@ -2934,14 +2937,14 @@ async function gFieldInput(f, val) {
     const unmatched = val != null && val !== "" && !items.some(o => String(o.v) === String(val));
     return `<label><span>${esc(f.label)}${req}</span><select id="${fid}"><option value="">—</option>${unmatched ? `<option value="${esc(val)}" selected>${esc(val)}</option>` : ""}${items.map(o => `<option value="${esc(o.v)}" ${String(o.v) === String(val) ? "selected" : ""}>${esc(o.l)}</option>`).join("")}</select></label>`;
   }
-  if (f.readonly) return `<label><span>${esc(f.label)}${req}</span><input id="${fid}" type="text" value="${esc(val == null ? "" : val)}" disabled title="managed by the platform"></label>`;
+  if (gLocked(f, editing)) return `<label><span>${esc(f.label)}${req}</span><input id="${fid}" type="text" value="${esc(val == null ? "" : val)}" disabled title="${f.readonly ? "managed by the platform" : "given when the record is created"}"></label>`;
   const t = f.type === "money" || f.type === "number" ? "number" : f.type === "date" ? "date" : "text";
   return `<label><span>${esc(f.label)}${req}</span><input id="${fid}" type="${t}" step="any" value="${esc(val == null ? "" : val)}"></label>`;
 }
-function gCollect(def, m) {
+function gCollect(def, m, editing) {
   const row = {};
   for (const f of def.fields) {
-    if (f.readonly) continue;
+    if (gLocked(f, editing)) continue;
     const el = m.querySelector("#gf_" + f.key);
     if (!el) continue;
     if (f.type === "bool") { row[f.key] = el.checked ? 1 : 0; continue; }
@@ -2977,11 +2980,11 @@ async function gRecordForm(key, id) {
   }
   const m = modal(`<div class="p-modal-head"><h3>${id != null ? "Edit" : "New"} · ${esc(def.label || def.name || key)}</h3><button data-mclose>✕</button></div>
     <div class="p-form">${gScopeSelect(def, "gf_tenant")}
-      ${(await Promise.all(def.fields.map(f => gFieldInput(f, row[f.key])))).join("")}
+      ${(await Promise.all(def.fields.map(f => gFieldInput(f, row[f.key], id != null)))).join("")}
       <div style="display:flex;gap:10px;margin-top:8px"><button class="p-btn primary" id="gfSave">${id != null ? "Save" : "Create"}</button><button class="p-btn" data-mclose>Cancel</button></div></div>`);
   m.querySelector("#gfSave").onclick = async () => {
     try {
-      const body = gCollect(def, m);
+      const body = gCollect(def, m, id != null);
       const tidEl = m.querySelector("#gf_tenant");
       if (tidEl) body.tenant_id = tidEl.value ? Number(tidEl.value) : "";
       if (!def.platformLevel && def.storage !== "json" && !body.tenant_id) { toast("Pick a store — this dataset is store-scoped"); return; }

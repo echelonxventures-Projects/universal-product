@@ -1,5 +1,5 @@
 {
-  "$comment": "Geo's declarations on the kernel (lib/places.js). The place kind, the place tree and its identifier schemes are data: a new level (a planet, an ocean, a district, a shelf) is a node of this kind or a new kind, never code. Every write to a country or subdivision goes to the kernel first, in the same transaction as its master row; the boot pass only imports rows the kernel has never seen. A place's currency and locale are not facts of the place: they are settings owned by Value and Expression, assigned at the place's node and answered by the resolver; `column` names the master column a write or an import carries them in, until those columns are removed.",
+  "$comment": "Geo's declarations on the kernel (lib/places.js). The place kind, the place tree and its identifier schemes are data: a new level (a planet, an ocean, a district, a shelf) is a node of this kind or a new kind, never code. Every write to a country or subdivision goes to the kernel first, in the same transaction as its master row; the boot pass only imports rows the kernel has never seen. A place's currency and locale are not facts of the place: they are settings owned by Value and Expression, assigned at the place's node and answered by the resolver; `column` names the field a write carries them in, and the legacy column an import reads them from on an install that predates the place tree; master.retiredColumns are dropped from the country table once their values are on the kernel.",
   "namespace": "platform",
   "kind": {
     "kind": "place",
@@ -38,7 +38,16 @@
     "subdivisionScheme": "iso3166-2",
     "countryLevel": "country",
     "actor": "geo",
-    "importActor": "geo.import"
+    "importActor": "geo.import",
+    "currencySetting": "value.currency",
+    "retiredColumns": [
+      "currency",
+      "symbol",
+      "locale",
+      "decimals",
+      "tax_mode",
+      "tax_rate"
+    ]
   },
   "settings": [
     {

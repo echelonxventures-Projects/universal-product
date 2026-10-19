@@ -60,17 +60,15 @@ ok(noRule.length === 0, "no seeded country is resolved by a fallback into anothe
 console.log("\n▸ DRIFT — one edit moves every consumer, because there is no second copy");
 
 /* the country master used to carry this fact; verify it no longer does, so the two cannot
-   disagree. The columns remain for compatibility with warm databases, but nothing authoritative
-   reads them */
+   disagree. A fresh install's country table has no tax columns at all (P09) */
 const cDef = entity.allEntities(0).country;
 ok(!cDef.fields.some(f => f.key === "tax_mode" || f.key === "tax_rate"),
   "the country entity declares no tax fields — the New Country form cannot ask for a rate",
   cDef.fields.map(f => f.key).join(","));
-/* the store's unconfigured tax resolves from the ENGINE, not the country row. Set the country
-   row's rate to something unmistakable and confirm no tax consumer picks it up */
-db.run("UPDATE countries SET tax_rate=0.99, tax_mode='gst' WHERE code='US'");
+/* the store's unconfigured tax resolves from the ENGINE: the country row has nowhere to hold one */
+const noCol = c => { try { db.get(`SELECT ${c} FROM countries LIMIT 1`); return false; } catch (e) { return true; } };
+ok(noCol("tax_rate") && noCol("tax_mode"), "a fresh install's country table has no tax columns");
 const dflt = tax.defaultRateFor("US");
-ok(dflt.rate !== 0.99, "defaultRateFor ignores the country row's stale rate", JSON.stringify(dflt));
 ok(dflt.mode === (one("SELECT mode FROM tax_rules WHERE country='US'") || {}).mode, "the mode comes from the engine's rule", JSON.stringify(dflt));
 /* editing the ONE master moves every reader: quote, the default resolver, the config surface */
 db.run("UPDATE tax_rules SET standard=0.0444 WHERE country='US'");

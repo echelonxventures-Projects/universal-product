@@ -215,9 +215,7 @@ CREATE TABLE meta_lists (
   name TEXT PRIMARY KEY, label TEXT, items TEXT NOT NULL, seeded_from TEXT
 , edited INTEGER DEFAULT 0, uid TEXT);
 CREATE TABLE countries (
-  code TEXT PRIMARY KEY, name TEXT NOT NULL, currency TEXT NOT NULL, symbol TEXT NOT NULL,
-  locale TEXT NOT NULL, decimals INTEGER NOT NULL DEFAULT 2, tax_mode TEXT DEFAULT 'manual',
-  tax_rate REAL DEFAULT 0, position INTEGER DEFAULT 0, active INTEGER DEFAULT 1
+  code TEXT PRIMARY KEY, name TEXT NOT NULL, position INTEGER DEFAULT 0, active INTEGER DEFAULT 1
 , uid TEXT);
 CREATE TABLE currencies (
   code TEXT PRIMARY KEY, name TEXT NOT NULL, symbol TEXT NOT NULL, decimals INTEGER NOT NULL DEFAULT 2,
