@@ -21,19 +21,25 @@ const P = require("../lib/places.js");
 const globalmod = require("../lib/global.js");
 const entity = require("../lib/entity.js");
 let passed = 0, failed = 0;
+const threw = fn => { try { fn(); return null; } catch (e) { return e; } };
 const ok = (c, n, x) => { c ? (passed++, console.log("  ✓ " + n)) : (failed++, console.log("  ✗ " + n + (x !== undefined ? " → " + (typeof x === "string" ? x : JSON.stringify(x)) : ""))); };
 
 console.log("places — the master is on the kernel");
 const countries = db.all("SELECT code, name, uid, active FROM countries");
 const subs = db.all("SELECT rowid AS id, code, country_code, parent_id, name FROM subdivisions");
 const placeNodes = K.nodes("place", "platform", { includeHidden: true });
-ok(placeNodes.length === countries.length + subs.length, "one node per country and per subdivision", { nodes: placeNodes.length, rows: countries.length + subs.length });
+const PSEED = require("../lib/seed/places.json");
+const coded = placeNodes.filter(u => { const i = K.identifiers(u); return i[PSEED.master.countryScheme] || i[PSEED.master.subdivisionScheme]; });
+ok(coded.length === countries.length + subs.length, "one node per country and per subdivision", { nodes: coded.length, rows: countries.length + subs.length });
+ok(placeNodes.length === coded.length + PSEED.declared.filter(d => !d.code).length, "and one per place the seed declares above or beside them", { all: placeNodes.length });
 ok(countries.every(c => P.country(c.code)), "every country resolves by its code");
 ok(subs.every(s => P.subdivision(s.code)), "every subdivision resolves by its code");
 const withUid = countries.filter(c => /^[0-9a-f-]{36}$/i.test(c.uid || ""));
 ok(withUid.length > 0 && withUid.every(c => P.country(c.code) === c.uid.toLowerCase()), "a country keeps its universal ID as its node's");
 const tops = K.children(P.HIERARCHY, null, { includeHidden: true });
-ok(tops.length === countries.length && countries.every(c => tops.includes(P.country(c.code))), "countries are the top of the place tree; nothing is invented above them");
+const body = P.byPath(PSEED.master.countryParent);
+ok(body && tops.includes(body) && countries.every(c => K.parents(P.HIERARCHY, P.country(c.code)).join() === body), "countries sit under the place the seed declares for them; nothing above it is invented");
+ok(tops.every(u => PSEED.declared.some(d => !d.code && !d.path.includes(".") && P.pathOf(u) === d.path)), "every place at the top is one the seed declares", tops.map(P.pathOf));
 const nested = subs.find(s => s.parent_id);
 if (nested) {
   const parent = subs.find(s => s.id === nested.parent_id);
@@ -45,7 +51,29 @@ ok(K.attributes(P.country(countries[0].code)).name === countries[0].name, "a pla
 
 const MS = require("../lib/seed/places.json").master;
 const createdBy = actor => db.get("SELECT COUNT(*) AS n FROM k_events WHERE type=? AND actor=?", K.SEED.events.nodeCreated, actor).n;
-ok(createdBy(MS.actor) === countries.length + subs.length && createdBy(MS.importActor) === 0, "a fresh install seeds every place through Geo's write path; nothing needs importing", { write: createdBy(MS.actor), import: createdBy(MS.importActor) });
+ok(createdBy(MS.actor) === placeNodes.length && createdBy(MS.importActor) === 0, "a fresh install seeds every place through Geo's write path; nothing needs importing", { write: createdBy(MS.actor), import: createdBy(MS.importActor) });
+
+console.log("places — every place at any scale has a path, a system and a calendar");
+const cIN0 = countries.find(c => c.active === 1);
+ok(P.pathOf(P.country(cIN0.code)) === PSEED.master.countryParent + "." + cIN0.code.toLowerCase(), "a country's path is its body's and its code", P.pathOf(P.country(cIN0.code)));
+const sub0 = subs.find(x => !x.parent_id);
+ok(P.pathOf(P.subdivision(sub0.code)).startsWith(P.pathOf(P.country(sub0.country_code)) + "."), "a subdivision's path lies under its country's", P.pathOf(P.subdivision(sub0.code)));
+for (const d of PSEED.declared) ok(!!P.byPath(d.path), "the seed's place " + d.path + " exists" + (d.code ? " (it is " + d.code + ")" : ""), d.path);
+const alias = PSEED.declared.find(d => d.code);
+if (alias) ok(P.byPath(alias.path) === P.byCode(alias.code), "a declared path can name an existing subdivision");
+const bodyDecl = PSEED.declared.find(d => d.system && d.settings);
+const deep = PSEED.declared.find(d => d.path.startsWith(bodyDecl.path + ".") && !d.code);
+ok(P.spatial(deep.path).system === bodyDecl.system, "a place belongs to the system its body heads", P.spatial(deep.path));
+ok(P.calendarAt(deep.path) === Object.values(bodyDecl.settings)[0], "and keeps its body's calendar, Time's setting resolved up the tree", P.calendarAt(deep.path));
+ok(P.systems().some(x => x.key === bodyDecl.system && x.body === bodyDecl.path) && P.systems().some(x => x.key === PSEED.master.declaredSystem), "the place systems are the bodies that head one, and the declared system");
+ok(P.coordinateSystems().length === PSEED.coordinateSystems.length, "the coordinate systems are the kernel's (K05)");
+P.putPlace({ path: "titan", name: "Titan", level: "moon" });
+P.putPlace({ path: "titan.rhea-basin", name: "Rhea Basin", level: "basin" });
+ok(P.spatial("titan.rhea-basin").parent === "titan" && P.spatial("titan.rhea-basin").system === PSEED.master.declaredSystem, "a new world is declared at runtime, with no code, in the declared system");
+ok(!!threw(() => P.putPlace({ path: "nowhere.x", name: "X" })), "a place under a path no place has is refused");
+const vB = db.get("SELECT COUNT(*) AS n FROM k_events").n;
+P.declarePlaces();
+ok(db.get("SELECT COUNT(*) AS n FROM k_events").n === vB, "declaring the seed's places again writes nothing");
 
 console.log("places — the kernel is the record; the boot pass only imports");
 const evs = db.get("SELECT COUNT(*) AS n FROM k_events").n;
@@ -82,6 +110,7 @@ const moved = entity.updateEntity(0, "subdivision", mover.code, { parent_id: new
 ok(!moved.error, "a re-parent in the console is accepted", moved.error);
 ok(K.parents(P.HIERARCHY, P.subdivision(mover.code)).join() === P.subdivision(newParent.code), "a re-parented subdivision moves in the tree");
 ok(K.parents(P.HIERARCHY, P.subdivision(mover.code), { at: beforeMove }).join() === P.country(mover.country_code), "and where it sat before is kept");
+ok(P.pathOf(P.subdivision(mover.code)).startsWith(P.pathOf(P.subdivision(newParent.code)) + "."), "and its path follows it", P.pathOf(P.subdivision(mover.code)));
 const gone = db.all("SELECT code FROM subdivisions WHERE parent_id IS NULL AND code NOT IN (SELECT s.code FROM subdivisions s JOIN subdivisions c ON c.parent_id = s.rowid)").find(s => s.code !== newParent.code);
 const goneNode = P.subdivision(gone.code);
 entity.deleteEntity(0, "subdivision", gone.code);
@@ -162,6 +191,9 @@ ok(!colGone("currency"), "and its columns are left alone (dropping them is the o
 ok(registry.country("QW").symbol === registry.currency(cur3).symbol, "a legacy column is never read: the symbol is the currency's");
 const legacyNew = entity.createEntity(0, "country", { code: "QT", name: "Newer", currency: cur3, locale: "en-QT" });
 ok(!legacyNew.error && db.get("SELECT symbol FROM countries WHERE code='QT'").symbol === registry.currency(cur3).symbol, "a new row on such a table still fills the columns it requires", legacyNew);
+db.run("INSERT OR REPLACE INTO meta_lists(name,label,items) VALUES(?,?,?)", PSEED.master.legacyPathList, "legacy", JSON.stringify([{ key: PSEED.master.countryParent }, { key: "europa", name: "Europa", level: "moon" }, { key: "europa.dock-1", name: "Dock 1", level: "dock" }]));
+const leg = P.importRows();
+ok(leg.legacyPaths === 2 && P.spatial("europa.dock-1").parent === "europa", "places an operator added to the offer engine's old list are imported, parents first", leg);
 ok(Object.values(P.importRows()).every(v => v === 0), "a second pass imports nothing");
 const noYes = require("child_process").spawnSync(process.execPath, [path.join(__dirname, "..", "scripts", "retire-country-columns.js")], { env: { ...process.env, LX_DB: TMP }, encoding: "utf8" });
 ok(noYes.status === 2 && !colGone("currency"), "the retirement script does nothing without the operator's --yes");

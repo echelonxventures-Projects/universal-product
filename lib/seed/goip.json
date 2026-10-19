@@ -508,7 +508,7 @@
    "n": 64,
    "key": "universal_spatial",
    "name": "Universal Spatial Domain",
-   "owner": "meta_lists:goipSpatialNodes",
+   "owner": "kernel:places",
    "discriminator": "systems, coordinates, hierarchy paths",
    "fabric": "context"
   },
@@ -551,7 +551,7 @@
   {
    "key": "spatial",
    "name": "Spatial Context",
-   "source": "registry:goipSpatialSystems"
+   "source": "kernel:places"
   },
   {
    "key": "economic",

@@ -64,8 +64,8 @@ for (const [registry, want] of Object.entries(SPEC)) {
 /* the temporal / spatial / economic examples the specification names by hand */
 for (const c of ["gregorian", "islamic", "hebrew", "fiscal", "academic", "mars_darian", "lunar", "federation", "custom_planetary"]) ok(has("goipCalendars", c), "calendar registry carries " + c);
 for (const r of ["Temporal Authority=goipCalendars", "Chronology Registry=goipChronologies", "Temporal Measurement=goipTemporalUnits", "Temporal Conversion=goipTemporalConversions"]) { const [label, key] = r.split("="); ok(reg(key).length > 0 || Object.keys(require(path.join(__dirname, "..", "lib", "registry.js")).list(key) || {}).length > 0, "temporal domain: " + label + " is registry-driven"); }
-for (const p of ["earth", "earth.in", "earth.in.bihar", "earth.in.bihar.patna", "mars", "mars.olympus", "mars.olympus.sector-7", "moon", "moon.alpha", "galaxy-7", "galaxy-7.zone-22"]) ok(has("goipSpatialNodes", p), "spatial hierarchy carries " + p);
-for (const sY of ["earth_admin", "mars_admin", "lunar_admin", "galactic", "network", "declared"]) ok(has("goipSpatialSystems", sY), "spatial system " + sY);
+for (const p of ["earth", "earth.in", "earth.in.bihar", "earth.in.bihar.patna", "mars", "mars.olympus", "mars.olympus.sector-7", "moon", "moon.alpha", "galaxy-7", "galaxy-7.zone-22"]) ok(!!require(path.join(__dirname, "..", "lib", "places.js")).byPath(p), "Geo's place tree carries " + p);
+for (const sY of ["earth_admin", "mars_admin", "lunar_admin", "galactic", "network", "declared"]) ok(require(path.join(__dirname, "..", "lib", "places.js")).systems().some(x => x.key === sY), "place system " + sY);
 for (const u of ["USD", "EUR", "INR", "MARS_CREDIT", "LUNAR_TOKEN", "FED_CREDIT", "CARBON", "ENERGY", "RESOURCE", "POINT", "COIN", "TOKEN"]) ok(has("goipEconomicUnits", u), "economic unit " + u);
 ok(!reg("goipEconomicUnits").some(u => u.class === "fiat" && !u.settleable), "fiat units are settleable");
 
@@ -133,7 +133,10 @@ ok(typeof require(path.join(__dirname, "..", "lib", "billing.js")).meter === "fu
 /* ── 7 · NO REDESIGN: the registries are data, and the engines read the data ── */
 group("no redesign — a new civilization is a row, not a release");
 const D = require(path.join(__dirname, "..", "lib", "db.js"));
-D.run("UPDATE meta_lists SET items=? WHERE name='goipSpatialNodes'", JSON.stringify(reg("goipSpatialNodes").concat([{ key: "titan", system: "declared", parent: null, name: "Titan", level: "moon" }, { key: "titan.rhea-basin", system: "declared", parent: "titan", name: "Rhea Basin", level: "settlement" }])));
+/* a new world is a place declared on Geo's tree — data, through its write path, no code */
+const Pl = require(path.join(__dirname, "..", "lib", "places.js"));
+Pl.putPlace({ path: "titan", name: "Titan", level: "moon" });
+Pl.putPlace({ path: "titan.rhea-basin", name: "Rhea Basin", level: "settlement" });
 D.run("UPDATE meta_lists SET items=? WHERE name='goipEconomicUnits'", JSON.stringify(reg("goipEconomicUnits").concat([{ key: "TITAN_CRED", name: "Titan Credits", class: "colonial", decimals: 2, base_rate: 0, settleable: false, source: "registry" }])));
 const made = goip.createExchange(1, { name: "Titan settlement welcome", benefit: "percentage_discount", value: 15, code: "TITAN15", domain: "offer", economic_unit: "TITAN_CRED", spatial: { system: "declared", include: ["titan.rhea-basin"] }, governance: { state: "published" } }, {});
 ok(made.ok, "a value exchange binds to a world invented seconds ago, with no code change", made.error);
