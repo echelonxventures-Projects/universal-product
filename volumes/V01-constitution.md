@@ -26,6 +26,7 @@
 | | |
 |---|---|
 | **Category** | C01 Constitution |
+| **Build status** | designed — declared and contracted; no code or live route yet |
 | **Owns** | [Capability](../UCOS-MASTER.md#t-capability), [Constitution](../UCOS-MASTER.md#t-constitution), [Amendment](../UCOS-MASTER.md#t-amendment) |
 | **Responsible for** | Constitutional Law, Amendment Process, Certification Law, Capability Declaration |
 | **Not responsible for** | Runtime Execution, Registry Storage |
@@ -34,6 +35,8 @@
 | **Concepts** | 1379 — `node _registry/compile.js --search <words> --kind concept --owner "Constitutional Authority"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-CON` |
+
+**Live routes:** none yet.
 
 <a id="ucos-con-000001"></a>
 #### UCOS-CON-000001 · Constitutional Foundation
@@ -83,6 +86,8 @@ Identity:
 
 <a id="ucos-con-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /identity.v1.create
 - POST /identity.v1.resolve
@@ -299,6 +304,8 @@ Knowledge:
 <a id="ucos-con-000002-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - POST /knowledge.v1.assert
 - GET  /knowledge.v1/{id}
 - POST /knowledge.v1/{id}/contest
@@ -509,6 +516,8 @@ This IS the graph. (:Identity)-[:RELATIONSHIP_TYPE {context, temporal, trust}]->
 <a id="ucos-con-000003-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - POST /relationship.v1.create
 - POST /relationship.v1.query
 - GET  /relationship.v1/{id}
@@ -715,6 +724,8 @@ Context:
 <a id="ucos-con-000004-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - POST /context.v1.create
 - GET  /context.v1/{id}
 - POST /context.v1.resolve
@@ -914,6 +925,8 @@ Policy:
 
 <a id="ucos-con-000005-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /policy.v1.create
 - POST /policy.v1.activate
@@ -1118,6 +1131,8 @@ Rule:
 <a id="ucos-con-000006-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - POST /rule.v1.evaluate
 - GET  /rule.v1/{id}
 - GET  /rule.v1/byPolicy/{policyId}
@@ -1313,6 +1328,8 @@ Authority:
 
 <a id="ucos-con-000007-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /authority.v1.grant
 - POST /authority.v1.delegate
@@ -1516,6 +1533,8 @@ Trust:
 <a id="ucos-con-000008-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - GET  /trust.v1/{subjectId}
 - POST /trust.v1/recompute
 - GET  /trust.v1.history/{subjectId}
@@ -1711,6 +1730,8 @@ Evolution:
 
 <a id="ucos-con-000009-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /evolution.v1.propose
 - POST /evolution.v1.approve
@@ -1909,6 +1930,8 @@ Evidence:
 
 <a id="ucos-con-000010-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /evidence.v1.submit
 - GET  /evidence.v1/{id}

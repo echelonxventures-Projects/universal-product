@@ -301,6 +301,37 @@ function run(payload) {
     record(check("zero-missing · every document has one registered status and owner, and sits where its status says (" + dr.documents.length + " documents)",
       docPaths.size === dr.documents.length && !docProblems.length, docProblems.slice(0, 6).join("; ")));
 
+    /* the live API: every route has one owner; the sealed register equals a fresh derivation;
+       every domain's build status follows from what it owns (code modules or live routes) */
+    const api = payload.api;
+    let apiFresh = null;
+    try { apiFresh = require(path.join(ROOT, "lib", "canonical.js")).apiRegister(rf); } catch (e) { }
+    const badApiRules = ((rf.api || {}).owners || []).filter(r => !domNames.has(r.owner)).map(r => r.pattern);
+    /* an independent count of every route key in the table, so a parser that skips an entry
+       form cannot pass silently */
+    let keyCount = -1;
+    try {
+      const src = require("fs").readFileSync(path.join(ROOT, (rf.api || {}).source || "lib/api.js"), "utf8");
+      const s0 = src.indexOf("const " + ((rf.api || {}).table || "routes") + " = ["), s1 = src.indexOf("function handle(", s0);
+      keyCount = (src.slice(s0, s1).match(/"(GET|POST|PUT|DELETE|PATCH) \/api\//g) || []).length;
+    } catch (e) { }
+    const apiProblems = api ? api.unowned.slice(0, 5).concat(badApiRules) : ["no API register compiled"];
+    if (api && api.routes.length !== keyCount) apiProblems.push("the register holds " + api.routes.length + " of " + keyCount + " routes in the table");
+    record(check("zero-missing · every live API route has one owning domain (" + (api ? api.routes.length : 0) + " routes)",
+      !!api && api.routes.length > 0 && !apiProblems.length && JSON.stringify(apiFresh) === JSON.stringify(api), apiProblems.join(", ")));
+    const built = new Set(Object.keys((api || {}).counts || {}));
+    for (const m of (rf.codebase || { modules: [] }).modules) for (const p of m.parts || [{ owner: m.owner }]) built.add(p.owner);
+    const statusWrong = doms.filter(d => d.status !== (built.has(d.name) ? "partial" : "designed") && !(d.status === "built" && built.has(d.name))).map(d => d.name + " says " + d.status);
+    record(check("zero-overlap · every domain's build status matches what it owns (designed: no code and no routes)", !statusWrong.length, statusWrong.slice(0, 6).join(", ")));
+
+    /* the gap list: every gap has a declared owner and status; a closed gap names the
+       amendment that closed it */
+    const gaps = (rm.gaps || []);
+    const badGaps = gaps.filter(g => !g.gapId || !g.title || !domNames.has(g.owner) || !["open", "closed"].includes(g.status)
+      || (g.status === "closed" && (!g.closedBy || !amdIds.has(g.closedBy)))).map(g => g.gapId || g.title);
+    record(check("zero-partial · every recorded gap has an owner and a status, and every closed gap its amendment (" + gaps.filter(g => g.status === "open").length + " open)",
+      keySet(gaps, "gapId").size === gaps.length && !badGaps.length, badGaps.join(", ")));
+
     registerCounts = { categories: cats.length, domains: doms.length, owned: owners.size, domainsWithoutContract: noContract.length, outstanding: noContract,
       laws: laws.length, lawsNotEnforced: notEnforced.length, kernel: kernel.length, modules: cb.modules.length, steps: rm.steps.length,
       stepsDone: rm.steps.filter(st => st.status === "done").length,

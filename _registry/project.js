@@ -32,7 +32,14 @@ const MANIFEST = load('manifest.json');
 const CONTENT_MAP = load('content-map.json');
 const CODEBASE = load('codebase.json');
 /* the concept register is derived at compile time (lib/canonical.js) and read from the seal */
-let _register;
+let _register, _api;
+function liveApi() {
+  if (_api === undefined) {
+    const silence = console.log; console.log = () => { };
+    try { _api = require(path.join(ROOT, 'lib', 'canonical.js')).get().api || null; } finally { console.log = silence; }
+  }
+  return _api;
+}
 function conceptRegister() {
   if (_register === undefined) {
     const silence = console.log; console.log = () => { };
@@ -422,6 +429,7 @@ function domainCard(d, from) {
     '',
     '| | |', '|---|---|',
     `| **Category** | ${c.categoryId} ${c.name} |`,
+    `| **Build status** | ${d.status}${d.status === 'designed' ? ' — declared and contracted; no code or live route yet' : ''} |`,
     `| **Owns** | ${(d.owns || []).map(o => linkTerm(o, from)).join(', ')} |`,
     `| **Responsible for** | ${(d.responsible || []).join(', ')} |`,
     d.notResponsible ? `| **Not responsible for** | ${d.notResponsible.join(', ')} |` : `| **Must obey** | ${(d.mustObey || []).join(', ')} |`,
@@ -430,7 +438,13 @@ function domainCard(d, from) {
     `| **Concepts** | ${((conceptRegister() || { counts: { byOwner: {} } }).counts.byOwner[d.name] || 0)} — \`node _registry/compile.js --search <words> --kind concept --owner "${d.name}"\` |`,
     `| **Code** | ${CODEBASE.modules.filter(m => (m.parts || [{ owner: m.owner }]).some(p => p.owner === d.name)).map(m => '\`' + m.path + '\`').join(', ') || '—'} |`,
     `| **Managed in** | \`_registry/domains.json\` → \`${d.domainId}\` |`,
-    ''
+    '',
+    ...(() => {
+      const routes = ((liveApi() || {}).routes || []).filter(r => r[3] === d.name);
+      return routes.length
+        ? [`**Live routes (${routes.length})** — what the platform serves today for this domain:`, '', ...routes.map(r => `- \`${r[0]} ${r[1]}\``), '']
+        : ['**Live routes:** none yet.', ''];
+    })()
   ].join('\n');
 }
 
@@ -450,7 +464,7 @@ function artifactEntry(a, from) {
     if (!k || used.has(k)) continue;
     used.add(k);
     out.push(`<a id="${anchor(a.id + '-' + sec)}"></a>`);
-    out.push(`##### ${sec}`, '', render(block[k]), '');
+    out.push(`##### ${sec}`, '', ...(k === 'apis' ? ['*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*', ''] : []), render(block[k]), '');
   }
   return out.join('\n');
 }
@@ -533,7 +547,9 @@ function masterText(volumes, sizes, max) {
     '| A kernel part | `_registry/domains.json` → `kernel` |',
     '| Which domain owns a code file | `_registry/codebase.json` → `modules` |',
     '| A document’s status (corpus source, projection, living record, guidance, superseded) and owner | `_registry/documents.json` → `documents` (move a superseded document into `_superseded/`) |',
-    '| A build step’s status, or a design decision | `_registry/roadmap.json` → `steps`, `decisions` |',
+    '| A build step’s status, a design decision, or a gap | `_registry/roadmap.json` → `steps`, `decisions`, `gaps` |',
+    '| Which domain owns a live API route | `_registry/api.json` → `owners` (rules by path; the first match wins) |',
+    '| A domain’s build status | derived: `designed` until it owns code or a live route (`_registry/domains.json` → `status`, checked by the gate) |',
     '| Which register domain owns a part of another domain system | `_registry/alignment.json` → `systems` |',
     '| A primitive (frozen: needs an amendment) | `_registry/primitives.json`, with an entry in `domains.json` → `amendments` |',
     '| A term (add, define) | `_registry/terminology.json`, and add it to exactly one domain’s `owns` |',
@@ -672,6 +688,11 @@ function masterText(volumes, sizes, max) {
 
   L.push('<a id="build-path"></a>', '## 11. Build path and decisions', '');
   const done = ROADMAP.steps.filter(st => st.status === 'done').length;
+  const gaps = ROADMAP.gaps || [];
+  L.push('<a id="gaps"></a>', '### Gaps', '', `${gaps.filter(g => g.status === 'open').length} open, ${gaps.filter(g => g.status === 'closed').length} closed. Every gap has one owning domain; a closed gap names the amendment that closed it (\`_registry/roadmap.json\` → \`gaps\`).`, '',
+    '| Gap | Group | What | Owner | Status |', '|---|---|---|---|---|');
+  for (const g of gaps) { const o = domainByName(g.owner); L.push(`| <a id="${anchor(g.gapId)}"></a>${g.gapId} | ${g.group} | ${g.title} | ${o ? linkDomain(o, from) : g.owner} | ${g.status}${g.closedBy ? ' (' + g.closedBy + ')' : ''} |`); }
+  L.push('', '### Steps', '');
   L.push(`${done} of ${ROADMAP.steps.length} steps done. Each step is committed only once the full test suite passes.`, '', '| Step | What | Domains | Status | Delivered by |', '|---|---|---|---|---|');
   for (const st of ROADMAP.steps) L.push(`| <a id="${anchor(st.stepId)}"></a>${st.stepId} | ${st.title} | ${st.domains.map(n => linkDomain(domainByName(n), from)).join(', ')} | ${st.status} | ${(st.deliveredBy || []).map(a => `[${a}](#${anchor(a)})`).join(', ') || '—'} |`);
   L.push('', '### Decisions', '', '| ID | Question | Decision |', '|---|---|---|');
@@ -690,6 +711,7 @@ function masterText(volumes, sizes, max) {
   for (const k of DOMAINS.kernel || []) rows.push([k.partId, 'kernel part', k.name, `[kernel](#${anchor(k.partId)})`]);
   for (const st of ROADMAP.steps) rows.push([st.stepId, 'build step', st.title.slice(0, 60), `[build path](#${anchor(st.stepId)})`]);
   for (const dc of ROADMAP.decisions) rows.push([dc.decisionId, 'decision', dc.question, `[decisions](#${anchor(dc.decisionId)})`]);
+  for (const g of ROADMAP.gaps || []) rows.push([g.gapId, 'gap', g.title.slice(0, 60), `[gaps](#${anchor(g.gapId)})`]);
   for (const a of DOMAINS.amendments || []) rows.push([a.amendmentId, 'amendment', a.summary.split(':')[0].slice(0, 60), `[constitution](#${anchor(a.amendmentId)})`]);
   rows.sort((x, y) => x[0].localeCompare(y[0]));
   for (const r of rows) L.push(`| ${r[0]} | ${r[1]} | ${r[2]} | ${r[3]} |`);

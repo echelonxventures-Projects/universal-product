@@ -23,6 +23,7 @@
 | | |
 |---|---|
 | **Category** | C06 Decision and Control |
+| **Build status** | partial |
 | **Owns** | [Policy](../UCOS-MASTER.md#t-policy) |
 | **Responsible for** | Behavior, Governance, Enforcement |
 | **Not responsible for** | Knowledge, Meaning, Identity |
@@ -31,6 +32,15 @@
 | **Concepts** | 342 — `node _registry/compile.js --search <words> --kind concept --owner "Policy"` |
 | **Code** | `lib/policies.js` |
 | **Managed in** | `_registry/domains.json` → `D-POL` |
+
+**Live routes (6)** — what the platform serves today for this domain:
+
+- `GET /api/ucii/policies`
+- `POST /api/ucii/policies`
+- `GET /api/platform/policies`
+- `GET /api/platform/policies/:category`
+- `PUT /api/platform/policies/:category`
+- `DELETE /api/platform/policies/:category`
 
 <a id="ucos-pol-000001"></a>
 #### UCOS-POL-000001 · Policy Architecture
@@ -76,6 +86,8 @@ Policy:
 
 <a id="ucos-pol-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /policy.v1.create
 - POST /policy.v1.activate
@@ -245,14 +257,32 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C06 Decision and Control |
+| **Build status** | partial |
 | **Owns** | [Rule](../UCOS-MASTER.md#t-rule) |
 | **Responsible for** | Executable Constraint Definition, Rule Evaluation Readiness |
 | **Not responsible for** | Policy Intent, Decision |
 | **Contract** | [UCOS-RUL-000001 Rule Architecture](#ucos-rul-000001) |
 | **Artifacts** | [UCOS-RUL-000001](#ucos-rul-000001) |
 | **Concepts** | 35 — `node _registry/compile.js --search <words> --kind concept --owner "Rule"` |
-| **Code** | `lib/rules.js`, `lib/gates.js`, `lib/tax.js`, `lib/seed/gates.json`, `lib/seed/rules.json`, `lib/seed/tax.json` |
+| **Code** | `lib/registry.js`, `lib/rules.js`, `lib/gates.js`, `lib/tax.js`, `lib/seed/gates.json`, `lib/seed/rules.json`, `lib/seed/tax.json` |
 | **Managed in** | `_registry/domains.json` → `D-RUL` |
+
+**Live routes (14)** — what the platform serves today for this domain:
+
+- `GET /api/admin/tax/report`
+- `GET /api/admin/tax`
+- `POST /api/admin/tax/quote`
+- `GET /api/platform/rules`
+- `POST /api/platform/rules`
+- `POST /api/platform/rules/explain`
+- `DELETE /api/platform/rules/:id`
+- `GET /api/admin/rules`
+- `GET /api/admin/rules/subjects`
+- `GET /api/platform/rules/subjects`
+- `POST /api/admin/rules`
+- `POST /api/admin/rules/explain`
+- `DELETE /api/admin/rules/:id`
+- `POST /api/rules/check`
 
 <a id="ucos-rul-000001"></a>
 #### UCOS-RUL-000001 · Rule Architecture
@@ -296,6 +326,8 @@ Rule:
 
 <a id="ucos-rul-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /rule.v1.evaluate
 - GET  /rule.v1/{id}
@@ -458,6 +490,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C06 Decision and Control |
+| **Build status** | designed — declared and contracted; no code or live route yet |
 | **Owns** | [Decision](../UCOS-MASTER.md#t-decision) |
 | **Responsible for** | Decision Recording, Decision Lineage |
 | **Not responsible for** | Rule Execution Semantics |
@@ -466,6 +499,8 @@ stateDiagram-v2
 | **Concepts** | 212 — `node _registry/compile.js --search <words> --kind concept --owner "Decision"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-DEC` |
+
+**Live routes:** none yet.
 
 <a id="ucos-dec-000001"></a>
 #### UCOS-DEC-000001 · Decision Architecture
@@ -509,6 +544,8 @@ Decision:
 
 <a id="ucos-dec-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /dec.v1.record
 - GET  /dec.v1/{id}
@@ -663,6 +700,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C06 Decision and Control |
+| **Build status** | partial |
 | **Owns** | [Authority](../UCOS-MASTER.md#t-authority), [Ownership](../UCOS-MASTER.md#t-ownership), [Permission](../UCOS-MASTER.md#t-permission) |
 | **Responsible for** | Governance Rights, Jurisdictions, Delegations, Permissions |
 | **Not responsible for** | Knowledge, Meaning, Relationships |
@@ -671,6 +709,18 @@ stateDiagram-v2
 | **Concepts** | 331 — `node _registry/compile.js --search <words> --kind concept --owner "Authority"` |
 | **Code** | `lib/authz.js`, `lib/rbac.js`, `lib/prbac.js`, `lib/seed/authz.json` |
 | **Managed in** | `_registry/domains.json` → `D-AUT` |
+
+**Live routes (9)** — what the platform serves today for this domain:
+
+- `GET /api/admin/roles`
+- `POST /api/admin/roles`
+- `DELETE /api/admin/roles/:key`
+- `POST /api/admin/roles/reset`
+- `GET /api/platform/roles`
+- `POST /api/platform/roles`
+- `DELETE /api/platform/roles/:key`
+- `POST /api/platform/roles/staff`
+- `DELETE /api/platform/roles/staff/:key`
 
 <a id="ucos-aut-000001"></a>
 #### UCOS-AUT-000001 · Authority Architecture
@@ -714,6 +764,8 @@ Authority:
 
 <a id="ucos-aut-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /authority.v1.grant
 - POST /authority.v1.delegate

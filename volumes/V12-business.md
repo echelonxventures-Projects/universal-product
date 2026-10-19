@@ -26,6 +26,7 @@
 | | |
 |---|---|
 | **Category** | C12 Business |
+| **Build status** | partial |
 | **Owns** | [Commerce Projection](../UCOS-MASTER.md#t-commerce-projection) |
 | **Responsible for** | Commerce Projections |
 | **Not responsible for** | Truth Ownership, Offerings |
@@ -34,6 +35,276 @@
 | **Concepts** | 1969 — `node _registry/compile.js --search <words> --kind concept --owner "Commerce"` |
 | **Code** | `lib/billing.js`, `lib/offers.js`, `lib/goip.js`, `lib/shipping.js`, `lib/logistics.js`, `lib/fin.js`, `lib/fintech.js`, `lib/marketplace.js`, `lib/marketplace-ext.js`, `lib/affiliate.js`, `lib/trade.js`, `lib/qcommerce.js`, `lib/mobility.js`, `lib/operations.js`, `lib/recurring.js`, `lib/ugc.js`, `lib/gcatalog.js`, `lib/seed/catalog.json`, `lib/seed/goip.json`, `lib/seed/offers.json` |
 | **Managed in** | `_registry/domains.json` → `D-BIZ` |
+
+**Live routes (267)** — what the platform serves today for this domain:
+
+- `GET /api/qc/promise`
+- `GET /api/qc/stores`
+- `GET /api/qc/slots`
+- `POST /api/qc/pin`
+- `POST /api/qc/reserve`
+- `GET /api/qc/runs`
+- `POST /api/qc/runs`
+- `POST /api/qc/runs/:id`
+- `POST /api/qc/runs/:id/pod`
+- `GET /api/qc/riders`
+- `GET /api/fintech/upi`
+- `POST /api/fintech/upi`
+- `POST /api/fintech/upi/collect`
+- `POST /api/fintech/upi/collect/:id`
+- `POST /api/fintech/qr`
+- `POST /api/fintech/qr/:id/scan`
+- `POST /api/fintech/links`
+- `POST /api/fintech/links/:token/pay`
+- `POST /api/fintech/mandates`
+- `POST /api/fintech/mandates/:id/charge`
+- `POST /api/fintech/escrow`
+- `POST /api/fintech/escrow/:id/release`
+- `POST /api/fintech/escrow/:id/dispute`
+- `POST /api/fintech/splits`
+- `POST /api/fintech/kyc`
+- `POST /api/fintech/kyc/:id/verify`
+- `POST /api/fintech/payouts`
+- `POST /api/fintech/payouts/:id/process`
+- `GET /api/fintech/billers`
+- `POST /api/fintech/bills`
+- `GET /api/fintech/plans`
+- `POST /api/fintech/recharge`
+- `POST /api/fintech/transfer`
+- `POST /api/fintech/bnpl`
+- `POST /api/fintech/bnpl/:id/spend`
+- `POST /api/fintech/emi/:id/pay`
+- `POST /api/fintech/loans`
+- `POST /api/fintech/loans/:id/disburse`
+- `POST /api/fintech/insurance`
+- `POST /api/fintech/insurance/:id/activate`
+- `POST /api/fintech/vouchers`
+- `POST /api/fintech/vouchers/redeem`
+- `POST /api/marketplace/onboarding`
+- `POST /api/marketplace/onboarding/:id/review`
+- `GET /api/marketplace/offers/:productId`
+- `POST /api/marketplace/buybox/:productId`
+- `POST /api/marketplace/fba`
+- `POST /api/marketplace/fba/:id/receive`
+- `POST /api/marketplace/performance/:sellerId`
+- `POST /api/marketplace/claims`
+- `POST /api/marketplace/claims/:id/resolve`
+- `POST /api/marketplace/smart-fulfilment`
+- `GET /api/marketplace/portal/:sellerId`
+- `POST /api/trade/assurance`
+- `POST /api/trade/assurance/:id/milestone`
+- `POST /api/trade/assurance/:id/confirm`
+- `POST /api/trade/assurance/:id/dispute`
+- `POST /api/trade/gold`
+- `POST /api/trade/verification`
+- `POST /api/trade/verification/:id/complete`
+- `GET /api/trade/badges/:supplierId`
+- `POST /api/trade/docs`
+- `GET /api/trade/docs/:id`
+- `POST /api/trade/lc`
+- `POST /api/trade/lc/:id/present`
+- `POST /api/trade/rfq/:id/quote`
+- `POST /api/trade/quotes/:id/accept`
+- `POST /api/trade/tenders/:id/bid`
+- `POST /api/trade/tenders/:id/award`
+- `GET /api/trade/price`
+- `GET /api/trade/moq-check`
+- `GET /api/compare`
+- `POST /api/compare`
+- `POST /api/compare/remove`
+- `POST /api/orders/:id/cancel`
+- `POST /api/orders/:id/invoice`
+- `GET /api/stores`
+- `GET /api/platform/global-products`
+- `POST /api/platform/global-products`
+- `PUT /api/platform/global-products/:id`
+- `DELETE /api/platform/global-products/:id`
+- `GET /api/platform/store-product-config`
+- `POST /api/platform/store-product-config`
+- `DELETE /api/platform/store-product-config/:tenant_id/:global_id`
+- `GET /api/platform/global-catalog`
+- `GET /api/promos`
+- `POST /api/rfqs`
+- `POST /api/returns`
+- `POST /api/zip`
+- `POST /api/coupon`
+- `GET /api/products`
+- `GET /api/shipments`
+- `GET /api/shipments/:id`
+- `POST /api/admin/shipments`
+- `PUT /api/admin/shipments/:id/status`
+- `POST /api/admin/warehouses/route`
+- `PUT /api/admin/returns/:id/disposition`
+- `GET /api/carriers`
+- `GET /api/admin/fin/disputes`
+- `POST /api/admin/fin/disputes`
+- `PUT /api/admin/fin/disputes/:id`
+- `POST /api/admin/fin/payments/:id/retry`
+- `GET /api/admin/fin/payouts`
+- `POST /api/admin/fin/payouts`
+- `POST /api/admin/fin/payouts/:id/disburse`
+- `POST /api/admin/fin/reconcile`
+- `GET /api/admin/fin/ledger`
+- `GET /api/marketplace/ads`
+- `POST /api/admin/marketplace/ads`
+- `GET /api/marketplace/rank`
+- `POST /api/marketplace/ads/:id/event`
+- `POST /api/admin/marketplace/attribute`
+- `GET /api/admin/marketplace/metrics`
+- `POST /api/admin/marketplace/settle`
+- `GET /api/products/:id`
+- `GET /api/cart`
+- `POST /api/cart`
+- `PUT /api/cart`
+- `DELETE /api/cart/:id`
+- `POST /api/saved`
+- `DELETE /api/saved/:id`
+- `POST /api/saved/:id/move`
+- `GET /api/orders`
+- `POST /api/checkout`
+- `POST /api/checkout/quote`
+- `POST /api/reviews/:id`
+- `POST /api/reviews/:id/vote`
+- `POST /api/reviews/:id/reply`
+- `PUT /api/admin/reviews/:id/moderate`
+- `GET /api/admin/ugc/queue`
+- `POST /api/qna/:id/question`
+- `POST /api/qna/question/:id/answer`
+- `POST /api/qna/:id/vote`
+- `PUT /api/admin/qna/:id/moderate`
+- `POST /api/subscriptions`
+- `GET /api/subscriptions`
+- `PUT /api/subscriptions/:id`
+- `GET /api/admin/recurring`
+- `POST /api/admin/recurring/process`
+- `GET /api/membership`
+- `POST /api/membership/subscribe`
+- `POST /api/membership/cancel`
+- `GET /api/admin/memberships`
+- `GET /api/admin/mobility`
+- `POST /api/admin/mobility/rides`
+- `PUT /api/admin/mobility/rides/:id`
+- `POST /api/admin/mobility/rides/:id/rate`
+- `POST /api/admin/mobility/drivers`
+- `POST /api/admin/mobility/drivers/:id/toggle`
+- `POST /api/admin/mobility/drivers/:id/deactivate`
+- `POST /api/admin/mobility/vehicles`
+- `POST /api/admin/mobility/zones`
+- `GET /api/admin/operations`
+- `POST /api/admin/ops/employees`
+- `POST /api/admin/ops/attendance`
+- `POST /api/admin/ops/payroll/run`
+- `PUT /api/admin/ops/payroll/:id`
+- `POST /api/admin/ops/requests`
+- `PUT /api/admin/ops/requests/:id`
+- `POST /api/admin/ops/work-orders`
+- `POST /api/admin/ops/work-orders/:id/complete`
+- `POST /api/admin/ops/projects`
+- `POST /api/admin/ops/tasks`
+- `POST /api/admin/ops/tasks/:id/time`
+- `PUT /api/admin/ops/approvals/:id`
+- `POST /api/giftcard`
+- `POST /api/viewed`
+- `GET /api/admin/products`
+- `GET /api/admin/products/:id`
+- `POST /api/admin/products`
+- `PUT /api/admin/products/:id`
+- `PUT /api/admin/products/:id/meta`
+- `POST /api/admin/products/:id/lifecycle`
+- `POST /api/admin/products/:id/relationships`
+- `DELETE /api/admin/products/:id`
+- `POST /api/admin/skus`
+- `PUT /api/admin/skus/:id`
+- `DELETE /api/admin/skus/:id`
+- `PUT /api/admin/inventory/:id`
+- `GET /api/admin/warehouses`
+- `POST /api/admin/warehouses`
+- `PUT /api/admin/warehouses/:id`
+- `GET /api/admin/promotions`
+- `POST /api/admin/promotions`
+- `PUT /api/admin/promotions/:id`
+- `DELETE /api/admin/promotions/:id`
+- `GET /api/admin/sellers`
+- `POST /api/admin/sellers`
+- `PUT /api/admin/sellers/:id`
+- `DELETE /api/admin/sellers/:id`
+- `GET /api/admin/rfqs`
+- `PUT /api/admin/rfqs/:id`
+- `GET /api/admin/returns`
+- `PUT /api/admin/returns/:id`
+- `GET /api/admin/settlements`
+- `POST /api/admin/settlements/generate`
+- `GET /api/admin/orders`
+- `PUT /api/admin/orders/:id/status`
+- `GET /api/admin/reviews`
+- `DELETE /api/admin/reviews/:id`
+- `GET /api/admin/payments`
+- `POST /api/admin/payments/:id/refund`
+- `POST /api/admin/payments/:id/reconcile`
+- `POST /api/admin/payments/:id/received`
+- `POST /api/admin/contracts`
+- `PUT /api/admin/contracts/:id/status`
+- `POST /api/admin/tenders`
+- `POST /api/admin/tenders/:id/award`
+- `POST /api/admin/rfqs/:id/contract`
+- `POST /api/admin/serialized/bulk`
+- `GET /api/feeds/:slug`
+- `GET /api/admin/transfers`
+- `POST /api/admin/transfers`
+- `GET /api/offers`
+- `POST /api/offers`
+- `PUT /api/offers/:id`
+- `DELETE /api/offers/:id`
+- `POST /api/offers/preview`
+- `GET /api/offers/analytics`
+- `GET /api/offers/coupons`
+- `POST /api/offers/coupons`
+- `POST /api/offers/coupons/generate`
+- `DELETE /api/offers/coupons/:id`
+- `GET /api/wallet/ledger`
+- `GET /api/platform/offers`
+- `GET /api/goip`
+- `GET /api/goip/exchanges`
+- `GET /api/goip/exchanges/:id`
+- `GET /api/goip/context`
+- `GET /api/goip/treasury`
+- `GET /api/goip/settlements`
+- `GET /api/goip/entitlements`
+- `GET /api/goip/touchpoints`
+- `GET /api/goip/widget`
+- `GET /api/goip/registry/:name`
+- `GET /api/goip/intelligence/:key`
+- `GET /api/goip/feed/:channel`
+- `POST /api/goip/:capability`
+- `GET /api/market`
+- `GET /api/marketing/providers`
+- `POST /api/marketing/save`
+- `POST /api/marketing/send`
+- `GET /api/affiliate/networks`
+- `POST /api/affiliate/networks`
+- `GET /api/affiliate/affiliates`
+- `POST /api/affiliate/affiliates`
+- `GET /api/affiliate/affiliates/:id`
+- `PUT /api/affiliate/affiliates/:id`
+- `POST /api/affiliate/click`
+- `POST /api/affiliate/conversion`
+- `GET /api/affiliate/conversions/:id`
+- `POST /api/affiliate/conversions/:id/approve`
+- `POST /api/affiliate/conversions/:id/reject`
+- `GET /api/affiliate/payouts`
+- `POST /api/affiliate/payouts`
+- `POST /api/affiliate/payouts/:id/process`
+- `GET /api/affiliate/reports`
+- `GET /api/shipping/providers`
+- `POST /api/shipping/providers/config`
+- `GET /api/platform/shipping/providers`
+- `POST /api/platform/shipping/providers/:id/disconnect`
+- `POST /api/shipping/track`
+- `GET /api/shipping/track/:trackingNumber`
+- `POST /api/shipping/quote`
+- `POST /api/shipping/label`
+- `GET /api/shipping/orders/:id/labels`
+- `POST /api/shipping/webhook/:provider`
 
 <a id="ucos-com-000001"></a>
 #### UCOS-COM-000001 · Universal Commerce Architecture
@@ -79,6 +350,8 @@ CommercialProjection:
 
 <a id="ucos-com-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /commerce.v1.project
 - GET  /commerce.v1/{id}
@@ -270,6 +543,8 @@ GlobalCatalogEntry:
 
 <a id="ucos-gps-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - GET  /catalog.v1.entry/{id}
 - POST /catalog.v1.query
@@ -463,6 +738,8 @@ PricingProjection:
 <a id="ucos-prc-000001-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - POST /pricing.v1.quote
 - GET  /pricing.v1.history/{id}
 - POST /pricing.v1.simulate
@@ -655,6 +932,8 @@ OfferProjection:
 
 <a id="ucos-ofr-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /offer.v1.create
 - GET  /offer.v1/{id}
@@ -850,6 +1129,8 @@ SubscriptionProjection:
 
 <a id="ucos-sub-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /subscription.v1.create
 - GET  /subscription.v1/{id}
@@ -1052,6 +1333,8 @@ ContractProjection:
 <a id="ucos-cnt-000001-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - POST /contract.v1.form
 - GET  /contract.v1/{id}
 - POST /contract.v1/{id}/amend
@@ -1252,6 +1535,8 @@ MarketplaceContext:
 <a id="ucos-mkt-000001-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - POST /marketplace.v1.join
 - GET  /marketplace.v1/{id}
 - POST /marketplace.v1.search
@@ -1445,6 +1730,8 @@ InventoryProjection:
 
 <a id="ucos-inv-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - GET  /inventory.v1/{subjectId}/{contextId}
 - POST /inventory.v1.observe
@@ -1645,6 +1932,8 @@ OrderProjection:
 <a id="ucos-ord-000001-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - POST /order.v1.place
 - GET  /order.v1/{id}
 - POST /order.v1/{id}/transition
@@ -1844,6 +2133,8 @@ FulfillmentProjection:
 
 <a id="ucos-ful-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /fulfillment.v1.plan
 - GET  /fulfillment.v1/{id}

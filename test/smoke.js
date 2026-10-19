@@ -60,6 +60,11 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   console.log("▸ booting platform server…");
   const dbBase = path.join(__dirname, "..", "data", "smoke.db");
   for (const suffix of ["", "-wal", "-shm"]) { try { require("fs").rmSync(dbBase + suffix, { force: true }); } catch (e) { } }
+  /* this process loads platform modules too (config, adapters, pg, dbpool). Point it at the
+     same test database as the server, before any of them opens one: otherwise it booted the
+     default data/luxora.db — the developer's own database locally, and on a fresh CI machine a
+     full first seed that blocked this process past the server's keep-alive and failed the run */
+  process.env.LX_DB = dbBase;
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")],
     { env: { ...process.env, PORT, LX_DB: dbBase, LX_METRICS_TOKEN: METRICS_TOKEN, LUXORA_DEMO_BRANDS: "1" }, stdio: ["ignore", "ignore", "inherit"] });
   /* first boot seeds three stores, 156 products and every registry — on a slow or network-backed

@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0007 (2026-10-19).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0008 (2026-10-19).
 
 ## Contents
 
@@ -30,7 +30,9 @@ Everything here is projected. To change it, edit the registry entry named below,
 | A kernel part | `_registry/domains.json` → `kernel` |
 | Which domain owns a code file | `_registry/codebase.json` → `modules` |
 | A document’s status (corpus source, projection, living record, guidance, superseded) and owner | `_registry/documents.json` → `documents` (move a superseded document into `_superseded/`) |
-| A build step’s status, or a design decision | `_registry/roadmap.json` → `steps`, `decisions` |
+| A build step’s status, a design decision, or a gap | `_registry/roadmap.json` → `steps`, `decisions`, `gaps` |
+| Which domain owns a live API route | `_registry/api.json` → `owners` (rules by path; the first match wins) |
+| A domain’s build status | derived: `designed` until it owns code or a live route (`_registry/domains.json` → `status`, checked by the gate) |
 | Which register domain owns a part of another domain system | `_registry/alignment.json` → `systems` |
 | A primitive (frozen: needs an amendment) | `_registry/primitives.json`, with an entry in `domains.json` → `amendments` |
 | A term (add, define) | `_registry/terminology.json`, and add it to exactly one domain’s `owns` |
@@ -47,26 +49,27 @@ The integrity gate refuses a change that leaves a name owned twice or not at all
 <a id="volume-register"></a>
 ## 2. Volume register
 
-**15 volumes** for 13 categories · 47 domains · 111 artifacts · 27 primitives · 76 terms.
+**16 volumes** for 13 categories · 47 domains · 111 artifacts · 27 primitives · 76 terms.
 
 A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A category that would pass it is split into numbered parts on the next projection, and merged back when it shrinks.
 
 | Volume | Category | Part | Domains | Artifacts | Size |
 |---|---|---|---:|---:|---:|
-| [V01](volumes/V01-constitution.md) | C01 Constitution | 1 of 1 | 1 | 10 | 70 KB |
-| [V02](volumes/V02-meaning.md) | C02 Meaning | 1 of 1 | 5 | 13 | 85 KB |
-| [V03.1](volumes/V03.1-reality-and-reasoning.md) | C03 Reality and Reasoning | 1 of 2 | 9 | 13 | 89 KB |
+| [V01](volumes/V01-constitution.md) | C01 Constitution | 1 of 1 | 1 | 10 | 71 KB |
+| [V02](volumes/V02-meaning.md) | C02 Meaning | 1 of 1 | 5 | 13 | 88 KB |
+| [V03.1](volumes/V03.1-reality-and-reasoning.md) | C03 Reality and Reasoning | 1 of 2 | 9 | 13 | 91 KB |
 | [V03.2](volumes/V03.2-reality-and-reasoning.md) | C03 Reality and Reasoning | 2 of 2 | 1 | 3 | 21 KB |
-| [V04](volumes/V04-universal-dimensions.md) | C04 Universal Dimensions | 1 of 1 | 6 | 6 | 38 KB |
-| [V05](volumes/V05-structure.md) | C05 Structure | 1 of 1 | 2 | 2 | 15 KB |
-| [V06](volumes/V06-decision-and-control.md) | C06 Decision and Control | 1 of 1 | 4 | 4 | 28 KB |
-| [V07](volumes/V07-assurance.md) | C07 Assurance | 1 of 1 | 4 | 10 | 66 KB |
-| [V08](volumes/V08-interaction.md) | C08 Interaction | 1 of 1 | 4 | 4 | 26 KB |
-| [V09](volumes/V09-automation.md) | C09 Automation | 1 of 1 | 3 | 15 | 98 KB |
-| [V10](volumes/V10-intelligence.md) | C10 Intelligence | 1 of 1 | 1 | 1 | 6 KB |
-| [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 83 KB |
-| [V11.2](volumes/V11.2-platform.md) | C11 Platform | 2 of 2 | 3 | 6 | 37 KB |
-| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 66 KB |
+| [V04](volumes/V04-universal-dimensions.md) | C04 Universal Dimensions | 1 of 1 | 6 | 6 | 40 KB |
+| [V05](volumes/V05-structure.md) | C05 Structure | 1 of 1 | 2 | 2 | 19 KB |
+| [V06](volumes/V06-decision-and-control.md) | C06 Decision and Control | 1 of 1 | 4 | 4 | 30 KB |
+| [V07](volumes/V07-assurance.md) | C07 Assurance | 1 of 1 | 4 | 10 | 70 KB |
+| [V08](volumes/V08-interaction.md) | C08 Interaction | 1 of 1 | 4 | 4 | 28 KB |
+| [V09.1](volumes/V09.1-automation.md) | C09 Automation | 1 of 2 | 2 | 14 | 94 KB |
+| [V09.2](volumes/V09.2-automation.md) | C09 Automation | 2 of 2 | 1 | 1 | 8 KB |
+| [V10](volumes/V10-intelligence.md) | C10 Intelligence | 1 of 1 | 1 | 1 | 7 KB |
+| [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 85 KB |
+| [V11.2](volumes/V11.2-platform.md) | C11 Platform | 2 of 2 | 3 | 6 | 39 KB |
+| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 76 KB |
 | [V13](volumes/V13-composition.md) | C13 Composition | 1 of 1 | 1 | 1 | 7 KB |
 
 <a id="index"></a>
@@ -215,26 +218,26 @@ How people see, are told, converse and find. Volume: [V08](volumes/V08-interacti
 
 ### C09 · Automation
 
-How work runs: events, state, workflows, agents and connections. Volume: [V09](volumes/V09-automation.md).
+How work runs: events, state, workflows, agents and connections. Volumes: [V09.1](volumes/V09.1-automation.md), [V09.2](volumes/V09.2-automation.md).
 
-- [Runtime](volumes/V09-automation.md#d-run) — owns [State](#t-state), [Event](#t-event), [Process](#t-process), [Workflow](#t-workflow), [Projection](#t-projection)
-  - [UCOS-RUN-000001](volumes/V09-automation.md#ucos-run-000001) Runtime Constitution
-  - [UCOS-RUN-000002](volumes/V09-automation.md#ucos-run-000002) Execution Architecture
-  - [UCOS-RUN-000003](volumes/V09-automation.md#ucos-run-000003) Orchestration Architecture
-  - [UCOS-RUN-000004](volumes/V09-automation.md#ucos-run-000004) Workflow Architecture
-  - [UCOS-RUN-000005](volumes/V09-automation.md#ucos-run-000005) State Machine Architecture
-  - [UCOS-EVT-000001](volumes/V09-automation.md#ucos-evt-000001) Event Architecture
-  - [UCOS-MSG-000001](volumes/V09-automation.md#ucos-msg-000001) Messaging Architecture
-- [Agent](volumes/V09-automation.md#d-agt) — owns [Agent](#t-agent)
-  - [UCOS-AGT-000001](volumes/V09-automation.md#ucos-agt-000001) Agent Constitution
-  - [UCOS-AGT-000002](volumes/V09-automation.md#ucos-agt-000002) Agent Runtime
-  - [UCOS-AGT-000003](volumes/V09-automation.md#ucos-agt-000003) Agent Governance
-  - [UCOS-AGT-000004](volumes/V09-automation.md#ucos-agt-000004) Agent Trust
-  - [UCOS-AGT-000005](volumes/V09-automation.md#ucos-agt-000005) Agent Safety
-  - [UCOS-AGT-000006](volumes/V09-automation.md#ucos-agt-000006) Agent Economics
-  - [UCOS-AGT-000007](volumes/V09-automation.md#ucos-agt-000007) Agent Society
-- [Integration](volumes/V09-automation.md#d-int) — owns [API](#t-api), [Connector](#t-connector)
-  - [UCOS-INT-000001](volumes/V09-automation.md#ucos-int-000001) Integration Architecture
+- [Runtime](volumes/V09.1-automation.md#d-run) — owns [State](#t-state), [Event](#t-event), [Process](#t-process), [Workflow](#t-workflow), [Projection](#t-projection)
+  - [UCOS-RUN-000001](volumes/V09.1-automation.md#ucos-run-000001) Runtime Constitution
+  - [UCOS-RUN-000002](volumes/V09.1-automation.md#ucos-run-000002) Execution Architecture
+  - [UCOS-RUN-000003](volumes/V09.1-automation.md#ucos-run-000003) Orchestration Architecture
+  - [UCOS-RUN-000004](volumes/V09.1-automation.md#ucos-run-000004) Workflow Architecture
+  - [UCOS-RUN-000005](volumes/V09.1-automation.md#ucos-run-000005) State Machine Architecture
+  - [UCOS-EVT-000001](volumes/V09.1-automation.md#ucos-evt-000001) Event Architecture
+  - [UCOS-MSG-000001](volumes/V09.1-automation.md#ucos-msg-000001) Messaging Architecture
+- [Agent](volumes/V09.1-automation.md#d-agt) — owns [Agent](#t-agent)
+  - [UCOS-AGT-000001](volumes/V09.1-automation.md#ucos-agt-000001) Agent Constitution
+  - [UCOS-AGT-000002](volumes/V09.1-automation.md#ucos-agt-000002) Agent Runtime
+  - [UCOS-AGT-000003](volumes/V09.1-automation.md#ucos-agt-000003) Agent Governance
+  - [UCOS-AGT-000004](volumes/V09.1-automation.md#ucos-agt-000004) Agent Trust
+  - [UCOS-AGT-000005](volumes/V09.1-automation.md#ucos-agt-000005) Agent Safety
+  - [UCOS-AGT-000006](volumes/V09.1-automation.md#ucos-agt-000006) Agent Economics
+  - [UCOS-AGT-000007](volumes/V09.1-automation.md#ucos-agt-000007) Agent Society
+- [Integration](volumes/V09.2-automation.md#d-int) — owns [API](#t-api), [Connector](#t-connector)
+  - [UCOS-INT-000001](volumes/V09.2-automation.md#ucos-int-000001) Integration Architecture
 
 ### C10 · Intelligence
 
@@ -367,6 +370,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0005"></a>AMD-0005 | 2026-10-18 | Platform owner | The concept register: every corpus concept placed once. Kind rules and owner rules in classification.json (owned by Semantic); every concept-holding container (5,609) and every concept in a structural container (3,552) reviewed by agents with independent second opinions on low-confidence calls and a maintainer sample check; the register is derived at compile time, sealed, gated and searchable by owner and category; low-confidence decisions form the master's review queue. |
 | <a id="amd-0006"></a>AMD-0006 | 2026-10-19 | Platform owner | One set of domains: the other structures that call their parts domains are aligned to the register. GOIP's 67 incentive domains and the 7 capability domains each name their one register owner (alignment.json); every per-universe record engine takes its reviewed container's owner; the capability-domain list moves from lib/registry.js into seed data. |
 | <a id="amd-0007"></a>AMD-0007 | 2026-10-19 | Platform owner | Every document has one registered status and owner (documents.json). 18 hand-written documents that the user manual, the master or the registry now cover — topic guides, flow diagrams, implementation summaries, an old code review and two roadmaps — move to _superseded with what replaced each. The compiler's corpus inputs are derived from the parser's document list, which puts the UCRS constitution in the seal's manifest for the first time. |
+| <a id="amd-0008"></a>AMD-0008 | 2026-10-19 | Platform owner | The registry tells the truth about what runs. The live API (lib/api.js, 725 routes) is registered with one owning domain per route (api.json); every domain carries a build status derived from what it owns (designed: no code and no routes); mixed modules in the code map are split so storage, links, places and value units sit with their owners; the 25 gaps the audit found are recorded with owners and status (roadmap.json → gaps). Test isolation: tests may no longer open the default database. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -382,7 +386,7 @@ The parts every domain is built on. Each part has one owning domain.
 | <a id="k05"></a>K05 | Shape | [Geo](volumes/V04-universal-dimensions.md#d-geo) | A point, area or volume in a declared coordinate system; any coordinate resolves to every node that contains it. |
 | <a id="k06"></a>K06 | Attributes | [Registry](volumes/V05-structure.md#d-reg) | Typed values declared in the registry; text is multilingual through Expression, sensitive values are encrypted through Security. |
 | <a id="k07"></a>K07 | Versions | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | Bi-temporal history: valid time and recorded time; nothing is overwritten and any past state can be queried. |
-| <a id="k08"></a>K08 | Events | [Runtime](volumes/V09-automation.md#d-run) | One event log that every change and declared occurrence is written to; workflows, notifications, analytics, webhooks and audit read it. |
+| <a id="k08"></a>K08 | Events | [Runtime](volumes/V09.1-automation.md#d-run) | One event log that every change and declared occurrence is written to; workflows, notifications, analytics, webhooks and audit read it. |
 | <a id="k09"></a>K09 | Change Lifecycle | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | Draft, validate, preview, approve, publish (now or scheduled), roll back; hide is reversible; delete is archive, then purge with a separate permission. |
 | <a id="k10"></a>K10 | Views | [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per) | A platform, tenant, module or subscriber selects hierarchies, subtrees, depth, groupings and labels by reference, never by copy. |
 | <a id="k11"></a>K11 | Scope | [Context](volumes/V04-universal-dimensions.md#d-ctx) | Every declaration lives in a namespace (platform, tenant, publisher) and at a scope level (platform, tenant, store, channel, place, language, segment, device type, person). |
@@ -605,7 +609,7 @@ Forbidden: circular dependencies, mutual ownership, cross-domain state mutation.
 Every primitive and term, once, with its single owner.
 
 <a id="t-agent"></a>
-**Agent** T-AGENT — owned by [Agent](volumes/V09-automation.md#d-agt)
+**Agent** T-AGENT — owned by [Agent](volumes/V09.1-automation.md#d-agt)
 
 - Term: Autonomous actor operating under governance.
 - Never means: user, service, process
@@ -618,7 +622,7 @@ Every primitive and term, once, with its single owner.
 - Never means: edit
 
 <a id="t-api"></a>
-**API** T-API — owned by [Integration](volumes/V09-automation.md#d-int)
+**API** T-API — owned by [Integration](volumes/V09.2-automation.md#d-int)
 
 - Term: The generated, versioned interface through which every capability is called.
 - Also called: endpoint
@@ -694,7 +698,7 @@ Every primitive and term, once, with its single owner.
 - Never means: sales channel, context
 
 <a id="t-connector"></a>
-**Connector** T-CONNECTOR — owned by [Integration](volumes/V09-automation.md#d-int)
+**Connector** T-CONNECTOR — owned by [Integration](volumes/V09.2-automation.md#d-int)
 
 - Term: A declared connection to an outside system.
 - Also called: integration
@@ -792,7 +796,7 @@ Every primitive and term, once, with its single owner.
 - Never means: context
 
 <a id="t-event"></a>
-**Event** P-20 · T-EVENT — owned by [Runtime](volumes/V09-automation.md#d-run)
+**Event** P-20 · T-EVENT — owned by [Runtime](volumes/V09.1-automation.md#d-run)
 
 - Primitive: Something that occurred.
 - Term: Something that occurred.
@@ -1038,13 +1042,13 @@ Every primitive and term, once, with its single owner.
 - Primitive: Realizable future state.
 
 <a id="t-process"></a>
-**Process** T-PROCESS — owned by [Runtime](volumes/V09-automation.md#d-run)
+**Process** T-PROCESS — owned by [Runtime](volumes/V09.1-automation.md#d-run)
 
 - Term: Sequence of execution.
 - Never means: capability, workflow
 
 <a id="t-projection"></a>
-**Projection** T-PROJECTION — owned by [Runtime](volumes/V09-automation.md#d-run)
+**Projection** T-PROJECTION — owned by [Runtime](volumes/V09.1-automation.md#d-run)
 
 - Term: Runtime representation derived from primitives; never owns truth.
 - Also called: derived view
@@ -1123,7 +1127,7 @@ Every primitive and term, once, with its single owner.
 - Never means: reality
 
 <a id="t-state"></a>
-**State** P-19 · T-STATE — owned by [Runtime](volumes/V09-automation.md#d-run)
+**State** P-19 · T-STATE — owned by [Runtime](volumes/V09.1-automation.md#d-run)
 
 - Primitive: Current condition of an existence.
 - Term: Current condition.
@@ -1185,7 +1189,7 @@ Every primitive and term, once, with its single owner.
 - Never means: evidence
 
 <a id="t-workflow"></a>
-**Workflow** T-WORKFLOW — owned by [Runtime](volumes/V09-automation.md#d-run)
+**Workflow** T-WORKFLOW — owned by [Runtime](volumes/V09.1-automation.md#d-run)
 
 - Term: Orchestrated process.
 - Never means: process
@@ -1218,6 +1222,11 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 
 | File | Owner | Part |
 |---|---|---|
+| `lib/registry.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | countries and subdivisions: seed, repair, reconcile, profile, withdraw |
+| `lib/registry.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | currencies and exchange rates |
+| `lib/global.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | countries and a store's country |
+| `lib/global.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | currencies and a store's currency |
+| `lib/global.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | global settings |
 | `lib/defaults.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | resolver answers (K12) |
 | `lib/settings.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | resolver answers (K12) |
 | `lib/subdivisions.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) |  |
@@ -1232,8 +1241,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `lib/entity.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/meta.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/parity-registries.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
-| `lib/registry.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
-| `lib/global.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/registry.js` | [Registry](volumes/V05-structure.md#d-reg) | registry lists: seed, read, save, delete, upgrade, defaults |
+| `lib/registry.js` | [Relationship](volumes/V05-structure.md#d-rel) | link reconciliation |
 | `lib/canonical.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/ucos.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/ucos-registry.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
@@ -1242,23 +1251,17 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `lib/ucos-domain.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/ucos-catalog.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/ucos-completeness.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
-| `lib/db.js` | [Registry](volumes/V05-structure.md#d-reg) | storage adapter: SQLite |
-| `lib/dbpool.js` | [Registry](volumes/V05-structure.md#d-reg) | storage adapter |
-| `lib/sql.js` | [Registry](volumes/V05-structure.md#d-reg) | storage adapter: dialect |
-| `lib/pg.js` | [Registry](volumes/V05-structure.md#d-reg) | storage adapter: PostgreSQL |
-| `lib/pgbridge.js` | [Registry](volumes/V05-structure.md#d-reg) | storage adapter: PostgreSQL |
-| `lib/pgworker.js` | [Registry](volumes/V05-structure.md#d-reg) | storage adapter: PostgreSQL |
-| `lib/migrate.js` | [Registry](volumes/V05-structure.md#d-reg) | migrations |
+| `lib/db.js` | [Relationship](volumes/V05-structure.md#d-rel) | the links table and addLink |
 | `lib/seed/entity.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/seed/meta.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/seed/parity-registries.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/seed/ucos.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
-| `scripts/schema-dump.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
 
 ### C06 · Decision and Control
 
 | File | Owner | Part |
 |---|---|---|
+| `lib/registry.js` | [Rule](volumes/V06-decision-and-control.md#d-rul) | tax modes |
 | `lib/rules.js` | [Rule](volumes/V06-decision-and-control.md#d-rul) |  |
 | `lib/policies.js` | [Policy](volumes/V06-decision-and-control.md#d-pol) |  |
 | `lib/gates.js` | [Rule](volumes/V06-decision-and-control.md#d-rul) |  |
@@ -1309,18 +1312,20 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 
 | File | Owner | Part |
 |---|---|---|
-| `server.js` | [Integration](volumes/V09-automation.md#d-int) | the HTTP entry point |
-| `lib/events.js` | [Runtime](volumes/V09-automation.md#d-run) | the event log; its outbound webhooks are Integration's |
-| `lib/providers.js` | [Integration](volumes/V09-automation.md#d-int) | provider connectors; providers as parties are Party's |
-| `lib/states.js` | [Runtime](volumes/V09-automation.md#d-run) |  |
-| `lib/queue.js` | [Runtime](volumes/V09-automation.md#d-run) | job semantics |
-| `lib/ai.js` | [Agent](volumes/V09-automation.md#d-agt) |  |
-| `lib/api.js` | [Integration](volumes/V09-automation.md#d-int) |  |
-| `lib/spec.js` | [Integration](volumes/V09-automation.md#d-int) |  |
-| `lib/connect.js` | [Integration](volumes/V09-automation.md#d-int) |  |
-| `lib/idempotency.js` | [Integration](volumes/V09-automation.md#d-int) |  |
-| `lib/seed/providers.json` | [Integration](volumes/V09-automation.md#d-int) |  |
-| `lib/seed/states.json` | [Runtime](volumes/V09-automation.md#d-run) |  |
+| `server.js` | [Integration](volumes/V09.2-automation.md#d-int) | the HTTP entry point |
+| `lib/registry.js` | [Integration](volumes/V09.2-automation.md#d-int) | provider definitions, availability and exemptions |
+| `lib/global.js` | [Integration](volumes/V09.2-automation.md#d-int) | providers and their availability, a store's providers |
+| `lib/events.js` | [Runtime](volumes/V09.1-automation.md#d-run) | the event log; its outbound webhooks are Integration's |
+| `lib/providers.js` | [Integration](volumes/V09.2-automation.md#d-int) | provider connectors; providers as parties are Party's |
+| `lib/states.js` | [Runtime](volumes/V09.1-automation.md#d-run) |  |
+| `lib/queue.js` | [Runtime](volumes/V09.1-automation.md#d-run) | job semantics |
+| `lib/ai.js` | [Agent](volumes/V09.1-automation.md#d-agt) |  |
+| `lib/api.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
+| `lib/spec.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
+| `lib/connect.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
+| `lib/idempotency.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
+| `lib/seed/providers.json` | [Integration](volumes/V09.2-automation.md#d-int) |  |
+| `lib/seed/states.json` | [Runtime](volumes/V09.1-automation.md#d-run) |  |
 
 ### C10 · Intelligence
 
@@ -1334,6 +1339,14 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 
 | File | Owner | Part |
 |---|---|---|
+| `lib/global.js` | [Offering](volumes/V11.2-platform.md#d-ofg) | plans and a store's plan |
+| `lib/db.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | the SQLite connection, schema, migrations and first-boot seeding |
+| `lib/dbpool.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | storage adapter: the async data pool |
+| `lib/sql.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | storage adapter: SQL dialect |
+| `lib/pg.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | storage adapter: PostgreSQL wire client |
+| `lib/pgbridge.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | storage adapter: PostgreSQL bridge |
+| `lib/pgworker.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | storage adapter: PostgreSQL worker |
+| `lib/migrate.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | storage adapter: SQLite to PostgreSQL migration |
 | `lib/ucos-monitor.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `lib/queue.js` | [Operations](volumes/V11.1-platform.md#d-ops) | queue runtime adapter |
 | `lib/billing.js` | [Offering](volumes/V11.2-platform.md#d-ofg) | platform subscriptions, metering, platform invoices |
@@ -1353,6 +1366,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `scripts/browser-check.js` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
 | `scripts/backup.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `scripts/restore.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `scripts/schema-dump.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | dumps the storage schema |
 
 ### C12 · Business
 
@@ -1383,6 +1397,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 
 | File | Owner | Part |
 |---|---|---|
+| `lib/registry.js` | [Package](volumes/V13-composition.md#d-pkg) | platform kinds |
 | `lib/compose.js` | [Package](volumes/V13-composition.md#d-pkg) |  |
 
 ### Documents
@@ -1482,9 +1497,9 @@ Containers reviewed: 5609 of 5609. Concepts reviewed on their own: 3552.
 | C08 Interaction | [Communication](volumes/V08-interaction.md#d-cmn) | 116 |
 | C08 Interaction | [Notification](volumes/V08-interaction.md#d-ntf) | 5 |
 | C08 Interaction | [Search](volumes/V08-interaction.md#d-srh) | 99 |
-| C09 Automation | [Runtime](volumes/V09-automation.md#d-run) | 729 |
-| C09 Automation | [Agent](volumes/V09-automation.md#d-agt) | 330 |
-| C09 Automation | [Integration](volumes/V09-automation.md#d-int) | 176 |
+| C09 Automation | [Runtime](volumes/V09.1-automation.md#d-run) | 729 |
+| C09 Automation | [Agent](volumes/V09.1-automation.md#d-agt) | 330 |
+| C09 Automation | [Integration](volumes/V09.2-automation.md#d-int) | 176 |
 | C10 Intelligence | [Insight](volumes/V10-intelligence.md#d-ins) | 596 |
 | C11 Platform | [Persistence](volumes/V11.1-platform.md#d-prs) | 38 |
 | C11 Platform | [Operations](volumes/V11.1-platform.md#d-ops) | 391 |
@@ -1920,8 +1935,8 @@ partitions of the offers and incentives engine, each a store and a discriminator
 | Search Domain (`search`) | [Search](volumes/V08-interaction.md#d-srh) |
 | Recommendation Domain (`recommendation`) | [Search](volumes/V08-interaction.md#d-srh) |
 | Personalization Domain (`personalization`) | [Search](volumes/V08-interaction.md#d-srh) |
-| Distribution Domain (`distribution`) | [Integration](volumes/V09-automation.md#d-int) |
-| Syndication Domain (`syndication`) | [Integration](volumes/V09-automation.md#d-int) |
+| Distribution Domain (`distribution`) | [Integration](volumes/V09.2-automation.md#d-int) |
+| Syndication Domain (`syndication`) | [Integration](volumes/V09.2-automation.md#d-int) |
 | Marketplace Domain (`marketplace`) | [Party](volumes/V02-meaning.md#d-pty) |
 | Merchant Domain (`merchant`) | [Party](volumes/V02-meaning.md#d-pty) |
 | Brand Domain (`brand`) | [Commerce](volumes/V12-business.md#d-biz) |
@@ -1943,8 +1958,8 @@ partitions of the offers and incentives engine, each a store and a discriminator
 | Analytics Domain (`analytics`) | [Insight](volumes/V10-intelligence.md#d-ins) |
 | Forecasting Domain (`forecasting`) | [Insight](volumes/V10-intelligence.md#d-ins) |
 | Simulation Domain (`simulation`) | [Simulation](volumes/V03.1-reality-and-reasoning.md#d-sim) |
-| AI Domain (`ai`) | [Agent](volumes/V09-automation.md#d-agt) |
-| Agent Domain (`agent`) | [Agent](volumes/V09-automation.md#d-agt) |
+| AI Domain (`ai`) | [Agent](volumes/V09.1-automation.md#d-agt) |
+| Agent Domain (`agent`) | [Agent](volumes/V09.1-automation.md#d-agt) |
 | Governance Domain (`governance`) | [Policy](volumes/V06-decision-and-control.md#d-pol) |
 | Compliance Domain (`compliance`) | [Compliance](volumes/V07-assurance.md#d-cmp) |
 | Knowledge Domain (`knowledge`) | [Registry](volumes/V05-structure.md#d-reg) |
@@ -1984,20 +1999,20 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | [Reasoning](volumes/V03.1-reality-and-reasoning.md#d-rsn) | 123 |
 | [Party](volumes/V02-meaning.md#d-pty) | 110 |
 | [Security](volumes/V07-assurance.md#d-sec) | 91 |
-| [Runtime](volumes/V09-automation.md#d-run) | 70 |
+| [Runtime](volumes/V09.1-automation.md#d-run) | 70 |
 | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | 69 |
 | [Compliance](volumes/V07-assurance.md#d-cmp) | 68 |
 | [Insight](volumes/V10-intelligence.md#d-ins) | 62 |
 | [Inference](volumes/V03.1-reality-and-reasoning.md#d-inf) | 60 |
 | [Semantic](volumes/V02-meaning.md#d-sem) | 58 |
 | [Policy](volumes/V06-decision-and-control.md#d-pol) | 58 |
-| [Agent](volumes/V09-automation.md#d-agt) | 55 |
+| [Agent](volumes/V09.1-automation.md#d-agt) | 55 |
 | [Time](volumes/V04-universal-dimensions.md#d-tim) | 48 |
 | [Authority](volumes/V06-decision-and-control.md#d-aut) | 44 |
 | [Geo](volumes/V04-universal-dimensions.md#d-geo) | 44 |
 | [Constitutional Authority](volumes/V01-constitution.md#d-con) | 44 |
 | [Identity](volumes/V02-meaning.md#d-idn) | 44 |
-| [Integration](volumes/V09-automation.md#d-int) | 41 |
+| [Integration](volumes/V09.2-automation.md#d-int) | 41 |
 | [Quality](volumes/V11.2-platform.md#d-qlt) | 39 |
 | [Relationship](volumes/V05-structure.md#d-rel) | 39 |
 | [Experience](volumes/V08-interaction.md#d-exp) | 37 |
@@ -2030,6 +2045,42 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 <a id="build-path"></a>
 ## 11. Build path and decisions
 
+<a id="gaps"></a>
+### Gaps
+
+22 open, 4 closed. Every gap has one owning domain; a closed gap names the amendment that closed it (`_registry/roadmap.json` → `gaps`).
+
+| Gap | Group | What | Owner | Status |
+|---|---|---|---|---|
+| <a id="gap-01"></a>GAP-01 | broken | CI failed on Node 22: the smoke test's own process booted the default database (a full first seed past the server's keep-alive) | [Quality](volumes/V11.2-platform.md#d-qlt) | closed (AMD-0008) |
+| <a id="gap-02"></a>GAP-02 | broken | The code map gave storage, links, places and value units to Registry; mixed modules were not split | [Registry](volumes/V05-structure.md#d-reg) | closed (AMD-0008) |
+| <a id="gap-03"></a>GAP-03 | truth | Contract APIs are designed interfaces, and the live API was unregistered; nothing said what is built | [Integration](volumes/V09.2-automation.md#d-int) | closed (AMD-0008) |
+| <a id="gap-04"></a>GAP-04 | truth | Domains with no code and no live route (designed only) | [Constitutional Authority](volumes/V01-constitution.md#d-con) | open |
+| <a id="gap-05"></a>GAP-05 | truth | Laws not yet fully enforced (11 planned, 9 partial) | [Constitutional Authority](volumes/V01-constitution.md#d-con) | open |
+| <a id="gap-06"></a>GAP-06 | truth | Kernel parts K01–K12 are declared, not built | [Registry](volumes/V05-structure.md#d-reg) | open |
+| <a id="gap-07"></a>GAP-07 | truth | 375 low-confidence classification decisions await a person | [Semantic](volumes/V02-meaning.md#d-sem) | open |
+| <a id="gap-08"></a>GAP-08 | law | Countries embed currency, symbol, locale, decimals and tax; stores embed one country and region (LAW-008) | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
+| <a id="gap-09"></a>GAP-09 | law | goip.js holds seven literal registries that belong to Time, Geo and Value | [Commerce](volumes/V12-business.md#d-biz) | open |
+| <a id="gap-10"></a>GAP-10 | law | The hard-coding ratchet still counts 65 branches, 99 fallbacks and 8 seed-sized constants | [Quality](volumes/V11.2-platform.md#d-qlt) | open |
+| <a id="gap-11"></a>GAP-11 | requirement | Places: only countries and one subdivision level; no place hierarchy at any scale, no coordinates | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
+| <a id="gap-12"></a>GAP-12 | requirement | Time: no time zones anywhere; calendars only in the offers module | [Time](volumes/V04-universal-dimensions.md#d-tim) | open |
+| <a id="gap-13"></a>GAP-13 | requirement | Languages: every page is English, no message catalogues, no right-to-left | [Expression](volumes/V04-universal-dimensions.md#d-exr) | open |
+| <a id="gap-14"></a>GAP-14 | requirement | Value: the core knows Earth fiat only; other units of value live only in the offers module | [Value](volumes/V04-universal-dimensions.md#d-val) | open |
+| <a id="gap-15"></a>GAP-15 | requirement | Schema and database from the console: custom entities and a database switch exist; no per-domain storage choice | [Persistence](volumes/V11.1-platform.md#d-prs) | open |
+| <a id="gap-16"></a>GAP-16 | requirement | Interface for every device: themes exist; no device types, component registry or screen builder | [Experience](volumes/V08-interaction.md#d-exp) | open |
+| <a id="gap-17"></a>GAP-17 | requirement | Workflow, notification, package, agent, integration and report designers described by the contracts are not built | [Runtime](volumes/V09.1-automation.md#d-run) | open |
+| <a id="gap-18"></a>GAP-18 | requirement | Launch by configuration, end to end, is not yet possible | [Package](volumes/V13-composition.md#d-pkg) | open |
+| <a id="gap-19"></a>GAP-19 | data | The development database holds test countries (XX, XY, Zamunda under ZA, Zephyria, Antarctica); awaiting the owner's go-ahead to remove | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
+| <a id="gap-20"></a>GAP-20 | process | PR #3's description does not cover its last commits | [Guidance](volumes/V02-meaning.md#d-gdn) | open |
+| <a id="gap-21"></a>GAP-21 | process | The development server is not running from the repository's new location | [Operations](volumes/V11.1-platform.md#d-ops) | open |
+| <a id="gap-22"></a>GAP-22 | process | Stripe and EasyPost have never been run against real sandboxes; deployment is a single node | [Operations](volumes/V11.1-platform.md#d-ops) | open |
+| <a id="gap-23"></a>GAP-23 | process | CI actions target the deprecated Node 20 runtime; the runner image moves to Ubuntu 26 | [Operations](volumes/V11.1-platform.md#d-ops) | open |
+| <a id="gap-24"></a>GAP-24 | process | USER_MANUAL.md is hand-written; nothing checks it against the code | [Guidance](volumes/V02-meaning.md#d-gdn) | open |
+| <a id="gap-25"></a>GAP-25 | process | Search filters by owner and category only for register entries, not universes or corpus documents | [Search](volumes/V08-interaction.md#d-srh) | open |
+| <a id="gap-26"></a>GAP-26 | broken | test/identity.js opened the developer's own database on every run; no guard stopped a test doing so | [Quality](volumes/V11.2-platform.md#d-qlt) | closed (AMD-0008) |
+
+### Steps
+
 7 of 26 steps done. Each step is committed only once the full test suite passes.
 
 | Step | What | Domains | Status | Delivered by |
@@ -2041,7 +2092,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="p05"></a>P05 | Corpus concepts placed in the register (one owner, aliases, sources) | [Registry](volumes/V05-structure.md#d-reg), [Semantic](volumes/V02-meaning.md#d-sem) | done | [AMD-0005](#amd-0005) |
 | <a id="p06"></a>P06 | The other domain systems unified (GOIP's 67 domains, capability domains, the per-universe record engine) | [Registry](volumes/V05-structure.md#d-reg), [Commerce](volumes/V12-business.md#d-biz), [Offering](volumes/V11.2-platform.md#d-ofg) | done | [AMD-0006](#amd-0006) |
 | <a id="p07"></a>P07 | The remaining root design documents absorbed or superseded | [Guidance](volumes/V02-meaning.md#d-gdn) | done | [AMD-0007](#amd-0007) |
-| <a id="p08"></a>P08 | Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution | [Registry](volumes/V05-structure.md#d-reg), [Identity](volumes/V02-meaning.md#d-idn), [Relationship](volumes/V05-structure.md#d-rel), [Geo](volumes/V04-universal-dimensions.md#d-geo), [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo), [Runtime](volumes/V09-automation.md#d-run), [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per), [Context](volumes/V04-universal-dimensions.md#d-ctx) | planned | — |
+| <a id="p08"></a>P08 | Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution | [Registry](volumes/V05-structure.md#d-reg), [Identity](volumes/V02-meaning.md#d-idn), [Relationship](volumes/V05-structure.md#d-rel), [Geo](volumes/V04-universal-dimensions.md#d-geo), [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo), [Runtime](volumes/V09.1-automation.md#d-run), [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per), [Context](volumes/V04-universal-dimensions.md#d-ctx) | planned | — |
 | <a id="p09"></a>P09 | Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships | [Geo](volumes/V04-universal-dimensions.md#d-geo) | planned | — |
 | <a id="p10"></a>P10 | Measure and Value, with GOIP's units merged | [Measure](volumes/V04-universal-dimensions.md#d-mea), [Value](volumes/V04-universal-dimensions.md#d-val) | planned | — |
 | <a id="p11"></a>P11 | Time, with GOIP's calendars merged | [Time](volumes/V04-universal-dimensions.md#d-tim) | planned | — |
@@ -2050,11 +2101,11 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="p14"></a>P14 | Compliance: regulations, controls, consent, subject requests, retention | [Compliance](volumes/V07-assurance.md#d-cmp) | planned | — |
 | <a id="p15"></a>P15 | Experience: device types, themes, components, configured screens | [Experience](volumes/V08-interaction.md#d-exp) | planned | — |
 | <a id="p16"></a>P16 | Communication and Notification | [Communication](volumes/V08-interaction.md#d-cmn), [Notification](volumes/V08-interaction.md#d-ntf) | planned | — |
-| <a id="p17"></a>P17 | Runtime workflows on today's state machines | [Runtime](volumes/V09-automation.md#d-run) | planned | — |
+| <a id="p17"></a>P17 | Runtime workflows on today's state machines | [Runtime](volumes/V09.1-automation.md#d-run) | planned | — |
 | <a id="p18"></a>P18 | Search, Content and Guidance; the user manual generated | [Search](volumes/V08-interaction.md#d-srh), [Content](volumes/V11.2-platform.md#d-cnt), [Guidance](volumes/V02-meaning.md#d-gdn) | planned | — |
-| <a id="p19"></a>P19 | Integration: the generated API, connectors, webhooks | [Integration](volumes/V09-automation.md#d-int) | planned | — |
+| <a id="p19"></a>P19 | Integration: the generated API, connectors, webhooks | [Integration](volumes/V09.2-automation.md#d-int) | planned | — |
 | <a id="p20"></a>P20 | Insight on today's dashboards and experiments | [Insight](volumes/V10-intelligence.md#d-ins) | planned | — |
-| <a id="p21"></a>P21 | Agent on today's AI layer | [Agent](volumes/V09-automation.md#d-agt) | planned | — |
+| <a id="p21"></a>P21 | Agent on today's AI layer | [Agent](volumes/V09.1-automation.md#d-agt) | planned | — |
 | <a id="p22"></a>P22 | Offering and Package: configuring by selection, blueprints, overlays, the first packages | [Offering](volumes/V11.2-platform.md#d-ofg), [Package](volumes/V13-composition.md#d-pkg) | planned | — |
 | <a id="p23"></a>P23 | Operations consolidated | [Operations](volumes/V11.1-platform.md#d-ops) | planned | — |
 | <a id="p24"></a>P24 | Business entities on the kernel; engines read the resolver; stores lose their single country and currency | [Commerce](volumes/V12-business.md#d-biz) | planned | — |
@@ -2092,6 +2143,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0005 | amendment | The concept register | [constitution](#amd-0005) |
 | AMD-0006 | amendment | One set of domains | [constitution](#amd-0006) |
 | AMD-0007 | amendment | Every document has one registered status and owner (document | [constitution](#amd-0007) |
+| AMD-0008 | amendment | The registry tells the truth about what runs. The live API ( | [constitution](#amd-0008) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |
@@ -2100,12 +2152,12 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | C06 | category | Decision and Control | [V06](volumes/V06-decision-and-control.md) |
 | C07 | category | Assurance | [V07](volumes/V07-assurance.md) |
 | C08 | category | Interaction | [V08](volumes/V08-interaction.md) |
-| C09 | category | Automation | [V09](volumes/V09-automation.md) |
+| C09 | category | Automation | [V09.1](volumes/V09.1-automation.md), [V09.2](volumes/V09.2-automation.md) |
 | C10 | category | Intelligence | [V10](volumes/V10-intelligence.md) |
 | C11 | category | Platform | [V11.1](volumes/V11.1-platform.md), [V11.2](volumes/V11.2-platform.md) |
 | C12 | category | Business | [V12](volumes/V12-business.md) |
 | C13 | category | Composition | [V13](volumes/V13-composition.md) |
-| D-AGT | domain | Agent | [Agent](volumes/V09-automation.md#d-agt) |
+| D-AGT | domain | Agent | [Agent](volumes/V09.1-automation.md#d-agt) |
 | D-AUD | domain | Audit | [Audit](volumes/V07-assurance.md#d-aud) |
 | D-AUT | domain | Authority | [Authority](volumes/V06-decision-and-control.md#d-aut) |
 | D-BIZ | domain | Commerce | [Commerce](volumes/V12-business.md#d-biz) |
@@ -2126,7 +2178,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | D-IDN | domain | Identity | [Identity](volumes/V02-meaning.md#d-idn) |
 | D-INF | domain | Inference | [Inference](volumes/V03.1-reality-and-reasoning.md#d-inf) |
 | D-INS | domain | Insight | [Insight](volumes/V10-intelligence.md#d-ins) |
-| D-INT | domain | Integration | [Integration](volumes/V09-automation.md#d-int) |
+| D-INT | domain | Integration | [Integration](volumes/V09.2-automation.md#d-int) |
 | D-KNW | domain | Knowledge | [Knowledge](volumes/V02-meaning.md#d-knw) |
 | D-MEA | domain | Measure | [Measure](volumes/V04-universal-dimensions.md#d-mea) |
 | D-NTF | domain | Notification | [Notification](volumes/V08-interaction.md#d-ntf) |
@@ -2144,7 +2196,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | D-REL | domain | Relationship | [Relationship](volumes/V05-structure.md#d-rel) |
 | D-RSN | domain | Reasoning | [Reasoning](volumes/V03.1-reality-and-reasoning.md#d-rsn) |
 | D-RUL | domain | Rule | [Rule](volumes/V06-decision-and-control.md#d-rul) |
-| D-RUN | domain | Runtime | [Runtime](volumes/V09-automation.md#d-run) |
+| D-RUN | domain | Runtime | [Runtime](volumes/V09.1-automation.md#d-run) |
 | D-SEC | domain | Security | [Security](volumes/V07-assurance.md#d-sec) |
 | D-SEM | domain | Semantic | [Semantic](volumes/V02-meaning.md#d-sem) |
 | D-SIM | domain | Simulation | [Simulation](volumes/V03.1-reality-and-reasoning.md#d-sim) |
@@ -2166,6 +2218,32 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | DEC-012 | decision | How is configuration made fast? | [decisions](#dec-012) |
 | DEC-013 | decision | Which names do place, value and language domains take? | [decisions](#dec-013) |
 | DEC-014 | decision | How is the documentation organised? | [decisions](#dec-014) |
+| GAP-01 | gap | CI failed on Node 22: the smoke test's own process booted th | [gaps](#gap-01) |
+| GAP-02 | gap | The code map gave storage, links, places and value units to  | [gaps](#gap-02) |
+| GAP-03 | gap | Contract APIs are designed interfaces, and the live API was  | [gaps](#gap-03) |
+| GAP-04 | gap | Domains with no code and no live route (designed only) | [gaps](#gap-04) |
+| GAP-05 | gap | Laws not yet fully enforced (11 planned, 9 partial) | [gaps](#gap-05) |
+| GAP-06 | gap | Kernel parts K01–K12 are declared, not built | [gaps](#gap-06) |
+| GAP-07 | gap | 375 low-confidence classification decisions await a person | [gaps](#gap-07) |
+| GAP-08 | gap | Countries embed currency, symbol, locale, decimals and tax;  | [gaps](#gap-08) |
+| GAP-09 | gap | goip.js holds seven literal registries that belong to Time,  | [gaps](#gap-09) |
+| GAP-10 | gap | The hard-coding ratchet still counts 65 branches, 99 fallbac | [gaps](#gap-10) |
+| GAP-11 | gap | Places: only countries and one subdivision level; no place h | [gaps](#gap-11) |
+| GAP-12 | gap | Time: no time zones anywhere; calendars only in the offers m | [gaps](#gap-12) |
+| GAP-13 | gap | Languages: every page is English, no message catalogues, no  | [gaps](#gap-13) |
+| GAP-14 | gap | Value: the core knows Earth fiat only; other units of value  | [gaps](#gap-14) |
+| GAP-15 | gap | Schema and database from the console: custom entities and a  | [gaps](#gap-15) |
+| GAP-16 | gap | Interface for every device: themes exist; no device types, c | [gaps](#gap-16) |
+| GAP-17 | gap | Workflow, notification, package, agent, integration and repo | [gaps](#gap-17) |
+| GAP-18 | gap | Launch by configuration, end to end, is not yet possible | [gaps](#gap-18) |
+| GAP-19 | gap | The development database holds test countries (XX, XY, Zamun | [gaps](#gap-19) |
+| GAP-20 | gap | PR #3's description does not cover its last commits | [gaps](#gap-20) |
+| GAP-21 | gap | The development server is not running from the repository's  | [gaps](#gap-21) |
+| GAP-22 | gap | Stripe and EasyPost have never been run against real sandbox | [gaps](#gap-22) |
+| GAP-23 | gap | CI actions target the deprecated Node 20 runtime; the runner | [gaps](#gap-23) |
+| GAP-24 | gap | USER_MANUAL.md is hand-written; nothing checks it against th | [gaps](#gap-24) |
+| GAP-25 | gap | Search filters by owner and category only for register entri | [gaps](#gap-25) |
+| GAP-26 | gap | test/identity.js opened the developer's own database on ever | [gaps](#gap-26) |
 | K01 | kernel part | Kinds | [kernel](#k01) |
 | K02 | kernel part | Nodes | [kernel](#k02) |
 | K03 | kernel part | Hierarchies | [kernel](#k03) |
@@ -2333,13 +2411,13 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | T-VALUE-UNIT | term | Value Unit | [Value Unit](#t-value-unit) |
 | T-VERIFICATION | term | Verification | [Verification](#t-verification) |
 | T-WORKFLOW | term | Workflow | [Workflow](#t-workflow) |
-| UCOS-AGT-000001 | artifact | Agent Constitution | [UCOS-AGT-000001](volumes/V09-automation.md#ucos-agt-000001) |
-| UCOS-AGT-000002 | artifact | Agent Runtime | [UCOS-AGT-000002](volumes/V09-automation.md#ucos-agt-000002) |
-| UCOS-AGT-000003 | artifact | Agent Governance | [UCOS-AGT-000003](volumes/V09-automation.md#ucos-agt-000003) |
-| UCOS-AGT-000004 | artifact | Agent Trust | [UCOS-AGT-000004](volumes/V09-automation.md#ucos-agt-000004) |
-| UCOS-AGT-000005 | artifact | Agent Safety | [UCOS-AGT-000005](volumes/V09-automation.md#ucos-agt-000005) |
-| UCOS-AGT-000006 | artifact | Agent Economics | [UCOS-AGT-000006](volumes/V09-automation.md#ucos-agt-000006) |
-| UCOS-AGT-000007 | artifact | Agent Society | [UCOS-AGT-000007](volumes/V09-automation.md#ucos-agt-000007) |
+| UCOS-AGT-000001 | artifact | Agent Constitution | [UCOS-AGT-000001](volumes/V09.1-automation.md#ucos-agt-000001) |
+| UCOS-AGT-000002 | artifact | Agent Runtime | [UCOS-AGT-000002](volumes/V09.1-automation.md#ucos-agt-000002) |
+| UCOS-AGT-000003 | artifact | Agent Governance | [UCOS-AGT-000003](volumes/V09.1-automation.md#ucos-agt-000003) |
+| UCOS-AGT-000004 | artifact | Agent Trust | [UCOS-AGT-000004](volumes/V09.1-automation.md#ucos-agt-000004) |
+| UCOS-AGT-000005 | artifact | Agent Safety | [UCOS-AGT-000005](volumes/V09.1-automation.md#ucos-agt-000005) |
+| UCOS-AGT-000006 | artifact | Agent Economics | [UCOS-AGT-000006](volumes/V09.1-automation.md#ucos-agt-000006) |
+| UCOS-AGT-000007 | artifact | Agent Society | [UCOS-AGT-000007](volumes/V09.1-automation.md#ucos-agt-000007) |
 | UCOS-AUD-000001 | artifact | Audit Architecture | [UCOS-AUD-000001](volumes/V07-assurance.md#ucos-aud-000001) |
 | UCOS-AUT-000001 | artifact | Authority Architecture | [UCOS-AUT-000001](volumes/V06-decision-and-control.md#ucos-aut-000001) |
 | UCOS-BCP-000001 | artifact | Business Continuity Architecture | [UCOS-BCP-000001](volumes/V11.1-platform.md#ucos-bcp-000001) |
@@ -2378,7 +2456,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | UCOS-EMG-000001 | artifact | Emergence Architecture | [UCOS-EMG-000001](volumes/V03.1-reality-and-reasoning.md#ucos-emg-000001) |
 | UCOS-EVD-000001 | artifact | Evidence Architecture | [UCOS-EVD-000001](volumes/V03.1-reality-and-reasoning.md#ucos-evd-000001) |
 | UCOS-EVO-000001 | artifact | Evolution Architecture | [UCOS-EVO-000001](volumes/V03.1-reality-and-reasoning.md#ucos-evo-000001) |
-| UCOS-EVT-000001 | artifact | Event Architecture | [UCOS-EVT-000001](volumes/V09-automation.md#ucos-evt-000001) |
+| UCOS-EVT-000001 | artifact | Event Architecture | [UCOS-EVT-000001](volumes/V09.1-automation.md#ucos-evt-000001) |
 | UCOS-EXP-000001 | artifact | Experience Architecture | [UCOS-EXP-000001](volumes/V08-interaction.md#ucos-exp-000001) |
 | UCOS-EXR-000001 | artifact | Expression Architecture | [UCOS-EXR-000001](volumes/V04-universal-dimensions.md#ucos-exr-000001) |
 | UCOS-FML-000001 | artifact | Formal Verification Architecture | [UCOS-FML-000001](volumes/V11.2-platform.md#ucos-fml-000001) |
@@ -2397,7 +2475,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | UCOS-IMP-000005 | artifact | Delivery Roadmap | [UCOS-IMP-000005](volumes/V02-meaning.md#ucos-imp-000005) |
 | UCOS-INF-000001 | artifact | Inference Architecture | [UCOS-INF-000001](volumes/V03.1-reality-and-reasoning.md#ucos-inf-000001) |
 | UCOS-INS-000001 | artifact | Insight Architecture | [UCOS-INS-000001](volumes/V10-intelligence.md#ucos-ins-000001) |
-| UCOS-INT-000001 | artifact | Integration Architecture | [UCOS-INT-000001](volumes/V09-automation.md#ucos-int-000001) |
+| UCOS-INT-000001 | artifact | Integration Architecture | [UCOS-INT-000001](volumes/V09.2-automation.md#ucos-int-000001) |
 | UCOS-INV-000001 | artifact | Inventory Architecture | [UCOS-INV-000001](volumes/V12-business.md#ucos-inv-000001) |
 | UCOS-KMS-000001 | artifact | Key Management Architecture | [UCOS-KMS-000001](volumes/V07-assurance.md#ucos-kms-000001) |
 | UCOS-KNW-000001 | artifact | Knowledge Architecture | [UCOS-KNW-000001](volumes/V02-meaning.md#ucos-knw-000001) |
@@ -2405,7 +2483,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | UCOS-MED-000001 | artifact | Content Architecture | [UCOS-MED-000001](volumes/V11.2-platform.md#ucos-med-000001) |
 | UCOS-MKT-000001 | artifact | Marketplace Architecture | [UCOS-MKT-000001](volumes/V12-business.md#ucos-mkt-000001) |
 | UCOS-MON-000001 | artifact | Monitoring Architecture | [UCOS-MON-000001](volumes/V11.1-platform.md#ucos-mon-000001) |
-| UCOS-MSG-000001 | artifact | Messaging Architecture | [UCOS-MSG-000001](volumes/V09-automation.md#ucos-msg-000001) |
+| UCOS-MSG-000001 | artifact | Messaging Architecture | [UCOS-MSG-000001](volumes/V09.1-automation.md#ucos-msg-000001) |
 | UCOS-NTF-000001 | artifact | Notification Architecture | [UCOS-NTF-000001](volumes/V08-interaction.md#ucos-ntf-000001) |
 | UCOS-OBS-000001 | artifact | Observation Architecture | [UCOS-OBS-000001](volumes/V03.1-reality-and-reasoning.md#ucos-obs-000001) |
 | UCOS-OBSV-000001 | artifact | Observability Architecture | [UCOS-OBSV-000001](volumes/V11.1-platform.md#ucos-obsv-000001) |
@@ -2425,11 +2503,11 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | UCOS-REL-000001 | artifact | Relationship Architecture | [UCOS-REL-000001](volumes/V05-structure.md#ucos-rel-000001) |
 | UCOS-RSN-000001 | artifact | Reasoning Architecture | [UCOS-RSN-000001](volumes/V03.1-reality-and-reasoning.md#ucos-rsn-000001) |
 | UCOS-RUL-000001 | artifact | Rule Architecture | [UCOS-RUL-000001](volumes/V06-decision-and-control.md#ucos-rul-000001) |
-| UCOS-RUN-000001 | artifact | Runtime Constitution | [UCOS-RUN-000001](volumes/V09-automation.md#ucos-run-000001) |
-| UCOS-RUN-000002 | artifact | Execution Architecture | [UCOS-RUN-000002](volumes/V09-automation.md#ucos-run-000002) |
-| UCOS-RUN-000003 | artifact | Orchestration Architecture | [UCOS-RUN-000003](volumes/V09-automation.md#ucos-run-000003) |
-| UCOS-RUN-000004 | artifact | Workflow Architecture | [UCOS-RUN-000004](volumes/V09-automation.md#ucos-run-000004) |
-| UCOS-RUN-000005 | artifact | State Machine Architecture | [UCOS-RUN-000005](volumes/V09-automation.md#ucos-run-000005) |
+| UCOS-RUN-000001 | artifact | Runtime Constitution | [UCOS-RUN-000001](volumes/V09.1-automation.md#ucos-run-000001) |
+| UCOS-RUN-000002 | artifact | Execution Architecture | [UCOS-RUN-000002](volumes/V09.1-automation.md#ucos-run-000002) |
+| UCOS-RUN-000003 | artifact | Orchestration Architecture | [UCOS-RUN-000003](volumes/V09.1-automation.md#ucos-run-000003) |
+| UCOS-RUN-000004 | artifact | Workflow Architecture | [UCOS-RUN-000004](volumes/V09.1-automation.md#ucos-run-000004) |
+| UCOS-RUN-000005 | artifact | State Machine Architecture | [UCOS-RUN-000005](volumes/V09.1-automation.md#ucos-run-000005) |
 | UCOS-SEC-000001 | artifact | Security Runtime Architecture | [UCOS-SEC-000001](volumes/V07-assurance.md#ucos-sec-000001) |
 | UCOS-SEM-000001 | artifact | Universal Semantic Architecture | [UCOS-SEM-000001](volumes/V02-meaning.md#ucos-sem-000001) |
 | UCOS-SIM-000001 | artifact | Simulation Architecture | [UCOS-SIM-000001](volumes/V03.1-reality-and-reasoning.md#ucos-sim-000001) |
@@ -2446,5 +2524,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | UCOS-ZTA-000001 | artifact | Zero Trust Architecture | [UCOS-ZTA-000001](volumes/V07-assurance.md#ucos-zta-000001) |
 | V03.1 | volume | Reality and Reasoning, part 1 of 2 | [V03.1-reality-and-reasoning.md](volumes/V03.1-reality-and-reasoning.md) |
 | V03.2 | volume | Reality and Reasoning, part 2 of 2 | [V03.2-reality-and-reasoning.md](volumes/V03.2-reality-and-reasoning.md) |
+| V09.1 | volume | Automation, part 1 of 2 | [V09.1-automation.md](volumes/V09.1-automation.md) |
+| V09.2 | volume | Automation, part 2 of 2 | [V09.2-automation.md](volumes/V09.2-automation.md) |
 | V11.1 | volume | Platform, part 1 of 2 | [V11.1-platform.md](volumes/V11.1-platform.md) |
 | V11.2 | volume | Platform, part 2 of 2 | [V11.2-platform.md](volumes/V11.2-platform.md) |

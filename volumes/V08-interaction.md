@@ -23,6 +23,7 @@
 | | |
 |---|---|
 | **Category** | C08 Interaction |
+| **Build status** | partial |
 | **Owns** | [Interface](../UCOS-MASTER.md#t-interface), [Device Type](../UCOS-MASTER.md#t-device-type) |
 | **Responsible for** | Device Types, Design Tokens, Themes, Components, Screens, Navigation, Sites And Web Domains |
 | **Not responsible for** | Message Delivery, Interface Text |
@@ -31,6 +32,38 @@
 | **Concepts** | 97 — `node _registry/compile.js --search <words> --kind concept --owner "Experience"` |
 | **Code** | `lib/themes.js`, `lib/branding.js`, `lib/bundle.js`, `lib/sitemap.js`, `lib/seed/themes.json`, `public/js/admin.js`, `public/js/app.js`, `public/js/console.js`, `public/js/platform.js`, `public/js/data.js`, `public/js/editors.js`, `public/js/provisioning.js`, `public/js/rules-ui.js` |
 | **Managed in** | `_registry/domains.json` → `D-EXP` |
+
+**Live routes (29)** — what the platform serves today for this domain:
+
+- `GET /api/config`
+- `GET /api/themes`
+- `GET /api/themes/resolve`
+- `GET /api/themes/preview`
+- `POST /api/themes/assign`
+- `POST /api/themes/unassign`
+- `POST /api/themes`
+- `GET /api/platform/hint`
+- `GET /api/hint`
+- `GET /api/admin/banners`
+- `POST /api/admin/banners`
+- `PUT /api/admin/banners/:id`
+- `DELETE /api/admin/banners/:id`
+- `GET /api/admin/cards`
+- `POST /api/admin/cards`
+- `PUT /api/admin/cards/:id`
+- `DELETE /api/admin/cards/:id`
+- `GET /api/branding`
+- `PUT /api/branding`
+- `GET /api/platform/branding`
+- `PUT /api/platform/branding`
+- `GET /api/platform/branding-permissions/:id`
+- `PUT /api/platform/branding-permissions/:id`
+- `GET /api/seo/sitemap.xml`
+- `GET /api/sitemap`
+- `GET /api/sitemap.xml`
+- `POST /api/sitemap/generate`
+- `GET /api/sitemap/config`
+- `PUT /api/sitemap/config`
 
 <a id="ucos-exp-000001"></a>
 #### UCOS-EXP-000001 · Experience Architecture
@@ -72,6 +105,8 @@ Screen:
 
 <a id="ucos-exp-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /exp.v1.theme
 - POST /exp.v1.screen
@@ -228,6 +263,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C08 Interaction |
+| **Build status** | partial |
 | **Owns** | [Message](../UCOS-MASTER.md#t-message), [Conversation](../UCOS-MASTER.md#t-conversation), [Communication Channel](../UCOS-MASTER.md#t-communication-channel) |
 | **Responsible for** | Channels, Messages, Conversations, Templates, Sender Identities, Delivery |
 | **Not responsible for** | Who Is Notified, System Event Transport |
@@ -236,6 +272,25 @@ stateDiagram-v2
 | **Concepts** | 116 — `node _registry/compile.js --search <words> --kind concept --owner "Communication"` |
 | **Code** | `lib/mailer.js`, `lib/helpdesk.js` |
 | **Managed in** | `_registry/domains.json` → `D-CMN` |
+
+**Live routes (16)** — what the platform serves today for this domain:
+
+- `POST /api/support/tickets`
+- `GET /api/support/tickets`
+- `GET /api/support/tickets/:id`
+- `POST /api/support/tickets/:id/reply`
+- `POST /api/support/tickets/:id/csat`
+- `GET /api/admin/helpdesk/tickets`
+- `GET /api/admin/helpdesk/tickets/:id`
+- `PUT /api/admin/helpdesk/tickets/:id`
+- `POST /api/admin/helpdesk/tickets/:id/reply`
+- `GET /api/admin/helpdesk/sla`
+- `GET /api/helpdesk/channels`
+- `POST /api/helpdesk/chat`
+- `POST /api/helpdesk/sms`
+- `POST /api/helpdesk/:ticketId/message`
+- `GET /api/helpdesk/agents/status`
+- `POST /api/helpdesk/agents/status`
 
 <a id="ucos-cmn-000001"></a>
 #### UCOS-CMN-000001 · Communication Architecture
@@ -278,6 +333,8 @@ Message:
 
 <a id="ucos-cmn-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /cmn.v1.send
 - POST /cmn.v1.inbound
@@ -437,6 +494,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C08 Interaction |
+| **Build status** | partial |
 | **Owns** | [Notification](../UCOS-MASTER.md#t-notification) |
 | **Responsible for** | Event Subscriptions, Recipient Preferences, Timing |
 | **Not responsible for** | Channels, Templates, Delivery |
@@ -445,6 +503,11 @@ stateDiagram-v2
 | **Concepts** | 5 — `node _registry/compile.js --search <words> --kind concept --owner "Notification"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-NTF` |
+
+**Live routes (2)** — what the platform serves today for this domain:
+
+- `GET /api/notifications`
+- `POST /api/notifications/read`
 
 <a id="ucos-ntf-000001"></a>
 #### UCOS-NTF-000001 · Notification Architecture
@@ -485,6 +548,8 @@ EventSubscription:
 
 <a id="ucos-ntf-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /ntf.v1.subscription
 - PUT  /ntf.v1/preferences/{party}
@@ -635,6 +700,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C08 Interaction |
+| **Build status** | partial |
 | **Owns** | [Search Index](../UCOS-MASTER.md#t-search-index) |
 | **Responsible for** | Indexes, Ranking, Synonyms, Facets |
 | **Not responsible for** | Persistence Indexes, Meaning |
@@ -643,6 +709,14 @@ stateDiagram-v2
 | **Concepts** | 99 — `node _registry/compile.js --search <words> --kind concept --owner "Search"` |
 | **Code** | `lib/search.js` |
 | **Managed in** | `_registry/domains.json` → `D-SRH` |
+
+**Live routes (5)** — what the platform serves today for this domain:
+
+- `GET /api/search`
+- `GET /api/suggest`
+- `GET /api/recommend`
+- `GET /api/reco/:id`
+- `GET /api/facets`
 
 <a id="ucos-src-000001"></a>
 #### UCOS-SRC-000001 · Search Architecture
@@ -686,6 +760,8 @@ SearchQuery:
 
 <a id="ucos-src-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /search.v1.query
 - POST /search.v1.suggest

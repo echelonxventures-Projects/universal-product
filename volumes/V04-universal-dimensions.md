@@ -27,14 +27,23 @@
 | | |
 |---|---|
 | **Category** | C04 Universal Dimensions |
+| **Build status** | partial |
 | **Owns** | [Place](../UCOS-MASTER.md#t-place) |
 | **Responsible for** | Places At Every Scale, Place Kinds, Place Hierarchies, Coordinate Systems, Address Formats, Data Placement |
 | **Not responsible for** | Deployment Regions, Time, Value |
 | **Contract** | [UCOS-PLC-000001 Geo Architecture](#ucos-plc-000001) |
 | **Artifacts** | [UCOS-PLC-000001](#ucos-plc-000001) |
 | **Concepts** | 69 — `node _registry/compile.js --search <words> --kind concept --owner "Geo"` |
-| **Code** | `lib/subdivisions.js`, `lib/seed/subdivisions.json` |
+| **Code** | `lib/registry.js`, `lib/global.js`, `lib/subdivisions.js`, `lib/seed/subdivisions.json` |
 | **Managed in** | `_registry/domains.json` → `D-GEO` |
+
+**Live routes (5)** — what the platform serves today for this domain:
+
+- `GET /api/platform/global/countries`
+- `GET /api/platform/global/country`
+- `POST /api/platform/global/country`
+- `PUT /api/platform/global/country`
+- `POST /api/platform/global/tenant/country`
 
 <a id="ucos-plc-000001"></a>
 #### UCOS-PLC-000001 · Geo Architecture
@@ -78,6 +87,8 @@ Place:
 
 <a id="ucos-plc-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /plc.v1.place
 - GET  /plc.v1/{id}
@@ -235,6 +246,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C04 Universal Dimensions |
+| **Build status** | designed — declared and contracted; no code or live route yet |
 | **Owns** | [Time](../UCOS-MASTER.md#t-time), [Calendar](../UCOS-MASTER.md#t-calendar) |
 | **Responsible for** | Chronologies, Calendars, Clocks And Zones, Business Hours, Recurrence, Validity Windows, Signal Delay |
 | **Not responsible for** | Event Recording, State |
@@ -243,6 +255,8 @@ stateDiagram-v2
 | **Concepts** | 112 — `node _registry/compile.js --search <words> --kind concept --owner "Time"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-TIM` |
+
+**Live routes:** none yet.
 
 <a id="ucos-tim-000001"></a>
 #### UCOS-TIM-000001 · Time Architecture
@@ -284,6 +298,8 @@ Calendar:
 
 <a id="ucos-tim-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /tim.v1.calendar
 - POST /tim.v1.convert
@@ -440,6 +456,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C04 Universal Dimensions |
+| **Build status** | designed — declared and contracted; no code or live route yet |
 | **Owns** | [Quantity](../UCOS-MASTER.md#t-quantity), [Unit](../UCOS-MASTER.md#t-unit) |
 | **Responsible for** | Quantities, Units, Conversions |
 | **Not responsible for** | Value Units, Time Calendars |
@@ -448,6 +465,8 @@ stateDiagram-v2
 | **Concepts** | 189 — `node _registry/compile.js --search <words> --kind concept --owner "Measure"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-MEA` |
+
+**Live routes:** none yet.
 
 <a id="ucos-mea-000001"></a>
 #### UCOS-MEA-000001 · Measure Architecture
@@ -488,6 +507,8 @@ Unit:
 
 <a id="ucos-mea-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /mea.v1.unit
 - POST /mea.v1.convert
@@ -632,14 +653,28 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C04 Universal Dimensions |
+| **Build status** | partial |
 | **Owns** | [Value Unit](../UCOS-MASTER.md#t-value-unit) |
 | **Responsible for** | Units Of Value, Minor Units, Rates Over Time, Settleability |
 | **Not responsible for** | Pricing Rules, Offerings |
 | **Contract** | [UCOS-VAL-000001 Value Architecture](#ucos-val-000001) |
 | **Artifacts** | [UCOS-VAL-000001](#ucos-val-000001) |
 | **Concepts** | 149 — `node _registry/compile.js --search <words> --kind concept --owner "Value"` |
-| **Code** | — |
+| **Code** | `lib/registry.js`, `lib/global.js` |
 | **Managed in** | `_registry/domains.json` → `D-VAL` |
+
+**Live routes (10)** — what the platform serves today for this domain:
+
+- `GET /api/fx`
+- `GET /api/platform/fx`
+- `POST /api/platform/fx/rates`
+- `PUT /api/platform/fx/provider`
+- `POST /api/platform/fx/sync`
+- `GET /api/platform/global/currencies`
+- `GET /api/platform/global/currency`
+- `POST /api/platform/global/currency`
+- `PUT /api/platform/global/currency`
+- `POST /api/platform/global/tenant/currency`
 
 <a id="ucos-val-000001"></a>
 #### UCOS-VAL-000001 · Value Architecture
@@ -681,6 +716,8 @@ ValueUnit:
 
 <a id="ucos-val-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /val.v1.unit
 - POST /val.v1.rate
@@ -832,6 +869,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C04 Universal Dimensions |
+| **Build status** | designed — declared and contracted; no code or live route yet |
 | **Owns** | [Expression](../UCOS-MASTER.md#t-expression), [Script](../UCOS-MASTER.md#t-script) |
 | **Responsible for** | Languages, Scripts, Direction, Plural Rules, Interface Text, Multilingual Names, Translation |
 | **Not responsible for** | Meaning, Place |
@@ -840,6 +878,8 @@ stateDiagram-v2
 | **Concepts** | 41 — `node _registry/compile.js --search <words> --kind concept --owner "Expression"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-EXR` |
+
+**Live routes:** none yet.
 
 <a id="ucos-exr-000001"></a>
 #### UCOS-EXR-000001 · Expression Architecture
@@ -882,6 +922,8 @@ Expression:
 
 <a id="ucos-exr-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /exr.v1.expression
 - GET  /exr.v1/catalogue/{tag}
@@ -1035,14 +1077,21 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C04 Universal Dimensions |
+| **Build status** | partial |
 | **Owns** | [Context](../UCOS-MASTER.md#t-context) |
 | **Responsible for** | Applicability, Scope, Boundary, Constraints |
 | **Not responsible for** | Meaning, Trust, Identity |
 | **Contract** | [UCOS-CTX-000001 Context Architecture](#ucos-ctx-000001) |
 | **Artifacts** | [UCOS-CTX-000001](#ucos-ctx-000001) |
 | **Concepts** | 123 — `node _registry/compile.js --search <words> --kind concept --owner "Context"` |
-| **Code** | `lib/defaults.js`, `lib/settings.js`, `lib/seed/defaults.json`, `lib/seed/settings.json` |
+| **Code** | `lib/global.js`, `lib/defaults.js`, `lib/settings.js`, `lib/seed/defaults.json`, `lib/seed/settings.json` |
 | **Managed in** | `_registry/domains.json` → `D-CTX` |
+
+**Live routes (3)** — what the platform serves today for this domain:
+
+- `GET /api/admin/settings`
+- `PUT /api/admin/settings`
+- `POST /api/admin/settings/reset`
 
 <a id="ucos-ctx-000001"></a>
 #### UCOS-CTX-000001 · Context Architecture
@@ -1087,6 +1136,8 @@ Context:
 
 <a id="ucos-ctx-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /context.v1.create
 - GET  /context.v1/{id}

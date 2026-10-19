@@ -33,6 +33,7 @@
 | | |
 |---|---|
 | **Category** | C02 Meaning |
+| **Build status** | partial |
 | **Owns** | [Identity](../UCOS-MASTER.md#t-identity), [Intent](../UCOS-MASTER.md#t-intent), [Existence](../UCOS-MASTER.md#t-existence), [Entity](../UCOS-MASTER.md#t-entity) |
 | **Responsible for** | Identity Creation, Identity Resolution, Identity Versioning, Identity Lineage |
 | **Not responsible for** | Knowledge, Meaning, Policy, Trust |
@@ -41,6 +42,8 @@
 | **Concepts** | 1348 — `node _registry/compile.js --search <words> --kind concept --owner "Identity"` |
 | **Code** | `lib/uid.js` |
 | **Managed in** | `_registry/domains.json` → `D-IDN` |
+
+**Live routes:** none yet.
 
 <a id="ucos-idn-000001"></a>
 #### UCOS-IDN-000001 · Identity Architecture
@@ -90,6 +93,8 @@ Identity:
 
 <a id="ucos-idn-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /identity.v1.create
 - POST /identity.v1.resolve
@@ -267,6 +272,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C02 Meaning |
+| **Build status** | partial |
 | **Owns** | [Meaning](../UCOS-MASTER.md#t-meaning), [Ontology](../UCOS-MASTER.md#t-ontology), [Taxonomy](../UCOS-MASTER.md#t-taxonomy), [Classification](../UCOS-MASTER.md#t-classification) |
 | **Responsible for** | Meaning, Ontology, Taxonomy, Classification |
 | **Not responsible for** | Knowledge Validation, Identity, Policy |
@@ -275,6 +281,19 @@ stateDiagram-v2
 | **Concepts** | 314 — `node _registry/compile.js --search <words> --kind concept --owner "Semantic"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-SEM` |
+
+**Live routes (10)** — what the platform serves today for this domain:
+
+- `GET /api/taxonomy`
+- `GET /api/admin/taxonomy`
+- `POST /api/admin/taxonomy`
+- `PUT /api/admin/taxonomy/:id`
+- `DELETE /api/admin/taxonomy/:id`
+- `GET /api/admin/departments`
+- `POST /api/admin/departments`
+- `DELETE /api/admin/departments/:key`
+- `POST /api/admin/segments/members`
+- `DELETE /api/admin/segments/members/:id`
 
 <a id="ucos-sem-000001"></a>
 #### UCOS-SEM-000001 · Universal Semantic Architecture
@@ -319,6 +338,8 @@ SemanticModel:
 
 <a id="ucos-sem-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /semantic.v1.concept.create
 - POST /semantic.v1.resolve
@@ -512,6 +533,8 @@ Ontology:
 <a id="ucos-ont-000001-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - GET  /ontology.v1/{node}
 - GET  /ontology.v1.ancestors/{node}
 - GET  /ontology.v1.descendants/{node}
@@ -692,6 +715,8 @@ Taxonomy:
 
 <a id="ucos-tax-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /taxonomy.v1.category.create
 - GET  /taxonomy.v1/{category}
@@ -883,6 +908,8 @@ SemanticModel:
 <a id="ucos-cls-000001-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - POST /semantic.v1.concept.create
 - POST /semantic.v1.resolve
 - GET  /semantic.v1/{id}
@@ -1042,6 +1069,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C02 Meaning |
+| **Build status** | designed — declared and contracted; no code or live route yet |
 | **Owns** | [Knowledge](../UCOS-MASTER.md#t-knowledge) |
 | **Responsible for** | Knowledge Creation, Knowledge Validation, Knowledge Provenance, Knowledge Evolution |
 | **Not responsible for** | Identity, Policy, Authority |
@@ -1050,6 +1078,8 @@ stateDiagram-v2
 | **Concepts** | 2774 — `node _registry/compile.js --search <words> --kind concept --owner "Knowledge"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-KNW` |
+
+**Live routes:** none yet.
 
 <a id="ucos-knw-000001"></a>
 #### UCOS-KNW-000001 · Knowledge Architecture
@@ -1097,6 +1127,8 @@ Knowledge:
 
 <a id="ucos-knw-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /knowledge.v1.assert
 - GET  /knowledge.v1/{id}
@@ -1271,6 +1303,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C02 Meaning |
+| **Build status** | partial |
 | **Owns** | [Guide](../UCOS-MASTER.md#t-guide) |
 | **Responsible for** | User Manual, Help, Implementation Guides, Glossary |
 | **Not responsible for** | Knowledge Validation, Meaning |
@@ -1279,6 +1312,8 @@ stateDiagram-v2
 | **Concepts** | 8 — `node _registry/compile.js --search <words> --kind concept --owner "Guidance"` |
 | **Code** | `public/docs/architecture.html`, `public/docs/e2e-flow.html`, `public/docs/platform-reference.html`, `public/docs/provisioning-guide.html`, `public/docs/user-manual.html`, `public/docs/user-manual.js` |
 | **Managed in** | `_registry/domains.json` → `D-GDN` |
+
+**Live routes:** none yet.
 
 <a id="ucos-imp-000001"></a>
 #### UCOS-IMP-000001 · Master Implementation Blueprint
@@ -1321,6 +1356,8 @@ ImplementationPhase:
 
 <a id="ucos-imp-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - GET  /imp.v1/phases
 - POST /imp.v1.phase.start
@@ -1516,6 +1553,8 @@ ReferencePlatform:
 <a id="ucos-imp-000002-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - GET  /ref.v1/platform
 - POST /ref.v1.validate
 - GET  /ref.v1/coverage
@@ -1707,6 +1746,8 @@ PlaybookPractice:
 <a id="ucos-imp-000003-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - GET  /play.v1/practices
 - GET  /play.v1/{id}
 - GET  /play.v1/byLaw/{lawId}
@@ -1897,6 +1938,8 @@ Migration:
 
 <a id="ucos-imp-000004-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /mig.v1.plan
 - POST /mig.v1.ingest
@@ -2096,6 +2139,8 @@ Roadmap:
 <a id="ucos-imp-000005-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - GET  /road.v1
 - POST /road.v1.update
 - GET  /road.v1.critical-path
@@ -2289,6 +2334,8 @@ Guide:
 <a id="ucos-gdn-000001-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - GET  /gdn.v1/guide/{id}
 - GET  /gdn.v1/for/{declaration}
 - POST /gdn.v1.guide
@@ -2434,6 +2481,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C02 Meaning |
+| **Build status** | partial |
 | **Owns** | [Party](../UCOS-MASTER.md#t-party), [Role](../UCOS-MASTER.md#t-role) |
 | **Responsible for** | Platforms And Tenants, Organisations, People, Agents As Actors, Providers, Roles |
 | **Not responsible for** | Identity, Permissions, Credentials |
@@ -2442,6 +2490,50 @@ stateDiagram-v2
 | **Concepts** | 265 — `node _registry/compile.js --search <words> --kind concept --owner "Party"` |
 | **Code** | `lib/tenancy.js` |
 | **Managed in** | `_registry/domains.json` → `D-PTY` |
+
+**Live routes (41)** — what the platform serves today for this domain:
+
+- `GET /api/admin/staff`
+- `POST /api/admin/staff`
+- `PUT /api/admin/staff/:id`
+- `DELETE /api/admin/staff/:id`
+- `GET /api/tenant/entity-def`
+- `GET /api/tenant/products`
+- `GET /api/tenant/catalog/importable`
+- `POST /api/tenant/catalog/import`
+- `GET /api/platform/global/tenant`
+- `GET /api/addresses`
+- `POST /api/addresses`
+- `PUT /api/addresses/:id`
+- `DELETE /api/addresses/:id`
+- `PUT /api/admin/mode`
+- `GET /api/admin/users`
+- `DELETE /api/admin/users/:id`
+- `GET /api/tenancy/tree`
+- `GET /api/tenancy/nodes`
+- `POST /api/tenancy/node`
+- `PUT /api/tenancy/node/:id`
+- `DELETE /api/tenancy/node/:id`
+- `GET /api/tenancy/resolve/:id`
+- `POST /api/tenancy/config/:id/:key`
+- `PUT /api/admin/account`
+- `GET /api/user/identity-methods`
+- `POST /api/user/identity-methods`
+- `DELETE /api/user/identity-methods/:id`
+- `PUT /api/user/identity-methods/:id/primary`
+- `GET /api/platform/tenants`
+- `GET /api/platform/tenants/:id/setup`
+- `POST /api/platform/tenants`
+- `PUT /api/platform/tenants/:id`
+- `DELETE /api/platform/tenants/:id`
+- `POST /api/platform/tenants/:id/impersonate`
+- `POST /api/platform/tenants/:id/subscribe`
+- `POST /api/platform/tenants/:id/invoice`
+- `GET /api/platform/admins`
+- `POST /api/platform/admins`
+- `PUT /api/platform/admins/:id`
+- `DELETE /api/platform/admins/:id`
+- `POST /api/platform/users`
 
 <a id="ucos-pty-000001"></a>
 #### UCOS-PTY-000001 · Party Architecture
@@ -2482,6 +2574,8 @@ Party:
 
 <a id="ucos-pty-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /pty.v1.party
 - GET  /pty.v1/{id}

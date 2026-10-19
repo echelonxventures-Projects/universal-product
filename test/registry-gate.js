@@ -121,6 +121,18 @@ console.log("\n▸ §A1 THE REGISTER — one categorised owner for every declara
   ok(r6.fails.some(f => /every document has one registered status/.test(f.name) && /README\.md unregistered/.test(f.detail) && /sits in _superseded/.test(f.detail)),
     "an unregistered document, or a superseded one claimed as current, fails the gate", (r6.fails.find(f => /document/.test(f.name)) || {}).detail);
   ok(Object.keys(can.liveManifest()).includes("UCRS-Zero-Hardcoding-Constitution.md"), "every parsed constitution is in the seal's manifest (the UCRS constitution was missing)");
+
+  /* the live API and each domain's build status are gated */
+  ok(payload.api && payload.api.routes.length >= 700 && payload.api.routes.every(r => r[3]), "every live API route has one owning domain", payload.api && payload.api.routes.length);
+  const apiCut = JSON.parse(JSON.stringify(payload));
+  apiCut.api.routes = apiCut.api.routes.slice(10);
+  ok(gate.run(apiCut).fails.some(f => /live API route/.test(f.name)), "a register missing routes from the live table fails the gate");
+  const status = JSON.parse(JSON.stringify(payload));
+  status.registryFiles.domains.domains.find(d => d.status === "designed").status = "built";
+  ok(gate.run(status).fails.some(f => /build status matches/.test(f.name)), "a domain claiming to be built with no code and no routes fails the gate");
+  const gapBad = JSON.parse(JSON.stringify(payload));
+  gapBad.registryFiles.roadmap.gaps[0].closedBy = "AMD-9999";
+  ok(gate.run(gapBad).fails.some(f => /recorded gap/.test(f.name)), "a closed gap naming an amendment that does not exist fails the gate");
 }
 
 console.log("\n▸ §A2 THE GATE REFUSES A BROKEN COMPILE");

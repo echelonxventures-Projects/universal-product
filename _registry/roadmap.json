@@ -49,5 +49,33 @@
     {"decisionId": "DEC-012", "question": "How is configuration made fast?", "decision": "Packages: editable compositions with overlays that survive upgrades."},
     {"decisionId": "DEC-013", "question": "Which names do place, value and language domains take?", "decision": "Geo, Value and Expression — named by what they own, because the constitution reserves Country, Currency and Language for projections."},
     {"decisionId": "DEC-014", "question": "How is the documentation organised?", "decision": "One master document and one volume per category, split into numbered parts past a declared size, projected and checked automatically."}
+  ],
+  "gaps": [
+    {"gapId": "GAP-01", "group": "broken", "title": "CI failed on Node 22: the smoke test's own process booted the default database (a full first seed past the server's keep-alive)", "owner": "Quality", "status": "closed", "closedBy": "AMD-0008"},
+    {"gapId": "GAP-02", "group": "broken", "title": "The code map gave storage, links, places and value units to Registry; mixed modules were not split", "owner": "Registry", "status": "closed", "closedBy": "AMD-0008"},
+    {"gapId": "GAP-03", "group": "truth", "title": "Contract APIs are designed interfaces, and the live API was unregistered; nothing said what is built", "owner": "Integration", "status": "closed", "closedBy": "AMD-0008"},
+    {"gapId": "GAP-04", "group": "truth", "title": "Domains with no code and no live route (designed only)", "owner": "Constitutional Authority", "status": "open"},
+    {"gapId": "GAP-05", "group": "truth", "title": "Laws not yet fully enforced (11 planned, 9 partial)", "owner": "Constitutional Authority", "status": "open"},
+    {"gapId": "GAP-06", "group": "truth", "title": "Kernel parts K01–K12 are declared, not built", "owner": "Registry", "status": "open"},
+    {"gapId": "GAP-07", "group": "truth", "title": "375 low-confidence classification decisions await a person", "owner": "Semantic", "status": "open"},
+    {"gapId": "GAP-08", "group": "law", "title": "Countries embed currency, symbol, locale, decimals and tax; stores embed one country and region (LAW-008)", "owner": "Geo", "status": "open"},
+    {"gapId": "GAP-09", "group": "law", "title": "goip.js holds seven literal registries that belong to Time, Geo and Value", "owner": "Commerce", "status": "open"},
+    {"gapId": "GAP-10", "group": "law", "title": "The hard-coding ratchet still counts 65 branches, 99 fallbacks and 8 seed-sized constants", "owner": "Quality", "status": "open"},
+    {"gapId": "GAP-11", "group": "requirement", "title": "Places: only countries and one subdivision level; no place hierarchy at any scale, no coordinates", "owner": "Geo", "status": "open"},
+    {"gapId": "GAP-12", "group": "requirement", "title": "Time: no time zones anywhere; calendars only in the offers module", "owner": "Time", "status": "open"},
+    {"gapId": "GAP-13", "group": "requirement", "title": "Languages: every page is English, no message catalogues, no right-to-left", "owner": "Expression", "status": "open"},
+    {"gapId": "GAP-14", "group": "requirement", "title": "Value: the core knows Earth fiat only; other units of value live only in the offers module", "owner": "Value", "status": "open"},
+    {"gapId": "GAP-15", "group": "requirement", "title": "Schema and database from the console: custom entities and a database switch exist; no per-domain storage choice", "owner": "Persistence", "status": "open"},
+    {"gapId": "GAP-16", "group": "requirement", "title": "Interface for every device: themes exist; no device types, component registry or screen builder", "owner": "Experience", "status": "open"},
+    {"gapId": "GAP-17", "group": "requirement", "title": "Workflow, notification, package, agent, integration and report designers described by the contracts are not built", "owner": "Runtime", "status": "open"},
+    {"gapId": "GAP-18", "group": "requirement", "title": "Launch by configuration, end to end, is not yet possible", "owner": "Package", "status": "open"},
+    {"gapId": "GAP-19", "group": "data", "title": "The development database holds test countries (XX, XY, Zamunda under ZA, Zephyria, Antarctica); awaiting the owner's go-ahead to remove", "owner": "Geo", "status": "open"},
+    {"gapId": "GAP-20", "group": "process", "title": "PR #3's description does not cover its last commits", "owner": "Guidance", "status": "open"},
+    {"gapId": "GAP-21", "group": "process", "title": "The development server is not running from the repository's new location", "owner": "Operations", "status": "open"},
+    {"gapId": "GAP-22", "group": "process", "title": "Stripe and EasyPost have never been run against real sandboxes; deployment is a single node", "owner": "Operations", "status": "open"},
+    {"gapId": "GAP-23", "group": "process", "title": "CI actions target the deprecated Node 20 runtime; the runner image moves to Ubuntu 26", "owner": "Operations", "status": "open"},
+    {"gapId": "GAP-24", "group": "process", "title": "USER_MANUAL.md is hand-written; nothing checks it against the code", "owner": "Guidance", "status": "open"},
+    {"gapId": "GAP-25", "group": "process", "title": "Search filters by owner and category only for register entries, not universes or corpus documents", "owner": "Search", "status": "open"},
+    {"gapId": "GAP-26", "group": "broken", "title": "test/identity.js opened the developer's own database on every run; no guard stopped a test doing so", "owner": "Quality", "status": "closed", "closedBy": "AMD-0008"}
   ]
 }

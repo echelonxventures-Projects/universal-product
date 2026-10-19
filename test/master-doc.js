@@ -14,6 +14,9 @@ const path = require("path");
 const fs = require("fs");
 const { execFileSync } = require("child_process");
 const ROOT = path.join(__dirname, "..");
+/* the projection reads the sealed registry, which may compile: give that a throwaway database */
+process.env.LX_DB = process.env.LX_DB || path.join(require("os").tmpdir(), "master-doc-" + process.pid + ".db");
+process.on("exit", () => { for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(process.env.LX_DB + s, { force: true }); } catch (e) { } } });
 const proj = require(path.join(ROOT, "_registry", "project.js"));
 
 let passed = 0, failed = 0;

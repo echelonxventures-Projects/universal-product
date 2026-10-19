@@ -19,14 +19,113 @@
 | | |
 |---|---|
 | **Category** | C05 Structure |
+| **Build status** | partial |
 | **Owns** | [Registry](../UCOS-MASTER.md#t-registry), [RegistryEntry](../UCOS-MASTER.md#t-registryentry), [Metadata](../UCOS-MASTER.md#t-metadata), [Kind](../UCOS-MASTER.md#t-kind) |
 | **Responsible for** | Declarations, Kinds And Attributes, Composite Kinds, Migrations, Storage Selection |
 | **Not responsible for** | Constitutional Law, Relationship Integrity |
 | **Contract** | [UCOS-REG-000001 Registry Architecture](#ucos-reg-000001) |
 | **Artifacts** | [UCOS-REG-000001](#ucos-reg-000001) |
 | **Concepts** | 327 — `node _registry/compile.js --search <words> --kind concept --owner "Registry"` |
-| **Code** | `lib/entity.js`, `lib/meta.js`, `lib/parity-registries.js`, `lib/registry.js`, `lib/global.js`, `lib/canonical.js`, `lib/ucos.js`, `lib/ucos-registry.js`, `lib/ucos-foundations.js`, `lib/ucos-universes.js`, `lib/ucos-domain.js`, `lib/ucos-catalog.js`, `lib/ucos-completeness.js`, `lib/db.js`, `lib/dbpool.js`, `lib/sql.js`, `lib/pg.js`, `lib/pgbridge.js`, `lib/pgworker.js`, `lib/migrate.js`, `lib/seed/entity.json`, `lib/seed/meta.json`, `lib/seed/parity-registries.json`, `lib/seed/ucos.json`, `scripts/schema-dump.js` |
+| **Code** | `lib/entity.js`, `lib/meta.js`, `lib/parity-registries.js`, `lib/registry.js`, `lib/canonical.js`, `lib/ucos.js`, `lib/ucos-registry.js`, `lib/ucos-foundations.js`, `lib/ucos-universes.js`, `lib/ucos-domain.js`, `lib/ucos-catalog.js`, `lib/ucos-completeness.js`, `lib/seed/entity.json`, `lib/seed/meta.json`, `lib/seed/parity-registries.json`, `lib/seed/ucos.json` |
 | **Managed in** | `_registry/domains.json` → `D-REG` |
+
+**Live routes (95)** — what the platform serves today for this domain:
+
+- `GET /api/registries`
+- `POST /api/registries`
+- `POST /api/registries/:id/items`
+- `GET /api/meta`
+- `GET /api/meta/entities`
+- `GET /api/meta/entity/:key`
+- `POST /api/meta/entity/:key`
+- `PUT /api/meta/entity/:key/:id`
+- `DELETE /api/meta/entity/:key/:id`
+- `GET /api/meta/entity-def`
+- `POST /api/meta/entity-def`
+- `DELETE /api/meta/entity-def/:key`
+- `POST /api/meta/entity-def/:key/enable`
+- `POST /api/meta/entity-def/:key/disable`
+- `GET /api/ucii/domains`
+- `POST /api/ucii/domains`
+- `GET /api/platform/universe-fields/:key`
+- `GET /api/ucii/knowledge`
+- `POST /api/ucii/knowledge`
+- `GET /api/ucos/manifest`
+- `GET /api/ucos/coverage`
+- `GET /api/ucos/docs`
+- `GET /api/ucos/:doc/parts`
+- `GET /api/ucos/:doc/sections`
+- `GET /api/ucos/:doc/concepts`
+- `GET /api/ucos/:doc/registries`
+- `GET /api/ucos/:doc/edges`
+- `GET /api/ucos/:doc/neighbours`
+- `GET /api/ucos/search`
+- `POST /api/ucos/reparse`
+- `GET /api/ucos/health`
+- `GET /api/ucos/drift`
+- `GET /api/ucos/completeness`
+- `GET /api/ucos/index`
+- `GET /api/ucos/:doc/annotations`
+- `POST /api/ucos/:doc/annotations`
+- `PUT /api/ucos/annotations/:id`
+- `DELETE /api/ucos/annotations/:id`
+- `GET /api/ucos/annotations/orphans`
+- `GET /api/ucos/foundations/manifest`
+- `GET /api/ucos/foundations/verify`
+- `GET /api/ucos/foundations/ledger`
+- `GET /api/ucos/foundations`
+- `GET /api/ucos/foundations/:key`
+- `GET /api/ucos/foundations/:key/traverse`
+- `POST /api/ucos/foundations`
+- `POST /api/ucos/foundations/:key/certify`
+- `POST /api/ucos/foundations/:key/deprecate`
+- `POST /api/ucos/foundations/:key/retire`
+- `GET /api/ucos/universes`
+- `POST /api/ucos/universes/instantiate`
+- `GET /api/ucos/coverage-report`
+- `GET /api/ucos/catalog`
+- `GET /api/ucos/catalog/stats`
+- `POST /api/ucos/catalog/:key/publish`
+- `POST /api/ucos/catalog/:key/withdraw`
+- `POST /api/ucos/catalog/activate`
+- `POST /api/ucos/catalog/:key/activate`
+- `GET /api/ucos/catalog/activation`
+- `GET /api/ucos/trace`
+- `GET /api/ucos/matrix`
+- `GET /api/ucos/domains`
+- `GET /api/ucos/domain/:key`
+- `POST /api/ucos/domain/:key/fire`
+- `GET /api/platform/entity-types`
+- `POST /api/platform/entity-types`
+- `PUT /api/platform/entity-types/:entity/:type_key`
+- `DELETE /api/platform/entity-types/:entity/:type_key`
+- `GET /api/platform/tenant-entities`
+- `POST /api/platform/tenant-entities`
+- `POST /api/platform/tenant-fields`
+- `GET /api/platform/data`
+- `GET /api/platform/data/:key`
+- `GET /api/platform/data/:key/def`
+- `GET /api/platform/data/:key/export`
+- `GET /api/platform/data/:key/sample`
+- `POST /api/platform/data/:key`
+- `PUT /api/platform/data/:key/:id`
+- `DELETE /api/platform/data/:key/:id`
+- `POST /api/platform/data/:key/import`
+- `GET /api/platform/attributes`
+- `POST /api/platform/attributes`
+- `GET /api/platform/entity-attributes`
+- `POST /api/platform/entity-attributes`
+- `GET /api/admin/attributes`
+- `POST /api/admin/attributes`
+- `DELETE /api/admin/attributes/:key`
+- `GET /api/platform/registries`
+- `GET /api/platform/registries/:name`
+- `POST /api/platform/registries/:name`
+- `POST /api/platform/registries/:name/recommend`
+- `DELETE /api/platform/registries/:name/:key`
+- `GET /api/admin/entity-usage`
+- `GET /api/admin/entity-meta`
+- `PUT /api/admin/entity-meta`
 
 <a id="ucos-reg-000001"></a>
 #### UCOS-REG-000001 · Registry Architecture
@@ -68,6 +167,8 @@ Declaration:
 
 <a id="ucos-reg-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /reg.v1.declare
 - POST /reg.v1.preview
@@ -230,14 +331,19 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C05 Structure |
+| **Build status** | partial |
 | **Owns** | [Relationship](../UCOS-MASTER.md#t-relationship) |
 | **Responsible for** | Relationship Definition, Relationship Resolution, Relationship Integrity |
 | **Not responsible for** | Meaning, Trust, Authority |
 | **Contract** | [UCOS-REL-000001 Relationship Architecture](#ucos-rel-000001) |
 | **Artifacts** | [UCOS-REL-000001](#ucos-rel-000001) |
 | **Concepts** | 298 — `node _registry/compile.js --search <words> --kind concept --owner "Relationship"` |
-| **Code** | — |
+| **Code** | `lib/registry.js`, `lib/db.js` |
 | **Managed in** | `_registry/domains.json` → `D-REL` |
+
+**Live routes (1)** — what the platform serves today for this domain:
+
+- `DELETE /api/admin/relationships/:id`
 
 <a id="ucos-rel-000001"></a>
 #### UCOS-REL-000001 · Relationship Architecture
@@ -283,6 +389,8 @@ This IS the graph. (:Identity)-[:RELATIONSHIP_TYPE {context, temporal, trust}]->
 
 <a id="ucos-rel-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /relationship.v1.create
 - POST /relationship.v1.query

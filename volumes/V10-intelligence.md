@@ -17,6 +17,7 @@
 | | |
 |---|---|
 | **Category** | C10 Intelligence |
+| **Build status** | partial |
 | **Owns** | [Metric](../UCOS-MASTER.md#t-metric), [Report](../UCOS-MASTER.md#t-report) |
 | **Responsible for** | Metrics, Reports, Dashboards, Alerts, Forecasts, Experiments |
 | **Not responsible for** | Observation Capture, Simulation |
@@ -25,6 +26,36 @@
 | **Concepts** | 596 — `node _registry/compile.js --search <words> --kind concept --owner "Insight"` |
 | **Code** | `lib/dashboards.js`, `lib/experiments.js`, `lib/planning.js` |
 | **Managed in** | `_registry/domains.json` → `D-INS` |
+
+**Live routes (27)** — what the platform serves today for this domain:
+
+- `GET /api/dashboards/entities`
+- `GET /api/dashboards`
+- `GET /api/dashboards/:key`
+- `POST /api/dashboards/:key`
+- `PUT /api/dashboards/:key`
+- `DELETE /api/dashboards/:key`
+- `POST /api/dashboards/:key/widgets`
+- `DELETE /api/dashboards/:key/widgets`
+- `POST /api/dashboards/:key/prefs`
+- `GET /api/reports`
+- `GET /api/reports/:key/run`
+- `POST /api/reports/:key`
+- `PUT /api/reports/:key`
+- `DELETE /api/reports/:key`
+- `GET /api/experiments/:id/assign`
+- `POST /api/experiments/:id/convert`
+- `GET /api/admin/experiments`
+- `POST /api/admin/experiments`
+- `PUT /api/admin/experiments/:id/status`
+- `GET /api/admin/experiments/:id/results`
+- `GET /api/admin/planning`
+- `POST /api/admin/planning/run`
+- `PUT /api/admin/planning/:id`
+- `POST /api/admin/planning/approve-all`
+- `GET /api/admin/planning/pos`
+- `GET /api/admin/stats`
+- `GET /api/admin/analytics`
 
 <a id="ucos-ins-000001"></a>
 #### UCOS-INS-000001 · Insight Architecture
@@ -66,6 +97,8 @@ Metric:
 
 <a id="ucos-ins-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /ins.v1.metric
 - POST /ins.v1.query

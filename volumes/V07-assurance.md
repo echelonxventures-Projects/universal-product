@@ -29,6 +29,7 @@
 | | |
 |---|---|
 | **Category** | C07 Assurance |
+| **Build status** | partial |
 | **Owns** | [Credential](../UCOS-MASTER.md#t-credential), [Key](../UCOS-MASTER.md#t-key) |
 | **Responsible for** | Authentication, Sign-in Methods, Keys And Encryption, Threat Protection, Security Incidents |
 | **Not responsible for** | Trust Computation, Permissions, Audit Record |
@@ -37,6 +38,54 @@
 | **Concepts** | 285 — `node _registry/compile.js --search <words> --kind concept --owner "Security"` |
 | **Code** | `lib/security.js`, `lib/identity.js`, `lib/webauthn.js`, `lib/risk.js` |
 | **Managed in** | `_registry/domains.json` → `D-SEC` |
+
+**Live routes (45)** — what the platform serves today for this domain:
+
+- `GET /api/session`
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `POST /api/auth/logout`
+- `POST /api/auth/token-exchange`
+- `POST /api/admin/risk/screen`
+- `GET /api/admin/risk/blocklist`
+- `POST /api/admin/risk/blocklist`
+- `GET /api/admin/risk/queue`
+- `PUT /api/admin/risk/:id/resolve`
+- `GET /api/platform/identity-templates`
+- `POST /api/platform/identity-templates`
+- `DELETE /api/platform/identity-templates/:id`
+- `GET /api/platform/identity-templates/:id`
+- `PUT /api/platform/identity-templates/:id`
+- `POST /api/platform/identity-templates/:id/apply`
+- `GET /api/admin/sso`
+- `PUT /api/admin/sso`
+- `POST /api/auth/sso/start`
+- `POST /api/auth/sso/callback`
+- `GET /api/admin/identity-providers`
+- `PUT /api/admin/identity-providers`
+- `DELETE /api/admin/identity-providers/:id`
+- `GET /api/admin/identity-provider-types`
+- `POST /api/admin/identity-provider-types`
+- `GET /api/admin/identity-settings`
+- `PUT /api/admin/identity-settings`
+- `POST /api/auth/password/forgot`
+- `POST /api/auth/password/reset`
+- `POST /api/auth/login-init`
+- `POST /api/auth/login/otp`
+- `POST /api/auth/login/magic`
+- `POST /api/auth/login/biometric`
+- `POST /api/auth/biometric/register`
+- `POST /api/auth/login/callback`
+- `GET /api/auth/methods`
+- `GET /api/scim/Users`
+- `POST /api/scim/Users`
+- `POST /api/admin/scim/token`
+- `POST /api/platform/login`
+- `POST /api/platform/logout`
+- `GET /api/platform/me`
+- `GET /api/auth/me`
+- `GET /api/platform/security`
+- `POST /api/platform/keys/rotate`
 
 <a id="ucos-iam-000001"></a>
 #### UCOS-IAM-000001 · Identity & Access Management
@@ -80,6 +129,8 @@ AccessGrant:
 
 <a id="ucos-iam-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /iam.v1.authenticate
 - POST /iam.v1.authorize
@@ -285,6 +336,8 @@ ZeroTrustDecision:
 <a id="ucos-zta-000001-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - POST /zt.v1.evaluate
 - POST /zt.v1.stepup
 - GET  /zt.v1/decision/{id}
@@ -484,6 +537,8 @@ CryptoOperation:
 <a id="ucos-cry-000001-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - POST /crypto.v1.sign
 - POST /crypto.v1.verify
 - POST /crypto.v1.encrypt
@@ -682,6 +737,8 @@ Key:
 
 <a id="ucos-kms-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /kms.v1.generate
 - POST /kms.v1.rotate
@@ -885,6 +942,8 @@ SecurityEvent:
 <a id="ucos-sec-000001-apis"></a>
 ##### APIs
 
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
+
 - POST /sec.v1.report
 - GET  /sec.v1/events
 - POST /sec.v1/{id}/respond
@@ -1051,6 +1110,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C07 Assurance |
+| **Build status** | designed — declared and contracted; no code or live route yet |
 | **Owns** | [Trust](../UCOS-MASTER.md#t-trust) |
 | **Responsible for** | Trust Computation, Trust Scores, Trust Verification |
 | **Not responsible for** | Evidence Generation, Policy, Identity |
@@ -1059,6 +1119,8 @@ stateDiagram-v2
 | **Concepts** | 215 — `node _registry/compile.js --search <words> --kind concept --owner "Trust"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-TRU` |
+
+**Live routes:** none yet.
 
 <a id="ucos-trs-000001"></a>
 #### UCOS-TRS-000001 · Trust Architecture
@@ -1105,6 +1167,8 @@ Trust:
 
 <a id="ucos-trs-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - GET  /trust.v1/{subjectId}
 - POST /trust.v1/recompute
@@ -1266,6 +1330,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C07 Assurance |
+| **Build status** | partial |
 | **Owns** | [Audit Record](../UCOS-MASTER.md#t-audit-record) |
 | **Responsible for** | Immutable Record, Investigation, Evidence Packs |
 | **Not responsible for** | Evidence Validity, Obligations |
@@ -1274,6 +1339,13 @@ stateDiagram-v2
 | **Concepts** | 40 — `node _registry/compile.js --search <words> --kind concept --owner "Audit"` |
 | **Code** | `lib/ucos-trace.js`, `lib/security.js` |
 | **Managed in** | `_registry/domains.json` → `D-AUD` |
+
+**Live routes (4)** — what the platform serves today for this domain:
+
+- `GET /api/admin/audit`
+- `GET /api/platform/chain/verify`
+- `GET /api/admin/chain/verify`
+- `GET /api/platform/audit`
 
 <a id="ucos-aud-000001"></a>
 #### UCOS-AUD-000001 · Audit Architecture
@@ -1320,6 +1392,8 @@ AuditRecord:
 
 <a id="ucos-aud-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /aud.v1.record
 - GET  /aud.v1/{id}
@@ -1480,6 +1554,7 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C07 Assurance |
+| **Build status** | partial |
 | **Owns** | [Obligation](../UCOS-MASTER.md#t-obligation), [Consent](../UCOS-MASTER.md#t-consent) |
 | **Responsible for** | Regulations, Controls, Consent, Data-Subject Requests, Retention, Residency Obligations, Processor Register |
 | **Not responsible for** | Security Controls, Audit Record |
@@ -1488,6 +1563,21 @@ stateDiagram-v2
 | **Concepts** | 211 — `node _registry/compile.js --search <words> --kind concept --owner "Compliance"` |
 | **Code** | `lib/compliance.js`, `lib/seed/compliance.json` |
 | **Managed in** | `_registry/domains.json` → `D-CMP` |
+
+**Live routes (12)** — what the platform serves today for this domain:
+
+- `GET /api/admin/retention`
+- `PUT /api/admin/retention`
+- `GET /api/admin/compliance/status`
+- `GET /api/admin/compliance/catalog`
+- `POST /api/admin/compliance/control`
+- `GET /api/admin/compliance/evidence`
+- `GET /api/consent`
+- `POST /api/consent`
+- `POST /api/privacy/request`
+- `GET /api/admin/privacy/requests`
+- `POST /api/admin/privacy/requests/:id`
+- `GET /api/admin/privacy/requests/:id/events`
 
 <a id="ucos-dsp-000001"></a>
 #### UCOS-DSP-000001 · Data Sovereignty Architecture
@@ -1530,6 +1620,8 @@ SovereigntyBinding:
 
 <a id="ucos-dsp-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /sovereignty.v1.bind
 - GET  /sovereignty.v1/{id}
@@ -1725,6 +1817,8 @@ Consent:
 
 <a id="ucos-cns-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /consent.v1.give
 - POST /consent.v1.withdraw
@@ -1924,6 +2018,8 @@ Obligation:
 
 <a id="ucos-cmp-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /cmp.v1.regulation
 - POST /cmp.v1.consent

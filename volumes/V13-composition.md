@@ -17,14 +17,26 @@
 | | |
 |---|---|
 | **Category** | C13 Composition |
+| **Build status** | partial |
 | **Owns** | [Package](../UCOS-MASTER.md#t-package), [Blueprint](../UCOS-MASTER.md#t-blueprint), [Overlay](../UCOS-MASTER.md#t-overlay) |
 | **Responsible for** | Packages, Blueprints, Overlays |
 | **Not responsible for** | Domain Truth, Offerings |
 | **Contract** | [UCOS-PKG-000001 Package Architecture](#ucos-pkg-000001) |
 | **Artifacts** | [UCOS-PKG-000001](#ucos-pkg-000001) |
 | **Concepts** | 256 — `node _registry/compile.js --search <words> --kind concept --owner "Package"` |
-| **Code** | `lib/compose.js` |
+| **Code** | `lib/registry.js`, `lib/compose.js` |
 | **Managed in** | `_registry/domains.json` → `D-PKG` |
+
+**Live routes (8)** — what the platform serves today for this domain:
+
+- `GET /api/compose/candidates`
+- `GET /api/compose/ledger`
+- `GET /api/compose/:key`
+- `POST /api/compose/:key`
+- `POST /api/compose/:key/recompose`
+- `GET /api/platform/kinds`
+- `POST /api/platform/kinds`
+- `DELETE /api/platform/kinds/:key`
 
 <a id="ucos-pkg-000001"></a>
 #### UCOS-PKG-000001 · Package Architecture
@@ -67,6 +79,8 @@ Package:
 
 <a id="ucos-pkg-000001-apis"></a>
 ##### APIs
+
+*Designed interface: the contract the domain is built towards. The routes it serves today are on its card.*
 
 - POST /pkg.v1.package
 - POST /pkg.v1.install
