@@ -527,7 +527,9 @@ const raw = (text) => new Promise((resolve) => {
       ok(fin.simulatedAllowed() === true, "outside production the sandbox rails still work");
     }
   } catch (e) {
-    failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e));
+    failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e) + (e && e.cause ? "\n    cause: " + (e.cause.stack || e.cause) : ""));
+    /* what the server said before it went away */
+    console.log(stderr.split("\n").filter(l => l && !/ExperimentalWarning|trace-warnings/.test(l)).slice(-25).join("\n"));
   } finally {
     srv.kill();
     await sleep(300);

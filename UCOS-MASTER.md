@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0020 (2026-10-20).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0022 (2026-10-20).
 
 ## Contents
 
@@ -383,6 +383,8 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0018"></a>AMD-0018 | 2026-10-19 | Platform owner | A store stores no country. Every store is a node of the store kind (owner Party), known by its store id, with its row's universal ID. The places it serves are a relationship of their own (owner Relationship): in the serves hierarchy a store sits under each place it serves — any mix of countries and subdivisions — each with a time window. Its jurisdiction is a Party setting at its node naming one of those places; settings, tax, billing, modules, the global console and the offer engine's context read the store's country from it, and a subdivision jurisdiction answers the country it lies in. Saving a store's country moves its jurisdiction and the settings row keeps no copy. A fresh install's store row has no country column; an older install's stores are imported at boot (what the storefront showed, else the row's column, else provisioning policy) and the column is never read again. A deleted store's node is archived with its history; a country a store serves cannot be deleted. |
 | <a id="amd-0019"></a>AMD-0019 | 2026-10-20 | Platform owner | P09 completes: the offer engine's spatial systems, coordinate systems and place list are Geo's. Places above and beside the countries are declared as data (lib/seed/places.json declared): a planet, a moon, a galaxy, a network realm heads its own place system with its levels and coordinate system, and its calendar is Time's setting at the place, resolved up the tree. Countries sit under the declared Earth. Every place has a path identifier (its parent's path and its own segment), which follows a move; a declared entry may give an existing subdivision its path. The coordinate systems are kernel coordinate systems (K05). A new place at any scale is declared at runtime through Geo's write path (putPlace), with no code. goip.js holds no spatial list: it names places by path and reads their system and calendar from the place tree; a store's default place is its jurisdiction's path. Places an operator added to the engine's old list are imported once. |
 | <a id="amd-0020"></a>AMD-0020 | 2026-10-20 | Platform owner | P10 begins: every unit of value is Value's. The currency master is the master of every unit of value — an ISO 4217 currency, a colony's credits, carbon credits, loyalty points — with its class (Value's class list, lib/seed/value.json; a class that is money prices goods) and whether it can be paid out. A unit's code is capital letters, digits and underscores: ISO 4217's three letters are one case, not an assumption; a unit may have no exchange value. The units the offer engine declared in code arrive in Value's master switched off; units and classes an operator added to its old lists are imported once. goip.js holds no economic list: it reads units and classes from Value. The shipped default country for a new store is seed data (lib/seed/defaults.json), not code. |
+| <a id="amd-0021"></a>AMD-0021 | 2026-10-20 | Platform owner | P11: Time owns time. Calendars, chronologies, temporal units and their conversions are Time's registries (lib/seed/time.json), not lists in the offer engine; rows an operator added under the engine's old list names join Time's once. A place's time zone is Time's setting at the place, resolved up the place tree like its calendar: each seeded country has its primary zone, any subdivision, city or colony may have its own, and a place under none is in the declared default zone. A zone the host's clock knows answers the local date, weekday and hour at an instant; a colony's own clock is carried as declared. The offer engine's temporal context carries the zone where the exchange happens (the request's, the place's, else the store's jurisdiction's) and its local time. |
+| <a id="amd-0022"></a>AMD-0022 | 2026-10-20 | Platform owner | An idle keep-alive connection outlives a load balancer's idle timeout: the server's keep-alive is 65 s by default (LX_KEEPALIVE_MS), so the balancer, not the server, closes it. With Node's 5 s default the server closed idle sockets while a client was about to reuse one, which reset the client's next request — the cause of the intermittent ECONNRESET in the test suites (GAP-28), and of 502s behind a balancer. Shutdown closes the listening server, TLS included. A security-suite crash now prints the server's last words and the network cause. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1209,7 +1211,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 137 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 139 files.
 
 ### C02 · Meaning
 
@@ -1247,11 +1249,13 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `lib/global.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | global settings |
 | `lib/kernel-shape.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | kernel part K05: coordinate systems and shapes |
 | `lib/kernel-context.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | scope and resolution (K11, K12) |
+| `lib/time.js` | [Time](volumes/V04-universal-dimensions.md#d-tim) | Time's registries and a place's time zone, resolved up the place tree (P11) |
 | `lib/places.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | the place tree on the kernel; the write path for countries and subdivisions, and the import of rows it has never seen (P09) |
 | `lib/defaults.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | resolver answers (K12) |
 | `lib/settings.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | resolver answers (K12) |
 | `lib/subdivisions.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) |  |
 | `lib/seed/defaults.json` | [Context](volumes/V04-universal-dimensions.md#d-ctx) |  |
+| `lib/seed/time.json` | [Time](volumes/V04-universal-dimensions.md#d-tim) | calendars, chronologies, temporal units, conversions and each seeded country's primary zone |
 | `lib/seed/value.json` | [Value](volumes/V04-universal-dimensions.md#d-val) | the classes of units of value and the units shipped beyond the currency seed |
 | `lib/seed/places.json` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | the place kind, the place tree and their identifier schemes |
 | `lib/seed/settings.json` | [Context](volumes/V04-universal-dimensions.md#d-ctx) |  |
@@ -2076,7 +2080,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 <a id="gaps"></a>
 ### Gaps
 
-23 open, 7 closed. Every gap has one owning domain; a closed gap names the amendment that closed it (`_registry/roadmap.json` → `gaps`).
+21 open, 9 closed. Every gap has one owning domain; a closed gap names the amendment that closed it (`_registry/roadmap.json` → `gaps`).
 
 | Gap | Group | What | Owner | Status |
 |---|---|---|---|---|
@@ -2088,10 +2092,10 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="gap-06"></a>GAP-06 | truth | Every kernel part runs, but K01, K05, K06 and K08–K12 are partial (see each part's note); no domain is on the kernel yet (P09 onward) | [Registry](volumes/V05-structure.md#d-reg) | open |
 | <a id="gap-07"></a>GAP-07 | truth | 375 low-confidence classification decisions await a person | [Semantic](volumes/V02-meaning.md#d-sem) | open |
 | <a id="gap-08"></a>GAP-08 | law | Stores embedded one country and region, and the country master embedded currency, symbol, locale, decimals and tax columns (LAW-008). Countries hold only the place (AMD-0017); stores serve a set of places with a jurisdiction among them (AMD-0018). An older install keeps the retired columns, unread, until an operator retires them | [Geo](volumes/V04-universal-dimensions.md#d-geo) | closed (AMD-0018) |
-| <a id="gap-09"></a>GAP-09 | law | goip.js still holds the literal registries that belong to Time (calendars, chronologies, temporal units and conversions); Geo's places (AMD-0019) and Value's units (AMD-0020) are their owners' | [Commerce](volumes/V12-business.md#d-biz) | open |
+| <a id="gap-09"></a>GAP-09 | law | goip.js still holds the literal registries that belong to Time (calendars, chronologies, temporal units and conversions); Geo's places (AMD-0019) and Value's units (AMD-0020) are their owners' | [Commerce](volumes/V12-business.md#d-biz) | closed (AMD-0021) |
 | <a id="gap-10"></a>GAP-10 | law | The hard-coding ratchet still counts 65 branches, 99 fallbacks and 8 seed-sized constants | [Quality](volumes/V11.2-platform.md#d-qlt) | open |
 | <a id="gap-11"></a>GAP-11 | requirement | Places carry no shapes yet: coordinate systems are declared and any place at any scale can be declared, but no country, subdivision or body has coordinates, so 'which places contain this point' answers nothing on real data | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
-| <a id="gap-12"></a>GAP-12 | requirement | Time: no time zones anywhere; calendars only in the offers module | [Time](volumes/V04-universal-dimensions.md#d-tim) | open |
+| <a id="gap-12"></a>GAP-12 | requirement | Time: no time zones anywhere; calendars only in the offers module | [Time](volumes/V04-universal-dimensions.md#d-tim) | closed (AMD-0021) |
 | <a id="gap-13"></a>GAP-13 | requirement | Languages: every page is English, no message catalogues, no right-to-left | [Expression](volumes/V04-universal-dimensions.md#d-exr) | open |
 | <a id="gap-14"></a>GAP-14 | requirement | Value: the core knows Earth fiat only; other units of value live only in the offers module | [Value](volumes/V04-universal-dimensions.md#d-val) | closed (AMD-0020) |
 | <a id="gap-15"></a>GAP-15 | requirement | Schema and database from the console: custom entities and a database switch exist; no per-domain storage choice | [Persistence](volumes/V11.1-platform.md#d-prs) | open |
@@ -2107,13 +2111,13 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="gap-25"></a>GAP-25 | process | Search filters by owner and category only for register entries, not universes or corpus documents | [Search](volumes/V08-interaction.md#d-srh) | open |
 | <a id="gap-26"></a>GAP-26 | broken | test/identity.js opened the developer's own database on every run; no guard stopped a test doing so | [Quality](volumes/V11.2-platform.md#d-qlt) | closed (AMD-0008) |
 | <a id="gap-27"></a>GAP-27 | truth | Three event records coexist — audit_log, the webhook bus (lib/events.js) and the kernel's log (k_events); K08 requires one | [Runtime](volumes/V09.1-automation.md#d-run) | open |
-| <a id="gap-28"></a>GAP-28 | process | Intermittent test failures with unproven causes: the smoke test crashed once with ECONNRESET at its retention section, and the browser check once timed out (Runtime.evaluate) after the platform console's context-types page; both passed on rerun | [Quality](volumes/V11.2-platform.md#d-qlt) | open |
+| <a id="gap-28"></a>GAP-28 | process | Intermittent test failures: the ECONNRESET was a 5 s server keep-alive racing a reused client socket (fixed, AMD-0022); the browser check's occasional Runtime.evaluate timeout and a console render that misses its fixed wait under full-suite load remain unexplained | [Quality](volumes/V11.2-platform.md#d-qlt) | open |
 | <a id="gap-29"></a>GAP-29 | process | CI did not run on 3e67d62: GitHub refused to start the jobs because the account's payments failed or its spending limit is reached; every later commit is checked locally only until the owner fixes billing | [Operations](volumes/V11.1-platform.md#d-ops) | open |
 | <a id="gap-30"></a>GAP-30 | process | The repository sits in an iCloud-synced Desktop folder: the sync made 67 conflict copies ("canonical 2.lxr", test databases, ".luxora 2.pid"), one hung git add, and its file locking may explain the intermittent test failures (GAP-28); the repository belongs outside iCloud | [Operations](volumes/V11.1-platform.md#d-ops) | open |
 
 ### Steps
 
-8 of 26 steps done. Each step is committed only once the full test suite passes.
+9 of 26 steps done. Each step is committed only once the full test suite passes.
 
 | Step | What | Domains | Status | Delivered by |
 |---|---|---|---|---|
@@ -2127,7 +2131,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="p08"></a>P08 | Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution | [Registry](volumes/V05-structure.md#d-reg), [Identity](volumes/V02-meaning.md#d-idn), [Relationship](volumes/V05-structure.md#d-rel), [Geo](volumes/V04-universal-dimensions.md#d-geo), [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo), [Runtime](volumes/V09.1-automation.md#d-run), [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per), [Context](volumes/V04-universal-dimensions.md#d-ctx) | in-progress | [AMD-0009](#amd-0009), [AMD-0010](#amd-0010), [AMD-0011](#amd-0011), [AMD-0012](#amd-0012) |
 | <a id="p09"></a>P09 | Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships | [Geo](volumes/V04-universal-dimensions.md#d-geo) | done | [AMD-0013](#amd-0013), [AMD-0014](#amd-0014), [AMD-0015](#amd-0015), [AMD-0016](#amd-0016), [AMD-0017](#amd-0017), [AMD-0018](#amd-0018), [AMD-0019](#amd-0019) |
 | <a id="p10"></a>P10 | Measure and Value, with GOIP's units merged | [Measure](volumes/V04-universal-dimensions.md#d-mea), [Value](volumes/V04-universal-dimensions.md#d-val) | in-progress | [AMD-0020](#amd-0020) |
-| <a id="p11"></a>P11 | Time, with GOIP's calendars merged | [Time](volumes/V04-universal-dimensions.md#d-tim) | planned | — |
+| <a id="p11"></a>P11 | Time, with GOIP's calendars merged | [Time](volumes/V04-universal-dimensions.md#d-tim) | done | [AMD-0021](#amd-0021) |
 | <a id="p12"></a>P12 | Expression: languages, scripts, message catalogues | [Expression](volumes/V04-universal-dimensions.md#d-exr) | planned | — |
 | <a id="p13"></a>P13 | Classification, Context, Party and Rule on the kernel; one authorisation engine | [Semantic](volumes/V02-meaning.md#d-sem), [Context](volumes/V04-universal-dimensions.md#d-ctx), [Party](volumes/V02-meaning.md#d-pty), [Rule](volumes/V06-decision-and-control.md#d-rul), [Authority](volumes/V06-decision-and-control.md#d-aut) | planned | — |
 | <a id="p14"></a>P14 | Compliance: regulations, controls, consent, subject requests, retention | [Compliance](volumes/V07-assurance.md#d-cmp) | planned | — |
@@ -2188,6 +2192,8 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0018 | amendment | A store stores no country. Every store is a node of the stor | [constitution](#amd-0018) |
 | AMD-0019 | amendment | P09 completes | [constitution](#amd-0019) |
 | AMD-0020 | amendment | P10 begins | [constitution](#amd-0020) |
+| AMD-0021 | amendment | P11 | [constitution](#amd-0021) |
+| AMD-0022 | amendment | An idle keep-alive connection outlives a load balancer's idl | [constitution](#amd-0022) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |
@@ -2289,7 +2295,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | GAP-25 | gap | Search filters by owner and category only for register entri | [gaps](#gap-25) |
 | GAP-26 | gap | test/identity.js opened the developer's own database on ever | [gaps](#gap-26) |
 | GAP-27 | gap | Three event records coexist — audit_log, the webhook bus (li | [gaps](#gap-27) |
-| GAP-28 | gap | Intermittent test failures with unproven causes: the smoke t | [gaps](#gap-28) |
+| GAP-28 | gap | Intermittent test failures: the ECONNRESET was a 5 s server  | [gaps](#gap-28) |
 | GAP-29 | gap | CI did not run on 3e67d62: GitHub refused to start the jobs  | [gaps](#gap-29) |
 | GAP-30 | gap | The repository sits in an iCloud-synced Desktop folder: the  | [gaps](#gap-30) |
 | K01 | kernel part | Kinds | [kernel](#k01) |

@@ -19,7 +19,7 @@
   "finCircles": "national",
   "uomUnits": "ea",
   "finBillerCategories": "electricity",
-  "goipCalendars": "gregorian",
+  "timeCalendars": "gregorian",
   "goipDistribution": "in_app",
   "ruleSubjectTypes": "gateway",
   "offerFunders": "self",

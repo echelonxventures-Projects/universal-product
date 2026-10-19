@@ -1,0 +1,279 @@
+{
+  "$comment": "Time's declarations (lib/time.js). Calendars, chronologies, temporal units and their conversions are Time's registries — a Martian sol, a lunar month and the Gregorian year are rows, not code. A place's time zone is Time's setting at the place (zoneSetting), resolved up the place tree like its calendar: a zone is assigned at a country, may be assigned at any subdivision or city under it, and a place under none is in defaultZone. `countryZones` names each seeded country's primary zone (an IANA name); an operator assigns the others where a country spans several. Lists an operator edited under the offer engine's old names (legacyLists) are merged once.",
+  "lists": {
+    "calendars": "timeCalendars",
+    "chronologies": "timeChronologies",
+    "units": "timeUnits",
+    "conversions": "timeConversions"
+  },
+  "legacyLists": {
+    "calendars": "goipCalendars",
+    "chronologies": "goipChronologies",
+    "units": "goipTemporalUnits",
+    "conversions": "goipTemporalConversions"
+  },
+  "defaultCalendar": "gregorian",
+  "zoneSetting": {
+    "name": "time.zone",
+    "owner": "Time",
+    "type": "text",
+    "label": "Time zone"
+  },
+  "defaultZone": "UTC",
+  "actor": "time",
+  "calendars": [
+    {
+      "key": "gregorian",
+      "name": "Gregorian",
+      "chronology": "solar_terrestrial",
+      "epoch": "0001-01-01",
+      "day_seconds": 86400,
+      "year_days": 365.2425,
+      "authority": "ISO 8601"
+    },
+    {
+      "key": "iso_week",
+      "name": "ISO week calendar",
+      "chronology": "solar_terrestrial",
+      "epoch": "0001-01-01",
+      "day_seconds": 86400,
+      "year_days": 364,
+      "authority": "ISO 8601"
+    },
+    {
+      "key": "islamic",
+      "name": "Islamic (Hijri)",
+      "chronology": "lunar_terrestrial",
+      "epoch": "0622-07-16",
+      "day_seconds": 86400,
+      "year_days": 354.367,
+      "authority": "Umm al-Qura"
+    },
+    {
+      "key": "hebrew",
+      "name": "Hebrew",
+      "chronology": "lunisolar_terrestrial",
+      "epoch": "-3760-09-07",
+      "day_seconds": 86400,
+      "year_days": 365.2468,
+      "authority": "Hillel II"
+    },
+    {
+      "key": "fiscal",
+      "name": "Fiscal calendar",
+      "chronology": "solar_terrestrial",
+      "epoch": "anchor:fiscal_year_start",
+      "day_seconds": 86400,
+      "year_days": 365.2425,
+      "authority": "tenant"
+    },
+    {
+      "key": "academic",
+      "name": "Academic calendar",
+      "chronology": "solar_terrestrial",
+      "epoch": "anchor:term_start",
+      "day_seconds": 86400,
+      "year_days": 365.2425,
+      "authority": "institution"
+    },
+    {
+      "key": "lunar",
+      "name": "Lunar (synodic)",
+      "chronology": "lunar_terrestrial",
+      "epoch": "2000-01-06",
+      "day_seconds": 86400,
+      "year_days": 354.367,
+      "authority": "synodic month 29.530589 d"
+    },
+    {
+      "key": "mars_darian",
+      "name": "Mars Colony (Darian)",
+      "chronology": "solar_martian",
+      "epoch": "1609-03-11",
+      "day_seconds": 88775.244,
+      "year_days": 668.5991,
+      "authority": "Darian"
+    },
+    {
+      "key": "federation",
+      "name": "Federation Standard",
+      "chronology": "federation_standard",
+      "epoch": "2161-01-01",
+      "day_seconds": 86400,
+      "year_days": 365,
+      "authority": "federation"
+    },
+    {
+      "key": "custom_planetary",
+      "name": "Custom Planetary",
+      "chronology": "declared",
+      "epoch": "declared",
+      "day_seconds": 0,
+      "year_days": 0,
+      "authority": "registry"
+    }
+  ],
+  "chronologies": [
+    {
+      "key": "solar_terrestrial",
+      "name": "Solar (Earth)",
+      "base_unit": "second",
+      "rotation_seconds": 86400
+    },
+    {
+      "key": "lunar_terrestrial",
+      "name": "Lunar (Earth)",
+      "base_unit": "second",
+      "rotation_seconds": 86400
+    },
+    {
+      "key": "lunisolar_terrestrial",
+      "name": "Lunisolar (Earth)",
+      "base_unit": "second",
+      "rotation_seconds": 86400
+    },
+    {
+      "key": "solar_martian",
+      "name": "Solar (Mars sol)",
+      "base_unit": "second",
+      "rotation_seconds": 88775.244
+    },
+    {
+      "key": "solar_lunar_colony",
+      "name": "Solar (Moon colony)",
+      "base_unit": "second",
+      "rotation_seconds": 2551442.8
+    },
+    {
+      "key": "federation_standard",
+      "name": "Federation standard",
+      "base_unit": "second",
+      "rotation_seconds": 86400
+    },
+    {
+      "key": "declared",
+      "name": "Declared by registry",
+      "base_unit": "second",
+      "rotation_seconds": 0
+    }
+  ],
+  "units": [
+    {
+      "key": "second",
+      "name": "Second",
+      "seconds": 1
+    },
+    {
+      "key": "minute",
+      "name": "Minute",
+      "seconds": 60
+    },
+    {
+      "key": "hour",
+      "name": "Hour",
+      "seconds": 3600
+    },
+    {
+      "key": "day",
+      "name": "Day (Earth)",
+      "seconds": 86400
+    },
+    {
+      "key": "sol",
+      "name": "Sol (Mars day)",
+      "seconds": 88775.244
+    },
+    {
+      "key": "week",
+      "name": "Week",
+      "seconds": 604800
+    },
+    {
+      "key": "month",
+      "name": "Month (mean Gregorian)",
+      "seconds": 2629746
+    },
+    {
+      "key": "quarter",
+      "name": "Quarter",
+      "seconds": 7889238
+    },
+    {
+      "key": "year",
+      "name": "Year (mean Gregorian)",
+      "seconds": 31556952
+    },
+    {
+      "key": "mars_year",
+      "name": "Mars year",
+      "seconds": 59355072
+    },
+    {
+      "key": "lunation",
+      "name": "Lunation",
+      "seconds": 2551442.8
+    },
+    {
+      "key": "cycle",
+      "name": "Declared cycle",
+      "seconds": 0
+    }
+  ],
+  "conversions": {
+    "sol_per_day": 1.0274912517,
+    "day_per_sol": 0.9732696,
+    "mars_year_days": 686.98,
+    "lunation_days": 29.530589
+  },
+  "countryZones": {
+    "US": "America/New_York",
+    "IN": "Asia/Kolkata",
+    "GB": "Europe/London",
+    "DE": "Europe/Berlin",
+    "FR": "Europe/Paris",
+    "NL": "Europe/Amsterdam",
+    "BR": "America/Sao_Paulo",
+    "KE": "Africa/Nairobi",
+    "AE": "Asia/Dubai",
+    "JP": "Asia/Tokyo",
+    "SG": "Asia/Singapore",
+    "AU": "Australia/Sydney",
+    "CA": "America/Toronto",
+    "SE": "Europe/Stockholm",
+    "SA": "Asia/Riyadh",
+    "CN": "Asia/Shanghai",
+    "CH": "Europe/Zurich",
+    "ZA": "Africa/Johannesburg",
+    "MX": "America/Mexico_City",
+    "TR": "Europe/Istanbul",
+    "NG": "Africa/Lagos",
+    "NZ": "Pacific/Auckland",
+    "IT": "Europe/Rome",
+    "ES": "Europe/Madrid",
+    "IE": "Europe/Dublin",
+    "AT": "Europe/Vienna",
+    "BE": "Europe/Brussels",
+    "PT": "Europe/Lisbon",
+    "FI": "Europe/Helsinki",
+    "PL": "Europe/Warsaw",
+    "DK": "Europe/Copenhagen",
+    "NO": "Europe/Oslo",
+    "KR": "Asia/Seoul",
+    "ID": "Asia/Jakarta",
+    "MY": "Asia/Kuala_Lumpur",
+    "TH": "Asia/Bangkok",
+    "PH": "Asia/Manila",
+    "VN": "Asia/Ho_Chi_Minh",
+    "HK": "Asia/Hong_Kong",
+    "TW": "Asia/Taipei",
+    "IL": "Asia/Jerusalem",
+    "EG": "Africa/Cairo",
+    "QA": "Asia/Qatar",
+    "KW": "Asia/Kuwait",
+    "PK": "Asia/Karachi",
+    "BD": "Asia/Dhaka",
+    "AR": "America/Argentina/Buenos_Aires",
+    "CL": "America/Santiago",
+    "CO": "America/Bogota"
+  }
+}

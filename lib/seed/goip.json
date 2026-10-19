@@ -500,7 +500,7 @@
    "n": 63,
    "key": "universal_temporal",
    "name": "Universal Temporal Domain",
-   "owner": "meta_lists:goipCalendars",
+   "owner": "registry:timeCalendars",
    "discriminator": "calendars, chronologies, units, conversions",
    "fabric": "context"
   },
@@ -546,7 +546,7 @@
   {
    "key": "temporal",
    "name": "Temporal Context",
-   "source": "registry:goipCalendars"
+   "source": "registry:timeCalendars"
   },
   {
    "key": "spatial",

@@ -246,14 +246,14 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C04 Universal Dimensions |
-| **Build status** | designed — declared and contracted; no code or live route yet |
+| **Build status** | partial |
 | **Owns** | [Time](../UCOS-MASTER.md#t-time), [Calendar](../UCOS-MASTER.md#t-calendar) |
 | **Responsible for** | Chronologies, Calendars, Clocks And Zones, Business Hours, Recurrence, Validity Windows, Signal Delay |
 | **Not responsible for** | Event Recording, State |
 | **Contract** | [UCOS-TIM-000001 Time Architecture](#ucos-tim-000001) |
 | **Artifacts** | [UCOS-TIM-000001](#ucos-tim-000001) |
 | **Concepts** | 112 — `node _registry/compile.js --search <words> --kind concept --owner "Time"` |
-| **Code** | — |
+| **Code** | `lib/time.js`, `lib/seed/time.json` |
 | **Managed in** | `_registry/domains.json` → `D-TIM` |
 
 **Live routes:** none yet.

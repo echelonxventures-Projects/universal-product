@@ -294,6 +294,11 @@ const handler = async (req, res) => {
 
 const server = http.createServer(handler);
 const listenServer = IS_TLS ? https.createServer(TLS, handler) : server;
+/* an idle keep-alive connection outlives a load balancer's idle timeout (commonly 60 s), so the
+   balancer, never this server, closes it: a server that closes first races the client's next
+   request on the same socket (ECONNRESET, or a 502 at the balancer). LX_KEEPALIVE_MS overrides. */
+const KEEPALIVE_MS = Number(process.env.LX_KEEPALIVE_MS) || 65000;
+for (const sv of new Set([server, listenServer])) { sv.keepAliveTimeout = KEEPALIVE_MS; sv.headersTimeout = KEEPALIVE_MS + 1000; }
 
 /* P0: the seed ships documented default passwords (admin123 / platform123) so a first
    boot is observable. In production they are an open door — refuse to serve until the
@@ -323,7 +328,7 @@ prodCredentialGuard();
 if (process.env.NODE_ENV === "production" && !require("./lib/mailer.js").transportFor(0, "email"))
   console.warn("  ⚠️  No platform email transport (LX_MAIL_PROVIDER / LX_SMTP_URL / LX_MAIL_FROM) — password resets and sign-in codes are only delivered for stores with their own live email gateway.");
 
-function shutdown(sig) { console.log(`\n${sig} — closing`); sec.persistState(); server.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000); }
+function shutdown(sig) { console.log(`\n${sig} — closing`); sec.persistState(); listenServer.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000); }
 /* a stray rejected promise in an async handler must not take the process down (Node
    >= 15 exits on unhandled rejections); log it with enough context to fix the source */
 /* expired idempotency keys are swept hourly (they were only ever deleted lazily on lookup) */
