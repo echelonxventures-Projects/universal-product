@@ -34,7 +34,7 @@
     {"path": "lib/kernel-shape.js", "owner": "Geo", "note": "kernel part K05: coordinate systems and shapes"},
     {"path": "lib/kernel-lifecycle.js", "owner": "Evolution", "note": "kernel part K09: changes and node states"},
     {"path": "lib/kernel-context.js", "parts": [{"owner": "Context", "part": "scope and resolution (K11, K12)"}, {"owner": "Perspective", "part": "views (K10)"}]},
-    {"path": "lib/places.js", "owner": "Geo", "note": "the place tree on the kernel; mirrors the country and subdivision master (P09)"},
+    {"path": "lib/places.js", "owner": "Geo", "note": "the place tree on the kernel; the write path for countries and subdivisions, and the import of rows it has never seen (P09)"},
     {"path": "lib/events.js", "owner": "Runtime", "note": "the event log; its outbound webhooks are Integration's"},
     {"path": "lib/governance.js", "owner": "Evolution", "note": "archive, restore, purge (K09)"},
     {"path": "lib/defaults.js", "owner": "Context", "note": "resolver answers (K12)"},

@@ -61,7 +61,7 @@ try {
   ok(fixed.name === sample.name && fixed.currency === sample.currency && fixed.locale === sample.locale, "an auto-registered row takes the seed's geography: " + sample.code + " → " + fixed.name + ", " + fixed.currency);
   ok(!db.get("SELECT 1 ok FROM currencies WHERE code=?", sample.code) && !db.get("SELECT 1 ok FROM fx_rates WHERE currency=?", sample.code), "the invented currency and its rate are gone");
   const opName = "Operator-named " + sample.code;
-  db.run("UPDATE countries SET name=? WHERE code=?", opName, sample.code);
+  ok(globalmod.updateCountry(sample.code, { name: opName }).ok, "an operator renames the repaired country");
   registry.repairCountries();
   ok(db.get("SELECT name FROM countries WHERE code=?", sample.code).name === opName, "a row an operator named is never touched");
 

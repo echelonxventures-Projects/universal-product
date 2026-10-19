@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0015 (2026-10-19).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0016 (2026-10-19).
 
 ## Contents
 
@@ -378,6 +378,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0013"></a>AMD-0013 | 2026-10-19 | Platform owner | P09 begins: places are on the kernel. Every country and subdivision is a node of the place kind (declared as data in lib/seed/places.json) in one place tree — countries at the top, nothing invented above them, subdivisions under their country or parent subdivision to any depth — with its code as an identifier in its declared scheme and its row's universal ID as its own. lib/places.js mirrors the master after every write and on every boot: a rename is a new version, a switched-off country is hidden, a re-parented subdivision moves with its past kept, a deleted row is archived; a warm pass writes nothing. The tables remain the source until the writes move onto the kernel. |
 | <a id="amd-0014"></a>AMD-0014 | 2026-10-19 | Platform owner | A place's currency and locale are no longer facts of the place. They are settings owned by Value and Expression (declared in lib/seed/places.json), assigned at the place's node on the kernel and answered by the resolver — so a subdivision inherits its country's currency, and a setting assigned at a subdivision applies there and below. registry.country(), through which the platform's readers ask, answers currency and locale from the kernel and a country's money symbol and decimals from its currency in Value's master; a country profile's tax is the tax engine's rule, no longer the country's legacy tax columns. The master's columns remain as the mirror's input until the writes move onto the kernel. |
 | <a id="amd-0015"></a>AMD-0015 | 2026-10-19 | Platform owner | Every application write to a place goes to the kernel first. The entity engine's built-in entities may name their owner's write path (lib/seed/entity.json WRITERS; tenant-defined entities cannot): the country and subdivision entities name Geo's, which records the change on the kernel and writes the row in one transaction — a write the row refuses leaves the kernel untouched, a write the kernel refuses never reaches the row. global.js's country writes and the platform's country withdrawal take the same path; a deleted place is archived with its history; a country row carries its place's universal ID. The boot mirror remains for seeds and legacy rows. |
+| <a id="amd-0016"></a>AMD-0016 | 2026-10-19 | Platform owner | The kernel is the record for places. The registry's first-boot seeding of countries, its repair of legacy and newly declared countries, and its materialisation of a country's subdivisions all go through Geo's write path, so every place is recorded on the kernel in the same transaction as its row. The boot mirror becomes an import: it creates places only for rows the kernel has never seen (an install that predates the place tree), under its own actor, and never changes a place that exists. A write that bypasses the write path no longer reaches the place tree. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1240,7 +1241,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `lib/global.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | global settings |
 | `lib/kernel-shape.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | kernel part K05: coordinate systems and shapes |
 | `lib/kernel-context.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | scope and resolution (K11, K12) |
-| `lib/places.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | the place tree on the kernel; mirrors the country and subdivision master (P09) |
+| `lib/places.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | the place tree on the kernel; the write path for countries and subdivisions, and the import of rows it has never seen (P09) |
 | `lib/defaults.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | resolver answers (K12) |
 | `lib/settings.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | resolver answers (K12) |
 | `lib/subdivisions.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) |  |
@@ -2078,7 +2079,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="gap-05"></a>GAP-05 | truth | Laws not yet fully enforced (11 planned, 9 partial) | [Constitutional Authority](volumes/V01-constitution.md#d-con) | open |
 | <a id="gap-06"></a>GAP-06 | truth | Every kernel part runs, but K01, K05, K06 and K08–K12 are partial (see each part's note); no domain is on the kernel yet (P09 onward) | [Registry](volumes/V05-structure.md#d-reg) | open |
 | <a id="gap-07"></a>GAP-07 | truth | 375 low-confidence classification decisions await a person | [Semantic](volumes/V02-meaning.md#d-sem) | open |
-| <a id="gap-08"></a>GAP-08 | law | Country rows still carry currency, symbol, locale, decimals and legacy tax columns, now only as the mirror's input (readers get currency and locale from the kernel, symbol and decimals from the currency, tax from the tax engine); stores embed one country and region (LAW-008) | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
+| <a id="gap-08"></a>GAP-08 | law | Country rows still carry currency, symbol, locale, decimals and legacy tax columns, now only as what a write or an import carries (readers get currency and locale from the kernel, symbol and decimals from the currency, tax from the tax engine); stores embed one country and region (LAW-008) | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
 | <a id="gap-09"></a>GAP-09 | law | goip.js holds seven literal registries that belong to Time, Geo and Value | [Commerce](volumes/V12-business.md#d-biz) | open |
 | <a id="gap-10"></a>GAP-10 | law | The hard-coding ratchet still counts 65 branches, 99 fallbacks and 8 seed-sized constants | [Quality](volumes/V11.2-platform.md#d-qlt) | open |
 | <a id="gap-11"></a>GAP-11 | requirement | Places: only countries and one subdivision level; no place hierarchy at any scale, no coordinates | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
@@ -2116,7 +2117,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="p06"></a>P06 | The other domain systems unified (GOIP's 67 domains, capability domains, the per-universe record engine) | [Registry](volumes/V05-structure.md#d-reg), [Commerce](volumes/V12-business.md#d-biz), [Offering](volumes/V11.2-platform.md#d-ofg) | done | [AMD-0006](#amd-0006) |
 | <a id="p07"></a>P07 | The remaining root design documents absorbed or superseded | [Guidance](volumes/V02-meaning.md#d-gdn) | done | [AMD-0007](#amd-0007) |
 | <a id="p08"></a>P08 | Kernel K01–K12 built: kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views, scope, resolution | [Registry](volumes/V05-structure.md#d-reg), [Identity](volumes/V02-meaning.md#d-idn), [Relationship](volumes/V05-structure.md#d-rel), [Geo](volumes/V04-universal-dimensions.md#d-geo), [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo), [Runtime](volumes/V09.1-automation.md#d-run), [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per), [Context](volumes/V04-universal-dimensions.md#d-ctx) | in-progress | [AMD-0009](#amd-0009), [AMD-0010](#amd-0010), [AMD-0011](#amd-0011), [AMD-0012](#amd-0012) |
-| <a id="p09"></a>P09 | Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships | [Geo](volumes/V04-universal-dimensions.md#d-geo) | in-progress | [AMD-0013](#amd-0013), [AMD-0014](#amd-0014), [AMD-0015](#amd-0015) |
+| <a id="p09"></a>P09 | Geo, with GOIP's spatial systems merged; countries and subdivisions migrate and their embedded columns become relationships | [Geo](volumes/V04-universal-dimensions.md#d-geo) | in-progress | [AMD-0013](#amd-0013), [AMD-0014](#amd-0014), [AMD-0015](#amd-0015), [AMD-0016](#amd-0016) |
 | <a id="p10"></a>P10 | Measure and Value, with GOIP's units merged | [Measure](volumes/V04-universal-dimensions.md#d-mea), [Value](volumes/V04-universal-dimensions.md#d-val) | planned | — |
 | <a id="p11"></a>P11 | Time, with GOIP's calendars merged | [Time](volumes/V04-universal-dimensions.md#d-tim) | planned | — |
 | <a id="p12"></a>P12 | Expression: languages, scripts, message catalogues | [Expression](volumes/V04-universal-dimensions.md#d-exr) | planned | — |
@@ -2174,6 +2175,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0013 | amendment | P09 begins | [constitution](#amd-0013) |
 | AMD-0014 | amendment | A place's currency and locale are no longer facts of the pla | [constitution](#amd-0014) |
 | AMD-0015 | amendment | Every application write to a place goes to the kernel first. | [constitution](#amd-0015) |
+| AMD-0016 | amendment | The kernel is the record for places. The registry's first-bo | [constitution](#amd-0016) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

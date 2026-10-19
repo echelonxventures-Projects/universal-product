@@ -1,8 +1,9 @@
-/* Places on the kernel (P09, first step): every country and subdivision in the master is a node
-   of the place kind in one place tree, with its code as an identifier and its row's universal ID
-   as its own. The mirror follows every write — a rename is a new version with the old one kept,
-   a switched-off country is hidden, a re-parented subdivision moves, a deleted row is archived —
-   and a warm pass writes nothing. Nothing is invented above the countries. */
+/* Places on the kernel (P09): every country and subdivision is a node of the place kind in one
+   place tree, with its code as an identifier and its row's universal ID as its own. Every write —
+   seeding, repair, console, global.js — goes to the kernel first, in the same transaction as the
+   row: a rename is a new version with the old one kept, a switched-off country is hidden, a
+   re-parented subdivision moves, a deleted one is archived. The boot pass only imports rows the
+   kernel has never seen; a warm pass writes nothing. Nothing is invented above the countries. */
 "use strict";
 const path = require("path");
 const fs = require("fs");
@@ -18,11 +19,11 @@ const K = require("../lib/kernel.js");
 const LC = require("../lib/kernel-lifecycle.js");
 const P = require("../lib/places.js");
 const globalmod = require("../lib/global.js");
+const entity = require("../lib/entity.js");
 let passed = 0, failed = 0;
 const ok = (c, n, x) => { c ? (passed++, console.log("  ✓ " + n)) : (failed++, console.log("  ✗ " + n + (x !== undefined ? " → " + (typeof x === "string" ? x : JSON.stringify(x)) : ""))); };
 
 console.log("places — the master is on the kernel");
-P.mirror();
 const countries = db.all("SELECT code, name, uid, active FROM countries");
 const subs = db.all("SELECT rowid AS id, code, country_code, parent_id, name FROM subdivisions");
 const placeNodes = K.nodes("place", "platform", { includeHidden: true });
@@ -42,10 +43,27 @@ const flat = subs.find(s => !s.parent_id);
 ok(K.parents(P.HIERARCHY, P.subdivision(flat.code)).join() === P.country(flat.country_code), "a first-level subdivision sits under its country");
 ok(K.attributes(P.country(countries[0].code)).name === countries[0].name, "a place's name is its attribute");
 
-console.log("places — the mirror follows the master");
+const MS = require("../lib/seed/places.json").master;
+const createdBy = actor => db.get("SELECT COUNT(*) AS n FROM k_events WHERE type=? AND actor=?", K.SEED.events.nodeCreated, actor).n;
+ok(createdBy(MS.actor) === countries.length + subs.length && createdBy(MS.importActor) === 0, "a fresh install seeds every place through Geo's write path; nothing needs importing", { write: createdBy(MS.actor), import: createdBy(MS.importActor) });
+
+console.log("places — the kernel is the record; the boot pass only imports");
 const evs = db.get("SELECT COUNT(*) AS n FROM k_events").n;
-const again = P.mirror();
+const again = P.importRows();
 ok(db.get("SELECT COUNT(*) AS n FROM k_events").n === evs && Object.values(again).every(v => v === 0), "a warm pass writes nothing", again);
+const raw = countries[1];
+db.run("UPDATE countries SET name='Raw Write' WHERE code=?", raw.code);
+P.importRows();
+ok(K.attributes(P.country(raw.code)).name === raw.name, "a write that bypasses the write path does not reach an existing place");
+db.run("UPDATE countries SET name=? WHERE code=?", raw.name, raw.code);
+const legacyParent = subs.find(s => !s.parent_id);
+db.run("INSERT INTO subdivisions(code,country_code,name,level,parent_id,position,active) VALUES('ZZ-LEGACY',?,?,?,?,999,1)", legacyParent.country_code, "Legacy", "district", legacyParent.id);
+ok(!P.subdivision("ZZ-LEGACY"), "a row from before the place tree has no place");
+const imported = P.importRows();
+ok(imported.created === 1 && createdBy(MS.importActor) === 1 && K.parents(P.HIERARCHY, P.subdivision("ZZ-LEGACY")).join() === P.subdivision(legacyParent.code), "the boot pass imports it, under its parent", imported);
+entity.deleteEntity(0, "subdivision", "ZZ-LEGACY");
+
+console.log("places — every write reaches the place tree");
 const cc = countries.find(c => c.active === 1).code;
 const node = P.country(cc);
 const oldName = K.attributes(node).name;
@@ -60,16 +78,15 @@ const mover = subs.find(s => !s.parent_id && subs.some(o => o.country_code === s
 const newParent = subs.find(o => o.country_code === mover.country_code && o.code !== mover.code && !o.parent_id);
 const beforeMove = new Date().toISOString();
 while (new Date().toISOString() === beforeMove) { /* the move must start after this instant */ }
-db.run("UPDATE subdivisions SET parent_id=? WHERE code=?", newParent.id, mover.code);
-P.mirror();
+const moved = entity.updateEntity(0, "subdivision", mover.code, { parent_id: newParent.id });
+ok(!moved.error, "a re-parent in the console is accepted", moved.error);
 ok(K.parents(P.HIERARCHY, P.subdivision(mover.code)).join() === P.subdivision(newParent.code), "a re-parented subdivision moves in the tree");
 ok(K.parents(P.HIERARCHY, P.subdivision(mover.code), { at: beforeMove }).join() === P.country(mover.country_code), "and where it sat before is kept");
 const gone = db.all("SELECT code FROM subdivisions WHERE parent_id IS NULL AND code NOT IN (SELECT s.code FROM subdivisions s JOIN subdivisions c ON c.parent_id = s.rowid)").find(s => s.code !== newParent.code);
 const goneNode = P.subdivision(gone.code);
-db.run("DELETE FROM subdivisions WHERE code=?", gone.code);
-P.mirror();
-ok(LC.nodeState(goneNode) === "archived" && K.history(goneNode).length > 0, "a deleted row's place is archived, never erased");
-ok(K.verifyEvents().ok, "every mirror write is in the hash-chained log");
+entity.deleteEntity(0, "subdivision", gone.code);
+ok(LC.nodeState(goneNode) === "archived" && K.history(goneNode).length > 0 && !db.get("SELECT 1 AS x FROM subdivisions WHERE code=?", gone.code), "a deleted subdivision's place is archived, never erased");
+ok(K.verifyEvents().ok, "every write is in the hash-chained log");
 
 console.log("places — currency and locale are settings at the place, not columns of it (LAW-008)");
 const C = require("../lib/kernel-context.js");
@@ -94,7 +111,6 @@ const prof = registry.countryProfile(cIN.code);
 ok(tr ? prof.tax.mode === tr.mode && prof.tax.rate === tr.standard : prof.tax === null, "a country profile's tax is the tax engine's rule, not a column of the country");
 
 console.log("places — every write goes to the kernel first, in the same transaction as the row");
-const entity = require("../lib/entity.js");
 const cur2 = db.get("SELECT code FROM currencies WHERE active=1 LIMIT 1").code;
 const made = entity.createEntity(0, "country", { code: "QZ", name: "Testland", currency: cur2, symbol: "¤", locale: "en-QZ", decimals: 2, active: true });
 const qz = P.country("QZ");

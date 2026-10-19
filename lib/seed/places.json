@@ -1,5 +1,5 @@
 {
-  "$comment": "Geo's declarations on the kernel (lib/places.js). The place kind, the place tree and its identifier schemes are data: a new level (a planet, an ocean, a district, a shelf) is a node of this kind or a new kind, never code. Countries and subdivisions are mirrored from their master tables until P09 moves their writes onto the kernel. A place's currency and locale are not facts of the place: they are settings owned by Value and Expression, assigned at the place's node and answered by the resolver; `column` names the master column the mirror reads them from until the writes move onto the kernel.",
+  "$comment": "Geo's declarations on the kernel (lib/places.js). The place kind, the place tree and its identifier schemes are data: a new level (a planet, an ocean, a district, a shelf) is a node of this kind or a new kind, never code. Every write to a country or subdivision goes to the kernel first, in the same transaction as its master row; the boot pass only imports rows the kernel has never seen. A place's currency and locale are not facts of the place: they are settings owned by Value and Expression, assigned at the place's node and answered by the resolver; `column` names the master column a write or an import carries them in, until those columns are removed.",
   "namespace": "platform",
   "kind": {
     "kind": "place",
@@ -33,11 +33,12 @@
     "owner": "Geo",
     "label": "The place tree"
   },
-  "mirror": {
+  "master": {
     "countryScheme": "iso3166-1",
     "subdivisionScheme": "iso3166-2",
     "countryLevel": "country",
-    "actor": "geo.mirror"
+    "actor": "geo",
+    "importActor": "geo.import"
   },
   "settings": [
     {
