@@ -155,8 +155,12 @@
         "archived": [
           "active"
         ]
-      }
+      },
+      "listed": [
+        "active"
+      ]
     },
-    "purgePermission": "kernel.purge"
+    "purgePermission": "kernel.purge",
+    "approvePermission": "kernel.approve"
   }
 }
