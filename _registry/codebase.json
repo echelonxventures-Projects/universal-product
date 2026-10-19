@@ -32,6 +32,7 @@
     {"path": "lib/uid.js", "owner": "Identity"},
     {"path": "lib/kernel.js", "parts": [{"owner": "Registry", "part": "kinds and typed attributes (K01, K06)"}, {"owner": "Identity", "part": "nodes and identifiers (K02, K04)"}, {"owner": "Relationship", "part": "hierarchies and placements (K03)"}, {"owner": "Evolution", "part": "bi-temporal versions (K07)"}, {"owner": "Runtime", "part": "the hash-chained event log (K08)"}]},
     {"path": "lib/kernel-shape.js", "owner": "Geo", "note": "kernel part K05: coordinate systems and shapes"},
+    {"path": "lib/kernel-lifecycle.js", "owner": "Evolution", "note": "kernel part K09: changes and node states"},
     {"path": "lib/kernel-context.js", "parts": [{"owner": "Context", "part": "scope and resolution (K11, K12)"}, {"owner": "Perspective", "part": "views (K10)"}]},
     {"path": "lib/events.js", "owner": "Runtime", "note": "the event log; its outbound webhooks are Integration's"},
     {"path": "lib/governance.js", "owner": "Evolution", "note": "archive, restore, purge (K09)"},

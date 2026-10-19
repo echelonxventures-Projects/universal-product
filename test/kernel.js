@@ -175,6 +175,61 @@ K.place("physical", city, india, {}, "test");
 ok(C.viewNodes("asia").some(n => n.uid === city), "a node added to the master appears in the view with no change to the view");
 ok(!JSON.stringify(db.all("SELECT spec FROM k_declarations WHERE family='view'")).includes(site), "a view stores references, not copies");
 
+console.log("kernel — the change lifecycle: draft, validate, preview, approve, publish, schedule, roll back (K09)");
+const LC = require("../lib/kernel-lifecycle.js");
+const nodesBefore = db.get("SELECT COUNT(*) AS n FROM k_nodes").n;
+const ch = LC.draft({ title: "Add a district", ops: [
+  { op: "createNode", args: ["place", { attributes: { name: "A district" } }] },
+  { op: "place", args: ["physical", "$0", city] },
+  { op: "record", args: [india, { population: 1450000000 }, { validFrom: T(2026) }] },
+  { op: "assign", args: ["display.system", "district", { scope: "$0" }] }
+] }, "author");
+ok(LC.change(ch).state === "draft", "a change starts as a draft of operations written as data");
+throws(() => LC.draft({ ops: [{ op: "dropTable" }] }, "author"), /unknown operation/, "only declared operations can be drafted");
+const rep = LC.validate(ch, "author");
+ok(rep.ok && LC.change(ch).state === "validated", "a valid change validates");
+ok(db.get("SELECT COUNT(*) AS n FROM k_nodes").n === nodesBefore, "validation is a dry run that leaves nothing behind");
+const pv = LC.preview(ch, res => C.resolve("display.system", { context: { physical: res[0] } }).value);
+ok(pv.ok && pv.result === "district" && db.get("SELECT COUNT(*) AS n FROM k_nodes").n === nodesBefore, "a preview answers questions about the result, then undoes it");
+throws(() => LC.approve(ch, "author"), /someone other than its author/, "the author cannot approve their own change");
+LC.approve(ch, "reviewer");
+const popBefore = K.attributes(india).population;
+const pub = LC.publish(ch, {}, "reviewer");
+const district = pub.result[0];
+ok(pub.state === "published" && K.parents("physical", district).join() === city && K.attributes(india).population === 1450000000, "publishing applies every operation");
+ok(pub.seqFrom > 0 && pub.seqTo >= pub.seqFrom, "a published change occupies a range of the event log");
+LC.rollback(ch, "reviewer");
+ok(LC.change(ch).state === "rolled-back", "a published change can be rolled back");
+ok(K.attributes(india).population === popBefore && K.parents("physical", district).length === 0 && C.resolve("display.system", { context: { physical: district } }).value === "everywhere",
+  "rolling back closes what it recorded and reopens what it superseded");
+ok(K.attributes(india, { recorded: pub.seqTo }).population === 1450000000, "and what was believed while it was published can still be asked");
+const bad = LC.draft({ ops: [{ op: "record", args: [india, { name: 42 }] }] }, "author");
+const badRep = LC.validate(bad, "author");
+ok(!badRep.ok && /must be text/.test(badRep.error) && LC.change(bad).state === "draft", "an invalid change reports why and stays a draft");
+const sch = LC.draft({ ops: [{ op: "record", args: [asia, { population: 4800000000 }] }] }, "author");
+LC.validate(sch, "author"); LC.approve(sch, "reviewer");
+ok(LC.publish(sch, { at: T(2099) }, "reviewer").state === "scheduled" && LC.publishDue(T(2098)).length === 0, "a change can be scheduled and waits for its time");
+const due = LC.publishDue(T(2100), "scheduler");
+ok(due.length === 1 && due[0].ok && K.attributes(asia).population === 4800000000, "and is published when it falls due");
+const c1 = LC.draft({ ops: [{ op: "record", args: [asia, { population: 1 }] }] }, "author"); LC.validate(c1, "author"); LC.approve(c1, "reviewer"); LC.publish(c1, {}, "reviewer");
+const c2 = LC.draft({ ops: [{ op: "record", args: [asia, { population: 2 }] }] }, "author"); LC.validate(c2, "author"); LC.approve(c2, "reviewer"); LC.publish(c2, {}, "reviewer");
+throws(() => LC.rollback(c1, "reviewer"), /later change built on this one/, "a change a later one built on cannot be rolled back first");
+LC.rollback(c2, "reviewer"); LC.rollback(c1, "reviewer");
+ok(K.attributes(asia).population === 4800000000, "rolled back in reverse order, the earlier state returns");
+throws(() => LC.edit(ch, [{ op: "createNode", args: ["place", {}] }]), /Only a draft/, "only a draft can be edited");
+
+console.log("kernel — hide is reversible, delete is archive, purge needs its own permission (K09)");
+const temp = K.createNode("place", { attributes: { name: "Temporary", secret_note: "x" }, identifiers: {} }, "test");
+LC.hide(temp, "test"); ok(LC.nodeState(temp) === "hidden", "a node can be hidden");
+LC.unhide(temp, "test"); ok(LC.nodeState(temp) === "active", "and shown again");
+throws(() => LC.purge(temp, ["kernel.purge"], "test"), /Only an archived node/, "only an archived node can be purged");
+LC.archive(temp, "test");
+throws(() => LC.purge(temp, [], "test"), /permission/, "purging needs the separate permission");
+LC.purge(temp, ["kernel.purge"], "test");
+ok(!db.get("SELECT 1 AS x FROM k_nodes WHERE uid=?", temp) && !db.get("SELECT 1 AS x FROM k_versions WHERE node=?", temp), "a purged node and its facts are gone");
+ok(K.events({ subject: temp, type: "kernel.node.purged" }).length === 1, "leaving one tombstone event");
+throws(() => { LC.archive(asia, "test"); LC.purge(asia, ["kernel.purge"], "test"); }, /still sit under/, "a node others sit under cannot be purged");
+
 console.log("kernel — a failed write leaves nothing behind");
 const count = db.get("SELECT COUNT(*) AS n FROM k_nodes").n, evs = db.get("SELECT COUNT(*) AS n FROM k_events").n;
 throws(() => K.createNode("place", { attributes: { name: "Atlantis" }, identifiers: { iso2: "IN" }, validFrom: T(2032) }), /already names/, "a clashing identifier rejects the whole create");

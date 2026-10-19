@@ -1,5 +1,5 @@
 {
-  "$comment": "The kernel's own declarations (FOUNDATIONS K01–K12), read by lib/kernel.js, lib/kernel-shape.js and lib/kernel-context.js. Data, not code: a namespace or an event name added here needs no code change; a value type or a shape type also needs its check in code (TYPE_CHECKS, CONTAINS).",
+  "$comment": "The kernel's own declarations (FOUNDATIONS K01–K12), read by lib/kernel.js, lib/kernel-shape.js, lib/kernel-context.js and lib/kernel-lifecycle.js. Data, not code: a namespace or an event name added here needs no code change; a value type or a shape type also needs its check in code (TYPE_CHECKS, CONTAINS), and an operation its call in lib/kernel-lifecycle.js OPS.",
   "namespaces": [
     "platform",
     "tenant",
@@ -58,7 +58,13 @@
     "settingDeclared": "kernel.setting.declared",
     "valueAssigned": "kernel.value.assigned",
     "resolutionDefined": "kernel.resolution.defined",
-    "viewDefined": "kernel.view.defined"
+    "viewDefined": "kernel.view.defined",
+    "changeDrafted": "kernel.change.drafted",
+    "changeEdited": "kernel.change.edited",
+    "changeMoved": "kernel.change.moved",
+    "changeRolledBack": "kernel.change.rolled-back",
+    "nodeStateChanged": "kernel.node.state-changed",
+    "nodePurged": "kernel.node.purged"
   },
   "limits": {
     "keyPattern": "^[a-z][a-z0-9_.-]{0,63}$",
@@ -82,5 +88,75 @@
       "key": "polygon",
       "label": "A polygon on the first two axes"
     }
-  ]
+  ],
+  "lifecycle": {
+    "initial": "draft",
+    "validated": "validated",
+    "approved": "approved",
+    "scheduled": "scheduled",
+    "published": "published",
+    "rolledBack": "rolled-back",
+    "discarded": "discarded",
+    "untitled": "Untitled change",
+    "transitions": {
+      "draft": [
+        "validated",
+        "discarded"
+      ],
+      "validated": [
+        "approved",
+        "discarded"
+      ],
+      "approved": [
+        "scheduled",
+        "published",
+        "discarded"
+      ],
+      "scheduled": [
+        "published",
+        "discarded"
+      ],
+      "published": [
+        "rolled-back"
+      ],
+      "rolled-back": [],
+      "discarded": []
+    },
+    "distinctApprover": true,
+    "operations": [
+      "defineKind",
+      "createNode",
+      "record",
+      "assignIdentifier",
+      "endIdentifier",
+      "defineHierarchy",
+      "place",
+      "endPlacement",
+      "defineSystem",
+      "setShape",
+      "declareSetting",
+      "assign",
+      "defineResolution",
+      "defineView"
+    ],
+    "nodeStates": {
+      "initial": "active",
+      "hidden": "hidden",
+      "archived": "archived",
+      "transitions": {
+        "active": [
+          "hidden",
+          "archived"
+        ],
+        "hidden": [
+          "active",
+          "archived"
+        ],
+        "archived": [
+          "active"
+        ]
+      }
+    },
+    "purgePermission": "kernel.purge"
+  }
 }
