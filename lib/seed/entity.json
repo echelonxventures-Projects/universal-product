@@ -73,7 +73,8 @@
      "label": "Position",
      "type": "number"
     }
-   ]
+   ],
+   "writer": "places"
   },
   "subdivision": {
    "table": "subdivisions",
@@ -139,7 +140,8 @@
      "type": "bool",
      "list": true
     }
-   ]
+   ],
+   "writer": "places"
   },
   "currency": {
    "table": "currencies",
@@ -10036,5 +10038,9 @@
     }
    ]
   }
+ },
+ "WRITERS": {
+  "$comment": "the modules a built-in entity may name as its writer: the owner's write path, which records the change on the kernel and writes the row in one transaction (lib/entity.js). Tenant-defined entities cannot name a writer.",
+  "places": "./places.js"
  }
 }

@@ -92,6 +92,32 @@ ok(db.all("SELECT value FROM k_assignments WHERE setting='value.currency' AND sc
 const tr = require("../lib/tax.js").ruleFor(cIN.code);
 const prof = registry.countryProfile(cIN.code);
 ok(tr ? prof.tax.mode === tr.mode && prof.tax.rate === tr.standard : prof.tax === null, "a country profile's tax is the tax engine's rule, not a column of the country");
+
+console.log("places — every write goes to the kernel first, in the same transaction as the row");
+const entity = require("../lib/entity.js");
+const cur2 = db.get("SELECT code FROM currencies WHERE active=1 LIMIT 1").code;
+const made = entity.createEntity(0, "country", { code: "QZ", name: "Testland", currency: cur2, symbol: "¤", locale: "en-QZ", decimals: 2, active: true });
+const qz = P.country("QZ");
+ok(made.id === "QZ" && qz && K.attributes(qz).name === "Testland", "creating a country in the console creates its place on the kernel");
+ok(db.get("SELECT uid FROM countries WHERE code='QZ'").uid === qz, "the row carries its place's universal ID");
+ok(C.assignedAt("expression.locale", { scope: qz }) === "en-QZ", "its settings are assigned at its place");
+const evQ = db.get("SELECT COUNT(*) AS n FROM k_events").n;
+const dup = entity.createEntity(0, "country", { code: "QZ", name: "Testland again", currency: cur2, symbol: "¤", locale: "en-QZ", decimals: 2 });
+ok(dup.error && K.attributes(qz).name === "Testland" && db.get("SELECT COUNT(*) AS n FROM k_events").n === evQ, "a write the row refuses leaves the kernel untouched");
+const orphan = entity.createEntity(0, "subdivision", { code: "QQ-01", country_code: "QQ", name: "Nowhere", level: "region" });
+ok(orphan.error && !db.get("SELECT 1 AS x FROM subdivisions WHERE code='QQ-01'"), "a write the kernel refuses never reaches the row");
+const sd = entity.createEntity(0, "subdivision", { code: "QZ-01", country_code: "QZ", name: "North", level: "region" });
+ok(!sd.error && K.parents(P.HIERARCHY, P.subdivision("QZ-01")).join() === qz, "a subdivision created in the console sits under its country on the kernel");
+entity.updateEntity(0, "country", "QZ", { name: "Testland Renamed" });
+ok(K.attributes(qz).name === "Testland Renamed", "an edit in the console is recorded on the kernel");
+const qz1 = P.subdivision("QZ-01");
+/* the platform's delete path: derived provider links go, the country is withdrawn, then deleted */
+db.run("DELETE FROM provider_availability WHERE country_code='QZ'");
+registry.withdrawCountry("QZ");
+ok(LC.nodeState(qz1) === "archived" && !db.get("SELECT 1 AS x FROM subdivisions WHERE code='QZ-01'"), "withdrawing a country archives its subdivisions' places with the rows");
+entity.deleteEntity(0, "country", "QZ");
+ok(LC.nodeState(qz) === "archived" && !db.get("SELECT 1 AS x FROM countries WHERE code='QZ'"), "deleting a country archives its place and removes the row");
+ok(K.history(qz).length > 0 && K.verifyEvents().ok, "the archived place keeps its history in an intact log");
 console.log("  (" + placeNodes.length + " places on the kernel)");
 
 for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP + s, { force: true }); } catch (e) { } }
