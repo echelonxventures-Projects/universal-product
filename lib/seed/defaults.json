@@ -1,5 +1,6 @@
 {
  "currency": "USD",
+ "country": "US",
  "lists": {
   "offerChannels": "commerce",
   "staffRoles": "manager",

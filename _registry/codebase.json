@@ -109,6 +109,7 @@
     {"path": "lib/seed/gates.json", "owner": "Rule"},
     {"path": "lib/seed/kernel.json", "owner": "Registry", "note": "the kernel's namespaces, value types and event names"},
     {"path": "lib/seed/stores.json", "owner": "Party", "note": "the store kind, the serves hierarchy and the jurisdiction setting"},
+    {"path": "lib/seed/value.json", "owner": "Value", "note": "the classes of units of value and the units shipped beyond the currency seed"},
     {"path": "lib/seed/places.json", "owner": "Geo", "note": "the place kind, the place tree and their identifier schemes"},
     {"path": "lib/seed/goip.json", "owner": "Commerce"},
     {"path": "lib/seed/meta.json", "owner": "Registry"},

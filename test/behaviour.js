@@ -67,7 +67,7 @@ try {
   console.log("▸ THE GATE: CONVERTED ENGINES NAME NO DECLARED KEY");
   const VOCAB = { ai: ["aiCapabilities"], tax: ["taxClasses"], offers: ["offerScopes", "stackingPolicies", "couponKinds", "offerChannels"],
     marketplace: ["mktBidModels"], mailer: ["deliveryChannels"], risk: ["riskActions"], recurring: ["membershipBenefits"],
-    goip: ["goipObjectives", "goipAttributionModels", "goipTouchpointKinds", "goipAssetClasses", "goipPartyTypes"] };
+    goip: ["goipObjectives", "goipAttributionModels", "goipTouchpointKinds", "valueClasses", "goipPartyTypes"] };
   /* kernel words that merely share a spelling with a vocabulary key: a capability's
      authority scope "platform" is not the party type "platform" */
   const KERNEL = { goip: ["platform"] };

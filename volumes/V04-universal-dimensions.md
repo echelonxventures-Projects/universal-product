@@ -660,7 +660,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-VAL-000001 Value Architecture](#ucos-val-000001) |
 | **Artifacts** | [UCOS-VAL-000001](#ucos-val-000001) |
 | **Concepts** | 149 — `node _registry/compile.js --search <words> --kind concept --owner "Value"` |
-| **Code** | `lib/registry.js`, `lib/global.js` |
+| **Code** | `lib/registry.js`, `lib/global.js`, `lib/seed/value.json` |
 | **Managed in** | `_registry/domains.json` → `D-VAL` |
 
 **Live routes (10)** — what the platform serves today for this domain:

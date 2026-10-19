@@ -316,7 +316,7 @@
    "n": 40,
    "key": "exchange",
    "name": "Exchange Domain",
-   "owner": "meta_lists:goipEconomicUnits + fx_rates",
+   "owner": "table:currencies + fx_rates",
    "discriminator": "unit → unit conversion",
    "fabric": "economic"
   },
@@ -516,7 +516,7 @@
    "n": 65,
    "key": "universal_economic",
    "name": "Universal Economic Domain",
-   "owner": "meta_lists:goipEconomicUnits",
+   "owner": "table:currencies",
    "discriminator": "units, classes, rates",
    "fabric": "economic"
   },
@@ -556,7 +556,7 @@
   {
    "key": "economic",
    "name": "Economic Context",
-   "source": "registry:goipEconomicUnits + currencies"
+   "source": "table:currencies"
   },
   {
    "key": "governance",

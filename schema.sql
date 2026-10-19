@@ -219,7 +219,7 @@ CREATE TABLE countries (
 , uid TEXT);
 CREATE TABLE currencies (
   code TEXT PRIMARY KEY, name TEXT NOT NULL, symbol TEXT NOT NULL, decimals INTEGER NOT NULL DEFAULT 2,
-  usd REAL NOT NULL DEFAULT 1, position INTEGER DEFAULT 0, active INTEGER DEFAULT 1
+  usd REAL NOT NULL DEFAULT 1, position INTEGER DEFAULT 0, active INTEGER DEFAULT 1, class TEXT, settleable INTEGER DEFAULT 1
 , uid TEXT);
 CREATE TABLE tax_modes (
   key TEXT PRIMARY KEY, label TEXT NOT NULL, description TEXT, fields TEXT DEFAULT '[]', position INTEGER DEFAULT 0

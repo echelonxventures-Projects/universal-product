@@ -45,7 +45,7 @@ try {
 
   console.log("▸ A FRESH INSTALL");
   ok(db.get("SELECT COUNT(*) n FROM countries").n === C.length, "boot seeds every declared country");
-  ok(!db.get("SELECT 1 ok FROM countries WHERE name LIKE '%auto-registered%'") && !db.get("SELECT 1 ok FROM currencies WHERE length(code)<>3"), "no invented country or currency");
+  ok(!db.get("SELECT 1 ok FROM countries WHERE name LIKE '%auto-registered%'") && (() => { const known = new Set(providers.CURRENCIES.map(c => c.code).concat(require("../lib/seed/value.json").units.map(u => u.code))); return db.all("SELECT code FROM currencies").every(c => known.has(c.code)); })(), "no invented country or currency: every unit of value is one the seed declares");
   const decOf = new Map(db.all("SELECT code, decimals FROM currencies").map(k => [k.code, k.decimals]));
   const wrongDec = registry.countries().filter(c => c.decimals !== decOf.get(c.currency)).map(c => c.code);
   ok(wrongDec.length === 0, "a country's decimals are its currency's", wrongDec);
@@ -82,7 +82,7 @@ try {
 
   console.log("▸ EVERY WRITE IS CHECKED BY THE ENTITY'S DECLARATIONS");
   const good = { code: "QZ", name: "Testland", currency: "EUR", symbol: "€", locale: "en-IE" };
-  ok(!globalmod.createCountry({ ...good, currency: "EURO" }).ok, "a currency code that is not three letters is refused");
+  ok(!globalmod.createCountry({ ...good, currency: "EU-RO" }).ok, "a currency code that is not a unit code is refused");
   ok(!globalmod.createCountry({ ...good, code: "Q1" }).ok, "a code that is not two letters is refused");
   ok(!globalmod.createCountry({ ...good, locale: "not a locale!" }).ok, "a locale that is not BCP 47 is refused");
   ok(!globalmod.createCountry({ ...good, name: "" }).ok, "a country with no name is refused");
@@ -90,8 +90,9 @@ try {
   ok(made.ok && db.get("SELECT code FROM countries WHERE code='QZ'"), "a valid country is created (code upper-cased)", made);
   ok(globalmod.createCountry({ ...good, code: "QY", currency: "JPY", symbol: "¥", locale: "ja-JP" }).ok && globalmod.getCountry("QY").decimals === 0, "a new country takes its currency's decimals (JPY: 0)");
   ok(!globalmod.updateCountry("QZ", { locale: "??" }).ok && globalmod.updateCountry("QZ", { name: "Testland II" }).ok, "a partial update is checked on the fields it sends");
-  ok(!globalmod.createCurrency({ code: "QZ", name: "Q", symbol: "q", decimals: 2, usd: 1 }).ok, "a currency code that is not three letters is refused");
-  ok(!globalmod.createCurrency({ code: "QZQ", name: "Q", symbol: "q", decimals: 2, usd: 0 }).ok, "a currency with no value is refused");
+  ok(!globalmod.createCurrency({ code: "Q-Z", name: "Q", symbol: "q", decimals: 2, usd: 1 }).ok, "a unit code that is not capital letters, digits and _ is refused");
+  ok(!globalmod.createCurrency({ code: "QZQ", name: "Q", symbol: "q", decimals: 2, usd: -1 }).ok, "a unit with a negative value is refused");
+  ok(globalmod.createCurrency({ code: "QZ_CREDIT", name: "Q credits", symbol: "qc", decimals: 0, usd: 0, class: "loyalty", settleable: false }).ok && registry.unit("QZ_CREDIT").class === "loyalty" && !registry.unit("QZ_CREDIT").settleable, "any unit of value is a row: a code beyond ISO 4217, its class, no exchange value, not payable");
   ok(!globalmod.createCurrency({ code: "QZQ", name: "Q", symbol: "q", decimals: 9, usd: 1 }).ok, "minor units outside 0–4 are refused");
   const pv = db.get("SELECT id, kind FROM provider_defs ORDER BY position LIMIT 1"), pl = db.get("SELECT id FROM plans ORDER BY id LIMIT 1");
   ok(globalmod.updateProvider(pv.id, pv.kind, { position: 7 }).ok && (!pl || globalmod.updatePlan(pl.id, { position: 3 }).ok), "provider and plan edits write (they stamped a column the tables do not have)");

@@ -42,8 +42,8 @@
      "required": true,
      "list": true,
      "upper": true,
-     "pattern": "^[A-Z]{3}$",
-     "patternHint": "three letters (ISO 4217)",
+     "pattern": "^[A-Z][A-Z0-9_]{1,31}$",
+     "patternHint": "capital letters, digits and _ (an ISO 4217 code, or any unit's own)",
      "stored": false
     },
     {
@@ -170,8 +170,8 @@
      "required": true,
      "list": true,
      "upper": true,
-     "pattern": "^[A-Z]{3}$",
-     "patternHint": "three letters (ISO 4217)"
+     "pattern": "^[A-Z][A-Z0-9_]{1,31}$",
+     "patternHint": "capital letters, digits and _ (an ISO 4217 code, or any unit's own)"
     },
     {
      "key": "name",
@@ -199,11 +199,23 @@
     },
     {
      "key": "usd",
-     "label": "Value in USD (1 unit = x USD)",
+     "label": "Value in USD (1 unit = x USD; 0 = no exchange value)",
      "type": "number",
      "required": true,
      "list": true,
-     "gt": 0
+     "min": 0
+    },
+    {
+     "key": "class",
+     "label": "Class",
+     "type": "select",
+     "options": "valueClasses",
+     "list": true
+    },
+    {
+     "key": "settleable",
+     "label": "Can be paid out",
+     "type": "bool"
     },
     {
      "key": "position",
