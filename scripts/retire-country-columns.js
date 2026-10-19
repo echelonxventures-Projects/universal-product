@@ -17,7 +17,7 @@ if (!process.argv.includes("--yes")) {
 }
 const db = require(path.join(__dirname, "..", "lib", "db.js"));
 const P = require(path.join(__dirname, "..", "lib", "places.js"));
-const present = P.RETIRED.filter(P.hasColumn);
+const present = P.RETIRED.filter(c => P.hasColumn(c, P.TABLE));
 if (!present.length) { console.log("Nothing to retire: the country table has none of " + P.RETIRED.join(", ")); process.exit(0); }
 if (!db.USE_PG) {
   const copy = db.DB_PATH + ".before-retire-" + new Date().toISOString().replace(/[:.]/g, "-");

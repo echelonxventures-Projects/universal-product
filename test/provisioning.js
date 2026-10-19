@@ -78,7 +78,7 @@ const mk = () => {
     ok((await P("/api/platform/config", "PUT", { provisioning: { defaultCountry: "ZZ" } })).status === 400, "an unknown default country is refused");
     ok((await P("/api/platform/config", "PUT", { provisioning: { defaultCountry: "gb" } })).status === 200, "the platform changes the default country");
     const gbs = await P("/api/platform/tenants", "POST", { name: "No Country", slug: "nocountry", ...owner("nocountry") });
-    ok(gbs.status === 200 && db.get("SELECT country FROM tenants WHERE id=?", gbs.body.tenant.id).country === "GB", "a store registered without a country gets the policy's", gbs.body.error);
+    ok(gbs.status === 200 && require("../lib/stores.js").country(gbs.body.tenant.id) === "GB" && gbs.body.tenant.country === "GB", "a store registered without a country gets the policy's", gbs.body.error);
     const settingsMod = require("../lib/settings.js");
     settingsMod.reset(gbs.body.tenant.id);
     ok(settingsMod.load(gbs.body.tenant.id).commerce.country === "GB", "resetting a store's settings keeps the store in its own country");

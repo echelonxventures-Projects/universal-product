@@ -34,6 +34,7 @@
     "label": "The place tree"
   },
   "master": {
+    "table": "countries",
     "countryScheme": "iso3166-1",
     "subdivisionScheme": "iso3166-2",
     "countryLevel": "country",

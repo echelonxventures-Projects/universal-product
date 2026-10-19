@@ -119,11 +119,10 @@
    "match": "group",
    "groups": "countryGroups",
    "source": "platform",
-   "column": "country",
    "overridable": true,
    "upper": true,
    "options": "list:countryGroups+rows:countries:code:name",
-   "setting": "commerce.country"
+   "provider": "jurisdiction"
   },
   {
    "key": "regions",

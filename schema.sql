@@ -2,7 +2,7 @@ CREATE TABLE tenants (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   slug TEXT NOT NULL UNIQUE, name TEXT NOT NULL, domain TEXT DEFAULT '',
   status TEXT NOT NULL DEFAULT 'active', created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, mode TEXT NOT NULL DEFAULT 'marketplace', industries TEXT DEFAULT '[]', profile TEXT DEFAULT '{}', country TEXT DEFAULT 'US', region TEXT DEFAULT 'global', sso_provider TEXT DEFAULT '', cdn TEXT DEFAULT '', uid TEXT);
+, mode TEXT NOT NULL DEFAULT 'marketplace', industries TEXT DEFAULT '[]', profile TEXT DEFAULT '{}', region TEXT DEFAULT 'global', sso_provider TEXT DEFAULT '', cdn TEXT DEFAULT '', uid TEXT);
 CREATE TABLE sqlite_sequence(name,seq);
 CREATE TABLE plans (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
