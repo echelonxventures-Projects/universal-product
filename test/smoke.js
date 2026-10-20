@@ -1625,7 +1625,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     {
       const sqlm = require("../lib/sql.js");
       ok(/now\(\)/.test(sqlm.toPg("SELECT * FROM t WHERE d>datetime('now')")) && /\$1/.test(sqlm.toPg("SELECT * FROM t WHERE x=?")), "translator: datetime→now(), ?→$n");
-      ok(/to_char\(ts, 'YYYY-MM'\)/.test(sqlm.toPg("SELECT strftime('%Y-%m', ts) FROM t")), "translator: strftime→to_char");
+      /* a stored timestamp is text 'YYYY-MM-DD HH:MM:SS': a format that is a prefix of it is the
+         text's prefix; any other format parses it first (and %H is the 24-hour clock) */
+      ok(/substring\(CAST\(ts AS TEXT\) from 1 for 7\)/.test(sqlm.toPg("SELECT strftime('%Y-%m', ts) FROM t")), "translator: strftime of a layout prefix → the text's prefix", sqlm.toPg("SELECT strftime('%Y-%m', ts) FROM t"));
+      ok(/to_char\(CAST\(ts AS timestamp\), 'HH24:MI'\)/.test(sqlm.toPg("SELECT strftime('%H:%M', ts) FROM t")), "translator: strftime of any other format → to_char of the parsed timestamp", sqlm.toPg("SELECT strftime('%H:%M', ts) FROM t"));
       ok(/substring\(|from 1 for 10/.test(sqlm.toPg("SELECT substr(name,1,10) FROM t")), "translator: substr→substring");
       ok(/ON CONFLICT DO NOTHING|INSERT INTO/.test(sqlm.toPg("INSERT OR IGNORE INTO t VALUES(?,?)")) && !/OR IGNORE/.test(sqlm.toPg("INSERT OR IGNORE INTO t VALUES(?,?)")), "translator: INSERT OR IGNORE→plain (no OR IGNORE)");
       const iv = sqlm.toPg("SELECT datetime('now','+1 month')");
@@ -1639,6 +1642,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(ord.indexOf("parent") < ord.indexOf("child"), "migrate: FK dependency ordering (parent before child)", ord);
       const pgm = require("../lib/pg.js");
       ok(pgm.normalizeConn({ connectionString: "postgres://u:p@h:5433/db" }).database === "db" && pgm.normalizeConn({ url: "postgres://u:p@h:5433/db2" }).database === "db2", "pg: normalizeConn parses {connectionString|url}");
+      /* sslmode as libpq reads it: verify-* is TLS (it once fell through to plaintext), and only
+         prefer/allow may fall back to plaintext when the server refuses TLS */
+      ok(["require", "prefer", "allow", "verify-ca", "verify-full"].every(m => pgm.wantsSsl("postgres://h/d?sslmode=" + m)) && !pgm.wantsSsl("postgres://h/d?sslmode=disable") && !pgm.wantsSsl("postgres://h/d"), "pg: every TLS sslmode asks for TLS, verify-* included");
+      ok(["require", "verify-ca", "verify-full"].every(m => pgm.mustSsl("postgres://h/d?sslmode=" + m)) && !pgm.mustSsl("postgres://h/d?sslmode=prefer"), "pg: require and verify-* never fall back to plaintext");
       const dbp = require("../lib/dbpool.js");
       ok(dbp.driver() === "sqlite", "async pool defaults to sqlite driver (no behavior change)");
       ok((await dbp.get("SELECT 1 AS one")) !== null, "async pool reads through sqlite");
@@ -1673,7 +1680,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       /* T5: setval is emitted by apply() after the data load, not by plan(). An off-by-one here
          would collide every subsequent INSERT, so assert the exact expression apply() runs. */
       const setvalSrc = require("fs").readFileSync(require("path").join(__dirname, "..", "lib", "migrate.js"), "utf8").replace(/\s+/g, " ");
-      ok(setvalSrc.includes("SELECT setval(pg_get_serial_sequence('\"${t}\"','id'), COALESCE((SELECT MAX(id) FROM \"${t}\"), 0) + 1, false)"), "migrate: setval advances identity sequences past copied rows (T5)", "apply() setval clause verified");
+      ok(setvalSrc.includes("SELECT setval(pg_get_serial_sequence('\"${t}\"','${col}'), COALESCE((SELECT MAX(\"${col}\") FROM \"${t}\"), 0) + 1, false)"), "migrate: setval advances identity sequences past copied rows (T5)", "apply() setval clause verified");
       ok(/partial/i.test(idx.find(s => /WHERE/i.test(s.sql) || /partial/i.test(s.sql)) ? "yes" : "no") || idx.some(s => /WHERE/i.test(s.sql)), "migrate: partial-index WHERE clauses carried through", idx.filter(s => /WHERE/i.test(s.sql)).length);
     }
     console.log("▸ ENTERPRISE OPS (cutover · SSO/SCIM · regions/CDN · metrics · feeds · transfers · tax)");

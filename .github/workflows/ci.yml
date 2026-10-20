@@ -7,14 +7,14 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         # 22.13 is the floor: node:sqlite is behind --experimental-sqlite before it
         node: [22.13, 22, 24]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node }}
       # the browser-level suites (test/console, smoke, roles, navfit, …) drive the pages
@@ -35,13 +35,38 @@ jobs:
   browser:
     # every page and console section in real Chrome under the production CSP:
     # fails on a CSP violation, an uncaught exception, a console error or a failed load
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
       - name: Install
         run: npm ci
       - name: Real-browser check (headless Chrome)
         run: CHROME_PATH=$(command -v google-chrome || command -v chromium) npm run check:browser
+
+  postgres:
+    # the whole platform on Postgres: a fresh install migrated in one transaction, the kernel's
+    # transactions, places, stores, time, expression and Value on it, then every page and console
+    # section with the server on Postgres (scripts/pg-check.js). The service authenticates with
+    # SCRAM-SHA-256, Postgres's default, as managed Postgres does.
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: ci-scram-password
+          POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install
+        run: npm ci
+      - name: The platform on Postgres
+        run: CHROME_PATH=$(command -v google-chrome || command -v chromium) PG_CHECK_URL=postgres://postgres:ci-scram-password@127.0.0.1:5432/postgres npm run check:postgres

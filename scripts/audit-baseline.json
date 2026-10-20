@@ -1,10 +1,10 @@
 {
  "summary": {
   "branch": 65,
-  "fallback": 99,
+  "fallback": 95,
   "seedConstants": {
-   "count": 8,
-   "lines": 244
+   "count": 7,
+   "lines": 223
   }
  },
  "hits": {
@@ -103,10 +103,7 @@
    "lib/gcatalog.js · retail": 1,
    "lib/gcatalog.js · service": 1,
    "lib/global.js · payment": 1,
-   "lib/goip.js · COIN": 1,
    "lib/goip.js · DISCOVERED_BY": 3,
-   "lib/goip.js · POINT": 1,
-   "lib/goip.js · TOKEN": 2,
    "lib/goip.js · accepted": 1,
    "lib/goip.js · bank_voucher": 2,
    "lib/goip.js · customer": 1,
@@ -148,7 +145,6 @@
  "seedConstants": {
   "lib/api.js · STORE_ROUTE_SECTION": 28,
   "lib/authz.js · ROUTE_SECTION": 35,
-  "lib/goip.js · REGISTRIES": 21,
   "lib/goip.js · GOIP_HANDLERS": 40,
   "lib/goip.js · INTEL": 30,
   "lib/goip.js · IMPL": 47,

@@ -1,4 +1,9 @@
 {
+ "GATEWAY_PREFIX": {
+  "$comment": "A store's enabled provider (tenant_gateways.provider_id) is the provider's id, prefixed by its kind's entry here; a kind with no entry is unprefixed.",
+  "shipping": "ship:",
+  "notification": "notify:"
+ },
  "PROVIDER_SPECS": {
   "payment:stripe": {
    "method": "POST",

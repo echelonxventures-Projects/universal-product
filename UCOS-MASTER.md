@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0023 (2026-10-20).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0024 (2026-10-20).
 
 ## Contents
 
@@ -386,6 +386,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0021"></a>AMD-0021 | 2026-10-20 | Platform owner | P11: Time owns time. Calendars, chronologies, temporal units and their conversions are Time's registries (lib/seed/time.json), not lists in the offer engine; rows an operator added under the engine's old list names join Time's once. A place's time zone is Time's setting at the place, resolved up the place tree like its calendar: each seeded country has its primary zone, any subdivision, city or colony may have its own, and a place under none is in the declared default zone. A zone the host's clock knows answers the local date, weekday and hour at an instant; a colony's own clock is carried as declared. The offer engine's temporal context carries the zone where the exchange happens (the request's, the place's, else the store's jurisdiction's) and its local time. |
 | <a id="amd-0022"></a>AMD-0022 | 2026-10-20 | Platform owner | An idle keep-alive connection outlives a load balancer's idle timeout: the server's keep-alive is 65 s by default (LX_KEEPALIVE_MS), so the balancer, not the server, closes it. With Node's 5 s default the server closed idle sockets while a client was about to reuse one, which reset the client's next request — the cause of the intermittent ECONNRESET in the test suites (GAP-28), and of 502s behind a balancer. Shutdown closes the listening server, TLS included. A security-suite crash now prints the server's last words and the network cause. |
 | <a id="amd-0023"></a>AMD-0023 | 2026-10-20 | Platform owner | P12 begins: Expression speaks languages by configuration. Languages are a registry naming each one's script and writing direction (lib/seed/expression.json); the storefront's shipped copy is the source language, and the message catalogue (the messages table, the console's message entity) holds it in Arabic, Hindi, Spanish, French and German. A request is answered in the language it names, else the shopper's remembered choice, else the best one the browser asks for, else the store's locale's language, else the source — always one the platform can speak. The storefront sets the page's language and direction, so a right-to-left language lays out right to left, and offers a language switch. A store's own saved copy applies in its own language only; an operator's catalogue edit survives the seed. Bug fixed: the store import failed when the settings module was what first booted the database (a circular load). |
+| <a id="amd-0024"></a>AMD-0024 | 2026-10-20 | Platform owner | The platform runs on Postgres, and is checked there end to end. The Postgres client opened a new connection for every statement, so no transaction held (a BEGIN, its statements and its COMMIT or ROLLBACK each ran on a different connection), the migration could not roll back, and a busy server exhausted its ports; it authenticated only with md5 or cleartext, not SCRAM-SHA-256 (Postgres's default and what managed Postgres requires), and a TLS connection wrote to a closed socket. Now one persistent connection serves the db bridge and a migration: SCRAM-SHA-256, TLS upgraded in place, one statement at a time, and a connection lost inside a transaction refuses every statement until the caller's ROLLBACK. The migration quotes reserved column names, keeps any identity column (the kernel's seq) and SQLite's implicit rowid (which subdivisions point at), declares TEXT a numeric column that holds text, translates indexes on their own, and runs in one transaction that stops at its first error. The dialect translator learned IFNULL, last_insert_rowid(), strftime and date() of stored text timestamps, datetime('now', ?), typed concatenation parameters and multi-row INSERT OR IGNORE. Queries fixed to be portable: GROUP BY lists, HAVING on aggregates, an unaliased day, IS ? on a parameter. Three latent bugs found by sweeping every SELECT through Postgres, broken on SQLite too: a store's providers on the global console read columns tenant_gateways never had, a shipment's third-party push looked up a column that does not exist (so it never ran), and a supplier's minimum order looked up a SKU column product_suppliers does not have. scripts/pg-check.js (npm run check:postgres) migrates a fresh install, checks the kernel's transactions, places, stores, time, expression and Value, and loads every page and console section with the server on Postgres; CI runs it against a SCRAM-authenticated Postgres 16 service. CI moves to the actions' Node 24 runtime on a pinned ubuntu-24.04 runner. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1212,7 +1213,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 141 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 142 files.
 
 ### C02 · Meaning
 
@@ -1399,6 +1400,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `scripts/audit-hardcoding.js` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
 | `scripts/audit-baseline.json` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
 | `scripts/browser-check.js` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
+| `scripts/pg-check.js` | [Quality](volumes/V11.2-platform.md#d-qlt) | the platform on Postgres end to end: migrate, boot, kernel checks and the browser check |
 | `scripts/backup.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `scripts/restore.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `scripts/schema-dump.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | dumps the storage schema |
@@ -2101,7 +2103,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="gap-12"></a>GAP-12 | requirement | Time: no time zones anywhere; calendars only in the offers module | [Time](volumes/V04-universal-dimensions.md#d-tim) | closed (AMD-0021) |
 | <a id="gap-13"></a>GAP-13 | requirement | Languages: the storefront's copy keys speak every catalogued language, right to left included (AMD-0023), but most page text — the footer columns, page headings, both consoles, emails — is still English written in code rather than catalogue keys | [Expression](volumes/V04-universal-dimensions.md#d-exr) | open |
 | <a id="gap-14"></a>GAP-14 | requirement | Value: the core knows Earth fiat only; other units of value live only in the offers module | [Value](volumes/V04-universal-dimensions.md#d-val) | closed (AMD-0020) |
-| <a id="gap-15"></a>GAP-15 | requirement | Schema and database from the console: custom entities and a database switch exist; no per-domain storage choice | [Persistence](volumes/V11.1-platform.md#d-prs) | open |
+| <a id="gap-15"></a>GAP-15 | requirement | Schema and database from the console: custom entities exist and the platform now runs on Postgres end to end (AMD-0024, npm run check:postgres), but there is no per-domain storage choice and no console-driven move between databases | [Persistence](volumes/V11.1-platform.md#d-prs) | open |
 | <a id="gap-16"></a>GAP-16 | requirement | Interface for every device: themes exist; no device types, component registry or screen builder | [Experience](volumes/V08-interaction.md#d-exp) | open |
 | <a id="gap-17"></a>GAP-17 | requirement | Workflow, notification, package, agent, integration and report designers described by the contracts are not built | [Runtime](volumes/V09.1-automation.md#d-run) | open |
 | <a id="gap-18"></a>GAP-18 | requirement | Launch by configuration, end to end, is not yet possible | [Package](volumes/V13-composition.md#d-pkg) | open |
@@ -2109,7 +2111,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="gap-20"></a>GAP-20 | process | PR #3's description does not cover its last commits | [Guidance](volumes/V02-meaning.md#d-gdn) | open |
 | <a id="gap-21"></a>GAP-21 | process | The development server is not running from the repository's new location | [Operations](volumes/V11.1-platform.md#d-ops) | closed (AMD-0009) |
 | <a id="gap-22"></a>GAP-22 | process | Stripe and EasyPost have never been run against real sandboxes; deployment is a single node | [Operations](volumes/V11.1-platform.md#d-ops) | open |
-| <a id="gap-23"></a>GAP-23 | process | CI actions target the deprecated Node 20 runtime; the runner image moves to Ubuntu 26 | [Operations](volumes/V11.1-platform.md#d-ops) | open |
+| <a id="gap-23"></a>GAP-23 | process | CI moved to the actions' Node 24 runtime (checkout and setup-node v5) on a pinned ubuntu-24.04 runner (AMD-0024); unverified until CI can run again (GAP-29) | [Operations](volumes/V11.1-platform.md#d-ops) | open |
 | <a id="gap-24"></a>GAP-24 | process | USER_MANUAL.md is hand-written; nothing checks it against the code | [Guidance](volumes/V02-meaning.md#d-gdn) | open |
 | <a id="gap-25"></a>GAP-25 | process | Search filters by owner and category only for register entries, not universes or corpus documents | [Search](volumes/V08-interaction.md#d-srh) | open |
 | <a id="gap-26"></a>GAP-26 | broken | test/identity.js opened the developer's own database on every run; no guard stopped a test doing so | [Quality](volumes/V11.2-platform.md#d-qlt) | closed (AMD-0008) |
@@ -2198,6 +2200,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0021 | amendment | P11 | [constitution](#amd-0021) |
 | AMD-0022 | amendment | An idle keep-alive connection outlives a load balancer's idl | [constitution](#amd-0022) |
 | AMD-0023 | amendment | P12 begins | [constitution](#amd-0023) |
+| AMD-0024 | amendment | The platform runs on Postgres, and is checked there end to e | [constitution](#amd-0024) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |
@@ -2286,7 +2289,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | GAP-12 | gap | Time: no time zones anywhere; calendars only in the offers m | [gaps](#gap-12) |
 | GAP-13 | gap | Languages: the storefront's copy keys speak every catalogued | [gaps](#gap-13) |
 | GAP-14 | gap | Value: the core knows Earth fiat only; other units of value  | [gaps](#gap-14) |
-| GAP-15 | gap | Schema and database from the console: custom entities and a  | [gaps](#gap-15) |
+| GAP-15 | gap | Schema and database from the console: custom entities exist  | [gaps](#gap-15) |
 | GAP-16 | gap | Interface for every device: themes exist; no device types, c | [gaps](#gap-16) |
 | GAP-17 | gap | Workflow, notification, package, agent, integration and repo | [gaps](#gap-17) |
 | GAP-18 | gap | Launch by configuration, end to end, is not yet possible | [gaps](#gap-18) |
@@ -2294,7 +2297,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | GAP-20 | gap | PR #3's description does not cover its last commits | [gaps](#gap-20) |
 | GAP-21 | gap | The development server is not running from the repository's  | [gaps](#gap-21) |
 | GAP-22 | gap | Stripe and EasyPost have never been run against real sandbox | [gaps](#gap-22) |
-| GAP-23 | gap | CI actions target the deprecated Node 20 runtime; the runner | [gaps](#gap-23) |
+| GAP-23 | gap | CI moved to the actions' Node 24 runtime (checkout and setup | [gaps](#gap-23) |
 | GAP-24 | gap | USER_MANUAL.md is hand-written; nothing checks it against th | [gaps](#gap-24) |
 | GAP-25 | gap | Search filters by owner and category only for register entri | [gaps](#gap-25) |
 | GAP-26 | gap | test/identity.js opened the developer's own database on ever | [gaps](#gap-26) |
