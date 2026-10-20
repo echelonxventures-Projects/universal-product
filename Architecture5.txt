@@ -1091,22 +1091,22 @@ factory resolves the rest.
 
 ## Composition Examples
 ```text
-Amazon Like Solution
-Uber Like Solution
-Netflix Like Solution
-Salesforce Like Solution
-SAP Like Solution
-Airbnb Like Solution
-YouTube Like Solution
-Shopify Like Solution
-ServiceNow Like Solution
-Zerodha Like Solution
-Flipkart Like Solution
-Walmart Like Solution
+General Marketplace Solution
+Ride Hailing Solution
+Video on Demand Solution
+CRM Solution
+ERP Solution
+Short Stay Rental Solution
+Video Sharing Solution
+Hosted Store Builder Solution
+IT Service Management Solution
+Retail Brokerage Solution
+Regional Marketplace Solution
+Omnichannel Retail Solution
 Future Platform Not Yet Invented
 ```
 
-## Amazon Composition
+## General Marketplace Composition
 ```text
 Identity
 Product
@@ -1123,7 +1123,7 @@ Recommendation
 Analytics
 ```
 
-## Uber Composition
+## Ride Hailing Composition
 ```text
 Identity
 Geo
@@ -1136,7 +1136,7 @@ Rating
 Tracking
 ```
 
-## Netflix Composition
+## Video on Demand Composition
 ```text
 Identity
 Subscription
@@ -1147,7 +1147,7 @@ Billing
 Analytics
 ```
 
-## Salesforce Composition
+## CRM Platform Composition
 ```text
 Identity
 CRM
@@ -1157,7 +1157,7 @@ AI
 Communication
 ```
 
-## SAP Composition
+## ERP Platform Composition
 ```text
 Identity
 ERP

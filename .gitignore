@@ -59,6 +59,9 @@ test/*.sqlite-shm
 # authority; the seal is reproducible, verifiable, not stored.
 _registry/canonical.json
 _registry/canonical.lxr
+# copies of them (a file manager's "canonical 2.json") are derived too
+_registry/canonical *.json
+_registry/canonical *.lxr
 
 # ───────────────────────── build & coverage output ─────────────────────────
 coverage/

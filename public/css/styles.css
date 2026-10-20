@@ -594,3 +594,31 @@ body { font-family: var(--font-body); }
   .lst-i-r { grid-column: 1 / -1; justify-items: start; grid-auto-flow: column; overflow-x: auto; }
   .rc-split { grid-template-columns: 1fr; }
 }
+
+/* ---------- platform-type panels: options, bookings, auctions, groups, activity, messages ---------- */
+.ppx-seller { font-size: 13px; color: var(--muted); margin: 6px 0; }
+.ppx-opts { margin: 8px 0; display: grid; gap: 10px; }
+.ppx-oh { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.ppx-ov { display: block; font-size: 14px; padding: 3px 0; cursor: pointer; }
+.ppx-ov input { accent-color: var(--accent-deep); margin-right: 6px; }
+.ppx-og input[data-text] { width: 100%; }
+.ppx-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; margin: 10px 0; }
+.ppx-card h4 { margin: 0 0 6px; font-size: 14px; }
+.ppx-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 6px 0; }
+.ppx-row input { flex: 1; min-width: 120px; }
+.ppx-price { font-size: 22px; }
+.ppx-slots { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.ppx-slot { padding: 4px 10px; font-size: 13px; }
+.ci-term { font-size: 13px; color: var(--muted); margin: 2px 0; }
+.ci-problem { font-size: 13px; color: var(--deal); margin: 2px 0; }
+.ci-sub { font-size: 12px; max-width: 220px; }
+.act { padding: 14px 18px; }
+.act h2 { margin: 0 0 8px; font-size: 18px; }
+.act-sec h3 { font-size: 15px; margin: 12px 0 6px; }
+.act-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.act-row > span:first-child, .act-row > a:first-child { flex: 1; min-width: 180px; }
+.msg-thread { display: grid; gap: 8px; margin: 12px 0; }
+.msg { max-width: 75%; padding: 8px 12px; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-sm); }
+.msg.mine { justify-self: end; background: var(--accent-soft); }
+.msg p { margin: 0 0 2px; white-space: pre-wrap; }
+@media (max-width: 720px) { .msg { max-width: 92%; } }

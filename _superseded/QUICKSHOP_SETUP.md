@@ -1,4 +1,4 @@
-# Create "QuickShop" - Amazon-Like Store Setup Guide
+# Create "QuickShop" - General-Marketplace Store Setup Guide
 
 ## Complete 12-Step Setup
 
@@ -163,7 +163,7 @@ VALUES
 ## Step 6: Add Sample Products
 
 ```sql
--- Add Amazon-like products
+-- Add general-marketplace products
 INSERT INTO products (tenant_id, id, title, brand, dept, price, list_price, rating, ratings_count, emoji, keywords, deal_pct, stock, type)
 VALUES
   (1, 'QS-PHONE-001', 'SmartPhone Pro 128GB', 'TechBrand', 'electronics', 499.99, 599.99, 4.5, 1250, '📱', 'smartphone, mobile, 5g, unlocked', 15, 500, 'physical'),
@@ -404,6 +404,6 @@ Platform Admin: platform@luxora.shop / platform123
 
 ```
 Total Steps: 12
-Features: 24 (Amazon-level)
+Features: 24 (general-marketplace level)
 Status: 100% Complete
 ```

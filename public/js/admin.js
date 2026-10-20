@@ -55,13 +55,13 @@ function toast(msg) {
    (every key is also a grant section), and NAVFLAT drives title lookup. */
 const NAV = [
   { g: "Overview", items: [["dash", "◈ Dashboard"], ["analytics", "📊 Analytics"], ["monitor", "📈 Monitor"]] },
-  { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["shipping", "📮 Shipping & Tracking"], ["pickup", "📍 Pickup Points"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"]] },
-  { g: "Catalogue", items: [["products", "📦 Products"], ["skus", "🔖 SKUs & Inventory"], ["brands", "🏷️ Brands"], ["brandreg", "™️ Brand Registry"], ["richcontent", "✨ Rich Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["gcatalog", "🌐 Global Catalog"]] },
+  { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["shipping", "📮 Shipping & Tracking"], ["pickup", "📍 Pickup Points"], ["bookings", "📅 Bookings"], ["substitutions", "🔄 Substitutions"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"]] },
+  { g: "Catalogue", items: [["products", "📦 Products"], ["skus", "🔖 SKUs & Inventory"], ["brands", "🏷️ Brands"], ["brandreg", "™️ Brand Registry"], ["richcontent", "✨ Rich Content"], ["prodoptions", "🧩 Product Options"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["gcatalog", "🌐 Global Catalog"]] },
   { g: "Supply Chain", items: [["suppliers", "🏭 Suppliers"], ["ops_proc", "🛒 Purchase Requests"], ["planning", "📈 Planning & Replenishment"]] },
   { g: "Storefront", items: [["content", "🖼️ Home Content"], ["search", "🔎 Search & Discovery"], ["sitemap", "🗺️ Sitemap & SEO"], ["localizations", "🌐 Localizations"]] },
-  { g: "Marketing & Growth", items: [["promotions", "🎟️ Offers & Coupons"], ["goip", "Ω∞ GOIP"], ["affiliate", "📣 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["marketplace", "📢 Marketplace & Ads"]] },
-  { g: "Customer Care", items: [["helpdesk", "🎧 Support Helpdesk"], ["ugc", "⭐ Reviews & Q&A"]] },
-  { g: "Sellers & B2B", items: [["sellers", "🏪 Sellers"], ["rfqs", "📋 RFQs"], ["contracts", "📝 Contracts"], ["tenders", "🏛️ Tenders"]] },
+  { g: "Marketing & Growth", items: [["promotions", "🎟️ Offers & Coupons"], ["goip", "Ω∞ GOIP"], ["affiliate", "📣 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["marketplace", "📢 Marketplace & Ads"], ["auctions", "🔨 Auctions"], ["groupbuy", "👥 Group Buying"]] },
+  { g: "Customer Care", items: [["helpdesk", "🎧 Support Helpdesk"], ["conversations", "💬 Messages"], ["ugc", "⭐ Reviews & Q&A"]] },
+  { g: "Sellers & B2B", items: [["sellers", "🏪 Sellers"], ["listings", "🏷️ Shopper Listings"], ["negotiation", "🤝 Offers"], ["rfqs", "📋 RFQs"], ["contracts", "📝 Contracts"], ["tenders", "🏛️ Tenders"]] },
   { g: "Payments & Finance", items: [["payments", "💳 Payment Gateways"], ["settlements", "🤝 Settlements"], ["finance", "💰 Disputes & Payouts"], ["billing", "🧮 Billing"]] },
   { g: "Business Operations", items: [["qcops", "⚡ Quick-commerce"], ["mktops", "🏬 Marketplace Ops"], ["tradeops", "🚢 Trade Ops"], ["finops", "💸 Fintech Ops"], ["ops_hr", "🧑‍💼 People & Payroll"], ["ops_mfg", "🏭 Manufacturing"], ["ops_proj", "📐 Projects & Approvals"]] },
   { g: "Mobility", items: [["rides", "🚗 Rides & Dispatch"], ["fleet", "🚙 Fleet & Drivers"]] },
@@ -613,6 +613,200 @@ function wireBrandReg() {
   });
 }
 
+/* ---------- the platform-type screens: options, bookings, offers, auctions, listings,
+   messages, group buying, substitutions ----------
+   Same rule as above: every button is one of the record's state-machine verbs the server
+   offers; every kind, mode and policy is a registry row the server sends. */
+const fieldVal = id => ($(id) || {}).value || "";
+const postAndRender = async (path, body, method, msg) => { try { await api(path, method || "POST", body); toast(msg || "Saved"); render(); } catch (e) { toast(e.message); } };
+/* verbs on rows that carry `next` (state keys), from a vocabulary of { verb, to } */
+const verbRow = (acts, rec, path, extra) => (acts || []).filter(a => (rec.next || []).includes(a.to))
+  .map(a => `<button class="btn-white sm" data-co-post="${esc(path)}" data-co-body='${esc(JSON.stringify(Object.assign({ action: a.verb }, extra || {})))}'>${esc(a.verb.replace(/_/g, " "))}</button>`).join(" ");
+function wireCoPosts() {
+  $$("[data-co-post]").forEach(b => b.onclick = () => {
+    const body = JSON.parse(b.dataset.coBody || "{}");
+    if (b.dataset.coAsk) { const v = prompt(b.dataset.coAsk); if (v == null) return; body[b.dataset.coField || "notes"] = v; }
+    postAndRender(b.dataset.coPost, body, b.dataset.coMethod);
+  });
+}
+
+async function vProdOptions() {
+  const gate = await coGate("prodoptions");
+  if (!gate.any) return coOff("product options", "🧩 Product Options", gate.off);
+  const d = await api("/admin/options", {});
+  const byProduct = {}; (d.attached || []).forEach(a => { (byProduct[a.product_id] = byProduct[a.product_id] || { title: a.title, groups: [] }).groups.push(a.group_id); });
+  return `<div class="a-head"><h2>🧩 Product Options</h2><p class="a-sub">Modifiers, add-ons and personal text, defined once and attached to any product. Group kinds are the <code>optionKinds</code> registry; the longest personal text is the <code>product_options</code> capability's param.</p></div>
+  <div class="a-card"><h3>Option group</h3><div class="p-form">
+    <div class="row"><label><span>Code *</span><input id="ogCode" placeholder="e.g. size"></label><label><span>Name *</span><input id="ogName"></label>
+      <label><span>Kind</span><select id="ogKind">${(d.kinds || []).map(k => `<option value="${esc(k.key)}">${esc(k.name)}</option>`).join("")}</select></label></div>
+    <div class="row"><label><span>Must choose at least</span><input id="ogMin" type="number" min="0" value="0"></label><label><span>May choose up to</span><input id="ogMax" type="number" min="1" value="1"></label><label><span>Longest text</span><input id="ogLen" type="number" min="1"></label></div>
+    <label><span>Values — one per line: code | name | price change</span><textarea id="ogVals" rows="4" placeholder="large | Large | 3.00"></textarea></label>
+    <input type="hidden" id="ogId"><button class="p-btn primary" id="ogSave">Save group</button></div></div>
+  <div class="a-card"><h3>Groups</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>kind</th><th>choose</th><th>values</th><th></th></tr></thead><tbody>
+    ${(d.groups || []).map(g => `<tr><td><code>${esc(g.code)}</code></td><td>${esc(g.name)}</td><td>${esc(g.kind_row ? g.kind_row.name : g.kind)}</td><td>${g.min_select}–${g.max_select}</td>
+      <td>${g.values.filter(v => v.active).map(v => `${esc(v.name)}${Number(v.price_delta) ? " (" + (v.price_delta > 0 ? "+" : "") + money(v.price_delta) + ")" : ""}`).join(", ") || "—"}</td>
+      <td style="white-space:nowrap"><button class="btn-white sm" data-og-edit="${g.id}">Edit</button> <button class="btn-white sm" data-co-post="/admin/options/${g.id}" data-co-method="DELETE">Remove</button></td></tr>`).join("") || '<tr><td colspan="6">No option groups yet.</td></tr>'}</tbody></table></div></div>
+  <div class="a-card"><h3>Attach to a product</h3><div class="p-form"><div class="row"><label><span>Product id *</span><input id="oaProd"></label></div>
+    <div>${(d.groups || []).map(g => `<label style="display:inline-block;margin-right:12px"><input type="checkbox" data-oa="${g.id}"> ${esc(g.name)}</label>`).join("")}</div>
+    <button class="p-btn primary" id="oaSave">Attach (replaces the product's groups)</button></div>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>groups</th></tr></thead><tbody>${Object.entries(byProduct).map(([pid, x]) => `<tr><td>${esc(x.title || pid)} <code>${esc(pid)}</code></td><td>${x.groups.map(id => esc(((d.groups || []).find(g => g.id === id) || {}).name || id)).join(", ")}</td></tr>`).join("") || '<tr><td colspan="2">No product has options yet.</td></tr>'}</tbody></table></div></div>`;
+}
+function wireProdOptions() {
+  const save = $("#ogSave"); if (!save) return;
+  window.__og = window.__og || null;
+  save.onclick = () => postAndRender("/admin/options", { id: fieldVal("#ogId") || undefined, code: fieldVal("#ogCode"), name: fieldVal("#ogName"), kind: fieldVal("#ogKind"), min_select: fieldVal("#ogMin"), max_select: fieldVal("#ogMax"), max_length: fieldVal("#ogLen") || undefined,
+    values: fieldVal("#ogVals").split(/\n/).map(l => l.split("|").map(x => x.trim())).filter(x => x[0]).map(([code, name, delta]) => ({ code, name: name || code, price_delta: Number(delta) || 0 })) }, "POST", "Option group saved");
+  $$("[data-og-edit]").forEach(b => b.onclick = async () => {
+    const g = ((await api("/admin/options", {})).groups || []).find(x => String(x.id) === b.dataset.ogEdit); if (!g) return;
+    $("#ogId").value = g.id; $("#ogCode").value = g.code; $("#ogName").value = g.name; $("#ogKind").value = g.kind; $("#ogMin").value = g.min_select; $("#ogMax").value = g.max_select; $("#ogLen").value = g.max_length || "";
+    $("#ogVals").value = g.values.filter(v => v.active).map(v => [v.code, v.name, v.price_delta].join(" | ")).join("\n"); window.scrollTo(0, 0);
+  });
+  $("#oaSave").onclick = () => postAndRender("/admin/options/products/" + encodeURIComponent(fieldVal("#oaProd").trim()), { groups: $$("[data-oa]").filter(c => c.checked).map(c => Number(c.dataset.oa)) }, "PUT", "Options attached");
+  wireCoPosts();
+}
+
+async function vBookings() {
+  const gate = await coGate("bookings");
+  if (!gate.any) return coOff("bookings", "📅 Bookings", gate.off);
+  const from = new Date(Date.now() - 864e5).toISOString().slice(0, 19).replace("T", " "), to = new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 19).replace("T", " ");
+  const d = await api("/admin/bookings", { from, to });
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const hoursText = h => Object.entries(h || {}).map(([k, rs]) => days[k] + " " + rs.map(r => r.join("-")).join(", ")).join("; ");
+  return `<div class="a-head"><h2>📅 Bookings</h2><p class="a-sub">Appointments, stays, rentals and experiences. Resource kinds and booking modes are the <code>bookingResourceKinds</code> and <code>bookingModes</code> registries; holding time and cancellation cut-off are the <code>bookings</code> capability's params.</p></div>
+  <div class="a-card"><h3>Resource</h3><div class="p-form"><div class="row"><label><span>Code *</span><input id="brCode"></label><label><span>Name *</span><input id="brName"></label>
+    <label><span>Kind</span><select id="brKind">${(d.resourceKinds || []).map(k => `<option value="${esc(k.key)}">${esc(k.name)}</option>`).join("")}</select></label><label><span>Capacity</span><input id="brCap" type="number" min="1" value="1"></label></div>
+    <div class="row"><label><span>Time zone (blank: the store's)</span><input id="brTz" placeholder="e.g. Asia/Kolkata"></label></div>
+    <label><span>Weekly hours — one line per day: weekday 0 (Sunday)–6, then HH:MM-HH:MM, …</span><textarea id="brHours" rows="3" placeholder="1 09:00-13:00, 14:00-18:00"></textarea></label>
+    <button class="p-btn primary" id="brSave">Save resource</button></div>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>kind</th><th>capacity</th><th>zone</th><th>hours</th></tr></thead><tbody>${(d.resources || []).map(r => `<tr><td><code>${esc(r.code)}</code></td><td>${esc(r.name)}</td><td>${esc(r.kind_row ? r.kind_row.name : r.kind)}</td><td>${r.capacity}</td><td>${esc(r.tz || "store")}</td><td>${esc(hoursText(r.hours))}</td></tr>`).join("") || '<tr><td colspan="6">No resources yet.</td></tr>'}</tbody></table></div></div>
+  <div class="a-card"><h3>Make a product bookable</h3><div class="p-form"><div class="row"><label><span>Product id *</span><input id="bpProd"></label>
+    <label><span>Mode</span><select id="bpMode">${(d.modes || []).map(m => `<option value="${esc(m.key)}">${esc(m.name)}</option>`).join("")}</select></label></div>
+    <div>${(d.resources || []).map(r => `<label style="display:inline-block;margin-right:12px"><input type="checkbox" data-bp-res="${r.id}"> ${esc(r.name)}</label>`).join("")}</div>
+    <div class="row"><label><span>Length (min)</span><input id="bpDur" type="number" value="60"></label><label><span>Every (min)</span><input id="bpStep" type="number" value="60"></label><label><span>Gap after (min)</span><input id="bpBuf" type="number" value="0"></label><label><span>Notice (hours)</span><input id="bpLead" type="number" value="0"></label></div>
+    <div class="row"><label><span>Fewest days</span><input id="bpMin" type="number" value="1"></label><label><span>Most days</span><input id="bpMax" type="number" value="30"></label></div>
+    <button class="p-btn primary" id="bpSave">Save</button></div></div>
+  <div class="a-card"><h3>Next 30 days</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>when</th><th>product</th><th>state</th><th></th></tr></thead><tbody>
+    ${(d.bookings || []).map(b => `<tr><td><code>${esc(b.ref)}</code></td><td>${esc(b.label)}</td><td><code>${esc(b.product_id)}</code></td><td>${stateChip(b.state)}</td><td style="white-space:nowrap">${verbRow(d.actions, b, "/admin/bookings/" + b.id)}</td></tr>`).join("") || '<tr><td colspan="5">Nothing booked.</td></tr>'}</tbody></table></div>
+    <button class="btn-white sm" data-co-post="/admin/bookings/sweep">Expire lapsed holds now</button></div>`;
+}
+function wireBookings() {
+  const s = $("#brSave"); if (!s) return;
+  s.onclick = () => {
+    const hours = {};
+    fieldVal("#brHours").split(/\n/).map(l => l.trim()).filter(Boolean).forEach(l => { const m = /^([0-6])\s+(.+)$/.exec(l); if (m) hours[m[1]] = m[2].split(",").map(x => x.trim().split("-")); });
+    postAndRender("/admin/bookings/resources", { code: fieldVal("#brCode"), name: fieldVal("#brName"), kind: fieldVal("#brKind"), capacity: fieldVal("#brCap"), tz: fieldVal("#brTz"), hours }, "POST", "Resource saved");
+  };
+  $("#bpSave").onclick = () => postAndRender("/admin/bookings/products/" + encodeURIComponent(fieldVal("#bpProd").trim()), { mode: fieldVal("#bpMode"), resource_ids: $$("[data-bp-res]").filter(c => c.checked).map(c => Number(c.dataset.bpRes)),
+    duration_min: fieldVal("#bpDur"), step_min: fieldVal("#bpStep"), buffer_min: fieldVal("#bpBuf"), lead_hours: fieldVal("#bpLead"), min_units: fieldVal("#bpMin"), max_units: fieldVal("#bpMax") }, "PUT", "Product is bookable");
+  wireCoPosts();
+}
+
+async function vNegotiation() {
+  const gate = await coGate("negotiation");
+  if (!gate.any) return coOff("offers", "🤝 Offers", gate.off);
+  const d = await api("/admin/price-offers", {});
+  return `<div class="a-head"><h2>🤝 Offers</h2><p class="a-sub">Shoppers' offers on the store's own products (offers on a shopper's listing are that shopper's to answer). Floors, automatic thresholds and windows are the <code>price_negotiation</code> capability's params.</p></div>
+  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>qty</th><th>offer</th><th>counter</th><th>state</th><th>expires</th><th></th></tr></thead><tbody>
+    ${(d.offers || []).map(o => `<tr><td>${esc(o.product ? o.product.title : "")}</td><td>${o.qty}</td><td>${money(o.amount)}</td><td>${o.counter_amount != null ? money(o.counter_amount) : "—"}</td><td>${stateChip(o.state)}</td><td>${esc(String(o.expires_at || "").slice(0, 16))}</td>
+      <td style="white-space:nowrap">${o.awaiting_you ? `<button class="btn-white sm" data-co-post="/admin/price-offers/${o.id}" data-co-body='{"action":"accept"}'>Accept</button> <button class="btn-white sm" data-co-post="/admin/price-offers/${o.id}" data-co-body='{"action":"counter"}' data-co-ask="Your counter price" data-co-field="amount">Counter</button> <button class="btn-white sm" data-co-post="/admin/price-offers/${o.id}" data-co-body='{"action":"refuse"}'>Refuse</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="7">No offers.</td></tr>'}</tbody></table></div></div>`;
+}
+
+async function vAuctions() {
+  const gate = await coGate("auctions");
+  if (!gate.any) return coOff("auctions", "🔨 Auctions", gate.off);
+  const d = await api("/admin/auctions", {});
+  return `<div class="a-head"><h2>🔨 Auctions</h2><p class="a-sub">Timed auctions with automatic bidding. The bid increments, the last-minute extension and the payment window are the <code>auctions</code> capability's params.</p></div>
+  <div class="a-card"><h3>New auction</h3><div class="p-form"><div class="row"><label><span>Product id *</span><input id="auProd"></label><label><span>Starting price *</span><input id="auStart" type="number" step="0.01"></label>
+    <label><span>Reserve</span><input id="auRes" type="number" step="0.01"></label><label><span>Buy it now</span><input id="auBn" type="number" step="0.01"></label></div>
+    <div class="row"><label><span>Starts (blank: now)</span><input id="auFrom" type="datetime-local"></label><label><span>Ends *</span><input id="auTo" type="datetime-local"></label></div>
+    <button class="p-btn primary" id="auSave">Open auction</button></div></div>
+  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>price</th><th>bids</th><th>reserve</th><th>ends</th><th>state</th><th></th></tr></thead><tbody>
+    ${(d.auctions || []).map(a => `<tr><td>${esc(a.product ? a.product.title : "")}</td><td>${money(a.current_price != null ? a.current_price : a.start_price)}</td><td>${a.bids}</td><td>${a.reserve_met ? "met" : "not met"}</td><td>${esc(a.ends_at)}</td><td>${stateChip(a.state)}</td>
+      <td>${a.live || (a.state && !a.final_price && !a.bids) ? `<button class="btn-white sm" data-co-post="/admin/auctions/${a.id}/cancel">Cancel</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="7">No auctions.</td></tr>'}</tbody></table></div>
+    <button class="btn-white sm" data-co-post="/admin/auctions/tick">Close ended auctions now</button></div>`;
+}
+function wireAuctions() {
+  const b = $("#auSave"); if (b) b.onclick = () => postAndRender("/admin/auctions", { product_id: fieldVal("#auProd").trim(), start_price: Number(fieldVal("#auStart")), reserve_price: fieldVal("#auRes") ? Number(fieldVal("#auRes")) : null, buy_now_price: fieldVal("#auBn") ? Number(fieldVal("#auBn")) : null,
+    starts_at: fieldVal("#auFrom") ? new Date(fieldVal("#auFrom")).toISOString() : undefined, ends_at: fieldVal("#auTo") ? new Date(fieldVal("#auTo")).toISOString() : "" }, "POST", "Auction opened");
+  wireCoPosts();
+}
+
+async function vListings() {
+  const gate = await coGate("listings");
+  if (!gate.any) return coOff("shopper selling", "🏷️ Shopper Listings", gate.off);
+  const d = await api("/admin/listings", {});
+  const staffVerbs = (d.actions || []).filter(a => a.staff_only);
+  return `<div class="a-head"><h2>🏷️ Shopper Listings</h2><p class="a-sub">Items shoppers sell. Review, commission and the holding period before proceeds are credited are the <code>peer_listings</code> capability's params; conditions are the <code>mktConditions</code> registry.</p></div>
+  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>title</th><th>seller</th><th>price</th><th>sold</th><th>condition</th><th>state</th><th></th></tr></thead><tbody>
+    ${(d.listings || []).map(l => `<tr><td>${esc(l.title)}${l.product_id ? ` <code>${esc(l.product_id)}</code>` : ""}<div class="p-tag">${esc((l.description || "").slice(0, 120))}</div></td><td>${esc(l.by || "")}</td><td>${money(l.price)}</td><td>${l.sold}/${l.qty}</td><td>${esc(l.condition || "")}</td><td>${stateChip(l.state)}</td>
+      <td style="white-space:nowrap">${staffVerbs.filter(a => (l.next || []).includes(a.to)).map(a => `<button class="btn-white sm" data-co-post="/admin/listings/${l.id}" data-co-body='${esc(JSON.stringify({ action: a.verb }))}' data-co-ask="Notes for the seller (optional)">${esc(a.verb)}</button>`).join(" ")}</td></tr>`).join("") || '<tr><td colspan="7">No listings.</td></tr>'}</tbody></table></div></div>`;
+}
+
+async function vConversations() {
+  const gate = await coGate("conversations");
+  if (!gate.any) return coOff("messages", "💬 Messages", gate.off);
+  const all = window.__convAll ? 1 : 0;
+  const d = await api("/admin/conversations", all ? { all: 1 } : {});
+  return `<div class="a-head"><h2>💬 Messages</h2><p class="a-sub">Conversations with the store, and — where staff may read them — between shoppers. Subjects are the <code>conversationSubjects</code> registry; hiding contact details is the <code>conversations</code> capability's param.</p>
+    <label><input type="checkbox" id="convAll" ${all ? "checked" : ""}> Show every conversation, not only the store's</label></div>
+  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>about</th><th>with</th><th>last</th><th>state</th><th></th></tr></thead><tbody>
+    ${(d.conversations || []).map(c => `<tr><td>${esc(c.title)}</td><td>${esc(c.with)}</td><td>${esc(String(c.last_at).slice(0, 16))}</td><td>${stateChip(c.state)}${c.unread ? ` <span class="a-chip">${c.unread} new</span>` : ""}</td>
+      <td style="white-space:nowrap"><button class="btn-white sm" data-conv-open="${c.id}">Open</button> ${(d.actions || []).filter(a => a.to !== c.status).map(a => `<button class="btn-white sm" data-co-post="/admin/conversations/${c.id}" data-co-body='${esc(JSON.stringify({ action: a.verb }))}'>${esc(a.verb)}</button>`).join(" ")}</td></tr>`).join("") || '<tr><td colspan="5">No conversations.</td></tr>'}</tbody></table></div></div>`;
+}
+function wireConversations() {
+  const all = $("#convAll"); if (all) all.onchange = () => { window.__convAll = all.checked; render(); };
+  $$("[data-conv-open]").forEach(b => b.onclick = async () => {
+    const t = await api("/admin/conversations/" + b.dataset.convOpen, {});
+    const m = modal(`<div class="p-modal-head"><h3>${esc(t.conversation.title)}</h3><button data-mclose>✕</button></div>
+      <div style="max-height:50vh;overflow:auto">${t.messages.map(x => `<p style="margin:6px 0"><b>${esc(x.side)}</b> ${x.hidden ? "<i>(hidden)</i> " : ""}${esc(x.body)} <button class="btn-white sm" data-msg-hide="${x.id}" data-hidden="${x.hidden ? 0 : 1}">${x.hidden ? "Show" : "Hide"}</button></p>`).join("")}</div>
+      ${t.conversation.side ? `<div class="p-form"><textarea id="convReply" rows="2"></textarea><button class="p-btn primary" id="convSend">Reply as the store</button></div>` : ""}`);
+    m.querySelector("[data-mclose]").onclick = () => { m.innerHTML = ""; };
+    m.querySelectorAll("[data-msg-hide]").forEach(h => h.onclick = async () => { await api("/admin/conversations/messages/" + h.dataset.msgHide, "POST", { hidden: h.dataset.hidden === "1" }); m.innerHTML = ""; toast("Updated"); });
+    const send = m.querySelector("#convSend"); if (send) send.onclick = async () => { try { await api("/admin/conversations/" + t.conversation.id, "POST", { body: m.querySelector("#convReply").value }); m.innerHTML = ""; toast("Sent"); render(); } catch (e) { toast(e.message); } };
+  });
+  wireCoPosts();
+}
+
+async function vGroupBuy() {
+  const gate = await coGate("groupbuy");
+  if (!gate.any) return coOff("group buying", "👥 Group Buying", gate.off);
+  const d = await api("/admin/group-buys", {});
+  return `<div class="a-head"><h2>👥 Group Buying</h2><p class="a-sub">A lower price when enough shoppers join by a deadline; a group that falls short cancels and refunds every member. The most one member may buy and closing when full are the <code>group_buying</code> capability's params.</p></div>
+  <div class="a-card"><h3>New group</h3><div class="p-form"><div class="row"><label><span>Product id *</span><input id="gbProd"></label><label><span>Group price *</span><input id="gbPrice" type="number" step="0.01"></label>
+    <label><span>Members needed *</span><input id="gbMin" type="number" min="2" value="2"></label><label><span>Most members</span><input id="gbMax" type="number"></label><label><span>Ends *</span><input id="gbEnd" type="datetime-local"></label></div>
+    <button class="p-btn primary" id="gbSave">Open group</button></div></div>
+  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>title</th><th>price</th><th>members</th><th>ends</th><th>state</th><th></th></tr></thead><tbody>
+    ${(d.groups || []).map(g => `<tr><td>${esc(g.title)}</td><td>${money(g.group_price)}</td><td>${g.members} / ${g.min_members}${g.max_members ? " (max " + g.max_members + ")" : ""}</td><td>${esc(g.ends_at)}</td><td>${stateChip(g.state)}</td>
+      <td>${g.joinable ? `<button class="btn-white sm" data-co-post="/admin/group-buys/${g.id}/cancel">Cancel &amp; refund</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="6">No groups.</td></tr>'}</tbody></table></div>
+    <button class="btn-white sm" data-co-post="/admin/group-buys/tick">Settle ended groups now</button></div>`;
+}
+function wireGroupBuy() {
+  const b = $("#gbSave"); if (b) b.onclick = () => postAndRender("/admin/group-buys", { product_id: fieldVal("#gbProd").trim(), group_price: Number(fieldVal("#gbPrice")), min_members: Number(fieldVal("#gbMin")), max_members: fieldVal("#gbMax") ? Number(fieldVal("#gbMax")) : null,
+    ends_at: fieldVal("#gbEnd") ? new Date(fieldVal("#gbEnd")).toISOString() : "" }, "POST", "Group opened");
+  wireCoPosts();
+}
+
+async function vSubstitutions() {
+  const gate = await coGate("substitutions");
+  if (!gate.any) return coOff("substitutions", "🔄 Substitutions", gate.off);
+  const oid = window.__subOrder || "";
+  const d = oid ? await api("/admin/substitutions/" + encodeURIComponent(oid), {}).catch(e => ({ error: e.message })) : null;
+  return `<div class="a-head"><h2>🔄 Substitutions</h2><p class="a-sub">At picking: each line shows the shopper's own choice (the <code>substitutionPolicies</code> registry). Propose a substitute, or mark the line unavailable to refund it. Whether a dearer substitute is charged is the <code>substitutions</code> capability's param.</p></div>
+  <div class="a-card"><div class="p-form"><div class="row"><label><span>Order id</span><input id="sbOrder" value="${esc(oid)}"></label><button class="p-btn primary" id="sbLoad">Open order</button></div></div>
+    ${d && d.error ? `<p class="a-sub">${esc(d.error)}</p>` : ""}
+    ${d && d.lines ? `<div class="a-tablewrap"><table class="a-table"><thead><tr><th>item</th><th>qty</th><th>shopper's choice</th><th>substitute id</th><th></th></tr></thead><tbody>${d.lines.map(l => `<tr><td>${esc(l.title || l.product_id)}</td><td>${l.qty}</td><td>${esc(l.policy ? l.policy.name : "—")}</td>
+      <td>${l.policy && l.policy.allows ? `<input data-sb-sub="${esc(l.product_id)}" placeholder="${l.policy.needs_item && l.preference ? esc(l.preference.product_id) : "product id"}" ${l.policy.needs_item ? "disabled" : ""}>` : "—"}</td>
+      <td style="white-space:nowrap">${l.policy && l.policy.allows ? `<button class="btn-white sm" data-sb-prop="${esc(l.product_id)}">Propose</button> ` : ""}<button class="btn-white sm" data-sb-un="${esc(l.product_id)}">Unavailable</button></td></tr>`).join("")}</tbody></table></div>
+    <h3>Decisions</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>item</th><th>substitute</th><th>qty</th><th>refund</th><th>state</th></tr></thead><tbody>${d.substitutions.map(x => `<tr><td><code>${esc(x.product_id)}</code></td><td><code>${esc(x.substitute_id || "—")}</code></td><td>${x.qty}</td><td>${money(x.refund)}</td><td>${stateChip(x.state)}</td></tr>`).join("") || '<tr><td colspan="5">None yet.</td></tr>'}</tbody></table></div>` : ""}</div>`;
+}
+function wireSubstitutions() {
+  const load = $("#sbLoad"); if (!load) return;
+  load.onclick = () => { window.__subOrder = fieldVal("#sbOrder").trim(); render(); };
+  const oid = window.__subOrder;
+  $$("[data-sb-prop]").forEach(b => b.onclick = () => postAndRender("/admin/substitutions/" + encodeURIComponent(oid), { product_id: b.dataset.sbProp, substitute_id: (($$("[data-sb-sub]").find(i => i.dataset.sbSub === b.dataset.sbProp)) || {}).value }, "POST", "Substitute proposed"));
+  $$("[data-sb-un]").forEach(b => b.onclick = () => { if (confirm("Refund this line as unavailable?")) postAndRender("/admin/substitutions/" + encodeURIComponent(oid), { product_id: b.dataset.sbUn, unavailable: true }, "POST", "Refunded"); });
+}
+
 /* ---------- Trade Ops: assurance, gold suppliers, verification, LCs, RFQs ---------- */
 async function vTradeOps() {
   const gate = await coGate("tradeops");
@@ -671,7 +865,7 @@ async function vRetention() {
   const scheds = rec.schedules || [];
   const byS = {}; scheds.forEach(s => byS[s.status] = (byS[s.status] || 0) + 1);
   const mems = mem.memberships || [];
-  return `<div class="a-head"><h2>🔁 Subscriptions &amp; Members</h2><p class="a-sub">Subscribe &amp; Save recurring delivery schedules + paid membership tiers (Prime / Plus / Walmart+ style; benefits apply at checkout). Tiers &amp; frequencies in Data Studio: <code>membershipTiers</code>, <code>recFrequencies</code>.</p></div>
+  return `<div class="a-head"><h2>🔁 Subscriptions &amp; Members</h2><p class="a-sub">Subscribe &amp; Save recurring delivery schedules + paid membership tiers (benefits apply at checkout). Tiers &amp; frequencies in Data Studio: <code>membershipTiers</code>, <code>recFrequencies</code>.</p></div>
   <div class="a-card"><h3>Recurring schedules · ${scheds.length} · ${rec.due} due now</h3>
     <p class="a-sub">${Object.entries(byS).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("") || "none"}</p>
     <div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>customer</th><th>qty</th><th>freq</th><th>disc</th><th>next ship</th><th>cycles</th><th>status</th></tr></thead>
@@ -2011,6 +2205,14 @@ async function render() {
     else if (view === "pickup") { body.innerHTML = await vPickup(); wirePickup(); }
     else if (view === "richcontent") { body.innerHTML = await vRichContent(); wireRichContent(); }
     else if (view === "brandreg") { body.innerHTML = await vBrandReg(); wireBrandReg(); }
+    else if (view === "prodoptions") { body.innerHTML = await vProdOptions(); wireProdOptions(); }
+    else if (view === "bookings") { body.innerHTML = await vBookings(); wireBookings(); }
+    else if (view === "negotiation") { body.innerHTML = await vNegotiation(); wireCoPosts(); }
+    else if (view === "auctions") { body.innerHTML = await vAuctions(); wireAuctions(); }
+    else if (view === "listings") { body.innerHTML = await vListings(); wireCoPosts(); }
+    else if (view === "conversations") { body.innerHTML = await vConversations(); wireConversations(); }
+    else if (view === "groupbuy") { body.innerHTML = await vGroupBuy(); wireGroupBuy(); }
+    else if (view === "substitutions") { body.innerHTML = await vSubstitutions(); wireSubstitutions(); }
     else if (view === "tradeops") { body.innerHTML = await vTradeOps(); wireTradeOps(); }
     else if (view === "helpdesk") { body.innerHTML = await vHelpdesk(); } else if (view === "affiliate") renderAffiliate(); else if (view === "sitemap") renderSitemap(); else if (view === "shipping") renderShipping();
     else if (view === "retention") body.innerHTML = await vRetention();

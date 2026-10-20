@@ -40,7 +40,10 @@ console.log("\n▸ §A THE GATE — the five criteria over the compiled registry
   console.log("  the gate checked " + report.checked + " properties (" + report.passed + " passed):");
   ok(report.ok, "the compiled registry passes all five criteria", report.fails.map(f => f.name).join("; "));
   for (const f of report.fails) ok(false, "  ✗ " + f.name, f.detail);
-  ok(report.counts.universes === 2937, "the compiled registry declares the constitutional universes (2919 + the 18 contract artifacts)", report.counts.universes);
+  /* 2914 + the 18 contract artifacts. Was 2919: the integration universe's connector list named
+     ten vendors one by one; it now names the kinds of system (ERP, CRM, ITSM and HR systems,
+     payment processors, public clouds) — the platform is white-label (scripts/white-label.js) */
+  ok(report.counts.universes === 2932, "the compiled registry declares the constitutional universes (2914 + the 18 contract artifacts)", report.counts.universes);
   ok(report.counts.concepts > 30000, "and the full concept layer", report.counts.concepts);
 }
 

@@ -1326,6 +1326,270 @@
     }
    },
    "shopper": true
+  },
+  {
+   "key": "product_options",
+   "label": "Product options",
+   "domain": "shopper",
+   "icon": "🧩",
+   "shopper": true,
+   "description": "Modifiers, add-ons and personalisation: option groups defined once, attached to any product, each value with its own price change. What a kind of group does is an optionKinds row.",
+   "params": {
+    "max_text_length": {
+     "type": "number",
+     "default": 60,
+     "label": "Longest personal text a shopper may enter"
+    }
+   }
+  },
+  {
+   "key": "bookings",
+   "label": "Bookings",
+   "domain": "shopper",
+   "icon": "📅",
+   "shopper": true,
+   "description": "Appointments, stays, rentals and experiences: resources with weekly hours in their own time zone and a capacity; a shopper holds a time, pays for it, and staff check them in. Modes and resource kinds are registry rows.",
+   "params": {
+    "hold_minutes": {
+     "type": "number",
+     "default": 15,
+     "label": "Minutes a chosen time is held while the shopper checks out"
+    },
+    "cancel_cutoff_hours": {
+     "type": "number",
+     "default": 24,
+     "label": "Hours before the start a shopper may still cancel"
+    },
+    "max_horizon_days": {
+     "type": "number",
+     "default": 365,
+     "label": "Furthest ahead anything may be booked"
+    }
+   }
+  },
+  {
+   "key": "price_negotiation",
+   "label": "Make an offer",
+   "domain": "marketplace",
+   "icon": "🤝",
+   "shopper": true,
+   "description": "A shopper offers a price; the seller accepts, counters or declines; an agreed price is bought within a window. Thresholds can accept or decline automatically.",
+   "params": {
+    "min_offer_pct": {
+     "type": "number",
+     "default": 50,
+     "label": "Lowest offer, as a share of the list price",
+     "unit": "%"
+    },
+    "auto_accept_pct": {
+     "type": "number",
+     "default": 0,
+     "label": "Offers at or above this share are accepted at once (0 = never)",
+     "unit": "%"
+    },
+    "auto_decline_pct": {
+     "type": "number",
+     "default": 0,
+     "label": "Offers below this share are declined at once (0 = never)",
+     "unit": "%"
+    },
+    "expiry_hours": {
+     "type": "number",
+     "default": 48,
+     "label": "Hours an offer or counter stays open"
+    },
+    "buy_within_hours": {
+     "type": "number",
+     "default": 24,
+     "label": "Hours to buy at an agreed price"
+    },
+    "max_open_per_shopper": {
+     "type": "number",
+     "default": 20,
+     "label": "Open offers one shopper may have"
+    }
+   }
+  },
+  {
+   "key": "auctions",
+   "label": "Auctions",
+   "domain": "marketplace",
+   "icon": "🔨",
+   "shopper": true,
+   "description": "Timed auctions with automatic (proxy) bidding, a reserve, a buy-it-now price and protection against last-second bids; the winner pays within a window.",
+   "params": {
+    "increments": {
+     "type": "json",
+     "default": [
+      [
+       0,
+       0.5
+      ],
+      [
+       20,
+       1
+      ],
+      [
+       100,
+       2.5
+      ],
+      [
+       500,
+       5
+      ],
+      [
+       1000,
+       10
+      ],
+      [
+       5000,
+       25
+      ]
+     ],
+     "label": "Bid increments: [from price, step] pairs"
+    },
+    "anti_snipe_minutes": {
+     "type": "number",
+     "default": 2,
+     "label": "A bid this close to the end extends the auction"
+    },
+    "extend_minutes": {
+     "type": "number",
+     "default": 2,
+     "label": "Minutes an auction is extended by"
+    },
+    "payment_window_hours": {
+     "type": "number",
+     "default": 48,
+     "label": "Hours the winner has to pay"
+    },
+    "buy_now_until_first_bid": {
+     "type": "bool",
+     "default": true,
+     "label": "Buy-it-now disappears once anyone bids"
+    },
+    "max_duration_days": {
+     "type": "number",
+     "default": 30,
+     "label": "Longest an auction may run"
+    }
+   }
+  },
+  {
+   "key": "peer_listings",
+   "label": "Shopper selling",
+   "domain": "marketplace",
+   "icon": "🏷️",
+   "shopper": true,
+   "description": "Any signed-in shopper lists their own items — used, refurbished or new — reviewed before they go on sale; the store keeps a commission and credits the rest after a holding period.",
+   "params": {
+    "require_review": {
+     "type": "bool",
+     "default": true,
+     "label": "Listings are reviewed before they go on sale"
+    },
+    "commission_pct": {
+     "type": "number",
+     "default": 10,
+     "label": "Store commission on a sale",
+     "unit": "%"
+    },
+    "hold_days": {
+     "type": "number",
+     "default": 7,
+     "label": "Days a sale's proceeds are held before they are credited"
+    },
+    "max_live": {
+     "type": "number",
+     "default": 50,
+     "label": "Listings one shopper may have on sale"
+    },
+    "seller_role": {
+     "type": "text",
+     "default": "individual",
+     "label": "Seller role a shopper is registered under (a sellerRoles row)"
+    },
+    "source_kind": {
+     "type": "text",
+     "default": "peer",
+     "label": "Product source recorded for a listed item"
+    },
+    "earnings_kind": {
+     "type": "text",
+     "default": "sale_proceeds",
+     "label": "Wallet ledger kind used to credit proceeds"
+    }
+   }
+  },
+  {
+   "key": "conversations",
+   "label": "Buyer–seller messages",
+   "domain": "marketplace",
+   "icon": "💬",
+   "shopper": true,
+   "description": "Conversations between a shopper and whoever sells a product, an order or a booking — the store or another shopper. What a conversation may be about is a conversationSubjects row; staff can review and flag.",
+   "params": {
+    "max_length": {
+     "type": "number",
+     "default": 2000,
+     "label": "Longest message"
+    },
+    "hide_contact_details": {
+     "type": "bool",
+     "default": true,
+     "label": "Hide email addresses and phone numbers in messages"
+    },
+    "staff_can_read": {
+     "type": "bool",
+     "default": true,
+     "label": "Staff can read every conversation"
+    }
+   }
+  },
+  {
+   "key": "group_buying",
+   "label": "Group buying",
+   "domain": "shopper",
+   "icon": "👥",
+   "shopper": true,
+   "description": "A lower price that applies when enough shoppers join before a deadline; if the group falls short, every member's order is cancelled and refunded.",
+   "params": {
+    "max_qty_per_member": {
+     "type": "number",
+     "default": 5,
+     "label": "Most one member may buy"
+    },
+    "close_when_full": {
+     "type": "bool",
+     "default": true,
+     "label": "A campaign closes as soon as it is full"
+    },
+    "refund_kind": {
+     "type": "text",
+     "default": "refund",
+     "label": "Wallet ledger kind used to refund a failed group"
+    }
+   }
+  },
+  {
+   "key": "substitutions",
+   "label": "Substitutions",
+   "domain": "shopper",
+   "icon": "🔄",
+   "shopper": true,
+   "description": "When an item is unavailable at picking: the shopper's own choice per line — refund, best match, ask me, or a named item — and the picker's proposal; a cheaper substitute refunds the difference. Policies are substitutionPolicies rows.",
+   "params": {
+    "charge_more": {
+     "type": "bool",
+     "default": false,
+     "label": "Charge the shopper when a substitute costs more"
+    },
+    "refund_kind": {
+     "type": "text",
+     "default": "refund",
+     "label": "Wallet ledger kind used for a refunded difference"
+    }
+   }
   }
  ],
  "PRESETS": [
@@ -1399,6 +1663,22 @@
     "uv_marketplace"
    ],
    "capabilities": {
+    "instant_delivery": {
+     "params": {
+      "default_promise_minutes": 10,
+      "default_prep_minutes": 4,
+      "default_radius_km": 3
+     }
+    },
+    "store_inventory": {},
+    "dispatch_batching": {},
+    "qr_pay": {},
+    "upi_collect": {},
+    "p2p_transfer": {},
+    "gift_vouchers": {},
+    "substitutions": {}
+   },
+   "capabilitiesWas": {
     "instant_delivery": {
      "params": {
       "default_promise_minutes": 10,
@@ -1602,7 +1882,13 @@
     "pickup_points": {},
     "rich_content": {},
     "brand_registry": {},
-    "sponsored_ads": {}
+    "sponsored_ads": {},
+    "product_options": {},
+    "bookings": {},
+    "price_negotiation": {},
+    "conversations": {},
+    "group_buying": {},
+    "substitutions": {}
    },
    "capabilitiesWas": {
     "buy_box": {
@@ -1677,6 +1963,171 @@
       "internal_cost_per_hour": 0
      }
     }
+   }
+  },
+  {
+   "key": "blend_omnichannel_retail",
+   "label": "Omnichannel retail blend",
+   "description": "A worked example: a retail chain selling online and through its shops — store stock, pickup at a shop or locker, fast local delivery, substitutions, memberships and repeat orders.",
+   "universes": [],
+   "capabilities": {
+    "reviews": {},
+    "qna": {},
+    "deals": {},
+    "coupons": {},
+    "gift_cards": {},
+    "wish_lists": {},
+    "product_alerts": {},
+    "customer_service": {},
+    "save_for_later": {},
+    "suggestions": {},
+    "buy_now": {},
+    "fraud_screen": {},
+    "store_inventory": {},
+    "pickup_points": {},
+    "instant_delivery": {},
+    "smart_fulfilment": {},
+    "substitutions": {},
+    "membership": {},
+    "subscribe_save": {},
+    "product_options": {}
+   }
+  },
+  {
+   "key": "blend_super_app",
+   "label": "Payments-led super app blend",
+   "description": "A worked example: a wallet and payments app that also sells — UPI and QR payments, bill payments, recharges, pay later and lending, beside a marketplace and fast delivery.",
+   "universes": [],
+   "capabilities": {
+    "reviews": {},
+    "qna": {},
+    "deals": {},
+    "coupons": {},
+    "gift_cards": {},
+    "wish_lists": {},
+    "product_alerts": {},
+    "customer_service": {},
+    "save_for_later": {},
+    "suggestions": {},
+    "buy_now": {},
+    "fraud_screen": {},
+    "upi_collect": {},
+    "qr_pay": {},
+    "payment_links": {},
+    "bbps": {},
+    "recharge": {},
+    "p2p_transfer": {},
+    "bnpl": {},
+    "lending": {},
+    "insurance": {},
+    "gift_vouchers": {},
+    "kyc": {},
+    "buy_box": {},
+    "instant_delivery": {},
+    "store_inventory": {}
+   }
+  },
+  {
+   "key": "blend_resale",
+   "label": "Resale and classifieds blend",
+   "description": "A worked example: shoppers sell to shoppers — their own listings, offers and counter-offers, auctions, messages between buyer and seller, escrow and buyer protection.",
+   "universes": [],
+   "capabilities": {
+    "peer_listings": {},
+    "conversations": {},
+    "price_negotiation": {},
+    "auctions": {},
+    "escrow": {},
+    "buyer_protection": {},
+    "reviews": {},
+    "wish_lists": {},
+    "product_alerts": {},
+    "fraud_screen": {},
+    "kyc": {}
+   }
+  },
+  {
+   "key": "blend_auction_house",
+   "label": "Auction house blend",
+   "description": "A worked example: timed auctions with automatic bidding, reserves and buy-it-now, buyer messages, escrow and buyer protection.",
+   "universes": [],
+   "capabilities": {
+    "auctions": {},
+    "conversations": {},
+    "escrow": {},
+    "buyer_protection": {},
+    "reviews": {},
+    "wish_lists": {},
+    "product_alerts": {},
+    "fraud_screen": {}
+   }
+  },
+  {
+   "key": "blend_services",
+   "label": "Services and appointments blend",
+   "description": "A worked example: appointments with staff, rooms or venues — held while the customer pays, checked in on the day — with options, messages and memberships.",
+   "universes": [],
+   "capabilities": {
+    "bookings": {},
+    "product_options": {},
+    "conversations": {},
+    "reviews": {},
+    "qna": {},
+    "coupons": {},
+    "gift_cards": {},
+    "membership": {},
+    "customer_service": {}
+   }
+  },
+  {
+   "key": "blend_rentals",
+   "label": "Rentals and stays blend",
+   "description": "A worked example: date-range bookings of assets, rooms or venues with escrow, buyer protection, messages and reviews.",
+   "universes": [],
+   "capabilities": {
+    "bookings": {},
+    "conversations": {},
+    "escrow": {},
+    "buyer_protection": {},
+    "reviews": {},
+    "qna": {},
+    "coupons": {},
+    "wish_lists": {},
+    "fraud_screen": {}
+   }
+  },
+  {
+   "key": "blend_food_delivery",
+   "label": "Food and restaurant delivery blend",
+   "description": "A worked example: restaurant menus with modifiers and add-ons, minutes-fast delivery, batched dispatch, reviews and memberships.",
+   "universes": [],
+   "capabilities": {
+    "product_options": {},
+    "instant_delivery": {},
+    "store_inventory": {},
+    "dispatch_batching": {},
+    "reviews": {},
+    "deals": {},
+    "coupons": {},
+    "membership": {},
+    "customer_service": {},
+    "conversations": {}
+   }
+  },
+  {
+   "key": "blend_group_buying",
+   "label": "Social and group buying blend",
+   "description": "A worked example: group prices that unlock when enough shoppers join, flash deals with countdowns, coupons and shareable lists.",
+   "universes": [],
+   "capabilities": {
+    "group_buying": {},
+    "deals": {},
+    "countdown": {},
+    "coupons": {},
+    "reviews": {},
+    "wish_lists": {},
+    "product_alerts": {},
+    "buy_now": {}
    }
   }
  ],
@@ -1820,6 +2271,30 @@
   ],
   "sponsored_ads": [
    "marketplace"
+  ],
+  "product_options": [
+   "prodoptions"
+  ],
+  "bookings": [
+   "bookings"
+  ],
+  "price_negotiation": [
+   "negotiation"
+  ],
+  "auctions": [
+   "auctions"
+  ],
+  "peer_listings": [
+   "listings"
+  ],
+  "conversations": [
+   "conversations"
+  ],
+  "group_buying": [
+   "groupbuy"
+  ],
+  "substitutions": [
+   "substitutions"
   ]
  }
 }

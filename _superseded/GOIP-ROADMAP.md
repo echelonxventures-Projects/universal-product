@@ -1,4 +1,4 @@
-# GOIP Ω∞ — Enterprise Capability Roadmap (Amazon · Flipkart · Paytm · Alibaba · Walmart parity)
+# GOIP Ω∞ — Enterprise Capability Roadmap (general marketplace · regional marketplace · payments super app · B2B wholesale · omnichannel retail parity)
 
 Audit of the LUXORA codebase against the target enterprise-surface, plus the build order for closing the gap.
 Everything ships into the existing LUXORA entity engine (no per-feature code — registries + Data Studio own

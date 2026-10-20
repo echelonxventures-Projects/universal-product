@@ -32,7 +32,7 @@
 | **Not responsible for** | Runtime Execution, Registry Storage |
 | **Contract** | [UCOS-CON-000001 Constitutional Foundation](#ucos-con-000001) |
 | **Artifacts** | [UCOS-CON-000001](#ucos-con-000001), [UCOS-CON-000002](#ucos-con-000002), [UCOS-CON-000003](#ucos-con-000003), [UCOS-CON-000004](#ucos-con-000004), [UCOS-CON-000005](#ucos-con-000005), [UCOS-CON-000006](#ucos-con-000006), [UCOS-CON-000007](#ucos-con-000007), [UCOS-CON-000008](#ucos-con-000008), [UCOS-CON-000009](#ucos-con-000009), [UCOS-CON-000010](#ucos-con-000010) |
-| **Concepts** | 1379 — `node _registry/compile.js --search <words> --kind concept --owner "Constitutional Authority"` |
+| **Concepts** | 1380 — `node _registry/compile.js --search <words> --kind concept --owner "Constitutional Authority"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-CON` |
 

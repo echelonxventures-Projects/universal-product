@@ -1,4 +1,4 @@
-/* LUXORA Platform — the Amazon-parity atoms clicked through in real Chrome, under the
+/* LUXORA Platform — the shopper and brand atoms clicked through in real Chrome, under the
    production CSP: a shopper adds a product to a list and sets a price alert from the product
    page (which shows the brand's rich content and its registered-brand badge), sees a
    sponsored result in search, manages the list, and checks out to a pickup locker and gets a
@@ -10,7 +10,7 @@ const fs = require("fs");
 const os = require("os");
 const { spawn } = require("child_process");
 const { Tab, findChrome, problems } = require("../scripts/browser-check.js");
-const DB = path.join(__dirname, "amazon-ui.db");
+const DB = path.join(__dirname, "shopper-ui.db");
 for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(DB + s, { force: true }); } catch (e) { } }
 const PORT = 8888;
 Object.assign(process.env, { LX_DB: DB, PORT: String(PORT), LX_LOG: "", LX_OFFLINE: "1" });
@@ -121,6 +121,48 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(!!(await until(S.tab, `/Your pickup code/.test(document.querySelector(".oco")?.innerText || "") && /^\\d{6}$/.test(document.querySelector(".oco .pk-code")?.innerText || "")`, 15000)), "the confirmation gives a 6-digit pickup code");
     await go(S.tab, "/orders.html");
     ok(!!(await until(S.tab, `/Station Locker/.test(document.querySelector(".ord-pk")?.innerText || "") && !!document.querySelector(".ord-pk .pk-code")`)), "Your Orders shows the locker and the code");
+
+    console.log("▸ PLATFORM-TYPE PANELS: OPTIONS, BOOKINGS, SELLING, MESSAGES");
+    for (const k of ["product_options", "bookings", "peer_listings", "conversations", "price_negotiation"])
+      ok((await A.tab.call("/api/capabilities/enable", "POST", { capability: k })).status === 200, "switches on " + k);
+    const [po, pb] = db.all("SELECT id FROM products WHERE tenant_id=1 AND lifecycle='published' AND deleted_at IS NULL AND stock > 5 AND id<>? ORDER BY id LIMIT 2", prod.id);
+    const og = await A.tab.call("/api/admin/options", "POST", { code: "size", name: "Size", kind: "choice", min_select: 1, max_select: 1, values: [{ code: "s", name: "Small" }, { code: "l", name: "Large", price_delta: 5 }] });
+    await A.tab.call(`/api/admin/options/products/${encodeURIComponent(po.id)}`, "PUT", { groups: [og.body.group.id] });
+    const allWeek = Object.fromEntries([0, 1, 2, 3, 4, 5, 6].map(d => [String(d), [["08:00", "20:00"]]]));
+    const res = await A.tab.call("/api/admin/bookings/resources", "POST", { code: "chair-1", name: "Chair One", kind: "staff", tz: "UTC", hours: allWeek });
+    ok((await A.tab.call(`/api/admin/bookings/products/${encodeURIComponent(pb.id)}`, "PUT", { mode: "timed", resource_ids: [res.body.resource.id], duration_min: 60, step_min: 60 })).status === 200, "a product is made bookable");
+    await go(S.tab, "/product.html?id=" + encodeURIComponent(po.id));
+    ok(!!(await until(S.tab, `!!document.querySelector("#ppOptions input[value='l']")`)), "the product page offers its options");
+    await S.tab.eval(`document.querySelector("#ppOptions input[value='l']").click()`);
+    await click(S.tab, "#bbAdd");
+    await go(S.tab, "/cart.html");
+    ok(!!(await until(S.tab, `/Size: Large/.test(document.querySelector(".cart-main")?.innerText || "")`)), "the bag line shows the chosen option");
+    await go(S.tab, "/product.html?id=" + encodeURIComponent(pb.id));
+    ok(!!(await until(S.tab, `!!document.querySelector("#bkFind") && document.querySelector("#bbAdd")?.hidden !== false`)), "a bookable product asks for a time instead of Add to bag");
+    await set(S.tab, "#bkDate", new Date(Date.now() + 2 * 864e5).toISOString().slice(0, 10));
+    await click(S.tab, "#bkFind");
+    ok(!!(await until(S.tab, `document.querySelectorAll(".ppx-slot").length >= 10`)), "it shows the free times that day");
+    await click(S.tab, ".ppx-slot");
+    ok(!!(await until(S.tab, `/held for you/.test(document.querySelector("#toast")?.innerText || "")`)), "choosing one holds it and puts it in the bag");
+    await go(S.tab, "/sell.html");
+    ok(!!(await until(S.tab, `!!document.querySelector("#slCreate")`)), "the selling page opens");
+    await set(S.tab, "#slTitle", "Old bicycle"); await set(S.tab, "#slPrice", "40");
+    await click(S.tab, "#slCreate");
+    ok(!!(await until(S.tab, `/Old bicycle/.test(document.querySelector(".lst-main")?.innerText || "")`)), "a listing is drafted from the page");
+    await go(S.tab, "/product.html?id=" + encodeURIComponent(po.id));
+    await until(S.tab, `!!document.querySelector("[data-act='msg-open']")`);
+    await click(S.tab, "[data-act='msg-open']");
+    await until(S.tab, `!!document.querySelector("#msgSend")`);
+    await set(S.tab, "#msgBody", "Is it in stock in Large?");
+    await click(S.tab, "#msgSend");
+    await go(S.tab, "/messages.html");
+    ok(!!(await until(S.tab, `/in stock in Large/.test(document.querySelector(".msg-thread")?.innerText || "")`)), "the messages page shows the conversation");
+    for (const [v, re] of [["prodoptions", /Size/], ["bookings", /Chair One/], ["listings", /Old bicycle|No listings/], ["conversations", /in stock|No conversations|Messages/]]) {
+      await go(A.tab, "/console.html?scope=store&view=" + v);
+      ok(!!(await until(A.tab, `${re}.test(document.querySelector("#vBody")?.innerText || "")`)), "the " + v + " console screen renders");
+    }
+    const aIssues2 = problems(A.tab.events);
+    ok(!aIssues2.length, "no browser errors on the new console screens", aIssues2);
     const sIssues = problems(S.tab.events);
     ok(!sIssues.length, "no browser errors on the storefront", sIssues);
 

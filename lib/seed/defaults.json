@@ -26,5 +26,10 @@
   "goipRealities": "physical",
   "taxClasses": "standard",
   "taxonomyLevels": "category"
+ },
+ "provisioning": {
+  "defaultMode": "marketplace",
+  "cashGateway": "cod",
+  "houseShipping": "house-std"
  }
 }

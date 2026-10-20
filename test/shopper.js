@@ -1,4 +1,4 @@
-/* LUXORA Platform — the Amazon-parity atoms, end to end: wish lists, price & stock alerts,
+/* LUXORA Platform — the shopper and brand atoms, end to end: wish lists, price & stock alerts,
    pickup points & lockers, rich product content, the brand registry and sponsored results.
    Each is a capability atom a store switches on and tunes; each kind, visibility, module and
    status is a registry row. Runs a real server on its own throwaway database; nothing here
@@ -6,7 +6,7 @@
 "use strict";
 const path = require("path");
 const fs = require("fs");
-const DB = path.join(__dirname, "amazon.db");
+const DB = path.join(__dirname, "shopper.db");
 process.env.LX_DB = DB;
 const { spawn } = require("child_process");
 const PORT = 8887;

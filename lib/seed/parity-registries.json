@@ -696,7 +696,14 @@
     "payout_update",
     "bill_due",
     "emi_due",
-    "pickup_ready"
+    "pickup_ready",
+    "offer_update",
+    "auction_update",
+    "booking_update",
+    "listing_update",
+    "message",
+    "group_update",
+    "substitution"
    ]
   },
   "shopDocKinds": {
@@ -1022,6 +1029,191 @@
     "open",
     "actioned",
     "dismissed"
+   ]
+  },
+  "optionKinds": {
+   "label": "Options · Group kinds",
+   "items": [
+    {
+     "key": "choice",
+     "name": "Choose from a list",
+     "takes_text": false,
+     "default": true
+    },
+    {
+     "key": "text",
+     "name": "Personal text",
+     "takes_text": true
+    }
+   ]
+  },
+  "bookingResourceKinds": {
+   "label": "Bookings · Resource kinds",
+   "items": [
+    {
+     "key": "staff",
+     "name": "Staff member",
+     "default": true
+    },
+    {
+     "key": "room",
+     "name": "Room or space"
+    },
+    {
+     "key": "asset",
+     "name": "Asset or vehicle"
+    },
+    {
+     "key": "venue",
+     "name": "Venue"
+    }
+   ]
+  },
+  "bookingModes": {
+   "label": "Bookings · Modes",
+   "items": [
+    {
+     "key": "timed",
+     "name": "Time slots (appointments, sessions)",
+     "engine": "slots",
+     "default": true
+    },
+    {
+     "key": "stay",
+     "name": "Date range (stays, rentals)",
+     "engine": "days"
+    }
+   ]
+  },
+  "bookingStatuses": {
+   "label": "Bookings · Statuses",
+   "items": [
+    "held",
+    "confirmed",
+    "checked_in",
+    "completed",
+    "cancelled",
+    "no_show",
+    "expired"
+   ]
+  },
+  "priceOfferStatuses": {
+   "label": "Negotiation · Offer statuses",
+   "items": [
+    "open",
+    "countered",
+    "accepted",
+    "refused",
+    "withdrawn",
+    "expired",
+    "used"
+   ]
+  },
+  "auctionStatuses": {
+   "label": "Auctions · Statuses",
+   "items": [
+    "scheduled",
+    "live",
+    "sold",
+    "unsold",
+    "cancelled",
+    "paid"
+   ]
+  },
+  "listingStatuses": {
+   "label": "Peer listings · Statuses",
+   "items": [
+    "draft",
+    "submitted",
+    "live",
+    "rejected",
+    "withdrawn",
+    "sold"
+   ]
+  },
+  "earningStatuses": {
+   "label": "Peer listings · Earning statuses",
+   "items": [
+    "pending",
+    "credited",
+    "void"
+   ]
+  },
+  "conversationSubjects": {
+   "label": "Conversations · Subjects",
+   "items": [
+    {
+     "key": "product",
+     "name": "A product or listing",
+     "resolver": "product",
+     "default": true
+    },
+    {
+     "key": "order",
+     "name": "An order",
+     "resolver": "order"
+    },
+    {
+     "key": "booking",
+     "name": "A booking",
+     "resolver": "booking"
+    }
+   ]
+  },
+  "conversationStatuses": {
+   "label": "Conversations · Statuses",
+   "items": [
+    "open",
+    "closed",
+    "flagged"
+   ]
+  },
+  "groupCampaignStatuses": {
+   "label": "Group buying · Campaign statuses",
+   "items": [
+    "open",
+    "succeeded",
+    "failed",
+    "cancelled"
+   ]
+  },
+  "substitutionPolicies": {
+   "label": "Substitutions · Shopper policies",
+   "items": [
+    {
+     "key": "none",
+     "name": "Don't substitute — refund it",
+     "allows": false,
+     "default": true
+    },
+    {
+     "key": "best_match",
+     "name": "Best match",
+     "allows": true,
+     "auto_accept": true
+    },
+    {
+     "key": "ask_me",
+     "name": "Ask me first",
+     "allows": true,
+     "auto_accept": false
+    },
+    {
+     "key": "specific",
+     "name": "This item instead",
+     "allows": true,
+     "auto_accept": true,
+     "needs_item": true
+    }
+   ]
+  },
+  "substitutionStatuses": {
+   "label": "Substitutions · Statuses",
+   "items": [
+    "proposed",
+    "applied",
+    "rejected",
+    "refunded"
    ]
   }
  }

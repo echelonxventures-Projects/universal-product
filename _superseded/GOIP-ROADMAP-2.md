@@ -1,4 +1,4 @@
-# GOIP Ω∞ — Enterprise Capability Roadmap II (Amazon · Flipkart · Paytm · Alibaba · Walmart parity)
+# GOIP Ω∞ — Enterprise Capability Roadmap II (general marketplace · regional marketplace · payments super app · B2B wholesale · omnichannel retail parity)
 
 The first roadmap (`GOIP-ROADMAP.md`) closed four build domains — Search/Discovery, Logistics,
 Payments & Financial services, and Marketplace/Seller. All five steps shipped; the suite is green
@@ -25,7 +25,7 @@ admin console + Data Studio entity defs + a smoke test. Status legend: ✅ done 
 
 ### A · Customer Trust & Commerce Content
 - 🟡 reviews: present but flat
-- ❌ **Q&A on products** — Alibaba/Amazon "Customer Questions & Answers": question per product, answers,
+- ❌ **Q&A on products** — "Customer Questions & Answers" as large marketplaces run it: question per product, answers,
   helpfulness votes, seller/admin can answer, moderation states
 - ❌ **Rich reviews**: helpfulness votes (up/down), seller reply thread per review, moderation queue
   (pending/approved/rejected), photo/media attachment
@@ -44,7 +44,7 @@ admin console + Data Studio entity defs + a smoke test. Status legend: ✅ done 
 - ❌ **Subscribe & Save** — recurring customer delivery schedules (frequency, next shipment,
   pause/skip/cancel, one-off reorder) — distinct from platform `subscriptions`; reuses `offers`
   wallet/billing for cycle charges
-- ❌ **Membership program** (Prime / Flipkart Plus / Walmart+) — paid tiers, bundled benefits
+- ❌ **Membership program** (paid shopper memberships) — paid tiers, bundled benefits
   (free-shipping, early access, bonus rewards), entitlement grants ride GOIP `goip_entitlements`,
   wallet-billed
 - ❌ **Address book** — multiple shipping addresses per customer with a default; checkout picks one

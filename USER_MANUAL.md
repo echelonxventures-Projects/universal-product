@@ -365,6 +365,44 @@ Usage is metered to an AI ledger and can appear on your invoice.
 - **🌐 Localizations (i18n)** — per-product (and other objects) translations applied at the
   shopper's locale.
 
+## B12. Options, bookings, offers, auctions, shopper selling, messages, group buying, substitutions
+Each is a capability (⚙️ Capabilities: `product_options`, `bookings`, `price_negotiation`,
+`auctions`, `peer_listings`, `conversations`, `group_buying`, `substitutions`); its section
+appears in the menu when it is on. Which platform types use them is in
+[PLATFORM_TYPES.md](PLATFORM_TYPES.md).
+- **🧩 Product Options** — define a group once (a size, extras, an engraving): a list to choose
+  from (values one per line, `code | name | price change`) or personal text, how many must or
+  may be chosen. Attach groups to a product by its id. Shoppers choose on the product page; each
+  choice adds its price change and is kept on the order.
+- **📅 Bookings** — add resources (staff, rooms, assets, venues) with a capacity and weekly hours
+  (one line per weekday, `1 09:00-13:00, 14:00-18:00`) in their own time zone (blank: the store's).
+  Make a product bookable: its mode (time slots, or a date range priced per day), the resources
+  that deliver it, the slot length, step, gap after and notice. Shoppers pick a time, which is
+  held while they check out; the list shows the next 30 days with the moves each booking allows
+  (check in, complete, no-show, cancel).
+- **🤝 Offers** — shoppers' offers on the store's own products: accept, counter with a price, or
+  refuse. Floors and automatic accept/refuse thresholds are the capability's params. An agreed
+  price is bought within its window.
+- **🔨 Auctions** — open an auction on a product: starting price, optional reserve and
+  buy-it-now, start and end. Bidders state their maximum and the platform bids for them; a bid in
+  the last minutes extends the end. The winner pays within the window. *Close ended auctions now*
+  settles any that ended.
+- **🏷️ Shopper Listings** — items shoppers list from *Sell an item*. Approve (it goes on sale as an
+  ordinary product) or reject with notes. The store keeps its commission; the rest is credited to
+  the seller's wallet after the holding period.
+- **💬 Messages** — the store's conversations with shoppers, and — where staff may read them —
+  conversations between shoppers. Open one to reply as the store, hide a message, flag or close it.
+- **👥 Group Buying** — a group price, how many members it needs and by when. A group that fills
+  goes ahead; one that falls short cancels every member's order and refunds it to their wallet.
+- **🔄 Substitutions** — open an order at picking: every line shows the shopper's own choice
+  (refund it, best match, ask me, a named item). Propose a substitute (applied at once where the
+  choice allows) or mark a line unavailable to refund it.
+
+Shoppers see the matching pieces on the product page (options, a booking picker, the auction,
+the group, *Make an offer*, *Ask the seller*), choose a substitution per line in the bag, sell
+from *Sell an item*, read *Messages*, and follow their bookings, offers, auctions, groups and
+substitution proposals under *Your Orders → Your activity*.
+
 ## B11. Lists, alerts, pickup points, brand content, brand registry and sponsored products
 Each is a capability: switch it on and tune it in **⚙️ Capabilities** (`wish_lists`,
 `product_alerts`, `pickup_points`, `rich_content`, `brand_registry`, `sponsored_ads`). A

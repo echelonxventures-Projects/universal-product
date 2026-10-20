@@ -4990,7 +4990,7 @@ const GRANT_OPTS = [["", "inherit"], ["off", "off"], ["read", "read"], ["write",
    ╚════════════════════════════════════════════════════════════════════╝
    The list of lists is fetched from the API, never hardcoded, so a registry
    created by any engine (or a future seed) is authorable here the moment it
-   exists. Adding a platform mode here is what makes "register an Uber-like
+   exists. Adding a platform mode here is what makes "register a ride-hailing
    platform" a data change: the registration walk, every form select and every
    engine read the same rows on the next request.
 

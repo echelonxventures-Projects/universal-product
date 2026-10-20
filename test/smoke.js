@@ -1045,7 +1045,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
         ok(vb && /Marketplace Ops/i.test(vb.textContent), "marketplace ops renders when its capabilities are on");
         ok(vb && /Seller onboarding/i.test(vb.textContent), "marketplace ops lists the onboarding surface");
         ok(!!ap.doc.querySelector("#mktBb"), "the buy-box recompute action is reachable");
-        ok(vb && !/Amazon|Flipkart|Zepto|Blinkit|Paytm|Alibaba/i.test(vb.textContent),
+        ok(vb && require("../scripts/white-label.js").clean(vb.textContent),
           "no vendor name appears on the marketplace ops surface");
         ok(ap.errs.length === 0, "marketplace ops no JS errors", ap.errs.slice(0, 2).join("|"));
       } else ok(false, "marketplace capability on for the flagship store (test precondition)");
@@ -1121,7 +1121,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
         const vb = cp.doc.querySelector("#vBody");
         ok(vb && /the configurable platform/i.test(vb.textContent), "the capabilities console renders");
         ok(vb && /Buy-box competition/i.test(vb.textContent), "the catalog lists a capability with its declared tunables");
-        ok(vb && !/Amazon|Flipkart|Zepto|Blinkit|Paytm|Alibaba/i.test(vb.textContent),
+        ok(vb && require("../scripts/white-label.js").clean(vb.textContent),
           "no vendor or brand name appears anywhere on the configuration surface");
         const rows = vb ? vb.querySelectorAll("tbody tr").length : 0;
         ok(rows >= 30, "the entire catalog renders as rows (" + rows + ")");
@@ -2049,13 +2049,13 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       { const { DatabaseSync } = require("node:sqlite"); const wdb = new DatabaseSync(dbBase);
         const du = wdb.prepare("SELECT id, tenant_id FROM users WHERE email='demo@luxora.shop'").get();
         wdb.prepare("INSERT INTO wallets(tenant_id,owner,balance) VALUES(?,?,0) ON CONFLICT(tenant_id,owner) DO UPDATE SET balance=0").run(du.tenant_id, "t" + du.tenant_id + ":u:" + du.id);
-        const broke = await C("/api/membership/subscribe", "POST", { tier: "prime" });
+        const broke = await C("/api/membership/subscribe", "POST", { tier: "premier" });
         ok(broke.status === 400 && /Insufficient/i.test(broke.body.error || ""), "a paid membership is refused from an empty wallet", broke.body);
         wdb.prepare("UPDATE wallets SET balance=500 WHERE tenant_id=? AND owner=?").run(du.tenant_id, "t" + du.tenant_id + ":u:" + du.id); wdb.close(); }
-      const mem1 = await C("/api/membership/subscribe", "POST", { tier: "prime" });
-      ok(mem1.status === 200 && mem1.body.membership.tier === "prime", "customer upgrades membership tier", JSON.stringify(mem1.body));
+      const mem1 = await C("/api/membership/subscribe", "POST", { tier: "premier" });
+      ok(mem1.status === 200 && mem1.body.membership.tier === "premier", "customer upgrades membership tier", JSON.stringify(mem1.body));
       const mem2 = await C("/api/membership");
-      ok(mem2.body.membership.tier === "prime", "membership persists across sessions", mem2.body.membership.tier);
+      ok(mem2.body.membership.tier === "premier", "membership persists across sessions", mem2.body.membership.tier);
       const addr = await C("/api/addresses");
       ok(addr.body.addresses.length >= 1 && addr.body.addresses.some(a => a.is_default === 1), "seeded address book has a default");
       const sub = await C("/api/subscriptions");
@@ -2081,7 +2081,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const cancel = await C("/api/subscriptions/" + newSub.body.schedule.id, "PUT", { action: "cancel" });
       ok(cancel.body.schedule.status === "cancelled", "cancel subscription");
       const mem3 = await A("/api/admin/memberships");
-      ok(mem3.body.memberships.some(m => m.tier === "prime" && m.status === "active"), "admin memberships view");
+      ok(mem3.body.memberships.some(m => m.tier === "premier" && m.status === "active"), "admin memberships view");
       const memCancel = await C("/api/membership/cancel", "POST");
       ok(memCancel.body.membership.status === "cancelled", "customer cancels membership");
       const memReNew = await C("/api/membership/subscribe", "POST", { tier: "plus", renew: true });

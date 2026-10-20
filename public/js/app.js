@@ -152,6 +152,8 @@ function renderHeader() {
               ${CFG.features.giftCards ? `<a href="gift-cards.html">Gift Balance · ${money(S.gift)}</a>` : ""}
               ${CFG.features.registry || atoms().wish_lists ? `<a href="registry.html">${atoms().wish_lists ? "Lists" : "Registries"}</a>` : ""}
               ${CFG.features.customerService ? `<a href="customer-service.html">Client Care</a>` : ""}
+              ${atoms().peer_listings ? `<a href="sell.html">Sell an item</a>` : ""}
+              ${atoms().conversations ? `<a href="messages.html">Messages</a>` : ""}
               ${u && u.role === "admin" && CFG.features.adminPortal ? `<a href="console.html?scope=store" class="adm-link">⬡ Admin Console</a>` : ""}</div>
           </div>
           <p class="hmenu-foot">${u ? "Signed in as <b>" + esc(u.email) + "</b>" : "New here? <a href='#' data-act='signin-open'>Create an account.</a>"}</p>
@@ -445,6 +447,79 @@ async function sponsoredRow(q, exclude) {
   }));
 }
 
+/* ============ PLATFORM-TYPE PANELS ON THE PRODUCT PAGE ============
+   Options, a booking, an auction, a group price, make-an-offer and ask-the-seller each draw
+   only when the server says this product has one (its answer to /products/:id) and the store
+   has the atom on (CFG.atoms). A bag line's terms are what these panels add to it. */
+const fmtWhen = iso => { try { return new Date(iso).toLocaleString(CFG.commerce.locale, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }); } catch (e) { return iso; } };
+function optionsHtml(groups) {
+  return `<div class="ppx-opts" id="ppOptions">${groups.map(g => {
+    const head = `<div class="ppx-oh">${esc(g.name)}${g.min_select > 0 ? " *" : ""}${!(g.kind_row && g.kind_row.takes_text) && g.max_select > 1 ? ` <span class="pay-meta">up to ${g.max_select}</span>` : ""}</div>`;
+    if (g.kind_row && g.kind_row.takes_text) return `<div class="ppx-og">${head}<input data-og="${esc(g.code)}" data-text="1" maxlength="${esc(g.max_length || 60)}" placeholder="${esc(g.name)}"></div>`;
+    const multi = g.max_select > 1;
+    return `<div class="ppx-og">${head}${g.values.map((v, i) => `<label class="ppx-ov"><input type="${multi ? "checkbox" : "radio"}" name="og_${esc(g.code)}" data-og="${esc(g.code)}" value="${esc(v.code)}" ${!multi && g.min_select > 0 && i === 0 ? "checked" : ""}> ${esc(v.name)}${Number(v.price_delta) ? ` <span class="pay-meta">${v.price_delta > 0 ? "+" : "−"}${money(Math.abs(v.price_delta))}</span>` : ""}</label>`).join("")}</div>`;
+  }).join("")}</div>`;
+}
+/* the options the shopper chose, as the `options` term */
+function chosenOptions() {
+  const box = $("#ppOptions"); if (!box) return undefined;
+  const out = {};
+  box.querySelectorAll("[data-og]").forEach(el => {
+    const g = el.dataset.og;
+    if (el.dataset.text) { if (el.value.trim()) out[g] = el.value.trim(); return; }
+    if (el.checked) (out[g] = out[g] || []).push(el.value);
+  });
+  return Object.keys(out).length ? out : undefined;
+}
+function lineTerms() { const o = chosenOptions(); return o ? { options: o } : undefined; }
+async function addWithTerms(id, terms, qty) {
+  const c = await api("/cart", "POST", { id, qty: qty || 1, terms });
+  S.cartCount = c.count; if ($("#cartCount")) $("#cartCount").textContent = c.count;
+  return c;
+}
+function renderProductExtras(data) {
+  const p = data.product, a = atoms(), box = $("#ppExtras");
+  if (!box) return;
+  const parts = [];
+  if (data.sold_by_shopper) parts.push(`<div class="ppx-seller">🏷️ Sold by <b>${esc(data.sold_by_shopper)}</b>, a shopper on ${esc(CFG.brand.name)}</div>`);
+  if ((data.options || []).length) { parts.push(optionsHtml(data.options)); const add = $("#bbAdd"); if (add) add.dataset.termsSrc = "1"; const buy = $("#bbBuy"); if (buy) buy.dataset.termsSrc = "1"; }
+  if (data.booking) {
+    const stay = !!data.booking.ranged;
+    ["#bbAdd", "#bbBuy"].forEach(id => { const b = $(id); if (b) b.hidden = true; });
+    parts.push(`<div class="ppx-card" id="ppBook"><h4>📅 ${esc(data.booking.mode.name)}</h4>
+      ${stay ? `<div class="ppx-row"><label>From <input type="date" id="bkFrom"></label><label>To <input type="date" id="bkTo"></label></div>` : `<label>Day <input type="date" id="bkDate"></label>`}
+      ${data.booking.resources.length > 1 ? `<select id="bkRes"><option value="">Any ${esc((data.booking.resources[0].kind || {}).name || "")}</option>${data.booking.resources.map(r => `<option value="${r.id}">${esc(r.name)}</option>`).join("")}</select>` : ""}
+      <button class="btn-white" id="bkFind">${stay ? "Check availability" : "Show times"}</button><div id="bkSlots" class="ppx-slots"></div></div>`);
+  }
+  if (data.group && a.group_buying) {
+    const g = data.group;
+    parts.push(`<div class="ppx-card"><h4>👥 Group price ${money(g.group_price)}</h4><p class="pay-meta">${g.members} joined · ${g.needed ? g.needed + " more needed" : "the group is on"} · until ${fmtWhen(String(g.ends_at).replace(" ", "T") + "Z")}</p>
+      ${g.joined ? `<p>✔ You're in this group.</p>` : g.joinable ? `<button class="btn-yellow w100" data-act="grp-join" data-id="${p.id}" data-group="${g.id}">Join the group</button><p class="pay-meta">If the group doesn't fill in time, your order is cancelled and refunded.</p>` : ""}</div>`);
+  }
+  if (data.auction && a.auctions) {
+    const x = data.auction;
+    parts.push(`<div class="ppx-card" id="ppAuction"><h4>🔨 ${x.live ? "Live auction" : esc(x.state.label)}</h4>
+      <div class="ppx-row"><b class="ppx-price">${money(x.current_price != null ? x.current_price : x.start_price)}</b><span class="pay-meta">${x.bids} bid${x.bids === 1 ? "" : "s"}${x.reserve_met ? "" : " · reserve not met"} · ends ${fmtWhen(String(x.ends_at).replace(" ", "T") + "Z")}</span></div>
+      ${x.leading && x.live ? `<p>✔ You're the highest bidder.</p>` : ""}
+      ${x.live ? `<div class="ppx-row"><input id="auMax" type="number" step="0.01" min="${esc(x.next_bid)}" placeholder="Your maximum (${money(x.next_bid)} or more)"><button class="btn-yellow" data-act="au-bid" data-id="${x.id}">Bid</button></div><p class="pay-meta">We bid for you, one step at a time, up to your maximum.</p>` : ""}
+      ${x.buy_now_price != null ? `<button class="btn-orange w100" data-act="au-buynow" data-id="${x.id}">Buy it now · ${money(x.buy_now_price)}</button>` : ""}
+      ${x.won ? `<button class="btn-yellow w100" data-act="au-pay" data-id="${p.id}" data-auction="${x.id}">You won — pay ${money(x.final_price)}</button>` : ""}</div>`);
+  }
+  if (a.price_negotiation && p.st && !(data.auction && data.auction.live)) parts.push(`<button class="btn-white bb-btn" data-act="offer-open" data-id="${p.id}">🤝 Make an offer</button>`);
+  if (a.conversations) parts.push(`<button class="btn-white bb-btn" data-act="msg-open" data-id="${p.id}">💬 ${data.sold_by_shopper ? "Ask the seller" : "Ask a question"}</button>`);
+  box.innerHTML = parts.join("");
+  const find = $("#bkFind");
+  if (find) find.onclick = async () => {
+    const out = $("#bkSlots"); out.innerHTML = `<p class="pay-meta">Looking…</p>`;
+    const res = $("#bkRes") ? $("#bkRes").value : "";
+    try {
+      const stay = !!$("#bkFrom");
+      const q = stay ? { product: p.id, from: $("#bkFrom").value, to: $("#bkTo").value, resource_id: res } : { product: p.id, date: $("#bkDate").value, resource_id: res };
+      const r = await api("/bookings/availability?" + qs(q));
+      out.innerHTML = r.slots.length ? r.slots.map(sl => `<button class="btn-white ppx-slot" data-act="bk-hold" data-id="${p.id}" data-start="${esc(sl.start)}" data-from="${stay ? esc(q.from) : ""}" data-to="${stay ? esc(q.to) : ""}" data-res="${sl.resource_id}">${stay ? esc(sl.resource) + " · " + sl.units + " nights" : fmtWhen(sl.start).split(", ").pop() + (data.booking.resources.length > 1 ? " · " + esc(sl.resource) : "")}</button>`).join("") : `<p class="pay-meta">Nothing free then — try another day.</p>`;
+    } catch (e) { out.innerHTML = `<p class="pay-meta">${esc(e.message)}</p>`; }
+  };
+}
 /* ============ PRODUCT ============ */
 function verticalRows(p) {
   const v = p.vertical || {};
@@ -529,6 +604,7 @@ async function pageProduct() {
         ${f.subscribeSave ? `<div class="bb-sub"><button class="btn-white bb-btn" data-act="sub-save" data-id="${p.id}">🔁 Subscribe &amp; Save ${subDisc}%</button><div class="a-sub">Delivers every <b>${subFreq} days</b> · skip or pause anytime</div></div>` : ""}
         ${p.vertical && p.vertical.test_drive ? `<button class="btn-white bb-btn" data-act="rfq-open" data-id="${p.id}">🚗 Book a test drive</button>` : ""}
         <div class="bb-ship"><div><em>Ships from</em> ${esc(CFG.brand.name)} Atelier</div><div><em>Sold by</em> ${esc(p.b)}</div><div><em>Returns</em> 30-day, complimentary</div><div><em>Payment</em> 🔒 Secure</div></div>` : `<div class="oos">${esc(T("outOfStock"))}</div>`}
+        <div id="ppExtras"></div>
         ${atoms().wish_lists ? `<button class="btn-white bb-btn" data-act="lst-add" data-id="${p.id}">♡ Add to List</button>${data.mine && data.mine.lists.length ? `<div class="bb-note">In ${data.mine.lists.map(l => `<a href="registry.html?id=${l.id}">${esc(l.name)}</a>`).join(", ")}</div>` : ""}` : ""}
         ${atoms().product_alerts ? `<button class="btn-white bb-btn" data-act="alert-open" data-id="${p.id}">🔔 ${p.st ? "Price alert" : "Tell me when it's back"}</button>${data.mine && data.mine.alerts.length ? `<div class="bb-note">You have ${data.mine.alerts.length} alert${data.mine.alerts.length === 1 ? "" : "s"} on this item · <a href="registry.html#alerts">manage</a></div>` : ""}` : ""}
       </div>
@@ -573,6 +649,7 @@ async function pageProduct() {
     ${related.length ? carousel(T("relatedTitle"), related.slice(0, 10)) : ""}
   </div>`;
   wireCarousels();
+  renderProductExtras(data);
   const z = document.getElementById("ppZip");
   if (z) z.onclick = e => { e.preventDefault(); openModal("zipModal"); };
   $$(".pp-thumbs .thumb").forEach(t => t.onclick = e => {
@@ -590,6 +667,7 @@ async function pageCart() {
   const c = await api("/cart");
   S.cartCount = c.count; S.cartSub = c.sub; $("#cartCount") && ($("#cartCount").textContent = c.count);
   document.title = `Your Bag — ${CFG.brand.name}`;
+  if (atoms().substitutions && S.user && !window.__subPolicies) { try { window.__subPolicies = (await api("/substitutions")).policies; } catch (e) { } }
   const f = CFG.features;
   if (!c.items.length) {
     main.innerHTML = `<div class="cart-empty"><div class="ce-icon">◇</div><div class="ce-text"><h2>${esc(T("emptyCart", { brand: CFG.brand.name }))}</h2><p>${esc(T("emptyCartHint"))}</p>
@@ -597,15 +675,18 @@ async function pageCart() {
       ${carousel(T("bestSellers"), (await api("/products?sort=best&limit=12")).items)}`;
     wireCarousels(); return;
   }
-  const row = ({ product: p, qty, unit }) => `
+  const row = ({ product: p, qty, unit, line, term_labels, problems, max_qty }) => `
   <div class="ci"><a class="ci-img" href="${prodLink(p)}">${img(p, "big")}</a>
     <div class="ci-mid"><a class="ci-title" href="${prodLink(p)}">${esc(p.t)}</a>
       <div class="ci-stock">${stockText(p)}</div>
       <div class="ci-by"><span>${esc(p.b)}</span>${!isPlain(p.type) ? `<span class="pc-type">${esc(typeIcon(p.type))}</span>` : ""}${p.pr ? `<span>${prioBadge()}</span>` : ""}</div>
       <div class="ci-ship">${esc(T("deliverEstimate"))} <b>${p.pr ? dLong(daysP()) : dLong(daysS())}</b> · ${esc(T("deliverTo"))} ${esc(S.zip)}</div>
-      <div class="ci-actions"><select class="ci-qty" data-id="${p.id}">${Array.from({ length: CFG.commerce.cartMaxQty }, (_, i) => `<option ${i + 1 === qty ? "selected" : ""}>${i + 1}</option>`).join("")}</select>
-        <span class="sep">|</span><a href="#" data-act="cart-remove" data-id="${p.id}">Remove</a>
-        ${f.saveForLater ? `<span class="sep">|</span><a href="#" data-act="save-later" data-id="${p.id}">Save for later</a>` : ""}</div>
+      ${(term_labels || []).map(l => `<div class="ci-term">${esc(l)}</div>`).join("")}
+      ${(problems || []).length ? `<div class="ci-problem">⚠️ ${esc(problems.join("; "))}</div>` : ""}
+      <div class="ci-actions"><select class="ci-qty" data-id="${p.id}" data-line="${esc(line || "")}">${Array.from({ length: Math.min(CFG.commerce.cartMaxQty, max_qty || CFG.commerce.cartMaxQty) }, (_, i) => `<option ${i + 1 === qty ? "selected" : ""}>${i + 1}</option>`).join("")}</select>
+        <span class="sep">|</span><a href="#" data-act="cart-remove" data-id="${p.id}" data-line="${esc(line || "")}">Remove</a>
+        ${f.saveForLater && !line ? `<span class="sep">|</span><a href="#" data-act="save-later" data-id="${p.id}">Save for later</a>` : ""}
+        ${atoms().substitutions && window.__subPolicies ? `<span class="sep">|</span><select class="ci-sub" data-id="${p.id}" data-line="${esc(line || "")}" data-qty="${qty}" title="If this item is unavailable">${window.__subPolicies.filter(x => !x.needs_item).map(x => `<option value="${esc(x.key)}" ${(term_labels || []).some(l => l.endsWith(x.name)) ? "selected" : ""}>If unavailable: ${esc(x.name)}</option>`).join("")}</select>` : ""}</div>
       ${unit < p.p ? `<div class="ci-tier">Volume price applied: ${money(unit)} ea</div>` : ""}</div>
     <div class="ci-price">${priceHtml((unit * qty).toFixed(2))}</div></div>`;
   main.innerHTML = `
@@ -628,7 +709,16 @@ async function pageCart() {
   </div></div></aside></div>
   <div class="cart-recos">${carousel(T("relatedTitle"), (await api("/products?sort=best&limit=12")).items)}</div>`;
   wireCarousels();
-  $$(".ci-qty").forEach(sel => sel.onchange = async () => { applyCart(await api("/cart", "PUT", { id: sel.dataset.id, qty: Number(sel.value) })); });
+  $$(".ci-qty").forEach(sel => sel.onchange = async () => { applyCart(await api("/cart", "PUT", { id: sel.dataset.id, line: sel.dataset.line, qty: Number(sel.value) })); });
+  /* a substitution choice is a line term: the line is re-added with it, and the old one removed */
+  $$(".ci-sub").forEach(sel => sel.onchange = async () => {
+    const it = c.items.find(x => x.product.id === sel.dataset.id && (x.line || "") === sel.dataset.line) || {};
+    try {
+      await api("/cart", "POST", { id: sel.dataset.id, qty: Number(sel.dataset.qty) || 1, terms: { ...(it.line_terms || {}), substitute: { policy: sel.value } } });
+      await api("/cart/" + encodeURIComponent(sel.dataset.id) + "?line=" + encodeURIComponent(sel.dataset.line), "DELETE");
+      applyCart(await api("/cart"));
+    } catch (e) { toast("⚠️ " + esc(e.message)); }
+  });
 }
 
 /* ============ CHECKOUT ============ */
@@ -794,13 +884,41 @@ function pageReset() {
 }
 
 /* ============ ORDERS ============ */
+/* the shopper's activity beyond orders: bookings, offers, auctions, group buys and substitution
+   proposals — each section only where its atom is on, each button one of the moves the server
+   offers for that record */
+async function activityHtml() {
+  const a = atoms();
+  if (!S.user || !(a.bookings || a.price_negotiation || a.auctions || a.group_buying || a.substitutions)) return "";
+  const get = (on, path) => (on ? api(path).catch(() => null) : Promise.resolve(null));
+  const [bk, of, au, gr, sb] = await Promise.all([get(a.bookings, "/bookings"), get(a.price_negotiation, "/price-offers"), get(a.auctions, "/auctions/mine"), get(a.group_buying, "/group-buys"), get(a.substitutions, "/substitutions")]);
+  const btn = (label, path, body, ask) => `<button class="btn-white" data-act="act-do" data-path="${esc(path)}" data-body='${esc(JSON.stringify(body || {}))}'${ask ? ` data-ask="${esc(ask)}"` : ""}>${esc(label)}</button>`;
+  const sec = (title, rows) => rows.length ? `<div class="act-sec"><h3>${title}</h3>${rows.join("")}</div>` : "";
+  const out = [];
+  if (bk) out.push(sec("📅 Bookings", bk.bookings.slice(0, 20).map(b => `<div class="act-row"><span>${esc(b.label)}</span><span class="a-chip">${esc(b.state.label)}</span>${b.cancellable ? btn("Cancel", `/bookings/${b.id}/cancel`) : ""}</div>`)));
+  if (of) {
+    const row = (o, mineSide) => `<div class="act-row"><span>${esc(o.product ? o.product.title : "")} · ${o.qty} × ${money(o.counter_amount != null && mineSide ? o.counter_amount : o.amount)}</span><span class="a-chip">${esc(o.state.label)}</span>
+      ${o.awaiting_you ? btn("Accept", `/price-offers/${o.id}`, { action: "accept" }) + btn("Counter", `/price-offers/${o.id}`, { action: mineSide ? "rebid" : "counter" }, "Your price") + (mineSide ? "" : btn("Refuse", `/price-offers/${o.id}`, { action: "refuse" })) : ""}
+      ${mineSide && o.live && !o.agreed ? btn("Withdraw", `/price-offers/${o.id}`, { action: "withdraw" }) : ""}
+      ${mineSide && o.agreed && o.product ? `<button class="btn-yellow" data-act="terms-buy" data-id="${esc(o.product.id)}" data-terms='${esc(JSON.stringify({ offer: { id: o.id } }))}'>Buy at ${money(o.amount)}</button>` : ""}</div>`;
+    out.push(sec("🤝 Your offers", of.offers.slice(0, 20).map(o => row(o, true))));
+    out.push(sec("🤝 Offers on your listings", of.received.slice(0, 20).map(o => row(o, false))));
+  }
+  if (au) out.push(sec("🔨 Auctions", au.auctions.slice(0, 20).map(x => `<div class="act-row"><a href="product.html?id=${encodeURIComponent(x.product ? x.product.id : "")}">${esc(x.product ? x.product.title : "")}</a><span>${money(x.current_price != null ? x.current_price : x.start_price)}</span><span class="a-chip">${x.won ? "won" : x.leading ? "leading" : esc(x.state.label)}</span>
+    ${x.won ? `<button class="btn-yellow" data-act="au-pay" data-id="${esc(x.product.id)}" data-auction="${x.id}">Pay ${money(x.final_price)}</button>` : ""}</div>`)));
+  if (gr) out.push(sec("👥 Group buys", gr.groups.slice(0, 20).map(g => `<div class="act-row"><span>${esc(g.title)} · ${money(g.group_price)}</span><span>${g.members} joined${g.needed ? ", " + g.needed + " needed" : ""}</span><span class="a-chip">${esc(g.state.label)}</span></div>`)));
+  if (sb) out.push(sec("🔄 Substitutions", sb.substitutions.slice(0, 20).map(x => `<div class="act-row"><span>Order item ${esc(x.product_id)} → ${esc(x.substitute_id || "—")}${x.refund ? " · refunded " + money(x.refund) : ""}</span><span class="a-chip">${esc(x.state.label)}</span>
+    ${x.awaiting ? btn("Accept", `/substitutions/${x.id}`, { action: "apply" }) + btn("Reject", `/substitutions/${x.id}`, { action: "reject" }) : ""}</div>`)));
+  const html = out.join("");
+  return html ? `<div class="ord act" id="activity"><h2>Your activity</h2>${html}</div>` : "";
+}
 async function pageOrders() {
   const main = $("#page");
   main.innerHTML = `<div class="loading">Loading…</div>`;
   const [{ orders }, subs, mem] = await Promise.all([api("/orders"), CFG.features.subscribeSave ? api("/subscriptions") : Promise.resolve({ schedules: [] }), CFG.features.membership ? api("/membership") : Promise.resolve({ membership: null })]);
   document.title = `${T("yourOrders")} — ${CFG.brand.name}`;
-  if (!orders.length && !(subs.schedules || []).length) { main.innerHTML = `<div class="ord-empty"><h2>${esc(T("yourOrders"))}</h2><p>No orders yet.</p><a class="btn-yellow" href="index.html">Start exploring</a></div>`; return; }
-  main.innerHTML = `<h1 class="ord-h1">${esc(T("yourOrders"))}</h1>`;
+  if (!orders.length && !(subs.schedules || []).length) { main.innerHTML = `<div class="ord-empty"><h2>${esc(T("yourOrders"))}</h2><p>No orders yet.</p><a class="btn-yellow" href="index.html">Start exploring</a></div>` + await activityHtml(); return; }
+  main.innerHTML = `<h1 class="ord-h1">${esc(T("yourOrders"))}</h1>` + await activityHtml();
   if (CFG.features.membership && mem.membership && Number((mem.membership.tier_detail || {}).price) > 0) {
     const m = mem.membership;
     main.innerHTML += `<div class="ord mem-card"><div class="mem-h"><span class="mem-badge">🎟️ ${esc(m.tier_detail.name)}</span><div><em>MEMBERSHIP</em><b>Active${m.renews_at ? " · renews " + String(m.renews_at).slice(0, 10) : ""}</b></div>
@@ -1130,7 +1248,7 @@ document.addEventListener("click", async e => {
   const el = e.target.closest("[data-act]");
   if (!el) return;
   const act = el.dataset.act, id = el.dataset.id;
-  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "gift", "open-review", "buy-again", "list", "rfq-open", "return-open", "coupon", "select-variant", "ugc-vote", "qna-ask", "sub-save", "mem-subscribe", "mem-cancel", "sub-skip", "sub-pause", "sub-resume", "sub-cancel", "lst-add", "alert-open"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
+  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "gift", "open-review", "buy-again", "list", "rfq-open", "return-open", "coupon", "select-variant", "ugc-vote", "qna-ask", "sub-save", "mem-subscribe", "mem-cancel", "sub-skip", "sub-pause", "sub-resume", "sub-cancel", "lst-add", "alert-open", "grp-join", "au-bid", "au-buynow", "au-pay", "offer-open", "msg-open", "bk-hold", "act-do", "terms-buy"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
   try {
     switch (act) {
       case "select-variant": {
@@ -1146,7 +1264,7 @@ document.addEventListener("click", async e => {
       }
       case "add": {
         const qtySrc = el.dataset.qtySrc ? $("#" + el.dataset.qtySrc) : null;
-        const c = await api("/cart", "POST", { id, qty: qtySrc ? Number(qtySrc.value) : 1, sku_id: el.dataset.sku ? Number(el.dataset.sku) : undefined });
+        const c = await api("/cart", "POST", { id, qty: qtySrc ? Number(qtySrc.value) : 1, sku_id: el.dataset.sku ? Number(el.dataset.sku) : undefined, terms: el.dataset.termsSrc ? lineTerms() : undefined });
         S.cartCount = c.count; $("#cartCount").textContent = c.count;
         toast(`◇ Added to your bag <a href="cart.html">View →</a>`); break;
       }
@@ -1155,8 +1273,8 @@ document.addEventListener("click", async e => {
         await refreshSession(); $("#cartCount").textContent = S.cartCount;
         toast("◇ Added to your bag <a href='cart.html'>View →</a>"); break;
       }
-      case "buy-now": { await api("/cart", "POST", { id, qty: 1, sku_id: el.dataset.sku ? Number(el.dataset.sku) : undefined }); await refreshSession(); location.href = "checkout.html"; return; }
-      case "cart-remove": await api("/cart/" + encodeURIComponent(id), "DELETE"); applyCart(await api("/cart")); return;
+      case "buy-now": { await api("/cart", "POST", { id, qty: 1, sku_id: el.dataset.sku ? Number(el.dataset.sku) : undefined, terms: el.dataset.termsSrc ? lineTerms() : undefined }); await refreshSession(); location.href = "checkout.html"; return; }
+      case "cart-remove": await api("/cart/" + encodeURIComponent(id) + (el.dataset.line != null ? "?line=" + encodeURIComponent(el.dataset.line) : ""), "DELETE"); applyCart(await api("/cart")); return;
       case "save-later": await api("/saved", "POST", { id }); applyCart(await api("/cart")); return;
       case "move-cart": await api(`/saved/${encodeURIComponent(id)}/move`, "POST"); applyCart(await api("/cart")); return;
       case "unsave": await api("/saved/" + encodeURIComponent(id), "DELETE"); applyCart(await api("/cart")); return;
@@ -1198,6 +1316,45 @@ document.addEventListener("click", async e => {
       }
       case "track": toast("📦 Your parcel is <b>out for delivery</b>"); break;
       case "lst-add": await listPicker(id); break;
+      case "bk-hold": {
+        if (!S.user) { openModal("authModal"); break; }
+        const h = await api("/bookings/hold", "POST", el.dataset.from ? { product_id: id, from: el.dataset.from, to: el.dataset.to, resource_id: el.dataset.res } : { product_id: id, start: el.dataset.start, resource_id: el.dataset.res });
+        await addWithTerms(id, { booking: { id: h.booking.id } });
+        toast(`📅 ${esc(h.booking.label)} held for you · <a href="checkout.html">Check out →</a>`); break;
+      }
+      case "grp-join": { if (!S.user) { openModal("authModal"); break; } await addWithTerms(id, { group: { id: Number(el.dataset.group) } }); location.href = "checkout.html"; return; }
+      case "au-bid": {
+        if (!S.user) { openModal("authModal"); break; }
+        const r = await api(`/auctions/${id}/bid`, "POST", { max_amount: Number(($("#auMax") || {}).value) });
+        toast(r.auction.outbid ? "Someone's maximum is higher — try more" : "✔ You're the highest bidder"); pageProduct(); break;
+      }
+      case "au-buynow": { if (!S.user) { openModal("authModal"); break; } const r = await api(`/auctions/${id}/buy-now`, "POST", {}); await addWithTerms(r.auction.product.id, { auction: { id: r.auction.id } }); location.href = "checkout.html"; return; }
+      case "au-pay": { await addWithTerms(id, { auction: { id: Number(el.dataset.auction) } }); location.href = "checkout.html"; return; }
+      case "offer-open": {
+        if (!S.user) { openModal("authModal"); break; }
+        const body = dynModal("Make an offer", `<input id="ofAmt" type="number" step="0.01" min="0" placeholder="Your price (${esc(CFG.commerce.currency)})"><input id="ofQty" type="number" min="1" value="1"><input id="ofNote" placeholder="A note for the seller (optional)" maxlength="500"><button class="btn-yellow w100" id="ofSend">Send offer</button><p class="m-help">The seller can accept, counter or decline. You'll be told either way.</p>`);
+        body.querySelector("#ofSend").onclick = async () => {
+          try { const r = await api("/price-offers", "POST", { product_id: id, amount: Number($("#ofAmt").value), qty: Number($("#ofQty").value) || 1, note: $("#ofNote").value }); closeModal(); toast(r.offer.agreed ? "🤝 Accepted — <a href='orders.html#activity'>buy it at your price</a>" : "🤝 Offer sent — <a href='orders.html#activity'>follow it</a>"); }
+          catch (e) { toast("⚠️ " + esc(e.message)); }
+        }; break;
+      }
+      case "msg-open": {
+        if (!S.user) { openModal("authModal"); break; }
+        const body = dynModal("Send a message", `<textarea id="msgBody" rows="4" maxlength="2000" placeholder="Your question"></textarea><button class="btn-yellow w100" id="msgSend">Send</button>`);
+        body.querySelector("#msgSend").onclick = async () => {
+          try { const r = await api("/conversations", "POST", { subject: "product", ref: id, body: $("#msgBody").value }); closeModal(); toast(`💬 Sent · <a href="messages.html?c=${r.conversation.id}">Open the conversation</a>`); }
+          catch (e) { toast("⚠️ " + esc(e.message)); }
+        }; break;
+      }
+      case "act-do": {
+        /* an activity button names its endpoint and the body to send (data-path, data-body);
+           data-ask asks the shopper for an amount first */
+        const body = JSON.parse(el.dataset.body || "{}");
+        if (el.dataset.ask) { const v = prompt(el.dataset.ask); if (v == null || v === "") break; body.amount = Number(v); }
+        await api(el.dataset.path, "POST", body);
+        toast("✔ Done"); initPage(); break;
+      }
+      case "terms-buy": { await addWithTerms(id, JSON.parse(el.dataset.terms)); location.href = "checkout.html"; return; }
       case "alert-open": await alertPicker(id); break;
       case "list": toast("✦ Registry created"); break;
       case "soon": toast("✦ This experience is coming soon"); break;
@@ -1246,13 +1403,64 @@ document.addEventListener("click", async e => {
   } catch (err) { toast("⚠️ " + linkify(err.message)); }
 });
 
+/* ============ SELL — a shopper's own listings, proceeds and auctions ============ */
+async function pageSell() {
+  const main = $("#page");
+  document.title = `Sell — ${CFG.brand.name}`;
+  if (!atoms().peer_listings) { main.innerHTML = `<div class="r-empty"><h3>Selling is not open in this store</h3></div>`; return; }
+  if (!S.user) { main.innerHTML = `<div class="reg"><div class="reg-hero"><h1>Sell your things</h1><p>Sign in to list an item.</p><button class="btn-yellow" data-act="signin-open">Sign in</button></div></div>`; return; }
+  const v = await api("/listings");
+  const verbs = v.actions.filter(x => !x.staff_only);
+  main.innerHTML = `<div class="lst"><aside class="lst-side"><h2>New listing</h2>
+      <div class="lst-new"><input id="slTitle" placeholder="What are you selling?" maxlength="140"><textarea id="slDesc" rows="3" placeholder="Describe it"></textarea>
+      <input id="slPrice" type="number" step="0.01" min="0" placeholder="Price (${esc(CFG.commerce.currency)})"><input id="slQty" type="number" min="1" value="1">
+      <select id="slCond">${v.conditions.map(c => `<option value="${esc(c.key)}">${esc(humanize(c.name))}</option>`).join("")}</select>
+      <select id="slDept">${v.departments.map(d => `<option value="${esc(d.key)}">${esc(d.label)}</option>`).join("")}</select>
+      <textarea id="slImgs" rows="2" placeholder="Photo addresses, one per line (optional)"></textarea>
+      <button class="btn-yellow w100" id="slCreate">Save draft</button></div></aside>
+    <div class="lst-main"><div class="lst-head"><div><h1>Your listings</h1><span class="pay-meta">${v.listings.length} listing${v.listings.length === 1 ? "" : "s"}</span></div></div>
+      ${v.listings.map(l => `<div class="lst-item"><span class="pimg tile">🏷️</span><div class="lst-i-mid"><b>${esc(l.title)}</b><div>${priceHtml(l.price)} · ${l.sold}/${l.qty} sold</div>
+        <div class="pay-meta">${esc(humanize(l.condition || ""))}${l.review_notes ? " · " + esc(l.review_notes) : ""}</div>${l.product_id ? `<a href="product.html?id=${encodeURIComponent(l.product_id)}">View on sale ↗</a>` : ""}</div>
+        <div class="lst-i-r"><span class="a-chip">${esc(l.state.label)}</span>${verbs.filter(x => (l.next || []).includes(x.to)).map(x => `<button class="btn-white" data-act="act-do" data-path="/listings/${l.id}/action" data-body='${esc(JSON.stringify({ action: x.verb }))}'>${esc(humanize(x.verb))}</button>`).join("")}</div></div>`).join("") || `<div class="r-empty"><p>No listings yet — your first takes a minute.</p></div>`}
+      ${v.earnings.length ? `<section class="lst-alerts"><h2>Proceeds</h2><table class="lst-table"><thead><tr><th>Order</th><th>Sale</th><th>Commission</th><th>You receive</th><th>State</th></tr></thead><tbody>${v.earnings.map(e => `<tr><td>${e.order_id}</td><td>${money(e.gross)}</td><td>${money(e.commission)}</td><td>${money(e.net)}</td><td>${esc(e.state.label)}${e.state.key === "pending" ? " until " + esc(String(e.release_at).slice(0, 10)) : ""}</td></tr>`).join("")}</tbody></table></section>` : ""}
+      ${atoms().auctions ? `<section class="lst-find"><h2>Auction a listing</h2><div class="lst-find-row"><select id="auList">${v.listings.filter(l => l.on_sale && l.product_id).map(l => `<option value="${esc(l.product_id)}">${esc(l.title)}</option>`).join("")}</select>
+        <input id="auStart" type="number" step="0.01" min="0" placeholder="Start price"><input id="auEnd" type="datetime-local"><button class="btn-white" id="auCreate">Start auction</button></div></section>` : ""}
+    </div></div>`;
+  $("#slCreate").onclick = async () => {
+    try { await api("/listings", "POST", { title: $("#slTitle").value, description: $("#slDesc").value, price: Number($("#slPrice").value), qty: Number($("#slQty").value) || 1, condition: $("#slCond").value, dept: $("#slDept").value, images: $("#slImgs").value }); toast("✔ Draft saved — submit it when ready"); pageSell(); }
+    catch (e) { toast("⚠️ " + esc(e.message)); }
+  };
+  const ac = $("#auCreate"); if (ac) ac.onclick = async () => {
+    try { await api("/auctions", "POST", { product_id: $("#auList").value, start_price: Number($("#auStart").value), ends_at: $("#auEnd").value ? new Date($("#auEnd").value).toISOString() : "" }); toast("🔨 Auction started"); pageSell(); }
+    catch (e) { toast("⚠️ " + esc(e.message)); }
+  };
+}
+
+/* ============ MESSAGES ============ */
+async function pageMessages() {
+  const main = $("#page");
+  document.title = `Messages — ${CFG.brand.name}`;
+  if (!atoms().conversations) { main.innerHTML = `<div class="r-empty"><h3>Messages are not open in this store</h3></div>`; return; }
+  if (!S.user) { main.innerHTML = `<div class="reg"><div class="reg-hero"><h1>Messages</h1><p>Sign in to read your messages.</p><button class="btn-yellow" data-act="signin-open">Sign in</button></div></div>`; return; }
+  const list = (await api("/conversations")).conversations;
+  const id = params().get("c") || (list[0] && list[0].id);
+  const t = id ? await api("/conversations/" + encodeURIComponent(id)).catch(() => null) : null;
+  main.innerHTML = `<div class="lst"><aside class="lst-side"><h2>Messages</h2>${list.map(c => `<a class="${t && c.id === t.conversation.id ? "on" : ""}" href="messages.html?c=${c.id}"><b>${esc(c.title)}</b><span>with ${esc(c.with)}${c.unread ? " · " + c.unread + " new" : ""}</span></a>`).join("") || `<p class="pay-meta">No conversations yet — ask a question on any product.</p>`}</aside>
+    <div class="lst-main">${t ? `<div class="lst-head"><div><h1>${esc(t.conversation.title)}</h1><span class="pay-meta">with ${esc(t.conversation.with)} · ${esc(t.conversation.state.label)}</span></div></div>
+      <div class="msg-thread">${t.messages.map(m => `<div class="msg ${m.mine ? "mine" : ""}"><p>${esc(m.body)}</p><span class="pay-meta">${esc(String(m.at).slice(0, 16))}</span></div>`).join("")}</div>
+      <div class="lst-find-row"><input id="msgText" maxlength="2000" placeholder="Write a reply"><button class="btn-yellow" id="msgReply">Send</button></div>` : ""}</div></div>`;
+  const b = $("#msgReply"); if (b) b.onclick = async () => {
+    try { await api("/conversations/" + t.conversation.id, "POST", { body: $("#msgText").value }); pageMessages(); } catch (e) { toast("⚠️ " + esc(e.message)); }
+  };
+}
+
 /* ============ boot ============ */
 async function initPage() {
   const p = PAGE();
   try {
     /* each page of the storefront is its own entry: the page key the HTML declares picks it */
     const PAGES = { home: pageHome, results: pageResults, product: pageProduct, cart: pageCart, checkout: pageCheckout, orders: pageOrders,
-      deals: pageDeals, gift: pageGift, cs: pageCS, registry: pageRegistry, reset: pageReset };
+      deals: pageDeals, gift: pageGift, cs: pageCS, registry: pageRegistry, reset: pageReset, sell: pageSell, messages: pageMessages };
     if (PAGES[p]) await PAGES[p]();
   } catch (e) {
     console.error(e);

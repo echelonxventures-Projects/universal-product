@@ -32,7 +32,7 @@ const STORE = "() => { const m = document.querySelector('#page'); return !!m && 
 const PAGES = [
   ["/index.html?store=luxora", STORE], ["/results.html?q=a", STORE], ["/product.html?id=__PRODUCT__", STORE],
   ["/cart.html", STORE], ["/deals.html", STORE], ["/orders.html", "() => !!document.querySelector('#page')"],
-  ["/gift-cards.html", STORE], ["/customer-service.html", STORE], ["/registry.html", "() => !!document.querySelector('#page')"],
+  ["/gift-cards.html", STORE], ["/customer-service.html", STORE], ["/registry.html", "() => !!document.querySelector('#page')"], ["/sell.html", "() => !!document.querySelector('#page h1, #page h3')"], ["/messages.html", "() => !!document.querySelector('#page h1, #page h3')"],
   ["/reset.html", "() => !!document.querySelector('#resetForm')"], ["/reset.html?token=" + "0".repeat(64), "() => !!document.querySelector('#rpPass')"], ["/does-not-exist.html", "() => document.body.innerText.length > 10"],
   ["/admin.html", "() => document.body.innerText.trim().length > 20"], ["/platform.html", "() => document.body.innerText.trim().length > 20"],
   ["/console.html", "() => document.body.innerText.trim().length > 20"], ["/docs/user-manual.html", "() => document.body.innerText.trim().length > 20"], ["/docs/architecture.html", "() => document.body.innerText.trim().length > 20"]

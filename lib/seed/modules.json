@@ -299,8 +299,7 @@
    ],
    "gateways": [
     "razorpay",
-    "upi",
-    "paytm"
+    "upi"
    ]
   },
   {

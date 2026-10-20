@@ -329,8 +329,8 @@ A3. The Composition Equation
  + AI + SECURITY + GOVERNANCE + COMPOSITION + EVOLUTION
  ANY THING = Composition of Capabilities + Policies + Context + Workflows
  + AI + Governance + Security
-If that equation holds, then Amazon, Uber, Netflix, YouTube, SAP, Salesforce, Shopify, ServiceNow, banking
-systems, government systems, healthcare systems, future AI systems and entirely new industries become
+If that equation holds, then general marketplaces, ride-hailing, video-on-demand, video-sharing, ERP, CRM,
+hosted store-builder and IT-service-management platforms, banking systems, government systems, healthcare systems, future AI systems and entirely new industries become
 configurations of the same platform rather than separate products.
 A4. Target State
 A platform owner should be able to declare an intent and receive a working, certified solution:
@@ -356,22 +356,22 @@ Certify
 No platform is deployed until every required capability, dependency, policy, security control,
 compliance obligation, audit requirement and certification requirement is satisfied and the mandatory
 gap count is zero.
-No Amazon code exists.
-Amazon = Identity + Organization + Merchant + Catalog + Inventory + Pricing + Offer + Cart + Order + Payment +
+No marketplace-specific code exists.
+General marketplace = Identity + Organization + Merchant + Catalog + Inventory + Pricing + Offer + Cart + Order + Payment +
 Logistics + Review + Recommendation + Advertising + Analytics. The composition exists; the application does not.
 This is the meaning of "applications become compositions".
 A5. Final Platform Property
 Any Platform = Configuration + Capabilities + Policies + Workflows + AI + Data + Governance. There is no
 platform-specific code:
- • Amazon = Configuration
-• Uber = Configuration
-• Netflix = Configuration
-• YouTube = Configuration
-• Airbnb = Configuration
-• Salesforce = Configuration
-• Shopify = Configuration
-• SAP = Configuration
-• ServiceNow = Configuration
+ • General marketplace = Configuration
+• Ride hailing = Configuration
+• Video on demand = Configuration
+• Video sharing = Configuration
+• Short-stay rental = Configuration
+• CRM = Configuration
+• Hosted store builder = Configuration
+• ERP = Configuration
+• IT service management = Configuration
 • Future unknown platform = Configuration
 A6. What the Platform Is Not
 The platform is not an e-commerce platform, not a marketplace platform, not an ERP, not a CRM, not a streaming
@@ -1184,7 +1184,7 @@ UCOS Ω∞  ·  Universal Capability Operating System
 Consolidated Constitutional Architecture and Requirements Reference
 Zero Duplicate  ·  Zero Overlap  ·  Zero Gap
 Page 26
-• SAP · Salesforce · ServiceNow · Oracle · Workday · Stripe · PayPal · AWS · Azure · GCP — all adapters, never
+• ERP · CRM · ITSM · HR systems · payment processors · public clouds — all adapters, never
 dependencies
 D18. Legal Universe
 Usually missing until it is too late. Legal is separated from compliance because contracts, rights and holds are
@@ -1235,8 +1235,8 @@ Canonical product model
 • Compliance · Certifications · Policies · Context · Lifecycle
 E2. Global Product and Service Intelligence Network
 This is not a catalog — it is an intelligence network. One of the largest missing areas in most architectures.
-A product (for example, "Apple iPhone 17") is stored once, and any platform can consume it: an Amazon-like store, a
-Flipkart-like store, a B2B marketplace, an ERP, a CRM, a POS, a warehouse system, an analytics engine, an AI agent,
+A product (for example, one specific phone model) is stored once, and any platform can consume it: a general-marketplace store, a
+regional-marketplace store, a B2B marketplace, an ERP, a CRM, a POS, a warehouse system, an analytics engine, an AI agent,
 a recommendation engine. This is the Knowledge Once Principle applied to commerce.
 Registries
  • Global Product Registry · Global Service Registry
@@ -1422,7 +1422,7 @@ E14. Support Universe
 • Knowledge base · self-service · AI support
 • Field service · scheduling · parts
 E15. Content and Media Universe
-With this universe, Netflix, YouTube, Udemy, Spotify and Prime Video become compositions rather than builds —
+With this universe, video-on-demand, video-sharing, online-course, music-streaming and subscription-video platforms become compositions rather than builds —
 no code changes, only configuration.
 • CMS · DAM · Publishing
 • Media · Video · Audio · Image · Document
@@ -1461,12 +1461,12 @@ Experience constitution
 • Personalization · UI meta-model · App generation
 • API experience · machine experience · ambient interfaces
 E17. Mobility Universe
-Through configuration alone this universe yields Uber-, Ola-, DoorDash-, Swiggy- and Zomato-class platforms:
+Through configuration alone this universe yields ride-hailing, taxi, local-delivery, food-delivery and restaurant-marketplace platforms:
  • Ride hailing · Dispatch · Driver management
 • Routing · Fleet · Delivery · Tracking
 • Dynamic pricing · Matching · Rating
 E18. Operations Universe
-Through configuration alone this universe yields SAP-, Oracle-, ServiceNow- and Workday-class platforms:
+Through configuration alone this universe yields ERP, HRMS, payroll, IT-service-management and workforce-management platforms:
  • ERP · HRMS · Payroll · Workforce
 • SCM · Procurement · Manufacturing
 • Projects · Tasks · Approvals
@@ -2106,31 +2106,31 @@ Each of the following is a configuration of universes, not a codebase. The compo
 not.
 Platform class
 Composition of universes
-Amazon-class
+General marketplace
 Identity + Organization + Merchant + Catalog + Inventory + Pricing + Offer + Cart + Order + Payment
 + Logistics + Review + Recommendation + Advertising + Analytics
-Uber-class
+Ride hailing
 Identity + Geo + Dispatch + Routing + Matching + Dynamic Pricing + Payment + Rating + Tracking
-Netflix-class
+Video on demand
 Identity + Subscription + Media + Streaming + Recommendation + Billing + Analytics
-YouTube-class
+Video sharing
 Identity + Content + Media + Streaming + Recommendation + Advertising + Analytics
-Airbnb-class
+Short-stay rental
 Identity + Catalog + Booking + Reservation + Pricing + Trust + Payment + Reviews
-Salesforce-class
+CRM platform
 Identity + CRM + Workflow + Analytics + AI + Communication
-SAP-class
+ERP platform
 Identity + ERP + Finance + Procurement + Inventory + Manufacturing + Workforce + Analytics
-ServiceNow-class
+IT service management
 Identity + Workflow + Case Management + Knowledge + Analytics + AI
-Shopify-class
+Hosted store builder
 Identity + Commerce + Storefront + Subscription + Payment + Logistics + Marketplace
 Healthcare-class
 Identity + Geo + Knowledge + Catalog + Appointment + Workflow + Payment + Claims + Insurance +
 AI + Compliance
 Output range.
-Amazon-like, Flipkart-like, Walmart-like, Uber-like, Netflix-like, YouTube-like, Airbnb-like, Zerodha-like, SAP-like,
-Salesforce-like, ServiceNow-like, Shopify-like — and future platforms not yet invented. No code changes required; only
+General marketplaces, regional marketplaces, omnichannel retail, ride hailing, video on demand, video sharing, short-stay rental,
+retail brokerage, ERP, CRM, IT service management, hosted store builders — and future platforms not yet invented. No code changes required; only
 configuration, composition, governance and certification.
 
 

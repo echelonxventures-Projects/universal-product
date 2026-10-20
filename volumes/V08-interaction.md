@@ -501,7 +501,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-NTF-000001 Notification Architecture](#ucos-ntf-000001) |
 | **Artifacts** | [UCOS-NTF-000001](#ucos-ntf-000001) |
 | **Concepts** | 5 — `node _registry/compile.js --search <words> --kind concept --owner "Notification"` |
-| **Code** | — |
+| **Code** | `lib/tell.js` |
 | **Managed in** | `_registry/domains.json` → `D-NTF` |
 
 **Live routes (2)** — what the platform serves today for this domain:

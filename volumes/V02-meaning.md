@@ -39,7 +39,7 @@
 | **Not responsible for** | Knowledge, Meaning, Policy, Trust |
 | **Contract** | [UCOS-IDN-000001 Identity Architecture](#ucos-idn-000001) |
 | **Artifacts** | [UCOS-IDN-000001](#ucos-idn-000001) |
-| **Concepts** | 1348 — `node _registry/compile.js --search <words> --kind concept --owner "Identity"` |
+| **Concepts** | 1349 — `node _registry/compile.js --search <words> --kind concept --owner "Identity"` |
 | **Code** | `lib/uid.js`, `lib/kernel.js` |
 | **Managed in** | `_registry/domains.json` → `D-IDN` |
 
@@ -1075,7 +1075,7 @@ stateDiagram-v2
 | **Not responsible for** | Identity, Policy, Authority |
 | **Contract** | [UCOS-KNW-000001 Knowledge Architecture](#ucos-knw-000001) |
 | **Artifacts** | [UCOS-KNW-000001](#ucos-knw-000001) |
-| **Concepts** | 2774 — `node _registry/compile.js --search <words> --kind concept --owner "Knowledge"` |
+| **Concepts** | 2775 — `node _registry/compile.js --search <words> --kind concept --owner "Knowledge"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-KNW` |
 
@@ -2487,7 +2487,7 @@ stateDiagram-v2
 | **Not responsible for** | Identity, Permissions, Credentials |
 | **Contract** | [UCOS-PTY-000001 Party Architecture](#ucos-pty-000001) |
 | **Artifacts** | [UCOS-PTY-000001](#ucos-pty-000001) |
-| **Concepts** | 265 — `node _registry/compile.js --search <words> --kind concept --owner "Party"` |
+| **Concepts** | 267 — `node _registry/compile.js --search <words> --kind concept --owner "Party"` |
 | **Code** | `lib/stores.js`, `lib/tenancy.js`, `lib/seed/stores.json` |
 | **Managed in** | `_registry/domains.json` → `D-PTY` |
 

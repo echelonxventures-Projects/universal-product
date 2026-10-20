@@ -584,7 +584,7 @@ console.log("\n▸ THE CONFIGURATION LAYER — any platform is composed, never t
   const view = call("GET", "/api/capabilities", {}, ADMIN);
   ok(view.catalog.length >= 30, "the catalog lists every capability as rows (" + view.catalog.length + ")");
   ok(view.presets.length >= 5 && view.composition.capabilities, "the read returns archetypes and the store's live composition");
-  ok(view.catalog.every(c => !/(amazon|flipkart|zepto|blinkit|paytm|alibaba)/i.test(c.label + " " + c.description)),
+  ok(view.catalog.every(c => require("../scripts/white-label.js").clean(c.label + " " + c.description)),
     "no capability definition carries a vendor or brand name — the catalog describes what, never whose");
   ok(view.catalog.some(c => c.params && Object.keys(c.params).length), "capabilities expose typed tunables (standards, not constants)");
   /* a store admin may compose only its own store; cross-store configuration is platform-only */

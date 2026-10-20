@@ -23,7 +23,7 @@
 | **Not responsible for** | Domain Truth, Offerings |
 | **Contract** | [UCOS-PKG-000001 Package Architecture](#ucos-pkg-000001) |
 | **Artifacts** | [UCOS-PKG-000001](#ucos-pkg-000001) |
-| **Concepts** | 256 — `node _registry/compile.js --search <words> --kind concept --owner "Package"` |
+| **Concepts** | 250 — `node _registry/compile.js --search <words> --kind concept --owner "Package"` |
 | **Code** | `lib/registry.js`, `lib/compose.js` |
 | **Managed in** | `_registry/domains.json` → `D-PKG` |
 

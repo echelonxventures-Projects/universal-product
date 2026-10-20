@@ -49,7 +49,7 @@ const mk = () => {
     ok(dims.segments.options.some(o => o.key === "premium") && dims.segments.options.some(o => o.key === "high_value"), "segments join the registry's and the offers engine's audiences");
 
     console.log("▸ A PLATFORM TO RULE");
-    const t = await P("/api/platform/tenants", "POST", { name: "Bharat Bazaar", slug: "bharat", country: "IN", mode: "marketplace", seedCatalog: true, gateways: ["razorpay", "upi", "paytm", "cod"], owner: { name: "Owner", email: "owner@bharat.test", password: "Str0ng-bharat-pass" } });
+    const t = await P("/api/platform/tenants", "POST", { name: "Bharat Bazaar", slug: "bharat", country: "IN", mode: "marketplace", seedCatalog: true, gateways: ["razorpay", "upi", "bank", "cod"], owner: { name: "Owner", email: "owner@bharat.test", password: "Str0ng-bharat-pass" } });
     ok(t.status === 200, "an Indian marketplace is launched", t.body);
     const tid = db.get("SELECT id FROM tenants WHERE slug='bharat'").id;
     const gwOf = async (S, q) => ((await S("/api/providers?store=bharat" + (q || ""))).body.gateways || []).map(g => g.id);
@@ -121,10 +121,10 @@ const mk = () => {
     const dimAdd = await P("/api/platform/registries/ruleDimensions", "POST", { item: { key: "devices", name: "Devices", fact: "device", match: "in", options: "" } });
     ok(dimAdd.status === 200, "a 'devices' dimension is registered", dimAdd.body);
     rules.bust();
-    const dr = await save(P, "/api/platform/rules", { subject_type: "gateway", subject: "paytm", effect: "deny", scope: { devices: ["kiosk"] } });
+    const dr = await save(P, "/api/platform/rules", { subject_type: "gateway", subject: "bank", effect: "deny", scope: { devices: ["kiosk"] } });
     ok(dr.status === 200 && dr.body.rule.scope.devices, "a rule scopes by it", dr.body);
-    const kiosk = await G("/api/rules/check?store=bharat", "POST", { type: "gateway", id: "paytm" }, { "x-ctx-device": "kiosk" });
-    const phone = await G("/api/rules/check?store=bharat", "POST", { type: "gateway", id: "paytm", context: { device: "phone" } });
+    const kiosk = await G("/api/rules/check?store=bharat", "POST", { type: "gateway", id: "bank" }, { "x-ctx-device": "kiosk" });
+    const phone = await G("/api/rules/check?store=bharat", "POST", { type: "gateway", id: "bank", context: { device: "phone" } });
     ok(kiosk.body.ok === false && phone.body.ok === true, "the request supplies the fact (header or body context)", [kiosk.body, phone.body]);
     const typeAdd = await P("/api/platform/registries/ruleSubjectTypes", "POST", { item: { key: "warehouse", name: "Warehouse", source: "entity:warehouse" } });
     rules.bust();
@@ -163,14 +163,14 @@ const mk = () => {
       const co = await C("/api/checkout?store=bharat", "POST", { name: "Asha", address: "1 MG Road", city: "Bengaluru", zip: "560001", gateway: "cod" });
       const tot = db.get("SELECT price FROM products WHERE id=? AND tenant_id=?", pid.id, tid).price;
       ok(co.status === 422 && /amount/i.test(co.body.error || ""), "cash on delivery is refused at payment when the total is over the limit", { status: co.status, body: co.body, price: tot });
-      const co2 = await C("/api/checkout?store=bharat", "POST", { name: "Asha", address: "1 MG Road", city: "Bengaluru", zip: "560001", gateway: "paytm" });
+      const co2 = await C("/api/checkout?store=bharat", "POST", { name: "Asha", address: "1 MG Road", city: "Bengaluru", zip: "560001", gateway: "bank" });
       ok(co2.status === 200, "another gateway the rules permit takes the payment", co2.body);
     }
 
     console.log("▸ ENGINES NAME ONLY THEIR BINDING POINT — THE REST IS DATA");
-    const fee = await save(P, "/api/platform/rules", { subject_type: "gateway", subject: "paytm", effect: "allow", scope: { countries: ["IN"] }, params: { fee_pct: 0.25, label: "Paytm (promo)" } });
-    const ptOffer = ((await G("/api/providers?store=bharat")).body.gateways || []).find(g => g.id === "paytm");
-    ok(fee.status === 200 && ptOffer && ptOffer.feePct === 0.25 && ptOffer.name === "Paytm (promo)", "a rule's overrides reach the offer through the subject type's parameter map", ptOffer);
+    const fee = await save(P, "/api/platform/rules", { subject_type: "gateway", subject: "bank", effect: "allow", scope: { countries: ["IN"] }, params: { fee_pct: 0.25, label: "Bank transfer (promo)" } });
+    const ptOffer = ((await G("/api/providers?store=bharat")).body.gateways || []).find(g => g.id === "bank");
+    ok(fee.status === 200 && ptOffer && ptOffer.feePct === 0.25 && ptOffer.name === "Bank transfer (promo)", "a rule's overrides reach the offer through the subject type's parameter map", ptOffer);
     await P("/api/platform/rules/" + fee.body.rule.id, "DELETE");
     const registryMod = require("../lib/registry.js");
     const payout = registryMod.list("ruleBindings").find(b => b.key === "fintech.payout");

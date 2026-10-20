@@ -340,7 +340,9 @@ require("./lib/api.js").startPaymentSweep();
 (function shopperSweep() {
   const mins = Number(sec.policy().shopperSweepMinutes);
   const t = setTimeout(() => {
-    if (mins > 0) { try { require("./lib/alerts.js").sweepAll(); } catch (e) { } try { require("./lib/pickup.js").sweepAll(); } catch (e) { } }
+    /* each engine with a clock: alerts re-checked, pickup parcels and booking holds expired,
+       offers expired, auctions opened and closed, group buys settled, sellers' proceeds released */
+    if (mins > 0) for (const m of ["alerts", "pickup", "bookings", "negotiation", "auctions", "groupbuy", "listings"]) { try { require("./lib/" + m + ".js").sweepAll(); } catch (e) { } }
     shopperSweep();
   }, Math.max(1, mins > 0 ? mins : 15) * 60000);
   if (t.unref) t.unref();

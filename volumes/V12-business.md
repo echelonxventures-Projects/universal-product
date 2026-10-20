@@ -32,11 +32,11 @@
 | **Not responsible for** | Truth Ownership, Offerings |
 | **Contract** | [UCOS-COM-000001 Universal Commerce Architecture](#ucos-com-000001) |
 | **Artifacts** | [UCOS-COM-000001](#ucos-com-000001), [UCOS-GPS-000001](#ucos-gps-000001), [UCOS-PRC-000001](#ucos-prc-000001), [UCOS-OFR-000001](#ucos-ofr-000001), [UCOS-SUB-000001](#ucos-sub-000001), [UCOS-CNT-000001](#ucos-cnt-000001), [UCOS-MKT-000001](#ucos-mkt-000001), [UCOS-INV-000001](#ucos-inv-000001), [UCOS-ORD-000001](#ucos-ord-000001), [UCOS-FUL-000001](#ucos-ful-000001) |
-| **Concepts** | 1969 — `node _registry/compile.js --search <words> --kind concept --owner "Commerce"` |
-| **Code** | `lib/billing.js`, `lib/offers.js`, `lib/goip.js`, `lib/shipping.js`, `lib/logistics.js`, `lib/fin.js`, `lib/fintech.js`, `lib/marketplace.js`, `lib/marketplace-ext.js`, `lib/lists.js`, `lib/alerts.js`, `lib/pickup.js`, `lib/richcontent.js`, `lib/brandreg.js`, `lib/affiliate.js`, `lib/trade.js`, `lib/qcommerce.js`, `lib/mobility.js`, `lib/operations.js`, `lib/recurring.js`, `lib/ugc.js`, `lib/gcatalog.js`, `lib/seed/catalog.json`, `lib/seed/goip.json`, `lib/seed/offers.json` |
+| **Concepts** | 1967 — `node _registry/compile.js --search <words> --kind concept --owner "Commerce"` |
+| **Code** | `lib/billing.js`, `lib/offers.js`, `lib/goip.js`, `lib/shipping.js`, `lib/logistics.js`, `lib/fin.js`, `lib/fintech.js`, `lib/marketplace.js`, `lib/marketplace-ext.js`, `lib/lists.js`, `lib/alerts.js`, `lib/pickup.js`, `lib/richcontent.js`, `lib/brandreg.js`, `lib/lineterms.js`, `lib/options.js`, `lib/bookings.js`, `lib/listings.js`, `lib/negotiation.js`, `lib/auctions.js`, `lib/conversations.js`, `lib/groupbuy.js`, `lib/substitutions.js`, `lib/affiliate.js`, `lib/trade.js`, `lib/qcommerce.js`, `lib/mobility.js`, `lib/operations.js`, `lib/recurring.js`, `lib/ugc.js`, `lib/gcatalog.js`, `lib/seed/catalog.json`, `lib/seed/goip.json`, `lib/seed/offers.json` |
 | **Managed in** | `_registry/domains.json` → `D-BIZ` |
 
-**Live routes (296)** — what the platform serves today for this domain:
+**Live routes (349)** — what the platform serves today for this domain:
 
 - `GET /api/qc/promise`
 - `GET /api/qc/stores`
@@ -141,6 +141,59 @@
 - `POST /api/admin/brand-registry/claims/:id`
 - `POST /api/admin/brand-registry/reports`
 - `POST /api/admin/brand-registry/reports/:id`
+- `GET /api/bookings/availability`
+- `POST /api/bookings/hold`
+- `GET /api/bookings`
+- `POST /api/bookings/:id/cancel`
+- `GET /api/price-offers`
+- `POST /api/price-offers`
+- `POST /api/price-offers/:id`
+- `GET /api/auctions`
+- `GET /api/auctions/mine`
+- `POST /api/auctions`
+- `POST /api/auctions/:id/bid`
+- `POST /api/auctions/:id/buy-now`
+- `POST /api/auctions/:id/cancel`
+- `GET /api/listings`
+- `POST /api/listings`
+- `PUT /api/listings/:id`
+- `POST /api/listings/:id/action`
+- `GET /api/conversations`
+- `POST /api/conversations`
+- `GET /api/conversations/:id`
+- `POST /api/conversations/:id`
+- `GET /api/group-buys`
+- `GET /api/substitutions`
+- `POST /api/substitutions/:id`
+- `GET /api/admin/options`
+- `POST /api/admin/options`
+- `DELETE /api/admin/options/:id`
+- `PUT /api/admin/options/products/:pid`
+- `GET /api/admin/bookings`
+- `POST /api/admin/bookings/resources`
+- `GET /api/admin/bookings/products/:pid`
+- `PUT /api/admin/bookings/products/:pid`
+- `DELETE /api/admin/bookings/products/:pid`
+- `POST /api/admin/bookings/sweep`
+- `POST /api/admin/bookings/:id`
+- `GET /api/admin/price-offers`
+- `POST /api/admin/price-offers/:id`
+- `GET /api/admin/auctions`
+- `POST /api/admin/auctions`
+- `POST /api/admin/auctions/tick`
+- `POST /api/admin/auctions/:id/cancel`
+- `GET /api/admin/listings`
+- `POST /api/admin/listings/:id`
+- `GET /api/admin/conversations`
+- `POST /api/admin/conversations/messages/:id`
+- `GET /api/admin/conversations/:id`
+- `POST /api/admin/conversations/:id`
+- `GET /api/admin/group-buys`
+- `POST /api/admin/group-buys`
+- `POST /api/admin/group-buys/tick`
+- `POST /api/admin/group-buys/:id/cancel`
+- `GET /api/admin/substitutions/:orderId`
+- `POST /api/admin/substitutions/:orderId`
 - `POST /api/orders/:id/cancel`
 - `POST /api/orders/:id/invoice`
 - `GET /api/stores`

@@ -2836,6 +2836,562 @@
      ]
     }
    }
+  },
+  {
+   "key": "booking",
+   "name": "Booking",
+   "column": "status",
+   "initial": "held",
+   "states": "list:bookingStatuses",
+   "transitions": {
+    "held": [
+     "confirmed",
+     "cancelled",
+     "expired"
+    ],
+    "confirmed": [
+     "checked_in",
+     "completed",
+     "cancelled",
+     "no_show"
+    ],
+    "checked_in": [
+     "completed"
+    ]
+   },
+   "actions": {
+    "confirm": "confirmed",
+    "check_in": "checked_in",
+    "complete": "completed",
+    "cancel": "cancelled",
+    "no_show": "no_show",
+    "expire": "expired"
+   },
+   "meta": {
+    "held": {
+     "tags": [
+      "holding",
+      "occupies",
+      "cancellable",
+      "expirable"
+     ]
+    },
+    "confirmed": {
+     "tags": [
+      "occupies",
+      "cancellable",
+      "attendable"
+     ],
+     "stamps": [
+      {
+       "col": "confirmed_at",
+       "once": true
+      }
+     ]
+    },
+    "checked_in": {
+     "tags": [
+      "occupies"
+     ]
+    },
+    "completed": {
+     "tags": [
+      "success",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "void",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "no_show": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "expired": {
+     "tags": [
+      "void",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "price_offer",
+   "name": "Price offer",
+   "column": "status",
+   "initial": "open",
+   "states": "list:priceOfferStatuses",
+   "transitions": {
+    "open": [
+     "countered",
+     "accepted",
+     "refused",
+     "withdrawn",
+     "expired"
+    ],
+    "countered": [
+     "open",
+     "accepted",
+     "refused",
+     "withdrawn",
+     "expired"
+    ],
+    "accepted": [
+     "used",
+     "expired"
+    ]
+   },
+   "actions": {
+    "counter": "countered",
+    "rebid": "open",
+    "accept": "accepted",
+    "refuse": "refused",
+    "withdraw": "withdrawn",
+    "expire": "expired",
+    "use": "used"
+   },
+   "meta": {
+    "open": {
+     "tags": [
+      "live",
+      "awaiting_seller"
+     ]
+    },
+    "countered": {
+     "tags": [
+      "live",
+      "awaiting_buyer"
+     ]
+    },
+    "accepted": {
+     "tags": [
+      "live",
+      "agreed"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "refused": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "withdrawn": {
+     "tags": [
+      "terminal"
+     ]
+    },
+    "expired": {
+     "tags": [
+      "terminal"
+     ]
+    },
+    "used": {
+     "tags": [
+      "terminal",
+      "success"
+     ]
+    }
+   }
+  },
+  {
+   "key": "auction",
+   "name": "Auction",
+   "column": "status",
+   "initial": "scheduled",
+   "states": "list:auctionStatuses",
+   "transitions": {
+    "scheduled": [
+     "live",
+     "cancelled"
+    ],
+    "live": [
+     "sold",
+     "unsold",
+     "cancelled"
+    ],
+    "sold": [
+     "paid",
+     "unsold"
+    ]
+   },
+   "actions": {
+    "open": "live",
+    "sell": "sold",
+    "close_unsold": "unsold",
+    "cancel": "cancelled",
+    "pay": "paid"
+   },
+   "meta": {
+    "scheduled": {
+     "tags": [
+      "upcoming"
+     ]
+    },
+    "live": {
+     "tags": [
+      "accepting_bids"
+     ]
+    },
+    "sold": {
+     "tags": [
+      "won",
+      "awaiting_payment"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "unsold": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "paid": {
+     "tags": [
+      "terminal",
+      "success"
+     ]
+    }
+   }
+  },
+  {
+   "key": "listing",
+   "name": "Peer listing",
+   "column": "status",
+   "initial": "draft",
+   "states": "list:listingStatuses",
+   "transitions": {
+    "draft": [
+     "submitted",
+     "live",
+     "withdrawn"
+    ],
+    "submitted": [
+     "live",
+     "rejected",
+     "withdrawn"
+    ],
+    "rejected": [
+     "submitted",
+     "draft",
+     "withdrawn"
+    ],
+    "live": [
+     "sold",
+     "withdrawn",
+     "submitted"
+    ],
+    "withdrawn": [
+     "draft"
+    ]
+   },
+   "actions": {
+    "submit": "submitted",
+    "approve": "live",
+    "publish": "live",
+    "reject": "rejected",
+    "withdraw": "withdrawn",
+    "reopen": "draft",
+    "sell_out": "sold"
+   },
+   "meta": {
+    "draft": {
+     "tags": [
+      "editable"
+     ]
+    },
+    "submitted": {
+     "tags": [
+      "in_review"
+     ]
+    },
+    "live": {
+     "tags": [
+      "on_sale"
+     ],
+     "stamps": [
+      {
+       "col": "published_at"
+      }
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "editable",
+      "decision"
+     ]
+    },
+    "withdrawn": {
+     "tags": [
+      "off_sale"
+     ]
+    },
+    "sold": {
+     "tags": [
+      "terminal",
+      "success"
+     ]
+    }
+   }
+  },
+  {
+   "key": "peer_earning",
+   "name": "Seller earning",
+   "column": "status",
+   "initial": "pending",
+   "states": "list:earningStatuses",
+   "transitions": {
+    "pending": [
+     "credited",
+     "void"
+    ]
+   },
+   "actions": {
+    "credit": "credited",
+    "void": "void"
+   },
+   "meta": {
+    "pending": {
+     "tags": [
+      "held"
+     ]
+    },
+    "credited": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "credited_at"
+      }
+     ]
+    },
+    "void": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "conversation",
+   "name": "Conversation",
+   "column": "status",
+   "initial": "open",
+   "states": "list:conversationStatuses",
+   "transitions": {
+    "open": [
+     "closed",
+     "flagged"
+    ],
+    "flagged": [
+     "open",
+     "closed"
+    ],
+    "closed": [
+     "open"
+    ]
+   },
+   "actions": {
+    "close": "closed",
+    "flag": "flagged",
+    "reopen": "open"
+   },
+   "meta": {
+    "open": {
+     "tags": [
+      "writable"
+     ]
+    },
+    "flagged": {
+     "tags": [
+      "writable",
+      "needs_review"
+     ]
+    },
+    "closed": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "group_campaign",
+   "name": "Group-buy campaign",
+   "column": "status",
+   "initial": "open",
+   "states": "list:groupCampaignStatuses",
+   "transitions": {
+    "open": [
+     "succeeded",
+     "failed",
+     "cancelled"
+    ]
+   },
+   "actions": {
+    "succeed": "succeeded",
+    "fail": "failed",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "open": {
+     "tags": [
+      "joinable"
+     ]
+    },
+    "succeeded": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at"
+      }
+     ]
+    },
+    "failed": {
+     "tags": [
+      "terminal",
+      "refunds_members"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at"
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal",
+      "refunds_members"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "substitution",
+   "name": "Substitution",
+   "column": "status",
+   "initial": "proposed",
+   "states": "list:substitutionStatuses",
+   "transitions": {
+    "proposed": [
+     "applied",
+     "rejected",
+     "refunded"
+    ],
+    "rejected": [
+     "refunded"
+    ]
+   },
+   "actions": {
+    "apply": "applied",
+    "reject": "rejected",
+    "refund": "refunded"
+   },
+   "meta": {
+    "proposed": {
+     "tags": [
+      "awaiting_shopper"
+     ]
+    },
+    "applied": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "refunded": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
   }
  ]
 }
