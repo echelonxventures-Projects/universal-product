@@ -188,10 +188,14 @@ function renderFooter(stores) {
     </div>
     <div class="f-bottom">
       ${stores && stores.length > 1 ? `<div class="f-stores">Other stores on this platform: ${stores.map(x => `<a href="/index.html?store=${x.slug}">${esc(x.name)}</a>`).join(" · ")}</div>` : ""}
+      ${(CFG.languages || []).length > 1 ? `<label class="f-lang"><span class="sr-only">Language</span><select id="langSel">${CFG.languages.map(l => `<option value="${esc(l.key)}" ${l.key === CFG.lang ? "selected" : ""}>${esc(l.native)}</option>`).join("")}</select></label>` : ""}
       <p class="f-copy">${esc(T("footerNote", { year: new Date().getFullYear(), brand: CFG.brand.name }))}</p>
       ${CFG.brand.poweredBy ? `<p class="f-powered"><a href="#">${esc(CFG.brand.poweredBy)}</a></p>` : ""}
     </div>
   </footer>`;
+  /* the shopper's language choice is remembered for a year and the page re-renders in it */
+  const ls = $("#langSel");
+  if (ls) ls.addEventListener("change", () => { document.cookie = "azlang=" + encodeURIComponent(ls.value) + "; path=/; max-age=31536000; samesite=lax"; location.reload(); });
 }
 function renderSidebar() {
   $("#sidebar").innerHTML = `
@@ -1035,6 +1039,9 @@ async function initPage() {
   try {
     const [cfg, meta] = await Promise.all([api("/config"), api("/meta")]);
     CFG = cfg; META = meta;
+    /* the page speaks the answer's language, in its writing direction */
+    if (CFG.lang) document.documentElement.lang = CFG.lang;
+    if (CFG.dir) document.documentElement.dir = CFG.dir;
     computeDisp();
     applyTheme();
     await refreshSession();

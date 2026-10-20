@@ -869,14 +869,14 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C04 Universal Dimensions |
-| **Build status** | designed — declared and contracted; no code or live route yet |
+| **Build status** | partial |
 | **Owns** | [Expression](../UCOS-MASTER.md#t-expression), [Script](../UCOS-MASTER.md#t-script) |
 | **Responsible for** | Languages, Scripts, Direction, Plural Rules, Interface Text, Multilingual Names, Translation |
 | **Not responsible for** | Meaning, Place |
 | **Contract** | [UCOS-EXR-000001 Expression Architecture](#ucos-exr-000001) |
 | **Artifacts** | [UCOS-EXR-000001](#ucos-exr-000001) |
 | **Concepts** | 41 — `node _registry/compile.js --search <words> --kind concept --owner "Expression"` |
-| **Code** | — |
+| **Code** | `lib/expression.js`, `lib/seed/expression.json` |
 | **Managed in** | `_registry/domains.json` → `D-EXR` |
 
 **Live routes:** none yet.

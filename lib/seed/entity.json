@@ -5461,6 +5461,50 @@
      "type": "json"
     }
    ]
+  },
+  "message": {
+   "table": "messages",
+   "noTenant": true,
+   "pk": "lang",
+   "pk2": "key",
+   "pkType": "text",
+   "composite": true,
+   "label": "Messages",
+   "icon": "🗣️",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "lang",
+     "label": "Language",
+     "type": "select",
+     "options": "languages",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "key",
+     "label": "Message key",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "text",
+     "label": "Text",
+     "type": "textarea",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    }
+   ]
   }
  },
  "PARITY_DEFS": {
