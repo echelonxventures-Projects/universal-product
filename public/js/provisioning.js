@@ -49,6 +49,7 @@ async function vProvisioning() {
     + pol_bool("hsts", "Strict-Transport-Security (when TLS)")
     + pol_bool("demoHints", "Demo account hints on login screens")
     + pol_bool("cspInlineStyles", "Allow inline style attributes in CSP (disable for strictest mode)")
+    + '<label><span>Image hosts the storefront may load (comma-separated, e.g. cdn.example.com, *.brand.com)</span><input data-pol="cspImgHosts" placeholder="none — only this platform\'s own images"></label>'
     + '<p class="p-tag">HttpOnly + SameSite cookie flags are structural and cannot be disabled.</p></div></div>';
   h += '<div class="p-panel"><h2>New-store defaults (applied at launch)</h2><div class="p-form">'
     + '<label><span>Default plan</span><select data-pol="provisioning.defaultPlanId">' + plans.plans.map(function (x) { return '<option value="' + x.id + '" ' + (pol.provisioning.defaultPlanId === x.id ? "selected" : "") + '>' + esc(x.name) + '</option>'; }).join("") + '</select></label>'
@@ -73,6 +74,7 @@ async function vProvisioning() {
     + pol_num("provisioning.shipDaysPriority", "Priority delivery promise (days)")
     + pol_num("provisioning.shipDaysStandard", "Standard delivery promise (days)")
     + pol_num("paymentReconcileMinutes", "Check pending gateway payments every (minutes, 0 = never)", "", 0)
+    + pol_num("shopperSweepMinutes", "Re-check price/stock alerts and expire uncollected pickup parcels every (minutes, 0 = never)", "", 0)
     + '</div></div></div>';
   h += '<p><button class="p-btn primary" id="polSave">Save platform policy</button></p>';
   h += '<div class="p-panel"><h2>Layer scorecard</h2><div class="p-scroll-x"><table class="p-table"><thead><tr><th>#</th><th>Layer</th><th>Status</th><th>Detail</th></tr></thead><tbody>'

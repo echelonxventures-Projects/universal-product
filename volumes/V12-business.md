@@ -33,10 +33,10 @@
 | **Contract** | [UCOS-COM-000001 Universal Commerce Architecture](#ucos-com-000001) |
 | **Artifacts** | [UCOS-COM-000001](#ucos-com-000001), [UCOS-GPS-000001](#ucos-gps-000001), [UCOS-PRC-000001](#ucos-prc-000001), [UCOS-OFR-000001](#ucos-ofr-000001), [UCOS-SUB-000001](#ucos-sub-000001), [UCOS-CNT-000001](#ucos-cnt-000001), [UCOS-MKT-000001](#ucos-mkt-000001), [UCOS-INV-000001](#ucos-inv-000001), [UCOS-ORD-000001](#ucos-ord-000001), [UCOS-FUL-000001](#ucos-ful-000001) |
 | **Concepts** | 1969 — `node _registry/compile.js --search <words> --kind concept --owner "Commerce"` |
-| **Code** | `lib/billing.js`, `lib/offers.js`, `lib/goip.js`, `lib/shipping.js`, `lib/logistics.js`, `lib/fin.js`, `lib/fintech.js`, `lib/marketplace.js`, `lib/marketplace-ext.js`, `lib/affiliate.js`, `lib/trade.js`, `lib/qcommerce.js`, `lib/mobility.js`, `lib/operations.js`, `lib/recurring.js`, `lib/ugc.js`, `lib/gcatalog.js`, `lib/seed/catalog.json`, `lib/seed/goip.json`, `lib/seed/offers.json` |
+| **Code** | `lib/billing.js`, `lib/offers.js`, `lib/goip.js`, `lib/shipping.js`, `lib/logistics.js`, `lib/fin.js`, `lib/fintech.js`, `lib/marketplace.js`, `lib/marketplace-ext.js`, `lib/lists.js`, `lib/alerts.js`, `lib/pickup.js`, `lib/richcontent.js`, `lib/brandreg.js`, `lib/affiliate.js`, `lib/trade.js`, `lib/qcommerce.js`, `lib/mobility.js`, `lib/operations.js`, `lib/recurring.js`, `lib/ugc.js`, `lib/gcatalog.js`, `lib/seed/catalog.json`, `lib/seed/goip.json`, `lib/seed/offers.json` |
 | **Managed in** | `_registry/domains.json` → `D-BIZ` |
 
-**Live routes (267)** — what the platform serves today for this domain:
+**Live routes (296)** — what the platform serves today for this domain:
 
 - `GET /api/qc/promise`
 - `GET /api/qc/stores`
@@ -112,6 +112,35 @@
 - `GET /api/compare`
 - `POST /api/compare`
 - `POST /api/compare/remove`
+- `GET /api/lists`
+- `POST /api/lists`
+- `GET /api/lists/find`
+- `GET /api/lists/:id`
+- `PUT /api/lists/:id`
+- `DELETE /api/lists/:id`
+- `POST /api/lists/:id/items`
+- `PUT /api/list-items/:id`
+- `DELETE /api/list-items/:id`
+- `GET /api/shared-lists/:token`
+- `POST /api/shared-lists/:token/purchased`
+- `GET /api/alerts`
+- `POST /api/alerts`
+- `DELETE /api/alerts/:id`
+- `GET /api/pickup/points`
+- `GET /api/marketplace/sponsored`
+- `GET /api/admin/pickup`
+- `POST /api/admin/pickup/points`
+- `DELETE /api/admin/pickup/points/:id`
+- `POST /api/admin/pickup/reservations/:id`
+- `POST /api/admin/pickup/sweep`
+- `GET /api/admin/rich-content`
+- `POST /api/admin/rich-content`
+- `POST /api/admin/rich-content/:id`
+- `GET /api/admin/brand-registry`
+- `POST /api/admin/brand-registry/claims`
+- `POST /api/admin/brand-registry/claims/:id`
+- `POST /api/admin/brand-registry/reports`
+- `POST /api/admin/brand-registry/reports/:id`
 - `POST /api/orders/:id/cancel`
 - `POST /api/orders/:id/invoice`
 - `GET /api/stores`

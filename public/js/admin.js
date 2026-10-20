@@ -55,8 +55,8 @@ function toast(msg) {
    (every key is also a grant section), and NAVFLAT drives title lookup. */
 const NAV = [
   { g: "Overview", items: [["dash", "◈ Dashboard"], ["analytics", "📊 Analytics"], ["monitor", "📈 Monitor"]] },
-  { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["shipping", "📮 Shipping & Tracking"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"]] },
-  { g: "Catalogue", items: [["products", "📦 Products"], ["skus", "🔖 SKUs & Inventory"], ["brands", "🏷️ Brands"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["gcatalog", "🌐 Global Catalog"]] },
+  { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["shipping", "📮 Shipping & Tracking"], ["pickup", "📍 Pickup Points"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"]] },
+  { g: "Catalogue", items: [["products", "📦 Products"], ["skus", "🔖 SKUs & Inventory"], ["brands", "🏷️ Brands"], ["brandreg", "™️ Brand Registry"], ["richcontent", "✨ Rich Content"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["gcatalog", "🌐 Global Catalog"]] },
   { g: "Supply Chain", items: [["suppliers", "🏭 Suppliers"], ["ops_proc", "🛒 Purchase Requests"], ["planning", "📈 Planning & Replenishment"]] },
   { g: "Storefront", items: [["content", "🖼️ Home Content"], ["search", "🔎 Search & Discovery"], ["sitemap", "🗺️ Sitemap & SEO"], ["localizations", "🌐 Localizations"]] },
   { g: "Marketing & Growth", items: [["promotions", "🎟️ Offers & Coupons"], ["goip", "Ω∞ GOIP"], ["affiliate", "📣 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["marketplace", "📢 Marketplace & Ads"]] },
@@ -170,11 +170,20 @@ async function vFinance() {
 async function vMarketplace() {
   const [ads, m, rank] = await Promise.all([api("/marketplace/ads", {}), api("/admin/marketplace/metrics", {}), api("/marketplace/rank", { surface: "search", slots: 3 })]);
   const byM = {}; (ads.ads || []).forEach(a => byM[a.bid_model] = (byM[a.bid_model] || 0) + 1);
-  return `<div class="a-head"><h2>📣 Marketplace &amp; Ads</h2><p class="a-sub">Ad inventory · GSP bidding · impression/click ledger · last-click attribution · seller KPIs · take-rate settlement. Bid models / attribution models / surfaces in Data Studio: <code>mktBidModels</code>, <code>mktAttribution</code>, <code>mktSurfaces</code>.</p></div>
+  const tgt = a => { let t = {}; try { t = JSON.parse(a.target || "{}"); } catch (e) { } return [t.product_id ? "<code>" + esc(t.product_id) + "</code>" : "", (t.keywords || []).map(k => '<span class="a-chip">' + esc(k) + "</span>").join(" "), t.surface ? esc(t.surface) : ""].filter(Boolean).join(" · ") || "—"; };
+  return `<div class="a-head"><h2>📣 Marketplace &amp; Ads</h2><p class="a-sub">Ad inventory · GSP bidding · impression/click ledger · last-click attribution · seller KPIs · take-rate settlement. Bid models / attribution models / surfaces in Data Studio: <code>mktBidModels</code>, <code>mktAttribution</code>, <code>mktSurfaces</code>. Sponsored products in search, the reserve price, budgets and schedules are the <code>sponsored_ads</code> capability's.</p></div>
+  <div class="a-card"><h3>New sponsored product</h3>
+    <div class="p-form"><div class="row"><label><span>Name *</span><input id="adName"></label><label><span>Product id *</span><input id="adProd"></label><label><span>Seller id</span><input id="adSeller"></label></div>
+      <div class="row"><label><span>Keywords (comma-separated; blank = every search)</span><input id="adKw"></label>
+        <label><span>Surface</span><select id="adSurf"><option value="">any</option>${(ads.surfaces || []).map(x => `<option>${esc(x)}</option>`).join("")}</select></label></div>
+      <div class="row"><label><span>Bid model</span><select id="adModel">${(ads.bid_models || []).map(b => `<option value="${esc(b.key)}">${esc(b.name || b.key)}</option>`).join("")}</select></label>
+        <label><span>Bid *</span><input id="adBid" type="number" min="0" step="0.01"></label><label><span>Budget (0 = none)</span><input id="adBudget" type="number" min="0" step="0.01" value="0"></label></div>
+      <div class="row"><label><span>Starts</span><input id="adStart" type="datetime-local"></label><label><span>Ends</span><input id="adEnd" type="datetime-local"></label></div>
+      <button class="p-btn primary" id="adCreate">Create ad</button></div></div>
   <div class="a-card"><h3>Ad inventory</h3>
     <p class="a-sub">${Object.entries(byM).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("") || "no active ads"}</p>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>name</th><th>seller</th><th>model</th><th>bid</th><th>spent</th><th>status</th></tr></thead>
-      <tbody>${(ads.ads || []).slice(0, 15).map(a => `<tr><td>${esc(a.name)}</td><td>${a.seller_id || "—"}</td><td><span class="a-chip">${esc(a.bid_model)}</span></td><td>${money(a.bid_amount)}</td><td>${money(a.spent)}</td><td><span class="a-chip">${esc(a.status)}</span></td></tr>`).join("") || '<tr><td colspan="6">No ads yet.</td></tr>'}</tbody></table></div>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>name</th><th>seller</th><th>target</th><th>model</th><th>bid</th><th>spent / budget</th><th>status</th></tr></thead>
+      <tbody>${(ads.ads || []).slice(0, 25).map(a => `<tr><td>${esc(a.name)}</td><td>${a.seller_id || "—"}</td><td>${tgt(a)}</td><td><span class="a-chip">${esc(a.bid_model)}</span></td><td>${money(a.bid_amount)}</td><td>${money(a.spent)}${Number(a.budget) > 0 ? " / " + money(a.budget) : ""}</td><td><span class="a-chip">${esc(a.status)}</span></td></tr>`).join("") || '<tr><td colspan="7">No ads yet.</td></tr>'}</tbody></table></div>
   </div>
   <div class="a-card"><h3>Ad auction · surface <code>search</code> (top 3, GSP)</h3>
     <div class="a-tablewrap"><table class="a-table"><thead><tr><th>position</th><th>ad</th><th>seller</th><th>charge</th></tr></thead>
@@ -184,6 +193,19 @@ async function vMarketplace() {
     <div class="a-tablewrap"><table class="a-table"><thead><tr><th>seller</th><th>orders</th><th>revenue</th><th>take rate</th><th>commission</th><th>ad spend</th><th>ad ROI</th></tr></thead>
       <tbody>${(m.sellers || []).map(x => `<tr><td>${esc(x.seller_id)}</td><td>${x.orders}</td><td>${money(x.revenue)}</td><td>${(x.take_rate*100).toFixed(0)}%</td><td>${money(x.commission)}</td><td>${money(x.ads_spend)}</td><td>${x.ad_roi}</td></tr>`).join("") || '<tr><td colspan="7">No seller data yet.</td></tr>'}</tbody></table></div>
   </div>`;
+}
+function wireMarketplace() {
+  const b = $("#adCreate"); if (!b) return;
+  b.onclick = async () => {
+    const kw = $("#adKw").value.split(",").map(x => x.trim()).filter(Boolean);
+    const target = Object.assign({ product_id: $("#adProd").value.trim() }, kw.length ? { keywords: kw } : {}, $("#adSurf").value ? { surface: $("#adSurf").value } : {});
+    if (!$("#adName").value.trim() || !target.product_id || !(Number($("#adBid").value) > 0)) return toast("Name, product and a bid are required");
+    try {
+      await api("/admin/marketplace/ads", "POST", { name: $("#adName").value.trim(), seller_id: $("#adSeller").value || null, bid_model: $("#adModel").value, bid_amount: Number($("#adBid").value),
+        budget: Number($("#adBudget").value) || 0, target, start_at: $("#adStart").value ? new Date($("#adStart").value).toISOString() : null, end_at: $("#adEnd").value ? new Date($("#adEnd").value).toISOString() : null });
+      toast("Ad created"); render();
+    } catch (e) { toast(e.message); }
+  };
 }
 async function vUgc() {
   const [q, revs] = await Promise.all([api("/admin/ugc/queue", {}), api("/admin/reviews", {})]);
@@ -417,6 +439,177 @@ function wireMktOps() {
   $$("[data-mktapp]").forEach(b => b.onclick = async () => {
     try { await api("/marketplace/onboarding/" + b.dataset.mktapp + "/review", "POST", { decision: b.dataset.v }); toast("Onboarding " + b.dataset.v); render(); }
     catch (e) { toast(e.message); }
+  });
+}
+
+/* ---------- Pickup points, rich content, brand registry ----------
+   Each screen renders what its engine answered: the kinds, modules and report kinds are
+   registry rows, and every button is one of the state machine's verbs offered for the
+   record's current state — no state, kind or module is named in this file. */
+const verbButtons = (acts, rec, attr) => acts.filter(a => (rec.next || []).includes(a.to))
+  .map(a => `<button class="btn-white sm" data-${attr}="${esc(a.verb)}" data-id="${rec.id}">${esc(a.verb.charAt(0).toUpperCase() + a.verb.slice(1))}</button>`).join(" ");
+const stateChip = st => `<span class="a-chip" title="${esc(st && st.key)}">${esc((st && (st.icon ? st.icon + " " : "") + st.label) || "")}</span>`;
+async function vPickup() {
+  const gate = await coGate("pickup");
+  if (!gate.any) return coOff("pickup point", "📍 Pickup Points", gate.off);
+  const d = await api("/admin/pickup", {});
+  window.__pk = d;
+  const kindName = k => ((d.kinds || []).find(x => x.key === k) || { name: k }).name;
+  return `<div class="a-head"><h2>📍 Pickup Points &amp; Lockers</h2><p class="a-sub">Points shoppers can choose at checkout instead of a home address. The kinds of point are the <code>pickupKinds</code> registry; the fee, holding days, code length and lock-out are the <code>pickup_points</code> capability's params; a parcel's life is the <code>pickup</code> state machine.</p></div>
+  <div class="a-card"><h3>Points</h3>
+    <div style="margin-bottom:8px"><button class="btn-yellow sm" data-pk-new>＋ New point</button></div>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>kind</th><th>address</th><th>in use</th><th>hours</th><th>arrives in</th><th>state</th><th></th></tr></thead>
+    <tbody>${(d.points || []).map(p => `<tr><td><code>${esc(p.code)}</code></td><td>${esc(p.name)}</td><td>${esc(kindName(p.kind))}</td>
+      <td>${esc([p.address, p.city, p.postcode].filter(Boolean).join(", "))}</td><td>${p.held}${Number(p.capacity) > 0 ? " / " + p.capacity : ""}${p.full ? ' <span class="a-chip">full</span>' : ""}</td>
+      <td>${esc(p.hours || "—")}</td><td>${p.eta != null ? esc(p.eta) + " d" : "—"}</td><td>${p.active ? "on" : "off"}</td>
+      <td style="white-space:nowrap"><button class="btn-white sm" data-pk-edit="${p.id}">Edit</button> <button class="btn-white sm" data-pk-del="${p.id}">Remove</button></td></tr>`).join("") || '<tr><td colspan="9">No pickup points yet — add a locker, a counter or a shop.</td></tr>'}</tbody></table></div></div>
+  <div class="a-card"><h3>Parcels</h3>
+    <div style="margin-bottom:8px"><button class="btn-white sm" data-pk-sweep>Expire overdue parcels now</button></div>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>order</th><th>customer</th><th>point</th><th>state</th><th>hold until</th><th>wrong codes</th><th></th></tr></thead>
+    <tbody>${(d.reservations || []).map(r => `<tr><td><code>${esc(r.order_num || r.order_id)}</code></td><td>${esc(r.customer || "—")}</td><td>${esc(r.point_name || "—")}</td>
+      <td>${stateChip(r.state)}</td><td>${esc(r.hold_until || "—")}</td><td>${r.attempts || 0}</td><td style="white-space:nowrap">${verbButtons(d.actions || [], r, "pk-act")}</td></tr>`).join("") || '<tr><td colspan="7">No parcels for pickup yet.</td></tr>'}</tbody></table></div></div>`;
+}
+function pickupModal(p) {
+  const d = window.__pk || {};
+  const v = p || { active: 1 };
+  const m = modal(`<div class="p-modal-head"><h3>${p ? "Edit" : "New"} pickup point</h3><button data-mclose>✕</button></div>
+    <div class="p-form">
+      <div class="row"><label><span>Code *</span><input id="pkCode" value="${esc(v.code || "")}" placeholder="e.g. station-locker"></label>
+        <label><span>Kind</span><select id="pkKind">${(d.kinds || []).map(k => `<option value="${esc(k.key)}" ${k.key === v.kind ? "selected" : ""}>${esc(k.name)}</option>`).join("")}</select></label></div>
+      <label><span>Name *</span><input id="pkName" value="${esc(v.name || "")}"></label>
+      <label><span>Address *</span><input id="pkAddr" value="${esc(v.address || "")}"></label>
+      <div class="row"><label><span>Town / city</span><input id="pkCity" value="${esc(v.city || "")}"></label><label><span>Region</span><input id="pkRegion" value="${esc(v.region || "")}"></label><label><span>Postcode</span><input id="pkPost" value="${esc(v.postcode || "")}"></label></div>
+      <div class="row"><label><span>Capacity (0 = no limit)</span><input id="pkCap" type="number" min="0" value="${esc(v.capacity || 0)}"></label><label><span>Days to arrive (blank = store default)</span><input id="pkEta" type="number" min="0" value="${v.eta_days != null ? esc(v.eta_days) : ""}"></label></div>
+      <div class="row"><label><span>Latitude</span><input id="pkLat" value="${esc(v.lat != null ? v.lat : "")}"></label><label><span>Longitude</span><input id="pkLng" value="${esc(v.lng != null ? v.lng : "")}"></label></div>
+      <label><span>Opening hours</span><input id="pkHours" value="${esc(v.hours || "")}" placeholder="e.g. Mon–Sat 8–20"></label>
+      <label><input id="pkActive" type="checkbox" ${v.active ? "checked" : ""}> Offered at checkout</label>
+      <button class="p-btn primary" id="pkSave">Save</button></div>`);
+  m.querySelector("[data-mclose]").onclick = () => { m.innerHTML = ""; };
+  m.querySelector("#pkSave").onclick = async () => {
+    const val = id => m.querySelector(id).value;
+    try {
+      await api("/admin/pickup/points", "POST", { id: p ? p.id : undefined, code: val("#pkCode"), kind: val("#pkKind"), name: val("#pkName"), address: val("#pkAddr"), city: val("#pkCity"), region: val("#pkRegion"),
+        postcode: val("#pkPost"), capacity: val("#pkCap"), eta_days: val("#pkEta"), lat: val("#pkLat"), lng: val("#pkLng"), hours: val("#pkHours"), active: m.querySelector("#pkActive").checked });
+      m.innerHTML = ""; toast("Pickup point saved"); render();
+    } catch (e) { toast(e.message); }
+  };
+}
+function wirePickup() {
+  const d = window.__pk || {};
+  $$("[data-pk-new]").forEach(b => b.onclick = () => pickupModal(null));
+  $$("[data-pk-edit]").forEach(b => b.onclick = () => pickupModal((d.points || []).find(p => String(p.id) === b.dataset.pkEdit)));
+  $$("[data-pk-del]").forEach(b => b.onclick = async () => {
+    if (!confirm("Remove this point? A point with parcels is switched off instead.")) return;
+    try { const r = await api("/admin/pickup/points/" + b.dataset.pkDel, "DELETE"); toast(r.deactivated ? "Switched off (it has parcels)" : "Removed"); render(); } catch (e) { toast(e.message); }
+  });
+  $$("[data-pk-sweep]").forEach(b => b.onclick = async () => { try { const r = await api("/admin/pickup/sweep", "POST", {}); toast(r.expired + " parcel(s) expired"); render(); } catch (e) { toast(e.message); } });
+  $$("[data-pk-act]").forEach(b => b.onclick = async () => {
+    const a = (d.actions || []).find(x => x.verb === b.dataset.pkAct) || {};
+    let code;
+    if (a.needs_code) { code = prompt("The customer's pickup code"); if (code == null) return; }
+    try { const r = await api("/admin/pickup/reservations/" + b.dataset.id, "POST", { action: a.verb, code }); toast("Parcel " + r.reservation.state.label); render(); } catch (e) { toast(e.message); }
+  });
+}
+
+/* rich product content: a module's fields are declared on its contentModules row — the
+   editor draws an input for each declared field by its type */
+const RC_INPUT = { text: "input", image: "input", textarea: "textarea", list: "textarea", table: "textarea" };
+const rcValue = v => Array.isArray(v) ? v.map(x => Array.isArray(x) ? x.join(" | ") : x).join("\n") : (v == null ? "" : String(v));
+function rcModuleHtml(def, val, i) {
+  return `<div class="a-card" data-rc-mod="${i}" data-kind="${esc(def.key)}" style="padding:10px;margin:8px 0"><div style="display:flex;justify-content:space-between"><b>${esc(def.name)}</b><button class="btn-white sm" data-rc-drop="${i}">Remove</button></div>
+    ${(def.fields || []).map(f => { const tag = RC_INPUT[f.type] || "textarea"; const v = rcValue(val && val[f.key]);
+      return `<label style="display:block;margin-top:6px"><span>${esc(f.label || f.key)}${f.required ? " *" : ""}</span>${tag === "input" ? `<input data-f="${esc(f.key)}" value="${esc(v)}" style="width:100%">` : `<textarea data-f="${esc(f.key)}" rows="3" style="width:100%">${esc(v)}</textarea>`}</label>`; }).join("")}</div>`;
+}
+async function vRichContent() {
+  const gate = await coGate("richcontent");
+  if (!gate.any) return coOff("rich content", "✨ Rich Content", gate.off);
+  const d = await api("/admin/rich-content", {});
+  window.__rc = d;
+  return `<div class="a-head"><h2>✨ Rich Product Content</h2><p class="a-sub">Brand content below a product's details. The modules and their fields are the <code>contentModules</code> registry; review, the module limit and owner-only publishing are the <code>rich_content</code> capability's params.</p></div>
+  <div class="a-card"><h3>Author</h3>
+    <div class="p-form"><div class="row"><label><span>Product id *</span><input id="rcProd" placeholder="e.g. LX1A2B3C4D"></label>
+      <label><span>On behalf of seller</span><select id="rcSeller"><option value="">— the store —</option>${(d.sellers || []).map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></label></div>
+      <div id="rcMods"></div>
+      <div class="row"><label><span>Add a module</span><select id="rcKind">${(d.modules || []).map(m => `<option value="${esc(m.key)}">${esc(m.name)}</option>`).join("")}</select></label><button class="btn-white sm" id="rcAdd">＋ Add</button></div>
+      <button class="p-btn primary" id="rcSave">Save draft</button></div></div>
+  <div class="a-card"><h3>Content</h3>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>version</th><th>modules</th><th>state</th><th>by</th><th>review</th><th></th></tr></thead>
+    <tbody>${(d.content || []).map(c => `<tr><td>${esc(c.product ? c.product.title : c.product_id)} <code>${esc(c.product_id)}</code></td><td>v${c.version}</td>
+      <td>${c.modules.map(m => `<span class="a-chip">${esc(((d.modules || []).find(x => x.key === m.kind) || { name: m.kind }).name)}</span>`).join(" ")}</td>
+      <td>${stateChip(c.state)}</td><td>${esc(c.author || "—")}</td><td>${esc(c.review_notes || "")}</td>
+      <td style="white-space:nowrap"><button class="btn-white sm" data-rc-edit="${c.id}">Edit</button> ${verbButtons(d.actions || [], c, "rc-act")}</td></tr>`).join("") || '<tr><td colspan="7">No rich content yet.</td></tr>'}</tbody></table></div></div>`;
+}
+function wireRichContent() {
+  const d = window.__rc || {};
+  const box = $("#rcMods"); if (!box) return;
+  let mods = [];
+  const draw = () => {
+    box.innerHTML = mods.map((m, i) => { const def = (d.modules || []).find(x => x.key === m.kind); return def ? rcModuleHtml(def, m, i) : ""; }).join("") || '<p class="a-sub">No modules yet — add one below.</p>';
+    $$("[data-rc-drop]").forEach(b => b.onclick = () => { collect(); mods.splice(Number(b.dataset.rcDrop), 1); draw(); });
+  };
+  /* read what was typed back into the module list before redrawing or saving */
+  const collect = () => { $$("[data-rc-mod]").forEach(el => { const m = { kind: el.dataset.kind }; el.querySelectorAll("[data-f]").forEach(f => { m[f.dataset.f] = f.value; }); mods[Number(el.dataset.rcMod)] = m; }); };
+  draw();
+  $("#rcAdd").onclick = () => { collect(); mods.push({ kind: $("#rcKind").value }); draw(); };
+  $("#rcSave").onclick = async () => {
+    collect();
+    try { const r = await api("/admin/rich-content", "POST", { product_id: $("#rcProd").value.trim(), seller_id: $("#rcSeller").value || null, modules: mods }); toast("Draft saved · v" + r.content.version); render(); }
+    catch (e) { toast(e.message); }
+  };
+  $$("[data-rc-edit]").forEach(b => b.onclick = () => {
+    const c = (d.content || []).find(x => String(x.id) === b.dataset.rcEdit); if (!c) return;
+    $("#rcProd").value = c.product_id; $("#rcSeller").value = c.seller_id || "";
+    mods = c.modules.map(m => Object.assign({}, m)); draw(); window.scrollTo(0, 0);
+  });
+  $$("[data-rc-act]").forEach(b => b.onclick = async () => {
+    const notes = prompt("Notes for the author (optional)", ""); if (notes === null) return;
+    try { const r = await api("/admin/rich-content/" + b.dataset.id, "POST", { action: b.dataset.rcAct, notes }); toast("Content " + r.content.state.label); render(); } catch (e) { toast(e.message); }
+  });
+}
+
+async function vBrandReg() {
+  const gate = await coGate("brandreg");
+  if (!gate.any) return coOff("brand registry", "™️ Brand Registry", gate.off);
+  const d = await api("/admin/brand-registry", {});
+  window.__br = d;
+  const owners = (d.claims || []).filter(c => c.owner);
+  const kindName = k => ((d.reportKinds || []).find(x => x.key === k) || { name: k }).name;
+  return `<div class="a-head"><h2>™️ Brand Registry</h2><p class="a-sub">Sellers prove they own a brand; an approved owner reports infringing offers, and upholding a report moves the offer to the state the <code>brand_registry</code> capability names. Report kinds are the <code>brandReportKinds</code> registry.</p></div>
+  <div class="a-card"><h3>Claims</h3>
+    <div class="p-form"><div class="row"><label><span>Brand *</span><select id="brBrand">${(d.brands || []).map(b => `<option value="${esc(b.key)}">${esc(b.label)}</option>`).join("")}</select></label>
+      <label><span>Seller</span><select id="brSeller"><option value="">— the store —</option>${(d.sellers || []).map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></label></div>
+      <div class="row"><label><span>Trademark number</span><input id="brTm"></label><label><span>Trademark office</span><input id="brOffice"></label></div>
+      <label><span>Evidence (one item per line)</span><textarea id="brEv" rows="2"></textarea></label>
+      <button class="p-btn primary" id="brClaim">Submit claim</button></div>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>brand</th><th>seller</th><th>trademark</th><th>state</th><th>notes</th><th></th></tr></thead>
+    <tbody>${(d.claims || []).map(c => `<tr><td>${esc(c.brand)}</td><td>${esc(c.seller ? c.seller.name : "the store")}</td><td>${esc(c.trademark_number || "—")}${c.trademark_office ? " · " + esc(c.trademark_office) : ""}</td>
+      <td>${stateChip(c.state)}</td><td>${esc(c.notes || "")}</td><td style="white-space:nowrap">${verbButtons(d.claimActions || [], c, "br-claim")}</td></tr>`).join("") || '<tr><td colspan="6">No claims yet.</td></tr>'}</tbody></table></div></div>
+  <div class="a-card"><h3>Infringement reports</h3>
+    ${owners.length ? `<div class="p-form"><div class="row"><label><span>Reporting owner *</span><select id="brOwner">${owners.map(c => `<option value="${c.id}">${esc(c.brand)} · ${esc(c.seller ? c.seller.name : "the store")}</option>`).join("")}</select></label>
+      <label><span>Kind *</span><select id="brKind">${(d.reportKinds || []).map(k => `<option value="${esc(k.key)}">${esc(k.name)}</option>`).join("")}</select></label></div>
+      <div class="row"><label><span>Offer id</span><input id="brOffer"></label><label><span>…or product id</span><input id="brProd"></label><label><span>and seller</span><select id="brRSeller"><option value="">—</option>${(d.sellers || []).map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></label></div>
+      <label><span>Details</span><textarea id="brDetails" rows="2"></textarea></label>
+      <button class="p-btn primary" id="brReport">File report</button></div>` : '<p class="a-sub">A brand needs an approved owner before anyone can report against it.</p>'}
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>brand</th><th>kind</th><th>product</th><th>offer</th><th>seller</th><th>details</th><th>state</th><th></th></tr></thead>
+    <tbody>${(d.reports || []).map(r => `<tr><td>${esc(r.brand)}</td><td>${esc(kindName(r.kind))}</td><td><code>${esc(r.product_id || "—")}</code></td><td>${r.offer ? "#" + r.offer.id + " · " + esc(r.offer.offer_status) : "—"}</td>
+      <td>${esc(r.seller_id || "—")}</td><td>${esc(r.details || "")}${r.outcome ? "<br><i>" + esc(r.outcome) + "</i>" : ""}</td><td>${stateChip(r.state)}</td><td style="white-space:nowrap">${verbButtons(d.reportActions || [], r, "br-report")}</td></tr>`).join("") || '<tr><td colspan="8">No reports.</td></tr>'}</tbody></table></div></div>`;
+}
+function wireBrandReg() {
+  const c = $("#brClaim"); if (c) c.onclick = async () => {
+    try { await api("/admin/brand-registry/claims", "POST", { brand: $("#brBrand").value, seller_id: $("#brSeller").value || null, trademark_number: $("#brTm").value, trademark_office: $("#brOffice").value, evidence: $("#brEv").value }); toast("Claim submitted"); render(); }
+    catch (e) { toast(e.message); }
+  };
+  const r = $("#brReport"); if (r) r.onclick = async () => {
+    try { await api("/admin/brand-registry/reports", "POST", { claim_id: $("#brOwner").value, kind: $("#brKind").value, offer_id: $("#brOffer").value || null, product_id: $("#brProd").value || null, seller_id: $("#brRSeller").value || null, details: $("#brDetails").value }); toast("Report filed"); render(); }
+    catch (e) { toast(e.message); }
+  };
+  $$("[data-br-claim]").forEach(b => b.onclick = async () => {
+    const notes = prompt("Notes for the record (optional)", ""); if (notes === null) return;
+    try { const x = await api("/admin/brand-registry/claims/" + b.dataset.id, "POST", { action: b.dataset.brClaim, notes }); toast("Claim " + x.claim.state.label); render(); } catch (e) { toast(e.message); }
+  });
+  $$("[data-br-report]").forEach(b => b.onclick = async () => {
+    const outcome = prompt("Outcome, for the record", ""); if (outcome === null) return;
+    try { const x = await api("/admin/brand-registry/reports/" + b.dataset.id, "POST", { action: b.dataset.brReport, outcome }); toast("Report " + x.report.state.label + (x.report.offers_affected ? " · " + x.report.offers_affected + " offer(s) moved" : "")); render(); } catch (e) { toast(e.message); }
   });
 }
 
@@ -1810,11 +2003,14 @@ async function render() {
     else if (view === "billing") body.innerHTML = await vBilling();
     else if (view === "modules") { body.innerHTML = await vModules(); }
     else if (view === "audit") { body.innerHTML = await vAudit(); wireAudit(); }
-    else if (view === "marketplace") body.innerHTML = await vMarketplace();
+    else if (view === "marketplace") { body.innerHTML = await vMarketplace(); wireMarketplace(); }
     else if (view === "ugc") body.innerHTML = await vUgc();
     else if (view === "qcops") { body.innerHTML = await vQcOps(); wireQcOps(); }
     else if (view === "finops") { body.innerHTML = await vFinOps(); wireFinOps(); }
     else if (view === "mktops") { body.innerHTML = await vMktOps(); wireMktOps(); }
+    else if (view === "pickup") { body.innerHTML = await vPickup(); wirePickup(); }
+    else if (view === "richcontent") { body.innerHTML = await vRichContent(); wireRichContent(); }
+    else if (view === "brandreg") { body.innerHTML = await vBrandReg(); wireBrandReg(); }
     else if (view === "tradeops") { body.innerHTML = await vTradeOps(); wireTradeOps(); }
     else if (view === "helpdesk") { body.innerHTML = await vHelpdesk(); } else if (view === "affiliate") renderAffiliate(); else if (view === "sitemap") renderSitemap(); else if (view === "shipping") renderShipping();
     else if (view === "retention") body.innerHTML = await vRetention();

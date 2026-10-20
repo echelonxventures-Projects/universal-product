@@ -2511,6 +2511,331 @@
      ]
     }
    }
+  },
+  {
+   "key": "product_watch",
+   "name": "Product watch",
+   "column": "status",
+   "initial": "active",
+   "states": "list:watchStatuses",
+   "transitions": {
+    "active": [
+     "fired",
+     "cancelled"
+    ],
+    "fired": [
+     "active",
+     "cancelled"
+    ]
+   },
+   "actions": {
+    "cancel": "cancelled",
+    "rearm": "active"
+   },
+   "meta": {
+    "active": {
+     "tags": [
+      "watching",
+      "live"
+     ]
+    },
+    "fired": {
+     "tags": [
+      "fired",
+      "ended"
+     ],
+     "stamps": [
+      {
+       "col": "fired_at"
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "ended",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "pickup",
+   "name": "Pickup reservation",
+   "column": "status",
+   "initial": "reserved",
+   "states": "list:pickupStatuses",
+   "transitions": {
+    "reserved": [
+     "ready",
+     "cancelled"
+    ],
+    "ready": [
+     "collected",
+     "expired",
+     "cancelled"
+    ],
+    "expired": [
+     "returned"
+    ]
+   },
+   "actions": {
+    "arrive": "ready",
+    "collect": "collected",
+    "expire": "expired",
+    "return": "returned",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "reserved": {
+     "tags": [
+      "holding",
+      "awaiting_parcel",
+      "cancellable"
+     ]
+    },
+    "ready": {
+     "tags": [
+      "holding",
+      "collectable",
+      "expirable",
+      "cancellable"
+     ],
+     "stamps": [
+      {
+       "col": "ready_at",
+       "once": true
+      }
+     ]
+    },
+    "collected": {
+     "tags": [
+      "success",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "collected_at",
+       "once": true
+      },
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "expired": {
+     "tags": [
+      "failure",
+      "returnable"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "returned": {
+     "tags": [
+      "terminal"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "void",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "rich_content",
+   "name": "Rich product content",
+   "column": "status",
+   "initial": "draft",
+   "states": "list:richContentStatuses",
+   "transitions": {
+    "draft": [
+     "submitted",
+     "approved"
+    ],
+    "submitted": [
+     "approved",
+     "rejected"
+    ],
+    "rejected": [
+     "submitted",
+     "approved"
+    ],
+    "approved": [
+     "retired"
+    ]
+   },
+   "actions": {
+    "submit": "submitted",
+    "approve": "approved",
+    "reject": "rejected",
+    "retire": "retired"
+   },
+   "meta": {
+    "draft": {
+     "tags": [
+      "editable"
+     ]
+    },
+    "submitted": {
+     "tags": [
+      "in_review"
+     ],
+     "stamps": [
+      {
+       "col": "submitted_at"
+      }
+     ]
+    },
+    "approved": {
+     "tags": [
+      "live",
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "editable",
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    },
+    "retired": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "brand_claim",
+   "name": "Brand registry claim",
+   "column": "status",
+   "initial": "submitted",
+   "states": "list:brandClaimStatuses",
+   "transitions": {
+    "submitted": [
+     "approved",
+     "rejected"
+    ],
+    "rejected": [
+     "submitted"
+    ],
+    "approved": [
+     "revoked"
+    ]
+   },
+   "actions": {
+    "approve": "approved",
+    "reject": "rejected",
+    "resubmit": "submitted",
+    "revoke": "revoked"
+   },
+   "meta": {
+    "submitted": {
+     "tags": [
+      "in_review",
+      "pending"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "owner",
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    },
+    "revoked": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "brand_report",
+   "name": "Brand infringement report",
+   "column": "status",
+   "initial": "open",
+   "states": "list:brandReportStatuses",
+   "transitions": {
+    "open": [
+     "actioned",
+     "dismissed"
+    ]
+   },
+   "actions": {
+    "uphold": "actioned",
+    "dismiss": "dismissed"
+   },
+   "meta": {
+    "open": {
+     "tags": [
+      "in_review"
+     ]
+    },
+    "actioned": {
+     "tags": [
+      "upheld",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    },
+    "dismissed": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    }
+   }
   }
  ]
 }

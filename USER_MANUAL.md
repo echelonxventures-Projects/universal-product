@@ -139,6 +139,18 @@ an account lets you track orders, save items and earn faster checkout.
 
 ## A2. Save & track
 - **Wishlist / Saved list** — tap the save/heart on any product; find them under *Saved*.
+- **Lists** (where the store offers them) — **♡ Add to List** on any product puts it on one of
+  your lists, or a new one: a wish list, a shopping list, an idea list (the kinds are the
+  store's). Give each item a priority, a quantity and a note. Under **Lists** in the header you
+  can rename a list, move items between lists, add them to your bag, and choose who sees it:
+  only you, anyone with the link (**Copy link**; **New link** cuts off the old one) or everyone
+  (public lists can be found by name). Someone shopping from your shared wish list can mark an
+  item **bought**, so nobody buys it twice. A small "↓ was …" shows when a price fell since
+  you added the item.
+- **Price & stock alerts** — **🔔 Price alert** on a product tells you when its price drops
+  (by more than the store's threshold) or reaches a price you set; on a sold-out product,
+  **Tell me when it's back** tells you when it returns. Alerts arrive in your notifications and
+  by email; manage or stop them under **Lists → Your alerts**.
 - **Recently viewed** — surfaced on your account/home so you can jump back.
 - **Delivery estimate** — enter your ZIP / postal code to see whether an item reaches you
   and roughly when.
@@ -157,7 +169,12 @@ card. Recipients apply the code at checkout.
 
 ## A5. Checkout
 1. Review the cart, then **Proceed to checkout**.
-2. Enter **shipping details** (name, address, city, state, ZIP, phone).
+2. Enter **shipping details** (name, address, city, state, ZIP, phone) — or, where the store
+   has pickup points, choose **Collect from a pickup point**, search by postcode or town and
+   pick a locker, counter or shop. You then need only your name; the summary shows the point's
+   fee and when your parcel will be there. After ordering you get a **pickup code** (on the
+   confirmation, by email and on **Your Orders**); you're told when the parcel is ready and
+   until when it is held. Show the code to collect it.
 3. Choose a **delivery option** (standard/express; cost and ETA are shown). On a store that
    charges **live carrier rates**, the carriers' own rates to your address appear once the
    address is entered — pick one; the cheapest is preselected. The order summary is priced by
@@ -348,6 +365,44 @@ Usage is metered to an AI ledger and can appear on your invoice.
 - **🌐 Localizations (i18n)** — per-product (and other objects) translations applied at the
   shopper's locale.
 
+## B11. Lists, alerts, pickup points, brand content, brand registry and sponsored products
+Each is a capability: switch it on and tune it in **⚙️ Capabilities** (`wish_lists`,
+`product_alerts`, `pickup_points`, `rich_content`, `brand_registry`, `sponsored_ads`). A
+section appears in the menu only when its capability is on. The kinds and statuses behind each
+are registries a platform admin edits in Data Studio — a new kind of list, alert, pickup point,
+content module or infringement report needs no code.
+- **Lists and alerts** run themselves once on: shoppers keep lists and set alerts on the
+  storefront. Tune how many lists and items a shopper may keep, whether lists may be shared or
+  public, the smallest price drop that alerts, how often one alert may fire, and whether alerts
+  are also emailed.
+- **📍 Pickup Points** — **＋ New point**: a short code, a name, a kind (locker, counter, shop…),
+  the address, opening hours, a capacity (0 = no limit) and how many days parcels take to
+  arrive. A full point drops out of checkout until it has room. Under **Parcels**, each order
+  collected from a point offers only the next legal steps: **Arrive** when the parcel is in
+  (the shopper is told, with their code and a collect-by date), **Collect** when they come — type
+  the code they show you; after too many wrong codes the parcel locks — and **Expire / Return**
+  for parcels never collected (**Expire overdue parcels now** does it at once; the platform
+  also does it on a timer). You never see the code. The fee, holding days, code length and
+  lock-out are the capability's params.
+- **✨ Rich Content** — enter a product id, choose the seller you're publishing for (if any),
+  **＋ Add** modules (banner, image with text, feature list, comparison table, Q&A) and fill
+  their fields; lists take one entry per line and tables one row per line with cells separated
+  by `|`. **Save draft**, then **Submit**; a reviewer **Approves** (it goes live below the
+  product details, replacing the previous version) or **Rejects** with notes. Images must be
+  the store's own (`/media/…`) or on a host the platform allows. With *review* turned off,
+  submitting publishes at once; with *owner-only* on, only the brand's registered owner may
+  publish.
+- **™️ Brand Registry** — record a seller's claim to a brand (trademark number and office,
+  evidence) and **Approve** or **Reject** it; a brand has one approved owner unless the
+  capability says otherwise. An approved owner's **infringement report** names an offer (or a
+  product and seller) and a kind; **Uphold** moves the offending offer to the state the
+  capability names (by default suspended) and re-runs the buy-box, **Dismiss** closes it.
+  Product pages of a registered brand show a **✔ Registered brand** badge.
+- **📢 Marketplace & Ads → New sponsored product** — the product, keywords (blank = every
+  search), the bid model and bid, an optional budget and start/end. Ads appear labelled at the
+  top of search results that name a keyword, ranked by the auction; an ad stops when it has
+  spent its budget or passed its end, and a bid under the reserve price never serves.
+
 ---
 
 # Part C — Support Staff guide
@@ -513,8 +568,10 @@ pending."** Walk this path top to bottom; afterwards you can launch stores.
      rotated credentials. Existing hashes upgrade transparently on next login.
    - **Abuse control** — auth and API rate limits per IP, lockout threshold and backoff.
    - **Session & transport** — CSRF double-submit, HSTS under TLS, demo hints on login
-     screens, CSP inline-style allowance. *HttpOnly + SameSite cookies are structural and
-     cannot be disabled.*
+     screens, CSP inline-style allowance, and the **image hosts** storefronts may load images
+     from (e.g. a brand's CDN for rich product content — each becomes an `https:` source in the
+     content security policy; leave it empty to allow only the platform's own images).
+     *HttpOnly + SameSite cookies are structural and cannot be disabled.*
    - **New-store defaults** — default plan, whether new stores get a seeded demo catalogue,
      whether gateways start in **sandbox**, and the policy gates stores inherit: currency
      overrides, customer coupons, **global offers**, fiscal-context pickers.
@@ -526,6 +583,9 @@ pending."** Walk this path top to bottom; afterwards you can launch stores.
      delivery promise** in days, and how often pending **gateway payments are checked**
      with their gateway (0 = never). Every list is read from the live registries, so a mode or
      provider added later appears here. Saving changes only the fields you changed.
+   - **Shopper sweep** — how often shoppers' price and stock alerts are re-checked (prices
+     also move through imports and rules, not only edits) and uncollected pickup parcels
+     past their holding time are expired; 0 turns the timer off.
    - **Save platform policy** — the platform is now marked *Provisioned* (status card shows
      when, plus master-key version and whether the pepper is set).
    - The **Layer scorecard** at the bottom shows the live 10-layer security posture.

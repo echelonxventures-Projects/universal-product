@@ -69,7 +69,7 @@ A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A c
 | [V10](volumes/V10-intelligence.md) | C10 Intelligence | 1 of 1 | 1 | 1 | 7 KB |
 | [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 85 KB |
 | [V11.2](volumes/V11.2-platform.md) | C11 Platform | 2 of 2 | 3 | 6 | 39 KB |
-| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 76 KB |
+| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 77 KB |
 | [V13](volumes/V13-composition.md) | C13 Composition | 1 of 1 | 1 | 1 | 7 KB |
 
 <a id="index"></a>
@@ -1213,7 +1213,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 142 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 147 files.
 
 ### C02 · Meaning
 
@@ -1418,6 +1418,11 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `lib/fintech.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/marketplace.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/marketplace-ext.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/lists.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/alerts.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/pickup.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/richcontent.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/brandreg.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/affiliate.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/trade.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/qcommerce.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
@@ -2016,6 +2021,7 @@ console groupings of capabilities; each names a package. Source: `lib/seed/meta.
 |---|---|
 | 🛒 Marketplace (`marketplace`) | [Package](volumes/V13-composition.md#d-pkg) |
 | 🛍️ Storefront (`storefront`) | [Package](volumes/V13-composition.md#d-pkg) |
+| 🧺 Shopper services (`shopper`) | [Package](volumes/V13-composition.md#d-pkg) |
 | ⚡ Quick-commerce (`qc`) | [Package](volumes/V13-composition.md#d-pkg) |
 | 💸 Fintech (`fintech`) | [Package](volumes/V13-composition.md#d-pkg) |
 | 🤝 B2B trust & trade (`trade`) | [Package](volumes/V13-composition.md#d-pkg) |

@@ -150,7 +150,7 @@ function renderHeader() {
               ${u ? `<a href="#" data-act="logout">Sign out</a>` : `<a href="#" data-act="signin-open"><span class="btn-yellow small">${esc(T("signIn"))}</span></a>`}</div>
             <div><h4>Services</h4>
               ${CFG.features.giftCards ? `<a href="gift-cards.html">Gift Balance · ${money(S.gift)}</a>` : ""}
-              ${CFG.features.registry ? `<a href="registry.html">Registries</a>` : ""}
+              ${CFG.features.registry || atoms().wish_lists ? `<a href="registry.html">${atoms().wish_lists ? "Lists" : "Registries"}</a>` : ""}
               ${CFG.features.customerService ? `<a href="customer-service.html">Client Care</a>` : ""}
               ${u && u.role === "admin" && CFG.features.adminPortal ? `<a href="console.html?scope=store" class="adm-link">⬡ Admin Console</a>` : ""}</div>
           </div>
@@ -164,7 +164,7 @@ function renderHeader() {
       <button class="sub-all" id="allBtn">≡ Menu</button>
       ${CFG.features.deals ? `<a href="deals.html">${esc(T("dealsTitle"))}</a>` : ""}
       ${CFG.features.customerService ? `<a href="customer-service.html">Client Care</a>` : ""}
-      ${CFG.features.registry ? `<a href="registry.html">Registries</a>` : ""}
+      ${CFG.features.registry || atoms().wish_lists ? `<a href="registry.html">${atoms().wish_lists ? "Lists" : "Registries"}</a>` : ""}
       ${CFG.features.giftCards ? `<a href="gift-cards.html">Gift Cards</a>` : ""}
       <a href="results.html?sort=new">New Season</a><a href="results.html?sort=best">Favourites</a>
       <span class="sub-spacer"></span>
@@ -182,7 +182,7 @@ function renderFooter(stores) {
       <div class="f-cols">
         <div><h4>The House</h4><a href="#">About ${esc(CFG.brand.name)}</a><a href="#">Careers</a><a href="#">Journal</a></div>
         <div><h4>Shopping</h4>${CFG.features.deals ? `<a href="deals.html">${esc(T("dealsTitle"))}</a>` : ""}<a href="results.html?sort=new">New Season</a><a href="results.html?sort=best">Favourites</a><a href="results.html">All Departments</a></div>
-        <div><h4>Services</h4>${CFG.features.giftCards ? `<a href="gift-cards.html">Gift Cards</a>` : ""}${CFG.features.registry ? `<a href="registry.html">Registries</a>` : ""}${CFG.features.customerService ? `<a href="customer-service.html">Client Care</a>` : ""}<a href="orders.html">Track an Order</a></div>
+        <div><h4>Services</h4>${CFG.features.giftCards ? `<a href="gift-cards.html">Gift Cards</a>` : ""}${CFG.features.registry || atoms().wish_lists ? `<a href="registry.html">${atoms().wish_lists ? "Lists" : "Registries"}</a>` : ""}${CFG.features.customerService ? `<a href="customer-service.html">Client Care</a>` : ""}<a href="orders.html">Track an Order</a></div>
         <div><h4>Legal</h4><a href="#">Conditions</a><a href="#">Privacy</a><a href="#">Accessibility</a>${S.user && S.user.role === "admin" && CFG.features.adminPortal ? `<a href="console.html?scope=store">Admin Console</a>` : ""}</div>
       </div>
     </div>
@@ -236,7 +236,8 @@ function renderModals() {
     <div class="m-body"><div class="m-prod" id="rfqProd"></div>
       <input id="rfqName" placeholder="Company / contact name"><input id="rfqEmail" type="email" placeholder="Work email">
       <input id="rfqQty" type="number" min="1" placeholder="Quantity"><input id="rfqPrice" type="number" step="0.01" placeholder="Target unit price (optional)">
-      <button class="btn-orange w100" id="rfqSubmit">Submit RFQ</button></div></div></div>`;
+      <button class="btn-orange w100" id="rfqSubmit">Submit RFQ</button></div></div></div>
+  <div class="overlay hidden" id="dynModal"><div class="modal"><div class="m-head"><h3 id="dynTitle"></h3><button data-close>✕</button></div><div class="m-body" id="dynBody"></div></div></div>`;
 }
 function updateChrome() { renderHeader(); renderSidebar(); renderModals(); wireChrome(); }
 
@@ -363,8 +364,85 @@ async function pageResults() {
       ${res.pages > 1 ? `<div class="r-pages">${res.page > 1 ? `<a class="pnav" href="${mk({ page: res.page - 1 })}">‹ Previous</a>` : `<span class="pnav disabled">‹ Previous</span>`}<span class="pcur">Page <b>${res.page}</b> of ${res.pages}</span>${res.page < res.pages ? `<a class="pnav" href="${mk({ page: res.page + 1 })}">Next ›</a>` : `<span class="pnav disabled">Next ›</span>`}</div>` : ""}</div>
   </div>`;
   $("#sortSel").onchange = e => { location.href = mk({ sort: e.target.value, page: 1 }); };
+  sponsoredRow(q, res.items.map(p => p.id));
   const fb = $("#fallbackGrid");
   if (fb) fb.innerHTML = (await api("/products?sort=best&limit=4")).items.map(card).join("");
+}
+
+/* ============ LISTS · ALERTS · RICH CONTENT · SPONSORED ============
+   Each appears only where the store switched its atom on (CFG.atoms); the kinds of list,
+   priorities, visibilities, alert kinds and content modules are the server's registry rows. */
+const atoms = () => CFG.atoms || {};
+function dynModal(title, html) { $("#dynTitle").textContent = title; $("#dynBody").innerHTML = html; openModal("dynModal"); return $("#dynBody"); }
+async function listPicker(productId) {
+  if (!S.user) { openModal("authModal"); return; }
+  const v = await api("/lists");
+  const body = dynModal("Add to a list", `
+    ${v.lists.map((l, i) => `<label class="lp-opt"><input type="radio" name="lpList" value="${l.id}" ${i === 0 ? "checked" : ""}> <b>${esc(l.name)}</b> <span class="lp-meta">${esc(l.kind.name)} · ${l.count} item${l.count === 1 ? "" : "s"}</span></label>`).join("")}
+    <label class="lp-opt"><input type="radio" name="lpList" value="" ${v.lists.length ? "" : "checked"}> <b>A new list</b></label>
+    <div id="lpNew" class="lp-new" ${v.lists.length ? "hidden" : ""}><input id="lpName" placeholder="List name" maxlength="80"><select id="lpKind">${v.kinds.map(k => `<option value="${esc(k.key)}" ${k.default ? "selected" : ""}>${esc(k.name)}</option>`).join("")}</select></div>
+    <select id="lpPrio">${v.priorities.map(p => `<option value="${esc(p.key)}" ${p.default ? "selected" : ""}>Priority: ${esc(p.name)}</option>`).join("")}</select>
+    <input id="lpNote" placeholder="Note (optional)" maxlength="300">
+    <button class="btn-yellow w100" id="lpSave">Add to list</button>`);
+  body.querySelectorAll("input[name=lpList]").forEach(r => r.onchange = () => { $("#lpNew").hidden = !!(body.querySelector("input[name=lpList]:checked") || {}).value; });
+  $("#lpSave").onclick = async () => {
+    try {
+      let id = (body.querySelector("input[name=lpList]:checked") || {}).value;
+      if (!id) id = (await api("/lists", "POST", { name: $("#lpName").value.trim(), kind: $("#lpKind").value })).list.id;
+      const r = await api(`/lists/${id}/items`, "POST", { product_id: productId, priority: $("#lpPrio").value, note: $("#lpNote").value });
+      closeModal(); toast(`♡ Added to <a href="registry.html?id=${r.list.id}">${esc(r.list.name)}</a>`);
+      if (window.__rv && window.__rv.id === productId && $(".pp")) pageProduct();
+    } catch (e) { toast("⚠️ " + esc(e.message)); }
+  };
+}
+async function alertPicker(productId) {
+  if (!S.user) { openModal("authModal"); return; }
+  const v = await api("/alerts?product=" + encodeURIComponent(productId));
+  const kinds = (v.kinds || []).filter(k => k.available);
+  if (!kinds.length) { toast("No alerts can be set on this item right now"); return; }
+  const body = dynModal("Tell me when…", kinds.map((k, i) => `<label class="lp-opt"><input type="radio" name="alKind" value="${esc(k.key)}" data-target="${k.needs_target ? 1 : ""}" ${i === 0 ? "checked" : ""}> ${esc(k.name)}</label>`).join("") +
+    `<div id="alTargetRow" hidden><input id="alTarget" type="number" step="0.01" min="0" placeholder="Your price (${esc(CFG.commerce.currency)})"></div>
+    <button class="btn-yellow w100" id="alSave">Set alert</button><p class="m-help">We'll tell you in your notifications and by email.</p>`);
+  const sync = () => { const r = body.querySelector("input[name=alKind]:checked"); $("#alTargetRow").hidden = !(r && r.dataset.target); };
+  body.querySelectorAll("input[name=alKind]").forEach(r => r.onchange = sync); sync();
+  $("#alSave").onclick = async () => {
+    try {
+      await api("/alerts", "POST", { product_id: productId, kind: (body.querySelector("input[name=alKind]:checked") || {}).value, target_price: Number($("#alTarget").value) || undefined });
+      closeModal(); toast(`🔔 Alert set · <a href="registry.html#alerts">Manage alerts</a>`);
+      if (window.__rv && window.__rv.id === productId && $(".pp")) pageProduct();
+    } catch (e) { toast("⚠️ " + esc(e.message)); }
+  };
+}
+/* a module's fields render by their declared type; a type with media sits beside the text */
+const RC_RENDER = {
+  text: { html: v => `<h3 class="rc-h">${esc(v)}</h3>` },
+  textarea: { html: v => `<p class="rc-p">${esc(v).replace(/\n/g, "<br>")}</p>` },
+  image: { media: true, html: v => `<img class="rc-img" src="${esc(v)}" alt="" loading="lazy">` },
+  list: { html: v => `<ul class="rc-list">${(v || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul>` },
+  table: { html: (v, f) => `<table class="rc-table">${(v || []).map((r, i) => `<tr>${r.map(c => f.header_row && i === 0 ? `<th>${esc(c)}</th>` : `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</table>` }
+};
+function richContentHtml(rc) {
+  const defs = Object.fromEntries((rc.kinds || []).map(k => [k.key, k]));
+  const mods = (rc.modules || []).map(m => {
+    const def = defs[m.kind]; if (!def) return "";
+    const fs = (def.fields || []).filter(f => m[f.key] != null && RC_RENDER[f.type]);
+    const media = fs.filter(f => RC_RENDER[f.type].media), words = fs.filter(f => !RC_RENDER[f.type].media);
+    const part = list => list.map(f => RC_RENDER[f.type].html(m[f.key], f)).join("");
+    return `<div class="rc-mod${media.length && words.length ? " rc-split" : ""}">${media.length ? `<div class="rc-media">${part(media)}</div>` : ""}${words.length ? `<div class="rc-words">${part(words)}</div>` : ""}</div>`;
+  }).join("");
+  return mods ? `<section class="rc"><h2 class="rc-title">From the brand</h2>${mods}</section>` : "";
+}
+/* sponsored results: an ad's click is reported (and billed) only for a signed-in shopper */
+async function sponsoredRow(q, exclude) {
+  if (!atoms().sponsored_ads || !q) return;
+  let sp; try { sp = await api(`/marketplace/sponsored?${qs({ q, exclude: exclude.join(",") })}`); } catch (e) { return; }
+  if (!sp.items.length) return;
+  const box = document.createElement("div"); box.className = "r-sponsored";
+  box.innerHTML = `<div class="r-grid">${sp.items.map(it => `<div class="sp-card" data-ad="${it.ad}"><span class="sp-tag">${esc(sp.label || "")}</span>${card(it.product)}</div>`).join("")}</div>`;
+  const host = $(".r-main"); if (host) host.prepend(box);
+  box.querySelectorAll(".sp-card").forEach(c => c.addEventListener("click", () => {
+    if (S.user) fetch("/api/marketplace/ads/" + encodeURIComponent(c.dataset.ad) + "/event", { method: "POST", keepalive: true, credentials: "same-origin", headers: { "Content-Type": "application/json", "x-csrf": __csrf() }, body: "{}" }).catch(() => { });
+  }));
 }
 
 /* ============ PRODUCT ============ */
@@ -418,7 +496,7 @@ async function pageProduct() {
       <div class="pp-gallery"><div class="pp-thumbs">${thumbs}</div><div class="pp-main" id="ppMain">${mediaTile(media[0], 0)}</div></div>
       <div class="pp-info">
         <h1>${esc(p.t)}</h1>
-        <a class="pp-brand" href="results.html?brand=${encodeURIComponent(p.b)}">${esc(brandLabel(p.b))} · ${esc(deptLabel(p.d))}</a>
+        <a class="pp-brand" href="results.html?brand=${encodeURIComponent(p.b)}">${esc(brandLabel(p.b))} · ${esc(deptLabel(p.d))}</a>${data.brand_registry ? ` <span class="pp-regbrand" title="The brand's owner is registered with ${esc(CFG.brand.name)}">✔ Registered brand</span>` : ""}
         <div class="pp-rate">${starsHtml(p.r)}<a class="pp-rcount">${p.c.toLocaleString(CFG.commerce.locale)} ratings</a>${p.fl.includes("bs") ? `<span class="pp-bestsell">House Favourite</span>` : ""}${p.fl.includes("new") ? `<span class="pp-new">New Season</span>` : ""}</div>
         <hr><div class="pp-price-row">${priceHtml(p.p)}${p.l > p.p ? `<span class="pp-off">−${discount(p)}%</span> <s class="pp-list">${money(p.l)}</s>` : ""}${isRental ? '<span class="pp-cycle">/ rental period</span>' : ""}${isSub ? '<span class="pp-cycle">/ month</span>' : ""}</div>
         ${tiers.length ? `<table class="pp-tiers"><tr><th>Qty</th><th>Unit Price</th></tr>${tiers.map(t => `<tr><td>${t.qty}+</td><td>${money(t.price)}</td></tr>`).join("")}</table><p class="pp-b2b">B2B volume pricing — <a href="#" data-act="rfq-open" data-id="${p.id}">submit an RFQ</a> for larger lots.</p>` : ""}
@@ -451,8 +529,11 @@ async function pageProduct() {
         ${f.subscribeSave ? `<div class="bb-sub"><button class="btn-white bb-btn" data-act="sub-save" data-id="${p.id}">🔁 Subscribe &amp; Save ${subDisc}%</button><div class="a-sub">Delivers every <b>${subFreq} days</b> · skip or pause anytime</div></div>` : ""}
         ${p.vertical && p.vertical.test_drive ? `<button class="btn-white bb-btn" data-act="rfq-open" data-id="${p.id}">🚗 Book a test drive</button>` : ""}
         <div class="bb-ship"><div><em>Ships from</em> ${esc(CFG.brand.name)} Atelier</div><div><em>Sold by</em> ${esc(p.b)}</div><div><em>Returns</em> 30-day, complimentary</div><div><em>Payment</em> 🔒 Secure</div></div>` : `<div class="oos">${esc(T("outOfStock"))}</div>`}
+        ${atoms().wish_lists ? `<button class="btn-white bb-btn" data-act="lst-add" data-id="${p.id}">♡ Add to List</button>${data.mine && data.mine.lists.length ? `<div class="bb-note">In ${data.mine.lists.map(l => `<a href="registry.html?id=${l.id}">${esc(l.name)}</a>`).join(", ")}</div>` : ""}` : ""}
+        ${atoms().product_alerts ? `<button class="btn-white bb-btn" data-act="alert-open" data-id="${p.id}">🔔 ${p.st ? "Price alert" : "Tell me when it's back"}</button>${data.mine && data.mine.alerts.length ? `<div class="bb-note">You have ${data.mine.alerts.length} alert${data.mine.alerts.length === 1 ? "" : "s"} on this item · <a href="registry.html#alerts">manage</a></div>` : ""}` : ""}
       </div>
     </div>
+    ${data.rich_content ? richContentHtml(data.rich_content) : ""}
     ${relGroups.bundle || relGroups.cross_sell || relGroups.upsell ? `
     <section class="pp-fbt"><h3>${esc(T("fbtTitle"))}</h3><div class="fbt-row">
       <label><input type="checkbox" checked disabled> ${img(p, "fbt")}</label><span class="fbt-plus">+</span>
@@ -561,6 +642,8 @@ async function pageCheckout() {
   main.innerHTML = `
   <div class="co"><div class="co-grid"><div class="co-left">
     <div class="co-sec"><h3><span class="co-num">1</span> Shipping address</h3>
+      ${atoms().pickup_points ? `<div class="co-mode"><label><input type="radio" name="coMode" value="" checked> Deliver to an address</label><label><input type="radio" name="coMode" value="1"> Collect from a pickup point</label></div>
+      <div id="coPickup" hidden><input id="coPkQ" placeholder="Find a point near… (postcode or town)" value="${esc(S.zip)}"><div id="coPkList" class="co-pk-list"></div></div>` : ""}
       <form id="shipForm" class="co-form"><input id="coName" placeholder="Full name" required value="${esc(S.user ? S.user.name : "")}">
         <input id="coAddr" placeholder="Address" required>
         <div class="co-row3"><input id="coCity" placeholder="City" required><input id="coState" placeholder="State"><input id="coZip" placeholder="ZIP" value="${esc(S.zip)}"></div>
@@ -568,7 +651,7 @@ async function pageCheckout() {
     <div class="co-sec"><h3><span class="co-num">2</span> Payment method</h3>
       ${gws.map((g, i) => `<div class="pay-opt"><label><input type="radio" name="pay" value="${g.id}" ${i === 0 ? "checked" : ""}> <b>${g.emoji} ${esc(g.name)}</b> <span class="pay-meta">${esc((g.methods || []).join(" · "))}${g.mode === "sandbox" ? " · test mode" : ""}</span></label></div>`).join("")}
       ${CFG.features.giftCards && S.gift > 0 ? `<p class="pay-gift">🎁 Gift balance ${money(S.gift)} applied automatically</p>` : ""}</div>
-    ${f.fiscalSelection ? `<div class="co-sec" id="coCtx" hidden><h3><span class="co-num">＋</span> Fiscal &amp; billing contexts</h3><div id="ctxPicks"></div><p class="pay-meta">Chosen contexts are validated against the platform context entities.</p></div>` : ""}
+    ${CFG.features.fiscalSelection ? `<div class="co-sec" id="coCtx" hidden><h3><span class="co-num">＋</span> Fiscal &amp; billing contexts</h3><div id="ctxPicks"></div><p class="pay-meta">Chosen contexts are validated against the platform context entities.</p></div>` : ""}
     <div class="co-sec"><h3><span class="co-num">3</span> Review items and shipping</h3>
       ${c.items.map(({ product: p, qty, unit }) => `<div class="co-item">${img(p, "tile")}<div class="co-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><span class="co-i-qty">Qty: ${qty}${unit < p.p ? " · volume price" : ""}</span></div><div class="co-i-price">${priceHtml(unit * qty)}</div></div>`).join("")}
       ${carriers.map((x, i) => `<div class="co-del"><label><input type="radio" name="ship" value="${x.id}" ${i === 0 ? "checked" : ""}> ${x.emoji} <b>${esc(x.name)}</b> · ${x.eta[0]}–${x.eta[1]} days · ${c.qualifies ? "Complimentary" : money(x.baseFee || cm.shipFee)}</label></div>`).join("")}
@@ -587,7 +670,31 @@ async function pageCheckout() {
   </div></aside></div></div>`;
   /* the summary is priced by the server — the same code that charges the order — so a live
      carrier rate, a membership's free shipping or a per-line tax rule shows before paying */
-  const addr = () => ({ name: $("#coName").value, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value });
+  /* a pickup point replaces the address: its fields stop being required and the point is sent */
+  let pickupPoint = "";
+  const addr = () => ({ name: $("#coName").value, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value, pickup_point: pickupPoint || undefined });
+  const loadPoints = async () => {
+    const box = $("#coPkList"); if (!box) return;
+    try {
+      const r = await api("/pickup/points?" + qs({ q: $("#coPkQ").value.trim() }));
+      box.innerHTML = r.points.map((pt, i) => `<label class="co-pk"><input type="radio" name="coPk" value="${pt.id}" ${String(pt.id) === String(pickupPoint) || (!pickupPoint && i === 0) ? "checked" : ""}>
+        <b>${esc(pt.name)}</b> <span class="a-chip">${esc(pt.kind ? pt.kind.name : "")}</span><br><span class="pay-meta">${esc([pt.address, pt.city, pt.postcode].filter(Boolean).join(", "))}${pt.hours ? " · " + esc(pt.hours) : ""}${pt.eta_days != null ? " · ready in " + esc(pt.eta_days) + " days" : ""}</span></label>`).join("")
+        + (r.points.length ? `<p class="pay-meta">${r.fee ? "Pickup fee " + money(r.fee) : "No pickup fee"} · parcels wait ${esc(r.hold_days)} days</p>` : `<p class="pay-meta">No pickup points with room right now.</p>`);
+      const first = box.querySelector("input[name=coPk]:checked");
+      pickupPoint = first ? first.value : "";
+      box.querySelectorAll("input[name=coPk]").forEach(el => el.onchange = () => { pickupPoint = el.value; recalc(); });
+    } catch (e) { box.innerHTML = `<p class="pay-meta">${esc(e.message)}</p>`; pickupPoint = ""; }
+    recalc();
+  };
+  $$("input[name=coMode]").forEach(el => el.onchange = () => {
+    const on = !!el.value && el.checked;
+    $("#coPickup").hidden = !on;
+    ["#coAddr", "#coCity"].forEach(id => { $(id).required = !on; });
+    $("#coAddr").hidden = on; $(".co-row3").hidden = on;
+    if (on) loadPoints(); else { pickupPoint = ""; recalc(); }
+  });
+  let pkTimer = null;
+  if ($("#coPkQ")) $("#coPkQ").addEventListener("input", () => { clearTimeout(pkTimer); pkTimer = setTimeout(loadPoints, 400); });
   const pickedCarrier = () => (document.querySelector('input[name=ship]:checked') || {}).value || (carriers[0] || {}).id || "";
   let quote = null, rateId = null, qSeq = 0;
   const recalc = async () => {
@@ -600,7 +707,8 @@ async function pageCheckout() {
       $("#osTax").textContent = money(q.tax);
       const g = $("#osGift"); if (g) g.textContent = q.gift ? `-${money(q.gift)}` : money(0);
       $("#osTotal").innerHTML = priceHtml(q.total);
-      $("#coRates").innerHTML = q.source === "live" && q.rates.length ? `<p class="pay-meta">Live carrier rates to your address${q.free ? " — shipping is on us" : ""}:</p>` + q.rates.map(r => `<div class="co-del"><label><input type="radio" name="rate" value="${esc(r.id)}" ${r.id === q.rate_id ? "checked" : ""}> <b>${esc(r.carrier)}</b> ${esc(r.service)}${r.days ? ` · ${r.days} days` : ""} · ${money(r.price)}</label></div>`).join("") : "";
+      if (q.pickup) $("#coRates").innerHTML = `<p class="pay-meta">📍 Collect from <b>${esc(q.pickup.name)}</b>, ${esc(q.pickup.address)}${q.eta ? " · ready in about " + esc(q.eta) + " days" : ""}</p>`;
+      else $("#coRates").innerHTML = q.source === "live" && q.rates.length ? `<p class="pay-meta">Live carrier rates to your address${q.free ? " — shipping is on us" : ""}:</p>` + q.rates.map(r => `<div class="co-del"><label><input type="radio" name="rate" value="${esc(r.id)}" ${r.id === q.rate_id ? "checked" : ""}> <b>${esc(r.carrier)}</b> ${esc(r.service)}${r.days ? ` · ${r.days} days` : ""} · ${money(r.price)}</label></div>`).join("") : "";
       $$('input[name="rate"]').forEach(el => el.onchange = () => { rateId = el.value; recalc(); });
     } catch (e) { }
     return quote;
@@ -633,7 +741,7 @@ async function pageCheckout() {
         name: $("#coName").value, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value,
         gateway: (document.querySelector('input[name=pay]:checked') || {}).value || (gws[0] || {}).id,
         method: ((gws.find(g => g.id === (document.querySelector('input[name=pay]:checked') || {}).value) || {}).methods || ["card"])[0],
-        carrier: pickedCarrier(), rate_id: rateId,
+        carrier: pickedCarrier(), rate_id: rateId, pickup_point: pickupPoint || undefined,
         contexts: Object.fromEntries($$("[data-ctx]").filter(x => x.value).map(x => [x.dataset.ctx, x.value]))
       });
       if (r.order.payment_redirect && /^https:\/\//.test(r.order.payment_redirect)) { location.href = r.order.payment_redirect; return; }
@@ -641,6 +749,7 @@ async function pageCheckout() {
       main.innerHTML = `
       <div class="oco"><div class="oco-card"><div class="oco-check">✓</div><div><h2>${esc(T("orderPlaced"))}, ${esc($("#coName").value.split(" ")[0])}!</h2>
         <p>Order #<b>${r.order.num}</b> · ${esc(r.order.gateway_name)} txn <b>${esc(r.order.txn_ref)}</b> (${esc(r.order.payment_status)})</p>
+        ${r.order.pickup ? `<p class="oco-sub">📍 Collect from <b>${esc(r.order.pickup.point.name)}</b>, ${esc(r.order.pickup.point.address)} — we'll tell you when it's ready. Your pickup code: <b class="pk-code">${esc(r.order.pickup.code)}</b></p>` : ""}
         <p class="oco-sub">Arriving <b>${dLong(r.order.eta)}</b> · Total <b>${money(r.order.total)}</b>${r.order.discount ? ` · saved ${money(r.order.discount)} with ${r.order.promos.map(x => esc(x.name)).join(", ")}` : ""}</p></div></div>
         <div class="oco-card oco-track"><h3>Dispatch</h3>
           <div class="track-steps"><span class="done">📦 Packed</span><i>—</i><span class="done">🚚 In transit</span><i>—</i><span>🏠 Out for delivery</span><i>—</i><span>✅ ${dShort(r.order.eta)}</span></div>
@@ -720,6 +829,7 @@ async function pageOrders() {
       <div class="ord-h-r"><em>ORDER #${esc(o.num)}</em><button class="btn-white" data-act="buy-again" data-num="${esc(o.num)}">Buy it again</button><button class="btn-white" data-act="return-open" data-num="${esc(o.num)}">Return</button></div></div>
       <div class="ord-body">${items.map(({ product: p, qty }) => `<div class="ord-i">${img(p, "big")}<div class="ord-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><span>${esc(p.b)}</span></div><span class="ord-i-qty">Qty: ${qty}</span></div>`).join("")}
         <div class="ord-buy">${items.map(({ product: p }) => `<a href="${prodLink(p)}">${img(p, "tile")}</a>`).join("")}</div>
+        ${o.pickup ? `<div class="ord-pk">📍 ${esc(o.pickup.point ? o.pickup.point.name : "")} · ${esc((o.pickup.state.icon ? o.pickup.state.icon + " " : "") + o.pickup.state.label)}${o.pickup.code ? ` · pickup code <b class="pk-code">${esc(o.pickup.code)}</b>` : ""}${o.pickup.hold_until ? ` · collect by ${esc(String(o.pickup.hold_until).slice(0, 16))} UTC` : ""}<br><span class="pay-meta">${esc(o.pickup.point ? [o.pickup.point.address, o.pickup.point.city].filter(Boolean).join(", ") : "")}${o.pickup.point && o.pickup.point.hours ? " · " + esc(o.pickup.point.hours) : ""}</span></div>` : ""}
         <div class="ord-r"><div class="ord-status ${st[1]}">${st[0]} · ${dShort(o.eta_days || 5)}</div><a href="#" data-act="track">Track</a></div></div></div>`;
   }).join("");
 }
@@ -810,7 +920,119 @@ function pageCS() {
   };
   loadCases();
 }
-function pageRegistry() {
+/* the lists page: a list shared by its link (?list=<token>), or — signed in — my lists (?id=),
+   my price & stock alerts and public lists to find. Without the wish_lists or product_alerts
+   atom it is the registries page it always was. */
+async function pageRegistry() {
+  const u = params(), main = $("#page");
+  if (!atoms().wish_lists && !atoms().product_alerts) return registryIntro();
+  if (u.get("list")) return sharedListPage(u.get("list"));
+  document.title = `Your Lists — ${CFG.brand.name}`;
+  if (!S.user) {
+    main.innerHTML = `<div class="reg"><div class="reg-hero"><h1>Your Lists</h1><p>Sign in to keep wish lists, shopping lists and price alerts.</p><button class="btn-yellow" data-act="signin-open">Sign in</button></div>${atoms().wish_lists ? findBox() : ""}</div>`;
+    wireFind(); return;
+  }
+  const [v, al] = await Promise.all([atoms().wish_lists ? api("/lists") : null, atoms().product_alerts ? api("/alerts") : null]);
+  const sel = v && (v.lists.find(l => String(l.id) === u.get("id")) || v.lists[0]);
+  const cur = sel ? (await api(`/lists/${sel.id}`)).list : null;
+  main.innerHTML = `<div class="lst">
+    ${v ? `<aside class="lst-side"><h2>Your Lists</h2>${v.lists.map(l => `<a class="${cur && l.id === cur.id ? "on" : ""}" href="registry.html?id=${l.id}"><b>${esc(l.name)}</b><span>${esc(l.kind.name)} · ${esc(l.visibility.name)} · ${l.count}</span></a>`).join("")}
+      <div class="lst-new"><h4>New list</h4><input id="lnName" placeholder="List name" maxlength="80"><select id="lnKind">${v.kinds.map(k => `<option value="${esc(k.key)}" ${k.default ? "selected" : ""}>${esc(k.name)}</option>`).join("")}</select><button class="btn-yellow w100" id="lnCreate">Create list</button></div></aside>` : ""}
+    <div class="lst-main">${cur ? listHtml(cur, v) : v ? `<div class="r-empty"><h3>No lists yet</h3><p>Create one, or use ♡ Add to List on any product.</p></div>` : ""}
+      ${al ? alertsHtml(al) : ""}
+      ${v ? findBox() : ""}</div></div>`;
+  wireFind();
+  const lc = $("#lnCreate"); if (lc) lc.onclick = async () => {
+    try { const r = await api("/lists", "POST", { name: $("#lnName").value.trim(), kind: $("#lnKind").value }); location.href = "registry.html?id=" + r.list.id; } catch (e) { toast("⚠️ " + esc(e.message)); }
+  };
+  if (location.hash === "#alerts" && $("#alerts")) $("#alerts").scrollIntoView();
+  /* every control on a list names what it does (data-lx) and the record it acts on; a
+     handler that answers false has nothing to save (the page is not redrawn) */
+  const item = el => `/list-items/${el.dataset.item}`;
+  const ON_CHANGE = {
+    vis: el => api(`/lists/${cur.id}`, "PUT", { visibility: el.value }),
+    prio: el => api(item(el), "PUT", { priority: el.value }),
+    qty: el => api(item(el), "PUT", { qty: Number(el.value) || 1 }),
+    note: el => api(item(el), "PUT", { note: el.value }),
+    move: el => (el.value ? api(item(el), "PUT", { list_id: Number(el.value) }) : false)
+  };
+  const ON_CLICK = {
+    rename: () => { const n = prompt("Rename this list", cur.name); return n ? api(`/lists/${cur.id}`, "PUT", { name: n }) : false; },
+    relink: () => (confirm("Make a new link? The old one stops working.") ? api(`/lists/${cur.id}`, "PUT", { new_link: true }) : false),
+    copy: async el => { try { await navigator.clipboard.writeText(el.dataset.link); toast("🔗 Link copied"); } catch (x) { prompt("Copy this link", el.dataset.link); } return false; },
+    drop: async () => { if (!confirm("Delete this list and everything on it?")) return false; await api(`/lists/${cur.id}`, "DELETE"); location.href = "registry.html"; return false; },
+    remove: el => api(item(el), "DELETE"),
+    unwatch: el => api(`/alerts/${el.dataset.id}`, "DELETE")
+  };
+  main.onchange = async e => {
+    const el = e.target.closest("[data-lx]"); const fn = el && ON_CHANGE[el.dataset.lx]; if (!fn || !cur) return;
+    try { if ((await fn(el)) !== false) { toast("✓ Saved"); pageRegistry(); } } catch (err) { toast("⚠️ " + esc(err.message)); pageRegistry(); }
+  };
+  main.onclick = async e => {
+    const el = e.target.closest("[data-lx]"); const fn = el && ON_CLICK[el.dataset.lx]; if (!fn) return;
+    e.preventDefault();
+    try { if ((await fn(el)) !== false) pageRegistry(); } catch (err) { toast("⚠️ " + esc(err.message)); }
+  };
+}
+function listItemRow(it, l, v) {
+  const p = it.product;
+  if (!p) return `<div class="lst-item gone"><span>This item is no longer available.</span><button class="btn-white" data-lx="remove" data-item="${it.id}">Remove</button></div>`;
+  const dropped = it.price_added && p.p < it.price_added;
+  return `<div class="lst-item"><a href="${prodLink(p)}">${img(p, "tile")}</a>
+    <div class="lst-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><div>${priceHtml(p.p)}${dropped ? ` <span class="lst-drop">↓ was ${money(it.price_added)} when added</span>` : ""}</div>
+      <div class="pay-meta">${stockText(p.st)}${it.purchased ? ` · ${it.purchased} of ${it.qty} bought` : ""}</div>
+      <input data-lx="note" data-item="${it.id}" value="${esc(it.note || "")}" placeholder="Add a note" maxlength="300"></div>
+    <div class="lst-i-r"><label>Qty <input data-lx="qty" data-item="${it.id}" type="number" min="1" max="999" value="${it.qty}"></label>
+      <select data-lx="prio" data-item="${it.id}">${v.priorities.map(x => `<option value="${esc(x.key)}" ${it.priority && it.priority.key === x.key ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
+      ${p.st ? `<button class="btn-yellow" data-act="add" data-id="${p.id}">${esc(T("addToCart"))}</button>` : ""}
+      ${v.lists.length > 1 ? `<select data-lx="move" data-item="${it.id}"><option value="">Move to…</option>${v.lists.filter(x => x.id !== l.id).map(x => `<option value="${x.id}">${esc(x.name)}</option>`).join("")}</select>` : ""}
+      <button class="btn-white" data-lx="remove" data-item="${it.id}">Remove</button></div></div>`;
+}
+function listHtml(l, v) {
+  const link = location.origin + location.pathname + "?list=" + encodeURIComponent(l.token);
+  return `<div class="lst-head"><div><h1>${esc(l.name)}</h1><span class="pay-meta">${esc(l.kind.name)} · ${l.items.length} item${l.items.length === 1 ? "" : "s"}</span></div>
+    <div class="lst-acts"><select data-lx="vis">${v.visibilities.map(x => `<option value="${esc(x.key)}" ${x.key === l.visibility.key ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select>
+      ${l.visibility.shared ? `<button class="btn-white" data-lx="copy" data-link="${esc(link)}">🔗 Copy link</button><button class="btn-white" data-lx="relink">New link</button>` : ""}
+      <button class="btn-white" data-lx="rename">Rename</button><button class="btn-white" data-lx="drop">Delete</button></div></div>
+    ${l.items.length ? l.items.map(it => listItemRow(it, l, v)).join("") : `<div class="r-empty"><p>Nothing here yet — use ♡ Add to List on any product.</p></div>`}`;
+}
+function alertsHtml(al) {
+  return `<section class="lst-alerts" id="alerts"><h2>🔔 Your alerts</h2>${(al.alerts || []).length ? `<table class="lst-table"><thead><tr><th>Item</th><th>Alert</th><th>Now</th><th>State</th><th></th></tr></thead><tbody>${al.alerts.map(a => `<tr>
+    <td>${a.product ? `<a href="product.html?id=${encodeURIComponent(a.product.id)}">${esc(a.product.title)}</a>` : "—"}</td>
+    <td>${esc(a.kind_row ? a.kind_row.name : a.kind)}${a.target_price != null ? " · " + money(a.target_price) : ""}</td>
+    <td>${a.product ? money(a.product.price) : "—"}</td><td>${esc((a.state.icon ? a.state.icon + " " : "") + a.state.label)}${a.fires ? ` · told you ${a.fires}×` : ""}</td>
+    <td>${a.watching ? `<button class="btn-white" data-lx="unwatch" data-id="${a.id}">Stop</button>` : ""}</td></tr>`).join("")}</tbody></table>` : `<p class="pay-meta">No alerts — use 🔔 on a product to be told when its price drops or it's back in stock.</p>`}</section>`;
+}
+function findBox() { return `<section class="lst-find"><h2>Find a list</h2><div class="lst-find-row"><input id="lfQ" placeholder="A list's name or its owner's name"><button class="btn-white" id="lfGo">Search</button></div><div id="lfOut"></div></section>`; }
+function wireFind() {
+  const go = $("#lfGo"); if (!go) return;
+  go.onclick = async () => {
+    try {
+      const r = await api("/lists/find?" + qs({ q: $("#lfQ").value.trim() }));
+      $("#lfOut").innerHTML = r.lists.map(l => `<a class="lst-found" href="registry.html?list=${encodeURIComponent(l.token)}"><b>${esc(l.name)}</b> <span class="pay-meta">${esc(l.kind.name)}${l.by ? " · by " + esc(l.by) : ""} · ${l.count} items</span></a>`).join("") || `<p class="pay-meta">No public lists match.</p>`;
+    } catch (e) { toast("⚠️ " + esc(e.message)); }
+  };
+}
+async function sharedListPage(token) {
+  const main = $("#page");
+  let l;
+  try { l = (await api("/shared-lists/" + encodeURIComponent(token))).list; }
+  catch (e) { main.innerHTML = `<div class="r-empty"><h3>This list is private or no longer exists</h3><a class="btn-yellow" href="index.html">Back to ${esc(CFG.brand.name)}</a></div>`; return; }
+  document.title = `${l.name} — ${CFG.brand.name}`;
+  main.innerHTML = `<div class="lst"><div class="lst-main"><div class="lst-head"><div><h1>${esc(l.name)}</h1><span class="pay-meta">${esc(l.kind.name)}${l.by ? " · " + esc(l.by) : ""}</span></div></div>
+    ${l.items.map(it => { const p = it.product; if (!p) return ""; const left = Math.max(0, it.qty - it.purchased);
+      return `<div class="lst-item"><a href="${prodLink(p)}">${img(p, "tile")}</a><div class="lst-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><div>${priceHtml(p.p)}</div>
+        <div class="pay-meta">${it.priority ? esc(it.priority.name) + " priority · " : ""}wants ${it.qty}${l.kind.gifting ? ` · ${it.purchased} bought` : ""}</div>${it.note ? `<p class="lst-note">“${esc(it.note)}”</p>` : ""}</div>
+        <div class="lst-i-r">${p.st ? `<button class="btn-yellow" data-act="add" data-id="${p.id}">${esc(T("addToCart"))}</button>` : `<span class="oos">${esc(T("outOfStock"))}</span>`}
+        ${l.kind.gifting && left ? `<button class="btn-white" data-lx="bought" data-item="${it.id}">I bought one</button>` : ""}</div></div>`; }).join("") || `<div class="r-empty"><p>This list is empty.</p></div>`}</div></div>`;
+  main.onclick = async e => {
+    const el = e.target.closest("[data-lx]"); if (!el) return;
+    e.preventDefault();
+    try { await api(`/shared-lists/${encodeURIComponent(token)}/purchased`, "POST", { item_id: Number(el.dataset.item), qty: 1 }); toast("🎁 Marked as bought — thank you"); sharedListPage(token); }
+    catch (err) { toast("⚠️ " + esc(err.message)); }
+  };
+}
+function registryIntro() {
   document.title = `Registries — ${CFG.brand.name}`;
   $("#page").innerHTML = `
   <div class="reg"><div class="reg-hero"><h1>Registries &amp; Wish Lists</h1><p>One elegant list for every occasion.</p><button class="btn-yellow" data-act="list">+ Create a Registry</button></div>
@@ -908,7 +1130,7 @@ document.addEventListener("click", async e => {
   const el = e.target.closest("[data-act]");
   if (!el) return;
   const act = el.dataset.act, id = el.dataset.id;
-  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "gift", "open-review", "buy-again", "list", "rfq-open", "return-open", "coupon", "select-variant", "ugc-vote", "qna-ask", "sub-save", "mem-subscribe", "mem-cancel", "sub-skip", "sub-pause", "sub-resume", "sub-cancel"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
+  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "gift", "open-review", "buy-again", "list", "rfq-open", "return-open", "coupon", "select-variant", "ugc-vote", "qna-ask", "sub-save", "mem-subscribe", "mem-cancel", "sub-skip", "sub-pause", "sub-resume", "sub-cancel", "lst-add", "alert-open"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
   try {
     switch (act) {
       case "select-variant": {
@@ -975,6 +1197,8 @@ document.addEventListener("click", async e => {
         break;
       }
       case "track": toast("📦 Your parcel is <b>out for delivery</b>"); break;
+      case "lst-add": await listPicker(id); break;
+      case "alert-open": await alertPicker(id); break;
       case "list": toast("✦ Registry created"); break;
       case "soon": toast("✦ This experience is coming soon"); break;
       case "ugc-vote": {

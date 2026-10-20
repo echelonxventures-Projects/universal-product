@@ -335,6 +335,16 @@ function shutdown(sig) { console.log(`\n${sig} — closing`); sec.persistState()
 setInterval(() => { try { idem.purge(); } catch (e) { } }, 3600 * 1000).unref();
 /* live payments whose webhook never came are looked up with their gateway on a cadence */
 require("./lib/api.js").startPaymentSweep();
+/* shoppers' alerts are re-checked (prices also move by imports and rules, not only edits) and
+   pickup parcels past their holding time expire, on the platform policy's cadence */
+(function shopperSweep() {
+  const mins = Number(sec.policy().shopperSweepMinutes);
+  const t = setTimeout(() => {
+    if (mins > 0) { try { require("./lib/alerts.js").sweepAll(); } catch (e) { } try { require("./lib/pickup.js").sweepAll(); } catch (e) { } }
+    shopperSweep();
+  }, Math.max(1, mins > 0 ? mins : 15) * 60000);
+  if (t.unref) t.unref();
+})();
 process.on("unhandledRejection", (e) => { console.error("unhandledRejection:", e && e.stack || e); });
 process.on("SIGINT", () => shutdown("SIGINT"));
 process.on("SIGTERM", () => shutdown("SIGTERM"));

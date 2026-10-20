@@ -1519,6 +1519,65 @@ CREATE TABLE compare_lists (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_compare_owner ON compare_lists(tenant_id, owner);
+CREATE TABLE shopper_lists (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, owner TEXT NOT NULL, owner_name TEXT DEFAULT '',
+  kind TEXT NOT NULL, name TEXT NOT NULL, visibility TEXT NOT NULL, token TEXT NOT NULL, notes TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT
+);
+CREATE INDEX ix_slist_owner ON shopper_lists(tenant_id, owner);
+CREATE UNIQUE INDEX ux_slist_token ON shopper_lists(token);
+CREATE TABLE shopper_list_items (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, list_id INTEGER NOT NULL,
+  product_id TEXT NOT NULL, qty INTEGER NOT NULL DEFAULT 1, purchased INTEGER NOT NULL DEFAULT 0,
+  priority TEXT, note TEXT DEFAULT '', price_added REAL,
+  added_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX ux_slist_item ON shopper_list_items(list_id, product_id);
+CREATE TABLE product_watches (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, owner TEXT NOT NULL,
+  product_id TEXT NOT NULL, kind TEXT NOT NULL, target_price REAL, baseline_price REAL, baseline_stock INTEGER,
+  status TEXT NOT NULL DEFAULT 'active', fired_at TEXT, fired_price REAL, fires INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_watch_product ON product_watches(tenant_id, product_id, status);
+CREATE INDEX ix_watch_owner ON product_watches(tenant_id, owner);
+CREATE TABLE pickup_points (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, code TEXT NOT NULL,
+  name TEXT NOT NULL, kind TEXT NOT NULL, address TEXT NOT NULL, city TEXT DEFAULT '', region TEXT DEFAULT '', postcode TEXT DEFAULT '',
+  lat REAL, lng REAL, capacity INTEGER NOT NULL DEFAULT 0, hours TEXT DEFAULT '', eta_days INTEGER,
+  active INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX ux_pickup_code ON pickup_points(tenant_id, code);
+CREATE TABLE pickup_reservations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, point_id INTEGER NOT NULL,
+  order_id INTEGER NOT NULL, owner TEXT NOT NULL, code TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'reserved',
+  hold_until TEXT, ready_at TEXT, collected_at TEXT, closed_at TEXT, attempts INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_pickup_res ON pickup_reservations(tenant_id, point_id, status);
+CREATE UNIQUE INDEX ux_pickup_order ON pickup_reservations(tenant_id, order_id);
+CREATE TABLE rich_content (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL,
+  seller_id INTEGER, author TEXT DEFAULT '', modules TEXT NOT NULL DEFAULT '[]',
+  status TEXT NOT NULL DEFAULT 'draft', version INTEGER NOT NULL DEFAULT 1, review_notes TEXT DEFAULT '',
+  submitted_at TEXT, reviewed_at TEXT, reviewed_by TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT
+);
+CREATE INDEX ix_rich_product ON rich_content(tenant_id, product_id, status);
+CREATE TABLE brand_claims (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, brand TEXT NOT NULL,
+  seller_id INTEGER, claimant TEXT DEFAULT '', trademark_number TEXT DEFAULT '', trademark_office TEXT DEFAULT '',
+  evidence TEXT DEFAULT '[]', status TEXT NOT NULL DEFAULT 'submitted', notes TEXT DEFAULT '',
+  reviewed_by TEXT, reviewed_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_brand_claims ON brand_claims(tenant_id, brand, status);
+CREATE TABLE brand_reports (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, brand TEXT NOT NULL, claim_id INTEGER NOT NULL,
+  kind TEXT NOT NULL, product_id TEXT, offer_id INTEGER, seller_id INTEGER, details TEXT DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'open', outcome TEXT DEFAULT '', reviewed_by TEXT, reviewed_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_brand_reports ON brand_reports(tenant_id, brand, status);
 CREATE TABLE invoice_documents (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
   ref TEXT, order_id INTEGER, owner TEXT,

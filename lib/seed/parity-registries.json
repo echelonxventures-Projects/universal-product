@@ -695,7 +695,8 @@
     "kyc_update",
     "payout_update",
     "bill_due",
-    "emi_due"
+    "emi_due",
+    "pickup_ready"
    ]
   },
   "shopDocKinds": {
@@ -719,6 +720,308 @@
     "emailed",
     "amended",
     "cancelled"
+   ]
+  },
+  "listKinds": {
+   "label": "Lists · Kinds",
+   "items": [
+    {
+     "key": "wish_list",
+     "name": "Wish list",
+     "default_visibility": "private",
+     "gifting": true,
+     "default": true
+    },
+    {
+     "key": "shopping_list",
+     "name": "Shopping list",
+     "default_visibility": "private",
+     "gifting": false
+    },
+    {
+     "key": "idea_list",
+     "name": "Idea list",
+     "default_visibility": "public",
+     "gifting": false
+    }
+   ]
+  },
+  "listVisibilities": {
+   "label": "Lists · Visibility",
+   "items": [
+    {
+     "key": "private",
+     "name": "Only me",
+     "shared": false,
+     "listed": false,
+     "default": true
+    },
+    {
+     "key": "shared",
+     "name": "Anyone with the link",
+     "shared": true,
+     "listed": false
+    },
+    {
+     "key": "public",
+     "name": "Public — anyone can find it",
+     "shared": true,
+     "listed": true
+    }
+   ]
+  },
+  "listPriorities": {
+   "label": "Lists · Item priorities",
+   "items": [
+    {
+     "key": "low",
+     "name": "Low",
+     "rank": 1
+    },
+    {
+     "key": "medium",
+     "name": "Medium",
+     "rank": 2,
+     "default": true
+    },
+    {
+     "key": "high",
+     "name": "High",
+     "rank": 3
+    },
+    {
+     "key": "must_have",
+     "name": "Must have",
+     "rank": 4
+    }
+   ]
+  },
+  "alertKinds": {
+   "label": "Alerts · Kinds",
+   "items": [
+    {
+     "key": "price_drop",
+     "name": "Price drop",
+     "trigger": "price_below_baseline",
+     "watchable": "any",
+     "needs_target": false,
+     "notification_kind": "price_drop",
+     "title": "Price drop: {title}",
+     "body": "{title} is now {price} (was {was})."
+    },
+    {
+     "key": "price_target",
+     "name": "Price at or below my target",
+     "trigger": "price_at_or_below_target",
+     "watchable": "any",
+     "needs_target": true,
+     "notification_kind": "price_drop",
+     "title": "Your target price was reached: {title}",
+     "body": "{title} is now {price}, at or below your target of {target}."
+    },
+    {
+     "key": "back_in_stock",
+     "name": "Back in stock",
+     "trigger": "stock_restored",
+     "watchable": "out_of_stock",
+     "needs_target": false,
+     "notification_kind": "back_in_stock",
+     "title": "Back in stock: {title}",
+     "body": "{title} is available again at {price}."
+    }
+   ]
+  },
+  "watchStatuses": {
+   "label": "Alerts · Watch statuses",
+   "items": [
+    "active",
+    "fired",
+    "cancelled"
+   ]
+  },
+  "pickupKinds": {
+   "label": "Pickup · Point kinds",
+   "items": [
+    {
+     "key": "locker",
+     "name": "Locker",
+     "self_service": true,
+     "default": true
+    },
+    {
+     "key": "counter",
+     "name": "Staffed counter",
+     "self_service": false
+    },
+    {
+     "key": "store",
+     "name": "Store pickup",
+     "self_service": false
+    }
+   ]
+  },
+  "pickupStatuses": {
+   "label": "Pickup · Reservation statuses",
+   "items": [
+    "reserved",
+    "ready",
+    "collected",
+    "expired",
+    "returned",
+    "cancelled"
+   ]
+  },
+  "contentModules": {
+   "label": "Rich content · Module kinds",
+   "items": [
+    {
+     "key": "banner",
+     "name": "Banner",
+     "fields": [
+      {
+       "key": "image",
+       "label": "Image URL",
+       "type": "image",
+       "required": true
+      },
+      {
+       "key": "headline",
+       "label": "Headline",
+       "type": "text",
+       "max": 120
+      }
+     ]
+    },
+    {
+     "key": "image_text",
+     "name": "Image with text",
+     "fields": [
+      {
+       "key": "image",
+       "label": "Image URL",
+       "type": "image",
+       "required": true
+      },
+      {
+       "key": "headline",
+       "label": "Headline",
+       "type": "text",
+       "max": 120,
+       "required": true
+      },
+      {
+       "key": "body",
+       "label": "Text",
+       "type": "textarea",
+       "max": 1500
+      }
+     ]
+    },
+    {
+     "key": "feature_list",
+     "name": "Feature list",
+     "fields": [
+      {
+       "key": "headline",
+       "label": "Headline",
+       "type": "text",
+       "max": 120
+      },
+      {
+       "key": "items",
+       "label": "Features (one per line)",
+       "type": "list",
+       "max_items": 10,
+       "max": 200,
+       "required": true
+      }
+     ]
+    },
+    {
+     "key": "comparison",
+     "name": "Comparison table",
+     "fields": [
+      {
+       "key": "headline",
+       "label": "Headline",
+       "type": "text",
+       "max": 120
+      },
+      {
+       "key": "rows",
+       "label": "Rows (one per line, cells separated by |; the first row is the header)",
+       "type": "table",
+       "max_rows": 12,
+       "max_cols": 6,
+       "max": 120,
+       "required": true,
+       "header_row": true
+      }
+     ]
+    },
+    {
+     "key": "faq",
+     "name": "Questions and answers",
+     "fields": [
+      {
+       "key": "rows",
+       "label": "Question | Answer (one pair per line)",
+       "type": "table",
+       "max_rows": 12,
+       "max_cols": 2,
+       "max": 600,
+       "required": true
+      }
+     ]
+    }
+   ]
+  },
+  "richContentStatuses": {
+   "label": "Rich content · Statuses",
+   "items": [
+    "draft",
+    "submitted",
+    "approved",
+    "rejected",
+    "retired"
+   ]
+  },
+  "brandClaimStatuses": {
+   "label": "Brand registry · Claim statuses",
+   "items": [
+    "submitted",
+    "approved",
+    "rejected",
+    "revoked"
+   ]
+  },
+  "brandReportKinds": {
+   "label": "Brand registry · Report kinds",
+   "items": [
+    {
+     "key": "counterfeit",
+     "name": "Counterfeit product"
+    },
+    {
+     "key": "trademark",
+     "name": "Trademark misuse"
+    },
+    {
+     "key": "copyright",
+     "name": "Copyright (images or text)"
+    },
+    {
+     "key": "listing_abuse",
+     "name": "Wrong brand or listing abuse"
+    }
+   ]
+  },
+  "brandReportStatuses": {
+   "label": "Brand registry · Report statuses",
+   "items": [
+    "open",
+    "actioned",
+    "dismissed"
    ]
   }
  }

@@ -86,6 +86,23 @@ Seed accounts (env-overridable; hints auto-hide when passwords change): platform
 
 **Entity engine**: every table is a declared entity (fields, types, validation, permissions, composite keys, universal UUIDs via SQLite triggers). Define *new entities* in Data Studio or via `POST /api/meta/entity-def` — CRUD, validation, audit, and forms appear automatically. Custom providers register as JSON manifests, no code.
 
+## Shopper & brand features — lists, alerts, pickup points, rich content, brand registry, sponsored products
+
+Six capability atoms complete the everything-store experience. Each is off until a store switches it on (*Store console → ⚙️ Capabilities*, or a blend: `blend_everything_store` carries all six, `blend_marketplace` the three seller-facing ones), each is tuned by its params, and every kind, visibility, module and status is a registry row — so a new kind of list, alert, pickup point, content module or report is data, not code. Every record's life is a state machine (`product_watch`, `pickup`, `rich_content`, `brand_claim`, `brand_report`) asked by tag, never by a state's name.
+
+| Atom | What shoppers and staff get | Registries | Engine |
+|---|---|---|---|
+| `wish_lists` | Named lists (private, shared by link, public), priorities, notes, quantities, gift-givers marking items bought, a public-list search. `/registry.html` is the lists page. | `listKinds` (default visibility, `gifting`), `listVisibilities` (`shared`, `listed`), `listPriorities` | `lib/lists.js` |
+| `product_alerts` | Price-drop, target-price and back-in-stock alerts, in-app and by email. Checked on every catalogue change and on the platform's sweep (`shopperSweepMinutes`). | `alertKinds` — each names a `trigger` the engine has (`price_below_baseline`, `price_at_or_below_target`, `stock_restored`), when it may be set (`watchable`), its message and notification kind | `lib/alerts.js` |
+| `pickup_points` | Lockers, counters and shops chosen at checkout instead of an address; a one-time code shown only to the buyer; staff mark arrival, collect with the code (lock-out after wrong codes), and parcels left past their holding time expire. | `pickupKinds` | `lib/pickup.js` |
+| `rich_content` | Brand modules below the product details — banner, image-and-text, feature list, comparison table, Q&A — reviewed before they go live (optional), versioned, optionally owner-only. | `contentModules` — each field declares only a type (`text`, `textarea`, `image`, `list`, `table`) and its limits | `lib/richcontent.js` |
+| `brand_registry` | Brand ownership claims (trademark number and office, evidence); an approved owner reports counterfeit or infringing offers; upholding moves the offer to the state the atom names and re-runs the buy-box; a registered-brand badge on product pages. | `brandReportKinds` | `lib/brandreg.js` |
+| `sponsored_ads` | Keyword- and product-targeted sponsored results in search, ranked by the existing second-price auction, with budgets, schedules and a reserve price enforced, one impression per viewer per day and clicks billed per the ad's bid model. | `mktBidModels`, `mktSurfaces`, `adEventKinds` | `lib/marketplace.js` |
+
+Rich-content images are the store's own paths (e.g. `/media/…`) or https addresses on a host the platform allows: *Platform → Security* `cspImgHosts` (`PUT /api/platform/config {"cspImgHosts":["cdn.example.com"]}`), which also adds the host to the storefront's CSP `img-src` so the browser shows them.
+
+APIs — shopper: `GET/POST /api/lists`, `GET/PUT/DELETE /api/lists/:id`, `POST /api/lists/:id/items`, `PUT/DELETE /api/list-items/:id`, `GET /api/shared-lists/:token`, `POST /api/shared-lists/:token/purchased`, `GET /api/lists/find?q=`, `GET/POST /api/alerts`, `DELETE /api/alerts/:id`, `GET /api/pickup/points?q=`, `GET /api/marketplace/sponsored?q=&surface=`; checkout and its quote take `pickup_point` (an id or code) in place of an address. Store console: `/api/admin/pickup…`, `/api/admin/rich-content…`, `/api/admin/brand-registry…` (sections 📍 Pickup Points, ✨ Rich Content, ™️ Brand Registry), and ads under 📢 Marketplace & Ads.
+
 ## GOIP Ω∞ — Global Offer Infrastructure Platform
 
 The platform's incentive layer is not a coupon feature; it is a **constitution**. `GET /api/goip` returns it, and the platform console's **Ω∞ GOIP** screen renders it live.

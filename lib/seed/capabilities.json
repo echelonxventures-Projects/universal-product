@@ -1092,6 +1092,240 @@
      "label": "Sign-off levels an approval passes through"
     }
    }
+  },
+  {
+   "key": "wish_lists",
+   "label": "Wish lists",
+   "domain": "shopper",
+   "icon": "💝",
+   "description": "Shoppers keep named lists of products — private, shared by link or public. What a kind of list is and what each visibility means are registry rows (listKinds, listVisibilities).",
+   "params": {
+    "max_lists": {
+     "type": "number",
+     "default": 20,
+     "label": "Lists one shopper may keep"
+    },
+    "max_items": {
+     "type": "number",
+     "default": 200,
+     "label": "Items one list may hold"
+    },
+    "allow_sharing": {
+     "type": "bool",
+     "default": true,
+     "label": "Shoppers may share a list by link"
+    },
+    "allow_public": {
+     "type": "bool",
+     "default": true,
+     "label": "Shoppers may make a list public"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "product_alerts",
+   "label": "Price & stock alerts",
+   "domain": "shopper",
+   "icon": "🔔",
+   "description": "A shopper watches a product and is told when its price drops, reaches their target, or it is back in stock. Each kind of alert is an alertKinds row naming its trigger and its message.",
+   "params": {
+    "min_drop_pct": {
+     "type": "number",
+     "default": 5,
+     "label": "Smallest drop that alerts",
+     "unit": "%"
+    },
+    "max_watches": {
+     "type": "number",
+     "default": 50,
+     "label": "Active alerts one shopper may keep"
+    },
+    "cooldown_hours": {
+     "type": "number",
+     "default": 24,
+     "label": "Hours before one alert may fire again"
+    },
+    "rearm": {
+     "type": "bool",
+     "default": true,
+     "label": "A fired alert keeps watching from the new price"
+    },
+    "email": {
+     "type": "bool",
+     "default": true,
+     "label": "Also email the shopper"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "pickup_points",
+   "label": "Pickup points & lockers",
+   "domain": "shopper",
+   "icon": "📍",
+   "description": "Shoppers choose a locker, counter or store at checkout instead of a home address and collect with a one-time code. The kinds of point are pickupKinds rows; holding time, fee and code length are tuned here.",
+   "params": {
+    "fee": {
+     "type": "number",
+     "default": 0,
+     "label": "Pickup fee (store base currency)"
+    },
+    "free_shipping_applies": {
+     "type": "bool",
+     "default": true,
+     "label": "Free-shipping rules also waive the pickup fee"
+    },
+    "hold_days": {
+     "type": "number",
+     "default": 7,
+     "label": "Days a parcel waits once it is ready"
+    },
+    "code_length": {
+     "type": "number",
+     "default": 6,
+     "label": "Digits in a pickup code"
+    },
+    "max_attempts": {
+     "type": "number",
+     "default": 5,
+     "label": "Wrong codes before a parcel locks"
+    },
+    "default_eta_days": {
+     "type": "number",
+     "default": 3,
+     "label": "Days to reach a point that sets none"
+    },
+    "email_on_ready": {
+     "type": "bool",
+     "default": true,
+     "label": "Email the shopper when the parcel is ready"
+    },
+    "notify_kind": {
+     "type": "text",
+     "default": "pickup_ready",
+     "label": "Notification kind sent when a parcel is ready"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "rich_content",
+   "label": "Rich product content",
+   "domain": "marketplace",
+   "icon": "✨",
+   "description": "Brand-authored modules (banners, image-and-text, feature lists, comparison tables, Q&A) below the product details. Module kinds and their fields are contentModules rows; content can be reviewed before it goes live.",
+   "params": {
+    "require_approval": {
+     "type": "bool",
+     "default": true,
+     "label": "Content is reviewed before it goes live"
+    },
+    "max_modules": {
+     "type": "number",
+     "default": 7,
+     "label": "Modules on one product"
+    },
+    "brand_owner_only": {
+     "type": "bool",
+     "default": false,
+     "label": "Only the brand's registered owner may publish"
+    }
+   }
+  },
+  {
+   "key": "brand_registry",
+   "label": "Brand registry",
+   "domain": "marketplace",
+   "icon": "™️",
+   "description": "A seller proves it owns a brand; once approved it may report counterfeit or infringing offers, which staff uphold or dismiss. Upholding moves the offending offer to the offer state named here.",
+   "params": {
+    "require_trademark": {
+     "type": "bool",
+     "default": true,
+     "label": "A claim must carry a trademark number"
+    },
+    "one_owner_per_brand": {
+     "type": "bool",
+     "default": true,
+     "label": "A brand has at most one approved owner"
+    },
+    "offer_state_on_infringement": {
+     "type": "text",
+     "default": "suspended",
+     "label": "Offer state an upheld report moves the offer to"
+    },
+    "badge": {
+     "type": "bool",
+     "default": true,
+     "label": "Show a registered-brand badge on product pages"
+    }
+   }
+  },
+  {
+   "key": "sponsored_ads",
+   "label": "Sponsored products",
+   "domain": "marketplace",
+   "icon": "📢",
+   "description": "Sellers' ads compete in a second-price auction for slots in search results and other surfaces, targeted by keyword and paid per click, thousand impressions or sale. Budgets and schedules are enforced.",
+   "params": {
+    "slots": {
+     "type": "number",
+     "default": 3,
+     "label": "Sponsored slots per surface"
+    },
+    "reserve_price": {
+     "type": "number",
+     "default": 0,
+     "label": "Lowest bid that may serve (per charged unit)"
+    },
+    "pctr_baseline": {
+     "type": "number",
+     "default": 0.05,
+     "label": "Predicted click rate of a new ad"
+    },
+    "pctr_spend_lift": {
+     "type": "number",
+     "default": 0.05,
+     "label": "Most an ad's past spend can add to its predicted click rate"
+    },
+    "spend_divisor": {
+     "type": "number",
+     "default": 10000,
+     "label": "Past spend is divided by this and added to the predicted click rate (up to the lift)"
+    },
+    "runner_up_factor": {
+     "type": "number",
+     "default": 0.5,
+     "label": "Share of its own score the last ad pays when no one bids below it"
+    },
+    "enforce_budget": {
+     "type": "bool",
+     "default": true,
+     "label": "An ad stops serving once it has spent its budget"
+    },
+    "enforce_schedule": {
+     "type": "bool",
+     "default": true,
+     "label": "An ad serves only between its start and end"
+    },
+    "record_impressions": {
+     "type": "bool",
+     "default": true,
+     "label": "Serving an ad records an impression (charged under per-thousand bidding)"
+    },
+    "impression_event": {
+     "type": "text",
+     "default": "impression",
+     "label": "Ad event recorded when an ad is served (an adEventKinds row)"
+    },
+    "label": {
+     "type": "text",
+     "default": "Sponsored",
+     "label": "Label shown on an ad"
+    }
+   },
+   "shopper": true
   }
  ],
  "PRESETS": [
@@ -1107,6 +1341,31 @@
     "uv_seller_account"
    ],
    "capabilities": {
+    "buy_box": {
+     "params": {
+      "price_weight": 0.6,
+      "speed_weight": 0.25,
+      "trust_weight": 0.15
+     }
+    },
+    "seller_health": {
+     "params": {
+      "suspend_below": 40
+     }
+    },
+    "buyer_protection": {},
+    "smart_fulfilment": {},
+    "fba_inbound": {},
+    "escrow": {},
+    "split_payments": {},
+    "kyc": {},
+    "payment_links": {},
+    "bank_payouts": {},
+    "sponsored_ads": {},
+    "brand_registry": {},
+    "rich_content": {}
+   },
+   "capabilitiesWas": {
     "buy_box": {
      "params": {
       "price_weight": 0.6,
@@ -1337,6 +1596,45 @@
     "subscribe_save": {},
     "membership": {},
     "fraud_screen": {},
+    "experiments": {},
+    "wish_lists": {},
+    "product_alerts": {},
+    "pickup_points": {},
+    "rich_content": {},
+    "brand_registry": {},
+    "sponsored_ads": {}
+   },
+   "capabilitiesWas": {
+    "buy_box": {
+     "params": {
+      "price_weight": 0.6,
+      "speed_weight": 0.25,
+      "trust_weight": 0.15
+     }
+    },
+    "seller_health": {},
+    "buyer_protection": {},
+    "smart_fulfilment": {},
+    "fba_inbound": {},
+    "split_payments": {},
+    "bank_payouts": {},
+    "kyc": {},
+    "bnpl": {},
+    "gift_vouchers": {},
+    "reviews": {},
+    "qna": {},
+    "deals": {},
+    "countdown": {},
+    "coupons": {},
+    "gift_cards": {},
+    "registry": {},
+    "customer_service": {},
+    "save_for_later": {},
+    "suggestions": {},
+    "buy_now": {},
+    "subscribe_save": {},
+    "membership": {},
+    "fraud_screen": {},
     "experiments": {}
    }
   },
@@ -1510,6 +1808,18 @@
   ],
   "projects": [
    "ops_proj"
+  ],
+  "pickup_points": [
+   "pickup"
+  ],
+  "rich_content": [
+   "richcontent"
+  ],
+  "brand_registry": [
+   "brandreg"
+  ],
+  "sponsored_ads": [
+   "marketplace"
   ]
  }
 }

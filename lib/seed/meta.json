@@ -538,6 +538,10 @@
    "name": "🛍️ Storefront"
   },
   {
+   "key": "shopper",
+   "name": "🧺 Shopper services"
+  },
+  {
    "key": "qc",
    "name": "⚡ Quick-commerce"
   },
