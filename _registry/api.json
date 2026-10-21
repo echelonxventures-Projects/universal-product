@@ -27,6 +27,7 @@
     {"pattern": "^/api/platform/global/tenant/plan$", "owner": "Offering"},
     {"pattern": "^/api/platform/global/tenant$", "owner": "Party"},
     {"pattern": "^/api/(fx|platform/fx)(/|$)", "owner": "Value"},
+    {"pattern": "^/api/(wallets|wallet-definitions|admin/wallets|admin/journals|admin/ledger|platform/wallet-definitions)(/|$)", "owner": "Value"},
     {"pattern": "^/api/(auth|session|scim)(/|$)", "owner": "Security"},
     {"pattern": "^/api/platform/(login|logout|me|keys|security|identity-templates)(/|$)", "owner": "Security"},
     {"pattern": "^/api/admin/(sso|scim|identity-providers|identity-provider-types|identity-settings|risk)(/|$)", "owner": "Security"},

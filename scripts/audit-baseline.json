@@ -1,7 +1,7 @@
 {
  "summary": {
   "branch": 54,
-  "fallback": 91,
+  "fallback": 88,
   "seedConstants": {
    "count": 7,
    "lines": 223
@@ -109,10 +109,7 @@
    "lib/mailer.js · notification": 1,
    "lib/marketplace-ext.js · refund": 1,
    "lib/marketplace-ext.js · standard": 1,
-   "lib/offers.js · deposit": 1,
    "lib/offers.js · discount": 1,
-   "lib/offers.js · redeem": 1,
-   "lib/offers.js · reward": 1,
    "lib/offers.js · voided": 1,
    "lib/sitemap.js · monthly": 2,
    "lib/tax.js · manual": 1,

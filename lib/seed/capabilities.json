@@ -2738,6 +2738,9 @@
   "admin/tips": "tips",
   "admin/trials": "trials",
   "admin/per-minute": "metering",
-  "admin/health-records": "healthrecords"
+  "admin/health-records": "healthrecords",
+  "admin/wallets": "wallets",
+  "admin/journals": "wallets",
+  "admin/ledger": "wallets"
  }
 }

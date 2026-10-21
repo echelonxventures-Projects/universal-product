@@ -1603,6 +1603,25 @@
     "approved",
     "cancelled"
    ]
+  },
+  "walletStatuses": {
+   "label": "Wallet · Statuses",
+   "items": [
+    "active",
+    "restricted",
+    "suspended",
+    "closed"
+   ]
+  },
+  "walletHoldStatuses": {
+   "label": "Wallet · Hold statuses",
+   "items": [
+    "active",
+    "partly_spent",
+    "spent",
+    "released",
+    "expired"
+   ]
   }
  }
 }

@@ -897,10 +897,10 @@ async function activityHtml() {
   /* deliverables: whichever kinds (licence keys, lab tests, courses) the store has on */
   const dk = S.user ? ((await api("/deliverable-kinds").catch(() => ({ kinds: [] }))).kinds || []) : [];
   const anyDeliverable = dk.some(k => a[k.atom]);
-  if (!S.user || !(a.bookings || a.price_negotiation || a.auctions || a.group_buying || a.substitutions || a.try_and_buy || anyDeliverable || a.health_records || a.product_options)) return "";
+  if (!S.user || !(a.bookings || a.price_negotiation || a.auctions || a.group_buying || a.substitutions || a.try_and_buy || anyDeliverable || a.health_records || a.product_options || CFG.features.giftCards || a.wallet)) return "";
   const get = (on, path) => (on ? api(path).catch(() => null) : Promise.resolve(null));
-  const [bk, of, au, gr, sb, tr, dl, hr, fu] = await Promise.all([get(a.bookings, "/bookings"), get(a.price_negotiation, "/price-offers"), get(a.auctions, "/auctions/mine"), get(a.group_buying, "/group-buys"), get(a.substitutions, "/substitutions"), get(a.try_and_buy, "/trials"),
-    get(anyDeliverable, "/deliverables"), get(a.health_records, "/health-records"), get(a.product_options, "/options/follow-ups")]);
+  const [bk, of, au, gr, sb, tr, dl, hr, fu, wl] = await Promise.all([get(a.bookings, "/bookings"), get(a.price_negotiation, "/price-offers"), get(a.auctions, "/auctions/mine"), get(a.group_buying, "/group-buys"), get(a.substitutions, "/substitutions"), get(a.try_and_buy, "/trials"),
+    get(anyDeliverable, "/deliverables"), get(a.health_records, "/health-records"), get(a.product_options, "/options/follow-ups"), get(CFG.features.giftCards || a.wallet, "/wallets")]);
   const btn = (label, path, body, ask, more) => `<button class="btn-white" data-act="act-do" data-path="${esc(path)}" data-body='${esc(JSON.stringify(body || {}))}'${ask ? ` data-ask="${esc(ask)}"` : ""}${more && more.asks ? ` data-asks='${esc(JSON.stringify(more.asks))}'` : ""}${more && more.method ? ` data-method="${esc(more.method)}"` : ""}>${esc(label)}</button>`;
   const sec = (title, rows) => rows.length ? `<div class="act-sec"><h3>${title}</h3>${rows.join("")}</div>` : "";
   const out = [];
@@ -920,6 +920,16 @@ async function activityHtml() {
     ${x.awaiting ? btn("Accept", `/substitutions/${x.id}`, { action: "apply" }) + btn("Reject", `/substitutions/${x.id}`, { action: "reject" }) : ""}</div>`)));
   if (tr) out.push(sec("👟 On trial", tr.trials.slice(0, 20).map(t => `<div class="act-row"><span>Item ${esc(t.product_id)} · ${money(t.unit)}</span><span class="a-chip">${esc(t.state.label)}</span>
     ${t.open ? (tr.actions || []).filter(x => (t.next || []).includes(x.to)).map(x => btn(x.label, `/trials/${t.id}`, { action: x.verb })).join("") + `<span class="pay-meta">decide by ${esc(t.ends_at)}</span>` : ""}</div>`)));
+  /* the shopper's wallets: each named as they like, its available balance, renaming, moving value
+     between their own wallets, and opening another of any definition the store offers */
+  if (wl) {
+    const name = n => (n && (n[CFG.lang] || Object.values(n)[0])) || "";
+    const rows = wl.wallets.map(w => `<div class="act-row"><span><b>${esc(w.name)}</b> · ${esc(name(w.definition.name))}</span><span>${esc(String(w.available))} ${esc(w.unit)}${w.reserved ? ` <span class="pay-meta">(${esc(String(w.reserved))} held)</span>` : ""}</span><span class="a-chip">${esc(w.state.label)}</span>
+      ${btn("Rename", `/wallets/${encodeURIComponent(w.id)}/name`, {}, null, { asks: [["name", "New name"]] })}
+      ${wl.wallets.filter(o => o.id !== w.id && o.unit === w.unit).length ? btn("Move value", "/wallets/transfer", { from: w.id, idempotency_key: "mv-" + w.id + "-" + Date.now() }, null, { asks: [["to", "To which wallet? (" + wl.wallets.filter(o => o.id !== w.id && o.unit === w.unit).map(o => o.name + ": " + o.id).join(", ") + ")"], ["amount", "How much?"]] }) : ""}</div>`);
+    const opens = wl.definitions.map(d => btn("Open a " + name(d.name).toLowerCase(), "/wallets", { definition: d.key }, null, { asks: [["name", "Name it"]] }));
+    out.push(`<div class="act-sec"><h3>👛 Your wallets</h3>${rows.join("")}<div class="act-row">${opens.join("")}</div></div>`);
+  }
   /* what chosen options left to be done — each kind its own section (a visit, a plan, a proof),
      its buttons the moves its machine lets the shopper make */
   if (fu) {

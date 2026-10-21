@@ -789,6 +789,40 @@ CREATE TABLE wallet_entries (
   channel TEXT DEFAULT 'commerce', actor TEXT DEFAULT 'system',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 , uid TEXT);
+CREATE TABLE wallet_definitions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, key TEXT NOT NULL, version INTEGER NOT NULL, spec TEXT NOT NULL,
+  status TEXT NOT NULL, actor TEXT NOT NULL DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(namespace, key, version)
+);
+CREATE TABLE wallet_instances (
+  id TEXT PRIMARY KEY, tenant_id INTEGER NOT NULL, owner TEXT NOT NULL, namespace TEXT NOT NULL, definition_key TEXT NOT NULL,
+  definition_version INTEGER NOT NULL, unit TEXT NOT NULL, status TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT (datetime('now')), closed_at TEXT
+);
+CREATE INDEX ix_wallet_instances_owner ON wallet_instances(tenant_id, owner);
+CREATE TABLE wallet_names (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, wallet_id TEXT NOT NULL, lang TEXT NOT NULL, name TEXT NOT NULL, alias INTEGER NOT NULL DEFAULT 0,
+  actor TEXT NOT NULL DEFAULT '', valid_from TEXT NOT NULL DEFAULT (datetime('now')), valid_to TEXT
+);
+CREATE INDEX ix_wallet_names ON wallet_names(wallet_id, valid_to);
+CREATE TABLE ledger_accounts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, wallet_id TEXT, system_key TEXT, unit TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(wallet_id), UNIQUE(tenant_id, system_key, unit)
+);
+CREATE TABLE ledger_journals (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, op TEXT NOT NULL, ref TEXT NOT NULL DEFAULT '', idem_key TEXT,
+  request_hash TEXT NOT NULL DEFAULT '', actor TEXT NOT NULL DEFAULT '', reason TEXT NOT NULL DEFAULT '', reverses INTEGER, event_seq INTEGER,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(tenant_id, idem_key), UNIQUE(reverses)
+);
+CREATE TABLE ledger_postings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, journal_id INTEGER NOT NULL, account_id INTEGER NOT NULL, unit TEXT NOT NULL, amount INTEGER NOT NULL
+);
+CREATE INDEX ix_ledger_postings_account ON ledger_postings(account_id);
+CREATE INDEX ix_ledger_postings_journal ON ledger_postings(journal_id);
+CREATE TABLE wallet_holds (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, wallet_id TEXT NOT NULL, amount INTEGER NOT NULL, captured INTEGER NOT NULL DEFAULT 0,
+  purpose TEXT NOT NULL DEFAULT '', ref TEXT NOT NULL DEFAULT '', idem_key TEXT, expires_at TEXT, status TEXT NOT NULL, decided_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(wallet_id, idem_key)
+);
+CREATE INDEX ix_wallet_holds ON wallet_holds(wallet_id, status);
 CREATE TABLE goip_touchpoints (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 0,
   subject_uid TEXT DEFAULT '', offer_id INTEGER, code TEXT DEFAULT '', kind TEXT NOT NULL DEFAULT 'view',
@@ -1590,7 +1624,7 @@ CREATE TABLE bag_tips (tenant_id INTEGER NOT NULL, owner TEXT NOT NULL, amount R
 CREATE TABLE media_sessions (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, subject_type TEXT NOT NULL, subject_id TEXT NOT NULL, guest TEXT NOT NULL, host TEXT NOT NULL DEFAULT '',
   mode TEXT NOT NULL DEFAULT '', transport TEXT NOT NULL DEFAULT '', room TEXT NOT NULL, rate REAL NOT NULL DEFAULT 0, status TEXT NOT NULL,
-  started_at TEXT, ended_at TEXT, seconds INTEGER NOT NULL DEFAULT 0, charged REAL NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  started_at TEXT, ended_at TEXT, seconds INTEGER NOT NULL DEFAULT 0, charged REAL NOT NULL DEFAULT 0, shortfall REAL NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_media_sessions ON media_sessions(tenant_id, subject_type, subject_id);
 CREATE TABLE media_signals (
@@ -1599,7 +1633,7 @@ CREATE TABLE media_signals (
 CREATE INDEX ix_media_signals ON media_signals(session_id, id);
 CREATE TABLE trials (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, order_id INTEGER NOT NULL, product_id TEXT NOT NULL, owner TEXT NOT NULL, qty INTEGER NOT NULL DEFAULT 1,
-  unit REAL NOT NULL, deposit REAL NOT NULL DEFAULT 0, charged REAL NOT NULL DEFAULT 0, refunded REAL NOT NULL DEFAULT 0, ends_at TEXT NOT NULL, status TEXT NOT NULL,
+  unit REAL NOT NULL, deposit REAL NOT NULL DEFAULT 0, charged REAL NOT NULL DEFAULT 0, refunded REAL NOT NULL DEFAULT 0, notified_short INTEGER NOT NULL DEFAULT 0, ends_at TEXT NOT NULL, status TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT (datetime('now')), decided_at TEXT
 );
 CREATE INDEX ix_trials ON trials(tenant_id, owner);
@@ -1937,6 +1971,10 @@ CREATE TABLE approvals (
 CREATE INDEX ix_approvals ON approvals(tenant_id, status, kind);
 CREATE UNIQUE INDEX ux_composition_key ON composition_ledger(key);
 CREATE INDEX ix_products_source_global ON products(tenant_id, source_global_id);
+CREATE TRIGGER ledger_journals_no_update BEFORE UPDATE ON ledger_journals BEGIN SELECT RAISE(ABORT, 'posted ledger records are immutable'); END;
+CREATE TRIGGER ledger_journals_no_delete BEFORE DELETE ON ledger_journals BEGIN SELECT RAISE(ABORT, 'posted ledger records are immutable'); END;
+CREATE TRIGGER ledger_postings_no_update BEFORE UPDATE ON ledger_postings BEGIN SELECT RAISE(ABORT, 'posted ledger records are immutable'); END;
+CREATE TRIGGER ledger_postings_no_delete BEFORE DELETE ON ledger_postings BEGIN SELECT RAISE(ABORT, 'posted ledger records are immutable'); END;
 CREATE TABLE password_resets (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, user_id INTEGER NOT NULL,
   token_hash TEXT NOT NULL UNIQUE, expires_at INTEGER NOT NULL, used_at TEXT, ip TEXT,

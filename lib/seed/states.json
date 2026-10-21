@@ -3897,6 +3897,137 @@
      ]
     }
    }
+  },
+  {
+   "key": "wallet",
+   "name": "A wallet's life",
+   "column": "status",
+   "initial": "active",
+   "states": "list:walletStatuses",
+   "transitions": {
+    "active": [
+     "restricted",
+     "suspended",
+     "closed"
+    ],
+    "restricted": [
+     "active",
+     "suspended",
+     "closed"
+    ],
+    "suspended": [
+     "active",
+     "restricted",
+     "closed"
+    ]
+   },
+   "actions": {
+    "reactivate": "active",
+    "restrict": "restricted",
+    "suspend": "suspended",
+    "close": "closed"
+   },
+   "meta": {
+    "active": {
+     "tags": [
+      "operates",
+      "receives"
+     ]
+    },
+    "restricted": {
+     "tags": [
+      "receives"
+     ],
+     "label": "Restricted — may only receive"
+    },
+    "suspended": {
+     "tags": [
+      "blocked"
+     ]
+    },
+    "closed": {
+     "tags": [
+      "closed",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "wallet_hold",
+   "name": "Value a wallet keeps for a purpose",
+   "column": "status",
+   "initial": "active",
+   "states": "list:walletHoldStatuses",
+   "transitions": {
+    "active": [
+     "spent",
+     "partly_spent",
+     "released",
+     "expired"
+    ],
+    "partly_spent": [
+     "spent",
+     "partly_spent",
+     "released",
+     "expired"
+    ]
+   },
+   "actions": {
+    "capture": "spent",
+    "capture_part": "partly_spent",
+    "release": "released",
+    "expire": "expired"
+   },
+   "meta": {
+    "active": {
+     "tags": [
+      "keeps"
+     ]
+    },
+    "partly_spent": {
+     "tags": [
+      "keeps"
+     ]
+    },
+    "spent": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "released": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "expired": {
+     "tags": [
+      "terminal",
+      "lapsed"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
   }
  ]
 }

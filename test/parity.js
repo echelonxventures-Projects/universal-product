@@ -220,11 +220,13 @@ console.log("\n▸ FINTECH — one ledger, escrow, KYC-gated credit");
   /* mandates */
   const m = fin.registerMandate(T, { owner: "u:1", max_amount: 100, frequency: "monthly", purpose: "subscription" });
   ok(m.status === "registered" && m.frequency === "monthly", "a mandate registers with a registry frequency");
-  const charged = fin.chargeMandate(T, m.id, 40);
-  ok(charged.charged_amount === 40 && charged.charges_done === 1, "a mandate charge accumulates");
+  const charged = fin.chargeMandate(T, m.id, 30);
+  ok(charged.charged_amount === 30 && charged.charges_done === 1, "a mandate charge accumulates");
   let overCap = false; try { fin.chargeMandate(T, m.id, 100); } catch (e) { overCap = /cap/.test(e.message); }
   ok(overCap, "a charge past the mandate cap is refused");
-  ok(one("SELECT balance FROM wallets WHERE tenant_id=? AND owner=?", T, "u:1").balance === 0, "the mandate debited the same ledger");
+  let short = false; try { fin.chargeMandate(T, m.id, 10); } catch (e) { short = /Not enough/.test(e.message); }
+  ok(short && one("SELECT charges_done FROM mandates WHERE id=?", m.id).charges_done === 1, "a charge beyond what the wallet holds is refused and not counted");
+  ok(one("SELECT balance FROM wallets WHERE tenant_id=? AND owner=?", T, "u:1").balance === 5, "the mandate debited the same ledger");
   /* escrow */
   const e = fin.hold(T, 555, "u:buyer", "u:seller", 200, "USD", { source: "test" });
   ok(e.status === "held" && e.held === 1, "escrow holds the funds");

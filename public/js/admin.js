@@ -62,7 +62,7 @@ const NAV = [
   { g: "Marketing & Growth", items: [["promotions", "🎟️ Offers & Coupons"], ["goip", "Ω∞ GOIP"], ["affiliate", "📣 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["marketplace", "📢 Marketplace & Ads"], ["auctions", "🔨 Auctions"], ["groupbuy", "👥 Group Buying"]] },
   { g: "Customer Care", items: [["helpdesk", "🎧 Support Helpdesk"], ["conversations", "💬 Messages"], ["ugc", "⭐ Reviews & Q&A"]] },
   { g: "Sellers & B2B", items: [["sellers", "🏪 Sellers"], ["listings", "🏷️ Shopper Listings"], ["negotiation", "🤝 Offers"], ["rfqs", "📋 RFQs"], ["contracts", "📝 Contracts"], ["tenders", "🏛️ Tenders"]] },
-  { g: "Payments & Finance", items: [["payments", "💳 Payment Gateways"], ["settlements", "🤝 Settlements"], ["finance", "💰 Disputes & Payouts"], ["billing", "🧮 Billing"]] },
+  { g: "Payments & Finance", items: [["payments", "💳 Payment Gateways"], ["wallets", "👛 Wallets & Ledger"], ["settlements", "🤝 Settlements"], ["finance", "💰 Disputes & Payouts"], ["billing", "🧮 Billing"]] },
   { g: "Business Operations", items: [["qcops", "⚡ Quick-commerce"], ["mktops", "🏬 Marketplace Ops"], ["tradeops", "🚢 Trade Ops"], ["finops", "💸 Fintech Ops"], ["ops_hr", "🧑‍💼 People & Payroll"], ["ops_mfg", "🏭 Manufacturing"], ["ops_proj", "📐 Projects & Approvals"]] },
   { g: "Mobility", items: [["rides", "🚗 Rides & Dispatch"], ["fleet", "🚙 Fleet & Drivers"]] },
   { g: "Team & Access", items: [["team", "👥 Team & Roles"], ["structure", "🏢 Org Structure"], ["sso", "🔐 SSO & Integrations"]] },
@@ -727,6 +727,40 @@ async function vHealthRecords() {
   ${(d.shared || []).map(x => `<tr><td>${esc(x.owner)}</td><td>${x.item ? `<a href="${esc(x.item.url)}" target="_blank" rel="noopener">${esc(x.item.title)}</a>` : ""}</td><td>${esc(x.until)}</td></tr>`).join("") || `<tr><td colspan="3">${esc(d.error || (party ? "Nothing shared with this party." : "Name a party."))}</td></tr>`}</tbody></table></div></div>`;
 }
 function wireHealthRecords() { const b = $("#hrLook"); if (b) b.onclick = () => { hrParty = fieldVal("#hrParty"); render(); }; }
+/* ---------- the Universal Wallet (lib/wallet.js): an owner's wallets, their statements and holds,
+   staff moves with a reason, adjustments, reversals, and the ledger's own verification ---------- */
+let walOwner = "", walOpen = "";
+async function vWallets() {
+  const v = await api("/admin/ledger/verify", {}).catch(e => ({ error: e.message }));
+  const defs = await api("/wallet-definitions", {}).catch(() => ({ definitions: [] }));
+  const d = walOwner ? await api("/admin/wallets?owner=" + encodeURIComponent(walOwner), {}).catch(e => ({ error: e.message, wallets: [] })) : { wallets: [] };
+  const one = walOpen ? await api("/admin/wallets/" + encodeURIComponent(walOpen), {}).catch(e => ({ error: e.message })) : null;
+  const acts = d.walletActions || [];
+  return `<div class="a-head"><h2>👛 Wallets & Ledger</h2><p class="a-sub">Every wallet an owner holds — named as they like, each in one unit of value, bound to a versioned definition. Value moves only as balanced journals that cannot be edited; corrections are linked reversals. A wallet's balance is its postings, less what its holds keep.</p></div>
+  <div class="a-card"><h3>Ledger check</h3>${v.error ? `<p class="a-sub">${esc(v.error)}</p>` : `<p>${v.journals} journals · ${v.unbalanced.length ? `<b>${v.unbalanced.length} unbalanced</b>` : "every one balances"} · event chain ${v.chain && v.chain.ok ? "intact" : "<b>broken at " + esc(String((v.chain || {}).brokenAt)) + "</b>"}</p>`}</div>
+  <div class="a-card"><h3>Definitions</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>key</th><th>version</th><th>name</th><th>holds</th><th>allows</th><th>policy</th></tr></thead><tbody>
+  ${(defs.definitions || []).map(x => `<tr><td><code>${esc(x.key)}</code>${x.spec.default ? " ★" : ""}</td><td>${x.version}</td><td>${esc(Object.values(x.spec.name || {})[0] || "")}</td><td>${esc(x.spec.classes.join(", "))}</td><td>${esc(x.spec.operations.join(", "))}</td><td>${esc(Object.entries(x.spec.policy || {}).filter(([, n]) => n).map(([k, n]) => k.replace(/_/g, " ") + " " + n).join(" · ") || "—")}</td></tr>`).join("")}</tbody></table></div></div>
+  <div class="a-card"><h3>An owner's wallets</h3><div class="p-form"><div class="row"><label><span>Owner</span><input id="walOwner" value="${esc(walOwner)}" placeholder="t1:u:42"></label></div><button class="p-btn primary" id="walLook">Show</button></div>
+  ${d.error ? `<p class="a-sub">${esc(d.error)}</p>` : `<div class="a-tablewrap"><table class="a-table"><thead><tr><th>wallet</th><th>name</th><th>definition</th><th>unit</th><th>posted</th><th>reserved</th><th>available</th><th>state</th><th></th></tr></thead><tbody>
+  ${(d.wallets || []).map(w => `<tr><td><code>${esc(w.id)}</code></td><td>${esc(w.name)}</td><td>${esc(w.definition.key)} v${w.definition.version}</td><td>${esc(w.unit)}</td><td>${w.posted}</td><td>${w.reserved}</td><td>${w.available}</td><td>${stateChip(w.state)}</td>
+    <td style="white-space:nowrap"><button class="btn-white sm" data-wal-open="${esc(w.id)}">Statement</button> ${acts.filter(a => a.to !== w.state.key).map(a => `<button class="btn-white sm" data-co-post="/admin/wallets/${encodeURIComponent(w.id)}/move" data-co-body='${esc(JSON.stringify({ action: a.verb }))}' data-co-ask="Why?" data-co-field="reason">${esc(a.label)}</button>`).join(" ")}
+      <button class="btn-white sm" data-wal-adjust="${esc(w.id)}">Adjust</button></td></tr>`).join("") || `<tr><td colspan="9">${walOwner ? "This owner holds no wallets." : "Name an owner."}</td></tr>`}</tbody></table></div>`}</div>
+  ${one ? (one.error ? `<div class="a-card"><p class="a-sub">${esc(one.error)}</p></div>` : `<div class="a-card"><h3>${esc(one.wallet.name)} · <code>${esc(one.wallet.id)}</code></h3><p class="a-sub">Names over time: ${one.names.map(n => esc(n.name) + (n.alias ? " (alias)" : "") + (n.valid_to ? " — until " + esc(n.valid_to) : " — now")).join("; ")}</p>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>journal</th><th>when</th><th>operation</th><th>ref</th><th>amount</th><th></th></tr></thead><tbody>
+    ${one.lines.map(l => `<tr><td>#${l.id}${l.reverses ? " ↩ #" + l.reverses : ""}</td><td>${esc(l.created_at)}</td><td>${esc(l.op_name)}</td><td>${esc(l.ref)}</td><td>${l.amount}</td><td>${l.reverses ? "" : `<button class="btn-white sm" data-co-post="/admin/journals/${l.id}/reverse" data-co-ask="Why reverse it?" data-co-field="reason">Reverse</button>`}</td></tr>`).join("") || '<tr><td colspan="6">No movements.</td></tr>'}</tbody></table></div>
+    <h3>Holds</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>#</th><th>purpose</th><th>ref</th><th>amount</th><th>captured</th><th>until</th><th>state</th></tr></thead><tbody>
+    ${one.holds.map(h => `<tr><td>${h.id}</td><td>${esc(h.purpose)}</td><td>${esc(h.ref)}</td><td>${h.amount}</td><td>${h.captured}</td><td>${esc(h.expires_at || "")}</td><td>${stateChip(h.state)}</td></tr>`).join("") || '<tr><td colspan="7">No holds.</td></tr>'}</tbody></table></div></div>`) : ""}`;
+}
+function wireWallets() {
+  const b = $("#walLook"); if (b) b.onclick = () => { walOwner = fieldVal("#walOwner").trim(); walOpen = ""; render(); };
+  $$("[data-wal-open]").forEach(x => x.onclick = () => { walOpen = x.dataset.walOpen; render(); });
+  $$("[data-wal-adjust]").forEach(x => x.onclick = () => {
+    const amount = prompt("Amount (negative takes value out)"); if (amount == null || amount === "") return;
+    const reason = prompt("Why?"); if (!reason) return;
+    postAndRender("/admin/wallets/" + encodeURIComponent(x.dataset.walAdjust) + "/adjust", { amount, reason, idempotency_key: "adj-" + Date.now() }, "POST", "Adjusted");
+  });
+  wireCoPosts();
+}
 /* ---------- tips (lib/tips.js) ---------- */
 async function vTips() {
   const gate = await coGate("tips");
@@ -2415,6 +2449,7 @@ async function render() {
     else if (view === "tips") body.innerHTML = await vTips();
     else if (view === "sessions") body.innerHTML = await vSessions();
     else if (view === "metering") body.innerHTML = await vMetering();
+    else if (view === "wallets") { body.innerHTML = await vWallets(); wireWallets(); }
     else if (view === "trials") body.innerHTML = await vTrials();
     else if (await deliverableKindFor(view)) { body.innerHTML = await vDeliverables(view); wireDeliverables(view); }
     else if (view === "healthrecords") { body.innerHTML = await vHealthRecords(); wireHealthRecords(); }

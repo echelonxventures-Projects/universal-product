@@ -287,22 +287,6 @@
    "redeemed",
    "voided",
    "reserved"
-  ],
-  "walletEntryKinds": [
-   "deposit",
-   "redeem",
-   "refund",
-   "reward",
-   "adjust",
-   "transfer",
-   "expire",
-   "cashback"
-  ],
-  "walletAccountKinds": [
-   "gift",
-   "reward",
-   "prepaid",
-   "refund"
   ]
  }
 }

@@ -660,10 +660,10 @@ stateDiagram-v2
 | **Contract** | [UCOS-VAL-000001 Value Architecture](#ucos-val-000001) |
 | **Artifacts** | [UCOS-VAL-000001](#ucos-val-000001) |
 | **Concepts** | 149 — `node _registry/compile.js --search <words> --kind concept --owner "Value"` |
-| **Code** | `lib/registry.js`, `lib/global.js`, `lib/seed/value.json` |
+| **Code** | `lib/registry.js`, `lib/global.js`, `lib/wallet.js`, `lib/seed/wallet.json`, `lib/seed/value.json` |
 | **Managed in** | `_registry/domains.json` → `D-VAL` |
 
-**Live routes (10)** — what the platform serves today for this domain:
+**Live routes (24)** — what the platform serves today for this domain:
 
 - `GET /api/fx`
 - `GET /api/platform/fx`
@@ -675,6 +675,20 @@ stateDiagram-v2
 - `POST /api/platform/global/currency`
 - `PUT /api/platform/global/currency`
 - `POST /api/platform/global/tenant/currency`
+- `GET /api/wallets`
+- `POST /api/wallets`
+- `POST /api/wallets/transfer`
+- `GET /api/wallets/:id`
+- `GET /api/wallets/:id/statement`
+- `POST /api/wallets/:id/name`
+- `GET /api/wallet-definitions`
+- `GET /api/admin/wallets`
+- `GET /api/admin/wallets/:id`
+- `POST /api/admin/wallets/:id/move`
+- `POST /api/admin/wallets/:id/adjust`
+- `POST /api/admin/journals/:id/reverse`
+- `GET /api/admin/ledger/verify`
+- `POST /api/platform/wallet-definitions`
 
 <a id="ucos-val-000001"></a>
 #### UCOS-VAL-000001 · Value Architecture

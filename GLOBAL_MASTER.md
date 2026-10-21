@@ -226,3 +226,39 @@ Phase 9 adds, as rows and the conditions they need:
 
 Every offer still states who funds it, how it stacks and where it applies. A new kind of deal is a row,
 plus a condition when it needs one the engine does not yet know.
+
+## 11. The Universal Wallet
+
+The wallet is a product: what the Customer Wallets module sells, gated by `checkout.wallet`. It
+orchestrates the domains that own each concept and reproduces none of them.
+
+| Spec domain | Owner here | State |
+|---|---|---|
+| Wallet Product, Wallet Registry | `lib/wallet.js` — `wallet_definitions` (versioned, namespaced), `wallet_instances`, `wallet_names` | built (slice 1) |
+| Value Registry | Value's master (`currencies`, `lib/seed/value.json` classes) | existed; reused |
+| Ledger | `lib/wallet.js` — `ledger_accounts`, `ledger_journals`, `ledger_postings` (immutable, balanced, minor units) | built (slice 1) |
+| Holds | `wallet_holds`, `wallet_hold` machine | built (slice 1) |
+| Audit evidence | the kernel's hash-chained event log (one event per journal, wallet and hold change) | built (slice 1) |
+| Configuration and Policy | definition versions; state machines; capability params | built (slice 1) |
+| Conversion, FX and Pricing | `fx_rates` (rates exist); routes, quotes, execution | next — slice 2 |
+| Commission | one engine for seller, marketplace, affiliate, referral, reseller and provider fees | next — slice 3 (replaces three scattered implementations) |
+| Settlement, Payout | `settlements`, `payouts` (lib/fin.js) onto the ledger | slice 3 |
+| Rewards, Gift, Offer | offers/GOIP issue into wallet definitions (rewards, gift); gift cards and vouchers | slice 4 (with the incentive work) |
+| Interoperability, Custody, Asset and Network | external wallet links with consent, adapters from the Provider Registry, asset identity on Value units | slice 5 |
+| Compliance and jurisdiction activation | approval records per value class, operation, route and place; fail closed | slice 6 |
+| Risk, Disputes, Reconciliation | risk engine, cases, a reconciliation case per mismatch | slice 6 |
+
+### Requirement status (evidence: the named test file)
+
+| Requirement | State | Evidence |
+|---|---|---|
+| UW-CORE-001 immutable identity · 002 names apart from identity · 003 registered, versioned definitions · 004 many wallets per owner | built | `test/wallet.js` — "two wallets may share a name", "renaming keeps the identity and every past name", "a change makes the next version" |
+| UW-CORE-007 no closed list of names or types · 009 configuration cannot bypass invariants · 010 history keeps its definition version | built | definitions are data; balance, immutability and idempotency are code, not configuration; wallets bind a version |
+| UW-VAL-001/002/003/005 typed units, exact precision, unknown units fail | built | "decimals become whole minor units", "more decimals than the unit has are refused", "holds only units its definition's classes allow" |
+| UW-FIN-002 balanced, immutable journals · 003 no duplicate effects · 004 no overspend · 009 adjustments need a reason · 010 holds not double-counted | built | "two postings that sum to zero", "a posting cannot be changed", "the same key returns the first outcome", "refused, not clamped", "what a hold keeps cannot be spent elsewhere" |
+| UW-VAL-010 issuance limits by place | not built | any registered unit may be held today; issuance by place is slice 6 |
+| UW-FIN-006 discrepancies visible | partial | `GET /api/admin/ledger/verify` reports unbalanced journals and the chain; reconciliation cases are slice 6 |
+| UW-CNV-* conversion | not built | slice 2 |
+| UW-COM-* commission | not built | slice 3 |
+| UW-SET-*, UW-INT-*, UW-REG-* | not built | slices 3, 5, 6 |
+| UW-OPS-002 replay without duplicate effects | built for journals and holds (idempotency keys); event consumers are slice 6 | |

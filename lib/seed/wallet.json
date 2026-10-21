@@ -1,0 +1,234 @@
+{
+ "$comment": "The Universal Wallet's declarations (lib/wallet.js). A wallet DEFINITION is a versioned blueprint in a namespace: its names (any language, any aliases), the value classes it may hold (Value's classes — lib/seed/value.json), the operations it allows (the operations below, plus hold), and its policy. A wallet INSTANCE belongs to an owner, holds one unit of value and binds one definition version; an owner may hold any number of wallets, named as they like. Money moves only as balanced, immutable ledger journals; a wallet's balance is a projection of its postings. Nothing here names a business: a definition is data, added in the console or the seed. Policy: overdraft (how far below zero available may go), max_balance (0: none), max_wallets_per_owner (0: any number), hold_minutes (how long a hold keeps value when its caller names no expiry).",
+ "namespace": "platform",
+ "systemAccounts": [
+  {
+   "key": "issuance",
+   "name": "Value issued into wallets (the store's liability counterpart)"
+  },
+  {
+   "key": "clearing",
+   "name": "Value spent out of wallets, awaiting settlement"
+  },
+  {
+   "key": "migration",
+   "name": "Opening balances carried from the single-balance wallet"
+  },
+  {
+   "key": "suspense",
+   "name": "Value whose destination is not yet known"
+  }
+ ],
+ "operations": [
+  {
+   "key": "deposit",
+   "name": "Funded",
+   "direction": "in",
+   "counter": "issuance",
+   "default_in": true
+  },
+  {
+   "key": "cashback",
+   "name": "Cashback",
+   "direction": "in",
+   "counter": "issuance"
+  },
+  {
+   "key": "reward",
+   "name": "Reward",
+   "direction": "in",
+   "counter": "issuance"
+  },
+  {
+   "key": "refund",
+   "name": "Refund",
+   "direction": "in",
+   "counter": "clearing"
+  },
+  {
+   "key": "redeem",
+   "name": "Spent",
+   "direction": "out",
+   "counter": "clearing",
+   "default_out": true
+  },
+  {
+   "key": "expire",
+   "name": "Expired",
+   "direction": "out",
+   "counter": "issuance"
+  },
+  {
+   "key": "adjust",
+   "name": "Adjustment",
+   "direction": "either",
+   "counter": "suspense",
+   "needs_reason": true
+  },
+  {
+   "key": "transfer",
+   "name": "Transfer between wallets",
+   "direction": "between"
+  },
+  {
+   "key": "opening",
+   "name": "Opening balance",
+   "direction": "in",
+   "counter": "migration"
+  }
+ ],
+ "definitions": [
+  {
+   "key": "main",
+   "name": {
+    "en": "Wallet"
+   },
+   "aliases": {
+    "en": [
+     "Balance",
+     "Store wallet"
+    ]
+   },
+   "classes": [
+    "fiat"
+   ],
+   "operations": [
+    "deposit",
+    "cashback",
+    "reward",
+    "refund",
+    "redeem",
+    "adjust",
+    "transfer",
+    "opening",
+    "hold"
+   ],
+   "policy": {
+    "overdraft": 0,
+    "max_balance": 0,
+    "max_wallets_per_owner": 1,
+    "hold_minutes": 30
+   },
+   "default": true
+  },
+  {
+   "key": "gift",
+   "name": {
+    "en": "Gift balance"
+   },
+   "aliases": {
+    "en": [
+     "Gift card balance"
+    ]
+   },
+   "classes": [
+    "fiat"
+   ],
+   "operations": [
+    "deposit",
+    "redeem",
+    "refund",
+    "expire",
+    "adjust",
+    "opening",
+    "hold"
+   ],
+   "policy": {
+    "overdraft": 0,
+    "max_balance": 0,
+    "max_wallets_per_owner": 1,
+    "hold_minutes": 30
+   }
+  },
+  {
+   "key": "rewards",
+   "name": {
+    "en": "Rewards"
+   },
+   "aliases": {
+    "en": [
+     "Points"
+    ]
+   },
+   "classes": [
+    "loyalty",
+    "digital",
+    "utility"
+   ],
+   "operations": [
+    "reward",
+    "redeem",
+    "expire",
+    "adjust",
+    "opening",
+    "hold"
+   ],
+   "policy": {
+    "overdraft": 0,
+    "max_balance": 0,
+    "max_wallets_per_owner": 0,
+    "hold_minutes": 30
+   }
+  },
+  {
+   "key": "purpose",
+   "name": {
+    "en": "Purpose wallet"
+   },
+   "aliases": {
+    "en": [
+     "Savings pot",
+     "Travel wallet",
+     "Project wallet"
+    ]
+   },
+   "classes": [
+    "fiat"
+   ],
+   "operations": [
+    "redeem",
+    "refund",
+    "transfer",
+    "adjust",
+    "hold"
+   ],
+   "policy": {
+    "overdraft": 0,
+    "max_balance": 0,
+    "max_wallets_per_owner": 0,
+    "hold_minutes": 30
+   }
+  },
+  {
+   "key": "proceeds",
+   "name": {
+    "en": "Seller proceeds"
+   },
+   "aliases": {
+    "en": [
+     "Earnings"
+    ]
+   },
+   "classes": [
+    "fiat"
+   ],
+   "operations": [
+    "deposit",
+    "transfer",
+    "adjust",
+    "opening",
+    "hold"
+   ],
+   "policy": {
+    "overdraft": 0,
+    "max_balance": 0,
+    "max_wallets_per_owner": 1,
+    "hold_minutes": 30
+   }
+  }
+ ],
+ "machines": {
+  "wallet": "wallet",
+  "hold": "wallet_hold"
+ }
+}

@@ -181,7 +181,9 @@ const sqlAt = ms => new Date(ms).toISOString().slice(0, 19).replace("T", " ");
       ok(t.trials.length === 2 && t.trials.every(x => x.open) && t.actions.length === 2, "each item is on trial, to keep or return", t);
       const tid1 = t.trials.find(x => x.product_id === pa.id).id, tid2 = t.trials.find(x => x.product_id === pb.id).id;
       const wb = () => (db.get("SELECT balance FROM wallets WHERE tenant_id=1 AND owner=(SELECT owner FROM trials WHERE id=?)", tid1) || { balance: 0 }).balance;
-      db.run("INSERT INTO wallets(tenant_id,owner,balance,updated_at) VALUES(1,(SELECT owner FROM trials WHERE id=?),1000,datetime('now')) ON CONFLICT(tenant_id,owner) DO UPDATE SET balance=1000", tid1);
+      /* the shopper's wallet is funded through the ledger (the balance table is its projection) */
+      { const Wl = require("../lib/wallet.js"), trOwner = db.get("SELECT owner FROM trials WHERE id=?", tid1).owner, w0 = Wl.walletFor(1, trOwner);
+        const need = (1000 - wb()).toFixed(Wl.unitOf(w0.unit).decimals); if (Number(need) > 0) Wl.post(1, { op: "deposit", wallet: w0.id, amount: need, idem: "test-fund-" + tid1, actor: "test" }); }
       const kept = await R("/api/trials/" + tid1 + Q, "POST", { action: t.actions[0].verb });
       ok(kept.status === 200 && Math.abs(1000 - wb() - (kept.body.trial.charged || 0)) < 0.01, "deciding charges or refunds the wallet", [kept.body, wb()]);
       const back = await R("/api/trials/" + tid2 + Q, "POST", { action: t.actions[1].verb });

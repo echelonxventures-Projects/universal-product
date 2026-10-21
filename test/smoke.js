@@ -1476,7 +1476,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const reds = (await AD("/api/offers/coupons")).body.redemptions || [];
       ok(reds.some(x => x.status === "voided" && x.code === "CB10"), "refund voided the redemption (clawback)");
       const ledB = (await AD("/api/wallet/ledger?owner=" + encodeURIComponent(owner))).body.entries || [];
-      ok(ledB.some(e => e.kind === "refund" && /clawback/.test(e.ref || "")), "wallet reward clawed back on refund");
+      ok(ledB.some(e => Number(e.amount) < 0 && /^reversal:/.test(e.ref || "")), "wallet reward clawed back on refund, as a reversal linked to its journal", ledB.map(e => e.kind + ":" + e.amount + ":" + e.ref));
 
       // currency guard: EUR fixed offer invisible on USD store, valid on EUR
       ok((await AD("/api/offers/preview", "POST", { amount: 500, coupon: "EURFIX", currency: "USD" })).body.discount === 0, "EUR offer skipped on USD store");
@@ -2048,11 +2048,17 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       /* a paid tier is charged to the member's wallet — fund it first, then show an unfunded
          upgrade is refused */
       { const { DatabaseSync } = require("node:sqlite"); const wdb = new DatabaseSync(dbBase);
-        const du = wdb.prepare("SELECT id, tenant_id FROM users WHERE email='demo@luxora.shop'").get();
-        wdb.prepare("INSERT INTO wallets(tenant_id,owner,balance) VALUES(?,?,0) ON CONFLICT(tenant_id,owner) DO UPDATE SET balance=0").run(du.tenant_id, "t" + du.tenant_id + ":u:" + du.id);
+        const du = wdb.prepare("SELECT id, tenant_id FROM users WHERE email='demo@luxora.shop'").get(); wdb.close();
+        const memOwner = "t" + du.tenant_id + ":u:" + du.id;
+        /* the wallet is emptied and funded through the ledger (staff adjustments, each with a reason) */
+        await C("/api/wallets"); /* opens the default wallet if the member has none */
+        const ws = (await A("/api/admin/wallets?owner=" + encodeURIComponent(memOwner))).body.wallets || [];
+        const mw = ws.find(w => w.definition && w.definition.key) || {};
+        if (mw.posted > 0) await A("/api/admin/wallets/" + encodeURIComponent(mw.id) + "/adjust", "POST", { amount: -mw.posted, reason: "test: empty the wallet", idempotency_key: "smoke-empty" });
         const broke = await C("/api/membership/subscribe", "POST", { tier: "premier" });
         ok(broke.status === 400 && /Insufficient/i.test(broke.body.error || ""), "a paid membership is refused from an empty wallet", broke.body);
-        wdb.prepare("UPDATE wallets SET balance=500 WHERE tenant_id=? AND owner=?").run(du.tenant_id, "t" + du.tenant_id + ":u:" + du.id); wdb.close(); }
+        const fund = await A("/api/admin/wallets/" + encodeURIComponent(mw.id) + "/adjust", "POST", { amount: 500, reason: "test: fund the wallet", idempotency_key: "smoke-fund" });
+        ok(fund.status === 200, "staff fund the wallet through the ledger", fund.body); }
       const mem1 = await C("/api/membership/subscribe", "POST", { tier: "premier" });
       ok(mem1.status === 200 && mem1.body.membership.tier === "premier", "customer upgrades membership tier", JSON.stringify(mem1.body));
       const mem2 = await C("/api/membership");
