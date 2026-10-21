@@ -1215,6 +1215,15 @@
     "rejected",
     "refunded"
    ]
+  },
+  "contributionStatuses": {
+   "label": "Platform master · Contribution statuses",
+   "items": [
+    "proposed",
+    "approved",
+    "rejected",
+    "withdrawn"
+   ]
   }
  }
 }

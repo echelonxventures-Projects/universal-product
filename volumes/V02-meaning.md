@@ -40,7 +40,7 @@
 | **Contract** | [UCOS-IDN-000001 Identity Architecture](#ucos-idn-000001) |
 | **Artifacts** | [UCOS-IDN-000001](#ucos-idn-000001) |
 | **Concepts** | 1349 — `node _registry/compile.js --search <words> --kind concept --owner "Identity"` |
-| **Code** | `lib/uid.js`, `lib/kernel.js` |
+| **Code** | `lib/uid.js`, `lib/kernel.js`, `lib/platform-master.js` |
 | **Managed in** | `_registry/domains.json` → `D-IDN` |
 
 **Live routes:** none yet.
@@ -279,11 +279,13 @@ stateDiagram-v2
 | **Contract** | [UCOS-SEM-000001 Universal Semantic Architecture](#ucos-sem-000001) |
 | **Artifacts** | [UCOS-SEM-000001](#ucos-sem-000001), [UCOS-ONT-000001](#ucos-ont-000001), [UCOS-TAX-000001](#ucos-tax-000001), [UCOS-CLS-000001](#ucos-cls-000001) |
 | **Concepts** | 314 — `node _registry/compile.js --search <words> --kind concept --owner "Semantic"` |
-| **Code** | — |
+| **Code** | `lib/platform-master.js`, `lib/seed/master.json` |
 | **Managed in** | `_registry/domains.json` → `D-SEM` |
 
-**Live routes (10)** — what the platform serves today for this domain:
+**Live routes (12)** — what the platform serves today for this domain:
 
+- `GET /api/platform/master/tree`
+- `GET /api/platform/master/vocabulary/:key`
 - `GET /api/taxonomy`
 - `GET /api/admin/taxonomy`
 - `POST /api/admin/taxonomy`
@@ -2491,13 +2493,18 @@ stateDiagram-v2
 | **Code** | `lib/stores.js`, `lib/tenancy.js`, `lib/seed/stores.json` |
 | **Managed in** | `_registry/domains.json` → `D-PTY` |
 
-**Live routes (41)** — what the platform serves today for this domain:
+**Live routes (46)** — what the platform serves today for this domain:
 
 - `GET /api/admin/staff`
 - `POST /api/admin/staff`
 - `PUT /api/admin/staff/:id`
 - `DELETE /api/admin/staff/:id`
 - `GET /api/tenant/entity-def`
+- `GET /api/tenant/master/permissions`
+- `GET /api/tenant/master/contributions`
+- `POST /api/tenant/master/contributions`
+- `POST /api/tenant/master/contributions/:id/withdraw`
+- `GET /api/tenant/master/items/:ref`
 - `GET /api/tenant/products`
 - `GET /api/tenant/catalog/importable`
 - `POST /api/tenant/catalog/import`

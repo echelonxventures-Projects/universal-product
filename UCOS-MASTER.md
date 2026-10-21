@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0027 (2026-10-21).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0031 (2026-10-21).
 
 ## Contents
 
@@ -57,9 +57,9 @@ A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A c
 |---|---|---|---:|---:|---:|
 | [V01](volumes/V01-constitution.md) | C01 Constitution | 1 of 1 | 1 | 10 | 71 KB |
 | [V02](volumes/V02-meaning.md) | C02 Meaning | 1 of 1 | 5 | 13 | 88 KB |
-| [V03.1](volumes/V03.1-reality-and-reasoning.md) | C03 Reality and Reasoning | 1 of 2 | 9 | 13 | 91 KB |
+| [V03.1](volumes/V03.1-reality-and-reasoning.md) | C03 Reality and Reasoning | 1 of 2 | 9 | 13 | 92 KB |
 | [V03.2](volumes/V03.2-reality-and-reasoning.md) | C03 Reality and Reasoning | 2 of 2 | 1 | 3 | 21 KB |
-| [V04](volumes/V04-universal-dimensions.md) | C04 Universal Dimensions | 1 of 1 | 6 | 6 | 41 KB |
+| [V04](volumes/V04-universal-dimensions.md) | C04 Universal Dimensions | 1 of 1 | 6 | 6 | 40 KB |
 | [V05](volumes/V05-structure.md) | C05 Structure | 1 of 1 | 2 | 2 | 19 KB |
 | [V06](volumes/V06-decision-and-control.md) | C06 Decision and Control | 1 of 1 | 4 | 4 | 30 KB |
 | [V07](volumes/V07-assurance.md) | C07 Assurance | 1 of 1 | 4 | 10 | 70 KB |
@@ -390,6 +390,10 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0025"></a>AMD-0025 | 2026-10-21 | Platform owner | The platform master and configuration by selection, adopted as design (GLOBAL_MASTER.md). Every product and service is an entity in the platform master, of a kind declared as a row and classified in any number of hierarchies of any depth; codes, scientific names and local codes are identifiers under identifier schemes; what the source model called columns are attributes on kinds, inherited down a hierarchy and applicable by context. A platform sees the master through its permissions (scope, objects, actions, review) as a projection, with its overlays held in its own scope; nothing is copied. Every platform addition, modification or retirement is a contribution: the platform master's owner reviews each one, and once approved applies it, adds it as new, or attaches it as an addendum, or rejects it with a reason. A platform is configured through a blueprint's steps (official and working authorities, languages, value units, taxes, identifier schemes, selling model, what it sells, features, sites), every setting on its own with an effective time to the minute; discovery derives each capability as mandatory, recommended, added or requested with its reason, and requests are captured at configuration and editable by the platform owner afterwards. Platform kinds and blends stop deciding features and become starter packages. Fulfilment modes include appointment, chat, audio and video; media sessions are built in, with connectors plugged in beside them, and communication may itself be offered on any commercial terms. The starter master ships the maximum declared content. Steps P27–P30. |
 | <a id="amd-0026"></a>AMD-0026 | 2026-10-21 | Platform owner | Coverage of every type of platform, product, service, deal and offer, adopted as design (GLOBAL_MASTER.md sections 8–10). The coverage matrix names 32 types of platform by what they do (everything marketplaces, cross-border bargain marketplaces, hypermarket chains, wholesale exchanges, quick commerce, fresh and perishables grocery, online pharmacy and health, food delivery, fashion, electronics, furniture, automotive parts, digital goods, education, subscription boxes, services and consultancy, rentals, travel, ticketing, resale, auctions, group buying, live selling, reseller commerce, dropshipping, made-to-order, gifts, pre-orders, super apps, mobility, operations); each becomes a blueprint fixture that fails while any capability is left requested. The engines still missing and the offer types still missing (payment-instrument offers, instalments without cost, exchange, free gift, mix and match, lightning deals, sale events, clearance, price match, price-drop protection, member and tier prices, loyalty points, channel, time-window and place conditions, clipped coupons, two-sided referrals, gamified rewards, fee waivers) are listed as phase 9. Steps P31–P32. |
 | <a id="amd-0027"></a>AMD-0027 | 2026-10-21 | Platform owner | Phase 1 of GLOBAL_MASTER.md: the kernel parts the platform master stands on are complete. K01: a kind may extend another (entity and sub-entity, any depth, no loops); it inherits attributes, identifier schemes, placement rules and root, and may add attributes or tighten an inherited one but never change its type; a placement rule, a view's kinds and a nodeKind reference accept every kind extending the one named; validation rules are declared per attribute from a registry of operators (min, max, minLength, maxLength, pattern, oneOf, nodeKind, unique, languages), each checked against the value types it applies to and its parameter when declared. K06: text in many languages is a value type (expression) whose languages come from the Expression registry, answered in the language asked, else the source language; an amount in a unit is a value type (quantity) whose unit is a node. K10: a view declares groupings (by kind, by an attribute, by the nearest ancestor of a kind in a hierarchy), nested in order, each declaring its parameters. K11: kinds, hierarchies, settings, resolution profiles and views may be declared at a scope node inside a namespace; a node created at a scope is checked against the scope's kind. Bug fixed: a namespace holder could not be a number, so a tenant namespace such as tenant:42 was refused; holders have their own declared pattern. |
+| <a id="amd-0028"></a>AMD-0028 | 2026-10-21 | Platform owner | Phase 2, first part, of GLOBAL_MASTER.md (P27): the platform master stands on the kernel. lib/platform-master.js writes the starter content of lib/seed/master.json into the kernel the first time the master is asked for anything, in one transaction and only what is missing: 54 kinds (classification levels from domain to model, the item kinds every product and service type extends, identifier schemes, dimensions and units, attribute definitions, vocabularies and terms), the trade taxonomy (998 nodes: domains, industries with the capabilities each requires and recommends, categories and subcategories), the tariff nomenclature's sections and chapters with their codes, 36 identifier schemes each declaring its format, check rule, authority and places, 18 dimensions and 82 units with conversion factors and offsets, 124 attribute definitions bound to taxonomy nodes, kinds and places, 14 relationship types each a hierarchy of its own, and vocabularies for item kinds, fulfilment modes (each with the capabilities it requires), lifecycle, media kinds, packaging levels, variant axes, shipping classes, roles and selling models. An item's attribute set is computed: a definition bound nowhere applies everywhere, one bound to taxonomy nodes applies under them, one bound to kinds applies to every kind extending them, one bound to places applies inside them; its facts are checked against that set with the kernel's one value check. The kernel now checks every code against its scheme's declaration (format, case, check digit: GS1, Luhn, ISBN, ISSN, CAS) and exposes checkValue and checkCode. Measure moves from designed to partial (units still duplicated in lib/meta.js until the vocabularies are projected from the master). |
+| <a id="amd-0029"></a>AMD-0029 | 2026-10-21 | Platform owner | Phase 2, second part, of GLOBAL_MASTER.md (P27): the global catalogue is the platform master. The global_products table is gone: every global product is a master item — its code under the seller-code scheme, its multilingual title and description, its place in the trade taxonomy, its place among the product universes, its media, its lifecycle term and the profile the platform authors for stores — and lib/gcatalog.js only projects an item into the record the console edits and the store import copies, and writes such a record back as master writes (an edit is a new version; a delete retires the item, keeping its history). The product universes the registry declares are a classification of the master, and the kind each sells as is data on the kinds vocabulary (the universe-to-type constant in code is gone; an unmapped universe sells as the kind marked default; an entity named by the words of a universe or a kind resolves to it). The placeholder product the old seed wrote for every universe is gone: a universe is a classification, not a product. An install that predates the master moves every row onto it once, keeping code, place, universe, price, tax class, attributes, profile and status, re-points the store permissions and imported products that named it, and drops the table. Lifecycle states in the console come from the master; what an imported product starts with is platform policy (provisioning.importedProduct). |
+| <a id="amd-0030"></a>AMD-0030 | 2026-10-21 | Platform owner | Phase 2, third part, of GLOBAL_MASTER.md (P27): every product vocabulary the platform reads by name is answered by the platform master, and its copies are gone. The master's seed declares sixteen projections — product types, lifecycle and its transitions, media kinds, packaging levels, shipping classes, variant axes, roles, fulfilment modes, selling models, taxonomy levels (vocabularies), industries (the taxonomy's industry nodes with their domain), units and their conversions (from each unit's factor against its dimension's base unit), identity fields (the codes an item may carry) and relationship types (the relationship hierarchies) — and lib/registry.js answers each from the master, lists it for authoring beside its own lists, and writes a console save or removal to the master (a vocabulary term, an industry under its domain, a unit in its dimension, an identifier scheme that items may then carry, a relationship hierarchy). A list's default stays declared once, in lib/seed/defaults.json. An install that kept such a list as a registry row has the entries the master lacks added to it once, and the row goes. lib/meta.js no longer holds industries, product types, lifecycle, relationship types, media kinds, packaging levels, units, conversions, roles, identity fields, shipping classes, variant axes or taxonomy levels; the store seeders and modules read them through the registry. The universe a corpus entity names is matched by its words; a universe no kind names sells as the kind the vocabulary marks for it. Fixes: the database exports are visible before the bootstrap seeds its stores (seeding now reads the master, which reads the database); a scheme's places are held as codes and resolved when asked, so a scheme written before the place tree loads still names its places. |
+| <a id="amd-0031"></a>AMD-0031 | 2026-10-21 | Platform owner | Phase 3 and 4 of GLOBAL_MASTER.md (P28): permissions on the platform master, contributions and their review, addenda. A permission (lib/master-permissions.js, owner Authority) is a node of the master: its holder (a namespace), the master nodes it covers (each with everything under it in the trade taxonomy and the product universes; none: the whole master), the objects and actions it allows (an action implies the actions its term names: select implies view, sell implies select), the attributes the holder sees and when the holder's changes are reviewed. It is revoked by recording so from an instant on, so what it allowed before stays answerable. A store's access to a global product is a permission at one of the master's access levels (none, read, list, sell, full); the store_product_config table is gone — an install that kept it has each row moved onto a permission at the same level, and the table dropped. A platform never writes the master: what it proposes (add, modify, overlay, retire) is a contribution (lib/master-contributions.js, owner Evolution) the global platform reviews — approved and placed (applied to the master as a new version; added as a new entity; attached as an addendum for the platforms and places named, a retirement so placed hiding the entity there) or rejected with a reason; its author never reviews it. Reviewed before, nothing changes until approval; reviewed after, it holds at once for the proposing platform only, as a provisional addendum or a provisional entity the review places or withdraws. What a platform sees of an entity is the master with the addenda for it (and its place) over it, cut to the attributes its permission shows; a store imports a global product as it sees it. The actions, objects, review modes, access levels, contribution actions and placements are master vocabularies; the life of a contribution is the contribution state machine. Platform console: Master Review (approve with a placement or reject with a reason) and Master Permissions (grant and revoke by platform). Store console: Master Contributions (its permissions, its proposals, propose and withdraw). Fix: the store-access screen sent a product's id as a number, which item ids are not. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1258,7 +1262,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 159 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 164 files.
 
 ### C02 · Meaning
 
@@ -1266,8 +1270,11 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 |---|---|---|
 | `lib/uid.js` | [Identity](volumes/V02-meaning.md#d-idn) |  |
 | `lib/kernel.js` | [Identity](volumes/V02-meaning.md#d-idn) | nodes and identifiers (K02, K04) |
+| `lib/platform-master.js` | [Identity](volumes/V02-meaning.md#d-idn) | items, their codes and identifier schemes |
+| `lib/platform-master.js` | [Semantic](volumes/V02-meaning.md#d-sem) | the trade, tariff and scientific classifications |
 | `lib/stores.js` | [Party](volumes/V02-meaning.md#d-pty) | stores on the kernel: the places each store serves (a Relationship hierarchy, time-windowed) and its jurisdiction (a Party setting) (P09) |
 | `lib/tenancy.js` | [Party](volumes/V02-meaning.md#d-pty) |  |
+| `lib/seed/master.json` | [Semantic](volumes/V02-meaning.md#d-sem) | the platform master starter content (GLOBAL_MASTER.md) |
 | `lib/seed/stores.json` | [Party](volumes/V02-meaning.md#d-pty) | the store kind, the serves hierarchy and the jurisdiction setting |
 | `public/docs/architecture.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
 | `public/docs/e2e-flow.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
@@ -1282,6 +1289,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 |---|---|---|
 | `lib/kernel.js` | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | bi-temporal versions (K07) |
 | `lib/kernel-lifecycle.js` | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | kernel part K09: changes and node states |
+| `lib/master-contributions.js` | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | contributions to the platform master, their review and placement, addenda, and what a platform sees |
 | `lib/kernel-context.js` | [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per) | views (K10) |
 | `lib/governance.js` | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | archive, restore, purge (K09) |
 
@@ -1295,6 +1303,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `lib/global.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | currencies and a store's currency |
 | `lib/global.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | global settings |
 | `lib/kernel-shape.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | kernel part K05: coordinate systems and shapes |
+| `lib/platform-master.js` | [Measure](volumes/V04-universal-dimensions.md#d-mea) | dimensions, units and conversion |
 | `lib/kernel-context.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | scope and resolution (K11, K12) |
 | `lib/expression.js` | [Expression](volumes/V04-universal-dimensions.md#d-exr) | languages, the message catalogue, and the language a request is answered in (P12) |
 | `lib/time.js` | [Time](volumes/V04-universal-dimensions.md#d-tim) | Time's registries and a place's time zone, resolved up the place tree (P11) |
@@ -1331,6 +1340,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `lib/db.js` | [Relationship](volumes/V05-structure.md#d-rel) | the links table and addLink |
 | `lib/kernel.js` | [Registry](volumes/V05-structure.md#d-reg) | kinds and typed attributes (K01, K06) |
 | `lib/kernel.js` | [Relationship](volumes/V05-structure.md#d-rel) | hierarchies and placements (K03) |
+| `lib/platform-master.js` | [Registry](volumes/V05-structure.md#d-reg) | attribute definitions, attribute sets and vocabularies |
+| `lib/platform-master.js` | [Relationship](volumes/V05-structure.md#d-rel) | relationships between items |
 | `lib/seed/entity.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/seed/kernel.json` | [Registry](volumes/V05-structure.md#d-reg) | the kernel's namespaces, value types and event names |
 | `lib/seed/meta.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
@@ -1342,6 +1353,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | File | Owner | Part |
 |---|---|---|
 | `lib/registry.js` | [Rule](volumes/V06-decision-and-control.md#d-rul) | tax modes |
+| `lib/master-permissions.js` | [Authority](volumes/V06-decision-and-control.md#d-aut) | permissions on the platform master: scope, objects, actions, visible attributes, review; store access levels |
 | `lib/rules.js` | [Rule](volumes/V06-decision-and-control.md#d-rul) |  |
 | `lib/policies.js` | [Policy](volumes/V06-decision-and-control.md#d-pol) |  |
 | `lib/gates.js` | [Rule](volumes/V06-decision-and-control.md#d-rul) |  |
@@ -1497,6 +1509,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | File | Owner | Part |
 |---|---|---|
 | `lib/registry.js` | [Package](volumes/V13-composition.md#d-pkg) | platform kinds |
+| `lib/platform-discovery.js` | [Package](volumes/V13-composition.md#d-pkg) | discovery: each capability a platform needs, from its setup answers, classed and explained |
 | `lib/compose.js` | [Package](volumes/V13-composition.md#d-pkg) |  |
 
 ### Documents
@@ -2284,6 +2297,10 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0025 | amendment | The platform master and configuration by selection, adopted  | [constitution](#amd-0025) |
 | AMD-0026 | amendment | Coverage of every type of platform, product, service, deal a | [constitution](#amd-0026) |
 | AMD-0027 | amendment | Phase 1 of GLOBAL_MASTER.md | [constitution](#amd-0027) |
+| AMD-0028 | amendment | Phase 2, first part, of GLOBAL_MASTER.md (P27) | [constitution](#amd-0028) |
+| AMD-0029 | amendment | Phase 2, second part, of GLOBAL_MASTER.md (P27) | [constitution](#amd-0029) |
+| AMD-0030 | amendment | Phase 2, third part, of GLOBAL_MASTER.md (P27) | [constitution](#amd-0030) |
+| AMD-0031 | amendment | Phase 3 and 4 of GLOBAL_MASTER.md (P28) | [constitution](#amd-0031) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

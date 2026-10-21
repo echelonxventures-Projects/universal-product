@@ -3392,6 +3392,49 @@
      ]
     }
    }
+  },
+  {
+   "key": "contribution",
+   "name": "Contribution to the platform master",
+   "column": "status",
+   "initial": "proposed",
+   "states": "list:contributionStatuses",
+   "transitions": {
+    "proposed": [
+     "approved",
+     "rejected",
+     "withdrawn"
+    ]
+   },
+   "actions": {
+    "approve": "approved",
+    "reject": "rejected",
+    "withdraw": "withdrawn"
+   },
+   "meta": {
+    "proposed": {
+     "tags": [
+      "awaiting_review"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "terminal",
+      "success"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "terminal",
+      "decision"
+     ]
+    },
+    "withdrawn": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
   }
  ]
 }

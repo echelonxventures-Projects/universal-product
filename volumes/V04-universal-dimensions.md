@@ -456,14 +456,14 @@ stateDiagram-v2
 | | |
 |---|---|
 | **Category** | C04 Universal Dimensions |
-| **Build status** | designed — declared and contracted; no code or live route yet |
+| **Build status** | partial |
 | **Owns** | [Quantity](../UCOS-MASTER.md#t-quantity), [Unit](../UCOS-MASTER.md#t-unit) |
 | **Responsible for** | Quantities, Units, Conversions |
 | **Not responsible for** | Value Units, Time Calendars |
 | **Contract** | [UCOS-MEA-000001 Measure Architecture](#ucos-mea-000001) |
 | **Artifacts** | [UCOS-MEA-000001](#ucos-mea-000001) |
 | **Concepts** | 189 — `node _registry/compile.js --search <words> --kind concept --owner "Measure"` |
-| **Code** | — |
+| **Code** | `lib/platform-master.js` |
 | **Managed in** | `_registry/domains.json` → `D-MEA` |
 
 **Live routes:** none yet.

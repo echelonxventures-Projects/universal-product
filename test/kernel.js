@@ -249,13 +249,13 @@ throws(() => K.createNode("body", { attributes: { name: "Atlantis" }, identifier
 ok(db.get("SELECT COUNT(*) AS n FROM k_nodes").n === count && db.get("SELECT COUNT(*) AS n FROM k_events").n === evs, "no node and no event survive the failed write");
 
 console.log("kernel — kinds that extend kinds (entity and sub-entity)");
-K.defineKind({ kind: "item", owner: "Identity", label: "Item", root: false, parents: ["shelf"], schemes: ["gtin"],
+K.defineKind({ kind: "item", owner: "Identity", label: "Item", root: false, parents: ["shelf"], schemes: ["item_code"],
   attributes: [{ key: "title", type: "expression", required: true, constraints: { languages: ["en"] } }, { key: "weight", type: "number", constraints: { min: 0 } }] }, "test");
 K.defineKind({ kind: "shelf", owner: "Identity", label: "Shelf", attributes: [{ key: "title", type: "expression" }] }, "test");
 const med = K.defineKind({ kind: "medicine", owner: "Identity", extends: "item", schemes: ["drug_code"],
   attributes: [{ key: "strength", type: "text", required: true, constraints: { pattern: "^[0-9]+ ?(mg|ml|g)$" } }, { key: "weight", type: "number", constraints: { max: 5000 } }] }, "test");
 ok(med.lineage.join(">") === "medicine>item" && med.attributes.map(a => a.key).sort().join() === "strength,title,weight", "a sub-kind inherits its kind's attributes and adds its own");
-ok(med.schemes.includes("gtin") && med.schemes.includes("drug_code") && med.parents.includes("shelf") && med.root === false, "it inherits identifier schemes, placement rules and root");
+ok(med.schemes.includes("item_code") && med.schemes.includes("drug_code") && med.parents.includes("shelf") && med.root === false, "it inherits identifier schemes, placement rules and root");
 ok(JSON.stringify(med.attributes.find(a => a.key === "weight").constraints) === JSON.stringify({ min: 0, max: 5000 }), "a redeclared attribute keeps its kind's rules and adds its own");
 throws(() => K.defineKind({ kind: "tablet", owner: "Identity", extends: "medicine", attributes: [{ key: "strength", type: "number" }] }), /cannot be number/, "a sub-kind cannot change an inherited attribute's type");
 throws(() => K.defineKind({ kind: "item", owner: "Identity", extends: "medicine" }), /extend itself/, "kinds cannot extend in a loop");
@@ -268,7 +268,7 @@ throws(() => K.createNode("medicine", { attributes: { title: { en: "Pain relief"
 throws(() => K.createNode("medicine", { attributes: { title: { en: "Pain relief" }, strength: "500 mg", weight: -1 } }), /breaks the rule/, "an inherited minimum holds on the sub-kind");
 throws(() => K.createNode("medicine", { attributes: { title: { en: "Pain relief" }, strength: "500 mg", weight: 9000 } }), /breaks the rule/, "the sub-kind's own maximum holds too");
 throws(() => K.createNode("medicine", { attributes: { title: { ar: "مسكن" }, strength: "500 mg" } }), /breaks the rule/, "a languages rule needs the declared languages");
-const pill = K.createNode("medicine", { attributes: { title: { en: "Pain relief", ar: "مسكن" }, strength: "500 mg", weight: 20 }, identifiers: { gtin: "0001", drug_code: "DX-1" } }, "test");
+const pill = K.createNode("medicine", { attributes: { title: { en: "Pain relief", ar: "مسكن" }, strength: "500 mg", weight: 20 }, identifiers: { item_code: "0001", drug_code: "DX-1" } }, "test");
 ok(K.attributes(pill).strength === "500 mg" && K.identifiers(pill).drug_code === "DX-1", "a valid sub-kind node records with its inherited and own schemes");
 K.place("physical", pill, shelf, {}, "test");
 ok(K.children("physical", shelf).includes(pill), "a sub-kind sits wherever its kind may");

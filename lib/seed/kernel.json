@@ -51,7 +51,8 @@
   ],
   "identity": {
     "scheme": "uid",
-    "label": "Universal ID"
+    "label": "Universal ID",
+    "declaredBy": "identifier.scheme"
   },
   "events": {
     "kindDefined": "kernel.kind.defined",
@@ -246,7 +247,8 @@
         "number",
         "integer"
       ],
-      "param": "boolean"
+      "param": "boolean",
+      "needsNode": true
     },
     {
       "key": "languages",
@@ -277,6 +279,28 @@
         "hierarchy": "hierarchy",
         "kind": "key"
       }
+    }
+  ],
+  "checkRules": [
+    {
+      "key": "gs1",
+      "label": "GS1 modulo 10"
+    },
+    {
+      "key": "luhn",
+      "label": "Luhn modulo 10"
+    },
+    {
+      "key": "isbn",
+      "label": "ISBN-10 modulo 11 or ISBN-13 (GS1)"
+    },
+    {
+      "key": "issn",
+      "label": "ISSN modulo 11"
+    },
+    {
+      "key": "cas",
+      "label": "CAS registry number check digit"
     }
   ]
 }

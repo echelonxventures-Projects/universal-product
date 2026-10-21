@@ -55,7 +55,7 @@ console.log("▸ THE MOVED CONSTANTS LOAD FROM THEIR SEED FILES");
 const caps = require("../lib/capabilities.js"), meta = require("../lib/meta.js"), settings = require("../lib/settings.js");
 const capSeed = JSON.parse(fs.readFileSync(path.join(LIB, "seed", "capabilities.json"), "utf8"));
 ok(Array.isArray(capSeed.CATALOG) && capSeed.CATALOG.length > 50 && caps.catalog ? true : false, "the capability catalog is a seed file");
-ok(meta.INDUSTRIES.length > 10 && settings.DEFAULTS.brand, "industries and settings defaults load from their seed files");
+ok(require("../lib/registry.js").list("industries").length > 10 && settings.DEFAULTS.brand, "industries (from the platform master) and settings defaults load");
 
 for (const x of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP + x, { force: true }); } catch (e) { } }
 console.log(`\n${passed} passed, ${failed} failed`);

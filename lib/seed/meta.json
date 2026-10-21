@@ -1,874 +1,546 @@
 {
- "INDUSTRIES": [
-  {
-   "key": "retail",
-   "name": "Retail & Consumer",
-   "icon": "🛍️"
-  },
-  {
-   "key": "grocery",
-   "name": "Food & Grocery",
-   "icon": "🥦"
-  },
-  {
-   "key": "fashion",
-   "name": "Fashion & Apparel",
-   "icon": "👗"
-  },
-  {
-   "key": "furniture",
-   "name": "Furniture & Home",
-   "icon": "🛋️"
-  },
-  {
-   "key": "construction",
-   "name": "Construction & Hardware",
-   "icon": "🔩"
-  },
-  {
-   "key": "industrial",
-   "name": "Industrial & Manufacturing",
-   "icon": "🏭"
-  },
-  {
-   "key": "automotive",
-   "name": "Automotive",
-   "icon": "🚗"
-  },
-  {
-   "key": "agriculture",
-   "name": "Agriculture",
-   "icon": "🌾"
-  },
-  {
-   "key": "healthcare",
-   "name": "Healthcare",
-   "icon": "🏥"
-  },
-  {
-   "key": "pharma",
-   "name": "Pharmaceuticals",
-   "icon": "💊"
-  },
-  {
-   "key": "electronics",
-   "name": "Electronics",
-   "icon": "📺"
-  },
-  {
-   "key": "telecom",
-   "name": "Telecommunications",
-   "icon": "📡"
-  },
-  {
-   "key": "energy",
-   "name": "Energy",
-   "icon": "⚡"
-  },
-  {
-   "key": "chemicals",
-   "name": "Chemicals",
-   "icon": "🧪"
-  },
-  {
-   "key": "education",
-   "name": "Education",
-   "icon": "🎓"
-  },
-  {
-   "key": "media",
-   "name": "Books & Media",
-   "icon": "📚"
-  },
-  {
-   "key": "digital",
-   "name": "Digital Products",
-   "icon": "💾",
-   "purchase": "download"
-  },
-  {
-   "key": "software",
-   "name": "Software",
-   "icon": "🧩"
-  },
-  {
-   "key": "services",
-   "name": "Professional Services",
-   "icon": "🼻"
-  },
-  {
-   "key": "travel",
-   "name": "Travel",
-   "icon": "✈️"
-  },
-  {
-   "key": "realestate",
-   "name": "Real Estate",
-   "icon": "🏢"
-  },
-  {
-   "key": "finance",
-   "name": "Financial Products",
-   "icon": "📈"
-  },
-  {
-   "key": "rental",
-   "name": "Rental Assets",
-   "icon": "🔑",
-   "purchase": "rent"
-  },
-  {
-   "key": "subscription",
-   "name": "Subscription Products",
-   "icon": "🔁",
-   "purchase": "subscribe"
-  },
-  {
-   "key": "gov",
-   "name": "Government Procurement",
-   "icon": "🏛️"
-  },
-  {
-   "key": "defense",
-   "name": "Defense & Aerospace",
-   "icon": "🛰️"
-  },
-  {
-   "key": "marine",
-   "name": "Marine",
-   "icon": "🚢"
-  },
-  {
-   "key": "mining",
-   "name": "Mining",
-   "icon": "⛏️"
-  },
-  {
-   "key": "luxury",
-   "name": "Luxury Goods",
-   "icon": "💎"
-  },
-  {
-   "key": "art",
-   "name": "Art & Collectibles",
-   "icon": "🎨"
-  },
-  {
-   "key": "pets",
-   "name": "Pets & Veterinary",
-   "icon": "🐾"
-  },
-  {
-   "key": "sports",
-   "name": "Sports & Fitness",
-   "icon": "🏋️"
-  },
-  {
-   "key": "jewellery",
-   "name": "Jewellery & Precious Metals",
-   "icon": "💍"
-  }
- ],
- "PRODUCT_TYPES": [
-  {
-   "key": "physical",
-   "name": "Physical Product",
-   "icon": "📦",
-   "plain": true
-  },
-  {
-   "key": "digital",
-   "name": "Digital Product",
-   "icon": "💿"
-  },
-  {
-   "key": "service",
-   "name": "Service",
-   "icon": "🛠️",
-   "service": true,
-   "purchase": "book"
-  },
-  {
-   "key": "rental",
-   "name": "Rental Asset",
-   "icon": "🔑"
-  },
-  {
-   "key": "subscription",
-   "name": "Subscription",
-   "icon": "🔁"
-  },
-  {
-   "key": "bundle",
-   "name": "Bundle",
-   "icon": "🎁"
-  },
-  {
-   "key": "kit",
-   "name": "Kit",
-   "icon": "🧰"
-  },
-  {
-   "key": "package",
-   "name": "Package",
-   "icon": "🗃️"
-  },
-  {
-   "key": "membership",
-   "name": "Membership",
-   "icon": "🎟️"
-  },
-  {
-   "key": "warranty",
-   "name": "Warranty",
-   "icon": "🛡️"
-  },
-  {
-   "key": "insurance",
-   "name": "Insurance",
-   "icon": "☂️"
-  },
-  {
-   "key": "license",
-   "name": "License",
-   "icon": "📜",
-   "purchase": "download"
-  },
-  {
-   "key": "course",
-   "name": "Course",
-   "icon": "🎓",
-   "purchase": "download"
-  },
-  {
-   "key": "appointment",
-   "name": "Appointment",
-   "icon": "📅",
-   "purchase": "book"
-  },
-  {
-   "key": "event_ticket",
-   "name": "Event Ticket",
-   "icon": "🎫"
-  },
-  {
-   "key": "vehicle",
-   "name": "Vehicle",
-   "icon": "🚙"
-  },
-  {
-   "key": "property",
-   "name": "Property",
-   "icon": "🏠"
-  },
-  {
-   "key": "equipment",
-   "name": "Equipment",
-   "icon": "⚙️"
-  },
-  {
-   "key": "resource",
-   "name": "Resource",
-   "icon": "🌐"
-  },
-  {
-   "key": "consumable",
-   "name": "Consumable",
-   "icon": "🧻"
-  },
-  {
-   "key": "raw_material",
-   "name": "Raw Material",
-   "icon": "🪨"
-  },
-  {
-   "key": "semi_finished",
-   "name": "Semi Finished Good",
-   "icon": "🔗"
-  },
-  {
-   "key": "finished_good",
-   "name": "Finished Good",
-   "icon": "✅"
-  }
- ],
- "VERTICAL_CONTEXTS": {
-  "tax": [
-   {
-    "key": "gst_profile",
-    "label": "GST Profile (IN)",
-    "type": "tax",
-    "fields": [
-     {
-      "key": "rate",
-      "label": "GST Rate",
-      "type": "select",
-      "options": [
-       "0",
-       "5",
-       "12",
-       "18",
-       "28"
-      ]
-     },
-     {
-      "key": "hsn",
-      "label": "HSN Code",
-      "type": "text"
-     }
+  "VERTICAL_CONTEXTS": {
+    "tax": [
+      {
+        "key": "gst_profile",
+        "label": "GST Profile (IN)",
+        "type": "tax",
+        "fields": [
+          {
+            "key": "rate",
+            "label": "GST Rate",
+            "type": "select",
+            "options": [
+              "0",
+              "5",
+              "12",
+              "18",
+              "28"
+            ]
+          },
+          {
+            "key": "hsn",
+            "label": "HSN Code",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "key": "vat_profile",
+        "label": "VAT Profile (EU)",
+        "type": "tax",
+        "fields": [
+          {
+            "key": "rate",
+            "label": "VAT Rate",
+            "type": "select",
+            "options": [
+              "0",
+              "7",
+              "13",
+              "19",
+              "21"
+            ]
+          },
+          {
+            "key": "reverse",
+            "label": "Reverse Charge",
+            "type": "bool"
+          }
+        ]
+      },
+      {
+        "key": "sales_tax",
+        "label": "State Sales Tax (US)",
+        "type": "tax",
+        "fields": [
+          {
+            "key": "rate",
+            "label": "Rate",
+            "type": "number"
+          },
+          {
+            "key": "nexus",
+            "label": "Nexus State",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "key": "zero_rate",
+        "label": "Zero-Rated / Exempt",
+        "type": "tax",
+        "fields": [
+          {
+            "key": "reason",
+            "label": "Exemption Reason",
+            "type": "text"
+          }
+        ]
+      }
+    ],
+    "invoice": [
+      {
+        "key": "tax_invoice",
+        "label": "Tax Invoice (GST/VAT)",
+        "type": "invoice",
+        "fields": [
+          {
+            "key": "requires_gstin",
+            "label": "Requires Buyer GSTIN/VAT ID",
+            "type": "bool"
+          },
+          {
+            "key": "e_invoice",
+            "label": "E-Invoice Mandated",
+            "type": "bool"
+          }
+        ]
+      },
+      {
+        "key": "commercial_invoice",
+        "label": "Commercial Invoice",
+        "type": "invoice",
+        "fields": [
+          {
+            "key": "incoterms",
+            "label": "Incoterms",
+            "type": "select",
+            "options": [
+              "EXW",
+              "FOB",
+              "CIF",
+              "DDP"
+            ]
+          }
+        ]
+      },
+      {
+        "key": "proforma",
+        "label": "Proforma / Quotation",
+        "type": "invoice",
+        "fields": [
+          {
+            "key": "validity_days",
+            "label": "Validity Days",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "key": "cash_receipt",
+        "label": "Cash Receipt (COD)",
+        "type": "invoice",
+        "fields": []
+      }
+    ],
+    "payment": [
+      {
+        "key": "online_capture",
+        "label": "Online Capture (Gateway)",
+        "type": "payment",
+        "fields": [
+          {
+            "key": "mandates",
+            "label": "Supports Mandates/Recurring",
+            "type": "bool"
+          }
+        ]
+      },
+      {
+        "key": "bnpl",
+        "label": "Buy Now Pay Later",
+        "type": "payment",
+        "fields": [
+          {
+            "key": "installments",
+            "label": "Installment Count",
+            "type": "number"
+          },
+          {
+            "key": "credit_check",
+            "label": "Soft Credit Check",
+            "type": "bool"
+          }
+        ]
+      },
+      {
+        "key": "cash_delivery",
+        "label": "Cash on Delivery",
+        "type": "payment",
+        "fields": [
+          {
+            "key": "handling_fee",
+            "label": "Handling Fee",
+            "type": "money"
+          },
+          {
+            "key": "requires_otp",
+            "label": "OTP at Doorstep",
+            "type": "bool"
+          }
+        ]
+      },
+      {
+        "key": "invoice_net",
+        "label": "Invoice Terms (B2B Net)",
+        "type": "payment",
+        "fields": [
+          {
+            "key": "net_days",
+            "label": "Net Days",
+            "type": "number"
+          },
+          {
+            "key": "credit_limit",
+            "label": "Credit Limit",
+            "type": "money"
+          }
+        ]
+      }
     ]
-   },
-   {
-    "key": "vat_profile",
-    "label": "VAT Profile (EU)",
-    "type": "tax",
-    "fields": [
-     {
-      "key": "rate",
-      "label": "VAT Rate",
-      "type": "select",
-      "options": [
-       "0",
-       "7",
-       "13",
-       "19",
-       "21"
-      ]
-     },
-     {
-      "key": "reverse",
-      "label": "Reverse Charge",
-      "type": "bool"
-     }
-    ]
-   },
-   {
-    "key": "sales_tax",
-    "label": "State Sales Tax (US)",
-    "type": "tax",
-    "fields": [
-     {
-      "key": "rate",
-      "label": "Rate",
-      "type": "number"
-     },
-     {
-      "key": "nexus",
-      "label": "Nexus State",
-      "type": "text"
-     }
-    ]
-   },
-   {
-    "key": "zero_rate",
-    "label": "Zero-Rated / Exempt",
-    "type": "tax",
-    "fields": [
-     {
-      "key": "reason",
-      "label": "Exemption Reason",
-      "type": "text"
-     }
-    ]
-   }
+  },
+  "CAPABILITY_DOMAINS": [
+    {
+      "key": "marketplace",
+      "name": "🛒 Marketplace"
+    },
+    {
+      "key": "storefront",
+      "name": "🛍️ Storefront"
+    },
+    {
+      "key": "shopper",
+      "name": "🧺 Shopper services"
+    },
+    {
+      "key": "qc",
+      "name": "⚡ Quick-commerce"
+    },
+    {
+      "key": "fintech",
+      "name": "💸 Fintech"
+    },
+    {
+      "key": "trade",
+      "name": "🤝 B2B trust & trade"
+    },
+    {
+      "key": "mobility",
+      "name": "🚗 Mobility"
+    },
+    {
+      "key": "operations",
+      "name": "🏭 Operations"
+    }
   ],
-  "invoice": [
-   {
-    "key": "tax_invoice",
-    "label": "Tax Invoice (GST/VAT)",
-    "type": "invoice",
-    "fields": [
-     {
-      "key": "requires_gstin",
-      "label": "Requires Buyer GSTIN/VAT ID",
-      "type": "bool"
-     },
-     {
-      "key": "e_invoice",
-      "label": "E-Invoice Mandated",
-      "type": "bool"
-     }
-    ]
-   },
-   {
-    "key": "commercial_invoice",
-    "label": "Commercial Invoice",
-    "type": "invoice",
-    "fields": [
-     {
-      "key": "incoterms",
-      "label": "Incoterms",
-      "type": "select",
-      "options": [
-       "EXW",
-       "FOB",
-       "CIF",
-       "DDP"
-      ]
-     }
-    ]
-   },
-   {
-    "key": "proforma",
-    "label": "Proforma / Quotation",
-    "type": "invoice",
-    "fields": [
-     {
-      "key": "validity_days",
-      "label": "Validity Days",
-      "type": "number"
-     }
-    ]
-   },
-   {
-    "key": "cash_receipt",
-    "label": "Cash Receipt (COD)",
-    "type": "invoice",
-    "fields": []
-   }
+  "KIND_CORE": [
+    "dash",
+    "analytics",
+    "monitor",
+    "team",
+    "tenancy",
+    "settings",
+    "risk",
+    "compliance",
+    "privacy",
+    "audit",
+    "trash",
+    "ai",
+    "webhooks",
+    "modules",
+    "studio",
+    "compose",
+    "manual",
+    "architecture",
+    "helpdesk",
+    "payments",
+    "billing",
+    "finance",
+    "settlements"
   ],
-  "payment": [
-   {
-    "key": "online_capture",
-    "label": "Online Capture (Gateway)",
-    "type": "payment",
-    "fields": [
-     {
-      "key": "mandates",
-      "label": "Supports Mandates/Recurring",
-      "type": "bool"
-     }
-    ]
-   },
-   {
-    "key": "bnpl",
-    "label": "Buy Now Pay Later",
-    "type": "payment",
-    "fields": [
-     {
-      "key": "installments",
-      "label": "Installment Count",
-      "type": "number"
-     },
-     {
-      "key": "credit_check",
-      "label": "Soft Credit Check",
-      "type": "bool"
-     }
-    ]
-   },
-   {
-    "key": "cash_delivery",
-    "label": "Cash on Delivery",
-    "type": "payment",
-    "fields": [
-     {
-      "key": "handling_fee",
-      "label": "Handling Fee",
-      "type": "money"
-     },
-     {
-      "key": "requires_otp",
-      "label": "OTP at Doorstep",
-      "type": "bool"
-     }
-    ]
-   },
-   {
-    "key": "invoice_net",
-    "label": "Invoice Terms (B2B Net)",
-    "type": "payment",
-    "fields": [
-     {
-      "key": "net_days",
-      "label": "Net Days",
-      "type": "number"
-     },
-     {
-      "key": "credit_limit",
-      "label": "Credit Limit",
-      "type": "money"
-     }
-    ]
-   }
+  "DEPLOY_MODES": [
+    {
+      "key": "marketplace",
+      "name": "Universal Marketplace",
+      "desc": "All industries, many sellers",
+      "needsIndustries": false,
+      "noun": "store",
+      "nounPlural": "stores",
+      "archetype": "",
+      "provision": {
+        "payments": true,
+        "shipping": true,
+        "warehouse": true,
+        "storefront": true
+      },
+      "sections": null
+    },
+    {
+      "key": "industry",
+      "name": "Industry Marketplace",
+      "desc": "Single industry vertical (furniture-only, grocery-only…)",
+      "needsIndustries": true,
+      "noun": "store",
+      "nounPlural": "stores",
+      "archetype": "",
+      "provision": {
+        "payments": true,
+        "shipping": true,
+        "warehouse": true,
+        "storefront": true
+      },
+      "sections": null
+    },
+    {
+      "key": "brand",
+      "name": "Brand Store",
+      "desc": "Single seller / single brand D2C",
+      "needsIndustries": true,
+      "noun": "store",
+      "nounPlural": "stores",
+      "archetype": "",
+      "provision": {
+        "payments": true,
+        "shipping": true,
+        "warehouse": true,
+        "storefront": true
+      },
+      "sections": null
+    },
+    {
+      "key": "mobility",
+      "name": "Mobility Platform",
+      "desc": "Ride hailing, dispatch and fleets",
+      "needsIndustries": false,
+      "noun": "operator",
+      "nounPlural": "operators",
+      "archetype": "blend_mobility",
+      "provision": {
+        "payments": true,
+        "shipping": false,
+        "warehouse": false,
+        "storefront": false
+      },
+      "sections": [
+        "@core",
+        "offers",
+        "retention",
+        "experiments",
+        "localizations"
+      ]
+    },
+    {
+      "key": "operations",
+      "name": "Business Operations (ERP)",
+      "desc": "People and payroll, procurement, manufacturing, projects",
+      "needsIndustries": false,
+      "noun": "company",
+      "nounPlural": "companies",
+      "archetype": "blend_operations",
+      "provision": {
+        "payments": true,
+        "shipping": false,
+        "warehouse": true,
+        "storefront": false
+      },
+      "sections": [
+        "@core",
+        "orders",
+        "products",
+        "skus",
+        "attributes",
+        "taxonomy",
+        "brands",
+        "suppliers",
+        "planning",
+        "logistics",
+        "serialized",
+        "localizations"
+      ]
+    },
+    {
+      "key": "fintech",
+      "name": "Financial Services",
+      "desc": "Wallets, payment rails, lending and payouts",
+      "needsIndustries": false,
+      "noun": "provider",
+      "nounPlural": "providers",
+      "archetype": "blend_fintech",
+      "provision": {
+        "payments": true,
+        "shipping": false,
+        "warehouse": false,
+        "storefront": false
+      },
+      "sections": [
+        "@core",
+        "offers",
+        "retention",
+        "experiments",
+        "affiliate",
+        "localizations"
+      ]
+    },
+    {
+      "key": "quick_commerce",
+      "name": "Quick Commerce",
+      "desc": "Groceries and essentials delivered in minutes from nearby stores",
+      "needsIndustries": false,
+      "noun": "store",
+      "nounPlural": "stores",
+      "archetype": "blend_quick_commerce",
+      "provision": {
+        "payments": true,
+        "shipping": true,
+        "warehouse": true,
+        "storefront": true
+      },
+      "sections": null
+    },
+    {
+      "key": "omnichannel_retail",
+      "name": "Omnichannel Retail",
+      "desc": "A chain selling online and through its shops: store stock, pickup, local delivery",
+      "needsIndustries": false,
+      "noun": "retailer",
+      "nounPlural": "retailers",
+      "archetype": "blend_omnichannel_retail",
+      "provision": {
+        "payments": true,
+        "shipping": true,
+        "warehouse": true,
+        "storefront": true
+      },
+      "sections": null
+    },
+    {
+      "key": "b2b_wholesale",
+      "name": "B2B Wholesale Marketplace",
+      "desc": "Verified suppliers, quotes, tenders, volume pricing and trade assurance",
+      "needsIndustries": false,
+      "noun": "marketplace",
+      "nounPlural": "marketplaces",
+      "archetype": "blend_b2b_trade",
+      "provision": {
+        "payments": true,
+        "shipping": true,
+        "warehouse": true,
+        "storefront": true
+      },
+      "sections": null
+    },
+    {
+      "key": "super_app",
+      "name": "Payments-led Super App",
+      "desc": "A wallet and payments app that also sells and delivers",
+      "needsIndustries": false,
+      "noun": "app",
+      "nounPlural": "apps",
+      "archetype": "blend_super_app",
+      "provision": {
+        "payments": true,
+        "shipping": true,
+        "warehouse": true,
+        "storefront": true
+      },
+      "sections": null
+    },
+    {
+      "key": "resale",
+      "name": "Resale & Classifieds",
+      "desc": "Shoppers sell to shoppers: listings, offers, auctions and messages",
+      "needsIndustries": false,
+      "noun": "marketplace",
+      "nounPlural": "marketplaces",
+      "archetype": "blend_resale",
+      "provision": {
+        "payments": true,
+        "shipping": true,
+        "warehouse": false,
+        "storefront": true
+      },
+      "sections": null
+    },
+    {
+      "key": "auction_house",
+      "name": "Auction House",
+      "desc": "Timed auctions with automatic bidding, reserves and buy-it-now",
+      "needsIndustries": false,
+      "noun": "house",
+      "nounPlural": "houses",
+      "archetype": "blend_auction_house",
+      "provision": {
+        "payments": true,
+        "shipping": true,
+        "warehouse": true,
+        "storefront": true
+      },
+      "sections": null
+    },
+    {
+      "key": "services",
+      "name": "Services & Appointments",
+      "desc": "Bookable services delivered by staff, in rooms or at venues",
+      "needsIndustries": false,
+      "noun": "business",
+      "nounPlural": "businesses",
+      "archetype": "blend_services",
+      "provision": {
+        "payments": true,
+        "shipping": false,
+        "warehouse": false,
+        "storefront": true
+      },
+      "sections": null
+    },
+    {
+      "key": "rentals",
+      "name": "Rentals & Stays",
+      "desc": "Assets, rooms and venues booked by the day or night",
+      "needsIndustries": false,
+      "noun": "platform",
+      "nounPlural": "platforms",
+      "archetype": "blend_rentals",
+      "provision": {
+        "payments": true,
+        "shipping": true,
+        "warehouse": false,
+        "storefront": true
+      },
+      "sections": null
+    },
+    {
+      "key": "food_delivery",
+      "name": "Food & Restaurant Delivery",
+      "desc": "Menus with modifiers and add-ons, delivered in minutes",
+      "needsIndustries": false,
+      "noun": "platform",
+      "nounPlural": "platforms",
+      "archetype": "blend_food_delivery",
+      "provision": {
+        "payments": true,
+        "shipping": true,
+        "warehouse": false,
+        "storefront": true
+      },
+      "sections": null
+    },
+    {
+      "key": "group_buying",
+      "name": "Social & Group Buying",
+      "desc": "Group prices that unlock when enough shoppers join, and flash deals",
+      "needsIndustries": false,
+      "noun": "store",
+      "nounPlural": "stores",
+      "archetype": "blend_group_buying",
+      "provision": {
+        "payments": true,
+        "shipping": true,
+        "warehouse": true,
+        "storefront": true
+      },
+      "sections": null
+    }
   ]
- },
- "TAXONOMY_LEVELS": [
-  {
-   "key": "domain",
-   "name": "Domain",
-   "depth": 0
-  },
-  {
-   "key": "industry",
-   "name": "Industry",
-   "depth": 1,
-   "root": true
-  },
-  {
-   "key": "category",
-   "name": "Category",
-   "depth": 2,
-   "platform_catalogue": true
-  },
-  {
-   "key": "subcategory",
-   "name": "Subcategory",
-   "depth": 3,
-   "platform_catalogue": true
-  },
-  {
-   "key": "family",
-   "name": "Family",
-   "depth": 4
-  },
-  {
-   "key": "model",
-   "name": "Model",
-   "depth": 5
-  }
- ],
- "CAPABILITY_DOMAINS": [
-  {
-   "key": "marketplace",
-   "name": "🛒 Marketplace"
-  },
-  {
-   "key": "storefront",
-   "name": "🛍️ Storefront"
-  },
-  {
-   "key": "shopper",
-   "name": "🧺 Shopper services"
-  },
-  {
-   "key": "qc",
-   "name": "⚡ Quick-commerce"
-  },
-  {
-   "key": "fintech",
-   "name": "💸 Fintech"
-  },
-  {
-   "key": "trade",
-   "name": "🤝 B2B trust & trade"
-  },
-  {
-   "key": "mobility",
-   "name": "🚗 Mobility"
-  },
-  {
-   "key": "operations",
-   "name": "🏭 Operations"
-  }
- ],
- "KIND_CORE": [
-  "dash",
-  "analytics",
-  "monitor",
-  "team",
-  "tenancy",
-  "settings",
-  "risk",
-  "compliance",
-  "privacy",
-  "audit",
-  "trash",
-  "ai",
-  "webhooks",
-  "modules",
-  "studio",
-  "compose",
-  "manual",
-  "architecture",
-  "helpdesk",
-  "payments",
-  "billing",
-  "finance",
-  "settlements"
- ],
- "DEPLOY_MODES": [
-  {
-   "key": "marketplace",
-   "name": "Universal Marketplace",
-   "desc": "All industries, many sellers",
-   "needsIndustries": false,
-   "noun": "store",
-   "nounPlural": "stores",
-   "archetype": "",
-   "provision": {
-    "payments": true,
-    "shipping": true,
-    "warehouse": true,
-    "storefront": true
-   },
-   "sections": null
-  },
-  {
-   "key": "industry",
-   "name": "Industry Marketplace",
-   "desc": "Single industry vertical (furniture-only, grocery-only…)",
-   "needsIndustries": true,
-   "noun": "store",
-   "nounPlural": "stores",
-   "archetype": "",
-   "provision": {
-    "payments": true,
-    "shipping": true,
-    "warehouse": true,
-    "storefront": true
-   },
-   "sections": null
-  },
-  {
-   "key": "brand",
-   "name": "Brand Store",
-   "desc": "Single seller / single brand D2C",
-   "needsIndustries": true,
-   "noun": "store",
-   "nounPlural": "stores",
-   "archetype": "",
-   "provision": {
-    "payments": true,
-    "shipping": true,
-    "warehouse": true,
-    "storefront": true
-   },
-   "sections": null
-  },
-  {
-   "key": "mobility",
-   "name": "Mobility Platform",
-   "desc": "Ride hailing, dispatch and fleets",
-   "needsIndustries": false,
-   "noun": "operator",
-   "nounPlural": "operators",
-   "archetype": "blend_mobility",
-   "provision": {
-    "payments": true,
-    "shipping": false,
-    "warehouse": false,
-    "storefront": false
-   },
-   "sections": [
-    "@core",
-    "offers",
-    "retention",
-    "experiments",
-    "localizations"
-   ]
-  },
-  {
-   "key": "operations",
-   "name": "Business Operations (ERP)",
-   "desc": "People and payroll, procurement, manufacturing, projects",
-   "needsIndustries": false,
-   "noun": "company",
-   "nounPlural": "companies",
-   "archetype": "blend_operations",
-   "provision": {
-    "payments": true,
-    "shipping": false,
-    "warehouse": true,
-    "storefront": false
-   },
-   "sections": [
-    "@core",
-    "orders",
-    "products",
-    "skus",
-    "attributes",
-    "taxonomy",
-    "brands",
-    "suppliers",
-    "planning",
-    "logistics",
-    "serialized",
-    "localizations"
-   ]
-  },
-  {
-   "key": "fintech",
-   "name": "Financial Services",
-   "desc": "Wallets, payment rails, lending and payouts",
-   "needsIndustries": false,
-   "noun": "provider",
-   "nounPlural": "providers",
-   "archetype": "blend_fintech",
-   "provision": {
-    "payments": true,
-    "shipping": false,
-    "warehouse": false,
-    "storefront": false
-   },
-   "sections": [
-    "@core",
-    "offers",
-    "retention",
-    "experiments",
-    "affiliate",
-    "localizations"
-   ]
-  },
-  {
-   "key": "quick_commerce",
-   "name": "Quick Commerce",
-   "desc": "Groceries and essentials delivered in minutes from nearby stores",
-   "needsIndustries": false,
-   "noun": "store",
-   "nounPlural": "stores",
-   "archetype": "blend_quick_commerce",
-   "provision": {
-    "payments": true,
-    "shipping": true,
-    "warehouse": true,
-    "storefront": true
-   },
-   "sections": null
-  },
-  {
-   "key": "omnichannel_retail",
-   "name": "Omnichannel Retail",
-   "desc": "A chain selling online and through its shops: store stock, pickup, local delivery",
-   "needsIndustries": false,
-   "noun": "retailer",
-   "nounPlural": "retailers",
-   "archetype": "blend_omnichannel_retail",
-   "provision": {
-    "payments": true,
-    "shipping": true,
-    "warehouse": true,
-    "storefront": true
-   },
-   "sections": null
-  },
-  {
-   "key": "b2b_wholesale",
-   "name": "B2B Wholesale Marketplace",
-   "desc": "Verified suppliers, quotes, tenders, volume pricing and trade assurance",
-   "needsIndustries": false,
-   "noun": "marketplace",
-   "nounPlural": "marketplaces",
-   "archetype": "blend_b2b_trade",
-   "provision": {
-    "payments": true,
-    "shipping": true,
-    "warehouse": true,
-    "storefront": true
-   },
-   "sections": null
-  },
-  {
-   "key": "super_app",
-   "name": "Payments-led Super App",
-   "desc": "A wallet and payments app that also sells and delivers",
-   "needsIndustries": false,
-   "noun": "app",
-   "nounPlural": "apps",
-   "archetype": "blend_super_app",
-   "provision": {
-    "payments": true,
-    "shipping": true,
-    "warehouse": true,
-    "storefront": true
-   },
-   "sections": null
-  },
-  {
-   "key": "resale",
-   "name": "Resale & Classifieds",
-   "desc": "Shoppers sell to shoppers: listings, offers, auctions and messages",
-   "needsIndustries": false,
-   "noun": "marketplace",
-   "nounPlural": "marketplaces",
-   "archetype": "blend_resale",
-   "provision": {
-    "payments": true,
-    "shipping": true,
-    "warehouse": false,
-    "storefront": true
-   },
-   "sections": null
-  },
-  {
-   "key": "auction_house",
-   "name": "Auction House",
-   "desc": "Timed auctions with automatic bidding, reserves and buy-it-now",
-   "needsIndustries": false,
-   "noun": "house",
-   "nounPlural": "houses",
-   "archetype": "blend_auction_house",
-   "provision": {
-    "payments": true,
-    "shipping": true,
-    "warehouse": true,
-    "storefront": true
-   },
-   "sections": null
-  },
-  {
-   "key": "services",
-   "name": "Services & Appointments",
-   "desc": "Bookable services delivered by staff, in rooms or at venues",
-   "needsIndustries": false,
-   "noun": "business",
-   "nounPlural": "businesses",
-   "archetype": "blend_services",
-   "provision": {
-    "payments": true,
-    "shipping": false,
-    "warehouse": false,
-    "storefront": true
-   },
-   "sections": null
-  },
-  {
-   "key": "rentals",
-   "name": "Rentals & Stays",
-   "desc": "Assets, rooms and venues booked by the day or night",
-   "needsIndustries": false,
-   "noun": "platform",
-   "nounPlural": "platforms",
-   "archetype": "blend_rentals",
-   "provision": {
-    "payments": true,
-    "shipping": true,
-    "warehouse": false,
-    "storefront": true
-   },
-   "sections": null
-  },
-  {
-   "key": "food_delivery",
-   "name": "Food & Restaurant Delivery",
-   "desc": "Menus with modifiers and add-ons, delivered in minutes",
-   "needsIndustries": false,
-   "noun": "platform",
-   "nounPlural": "platforms",
-   "archetype": "blend_food_delivery",
-   "provision": {
-    "payments": true,
-    "shipping": true,
-    "warehouse": false,
-    "storefront": true
-   },
-   "sections": null
-  },
-  {
-   "key": "group_buying",
-   "name": "Social & Group Buying",
-   "desc": "Group prices that unlock when enough shoppers join, and flash deals",
-   "needsIndustries": false,
-   "noun": "store",
-   "nounPlural": "stores",
-   "archetype": "blend_group_buying",
-   "provision": {
-    "payments": true,
-    "shipping": true,
-    "warehouse": true,
-    "storefront": true
-   },
-   "sections": null
-  }
- ]
 }

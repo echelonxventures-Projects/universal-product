@@ -56,7 +56,7 @@ function toast(msg) {
 const NAV = [
   { g: "Overview", items: [["dash", "◈ Dashboard"], ["analytics", "📊 Analytics"], ["monitor", "📈 Monitor"]] },
   { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["shipping", "📮 Shipping & Tracking"], ["pickup", "📍 Pickup Points"], ["bookings", "📅 Bookings"], ["substitutions", "🔄 Substitutions"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"]] },
-  { g: "Catalogue", items: [["products", "📦 Products"], ["skus", "🔖 SKUs & Inventory"], ["brands", "🏷️ Brands"], ["brandreg", "™️ Brand Registry"], ["richcontent", "✨ Rich Content"], ["prodoptions", "🧩 Product Options"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["gcatalog", "🌐 Global Catalog"]] },
+  { g: "Catalogue", items: [["products", "📦 Products"], ["skus", "🔖 SKUs & Inventory"], ["brands", "🏷️ Brands"], ["brandreg", "™️ Brand Registry"], ["richcontent", "✨ Rich Content"], ["prodoptions", "🧩 Product Options"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["gcatalog", "🌐 Global Catalog"], ["mastercontrib", "🤝 Master Contributions"]] },
   { g: "Supply Chain", items: [["suppliers", "🏭 Suppliers"], ["ops_proc", "🛒 Purchase Requests"], ["planning", "📈 Planning & Replenishment"]] },
   { g: "Storefront", items: [["content", "🖼️ Home Content"], ["search", "🔎 Search & Discovery"], ["sitemap", "🗺️ Sitemap & SEO"], ["localizations", "🌐 Localizations"]] },
   { g: "Marketing & Growth", items: [["promotions", "🎟️ Offers & Coupons"], ["goip", "Ω∞ GOIP"], ["affiliate", "📣 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["marketplace", "📢 Marketplace & Ads"], ["auctions", "🔨 Auctions"], ["groupbuy", "👥 Group Buying"]] },
@@ -618,6 +618,41 @@ function wireBrandReg() {
    Same rule as above: every button is one of the record's state-machine verbs the server
    offers; every kind, mode and policy is a registry row the server sends. */
 const fieldVal = id => ($(id) || {}).value || "";
+/* ---------- the platform master: what this store may do with it, and what it has proposed ----------
+   A store never edits the master: it proposes, and the global platform reviews each proposal
+   (lib/master-contributions.js). The actions, kinds and statuses all come from the API. */
+async function vMasterContrib() {
+  const [p, c] = await Promise.all([api("/tenant/master/permissions"), api("/tenant/master/contributions")]);
+  const perms = p.permissions || [], acts = p.actions || [], kinds = p.kinds || [];
+  const permRow = x => `<tr><td>${esc((x.scope || []).length ? x.scope.length + " part(s) of the master" : "the whole master")}</td><td>${esc((x.actions || []).join(", "))}</td><td>${esc(x.review || "")}</td><td>${esc((x.visible || []).join(", ") || "all")}</td></tr>`;
+  const conRow = x => `<tr><td>${esc(x.action)}</td><td><code>${esc(x.target || "—")}</code></td><td><code>${esc(JSON.stringify(x.patch || x.proposal || {}).slice(0, 80))}</code></td><td>${stateChip(x.state)}</td><td>${esc(x.placement || "")}</td><td>${esc(x.reason || "")}</td>
+    <td>${x.awaiting ? `<button class="btn-white sm" data-mc-withdraw="${esc(x.uid)}">Withdraw</button>` : ""}</td></tr>`;
+  return `<div class="a-head"><h2>🤝 Master Contributions</h2><p class="a-sub">The platform master is the global platform's. What this store may do with it is its permissions; every change it proposes is reviewed there, then applied to the master, added as new, attached as an addendum, or rejected with a reason.</p></div>
+  <div class="a-card"><h3>Permissions</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>covers</th><th>actions</th><th>review</th><th>visible attributes</th></tr></thead><tbody>${perms.map(permRow).join("") || '<tr><td colspan="4">No permissions yet — the platform grants them.</td></tr>'}</tbody></table></div></div>
+  <div class="a-card"><h3>Propose</h3><div class="a-form">
+    <label>Proposal <select id="mcAction">${acts.map(a => `<option value="${esc(a.name)}" data-target="${a.target ? 1 : 0}">${esc((a.title && (a.title.en || Object.values(a.title)[0])) || a.name)}</option>`).join("")}</select></label>
+    <label>On (master key or id) <input id="mcTarget" placeholder="leave empty for an addition"></label>
+    <label>Title <input id="mcTitle"></label>
+    <label>Facts (JSON) <input id="mcFacts" placeholder='{"colour":"teal"}'></label>
+    <label>Kind (an addition) <select id="mcKind">${kinds.map(k => `<option value="${esc(k.kind)}">${esc((k.title && (k.title.en || Object.values(k.title)[0])) || k.name)}</option>`).join("")}</select></label>
+    <label>Under (taxonomy key, an addition) <input id="mcAt"></label>
+    <button class="btn" id="mcPropose">Propose</button></div></div>
+  <div class="a-card"><h3>Proposals</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>proposal</th><th>on</th><th>change</th><th>state</th><th>landed as</th><th>reason</th><th></th></tr></thead><tbody>${(c.contributions || []).map(conRow).join("") || '<tr><td colspan="7">Nothing proposed yet.</td></tr>'}</tbody></table></div></div>`;
+}
+function wireMasterContrib() {
+  const val = id => (document.querySelector(id) || {}).value || "";
+  const go = document.querySelector("#mcPropose");
+  if (go) go.onclick = () => {
+    let facts = null;
+    try { facts = val("#mcFacts").trim() ? JSON.parse(val("#mcFacts")) : null; } catch (e) { return toast("Facts must be JSON"); }
+    const action = val("#mcAction"), title = val("#mcTitle").trim();
+    const patch = Object.assign({}, title ? { title: { en: title } } : {}, facts ? { facts } : {});
+    const body = val("#mcTarget").trim() ? { action, target: val("#mcTarget").trim(), patch }
+      : { action, proposal: { kind: val("#mcKind"), at: val("#mcAt").trim() ? [val("#mcAt").trim()] : [], title: { en: title }, facts: facts || undefined } };
+    postAndRender("/tenant/master/contributions", body, "POST", "Proposed — the platform reviews it");
+  };
+  $$("[data-mc-withdraw]").forEach(b => b.onclick = () => postAndRender("/tenant/master/contributions/" + encodeURIComponent(b.dataset.mcWithdraw) + "/withdraw", {}, "POST", "Withdrawn"));
+}
 const postAndRender = async (path, body, method, msg) => { try { await api(path, method || "POST", body); toast(msg || "Saved"); render(); } catch (e) { toast(e.message); } };
 /* verbs on rows that carry `next` (state keys), from a vocabulary of { verb, to } */
 const verbRow = (acts, rec, path, extra) => (acts || []).filter(a => (rec.next || []).includes(a.to))
@@ -2167,6 +2202,7 @@ async function render() {
     else if (/^app_/.test(view)) body.innerHTML = await entityTable(view.slice(4));
     else if (view === "products") body.innerHTML = await entityTable("product");
     else if (view === "gcatalog") { body.innerHTML = await vGcatalog(); wireGcatalog(); }
+    else if (view === "mastercontrib") { body.innerHTML = await vMasterContrib(); wireMasterContrib(); }
     else if (view === "skus") body.innerHTML = await entityTable("sku") + await entityTable("inventory") + await entityTable("warehouse") + await entityTable("variant_group");
     else if (view === "orders") { await loadSM(); body.innerHTML = await entityTable("order", { rowExtra: r => smIs("order", r.status, "shippable") || smIs("order", r.status, "in_transit") ? `<button class="p-btn sm primary" data-act="ship-order" data-id="${esc(r.id)}" data-num="${esc(r.num)}">${smIs("order", r.status, "in_transit") ? "Label" : "Ship"}</button>` : "" }); }
     else if (view === "returns") body.innerHTML = await entityTable("ret");

@@ -128,6 +128,8 @@ const NAV = [
   { n: "02 · Knowledge", g: [
     { g: "Products", l: [
       ["gproducts", "🌐 Global Products", { v: "gproducts" }],
+      ["master-review", "🗳️ Master Review", { v: "master-review" }],
+      ["master-permissions", "🔐 Master Permissions", { v: "master-permissions" }],
       ["product-families", "👨‍👩‍👧 Product Families", { u: "product_family" }],
       ["product-types", "📦 Product Types", { u: "product_type" }],
       ["variants", "🧬 Variants", { u: "product_variants" }],
@@ -1202,7 +1204,7 @@ async function wireGeoFx() {
   g("cxGo").onclick = async () => { try { const r = await api("/fx?amount=" + encodeURIComponent(g("cxAmount").value || 1) + "&from=" + g("cxFrom").value + "&to=" + g("cxTo").value); g("cxOut").textContent = `= ${r.result.toLocaleString()} ${r.to} (rate ${r.rate})`; } catch (e) { g("cxOut").textContent = e.message; } };
 }
 /* ============ GLOBAL PRODUCTS: platform-level master catalog tenants subscribe to ============ */
-let gpFilter = "", gpUniverse = "", gpUniverses = [], gpKinds = [], gpTaxClasses = [], gpCategories = [], gpProfileFields = [];
+let gpFilter = "", gpUniverse = "", gpUniverses = [], gpKinds = [], gpTaxClasses = [], gpCategories = [], gpProfileFields = [], gpLifecycles = [];
 /* universe → product type, from the registry's own map (universeProductTypes) — the form
    shows the type as a consequence of the universe instead of a checkbox that can
    contradict it. Filled once from the list response. */
@@ -1217,12 +1219,13 @@ async function vGproducts() {
   const q = new URLSearchParams();
   if (gpFilter) q.set("category", gpFilter);
   if (gpUniverse) q.set("universe", gpUniverse);
-  const { products, universes, kinds, taxClasses, categories, universeProductTypes, profileFields } = await api("/platform/global-products" + (q.toString() ? "?" + q.toString() : ""));
+  const { products, universes, kinds, taxClasses, categories, universeProductTypes, profileFields, lifecycles } = await api("/platform/global-products" + (q.toString() ? "?" + q.toString() : ""));
   gpUniverses = universes || [];
   gpKinds = kinds || [];
   gpTaxClasses = taxClasses || [];
   gpCategories = categories || [];
   gpProfileFields = profileFields || [];
+  gpLifecycles = lifecycles || [];
   gpTypeMap = null; window.__universeProductTypes = universeProductTypes || [];
   const cats = [...new Set(products.map(p => p.category).filter(Boolean))];
   const uOf = p => (gpUniverses.find(u => u.key === p.universe) || {});
@@ -1237,7 +1240,7 @@ async function vGproducts() {
     </select>
     <span style="flex:1"></span>
     <button class="p-btn primary sm" id="gpNew">+ New global product</button></div>
-    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Platform-level master products, populated <b>automatically</b> from the corpus (one canonical archetype per universe UPIP §1 declares) and <b>manually</b> by you. Stores may import one into their own catalogue only when you permit it — <b>Store access</b> below is that gate (the "if the Global Platform permits" clause, as data).</p>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Every product and service in the platform master, described once: its taxonomy, its product universe, its codes and the profile stores receive. Stores may import one into their own catalogue only when you permit it — <b>Store access</b> below is that gate (the "if the Global Platform permits" clause, as data).</p>
     <div class="p-scroll-x"><table class="p-table"><thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Universe</th><th class="num">Price</th><th>Tax class</th><th>Type</th><th>Status</th><th>Store access</th><th></th></tr></thead>
     <tbody>${products.map(p => `<tr><td><b>${esc(p.sku)}</b></td><td>${esc(p.name)}</td><td class="p-tag">${esc(p.category || "—")}</td>
       <td><span title="${esc(p.universe || "physical_products")}">${esc(uOf(p).icon || "🧩")} ${esc(uOf(p).name || p.universe)}</span></td>
@@ -1254,12 +1257,13 @@ function wireGproducts() {
   if (univ) univ.onchange = () => { gpUniverse = univ.value; render(); };
   document.getElementById("gpNew").onclick = () => gpModal(null);
   $$("[data-gpedit]").forEach(b => b.onclick = () => {
-    api("/platform/global-products").then(({ products, universes, kinds, taxClasses, categories, universeProductTypes, profileFields }) => {
+    api("/platform/global-products").then(({ products, universes, kinds, taxClasses, categories, universeProductTypes, profileFields, lifecycles }) => {
       gpUniverses = universes || [];
       gpKinds = kinds || [];
       gpTaxClasses = taxClasses || [];
       gpCategories = categories || [];
       gpProfileFields = profileFields || [];
+      gpLifecycles = lifecycles || [];
       gpTypeMap = null; window.__universeProductTypes = universeProductTypes || [];
       const p = products.find(x => String(x.id) === b.dataset.gpedit);
       if (p) gpModal(p);
@@ -1275,11 +1279,13 @@ function wireGproducts() {
   });
 }
 /* the platform side of "if the Global Platform permits": grant or revoke a store's
-   access to list a global product. Pure data — one store_product_config row — and the
-   store console reads the consequence on its next render, never a code deployment. */
+   access to a global product. Pure data — a permission on the platform master at one of the
+   master's access levels — and the store console reads the consequence on its next render. */
 async function gpAccessModal(productId) {
-  const [{ products }, { tenants }] = await Promise.all([
+  const [{ products, accessLevels }, { tenants }] = await Promise.all([
     api("/platform/global-products"), api("/platform/tenants")]);
+  const levels = accessLevels || [];
+  const none = (levels.find(l => !l.actions.length) || {}).key;
   const p = products.find(x => String(x.id) === String(productId));
   if (!p) return toast("Product not found");
   const perms = (p.permissions || []);
@@ -1291,7 +1297,7 @@ async function gpAccessModal(productId) {
       const row = perms.find(x => Number(x.tenant_id) === Number(t.id));
       return `<tr><td><b>${esc(t.name)}</b> <span style="color:var(--p-muted);font-size:12px">${esc(t.slug)}</span></td>
         <td><select data-accsel="${t.id}" style="padding:4px 8px;border:1px solid var(--p-border);border-radius:6px;background:var(--p-bg)">
-          ${["none", "read", "list", "sell"].map(l => `<option value="${l}" ${row ? (row.permissions === l ? "selected" : "") : (l === "none" ? "selected" : "")}>${l}</option>`).join("")}
+          ${levels.map(l => `<option value="${esc(l.key)}" ${row ? (row.permissions === l.key ? "selected" : "") : (l.key === none ? "selected" : "")}>${esc(l.name)}</option>`).join("")}
         </select></td>
         <td>${row ? '<span class="badge active">granted</span>' : '<span class="badge">—</span>'}</td></tr>`;
     }).join("") || '<tr><td colspan="3" class="p-empty">No stores provisioned</td></tr>'}</tbody></table></div>
@@ -1301,9 +1307,9 @@ async function gpAccessModal(productId) {
   m.querySelectorAll("[data-accsel]").forEach(sel => sel.onchange = async () => {
     const tenantId = sel.dataset.accsel, level = sel.value;
     try {
-      if (level === "none") await api("/platform/store-product-config/" + tenantId + "/" + productId, "DELETE", {});
-      else await api("/platform/store-product-config", "POST", { tenant_id: Number(tenantId), global_product_id: Number(productId), permissions: level, enabled: 1 });
-      toast(level === "none" ? "Access revoked" : "Granted " + level);
+      if (level === none) await api("/platform/store-product-config/" + tenantId + "/" + encodeURIComponent(productId), "DELETE", {});
+      else await api("/platform/store-product-config", "POST", { tenant_id: Number(tenantId), global_product_id: String(productId), permissions: level, enabled: 1 });
+      toast(level === none ? "Access revoked" : "Granted " + level);
       m.innerHTML = ""; render();
     } catch (e) { toast(e.message); }
   });
@@ -1365,7 +1371,7 @@ async function gpModal(p, draft = {}) {
       <label><span>Product universe</span><select id="gpUnivSel">${gpUniverses.map(u => `<option value="${esc(u.key)}" ${universe === u.key ? "selected" : ""}>${esc(u.icon || "🧩")} ${esc(u.name)}</option>`).join("")}</select>
         <small class="medit-hint">Sets the product's type and the configuration section below — the universe is the authority on both.</small></label>
       <div class="gp-derived"><span>Product type</span><b id="gpTypeBadge">${esc(typeName)}</b><small>· derived from the universe, never hand-set</small></div>
-      <label><span>Status</span><select id="gpStatus">${["draft", "active", "retired"].map(s => `<option value="${s}" ${(draft.status != null ? draft.status : (p ? p.status : "draft")) === s ? "selected" : ""}>${s}</option>`).join("")}</select></label>
+      <label><span>Status</span><select id="gpStatus">${gpLifecycles.map((s, i) => `<option value="${esc(s.key)}" ${(draft.status != null ? draft.status : (p ? p.status : (gpLifecycles[0] || {}).key)) === s.key ? "selected" : ""}>${esc(s.name)}</option>`).join("")}</select></label>
       <div class="gp-sec"><h4>Configuration <small>· declared by the ${esc(uName)} universe</small></h4>
         ${fields.length ? fields.map(f => `<label><span>${esc(f.label)}${f.required ? " *" : ""}</span>
           ${f.type === "select" ? `<select data-uf="${esc(f.key)}">${(f.options || []).map(o => `<option ${String(attrs[f.key] || "") === String(o) ? "selected" : ""}>${esc(o)}</option>`).join("")}</select>`
@@ -1420,6 +1426,68 @@ async function gpModal(p, draft = {}) {
       else await api("/platform/global-products", "POST", body);
       toast(isEdit ? "Product updated" : "Product created"); m.innerHTML = ""; render();
     } catch (e) { err.textContent = e.message; err.classList.remove("hidden"); }
+  };
+}
+/* ============ THE PLATFORM MASTER: review what platforms propose, grant what they may do ============
+   Every contribution a platform makes is reviewed here: approved with a placement (applied to the
+   master, added as new, attached as an addendum for the platforms named) or rejected with a reason.
+   The placements, actions, objects and review modes are the master's vocabularies, read from the API. */
+const titleOf = t => (t && t.title && (t.title.en || Object.values(t.title)[0])) || (t && t.name) || "";
+let mrHolder = "";
+async function vMasterReview() {
+  const [{ contributions, placements }, all] = await Promise.all([api("/platform/master/contributions?awaiting=1"), api("/platform/master/contributions")]);
+  const pending = contributions || [];
+  const row = c => `<tr><td><b>${esc(c.holder)}</b><div style="color:var(--p-muted);font-size:12px">${esc(c.by || "")}</div></td><td>${esc(c.action)}</td>
+    <td><code>${esc(c.target || "—")}</code></td><td><code style="white-space:pre-wrap">${esc(JSON.stringify(c.patch || c.proposal || {}, null, 1).slice(0, 300))}</code></td><td>${esc(c.review || "")}</td>
+    <td style="white-space:nowrap"><select data-mr-place="${esc(c.uid)}">${(placements || []).filter(p => (p.for || []).includes(c.action)).map(p => `<option value="${esc(p.name)}">${esc(titleOf(p))}</option>`).join("")}</select>
+      <button class="p-btn sm primary" data-mr-approve="${esc(c.uid)}">Approve</button>
+      <input data-mr-reason="${esc(c.uid)}" placeholder="reason to reject" style="width:160px"> <button class="p-btn sm danger" data-mr-reject="${esc(c.uid)}">Reject</button></td></tr>`;
+  const done = (all.contributions || []).filter(c => !c.awaiting).slice(0, 50);
+  return `<div class="p-panel"><h2 style="margin:0 0 6px">Master Review (${pending.length})</h2>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">What platforms propose to the master. Nothing a platform proposes changes the master until it is approved here, and only where you place it.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Platform</th><th>Proposal</th><th>On</th><th>Change</th><th>Review</th><th>Decision</th></tr></thead>
+    <tbody>${pending.map(row).join("") || '<tr><td colspan="6" class="p-empty">Nothing awaits review</td></tr>'}</tbody></table></div>
+    <h3 style="margin:18px 0 8px">Decided</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Platform</th><th>Proposal</th><th>State</th><th>Landed as</th><th>Reason</th></tr></thead>
+    <tbody>${done.map(c => `<tr><td>${esc(c.holder)}</td><td>${esc(c.action)}</td><td><span class="badge">${esc(c.state && c.state.label)}</span></td><td>${esc(c.placement || "")}</td><td>${esc(c.reason || "")}</td></tr>`).join("") || '<tr><td colspan="5" class="p-empty">None yet</td></tr>'}</tbody></table></div></div>`;
+}
+function wireMasterReview() {
+  const decide = async (uid, body, msg) => { try { await api("/platform/master/contributions/" + encodeURIComponent(uid) + "/review", "POST", body); toast(msg); render(); } catch (e) { toast(e.message); } };
+  $$("[data-mr-approve]").forEach(b => b.onclick = () => decide(b.dataset.mrApprove, { action: "approve", placement: (document.querySelector(`[data-mr-place="${b.dataset.mrApprove}"]`) || {}).value }, "Approved"));
+  $$("[data-mr-reject]").forEach(b => b.onclick = () => decide(b.dataset.mrReject, { action: "reject", reason: (document.querySelector(`[data-mr-reason="${b.dataset.mrReject}"]`) || {}).value }, "Rejected"));
+}
+async function vMasterPermissions() {
+  const { tenants } = await api("/platform/tenants");
+  if (!mrHolder && (tenants || []).length) mrHolder = "tenant:" + tenants[0].id;
+  const d = await api("/platform/master/permissions" + (mrHolder ? "?holder=" + encodeURIComponent(mrHolder) : ""));
+  const top = await api("/platform/master/tree?depth=2");
+  const scopes = (top.nodes || []).flatMap(dm => [dm, ...(dm.children || [])]);
+  const check = (name, list) => list.map(t => `<label style="display:inline-flex;gap:4px;margin-right:10px"><input type="checkbox" data-${name}="${esc(t.name)}" ${t.default ? "checked" : ""}> ${esc(titleOf(t))}</label>`).join("");
+  return `<div class="p-panel"><h2 style="margin:0 0 6px">Master Permissions</h2>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">What each platform may see and do with the platform master: the parts it covers (each with everything under it), the actions, the attributes it sees and when its changes are reviewed. Revoking keeps the history of what it allowed.</p>
+    <label>Platform <select id="mpHolder">${(tenants || []).map(t => `<option value="tenant:${t.id}" ${mrHolder === "tenant:" + t.id ? "selected" : ""}>${esc(t.name)} (${esc(t.slug)})</option>`).join("")}</select></label>
+    <div class="p-scroll-x" style="margin-top:12px"><table class="p-table"><thead><tr><th>Covers</th><th>Objects</th><th>Actions</th><th>Visible</th><th>Review</th><th></th></tr></thead>
+    <tbody>${(d.permissions || []).map(p => `<tr><td>${esc((p.scope || []).length ? p.scope.length + " node(s)" : "the whole master")}</td><td>${esc((p.objects || []).join(", "))}</td><td>${esc((p.actions || []).join(", "))}</td><td>${esc((p.visible || []).join(", ") || "all")}</td><td>${esc(p.review || "")}</td>
+      <td><button class="p-btn sm danger" data-mp-revoke="${esc(p.uid)}">Revoke</button></td></tr>`).join("") || '<tr><td colspan="6" class="p-empty">No permissions</td></tr>'}</tbody></table></div>
+    <h3 style="margin:18px 0 8px">Grant</h3>
+    <div style="display:grid;gap:10px">
+      <label>Covers <select id="mpScope" multiple size="8">${scopes.map(n => `<option value="${esc(n.key)}">${esc(n.attributes && (n.attributes.icon || ""))} ${esc(titleOf({ title: n.attributes && n.attributes.title }))}</option>`).join("")}</select></label>
+      <div>Objects: ${check("mp-obj", d.objects || [])}</div>
+      <div>Actions: ${check("mp-act", d.actions || [])}</div>
+      <label>Review <select id="mpReview">${(d.reviews || []).map(t => `<option value="${esc(t.name)}" ${t.default ? "selected" : ""}>${esc(titleOf(t))}</option>`).join("")}</select></label>
+      <label>Visible attributes (comma separated, empty for all) <input id="mpVisible"></label>
+      <div><button class="p-btn primary" id="mpGrant">Grant</button></div></div></div>`;
+}
+function wireMasterPermissions() {
+  const h = document.getElementById("mpHolder");
+  if (h) h.onchange = () => { mrHolder = h.value; render(); };
+  $$("[data-mp-revoke]").forEach(b => b.onclick = async () => { try { await api("/platform/master/permissions/" + encodeURIComponent(b.dataset.mpRevoke), "DELETE", {}); toast("Revoked"); render(); } catch (e) { toast(e.message); } });
+  const g = document.getElementById("mpGrant");
+  if (g) g.onclick = async () => {
+    const picked = attr => $$(`[data-${attr}]`).filter(x => x.checked).map(x => x.dataset[attr.replace(/-([a-z])/g, (m, c) => c.toUpperCase())]);
+    const body = { holder: mrHolder, scope: Array.from(document.getElementById("mpScope").selectedOptions).map(o => o.value),
+      objects: picked("mp-obj"), actions: picked("mp-act"), review: document.getElementById("mpReview").value,
+      visible: document.getElementById("mpVisible").value.split(",").map(x => x.trim()).filter(Boolean) };
+    try { await api("/platform/master/permissions", "POST", body); toast("Granted"); render(); } catch (e) { toast(e.message); }
   };
 }
 /* ============ MODULE MARKETPLACE: every capability is a purchasable product ============ */
@@ -3644,6 +3712,8 @@ const VIEWFNS = {
   invoices: () => vInvoices(),
   billing: () => vBillingOps(),
   gproducts: () => vGproducts(),
+  "master-review": () => vMasterReview(),
+  "master-permissions": () => vMasterPermissions(),
   modules: () => vModules(),
   providers: () => vProviders(),
   ucii: () => vUCII(),
@@ -3698,6 +3768,8 @@ const WIREFNS = {
   applicability: () => LXRulesUI.mount($("#rulesRoot"), { api, base: "/platform/rules", scope: "platform" }),
   billing: () => wireBillingOps(),
   gproducts: () => wireGproducts(),
+  "master-review": () => wireMasterReview(),
+  "master-permissions": () => wireMasterPermissions(),
   modules: () => wireModules(),
   ucii: () => wireUCII(),
   ucos: () => wireUCOS(),

@@ -707,15 +707,18 @@ stateDiagram-v2
 | **Contract** | [UCOS-AUT-000001 Authority Architecture](#ucos-aut-000001) |
 | **Artifacts** | [UCOS-AUT-000001](#ucos-aut-000001) |
 | **Concepts** | 331 — `node _registry/compile.js --search <words> --kind concept --owner "Authority"` |
-| **Code** | `lib/authz.js`, `lib/rbac.js`, `lib/prbac.js`, `lib/seed/authz.json` |
+| **Code** | `lib/master-permissions.js`, `lib/authz.js`, `lib/rbac.js`, `lib/prbac.js`, `lib/seed/authz.json` |
 | **Managed in** | `_registry/domains.json` → `D-AUT` |
 
-**Live routes (9)** — what the platform serves today for this domain:
+**Live routes (12)** — what the platform serves today for this domain:
 
 - `GET /api/admin/roles`
 - `POST /api/admin/roles`
 - `DELETE /api/admin/roles/:key`
 - `POST /api/admin/roles/reset`
+- `GET /api/platform/master/permissions`
+- `POST /api/platform/master/permissions`
+- `DELETE /api/platform/master/permissions/:id`
 - `GET /api/platform/roles`
 - `POST /api/platform/roles`
 - `DELETE /api/platform/roles/:key`

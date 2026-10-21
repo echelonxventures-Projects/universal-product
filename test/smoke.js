@@ -604,13 +604,14 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     await f("/api/platform/fx/provider", "PUT", { provider: "manual", url: "" });
     /* registries themselves are entity data (incl. UOM conversions) */
     const ml = await f("/api/meta/entity/meta_list");
-    ok(ml.rows.some(x => x.name === "uomConversions") && ml.rows.some(x => x.name === "lifecycle"), "meta registries listed as entities", ml.rows.length);
-    const uomRow = ml.rows.find(x => x.name === "uomConversions");
-    const items = JSON.parse(uomRow.items);
-    items["furlong→m"] = 201.168;
-    await f("/api/meta/entity/meta_list/uomConversions", "PUT", { items });
-    ok((await f("/api/meta")).uomConversions["furlong→m"] === 201.168, "UOM conversion editable at runtime");
-    await f("/api/meta/entity/meta_list/uomConversions", "PUT", { items: JSON.stringify(JSON.parse(uomRow.items)) });
+    ok(ml.rows.length > 0, "meta registries listed as entities", ml.rows.length);
+    /* units and lifecycle are the platform master's: listed for authoring beside the registry's own */
+    const regs = await f("/api/platform/registries");
+    ok(regs.registries.some(x => x.name === "uomConversions") && regs.registries.some(x => x.name === "lifecycle"), "the master's lists are authorable beside the registry's", regs.registries.length);
+    /* a conversion follows from a unit: adding the unit at runtime adds its conversion */
+    await f("/api/platform/registries/uomUnits", "POST", { item: { key: "furlong", name: "Furlong", symbol: "fur", dim: "length", factor: 201.168 } });
+    ok((await f("/api/meta")).uomConversions["furlong→m"] === 201.168, "UOM conversion editable at runtime (through its unit)");
+    await f("/api/platform/registries/uomUnits/furlong", "DELETE", {});
 
     console.log("▸ SECURITY STACK — 10 layers");
     const sc = await f("/api/platform/security");

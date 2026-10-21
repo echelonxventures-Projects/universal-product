@@ -67,6 +67,9 @@
     {"pattern": "^/api/admin/settings(/|$)", "owner": "Context"},
     {"pattern": "^/api/(products|cart|checkout|orders|returns|saved|viewed|compare|coupon|giftcard|promos|offers|reviews|qna|subscriptions|membership|wallet|market|marketplace|affiliate|stores|rfqs|shipments|carriers|zip|feeds|goip|qc|fintech|trade|shipping|marketing|lists|list-items|shared-lists|alerts|pickup|bookings|price-offers|auctions|listings|conversations|group-buys|substitutions)(/|$)", "owner": "Commerce"},
     {"pattern": "^/api/admin/(products|skus|inventory|warehouses|orders|returns|promotions|reviews|qna|rfqs|tenders|contracts|sellers|settlements|payments|fin|transfers|shipments|serialized|memberships|recurring|mobility|operations|ops|marketplace|ugc|pickup|rich-content|brand-registry|options|bookings|price-offers|auctions|listings|conversations|group-buys|substitutions)(/|$)", "owner": "Commerce"},
+    {"pattern": "^/api/(platform|tenant)/master/permissions(/|$)", "owner": "Authority"},
+    {"pattern": "^/api/(platform|tenant)/master/contributions(/|$)", "owner": "Evolution"},
+    {"pattern": "^/api/(platform|tenant)/master/(tree|vocabulary|items)(/|$)", "owner": "Semantic"},
     {"pattern": "^/api/platform/(global-products|global-catalog|offers|store-product-config|shipping)(/|$)", "owner": "Commerce"}
   ]
 }
