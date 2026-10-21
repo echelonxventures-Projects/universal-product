@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0024 (2026-10-20).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0025 (2026-10-21).
 
 ## Contents
 
@@ -49,7 +49,7 @@ The integrity gate refuses a change that leaves a name owned twice or not at all
 <a id="volume-register"></a>
 ## 2. Volume register
 
-**16 volumes** for 13 categories · 47 domains · 111 artifacts · 27 primitives · 76 terms.
+**16 volumes** for 13 categories · 47 domains · 111 artifacts · 27 primitives · 82 terms.
 
 A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A category that would pass it is split into numbered parts on the next projection, and merged back when it shrinks.
 
@@ -95,7 +95,7 @@ The laws, amendments and certification law that govern every other category. Vol
 
 What exists, what it is called, and what is known about it. Volume: [V02](volumes/V02-meaning.md).
 
-- [Identity](volumes/V02-meaning.md#d-idn) — owns [Identity](#t-identity), [Intent](#t-intent), [Existence](#t-existence), [Entity](#t-entity)
+- [Identity](volumes/V02-meaning.md#d-idn) — owns [Identity](#t-identity), [Intent](#t-intent), [Existence](#t-existence), [Entity](#t-entity), [Identifier Scheme](#t-identifier-scheme)
   - [UCOS-IDN-000001](volumes/V02-meaning.md#ucos-idn-000001) Identity Architecture
 - [Semantic](volumes/V02-meaning.md#d-sem) — owns [Meaning](#t-meaning), [Ontology](#t-ontology), [Taxonomy](#t-taxonomy), [Classification](#t-classification)
   - [UCOS-SEM-000001](volumes/V02-meaning.md#ucos-sem-000001) Universal Semantic Architecture
@@ -137,7 +137,7 @@ How reality is observed, evidenced, explained, simulated and changed. Volumes: [
 - [Possibility](volumes/V03.1-reality-and-reasoning.md#d-pos) — owns [Possibility](#t-possibility)
   - [UCOS-REA-000001](volumes/V03.1-reality-and-reasoning.md#ucos-rea-000001) Multi-Reality Architecture
   - [UCOS-POSS-000001](volumes/V03.1-reality-and-reasoning.md#ucos-poss-000001) Possibility Architecture
-- [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) — owns [Evolution](#t-evolution), [Emergence](#t-emergence)
+- [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) — owns [Evolution](#t-evolution), [Emergence](#t-emergence), [Contribution](#t-contribution), [Addendum](#t-addendum)
   - [UCOS-EVO-000001](volumes/V03.1-reality-and-reasoning.md#ucos-evo-000001) Evolution Architecture
   - [UCOS-EMG-000001](volumes/V03.1-reality-and-reasoning.md#ucos-emg-000001) Emergence Architecture
 - [Twin](volumes/V03.2-reality-and-reasoning.md#d-dtw) — owns [Digital Twin](#t-digital-twin)
@@ -209,7 +209,7 @@ How people see, are told, converse and find. Volume: [V08](volumes/V08-interacti
 
 - [Experience](volumes/V08-interaction.md#d-exp) — owns [Interface](#t-interface), [Device Type](#t-device-type)
   - [UCOS-EXP-000001](volumes/V08-interaction.md#ucos-exp-000001) Experience Architecture
-- [Communication](volumes/V08-interaction.md#d-cmn) — owns [Message](#t-message), [Conversation](#t-conversation), [Communication Channel](#t-communication-channel)
+- [Communication](volumes/V08-interaction.md#d-cmn) — owns [Message](#t-message), [Conversation](#t-conversation), [Communication Channel](#t-communication-channel), [Media Session](#t-media-session)
   - [UCOS-CMN-000001](volumes/V08-interaction.md#ucos-cmn-000001) Communication Architecture
 - [Notification](volumes/V08-interaction.md#d-ntf) — owns [Notification](#t-notification)
   - [UCOS-NTF-000001](volumes/V08-interaction.md#ucos-ntf-000001) Notification Architecture
@@ -279,7 +279,7 @@ Storing, running, verifying, holding content and offering the platform. Volumes:
 
 Business projections composed from the domains; they own no truth. Volume: [V12](volumes/V12-business.md).
 
-- [Commerce](volumes/V12-business.md#d-biz) — owns [Commerce Projection](#t-commerce-projection)
+- [Commerce](volumes/V12-business.md#d-biz) — owns [Commerce Projection](#t-commerce-projection), [Fulfilment Mode](#t-fulfilment-mode)
   - [UCOS-COM-000001](volumes/V12-business.md#ucos-com-000001) Universal Commerce Architecture
   - [UCOS-GPS-000001](volumes/V12-business.md#ucos-gps-000001) Global Products & Services Architecture
   - [UCOS-PRC-000001](volumes/V12-business.md#ucos-prc-000001) Pricing Architecture
@@ -295,7 +295,7 @@ Business projections composed from the domains; they own no truth. Volume: [V12]
 
 Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composition.md).
 
-- [Package](volumes/V13-composition.md#d-pkg) — owns [Package](#t-package), [Blueprint](#t-blueprint), [Overlay](#t-overlay)
+- [Package](volumes/V13-composition.md#d-pkg) — owns [Package](#t-package), [Blueprint](#t-blueprint), [Overlay](#t-overlay), [Discovery](#t-discovery)
   - [UCOS-PKG-000001](volumes/V13-composition.md#ucos-pkg-000001) Package Architecture
 
 <a id="constitution"></a>
@@ -387,6 +387,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0022"></a>AMD-0022 | 2026-10-20 | Platform owner | An idle keep-alive connection outlives a load balancer's idle timeout: the server's keep-alive is 65 s by default (LX_KEEPALIVE_MS), so the balancer, not the server, closes it. With Node's 5 s default the server closed idle sockets while a client was about to reuse one, which reset the client's next request — the cause of the intermittent ECONNRESET in the test suites (GAP-28), and of 502s behind a balancer. Shutdown closes the listening server, TLS included. A security-suite crash now prints the server's last words and the network cause. |
 | <a id="amd-0023"></a>AMD-0023 | 2026-10-20 | Platform owner | P12 begins: Expression speaks languages by configuration. Languages are a registry naming each one's script and writing direction (lib/seed/expression.json); the storefront's shipped copy is the source language, and the message catalogue (the messages table, the console's message entity) holds it in Arabic, Hindi, Spanish, French and German. A request is answered in the language it names, else the shopper's remembered choice, else the best one the browser asks for, else the store's locale's language, else the source — always one the platform can speak. The storefront sets the page's language and direction, so a right-to-left language lays out right to left, and offers a language switch. A store's own saved copy applies in its own language only; an operator's catalogue edit survives the seed. Bug fixed: the store import failed when the settings module was what first booted the database (a circular load). |
 | <a id="amd-0024"></a>AMD-0024 | 2026-10-20 | Platform owner | The platform runs on Postgres, and is checked there end to end. The Postgres client opened a new connection for every statement, so no transaction held (a BEGIN, its statements and its COMMIT or ROLLBACK each ran on a different connection), the migration could not roll back, and a busy server exhausted its ports; it authenticated only with md5 or cleartext, not SCRAM-SHA-256 (Postgres's default and what managed Postgres requires), and a TLS connection wrote to a closed socket. Now one persistent connection serves the db bridge and a migration: SCRAM-SHA-256, TLS upgraded in place, one statement at a time, and a connection lost inside a transaction refuses every statement until the caller's ROLLBACK. The migration quotes reserved column names, keeps any identity column (the kernel's seq) and SQLite's implicit rowid (which subdivisions point at), declares TEXT a numeric column that holds text, translates indexes on their own, and runs in one transaction that stops at its first error. The dialect translator learned IFNULL, last_insert_rowid(), strftime and date() of stored text timestamps, datetime('now', ?), typed concatenation parameters and multi-row INSERT OR IGNORE. Queries fixed to be portable: GROUP BY lists, HAVING on aggregates, an unaliased day, IS ? on a parameter. Three latent bugs found by sweeping every SELECT through Postgres, broken on SQLite too: a store's providers on the global console read columns tenant_gateways never had, a shipment's third-party push looked up a column that does not exist (so it never ran), and a supplier's minimum order looked up a SKU column product_suppliers does not have. scripts/pg-check.js (npm run check:postgres) migrates a fresh install, checks the kernel's transactions, places, stores, time, expression and Value, and loads every page and console section with the server on Postgres; CI runs it against a SCRAM-authenticated Postgres 16 service. CI moves to the actions' Node 24 runtime on a pinned ubuntu-24.04 runner. |
+| <a id="amd-0025"></a>AMD-0025 | 2026-10-21 | Platform owner | The platform master and configuration by selection, adopted as design (GLOBAL_MASTER.md). Every product and service is an entity in the platform master, of a kind declared as a row and classified in any number of hierarchies of any depth; codes, scientific names and local codes are identifiers under identifier schemes; what the source model called columns are attributes on kinds, inherited down a hierarchy and applicable by context. A platform sees the master through its permissions (scope, objects, actions, review) as a projection, with its overlays held in its own scope; nothing is copied. Every platform addition, modification or retirement is a contribution: the platform master's owner reviews each one, and once approved applies it, adds it as new, or attaches it as an addendum, or rejects it with a reason. A platform is configured through a blueprint's steps (official and working authorities, languages, value units, taxes, identifier schemes, selling model, what it sells, features, sites), every setting on its own with an effective time to the minute; discovery derives each capability as mandatory, recommended, added or requested with its reason, and requests are captured at configuration and editable by the platform owner afterwards. Platform kinds and blends stop deciding features and become starter packages. Fulfilment modes include appointment, chat, audio and video; media sessions are built in, with connectors plugged in beside them, and communication may itself be offered on any commercial terms. The starter master ships the maximum declared content. Steps P27–P30. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -419,7 +420,7 @@ Every artifact inherits these sections. They are stated once here; `<artifact id
 **<artifact id> — <artifact title>**
 
 This artifact is a constitutionally governed, implementation-ready specification projected from the _UCOS Registry_ single source of truth.
-It conforms to the _Immutable Primitive Registry_ (27 frozen primitives) and the _Canonical Terminology Registry_ (76 governed terms).
+It conforms to the _Immutable Primitive Registry_ (27 frozen primitives) and the _Canonical Terminology Registry_ (82 governed terms).
 It contains no hardcoded business, industry, currency, country, or commerce concepts. All such concepts are runtime projections.
 
 <a id="standard-constitutional-purpose"></a>
@@ -624,6 +625,13 @@ Forbidden: circular dependencies, mutual ownership, cross-domain state mutation.
 
 Every primitive and term, once, with its single owner.
 
+<a id="t-addendum"></a>
+**Addendum** T-ADDENDUM — owned by [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo)
+
+- Term: An approved extension attached to an entity without changing it, applicable in a declared context such as a place, an authority or a platform.
+- Also called: extension
+- Never means: amendment, overlay, copy
+
 <a id="t-agent"></a>
 **Agent** T-AGENT — owned by [Agent](volumes/V09.1-automation.md#d-agt)
 
@@ -742,6 +750,13 @@ Every primitive and term, once, with its single owner.
 - Also called: scope
 - Never means: perspective
 
+<a id="t-contribution"></a>
+**Contribution** T-CONTRIBUTION — owned by [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo)
+
+- Term: A change a party proposes to data another party owns: an addition, a modification or a retirement. The owner reviews every one; once approved it is applied to the owner's data, added as a new entity, or attached as an addendum; otherwise it is rejected with a reason.
+- Also called: proposal
+- Never means: overlay, amendment, edit
+
 <a id="t-conversation"></a>
 **Conversation** T-CONVERSATION — owned by [Communication](volumes/V08-interaction.md#d-cmn)
 
@@ -791,6 +806,13 @@ Every primitive and term, once, with its single owner.
 - Term: Digital representation of reality.
 - Also called: twin
 - Never means: reality
+
+<a id="t-discovery"></a>
+**Discovery** T-DISCOVERY — owned by [Package](volumes/V13-composition.md#d-pkg)
+
+- Term: Deriving the capabilities a configuration needs from its blueprint answers: each one mandatory, recommended, added or requested, with the reason it was derived.
+- Also called: feature discovery
+- Never means: search, inference
 
 <a id="t-emergence"></a>
 **Emergence** P-25 — owned by [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo)
@@ -846,12 +868,26 @@ Every primitive and term, once, with its single owner.
 - Also called: wording, translation
 - Never means: meaning
 
+<a id="t-fulfilment-mode"></a>
+**Fulfilment Mode** T-FULFILMENT-MODE — owned by [Commerce](volumes/V12-business.md#d-biz)
+
+- Term: A declared way something reaches whoever acquires it: shipped, collected, downloaded, by appointment, by chat, by audio or video call, by visit, any declared.
+- Also called: delivery mode
+- Never means: communication channel, shipping method
+
 <a id="t-guide"></a>
 **Guide** T-GUIDE — owned by [Guidance](volumes/V02-meaning.md#d-gdn)
 
 - Term: Instruction for people or agents, generated from declarations.
 - Also called: manual, help
 - Never means: knowledge
+
+<a id="t-identifier-scheme"></a>
+**Identifier Scheme** T-IDENTIFIER-SCHEME — owned by [Identity](volumes/V02-meaning.md#d-idn)
+
+- Term: A declared system of identifiers: its format, check rule, issuing authority, the places it applies in and its validity.
+- Also called: code system, nomenclature
+- Never means: key, credential
 
 <a id="t-identity"></a>
 **Identity** P-01 — owned by [Identity](volumes/V02-meaning.md#d-idn)
@@ -935,6 +971,13 @@ Every primitive and term, once, with its single owner.
 - Also called: file, media
 - Never means: interface
 
+<a id="t-media-session"></a>
+**Media Session** T-MEDIA-SESSION — owned by [Communication](volumes/V08-interaction.md#d-cmn)
+
+- Term: A live audio or video exchange between parties, carried by the platform itself or by a connector.
+- Also called: call
+- Never means: message, conversation
+
 <a id="t-message"></a>
 **Message** T-MESSAGE — owned by [Communication](volumes/V08-interaction.md#d-cmn)
 
@@ -992,9 +1035,9 @@ Every primitive and term, once, with its single owner.
 <a id="t-overlay"></a>
 **Overlay** T-OVERLAY — owned by [Package](volumes/V13-composition.md#d-pkg)
 
-- Term: A platform's recorded changes on top of an installed package version.
+- Term: A platform's recorded changes on top of what it does not own: an installed package version, or the platform master's entities, held in the platform's own scope.
 - Also called: customisation
-- Never means: fork
+- Never means: fork, copy, contribution
 
 <a id="t-ownership"></a>
 **Ownership** T-OWNERSHIP — owned by [Authority](volumes/V06-decision-and-control.md#d-aut)
@@ -1456,7 +1499,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 
 ### Documents
 
-Every document at the repository root and in `_superseded/` (40), with its one status and owner. Superseded documents are kept for provenance; the last column says what replaced each.
+Every document at the repository root and in `_superseded/` (41), with its one status and owner. Superseded documents are kept for provenance; the last column says what replaced each.
 
 | Document | Status | Owner | Generated by, or replaced by |
 |---|---|---|---|
@@ -1474,6 +1517,7 @@ Every document at the repository root and in `_superseded/` (40), with its one s
 | `UCOS-MASTER.md` | projection | [Guidance](volumes/V02-meaning.md#d-gdn) | _registry/project.js |
 | `HARDCODING_AUDIT.generated.md` | projection | [Quality](volumes/V11.2-platform.md#d-qlt) | scripts/audit-hardcoding.js |
 | `HARDCODING_AUDIT.md` | living-record | [Quality](volumes/V11.2-platform.md#d-qlt) | the hard-coding audit: findings, batches and reviewed word collisions |
+| `GLOBAL_MASTER.md` | guidance | [Package](volumes/V13-composition.md#d-pkg) | the platform master, permissions, overlays, contributions, configuration by blueprint and discovery: the adopted design and its phases |
 | `PLATFORM_TYPES.md` | guidance | [Package](volumes/V13-composition.md#d-pkg) | every type of commerce platform: its kind, its blend and the engines it relies on |
 | `README.md` | guidance | [Guidance](volumes/V02-meaning.md#d-gdn) | the entry point: install, run, and where everything is |
 | `USER_MANUAL.md` | guidance | [Guidance](volumes/V02-meaning.md#d-gdn) | authored manual for every role; generated from declarations in build step P18 |
@@ -1504,13 +1548,13 @@ Every document at the repository root and in `_superseded/` (40), with its one s
 <a id="concept-register"></a>
 ## 9. Concept register
 
-Every concept the corpus names, once, from `_registry/classification.json` (owned by Semantic). 28210 distinct names: 18295 concepts, 3873 statements, 4628 parse fragments, 1414 identifiers. Each concept has one owner, taken from an exact registry name, else its reviewed container, else the rules on its name. Find any of them with `node _registry/compile.js --search <words> --kind concept [--owner …] [--category …]`.
+Every concept the corpus names, once, from `_registry/classification.json` (owned by Semantic). 28214 distinct names: 18299 concepts, 3873 statements, 4628 parse fragments, 1414 identifiers. Each concept has one owner, taken from an exact registry name, else its reviewed container, else the rules on its name. Find any of them with `node _registry/compile.js --search <words> --kind concept [--owner …] [--category …]`.
 
 | Basis | Concepts |
 |---|---:|
-| reviewed-container | 15335 |
+| reviewed-container | 15333 |
 | reviewed-concept | 2800 |
-| exact | 142 |
+| exact | 148 |
 | name-rule | 18 |
 
 Containers reviewed: 5604 of 5604. Concepts reviewed on their own: 3522.
@@ -1520,7 +1564,7 @@ Containers reviewed: 5604 of 5604. Concepts reviewed on their own: 3522.
 | C01 Constitution | [Constitutional Authority](volumes/V01-constitution.md#d-con) | 1380 |
 | C02 Meaning | [Identity](volumes/V02-meaning.md#d-idn) | 1349 |
 | C02 Meaning | [Semantic](volumes/V02-meaning.md#d-sem) | 314 |
-| C02 Meaning | [Knowledge](volumes/V02-meaning.md#d-knw) | 2775 |
+| C02 Meaning | [Knowledge](volumes/V02-meaning.md#d-knw) | 2774 |
 | C02 Meaning | [Guidance](volumes/V02-meaning.md#d-gdn) | 8 |
 | C02 Meaning | [Party](volumes/V02-meaning.md#d-pty) | 267 |
 | C03 Reality and Reasoning | [Observation](volumes/V03.1-reality-and-reasoning.md#d-obs) | 226 |
@@ -1531,7 +1575,7 @@ Containers reviewed: 5604 of 5604. Concepts reviewed on their own: 3522.
 | C03 Reality and Reasoning | [Causality](volumes/V03.1-reality-and-reasoning.md#d-cau) | 44 |
 | C03 Reality and Reasoning | [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per) | 94 |
 | C03 Reality and Reasoning | [Possibility](volumes/V03.1-reality-and-reasoning.md#d-pos) | 50 |
-| C03 Reality and Reasoning | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | 453 |
+| C03 Reality and Reasoning | [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo) | 455 |
 | C03 Reality and Reasoning | [Twin](volumes/V03.2-reality-and-reasoning.md#d-dtw) | 395 |
 | C04 Universal Dimensions | [Geo](volumes/V04-universal-dimensions.md#d-geo) | 69 |
 | C04 Universal Dimensions | [Time](volumes/V04-universal-dimensions.md#d-tim) | 112 |
@@ -1550,7 +1594,7 @@ Containers reviewed: 5604 of 5604. Concepts reviewed on their own: 3522.
 | C07 Assurance | [Audit](volumes/V07-assurance.md#d-aud) | 40 |
 | C07 Assurance | [Compliance](volumes/V07-assurance.md#d-cmp) | 211 |
 | C08 Interaction | [Experience](volumes/V08-interaction.md#d-exp) | 97 |
-| C08 Interaction | [Communication](volumes/V08-interaction.md#d-cmn) | 116 |
+| C08 Interaction | [Communication](volumes/V08-interaction.md#d-cmn) | 117 |
 | C08 Interaction | [Notification](volumes/V08-interaction.md#d-ntf) | 5 |
 | C08 Interaction | [Search](volumes/V08-interaction.md#d-srh) | 99 |
 | C09 Automation | [Runtime](volumes/V09.1-automation.md#d-run) | 731 |
@@ -1562,8 +1606,8 @@ Containers reviewed: 5604 of 5604. Concepts reviewed on their own: 3522.
 | C11 Platform | [Quality](volumes/V11.2-platform.md#d-qlt) | 442 |
 | C11 Platform | [Content](volumes/V11.2-platform.md#d-cnt) | 82 |
 | C11 Platform | [Offering](volumes/V11.2-platform.md#d-ofg) | 20 |
-| C12 Business | [Commerce](volumes/V12-business.md#d-biz) | 1967 |
-| C13 Composition | [Package](volumes/V13-composition.md#d-pkg) | 250 |
+| C12 Business | [Commerce](volumes/V12-business.md#d-biz) | 1968 |
+| C13 Composition | [Package](volumes/V13-composition.md#d-pkg) | 251 |
 
 <a id="review-queue"></a>
 ### Review queue
@@ -2142,7 +2186,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 
 ### Steps
 
-9 of 26 steps done. Each step is committed only once the full test suite passes.
+9 of 30 steps done. Each step is committed only once the full test suite passes.
 
 | Step | What | Domains | Status | Delivered by |
 |---|---|---|---|---|
@@ -2172,6 +2216,10 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="p24"></a>P24 | Business entities on the kernel; engines read the resolver; stores lose their single country and currency | [Commerce](volumes/V12-business.md#d-biz) | planned | — |
 | <a id="p25"></a>P25 | Launch by configuration, end to end, for a person with the manual and for an agent | [Package](volumes/V13-composition.md#d-pkg), [Guidance](volumes/V02-meaning.md#d-gdn) | planned | — |
 | <a id="p26"></a>P26 | More storage adapters; moving domains between databases from the console | [Registry](volumes/V05-structure.md#d-reg) | planned | — |
+| <a id="p27"></a>P27 | The platform master: entities of every kind as rows, classified in many hierarchies, identifier schemes, attributes inherited and applicable by context, the maximum starter content; the flat global catalogue and per-platform taxonomies and attributes merged into it | [Identity](volumes/V02-meaning.md#d-idn), [Semantic](volumes/V02-meaning.md#d-sem), [Registry](volumes/V05-structure.md#d-reg), [Relationship](volumes/V05-structure.md#d-rel), [Context](volumes/V04-universal-dimensions.md#d-ctx) | planned | — |
+| <a id="p28"></a>P28 | Permissions on the platform master, projections and overlays; contributions reviewed and applied, added as new or attached as an addendum | [Authority](volumes/V06-decision-and-control.md#d-aut), [Perspective](volumes/V03.1-reality-and-reasoning.md#d-per), [Evolution](volumes/V03.1-reality-and-reasoning.md#d-evo), [Package](volumes/V13-composition.md#d-pkg) | planned | — |
+| <a id="p29"></a>P29 | Configuration by blueprint steps, each setting effective to the minute; discovery of mandatory, recommended, added and requested capabilities; platform kinds and blends become starter packages | [Package](volumes/V13-composition.md#d-pkg), [Context](volumes/V04-universal-dimensions.md#d-ctx), [Time](volumes/V04-universal-dimensions.md#d-tim) | planned | — |
+| <a id="p30"></a>P30 | Fulfilment modes for every kind of offering; built-in media sessions beside connectors; communication offered on commercial terms | [Commerce](volumes/V12-business.md#d-biz), [Communication](volumes/V08-interaction.md#d-cmn), [Integration](volumes/V09.2-automation.md#d-int), [Offering](volumes/V11.2-platform.md#d-ofg) | planned | — |
 
 ### Decisions
 
@@ -2191,6 +2239,13 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="dec-012"></a>DEC-012 | How is configuration made fast? | Packages: editable compositions with overlays that survive upgrades. |
 | <a id="dec-013"></a>DEC-013 | Which names do place, value and language domains take? | Geo, Value and Expression — named by what they own, because the constitution reserves Country, Currency and Language for projections. |
 | <a id="dec-014"></a>DEC-014 | How is the documentation organised? | One master document and one volume per category, split into numbered parts past a declared size, projected and checked automatically. |
+| <a id="dec-015"></a>DEC-015 | Who adopts a platform's change to the platform master? | The platform master's owner reviews every contribution; once approved it is applied to the master, added as new, or attached as an addendum. Nothing is adopted automatically. |
+| <a id="dec-016"></a>DEC-016 | What does the platform master hold on day one? | The maximum: every declared level, kind, identifier scheme, unit, packaging level and relationship type, the existing catalogue, and data packs for public classifications. |
+| <a id="dec-017"></a>DEC-017 | Can a platform remove something from the platform master? | Only as a contribution, reviewed like any other: once approved it retires the entity as a new version, or is attached as an addendum. Nothing is erased. |
+| <a id="dec-018"></a>DEC-018 | How do existing platforms reach the new configuration? | Every setting is configurable on its own, with an effective time to the minute; there is no bulk migration. |
+| <a id="dec-019"></a>DEC-019 | Where do requested capabilities go? | They are captured during configuration, and the platform owner can edit them afterwards. |
+| <a id="dec-020"></a>DEC-020 | How are audio and video carried? | A built-in media session and connectors plugged in beside it; communication may itself be offered on any commercial terms. |
+| <a id="dec-021"></a>DEC-021 | How is a platform's type decided? | By its blueprint answers and discovery; platform kinds and blends are starter packages that pre-fill answers, never gates. |
 
 <a id="id-lookup"></a>
 ## 12. ID lookup
@@ -2221,6 +2276,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0022 | amendment | An idle keep-alive connection outlives a load balancer's idl | [constitution](#amd-0022) |
 | AMD-0023 | amendment | P12 begins | [constitution](#amd-0023) |
 | AMD-0024 | amendment | The platform runs on Postgres, and is checked there end to e | [constitution](#amd-0024) |
+| AMD-0025 | amendment | The platform master and configuration by selection, adopted  | [constitution](#amd-0025) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |
@@ -2295,6 +2351,13 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | DEC-012 | decision | How is configuration made fast? | [decisions](#dec-012) |
 | DEC-013 | decision | Which names do place, value and language domains take? | [decisions](#dec-013) |
 | DEC-014 | decision | How is the documentation organised? | [decisions](#dec-014) |
+| DEC-015 | decision | Who adopts a platform's change to the platform master? | [decisions](#dec-015) |
+| DEC-016 | decision | What does the platform master hold on day one? | [decisions](#dec-016) |
+| DEC-017 | decision | Can a platform remove something from the platform master? | [decisions](#dec-017) |
+| DEC-018 | decision | How do existing platforms reach the new configuration? | [decisions](#dec-018) |
+| DEC-019 | decision | Where do requested capabilities go? | [decisions](#dec-019) |
+| DEC-020 | decision | How are audio and video carried? | [decisions](#dec-020) |
+| DEC-021 | decision | How is a platform's type decided? | [decisions](#dec-021) |
 | GAP-01 | gap | CI failed on Node 22: the smoke test's own process booted th | [gaps](#gap-01) |
 | GAP-02 | gap | The code map gave storage, links, places and value units to  | [gaps](#gap-02) |
 | GAP-03 | gap | Contract APIs are designed interfaces, and the live API was  | [gaps](#gap-03) |
@@ -2416,6 +2479,11 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | P24 | build step | Business entities on the kernel; engines read the resolver;  | [build path](#p24) |
 | P25 | build step | Launch by configuration, end to end, for a person with the m | [build path](#p25) |
 | P26 | build step | More storage adapters; moving domains between databases from | [build path](#p26) |
+| P27 | build step | The platform master: entities of every kind as rows, classif | [build path](#p27) |
+| P28 | build step | Permissions on the platform master, projections and overlays | [build path](#p28) |
+| P29 | build step | Configuration by blueprint steps, each setting effective to  | [build path](#p29) |
+| P30 | build step | Fulfilment modes for every kind of offering; built-in media  | [build path](#p30) |
+| T-ADDENDUM | term | Addendum | [Addendum](#t-addendum) |
 | T-AGENT | term | Agent | [Agent](#t-agent) |
 | T-AMENDMENT | term | Amendment | [Amendment](#t-amendment) |
 | T-API | term | API | [API](#t-api) |
@@ -2433,19 +2501,23 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | T-CONSENT | term | Consent | [Consent](#t-consent) |
 | T-CONSTITUTION | term | Constitution | [Constitution](#t-constitution) |
 | T-CONTEXT | term | Context | [Context](#t-context) |
+| T-CONTRIBUTION | term | Contribution | [Contribution](#t-contribution) |
 | T-CONVERSATION | term | Conversation | [Conversation](#t-conversation) |
 | T-CREDENTIAL | term | Credential | [Credential](#t-credential) |
 | T-DATA | term | Data | [Data](#t-data) |
 | T-DECISION | term | Decision | [Decision](#t-decision) |
 | T-DEPLOYMENT | term | Deployment | [Deployment](#t-deployment) |
 | T-DEVICE-TYPE | term | Device Type | [Device Type](#t-device-type) |
+| T-DISCOVERY | term | Discovery | [Discovery](#t-discovery) |
 | T-ENTITY | term | Entity | [Entity](#t-entity) |
 | T-ENVIRONMENT | term | Environment | [Environment](#t-environment) |
 | T-EVENT | term | Event | [Event](#t-event) |
 | T-EVIDENCE | term | Evidence | [Evidence](#t-evidence) |
 | T-EXISTENCE | term | Existence | [Existence](#t-existence) |
 | T-EXPRESSION | term | Expression | [Expression](#t-expression) |
+| T-FULFILMENT-MODE | term | Fulfilment Mode | [Fulfilment Mode](#t-fulfilment-mode) |
 | T-GUIDE | term | Guide | [Guide](#t-guide) |
+| T-IDENTIFIER-SCHEME | term | Identifier Scheme | [Identifier Scheme](#t-identifier-scheme) |
 | T-INDEX | term | Index | [Index](#t-index) |
 | T-INFERENCE | term | Inference | [Inference](#t-inference) |
 | T-INFORMATION | term | Information | [Information](#t-information) |
@@ -2456,6 +2528,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | T-LICENCE | term | Licence | [Licence](#t-licence) |
 | T-MEANING | term | Meaning | [Meaning](#t-meaning) |
 | T-MEDIA-ASSET | term | Media Asset | [Media Asset](#t-media-asset) |
+| T-MEDIA-SESSION | term | Media Session | [Media Session](#t-media-session) |
 | T-MESSAGE | term | Message | [Message](#t-message) |
 | T-METRIC | term | Metric | [Metric](#t-metric) |
 | T-NOTIFICATION | term | Notification | [Notification](#t-notification) |

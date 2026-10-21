@@ -18,12 +18,12 @@
 |---|---|
 | **Category** | C13 Composition |
 | **Build status** | partial |
-| **Owns** | [Package](../UCOS-MASTER.md#t-package), [Blueprint](../UCOS-MASTER.md#t-blueprint), [Overlay](../UCOS-MASTER.md#t-overlay) |
+| **Owns** | [Package](../UCOS-MASTER.md#t-package), [Blueprint](../UCOS-MASTER.md#t-blueprint), [Overlay](../UCOS-MASTER.md#t-overlay), [Discovery](../UCOS-MASTER.md#t-discovery) |
 | **Responsible for** | Packages, Blueprints, Overlays |
 | **Not responsible for** | Domain Truth, Offerings |
 | **Contract** | [UCOS-PKG-000001 Package Architecture](#ucos-pkg-000001) |
 | **Artifacts** | [UCOS-PKG-000001](#ucos-pkg-000001) |
-| **Concepts** | 250 — `node _registry/compile.js --search <words> --kind concept --owner "Package"` |
+| **Concepts** | 251 — `node _registry/compile.js --search <words> --kind concept --owner "Package"` |
 | **Code** | `lib/registry.js`, `lib/compose.js` |
 | **Managed in** | `_registry/domains.json` → `D-PKG` |
 

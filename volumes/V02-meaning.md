@@ -34,7 +34,7 @@
 |---|---|
 | **Category** | C02 Meaning |
 | **Build status** | partial |
-| **Owns** | [Identity](../UCOS-MASTER.md#t-identity), [Intent](../UCOS-MASTER.md#t-intent), [Existence](../UCOS-MASTER.md#t-existence), [Entity](../UCOS-MASTER.md#t-entity) |
+| **Owns** | [Identity](../UCOS-MASTER.md#t-identity), [Intent](../UCOS-MASTER.md#t-intent), [Existence](../UCOS-MASTER.md#t-existence), [Entity](../UCOS-MASTER.md#t-entity), [Identifier Scheme](../UCOS-MASTER.md#t-identifier-scheme) |
 | **Responsible for** | Identity Creation, Identity Resolution, Identity Versioning, Identity Lineage |
 | **Not responsible for** | Knowledge, Meaning, Policy, Trust |
 | **Contract** | [UCOS-IDN-000001 Identity Architecture](#ucos-idn-000001) |
@@ -1075,7 +1075,7 @@ stateDiagram-v2
 | **Not responsible for** | Identity, Policy, Authority |
 | **Contract** | [UCOS-KNW-000001 Knowledge Architecture](#ucos-knw-000001) |
 | **Artifacts** | [UCOS-KNW-000001](#ucos-knw-000001) |
-| **Concepts** | 2775 — `node _registry/compile.js --search <words> --kind concept --owner "Knowledge"` |
+| **Concepts** | 2774 — `node _registry/compile.js --search <words> --kind concept --owner "Knowledge"` |
 | **Code** | — |
 | **Managed in** | `_registry/domains.json` → `D-KNW` |
 

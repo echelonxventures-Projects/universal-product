@@ -23,6 +23,7 @@
     {"path": "UCOS-MASTER.md", "status": "projection", "owner": "Guidance", "generatedBy": "_registry/project.js"},
     {"path": "HARDCODING_AUDIT.generated.md", "status": "projection", "owner": "Quality", "generatedBy": "scripts/audit-hardcoding.js"},
     {"path": "HARDCODING_AUDIT.md", "status": "living-record", "owner": "Quality", "note": "the hard-coding audit: findings, batches and reviewed word collisions"},
+    {"path": "GLOBAL_MASTER.md", "status": "guidance", "owner": "Package", "note": "the platform master, permissions, overlays, contributions, configuration by blueprint and discovery: the adopted design and its phases"},
     {"path": "PLATFORM_TYPES.md", "status": "guidance", "owner": "Package", "note": "every type of commerce platform: its kind, its blend and the engines it relies on"},
     {"path": "README.md", "status": "guidance", "owner": "Guidance", "note": "the entry point: install, run, and where everything is"},
     {"path": "USER_MANUAL.md", "status": "guidance", "owner": "Guidance", "note": "authored manual for every role; generated from declarations in build step P18"},

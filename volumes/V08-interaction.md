@@ -264,12 +264,12 @@ stateDiagram-v2
 |---|---|
 | **Category** | C08 Interaction |
 | **Build status** | partial |
-| **Owns** | [Message](../UCOS-MASTER.md#t-message), [Conversation](../UCOS-MASTER.md#t-conversation), [Communication Channel](../UCOS-MASTER.md#t-communication-channel) |
+| **Owns** | [Message](../UCOS-MASTER.md#t-message), [Conversation](../UCOS-MASTER.md#t-conversation), [Communication Channel](../UCOS-MASTER.md#t-communication-channel), [Media Session](../UCOS-MASTER.md#t-media-session) |
 | **Responsible for** | Channels, Messages, Conversations, Templates, Sender Identities, Delivery |
 | **Not responsible for** | Who Is Notified, System Event Transport |
 | **Contract** | [UCOS-CMN-000001 Communication Architecture](#ucos-cmn-000001) |
 | **Artifacts** | [UCOS-CMN-000001](#ucos-cmn-000001) |
-| **Concepts** | 116 — `node _registry/compile.js --search <words> --kind concept --owner "Communication"` |
+| **Concepts** | 117 — `node _registry/compile.js --search <words> --kind concept --owner "Communication"` |
 | **Code** | `lib/mailer.js`, `lib/helpdesk.js` |
 | **Managed in** | `_registry/domains.json` → `D-CMN` |
 
