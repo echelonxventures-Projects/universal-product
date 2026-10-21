@@ -55,8 +55,8 @@ function toast(msg) {
    (every key is also a grant section), and NAVFLAT drives title lookup. */
 const NAV = [
   { g: "Overview", items: [["dash", "◈ Dashboard"], ["analytics", "📊 Analytics"], ["monitor", "📈 Monitor"]] },
-  { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["shipping", "📮 Shipping & Tracking"], ["pickup", "📍 Pickup Points"], ["bookings", "📅 Bookings"], ["substitutions", "🔄 Substitutions"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"]] },
-  { g: "Catalogue", items: [["products", "📦 Products"], ["skus", "🔖 SKUs & Inventory"], ["brands", "🏷️ Brands"], ["brandreg", "™️ Brand Registry"], ["richcontent", "✨ Rich Content"], ["prodoptions", "🧩 Product Options"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["gcatalog", "🌐 Global Catalog"], ["mastercontrib", "🤝 Master Contributions"]] },
+  { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["shipping", "📮 Shipping & Tracking"], ["pickup", "📍 Pickup Points"], ["bookings", "📅 Bookings"], ["substitutions", "🔄 Substitutions"], ["pricematch", "🏷️ Price Match"], ["prescriptions", "📄 Prescriptions"], ["credentials", "🪪 Practitioner Verification"], ["enquiries", "📨 Enquiries"], ["tradeins", "♻️ Trade-ins"], ["fees", "🧾 Service Fees"], ["tips", "💝 Tips"], ["trials", "👟 Try and Buy"], ["licencekeys", "🔑 Licence Keys"], ["labtests", "🧫 Lab Tests"], ["courses", "🎓 Course Progress"], ["healthrecords", "🩺 Health Records"], ["sessions", "🎥 Live Sessions"], ["metering", "⏱️ Per-minute Charges"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"]] },
+  { g: "Catalogue", items: [["products", "📦 Products"], ["skus", "🔖 SKUs & Inventory"], ["brands", "🏷️ Brands"], ["brandreg", "™️ Brand Registry"], ["richcontent", "✨ Rich Content"], ["prodoptions", "🧩 Product Options"], ["installations", "🔧 Installations"], ["assemblies", "🪛 Assembly"], ["warranties", "🛡️ Extended Warranties"], ["proofs", "🎨 Customisation Proofs"], ["samples", "🧪 Sample Orders"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["gcatalog", "🌐 Global Catalog"], ["mastercontrib", "🤝 Master Contributions"]] },
   { g: "Supply Chain", items: [["suppliers", "🏭 Suppliers"], ["ops_proc", "🛒 Purchase Requests"], ["planning", "📈 Planning & Replenishment"]] },
   { g: "Storefront", items: [["content", "🖼️ Home Content"], ["search", "🔎 Search & Discovery"], ["sitemap", "🗺️ Sitemap & SEO"], ["localizations", "🌐 Localizations"]] },
   { g: "Marketing & Growth", items: [["promotions", "🎟️ Offers & Coupons"], ["goip", "Ω∞ GOIP"], ["affiliate", "📣 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["marketplace", "📢 Marketplace & Ads"], ["auctions", "🔨 Auctions"], ["groupbuy", "👥 Group Buying"]] },
@@ -653,6 +653,141 @@ function wireMasterContrib() {
   };
   $$("[data-mc-withdraw]").forEach(b => b.onclick = () => postAndRender("/tenant/master/contributions/" + encodeURIComponent(b.dataset.mcWithdraw) + "/withdraw", {}, "POST", "Withdrawn"));
 }
+/* ---------- live sessions (lib/media-sessions.js) ---------- */
+async function vSessions() {
+  const gate = await coGate("sessions");
+  if (!gate.any) return coOff("live sessions", "🎥 Live Sessions", gate.off);
+  const d = await api("/sessions", {}).catch(e => ({ sessions: [], error: e.message }));
+  return `<div class="a-head"><h2>🎥 Live Sessions</h2><p class="a-sub">Booked consultations, classes and calls held live. Carried by ${esc(((d.transports || []).find(t => t.builtin) || {}).name || "the platform")} unless the <code>media_sessions</code> capability names a media connector from the Provider Registry; charged by the minute where <code>per_minute_billing</code> is on (⏱️ Per-minute Charges).</p></div>
+  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>#</th><th>guest</th><th>mode</th><th>state</th><th>minutes</th><th>charged</th><th></th></tr></thead><tbody>
+  ${(d.sessions || []).map(x => `<tr><td>${x.id}</td><td>${esc(x.guest)}</td><td>${esc(x.mode)}</td><td>${stateChip(x.state)}</td><td>${(x.seconds / 60).toFixed(1)}</td><td>${x.charged ? money(x.charged) : ""}</td>
+    <td>${x.done ? "" : `<a class="btn-white sm" href="${esc(x.join_url)}" target="_blank" rel="noopener">Join</a>`}</td></tr>`).join("") || `<tr><td colspan="7">${esc(d.error || "No sessions yet.")}</td></tr>`}</tbody></table></div></div>`;
+}
+/* ---------- charged by the minute (capability per_minute_billing) ---------- */
+async function vMetering() {
+  const gate = await coGate("metering");
+  if (!gate.any) return coOff("charging by the minute", "⏱️ Per-minute Charges", gate.off);
+  const d = await api("/admin/per-minute", {}).catch(e => ({ error: e.message }));
+  if (d.error) return `<div class="a-head"><h2>⏱️ Per-minute Charges</h2><p class="a-sub">${esc(d.error)}</p></div>`;
+  const P = d.settings || {};
+  return `<div class="a-head"><h2>⏱️ Per-minute Charges</h2><p class="a-sub">Live sessions charged to the guest's wallet at the item's price per minute, else ${money(P.default_rate)} a minute, in steps of ${esc(P.increment_seconds)} seconds with ${esc(P.minimum_minutes)} minute(s) always charged — the <code>per_minute_billing</code> capability's params. Charged so far: <b>${money(d.total)}</b>.</p></div>
+  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>#</th><th>guest</th><th>rate / min</th><th>state</th><th>minutes</th><th>charged</th></tr></thead><tbody>
+  ${(d.sessions || []).map(x => `<tr><td>${x.id}</td><td>${esc(x.guest)}</td><td>${money(x.rate)}</td><td>${stateChip(x.state)}</td><td>${(x.seconds / 60).toFixed(1)}</td><td>${x.charged ? money(x.charged) : ""}</td></tr>`).join("") || '<tr><td colspan="6">No sessions charged by the minute yet.</td></tr>'}</tbody></table></div></div>`;
+}
+/* ---------- try and buy (lib/trials.js) ---------- */
+async function vTrials() {
+  const gate = await coGate("trials");
+  if (!gate.any) return coOff("try and buy", "👟 Try and Buy", gate.off);
+  const d = await api("/admin/trials", {}).catch(e => ({ trials: [], error: e.message }));
+  return `<div class="a-head"><h2>👟 Try and Buy</h2><p class="a-sub">Items on trial: the deposit paid, the window to decide, and what the shopper did — kept (the rest charged) or returned (the deposit back). A closed window keeps what was not returned.</p></div>
+  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>#</th><th>order</th><th>item</th><th>shopper</th><th>price</th><th>deposit</th><th>decide by</th><th>state</th><th>charged</th><th>refunded</th></tr></thead><tbody>
+  ${(d.trials || []).map(t => `<tr><td>${t.id}</td><td>#${t.order_id}</td><td><code>${esc(t.product_id)}</code></td><td>${esc(t.owner)}</td><td>${money(t.unit)} × ${t.qty}</td><td>${money(t.deposit)}</td><td>${esc(t.ends_at)}</td><td>${stateChip(t.state)}</td><td>${t.charged ? money(t.charged) : ""}</td><td>${t.refunded ? money(t.refunded) : ""}</td></tr>`).join("") || `<tr><td colspan="10">${esc(d.error || "Nothing on trial.")}</td></tr>`}</tbody></table></div></div>`;
+}
+/* ---------- deliverables: every kind (licence keys, lab tests, courses) its own screen, named by
+   its deliverableKinds row ---------- */
+let deliverableKindsCache = null;
+async function deliverableKindFor(section) {
+  if (!deliverableKindsCache) deliverableKindsCache = (await api("/deliverable-kinds", {}).catch(() => ({ kinds: [] }))).kinds || [];
+  return deliverableKindsCache.find(k => k.section === section) || null;
+}
+async function vDeliverables(section) {
+  const kind = await deliverableKindFor(section);
+  const gate = await coGate(section);
+  if (!gate.any) return coOff(kind.name.toLowerCase() + "s", kind.screen, gate.off);
+  const d = await api("/admin/deliverables/" + encodeURIComponent(kind.key), {}).catch(e => ({ error: e.message }));
+  if (d.error) return `<div class="a-head"><h2>${esc(kind.screen)}</h2><p class="a-sub">${esc(d.error)}</p></div>`;
+  const P = d.settings || {};
+  const how = kind.pooled ? `handed over from the item's pool the moment it is ordered; staff are told when fewer than ${esc(P.low_stock)} are left`
+    : kind.uploaded ? `awaited until staff upload it — late after ${esc(P.due_days)} day(s)` : `granted at once; the shopper counts the ${esc(P.steps_fact)} they finish`;
+  const pool = kind.pooled ? `<div class="a-card"><h3>Pool</h3><div class="p-form"><div class="row"><label><span>Item id *</span><input id="dlProd"></label></div>
+      <label><span>Codes — one per line</span><textarea id="dlCodes" rows="4"></textarea></label><button class="p-btn primary" id="dlStock">Add to pool</button></div>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>item</th><th>left</th><th>stocked</th></tr></thead><tbody>
+    ${(d.pools || []).map(r => `<tr><td><code>${esc(r.product_id)}</code></td><td>${r.n < Number(P.low_stock) ? `<b>${r.n}</b>` : r.n}</td><td>${r.total}</td></tr>`).join("") || '<tr><td colspan="3">No pools yet.</td></tr>'}</tbody></table></div></div>` : "";
+  return `<div class="a-head"><h2>${esc(kind.screen)}</h2><p class="a-sub">An item whose facts carry <code>${esc(P.fact)}</code> delivers a ${esc(kind.name.toLowerCase())}: ${how} — the <code>${esc(kind.atom)}</code> capability's params.</p></div>
+  ${pool}<div class="a-card"><h3>Delivered and awaited</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>#</th><th>order</th><th>item</th><th>shopper</th><th>state</th><th>${kind.access ? "progress" : "what was delivered"}</th><th></th></tr></thead><tbody>
+  ${(d.deliverables || []).map(x => `<tr><td>${x.id}</td><td>#${x.order_id}</td><td><code>${esc(x.product_id)}</code></td><td>${esc(x.owner)}</td><td>${stateChip(x.state)}${x.late ? ' <span class="a-chip">late</span>' : ""}</td>
+    <td>${kind.access ? `${x.steps_done} of ${x.steps_total}` : x.value ? (/^https?:/.test(x.value) ? `<a href="${esc(x.value)}" target="_blank" rel="noopener">file</a>` : `<code>${esc(x.value)}</code>`) : ""}</td>
+    <td>${!x.delivered && !kind.access ? `<input data-dl-value="${x.id}" placeholder="${kind.uploaded ? "link to the file" : "code"}" style="width:160px"> <button class="btn-white sm" data-dl-give="${x.id}">Deliver</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="7">None yet.</td></tr>'}</tbody></table></div></div>`;
+}
+function wireDeliverables(section) {
+  const st = $("#dlStock");
+  if (st) st.onclick = async () => { const k = await deliverableKindFor(section); postAndRender("/admin/deliverables/" + encodeURIComponent(k.key) + "/pool", { product_id: fieldVal("#dlProd"), codes: fieldVal("#dlCodes") }, "POST", "Pool stocked"); };
+  $$("[data-dl-give]").forEach(b => b.onclick = () => postAndRender("/admin/deliverables/item/" + b.dataset.dlGive, { value: ($(`[data-dl-value="${b.dataset.dlGive}"]`) || {}).value }, "POST", "Delivered"));
+}
+/* ---------- health records (lib/health-records.js): what shoppers shared with the store ---------- */
+let hrParty = "";
+async function vHealthRecords() {
+  const gate = await coGate("healthrecords");
+  if (!gate.any) return coOff("health records", "🩺 Health Records", gate.off);
+  const party = hrParty;
+  const d = await api("/admin/health-records/shared?party=" + encodeURIComponent(party), {}).catch(e => ({ shared: [], error: e.message }));
+  return `<div class="a-head"><h2>🩺 Health Records</h2><p class="a-sub">Shoppers keep their records private and share one with a party for some days; a party sees only what is shared with it while the share lasts. Every share is recorded.</p></div>
+  <div class="a-card"><div class="p-form"><div class="row"><label><span>Party (who it was shared with)</span><input id="hrParty" value="${esc(party)}"></label></div><button class="p-btn primary" id="hrLook">Show</button></div>
+  <div class="a-tablewrap"><table class="a-table"><thead><tr><th>shopper</th><th>record</th><th>shared until</th></tr></thead><tbody>
+  ${(d.shared || []).map(x => `<tr><td>${esc(x.owner)}</td><td>${x.item ? `<a href="${esc(x.item.url)}" target="_blank" rel="noopener">${esc(x.item.title)}</a>` : ""}</td><td>${esc(x.until)}</td></tr>`).join("") || `<tr><td colspan="3">${esc(d.error || (party ? "Nothing shared with this party." : "Name a party."))}</td></tr>`}</tbody></table></div></div>`;
+}
+function wireHealthRecords() { const b = $("#hrLook"); if (b) b.onclick = () => { hrParty = fieldVal("#hrParty"); render(); }; }
+/* ---------- tips (lib/tips.js) ---------- */
+async function vTips() {
+  const gate = await coGate("tips");
+  if (!gate.any) return coOff("tips", "💝 Tips", gate.off);
+  const d = await api("/admin/tips", {});
+  return `<div class="a-head"><h2>💝 Tips</h2><p class="a-sub">Shoppers add ${esc(d.label)} from ${(d.choices || []).map(money).join(", ")} or their own amount up to ${money(d.max)} — the <code>tips</code> capability's params (⚙️ Capabilities). Each tip is kept on its order.</p></div>`;
+}
+/* ---------- service fees (lib/fees.js) ---------- */
+async function vCharges() {
+  const gate = await coGate("fees");
+  if (!gate.any) return coOff("service fees", "🧾 Service Fees", gate.off);
+  const d = await api("/admin/charges", {});
+  return `<div class="a-head"><h2>🧾 Service Fees</h2><p class="a-sub">A fee is charged when its conditions hold — under an order amount, inside a window of the store's local hours, or always — and waived for members or with free shipping where it says.</p></div>
+  <div class="a-card"><h3>Fee</h3><div class="p-form">
+    <div class="row"><label><span>Code *</span><input id="fcCode"></label><label><span>Name *</span><input id="fcName" placeholder="Small order fee"></label><label><span>Amount</span><input id="fcAmt" type="number" step="0.01"></label><label><span>% of the order</span><input id="fcPct" type="number" step="0.1"></label></div>
+    <div class="row"><label><span>Only under an order of</span><input id="fcBelow" type="number" step="0.01"></label><label><span>From hour (local)</span><input id="fcFrom" type="number" min="0" max="23"></label><label><span>To hour</span><input id="fcTo" type="number" min="0" max="23"></label></div>
+    <div class="row"><label><input type="checkbox" id="fcMem"> Waived for members</label><label><input type="checkbox" id="fcFree"> Waived with free shipping</label><label><input type="checkbox" id="fcTax"> Taxed</label></div>
+    <button class="p-btn primary" id="fcSave">Save fee</button></div></div>
+  <div class="a-card"><h3>Fees</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>charge</th><th>when</th><th>waived</th><th></th></tr></thead><tbody>
+    ${(d.rules || []).map(r => `<tr><td><code>${esc(r.code)}</code></td><td>${esc(r.name)}</td><td>${r.amount ? money(r.amount) : ""}${r.amount && r.percent ? " + " : ""}${r.percent ? r.percent + "%" : ""}${r.taxable ? " · taxed" : ""}</td>
+      <td>${r.below_amount != null ? "under " + money(r.below_amount) : "any amount"}${r.from_hour != null ? " · " + r.from_hour + ":00–" + r.to_hour + ":00" : ""}</td><td>${[r.waive_for_members ? "members" : "", r.waive_with_free_shipping ? "free shipping" : ""].filter(Boolean).join(", ") || "—"}</td>
+      <td><button class="btn-white sm" data-co-post="/admin/charges/${encodeURIComponent(r.code)}" data-co-method="DELETE">Remove</button></td></tr>`).join("") || '<tr><td colspan="6">No fees.</td></tr>'}</tbody></table></div></div>`;
+}
+function wireCharges() {
+  const save = $("#fcSave"); if (!save) return;
+  save.onclick = () => postAndRender("/admin/charges", { code: fieldVal("#fcCode"), name: fieldVal("#fcName"), amount: fieldVal("#fcAmt"), percent: fieldVal("#fcPct"), below_amount: fieldVal("#fcBelow"),
+    from_hour: fieldVal("#fcFrom"), to_hour: fieldVal("#fcTo"), waive_for_members: $("#fcMem").checked, waive_with_free_shipping: $("#fcFree").checked, taxable: $("#fcTax").checked }, "POST", "Fee saved");
+  wireCoPosts();
+}
+/* ---------- cases: price matches, prescriptions, credentials, enquiries, trade-ins — every kind a
+   caseKinds row, its actions its state machine's ---------- */
+/* every kind of case is its own feature with its own screen: the kind row names its section */
+let caseKindsCache = null;
+async function caseKindFor(section) {
+  if (!caseKindsCache) caseKindsCache = (await api("/case-kinds", {}).catch(() => ({ kinds: [] }))).kinds || [];
+  return caseKindsCache.find(k => k.section === section) || null;
+}
+async function vCases(section) {
+  const kind = await caseKindFor(section);
+  const gate = await coGate(section);
+  if (!gate.any) return coOff(kind.name.toLowerCase(), kind.screen, gate.off);
+  const d = await api("/admin/cases?kind=" + encodeURIComponent(kind.key), {}).catch(e => ({ error: e.message }));
+  if (d.error) return `<div class="a-head"><h2>${esc(kind.screen)}</h2><p class="a-sub">${esc(d.error)}</p></div>`;
+  const acts = c => (d.actions || []).filter(a => a.machine === (c.kind_row || {}).machine);
+  const needsAmount = c => c.kind_row && c.kind_row.effect && c.kind_row.effect.amount;
+  return `<div class="a-head"><h2>${esc(kind.screen)}</h2><p class="a-sub">${esc(kind.name)} — what is asked, and what approval does, are its <code>caseKinds</code> row.</p></div>
+  ${[kind].map(k => `<div class="a-card"><h3>${esc(k.name)}</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>#</th><th>from</th><th>about</th><th>details</th><th>state</th><th>amount</th><th></th></tr></thead><tbody>
+    ${d.cases.filter(c => c.kind === k.key).map(c => `<tr><td>${c.id}</td><td>${esc(c.owner)}</td><td><code>${esc(c.subject_id || "—")}</code></td>
+      <td>${Object.entries(c.fields).map(([f, v]) => `<b>${esc(f)}</b>: ${/^https?:/.test(String(v)) ? `<a href="${esc(v)}" target="_blank" rel="noopener">link</a>` : esc(v)}`).join("<br>")}</td>
+      <td>${stateChip(c.state)}${c.valid_until ? `<div class="a-sub">until ${esc(c.valid_until)}</div>` : ""}</td><td>${c.amount != null ? money(c.amount) : ""}</td>
+      <td style="white-space:nowrap">${c.open ? `${needsAmount(c) ? `<input data-case-amount="${c.id}" type="number" step="0.01" placeholder="amount" style="width:90px">` : ""}
+        <input data-case-reason="${c.id}" placeholder="reason" style="width:120px">
+        ${acts(c).filter(a => (c.next || []).includes(a.to)).map(a => `<button class="btn-white sm" data-case-act="${c.id}" data-case-verb="${esc(a.verb)}">${esc(a.label || a.verb)}</button>`).join(" ")}` : ""}</td></tr>`).join("") || '<tr><td colspan="7">None yet.</td></tr>'}
+  </tbody></table></div></div>`).join("")}`;
+}
+function wireCases() {
+  $$("[data-case-act]").forEach(b => b.onclick = () => {
+    const id = b.dataset.caseAct, amt = $(`[data-case-amount="${id}"]`), why = $(`[data-case-reason="${id}"]`);
+    postAndRender("/admin/cases/" + id, { action: b.dataset.caseVerb, amount: amt ? Number(amt.value) : undefined, reason: why ? why.value : "" }, "POST", "Done");
+  });
+}
 const postAndRender = async (path, body, method, msg) => { try { await api(path, method || "POST", body); toast(msg || "Saved"); render(); } catch (e) { toast(e.message); } };
 /* verbs on rows that carry `next` (state keys), from a vocabulary of { verb, to } */
 const verbRow = (acts, rec, path, extra) => (acts || []).filter(a => (rec.next || []).includes(a.to))
@@ -665,34 +800,55 @@ function wireCoPosts() {
   });
 }
 
-async function vProdOptions() {
-  const gate = await coGate("prodoptions");
-  if (!gate.any) return coOff("product options", "🧩 Product Options", gate.off);
-  const d = await api("/admin/options", {});
-  const fu = await api("/admin/options/follow-ups", {}).catch(() => ({ followUps: [] }));
-  const fuCard = `<div class="a-card"><h3>Follow-ups</h3><p class="a-sub">What chosen options leave to be done after an order: a visit to schedule, a plan in force, a proof to send.</p>
+/* product options, and every option kind that is its own feature (installation, assembly, extended
+   warranties, customisation proofs, samples) — one screen per section its optionKinds rows name */
+const OPTION_SECTION = "prodoptions";
+async function optionSection(section) {
+  const kinds = ((await api("/options/kinds", {}).catch(() => ({ kinds: [] }))).kinds || []).filter(k => k.section === section);
+  return kinds.length ? kinds : null;
+}
+/* a follow-up's moves: its machine's actions into the states it may reach, each asking what its target declares */
+const fuVerbs = (acts, f, path) => (acts || []).filter(a => a.machine === (f.kind_row || {}).machine && (f.next || []).includes(a.to))
+  .map(a => `<button class="btn-white sm" data-co-post="${esc(path)}" data-co-body='${esc(JSON.stringify({ action: a.verb }))}'${a.asks ? ` data-co-ask="${esc(a.asks.label)}" data-co-field="${esc(a.asks.field)}"` : ""}>${esc(a.label || a.verb)}</button>`).join(" ");
+async function vProdOptions(section) {
+  section = section || OPTION_SECTION;
+  const kinds = await optionSection(section) || [];
+  const main = section === OPTION_SECTION;
+  const title = main ? "🧩 Product Options" : (kinds[0] || {}).screen || section;
+  const gate = await coGate(section);
+  if (!gate.any) return coOff(title.replace(/^\S+\s/, "").toLowerCase(), title, gate.off);
+  const d = await api("/admin/options?section=" + encodeURIComponent(section), {});
+  const all = main ? d : null;
+  const fu = kinds.some(k => k.follow_up) ? await api("/admin/options/follow-ups?section=" + encodeURIComponent(section), {}).catch(() => ({ followUps: [] })) : null;
+  const fuCard = fu ? `<div class="a-card"><h3>To do</h3><p class="a-sub">What an order with ${esc(kinds.map(k => k.name.toLowerCase()).join(" or "))} leaves to be done — the moves are the <code>${esc([...new Set(kinds.map(k => k.machine))].join(", "))}</code> state machine's.</p>
     <div class="a-tablewrap"><table class="a-table"><thead><tr><th>order</th><th>item</th><th>option</th><th>detail</th><th>when / until</th><th>state</th><th></th></tr></thead><tbody>
-    ${(fu.followUps || []).map(f => `<tr><td>#${f.order_id}</td><td><code>${esc(f.product_id)}</code></td><td>${esc(f.group_code)} ${esc(f.value_code)}</td><td>${esc(f.detail)}${f.proof_url ? ` · <a href="${esc(f.proof_url)}" target="_blank" rel="noopener">proof</a>` : ""}</td>
-      <td>${esc(f.scheduled_for || f.ends_at || "")}</td><td>${stateChip(f.state)}</td><td>${verbRow(fu.followUpActions, f, "/admin/options/follow-ups/" + f.id)}</td></tr>`).join("") || '<tr><td colspan="7">Nothing to do.</td></tr>'}</tbody></table></div></div>`;
+    ${(fu.followUps || []).map(f => `<tr><td>#${f.order_id}</td><td><code>${esc(f.product_id)}</code></td><td>${esc(f.group_code)} ${esc(f.value_code)}</td><td>${esc(f.detail)}${f.proof_url ? ` · <a href="${esc(f.proof_url)}" target="_blank" rel="noopener">proof</a>` : ""}${f.note ? ` · “${esc(f.note)}”` : ""}${f.rounds ? ` · ${f.rounds} round(s) of changes` : ""}</td>
+      <td>${esc(f.scheduled_for || f.ends_at || "")}</td><td>${stateChip(f.state)}</td><td>${fuVerbs(fu.followUpActions, f, "/admin/options/follow-ups/" + f.id)}</td></tr>`).join("") || '<tr><td colspan="7">Nothing to do.</td></tr>'}</tbody></table></div></div>` : "";
   const byProduct = {}; (d.attached || []).forEach(a => { (byProduct[a.product_id] = byProduct[a.product_id] || { title: a.title, groups: [] }).groups.push(a.group_id); });
-  return `<div class="a-head"><h2>🧩 Product Options</h2><p class="a-sub">Modifiers, add-ons and personal text, defined once and attached to any product. Group kinds are the <code>optionKinds</code> registry; the longest personal text is the <code>product_options</code> capability's param.</p></div>
+  const sub = main ? `Modifiers, add-ons and personal text, defined once and attached to any product. Group kinds are the <code>optionKinds</code> registry; the longest personal text is the <code>product_options</code> capability's param. Every group of every kind is attached here.`
+    : `${esc(kinds.map(k => k.name).join("; "))} — offered as an option group on an item (attach it under 🧩 Product Options); its settings are the <code>${esc(kinds.map(k => k.atom).join(", "))}</code> capability's params.`;
+  return `<div class="a-head"><h2>${esc(title)}</h2><p class="a-sub">${sub}</p></div>
   <div class="a-card"><h3>Option group</h3><div class="p-form">
     <div class="row"><label><span>Code *</span><input id="ogCode" placeholder="e.g. size"></label><label><span>Name *</span><input id="ogName"></label>
-      <label><span>Kind</span><select id="ogKind">${(d.kinds || []).map(k => `<option value="${esc(k.key)}">${esc(k.name)}</option>`).join("")}</select></label></div>
+      <label><span>Kind</span><select id="ogKind">${(d.kinds || []).filter(k => k.section === section).map(k => `<option value="${esc(k.key)}">${esc(k.name)}</option>`).join("")}</select></label></div>
     <div class="row"><label><span>Must choose at least</span><input id="ogMin" type="number" min="0" value="0"></label><label><span>May choose up to</span><input id="ogMax" type="number" min="1" value="1"></label><label><span>Longest text</span><input id="ogLen" type="number" min="1"></label></div>
-    <label><span>Values — one per line: code | name | price change (a plan: | months)</span><textarea id="ogVals" rows="4" placeholder="large | Large | 3.00"></textarea></label>
-    <input type="hidden" id="ogId"><button class="p-btn primary" id="ogSave">Save group</button></div></div>
+    <label><span>Values — one per line: code | name | price change${kinds.some(k => k.runs_months) ? " | months" : ""}</span><textarea id="ogVals" rows="4" placeholder="large | Large | 3.00"></textarea></label>
+    <input type="hidden" id="ogId"><button class="p-btn primary" id="ogSave" data-og-section="${esc(section)}">Save group</button></div></div>
   <div class="a-card"><h3>Groups</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>kind</th><th>choose</th><th>values</th><th></th></tr></thead><tbody>
     ${(d.groups || []).map(g => `<tr><td><code>${esc(g.code)}</code></td><td>${esc(g.name)}</td><td>${esc(g.kind_row ? g.kind_row.name : g.kind)}</td><td>${g.min_select}–${g.max_select}</td>
-      <td>${g.values.filter(v => v.active).map(v => `${esc(v.name)}${Number(v.price_delta) ? " (" + (v.price_delta > 0 ? "+" : "") + money(v.price_delta) + ")" : ""}`).join(", ") || "—"}</td>
+      <td>${g.values.filter(v => v.active).map(v => `${esc(v.name)}${Number(v.price_delta) ? " (" + (v.price_delta > 0 ? "+" : "") + money(v.price_delta) + ")" : ""}${v.extra && v.extra.months ? " · " + v.extra.months + " months" : ""}`).join(", ") || "—"}</td>
       <td style="white-space:nowrap"><button class="btn-white sm" data-og-edit="${g.id}">Edit</button> <button class="btn-white sm" data-co-post="/admin/options/${g.id}" data-co-method="DELETE">Remove</button></td></tr>`).join("") || '<tr><td colspan="6">No option groups yet.</td></tr>'}</tbody></table></div></div>
-  <div class="a-card"><h3>Attach to a product</h3><div class="p-form"><div class="row"><label><span>Product id *</span><input id="oaProd"></label></div>
-    <div>${(d.groups || []).map(g => `<label style="display:inline-block;margin-right:12px"><input type="checkbox" data-oa="${g.id}"> ${esc(g.name)}</label>`).join("")}</div>
+  ${fuCard}
+  ${all ? `<div class="a-card"><h3>Attach to a product</h3><p class="a-sub">Groups of every kind the store offers, including those run from their own screens.</p><div class="p-form"><div class="row"><label><span>Product id *</span><input id="oaProd"></label></div>
+    <div id="oaGroups"></div>
     <button class="p-btn primary" id="oaSave">Attach (replaces the product's groups)</button></div>
-    ${fuCard}<div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>groups</th></tr></thead><tbody>${Object.entries(byProduct).map(([pid, x]) => `<tr><td>${esc(x.title || pid)} <code>${esc(pid)}</code></td><td>${x.groups.map(id => esc(((d.groups || []).find(g => g.id === id) || {}).name || id)).join(", ")}</td></tr>`).join("") || '<tr><td colspan="2">No product has options yet.</td></tr>'}</tbody></table></div></div>`;
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>groups</th></tr></thead><tbody>${Object.entries(byProduct).map(([pid, x]) => `<tr><td>${esc(x.title || pid)} <code>${esc(pid)}</code></td><td>${x.groups.map(id => esc(String(id))).join(", ")}</td></tr>`).join("") || '<tr><td colspan="2">No product has options yet.</td></tr>'}</tbody></table></div></div>` : ""}`;
 }
-function wireProdOptions() {
+async function wireProdOptions() {
   const save = $("#ogSave"); if (!save) return;
+  /* the attach card offers every group of every kind (the section screens each list their own) */
+  const box = $("#oaGroups");
+  if (box) box.innerHTML = ((await api("/admin/options", {}).catch(() => ({ groups: [] }))).groups || []).map(g => `<label style="display:inline-block;margin-right:12px"><input type="checkbox" data-oa="${g.id}"> ${esc(g.name)}</label>`).join("");
   window.__og = window.__og || null;
   save.onclick = () => postAndRender("/admin/options", { id: fieldVal("#ogId") || undefined, code: fieldVal("#ogCode"), name: fieldVal("#ogName"), kind: fieldVal("#ogKind"), min_select: fieldVal("#ogMin"), max_select: fieldVal("#ogMax"), max_length: fieldVal("#ogLen") || undefined,
     values: fieldVal("#ogVals").split(/\n/).map(l => l.split("|").map(x => x.trim())).filter(x => x[0]).map(([code, name, delta, months]) => ({ code, name: name || code, price_delta: Number(delta) || 0, ...(months ? { months: Number(months) } : {}) })) }, "POST", "Option group saved");
@@ -701,7 +857,7 @@ function wireProdOptions() {
     $("#ogId").value = g.id; $("#ogCode").value = g.code; $("#ogName").value = g.name; $("#ogKind").value = g.kind; $("#ogMin").value = g.min_select; $("#ogMax").value = g.max_select; $("#ogLen").value = g.max_length || "";
     $("#ogVals").value = g.values.filter(v => v.active).map(v => [v.code, v.name, v.price_delta].join(" | ")).join("\n"); window.scrollTo(0, 0);
   });
-  $("#oaSave").onclick = () => postAndRender("/admin/options/products/" + encodeURIComponent(fieldVal("#oaProd").trim()), { groups: $$("[data-oa]").filter(c => c.checked).map(c => Number(c.dataset.oa)) }, "PUT", "Options attached");
+  if ($("#oaSave")) $("#oaSave").onclick = () => postAndRender("/admin/options/products/" + encodeURIComponent(fieldVal("#oaProd").trim()), { groups: $$("[data-oa]").filter(c => c.checked).map(c => Number(c.dataset.oa)) }, "PUT", "Options attached");
   wireCoPosts();
 }
 
@@ -2246,7 +2402,7 @@ async function render() {
     else if (view === "pickup") { body.innerHTML = await vPickup(); wirePickup(); }
     else if (view === "richcontent") { body.innerHTML = await vRichContent(); wireRichContent(); }
     else if (view === "brandreg") { body.innerHTML = await vBrandReg(); wireBrandReg(); }
-    else if (view === "prodoptions") { body.innerHTML = await vProdOptions(); wireProdOptions(); }
+    else if (view === "prodoptions" || await optionSection(view)) { body.innerHTML = await vProdOptions(view); wireProdOptions(); }
     else if (view === "bookings") { body.innerHTML = await vBookings(); wireBookings(); }
     else if (view === "negotiation") { body.innerHTML = await vNegotiation(); wireCoPosts(); }
     else if (view === "auctions") { body.innerHTML = await vAuctions(); wireAuctions(); }
@@ -2254,6 +2410,14 @@ async function render() {
     else if (view === "conversations") { body.innerHTML = await vConversations(); wireConversations(); }
     else if (view === "groupbuy") { body.innerHTML = await vGroupBuy(); wireGroupBuy(); }
     else if (view === "substitutions") { body.innerHTML = await vSubstitutions(); wireSubstitutions(); }
+    else if (await caseKindFor(view)) { body.innerHTML = await vCases(view); wireCases(); }
+    else if (view === "fees") { body.innerHTML = await vCharges(); wireCharges(); }
+    else if (view === "tips") body.innerHTML = await vTips();
+    else if (view === "sessions") body.innerHTML = await vSessions();
+    else if (view === "metering") body.innerHTML = await vMetering();
+    else if (view === "trials") body.innerHTML = await vTrials();
+    else if (await deliverableKindFor(view)) { body.innerHTML = await vDeliverables(view); wireDeliverables(view); }
+    else if (view === "healthrecords") { body.innerHTML = await vHealthRecords(); wireHealthRecords(); }
     else if (view === "tradeops") { body.innerHTML = await vTradeOps(); wireTradeOps(); }
     else if (view === "helpdesk") { body.innerHTML = await vHelpdesk(); } else if (view === "affiliate") renderAffiliate(); else if (view === "sitemap") renderSitemap(); else if (view === "shipping") renderShipping();
     else if (view === "retention") body.innerHTML = await vRetention();

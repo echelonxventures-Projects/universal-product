@@ -2256,13 +2256,14 @@
      ],
      "recommends": [
       "instant_delivery",
-      "instant_delivery",
+      "delivery_slots",
       "substitutions",
       "sell_by_weight",
       "freshness_windows",
+      "cold_chain",
       "subscribe_save",
-      "order_charges",
-      "instant_delivery"
+      "service_fees",
+      "serviceable_areas"
      ],
      "children": [
       {
@@ -3286,7 +3287,7 @@
      "position": 3,
      "requires": [],
      "recommends": [
-      "fit_profiles",
+      "size_guides",
       "try_and_buy",
       "reviews",
       "rich_content"
@@ -4074,9 +4075,9 @@
      "position": 6,
      "requires": [],
      "recommends": [
-      "product_options",
+      "extended_warranty",
       "exchange_offers",
-      "product_options",
+      "installation_booking",
       "bnpl",
       "reviews"
      ],
@@ -4477,8 +4478,8 @@
      "position": 7,
      "requires": [],
      "recommends": [
-      "product_options",
-      "product_options",
+      "installation_booking",
+      "extended_warranty",
       "exchange_offers",
       "large_item_delivery"
      ],
@@ -4711,7 +4712,7 @@
      "position": 8,
      "requires": [],
      "recommends": [
-      "product_options",
+      "assembly_booking",
       "large_item_delivery",
       "rich_content"
      ],
@@ -5226,7 +5227,7 @@
      "position": 10,
      "requires": [],
      "recommends": [
-      "fit_profiles",
+      "size_guides",
       "reviews"
      ],
      "children": [
@@ -5469,7 +5470,7 @@
      "requires": [],
      "recommends": [
       "reviews",
-      "advance_orders"
+      "preorders"
      ],
      "children": [
       {
@@ -5793,8 +5794,8 @@
      "position": 13,
      "requires": [],
      "recommends": [
-      "fit_profiles",
-      "product_options",
+      "fitment",
+      "installation_booking",
       "lead_capture"
      ],
      "children": [
@@ -6487,13 +6488,13 @@
      "icon": "💊",
      "position": 0,
      "requires": [
-      "lot_tracking"
+      "batch_expiry"
      ],
      "recommends": [
       "prescriptions",
-      "prescriptions",
-      "alternatives",
-      "replenishment_reminders",
+      "schedule_rules",
+      "generic_alternatives",
+      "refill_reminders",
       "instant_delivery"
      ],
      "children": [
@@ -6944,7 +6945,7 @@
       "lab_tests"
      ],
      "recommends": [
-      "records_vault",
+      "health_records",
       "conversations"
      ],
      "children": [
@@ -7120,12 +7121,12 @@
      "position": 3,
      "requires": [
       "bookings",
-      "credential_verification"
+      "practitioner_verification"
      ],
      "recommends": [
       "media_sessions",
       "conversations",
-      "records_vault",
+      "health_records",
       "prescriptions"
      ],
      "children": [
@@ -7398,8 +7399,8 @@
      "recommends": [
       "conversations",
       "media_sessions",
-      "metered_billing",
-      "credential_verification"
+      "per_minute_billing",
+      "practitioner_verification"
      ],
      "children": [
       {
@@ -7779,7 +7780,7 @@
      ],
      "recommends": [
       "conversations",
-      "credential_verification"
+      "practitioner_verification"
      ],
      "children": [
       {
@@ -8001,7 +8002,7 @@
       "instant_delivery",
       "dispatch_batching",
       "kitchen_hours",
-      "order_charges"
+      "tips"
      ],
      "children": [
       {
@@ -9883,7 +9884,7 @@
       "rfq_bidding",
       "moq_enforcement",
       "segment_pricing",
-      "product_options"
+      "sample_orders"
      ],
      "children": [
       {
@@ -10578,7 +10579,7 @@
      "position": 4,
      "requires": [],
      "recommends": [
-      "product_options"
+      "installation_booking"
      ],
      "children": [
       {
@@ -13156,8 +13157,8 @@
    "forKinds": []
   },
   {
-   "key": "attr.fit_profiles",
-   "name": "fit_profiles",
+   "key": "attr.fitment",
+   "name": "fitment",
    "title": {
     "en": "Fits vehicles"
    },
@@ -14365,8 +14366,8 @@
       "recommends": [
        "conversations",
        "media_sessions",
-       "metered_billing",
-       "credential_verification"
+       "per_minute_billing",
+       "practitioner_verification"
       ],
       "universes": [],
       "service": true,
@@ -14522,7 +14523,7 @@
       ],
       "requires": [],
       "recommends": [
-       "product_options"
+       "extended_warranty"
       ],
       "universes": [],
       "service": true
@@ -14646,7 +14647,7 @@
        "lab_tests"
       ],
       "recommends": [
-       "records_vault"
+       "health_records"
       ],
       "universes": [],
       "service": true,
@@ -14669,12 +14670,12 @@
        "collected"
       ],
       "requires": [
-       "lot_tracking"
+       "batch_expiry"
       ],
       "recommends": [
        "prescriptions",
-       "alternatives",
-       "replenishment_reminders"
+       "generic_alternatives",
+       "refill_reminders"
       ],
       "universes": []
      }
@@ -14698,8 +14699,9 @@
       ],
       "recommends": [
        "sell_by_weight",
+       "cold_chain",
        "substitutions",
-       "instant_delivery"
+       "delivery_slots"
       ],
       "universes": []
      }
@@ -14723,7 +14725,7 @@
       ],
       "recommends": [
        "kitchen_hours",
-       "order_charges",
+       "tips",
        "instant_delivery"
       ],
       "universes": []
@@ -14880,8 +14882,8 @@
       ],
       "requires": [],
       "recommends": [
-       "product_options",
-       "product_options"
+       "installation_booking",
+       "extended_warranty"
       ],
       "universes": []
      }
@@ -15027,7 +15029,7 @@
        "product_options"
       ],
       "recommends": [
-       "product_options"
+       "customisation_proofs"
       ],
       "universes": []
      }
@@ -15123,7 +15125,7 @@
       "requires": [],
       "recommends": [
        "instant_delivery",
-       "instant_delivery"
+       "delivery_slots"
       ],
       "physical": true
      }
@@ -16414,7 +16416,7 @@
       ],
       "requires": [
        "prescriptions",
-       "lot_tracking"
+       "batch_expiry"
       ]
      }
     },
@@ -16460,7 +16462,7 @@
        "consultancy.legal"
       ],
       "requires": [
-       "credential_verification"
+       "practitioner_verification"
       ]
      }
     },
@@ -16670,10 +16672,10 @@
         "bnpl"
        ],
        "requests": [
-        "coupons",
+        "payment_instrument_offers",
         "instalments_without_cost",
         "exchange_offers",
-        "deals"
+        "sale_events"
        ]
       }
      }
@@ -16697,9 +16699,9 @@
         "shipped"
        ],
        "requests": [
-        "cross_border",
-        "cross_border",
-        "cross_border",
+        "duties_at_checkout",
+        "customs_declarations",
+        "consolidated_shipping",
         "supplier_direct",
         "gamified_rewards"
        ]
@@ -16730,7 +16732,7 @@
         "membership"
        ],
        "requests": [
-        "segment_pricing",
+        "club_pricing",
         "price_match"
        ]
       }
@@ -16761,7 +16763,7 @@
         "moq_enforcement"
        ],
        "requests": [
-        "product_options"
+        "sample_orders"
        ]
       }
      }
@@ -17257,8 +17259,8 @@
      }
     },
     {
-     "key": "vocab.platform_types.advance_orders",
-     "name": "advance_orders",
+     "key": "vocab.platform_types.preorders",
+     "name": "preorders",
      "title": {
       "en": "Pre-orders and crowdfunding"
      },
@@ -17273,8 +17275,8 @@
         "shipped"
        ],
        "requests": [
-        "advance_orders",
-        "advance_orders"
+        "preorders",
+        "funding_goals"
        ]
       }
      }

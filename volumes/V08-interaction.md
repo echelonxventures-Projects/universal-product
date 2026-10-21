@@ -270,11 +270,17 @@ stateDiagram-v2
 | **Contract** | [UCOS-CMN-000001 Communication Architecture](#ucos-cmn-000001) |
 | **Artifacts** | [UCOS-CMN-000001](#ucos-cmn-000001) |
 | **Concepts** | 117 — `node _registry/compile.js --search <words> --kind concept --owner "Communication"` |
-| **Code** | `lib/mailer.js`, `lib/helpdesk.js` |
+| **Code** | `lib/media-sessions.js`, `lib/mailer.js`, `lib/helpdesk.js` |
 | **Managed in** | `_registry/domains.json` → `D-CMN` |
 
-**Live routes (16)** — what the platform serves today for this domain:
+**Live routes (22)** — what the platform serves today for this domain:
 
+- `GET /api/sessions`
+- `POST /api/sessions`
+- `POST /api/sessions/:id/join`
+- `POST /api/sessions/:id/signal`
+- `GET /api/sessions/:id/signals`
+- `POST /api/sessions/:id/end`
 - `POST /api/support/tickets`
 - `GET /api/support/tickets`
 - `GET /api/support/tickets/:id`

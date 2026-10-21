@@ -703,7 +703,12 @@
     "listing_update",
     "message",
     "group_update",
-    "substitution"
+    "substitution",
+    "case",
+    "deliverable",
+    "media_session",
+    "option_follow_up",
+    "trial"
    ]
   },
   "shopDocKinds": {
@@ -1037,37 +1042,65 @@
     {
      "key": "choice",
      "name": "Choose from a list",
+     "atom": "product_options",
+     "section": "prodoptions",
      "takes_text": false,
      "default": true
     },
     {
      "key": "text",
      "name": "Personal text",
+     "atom": "product_options",
+     "section": "prodoptions",
      "takes_text": true
     },
     {
-     "key": "service",
-     "name": "A service done for this item (installation, assembly…)",
+     "key": "installation",
+     "name": "Installation of this item",
+     "atom": "installation_booking",
+     "section": "installations",
+     "screen": "🔧 Installations",
      "takes_text": false,
-     "follow_up": true
+     "follow_up": true,
+     "machine": "service_visit"
+    },
+    {
+     "key": "assembly",
+     "name": "Assembly of this item",
+     "atom": "assembly_booking",
+     "section": "assemblies",
+     "screen": "🪛 Assembly",
+     "takes_text": false,
+     "follow_up": true,
+     "machine": "service_visit"
     },
     {
      "key": "plan",
-     "name": "A plan covering this item for months (warranty, protection…)",
+     "name": "An extended warranty or protection plan for months",
+     "atom": "extended_warranty",
+     "section": "warranties",
+     "screen": "🛡️ Extended Warranties",
      "takes_text": false,
      "follow_up": true,
      "runs_months": true,
-     "settled": true
+     "machine": "cover_plan"
     },
     {
      "key": "artwork",
      "name": "The shopper’s own artwork, proofed before making",
+     "atom": "customisation_proofs",
+     "section": "proofs",
+     "screen": "🎨 Customisation Proofs",
      "takes_text": true,
-     "follow_up": true
+     "follow_up": true,
+     "machine": "artwork_proof"
     },
     {
      "key": "sample",
      "name": "A sample of the item at its own price",
+     "atom": "sample_orders",
+     "section": "samples",
+     "screen": "🧪 Sample Orders",
      "takes_text": false,
      "sets_price": true,
      "limits_qty": true
@@ -1252,13 +1285,322 @@
     "withdrawn"
    ]
   },
-  "optionFollowUpStatuses": {
-   "label": "Options · Follow-up statuses",
+  "caseKinds": {
+   "label": "Cases · Kinds",
    "items": [
-    "open",
+    {
+     "key": "price_match",
+     "name": "Price match",
+     "atom": "price_match",
+     "subject": "product",
+     "opens": [
+      "shopper"
+     ],
+     "machine": "case",
+     "fields": [
+      {
+       "key": "seen_at",
+       "label": "Where it is cheaper (a link)",
+       "type": "url",
+       "required": true
+      },
+      {
+       "key": "seen_price",
+       "label": "The price seen",
+       "type": "number",
+       "required": true
+      },
+      {
+       "key": "note",
+       "label": "Note",
+       "type": "text"
+      }
+     ],
+     "effect": {
+      "amount": true,
+      "wallet": true,
+      "ledger_kind": "refund"
+     },
+     "section": "pricematch",
+     "screen": "🏷️ Price Match"
+    },
+    {
+     "key": "prescription",
+     "name": "Prescription",
+     "atom": "prescriptions",
+     "subject": null,
+     "opens": [
+      "shopper"
+     ],
+     "machine": "case",
+     "fields": [
+      {
+       "key": "patient",
+       "label": "Patient",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "prescriber",
+       "label": "Prescriber",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "issued_on",
+       "label": "Issued on",
+       "type": "date",
+       "required": true
+      },
+      {
+       "key": "document",
+       "label": "The prescription (a link to the file)",
+       "type": "url",
+       "required": true
+      }
+     ],
+     "effect": {
+      "valid_days": 180
+     },
+     "gates": {
+      "attr": "prescription_required",
+      "equals": true
+     },
+     "section": "prescriptions",
+     "screen": "📄 Prescriptions"
+    },
+    {
+     "key": "credential",
+     "name": "Practitioner verification",
+     "atom": "practitioner_verification",
+     "subject": null,
+     "opens": [
+      "shopper",
+      "seller",
+      "staff"
+     ],
+     "machine": "case",
+     "fields": [
+      {
+       "key": "credential",
+       "label": "What it is (a licence, a registration…)",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "number",
+       "label": "Its number",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "authority",
+       "label": "Who issued it",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "expires_on",
+       "label": "Valid until",
+       "type": "date"
+      },
+      {
+       "key": "document",
+       "label": "A copy (a link to the file)",
+       "type": "url"
+      }
+     ],
+     "effect": {
+      "valid_days": 365
+     },
+     "section": "credentials",
+     "screen": "🪪 Practitioner Verification"
+    },
+    {
+     "key": "enquiry",
+     "name": "Enquiry",
+     "atom": "lead_capture",
+     "subject": "product",
+     "opens": [
+      "shopper"
+     ],
+     "machine": "enquiry",
+     "fields": [
+      {
+       "key": "name",
+       "label": "Your name",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "contact",
+       "label": "How to reach you",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "message",
+       "label": "Your question",
+       "type": "text"
+      }
+     ],
+     "effect": {},
+     "section": "enquiries",
+     "screen": "📨 Enquiries"
+    },
+    {
+     "key": "trade_in",
+     "name": "Trade-in",
+     "atom": "exchange_offers",
+     "subject": null,
+     "opens": [
+      "shopper"
+     ],
+     "machine": "case",
+     "fields": [
+      {
+       "key": "item",
+       "label": "What you are trading in",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "condition",
+       "label": "Its condition",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "photo",
+       "label": "A photo (a link)",
+       "type": "url"
+      }
+     ],
+     "effect": {
+      "amount": true,
+      "line_credit": true,
+      "valid_days": 14
+     },
+     "section": "tradeins",
+     "screen": "♻️ Trade-ins"
+    }
+   ]
+  },
+  "caseStatuses": {
+   "label": "Cases · Statuses",
+   "items": [
+    "submitted",
+    "in_review",
+    "approved",
+    "rejected",
+    "withdrawn"
+   ]
+  },
+  "leadStatuses": {
+   "label": "Enquiries · Statuses",
+   "items": [
+    "new",
+    "contacted",
+    "won",
+    "lost",
+    "withdrawn"
+   ]
+  },
+  "caseSubjects": {
+   "label": "Cases · What a case may be about",
+   "items": [
+    {
+     "key": "product",
+     "name": "An item",
+     "lookup": "product",
+     "line_item": true
+    },
+    {
+     "key": "order",
+     "name": "An order",
+     "lookup": "order"
+    }
+   ]
+  },
+  "mediaSessionStatuses": {
+   "label": "Live sessions · Statuses",
+   "items": [
     "scheduled",
-    "proof_sent",
+    "live",
+    "ended",
+    "missed",
+    "cancelled"
+   ]
+  },
+  "trialStatuses": {
+   "label": "Try and buy · Statuses",
+   "items": [
+    "on_trial",
+    "kept",
+    "returned",
+    "lapsed"
+   ]
+  },
+  "deliverableKinds": {
+   "label": "Deliverables · Kinds",
+   "items": [
+    {
+     "key": "licence_key",
+     "name": "Licence key",
+     "atom": "licence_keys",
+     "section": "licencekeys",
+     "screen": "🔑 Licence Keys",
+     "pooled": true
+    },
+    {
+     "key": "lab_report",
+     "name": "Lab report",
+     "atom": "lab_tests",
+     "section": "labtests",
+     "screen": "🧫 Lab Tests",
+     "uploaded": true
+    },
+    {
+     "key": "course",
+     "name": "Course access",
+     "atom": "course_progress",
+     "section": "courses",
+     "screen": "🎓 Course Progress",
+     "access": true
+    }
+   ]
+  },
+  "deliverableStatuses": {
+   "label": "Deliverables · Statuses",
+   "items": [
+    "awaited",
+    "delivered",
+    "revoked"
+   ]
+  },
+  "serviceVisitStatuses": {
+   "label": "Installation and assembly · Visit statuses",
+   "items": [
+    "to_schedule",
+    "scheduled",
     "done",
+    "cancelled"
+   ]
+  },
+  "coverPlanStatuses": {
+   "label": "Extended warranties · Plan statuses",
+   "items": [
+    "in_force",
+    "ended",
+    "cancelled"
+   ]
+  },
+  "artworkProofStatuses": {
+   "label": "Customisation proofs · Proof statuses",
+   "items": [
+    "awaiting_proof",
+    "proof_sent",
+    "approved",
     "cancelled"
    ]
   }

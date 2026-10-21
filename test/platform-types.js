@@ -93,9 +93,12 @@ const sqlAt = ms => new Date(ms).toISOString().slice(0, 19).replace("T", " ");
       const k = await P("/api/platform/registries/optionKinds", "POST", { item: { key: "gift_note", name: "Gift note", takes_text: true } });
       ok(k.status === 200, "a new kind of option group is a registry row");
       await emptyCart(S);
-      /* services done for the item, plans that run for months, artwork proofed before making, samples */
+      /* installation, extended warranties, customisation proofs and samples — each its own feature */
       const pX = p6;
-      const fit = await A("/api/admin/options" + Q, "POST", { code: "fit", name: "Installation", kind: "service", values: [{ code: "install", name: "Install at home", price_delta: 25 }] });
+      const smpOff = await A("/api/admin/options" + Q, "POST", { code: "sample0", name: "Sample", kind: "sample", values: [{ code: "swatch", name: "Swatch", price_delta: 2 }] });
+      ok(smpOff.status === 403, "a kind whose own capability is off cannot be offered", smpOff.body);
+      for (const k of ["installation_booking", "extended_warranty", "customisation_proofs", "sample_orders"]) await A("/api/capabilities/enable" + Q, "POST", { capability: k });
+      const fit = await A("/api/admin/options" + Q, "POST", { code: "fit", name: "Installation", kind: "installation", values: [{ code: "install", name: "Install at home", price_delta: 25 }] });
       const cover = await A("/api/admin/options" + Q, "POST", { code: "cover", name: "Protection", kind: "plan", values: [{ code: "two_years", name: "Two years", price_delta: 40, months: 24 }] });
       const art = await A("/api/admin/options" + Q, "POST", { code: "art", name: "Your artwork", kind: "artwork", min_select: 0, max_length: 200 });
       const smp = await A("/api/admin/options" + Q, "POST", { code: "sample", name: "Sample", kind: "sample", values: [{ code: "swatch", name: "Swatch", price_delta: 2 }] });
@@ -111,15 +114,80 @@ const sqlAt = ms => new Date(ms).toISOString().slice(0, 19).replace("T", " ");
       ok(co2.status === 200, "checkout takes them", co2.body);
       const fu = (await A("/api/admin/options/follow-ups" + Q)).body.followUps.filter(f => f.order_id === db.get("SELECT id FROM orders WHERE num=?", co2.body.order.num).id);
       const visit = fu.find(f => f.group_code === "fit"), plan = fu.find(f => f.group_code === "cover"), proof = fu.find(f => f.group_code === "art");
-      ok(visit && visit.state && !plan.next.length && plan.ends_at && proof && proof.detail.includes("art.png"), "the order leaves a visit to schedule, a plan in force until its end, and a proof to send", fu.map(f => [f.group_code, f.status, f.ends_at]));
+      ok(visit && visit.state && plan.ends_at && plan.kind_row.machine !== visit.kind_row.machine && proof && proof.detail.includes("art.png"), "the order leaves a visit to book, a plan in force until its end, and a proof to send — each by its own machine", fu.map(f => [f.group_code, f.status, f.ends_at]));
+      const soon = await A("/api/admin/options/follow-ups/" + visit.id + Q, "POST", { action: "schedule", scheduled_for: new Date().toISOString().slice(0, 16).replace("T", " ") });
+      ok(soon.status === 400, "a visit is booked no sooner than the kind's earliest days", soon.body);
       await A("/api/admin/options/follow-ups/" + visit.id + Q, "POST", { action: "schedule", scheduled_for: "2030-01-02 10:00" });
+      const bySection = (await A("/api/admin/options/follow-ups?section=warranties&" + Q.slice(1))).body.followUps || [];
+      ok(bySection.length && bySection.every(f => f.kind === "plan"), "each kind's screen lists only its own", bySection.map(f => f.kind));
       await A("/api/admin/options/follow-ups/" + proof.id + Q, "POST", { action: "send_proof", proof_url: "https://example.com/proof.png" });
       const mine = (await S("/api/options/follow-ups" + Q)).body.followUps.find(f => f.id === proof.id);
       ok(mine && mine.awaiting, "the shopper sees the proof awaiting their answer");
       const ans = await S("/api/options/follow-ups/" + proof.id + Q, "POST", { action: "approve" });
       ok(ans.status === 200 && ans.body.followUp.state.key === mine.next.find(n => n !== "open"), "and approves it", ans.body);
       ok((await S("/api/options/follow-ups/" + visit.id + Q, "POST", { action: "complete" })).status === 409, "a shopper cannot close the store's own work");
+      for (const k of ["installation_booking", "extended_warranty", "customisation_proofs", "sample_orders"]) await A("/api/capabilities/disable" + Q, "POST", { capability: k });
       await emptyCart(S);
+    }
+
+    console.log("▸ FEES & TIPS — order charges");
+    {
+      await A("/api/capabilities/enable" + Q, "POST", { capability: "service_fees" });
+      await A("/api/capabilities/enable" + Q, "POST", { capability: "tips" });
+      const used = new Set([p1, p2, p3, p4, p5, p6, p7].map(p => p.id));
+      const pf = db.all("SELECT id, price FROM products WHERE tenant_id=1 AND lifecycle='published' AND deleted_at IS NULL AND stock > 20 AND price > 20 AND price < 400 ORDER BY id DESC LIMIT 20").find(p => !used.has(p.id));
+      const small = await A("/api/admin/charges" + Q, "POST", { code: "small", name: "Small order fee", amount: 3, below_amount: 100000 });
+      await A("/api/admin/charges" + Q, "POST", { code: "service", name: "Service fee", percent: 2, taxable: true });
+      await A("/api/admin/charges" + Q, "POST", { code: "night", name: "Late night fee", amount: 9, from_hour: 0, to_hour: 0 });
+      ok(small.status === 200 && (await A("/api/admin/charges" + Q)).body.rules.length === 3, "fees are a store's rules");
+      const F = await shopper("fee");
+      await F("/api/cart" + Q, "POST", { id: pf.id, qty: 1 });
+      let c = (await F("/api/cart" + Q)).body;
+      const fee = x => (c.charges || []).find(l => l.code === x);
+      ok(fee("small") && Math.abs(fee("small").amountBase - 3) < 0.01, "a fee whose condition holds is charged", c.charges);
+      ok(fee("service") && Math.abs(fee("service").amountBase - pf.price * 0.02) < 0.02, "a share of the order is charged as its share");
+      ok(!fee("night"), "a fee outside its hours is not");
+      const tipped = await F("/api/cart/tip" + Q, "POST", { amount: c.tips.choices[0] });
+      c = tipped.body;
+      ok((c.charges || []).some(l => !l.code && Math.abs(l.amountBase - c.tips.choices[0]) < 0.01), "the shopper adds a tip from the amounts offered");
+      ok((await F("/api/cart/tip" + Q, "POST", { amount: 100000 })).status === 400, "a tip has its limit");
+      const before = c.total;
+      const co = await checkout(F);
+      ok(co.status === 200, "checkout charges them", co.body);
+      const o = db.get("SELECT total, charges FROM orders WHERE num=?", co.body.order.num);
+      ok(JSON.parse(o.charges).length === 3 && Math.abs(o.total - before) < 0.05, "the order keeps its fees and tip, in its total", [o, before]);
+      ok(!(await F("/api/cart" + Q)).body.tip, "and the tip is spent");
+      await A("/api/capabilities/disable" + Q, "POST", { capability: "service_fees" });
+      await A("/api/capabilities/disable" + Q, "POST", { capability: "tips" });
+    }
+
+    console.log("▸ TRY AND BUY — pay for what you keep");
+    {
+      await A("/api/capabilities/enable" + Q, "POST", { capability: "try_and_buy" });
+      await tune("try_and_buy", "deposit_percent", 10);
+      const used = new Set([p1, p2, p3, p4, p5, p6, p7].map(p => p.id));
+      const [pa, pb] = db.all("SELECT id, price FROM products WHERE tenant_id=1 AND lifecycle='published' AND deleted_at IS NULL AND stock > 20 AND price > 20 AND price < 400 ORDER BY id DESC LIMIT 30").filter(p => !used.has(p.id)).slice(2, 4);
+      const R = await shopper("trial");
+      const pp = (await R(`/api/products/${encodeURIComponent(pa.id)}${Q}`)).body;
+      ok(pp.trial === true, "an item may be tried");
+      await R("/api/cart" + Q, "POST", { id: pa.id, qty: 1, terms: { trial: { on: true } } });
+      await R("/api/cart" + Q, "POST", { id: pb.id, qty: 1, terms: { trial: { on: true } } });
+      const c = (await R("/api/cart" + Q)).body;
+      const la = c.items.find(i => i.product.id === pa.id);
+      ok(la && Math.abs(la.unitBase - pa.price * 0.1) < 0.01, "on trial, a line costs its deposit now", la && la.unitBase);
+      const co = await checkout(R);
+      ok(co.status === 200, "checkout takes the trial lines", co.body);
+      const t = (await R("/api/trials" + Q)).body;
+      ok(t.trials.length === 2 && t.trials.every(x => x.open) && t.actions.length === 2, "each item is on trial, to keep or return", t);
+      const tid1 = t.trials.find(x => x.product_id === pa.id).id, tid2 = t.trials.find(x => x.product_id === pb.id).id;
+      const wb = () => (db.get("SELECT balance FROM wallets WHERE tenant_id=1 AND owner=(SELECT owner FROM trials WHERE id=?)", tid1) || { balance: 0 }).balance;
+      db.run("INSERT INTO wallets(tenant_id,owner,balance,updated_at) VALUES(1,(SELECT owner FROM trials WHERE id=?),1000,datetime('now')) ON CONFLICT(tenant_id,owner) DO UPDATE SET balance=1000", tid1);
+      const kept = await R("/api/trials/" + tid1 + Q, "POST", { action: t.actions[0].verb });
+      ok(kept.status === 200 && Math.abs(1000 - wb() - (kept.body.trial.charged || 0)) < 0.01, "deciding charges or refunds the wallet", [kept.body, wb()]);
+      const back = await R("/api/trials/" + tid2 + Q, "POST", { action: t.actions[1].verb });
+      ok(back.status === 200 && !back.body.trial.open, "the other choice decides the other item", back.body);
+      ok((await R("/api/trials/" + tid2 + Q, "POST", { action: t.actions[0].verb })).status === 409, "a trial is decided once");
+      await A("/api/capabilities/disable" + Q, "POST", { capability: "try_and_buy" });
     }
 
     console.log("▸ BOOKINGS — appointments and stays");

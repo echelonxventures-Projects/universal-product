@@ -3437,39 +3437,319 @@
    }
   },
   {
-   "key": "option_follow_up",
-   "name": "What a chosen option leaves to be done",
+   "key": "case",
+   "name": "A case a store decides",
    "column": "status",
-   "initial": "open",
-   "states": "list:optionFollowUpStatuses",
+   "initial": "submitted",
+   "states": "list:caseStatuses",
    "transitions": {
-    "open": [
+    "submitted": [
+     "in_review",
+     "approved",
+     "rejected",
+     "withdrawn"
+    ],
+    "in_review": [
+     "approved",
+     "rejected",
+     "withdrawn"
+    ]
+   },
+   "actions": {
+    "review": "in_review",
+    "approve": "approved",
+    "reject": "rejected",
+    "withdraw": "withdrawn"
+   },
+   "meta": {
+    "submitted": {
+     "tags": [
+      "open"
+     ]
+    },
+    "in_review": {
+     "tags": [
+      "open"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "terminal",
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "withdrawn": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "enquiry",
+   "name": "An enquiry a seller follows up",
+   "column": "status",
+   "initial": "new",
+   "states": "list:leadStatuses",
+   "transitions": {
+    "new": [
+     "contacted",
+     "won",
+     "lost",
+     "withdrawn"
+    ],
+    "contacted": [
+     "won",
+     "lost"
+    ]
+   },
+   "actions": {
+    "contact": "contacted",
+    "win": "won",
+    "lose": "lost",
+    "withdraw": "withdrawn"
+   },
+   "meta": {
+    "new": {
+     "tags": [
+      "open"
+     ]
+    },
+    "contacted": {
+     "tags": [
+      "open"
+     ]
+    },
+    "won": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "lost": {
+     "tags": [
+      "terminal",
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "withdrawn": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "media_session",
+   "name": "A live audio or video session",
+   "column": "status",
+   "initial": "scheduled",
+   "states": "list:mediaSessionStatuses",
+   "transitions": {
+    "scheduled": [
+     "live",
+     "missed",
+     "cancelled"
+    ],
+    "live": [
+     "ended"
+    ]
+   },
+   "actions": {
+    "start": "live",
+    "end": "ended",
+    "miss": "missed",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "scheduled": {
+     "tags": [
+      "upcoming"
+     ]
+    },
+    "live": {
+     "tags": [
+      "live"
+     ]
+    },
+    "ended": {
+     "tags": [
+      "terminal",
+      "success"
+     ]
+    },
+    "missed": {
+     "tags": [
+      "terminal"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "trial",
+   "name": "An item tried before buying",
+   "column": "status",
+   "initial": "on_trial",
+   "states": "list:trialStatuses",
+   "transitions": {
+    "on_trial": [
+     "kept",
+     "returned",
+     "lapsed"
+    ]
+   },
+   "actions": {
+    "keep": "kept",
+    "return": "returned",
+    "lapse": "lapsed"
+   },
+   "meta": {
+    "on_trial": {
+     "tags": [
+      "open"
+     ]
+    },
+    "kept": {
+     "tags": [
+      "terminal",
+      "kept",
+      "success",
+      "by_shopper"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "lapsed": {
+     "tags": [
+      "terminal",
+      "kept"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "returned": {
+     "tags": [
+      "terminal",
+      "returned",
+      "by_shopper"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "deliverable",
+   "name": "What an order hands the shopper",
+   "column": "status",
+   "initial": "awaited",
+   "states": "list:deliverableStatuses",
+   "transitions": {
+    "awaited": [
+     "delivered",
+     "revoked"
+    ],
+    "delivered": [
+     "revoked"
+    ]
+   },
+   "actions": {
+    "deliver": "delivered",
+    "revoke": "revoked"
+   },
+   "meta": {
+    "awaited": {
+     "tags": [
+      "open"
+     ]
+    },
+    "delivered": {
+     "tags": [
+      "delivered",
+      "success"
+     ]
+    },
+    "revoked": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "service_visit",
+   "name": "A visit a chosen service leaves to book (installation, assembly)",
+   "column": "status",
+   "initial": "to_schedule",
+   "states": "list:serviceVisitStatuses",
+   "transitions": {
+    "to_schedule": [
      "scheduled",
-     "proof_sent",
-     "done",
      "cancelled"
     ],
     "scheduled": [
+     "scheduled",
      "done",
-     "cancelled",
-     "scheduled"
-    ],
-    "proof_sent": [
-     "done",
-     "open",
      "cancelled"
     ]
    },
    "actions": {
     "schedule": "scheduled",
-    "send_proof": "proof_sent",
-    "approve": "done",
-    "request_changes": "open",
     "complete": "done",
     "cancel": "cancelled"
    },
    "meta": {
-    "open": {
+    "to_schedule": {
      "tags": [
       "to_do"
      ]
@@ -3478,14 +3758,124 @@
      "tags": [
       "to_do",
       "booked"
+     ],
+     "asks": {
+      "field": "scheduled_for",
+      "label": "When is the visit? (YYYY-MM-DD HH:MM, UTC)"
+     }
+    },
+    "done": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
      ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "cover_plan",
+   "name": "A plan in force for the months its value declares (an extended warranty)",
+   "column": "status",
+   "initial": "in_force",
+   "states": "list:coverPlanStatuses",
+   "transitions": {
+    "in_force": [
+     "ended",
+     "cancelled"
+    ]
+   },
+   "actions": {
+    "end": "ended",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "in_force": {
+     "tags": [
+      "in_force"
+     ]
+    },
+    "ended": {
+     "tags": [
+      "terminal",
+      "success",
+      "lapsed"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "artwork_proof",
+   "name": "The shopper's artwork, proofed before making",
+   "column": "status",
+   "initial": "awaiting_proof",
+   "states": "list:artworkProofStatuses",
+   "transitions": {
+    "awaiting_proof": [
+     "proof_sent",
+     "cancelled"
+    ],
+    "proof_sent": [
+     "approved",
+     "awaiting_proof",
+     "cancelled"
+    ]
+   },
+   "actions": {
+    "send_proof": "proof_sent",
+    "approve": "approved",
+    "request_changes": "awaiting_proof",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "awaiting_proof": {
+     "tags": [
+      "to_do"
+     ],
+     "asks": {
+      "field": "note",
+      "label": "What should change?"
+     }
     },
     "proof_sent": {
      "tags": [
       "awaiting_shopper"
-     ]
+     ],
+     "asks": {
+      "field": "proof_url",
+      "label": "A link to the proof"
+     }
     },
-    "done": {
+    "approved": {
      "tags": [
       "terminal",
       "success"

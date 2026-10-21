@@ -506,6 +506,7 @@ function renderProductExtras(data) {
       ${x.won ? `<button class="btn-yellow w100" data-act="au-pay" data-id="${p.id}" data-auction="${x.id}">You won — pay ${money(x.final_price)}</button>` : ""}</div>`);
   }
   if (a.price_negotiation && p.st && !(data.auction && data.auction.live)) parts.push(`<button class="btn-white bb-btn" data-act="offer-open" data-id="${p.id}">🤝 Make an offer</button>`);
+  if (a.try_and_buy && p.st && data.trial) parts.push(`<button class="btn-white bb-btn" data-act="terms-buy" data-id="${p.id}" data-terms='${esc(JSON.stringify({ trial: { on: true } }))}'>👟 Try before you buy</button>`);
   if (a.conversations) parts.push(`<button class="btn-white bb-btn" data-act="msg-open" data-id="${p.id}">💬 ${data.sold_by_shopper ? "Ask the seller" : "Ask a question"}</button>`);
   box.innerHTML = parts.join("");
   const find = $("#bkFind");
@@ -704,12 +705,15 @@ async function pageCart() {
   <aside class="cart-side"><div class="side-sticky"><div class="cs-box">
     ${c.qualifies ? `<p class="ok">✔ ${esc(T("freeShipQualify"))}.</p>` : `<p>${esc(T("freeShipGap", { gap: money(CFG.commerce.freeShipThreshold - c.sub) }))}</p>`}
     <p class="cs-sub">Subtotal: <b>${money(c.sub)}</b></p>${c.discount ? `<p class="cs-promo">Promo: −${money(c.discount)}</p>` : ""}
+    ${(c.charges || []).map(x => `<p class="cs-charge">${esc(x.name)}: ${money(x.amount)}</p>`).join("")}
+    ${c.tips && c.tips.on ? `<div class="cs-tip"><span>${esc(c.tips.label)}</span> ${[0, ...c.tips.choices].map(a => `<button class="btn-white sm${Number(c.tip) === a ? " on" : ""}" data-act="tip" data-amt="${a}">${a ? money(a) : "—"}</button>`).join(" ")}</div>` : ""}
     <a href="checkout.html" class="btn-yellow w100">${esc(T("proceedCheckout"))}</a>
     ${f.giftCards && S.gift > 0 ? `<p class="cs-gift">🎁 ${esc(T("giftBalanceLabel"))}: ${money(S.gift)}</p>` : ""}
   </div></div></aside></div>
   <div class="cart-recos">${carousel(T("relatedTitle"), (await api("/products?sort=best&limit=12")).items)}</div>`;
   wireCarousels();
   $$(".ci-qty").forEach(sel => sel.onchange = async () => { applyCart(await api("/cart", "PUT", { id: sel.dataset.id, line: sel.dataset.line, qty: Number(sel.value) })); });
+  $$("[data-act='tip']").forEach(b => b.onclick = async () => { try { applyCart(await api("/cart/tip", "POST", { amount: Number(b.dataset.amt) })); } catch (e) { toast(e.message); } });
   /* a substitution choice is a line term: the line is re-added with it, and the old one removed */
   $$(".ci-sub").forEach(sel => sel.onchange = async () => {
     const it = c.items.find(x => x.product.id === sel.dataset.id && (x.line || "") === sel.dataset.line) || {};
@@ -752,6 +756,7 @@ async function pageCheckout() {
     <p><span>Items:</span><b>${money(c.sub)}</b></p>
     ${c.discount ? `<p class="os-promo"><span>Promotions:</span><b>−${money(c.discount)}</b></p>` : ""}
     <p><span>Shipping:</span><b id="osShip">${c.shipFee ? money(c.shipFee) : "Complimentary"}</b></p>
+    ${(c.charges || []).map(x => `<p><span>${esc(x.name)}:</span><b>${money(x.amount)}</b></p>`).join("")}
     ${CFG.features.giftCards && S.gift > 0 ? `<p><span>Gift balance:</span><b id="osGift">—</b></p>` : ""}
     <p><span>Tax (${esc(prov.tax.mode)}, ${(cm.taxRate * 100).toFixed(2)}%):</span><b id="osTax">${money(c.tax)}</b></p>
     <hr><p class="os-total"><span>Order total:</span><b id="osTotal">${priceHtml(c.total)}</b></p>
@@ -889,10 +894,14 @@ function pageReset() {
    offers for that record */
 async function activityHtml() {
   const a = atoms();
-  if (!S.user || !(a.bookings || a.price_negotiation || a.auctions || a.group_buying || a.substitutions)) return "";
+  /* deliverables: whichever kinds (licence keys, lab tests, courses) the store has on */
+  const dk = S.user ? ((await api("/deliverable-kinds").catch(() => ({ kinds: [] }))).kinds || []) : [];
+  const anyDeliverable = dk.some(k => a[k.atom]);
+  if (!S.user || !(a.bookings || a.price_negotiation || a.auctions || a.group_buying || a.substitutions || a.try_and_buy || anyDeliverable || a.health_records || a.product_options)) return "";
   const get = (on, path) => (on ? api(path).catch(() => null) : Promise.resolve(null));
-  const [bk, of, au, gr, sb] = await Promise.all([get(a.bookings, "/bookings"), get(a.price_negotiation, "/price-offers"), get(a.auctions, "/auctions/mine"), get(a.group_buying, "/group-buys"), get(a.substitutions, "/substitutions")]);
-  const btn = (label, path, body, ask) => `<button class="btn-white" data-act="act-do" data-path="${esc(path)}" data-body='${esc(JSON.stringify(body || {}))}'${ask ? ` data-ask="${esc(ask)}"` : ""}>${esc(label)}</button>`;
+  const [bk, of, au, gr, sb, tr, dl, hr, fu] = await Promise.all([get(a.bookings, "/bookings"), get(a.price_negotiation, "/price-offers"), get(a.auctions, "/auctions/mine"), get(a.group_buying, "/group-buys"), get(a.substitutions, "/substitutions"), get(a.try_and_buy, "/trials"),
+    get(anyDeliverable, "/deliverables"), get(a.health_records, "/health-records"), get(a.product_options, "/options/follow-ups")]);
+  const btn = (label, path, body, ask, more) => `<button class="btn-white" data-act="act-do" data-path="${esc(path)}" data-body='${esc(JSON.stringify(body || {}))}'${ask ? ` data-ask="${esc(ask)}"` : ""}${more && more.asks ? ` data-asks='${esc(JSON.stringify(more.asks))}'` : ""}${more && more.method ? ` data-method="${esc(more.method)}"` : ""}>${esc(label)}</button>`;
   const sec = (title, rows) => rows.length ? `<div class="act-sec"><h3>${title}</h3>${rows.join("")}</div>` : "";
   const out = [];
   if (bk) out.push(sec("📅 Bookings", bk.bookings.slice(0, 20).map(b => `<div class="act-row"><span>${esc(b.label)}</span><span class="a-chip">${esc(b.state.label)}</span>${b.cancellable ? btn("Cancel", `/bookings/${b.id}/cancel`) : ""}</div>`)));
@@ -909,6 +918,27 @@ async function activityHtml() {
   if (gr) out.push(sec("👥 Group buys", gr.groups.slice(0, 20).map(g => `<div class="act-row"><span>${esc(g.title)} · ${money(g.group_price)}</span><span>${g.members} joined${g.needed ? ", " + g.needed + " needed" : ""}</span><span class="a-chip">${esc(g.state.label)}</span></div>`)));
   if (sb) out.push(sec("🔄 Substitutions", sb.substitutions.slice(0, 20).map(x => `<div class="act-row"><span>Order item ${esc(x.product_id)} → ${esc(x.substitute_id || "—")}${x.refund ? " · refunded " + money(x.refund) : ""}</span><span class="a-chip">${esc(x.state.label)}</span>
     ${x.awaiting ? btn("Accept", `/substitutions/${x.id}`, { action: "apply" }) + btn("Reject", `/substitutions/${x.id}`, { action: "reject" }) : ""}</div>`)));
+  if (tr) out.push(sec("👟 On trial", tr.trials.slice(0, 20).map(t => `<div class="act-row"><span>Item ${esc(t.product_id)} · ${money(t.unit)}</span><span class="a-chip">${esc(t.state.label)}</span>
+    ${t.open ? (tr.actions || []).filter(x => (t.next || []).includes(x.to)).map(x => btn(x.label, `/trials/${t.id}`, { action: x.verb })).join("") + `<span class="pay-meta">decide by ${esc(t.ends_at)}</span>` : ""}</div>`)));
+  /* what chosen options left to be done — each kind its own section (a visit, a plan, a proof),
+     its buttons the moves its machine lets the shopper make */
+  if (fu) {
+    const kinds = []; for (const f of fu.followUps) if (f.kind_row && !kinds.some(k => k.key === f.kind_row.key)) kinds.push(f.kind_row);
+    for (const k of kinds) out.push(sec(esc(k.screen || k.name), fu.followUps.filter(f => f.kind === k.key).slice(0, 20).map(f => `<div class="act-row"><span>${esc(f.detail || f.group_code)} · item ${esc(f.product_id)}</span><span class="a-chip">${esc(f.state.label)}</span>
+      ${f.scheduled_for ? `<span>${esc(f.scheduled_for)}</span>` : ""}${f.ends_at ? `<span class="pay-meta">until ${esc(f.ends_at)}</span>` : ""}${f.proof_url ? `<a href="${esc(f.proof_url)}" target="_blank" rel="noopener">See the proof</a>` : ""}
+      ${f.awaiting ? (fu.followUpActions || []).filter(x => x.machine === k.machine && (f.next || []).includes(x.to)).map(x => btn(x.label, `/options/follow-ups/${f.id}`, { action: x.verb }, null, x.asks ? { asks: [[x.asks.field, x.asks.label]] } : null)).join("") : ""}</div>`)));
+  }
+  /* each kind its own section, named by its row */
+  if (dl) for (const k of dk.filter(k => a[k.atom])) out.push(sec(esc(k.screen), dl.deliverables.filter(x => x.kind === k.key).slice(0, 20).map(x => `<div class="act-row"><span>Item ${esc(x.product_id)}</span><span class="a-chip">${esc(x.state.label)}</span>
+    ${x.delivered && x.value ? (/^https?:|\.html/.test(x.value) ? `<a href="${esc(x.value)}" target="_blank" rel="noopener">Open</a>` : `<code>${esc(x.value)}</code>`) : ""}
+    ${x.delivered && x.steps_total ? `<span>${x.steps_done} of ${x.steps_total}</span>${x.steps_done < x.steps_total ? btn("Done one more", `/deliverables/${x.id}/step`) : ""}` : ""}</div>`)));
+  if (hr) {
+    const share = (what, ref) => btn("Share", "/health-records/shares", { what, ref }, null, { asks: [["party", "Who may see it?"], ["days", "For how many days?"]] });
+    const rows = hr.records.map(r => `<div class="act-row"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a>${share("record", r.id)}</div>`)
+      .concat(hr.delivered.filter(x => x.delivered).map(x => `<div class="act-row"><span>${esc(x.kind_row.name || x.kind)} · item ${esc(x.product_id)}</span>${share("deliverable", x.id)}</div>`))
+      .concat(hr.shares.filter(x => x.until > new Date().toISOString().slice(0, 19).replace("T", " ")).map(x => `<div class="act-row"><span>Shared with ${esc(x.party)} until ${esc(x.until)}</span>${btn("Stop sharing", `/health-records/shares/${x.id}`, {}, null, { method: "DELETE" })}</div>`));
+    out.push(`<div class="act-sec"><h3>🩺 Health records</h3>${rows.join("")}<div class="act-row">${btn("Keep a record", "/health-records", {}, null, { asks: [["title", "Name the record"], ["url", "A link to the file"]] })}</div></div>`);
+  }
   const html = out.join("");
   return html ? `<div class="ord act" id="activity"><h2>Your activity</h2>${html}</div>` : "";
 }
@@ -1351,7 +1381,11 @@ document.addEventListener("click", async e => {
            data-ask asks the shopper for an amount first */
         const body = JSON.parse(el.dataset.body || "{}");
         if (el.dataset.ask) { const v = prompt(el.dataset.ask); if (v == null || v === "") break; body.amount = Number(v); }
-        await api(el.dataset.path, "POST", body);
+        /* data-asks: [[field, question], …] asked in turn, each answer sent as that field */
+        let asked = true;
+        for (const [f, q] of JSON.parse(el.dataset.asks || "[]")) { const v = prompt(q); if (v == null || v === "") { asked = false; break; } body[f] = v; }
+        if (!asked) break;
+        await api(el.dataset.path, el.dataset.method || "POST", body);
         toast("✔ Done"); initPage(); break;
       }
       case "terms-buy": { await addWithTerms(id, JSON.parse(el.dataset.terms)); location.href = "checkout.html"; return; }
@@ -1437,6 +1471,48 @@ async function pageSell() {
 }
 
 /* ============ MESSAGES ============ */
+/* a live session (lib/media-sessions.js): the two browsers connect directly; the platform only
+   relays the handshake, which each side reads in turn. The guest makes the offer, the host answers. */
+async function pageSession() {
+  const main = $("#page");
+  const id = new URLSearchParams(location.search).get("id");
+  let j;
+  try { j = await api("/sessions/" + encodeURIComponent(id) + "/join", "POST", {}); }
+  catch (e) { main.innerHTML = `<div class="lst"><p>⚠️ ${esc(e.message)}</p></div>`; return; }
+  const sess = j.session, audioOnly = /audio/.test(sess.mode || "");
+  main.innerHTML = `<div class="sess"><h2>${audioOnly ? "🎧" : "🎥"} Live session</h2><p class="pay-meta">You are the ${esc(j.side)} · ${esc(sess.transport_name)}${sess.rate ? " · charged " + money(sess.rate) + " a minute" : ""}</p>
+    <div class="sess-media"><video id="sessRemote" autoplay playsinline></video><video id="sessLocal" autoplay playsinline muted></video></div>
+    <p id="sessState" class="pay-meta">Connecting…</p><button class="btn-orange" id="sessEnd">End the session</button></div>`;
+  const pc = new RTCPeerConnection({ iceServers: j.ice || [] });
+  const send = (type, data) => api("/sessions/" + id + "/signal", "POST", { type, data }).catch(() => { });
+  let stream = null;
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: !audioOnly }); } catch (e) { $("#sessState").textContent = "Your camera or microphone is not available: " + e.message; }
+  if (stream) { stream.getTracks().forEach(t => pc.addTrack(t, stream)); $("#sessLocal").srcObject = stream; }
+  pc.ontrack = e => { $("#sessRemote").srcObject = e.streams[0]; $("#sessState").textContent = "Connected"; };
+  pc.onicecandidate = e => { if (e.candidate) send("candidate", e.candidate); };
+  /* the server says which side makes the offer; the other answers */
+  if (j.makesOffer) { const offer = await pc.createOffer(); await pc.setLocalDescription(offer); send("offer", offer); }
+  const ON = {
+    offer: async d => { await pc.setRemoteDescription(d); const a = await pc.createAnswer(); await pc.setLocalDescription(a); send("answer", a); },
+    answer: d => pc.setRemoteDescription(d),
+    candidate: d => pc.addIceCandidate(d).catch(() => { }),
+    bye: () => { finish(); return true; }
+  };
+  let since = 0, done = false;
+  const poll = async () => {
+    if (done) return;
+    try {
+      for (const m of (await api("/sessions/" + id + "/signals?since=" + since)).signals) {
+        since = m.id;
+        if (ON[m.type] && await ON[m.type](m.data) === true) return;
+      }
+    } catch (e) { }
+    setTimeout(poll, 1000);
+  };
+  const finish = async () => { done = true; try { pc.close(); } catch (e) { } if (stream) stream.getTracks().forEach(t => t.stop()); $("#sessState").textContent = "The session has ended."; };
+  $("#sessEnd").onclick = async () => { await send("bye", null); try { const r = await api("/sessions/" + id + "/end", "POST", {}); toast("Ended" + (r.session.charged ? " · " + money(r.session.charged) + " charged" : "")); } catch (e) { toast(esc(e.message)); } finish(); };
+  poll();
+}
 async function pageMessages() {
   const main = $("#page");
   document.title = `Messages — ${CFG.brand.name}`;
@@ -1460,7 +1536,7 @@ async function initPage() {
   try {
     /* each page of the storefront is its own entry: the page key the HTML declares picks it */
     const PAGES = { home: pageHome, results: pageResults, product: pageProduct, cart: pageCart, checkout: pageCheckout, orders: pageOrders,
-      deals: pageDeals, gift: pageGift, cs: pageCS, registry: pageRegistry, reset: pageReset, sell: pageSell, messages: pageMessages };
+      deals: pageDeals, gift: pageGift, cs: pageCS, registry: pageRegistry, reset: pageReset, sell: pageSell, messages: pageMessages, session: pageSession };
     if (PAGES[p]) await PAGES[p]();
   } catch (e) {
     console.error(e);
