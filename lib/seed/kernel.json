@@ -1,5 +1,5 @@
 {
-  "$comment": "The kernel's own declarations (FOUNDATIONS K01–K12), read by lib/kernel.js, lib/kernel-shape.js, lib/kernel-context.js and lib/kernel-lifecycle.js. Data, not code: a namespace or an event name added here needs no code change; a value type or a shape type also needs its check in code (TYPE_CHECKS, CONTAINS), and an operation its call in lib/kernel-lifecycle.js OPS.",
+  "$comment": "The kernel's own declarations (FOUNDATIONS K01–K12), read by lib/kernel.js, lib/kernel-shape.js, lib/kernel-context.js and lib/kernel-lifecycle.js. Data, not code: a namespace or an event name added here needs no code change; a value type, a shape type, an attribute constraint or a view grouping also needs its check in code (TYPE_CHECKS, CONTAINS, CONSTRAINTS, GROUPINGS), and an operation its call in lib/kernel-lifecycle.js OPS.",
   "namespaces": [
     "platform",
     "tenant",
@@ -38,6 +38,15 @@
     {
       "key": "record",
       "label": "Structured value"
+    },
+    {
+      "key": "expression",
+      "label": "Text in any number of languages: { <language>: <text> }",
+      "localised": true
+    },
+    {
+      "key": "quantity",
+      "label": "An amount in a unit: { amount, unit } where the unit is a node"
     }
   ],
   "identity": {
@@ -68,8 +77,10 @@
   },
   "limits": {
     "keyPattern": "^[a-z][a-z0-9_.-]{0,63}$",
+    "holderPattern": "^[a-z0-9][a-z0-9_.-]{0,63}$",
     "maxDepth": 4096,
-    "eventPage": 500
+    "eventPage": 500,
+    "maxExtends": 64
   },
   "shapeTypes": [
     {
@@ -162,5 +173,110 @@
     },
     "purgePermission": "kernel.purge",
     "approvePermission": "kernel.approve"
-  }
+  },
+  "constraints": [
+    {
+      "key": "min",
+      "label": "At least",
+      "types": [
+        "number",
+        "integer"
+      ],
+      "param": "number"
+    },
+    {
+      "key": "max",
+      "label": "At most",
+      "types": [
+        "number",
+        "integer"
+      ],
+      "param": "number"
+    },
+    {
+      "key": "minLength",
+      "label": "At least this many characters or items",
+      "types": [
+        "text",
+        "list"
+      ],
+      "param": "integer"
+    },
+    {
+      "key": "maxLength",
+      "label": "At most this many characters or items",
+      "types": [
+        "text",
+        "list"
+      ],
+      "param": "integer"
+    },
+    {
+      "key": "pattern",
+      "label": "Matches a regular expression",
+      "types": [
+        "text"
+      ],
+      "param": "pattern"
+    },
+    {
+      "key": "oneOf",
+      "label": "One of a declared list",
+      "types": [
+        "text",
+        "number",
+        "integer"
+      ],
+      "param": "list"
+    },
+    {
+      "key": "nodeKind",
+      "label": "Refers to a node of a kind (or a kind extending it)",
+      "types": [
+        "node",
+        "quantity"
+      ],
+      "param": "key"
+    },
+    {
+      "key": "unique",
+      "label": "No other node of the kind holds the same value",
+      "types": [
+        "text",
+        "number",
+        "integer"
+      ],
+      "param": "boolean"
+    },
+    {
+      "key": "languages",
+      "label": "Carries text in each of these languages",
+      "types": [
+        "expression"
+      ],
+      "param": "list"
+    }
+  ],
+  "groupings": [
+    {
+      "key": "kind",
+      "label": "By kind",
+      "params": {}
+    },
+    {
+      "key": "attribute",
+      "label": "By an attribute value",
+      "params": {
+        "key": "key"
+      }
+    },
+    {
+      "key": "ancestor",
+      "label": "By the nearest ancestor of a kind in a hierarchy",
+      "params": {
+        "hierarchy": "hierarchy",
+        "kind": "key"
+      }
+    }
+  ]
 }

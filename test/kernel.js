@@ -248,6 +248,74 @@ const count = db.get("SELECT COUNT(*) AS n FROM k_nodes").n, evs = db.get("SELEC
 throws(() => K.createNode("body", { attributes: { name: "Atlantis" }, identifiers: { iso2: "IN" }, validFrom: T(2032) }), /already names/, "a clashing identifier rejects the whole create");
 ok(db.get("SELECT COUNT(*) AS n FROM k_nodes").n === count && db.get("SELECT COUNT(*) AS n FROM k_events").n === evs, "no node and no event survive the failed write");
 
+console.log("kernel — kinds that extend kinds (entity and sub-entity)");
+K.defineKind({ kind: "item", owner: "Identity", label: "Item", root: false, parents: ["shelf"], schemes: ["gtin"],
+  attributes: [{ key: "title", type: "expression", required: true, constraints: { languages: ["en"] } }, { key: "weight", type: "number", constraints: { min: 0 } }] }, "test");
+K.defineKind({ kind: "shelf", owner: "Identity", label: "Shelf", attributes: [{ key: "title", type: "expression" }] }, "test");
+const med = K.defineKind({ kind: "medicine", owner: "Identity", extends: "item", schemes: ["drug_code"],
+  attributes: [{ key: "strength", type: "text", required: true, constraints: { pattern: "^[0-9]+ ?(mg|ml|g)$" } }, { key: "weight", type: "number", constraints: { max: 5000 } }] }, "test");
+ok(med.lineage.join(">") === "medicine>item" && med.attributes.map(a => a.key).sort().join() === "strength,title,weight", "a sub-kind inherits its kind's attributes and adds its own");
+ok(med.schemes.includes("gtin") && med.schemes.includes("drug_code") && med.parents.includes("shelf") && med.root === false, "it inherits identifier schemes, placement rules and root");
+ok(JSON.stringify(med.attributes.find(a => a.key === "weight").constraints) === JSON.stringify({ min: 0, max: 5000 }), "a redeclared attribute keeps its kind's rules and adds its own");
+throws(() => K.defineKind({ kind: "tablet", owner: "Identity", extends: "medicine", attributes: [{ key: "strength", type: "number" }] }), /cannot be number/, "a sub-kind cannot change an inherited attribute's type");
+throws(() => K.defineKind({ kind: "item", owner: "Identity", extends: "medicine" }), /extend itself/, "kinds cannot extend in a loop");
+throws(() => K.defineKind({ kind: "orphan", owner: "Identity", extends: "nothing_declared" }), /Unknown kind to extend/, "the kind extended must exist");
+ok(K.isA("medicine", "item") && !K.isA("item", "medicine"), "isA follows the line upwards only");
+
+console.log("kernel — declared validation rules (K01)");
+const shelf = K.createNode("shelf", { attributes: { title: { en: "Health" } } }, "test");
+throws(() => K.createNode("medicine", { attributes: { title: { en: "Pain relief" }, strength: "strong" } }), /breaks the rule/, "a pattern rule refuses a value");
+throws(() => K.createNode("medicine", { attributes: { title: { en: "Pain relief" }, strength: "500 mg", weight: -1 } }), /breaks the rule/, "an inherited minimum holds on the sub-kind");
+throws(() => K.createNode("medicine", { attributes: { title: { en: "Pain relief" }, strength: "500 mg", weight: 9000 } }), /breaks the rule/, "the sub-kind's own maximum holds too");
+throws(() => K.createNode("medicine", { attributes: { title: { ar: "مسكن" }, strength: "500 mg" } }), /breaks the rule/, "a languages rule needs the declared languages");
+const pill = K.createNode("medicine", { attributes: { title: { en: "Pain relief", ar: "مسكن" }, strength: "500 mg", weight: 20 }, identifiers: { gtin: "0001", drug_code: "DX-1" } }, "test");
+ok(K.attributes(pill).strength === "500 mg" && K.identifiers(pill).drug_code === "DX-1", "a valid sub-kind node records with its inherited and own schemes");
+K.place("physical", pill, shelf, {}, "test");
+ok(K.children("physical", shelf).includes(pill), "a sub-kind sits wherever its kind may");
+throws(() => K.defineKind({ kind: "bad_rule", owner: "Identity", attributes: [{ key: "n", type: "boolean", constraints: { min: 1 } }] }), /does not apply/, "a rule applies only to the value types it declares");
+throws(() => K.defineKind({ kind: "bad_rule", owner: "Identity", attributes: [{ key: "n", type: "text", constraints: { colour: 1 } }] }), /Unknown constraint/, "rules come from the declared list");
+throws(() => K.defineKind({ kind: "bad_rule", owner: "Identity", attributes: [{ key: "n", type: "text", constraints: { pattern: "(" } }] }), /needs a pattern/, "a rule's parameter is checked when declared");
+K.defineKind({ kind: "sku", owner: "Identity", attributes: [{ key: "code", type: "text", constraints: { unique: true, oneOf: ["A1", "B2"] } }, { key: "of", type: "node", constraints: { nodeKind: "item" } }] }, "test");
+K.createNode("sku", { attributes: { code: "A1", of: pill } }, "test");
+throws(() => K.createNode("sku", { attributes: { code: "A1" } }), /breaks the rule/, "a unique value is held by one node of the kind");
+throws(() => K.createNode("sku", { attributes: { code: "C3" } }), /breaks the rule/, "a value outside the declared list is refused");
+throws(() => K.createNode("sku", { attributes: { code: "B2", of: shelf } }), /breaks the rule/, "a reference must point at a node of the declared kind or a kind extending it");
+
+console.log("kernel — multilingual text (K06) and quantities");
+ok(K.attributes(pill, { lang: "ar" }).title === "مسكن" && K.attributes(pill, { lang: "fr" }).title === "Pain relief", "text answers in the language asked, else the source language");
+ok(typeof K.attributes(pill).title === "object", "without a language the whole expression is returned");
+throws(() => K.record(pill, { title: { klingon_x: "x" } }), /must be expression/, "an expression's languages come from the Expression registry");
+K.defineKind({ kind: "unit", owner: "Measure", attributes: [{ key: "symbol", type: "text" }] }, "test");
+const gram = K.createNode("unit", { attributes: { symbol: "g" } }, "test");
+K.defineKind({ kind: "parcel", owner: "Identity", attributes: [{ key: "mass", type: "quantity", constraints: { nodeKind: "unit" } }] }, "test");
+const parcel = K.createNode("parcel", { attributes: { mass: { amount: 250, unit: gram } } }, "test");
+ok(K.attributes(parcel).mass.amount === 250, "a quantity records an amount in a unit node");
+throws(() => K.record(parcel, { mass: { amount: 1, unit: shelf } }), /breaks the rule/, "a quantity's unit must be a node of the declared unit kind");
+throws(() => K.record(parcel, { mass: { amount: "x", unit: gram } }), /must be quantity/, "a quantity's amount is a number");
+
+console.log("kernel — view groupings (K10)");
+const pill2 = K.createNode("item", { attributes: { title: { en: "Bandage" }, weight: 5 } }, "test");
+K.place("physical", pill2, shelf, {}, "test");
+C.defineView({ name: "shelf_by_kind", owner: "Perspective", selects: [{ hierarchy: "physical", root: shelf, includeRoot: false, kinds: ["item"] }], groupBy: [{ by: "kind" }] }, "test");
+const g1 = C.viewGroups("shelf_by_kind");
+ok(g1.length === 2 && g1.every(g => g.nodes.length === 1), "a view groups its nodes by kind, and a selected kind takes its sub-kinds");
+C.defineView({ name: "shelf_by_title", owner: "Perspective", selects: [{ hierarchy: "physical", root: shelf, includeRoot: false }], groupBy: [{ by: "ancestor", hierarchy: "physical", kind: "shelf" }, { by: "attribute", key: "title" }] }, "test");
+const g2 = C.viewGroups("shelf_by_title", { lang: "ar" });
+ok(g2.length === 2 && g2.every(g => g.keys[0] === shelf) && g2.some(g => g.keys[1] === "مسكن"), "groupings nest: by the nearest ancestor of a kind, then by an attribute in a language");
+throws(() => C.defineView({ name: "bad_group", owner: "Perspective", selects: [{ hierarchy: "physical" }], groupBy: [{ by: "colour" }] }), /Unknown grouping/, "groupings come from the declared list");
+
+console.log("kernel — declarations at a scope inside a namespace (K11)");
+const scopeSite = K.createNode("body", { attributes: { name: "A site" } }, "test");
+K.defineKind({ kind: "item", namespace: "tenant:7", scope: scopeSite, owner: "Identity", extends: "shelf", label: "Site item", attributes: [{ key: "aisle", type: "integer" }] }, "test");
+ok(K.kindOf("item", "tenant:7", null, scopeSite).label === "Site item" && K.kindOf("item", "tenant:7").label === "Item", "a kind declared at a scope applies there; elsewhere the namespace's or platform's holds");
+const local = K.createNode("item", { namespace: "tenant:7", scope: scopeSite, attributes: { aisle: 4 } }, "test");
+ok(K.attributes(local).aisle === 4 && K.nodes("item", "tenant:7", { scope: scopeSite }).includes(local), "a node created at a scope is checked against the scope's kind");
+K.defineHierarchy({ hierarchy: "aisles", namespace: "tenant:7", scope: scopeSite, owner: "Relationship" }, "test");
+ok(K.hierarchyOf("aisles", "tenant:7", scopeSite) && !K.hierarchyOf("aisles", "tenant:7"), "a hierarchy declared at a scope is visible only there");
+C.declareSetting({ name: "aisle.count", namespace: "tenant:7", scope: scopeSite, owner: "Context", type: "integer" }, "test");
+ok(C.settingOf("aisle.count", "tenant:7", scopeSite) && !C.settingOf("aisle.count", "tenant:7"), "so is a setting declared at a scope");
+ok(K.nodes("item", "platform", { withSubkinds: true }).includes(pill) && !K.nodes("item", "platform").includes(pill), "node lists can include every sub-kind");
+
 for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP + s, { force: true }); } catch (e) { } }
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);
