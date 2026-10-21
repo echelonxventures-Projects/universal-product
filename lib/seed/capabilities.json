@@ -2741,6 +2741,8 @@
   "admin/health-records": "healthrecords",
   "admin/wallets": "wallets",
   "admin/journals": "wallets",
-  "admin/ledger": "wallets"
+  "admin/ledger": "wallets",
+  "admin/wallet-definitions": "wallets",
+  "admin/wallet-default": "wallets"
  }
 }

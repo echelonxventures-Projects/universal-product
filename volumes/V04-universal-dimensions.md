@@ -663,7 +663,7 @@ stateDiagram-v2
 | **Code** | `lib/registry.js`, `lib/global.js`, `lib/wallet.js`, `lib/seed/wallet.json`, `lib/seed/value.json` |
 | **Managed in** | `_registry/domains.json` → `D-VAL` |
 
-**Live routes (24)** — what the platform serves today for this domain:
+**Live routes (26)** — what the platform serves today for this domain:
 
 - `GET /api/fx`
 - `GET /api/platform/fx`
@@ -689,6 +689,8 @@ stateDiagram-v2
 - `POST /api/admin/journals/:id/reverse`
 - `GET /api/admin/ledger/verify`
 - `POST /api/platform/wallet-definitions`
+- `POST /api/admin/wallet-definitions/:key`
+- `POST /api/admin/wallet-default`
 
 <a id="ucos-val-000001"></a>
 #### UCOS-VAL-000001 · Value Architecture

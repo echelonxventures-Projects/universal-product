@@ -234,7 +234,7 @@ orchestrates the domains that own each concept and reproduces none of them.
 
 | Spec domain | Owner here | State |
 |---|---|---|
-| Wallet Product, Wallet Registry | `lib/wallet.js` — `wallet_definitions` (versioned, namespaced), `wallet_instances`, `wallet_names` | built (slice 1) |
+| Wallet Product, Wallet Registry | kernel nodes: definitions refining one another to any depth, wallets under their definition and holder; settings resolved by context; names and states versioned in time | built (slice 1, on the kernel) |
 | Value Registry | Value's master (`currencies`, `lib/seed/value.json` classes) | existed; reused |
 | Ledger | `lib/wallet.js` — `ledger_accounts`, `ledger_journals`, `ledger_postings` (immutable, balanced, minor units) | built (slice 1) |
 | Holds | `wallet_holds`, `wallet_hold` machine | built (slice 1) |
@@ -252,11 +252,12 @@ orchestrates the domains that own each concept and reproduces none of them.
 
 | Requirement | State | Evidence |
 |---|---|---|
-| UW-CORE-001 immutable identity · 002 names apart from identity · 003 registered, versioned definitions · 004 many wallets per owner | built | `test/wallet.js` — "two wallets may share a name", "renaming keeps the identity and every past name", "a change makes the next version" |
+| UW-CORE-001 immutable identity · 002 names apart from identity · 003 registered, versioned definitions · 004 many wallets per owner | built | `test/wallet.js` — "two wallets may share a name and stay two entities", "every name it has had, in every language, is kept in time", "a sub-sub-definition sits under the one it refines" |
 | UW-CORE-007 no closed list of names or types · 009 configuration cannot bypass invariants · 010 history keeps its definition version | built | definitions are data; balance, immutability and idempotency are code, not configuration; wallets bind a version |
 | UW-VAL-001/002/003/005 typed units, exact precision, unknown units fail | built | "decimals become whole minor units", "more decimals than the unit has are refused", "holds only units its definition's classes allow" |
 | UW-FIN-002 balanced, immutable journals · 003 no duplicate effects · 004 no overspend · 009 adjustments need a reason · 010 holds not double-counted | built | "two postings that sum to zero", "a posting cannot be changed", "the same key returns the first outcome", "refused, not clamped", "what a hold keeps cannot be spent elsewhere" |
 | UW-VAL-010 issuance limits by place | not built | any registered unit may be held today; issuance by place is slice 6 |
+| UW-SEC-006 sensitive data protected | built for wallets | the holder is sealed (AES-256-GCM) and found by a blind index — "the owner never sits readable in the store" |
 | UW-FIN-006 discrepancies visible | partial | `GET /api/admin/ledger/verify` reports unbalanced journals and the chain; reconciliation cases are slice 6 |
 | UW-CNV-* conversion | not built | slice 2 |
 | UW-COM-* commission | not built | slice 3 |

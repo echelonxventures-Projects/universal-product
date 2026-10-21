@@ -1,5 +1,7 @@
-/* The Universal Wallet (lib/wallet.js): definitions, many named wallets per owner, the balanced
-   immutable ledger in exact minor units, idempotency, holds, and the single-balance callers. */
+/* The Universal Wallet (lib/wallet.js), on the kernel: definitions as entities refining one another
+   to any depth, settings resolved by context and time, wallets as entities under their definition
+   and holder, the holder sealed and found by a blind index, and the balanced immutable ledger —
+   its index replayed from the hash-chained log. */
 "use strict";
 const path = require("path"), fs = require("fs"), os = require("os");
 const TMP = path.join(os.tmpdir(), "wallet-" + process.pid + ".db");
@@ -9,6 +11,7 @@ const silence = console.log; console.log = () => { };
 const db = require("../lib/db.js");
 console.log = silence;
 const W = require("../lib/wallet.js");
+const K = require("../lib/kernel.js");
 const offers = require("../lib/offers.js");
 let passed = 0, failed = 0;
 const ok = (c, n, x) => { c ? (passed++, console.log("  ✓ " + n)) : (failed++, console.log("  ✗ " + n + (x !== undefined ? " → " + (typeof x === "string" ? x : JSON.stringify(x)) : ""))); };
@@ -21,76 +24,92 @@ ok(W.toMinor("12.34", 2) === 1234 && W.toMinor(0.1 + 0.2, 2) === 30 && W.toMinor
 throws(() => W.toMinor("1.234", 2), /decimal places/, "more decimals than the unit has are refused");
 throws(() => W.toMinor("abc", 2), /Not an amount/, "and so is what is not an amount");
 
-console.log("wallet — definitions are versioned");
-const defs = W.definitions();
-ok(defs.length >= 3 && defs.some(d => d.spec.default), "the seed declares definitions, one the default", defs.map(d => d.key));
-const v1 = W.define({ key: "travel", name: { en: "Travel wallet", fr: "Portefeuille voyage" }, classes: ["fiat"], operations: ["transfer", "redeem", "hold"], policy: {} }, "test");
-const same = W.define({ key: "travel", name: { en: "Travel wallet", fr: "Portefeuille voyage" }, classes: ["fiat"], operations: ["transfer", "redeem", "hold"], policy: {} }, "test");
-const v2 = W.define({ key: "travel", name: { en: "Travel wallet" }, classes: ["fiat"], operations: ["transfer", "redeem", "hold"], policy: { max_balance: 1000 } }, "test");
-ok(v1.version === 1 && same.version === 1 && v2.version === 2, "an unchanged declaration keeps its version; a change makes the next", [v1.version, same.version, v2.version]);
-const early = W.open(T, "shopper:early", { definition: "travel" }, "shopper:early");
-const v3 = W.define({ key: "travel", name: { en: "Travel wallet" }, classes: ["fiat"], operations: ["transfer", "redeem", "hold", "refund"], policy: { max_balance: 2000 } }, "test");
-ok(W.rebind(v3, "test") >= 1 && W.balances(T, "shopper:early", early.id).definition.version === 3, "a version that only widens moves its wallets to it");
-const v4 = W.define({ key: "travel", name: { en: "Travel wallet" }, classes: ["fiat"], operations: ["transfer", "redeem", "hold"], policy: { max_balance: 2000 } }, "test");
-ok(W.rebind(v4, "test") === 0 && W.balances(T, "shopper:early", early.id).definition.version === 3, "a version that narrows leaves them where they are");
-W.define({ key: "travel", name: { en: "Travel wallet" }, classes: ["fiat"], operations: ["transfer", "redeem", "hold"], policy: { max_balance: 1000 } }, "test");
-throws(() => W.define({ key: "odd", name: { en: "Odd" }, classes: ["no_such_class"], operations: [] }), /value classes/, "a definition holds only classes Value declares");
-throws(() => W.define({ key: "odd", name: { en: "Odd" }, classes: ["fiat"], operations: ["teleport"] }), /Unknown operation/, "and allows only declared operations");
+console.log("wallet — definitions are entities that refine one another, to any depth");
+const root = W.definition("wallet"), main = W.definition("main");
+ok(root && main && main.parent === "wallet" && !root.spec.openable && main.spec.openable, "the seed's definitions sit under a root that cannot be opened itself");
+ok(main.spec.policy.hold_minutes === root.spec.policy.hold_minutes && main.spec.policy.hold_minutes > 0, "a child inherits what it does not state (hold expiry from the root)");
+const travel = W.define({ key: "travel", parent: "purpose", name: { en: "Travel wallet", fr: "Portefeuille voyage" }, settings: { max_balance: 1000 } }, "test");
+const trip = W.define({ key: "travel.trip", parent: "travel", name: { en: "Trip" }, settings: { max_per_owner: 2 } }, "test");
+ok(travel.parent === "purpose" && trip.parent === "travel", "a sub-sub-definition sits under the one it refines");
+ok(trip.spec.classes.join() === W.definition("purpose").spec.classes.join() && trip.spec.policy.max_balance === 1000 && trip.spec.policy.max_per_owner === 2,
+  "and resolves each setting from the nearest definition stating it — two, three levels up", trip.spec);
+const seqBefore = db.get("SELECT MAX(seq) s FROM k_events").s;
+W.define({ key: "travel", parent: "purpose", name: { en: "Travel wallet", fr: "Portefeuille voyage" }, settings: { max_balance: 1000 } }, "test");
+ok(db.get("SELECT MAX(seq) s FROM k_events").s === seqBefore, "an unchanged declaration writes nothing");
+throws(() => W.define({ key: "odd", name: { en: "Odd" }, settings: { classes: ["no_such_class"] } }), /value classes/, "a definition holds only classes Value declares");
+throws(() => W.define({ key: "odd", name: { en: "Odd" }, settings: { operations: ["teleport"] } }), /Unknown operation/, "and allows only declared operations");
+throws(() => W.define({ key: "odd", name: { en: "Odd" }, settings: { colour: "red" } }), /Unknown setting/, "and states only declared settings");
 
-console.log("wallet — many wallets per owner, names apart from identity");
-const main = W.walletFor(T, A, money);
-const t1 = W.open(T, A, { definition: "travel", name: "Trip" }, A);
-const t2 = W.open(T, A, { definition: "travel", name: "Trip" }, A);
-ok(t1.id !== t2.id && t1.name === t2.name, "two wallets may share a name and stay two wallets");
-ok(t2.definition.version === 5, "a new wallet binds the open version of its definition", t2.definition.version);
-throws(() => W.open(T, A, { definition: "main" }, A), /No more/, "a definition's policy caps how many an owner opens in a unit");
-const pts = db.get("SELECT code FROM currencies WHERE class='loyalty' AND active=1");
-if (pts) throws(() => W.open(T, A, { definition: "travel", unit: pts.code }, A), /does not hold/, "a wallet holds only units its definition's classes allow");
-const rn = W.rename(T, A, t1.id, { name: "Summer trip" }, A);
-ok(rn.id === t1.id && rn.name === "Summer trip" && W.names(t1.id).length === 2, "renaming keeps the identity and every past name");
-W.rename(T, A, t1.id, { name: "Holiday", alias: true }, A);
-ok(W.balances(T, A, t1.id).aliases.some(x => x.name === "Holiday"), "aliases ride beside the name");
-throws(() => W.rename(T, B, t1.id, { name: "Mine" }, B), /not found/, "only the owner renames it");
+console.log("wallet — a store configures a definition in its own namespace");
+W.define({ key: "travel.trip", settings: { max_balance: 300 } }, "store", { namespace: "tenant:" + T });
+ok(W.definition("travel.trip", T).spec.policy.max_balance === 300 && W.definition("travel.trip").spec.policy.max_balance === 1000, "the store's value holds in the store; the platform's stays the platform's");
+throws(() => W.define({ key: "nowhere", name: { en: "No" } }, "store", { namespace: "tenant:" + T }), /Unknown definition/, "a store configures definitions, it does not invent them");
 
-console.log("wallet — the ledger balances and cannot be edited");
-const dep = W.post(T, { op: "deposit", wallet: main.id, amount: "100.00", idem: "dep-1", actor: "test" });
-ok(dep.wallet.posted === 100 && dep.journal.postings.length === 2 && dep.journal.postings.reduce((s, p) => s + p.amount, 0) === 0, "a deposit is two postings that sum to zero", dep.journal.postings);
-const again = W.post(T, { op: "deposit", wallet: main.id, amount: "100.00", idem: "dep-1", actor: "test" });
+console.log("wallet — wallets are entities under their definition and their holder");
+const mainW = W.walletFor(T, A, money);
+const t1 = W.open(T, A, { definition: "travel.trip", name: "Summer" }, A);
+const t2 = W.open(T, A, { definition: "travel.trip", name: "Summer" }, A);
+ok(t1.id !== t2.id && t1.name === t2.name && /^[0-9a-f-]{36}$/.test(t1.id), "two wallets may share a name and stay two entities");
+throws(() => W.open(T, A, { definition: "travel.trip" }, A), /No more/, "the cap resolved for the definition holds");
+throws(() => W.open(T, A, { definition: "wallet" }, A), /not opened directly/, "a definition that is not openable is refined, not opened");
+throws(() => W.open(T, A, { definition: "main" }, A), /No more/, "one main wallet per unit");
+const pts = db.get("SELECT code FROM currencies WHERE class='loyalty'");
+if (pts) throws(() => W.open(T, A, { definition: "travel.trip", unit: pts.code }, A), /does not hold/, "a wallet holds only units its definition's classes allow");
+ok(W.walletsOf(T, A).length === 3 && W.walletsOf(T, B).length === 0, "an owner's wallets are the holder's children; another owner has none");
+W.rename(T, A, t1.id, { name: "Holiday" }, A);
+W.rename(T, A, t1.id, { name: "Vacances", lang: "fr" }, A);
+W.rename(T, A, t1.id, { name: "Getaway", alias: true }, A);
+const nm = W.names(t1.id);
+ok(nm.some(n => n.name === "Summer") && nm.some(n => n.name === "Holiday") && nm.some(n => n.lang === "fr" && n.name === "Vacances"), "every name it has had, in every language, is kept in time", nm);
+ok(W.balances(T, A, t1.id).aliases.some(a => a.name === "Getaway"), "aliases ride beside the name");
+throws(() => W.rename(T, B, t1.id, { name: "Mine" }, B), /not found/, "only the holder renames it");
+
+console.log("wallet — the holder is sealed and found by a blind index");
+const raw = db.all("SELECT v.attrs FROM k_versions v JOIN k_nodes n ON n.uid=v.node WHERE n.kind IN ('value.wallet','party.holder')").map(r => r.attrs).join(" ");
+ok(raw.length > 0 && !raw.includes(A) && /lux\.v1\./.test(raw), "the owner never sits readable in the store (sealed, AES-256-GCM)");
+const ids = db.all("SELECT value FROM k_identifiers WHERE scheme='party.holder.key'").map(r => r.value);
+ok(ids.length >= 1 && ids.every(v => /^[0-9a-f]{64}$/.test(v)) && !ids.some(v => v.includes("shopper")), "a holder is indexed by a keyed digest, not by who it is");
+ok(W.balances(T, A, t1.id).owner === A, "yet the holder's own calls read it back");
+
+console.log("wallet — the ledger balances, cannot be edited, and replays from the log");
+const dep = W.post(T, { op: "deposit", wallet: mainW.id, amount: "100.00", idem: "dep-1", actor: "test" });
+ok(dep.wallet.posted === 100 && dep.journal.postings.length === 2 && dep.journal.postings.reduce((s, p) => s + p.amount, 0) === 0, "a deposit is two postings that sum to zero");
+const again = W.post(T, { op: "deposit", wallet: mainW.id, amount: "100.00", idem: "dep-1", actor: "test" });
 ok(again.replayed && again.journal.id === dep.journal.id && again.wallet.posted === 100, "the same key returns the first outcome, once");
-throws(() => W.post(T, { op: "deposit", wallet: main.id, amount: "5.00", idem: "dep-1" }), /different request/, "the same key for another request is refused");
+throws(() => W.post(T, { op: "deposit", wallet: mainW.id, amount: "5.00", idem: "dep-1" }), /different request/, "the same key for another request is refused");
 throws(() => db.run("UPDATE ledger_postings SET amount=amount+1"), /immutable/, "a posting cannot be changed");
 throws(() => db.run("DELETE FROM ledger_journals"), /immutable/, "nor a journal removed");
-throws(() => W.post(T, { op: "redeem", wallet: main.id, amount: "100.01" }), /Not enough/, "a spend beyond what is available is refused, not clamped");
-ok(W.balances(T, A, main.id).posted === 100, "and changes nothing");
-throws(() => W.post(T, { op: "adjust", wallet: main.id, amount: "-5" }), /Say why/, "an adjustment needs a reason");
+throws(() => W.post(T, { op: "redeem", wallet: mainW.id, amount: "100.01" }), /Not enough/, "a spend beyond what is available is refused, not clamped");
+throws(() => W.post(T, { op: "adjust", wallet: mainW.id, amount: "-5" }), /Say why/, "an adjustment needs a reason");
 
-console.log("wallet — transfers and reversals");
-const tr = W.transfer(T, { owner: A, from: main.id, to: t1.id, amount: "30", idem: "tr-1", actor: A });
+console.log("wallet — settings apply by context");
+throws(() => W.post(T, { op: "deposit", wallet: t1.id, amount: "1" }), /does not allow/, "an operation the definition chain does not allow is refused");
+const tr = W.transfer(T, { owner: A, from: mainW.id, to: t1.id, amount: "30", idem: "tr-1", actor: A });
 ok(tr.from.posted === 70 && tr.to.posted === 30, "a transfer moves value between one owner's wallets");
-throws(() => W.transfer(T, { owner: B, from: main.id, to: t1.id, amount: "1" }), /not found/, "no one moves another's value");
+W.post(T, { op: "deposit", wallet: mainW.id, amount: "500", idem: "dep-2" });
+throws(() => W.transfer(T, { owner: A, from: mainW.id, to: t1.id, amount: "271" }), /Not enough|at most/, "the store's own maximum for its trips holds (300)");
+throws(() => W.transfer(T, { owner: B, from: mainW.id, to: t1.id, amount: "1" }), /not found/, "no one moves another's value");
 const rev = W.reverse(T, tr.journal.id, "staff", "test correction");
-ok(rev.reverses === tr.journal.id && W.balances(T, A, main.id).posted === 100 && W.balances(T, A, t1.id).posted === 0, "a reversal mirrors the journal and is linked to it");
+ok(rev.reverses === tr.journal.id && W.balances(T, A, t1.id).posted === 0, "a reversal mirrors the journal and is linked to it");
 throws(() => W.reverse(T, tr.journal.id, "staff", "twice"), /already reversed/, "a journal is reversed once");
 
-console.log("wallet — holds keep value until captured or released");
-const h = W.hold(T, { owner: A, wallet: main.id, amount: "60", purpose: "order", idem: "h-1" });
-ok(W.balances(T, A, main.id).available === 40 && W.balances(T, A, main.id).reserved === 60, "a hold keeps value out of available");
-throws(() => W.post(T, { op: "redeem", wallet: main.id, amount: "41" }), /Not enough/, "what a hold keeps cannot be spent elsewhere");
-throws(() => W.hold(T, { owner: A, wallet: main.id, amount: "41" }), /Not enough/, "nor held twice");
+console.log("wallet — holds keep value until spent or released");
+const h = W.hold(T, { owner: A, wallet: mainW.id, amount: "560", purpose: "order", idem: "h-1" });
+ok(W.balances(T, A, mainW.id).available === 40 && h.expires_at, "a hold keeps value out of available, and lapses by the resolved expiry");
+throws(() => W.post(T, { op: "redeem", wallet: mainW.id, amount: "41" }), /Not enough/, "what a hold keeps cannot be spent elsewhere");
 const c1 = W.capture(T, A, h.id, "25", "order:1", A);
-ok(c1.hold.keeps && c1.hold.captured === 25 && c1.wallet.posted === 75 && c1.wallet.reserved === 35, "a part capture spends that part and keeps the rest", c1.wallet);
-throws(() => W.capture(T, A, h.id, "36", "order:1", A), /no more than/, "a capture cannot exceed what remains");
-const rel = W.release(T, A, h.id, A);
-ok(!rel.keeps && W.balances(T, A, main.id).available === 75, "a release gives back what was kept");
-throws(() => W.release(T, A, h.id, A), /cannot be done/, "and is final");
+ok(c1.hold.keeps && c1.hold.captured === 25 && c1.wallet.posted === 575 && c1.wallet.reserved === 535, "a part capture spends that part and keeps the rest", c1.wallet);
+throws(() => W.capture(T, A, h.id, "536", "order:1", A), /no more than/, "a capture cannot exceed what remains");
+ok(!W.release(T, A, h.id, A).keeps && W.balances(T, A, mainW.id).available === 575, "a release gives back what was kept");
+ok(db.get("SELECT COUNT(*) n FROM k_events WHERE type='value.hold.moved'").n >= 3, "every move of a hold is an event");
 
 console.log("wallet — a wallet's life");
 throws(() => W.move(T, t2.id, "suspend", "staff", ""), /Say why/, "a move needs a reason");
 W.move(T, t2.id, "restrict", "staff", "review");
 throws(() => W.transfer(T, { owner: A, from: t2.id, to: t1.id, amount: "1" }), /restricted|Not enough/i, "a restricted wallet sends nothing");
-throws(() => W.move(T, main.id, "close", "staff", "asked"), /holds nothing/, "a wallet with value cannot be closed");
-const cl = W.move(T, t2.id, "close", "staff", "asked");
-ok(cl.state.key === "closed", "an empty wallet closes, and stays on record");
+throws(() => W.move(T, mainW.id, "close", "staff", "asked"), /holds nothing/, "a wallet with value cannot be closed");
+ok(W.move(T, t2.id, "close", "staff", "asked").state.key === "closed", "an empty wallet closes, and stays on record");
+ok(K.history(t2.id).length >= 3, "its states are versions in time");
 
 console.log("wallet — the single-balance callers ride on it");
 offers.credit(T, B, 20, "refund", "r1");
@@ -98,8 +117,11 @@ ok(require("../lib/modules.js").walletBalance(T, B) === 20 && W.walletsOf(T, B).
 throws(() => offers.debit(T, B, 25, "redeem", "x"), /Not enough/, "a debit beyond the balance is refused");
 offers.debit(T, B, 5, "redeem", "x");
 ok(require("../lib/modules.js").walletBalance(T, B) === 15, "a debit within it is spent");
+W.chooseDefault(T, "purpose", "store");
+ok(W.definitions(T).find(d => d.key === "purpose").spec.default, "a store chooses its own default definition");
+W.chooseDefault(T, "main", "store");
 const v = W.verify(T);
-ok(v.journals > 5 && !v.unbalanced.length && v.chain.ok, "every journal balances and the event chain holds", v);
+ok(v.journals > 5 && !v.unbalanced.length && !v.drift.length && v.chain.ok, "every journal balances, the index replays from the log, the chain holds", v);
 
 for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP + s, { force: true }); } catch (e) { } }
 console.log(`\n${passed} passed, ${failed} failed`);

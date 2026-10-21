@@ -738,11 +738,13 @@ async function vWallets() {
   const acts = d.walletActions || [];
   return `<div class="a-head"><h2>👛 Wallets & Ledger</h2><p class="a-sub">Every wallet an owner holds — named as they like, each in one unit of value, bound to a versioned definition. Value moves only as balanced journals that cannot be edited; corrections are linked reversals. A wallet's balance is its postings, less what its holds keep.</p></div>
   <div class="a-card"><h3>Ledger check</h3>${v.error ? `<p class="a-sub">${esc(v.error)}</p>` : `<p>${v.journals} journals · ${v.unbalanced.length ? `<b>${v.unbalanced.length} unbalanced</b>` : "every one balances"} · event chain ${v.chain && v.chain.ok ? "intact" : "<b>broken at " + esc(String((v.chain || {}).brokenAt)) + "</b>"}</p>`}</div>
-  <div class="a-card"><h3>Definitions</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>key</th><th>version</th><th>name</th><th>holds</th><th>allows</th><th>policy</th></tr></thead><tbody>
-  ${(defs.definitions || []).map(x => `<tr><td><code>${esc(x.key)}</code>${x.spec.default ? " ★" : ""}</td><td>${x.version}</td><td>${esc(Object.values(x.spec.name || {})[0] || "")}</td><td>${esc(x.spec.classes.join(", "))}</td><td>${esc(x.spec.operations.join(", "))}</td><td>${esc(Object.entries(x.spec.policy || {}).filter(([, n]) => n).map(([k, n]) => k.replace(/_/g, " ") + " " + n).join(" · ") || "—")}</td></tr>`).join("")}</tbody></table></div></div>
+  <div class="a-card"><h3>Definitions</h3><p class="a-sub">Each refines the one above it and states only what differs; every value shown is resolved for this store — its own settings over the platform's. ★ is the store's default.</p>
+  <div class="a-tablewrap"><table class="a-table"><thead><tr><th>definition</th><th>refines</th><th>name</th><th>holds</th><th>allows</th><th>policy</th><th></th></tr></thead><tbody>
+  ${(defs.definitions || []).map(x => `<tr><td><code>${esc(x.key)}</code>${x.spec.default ? " ★" : ""}${x.spec.openable ? "" : ' <span class="a-chip">not opened directly</span>'}</td><td>${x.parent ? `<code>${esc(x.parent)}</code>` : "—"}</td><td>${esc(Object.values(x.spec.name || {})[0] || "")}</td><td>${esc(x.spec.classes.join(", ") || "—")}</td><td>${esc(x.spec.operations.join(", ") || "—")}</td><td>${esc(Object.entries(x.spec.policy || {}).filter(([, n]) => n).map(([k, n]) => k.replace(/_/g, " ") + " " + n).join(" · ") || "—")}</td>
+    <td style="white-space:nowrap">${x.spec.openable && !x.spec.default ? `<button class="btn-white sm" data-co-post="/admin/wallet-default" data-co-body='${esc(JSON.stringify({ key: x.key }))}'>Make default</button>` : ""} <button class="btn-white sm" data-wal-conf="${esc(x.key)}">Configure</button></td></tr>`).join("")}</tbody></table></div></div>
   <div class="a-card"><h3>An owner's wallets</h3><div class="p-form"><div class="row"><label><span>Owner</span><input id="walOwner" value="${esc(walOwner)}" placeholder="t1:u:42"></label></div><button class="p-btn primary" id="walLook">Show</button></div>
   ${d.error ? `<p class="a-sub">${esc(d.error)}</p>` : `<div class="a-tablewrap"><table class="a-table"><thead><tr><th>wallet</th><th>name</th><th>definition</th><th>unit</th><th>posted</th><th>reserved</th><th>available</th><th>state</th><th></th></tr></thead><tbody>
-  ${(d.wallets || []).map(w => `<tr><td><code>${esc(w.id)}</code></td><td>${esc(w.name)}</td><td>${esc(w.definition.key)} v${w.definition.version}</td><td>${esc(w.unit)}</td><td>${w.posted}</td><td>${w.reserved}</td><td>${w.available}</td><td>${stateChip(w.state)}</td>
+  ${(d.wallets || []).map(w => `<tr><td><code>${esc(w.id)}</code></td><td>${esc(w.name)}</td><td><code>${esc(w.definition.key)}</code></td><td>${esc(w.unit)}</td><td>${w.posted}</td><td>${w.reserved}</td><td>${w.available}</td><td>${stateChip(w.state)}</td>
     <td style="white-space:nowrap"><button class="btn-white sm" data-wal-open="${esc(w.id)}">Statement</button> ${acts.filter(a => a.to !== w.state.key).map(a => `<button class="btn-white sm" data-co-post="/admin/wallets/${encodeURIComponent(w.id)}/move" data-co-body='${esc(JSON.stringify({ action: a.verb }))}' data-co-ask="Why?" data-co-field="reason">${esc(a.label)}</button>`).join(" ")}
       <button class="btn-white sm" data-wal-adjust="${esc(w.id)}">Adjust</button></td></tr>`).join("") || `<tr><td colspan="9">${walOwner ? "This owner holds no wallets." : "Name an owner."}</td></tr>`}</tbody></table></div>`}</div>
   ${one ? (one.error ? `<div class="a-card"><p class="a-sub">${esc(one.error)}</p></div>` : `<div class="a-card"><h3>${esc(one.wallet.name)} · <code>${esc(one.wallet.id)}</code></h3><p class="a-sub">Names over time: ${one.names.map(n => esc(n.name) + (n.alias ? " (alias)" : "") + (n.valid_to ? " — until " + esc(n.valid_to) : " — now")).join("; ")}</p>
@@ -754,6 +756,13 @@ async function vWallets() {
 function wireWallets() {
   const b = $("#walLook"); if (b) b.onclick = () => { walOwner = fieldVal("#walOwner").trim(); walOpen = ""; render(); };
   $$("[data-wal-open]").forEach(x => x.onclick = () => { walOpen = x.dataset.walOpen; render(); });
+  /* a store's own value for one setting of a definition (JSON: a number, true/false, or a list) */
+  $$("[data-wal-conf]").forEach(x => x.onclick = () => {
+    const name = prompt("Which setting? (overdraft, max_balance, max_per_owner, hold_minutes, classes, operations, openable)"); if (!name) return;
+    const raw = prompt("Its value for this store"); if (raw == null) return;
+    let value; try { value = JSON.parse(raw); } catch (e) { value = raw; }
+    postAndRender("/admin/wallet-definitions/" + encodeURIComponent(x.dataset.walConf), { settings: { [name.trim()]: value } }, "POST", "Configured for this store");
+  });
   $$("[data-wal-adjust]").forEach(x => x.onclick = () => {
     const amount = prompt("Amount (negative takes value out)"); if (amount == null || amount === "") return;
     const reason = prompt("Why?"); if (!reason) return;

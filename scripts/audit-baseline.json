@@ -1,6 +1,6 @@
 {
  "summary": {
-  "branch": 54,
+  "branch": 53,
   "fallback": 88,
   "seedConstants": {
    "count": 7,
@@ -25,7 +25,6 @@
    "lib/config.js · auto": 1,
    "lib/dashboards.js · manual": 1,
    "lib/entity.js · orders": 1,
-   "lib/fintech.js · commission": 1,
    "lib/gates.js · capability": 1,
    "lib/goip.js · coupon": 3,
    "lib/identity.js · password": 1,

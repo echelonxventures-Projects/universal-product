@@ -1,6 +1,352 @@
 {
- "$comment": "The Universal Wallet's declarations (lib/wallet.js). A wallet DEFINITION is a versioned blueprint in a namespace: its names (any language, any aliases), the value classes it may hold (Value's classes — lib/seed/value.json), the operations it allows (the operations below, plus hold), and its policy. A wallet INSTANCE belongs to an owner, holds one unit of value and binds one definition version; an owner may hold any number of wallets, named as they like. Money moves only as balanced, immutable ledger journals; a wallet's balance is a projection of its postings. Nothing here names a business: a definition is data, added in the console or the seed. Policy: overdraft (how far below zero available may go), max_balance (0: none), max_wallets_per_owner (0: any number), hold_minutes (how long a hold keeps value when its caller names no expiry).",
+ "$comment": "The Universal Wallet's declarations (lib/wallet.js), all on the kernel. A wallet DEFINITION is a node of the definition kind, placed in the definitions hierarchy under the definition it refines — to any depth — and every setting (the value classes it may hold, the operations it allows, its policy) is a kernel setting assigned at a definition node and resolved by context: from a wallet up through its definitions, the store's namespace before the platform's, at any moment and as believed at any moment. A definition declares only what differs from the one above it. A WALLET is a node of the wallet kind in its store's namespace, placed under its definition and under its holder; its name, aliases, unit and status are attributes with valid and recorded time, its holder's identity is sealed (a sensitive attribute) and found by a blind index. Value moves only as balanced, immutable journals, each an event in the kernel's hash-chained log; the ledger tables are their index, verified against the log.",
  "namespace": "platform",
+ "keys": {
+  "definitionKind": "value.wallet.definition",
+  "walletKind": "value.wallet",
+  "holderKind": "party.holder",
+  "definitions": "value.wallet.definitions",
+  "holding": "value.wallet.holding",
+  "definitionScheme": "value.wallet.definition.key",
+  "holderScheme": "party.holder.key",
+  "tenantNamespace": "tenant"
+ },
+ "kinds": [
+  {
+   "kind": "value.wallet.definition",
+   "owner": "Value",
+   "label": "Wallet definition",
+   "attributes": [
+    {
+     "key": "name",
+     "type": "expression",
+     "required": true,
+     "label": "Name"
+    },
+    {
+     "key": "aliases",
+     "type": "record",
+     "label": "Other names, by language"
+    }
+   ],
+   "parents": [
+    "value.wallet.definition"
+   ],
+   "root": true,
+   "schemes": [
+    "value.wallet.definition.key"
+   ]
+  },
+  {
+   "kind": "party.holder",
+   "owner": "Party",
+   "label": "A holder of wallets",
+   "attributes": [
+    {
+     "key": "owner",
+     "type": "text",
+     "required": true,
+     "sensitive": true,
+     "label": "Who holds them"
+    },
+    {
+     "key": "tenant",
+     "type": "integer",
+     "required": true,
+     "label": "Store"
+    }
+   ],
+   "root": true,
+   "schemes": [
+    "party.holder.key"
+   ]
+  },
+  {
+   "kind": "value.wallet",
+   "owner": "Value",
+   "label": "Wallet",
+   "attributes": [
+    {
+     "key": "name",
+     "type": "expression",
+     "required": true,
+     "label": "Name"
+    },
+    {
+     "key": "aliases",
+     "type": "record",
+     "label": "Other names, by language"
+    },
+    {
+     "key": "unit",
+     "type": "text",
+     "required": true,
+     "label": "Unit of value"
+    },
+    {
+     "key": "status",
+     "type": "text",
+     "required": true,
+     "label": "State"
+    },
+    {
+     "key": "tenant",
+     "type": "integer",
+     "required": true,
+     "label": "Store"
+    },
+    {
+     "key": "owner",
+     "type": "text",
+     "required": true,
+     "sensitive": true,
+     "label": "Holder"
+    },
+    {
+     "key": "closed_at",
+     "type": "text",
+     "label": "Closed at"
+    }
+   ],
+   "parents": [
+    "value.wallet.definition",
+    "party.holder"
+   ],
+   "root": false
+  }
+ ],
+ "hierarchies": [
+  {
+   "hierarchy": "value.wallet.definitions",
+   "owner": "Value",
+   "label": "Wallet definitions — each under the one it refines, wallets under their definition"
+  },
+  {
+   "hierarchy": "value.wallet.holding",
+   "owner": "Value",
+   "label": "Who holds which wallets"
+  }
+ ],
+ "settings": [
+  {
+   "name": "value.wallet.openable",
+   "type": "boolean",
+   "owner": "Value",
+   "label": "A wallet of this definition may be opened"
+  },
+  {
+   "name": "value.wallet.classes",
+   "type": "list",
+   "owner": "Value",
+   "label": "Value classes it may hold"
+  },
+  {
+   "name": "value.wallet.operations",
+   "type": "list",
+   "owner": "Value",
+   "label": "Operations it allows"
+  },
+  {
+   "name": "value.wallet.overdraft",
+   "type": "number",
+   "owner": "Value",
+   "label": "How far below zero available may go"
+  },
+  {
+   "name": "value.wallet.max_balance",
+   "type": "number",
+   "owner": "Value",
+   "label": "Most it may hold (0: no limit)"
+  },
+  {
+   "name": "value.wallet.max_per_owner",
+   "type": "integer",
+   "owner": "Value",
+   "label": "Most an owner may open in one unit (0: any number)"
+  },
+  {
+   "name": "value.wallet.hold_minutes",
+   "type": "number",
+   "owner": "Value",
+   "label": "How long a hold keeps value when its caller names no expiry"
+  },
+  {
+   "name": "value.wallet.default_definition",
+   "type": "text",
+   "owner": "Value",
+   "label": "The definition an owner's money lands in when nothing else is named"
+  }
+ ],
+ "settingKeys": {
+  "openable": "value.wallet.openable",
+  "classes": "value.wallet.classes",
+  "operations": "value.wallet.operations",
+  "overdraft": "value.wallet.overdraft",
+  "max_balance": "value.wallet.max_balance",
+  "max_per_owner": "value.wallet.max_per_owner",
+  "hold_minutes": "value.wallet.hold_minutes",
+  "default_definition": "value.wallet.default_definition"
+ },
+ "namespaceSettings": {
+  "value.wallet.default_definition": "main"
+ },
+ "definitions": [
+  {
+   "key": "wallet",
+   "name": {
+    "en": "Wallet"
+   },
+   "settings": {
+    "openable": false,
+    "classes": [],
+    "operations": [],
+    "overdraft": 0,
+    "max_balance": 0,
+    "max_per_owner": 0,
+    "hold_minutes": 30
+   }
+  },
+  {
+   "key": "main",
+   "parent": "wallet",
+   "name": {
+    "en": "Wallet"
+   },
+   "aliases": {
+    "en": [
+     "Balance",
+     "Store wallet"
+    ]
+   },
+   "settings": {
+    "openable": true,
+    "classes": [
+     "fiat"
+    ],
+    "operations": [
+     "deposit",
+     "cashback",
+     "reward",
+     "refund",
+     "redeem",
+     "adjust",
+     "transfer",
+     "opening",
+     "hold"
+    ],
+    "max_per_owner": 1
+   }
+  },
+  {
+   "key": "gift",
+   "parent": "wallet",
+   "name": {
+    "en": "Gift balance"
+   },
+   "aliases": {
+    "en": [
+     "Gift card balance"
+    ]
+   },
+   "settings": {
+    "openable": true,
+    "classes": [
+     "fiat"
+    ],
+    "operations": [
+     "deposit",
+     "redeem",
+     "refund",
+     "expire",
+     "adjust",
+     "opening",
+     "hold"
+    ],
+    "max_per_owner": 1
+   }
+  },
+  {
+   "key": "rewards",
+   "parent": "wallet",
+   "name": {
+    "en": "Rewards"
+   },
+   "aliases": {
+    "en": [
+     "Points"
+    ]
+   },
+   "settings": {
+    "openable": true,
+    "classes": [
+     "loyalty",
+     "digital",
+     "utility"
+    ],
+    "operations": [
+     "reward",
+     "redeem",
+     "expire",
+     "adjust",
+     "opening",
+     "hold"
+    ]
+   }
+  },
+  {
+   "key": "purpose",
+   "parent": "wallet",
+   "name": {
+    "en": "Purpose wallet"
+   },
+   "aliases": {
+    "en": [
+     "Savings pot",
+     "Travel wallet",
+     "Project wallet"
+    ]
+   },
+   "settings": {
+    "openable": true,
+    "classes": [
+     "fiat"
+    ],
+    "operations": [
+     "redeem",
+     "refund",
+     "transfer",
+     "adjust",
+     "hold"
+    ]
+   }
+  },
+  {
+   "key": "proceeds",
+   "parent": "wallet",
+   "name": {
+    "en": "Seller proceeds"
+   },
+   "aliases": {
+    "en": [
+     "Earnings"
+    ]
+   },
+   "settings": {
+    "openable": true,
+    "classes": [
+     "fiat"
+    ],
+    "operations": [
+     "deposit",
+     "transfer",
+     "adjust",
+     "opening",
+     "hold"
+    ],
+    "max_per_owner": 1
+   }
+  }
+ ],
  "systemAccounts": [
   {
    "key": "issuance",
@@ -77,158 +423,16 @@
    "counter": "migration"
   }
  ],
- "definitions": [
-  {
-   "key": "main",
-   "name": {
-    "en": "Wallet"
-   },
-   "aliases": {
-    "en": [
-     "Balance",
-     "Store wallet"
-    ]
-   },
-   "classes": [
-    "fiat"
-   ],
-   "operations": [
-    "deposit",
-    "cashback",
-    "reward",
-    "refund",
-    "redeem",
-    "adjust",
-    "transfer",
-    "opening",
-    "hold"
-   ],
-   "policy": {
-    "overdraft": 0,
-    "max_balance": 0,
-    "max_wallets_per_owner": 1,
-    "hold_minutes": 30
-   },
-   "default": true
-  },
-  {
-   "key": "gift",
-   "name": {
-    "en": "Gift balance"
-   },
-   "aliases": {
-    "en": [
-     "Gift card balance"
-    ]
-   },
-   "classes": [
-    "fiat"
-   ],
-   "operations": [
-    "deposit",
-    "redeem",
-    "refund",
-    "expire",
-    "adjust",
-    "opening",
-    "hold"
-   ],
-   "policy": {
-    "overdraft": 0,
-    "max_balance": 0,
-    "max_wallets_per_owner": 1,
-    "hold_minutes": 30
-   }
-  },
-  {
-   "key": "rewards",
-   "name": {
-    "en": "Rewards"
-   },
-   "aliases": {
-    "en": [
-     "Points"
-    ]
-   },
-   "classes": [
-    "loyalty",
-    "digital",
-    "utility"
-   ],
-   "operations": [
-    "reward",
-    "redeem",
-    "expire",
-    "adjust",
-    "opening",
-    "hold"
-   ],
-   "policy": {
-    "overdraft": 0,
-    "max_balance": 0,
-    "max_wallets_per_owner": 0,
-    "hold_minutes": 30
-   }
-  },
-  {
-   "key": "purpose",
-   "name": {
-    "en": "Purpose wallet"
-   },
-   "aliases": {
-    "en": [
-     "Savings pot",
-     "Travel wallet",
-     "Project wallet"
-    ]
-   },
-   "classes": [
-    "fiat"
-   ],
-   "operations": [
-    "redeem",
-    "refund",
-    "transfer",
-    "adjust",
-    "hold"
-   ],
-   "policy": {
-    "overdraft": 0,
-    "max_balance": 0,
-    "max_wallets_per_owner": 0,
-    "hold_minutes": 30
-   }
-  },
-  {
-   "key": "proceeds",
-   "name": {
-    "en": "Seller proceeds"
-   },
-   "aliases": {
-    "en": [
-     "Earnings"
-    ]
-   },
-   "classes": [
-    "fiat"
-   ],
-   "operations": [
-    "deposit",
-    "transfer",
-    "adjust",
-    "opening",
-    "hold"
-   ],
-   "policy": {
-    "overdraft": 0,
-    "max_balance": 0,
-    "max_wallets_per_owner": 1,
-    "hold_minutes": 30
-   }
-  }
- ],
  "machines": {
   "wallet": "wallet",
   "hold": "wallet_hold"
+ },
+ "events": {
+  "opened": "value.wallet.opened",
+  "renamed": "value.wallet.renamed",
+  "moved": "value.wallet.moved",
+  "journal": "value.journal.posted",
+  "hold": "value.hold.moved",
+  "ported": "value.wallet.ported"
  }
 }
