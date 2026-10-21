@@ -1269,7 +1269,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 176 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 178 files.
 
 ### C02 · Meaning
 
@@ -1277,6 +1277,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 |---|---|---|
 | `lib/uid.js` | [Identity](volumes/V02-meaning.md#d-idn) |  |
 | `lib/kernel.js` | [Identity](volumes/V02-meaning.md#d-idn) | nodes and identifiers (K02, K04) |
+| `scripts/domain-map.js` | [Guidance](volumes/V02-meaning.md#d-gdn) | every artifact's business domain, read from the code; unowned, doubly owned and stale claims |
+| `scripts/domain-docs.js` | [Guidance](volumes/V02-meaning.md#d-gdn) | each business domain's documentation and each user type's manual, generated from the catalogue and the code |
 | `lib/store-taxonomy.js` | [Semantic](volumes/V02-meaning.md#d-sem) | a store's category tree as a read model of the platform master |
 | `lib/platform-master.js` | [Identity](volumes/V02-meaning.md#d-idn) | items, their codes and identifier schemes |
 | `lib/platform-master.js` | [Semantic](volumes/V02-meaning.md#d-sem) | the trade, tariff and scientific classifications |

@@ -1312,7 +1312,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-GDN-000001 Guidance Architecture](#ucos-gdn-000001) |
 | **Artifacts** | [UCOS-IMP-000001](#ucos-imp-000001), [UCOS-IMP-000002](#ucos-imp-000002), [UCOS-IMP-000003](#ucos-imp-000003), [UCOS-IMP-000004](#ucos-imp-000004), [UCOS-IMP-000005](#ucos-imp-000005), [UCOS-GDN-000001](#ucos-gdn-000001) |
 | **Concepts** | 8 — `node _registry/compile.js --search <words> --kind concept --owner "Guidance"` |
-| **Code** | `public/docs/architecture.html`, `public/docs/e2e-flow.html`, `public/docs/platform-reference.html`, `public/docs/provisioning-guide.html`, `public/docs/user-manual.html`, `public/docs/user-manual.js` |
+| **Code** | `scripts/domain-map.js`, `scripts/domain-docs.js`, `public/docs/architecture.html`, `public/docs/e2e-flow.html`, `public/docs/platform-reference.html`, `public/docs/provisioning-guide.html`, `public/docs/user-manual.html`, `public/docs/user-manual.js` |
 | **Managed in** | `_registry/domains.json` → `D-GDN` |
 
 **Live routes:** none yet.

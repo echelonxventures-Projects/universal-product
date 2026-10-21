@@ -33,6 +33,8 @@
     {"path": "lib/kernel.js", "parts": [{"owner": "Registry", "part": "kinds and typed attributes (K01, K06)"}, {"owner": "Identity", "part": "nodes and identifiers (K02, K04)"}, {"owner": "Relationship", "part": "hierarchies and placements (K03)"}, {"owner": "Evolution", "part": "bi-temporal versions (K07)"}, {"owner": "Runtime", "part": "the hash-chained event log (K08)"}]},
     {"path": "lib/kernel-shape.js", "owner": "Geo", "note": "kernel part K05: coordinate systems and shapes"},
     {"path": "lib/kernel-lifecycle.js", "owner": "Evolution", "note": "kernel part K09: changes and node states"},
+    {"path": "scripts/domain-map.js", "owner": "Guidance", "note": "every artifact's business domain, read from the code; unowned, doubly owned and stale claims"},
+    {"path": "scripts/domain-docs.js", "owner": "Guidance", "note": "each business domain's documentation and each user type's manual, generated from the catalogue and the code"},
     {"path": "scripts/coverage-matrix.js", "owner": "Package", "note": "the coverage matrix: every type of platform configured from its setup answers, and what it still needs"},
     {"path": "lib/trials.js", "owner": "Commerce", "note": "try and buy: a deposit now, keep or return within the window"},
     {"path": "lib/media-sessions.js", "owner": "Communication", "note": "live audio and video sessions, the platform's own transport or a connector; charged by the minute where per_minute_billing is on"},
