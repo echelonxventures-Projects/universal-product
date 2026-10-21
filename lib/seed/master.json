@@ -16339,7 +16339,8 @@
      },
      "data": {
       "requires": [],
-      "recommends": []
+      "recommends": [],
+      "storefront": false
      }
     }
    ]
@@ -16599,7 +16600,7 @@
       "answer": "offerings",
       "from": "master",
       "many": true,
-      "required": true
+      "required": false
      }
     },
     {
@@ -16619,13 +16620,42 @@
      "key": "vocab.blueprint_steps.features",
      "name": "features",
      "title": {
-      "en": "Features"
+      "en": "Features switched on"
      },
      "data": {
       "answer": "features",
       "from": "discovery",
       "many": true,
-      "required": false
+      "required": false,
+      "open": true
+     }
+    },
+    {
+     "key": "vocab.blueprint_steps.declined",
+     "name": "declined",
+     "title": {
+      "en": "Recommended features switched off"
+     },
+     "data": {
+      "answer": "declined",
+      "from": "discovery",
+      "many": true,
+      "required": false,
+      "open": true
+     }
+    },
+    {
+     "key": "vocab.blueprint_steps.requests",
+     "name": "requests",
+     "title": {
+      "en": "Features requested"
+     },
+     "data": {
+      "answer": "requests",
+      "from": "discovery",
+      "many": true,
+      "required": false,
+      "open": true
      }
     },
     {
@@ -16744,6 +16774,14 @@
    }
   }
  ],
+ "setup": {
+  "settingPrefix": "setup.",
+  "resolutionMs": 60000,
+  "owner": "Package",
+  "valueType": "record",
+  "appliedAnswer": "applied",
+  "accessLevel": "sell"
+ },
  "projections": {
   "productTypes": {
    "from": "vocabulary",

@@ -24,10 +24,10 @@
 | **Contract** | [UCOS-PKG-000001 Package Architecture](#ucos-pkg-000001) |
 | **Artifacts** | [UCOS-PKG-000001](#ucos-pkg-000001) |
 | **Concepts** | 251 — `node _registry/compile.js --search <words> --kind concept --owner "Package"` |
-| **Code** | `lib/registry.js`, `lib/platform-discovery.js`, `lib/compose.js` |
+| **Code** | `lib/registry.js`, `lib/platform-setup.js`, `lib/platform-discovery.js`, `lib/compose.js` |
 | **Managed in** | `_registry/domains.json` → `D-PKG` |
 
-**Live routes (8)** — what the platform serves today for this domain:
+**Live routes (10)** — what the platform serves today for this domain:
 
 - `GET /api/compose/candidates`
 - `GET /api/compose/ledger`
@@ -37,6 +37,8 @@
 - `GET /api/platform/kinds`
 - `POST /api/platform/kinds`
 - `DELETE /api/platform/kinds/:key`
+- `GET /api/platform/setup/steps`
+- `POST /api/platform/setup/discover`
 
 <a id="ucos-pkg-000001"></a>
 #### UCOS-PKG-000001 · Package Architecture

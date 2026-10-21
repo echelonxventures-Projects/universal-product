@@ -274,7 +274,10 @@
         "warehouse": true,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "marketplace"
+      }
     },
     {
       "key": "industry",
@@ -290,7 +293,10 @@
         "warehouse": true,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "marketplace"
+      }
     },
     {
       "key": "brand",
@@ -306,7 +312,10 @@
         "warehouse": true,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "single_seller"
+      }
     },
     {
       "key": "mobility",
@@ -328,7 +337,14 @@
         "retention",
         "experiments",
         "localizations"
-      ]
+      ],
+      "starter": {
+        "sellingModel": "platform",
+        "offerings": [
+          "mobility",
+          "ride"
+        ]
+      }
     },
     {
       "key": "operations",
@@ -357,7 +373,10 @@
         "logistics",
         "serialized",
         "localizations"
-      ]
+      ],
+      "starter": {
+        "sellingModel": "platform"
+      }
     },
     {
       "key": "fintech",
@@ -380,7 +399,13 @@
         "experiments",
         "affiliate",
         "localizations"
-      ]
+      ],
+      "starter": {
+        "sellingModel": "platform",
+        "offerings": [
+          "finance"
+        ]
+      }
     },
     {
       "key": "quick_commerce",
@@ -396,7 +421,17 @@
         "warehouse": true,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "single_seller",
+        "offerings": [
+          "grocery",
+          "household"
+        ],
+        "fulfilment": [
+          "delivered_local"
+        ]
+      }
     },
     {
       "key": "omnichannel_retail",
@@ -412,7 +447,15 @@
         "warehouse": true,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "hybrid",
+        "fulfilment": [
+          "shipped",
+          "collected",
+          "delivered_local"
+        ]
+      }
     },
     {
       "key": "b2b_wholesale",
@@ -428,7 +471,13 @@
         "warehouse": true,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "marketplace",
+        "offerings": [
+          "industrial"
+        ]
+      }
     },
     {
       "key": "super_app",
@@ -444,7 +493,13 @@
         "warehouse": true,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "marketplace",
+        "offerings": [
+          "finance"
+        ]
+      }
     },
     {
       "key": "resale",
@@ -460,7 +515,10 @@
         "warehouse": false,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "peer_to_peer"
+      }
     },
     {
       "key": "auction_house",
@@ -476,7 +534,13 @@
         "warehouse": true,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "single_seller",
+        "offerings": [
+          "art"
+        ]
+      }
     },
     {
       "key": "services",
@@ -492,7 +556,17 @@
         "warehouse": false,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "marketplace",
+        "offerings": [
+          "services",
+          "consultation"
+        ],
+        "fulfilment": [
+          "appointment_in_person"
+        ]
+      }
     },
     {
       "key": "rentals",
@@ -508,7 +582,13 @@
         "warehouse": false,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "marketplace",
+        "offerings": [
+          "rental"
+        ]
+      }
     },
     {
       "key": "food_delivery",
@@ -524,7 +604,17 @@
         "warehouse": false,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "marketplace",
+        "offerings": [
+          "food_service",
+          "meal"
+        ],
+        "fulfilment": [
+          "delivered_local"
+        ]
+      }
     },
     {
       "key": "group_buying",
@@ -540,7 +630,10 @@
         "warehouse": true,
         "storefront": true
       },
-      "sections": null
+      "sections": null,
+      "starter": {
+        "sellingModel": "single_seller"
+      }
     }
   ]
 }

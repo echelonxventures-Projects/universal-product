@@ -347,6 +347,12 @@ require("./lib/api.js").startPaymentSweep();
   }, Math.max(1, mins > 0 ? mins : 15) * 60000);
   if (t.unref) t.unref();
 })();
+/* platform setup answers given for a later minute are applied when that minute comes */
+(function setupSweep() {
+  const SU = require("./lib/platform-setup.js");
+  const t = setTimeout(() => { try { SU.sweepAll(); } catch (e) { console.error("setup sweep:", e.message); } setupSweep(); }, SU.resolutionMs());
+  if (t.unref) t.unref();
+})();
 process.on("unhandledRejection", (e) => { console.error("unhandledRejection:", e && e.stack || e); });
 process.on("SIGINT", () => shutdown("SIGINT"));
 process.on("SIGTERM", () => shutdown("SIGTERM"));

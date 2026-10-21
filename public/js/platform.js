@@ -80,6 +80,7 @@ const NAV = [
       ["persons", "👥 Persons", { u: "person" }],
       ["organizations", "🏢 Organizations", { u: "organization" }],
       ["tenants", "🏬 Tenants", { e: "tenant", a: "tenants-admin" }],
+      ["platform-setup", "🧭 Platform Setup", { v: "platform-setup" }],
       ["users", "👤 Users", { v: "users", a: "users-admin" }],
       ["roles", "🎭 Roles", { v: "roles", a: "roles-admin" }],
       ["permissions", "🔑 Permissions", { u: "permission", a: "permissions-admin" }],
@@ -1488,6 +1489,66 @@ function wireMasterPermissions() {
       objects: picked("mp-obj"), actions: picked("mp-act"), review: document.getElementById("mpReview").value,
       visible: document.getElementById("mpVisible").value.split(",").map(x => x.trim()).filter(Boolean) };
     try { await api("/platform/master/permissions", "POST", body); toast("Granted"); render(); } catch (e) { toast(e.message); }
+  };
+}
+/* ============ PLATFORM SETUP: a platform configured by answering the setup steps ============
+   The steps, their options, the discovery classes and the requests all come from the API (the
+   master's vocabularies); every answer takes effect from the minute chosen. */
+let psTenant = null;
+async function vPlatformSetup() {
+  const { tenants } = await api("/platform/tenants");
+  if (!psTenant && (tenants || []).length) psTenant = tenants[0].id;
+  const [{ steps }, st] = await Promise.all([api("/platform/setup/steps"), psTenant ? api("/platform/tenants/" + psTenant + "/blueprint") : Promise.resolve({ answers: {}, discovery: [] })]);
+  const a = st.answers || {};
+  const field = s => {
+    const cur = a[s.answer];
+    const has = v => s.many ? (cur || []).map(String).includes(String(v)) : String(cur || "") === String(v);
+    const opts = (s.options || []).map(o => `<option value="${esc(o.key)}" ${has(o.key) ? "selected" : ""}>${esc(o.name || o.key)}</option>`).join("");
+    const extra = s.many ? (cur || []).filter(v => !(s.options || []).some(o => String(o.key) === String(v))) : [];
+    return `<label style="display:grid;gap:4px"><span><b>${esc(s.title)}</b>${s.required ? " *" : ""}</span>
+      ${s.many ? `<select data-ps="${esc(s.answer)}" multiple size="${Math.min(8, Math.max(3, (s.options || []).length))}">${opts}${extra.map(v => `<option value="${esc(v)}" selected>${esc(v)}</option>`).join("")}</select>`
+        : `<select data-ps="${esc(s.answer)}"><option value="">—</option>${opts}</select>`}
+      ${s.many ? `<input data-ps-more="${esc(s.answer)}" placeholder="others, comma separated">` : ""}</label>`;
+  };
+  const classes = [...new Set((st.discovery || []).map(d => d.class))];
+  return `<div class="p-panel"><h2 style="margin:0 0 6px">Platform Setup</h2>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">A platform is configured by its answers. Each answer is kept on its own and takes effect from the minute you choose; discovery derives every capability from them, with its reasons.</p>
+    <label>Platform <select id="psTenant">${(tenants || []).map(t => `<option value="${t.id}" ${Number(psTenant) === t.id ? "selected" : ""}>${esc(t.name)} (${esc(t.slug)})</option>`).join("")}</select></label>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:14px">${(steps || []).map(field).join("")}</div>
+    <div style="display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap">
+      <label>Takes effect <input type="datetime-local" id="psAt"></label>
+      <button class="p-btn" id="psPreview">Preview discovery</button>
+      <button class="p-btn primary" id="psApply">Apply answers</button></div>
+    <div id="psFound">${foundTable(st.discovery || [], classes)}</div></div>`;
+}
+function foundTable(found, classes) {
+  const cls = classes.length ? classes : [...new Set(found.map(d => d.class))];
+  return cls.map(c => `<h3 style="margin:16px 0 6px">${esc(c)} (${found.filter(d => d.class === c).length})</h3>
+    <div class="p-scroll-x"><table class="p-table"><tbody>${found.filter(d => d.class === c).map(d => `<tr><td><b>${esc(d.key)}</b>${d.available ? "" : ' <span class="badge">not built yet</span>'}</td><td style="color:var(--p-muted)">${esc((d.reasons || []).join(" · "))}</td></tr>`).join("")}</tbody></table></div>`).join("");
+}
+function psAnswers() {
+  const out = {};
+  $$("[data-ps]").forEach(el => {
+    const k = el.dataset.ps;
+    if (el.multiple) {
+      const more = (document.querySelector(`[data-ps-more="${k}"]`) || {}).value || "";
+      out[k] = Array.from(el.selectedOptions).map(o => o.value).concat(more.split(",").map(x => x.trim()).filter(Boolean));
+    } else if (el.value) out[k] = el.value;
+  });
+  return out;
+}
+function wirePlatformSetup() {
+  const t = document.getElementById("psTenant");
+  if (t) t.onchange = () => { psTenant = Number(t.value); render(); };
+  const pv = document.getElementById("psPreview");
+  if (pv) pv.onclick = async () => { try { const r = await api("/platform/setup/discover", "POST", { answers: psAnswers() }); document.getElementById("psFound").innerHTML = foundTable(r.discovery || [], []); } catch (e) { toast(e.message); } };
+  const ap = document.getElementById("psApply");
+  if (ap) ap.onclick = async () => {
+    const at = document.getElementById("psAt").value;
+    try {
+      const r = await api("/platform/tenants/" + psTenant + "/blueprint", "POST", { answers: psAnswers(), at: at ? new Date(at).toISOString() : undefined });
+      toast(r.applied ? "Applied" : "Scheduled from " + new Date(r.from).toLocaleString()); render();
+    } catch (e) { toast(e.message); }
   };
 }
 /* ============ MODULE MARKETPLACE: every capability is a purchasable product ============ */
@@ -3713,6 +3774,7 @@ const VIEWFNS = {
   billing: () => vBillingOps(),
   gproducts: () => vGproducts(),
   "master-review": () => vMasterReview(),
+  "platform-setup": () => vPlatformSetup(),
   "master-permissions": () => vMasterPermissions(),
   modules: () => vModules(),
   providers: () => vProviders(),
@@ -3769,6 +3831,7 @@ const WIREFNS = {
   billing: () => wireBillingOps(),
   gproducts: () => wireGproducts(),
   "master-review": () => wireMasterReview(),
+  "platform-setup": () => wirePlatformSetup(),
   "master-permissions": () => wireMasterPermissions(),
   modules: () => wireModules(),
   ucii: () => wireUCII(),
