@@ -36,7 +36,9 @@
     {"stepId": "P27", "title": "The platform master: entities of every kind as rows, classified in many hierarchies, identifier schemes, attributes inherited and applicable by context, the maximum starter content; the flat global catalogue and per-platform taxonomies and attributes merged into it", "domains": ["Identity", "Semantic", "Registry", "Relationship", "Context"], "status": "planned", "deliveredBy": []},
     {"stepId": "P28", "title": "Permissions on the platform master, projections and overlays; contributions reviewed and applied, added as new or attached as an addendum", "domains": ["Authority", "Perspective", "Evolution", "Package"], "status": "planned", "deliveredBy": []},
     {"stepId": "P29", "title": "Configuration by blueprint steps, each setting effective to the minute; discovery of mandatory, recommended, added and requested capabilities; platform kinds and blends become starter packages", "domains": ["Package", "Context", "Time"], "status": "planned", "deliveredBy": []},
-    {"stepId": "P30", "title": "Fulfilment modes for every kind of offering; built-in media sessions beside connectors; communication offered on commercial terms", "domains": ["Commerce", "Communication", "Integration", "Offering"], "status": "planned", "deliveredBy": []}
+    {"stepId": "P30", "title": "Fulfilment modes for every kind of offering; built-in media sessions beside connectors; communication offered on commercial terms", "domains": ["Commerce", "Communication", "Integration", "Offering"], "status": "planned", "deliveredBy": []},
+    {"stepId": "P31", "title": "The coverage matrix: every type of platform as blueprint answers, each launched by a test that fails while any capability is left requested", "domains": ["Package", "Quality"], "status": "planned", "deliveredBy": []},
+    {"stepId": "P32", "title": "The missing engines (pricing and money, fulfilment, health, catalogue fit, time and place, services around a sale, engagement) and every type of deal and offer as rows with the conditions they need", "domains": ["Commerce", "Offering", "Value", "Rule"], "status": "planned", "deliveredBy": []}
   ],
   "decisions": [
     {"decisionId": "DEC-001", "question": "One tree or several hierarchies?", "decision": "Several named hierarchies over shared nodes (K03)."},
@@ -59,7 +61,8 @@
     {"decisionId": "DEC-018", "question": "How do existing platforms reach the new configuration?", "decision": "Every setting is configurable on its own, with an effective time to the minute; there is no bulk migration."},
     {"decisionId": "DEC-019", "question": "Where do requested capabilities go?", "decision": "They are captured during configuration, and the platform owner can edit them afterwards."},
     {"decisionId": "DEC-020", "question": "How are audio and video carried?", "decision": "A built-in media session and connectors plugged in beside it; communication may itself be offered on any commercial terms."},
-    {"decisionId": "DEC-021", "question": "How is a platform's type decided?", "decision": "By its blueprint answers and discovery; platform kinds and blends are starter packages that pre-fill answers, never gates."}
+    {"decisionId": "DEC-021", "question": "How is a platform's type decided?", "decision": "By its blueprint answers and discovery; platform kinds and blends are starter packages that pre-fill answers, never gates."},
+    {"decisionId": "DEC-022", "question": "Which types of platform, product, service, deal and offer must the platform cover?", "decision": "Every type, each described by what it does and never by a company name: the coverage matrix in GLOBAL_MASTER.md is the list, a new type is a new row, and a row passes only when it launches with nothing left requested."}
   ],
   "gaps": [
     {"gapId": "GAP-01", "group": "broken", "title": "CI failed on Node 22: the smoke test's own process booted the default database (a full first seed past the server's keep-alive)", "owner": "Quality", "status": "closed", "closedBy": "AMD-0008"},
