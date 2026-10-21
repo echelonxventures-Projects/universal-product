@@ -269,6 +269,11 @@ const handler = async (req, res) => {
     }
     /* the unified console's bundles, wrapped server-side (lib/bundle.js) so the browser
        never has to eval fetched source */
+    const pm = /^\/js\/plain\/(store|platform)\.js$/.exec(url.pathname);
+    if (pm) {
+      res.writeHead(200, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" });
+      return res.end(require("./lib/bundle.js").plain(pm[1], PUB));
+    }
     const bm = /^\/js\/bundle\/(store|platform)\.js$/.exec(url.pathname);
     if (bm) {
       res.writeHead(200, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" });

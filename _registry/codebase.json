@@ -6,7 +6,7 @@
   "status": "Constitutional Freeze",
   "ownerDomain": "Registry",
   "law": "LAW-002 Knowledge Once — every code module has exactly one owning domain; a module that mixes concerns is split into parts, each with one owner.",
-  "covers": ["server.js", "lib/*.js", "lib/seed/*.json", "public/js/*.js", "public/docs/*", "scripts/*"],
+  "covers": ["server.js", "lib/*.js", "lib/seed/*.json", "lib/routes/*.js", "public/js/admin/*.js", "public/js/*.js", "public/docs/*", "scripts/*"],
   "modules": [
     {"path": "server.js", "owner": "Integration", "note": "the HTTP entry point"},
     {"path": "lib/entity.js", "owner": "Registry"},
@@ -104,6 +104,8 @@
     {"path": "lib/logger.js", "owner": "Operations"},
     {"path": "lib/metrics.js", "owner": "Operations"},
     {"path": "lib/compose.js", "owner": "Package"},
+    {"path": "lib/routes/offer.js", "owner": "Commerce", "note": "the Offers domain's API routes and handlers"},
+    {"path": "public/js/admin/offer.js", "owner": "Experience", "note": "the Offers domain's store-console screens"},
     {"path": "lib/offers.js", "owner": "Commerce"},
     {"path": "lib/goip.js", "owner": "Commerce", "note": "its spatial, temporal, value and context registries move to Geo, Time, Value and Context"},
     {"path": "lib/shipping.js", "owner": "Commerce"},

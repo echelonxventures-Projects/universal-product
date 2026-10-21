@@ -607,7 +607,7 @@
      "attribution"
     ],
     "routes": [
-     "^/api/(offers|coupon|promos|giftcard|goip|group-buys|marketing)(/|$)",
+     "^/api/(offers|coupon|promos|giftcard|goip|group-buys)(/|$)",
      "^/api/goip/",
      "^/api/admin/(promotions|group-buys)(/|$)",
      "^/api/platform/offers(/|$)",
@@ -1876,7 +1876,7 @@
    "key": "communication",
    "name": "Messages and notifications",
    "foundation": "Communication",
-   "purpose": "Talking to people: conversations between buyers, sellers and staff, notifications to shoppers and staff, and email.",
+   "purpose": "Talking to people: conversations between buyers, sellers and staff, notifications to shoppers and staff, email, and marketing campaigns sent through connected messaging providers.",
    "users": [
     "shopper",
     "seller",
@@ -1895,7 +1895,7 @@
      "notifications"
     ],
     "routes": [
-     "^/api/(conversations|notifications)(/|$)",
+     "^/api/(conversations|notifications|marketing)(/|$)",
      "^/api/admin/conversations(/|$)"
     ],
     "machines": [

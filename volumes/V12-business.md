@@ -33,10 +33,10 @@
 | **Contract** | [UCOS-COM-000001 Universal Commerce Architecture](#ucos-com-000001) |
 | **Artifacts** | [UCOS-COM-000001](#ucos-com-000001), [UCOS-GPS-000001](#ucos-gps-000001), [UCOS-PRC-000001](#ucos-prc-000001), [UCOS-OFR-000001](#ucos-ofr-000001), [UCOS-SUB-000001](#ucos-sub-000001), [UCOS-CNT-000001](#ucos-cnt-000001), [UCOS-MKT-000001](#ucos-mkt-000001), [UCOS-INV-000001](#ucos-inv-000001), [UCOS-ORD-000001](#ucos-ord-000001), [UCOS-FUL-000001](#ucos-ful-000001) |
 | **Concepts** | 1968 — `node _registry/compile.js --search <words> --kind concept --owner "Commerce"` |
-| **Code** | `lib/trials.js`, `lib/fees.js`, `lib/tips.js`, `lib/deliverables.js`, `lib/health-records.js`, `lib/cases.js`, `lib/billing.js`, `lib/offers.js`, `lib/goip.js`, `lib/shipping.js`, `lib/logistics.js`, `lib/fin.js`, `lib/fintech.js`, `lib/marketplace.js`, `lib/marketplace-ext.js`, `lib/lists.js`, `lib/alerts.js`, `lib/pickup.js`, `lib/richcontent.js`, `lib/brandreg.js`, `lib/lineterms.js`, `lib/options.js`, `lib/bookings.js`, `lib/listings.js`, `lib/negotiation.js`, `lib/auctions.js`, `lib/conversations.js`, `lib/groupbuy.js`, `lib/substitutions.js`, `lib/affiliate.js`, `lib/trade.js`, `lib/qcommerce.js`, `lib/mobility.js`, `lib/operations.js`, `lib/recurring.js`, `lib/ugc.js`, `lib/gcatalog.js`, `lib/seed/goip.json`, `lib/seed/offers.json` |
+| **Code** | `lib/trials.js`, `lib/fees.js`, `lib/tips.js`, `lib/deliverables.js`, `lib/health-records.js`, `lib/cases.js`, `lib/billing.js`, `lib/routes/offer.js`, `lib/offers.js`, `lib/goip.js`, `lib/shipping.js`, `lib/logistics.js`, `lib/fin.js`, `lib/fintech.js`, `lib/marketplace.js`, `lib/marketplace-ext.js`, `lib/lists.js`, `lib/alerts.js`, `lib/pickup.js`, `lib/richcontent.js`, `lib/brandreg.js`, `lib/lineterms.js`, `lib/options.js`, `lib/bookings.js`, `lib/listings.js`, `lib/negotiation.js`, `lib/auctions.js`, `lib/conversations.js`, `lib/groupbuy.js`, `lib/substitutions.js`, `lib/affiliate.js`, `lib/trade.js`, `lib/qcommerce.js`, `lib/mobility.js`, `lib/operations.js`, `lib/recurring.js`, `lib/ugc.js`, `lib/gcatalog.js`, `lib/seed/goip.json`, `lib/seed/offers.json` |
 | **Managed in** | `_registry/domains.json` → `D-BIZ` |
 
-**Live routes (380)** — what the platform serves today for this domain:
+**Live routes (342)** — what the platform serves today for this domain:
 
 - `GET /api/qc/promise`
 - `GET /api/qc/stores`
@@ -78,8 +78,6 @@
 - `POST /api/fintech/loans/:id/disburse`
 - `POST /api/fintech/insurance`
 - `POST /api/fintech/insurance/:id/activate`
-- `POST /api/fintech/vouchers`
-- `POST /api/fintech/vouchers/redeem`
 - `POST /api/marketplace/onboarding`
 - `POST /api/marketplace/onboarding/:id/review`
 - `GET /api/marketplace/offers/:productId`
@@ -162,7 +160,6 @@
 - `POST /api/conversations`
 - `GET /api/conversations/:id`
 - `POST /api/conversations/:id`
-- `GET /api/group-buys`
 - `GET /api/substitutions`
 - `POST /api/substitutions/:id`
 - `GET /api/admin/options`
@@ -219,10 +216,6 @@
 - `POST /api/admin/conversations/messages/:id`
 - `GET /api/admin/conversations/:id`
 - `POST /api/admin/conversations/:id`
-- `GET /api/admin/group-buys`
-- `POST /api/admin/group-buys`
-- `POST /api/admin/group-buys/tick`
-- `POST /api/admin/group-buys/:id/cancel`
 - `GET /api/admin/substitutions/:orderId`
 - `POST /api/admin/substitutions/:orderId`
 - `POST /api/orders/:id/cancel`
@@ -236,11 +229,9 @@
 - `POST /api/platform/store-product-config`
 - `DELETE /api/platform/store-product-config/:tenant_id/:global_id`
 - `GET /api/platform/global-catalog`
-- `GET /api/promos`
 - `POST /api/rfqs`
 - `POST /api/returns`
 - `POST /api/zip`
-- `POST /api/coupon`
 - `GET /api/products`
 - `GET /api/shipments`
 - `GET /api/shipments/:id`
@@ -316,7 +307,6 @@
 - `POST /api/admin/ops/tasks`
 - `POST /api/admin/ops/tasks/:id/time`
 - `PUT /api/admin/ops/approvals/:id`
-- `POST /api/giftcard`
 - `POST /api/viewed`
 - `GET /api/admin/products`
 - `GET /api/admin/products/:id`
@@ -333,10 +323,6 @@
 - `GET /api/admin/warehouses`
 - `POST /api/admin/warehouses`
 - `PUT /api/admin/warehouses/:id`
-- `GET /api/admin/promotions`
-- `POST /api/admin/promotions`
-- `PUT /api/admin/promotions/:id`
-- `DELETE /api/admin/promotions/:id`
 - `GET /api/admin/sellers`
 - `POST /api/admin/sellers`
 - `PUT /api/admin/sellers/:id`
@@ -364,31 +350,7 @@
 - `GET /api/feeds/:slug`
 - `GET /api/admin/transfers`
 - `POST /api/admin/transfers`
-- `GET /api/offers`
-- `POST /api/offers`
-- `PUT /api/offers/:id`
-- `DELETE /api/offers/:id`
-- `POST /api/offers/preview`
-- `GET /api/offers/analytics`
-- `GET /api/offers/coupons`
-- `POST /api/offers/coupons`
-- `POST /api/offers/coupons/generate`
-- `DELETE /api/offers/coupons/:id`
 - `GET /api/wallet/ledger`
-- `GET /api/platform/offers`
-- `GET /api/goip`
-- `GET /api/goip/exchanges`
-- `GET /api/goip/exchanges/:id`
-- `GET /api/goip/context`
-- `GET /api/goip/treasury`
-- `GET /api/goip/settlements`
-- `GET /api/goip/entitlements`
-- `GET /api/goip/touchpoints`
-- `GET /api/goip/widget`
-- `GET /api/goip/registry/:name`
-- `GET /api/goip/intelligence/:key`
-- `GET /api/goip/feed/:channel`
-- `POST /api/goip/:capability`
 - `GET /api/market`
 - `GET /api/marketing/providers`
 - `POST /api/marketing/save`

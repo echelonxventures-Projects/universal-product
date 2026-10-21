@@ -30,7 +30,7 @@
 | **Contract** | [UCOS-EXP-000001 Experience Architecture](#ucos-exp-000001) |
 | **Artifacts** | [UCOS-EXP-000001](#ucos-exp-000001) |
 | **Concepts** | 97 — `node _registry/compile.js --search <words> --kind concept --owner "Experience"` |
-| **Code** | `lib/themes.js`, `lib/branding.js`, `lib/bundle.js`, `lib/sitemap.js`, `lib/seed/themes.json`, `public/js/admin.js`, `public/js/app.js`, `public/js/console.js`, `public/js/platform.js`, `public/js/data.js`, `public/js/editors.js`, `public/js/provisioning.js`, `public/js/rules-ui.js` |
+| **Code** | `lib/themes.js`, `lib/branding.js`, `lib/bundle.js`, `lib/sitemap.js`, `public/js/admin/offer.js`, `lib/seed/themes.json`, `public/js/admin.js`, `public/js/app.js`, `public/js/console.js`, `public/js/platform.js`, `public/js/data.js`, `public/js/editors.js`, `public/js/provisioning.js`, `public/js/rules-ui.js` |
 | **Managed in** | `_registry/domains.json` → `D-EXP` |
 
 **Live routes (29)** — what the platform serves today for this domain:

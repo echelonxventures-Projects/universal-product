@@ -38,11 +38,15 @@ function tables() {
   return out;
 }
 function routeTable() {
-  const api = read("lib/api.js");
+  const out = {};
+  for (const f of require("./domain-map.js").routeFiles()) Object.assign(out, routeTableOf(read(f)));
+  return out;
+}
+function routeTableOf(api) {
   const out = {};
   for (const m of api.matchAll(/\["(GET|POST|PUT|PATCH|DELETE) (\/api\/[^"]+)",\s*(?:\(r[^)]*\)\s*=>\s*)?(\w+)/g)) {
     const fn = m[3];
-    const at = api.search(new RegExp("\\n(?:async )?function " + fn + "\\("));
+    const at = api.search(new RegExp("\\n[ \\t]*(?:async )?function " + fn + "\\("));
     let note = "";
     /* the handler's own comment: the block comment that ends right where the handler starts */
     if (at > 0) { const before = api.slice(Math.max(0, at - 1200), at); const c = /\/\*((?:(?!\*\/)[\s\S])*)\*\/\s*$/.exec(before); if (c) note = c[1].replace(/\s+/g, " ").trim(); }
@@ -52,7 +56,8 @@ function routeTable() {
 }
 const machines = () => Object.fromEntries(J("lib/seed/states.json").stateMachines.map(m => [m.key, m]));
 const caps = () => Object.fromEntries(J("lib/seed/capabilities.json").CATALOG.map(c => [c.key, c]));
-const adminLabels = () => Object.fromEntries([...read("public/js/admin.js").split("const NAVFLAT")[0].matchAll(/\["([a-z_]+)", "([^"]+)"\]/g)].map(m => [m[1], m[2]]));
+const adminLabels = () => Object.assign(Object.fromEntries([...read("public/js/admin.js").split("const NAVFLAT")[0].matchAll(/\["([a-z_]+)", "([^"]+)"\]/g)].map(m => [m[1], m[2]])),
+  Object.fromEntries(require("./domain-map.js").domainScreens().map(x => [x.key, (new RegExp('^screen\\("' + x.key + '", \\{[^}]*label: "([^"]+)"', "m").exec(read(x.file)) || [])[1] || x.key])));
 const platformLabels = () => Object.fromEntries([...read("public/js/platform.js").matchAll(/^\s+\["([a-z0-9_-]+)", "([^"]+)"/gm)].map(m => [m[1], m[2]]));
 
 /* ---------- what a person writes ---------- */

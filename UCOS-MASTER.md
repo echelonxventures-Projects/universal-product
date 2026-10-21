@@ -69,7 +69,7 @@ A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A c
 | [V10](volumes/V10-intelligence.md) | C10 Intelligence | 1 of 1 | 1 | 1 | 7 KB |
 | [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 85 KB |
 | [V11.2](volumes/V11.2-platform.md) | C11 Platform | 2 of 2 | 3 | 6 | 39 KB |
-| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 79 KB |
+| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 78 KB |
 | [V13](volumes/V13-composition.md) | C13 Composition | 1 of 1 | 1 | 1 | 7 KB |
 
 <a id="index"></a>
@@ -1269,7 +1269,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 178 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 180 files.
 
 ### C02 · Meaning
 
@@ -1404,6 +1404,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `lib/mailer.js` | [Communication](volumes/V08-interaction.md#d-cmn) |  |
 | `lib/helpdesk.js` | [Communication](volumes/V08-interaction.md#d-cmn) | conversations |
 | `lib/search.js` | [Search](volumes/V08-interaction.md#d-srh) |  |
+| `public/js/admin/offer.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Offers domain's store-console screens |
 | `lib/tell.js` | [Notification](volumes/V08-interaction.md#d-ntf) |  |
 | `lib/seed/themes.json` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `public/js/admin.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
@@ -1490,6 +1491,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `public/js/*.js`, `
 | `lib/health-records.js` | [Commerce](volumes/V12-business.md#d-biz) | health records: the shopper's own vault, shared with a party for some days |
 | `lib/cases.js` | [Commerce](volumes/V12-business.md#d-biz) | cases: what someone asks a store to decide, every kind a registry row (price match, prescriptions, credentials, enquiries, trade-ins) |
 | `lib/billing.js` | [Commerce](volumes/V12-business.md#d-biz) | customer invoices, credit notes, dunning |
+| `lib/routes/offer.js` | [Commerce](volumes/V12-business.md#d-biz) | the Offers domain's API routes and handlers |
 | `lib/offers.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/goip.js` | [Commerce](volumes/V12-business.md#d-biz) | its spatial, temporal, value and context registries move to Geo, Time, Value and Context |
 | `lib/shipping.js` | [Commerce](volumes/V12-business.md#d-biz) |  |

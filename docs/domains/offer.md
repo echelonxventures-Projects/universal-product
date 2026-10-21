@@ -61,6 +61,7 @@ A shopper describes what they trade in; staff value it, and the value comes off 
 | `lib/goip.js` | GOIP Ω∞ — GLOBAL OFFER INFRASTRUCTURE PLATFORM Universal Incentive · Offer · Reward · Value-Exchange operating system for LUXORA. |
 | `lib/groupbuy.js` | Group buying: a lower price when enough shoppers join. Staff open a campaign on a product: a group price, how many members it needs by a deadline, and how many it may take. A shopper joins by buying at the group price — the campaign rides on the bag line as its `group` term (lib/lineterms.js) — and becomes a member with that order. When the deadline passes, a campaign with enough members has succeeded and its orders go ahead; one that fell short has failed, and every member's order is cancelled and what they paid is refunded to their wallet. A full campaign may close early. The campaign's life is the `group_campaign` state machine, asked by tag (joinable, refunds_members…). Capability: group_buying. |
 | `lib/offers.js` | Central Offers / Coupons / Discounts / Wallet engine. ONE reusable service (like registry.js / ai.js / modules.js) that any surface — storefront cart, checkout, platform subscription billing, AI metering, or a client API — calls to compute discounts, credits, free-shipping and coupon redemptions. Everything (types, scopes, channels, directions, funders, coupon kinds, limits) is DATA in meta_lists; new offer types/scope rules are added without code. Legacy per-store `promotions` are read too, so nothing that already works regresses. |
+| `lib/routes/offer.js` | offer domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the offer domain; what it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `finVoucherStatuses`, `groupCampaignStatuses`
 
@@ -383,9 +384,6 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `GET /api/goip/intelligence/:key` | `apiGoipIntelligence` | — |
 | `GET /api/goip/feed/:channel` | `apiGoipFeed` | — |
 | `POST /api/goip/:capability` | `apiGoipCapability` | — |
-| `GET /api/marketing/providers` | `apiMarketingProviders` | — |
-| `POST /api/marketing/save` | `apiMarketingSave` | — |
-| `POST /api/marketing/send` | `apiMarketingSend` | — |
 
 ## Process flows
 
@@ -489,8 +487,8 @@ Actions: `succeed` → succeeded · `fail` → failed · `cancel` → cancelled
 ```mermaid
 flowchart LR
   U([Shopper / Seller / Store administrator / Platform administrator / Partner or affiliate]) --> UI[deals.html, gift-cards.html, store console, platform console]
-  UI --> API[41 API routes]
-  API --> ENG[goip.js, groupbuy.js, offers.js]
+  UI --> API[38 API routes]
+  API --> ENG[goip.js, groupbuy.js, offers.js, offer.js]
   ENG --> DB[(promotions, attribution, offers, coupons, coupon_redemptions, goip_touchpoints, …)]
   ENG --> SM{{9 state machines}}
 ```
@@ -499,7 +497,7 @@ flowchart LR
 
 **Pages:** `deals.html`, `gift-cards.html`
 
-**Store console:** 🏷️ Price Match · ♻️ Trade-ins · 🎟️ Offers & Coupons · Ω∞ GOIP · 👥 Group Buying
+**Store console:** 🎟️ Offers & Coupons · Ω∞ GOIP · 👥 Group Buying · 🏷️ Price Match · ♻️ Trade-ins
 
 **Platform console:** 🏷️ Offers · Affiliates · ⭐ Loyalty · 🎁 Rewards · 🔗 Referrals · 🏷️ Offers · Affiliates · Ω∞ GOIP · Value Exchange
 

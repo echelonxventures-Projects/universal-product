@@ -72,6 +72,12 @@ const reg2 = call("POST", "/api/platform/tenants", { name: "By kind", slug: "by-
 ok(reg2.tenant && !reg2.setup.error && SU.answers(reg2.tenant.id).sellingModel === withStarter.starter.sellingModel, "a registration that names a kind has the kind's starter answers, through the same steps", reg2.setup || reg2.error);
 throws(() => SU.check({ official: countries[0], languages: [langs[0]], currencies: [curr[0]], sellingModel: "nope" }), /not an option/, "an answer the registration gives is checked like any other");
 
+/* every step's options load (the platform's setup screen lists them all) */
+const broken = SU.describe().map(st => { try { SU.options(st.step); return null; } catch (e) { return st.step + ": " + e.message; } }).filter(Boolean);
+ok(!broken.length, "every step offers its options", broken);
+/* the contribution machine the master review screen shows is found in the state catalogue */
+ok(!!require("../lib/states.js").catalog()[require("../lib/platform-master.js").ROLES.contributionMachine], "the contribution machine is in the state catalogue");
+
 for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP + s, { force: true }); } catch (e) { } }
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);

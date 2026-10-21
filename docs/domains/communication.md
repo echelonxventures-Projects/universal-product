@@ -4,7 +4,7 @@
 
 ## Overview
 
-Talking to people: conversations between buyers, sellers and staff, notifications to shoppers and staff, and email.
+Talking to people: conversations between buyers, sellers and staff, notifications to shoppers and staff, email, and marketing campaigns sent through connected messaging providers.
 
 **Foundation domain:** Communication · **Used by:** Shopper, Seller, Store staff, Store administrator
 
@@ -94,6 +94,9 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `POST /api/admin/conversations/messages/:id` | `apiAdminMessageHide` | — |
 | `GET /api/admin/conversations/:id` | `apiAdminConversationGet` | — |
 | `POST /api/admin/conversations/:id` | `apiAdminConversationPost` | — |
+| `GET /api/marketing/providers` | `apiMarketingProviders` | — |
+| `POST /api/marketing/save` | `apiMarketingSave` | — |
+| `POST /api/marketing/send` | `apiMarketingSend` | — |
 
 ## Process flows
 
@@ -119,7 +122,7 @@ Actions: `close` → closed · `flag` → flagged · `reopen` → open
 ```mermaid
 flowchart LR
   U([Shopper / Seller / Store staff / Store administrator]) --> UI[messages.html, store console]
-  UI --> API[10 API routes]
+  UI --> API[13 API routes]
   API --> ENG[conversations.js, mailer.js, tell.js]
   ENG --> DB[(notifications, conversations, conversation_messages)]
   ENG --> SM{{1 state machines}}

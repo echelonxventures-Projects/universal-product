@@ -103,7 +103,7 @@ More: [Reviews and questions](../domains/reviews.md)
 
 ## Messages and notifications
 
-Talking to people: conversations between buyers, sellers and staff, notifications to shoppers and staff, and email.
+Talking to people: conversations between buyers, sellers and staff, notifications to shoppers and staff, email, and marketing campaigns sent through connected messaging providers.
 
 _Not yet written._
 

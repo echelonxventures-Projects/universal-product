@@ -25,6 +25,11 @@ console.log("▸ THE DOCUMENTATION IS GENERATED FROM WHAT IS BUILT, AND CURRENT"
 const stale = Object.entries(docs.generate()).filter(([f, t]) => { const p = path.join(__dirname, "..", f); return !fs.existsSync(p) || fs.readFileSync(p, "utf8") !== t; }).map(([f]) => f);
 ok(!stale.length, "every domain's documentation and every manual matches the code (node scripts/domain-docs.js)", stale.slice(0, 8));
 
+console.log("▸ NO ROUTE ANSWERS A REQUEST BECAUSE OF WHERE IT SITS");
+const ov = require("../scripts/domain-map.js").overlaps();
+ok(ov.every(o => o.sameFile), "routes one request could match sit in one file", ov.filter(o => !o.sameFile));
+ok(ov.every(o => o.ordered), "and the more literal route comes first", ov.filter(o => !o.ordered));
+
 /* the debts, measured */
 const shared = f => fs.readFileSync(path.join(__dirname, "..", f), "utf8");
 const debts = {

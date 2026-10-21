@@ -12,9 +12,17 @@ const read = f => fs.readFileSync(path.join(ROOT, f), "utf8");
 const J = f => JSON.parse(read(f));
 
 /* ---------- the artifacts, read from the code ---------- */
+/* the screens a domain's own console file registers (public/js/admin/<domain>.js: screen("key", …)) */
+function domainScreens() {
+  const dir = path.join(ROOT, "public/js/admin");
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir).filter(f => f.endsWith(".js")).flatMap(f => [...read("public/js/admin/" + f).matchAll(/^screen\("([a-z_]+)"/gm)].map(m => ({ key: m[1], domain: f.replace(/\.js$/, ""), file: "public/js/admin/" + f })));
+}
+/* the route sources: the shared route file and each domain's own (lib/routes/<domain>.js) */
+const routeFiles = () => ["lib/api.js", ...(fs.existsSync(path.join(ROOT, "lib/routes")) ? fs.readdirSync(path.join(ROOT, "lib/routes")).filter(f => f.endsWith(".js")).sort().map(f => "lib/routes/" + f) : [])];
+function routesIn(file) { return [...read(file).matchAll(/\["(GET|POST|PUT|PATCH|DELETE) (\/api\/[^"]+)"/g)].map(m => m[1] + " " + m[2]); }
 function artifacts() {
-  const api = read("lib/api.js");
-  const routes = [...api.matchAll(/\["(GET|POST|PUT|PATCH|DELETE) (\/api\/[^"]+)"/g)].map(m => m[1] + " " + m[2]);
+  const routes = routeFiles().flatMap(routesIn);
   const admin = read("public/js/admin.js").split("const NAVFLAT")[0];
   const platform = read("public/js/platform.js");
   const navStart = platform.indexOf("const NAV = ["), navEnd = platform.indexOf("\n];", navStart);
@@ -25,13 +33,13 @@ function artifacts() {
     const l = /^\s+\["([a-z0-9_-]+)", "/.exec(line); if (l) platformScreens.push({ key: l[1], group });
   }
   return {
-    files: fs.readdirSync(path.join(ROOT, "lib")).filter(f => f.endsWith(".js")).map(f => "lib/" + f),
+    files: fs.readdirSync(path.join(ROOT, "lib")).filter(f => f.endsWith(".js")).map(f => "lib/" + f).concat(routeFiles().slice(1)),
     tables: [...read("schema.sql").matchAll(/^CREATE TABLE (?:IF NOT EXISTS )?"?(\w+)/gm)].map(m => m[1]),
     routes,
     machines: J("lib/seed/states.json").stateMachines.map(m => m.key),
     capabilities: J("lib/seed/capabilities.json").CATALOG.map(c => c.key),
     registries: Object.keys(J("lib/seed/parity-registries.json").REG),
-    screens: [...admin.matchAll(/\["([a-z_]+)", "/g)].map(m => m[1]),
+    screens: [...admin.matchAll(/\["([a-z_]+)", "/g)].map(m => m[1]).concat(domainScreens().map(x => x.key)),
     platformScreens,
     pages: fs.readdirSync(path.join(ROOT, "public")).filter(f => f.endsWith(".html")).map(f => f.replace(/\.html$/, ""))
   };
@@ -55,13 +63,15 @@ function map() {
     out.kinds[kind] = { total: list.length, owned, unowned, double, stale };
   };
   const re = s => { const r = new RegExp(s); const f = x => r.test(x.replace(/^[A-Z]+ /, "")); f.src = s; return f; };
-  claim("files", a.files, d => d.owns.files);
+  /* a domain's own route file is its by convention */
+  claim("files", a.files, d => d.owns.files.concat(a.files.includes("lib/routes/" + d.key + ".js") ? ["lib/routes/" + d.key + ".js"] : []));
   claim("tables", a.tables, d => d.owns.tables);
   claim("routes", a.routes, d => d.owns.routes.map(re));
   claim("machines", a.machines, d => d.owns.machines);
   claim("capabilities", a.capabilities, d => d.owns.capabilities);
   claim("registries", a.registries, d => d.owns.registries);
-  claim("screens", a.screens, d => d.owns.screens);
+  /* a screen registered in a domain's own console file is that domain's by convention */
+  claim("screens", a.screens, d => d.owns.screens.concat(domainScreens().filter(x => x.domain === d.key).map(x => x.key)));
   claim("pages", a.pages, d => d.owns.pages);
   /* platform screens: claimed by key, else by their console group (a key claim wins over a group) */
   const keys = a.platformScreens.map(s => s.key);
@@ -88,4 +98,19 @@ if (require.main === module) {
     console.log(`${k.padEnd(15)} ${String(Object.keys(v.owned).length).padStart(4)} of ${String(v.total).padEnd(4)} owned · ${v.unowned.length} unowned · ${v.double.length} owned twice · ${v.stale.length} stale claims`);
   console.log(`console groups mixing domains: ${m.mixedGroups.length}`);
 }
-module.exports = { map, artifacts };
+/* two routes one request could match: they must sit in one domain's file, the literal one first */
+function overlaps() {
+  const seg = p => p.split("/").filter(Boolean);
+  const rs = routeFiles().flatMap(f => routesIn(f).map((r, i) => ({ r, f, i })));
+  const out = [];
+  for (let i = 0; i < rs.length; i++) for (let j = i + 1; j < rs.length; j++) {
+    const [ma, pa] = rs[i].r.split(" "), [mb, pb] = rs[j].r.split(" ");
+    if (ma !== mb) continue;
+    const x = seg(pa), y = seg(pb);
+    if (x.length !== y.length || !x.every((v, k) => v === y[k] || v.startsWith(":") || y[k].startsWith(":"))) continue;
+    const litFirst = x.filter(v => v.startsWith(":")).length <= y.filter(v => v.startsWith(":")).length;
+    out.push({ a: rs[i].r, b: rs[j].r, sameFile: rs[i].f === rs[j].f, ordered: litFirst });
+  }
+  return out;
+}
+module.exports = { map, artifacts, overlaps, routeFiles, domainScreens };
