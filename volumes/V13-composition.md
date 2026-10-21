@@ -24,7 +24,7 @@
 | **Contract** | [UCOS-PKG-000001 Package Architecture](#ucos-pkg-000001) |
 | **Artifacts** | [UCOS-PKG-000001](#ucos-pkg-000001) |
 | **Concepts** | 251 — `node _registry/compile.js --search <words> --kind concept --owner "Package"` |
-| **Code** | `lib/registry.js`, `lib/platform-setup.js`, `lib/platform-discovery.js`, `lib/compose.js` |
+| **Code** | `lib/registry.js`, `scripts/coverage-matrix.js`, `lib/platform-setup.js`, `lib/platform-discovery.js`, `lib/compose.js` |
 | **Managed in** | `_registry/domains.json` → `D-PKG` |
 
 **Live routes (10)** — what the platform serves today for this domain:

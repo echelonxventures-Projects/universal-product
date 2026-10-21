@@ -135,7 +135,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     const prov = await f("/api/providers");
     ok(prov.gateways[0].id === "stripe" && prov.country.code === "US", "US store → Stripe primary", prov.gateways.map(g => g.id).join(","));
     const order = await f("/api/checkout", "POST", { name: "Smoke Tester", address: "1 Test St", city: "Seattle", state: "WA", zip: "98109", gateway: "stripe", method: "card", carrier: "house-std", contexts: { tax: "gst_profile", payment: "online_capture" } });
-    ok(order.order && /stripe_sim_/.test(order.order.txn_ref), "stripe txn ref", order.order && order.order.txn_ref);
+    ok(order.order && /stripe_sim_/.test(order.order.txn_ref), "stripe txn ref", order.order ? order.order.txn_ref : order.error);
     ok(order.order.payment_status === "captured", "payment captured");
     ok(order.order.contexts && (order.order.contexts.tax || []).includes("gst_profile"), "contexts persisted on order", JSON.stringify(order.order && order.order.contexts));
     const badGw = await f("/api/cart", "POST", { id: "LX-BKS-001", qty: 1 });

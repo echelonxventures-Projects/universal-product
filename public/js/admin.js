@@ -669,13 +669,18 @@ async function vProdOptions() {
   const gate = await coGate("prodoptions");
   if (!gate.any) return coOff("product options", "🧩 Product Options", gate.off);
   const d = await api("/admin/options", {});
+  const fu = await api("/admin/options/follow-ups", {}).catch(() => ({ followUps: [] }));
+  const fuCard = `<div class="a-card"><h3>Follow-ups</h3><p class="a-sub">What chosen options leave to be done after an order: a visit to schedule, a plan in force, a proof to send.</p>
+    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>order</th><th>item</th><th>option</th><th>detail</th><th>when / until</th><th>state</th><th></th></tr></thead><tbody>
+    ${(fu.followUps || []).map(f => `<tr><td>#${f.order_id}</td><td><code>${esc(f.product_id)}</code></td><td>${esc(f.group_code)} ${esc(f.value_code)}</td><td>${esc(f.detail)}${f.proof_url ? ` · <a href="${esc(f.proof_url)}" target="_blank" rel="noopener">proof</a>` : ""}</td>
+      <td>${esc(f.scheduled_for || f.ends_at || "")}</td><td>${stateChip(f.state)}</td><td>${verbRow(fu.followUpActions, f, "/admin/options/follow-ups/" + f.id)}</td></tr>`).join("") || '<tr><td colspan="7">Nothing to do.</td></tr>'}</tbody></table></div></div>`;
   const byProduct = {}; (d.attached || []).forEach(a => { (byProduct[a.product_id] = byProduct[a.product_id] || { title: a.title, groups: [] }).groups.push(a.group_id); });
   return `<div class="a-head"><h2>🧩 Product Options</h2><p class="a-sub">Modifiers, add-ons and personal text, defined once and attached to any product. Group kinds are the <code>optionKinds</code> registry; the longest personal text is the <code>product_options</code> capability's param.</p></div>
   <div class="a-card"><h3>Option group</h3><div class="p-form">
     <div class="row"><label><span>Code *</span><input id="ogCode" placeholder="e.g. size"></label><label><span>Name *</span><input id="ogName"></label>
       <label><span>Kind</span><select id="ogKind">${(d.kinds || []).map(k => `<option value="${esc(k.key)}">${esc(k.name)}</option>`).join("")}</select></label></div>
     <div class="row"><label><span>Must choose at least</span><input id="ogMin" type="number" min="0" value="0"></label><label><span>May choose up to</span><input id="ogMax" type="number" min="1" value="1"></label><label><span>Longest text</span><input id="ogLen" type="number" min="1"></label></div>
-    <label><span>Values — one per line: code | name | price change</span><textarea id="ogVals" rows="4" placeholder="large | Large | 3.00"></textarea></label>
+    <label><span>Values — one per line: code | name | price change (a plan: | months)</span><textarea id="ogVals" rows="4" placeholder="large | Large | 3.00"></textarea></label>
     <input type="hidden" id="ogId"><button class="p-btn primary" id="ogSave">Save group</button></div></div>
   <div class="a-card"><h3>Groups</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>kind</th><th>choose</th><th>values</th><th></th></tr></thead><tbody>
     ${(d.groups || []).map(g => `<tr><td><code>${esc(g.code)}</code></td><td>${esc(g.name)}</td><td>${esc(g.kind_row ? g.kind_row.name : g.kind)}</td><td>${g.min_select}–${g.max_select}</td>
@@ -684,13 +689,13 @@ async function vProdOptions() {
   <div class="a-card"><h3>Attach to a product</h3><div class="p-form"><div class="row"><label><span>Product id *</span><input id="oaProd"></label></div>
     <div>${(d.groups || []).map(g => `<label style="display:inline-block;margin-right:12px"><input type="checkbox" data-oa="${g.id}"> ${esc(g.name)}</label>`).join("")}</div>
     <button class="p-btn primary" id="oaSave">Attach (replaces the product's groups)</button></div>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>groups</th></tr></thead><tbody>${Object.entries(byProduct).map(([pid, x]) => `<tr><td>${esc(x.title || pid)} <code>${esc(pid)}</code></td><td>${x.groups.map(id => esc(((d.groups || []).find(g => g.id === id) || {}).name || id)).join(", ")}</td></tr>`).join("") || '<tr><td colspan="2">No product has options yet.</td></tr>'}</tbody></table></div></div>`;
+    ${fuCard}<div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>groups</th></tr></thead><tbody>${Object.entries(byProduct).map(([pid, x]) => `<tr><td>${esc(x.title || pid)} <code>${esc(pid)}</code></td><td>${x.groups.map(id => esc(((d.groups || []).find(g => g.id === id) || {}).name || id)).join(", ")}</td></tr>`).join("") || '<tr><td colspan="2">No product has options yet.</td></tr>'}</tbody></table></div></div>`;
 }
 function wireProdOptions() {
   const save = $("#ogSave"); if (!save) return;
   window.__og = window.__og || null;
   save.onclick = () => postAndRender("/admin/options", { id: fieldVal("#ogId") || undefined, code: fieldVal("#ogCode"), name: fieldVal("#ogName"), kind: fieldVal("#ogKind"), min_select: fieldVal("#ogMin"), max_select: fieldVal("#ogMax"), max_length: fieldVal("#ogLen") || undefined,
-    values: fieldVal("#ogVals").split(/\n/).map(l => l.split("|").map(x => x.trim())).filter(x => x[0]).map(([code, name, delta]) => ({ code, name: name || code, price_delta: Number(delta) || 0 })) }, "POST", "Option group saved");
+    values: fieldVal("#ogVals").split(/\n/).map(l => l.split("|").map(x => x.trim())).filter(x => x[0]).map(([code, name, delta, months]) => ({ code, name: name || code, price_delta: Number(delta) || 0, ...(months ? { months: Number(months) } : {}) })) }, "POST", "Option group saved");
   $$("[data-og-edit]").forEach(b => b.onclick = async () => {
     const g = ((await api("/admin/options", {})).groups || []).find(x => String(x.id) === b.dataset.ogEdit); if (!g) return;
     $("#ogId").value = g.id; $("#ogCode").value = g.code; $("#ogName").value = g.name; $("#ogKind").value = g.kind; $("#ogMin").value = g.min_select; $("#ogMax").value = g.max_select; $("#ogLen").value = g.max_length || "";

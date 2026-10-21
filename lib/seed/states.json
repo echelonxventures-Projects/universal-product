@@ -3435,6 +3435,78 @@
      ]
     }
    }
+  },
+  {
+   "key": "option_follow_up",
+   "name": "What a chosen option leaves to be done",
+   "column": "status",
+   "initial": "open",
+   "states": "list:optionFollowUpStatuses",
+   "transitions": {
+    "open": [
+     "scheduled",
+     "proof_sent",
+     "done",
+     "cancelled"
+    ],
+    "scheduled": [
+     "done",
+     "cancelled",
+     "scheduled"
+    ],
+    "proof_sent": [
+     "done",
+     "open",
+     "cancelled"
+    ]
+   },
+   "actions": {
+    "schedule": "scheduled",
+    "send_proof": "proof_sent",
+    "approve": "done",
+    "request_changes": "open",
+    "complete": "done",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "open": {
+     "tags": [
+      "to_do"
+     ]
+    },
+    "scheduled": {
+     "tags": [
+      "to_do",
+      "booked"
+     ]
+    },
+    "proof_sent": {
+     "tags": [
+      "awaiting_shopper"
+     ]
+    },
+    "done": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
   }
  ]
 }

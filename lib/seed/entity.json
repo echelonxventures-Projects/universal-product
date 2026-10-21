@@ -3308,8 +3308,14 @@
      "key": "position",
      "label": "Position",
      "type": "number"
+    },
+    {
+     "key": "node_uid",
+     "label": "Master node",
+     "type": "readonly"
     }
-   ]
+   ],
+   "writeThrough": "store-taxonomy"
   },
   "attribute": {
    "table": "attribute_defs",
@@ -3387,7 +3393,8 @@
      "label": "Position",
      "type": "number"
     }
-   ]
+   ],
+   "writeThrough": "store-attributes"
   },
   "context_type": {
    "table": "context_types",

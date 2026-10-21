@@ -93,6 +93,33 @@ const sqlAt = ms => new Date(ms).toISOString().slice(0, 19).replace("T", " ");
       const k = await P("/api/platform/registries/optionKinds", "POST", { item: { key: "gift_note", name: "Gift note", takes_text: true } });
       ok(k.status === 200, "a new kind of option group is a registry row");
       await emptyCart(S);
+      /* services done for the item, plans that run for months, artwork proofed before making, samples */
+      const pX = p6;
+      const fit = await A("/api/admin/options" + Q, "POST", { code: "fit", name: "Installation", kind: "service", values: [{ code: "install", name: "Install at home", price_delta: 25 }] });
+      const cover = await A("/api/admin/options" + Q, "POST", { code: "cover", name: "Protection", kind: "plan", values: [{ code: "two_years", name: "Two years", price_delta: 40, months: 24 }] });
+      const art = await A("/api/admin/options" + Q, "POST", { code: "art", name: "Your artwork", kind: "artwork", min_select: 0, max_length: 200 });
+      const smp = await A("/api/admin/options" + Q, "POST", { code: "sample", name: "Sample", kind: "sample", values: [{ code: "swatch", name: "Swatch", price_delta: 2 }] });
+      ok(cover.body.group.values[0].extra.months === 24, "a plan's value declares its months");
+      await A(`/api/admin/options/products/${encodeURIComponent(pX.id)}${Q}`, "PUT", { groups: [fit.body.group.id, cover.body.group.id, art.body.group.id, smp.body.group.id] });
+      await S("/api/cart" + Q, "POST", { id: pX.id, qty: 1, terms: { options: { fit: ["install"], cover: ["two_years"], art: "https://example.com/art.png" } } });
+      const big2 = (await S("/api/cart" + Q)).body.items.find(i => i.product.id === pX.id && !/Swatch/.test([].concat(i.term_labels).join(" ")));
+      ok(big2 && Math.abs(big2.unitBase - (pX.price + 65)) < 0.01, "a service and a plan add their prices to the line", big2 && big2.unitBase);
+      const s3 = await S("/api/cart" + Q, "POST", { id: pX.id, qty: 5, terms: { options: { sample: ["swatch"] } } });
+      const sampleLine = (await S("/api/cart" + Q)).body.items.find(i => i.product.id === pX.id && /Swatch/.test([].concat(i.term_labels).join(" ")));
+      ok(sampleLine && Math.abs(sampleLine.unitBase - 2) < 0.01 && sampleLine.qty <= 2, "a sample sets the line's price and caps how many a bag holds", [s3.status, sampleLine && sampleLine.unitBase, sampleLine && sampleLine.qty]);
+      const co2 = await checkout(S);
+      ok(co2.status === 200, "checkout takes them", co2.body);
+      const fu = (await A("/api/admin/options/follow-ups" + Q)).body.followUps.filter(f => f.order_id === db.get("SELECT id FROM orders WHERE num=?", co2.body.order.num).id);
+      const visit = fu.find(f => f.group_code === "fit"), plan = fu.find(f => f.group_code === "cover"), proof = fu.find(f => f.group_code === "art");
+      ok(visit && visit.state && !plan.next.length && plan.ends_at && proof && proof.detail.includes("art.png"), "the order leaves a visit to schedule, a plan in force until its end, and a proof to send", fu.map(f => [f.group_code, f.status, f.ends_at]));
+      await A("/api/admin/options/follow-ups/" + visit.id + Q, "POST", { action: "schedule", scheduled_for: "2030-01-02 10:00" });
+      await A("/api/admin/options/follow-ups/" + proof.id + Q, "POST", { action: "send_proof", proof_url: "https://example.com/proof.png" });
+      const mine = (await S("/api/options/follow-ups" + Q)).body.followUps.find(f => f.id === proof.id);
+      ok(mine && mine.awaiting, "the shopper sees the proof awaiting their answer");
+      const ans = await S("/api/options/follow-ups/" + proof.id + Q, "POST", { action: "approve" });
+      ok(ans.status === 200 && ans.body.followUp.state.key === mine.next.find(n => n !== "open"), "and approves it", ans.body);
+      ok((await S("/api/options/follow-ups/" + visit.id + Q, "POST", { action: "complete" })).status === 409, "a shopper cannot close the store's own work");
+      await emptyCart(S);
     }
 
     console.log("▸ BOOKINGS — appointments and stays");

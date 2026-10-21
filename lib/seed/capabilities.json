@@ -1333,12 +1333,17 @@
    "domain": "shopper",
    "icon": "🧩",
    "shopper": true,
-   "description": "Modifiers, add-ons and personalisation: option groups defined once, attached to any product, each value with its own price change. What a kind of group does is an optionKinds row.",
+   "description": "Modifiers, add-ons and personalisation: option groups defined once, attached to any product, each value with its own price change. What a kind of group does is an optionKinds row. Kinds of group also cover services done for the item (installation, assembly), plans that run for months (warranty, protection), the shopper’s own artwork proofed before making, and samples at their own price.",
    "params": {
     "max_text_length": {
      "type": "number",
      "default": 60,
      "label": "Longest personal text a shopper may enter"
+    },
+    "sample_max_qty": {
+     "type": "number",
+     "default": 2,
+     "label": "Most samples of one item a bag may hold"
     }
    }
   },

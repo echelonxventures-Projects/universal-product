@@ -1044,6 +1044,33 @@
      "key": "text",
      "name": "Personal text",
      "takes_text": true
+    },
+    {
+     "key": "service",
+     "name": "A service done for this item (installation, assembly…)",
+     "takes_text": false,
+     "follow_up": true
+    },
+    {
+     "key": "plan",
+     "name": "A plan covering this item for months (warranty, protection…)",
+     "takes_text": false,
+     "follow_up": true,
+     "runs_months": true,
+     "settled": true
+    },
+    {
+     "key": "artwork",
+     "name": "The shopper’s own artwork, proofed before making",
+     "takes_text": true,
+     "follow_up": true
+    },
+    {
+     "key": "sample",
+     "name": "A sample of the item at its own price",
+     "takes_text": false,
+     "sets_price": true,
+     "limits_qty": true
     }
    ]
   },
@@ -1223,6 +1250,16 @@
     "approved",
     "rejected",
     "withdrawn"
+   ]
+  },
+  "optionFollowUpStatuses": {
+   "label": "Options · Follow-up statuses",
+   "items": [
+    "open",
+    "scheduled",
+    "proof_sent",
+    "done",
+    "cancelled"
    ]
   }
  }

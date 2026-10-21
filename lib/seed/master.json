@@ -26,10 +26,13 @@
   "viewAction": "view",
   "selectAction": "select",
   "storeNamespace": "tenant",
+  "attributeTypes": "vocab.attribute_types",
+  "attributePrefix": "attr.",
   "sellingModels": "vocab.selling_models",
   "authorityRules": "vocab.authority_rules",
   "blueprintSteps": "vocab.blueprint_steps",
   "discoveryClasses": "vocab.discovery_classes",
+  "platformTypes": "vocab.platform_types",
   "fulfilmentModes": "vocab.fulfilment",
   "contribution": "master.contribution",
   "addendum": "master.addendum",
@@ -2253,14 +2256,13 @@
      ],
      "recommends": [
       "instant_delivery",
-      "delivery_slots",
+      "instant_delivery",
       "substitutions",
       "sell_by_weight",
       "freshness_windows",
-      "cold_chain",
       "subscribe_save",
-      "service_fees",
-      "serviceable_areas"
+      "order_charges",
+      "instant_delivery"
      ],
      "children": [
       {
@@ -3284,7 +3286,7 @@
      "position": 3,
      "requires": [],
      "recommends": [
-      "size_guides",
+      "fit_profiles",
       "try_and_buy",
       "reviews",
       "rich_content"
@@ -4072,9 +4074,9 @@
      "position": 6,
      "requires": [],
      "recommends": [
-      "extended_warranty",
+      "product_options",
       "exchange_offers",
-      "installation_booking",
+      "product_options",
       "bnpl",
       "reviews"
      ],
@@ -4475,8 +4477,8 @@
      "position": 7,
      "requires": [],
      "recommends": [
-      "installation_booking",
-      "extended_warranty",
+      "product_options",
+      "product_options",
       "exchange_offers",
       "large_item_delivery"
      ],
@@ -4709,7 +4711,7 @@
      "position": 8,
      "requires": [],
      "recommends": [
-      "assembly_booking",
+      "product_options",
       "large_item_delivery",
       "rich_content"
      ],
@@ -5224,7 +5226,7 @@
      "position": 10,
      "requires": [],
      "recommends": [
-      "size_guides",
+      "fit_profiles",
       "reviews"
      ],
      "children": [
@@ -5467,7 +5469,7 @@
      "requires": [],
      "recommends": [
       "reviews",
-      "preorders"
+      "advance_orders"
      ],
      "children": [
       {
@@ -5791,8 +5793,8 @@
      "position": 13,
      "requires": [],
      "recommends": [
-      "fitment",
-      "installation_booking",
+      "fit_profiles",
+      "product_options",
       "lead_capture"
      ],
      "children": [
@@ -6485,13 +6487,13 @@
      "icon": "💊",
      "position": 0,
      "requires": [
-      "batch_expiry"
+      "lot_tracking"
      ],
      "recommends": [
       "prescriptions",
-      "schedule_rules",
-      "generic_alternatives",
-      "refill_reminders",
+      "prescriptions",
+      "alternatives",
+      "replenishment_reminders",
       "instant_delivery"
      ],
      "children": [
@@ -6942,7 +6944,7 @@
       "lab_tests"
      ],
      "recommends": [
-      "health_records",
+      "records_vault",
       "conversations"
      ],
      "children": [
@@ -7118,12 +7120,12 @@
      "position": 3,
      "requires": [
       "bookings",
-      "practitioner_verification"
+      "credential_verification"
      ],
      "recommends": [
       "media_sessions",
       "conversations",
-      "health_records",
+      "records_vault",
       "prescriptions"
      ],
      "children": [
@@ -7326,6 +7328,48 @@
          "position": 2
         }
        ]
+      },
+      {
+       "key": "healthcare.medical_equipment",
+       "kind": "master.category",
+       "title": {
+        "en": "Medical Equipment"
+       },
+       "position": 4,
+       "children": [
+        {
+         "key": "healthcare.medical_equipment.monitors",
+         "kind": "master.subcategory",
+         "title": {
+          "en": "Monitors"
+         },
+         "position": 0
+        },
+        {
+         "key": "healthcare.medical_equipment.diagnostic_devices",
+         "kind": "master.subcategory",
+         "title": {
+          "en": "Diagnostic Devices"
+         },
+         "position": 1
+        },
+        {
+         "key": "healthcare.medical_equipment.hospital_supplies",
+         "kind": "master.subcategory",
+         "title": {
+          "en": "Hospital Supplies"
+         },
+         "position": 2
+        },
+        {
+         "key": "healthcare.medical_equipment.respiratory_equipment",
+         "kind": "master.subcategory",
+         "title": {
+          "en": "Respiratory Equipment"
+         },
+         "position": 3
+        }
+       ]
       }
      ]
     }
@@ -7354,8 +7398,8 @@
      "recommends": [
       "conversations",
       "media_sessions",
-      "per_minute_billing",
-      "practitioner_verification"
+      "metered_billing",
+      "credential_verification"
      ],
      "children": [
       {
@@ -7735,7 +7779,7 @@
      ],
      "recommends": [
       "conversations",
-      "practitioner_verification"
+      "credential_verification"
      ],
      "children": [
       {
@@ -7957,7 +8001,7 @@
       "instant_delivery",
       "dispatch_batching",
       "kitchen_hours",
-      "tips"
+      "order_charges"
      ],
      "children": [
       {
@@ -9839,7 +9883,7 @@
       "rfq_bidding",
       "moq_enforcement",
       "segment_pricing",
-      "sample_orders"
+      "product_options"
      ],
      "children": [
       {
@@ -10534,7 +10578,7 @@
      "position": 4,
      "requires": [],
      "recommends": [
-      "installation_booking"
+      "product_options"
      ],
      "children": [
       {
@@ -13112,8 +13156,8 @@
    "forKinds": []
   },
   {
-   "key": "attr.fitment",
-   "name": "fitment",
+   "key": "attr.fit_profiles",
+   "name": "fit_profiles",
    "title": {
     "en": "Fits vehicles"
    },
@@ -14321,8 +14365,8 @@
       "recommends": [
        "conversations",
        "media_sessions",
-       "per_minute_billing",
-       "practitioner_verification"
+       "metered_billing",
+       "credential_verification"
       ],
       "universes": [],
       "service": true,
@@ -14478,7 +14522,7 @@
       ],
       "requires": [],
       "recommends": [
-       "extended_warranty"
+       "product_options"
       ],
       "universes": [],
       "service": true
@@ -14602,7 +14646,7 @@
        "lab_tests"
       ],
       "recommends": [
-       "health_records"
+       "records_vault"
       ],
       "universes": [],
       "service": true,
@@ -14625,12 +14669,12 @@
        "collected"
       ],
       "requires": [
-       "batch_expiry"
+       "lot_tracking"
       ],
       "recommends": [
        "prescriptions",
-       "generic_alternatives",
-       "refill_reminders"
+       "alternatives",
+       "replenishment_reminders"
       ],
       "universes": []
      }
@@ -14654,9 +14698,8 @@
       ],
       "recommends": [
        "sell_by_weight",
-       "cold_chain",
        "substitutions",
-       "delivery_slots"
+       "instant_delivery"
       ],
       "universes": []
      }
@@ -14680,7 +14723,7 @@
       ],
       "recommends": [
        "kitchen_hours",
-       "tips",
+       "order_charges",
        "instant_delivery"
       ],
       "universes": []
@@ -14837,8 +14880,8 @@
       ],
       "requires": [],
       "recommends": [
-       "installation_booking",
-       "extended_warranty"
+       "product_options",
+       "product_options"
       ],
       "universes": []
      }
@@ -14984,7 +15027,7 @@
        "product_options"
       ],
       "recommends": [
-       "customisation_proofs"
+       "product_options"
       ],
       "universes": []
      }
@@ -15080,7 +15123,7 @@
       "requires": [],
       "recommends": [
        "instant_delivery",
-       "delivery_slots"
+       "instant_delivery"
       ],
       "physical": true
      }
@@ -15999,7 +16042,9 @@
      "title": {
       "en": "Attribute definitions"
      },
-     "data": {}
+     "data": {
+      "attribute": true
+     }
     },
     {
      "key": "vocab.permission_objects.classification",
@@ -16007,7 +16052,9 @@
      "title": {
       "en": "Categories and classifications"
      },
-     "data": {}
+     "data": {
+      "classification": true
+     }
     },
     {
      "key": "vocab.permission_objects.relationship",
@@ -16367,7 +16414,7 @@
       ],
       "requires": [
        "prescriptions",
-       "batch_expiry"
+       "lot_tracking"
       ]
      }
     },
@@ -16413,7 +16460,7 @@
        "consultancy.legal"
       ],
       "requires": [
-       "practitioner_verification"
+       "credential_verification"
       ]
      }
     },
@@ -16432,6 +16479,870 @@
       "requires": [
        "kyc"
       ]
+     }
+    }
+   ]
+  },
+  {
+   "key": "vocab.attribute_types",
+   "title": {
+    "en": "Attribute field types"
+   },
+   "terms": [
+    {
+     "key": "vocab.attribute_types.text",
+     "name": "text",
+     "title": {
+      "en": "Text"
+     },
+     "data": {
+      "kernel": "text",
+      "default": true
+     }
+    },
+    {
+     "key": "vocab.attribute_types.number",
+     "name": "number",
+     "title": {
+      "en": "Number"
+     },
+     "data": {
+      "kernel": "number"
+     }
+    },
+    {
+     "key": "vocab.attribute_types.whole_number",
+     "name": "whole_number",
+     "title": {
+      "en": "Whole number"
+     },
+     "data": {
+      "kernel": "integer"
+     }
+    },
+    {
+     "key": "vocab.attribute_types.select",
+     "name": "select",
+     "title": {
+      "en": "Choice"
+     },
+     "data": {
+      "kernel": "text",
+      "choice": true
+     }
+    },
+    {
+     "key": "vocab.attribute_types.multi",
+     "name": "multi",
+     "title": {
+      "en": "Several values"
+     },
+     "data": {
+      "kernel": "list"
+     }
+    },
+    {
+     "key": "vocab.attribute_types.bool",
+     "name": "bool",
+     "title": {
+      "en": "Yes or no"
+     },
+     "data": {
+      "kernel": "boolean"
+     }
+    },
+    {
+     "key": "vocab.attribute_types.date",
+     "name": "date",
+     "title": {
+      "en": "Date"
+     },
+     "data": {
+      "kernel": "instant"
+     }
+    },
+    {
+     "key": "vocab.attribute_types.json",
+     "name": "json",
+     "title": {
+      "en": "Structured"
+     },
+     "data": {
+      "kernel": "record"
+     }
+    },
+    {
+     "key": "vocab.attribute_types.translated",
+     "name": "translated",
+     "title": {
+      "en": "Text in several languages"
+     },
+     "data": {
+      "kernel": "expression"
+     }
+    },
+    {
+     "key": "vocab.attribute_types.measure",
+     "name": "measure",
+     "title": {
+      "en": "Amount in a unit"
+     },
+     "data": {
+      "kernel": "quantity"
+     }
+    },
+    {
+     "key": "vocab.attribute_types.reference",
+     "name": "reference",
+     "title": {
+      "en": "Reference"
+     },
+     "data": {
+      "kernel": "node"
+     }
+    }
+   ]
+  },
+  {
+   "key": "vocab.platform_types",
+   "title": {
+    "en": "Coverage matrix: types of platform"
+   },
+   "terms": [
+    {
+     "key": "vocab.platform_types.everything_marketplace",
+     "name": "everything_marketplace",
+     "title": {
+      "en": "General everything marketplace"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "electronics",
+        "fashion",
+        "furniture",
+        "media",
+        "beauty",
+        "baby_kids",
+        "sports",
+        "digital",
+        "physical"
+       ],
+       "features": [
+        "buy_box",
+        "seller_health",
+        "buyer_protection",
+        "smart_fulfilment",
+        "sponsored_ads",
+        "brand_registry",
+        "reviews",
+        "qna",
+        "wish_lists",
+        "product_alerts",
+        "pickup_points",
+        "membership",
+        "subscribe_save"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.national_marketplace",
+     "name": "national_marketplace",
+     "title": {
+      "en": "National multi-category marketplace"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "electronics",
+        "fashion",
+        "appliances",
+        "grocery",
+        "physical"
+       ],
+       "features": [
+        "buy_box",
+        "seller_health",
+        "buyer_protection",
+        "bnpl"
+       ],
+       "requests": [
+        "coupons",
+        "instalments_without_cost",
+        "exchange_offers",
+        "deals"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.cross_border_marketplace",
+     "name": "cross_border_marketplace",
+     "title": {
+      "en": "Cross-border bargain marketplace"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "fashion",
+        "electronics",
+        "household",
+        "physical"
+       ],
+       "fulfilment": [
+        "shipped"
+       ],
+       "requests": [
+        "cross_border",
+        "cross_border",
+        "cross_border",
+        "supplier_direct",
+        "gamified_rewards"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.hypermarket_chain",
+     "name": "hypermarket_chain",
+     "title": {
+      "en": "Hypermarket and warehouse club"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "hybrid",
+       "offerings": [
+        "grocery",
+        "household",
+        "appliances",
+        "perishable"
+       ],
+       "fulfilment": [
+        "collected",
+        "delivered_local"
+       ],
+       "features": [
+        "store_inventory",
+        "membership"
+       ],
+       "requests": [
+        "segment_pricing",
+        "price_match"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.wholesale_exchange",
+     "name": "wholesale_exchange",
+     "title": {
+      "en": "B2B wholesale exchange"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "industrial",
+        "construction",
+        "chemicals",
+        "raw_material"
+       ],
+       "features": [
+        "rfq_bidding",
+        "trade_assurance",
+        "gold_supplier",
+        "export_documents",
+        "letters_of_credit",
+        "segment_pricing",
+        "moq_enforcement"
+       ],
+       "requests": [
+        "product_options"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.quick_commerce",
+     "name": "quick_commerce",
+     "title": {
+      "en": "Quick commerce"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "single_seller",
+       "offerings": [
+        "grocery",
+        "household",
+        "perishable"
+       ],
+       "fulfilment": [
+        "delivered_local"
+       ],
+       "features": [
+        "instant_delivery",
+        "store_inventory",
+        "dispatch_batching",
+        "substitutions"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.fresh_grocery",
+     "name": "fresh_grocery",
+     "title": {
+      "en": "Fresh and perishables grocery"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "single_seller",
+       "offerings": [
+        "grocery.fresh_produce",
+        "grocery.meat_fish_and_poultry",
+        "grocery.dairy_eggs_and_bakery",
+        "perishable"
+       ],
+       "fulfilment": [
+        "delivered_local",
+        "collected"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.online_pharmacy",
+     "name": "online_pharmacy",
+     "title": {
+      "en": "Online pharmacy and health"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "pharma",
+        "wellness",
+        "diagnostics",
+        "healthcare",
+        "medicine",
+        "lab_test",
+        "consultation"
+       ],
+       "fulfilment": [
+        "delivered_local",
+        "visit_at_home",
+        "chat",
+        "video_call"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.food_delivery",
+     "name": "food_delivery",
+     "title": {
+      "en": "Food and restaurant delivery"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "food_service",
+        "meal"
+       ],
+       "fulfilment": [
+        "delivered_local"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.fashion",
+     "name": "fashion",
+     "title": {
+      "en": "Fashion and lifestyle"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "fashion",
+        "beauty",
+        "physical"
+       ],
+       "fulfilment": [
+        "shipped"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.electronics",
+     "name": "electronics",
+     "title": {
+      "en": "Electronics and appliances"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "electronics",
+        "appliances",
+        "equipment"
+       ],
+       "fulfilment": [
+        "shipped"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.furniture",
+     "name": "furniture",
+     "title": {
+      "en": "Furniture and home"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "single_seller",
+       "offerings": [
+        "furniture",
+        "physical"
+       ],
+       "fulfilment": [
+        "shipped"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.automotive_parts",
+     "name": "automotive_parts",
+     "title": {
+      "en": "Automotive parts"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "automotive",
+        "physical"
+       ],
+       "fulfilment": [
+        "shipped"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.digital_goods",
+     "name": "digital_goods",
+     "title": {
+      "en": "Digital goods"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "single_seller",
+       "offerings": [
+        "digital",
+        "software",
+        "license"
+       ],
+       "fulfilment": [
+        "downloaded"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.education",
+     "name": "education",
+     "title": {
+      "en": "Education"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "education",
+        "course"
+       ],
+       "fulfilment": [
+        "streamed",
+        "video_call"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.subscription_boxes",
+     "name": "subscription_boxes",
+     "title": {
+      "en": "Subscription boxes"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "single_seller",
+       "offerings": [
+        "subscription",
+        "subscription.boxes"
+       ],
+       "fulfilment": [
+        "shipped"
+       ],
+       "features": [
+        "subscribe_save"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.consultancy",
+     "name": "consultancy",
+     "title": {
+      "en": "Services and consultancy"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "consultancy",
+        "fitness_wellbeing",
+        "consultation"
+       ],
+       "fulfilment": [
+        "chat",
+        "audio_call",
+        "video_call",
+        "appointment_in_person"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.rentals",
+     "name": "rentals",
+     "title": {
+      "en": "Rentals and stays"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "rental",
+        "travel.stays",
+        "rental",
+        "stay"
+       ],
+       "fulfilment": [
+        "on_site",
+        "delivered_local"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.travel",
+     "name": "travel",
+     "title": {
+      "en": "Travel"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "travel",
+        "journey",
+        "stay"
+       ],
+       "fulfilment": [
+        "downloaded",
+        "on_site"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.ticketing",
+     "name": "ticketing",
+     "title": {
+      "en": "Event ticketing"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "events",
+        "event_ticket"
+       ],
+       "fulfilment": [
+        "downloaded"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.resale",
+     "name": "resale",
+     "title": {
+      "en": "Resale and classifieds"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "peer_to_peer",
+       "offerings": [
+        "retail.second_hand",
+        "automotive.vehicles",
+        "realestate",
+        "vehicle",
+        "property"
+       ],
+       "fulfilment": [
+        "shipped",
+        "collected"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.auction_house",
+     "name": "auction_house",
+     "title": {
+      "en": "Auction house"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "single_seller",
+       "offerings": [
+        "art",
+        "luxury",
+        "physical"
+       ],
+       "fulfilment": [
+        "shipped",
+        "collected"
+       ],
+       "features": [
+        "auctions",
+        "escrow"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.group_buying",
+     "name": "group_buying",
+     "title": {
+      "en": "Group and social buying"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "single_seller",
+       "offerings": [
+        "household",
+        "physical"
+       ],
+       "fulfilment": [
+        "shipped"
+       ],
+       "features": [
+        "group_buying",
+        "deals",
+        "countdown"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.live_selling",
+     "name": "live_selling",
+     "title": {
+      "en": "Live and social video selling"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "fashion",
+        "beauty",
+        "live_session"
+       ],
+       "fulfilment": [
+        "shipped",
+        "streamed"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.reseller_commerce",
+     "name": "reseller_commerce",
+     "title": {
+      "en": "Reseller and social commerce"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "reseller",
+       "offerings": [
+        "fashion",
+        "household",
+        "physical"
+       ],
+       "fulfilment": [
+        "shipped"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.dropshipping",
+     "name": "dropshipping",
+     "title": {
+      "en": "Dropshipping"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "dropship",
+       "offerings": [
+        "household",
+        "electronics",
+        "physical"
+       ],
+       "fulfilment": [
+        "shipped"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.made_to_order",
+     "name": "made_to_order",
+     "title": {
+      "en": "Made-to-order and print on demand"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "single_seller",
+       "offerings": [
+        "made_to_order",
+        "fashion"
+       ],
+       "fulfilment": [
+        "shipped"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.gifts_flowers",
+     "name": "gifts_flowers",
+     "title": {
+      "en": "Gifts and flowers"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "single_seller",
+       "offerings": [
+        "gifts",
+        "physical"
+       ],
+       "fulfilment": [
+        "delivered_local"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.advance_orders",
+     "name": "advance_orders",
+     "title": {
+      "en": "Pre-orders and crowdfunding"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "single_seller",
+       "offerings": [
+        "electronics",
+        "physical"
+       ],
+       "fulfilment": [
+        "shipped"
+       ],
+       "requests": [
+        "advance_orders",
+        "advance_orders"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.super_app",
+     "name": "super_app",
+     "title": {
+      "en": "Payments-led super app"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "finance",
+        "telecom",
+        "insurance"
+       ],
+       "features": [
+        "upi_collect",
+        "qr_pay",
+        "payment_links",
+        "bbps",
+        "recharge",
+        "p2p_transfer",
+        "bnpl",
+        "lending",
+        "insurance",
+        "kyc"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.mobility",
+     "name": "mobility",
+     "title": {
+      "en": "Mobility"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "platform",
+       "offerings": [
+        "mobility",
+        "ride"
+       ],
+       "fulfilment": [
+        "on_site"
+       ]
+      }
+     }
+    },
+    {
+     "key": "vocab.platform_types.operations",
+     "name": "operations",
+     "title": {
+      "en": "Operations"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "platform",
+       "features": [
+        "workforce",
+        "procurement",
+        "manufacturing",
+        "projects"
+       ]
+      }
      }
     }
    ]
@@ -16780,7 +17691,11 @@
   "owner": "Package",
   "valueType": "record",
   "appliedAnswer": "applied",
-  "accessLevel": "sell"
+  "accessLevel": "sell",
+  "objects": [
+   "item",
+   "classification"
+  ]
  },
  "projections": {
   "productTypes": {

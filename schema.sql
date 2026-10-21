@@ -150,11 +150,11 @@ CREATE TABLE taxonomy (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
   parent_id INTEGER, level TEXT NOT NULL, key TEXT NOT NULL, name TEXT NOT NULL,
   icon TEXT DEFAULT '', attrs TEXT DEFAULT '{}', active INTEGER DEFAULT 1, position INTEGER DEFAULT 0
-, deleted_at TEXT);
+, deleted_at TEXT, node_uid TEXT);
 CREATE TABLE attribute_defs (
   tenant_id INTEGER NOT NULL, key TEXT NOT NULL, label TEXT NOT NULL, grp TEXT DEFAULT 'General',
   type TEXT DEFAULT 'text', unit TEXT DEFAULT '', options TEXT DEFAULT '[]', validation TEXT DEFAULT '{}',
-  industry TEXT DEFAULT '', position INTEGER DEFAULT 0, category TEXT DEFAULT '', deleted_at TEXT, PRIMARY KEY (tenant_id, key)
+  industry TEXT DEFAULT '', position INTEGER DEFAULT 0, category TEXT DEFAULT '', deleted_at TEXT, node_uid TEXT, PRIMARY KEY (tenant_id, key)
 );
 CREATE TABLE skus (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL,
@@ -882,12 +882,6 @@ CREATE TABLE policies (
   status TEXT NOT NULL DEFAULT 'active', created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_policy_domain ON policies(domain, priority, status);
-CREATE TABLE store_product_config (
-  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
-  global_product_id TEXT NOT NULL, category TEXT DEFAULT '', permissions TEXT DEFAULT 'read',
-  config TEXT DEFAULT '{}', enabled INTEGER DEFAULT 1,
-  created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE (tenant_id, global_product_id)
-);
 CREATE TABLE identity_providers (
   id TEXT PRIMARY KEY, tenant_id INTEGER NOT NULL, provider_type TEXT NOT NULL, name TEXT NOT NULL,
   enabled INTEGER DEFAULT 1, config TEXT DEFAULT '{}', display_order INTEGER DEFAULT 0,
@@ -924,23 +918,6 @@ CREATE TABLE identity_login_states (
   expires_at INTEGER NOT NULL, created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_login_state ON identity_login_states(tenant_id, expires_at);
-CREATE TABLE global_products (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  sku TEXT NOT NULL UNIQUE,
-  name TEXT NOT NULL,
-  description TEXT DEFAULT '',
-  category TEXT DEFAULT '',
-  universe TEXT DEFAULT 'physical_products',
-  price REAL DEFAULT 0,
-  tax_class TEXT DEFAULT 'standard',
-  is_service INTEGER DEFAULT 0,
-  attributes TEXT DEFAULT '{}',
-  media TEXT DEFAULT '[]',
-  profile TEXT DEFAULT '{}',
-  status TEXT DEFAULT 'draft',
-  created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  updated_at TEXT
-);
 CREATE INDEX ix_goip_touch ON goip_touchpoints(tenant_id, owner, created_at);
 CREATE INDEX ix_goip_touch_party ON goip_touchpoints(tenant_id, party_type, party);
 CREATE INDEX ix_goip_budget ON goip_budgets(tenant_id, funder, unit, period, status);
@@ -1588,9 +1565,16 @@ CREATE TABLE option_groups (
 CREATE UNIQUE INDEX ux_option_group ON option_groups(tenant_id, code);
 CREATE TABLE option_values (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, group_id INTEGER NOT NULL, code TEXT NOT NULL, name TEXT NOT NULL,
-  price_delta REAL NOT NULL DEFAULT 0, position INTEGER NOT NULL DEFAULT 0, active INTEGER NOT NULL DEFAULT 1
+  price_delta REAL NOT NULL DEFAULT 0, position INTEGER NOT NULL DEFAULT 0, active INTEGER NOT NULL DEFAULT 1, extra TEXT NOT NULL DEFAULT '{}'
 );
 CREATE UNIQUE INDEX ux_option_value ON option_values(group_id, code);
+CREATE TABLE option_follow_ups (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, order_id INTEGER NOT NULL, product_id TEXT NOT NULL,
+  owner TEXT NOT NULL, group_code TEXT NOT NULL, value_code TEXT NOT NULL DEFAULT '', kind TEXT NOT NULL, detail TEXT NOT NULL DEFAULT '',
+  scheduled_for TEXT, ends_at TEXT, proof_url TEXT NOT NULL DEFAULT '', note TEXT NOT NULL DEFAULT '', status TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), decided_at TEXT
+);
+CREATE INDEX ix_option_follow_ups ON option_follow_ups(tenant_id, order_id);
 CREATE TABLE product_option_groups (
   tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, group_id INTEGER NOT NULL, position INTEGER NOT NULL DEFAULT 0,
   PRIMARY KEY (tenant_id, product_id, group_id)
@@ -2237,10 +2221,10 @@ CREATE INDEX ix_k_events_subject ON k_events(subject, seq);
 CREATE INDEX ix_k_events_at ON k_events(at);
 CREATE TABLE k_kinds (
     id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, kind TEXT NOT NULL,
-    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER);
+    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER, scope TEXT);
 CREATE INDEX ix_k_kinds ON k_kinds(namespace, kind, rec_to);
 CREATE TABLE k_nodes (
-    uid TEXT PRIMARY KEY, namespace TEXT NOT NULL, kind TEXT NOT NULL, rec_from INTEGER NOT NULL);
+    uid TEXT PRIMARY KEY, namespace TEXT NOT NULL, kind TEXT NOT NULL, rec_from INTEGER NOT NULL, scope TEXT);
 CREATE INDEX ix_k_nodes_kind ON k_nodes(namespace, kind);
 CREATE TABLE k_identifiers (
     id INTEGER PRIMARY KEY AUTOINCREMENT, node TEXT NOT NULL, scheme TEXT NOT NULL, value TEXT NOT NULL,
@@ -2249,7 +2233,7 @@ CREATE INDEX ix_k_ident_value ON k_identifiers(scheme, value, rec_to);
 CREATE INDEX ix_k_ident_node ON k_identifiers(node, rec_to);
 CREATE TABLE k_hierarchies (
     id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, hierarchy TEXT NOT NULL,
-    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER);
+    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER, scope TEXT);
 CREATE INDEX ix_k_hier ON k_hierarchies(namespace, hierarchy, rec_to);
 CREATE TABLE k_placements (
     id INTEGER PRIMARY KEY AUTOINCREMENT, hierarchy TEXT NOT NULL, node TEXT NOT NULL, parent TEXT,
@@ -2274,7 +2258,7 @@ CREATE INDEX ix_k_shapes ON k_shapes(system, rec_to);
 CREATE INDEX ix_k_shapes_node ON k_shapes(node, system, rec_to);
 CREATE TABLE k_declarations (
     id INTEGER PRIMARY KEY AUTOINCREMENT, family TEXT NOT NULL, namespace TEXT NOT NULL, name TEXT NOT NULL,
-    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER);
+    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER, scope TEXT);
 CREATE INDEX ix_k_decl ON k_declarations(family, namespace, name, rec_to);
 CREATE TABLE k_assignments (
     id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, setting TEXT NOT NULL, scope TEXT,

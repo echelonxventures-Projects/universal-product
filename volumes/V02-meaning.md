@@ -279,7 +279,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-SEM-000001 Universal Semantic Architecture](#ucos-sem-000001) |
 | **Artifacts** | [UCOS-SEM-000001](#ucos-sem-000001), [UCOS-ONT-000001](#ucos-ont-000001), [UCOS-TAX-000001](#ucos-tax-000001), [UCOS-CLS-000001](#ucos-cls-000001) |
 | **Concepts** | 314 — `node _registry/compile.js --search <words> --kind concept --owner "Semantic"` |
-| **Code** | `lib/platform-master.js`, `lib/seed/master.json` |
+| **Code** | `lib/store-taxonomy.js`, `lib/platform-master.js`, `lib/seed/master.json` |
 | **Managed in** | `_registry/domains.json` → `D-SEM` |
 
 **Live routes (12)** — what the platform serves today for this domain:
