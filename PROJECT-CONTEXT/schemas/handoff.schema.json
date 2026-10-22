@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ctx/handoff.schema.json",
+  "$comment": "A durable task handoff. It must let a fresh agent continue without the previous agent's conversation. Every completed or verified claim carries evidence; anything without evidence goes in 'unverified'.",
+  "type": "object",
+  "required": ["schema", "id", "task", "createdAt", "agent", "repository", "objective", "completed", "notCompleted", "unverified", "mustNotChange", "commands", "tests", "nextAction", "verification", "contextPacks"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "ctx-handoff/1" },
+    "id": { "type": "string", "pattern": "^HO-[A-Z0-9-]+-[0-9]{3,}$" },
+    "task": { "type": "string", "pattern": "^TASK-[A-Z0-9-]+$" },
+    "createdAt": { "type": "string", "minLength": 1 },
+    "agent": { "type": "string", "minLength": 1 },
+    "repository": {
+      "type": "object",
+      "required": ["branch", "head", "dirty"],
+      "additionalProperties": false,
+      "properties": {
+        "branch": { "type": ["string", "null"] },
+        "head": { "type": ["string", "null"] },
+        "upstream": { "type": ["string", "null"] },
+        "dirty": { "type": ["boolean", "null"] },
+        "status": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "objective": { "type": "string", "minLength": 1 },
+    "state": { "enum": ["planned", "in-progress", "blocked", "done", "abandoned"] },
+    "completed": { "type": "array", "items": { "$ref": "#/definitions/evidenced" } },
+    "notCompleted": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "unverified": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "regressions": { "type": "array", "items": { "type": "string" } },
+    "mustNotChange": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "prerequisites": { "type": "array", "items": { "type": "string" } },
+    "filesInspected": { "type": "array", "items": { "type": "string" } },
+    "filesChanged": { "type": "array", "items": { "type": "string" } },
+    "commands": { "type": "array", "items": { "$ref": "#/definitions/command" } },
+    "tests": { "type": "array", "items": { "$ref": "#/definitions/command" } },
+    "blockers": { "type": "array", "items": { "type": "string" } },
+    "nextAction": { "type": "string", "minLength": 1 },
+    "verification": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "contextPacks": { "type": "array", "items": { "type": "object", "required": ["id", "fingerprint"], "additionalProperties": false, "properties": { "id": { "type": "string" }, "fingerprint": { "type": "string" } } } },
+    "receipt": { "type": "string" },
+    "previous": { "type": ["string", "null"] }
+  },
+  "definitions": {
+    "evidenced": {
+      "type": "object",
+      "required": ["claim", "evidence"],
+      "additionalProperties": false,
+      "properties": { "claim": { "type": "string", "minLength": 1 }, "evidence": { "type": "string", "minLength": 1 } }
+    },
+    "command": {
+      "type": "object",
+      "required": ["command", "result"],
+      "additionalProperties": false,
+      "properties": {
+        "command": { "type": "string", "minLength": 1 },
+        "result": { "enum": ["passed", "failed", "ran", "not-run", "error"] },
+        "exitCode": { "type": ["integer", "null"] },
+        "observed": { "type": "string" },
+        "preExisting": { "type": "boolean" }
+      }
+    }
+  }
+}

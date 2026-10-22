@@ -1,0 +1,162 @@
+{
+  "acceptance": [
+    "0 unprocessed segments among sources whose bytes are available",
+    "every newly accounted segment is either cited by a record or classified with a segment-specific rationale",
+    "inaccessible and not-retained sources remain explicit gaps with no fabricated content",
+    "coverage reports rule-classified vs individually reviewed segments with denominators",
+    "npm run context:verify and node test/context.js pass"
+  ],
+  "agent": "claude-code-session-2026-10-22",
+  "budgetBytes": 24000,
+  "checks": [
+    {
+      "detail": "claude/modest-babbage-kyejdn @ e1a36137b923 (dirty: 5 paths)",
+      "name": "repository identified",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "knowledge valid",
+      "ok": true
+    },
+    {
+      "detail": "374 edges",
+      "name": "graph valid",
+      "ok": true
+    },
+    {
+      "detail": "PROJECT-CONTEXT/00-MASTER-INDEX.md",
+      "name": "master index present",
+      "ok": true
+    },
+    {
+      "detail": "Process the unprocessed source segments and audit segment accounting",
+      "name": "task resolved",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "packs fresh",
+      "ok": true
+    },
+    {
+      "detail": "TASK-CTX-0001",
+      "name": "prerequisites available",
+      "ok": true
+    }
+  ],
+  "constraints": [
+    "CST-AUTHORIZED-SIDE-EFFECTS",
+    "CST-CONFIG-OVER-CODE",
+    "CST-EVIDENCE-BEFORE-CLAIMS",
+    "CST-EXPLAINABILITY",
+    "CST-FROZEN-PRIMITIVES",
+    "CST-KNOWLEDGE-ONCE",
+    "CST-NO-DESTRUCTIVE-CLEANUP",
+    "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+    "CST-NO-SECRETS",
+    "CST-NODE-ENGINE",
+    "CST-PRESERVE-WORKING-TREE",
+    "CST-PROJECTION-LAW",
+    "CST-SEAL-DERIVED",
+    "CST-SUPERSEDED-NOT-AUTHORITY",
+    "CST-ZERO-HARDCODING"
+  ],
+  "createdAt": "2026-10-22T07:32:07.426Z",
+  "decisions": [
+    "DEC-CTX-GIT-AS-ARCHIVE",
+    "DEC-CTX-MEMORY-LEDGER-HISTORICAL"
+  ],
+  "exclusions": [
+    "No reconstruction of any missing conversation or prompt",
+    "No change to product runtime, _registry/ or the constitutional projections",
+    "The seal defect (ISS-CANONICAL-INPUT-MISNAMED) stays separate",
+    "No merge or deployment"
+  ],
+  "gaps": [
+    {
+      "code": "sequential-reading",
+      "message": "required reading totals 33750 B across 4 units — more than one 24000-byte window: read in the listed order and carry forward each unit's mandatory items (rules, decisions, open issues)",
+      "severity": "warn"
+    },
+    {
+      "code": "decision-unapproved",
+      "message": "DEC-CTX-GIT-AS-ARCHIVE is proposed, not owner-approved",
+      "severity": "warn"
+    },
+    {
+      "code": "decision-unapproved",
+      "message": "DEC-CTX-MEMORY-LEDGER-HISTORICAL is proposed, not owner-approved",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-ARCHIVE cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-COVERAGE cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    }
+  ],
+  "id": "RCPT-CTX-0004-001",
+  "packs": [
+    {
+      "fingerprint": "2c694e31819366ce19127a62a751dbb259027ec09b3ad629bd6e8f701aff94dd",
+      "fresh": true,
+      "id": "CTX-BOOTSTRAP"
+    },
+    {
+      "fingerprint": "3744b5cb41eaab77b8801bde67b97b538c50563c4e8489f9b2fec46e86e41f18",
+      "fresh": true,
+      "id": "CTX-EVIDENCE-ARCHIVE"
+    }
+  ],
+  "prerequisites": [
+    "TASK-CTX-0001"
+  ],
+  "readingOrder": [
+    {
+      "bytes": 5428,
+      "ref": "PROJECT-CONTEXT/00-MASTER-INDEX.md",
+      "step": "master-index"
+    },
+    {
+      "bytes": 2556,
+      "ref": "PROJECT-CONTEXT/task-packs/TASK-CTX-0004.md",
+      "step": "task-pack"
+    },
+    {
+      "bytes": 9691,
+      "estimatedTokens": 3231,
+      "ref": "PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md",
+      "step": "mandatory-bootstrap"
+    },
+    {
+      "bytes": 16075,
+      "estimatedTokens": 5359,
+      "ref": "PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md",
+      "step": "pack"
+    }
+  ],
+  "repository": {
+    "branch": "claude/modest-babbage-kyejdn",
+    "dirty": true,
+    "head": "e1a36137b9232b9eafc4026070e7b74c435c088e"
+  },
+  "requirements": [
+    "REQ-CTX-ARCHIVE",
+    "REQ-CTX-COVERAGE"
+  ],
+  "schema": "ctx-receipt/1",
+  "scope": [
+    "the 23 unprocessed segments of SRC-IMPLEMENTATION-MAP, SRC-README and SRC-REVIEW-2026-10-12",
+    "knowledge records corrected by what those segments show",
+    "coverage accounting that distinguishes rule-classified, individually classified and cited segments",
+    "the provenance gap for the unarchived owner instructions"
+  ],
+  "task": "TASK-CTX-0004",
+  "totalRequiredBytes": 33750,
+  "verdict": "pass-with-warnings"
+}

@@ -1,0 +1,213 @@
+{
+  "budgetBytes": 24000,
+  "contentFingerprint": "cc1911e4917a40312321728f53c1bd6edbb1a415a3ed18fda8a9dde00a96ff32",
+  "depFingerprint": "e1f4b1c949e1205fb175a2eb6c72bae60bebcd84c48250971260678a28dc60b0",
+  "excluded": [],
+  "freshness": "fresh-at-build",
+  "generatedAt": "2026-10-22",
+  "generator": "ctx-1.0.0",
+  "id": "CTX-PLATFORM-QUALITY",
+  "inputs": [
+    [
+      "CST-AUTHORIZED-SIDE-EFFECTS",
+      "785e628fc900f335bc4c5658879db74191b1068494a65aa2fae44e57b6ec1336"
+    ],
+    [
+      "CST-CONFIG-OVER-CODE",
+      "78117e2e3be560e662e207c22b69c29fbd59594af1f186e61c1079db23183168"
+    ],
+    [
+      "CST-DEPENDENCY-MINIMAL",
+      "a1c9b2e8a7d00b9c3bb945a97c3da18dcc9e3e4a481989e30bbfea57ec656195"
+    ],
+    [
+      "CST-EVIDENCE-BEFORE-CLAIMS",
+      "336230e694eb86b8f4d1d42c3b588c7e58234ce809d5ba4695c14db0deff8b2d"
+    ],
+    [
+      "CST-EXPLAINABILITY",
+      "b64aa8200dca9443b769f3c923ce3a2fbe0d2e34debe40d7abacae7df655bed9"
+    ],
+    [
+      "CST-FROZEN-PRIMITIVES",
+      "78e9b8e40e3004618edd825d1637d33fccdf6dacdd2ab6b14c9b4b279e2e3fd9"
+    ],
+    [
+      "CST-KNOWLEDGE-ONCE",
+      "8e28da9351e3eb8a70825922df78adccc9c7fd4169b1e39a0b44297c5d5ba05d"
+    ],
+    [
+      "CST-NO-DESTRUCTIVE-CLEANUP",
+      "7747d31f2dd557226325ede059a0a0d92171227a89cf9e6a70b73d52e7c9cc86"
+    ],
+    [
+      "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "74f67f765383961295845131effc939a67ee9d4c79ca36283d54b5c15a3aaea2"
+    ],
+    [
+      "CST-NO-SECRETS",
+      "919e69e7d19bb95c6a96a09c24eb09ef7bcf181442c86ff0456a47ac8afca47c"
+    ],
+    [
+      "CST-NODE-ENGINE",
+      "67523abb18530d49400744bdc703163e34b2a07b6d92d021bca716bb666b8ab6"
+    ],
+    [
+      "CST-PRESERVE-WORKING-TREE",
+      "7cbdf7102bdd684beb93c4596852524be125d7ad23dffbb20b2b21a0f2107e28"
+    ],
+    [
+      "CST-PROJECTION-LAW",
+      "b54e583d5f7cd522c3ee0f739fa479a0e4a830e9a715a50e7e760c7d184ad405"
+    ],
+    [
+      "CST-SEAL-DERIVED",
+      "44150e62a9868196b07fcfe99986071508a95fe61d98d27c35688ad0e575af3a"
+    ],
+    [
+      "CST-SUPERSEDED-NOT-AUTHORITY",
+      "c8dab4d9391d2e4683f0169fb7b040e527e1c5788fbed7e798f2d49b63ec93a1"
+    ],
+    [
+      "CST-ZERO-HARDCODING",
+      "1fa46b53f278850801081aba2f2922796813444f0b3279b033598f0a3e884ed0"
+    ],
+    [
+      "ISS-BASE-ECONNRESET-FLAKE",
+      "a5733a561eaa6df7dcedcfa028861c4c839c91e0270fe38a9c128ef37c2f5158"
+    ],
+    [
+      "ISS-IMPLEMENTATION-MAP-STALE",
+      "f7872415c2c441264633ce113e73461d1490c87530b242f48d623e3a7fc790d7"
+    ],
+    [
+      "ISS-NPM-TEST-DURATION",
+      "47262ceaec869a24f7b260f99b50d323bff1f1bda495ffedb0f108f7ae97c046"
+    ],
+    [
+      "ISS-PG-CUTOVER-STATUS",
+      "2271e9e4d78b4b54e6f32ee6234f80d14aa43e285b8b794213e8fb424564250a"
+    ],
+    [
+      "ISS-REVIEW-FINDINGS-UNRECONCILED",
+      "2be1ece995dc3e14c4588caf4ff541fcfe858e8d9c2aff7b99d15eea4b266054"
+    ],
+    [
+      "ISS-RUNTIME-DEPENDENCY-CLAIM",
+      "cf14429e18e1d80e67202c41e0701b4da4437a712c2840fce140a3152fc42b96"
+    ],
+    [
+      "SRC-REVIEW-2026-09-17",
+      "225b6b3df385bca0b65b2766f3973a9acc98bf3c46a2807b89d56facc822ae06"
+    ],
+    [
+      "SRC-REVIEW-2026-10-12",
+      "778ece4a80383827bb6ddef8d47abab4c02fe9cb66fb1c2f3739ed35cf244432"
+    ],
+    [
+      "fact:F-003",
+      "0e7c04a5e997191c49e04d2672b04cccfdbc7d4b6f9ad26f89af2f318ca2ea1e"
+    ],
+    [
+      "fact:F-005",
+      "7a0196f96eda9aac1f15875e2c440aacef1b26f94f15d2d1fd2828035d40c9df"
+    ],
+    [
+      "fact:F-006",
+      "6e456b2904373ae6771644aca437e075f87fc7ec1c11c20edf5d462ede8afa49"
+    ],
+    [
+      "fact:F-008",
+      "51c0b05792661b56d9cf436a0550e634cf28a909ec41985e9b7a1424aeaf6ee9"
+    ]
+  ],
+  "mandatory": [
+    "CST-AUTHORIZED-SIDE-EFFECTS",
+    "CST-CONFIG-OVER-CODE",
+    "CST-CONFIG-OVER-CODE",
+    "CST-EVIDENCE-BEFORE-CLAIMS",
+    "CST-EXPLAINABILITY",
+    "CST-FROZEN-PRIMITIVES",
+    "CST-KNOWLEDGE-ONCE",
+    "CST-NO-DESTRUCTIVE-CLEANUP",
+    "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+    "CST-NO-SECRETS",
+    "CST-NODE-ENGINE",
+    "CST-NODE-ENGINE",
+    "CST-PRESERVE-WORKING-TREE",
+    "CST-PROJECTION-LAW",
+    "CST-SEAL-DERIVED",
+    "CST-SUPERSEDED-NOT-AUTHORITY",
+    "CST-ZERO-HARDCODING",
+    "ISS-BASE-ECONNRESET-FLAKE",
+    "ISS-IMPLEMENTATION-MAP-STALE",
+    "ISS-NPM-TEST-DURATION",
+    "ISS-REVIEW-FINDINGS-UNRECONCILED"
+  ],
+  "members": {
+    "artifacts": [],
+    "constraints": [
+      "CST-AUTHORIZED-SIDE-EFFECTS",
+      "CST-CONFIG-OVER-CODE",
+      "CST-DEPENDENCY-MINIMAL",
+      "CST-EVIDENCE-BEFORE-CLAIMS",
+      "CST-EXPLAINABILITY",
+      "CST-FROZEN-PRIMITIVES",
+      "CST-KNOWLEDGE-ONCE",
+      "CST-NO-DESTRUCTIVE-CLEANUP",
+      "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "CST-NO-SECRETS",
+      "CST-NODE-ENGINE",
+      "CST-PRESERVE-WORKING-TREE",
+      "CST-PROJECTION-LAW",
+      "CST-SEAL-DERIVED",
+      "CST-SUPERSEDED-NOT-AUTHORITY",
+      "CST-ZERO-HARDCODING"
+    ],
+    "decisions": [],
+    "issues": [
+      "ISS-BASE-ECONNRESET-FLAKE",
+      "ISS-IMPLEMENTATION-MAP-STALE",
+      "ISS-NPM-TEST-DURATION",
+      "ISS-PG-CUTOVER-STATUS",
+      "ISS-REVIEW-FINDINGS-UNRECONCILED",
+      "ISS-RUNTIME-DEPENDENCY-CLAIM"
+    ],
+    "requirements": [],
+    "sources": [
+      "SRC-REVIEW-2026-09-17",
+      "SRC-REVIEW-2026-10-12"
+    ]
+  },
+  "missing": [],
+  "parts": [
+    {
+      "bytes": 9302,
+      "estimatedTokens": 3101,
+      "file": "contexts/CTX-PLATFORM-QUALITY.md",
+      "id": "CTX-PLATFORM-QUALITY",
+      "sha256": "ae7bc141676f2512a85c5c5f3ae0f3a0967921532532be893b1a5bff4ac37350"
+    }
+  ],
+  "prerequisites": [
+    {
+      "fingerprint": "07e2e9fab1984bc4d065f915f07d77bbc61147b8ead851cd580e9db039c9770c",
+      "id": "CTX-BOOTSTRAP"
+    }
+  ],
+  "schema": "ctx-pack/1",
+  "secretFindings": [],
+  "sourceFingerprints": [
+    {
+      "id": "SRC-REVIEW-2026-09-17",
+      "sha256": "5828c55364f624b8bfb7c83e5c5209300840180011e8a168f2ed06c95a2f05d3"
+    },
+    {
+      "id": "SRC-REVIEW-2026-10-12",
+      "sha256": "4aa4c580b931fb80caf1c722e813fc07da4e20aedb0ce18a9eccd03c61b91a61"
+    }
+  ],
+  "status": "ok",
+  "title": "Platform quality — open review findings and runtime risks",
+  "withheld": []
+}

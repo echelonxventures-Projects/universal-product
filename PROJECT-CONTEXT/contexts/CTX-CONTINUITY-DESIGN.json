@@ -1,0 +1,189 @@
+{
+  "budgetBytes": 24000,
+  "contentFingerprint": "140a2c3cc6266396d1a7dd8b9d84d30128002bff706807f6b767dd8a7fd55767",
+  "depFingerprint": "b0f9addc39075ca47bfc163e34e11e2df01a2b14aaca54927b35a8a4440d1fcb",
+  "excluded": [],
+  "freshness": "fresh-at-build",
+  "generatedAt": "2026-10-22",
+  "generator": "ctx-1.0.0",
+  "id": "CTX-CONTINUITY-DESIGN",
+  "inputs": [
+    [
+      "CST-AUTHORIZED-SIDE-EFFECTS",
+      "785e628fc900f335bc4c5658879db74191b1068494a65aa2fae44e57b6ec1336"
+    ],
+    [
+      "CST-CONFIG-OVER-CODE",
+      "78117e2e3be560e662e207c22b69c29fbd59594af1f186e61c1079db23183168"
+    ],
+    [
+      "CST-EVIDENCE-BEFORE-CLAIMS",
+      "336230e694eb86b8f4d1d42c3b588c7e58234ce809d5ba4695c14db0deff8b2d"
+    ],
+    [
+      "CST-EXPLAINABILITY",
+      "b64aa8200dca9443b769f3c923ce3a2fbe0d2e34debe40d7abacae7df655bed9"
+    ],
+    [
+      "CST-FROZEN-PRIMITIVES",
+      "78e9b8e40e3004618edd825d1637d33fccdf6dacdd2ab6b14c9b4b279e2e3fd9"
+    ],
+    [
+      "CST-KNOWLEDGE-ONCE",
+      "8e28da9351e3eb8a70825922df78adccc9c7fd4169b1e39a0b44297c5d5ba05d"
+    ],
+    [
+      "CST-NO-DESTRUCTIVE-CLEANUP",
+      "7747d31f2dd557226325ede059a0a0d92171227a89cf9e6a70b73d52e7c9cc86"
+    ],
+    [
+      "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "74f67f765383961295845131effc939a67ee9d4c79ca36283d54b5c15a3aaea2"
+    ],
+    [
+      "CST-NO-SECRETS",
+      "919e69e7d19bb95c6a96a09c24eb09ef7bcf181442c86ff0456a47ac8afca47c"
+    ],
+    [
+      "CST-NODE-ENGINE",
+      "67523abb18530d49400744bdc703163e34b2a07b6d92d021bca716bb666b8ab6"
+    ],
+    [
+      "CST-PRESERVE-WORKING-TREE",
+      "7cbdf7102bdd684beb93c4596852524be125d7ad23dffbb20b2b21a0f2107e28"
+    ],
+    [
+      "CST-PROJECTION-LAW",
+      "b54e583d5f7cd522c3ee0f739fa479a0e4a830e9a715a50e7e760c7d184ad405"
+    ],
+    [
+      "CST-SEAL-DERIVED",
+      "44150e62a9868196b07fcfe99986071508a95fe61d98d27c35688ad0e575af3a"
+    ],
+    [
+      "CST-SUPERSEDED-NOT-AUTHORITY",
+      "c8dab4d9391d2e4683f0169fb7b040e527e1c5788fbed7e798f2d49b63ec93a1"
+    ],
+    [
+      "CST-ZERO-HARDCODING",
+      "1fa46b53f278850801081aba2f2922796813444f0b3279b033598f0a3e884ed0"
+    ],
+    [
+      "DEC-CTX-BYTE-BUDGETS",
+      "c20ad3e31ab636b42a3300ea2efe6e6de63dab267ed0f17d53a3b63f1fb76eab"
+    ],
+    [
+      "DEC-CTX-DERIVED-EDGES",
+      "2ed4613560bbe7b5207e713be00ffe75d58d54c51e9d0fe9d177162ae4ec2533"
+    ],
+    [
+      "DEC-CTX-DETERMINISTIC-TIME",
+      "b9e4767ca081873d23acf568d1dbea2c8079506dbd0000a0311059df6807ba2e"
+    ],
+    [
+      "DEC-CTX-GIT-AS-ARCHIVE",
+      "4ead89c85a75122a75e94a949e81cd54d54012f6cfe64a16cf48c1e6be335f68"
+    ],
+    [
+      "DEC-CTX-LOCATION",
+      "8f548dca1638c606dfef10ec14b837738937a1b5493459a3e9c9458c0ae2b6a8"
+    ],
+    [
+      "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+      "b4b189711761e4e8575972276b536b66400572dda37a81c51484fee23176f822"
+    ],
+    [
+      "DEC-CTX-ZERO-DEPENDENCIES",
+      "2105fa1174e05bf660061f94e864e9569a444ac9ba91af17ca842e16d881f0f7"
+    ],
+    [
+      "ISS-MASTER-PROMPT-NOT-ARCHIVED",
+      "45be368da5a16146dd1a8ea0f2f48842d62224c0fe28f652cc73027844debf1e"
+    ]
+  ],
+  "mandatory": [
+    "CST-AUTHORIZED-SIDE-EFFECTS",
+    "CST-CONFIG-OVER-CODE",
+    "CST-EVIDENCE-BEFORE-CLAIMS",
+    "CST-EXPLAINABILITY",
+    "CST-FROZEN-PRIMITIVES",
+    "CST-KNOWLEDGE-ONCE",
+    "CST-NO-DESTRUCTIVE-CLEANUP",
+    "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+    "CST-NO-SECRETS",
+    "CST-NODE-ENGINE",
+    "CST-PRESERVE-WORKING-TREE",
+    "CST-PROJECTION-LAW",
+    "CST-SEAL-DERIVED",
+    "CST-SUPERSEDED-NOT-AUTHORITY",
+    "CST-ZERO-HARDCODING",
+    "DEC-CTX-BYTE-BUDGETS",
+    "DEC-CTX-DERIVED-EDGES",
+    "DEC-CTX-DETERMINISTIC-TIME",
+    "DEC-CTX-GIT-AS-ARCHIVE",
+    "DEC-CTX-LOCATION",
+    "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+    "DEC-CTX-ZERO-DEPENDENCIES",
+    "ISS-MASTER-PROMPT-NOT-ARCHIVED"
+  ],
+  "members": {
+    "artifacts": [],
+    "constraints": [
+      "CST-AUTHORIZED-SIDE-EFFECTS",
+      "CST-CONFIG-OVER-CODE",
+      "CST-EVIDENCE-BEFORE-CLAIMS",
+      "CST-EXPLAINABILITY",
+      "CST-FROZEN-PRIMITIVES",
+      "CST-KNOWLEDGE-ONCE",
+      "CST-NO-DESTRUCTIVE-CLEANUP",
+      "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "CST-NO-SECRETS",
+      "CST-NODE-ENGINE",
+      "CST-PRESERVE-WORKING-TREE",
+      "CST-PROJECTION-LAW",
+      "CST-SEAL-DERIVED",
+      "CST-SUPERSEDED-NOT-AUTHORITY",
+      "CST-ZERO-HARDCODING"
+    ],
+    "decisions": [
+      "DEC-CTX-BYTE-BUDGETS",
+      "DEC-CTX-DERIVED-EDGES",
+      "DEC-CTX-DETERMINISTIC-TIME",
+      "DEC-CTX-GIT-AS-ARCHIVE",
+      "DEC-CTX-LOCATION",
+      "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+      "DEC-CTX-ZERO-DEPENDENCIES"
+    ],
+    "issues": [
+      "ISS-MASTER-PROMPT-NOT-ARCHIVED"
+    ],
+    "requirements": [],
+    "sources": []
+  },
+  "missing": [],
+  "parts": [
+    {
+      "bytes": 10355,
+      "estimatedTokens": 3452,
+      "file": "contexts/CTX-CONTINUITY-DESIGN.md",
+      "id": "CTX-CONTINUITY-DESIGN",
+      "sha256": "73eec2fa9d05f6ab08207a4dc5fdabc53eb461928c5c2b696a2524dfde933bb5"
+    }
+  ],
+  "prerequisites": [
+    {
+      "fingerprint": "07e2e9fab1984bc4d065f915f07d77bbc61147b8ead851cd580e9db039c9770c",
+      "id": "CTX-BOOTSTRAP"
+    },
+    {
+      "fingerprint": "4e8bd55e94121ad2362cce746fb9fd0dc4f87f65573fea182b36b54994679ef0",
+      "id": "CTX-GOVERNANCE"
+    }
+  ],
+  "schema": "ctx-pack/1",
+  "secretFindings": [],
+  "sourceFingerprints": [],
+  "status": "ok",
+  "title": "Context continuity — design decisions and open design questions",
+  "withheld": []
+}

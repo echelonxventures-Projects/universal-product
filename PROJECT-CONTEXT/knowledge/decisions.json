@@ -1,0 +1,380 @@
+{
+  "$comment": "Decision register. 'evidenced' decisions cite the repository evidence they come from; 'newly-proposed' ones were made during implementation and are NOT owner-approved until TASK-CTX-0002 records the approval. Never invent a historical approval or rationale.",
+  "registryId": "CTX-REG-DECISIONS",
+  "kind": "decision",
+  "version": 1,
+  "records": [
+    {
+      "id": "DEC-CTX-BYTE-BUDGETS",
+      "statement": "Budgets are enforced in bytes; token figures are estimates at 3 bytes/token and labelled as estimates.",
+      "context": "Packs must fit small context windows, but no tokenizer ships with the repository and token counts are model-specific.",
+      "selected": "Byte budgets (schemas/config.json) with a conservative 3 B/token estimate shown next to them.",
+      "rationale": "Bytes are exact and model-independent; 3 B/token over-estimates tokens for English prose (~4 B/token), erring towards smaller packs.",
+      "rejected": [
+        {
+          "option": "bundle a tokenizer",
+          "reason": "adds a dependency and is still model-specific"
+        }
+      ],
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
+      "provenance": "newly-proposed",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§16 Phase 1"
+        }
+      ],
+      "affects": [
+        "REQ-CTX-PACKS"
+      ],
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T13:37:32.148Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "DEC-CTX-DERIVED-EDGES",
+      "statement": "Graph edges are derived from record fields through schemas/relations.json; there is no separate edge file.",
+      "context": "A dependency written on a record and an edge written elsewhere can disagree.",
+      "selected": "Each relation declares which record fields emit it; the graph is rebuilt from the records on every run.",
+      "rationale": "One fact, one place (Knowledge Once applied to the graph).",
+      "rejected": [
+        {
+          "option": "a separate edges.json",
+          "reason": "two places for one fact"
+        }
+      ],
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
+      "provenance": "newly-proposed",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§16 Phase 1"
+        }
+      ],
+      "affects": [
+        "REQ-CTX-GRAPH"
+      ],
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T13:37:32.802Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "DEC-CTX-DETERMINISTIC-TIME",
+      "statement": "Generated files carry the knowledge snapshot date (knowledge/state.json asOf), not the wall clock; wall-clock time is recorded only in receipts and handoffs.",
+      "context": "Generated outputs are drift-checked byte for byte; a timestamp would make every build differ.",
+      "selected": "generatedAt = state.asOf in packs and views; createdAt = now in receipts/handoffs (events, not projections).",
+      "rationale": "Deterministic outputs make drift a real signal while events keep their true time.",
+      "rejected": [
+        {
+          "option": "wall-clock generatedAt in packs",
+          "reason": "every rebuild would differ and drift detection would be meaningless"
+        }
+      ],
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
+      "provenance": "newly-proposed",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§16 Phase 1"
+        }
+      ],
+      "affects": [
+        "REQ-CTX-PACKS",
+        "REQ-CTX-INVALIDATION"
+      ],
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T13:37:33.428Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "DEC-CTX-GIT-AS-ARCHIVE",
+      "statement": "Repository evidence is archived by git blob id + sha256 in the manifest; private exports go to a write-once content-addressed store outside git.",
+      "context": "Original evidence must be preserved by bytes and restorable after the live file changes, without duplicating 2 MB of corpora or committing private data.",
+      "selected": "git-blob / git-history storage kinds for repository evidence; 'store' kind (CONTEXT_ARCHIVE_DIR, default .context-archive/, gitignored) for private material.",
+      "rationale": "Git's object store is already append-only and content-addressed; pinning the blob id makes every captured version restorable with `git cat-file`, so no second copy can drift. Private material never enters a public history.",
+      "rejected": [
+        {
+          "option": "copy sources into PROJECT-CONTEXT/archives/",
+          "reason": "duplicates ~2 MB and creates a second copy that can drift"
+        },
+        {
+          "option": "commit conversation exports",
+          "reason": "publishes private data (CST-NO-PRIVATE-ARCHIVES-IN-GIT)"
+        }
+      ],
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
+      "provenance": "newly-proposed",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§16 Phase 1"
+        }
+      ],
+      "affects": [
+        "REQ-CTX-ARCHIVE"
+      ],
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T13:37:34.083Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "DEC-CTX-LOCATION",
+      "statement": "Continuity knowledge lives in PROJECT-CONTEXT/knowledge/*.json; its markdown views and packs are generated; UCOS artifacts are imported read-only from _registry/manifest.json.",
+      "context": "The system needs a canonical home for requirements, decisions, sources, tasks and context specs without competing with the constitutional registry.",
+      "selected": "A separate PROJECT-CONTEXT/ tree, using the same projection pattern as _registry/ (authored JSON in, generated documents out).",
+      "rationale": "_registry/ is the UCOS constitutional corpus: its files are inputs to the sealed compile (lib/canonical.js), so adding operational records there would change the seal and mix project-operations knowledge into constitutional content. A separate tree keeps one owner per concept and reuses the repository's proven pattern.",
+      "rejected": [
+        {
+          "option": "extend _registry/*.json",
+          "reason": "changes the sealed compile's inputs and mixes operational knowledge into the constitution"
+        },
+        {
+          "option": "free-form markdown memory like .workbuddy-ai/memory/MEMORY.md",
+          "reason": "not machine-checkable, grows without bound (111 KB), no freshness or traceability"
+        }
+      ],
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
+      "provenance": "newly-proposed",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§16 Phase 1"
+        }
+      ],
+      "affects": [
+        "REQ-CTX-NO-COMPETING-SOT",
+        "REQ-CTX-KNOWLEDGE-MODEL"
+      ],
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T13:37:34.727Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+      "statement": "The existing .workbuddy-ai/memory/MEMORY.md is left untouched and archived as historical evidence; new continuity is recorded through schema-validated handoffs.",
+      "context": "MEMORY.md is a 111 KB narrative ledger of sessions 2026-09-17 → 2026-10-07 and the only surviving record of those sessions.",
+      "selected": "Archive it (SRC-MEMORY-LEDGER), cite its segments, and stop growing it as the continuity mechanism.",
+      "rationale": "Rewriting or compacting it would destroy the only evidence of those sessions; as an unstructured narrative it cannot be checked for freshness or completeness.",
+      "rejected": [
+        {
+          "option": "compact or rewrite MEMORY.md",
+          "reason": "destroys unique historical evidence"
+        },
+        {
+          "option": "keep appending to MEMORY.md",
+          "reason": "unbounded, unverifiable, not machine-readable"
+        }
+      ],
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
+      "provenance": "newly-proposed",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§16 Phase 1"
+        }
+      ],
+      "affects": [
+        "REQ-CTX-HANDOFF",
+        "REQ-CTX-ARCHIVE"
+      ],
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T13:37:35.375Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "DEC-CTX-ZERO-DEPENDENCIES",
+      "statement": "The continuity system uses only the Node standard library, including a small JSON Schema subset validator that rejects unsupported keywords.",
+      "context": "Schema validation and hashing are needed; the platform minimises dependencies.",
+      "selected": "Own validator (lib/context/schema.js) supporting exactly the keywords the schemas use; it throws on any other keyword.",
+      "rationale": "No new install or supply-chain surface; a schema cannot claim a rule the validator silently ignores.",
+      "rejected": [
+        {
+          "option": "ajv",
+          "reason": "new dependency for a small, fixed schema surface"
+        }
+      ],
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
+      "provenance": "newly-proposed",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§16 Phase 1"
+        }
+      ],
+      "affects": [
+        "REQ-CTX-KNOWLEDGE-MODEL"
+      ],
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active",
+      "dependsOn": [
+        "DEC-CTX-LOCATION"
+      ],
+      "history": [
+        {
+          "at": "2026-10-22T13:37:36.011Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
+    },
+    {
+      "id": "DEC-REGISTRY-AS-SOT",
+      "statement": "The registry (_registry/*.json) is the single source of truth and every constitutional document is a projection generated from it.",
+      "context": "Hand-authoring 93 artifacts would define the same concept many times and drift on each retelling.",
+      "options": [
+        "hand-author each artifact",
+        "store truth in machine-readable registries and project documents"
+      ],
+      "selected": "Truth lives in _registry/*.json; node _registry/project.js projects the documents; node _registry/audit.js enforces the laws.",
+      "rationale": "Hand-authoring would violate Law 002 (Knowledge Once); projection makes Law 003 executable.",
+      "rejected": [
+        {
+          "option": "hand-author the 93 documents",
+          "reason": "violates Law 002 — the same concept defined 93 times, drifting on each retelling"
+        }
+      ],
+      "authority": "repository constitution as committed (UCOS-REPOSITORY-INDEX.md); approver and date not recorded",
+      "decidedAt": null,
+      "status": "approved",
+      "provenance": "evidenced",
+      "sources": [
+        {
+          "ref": "SRC-REPOSITORY-INDEX",
+          "segment": "S0002"
+        }
+      ],
+      "affects": [
+        "CST-PROJECTION-LAW",
+        "CST-KNOWLEDGE-ONCE"
+      ],
+      "tags": [
+        "governance"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "DEC-SEALED-CANONICAL-COMPILE",
+      "statement": "The corpora and registry JSON compile into one sealed canonical registry (lib/canonical.js) that the runtime reads; the seal is derived and reproducible, never stored.",
+      "context": "Declarations were spread across the corpora and registry files with no single runtime source.",
+      "selected": "node _registry/compile.js compiles, gates (five integrity criteria) and seals with AES-256-GCM + HMAC-SHA256 and a per-input sha256 manifest; the artifacts are gitignored.",
+      "rationale": "One compiled, authenticated source makes drift and tampering detectable while keeping the sources as the authority.",
+      "rejected": [],
+      "authority": "recorded in commit 7daf85b and the session-19 memory entry; owner approval not separately recorded",
+      "decidedAt": "2026-10-06",
+      "status": "approved",
+      "provenance": "evidenced",
+      "sources": [
+        {
+          "ref": "SRC-GIT-HISTORY-LEGACY-RECOVERED",
+          "segment": "S0036"
+        },
+        {
+          "ref": "SRC-MEMORY-LEDGER",
+          "segment": "S0033"
+        }
+      ],
+      "affects": [
+        "CST-SEAL-DERIVED"
+      ],
+      "dependsOn": [
+        "DEC-REGISTRY-AS-SOT"
+      ],
+      "tags": [
+        "governance"
+      ],
+      "lifecycle": "canonical-active"
+    }
+  ]
+}

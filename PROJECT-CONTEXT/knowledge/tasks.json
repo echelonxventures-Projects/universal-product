@@ -1,0 +1,409 @@
+{
+  "$comment": "Durable task ledger. state/nextAction are updated by `npm run context:handoff`; history records every change with its evidence.",
+  "registryId": "CTX-REG-TASKS",
+  "kind": "task",
+  "version": 1,
+  "records": [
+    {
+      "id": "TASK-CTX-0001",
+      "title": "Implement the context continuity system",
+      "objective": "Give any authorised agent — any model, client or context size — a governed, verifiable path to recover the project's knowledge, continue work and hand off, with preserved evidence and measurable coverage.",
+      "scope": [
+        "PROJECT-CONTEXT/ (schemas, knowledge, generated views, packs, task packs, handoffs, receipts, verification)",
+        "lib/context/*.js and scripts/context.js",
+        "test/context.js",
+        "AGENTS.md, CLAUDE.md",
+        "package.json context:* scripts and .github/workflows/ci.yml"
+      ],
+      "exclusions": [
+        "No change to the marketplace/product runtime (lib/*.js outside lib/context, server.js, public/)",
+        "No change to _registry/*.json or the constitutional projections",
+        "Pre-existing defects (ISS-CANONICAL-INPUT-MISNAMED, ISS-REVIEW-FINDINGS-UNRECONCILED) are tracked, not fixed here",
+        "No push, PR or deployment without owner authorisation"
+      ],
+      "authority": "owner instruction, 2026-10-22 session (SRC-CONV-2026-10-22-MASTER-PROMPT)",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§1–§21"
+        }
+      ],
+      "requirements": [
+        "REQ-CTX-ARCHIVE",
+        "REQ-CTX-ASSIMILATION",
+        "REQ-CTX-CI",
+        "REQ-CTX-COVERAGE",
+        "REQ-CTX-ENTRY-POINTS",
+        "REQ-CTX-GRAPH",
+        "REQ-CTX-HANDOFF",
+        "REQ-CTX-HYGIENE",
+        "REQ-CTX-INVALIDATION",
+        "REQ-CTX-KNOWLEDGE-MODEL",
+        "REQ-CTX-NO-COMPETING-SOT",
+        "REQ-CTX-PACKS",
+        "REQ-CTX-SECURITY",
+        "REQ-CTX-VERIFICATION"
+      ],
+      "decisions": [
+        "DEC-CTX-BYTE-BUDGETS",
+        "DEC-CTX-DERIVED-EDGES",
+        "DEC-CTX-DETERMINISTIC-TIME",
+        "DEC-CTX-GIT-AS-ARCHIVE",
+        "DEC-CTX-LOCATION",
+        "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+        "DEC-CTX-ZERO-DEPENDENCIES"
+      ],
+      "constraints": [
+        "CST-AUTHORIZED-SIDE-EFFECTS",
+        "CST-EVIDENCE-BEFORE-CLAIMS",
+        "CST-KNOWLEDGE-ONCE",
+        "CST-NO-DESTRUCTIVE-CLEANUP",
+        "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+        "CST-NO-SECRETS",
+        "CST-PRESERVE-WORKING-TREE",
+        "CST-PROJECTION-LAW"
+      ],
+      "contexts": [
+        "CTX-CONTINUITY-SYSTEM",
+        "CTX-EVIDENCE-ARCHIVE"
+      ],
+      "state": "done",
+      "acceptance": [
+        "npm run context:verify exits 0 on the committed tree",
+        "node test/context.js passes (determinism, invalidation, hygiene safety, restore, fresh-agent scenario)",
+        "npm run context:assimilate -- TASK-CTX-0001 passes on the committed tree",
+        "the pre-existing npm test and npm run registry results are unchanged by this work",
+        "a schema-valid handoff records the outcome"
+      ],
+      "verification": [
+        "npm run context:verify",
+        "node test/context.js",
+        "npm run context:restore-check",
+        "npm run registry",
+        "npm test"
+      ],
+      "nextAction": "Owner reviews DEC-CTX-* in PROJECT-CONTEXT/03-DECISION-REGISTER.md (TASK-CTX-0002); open a PR so CI runs the workflow remotely.",
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "created",
+          "to": "in-progress",
+          "by": "implementing agent (Claude Code session 2026-10-22)"
+        },
+        {
+          "at": "2026-10-22T06:18:12.394Z",
+          "change": "handoff HO-CTX-0001-001",
+          "from": "in-progress",
+          "to": "done",
+          "by": "claude-code-session-2026-10-22",
+          "evidence": "PROJECT-CONTEXT/handoffs/HO-CTX-0001-001.json"
+        },
+        {
+          "at": "2026-10-22T06:47:02.950Z",
+          "change": "handoff HO-CTX-0001-002",
+          "from": "done",
+          "to": "done",
+          "by": "claude-code-session-2026-10-22",
+          "evidence": "PROJECT-CONTEXT/handoffs/HO-CTX-0001-002.json"
+        }
+      ]
+    },
+    {
+      "id": "TASK-CTX-0002",
+      "title": "Owner review of the continuity design decisions",
+      "objective": "Have the owner approve, amend or reject each DEC-CTX-* decision so the continuity system's design is owner-approved, not agent-proposed.",
+      "scope": [
+        "decisions.json status/authority/decidedAt for DEC-CTX-*",
+        "any follow-up changes the owner asks for"
+      ],
+      "exclusions": [
+        "No change to approved constitutional decisions"
+      ],
+      "authority": "repository owner",
+      "requirements": [
+        "REQ-CTX-KNOWLEDGE-MODEL"
+      ],
+      "decisions": [
+        "DEC-CTX-BYTE-BUDGETS",
+        "DEC-CTX-DERIVED-EDGES",
+        "DEC-CTX-DETERMINISTIC-TIME",
+        "DEC-CTX-GIT-AS-ARCHIVE",
+        "DEC-CTX-LOCATION",
+        "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+        "DEC-CTX-ZERO-DEPENDENCIES"
+      ],
+      "contexts": [
+        "CTX-CONTINUITY-DESIGN"
+      ],
+      "dependsOn": [
+        "TASK-CTX-0001"
+      ],
+      "state": "done",
+      "acceptance": [
+        "each DEC-CTX-* has status approved, superseded or reversed, with the owner as authority and a date",
+        "ISS-CTX-DECISIONS-UNAPPROVED is resolved"
+      ],
+      "verification": [
+        "npm run context:verify"
+      ],
+      "nextAction": "No further owner review is required for these seven decisions; retain the canonical approval evidence and run verification after future changes.",
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "completed",
+          "from": "planned",
+          "to": "done",
+          "by": "repository owner",
+          "evidence": "Both acceptance criteria verified: all seven decisions have approved status, repository owner authority and decision date; ISS-CTX-DECISIONS-UNAPPROVED is resolved. Owner explicitly approved all seven DEC-CTX-* decisions in ChatGPT on 2026-10-22; each canonical decision records status approved, authority repository owner, and decidedAt 2026-10-22. Original master-prompt source remains unavailable and is not claimed as recovered."
+        }
+      ]
+    },
+    {
+      "id": "TASK-CTX-0003",
+      "title": "Archive the 2026-10-22 session transcript",
+      "objective": "Preserve the owner's master prompt as original evidence in access-controlled storage so REQ-CTX-* can be checked against it.",
+      "scope": [
+        "export of the session transcript",
+        "context:import into CONTEXT_ARCHIVE_DIR",
+        "re-cite REQ-CTX-* to the imported source segments"
+      ],
+      "exclusions": [
+        "The transcript bytes are never committed to git"
+      ],
+      "authority": "repository owner",
+      "requirements": [
+        "REQ-CTX-ARCHIVE"
+      ],
+      "constraints": [
+        "CST-NO-PRIVATE-ARCHIVES-IN-GIT"
+      ],
+      "contexts": [
+        "CTX-EVIDENCE-ARCHIVE"
+      ],
+      "state": "planned",
+      "acceptance": [
+        "a 'store' source exists with sensitivity private and a verified sha256",
+        "ISS-MASTER-PROMPT-NOT-ARCHIVED is resolved"
+      ],
+      "verification": [
+        "npm run context:verify",
+        "npm run context:restore-check"
+      ],
+      "nextAction": "Owner exports the transcript and provides an access-controlled CONTEXT_ARCHIVE_DIR.",
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "TASK-CTX-0004",
+      "title": "Process the unprocessed source segments and audit segment accounting",
+      "objective": "Account for every in-scope segment with provenance: read each unprocessed segment whose source is available, cite it from knowledge or classify it with a segment-specific rationale, keep unavailable sources as explicit gaps, and report accounting with explicit denominators that separate rule-classified from individually reviewed segments.",
+      "scope": [
+        "the 23 unprocessed segments of SRC-IMPLEMENTATION-MAP, SRC-README and SRC-REVIEW-2026-10-12",
+        "knowledge records corrected by what those segments show",
+        "coverage accounting that distinguishes rule-classified, individually classified and cited segments",
+        "the provenance gap for the unarchived owner instructions"
+      ],
+      "exclusions": [
+        "No reconstruction of any missing conversation or prompt",
+        "No change to product runtime, _registry/ or the constitutional projections",
+        "The seal defect (ISS-CANONICAL-INPUT-MISNAMED) stays separate",
+        "No merge or deployment"
+      ],
+      "authority": "owner instruction, 2026-10-22 PR-review request (not archived — see ISS-MASTER-PROMPT-NOT-ARCHIVED)",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "PR-review follow-up, items 5–7"
+        }
+      ],
+      "requirements": [
+        "REQ-CTX-COVERAGE",
+        "REQ-CTX-ARCHIVE"
+      ],
+      "constraints": [
+        "CST-EVIDENCE-BEFORE-CLAIMS",
+        "CST-NO-DESTRUCTIVE-CLEANUP"
+      ],
+      "contexts": [
+        "CTX-EVIDENCE-ARCHIVE"
+      ],
+      "dependsOn": [
+        "TASK-CTX-0001"
+      ],
+      "state": "done",
+      "acceptance": [
+        "0 unprocessed segments among sources whose bytes are available",
+        "every newly accounted segment is either cited by a record or classified with a segment-specific rationale",
+        "inaccessible and not-retained sources remain explicit gaps with no fabricated content",
+        "coverage reports rule-classified vs individually reviewed segments with denominators",
+        "npm run context:verify and node test/context.js pass"
+      ],
+      "verification": [
+        "npm run context:verify",
+        "node test/context.js",
+        "npm run context:coverage",
+        "npm test"
+      ],
+      "nextAction": "Owner restores GitHub Actions for the repository so CI runs on PR #4, then reviews DEC-CTX-* (TASK-CTX-0002).",
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "created",
+          "to": "in-progress",
+          "by": "claude-code-session-2026-10-22"
+        },
+        {
+          "at": "2026-10-22T07:37:36.979Z",
+          "change": "handoff HO-CTX-0004-001",
+          "from": "in-progress",
+          "to": "done",
+          "by": "claude-code-session-2026-10-22",
+          "evidence": "PROJECT-CONTEXT/handoffs/HO-CTX-0004-001.json"
+        }
+      ]
+    },
+    {
+      "id": "TASK-CTX-0005",
+      "title": "Repair git-history archive integrity",
+      "objective": "Make the git-history archive verifiable in any full clone without rewriting historical evidence: represent the legacy capture honestly, recover its bytes if possible, introduce a canonical fail-closed serializer used by capture/verify/restore, and cover the failure modes with regression tests.",
+      "scope": [
+        "lib/context/archive.js serializer, verifier, capture, identity audit",
+        "schema/relation support for storage.format and recovers",
+        "SRC-GIT-HISTORY records and citations",
+        "regression tests"
+      ],
+      "exclusions": [
+        "No change to SRC-GIT-HISTORY's recorded identity (commit, sha256, bytes, commits)",
+        "No reconstruction of unavailable conversation sources",
+        "No push without owner authorisation",
+        "The seal defect (ISS-CANONICAL-INPUT-MISNAMED) stays separate"
+      ],
+      "authority": "owner instruction, 2026-10-22 integrity-repair prompt (not archived — ISS-MASTER-PROMPT-NOT-ARCHIVED)",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "integrity-repair prompt"
+        }
+      ],
+      "requirements": [
+        "REQ-CTX-ARCHIVE",
+        "REQ-CTX-VERIFICATION"
+      ],
+      "constraints": [
+        "CST-EVIDENCE-BEFORE-CLAIMS",
+        "CST-NO-DESTRUCTIVE-CLEANUP"
+      ],
+      "contexts": [
+        "CTX-EVIDENCE-ARCHIVE"
+      ],
+      "dependsOn": [
+        "TASK-CTX-0004"
+      ],
+      "state": "done",
+      "acceptance": [
+        "node test/context.js passes in a full clone",
+        "npm run context:verify and npm run context:restore-check exit 0",
+        "SRC-GIT-HISTORY identity unchanged and never reported as verified",
+        "canonical capture deterministic, fail-closed on shallow/incomplete history",
+        "npm test, audit, project --check and registry pass"
+      ],
+      "verification": [
+        "node test/context.js",
+        "npm run context:verify",
+        "npm run context:restore-check",
+        "node _registry/audit.js",
+        "node _registry/project.js --check",
+        "npm run registry",
+        "npm test"
+      ],
+      "nextAction": "Owner restores GitHub Actions so CI runs on PR #4; then reviews DEC-CTX-* (TASK-CTX-0002).",
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "created",
+          "to": "in-progress",
+          "by": "claude-code-session-2026-10-22"
+        },
+        {
+          "at": "2026-10-22T10:14:12.780Z",
+          "change": "handoff HO-CTX-0005-001",
+          "from": "in-progress",
+          "to": "in-progress",
+          "by": "claude-code-session-2026-10-22",
+          "evidence": "PROJECT-CONTEXT/handoffs/HO-CTX-0005-001.json"
+        },
+        {
+          "at": "2026-10-22T11:29:06.548Z",
+          "change": "handoff HO-CTX-0005-002",
+          "from": "in-progress",
+          "to": "done",
+          "by": "claude-code-session-2026-10-22",
+          "evidence": "PROJECT-CONTEXT/handoffs/HO-CTX-0005-002.json"
+        }
+      ]
+    },
+    {
+      "id": "TASK-REG-0001",
+      "title": "Correct the seal's misnamed zero-hardcoding input",
+      "objective": "Make the canonical seal hash the zero-hardcoding constitution the compiler actually parses.",
+      "scope": [
+        "lib/canonical.js INPUT_FILES",
+        "re-seal and registry tests"
+      ],
+      "exclusions": [
+        "No change to the constitution's content"
+      ],
+      "authority": "repository owner (defect found 2026-10-22)",
+      "constraints": [
+        "CST-KNOWLEDGE-ONCE",
+        "CST-SEAL-DERIVED"
+      ],
+      "contexts": [
+        "CTX-GOVERNANCE"
+      ],
+      "state": "planned",
+      "acceptance": [
+        "npm run registry passes with no missing input",
+        "an edit to UCRS-Zero-Hardcoding-Constitution.md drifts the seal"
+      ],
+      "verification": [
+        "npm run registry",
+        "node test/registry-gate.js"
+      ],
+      "nextAction": "Confirm the intended file with the owner, then change lib/canonical.js:104 and re-run the registry checks.",
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "TASK-SEC-0001",
+      "title": "Reconcile REVIEW.md findings with their fixes",
+      "objective": "Record, for each finding in REVIEW.md (2026-10-12), whether it is fixed, by which commit, and which test proves it.",
+      "scope": [
+        "REVIEW.md S1–S11, P1, T1",
+        "commits in PR #1 and PR #2"
+      ],
+      "exclusions": [
+        "New fixes are separate tasks"
+      ],
+      "authority": "repository owner",
+      "constraints": [
+        "CST-EVIDENCE-BEFORE-CLAIMS"
+      ],
+      "contexts": [
+        "CTX-PLATFORM-QUALITY"
+      ],
+      "state": "planned",
+      "acceptance": [
+        "every finding has fixed/open status with commit + test evidence",
+        "ISS-REVIEW-FINDINGS-UNRECONCILED is resolved"
+      ],
+      "verification": [
+        "npm test"
+      ],
+      "nextAction": "Map each REVIEW.md finding to the commits of PR #1/#2 and the tests in test/security.js.",
+      "lifecycle": "canonical-active"
+    }
+  ]
+}

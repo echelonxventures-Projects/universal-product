@@ -1,0 +1,93 @@
+{
+  "generatedAt": "2026-10-22",
+  "generator": "ctx-1.0.0",
+  "packs": [
+    {
+      "contentFingerprint": "0973a98a15a3840ccedc962daffed485119c6572a328f288cf635c28d93b55ef",
+      "depFingerprint": "07e2e9fab1984bc4d065f915f07d77bbc61147b8ead851cd580e9db039c9770c",
+      "id": "CTX-BOOTSTRAP",
+      "parts": [
+        {
+          "bytes": 10819,
+          "id": "CTX-BOOTSTRAP"
+        }
+      ],
+      "status": "ok",
+      "title": "Bootstrap — mandatory rules and current state"
+    },
+    {
+      "contentFingerprint": "8a22f6870afff9ddb53404e22eb82fb0f0b759b361144ca3ff9171b1fccc27f3",
+      "depFingerprint": "4e8bd55e94121ad2362cce746fb9fd0dc4f87f65573fea182b36b54994679ef0",
+      "id": "CTX-GOVERNANCE",
+      "parts": [
+        {
+          "bytes": 8179,
+          "id": "CTX-GOVERNANCE"
+        }
+      ],
+      "status": "ok",
+      "title": "Constitutional governance and the registry pipeline"
+    },
+    {
+      "contentFingerprint": "140a2c3cc6266396d1a7dd8b9d84d30128002bff706807f6b767dd8a7fd55767",
+      "depFingerprint": "b0f9addc39075ca47bfc163e34e11e2df01a2b14aaca54927b35a8a4440d1fcb",
+      "id": "CTX-CONTINUITY-DESIGN",
+      "parts": [
+        {
+          "bytes": 10355,
+          "id": "CTX-CONTINUITY-DESIGN"
+        }
+      ],
+      "status": "ok",
+      "title": "Context continuity — design decisions and open design questions"
+    },
+    {
+      "contentFingerprint": "994a6a9f9d1876667c5ff3dfe5a0679a829322869574d99fcce3ecde7f28005c",
+      "depFingerprint": "fe74b5ccfeb93de2046342bac89bfd6a8c04bb3a7463f143553a1675470de30e",
+      "id": "CTX-CONTINUITY-SYSTEM",
+      "parts": [
+        {
+          "bytes": 20658,
+          "id": "CTX-CONTINUITY-SYSTEM"
+        }
+      ],
+      "status": "ok",
+      "title": "Context continuity — requirements and code"
+    },
+    {
+      "contentFingerprint": "6190e55f13558c363ef14be69199d5bbe0a0b67cf54034045eac23360cf04d79",
+      "depFingerprint": "99217f14687ae8411d308a5c2d022f2653e23cdfa18830adfb886fa597a268ae",
+      "id": "CTX-EVIDENCE-ARCHIVE",
+      "parts": [
+        {
+          "bytes": 19647,
+          "id": "CTX-EVIDENCE-ARCHIVE"
+        }
+      ],
+      "status": "ok",
+      "title": "Source evidence — inventory, gaps and coverage"
+    },
+    {
+      "contentFingerprint": "cc1911e4917a40312321728f53c1bd6edbb1a415a3ed18fda8a9dde00a96ff32",
+      "depFingerprint": "e1f4b1c949e1205fb175a2eb6c72bae60bebcd84c48250971260678a28dc60b0",
+      "id": "CTX-PLATFORM-QUALITY",
+      "parts": [
+        {
+          "bytes": 9302,
+          "id": "CTX-PLATFORM-QUALITY"
+        }
+      ],
+      "status": "ok",
+      "title": "Platform quality — open review findings and runtime risks"
+    }
+  ],
+  "readingOrder": [
+    "CTX-BOOTSTRAP",
+    "CTX-GOVERNANCE",
+    "CTX-CONTINUITY-DESIGN",
+    "CTX-CONTINUITY-SYSTEM",
+    "CTX-EVIDENCE-ARCHIVE",
+    "CTX-PLATFORM-QUALITY"
+  ],
+  "schema": "ctx-pack-index/1"
+}

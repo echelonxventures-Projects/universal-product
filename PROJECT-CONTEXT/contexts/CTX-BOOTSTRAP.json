@@ -1,0 +1,182 @@
+{
+  "budgetBytes": 12000,
+  "contentFingerprint": "0973a98a15a3840ccedc962daffed485119c6572a328f288cf635c28d93b55ef",
+  "depFingerprint": "07e2e9fab1984bc4d065f915f07d77bbc61147b8ead851cd580e9db039c9770c",
+  "excluded": [],
+  "freshness": "fresh-at-build",
+  "generatedAt": "2026-10-22",
+  "generator": "ctx-1.0.0",
+  "id": "CTX-BOOTSTRAP",
+  "inputs": [
+    [
+      "ART-AGENTS-MD",
+      "40193bb9f55ff4100c9c84dc0bafadfd5efdca9606b40d7709f22ada6a73e08a"
+    ],
+    [
+      "CST-AUTHORIZED-SIDE-EFFECTS",
+      "785e628fc900f335bc4c5658879db74191b1068494a65aa2fae44e57b6ec1336"
+    ],
+    [
+      "CST-CONFIG-OVER-CODE",
+      "78117e2e3be560e662e207c22b69c29fbd59594af1f186e61c1079db23183168"
+    ],
+    [
+      "CST-EVIDENCE-BEFORE-CLAIMS",
+      "336230e694eb86b8f4d1d42c3b588c7e58234ce809d5ba4695c14db0deff8b2d"
+    ],
+    [
+      "CST-EXPLAINABILITY",
+      "b64aa8200dca9443b769f3c923ce3a2fbe0d2e34debe40d7abacae7df655bed9"
+    ],
+    [
+      "CST-FROZEN-PRIMITIVES",
+      "78e9b8e40e3004618edd825d1637d33fccdf6dacdd2ab6b14c9b4b279e2e3fd9"
+    ],
+    [
+      "CST-KNOWLEDGE-ONCE",
+      "8e28da9351e3eb8a70825922df78adccc9c7fd4169b1e39a0b44297c5d5ba05d"
+    ],
+    [
+      "CST-NO-DESTRUCTIVE-CLEANUP",
+      "7747d31f2dd557226325ede059a0a0d92171227a89cf9e6a70b73d52e7c9cc86"
+    ],
+    [
+      "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "74f67f765383961295845131effc939a67ee9d4c79ca36283d54b5c15a3aaea2"
+    ],
+    [
+      "CST-NO-SECRETS",
+      "919e69e7d19bb95c6a96a09c24eb09ef7bcf181442c86ff0456a47ac8afca47c"
+    ],
+    [
+      "CST-NODE-ENGINE",
+      "67523abb18530d49400744bdc703163e34b2a07b6d92d021bca716bb666b8ab6"
+    ],
+    [
+      "CST-PRESERVE-WORKING-TREE",
+      "7cbdf7102bdd684beb93c4596852524be125d7ad23dffbb20b2b21a0f2107e28"
+    ],
+    [
+      "CST-PROJECTION-LAW",
+      "b54e583d5f7cd522c3ee0f739fa479a0e4a830e9a715a50e7e760c7d184ad405"
+    ],
+    [
+      "CST-SEAL-DERIVED",
+      "44150e62a9868196b07fcfe99986071508a95fe61d98d27c35688ad0e575af3a"
+    ],
+    [
+      "CST-SUPERSEDED-NOT-AUTHORITY",
+      "c8dab4d9391d2e4683f0169fb7b040e527e1c5788fbed7e798f2d49b63ec93a1"
+    ],
+    [
+      "CST-ZERO-HARDCODING",
+      "1fa46b53f278850801081aba2f2922796813444f0b3279b033598f0a3e884ed0"
+    ],
+    [
+      "ISS-CI-RUNNERS-UNAVAILABLE",
+      "66a45c6ba85f8022388aa6c86b045bcb31649b91c5053b4af53b2a03042e335d"
+    ],
+    [
+      "ISS-CTX-DECISIONS-UNAPPROVED",
+      "b7ce82ffab0379f8c1a494eefae315028362fed88637b5eefa7ecea895ec6a91"
+    ],
+    [
+      "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
+      "8cb82fabc641c3cf116e57f0e8a4b5ef02204005cb0e58f9f20fea6fcb6ae14b"
+    ],
+    [
+      "fact:F-001",
+      "d8628adf6f1ea34771995322981ef3e3f30b29bc7cc4fc3703228247c3f1e7cd"
+    ],
+    [
+      "fact:F-003",
+      "0e7c04a5e997191c49e04d2672b04cccfdbc7d4b6f9ad26f89af2f318ca2ea1e"
+    ],
+    [
+      "fact:F-006",
+      "6e456b2904373ae6771644aca437e075f87fc7ec1c11c20edf5d462ede8afa49"
+    ],
+    [
+      "fact:F-009",
+      "5d2ece71541f6d1f4a9b0aefebd4ef813898431f4ee484f1761be5fe5a4d7108"
+    ],
+    [
+      "fact:F-011",
+      "0375d4722a3c78efd0f53c97428dbc19271f5fbc7ef9d853d60a6cc382b002ee"
+    ],
+    [
+      "fact:F-013",
+      "1b67cf490fa43bb78703c1e2ed2a7ff91bfd892cee4ec9482d6975ad65ffcc1b"
+    ],
+    [
+      "fact:F-015",
+      "ce8352d43c6698f4bde09bcfb2f6aec90a2bfc2928332a2de08953a6db005609"
+    ]
+  ],
+  "mandatory": [
+    "CST-AUTHORIZED-SIDE-EFFECTS",
+    "CST-CONFIG-OVER-CODE",
+    "CST-EVIDENCE-BEFORE-CLAIMS",
+    "CST-EXPLAINABILITY",
+    "CST-FROZEN-PRIMITIVES",
+    "CST-KNOWLEDGE-ONCE",
+    "CST-NO-DESTRUCTIVE-CLEANUP",
+    "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+    "CST-NO-SECRETS",
+    "CST-NODE-ENGINE",
+    "CST-PRESERVE-WORKING-TREE",
+    "CST-PROJECTION-LAW",
+    "CST-SEAL-DERIVED",
+    "CST-SUPERSEDED-NOT-AUTHORITY",
+    "CST-ZERO-HARDCODING",
+    "ISS-CI-RUNNERS-UNAVAILABLE",
+    "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE"
+  ],
+  "members": {
+    "artifacts": [
+      "ART-AGENTS-MD"
+    ],
+    "constraints": [
+      "CST-AUTHORIZED-SIDE-EFFECTS",
+      "CST-CONFIG-OVER-CODE",
+      "CST-EVIDENCE-BEFORE-CLAIMS",
+      "CST-EXPLAINABILITY",
+      "CST-FROZEN-PRIMITIVES",
+      "CST-KNOWLEDGE-ONCE",
+      "CST-NO-DESTRUCTIVE-CLEANUP",
+      "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "CST-NO-SECRETS",
+      "CST-NODE-ENGINE",
+      "CST-PRESERVE-WORKING-TREE",
+      "CST-PROJECTION-LAW",
+      "CST-SEAL-DERIVED",
+      "CST-SUPERSEDED-NOT-AUTHORITY",
+      "CST-ZERO-HARDCODING"
+    ],
+    "decisions": [],
+    "issues": [
+      "ISS-CI-RUNNERS-UNAVAILABLE",
+      "ISS-CTX-DECISIONS-UNAPPROVED",
+      "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE"
+    ],
+    "requirements": [],
+    "sources": []
+  },
+  "missing": [],
+  "parts": [
+    {
+      "bytes": 10819,
+      "estimatedTokens": 3607,
+      "file": "contexts/CTX-BOOTSTRAP.md",
+      "id": "CTX-BOOTSTRAP",
+      "sha256": "2aa30a22e55ee3b4882e648f3d5c5e2f902a23e91f9cad533fcd35934cbf3d19"
+    }
+  ],
+  "prerequisites": [],
+  "schema": "ctx-pack/1",
+  "secretFindings": [],
+  "sourceFingerprints": [],
+  "status": "ok",
+  "title": "Bootstrap — mandatory rules and current state",
+  "withheld": []
+}

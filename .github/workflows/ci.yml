@@ -14,6 +14,11 @@ jobs:
         node: [22.13, 22, 24]
     steps:
       - uses: actions/checkout@v4
+        with:
+          # full history: the context archive pins evidence by git blob id (including
+          # superseded file versions) and hashes the commit list — a shallow clone can
+          # only warn about those, never verify them
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
@@ -21,6 +26,12 @@ jobs:
       # through jsdom, a devDependency — without the install `npm test` dies on require
       - name: Install
         run: npm ci
+      # fast, dependency-free, fails first: schema, ids, owners, graph, archive checksums,
+      # pack freshness, generated-output drift, secrets, handoffs — then an isolated restore
+      - name: Context continuity (verify + restore-check)
+        run: |
+          npm run context:verify
+          npm run context:restore-check
       - name: Syntax + E2E suite (own DB/port)
         run: npm test
       - name: Boot smoke (fresh DB, healthz)

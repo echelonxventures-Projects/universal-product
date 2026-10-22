@@ -1,0 +1,458 @@
+{
+  "budgetBytes": 24000,
+  "contentFingerprint": "6190e55f13558c363ef14be69199d5bbe0a0b67cf54034045eac23360cf04d79",
+  "depFingerprint": "99217f14687ae8411d308a5c2d022f2653e23cdfa18830adfb886fa597a268ae",
+  "excluded": [],
+  "freshness": "fresh-at-build",
+  "generatedAt": "2026-10-22",
+  "generator": "ctx-1.0.0",
+  "id": "CTX-EVIDENCE-ARCHIVE",
+  "inputs": [
+    [
+      "ART-ARCHIVE-STORE",
+      "f4cf19ceec4df5773bd358331170ae6160c20303647c5bac71be105ee0ad1708"
+    ],
+    [
+      "ART-GIT-OBJECT-STORE",
+      "e4ec1c2994c5931600e2dc7dc281b1ab11de48f8d460c5f0ab7767e8c0eb653e"
+    ],
+    [
+      "CST-AUTHORIZED-SIDE-EFFECTS",
+      "785e628fc900f335bc4c5658879db74191b1068494a65aa2fae44e57b6ec1336"
+    ],
+    [
+      "CST-CONFIG-OVER-CODE",
+      "78117e2e3be560e662e207c22b69c29fbd59594af1f186e61c1079db23183168"
+    ],
+    [
+      "CST-EVIDENCE-BEFORE-CLAIMS",
+      "336230e694eb86b8f4d1d42c3b588c7e58234ce809d5ba4695c14db0deff8b2d"
+    ],
+    [
+      "CST-EXPLAINABILITY",
+      "b64aa8200dca9443b769f3c923ce3a2fbe0d2e34debe40d7abacae7df655bed9"
+    ],
+    [
+      "CST-FROZEN-PRIMITIVES",
+      "78e9b8e40e3004618edd825d1637d33fccdf6dacdd2ab6b14c9b4b279e2e3fd9"
+    ],
+    [
+      "CST-KNOWLEDGE-ONCE",
+      "8e28da9351e3eb8a70825922df78adccc9c7fd4169b1e39a0b44297c5d5ba05d"
+    ],
+    [
+      "CST-NO-DESTRUCTIVE-CLEANUP",
+      "7747d31f2dd557226325ede059a0a0d92171227a89cf9e6a70b73d52e7c9cc86"
+    ],
+    [
+      "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "74f67f765383961295845131effc939a67ee9d4c79ca36283d54b5c15a3aaea2"
+    ],
+    [
+      "CST-NO-SECRETS",
+      "919e69e7d19bb95c6a96a09c24eb09ef7bcf181442c86ff0456a47ac8afca47c"
+    ],
+    [
+      "CST-NODE-ENGINE",
+      "67523abb18530d49400744bdc703163e34b2a07b6d92d021bca716bb666b8ab6"
+    ],
+    [
+      "CST-PRESERVE-WORKING-TREE",
+      "7cbdf7102bdd684beb93c4596852524be125d7ad23dffbb20b2b21a0f2107e28"
+    ],
+    [
+      "CST-PROJECTION-LAW",
+      "b54e583d5f7cd522c3ee0f739fa479a0e4a830e9a715a50e7e760c7d184ad405"
+    ],
+    [
+      "CST-SEAL-DERIVED",
+      "44150e62a9868196b07fcfe99986071508a95fe61d98d27c35688ad0e575af3a"
+    ],
+    [
+      "CST-SUPERSEDED-NOT-AUTHORITY",
+      "c8dab4d9391d2e4683f0169fb7b040e527e1c5788fbed7e798f2d49b63ec93a1"
+    ],
+    [
+      "CST-ZERO-HARDCODING",
+      "1fa46b53f278850801081aba2f2922796813444f0b3279b033598f0a3e884ed0"
+    ],
+    [
+      "DEC-CTX-GIT-AS-ARCHIVE",
+      "4ead89c85a75122a75e94a949e81cd54d54012f6cfe64a16cf48c1e6be335f68"
+    ],
+    [
+      "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+      "b4b189711761e4e8575972276b536b66400572dda37a81c51484fee23176f822"
+    ],
+    [
+      "ISS-GIT-HISTORY-SHALLOW-CAPTURE",
+      "81c75dc1de795d4c1aaf92cb452cd2bef977171eafdf14a4b8802fb88f0cd9a1"
+    ],
+    [
+      "ISS-IMPLEMENTATION-MAP-STALE",
+      "f7872415c2c441264633ce113e73461d1490c87530b242f48d623e3a7fc790d7"
+    ],
+    [
+      "ISS-MASTER-PROMPT-NOT-ARCHIVED",
+      "45be368da5a16146dd1a8ea0f2f48842d62224c0fe28f652cc73027844debf1e"
+    ],
+    [
+      "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
+      "8cb82fabc641c3cf116e57f0e8a4b5ef02204005cb0e58f9f20fea6fcb6ae14b"
+    ],
+    [
+      "ISS-REVIEW-FINDINGS-UNRECONCILED",
+      "2be1ece995dc3e14c4588caf4ff541fcfe858e8d9c2aff7b99d15eea4b266054"
+    ],
+    [
+      "ISS-SEGMENTS-UNPROCESSED",
+      "57a50cffbeaa46a525cc3a0be6e6e587c06e7b03729b25c392f28ae8aa7ff25c"
+    ],
+    [
+      "REQ-CTX-ARCHIVE",
+      "368ee4ab20bc3d970b644e4963b884f98fbbc38b72c5a6497ae891f2ff56c545"
+    ],
+    [
+      "REQ-CTX-COVERAGE",
+      "853554dc2a7b4c9783d2882c5549de2eeb789ad3b9339254e1462e9e2be81e03"
+    ],
+    [
+      "SRC-ARCH-1",
+      "ff299e27fe874d4fa186b2c67d8a186fff63cf5cf64b969e30d7f9f87cad8377"
+    ],
+    [
+      "SRC-ARCH-2",
+      "91cf03a1b3c1bfeeabb3e75d3f19870e1682cc4ea43f42f7b959f809b9db5e8c"
+    ],
+    [
+      "SRC-ARCH-3",
+      "6f63d168aff287ff3355eb9aa7ce50b89538a444ad45414c8936e19f15eae0d1"
+    ],
+    [
+      "SRC-ARCH-4",
+      "f69f4acb56505c8267f595249df389a0e419568974c83cbbe931005a74779268"
+    ],
+    [
+      "SRC-ARCH-5",
+      "b755075e7b7862e9567ddfb62dcb7916bdaec8fe4945c13e9ae9bc09f0327820"
+    ],
+    [
+      "SRC-ARCH-6",
+      "31ca321f4b319ca6e6dd1dc6ae999199f30d1e4c3f048e58c70d97898fa29c9b"
+    ],
+    [
+      "SRC-CONV-2026-10-22-MASTER-PROMPT",
+      "393b5f942b6efb4c5673045795f4141324615c6a1861ee73ee2e714fc0b157e8"
+    ],
+    [
+      "SRC-CONV-PRIOR-SESSIONS",
+      "5484b472302f90929de9f749af53762f495b779dd93c2bac6466fcd9dfeaeb06"
+    ],
+    [
+      "SRC-GIT-HISTORY",
+      "2d008aa3d8ea96cb55ceb07778a89a7e828ceddfa1dee53202f034bcf87c7665"
+    ],
+    [
+      "SRC-GIT-HISTORY-441D772-V1",
+      "0bdf7f91307e1051ff1cc1039905606b4c3ba74a7792be62746b683a1950e228"
+    ],
+    [
+      "SRC-GIT-HISTORY-LEGACY-RECOVERED",
+      "53a80a31975c9a832384b7e21ff458ba180bbe60bac1c3902361953d779fc80e"
+    ],
+    [
+      "SRC-IMPLEMENTATION-MAP",
+      "157f7dd9385f6897291ae24df83bf2bd153750a5e6250a72847f28b1d31292fc"
+    ],
+    [
+      "SRC-MEMORY-2026-09-17",
+      "1f7ca6fd6a316356bfc15a18d2d80e67b6e1eff9350d431d25ef27905b87157a"
+    ],
+    [
+      "SRC-MEMORY-LEDGER",
+      "54506429b49b6c7e8f4177f40ad46c86c5da7a227fdfe40fa278c76d0c46aabd"
+    ],
+    [
+      "SRC-README",
+      "1f4d490a76a30e24d1c489c5f7a37c4a141390de7eced8c1d6fb7500c0d963e1"
+    ],
+    [
+      "SRC-REPOSITORY-INDEX",
+      "1723bb68d9ab80430ef1722c88ecff51952119273f31806b26678ac1534aeb2b"
+    ],
+    [
+      "SRC-REVIEW-2026-09-17",
+      "225b6b3df385bca0b65b2766f3973a9acc98bf3c46a2807b89d56facc822ae06"
+    ],
+    [
+      "SRC-REVIEW-2026-10-12",
+      "778ece4a80383827bb6ddef8d47abab4c02fe9cb66fb1c2f3739ed35cf244432"
+    ],
+    [
+      "SRC-SUPERSEDED-ADDENDUM",
+      "4f2045ec136ce5d268912562cbe890b6d47d6ab9d3af7bdd44ad92119eae71da"
+    ],
+    [
+      "SRC-SUPERSEDED-MASTER-ARCH",
+      "45fcb052134f565bae17574c33ea6391cec7ee15e894f09425ffb6b4dc84decb"
+    ],
+    [
+      "SRC-SUPERSEDED-ZERO-HARDCODING",
+      "ba9293125c87d0220a6383f040e82dc233a953d8485f2126677780e61eddc33c"
+    ],
+    [
+      "SRC-UCOS-ADDENDUM",
+      "0787e6ffef12a8859b5a05616357c82ed6535afa6a5d64ba60230ee67c98fc21"
+    ],
+    [
+      "SRC-UCOS-CAPABILITY-OS",
+      "df32d33fb1b3f657e0723f3cde7db7e53c628d6b37e4671b2b49e8b02c1da5be"
+    ],
+    [
+      "SRC-UCOS-MASTER-ARCH",
+      "1785928dba89b7e4b54a65ce931a4ad851a90e3125a0ff6ce42dd8009f1dee4f"
+    ],
+    [
+      "SRC-UCOS-OMEGA",
+      "01e251bd138230f476613b8f182587de92015105341c6ef4f3d554913b65cd52"
+    ],
+    [
+      "SRC-UCRS-ZERO-HARDCODING",
+      "0ab7628cfee438939d720ad59eef5c376f43d9cb8d9e37608815e3616420000c"
+    ],
+    [
+      "fact:F-008",
+      "51c0b05792661b56d9cf436a0550e634cf28a909ec41985e9b7a1424aeaf6ee9"
+    ],
+    [
+      "fact:F-014",
+      "f0b40be08346679fa9b44e13a731bac39cd72c95693ce613a1b4052a8dd94e7f"
+    ],
+    [
+      "fact:F-016",
+      "f1d0bf4260940d6655a11b7ce808bf9baae594ecc59b5dd934e96d84bf6f973a"
+    ]
+  ],
+  "mandatory": [
+    "CST-AUTHORIZED-SIDE-EFFECTS",
+    "CST-CONFIG-OVER-CODE",
+    "CST-EVIDENCE-BEFORE-CLAIMS",
+    "CST-EXPLAINABILITY",
+    "CST-FROZEN-PRIMITIVES",
+    "CST-KNOWLEDGE-ONCE",
+    "CST-NO-DESTRUCTIVE-CLEANUP",
+    "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+    "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+    "CST-NO-SECRETS",
+    "CST-NODE-ENGINE",
+    "CST-PRESERVE-WORKING-TREE",
+    "CST-PROJECTION-LAW",
+    "CST-SEAL-DERIVED",
+    "CST-SUPERSEDED-NOT-AUTHORITY",
+    "CST-ZERO-HARDCODING",
+    "DEC-CTX-GIT-AS-ARCHIVE",
+    "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+    "ISS-IMPLEMENTATION-MAP-STALE",
+    "ISS-MASTER-PROMPT-NOT-ARCHIVED",
+    "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
+    "ISS-REVIEW-FINDINGS-UNRECONCILED",
+    "REQ-CTX-ARCHIVE",
+    "REQ-CTX-COVERAGE"
+  ],
+  "members": {
+    "artifacts": [
+      "ART-ARCHIVE-STORE",
+      "ART-GIT-OBJECT-STORE"
+    ],
+    "constraints": [
+      "CST-AUTHORIZED-SIDE-EFFECTS",
+      "CST-CONFIG-OVER-CODE",
+      "CST-EVIDENCE-BEFORE-CLAIMS",
+      "CST-EXPLAINABILITY",
+      "CST-FROZEN-PRIMITIVES",
+      "CST-KNOWLEDGE-ONCE",
+      "CST-NO-DESTRUCTIVE-CLEANUP",
+      "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "CST-NO-SECRETS",
+      "CST-NODE-ENGINE",
+      "CST-PRESERVE-WORKING-TREE",
+      "CST-PROJECTION-LAW",
+      "CST-SEAL-DERIVED",
+      "CST-SUPERSEDED-NOT-AUTHORITY",
+      "CST-ZERO-HARDCODING"
+    ],
+    "decisions": [
+      "DEC-CTX-GIT-AS-ARCHIVE",
+      "DEC-CTX-MEMORY-LEDGER-HISTORICAL"
+    ],
+    "issues": [
+      "ISS-GIT-HISTORY-SHALLOW-CAPTURE",
+      "ISS-IMPLEMENTATION-MAP-STALE",
+      "ISS-MASTER-PROMPT-NOT-ARCHIVED",
+      "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
+      "ISS-REVIEW-FINDINGS-UNRECONCILED",
+      "ISS-SEGMENTS-UNPROCESSED"
+    ],
+    "requirements": [
+      "REQ-CTX-ARCHIVE",
+      "REQ-CTX-COVERAGE"
+    ],
+    "sources": [
+      "SRC-ARCH-1",
+      "SRC-ARCH-2",
+      "SRC-ARCH-3",
+      "SRC-ARCH-4",
+      "SRC-ARCH-5",
+      "SRC-ARCH-6",
+      "SRC-CONV-2026-10-22-MASTER-PROMPT",
+      "SRC-CONV-PRIOR-SESSIONS",
+      "SRC-GIT-HISTORY",
+      "SRC-GIT-HISTORY-441D772-V1",
+      "SRC-GIT-HISTORY-LEGACY-RECOVERED",
+      "SRC-IMPLEMENTATION-MAP",
+      "SRC-MEMORY-2026-09-17",
+      "SRC-MEMORY-LEDGER",
+      "SRC-README",
+      "SRC-REPOSITORY-INDEX",
+      "SRC-REVIEW-2026-09-17",
+      "SRC-REVIEW-2026-10-12",
+      "SRC-SUPERSEDED-ADDENDUM",
+      "SRC-SUPERSEDED-MASTER-ARCH",
+      "SRC-SUPERSEDED-ZERO-HARDCODING",
+      "SRC-UCOS-ADDENDUM",
+      "SRC-UCOS-CAPABILITY-OS",
+      "SRC-UCOS-MASTER-ARCH",
+      "SRC-UCOS-OMEGA",
+      "SRC-UCRS-ZERO-HARDCODING"
+    ]
+  },
+  "missing": [],
+  "parts": [
+    {
+      "bytes": 19647,
+      "estimatedTokens": 6549,
+      "file": "contexts/CTX-EVIDENCE-ARCHIVE.md",
+      "id": "CTX-EVIDENCE-ARCHIVE",
+      "sha256": "f6595570bbade36a20cc182e00fdd113bed72a5aacda8c29afd7cc3a66bc36cf"
+    }
+  ],
+  "prerequisites": [
+    {
+      "fingerprint": "07e2e9fab1984bc4d065f915f07d77bbc61147b8ead851cd580e9db039c9770c",
+      "id": "CTX-BOOTSTRAP"
+    }
+  ],
+  "schema": "ctx-pack/1",
+  "secretFindings": [],
+  "sourceFingerprints": [
+    {
+      "id": "SRC-ARCH-1",
+      "sha256": "aec7b3f72985f77696bf7606412c84d783217cdadc9efd0905999d5ff7808fca"
+    },
+    {
+      "id": "SRC-ARCH-2",
+      "sha256": "468471982922c23e953468fa976271b15408b41096ec78041e6811d93a2603c3"
+    },
+    {
+      "id": "SRC-ARCH-3",
+      "sha256": "01bb5d270950893a831ebf1d4be9139128894718ab5495ef60ba83ed68047904"
+    },
+    {
+      "id": "SRC-ARCH-4",
+      "sha256": "e5f2911c89b4f971642d393a7c8c041c875df2156172d64dba37c4bb9a64e753"
+    },
+    {
+      "id": "SRC-ARCH-5",
+      "sha256": "1a2624201fa4473875e3490b6b8e3aef825a541242000826bf6b6103c1c0dc3a"
+    },
+    {
+      "id": "SRC-ARCH-6",
+      "sha256": "a447fdf0f9c4d8767555107eb0e27a688c95ad2814c85226a27475358fb54026"
+    },
+    {
+      "id": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+      "sha256": null
+    },
+    {
+      "id": "SRC-CONV-PRIOR-SESSIONS",
+      "sha256": null
+    },
+    {
+      "id": "SRC-GIT-HISTORY",
+      "sha256": "87deb12d5bd91b90cfcd1e05edf3680541d11861a98a89c4b3de4359ad93afa5"
+    },
+    {
+      "id": "SRC-GIT-HISTORY-441D772-V1",
+      "sha256": "02356724458e0008e27cde8363a5acb48ab6911bdcab7f86cc29c1d78f4685c7"
+    },
+    {
+      "id": "SRC-GIT-HISTORY-LEGACY-RECOVERED",
+      "sha256": "87deb12d5bd91b90cfcd1e05edf3680541d11861a98a89c4b3de4359ad93afa5"
+    },
+    {
+      "id": "SRC-IMPLEMENTATION-MAP",
+      "sha256": "1c60ef60e3bfafadbf15ebc765e6fd8ac64e922e2602aa7e1afa0561d4c55f13"
+    },
+    {
+      "id": "SRC-MEMORY-2026-09-17",
+      "sha256": "f90c0b6e592c0c24cb696bf71330ca9689314b04062a04f553246fca85491b84"
+    },
+    {
+      "id": "SRC-MEMORY-LEDGER",
+      "sha256": "5eb2ac32ffb490a86636ba96596398f1453226c88e2990db462eb34393509d7d"
+    },
+    {
+      "id": "SRC-README",
+      "sha256": "d83c823acccef7514b9f05820be7464ff29e68ee55b1e3d2b9751df02bfe037c"
+    },
+    {
+      "id": "SRC-REPOSITORY-INDEX",
+      "sha256": "11fa373278aa1f9921f0bdf39a7da3fdeb82ea4174ce5cf2058273ee7843411e"
+    },
+    {
+      "id": "SRC-REVIEW-2026-09-17",
+      "sha256": "5828c55364f624b8bfb7c83e5c5209300840180011e8a168f2ed06c95a2f05d3"
+    },
+    {
+      "id": "SRC-REVIEW-2026-10-12",
+      "sha256": "4aa4c580b931fb80caf1c722e813fc07da4e20aedb0ce18a9eccd03c61b91a61"
+    },
+    {
+      "id": "SRC-SUPERSEDED-ADDENDUM",
+      "sha256": "ba0d0c8fdc38bee4a40e5f53d4ac2e9398a3a8adf9e8519e426d0ada8ed420b5"
+    },
+    {
+      "id": "SRC-SUPERSEDED-MASTER-ARCH",
+      "sha256": "4313a78a366fb83595d438a22244b8d9993bbfa3ee18a87f845160746dcbe650"
+    },
+    {
+      "id": "SRC-SUPERSEDED-ZERO-HARDCODING",
+      "sha256": "787d7e4daa821870f4961e4ae31e6ce8735d195ce7e576f79e2e13f5b193b868"
+    },
+    {
+      "id": "SRC-UCOS-ADDENDUM",
+      "sha256": "97f0f66291ff87b1bbc724b260546fb34ceb22f9253b2e275103186570d5e000"
+    },
+    {
+      "id": "SRC-UCOS-CAPABILITY-OS",
+      "sha256": "5870bfb170f292e90ce8b85a198d45cf133dd09370a1f946e67e13ab9d125a86"
+    },
+    {
+      "id": "SRC-UCOS-MASTER-ARCH",
+      "sha256": "277fe64e24e175c512c574588077eb53ac2bf24d00acce16a76c47c2833656c8"
+    },
+    {
+      "id": "SRC-UCOS-OMEGA",
+      "sha256": "e88afc858018fa21e22edfa7855e4c1b2365cddc844461fe02946c67e7855875"
+    },
+    {
+      "id": "SRC-UCRS-ZERO-HARDCODING",
+      "sha256": "ca7be7c64d72a269e80bbe0f2a75d238bc934d98bc0825f746bccc103910bf3c"
+    }
+  ],
+  "status": "ok",
+  "title": "Source evidence — inventory, gaps and coverage",
+  "withheld": [
+    "ART-MEMORY-LEDGER"
+  ]
+}

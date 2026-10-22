@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ctx/receipt.schema.json",
+  "$comment": "An assimilation receipt records WHICH context an agent loaded and what the gate found. It is evidence of loading, not proof of understanding.",
+  "type": "object",
+  "required": ["schema", "id", "createdAt", "agent", "task", "repository", "verdict", "budgetBytes", "readingOrder", "packs", "requirements", "decisions", "constraints", "prerequisites", "gaps", "acceptance", "scope", "exclusions", "checks"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "ctx-receipt/1" },
+    "id": { "type": "string", "pattern": "^RCPT-[A-Z0-9-]+$" },
+    "createdAt": { "type": "string" },
+    "agent": { "type": "string" },
+    "task": { "type": "string" },
+    "repository": { "type": "object" },
+    "verdict": { "enum": ["pass", "pass-with-warnings", "blocked"] },
+    "budgetBytes": { "type": "integer" },
+    "totalRequiredBytes": { "type": "integer" },
+    "readingOrder": { "type": "array", "items": { "type": "object", "required": ["step", "ref", "bytes"], "additionalProperties": false, "properties": { "step": { "type": "string" }, "ref": { "type": "string" }, "bytes": { "type": "integer" }, "estimatedTokens": { "type": "integer" } } } },
+    "packs": { "type": "array", "items": { "type": "object", "required": ["id", "fingerprint", "fresh"], "additionalProperties": false, "properties": { "id": { "type": "string" }, "fingerprint": { "type": "string" }, "fresh": { "type": "boolean" } } } },
+    "requirements": { "type": "array", "items": { "type": "string" } },
+    "decisions": { "type": "array", "items": { "type": "string" } },
+    "constraints": { "type": "array", "items": { "type": "string" } },
+    "prerequisites": { "type": "array", "items": { "type": "string" } },
+    "gaps": { "type": "array", "items": { "type": "object", "required": ["severity", "message"], "additionalProperties": false, "properties": { "severity": { "enum": ["block", "warn"] }, "code": { "type": "string" }, "message": { "type": "string" } } } },
+    "acceptance": { "type": "array", "items": { "type": "string" } },
+    "scope": { "type": "array", "items": { "type": "string" } },
+    "exclusions": { "type": "array", "items": { "type": "string" } },
+    "checks": { "type": "array", "items": { "type": "object", "required": ["name", "ok"], "additionalProperties": false, "properties": { "name": { "type": "string" }, "ok": { "type": "boolean" }, "detail": { "type": "string" } } } }
+  }
+}
