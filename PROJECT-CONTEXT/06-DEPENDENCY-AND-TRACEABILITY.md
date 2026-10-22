@@ -17,7 +17,7 @@
 | implements | 45 | <from> realises <to>. |
 | included-in | 103 | <from> is part of the curated content of context pack <to>. |
 | references | 41 | <from> mentions <to> for navigation; no dependency implied. |
-| resolves | 0 | <from> closes the open question or conflict <to>. |
+| resolves | 1 | <from> closes the open question or conflict <to>. |
 | supersedes | 1 | <from> replaces <to>; <to> must not govern active work. |
 | supports | 0 | <from> is evidence in favour of <to> without being its origin. |
 | verifies | 24 | <from> is executable evidence that <to> holds. |

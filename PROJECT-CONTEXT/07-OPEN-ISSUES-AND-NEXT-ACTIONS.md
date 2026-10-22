@@ -7,7 +7,6 @@
 
 | Id | Kind | Severity | Issue | Blocks | Evidence needed |
 |---|---|---|---|---|---|
-| ISS-CANONICAL-INPUT-MISNAMED | defect | medium | Seal manifest hashes a file that does not exist — lib/canonical.js:104 lists 'UCOS-Zero-Hardcoding-Constitution.md' in INPUT_FILES, but the repository file is 'UCRS-Zero-Hardcoding-Constitution.md' (which lib/ucos.js:72 parses). The seal manifest records the listed file as missing, so an edit to the real UCRS constitution does not drift the seal. Pre-existing; tracked separately from the continuity work. | — | Confirm UCRS-Zero-Hardcoding-Constitution.md is the intended input, correct INPUT_FILES, re-run `npm run registry` and `node test/registry-gate.js`. |
 | ISS-CONTENT-MAP-SHARED-KEYS | question | medium | Eleven projected artifacts share another artifact's content block — _registry/content-map.json maps each constitution UCOS-CON-000001…010 to the same content key as a core-domain artifact (e.g. CON-000001 Constitutional Foundation and IDN-000001 Identity Architecture both → core/IDN; CON-000007 Privacy Constitution → core/AUT, the Authority Architecture block), and UCOS-CLS-000001 shares ext/SEM with UCOS-SEM-000001. The projections are 83–91% identical by word-shingle Jaccard, and some titles do not match the content they project. Pre-existing; found by context:hygiene on 2026-10-22. | — | Owner decides whether each constitution needs its own content block in _registry/content-*.json (then re-project and audit) or whether the sharing is intended (then record that as a decision). |
 | ISS-CTX-DECISIONS-UNAPPROVED | approval | high | Continuity design decisions await owner approval — DEC-CTX-* were made by the implementing agent on 2026-10-22 and are recorded as proposed; nothing in the repository shows the owner approving them. | — | The owner approves, amends or rejects each DEC-CTX-* decision; record it via TASK-CTX-0002 (decision status → approved with authority and date). |
 | ISS-MASTER-PROMPT-NOT-ARCHIVED | gap | medium | The owner's master prompt is not archived — Requirements REQ-CTX-* paraphrase the 2026-10-22 master prompt and cite it by section; its original text is not in the repository or the private store, so the paraphrases cannot be re-checked against the source. | — | An export of the 2026-10-22 session transcript imported with `npm run context:import -- <file> --id SRC-CONV-2026-10-22-EXPORT --sensitivity private` into an access-controlled CONTEXT_ARCHIVE_DIR. |
@@ -25,9 +24,9 @@
 | TASK-CTX-0001 | in-progress | Finish the implementation, run the verification commands, record the outcome with `npm run context:handoff`. |
 | TASK-CTX-0002 | planned | Owner reads PROJECT-CONTEXT/03-DECISION-REGISTER.md and states a verdict per decision. |
 | TASK-CTX-0003 | planned | Owner exports the transcript and provides an access-controlled CONTEXT_ARCHIVE_DIR. |
-| TASK-REG-0001 | planned | Confirm the intended file with the owner, then change lib/canonical.js:104 and re-run the registry checks. |
+| TASK-REG-0001 | done | None for this task. Merge the branch once the owner approves; then run the full npm test in CI. |
 | TASK-SEC-0001 | planned | Map each REVIEW.md finding to the commits of PR #1/#2 and the tests in test/security.js. |
 
 ## Resolved / accepted
 
-- none
+- ISS-CANONICAL-INPUT-MISNAMED [resolved] Seal manifest hashes a file that does not exist

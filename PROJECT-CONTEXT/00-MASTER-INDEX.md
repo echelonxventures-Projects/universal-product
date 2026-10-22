@@ -43,7 +43,7 @@
 | # | Pack | Title | Parts (bytes) | Status |
 |---|---|---|---|---|
 | 1 | [CTX-BOOTSTRAP](contexts/CTX-BOOTSTRAP.md) | Bootstrap — mandatory rules and current state | 8776 | ok |
-| 2 | [CTX-GOVERNANCE](contexts/CTX-GOVERNANCE.md) | Constitutional governance and the registry pipeline | 10725 | ok |
+| 2 | [CTX-GOVERNANCE](contexts/CTX-GOVERNANCE.md) | Constitutional governance and the registry pipeline | 10729 | ok |
 | 3 | [CTX-CONTINUITY-DESIGN](contexts/CTX-CONTINUITY-DESIGN.md) | Context continuity — design decisions and open design questions | 13400 | ok |
 | 4 | [CTX-CONTINUITY-SYSTEM](contexts/CTX-CONTINUITY-SYSTEM.md) | Context continuity — requirements and code | 21961 | ok |
 | 5 | [CTX-EVIDENCE-ARCHIVE](contexts/CTX-EVIDENCE-ARCHIVE.md) | Source evidence — inventory, gaps and coverage | 18607 | ok |
@@ -56,13 +56,13 @@
 | [TASK-CTX-0001](task-packs/TASK-CTX-0001.md) | Implement the context continuity system | in-progress | Finish the implementation, run the verification commands, record the outcome with `npm run context:handoff`. |
 | [TASK-CTX-0002](task-packs/TASK-CTX-0002.md) | Owner review of the continuity design decisions | planned | Owner reads PROJECT-CONTEXT/03-DECISION-REGISTER.md and states a verdict per decision. |
 | [TASK-CTX-0003](task-packs/TASK-CTX-0003.md) | Archive the 2026-10-22 session transcript | planned | Owner exports the transcript and provides an access-controlled CONTEXT_ARCHIVE_DIR. |
-| [TASK-REG-0001](task-packs/TASK-REG-0001.md) | Correct the seal's misnamed zero-hardcoding input | planned | Confirm the intended file with the owner, then change lib/canonical.js:104 and re-run the registry checks. |
+| [TASK-REG-0001](task-packs/TASK-REG-0001.md) | Correct the seal's misnamed zero-hardcoding input | done | None for this task. Merge the branch once the owner approves; then run the full npm test in CI. |
 | [TASK-SEC-0001](task-packs/TASK-SEC-0001.md) | Reconcile REVIEW.md findings with their fixes | planned | Map each REVIEW.md finding to the commits of PR #1/#2 and the tests in test/security.js. |
 
 ## Counts
 
-- Sources 24 · requirements 14 · decisions 9 · constraints 16 · artifacts 32 (+93 imported from `_registry/manifest.json`) · issues 10 (10 open) · tasks 5 · packs 6
-- Graph edges 367 (derived from record fields via `schemas/relations.json`)
+- Sources 24 · requirements 14 · decisions 9 · constraints 16 · artifacts 32 (+93 imported from `_registry/manifest.json`) · issues 10 (9 open) · tasks 5 · packs 6
+- Graph edges 368 (derived from record fields via `schemas/relations.json`)
 
 ## Commands
 

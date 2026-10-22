@@ -1,0 +1,122 @@
+{
+  "acceptance": [
+    "npm run registry passes with no missing input",
+    "an edit to UCRS-Zero-Hardcoding-Constitution.md drifts the seal"
+  ],
+  "agent": "claude-code",
+  "budgetBytes": 24000,
+  "checks": [
+    {
+      "detail": "claude/keen-rubin-2oeljf @ 4d4e7fe39fe4 (clean)",
+      "name": "repository identified",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "knowledge valid",
+      "ok": true
+    },
+    {
+      "detail": "367 edges",
+      "name": "graph valid",
+      "ok": true
+    },
+    {
+      "detail": "PROJECT-CONTEXT/00-MASTER-INDEX.md",
+      "name": "master index present",
+      "ok": true
+    },
+    {
+      "detail": "Correct the seal's misnamed zero-hardcoding input",
+      "name": "task resolved",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "packs fresh",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "prerequisites available",
+      "ok": true
+    }
+  ],
+  "constraints": [
+    "CST-AUTHORIZED-SIDE-EFFECTS",
+    "CST-CONFIG-OVER-CODE",
+    "CST-EVIDENCE-BEFORE-CLAIMS",
+    "CST-EXPLAINABILITY",
+    "CST-FROZEN-PRIMITIVES",
+    "CST-KNOWLEDGE-ONCE",
+    "CST-NO-DESTRUCTIVE-CLEANUP",
+    "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+    "CST-NO-SECRETS",
+    "CST-NODE-ENGINE",
+    "CST-PRESERVE-WORKING-TREE",
+    "CST-PROJECTION-LAW",
+    "CST-SEAL-DERIVED",
+    "CST-SUPERSEDED-NOT-AUTHORITY",
+    "CST-ZERO-HARDCODING"
+  ],
+  "createdAt": "2026-10-22T05:28:38.351Z",
+  "decisions": [
+    "DEC-REGISTRY-AS-SOT",
+    "DEC-SEALED-CANONICAL-COMPILE"
+  ],
+  "exclusions": [
+    "No change to the constitution's content"
+  ],
+  "gaps": [],
+  "id": "RCPT-REG-0001-001",
+  "packs": [
+    {
+      "fingerprint": "4d7ad502df1c2bcba57e5b433191f74405b96410029a8ee872d1999a084ecc93",
+      "fresh": true,
+      "id": "CTX-BOOTSTRAP"
+    },
+    {
+      "fingerprint": "718613be3e705e2082bb314eb8cd25ad6437b098bf0ec4e059025b0fb11e02b2",
+      "fresh": true,
+      "id": "CTX-GOVERNANCE"
+    }
+  ],
+  "prerequisites": [],
+  "readingOrder": [
+    {
+      "bytes": 5209,
+      "ref": "PROJECT-CONTEXT/00-MASTER-INDEX.md",
+      "step": "master-index"
+    },
+    {
+      "bytes": 1314,
+      "ref": "PROJECT-CONTEXT/task-packs/TASK-REG-0001.md",
+      "step": "task-pack"
+    },
+    {
+      "bytes": 8776,
+      "estimatedTokens": 2926,
+      "ref": "PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md",
+      "step": "mandatory-bootstrap"
+    },
+    {
+      "bytes": 10725,
+      "estimatedTokens": 3575,
+      "ref": "PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md",
+      "step": "pack"
+    }
+  ],
+  "repository": {
+    "branch": "claude/keen-rubin-2oeljf",
+    "dirty": false,
+    "head": "4d4e7fe39fe4bf99ea757763ec747ebab92687c6"
+  },
+  "requirements": [],
+  "schema": "ctx-receipt/1",
+  "scope": [
+    "lib/canonical.js INPUT_FILES",
+    "re-seal and registry tests"
+  ],
+  "task": "TASK-REG-0001",
+  "verdict": "pass"
+}

@@ -34,7 +34,7 @@ Have the owner approve, amend or reject each DEC-CTX-* decision so the continuit
 ## Load these packs, in order
 
 1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (8776 B)
-2. `PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md` — Constitutional governance and the registry pipeline (10725 B)
+2. `PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md` — Constitutional governance and the registry pipeline (10729 B)
 3. `PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.md` — Context continuity — design decisions and open design questions (13400 B)
 
 ## Requirements

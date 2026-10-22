@@ -9,11 +9,13 @@
       "kind": "defect",
       "title": "Seal manifest hashes a file that does not exist",
       "statement": "lib/canonical.js:104 lists 'UCOS-Zero-Hardcoding-Constitution.md' in INPUT_FILES, but the repository file is 'UCRS-Zero-Hardcoding-Constitution.md' (which lib/ucos.js:72 parses). The seal manifest records the listed file as missing, so an edit to the real UCRS constitution does not drift the seal. Pre-existing; tracked separately from the continuity work.",
-      "status": "open",
+      "status": "resolved",
       "severity": "medium",
       "evidence": [
         "grep: lib/canonical.js:104 vs lib/ucos.js:72 and _registry/audit.js:30 (observed 2026-10-22)",
-        "`npm run registry` reports 'sources 28 files' including the missing entry (observed 2026-10-22)"
+        "`npm run registry` reports 'sources 28 files' including the missing entry (observed 2026-10-22)",
+        "lib/canonical.js:104 now lists UCRS-Zero-Hardcoding-Constitution.md; `npm run registry` passes and liveManifest() reports 28 entries, 0 missing (observed 2026-10-22)",
+        "appending one byte to UCRS-Zero-Hardcoding-Constitution.md makes `node _registry/compile.js --verify` exit 1 with changed:[UCRS-Zero-Hardcoding-Constitution.md]; reverted, verify exits 0 (observed 2026-10-22)"
       ],
       "evidenceNeeded": "Confirm UCRS-Zero-Hardcoding-Constitution.md is the intended input, correct INPUT_FILES, re-run `npm run registry` and `node test/registry-gate.js`.",
       "affects": [
@@ -24,7 +26,19 @@
         "governance",
         "defect"
       ],
-      "lifecycle": "canonical-active"
+      "lifecycle": "canonical-active",
+      "resolvedBy": [
+        "TASK-REG-0001"
+      ],
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "status",
+          "from": "open",
+          "to": "resolved",
+          "by": "claude-code (TASK-REG-0001)"
+        }
+      ]
     },
     {
       "id": "ISS-CONTENT-MAP-SHARED-KEYS",

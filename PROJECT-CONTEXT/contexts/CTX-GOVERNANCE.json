@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "10e6e4e9f9d99813ffe0bc2a794ae1fd91f5235ca72a020fd516a2563631a799",
-  "depFingerprint": "718613be3e705e2082bb314eb8cd25ad6437b098bf0ec4e059025b0fb11e02b2",
+  "contentFingerprint": "151c68c207a2045588f93dae47199b5e7e88ce00c7a188d525a7fba4fc3daf36",
+  "depFingerprint": "aa128bfb07d8426cde98e4eed7a7ca7637cb4d0e8d67d3056f89578585c0f6e9",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -10,7 +10,7 @@
   "inputs": [
     [
       "ART-CANONICAL",
-      "1df67ec124b02704a061ee00760b8e10ea9adb88bd8e892b2c4be02fe69e91c2"
+      "40af42440ef27e62b7f570452b0f4ec5d37cb6d8ca42fba0f20f669acd8f3d75"
     ],
     [
       "ART-REGISTRY-AUDIT",
@@ -98,7 +98,7 @@
     ],
     [
       "ISS-CANONICAL-INPUT-MISNAMED",
-      "a7a6a7cf7ca242bfa748ca4f42216ebea0e9dc9c2ac0ea46480aed56ace811c9"
+      "23c7646088652c544000fb941fb34bde32a63c58726b8586afc9907c0503089e"
     ],
     [
       "ISS-CONTENT-MAP-SHARED-KEYS",
@@ -190,11 +190,11 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 10725,
-      "estimatedTokens": 3575,
+      "bytes": 10729,
+      "estimatedTokens": 3577,
       "file": "contexts/CTX-GOVERNANCE.md",
       "id": "CTX-GOVERNANCE",
-      "sha256": "45b08f39fe8170a84af6b42e0392ed41e525eb5cf0aa877911515c8f75e3e5eb"
+      "sha256": "56948e6ce7172329501c816be51e78997489cac8de3806b3c4766ae02ca9bdcf"
     }
   ],
   "prerequisites": [

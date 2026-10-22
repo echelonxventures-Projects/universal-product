@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "9bf7ae43e22e42ee3adcc05d6017cdec4468bac89bb6d29ed876bde267c0e333",
-  "depFingerprint": "7c9a2a1b2ee1e911e77e5041bfa85ac0781a98949482180b8bc3fc8a24068514",
+  "contentFingerprint": "f3422b7d6e91e43d03a05e018991e592fd1a40da3bba83096c4c2f1f3800fdd1",
+  "depFingerprint": "d299de5a76843701d5ede67f3c4d41b3c2fe9a527b3c381148545d5707d0c4a7",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -303,12 +303,12 @@
       "estimatedTokens": 7321,
       "file": "contexts/CTX-CONTINUITY-SYSTEM.md",
       "id": "CTX-CONTINUITY-SYSTEM",
-      "sha256": "392815a8702009eb4b5b82fc3ca5bc45d5bda25c05bfd33f9f7a107395415961"
+      "sha256": "f32c0f3d3602a3afd6ec047ecec131a79697ec42e5e1ba91763f847e9ebe744b"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "0fc30cfcfffc9c360619e25e7588ee585bdbe408c39598add2a5eb7e37fd602a",
+      "fingerprint": "8eb0eb5247f7c9fbfdb0fd482c31fac025843d02da0845ca2da94c9e52bce06d",
       "id": "CTX-CONTINUITY-DESIGN"
     }
   ],

@@ -16,12 +16,12 @@
       "title": "Bootstrap — mandatory rules and current state"
     },
     {
-      "contentFingerprint": "10e6e4e9f9d99813ffe0bc2a794ae1fd91f5235ca72a020fd516a2563631a799",
-      "depFingerprint": "718613be3e705e2082bb314eb8cd25ad6437b098bf0ec4e059025b0fb11e02b2",
+      "contentFingerprint": "151c68c207a2045588f93dae47199b5e7e88ce00c7a188d525a7fba4fc3daf36",
+      "depFingerprint": "aa128bfb07d8426cde98e4eed7a7ca7637cb4d0e8d67d3056f89578585c0f6e9",
       "id": "CTX-GOVERNANCE",
       "parts": [
         {
-          "bytes": 10725,
+          "bytes": 10729,
           "id": "CTX-GOVERNANCE"
         }
       ],
@@ -29,8 +29,8 @@
       "title": "Constitutional governance and the registry pipeline"
     },
     {
-      "contentFingerprint": "b7d57f04839f94a0ad1e97e880f6bf96fd91ffc5b8e4025d72721c6d8acc9ca3",
-      "depFingerprint": "0fc30cfcfffc9c360619e25e7588ee585bdbe408c39598add2a5eb7e37fd602a",
+      "contentFingerprint": "157a4a75d0c04d968ad6e42b058fe1f7ec9d069a2cbfe495ffece9220256fa4f",
+      "depFingerprint": "8eb0eb5247f7c9fbfdb0fd482c31fac025843d02da0845ca2da94c9e52bce06d",
       "id": "CTX-CONTINUITY-DESIGN",
       "parts": [
         {
@@ -42,8 +42,8 @@
       "title": "Context continuity — design decisions and open design questions"
     },
     {
-      "contentFingerprint": "9bf7ae43e22e42ee3adcc05d6017cdec4468bac89bb6d29ed876bde267c0e333",
-      "depFingerprint": "7c9a2a1b2ee1e911e77e5041bfa85ac0781a98949482180b8bc3fc8a24068514",
+      "contentFingerprint": "f3422b7d6e91e43d03a05e018991e592fd1a40da3bba83096c4c2f1f3800fdd1",
+      "depFingerprint": "d299de5a76843701d5ede67f3c4d41b3c2fe9a527b3c381148545d5707d0c4a7",
       "id": "CTX-CONTINUITY-SYSTEM",
       "parts": [
         {

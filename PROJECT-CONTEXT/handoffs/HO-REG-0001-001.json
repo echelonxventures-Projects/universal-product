@@ -1,0 +1,135 @@
+{
+  "agent": "claude-code",
+  "blockers": [],
+  "commands": [
+    {
+      "command": "npm run context:assimilate -- TASK-REG-0001 --agent claude-code --write",
+      "exitCode": 0,
+      "observed": "PASS, receipt RCPT-REG-0001-001",
+      "result": "passed"
+    },
+    {
+      "command": "npm run context:build",
+      "exitCode": 0,
+      "observed": "packs rebuilt incl. CTX-GOVERNANCE",
+      "result": "passed"
+    },
+    {
+      "command": "npm run context:verify",
+      "exitCode": 0,
+      "observed": "0 errors, 1 pre-existing warning (TASK-CTX-0001 without handoff)",
+      "result": "passed"
+    }
+  ],
+  "completed": [
+    {
+      "claim": "Owner confirmed UCRS-Zero-Hardcoding-Constitution.md is the intended input",
+      "evidence": "Owner's task request (2026-10-22) names it; it is the only Zero-Hardcoding file in the repo root, parsed by lib/ucos.js:72 and listed by _registry/audit.js:30"
+    },
+    {
+      "claim": "lib/canonical.js INPUT_FILES lists UCRS-Zero-Hardcoding-Constitution.md instead of the nonexistent UCOS-Zero-Hardcoding-Constitution.md",
+      "evidence": "git diff lib/canonical.js: one-line change at line 104"
+    },
+    {
+      "claim": "Seal manifest has no missing input",
+      "evidence": "node -e liveManifest(): 28 entries, 0 missing; UCRS entry bytes 11489 sha256 ca7be7c6…"
+    },
+    {
+      "claim": "An edit to the UCRS constitution drifts the seal",
+      "evidence": "appended one byte: `node _registry/compile.js --verify` exit 1, changed:[UCRS-Zero-Hardcoding-Constitution.md]; reverted with git checkout, verify exit 0, drift none"
+    },
+    {
+      "claim": "ISS-CANONICAL-INPUT-MISNAMED resolved",
+      "evidence": "knowledge/issues.json status resolved, resolvedBy [TASK-REG-0001]; npm run context:build and context:verify pass"
+    }
+  ],
+  "contextPacks": [
+    {
+      "fingerprint": "aa128bfb07d8426cde98e4eed7a7ca7637cb4d0e8d67d3056f89578585c0f6e9",
+      "id": "CTX-GOVERNANCE"
+    }
+  ],
+  "createdAt": "2026-10-22T05:31:35.129Z",
+  "filesChanged": [
+    "lib/canonical.js",
+    "PROJECT-CONTEXT/knowledge/issues.json"
+  ],
+  "filesInspected": [
+    "lib/canonical.js",
+    "lib/ucos.js",
+    "_registry/audit.js",
+    "PROJECT-CONTEXT/knowledge/issues.json",
+    "PROJECT-CONTEXT/knowledge/tasks.json"
+  ],
+  "id": "HO-REG-0001-001",
+  "mustNotChange": [
+    "No change to the constitution's content"
+  ],
+  "nextAction": "None for this task. Merge the branch once the owner approves; then run the full npm test in CI.",
+  "notCompleted": [],
+  "objective": "Make the canonical seal hash the zero-hardcoding constitution the compiler actually parses.",
+  "prerequisites": [],
+  "previous": null,
+  "regressions": [],
+  "repository": {
+    "branch": "claude/keen-rubin-2oeljf",
+    "dirty": true,
+    "head": "4d4e7fe39fe4bf99ea757763ec747ebab92687c6",
+    "status": [
+      "M PROJECT-CONTEXT/00-MASTER-INDEX.md",
+      " M PROJECT-CONTEXT/06-DEPENDENCY-AND-TRACEABILITY.md",
+      " M PROJECT-CONTEXT/07-OPEN-ISSUES-AND-NEXT-ACTIONS.md",
+      " M PROJECT-CONTEXT/10-CONTEXT-QUALITY-REPORT.md",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.json",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.md",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.json",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.md",
+      " M PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.json",
+      " M PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md",
+      " M PROJECT-CONTEXT/contexts/index.json",
+      " M PROJECT-CONTEXT/knowledge/issues.json",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0001.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0002.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-REG-0001.md",
+      " M lib/canonical.js",
+      "?? PROJECT-CONTEXT/receipts/RCPT-REG-0001-001.json"
+    ],
+    "upstream": null
+  },
+  "schema": "ctx-handoff/1",
+  "state": "done",
+  "task": "TASK-REG-0001",
+  "tests": [
+    {
+      "command": "npm run registry",
+      "exitCode": 0,
+      "observed": "integrity gate 15 checks green; seal verified; drift none",
+      "result": "passed"
+    },
+    {
+      "command": "node test/registry-gate.js",
+      "exitCode": 0,
+      "observed": "37 passed",
+      "result": "passed"
+    },
+    {
+      "command": "node test/context.js",
+      "exitCode": 0,
+      "observed": "148/148 passed",
+      "result": "passed"
+    },
+    {
+      "command": "printf x >> UCRS-Zero-Hardcoding-Constitution.md && node _registry/compile.js --verify",
+      "exitCode": 1,
+      "observed": "seal FAILED changed:[UCRS-Zero-Hardcoding-Constitution.md] (expected); file reverted",
+      "result": "ran"
+    }
+  ],
+  "unverified": [
+    "Full `npm test` suite (~18 min) was not run; only the registry gate, seal verify and context tests were run"
+  ],
+  "verification": [
+    "npm run registry",
+    "node test/registry-gate.js"
+  ]
+}

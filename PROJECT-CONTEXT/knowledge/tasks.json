@@ -187,7 +187,7 @@
       "contexts": [
         "CTX-GOVERNANCE"
       ],
-      "state": "planned",
+      "state": "done",
       "acceptance": [
         "npm run registry passes with no missing input",
         "an edit to UCRS-Zero-Hardcoding-Constitution.md drifts the seal"
@@ -196,8 +196,18 @@
         "npm run registry",
         "node test/registry-gate.js"
       ],
-      "nextAction": "Confirm the intended file with the owner, then change lib/canonical.js:104 and re-run the registry checks.",
-      "lifecycle": "canonical-active"
+      "nextAction": "None for this task. Merge the branch once the owner approves; then run the full npm test in CI.",
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T05:31:35.129Z",
+          "change": "handoff HO-REG-0001-001",
+          "from": "planned",
+          "to": "done",
+          "by": "claude-code",
+          "evidence": "PROJECT-CONTEXT/handoffs/HO-REG-0001-001.json"
+        }
+      ]
     },
     {
       "id": "TASK-SEC-0001",

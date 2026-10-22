@@ -17,7 +17,7 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 | requirement-test-traceability | 100% | 14 / 14 | active requirements with an incoming 'verifies' edge ÷ active requirements |
 | context-dependency-completeness | 100% | 6 / 6 | active context specs whose prerequisites all exist and are active ÷ active context specs |
 | context-freshness | 100% | 6 / 6 | generated packs whose on-disk dependency fingerprint equals the recomputed one and whose parts match their sha256 ÷ active packs |
-| handoff-completeness | — | 0 / 0 | handoffs that validate against handoff.schema.json ÷ handoffs on disk |
+| handoff-completeness | 100% | 1 / 1 | handoffs that validate against handoff.schema.json ÷ handoffs on disk |
 
 ## Counts
 
@@ -67,7 +67,7 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 | Pack | Status | Parts | Bytes (est. tokens @3 B/token) | Mandatory items | Excluded |
 |---|---|---|---|---|---|
 | CTX-BOOTSTRAP | ok | 1 | 8776 (2926) | 16 | 0 |
-| CTX-GOVERNANCE | ok | 1 | 10725 (3575) | 20 | 0 |
+| CTX-GOVERNANCE | ok | 1 | 10729 (3577) | 20 | 0 |
 | CTX-CONTINUITY-DESIGN | ok | 1 | 13400 (4467) | 22 | 0 |
 | CTX-CONTINUITY-SYSTEM | ok | 1 | 21961 (7321) | 29 | 0 |
 | CTX-EVIDENCE-ARCHIVE | ok | 1 | 18607 (6203) | 21 | 0 |

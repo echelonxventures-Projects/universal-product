@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "b7d57f04839f94a0ad1e97e880f6bf96fd91ffc5b8e4025d72721c6d8acc9ca3",
-  "depFingerprint": "0fc30cfcfffc9c360619e25e7588ee585bdbe408c39598add2a5eb7e37fd602a",
+  "contentFingerprint": "157a4a75d0c04d968ad6e42b058fe1f7ec9d069a2cbfe495ffece9220256fa4f",
+  "depFingerprint": "8eb0eb5247f7c9fbfdb0fd482c31fac025843d02da0845ca2da94c9e52bce06d",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -166,7 +166,7 @@
       "estimatedTokens": 4467,
       "file": "contexts/CTX-CONTINUITY-DESIGN.md",
       "id": "CTX-CONTINUITY-DESIGN",
-      "sha256": "c0bd7dbb8cde8ceb4aeefde365701603ec6a3cf585afdfd1e4b66f4c6e2a8f89"
+      "sha256": "93516ba1639b7533a874b2c2400865de65f554c559eae5ad4679b8e540a417cf"
     }
   ],
   "prerequisites": [
@@ -175,7 +175,7 @@
       "id": "CTX-BOOTSTRAP"
     },
     {
-      "fingerprint": "718613be3e705e2082bb314eb8cd25ad6437b098bf0ec4e059025b0fb11e02b2",
+      "fingerprint": "aa128bfb07d8426cde98e4eed7a7ca7637cb4d0e8d67d3056f89578585c0f6e9",
       "id": "CTX-GOVERNANCE"
     }
   ],

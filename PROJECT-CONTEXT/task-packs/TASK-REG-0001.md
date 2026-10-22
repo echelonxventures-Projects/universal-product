@@ -9,9 +9,9 @@ Make the canonical seal hash the zero-hardcoding constitution the compiler actua
 
 ## State
 
-- **planned** · authority: repository owner (defect found 2026-10-22)
-- Next action: **Confirm the intended file with the owner, then change lib/canonical.js:104 and re-run the registry checks.**
-- No handoff recorded yet.
+- **done** · authority: repository owner (defect found 2026-10-22)
+- Next action: **None for this task. Merge the branch once the owner approves; then run the full npm test in CI.**
+- Latest handoff: `PROJECT-CONTEXT/handoffs/HO-REG-0001-001.json` (2026-10-22T05:31:35.129Z, by claude-code)
 
 ## Scope
 
@@ -35,7 +35,7 @@ Make the canonical seal hash the zero-hardcoding constitution the compiler actua
 ## Load these packs, in order
 
 1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (8776 B)
-2. `PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md` — Constitutional governance and the registry pipeline (10725 B)
+2. `PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md` — Constitutional governance and the registry pipeline (10729 B)
 
 ## Requirements
 

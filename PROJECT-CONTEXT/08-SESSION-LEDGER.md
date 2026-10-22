@@ -7,5 +7,5 @@ Durable handoffs written by `context:handoff` (schema `ctx-handoff/1`). The pre-
 
 | Handoff | Task | When | Agent | State | Valid | Next action |
 |---|---|---|---|---|---|---|
-
+| [HO-REG-0001-001](handoffs/HO-REG-0001-001.json) | TASK-REG-0001 | 2026-10-22T05:31:35.129Z | claude-code | done | yes | None for this task. Merge the branch once the owner approves; then run the full npm test in CI. |
 
