@@ -34,12 +34,37 @@ const H = require(path.join(ROOT, "lib", "context", "hygiene.js"));
 const Pr = require(path.join(ROOT, "lib", "context", "protocol.js"));
 
 let pass = 0, fail = 0;
+/* the live repository must be exactly as it was when the suite started: same HEAD,
+   same refs, same working-tree status — whatever the sandboxes do */
+const liveState = () => [U.gitText(ROOT, ["rev-parse", "HEAD"]), U.gitText(ROOT, ["for-each-ref", "--format=%(refname) %(objectname)"]), U.gitText(ROOT, ["status", "--porcelain", "--untracked-files=all"])].join("\n");
+const LIVE_AT_START = liveState();
 const ok = (cond, msg, detail) => { if (cond) { pass++; } else { fail++; console.log("  ✗ " + msg + (detail ? "\n      " + String(detail).slice(0, 600) : "")); } };
 const section = t => console.log("\n" + t);
 const TMP = fs.mkdtempSync(path.join(os.tmpdir(), "ctx-test-"));
 process.on("exit", () => { try { fs.rmSync(TMP, { recursive: true, force: true }); } catch (e) { } });
 
 /* ---------- sandboxes: a byte copy of the repository, git included ---------- */
+/* A sandbox must be a STANDALONE repository. Never copy `.git`: in a worktree or a
+   submodule it is a one-line "gitdir:" pointer file, so a copy would share the live
+   repository and every sandbox `git add`/`commit` would land on the owner's real
+   branch (this happened: "sandbox baseline" commits by ctx-test). Instead: a fresh
+   repo that reads the live objects through `objects/info/alternates` (read-only; new
+   objects stay in the sandbox), with its own refs, HEAD, index and shallow file. */
+function standaloneRepo(src, dest) {
+  const gitIn = (args, cwd) => cp.execFileSync("git", args, { cwd: cwd || dest, stdio: ["ignore", "pipe", "ignore"] }).toString().trim();
+  const common = path.resolve(src, U.gitText(src, ["rev-parse", "--git-common-dir"]));
+  const head = U.gitText(src, ["rev-parse", "HEAD"]);
+  const branch = U.gitText(src, ["rev-parse", "--abbrev-ref", "HEAD"]);
+  fs.mkdirSync(dest, { recursive: true });
+  gitIn(["init", "-q"]);
+  fs.writeFileSync(path.join(dest, ".git", "objects", "info", "alternates"), path.join(common, "objects") + "\n");
+  if (fs.existsSync(path.join(common, "shallow"))) fs.copyFileSync(path.join(common, "shallow"), path.join(dest, ".git", "shallow"));
+  if (branch && branch !== "HEAD") { gitIn(["update-ref", "refs/heads/" + branch, head]); gitIn(["symbolic-ref", "HEAD", "refs/heads/" + branch]); }
+  else gitIn(["update-ref", "--no-deref", "HEAD", head]);
+  gitIn(["read-tree", "HEAD"]);
+  const gd = path.resolve(dest, gitIn(["rev-parse", "--git-dir"]));
+  if (gd !== path.join(path.resolve(dest), ".git")) throw new Error("sandbox git dir escaped the sandbox: " + gd);
+}
 let base = null;
 function sandbox(name) {
   if (!base) {
@@ -51,7 +76,7 @@ function sandbox(name) {
       fs.mkdirSync(path.dirname(path.join(base, f)), { recursive: true });
       fs.copyFileSync(src, path.join(base, f));
     }
-    fs.cpSync(path.join(ROOT, ".git"), path.join(base, ".git"), { recursive: true });
+    standaloneRepo(ROOT, base);
   }
   const dir = path.join(TMP, name);
   fs.cpSync(base, dir, { recursive: true });
@@ -673,6 +698,29 @@ section("§J git-history integrity: honest legacy record, canonical fail-closed 
   ({ K } = ctx.open(ROOT));
   ok(A.verifyOne(K, K.nodes.get("SRC-README")).status === "verified", "git-blob verification is unchanged");
 }
+
+/* ===================================================================== §K */
+section("§K the suite never touches the live repository");
+{
+  /* the defect: a worktree's `.git` is a pointer file; copying it shared the live repo */
+  const live = path.join(TMP, "k-live"), wt = path.join(TMP, "k-wt");
+  const g = (args, cwd) => cp.execFileSync("git", args, { cwd, stdio: ["ignore", "pipe", "ignore"], env: Object.assign({}, process.env, { GIT_AUTHOR_NAME: "o", GIT_AUTHOR_EMAIL: "o@invalid", GIT_COMMITTER_NAME: "o", GIT_COMMITTER_EMAIL: "o@invalid" }) }).toString().trim();
+  fs.mkdirSync(live); g(["init", "-q", "-b", "main"], live); fs.writeFileSync(path.join(live, "a.txt"), "a"); g(["add", "-A"], live); g(["commit", "-qm", "base", "--no-verify"], live);
+  g(["worktree", "add", "-q", "-b", "feature", wt], live);
+  fs.writeFileSync(path.join(wt, "owner-uncommitted.txt"), "owner work in progress");
+  ok(fs.statSync(path.join(wt, ".git")).isFile(), "fixture: the worktree's .git is a pointer file");
+  const before = g(["rev-parse", "feature"], live), wtStatus = g(["status", "--porcelain"], wt);
+  const sb = path.join(TMP, "k-sandbox");
+  fs.mkdirSync(sb); for (const f of ["a.txt", "owner-uncommitted.txt"]) fs.copyFileSync(path.join(wt, f), path.join(sb, f));
+  standaloneRepo(wt, sb);
+  ok(fs.statSync(path.join(sb, ".git")).isDirectory() && !fs.readFileSync(path.join(sb, ".git", "HEAD"), "utf8").startsWith("gitdir:"), "the sandbox gets its own .git directory, not the pointer");
+  cp.execFileSync("git", ["-c", "user.name=ctx-test", "-c", "user.email=ctx-test@invalid", "add", "-A"], { cwd: sb });
+  cp.execFileSync("git", ["-c", "user.name=ctx-test", "-c", "user.email=ctx-test@invalid", "commit", "-qm", "sandbox baseline", "--no-verify", "--allow-empty"], { cwd: sb });
+  ok(g(["rev-parse", "feature"], live) === before && g(["status", "--porcelain"], wt) === wtStatus, "a sandbox commit leaves the live worktree's branch and uncommitted work untouched");
+  ok(!g(["log", "--all", "--format=%an"], live).includes("ctx-test"), "no ctx-test commit exists anywhere in the live repository");
+  ok(g(["cat-file", "-t", g(["rev-parse", "HEAD"], sb)], sb) === "commit" && !g(["log", "--all", "--format=%H"], live).includes(g(["rev-parse", "HEAD"], sb)), "the sandbox commit exists only in the sandbox");
+}
+ok(liveState() === LIVE_AT_START, "the live repository's HEAD, refs and working-tree status are exactly as at the start of the suite");
 
 /* ===================================================================== */
 const total = pass + fail;
