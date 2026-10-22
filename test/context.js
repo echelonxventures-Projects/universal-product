@@ -148,7 +148,7 @@ section("§A the committed knowledge");
   /* the gate passes on the committed tree */
   const rc = Pr.assimilate(K, G, "TASK-CTX-0001", { agent: "test" });
   ok(rc.verdict !== "blocked", "assimilation of TASK-CTX-0001 passes on the repository", JSON.stringify(rc.gaps.filter(g => g.severity === "block")));
-  ok(rc.gaps.some(g => g.code === "decision-unapproved"), "…and surfaces the unapproved (proposed) decisions as warnings, not as settled");
+  ok(!rc.gaps.some(g => g.code === "decision-unapproved"), "does not flag explicitly owner-approved decisions as unapproved");
 }
 
 /* ===================================================================== §B */
@@ -425,8 +425,8 @@ section("§G fresh agent: no conversation history, repository files only");
   ok(/CST-KNOWLEDGE-ONCE/.test(loaded) && /CST-EVIDENCE-BEFORE-CLAIMS/.test(loaded) && /CST-AUTHORIZED-SIDE-EFFECTS/.test(loaded), "recovers the governing constraints");
   const canon = U.readJSON(path.join(root, "PROJECT-CONTEXT", "knowledge", "tasks.json")).records.find(t => t.id === "TASK-CTX-0001");
   ok(loaded.includes("**" + canon.state + "**") && loaded.includes("Next action: **" + canon.nextAction + "**"), "recovers the task's actual state and exact next action (as recorded in canonical knowledge)");
-  ok(/DEC-CTX-LOCATION/.test(loaded) && /Status: \*\*proposed\*\*/.test(loaded), "recovers the relevant decisions and that they are only proposed");
-  ok(/ISS-CTX-DECISIONS-UNAPPROVED/.test(loaded) && /ISS-MASTER-PROMPT-NOT-ARCHIVED/.test(loaded), "recovers open issues and recovery limits");
+  ok(/DEC-CTX-LOCATION/.test(loaded) && /Status: \\*\\*approved\\*\\*/.test(loaded), "recovers the relevant decision and its approved status");
+  ok(!/ISS-CTX-DECISIONS-UNAPPROVED/.test(loaded) && /ISS-MASTER-PROMPT-NOT-ARCHIVED/.test(loaded), "confirms the approval issue is resolved while preserving the source-recovery limitation");
   ok(/`npm run context:verify`/.test(loaded) && /`node test\/context\.js`/.test(loaded), "recovers the required verification commands");
   ok(/\[verified\]/.test(loaded) && /\[unverified\]/.test(loaded), "can tell verified facts from unverified ones");
   ok(/Excluded:|Must not change/.test(loaded) && /No push, PR or deployment/.test(loaded), "recovers what must not be changed");
@@ -442,7 +442,7 @@ section("§G fresh agent: no conversation history, repository files only");
   ok(r.code === 0, "`context build` refreshes it");
   /* 8. the fresh agent hands off */
   const hf = path.join(TMP, "handoff.json");
-  fs.writeFileSync(hf, JSON.stringify({ agent: "fresh-agent", completed: [{ claim: "recovered context with no prior conversation", evidence: receipt.file }], notCompleted: ["remaining owner approvals"], unverified: [], tests: [{ command: "npm run context:verify", result: "passed", exitCode: 0, observed: "context verify passed" }], nextAction: "Ask the owner to review DEC-CTX-* (TASK-CTX-0002).", state: "in-progress" }));
+  fs.writeFileSync(hf, JSON.stringify({ agent: "fresh-agent", completed: [{ claim: "recovered context with no prior conversation", evidence: receipt.file }, { claim: "owner approved all seven continuity design decisions", evidence: "Canonical decisions.json and TASK-CTX-0002" }], notCompleted: ["recover the original master-prompt transcript if an authentic export becomes available", "open a PR so CI runs the workflow remotely"], unverified: ["Original master-prompt source remains unavailable"], tests: [{ command: "npm run context:verify", result: "passed", exitCode: 0, observed: "context verify passed" }], nextAction: "Recover the original master-prompt transcript only if an authentic export becomes available; otherwise continue repository verification and PR review.", state: "in-progress" }));
   r = cli(root, ["handoff", "TASK-CTX-0002", "--from", hf]);
   ok(r.code === 0, "step 10 — the fresh agent records a valid handoff", r.err + r.out);
   r = cli(root, ["verify"]);
@@ -552,17 +552,17 @@ section("§I fresh agent at a deliberately small budget (12 000 B ≈ 4k tokens,
   const found = {};
   for (const u of units) {
     const t = fs.readFileSync(path.join(root, u.ref.split(" ")[0]), "utf8");
-    if (/^# TASK-CTX-0002/m.test(t)) { found.task = true; found.state = /\*\*planned\*\*/.test(t); found.next = /Next action: \*\*Owner reads/.test(t); found.dep = /## Depends on\n\n- TASK-CTX-0001/.test(t); found.tests = /`npm run context:verify`/.test(t); }
+    if (/^# TASK-CTX-0002/m.test(t)) { found.task = true; found.state = /\\*\\*done\\*\\*/.test(t); found.next = /Next action: \\*\\*No further owner review is required/.test(t); found.dep = /## Depends on\n\n- TASK-CTX-0001/.test(t); found.tests = /`npm run context:verify`/.test(t); }
     if (/CST-KNOWLEDGE-ONCE/.test(t) && /CST-AUTHORIZED-SIDE-EFFECTS/.test(t)) found.rules = true;
-    if (/DEC-CTX-LOCATION/.test(t) && /Status: \*\*proposed\*\*/.test(t)) found.decisions = true;
-    if (/ISS-CTX-DECISIONS-UNAPPROVED/.test(t)) found.blocker = true;
+    if (/DEC-CTX-LOCATION/.test(t) && /\\[approved\\]/.test(t)) found.decisions = true;
+    if (/none open/.test(t)) found.noOpenBlockers = true;
     if (/\[verified\]/.test(t) && /\[unverified\]/.test(t)) found.facts = true;
   }
-  ok(found.task && found.state, "finds the current task and its actual state (planned)");
+  ok(found.task && found.state, "finds the current task and its actual state (done)");
   const depState = U.readJSON(path.join(root, "PROJECT-CONTEXT", "knowledge", "tasks.json")).records.find(t => t.id === "TASK-CTX-0001").state;
   ok(found.dep && rc.prerequisites.includes("TASK-CTX-0001") && (depState === "done") === !rc.gaps.some(g => g.code === "prerequisite-open"), "finds its dependency (TASK-CTX-0001), and the gate flags it open exactly when it is not done (now: " + depState + ")");
   ok(found.rules, "finds the governing constraints");
-  ok(found.decisions && found.blocker, "finds the decisions under review and the approval issue");
+  ok(found.decisions && found.noOpenBlockers, "finds approved decisions and confirms there are no open blockers");
   ok(found.next && found.tests, "finds the exact next action and the required verification");
   ok(found.facts, "separates verified facts from unverified ones");
   const tiny = cli(root, ["assimilate", "TASK-CTX-0002", "--agent", "tiny", "--budget", "8000", "--json"]);
