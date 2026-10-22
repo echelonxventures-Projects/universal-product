@@ -425,8 +425,9 @@ section("§G fresh agent: no conversation history, repository files only");
   ok(/CST-KNOWLEDGE-ONCE/.test(loaded) && /CST-EVIDENCE-BEFORE-CLAIMS/.test(loaded) && /CST-AUTHORIZED-SIDE-EFFECTS/.test(loaded), "recovers the governing constraints");
   const canon = U.readJSON(path.join(root, "PROJECT-CONTEXT", "knowledge", "tasks.json")).records.find(t => t.id === "TASK-CTX-0001");
   ok(loaded.includes("**" + canon.state + "**") && loaded.includes("Next action: **" + canon.nextAction + "**"), "recovers the task's actual state and exact next action (as recorded in canonical knowledge)");
-  ok(/DEC-CTX-LOCATION/.test(loaded) && /Status: \\*\\*approved\\*\\*/.test(loaded), "recovers the relevant decision and its approved status");
-  ok(!/ISS-CTX-DECISIONS-UNAPPROVED/.test(loaded) && /ISS-MASTER-PROMPT-NOT-ARCHIVED/.test(loaded), "confirms the approval issue is resolved while preserving the source-recovery limitation");
+  ok(loaded.includes("DEC-CTX-LOCATION") && loaded.includes("Status: **approved**"), "recovers the relevant decision and its approved status without contradictory proposed wording");
+  const issueRecords = U.readJSON(path.join(root, "PROJECT-CONTEXT", "knowledge", "issues.json")).records;
+  ok(issueRecords.find(x => x.id === "ISS-CTX-DECISIONS-UNAPPROVED").status === "resolved" && loaded.includes("ISS-MASTER-PROMPT-NOT-ARCHIVED"), "confirms the approval issue is resolved while preserving the source-recovery limitation");
   ok(/`npm run context:verify`/.test(loaded) && /`node test\/context\.js`/.test(loaded), "recovers the required verification commands");
   ok(/\[verified\]/.test(loaded) && /\[unverified\]/.test(loaded), "can tell verified facts from unverified ones");
   ok(/Excluded:|Must not change/.test(loaded) && /No push, PR or deployment/.test(loaded), "recovers what must not be changed");
@@ -552,10 +553,10 @@ section("§I fresh agent at a deliberately small budget (12 000 B ≈ 4k tokens,
   const found = {};
   for (const u of units) {
     const t = fs.readFileSync(path.join(root, u.ref.split(" ")[0]), "utf8");
-    if (/^# TASK-CTX-0002/m.test(t)) { found.task = true; found.state = /\\*\\*done\\*\\*/.test(t); found.next = /Next action: \\*\\*No further owner review is required/.test(t); found.dep = /## Depends on\n\n- TASK-CTX-0001/.test(t); found.tests = /`npm run context:verify`/.test(t); }
+    if (/^# TASK-CTX-0002/m.test(t)) { found.task = true; found.state = t.includes("**done**"); found.next = t.includes("Next action: **No further owner review is required"); found.dep = /## Depends on\n\n- TASK-CTX-0001/.test(t); found.tests = t.includes("`npm run context:verify`"); }
     if (/CST-KNOWLEDGE-ONCE/.test(t) && /CST-AUTHORIZED-SIDE-EFFECTS/.test(t)) found.rules = true;
-    if (/DEC-CTX-LOCATION/.test(t) && /\\[approved\\]/.test(t)) found.decisions = true;
-    if (/none open/.test(t)) found.noOpenBlockers = true;
+    if (t.includes("DEC-CTX-LOCATION") && t.includes("[approved]")) found.decisions = true;
+    if (t.includes("## Blockers\n\n- none open")) found.noOpenBlockers = true;
     if (/\[verified\]/.test(t) && /\[unverified\]/.test(t)) found.facts = true;
   }
   ok(found.task && found.state, "finds the current task and its actual state (done)");

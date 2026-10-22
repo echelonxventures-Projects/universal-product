@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "12fa80a84fe4b4071fd34b66e2be4a36a526661d87d173746bbb8642d1c08cdc",
-  "depFingerprint": "f2517f8b38c7f33cc8d900229044d7d6f5f73cd0d5da139f30e9ab8bbf6a09b5",
+  "contentFingerprint": "a8255c313b8ddbe8921ae6ec5eff11aab64b0a72bb0a64989188f59d301f6acb",
+  "depFingerprint": "5712ec0665f67d7bdaa5efdaf85a076c85a72d4f54981aba23bf191138d605ca",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -42,7 +42,7 @@
     ],
     [
       "ART-CTX-PACKS",
-      "a0ea90cc7876d4434fc6f529da66e65746a8f554538a0ce356176f233ffc7871"
+      "bab6aa9eaeb80a28c1bfd46799025fea3ec9faa4fb40aaabfcf5cb36951d2510"
     ],
     [
       "ART-CTX-PROTOCOL",
@@ -86,7 +86,7 @@
     ],
     [
       "ART-TEST-CONTEXT",
-      "027045aa930a1155d02636e0df1425ec724e518ed97898aacd94bf64ee0167da"
+      "d97f8ee675a4011d39893bfe67945205888b190838623bdc929e76b02a5f40d1"
     ],
     [
       "CST-AUTHORIZED-SIDE-EFFECTS",
@@ -319,7 +319,7 @@
       "estimatedTokens": 6886,
       "file": "contexts/CTX-CONTINUITY-SYSTEM.md",
       "id": "CTX-CONTINUITY-SYSTEM",
-      "sha256": "3684fdd189d83e6c02074afc627eff3da466abf3c1180a5848f30d48742f8636"
+      "sha256": "7551aee788bd34119857c514d1a8df6e9356d1807b1e5b62858921bf1044f625"
     }
   ],
   "prerequisites": [

@@ -67,7 +67,7 @@ Full statements, owners and sources: prerequisite `CTX-BOOTSTRAP` (loaded first)
 ## Decisions in force
 
 ### DEC-CTX-GIT-AS-ARCHIVE — Repository evidence is archived by git blob id + sha256 in the manifest; private exports go to a write-once content-addressed store outside git.
-- Status: **approved** (newly proposed — no historical approval exists) · Authority: repository owner · Decided: 2026-10-22
+- Status: **approved** · Authority: repository owner · Decided: 2026-10-22
 - Context: Original evidence must be preserved by bytes and restorable after the live file changes, without duplicating 2 MB of corpora or committing private data.
 - Selected: git-blob / git-history storage kinds for repository evidence; 'store' kind (CONTEXT_ARCHIVE_DIR, default .context-archive/, gitignored) for private material.
 - Rationale: Git's object store is already append-only and content-addressed; pinning the blob id makes every captured version restorable with `git cat-file`, so no second copy can drift. Private material never enters a public history.
@@ -75,7 +75,7 @@ Full statements, owners and sources: prerequisite `CTX-BOOTSTRAP` (loaded first)
 - Affects: REQ-CTX-ARCHIVE · Sources: SRC-CONV-2026-10-22-MASTER-PROMPT (§16 Phase 1)
 
 ### DEC-CTX-MEMORY-LEDGER-HISTORICAL — The existing .workbuddy-ai/memory/MEMORY.md is left untouched and archived as historical evidence; new continuity is recorded through schema-validated handoffs.
-- Status: **approved** (newly proposed — no historical approval exists) · Authority: repository owner · Decided: 2026-10-22
+- Status: **approved** · Authority: repository owner · Decided: 2026-10-22
 - Context: MEMORY.md is a 111 KB narrative ledger of sessions 2026-09-17 → 2026-10-07 and the only surviving record of those sessions.
 - Selected: Archive it (SRC-MEMORY-LEDGER), cite its segments, and stop growing it as the continuity mechanism.
 - Rationale: Rewriting or compacting it would destroy the only evidence of those sessions; as an unstructured narrative it cannot be checked for freshness or completeness.

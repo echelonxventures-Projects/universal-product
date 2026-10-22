@@ -1,6 +1,6 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "31319e898703419ba596a00f806cb15eb2a4aa30d032309cdf944ffed4980397",
+  "contentFingerprint": "140a2c3cc6266396d1a7dd8b9d84d30128002bff706807f6b767dd8a7fd55767",
   "depFingerprint": "b0f9addc39075ca47bfc163e34e11e2df01a2b14aaca54927b35a8a4440d1fcb",
   "excluded": [],
   "freshness": "fresh-at-build",
@@ -163,11 +163,11 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 10712,
-      "estimatedTokens": 3571,
+      "bytes": 10355,
+      "estimatedTokens": 3452,
       "file": "contexts/CTX-CONTINUITY-DESIGN.md",
       "id": "CTX-CONTINUITY-DESIGN",
-      "sha256": "106c977c21e7152a00f98b1eb8385a3764a96f5d8b13cc6700f9a9a0c0c967de"
+      "sha256": "73eec2fa9d05f6ab08207a4dc5fdabc53eb461928c5c2b696a2524dfde933bb5"
     }
   ],
   "prerequisites": [

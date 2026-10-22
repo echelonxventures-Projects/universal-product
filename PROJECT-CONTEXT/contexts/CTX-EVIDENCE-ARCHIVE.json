@@ -1,6 +1,6 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "97f558fad5a5bafe0476c59f35fadc8d7fa5da6b7fcba7f188bf4803d90f3cc5",
+  "contentFingerprint": "6190e55f13558c363ef14be69199d5bbe0a0b67cf54034045eac23360cf04d79",
   "depFingerprint": "99217f14687ae8411d308a5c2d022f2653e23cdfa18830adfb886fa597a268ae",
   "excluded": [],
   "freshness": "fresh-at-build",
@@ -329,11 +329,11 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 19749,
-      "estimatedTokens": 6583,
+      "bytes": 19647,
+      "estimatedTokens": 6549,
       "file": "contexts/CTX-EVIDENCE-ARCHIVE.md",
       "id": "CTX-EVIDENCE-ARCHIVE",
-      "sha256": "1794307670983020c669a149ca51ef166129a710baa6292e7f12e8740e568205"
+      "sha256": "f6595570bbade36a20cc182e00fdd113bed72a5aacda8c29afd7cc3a66bc36cf"
     }
   ],
   "prerequisites": [
