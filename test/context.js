@@ -356,7 +356,7 @@ section("§F archive: private import, write-once store, isolated restore");
   fs.writeFileSync(exp, "# Synthetic conversation export\n\n## Turn 1\nuser asks for a feature\n\n## Turn 2\nagent answers\n");
   /* commit the sandbox so "what changed" is exactly what the import changed */
   cp.execFileSync("git", ["-c", "user.name=ctx-test", "-c", "user.email=ctx-test@invalid", "add", "-A"], { cwd: root });
-  cp.execFileSync("git", ["-c", "user.name=ctx-test", "-c", "user.email=ctx-test@invalid", "commit", "-qm", "sandbox baseline", "--no-verify"], { cwd: root });
+  cp.execFileSync("git", ["-c", "user.name=ctx-test", "-c", "user.email=ctx-test@invalid", "commit", "-qm", "sandbox baseline", "--no-verify", "--allow-empty"], { cwd: root });
   let { K } = ctx.open(root);
   const imp = A.importFile(K, exp, { id: "SRC-TEST-EXPORT", store, sensitivity: "private", now: "2026-10-22T00:00:00Z" });
   ok(fs.existsSync(imp.stored) && !imp.stored.startsWith(root), "an import lands in the store outside the repository");
