@@ -14,11 +14,11 @@
 **Domains:** verification
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 36 / 41 | [verification/2](verification--2.md) | [verification/4](verification--4.md) |
-| dependency-first | 36 / 41 | [verification/2](verification--2.md) | [verification/4](verification--4.md) |
-| domain:verification | 3 / 4 | [verification/2](verification--2.md) | [verification/4](verification--4.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [verification/2](verification--2.md) | [verification/4](verification--4.md) |
+| dependency-first | [verification/2](verification--2.md) | [verification/4](verification--4.md) |
+| domain:verification | [verification/2](verification--2.md) | [verification/4](verification--4.md) |
 
 ## Prerequisite packs
 - `verification`: [verification/1](verification--1.md), [verification/2](verification--2.md)

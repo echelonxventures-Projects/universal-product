@@ -14,11 +14,11 @@
 **Domains:** runtime
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 24 / 41 | [corpora/1](corpora--1.md) | [runtime-server/2](runtime-server--2.md) |
-| dependency-first | 24 / 41 | [spec-IMP/1](spec-IMP--1.md) | [runtime-server/2](runtime-server--2.md) |
-| domain:runtime | 1 / 10 | ■ start | [runtime-server/2](runtime-server--2.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [corpora/1](corpora--1.md) | [runtime-server/2](runtime-server--2.md) |
+| dependency-first | [spec-IMP/1](spec-IMP--1.md) | [runtime-server/2](runtime-server--2.md) |
+| domain:runtime | ■ start | [runtime-server/2](runtime-server--2.md) |
 
 ## Prerequisite packs
 - `governance`: [governance/1](governance--1.md), [governance/2](governance--2.md), [governance/3](governance--3.md)

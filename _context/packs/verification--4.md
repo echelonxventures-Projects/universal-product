@@ -14,11 +14,11 @@
 **Domains:** verification
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 37 / 41 | [verification/3](verification--3.md) | [build-deploy/1](build-deploy--1.md) |
-| dependency-first | 37 / 41 | [verification/3](verification--3.md) | [build-deploy/1](build-deploy--1.md) |
-| domain:verification | 4 / 4 | [verification/3](verification--3.md) | ■ END |
+| sequence | previous | next |
+|---|---|---|
+| full | [verification/3](verification--3.md) | [build-deploy/1](build-deploy--1.md) |
+| dependency-first | [verification/3](verification--3.md) | [build-deploy/1](build-deploy--1.md) |
+| domain:verification | [verification/3](verification--3.md) | ■ END |
 
 ## Prerequisite packs
 - `verification`: [verification/1](verification--1.md), [verification/2](verification--2.md), [verification/3](verification--3.md)
@@ -80,4 +80,4 @@
 ## Continue
 - Next in `full`: [build-deploy/1](build-deploy--1.md) (`node _registry/context.js next verification/4`)
 - `dependency-first`: next `build-deploy/1`
-- `domain:verification`: ■ END OF SEQUENCE (4 packs)
+- `domain:verification`: ■ END OF SEQUENCE

@@ -14,12 +14,12 @@
 **Domains:** governance
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 2 / 41 | [orientation/1](orientation--1.md) | [governance/2](governance--2.md) |
-| dependency-first | 2 / 41 | [orientation/1](orientation--1.md) | [governance/2](governance--2.md) |
-| domain:governance | 2 / 5 | [orientation/1](orientation--1.md) | [governance/2](governance--2.md) |
-| trace | 2 / 5 | [orientation/1](orientation--1.md) | [governance/2](governance--2.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [orientation/1](orientation--1.md) | [governance/2](governance--2.md) |
+| dependency-first | [orientation/1](orientation--1.md) | [governance/2](governance--2.md) |
+| domain:governance | [orientation/1](orientation--1.md) | [governance/2](governance--2.md) |
+| trace | [orientation/1](orientation--1.md) | [governance/2](governance--2.md) |
 
 ## Prerequisite packs
 - `orientation`: [orientation/1](orientation--1.md)

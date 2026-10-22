@@ -150,7 +150,7 @@ const real = P.generate(ROOT);
     if (pos.prev !== (full.packs[i - 1] || null) || pos.next !== (full.packs[i + 1] || null)) linkOk = false;
   }
   const last = real.packById.get(full.packs[full.packs.length - 1]).text;
-  ok(linkOk && last.includes("END OF SEQUENCE `full`"), "next/previous links derive from the sequence; the last pack carries an explicit END marker");
+  ok(linkOk && last.includes("END OF SEQUENCE `full`") && !/\| \d+ \/ \d+ \|/.test(last), "next/previous links derive from the sequence; the last pack carries an explicit END marker");
   const covered = new Set(real.packs.flatMap(p => p.members));
   ok([...real.graph.nodes.values()].every(n => covered.has(n.id)), "every registered node (" + real.graph.nodes.size + ") appears in exactly one pack");
   ok([...real.graph.nodes.values()].every(n => n.lifecycle && n.owner), "every registered node carries a lifecycle and an owner");
@@ -275,6 +275,14 @@ console.log("\n▸ §E MAINTENANCE — invalidation, incremental regeneration, s
   write(d, "lib/new.js", "/* new */\n");
   const bn = cli(d, ["build", "--affected"]);
   ok(bn.status === 0 && /1 added/.test(bn.stdout), "an added artifact is registered and regenerated incrementally", bn.stdout);
+  /* a NEW pack (the empty optional history unit gains a member) must not ripple
+     through every other pack: only its sequence neighbours change */
+  const pre = new Map(P.generate(d).files);
+  write(d, "old/note.md", "# Old note\n\nkept for audit\n");
+  const bh = cli(d, ["build", "--affected"]);
+  const post = P.generate(d).files;
+  ok(bh.status === 0 && /all within the prediction/.test(bh.stdout), "adding a pack regenerates only predicted packs", bh.stdout);
+  ok(post.has("_context/packs/history--1.md") && pre.get("_context/packs/orientation--1.md") === post.get("_context/packs/orientation--1.md") && pre.get("_context/packs/code--1.md") === post.get("_context/packs/code--1.md"), "packs that are not neighbours of the new pack stay byte-identical");
   write(d, "AGENTS.md", "# Agents\n\nNever do X.\n");
   const bq = cli(d, ["build"]);
   ok(bq.status === 1 && /CONSTRAINT_QUOTE_MISSING/.test(bq.stdout), "build refuses to generate when a source change invalidates a binding quote (fail closed)");

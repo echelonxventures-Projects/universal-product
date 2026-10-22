@@ -14,11 +14,11 @@
 **Domains:** spec
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 18 / 41 | [spec-DAT/1](spec-DAT--1.md) | [spec-OPS/1](spec-OPS--1.md) |
-| dependency-first | 19 / 41 | [spec-DAT/1](spec-DAT--1.md) | [spec-OPS/1](spec-OPS--1.md) |
-| domain:spec | 11 / 15 | [spec-DAT/1](spec-DAT--1.md) | [spec-OPS/1](spec-OPS--1.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [spec-DAT/1](spec-DAT--1.md) | [spec-OPS/1](spec-OPS--1.md) |
+| dependency-first | [spec-DAT/1](spec-DAT--1.md) | [spec-OPS/1](spec-OPS--1.md) |
+| domain:spec | [spec-DAT/1](spec-DAT--1.md) | [spec-OPS/1](spec-OPS--1.md) |
 
 ## Prerequisite packs
 - `governance`: [governance/1](governance--1.md), [governance/2](governance--2.md), [governance/3](governance--3.md)

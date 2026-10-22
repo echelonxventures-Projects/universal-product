@@ -2,7 +2,7 @@
 
 A repository-native, model-agnostic system that lets an agent of any capability or context-window size find the context a task needs, prove it loaded it, do bounded work, and hand off to a later session through the repository alone. Agents start at [`AGENTS.md`](AGENTS.md). This document is for the people and agents who maintain the system.
 
-Status: **operational**. CI-gated (`node _registry/context.js check`) and covered by `test/context.js` (83 assertions). The open items are in the [gap register](#gap-register).
+Status: **operational**. CI-gated (`node _registry/context.js check`) and covered by `test/context.js` (85 assertions). The open items are in the [gap register](#gap-register).
 
 ---
 
@@ -139,7 +139,7 @@ Exit code `2` means REFUSE.
 
 | Path | How |
 |---|---|
-| Complete ordered assimilation | `sequence full`: 41 packs, `orientation/1` … `history/1`, then `■ END:full` |
+| Complete ordered assimilation | `sequence full`: 42 packs, `orientation/1` … `handoffs/1`, then `■ END:full` |
 | Task-specific entry | `bootstrap --task <T>` / `resolve <T>`: always-loaded packs plus the packs covering the task's mandatory closure, in primary order |
 | Dependency-first | `sequence dependency-first`: units topologically ordered by mandatory edges |
 | Domain-specific | `sequence domain:<tag>` for each unit tag (context, docs, frontend, governance, operations, registry, runtime, spec, trace, verification…) |
@@ -224,10 +224,10 @@ Expected outputs (from this repository, abbreviated):
 
 ```text
 $ node _registry/context.js check
-✓ validate: 341 nodes, 2558 edges, 0 error(s)
+✓ validate: 342 nodes, 2565 edges, 0 error(s)
 ✓ fresh: every generated file matches the repository
 ✓ deterministic: two generations over unchanged inputs are byte-identical (43 files)
-✓ bounded: 41 packs, largest 11302 ≤ budget 12000
+✓ bounded: 42 packs, largest 11302 ≤ budget 12000
 ✓ hygiene ratchet: 13 metrics, 0 regression(s)
 ✓ context check passed in 1649 ms
 
@@ -246,8 +246,8 @@ $ node _registry/context.js bootstrap --task lib/authz.js --loaded orientation/1
 UCOS context assimilation receipt — REFUSE
   ✗ mandatory packs not loaded: governance/1, governance/2, governance/3, runtime-server/2      (exit 2)
 
-$ node _registry/context.js next history/1
-■ END:full — history/1 is the last of 41 pack(s)
+$ node _registry/context.js next handoffs/1
+■ END:full — handoffs/1 is the last of 42 pack(s)
 
 $ node _registry/context.js prereqs UCOS-IDN-000001
 mandatory prerequisites, in reading order (23):
@@ -289,11 +289,11 @@ $ node _registry/context.js stale          # after editing lib/b.js without rebu
 ## 9. Measured limits
 
 Measured on 2026-10-22, Node 22.22, cloud container:
-- **Size:** 318 files (8.7 MB), 341 nodes, 2,558 edges, 41 packs.
+- **Size:** 319 files (8.7 MB), 342 nodes, 2,565 edges, 42 packs (after the first handoff).
 - **Speed:** a full generation takes about 0.35–0.6 s and reads every registered byte once. `check` (validate, freshness, double generation for determinism, hygiene including the projection-drift run) takes about 1.7 s; the hygiene analysis alone takes about 0.4 s.
 - **Scaling:** the cost is linear in bytes and edges. Pairwise duplicate detection goes through an inverted index; lines shared by more than 8 files are treated as boilerplate and skipped.
 - **Not shown:** behaviour beyond this size has not been demonstrated. There is no cache, because a full regeneration is cheaper than cache invalidation at this scale, and the gap register records where that stops being true.
-- **Small agents:** a task on `lib/authz.js` needs 5 of 41 packs (46k chars against 8.7 MB of repository). With `--window 12000` it stages into 5 windows, each within budget.
+- **Small agents:** a task on `lib/authz.js` needs 5 of 42 packs (46k chars against 8.7 MB of repository). With `--window 12000` it stages into 5 windows, each within budget.
 
 ---
 

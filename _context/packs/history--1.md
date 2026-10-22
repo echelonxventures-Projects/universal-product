@@ -16,12 +16,12 @@
 **Domains:** trace
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 41 / 41 | [operational-docs/2](operational-docs--2.md) | ■ END |
-| dependency-first | 41 / 41 | [operational-docs/2](operational-docs--2.md) | ■ END |
-| domain:trace | 1 / 1 | ■ start | ■ END |
-| trace | 5 / 5 | [governance/3](governance--3.md) | ■ END |
+| sequence | previous | next |
+|---|---|---|
+| full | [operational-docs/2](operational-docs--2.md) | [handoffs/1](handoffs--1.md) |
+| dependency-first | [operational-docs/2](operational-docs--2.md) | [handoffs/1](handoffs--1.md) |
+| domain:trace | ■ start | [handoffs/1](handoffs--1.md) |
+| trace | [governance/3](governance--3.md) | [handoffs/1](handoffs--1.md) |
 
 ## Prerequisite packs
 - `orientation`: [orientation/1](orientation--1.md)
@@ -73,7 +73,7 @@
 - Sources digest `587e57054277` — the manifest (`_context/manifest.json`) lists every expected pack; `node _registry/context.js validate` proves none is missing or stale.
 
 ## Continue
-- ■ **END OF SEQUENCE `full`** — 41 packs. Verify nothing was skipped: `node _registry/context.js sequence full`.
-- `dependency-first`: ■ END OF SEQUENCE (41 packs)
-- `domain:trace`: ■ END OF SEQUENCE (1 packs)
-- `trace`: ■ END OF SEQUENCE (5 packs)
+- Next in `full`: [handoffs/1](handoffs--1.md) (`node _registry/context.js next history/1`)
+- `dependency-first`: next `handoffs/1`
+- `domain:trace`: next `handoffs/1`
+- `trace`: next `handoffs/1`

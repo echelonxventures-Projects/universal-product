@@ -14,11 +14,11 @@
 **Domains:** spec
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 22 / 41 | [spec-QLT/1](spec-QLT--1.md) | [corpora/1](corpora--1.md) |
-| dependency-first | 23 / 41 | [spec-QLT/1](spec-QLT--1.md) | [runtime-server/1](runtime-server--1.md) |
-| domain:spec | 15 / 15 | [spec-QLT/1](spec-QLT--1.md) | ■ END |
+| sequence | previous | next |
+|---|---|---|
+| full | [spec-QLT/1](spec-QLT--1.md) | [corpora/1](corpora--1.md) |
+| dependency-first | [spec-QLT/1](spec-QLT--1.md) | [runtime-server/1](runtime-server--1.md) |
+| domain:spec | [spec-QLT/1](spec-QLT--1.md) | ■ END |
 
 ## Prerequisite packs
 - `governance`: [governance/1](governance--1.md), [governance/2](governance--2.md), [governance/3](governance--3.md)
@@ -69,4 +69,4 @@
 ## Continue
 - Next in `full`: [corpora/1](corpora--1.md) (`node _registry/context.js next spec-IMP/1`)
 - `dependency-first`: next `runtime-server/1`
-- `domain:spec`: ■ END OF SEQUENCE (15 packs)
+- `domain:spec`: ■ END OF SEQUENCE

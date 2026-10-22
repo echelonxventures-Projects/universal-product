@@ -14,12 +14,12 @@
 **Domains:** governance
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 4 / 41 | [governance/2](governance--2.md) | [canonical-registry/1](canonical-registry--1.md) |
-| dependency-first | 4 / 41 | [governance/2](governance--2.md) | [canonical-registry/1](canonical-registry--1.md) |
-| domain:governance | 4 / 5 | [governance/2](governance--2.md) | [canonical-registry/1](canonical-registry--1.md) |
-| trace | 4 / 5 | [governance/2](governance--2.md) | [history/1](history--1.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [governance/2](governance--2.md) | [canonical-registry/1](canonical-registry--1.md) |
+| dependency-first | [governance/2](governance--2.md) | [canonical-registry/1](canonical-registry--1.md) |
+| domain:governance | [governance/2](governance--2.md) | [canonical-registry/1](canonical-registry--1.md) |
+| trace | [governance/2](governance--2.md) | [history/1](history--1.md) |
 
 ## Prerequisite packs
 - `governance`: [governance/1](governance--1.md), [governance/2](governance--2.md)

@@ -14,11 +14,11 @@
 **Domains:** spec
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 8 / 41 | [registry-pipelines/2](registry-pipelines--2.md) | [spec-Core/1](spec-Core--1.md) |
-| dependency-first | 9 / 41 | [corpora/1](corpora--1.md) | [spec-Core/1](spec-Core--1.md) |
-| domain:spec | 1 / 15 | ■ start | [spec-Core/1](spec-Core--1.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [registry-pipelines/2](registry-pipelines--2.md) | [spec-Core/1](spec-Core--1.md) |
+| dependency-first | [corpora/1](corpora--1.md) | [spec-Core/1](spec-Core--1.md) |
+| domain:spec | ■ start | [spec-Core/1](spec-Core--1.md) |
 
 ## Prerequisite packs
 - `governance`: [governance/1](governance--1.md), [governance/2](governance--2.md), [governance/3](governance--3.md)

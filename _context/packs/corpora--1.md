@@ -16,11 +16,11 @@
 **Domains:** registry
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 23 / 41 | [spec-IMP/1](spec-IMP--1.md) | [runtime-server/1](runtime-server--1.md) |
-| dependency-first | 8 / 41 | [registry-pipelines/2](registry-pipelines--2.md) | [spec-SEM/1](spec-SEM--1.md) |
-| domain:registry | 4 / 4 | [registry-pipelines/2](registry-pipelines--2.md) | ■ END |
+| sequence | previous | next |
+|---|---|---|
+| full | [spec-IMP/1](spec-IMP--1.md) | [runtime-server/1](runtime-server--1.md) |
+| dependency-first | [registry-pipelines/2](registry-pipelines--2.md) | [spec-SEM/1](spec-SEM--1.md) |
+| domain:registry | [registry-pipelines/2](registry-pipelines--2.md) | ■ END |
 
 ## Prerequisite packs
 - `governance`: [governance/1](governance--1.md), [governance/2](governance--2.md), [governance/3](governance--3.md)
@@ -101,4 +101,4 @@
 ## Continue
 - Next in `full`: [runtime-server/1](runtime-server--1.md) (`node _registry/context.js next corpora/1`)
 - `dependency-first`: next `spec-SEM/1`
-- `domain:registry`: ■ END OF SEQUENCE (4 packs)
+- `domain:registry`: ■ END OF SEQUENCE

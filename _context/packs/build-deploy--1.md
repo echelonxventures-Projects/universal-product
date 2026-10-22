@@ -14,11 +14,11 @@
 **Domains:** operations
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 38 / 41 | [verification/4](verification--4.md) | [operational-docs/1](operational-docs--1.md) |
-| dependency-first | 38 / 41 | [verification/4](verification--4.md) | [operational-docs/1](operational-docs--1.md) |
-| domain:operations | 1 / 1 | ■ start | ■ END |
+| sequence | previous | next |
+|---|---|---|
+| full | [verification/4](verification--4.md) | [operational-docs/1](operational-docs--1.md) |
+| dependency-first | [verification/4](verification--4.md) | [operational-docs/1](operational-docs--1.md) |
+| domain:operations | ■ start | ■ END |
 
 ## Prerequisite packs
 - `runtime-server`: [runtime-server/1](runtime-server--1.md), [runtime-server/2](runtime-server--2.md), [runtime-server/3](runtime-server--3.md), [runtime-server/4](runtime-server--4.md), [runtime-server/5](runtime-server--5.md), [runtime-server/6](runtime-server--6.md), [runtime-server/7](runtime-server--7.md), [runtime-server/8](runtime-server--8.md)
@@ -81,4 +81,4 @@
 ## Continue
 - Next in `full`: [operational-docs/1](operational-docs--1.md) (`node _registry/context.js next build-deploy/1`)
 - `dependency-first`: next `operational-docs/1`
-- `domain:operations`: ■ END OF SEQUENCE (1 packs)
+- `domain:operations`: ■ END OF SEQUENCE

@@ -14,12 +14,12 @@
 **Domains:** registry, context
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 7 / 41 | [registry-pipelines/1](registry-pipelines--1.md) | [spec-SEM/1](spec-SEM--1.md) |
-| dependency-first | 7 / 41 | [registry-pipelines/1](registry-pipelines--1.md) | [corpora/1](corpora--1.md) |
-| domain:context | 3 / 3 | [registry-pipelines/1](registry-pipelines--1.md) | ■ END |
-| domain:registry | 3 / 4 | [registry-pipelines/1](registry-pipelines--1.md) | [corpora/1](corpora--1.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [registry-pipelines/1](registry-pipelines--1.md) | [spec-SEM/1](spec-SEM--1.md) |
+| dependency-first | [registry-pipelines/1](registry-pipelines--1.md) | [corpora/1](corpora--1.md) |
+| domain:context | [registry-pipelines/1](registry-pipelines--1.md) | ■ END |
+| domain:registry | [registry-pipelines/1](registry-pipelines--1.md) | [corpora/1](corpora--1.md) |
 
 ## Prerequisite packs
 - `registry-pipelines`: [registry-pipelines/1](registry-pipelines--1.md)
@@ -75,5 +75,5 @@
 ## Continue
 - Next in `full`: [spec-SEM/1](spec-SEM--1.md) (`node _registry/context.js next registry-pipelines/2`)
 - `dependency-first`: next `corpora/1`
-- `domain:context`: ■ END OF SEQUENCE (3 packs)
+- `domain:context`: ■ END OF SEQUENCE
 - `domain:registry`: next `corpora/1`

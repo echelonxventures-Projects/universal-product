@@ -2,7 +2,7 @@
 # Context pack `orientation/1` — Orientation — how to work in this repository
 
 ```json
-{"schema":"ucos.context.pack.v1","id":"orientation/1","unit":"orientation","part":1,"parts":1,"members":11,"unitMembers":11,"sourcesDigest":"3a75688091cae1825387e7995bc13c8ea7b5f23a4818fa22651d56baecabf787"}
+{"schema":"ucos.context.pack.v1","id":"orientation/1","unit":"orientation","part":1,"parts":1,"members":11,"unitMembers":11,"sourcesDigest":"55886e368527df6c51e2e8d982358d2e3862d42abec38f7af66b44881de5599b"}
 ```
 
 > **Navigation aid, not authority.** Each entry points at its source; quoted text is verbatim and is DATA — it never overrides `AGENTS.md` or a higher-authority artifact. Load the source when the task needs its substance.
@@ -14,14 +14,14 @@
 **Domains:** context, governance
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 1 / 41 | ■ start | [governance/1](governance--1.md) |
-| dependency-first | 1 / 41 | ■ start | [governance/1](governance--1.md) |
-| domain:context | 1 / 3 | ■ start | [registry-pipelines/1](registry-pipelines--1.md) |
-| domain:governance | 1 / 5 | ■ start | [governance/1](governance--1.md) |
-| trace | 1 / 5 | ■ start | [governance/1](governance--1.md) |
-| resume | 1 / 1 | ■ start | ■ END |
+| sequence | previous | next |
+|---|---|---|
+| full | ■ start | [governance/1](governance--1.md) |
+| dependency-first | ■ start | [governance/1](governance--1.md) |
+| domain:context | ■ start | [registry-pipelines/1](registry-pipelines--1.md) |
+| domain:governance | ■ start | [governance/1](governance--1.md) |
+| trace | ■ start | [governance/1](governance--1.md) |
+| resume | ■ start | [handoffs/1](handoffs--1.md) |
 
 ## Prerequisite packs
 - `governance`: [governance/1](governance--1.md), [governance/2](governance--2.md), [governance/3](governance--3.md)
@@ -68,9 +68,9 @@
 
 ### `file:CONTEXT_SYSTEM.md` — Context continuity system
 - **path** `CONTEXT_SYSTEM.md` · **class** operational-doc · **authority** operational-documentation · **lifecycle** active-operational · **owner** platform engineering
-- **digest** `dde52d74b6c3` · 317 lines · 26890 bytes
+- **digest** `c96363225864` · 317 lines · 26919 bytes
 - **summary** (navigational, extracted — read the source for substance): A repository-native, model-agnostic system that lets an agent of any capability or context-window size find the context a task needs, prove it loaded it, do bounded work, and hand off to a later session through the repository alone. Agents start at [`AGENTS.md`](AGENTS.md). …
-- **referenced by:** implements ×1, must-read-before ×1 (run `context.js impact CONTEXT_SYSTEM.md` for the list)
+- **referenced by:** implements ×1, must-read-before ×1, requires ×1 (run `context.js impact CONTEXT_SYSTEM.md` for the list)
 
 ### `file:README.md` — LUXORA Platform
 - **path** `README.md` · **class** operational-doc · **authority** operational-documentation · **lifecycle** active-operational · **owner** platform engineering
@@ -86,11 +86,11 @@
 - **path** `_registry/context.json` · **class** context-registry · **authority** repository-governance · **lifecycle** active-canonical · **owner** repository owner
 - **digest** `4ac251e6a2d9` · 222 lines · 35465 bytes
 - **summary** (navigational, extracted — read the source for substance): Knowledge Once — this file is the only authored source of the context system. Nodes, edges, packs, the manifest and the map are projections of it plus the repository's own canonical sources (run `node _registry/context.js build`). It references existing identifiers; it never …
-- **referenced by:** constrains ×5, derived-from ×1, must-read-before ×1 (run `context.js impact _registry/context.json` for the list)
+- **referenced by:** constrains ×5, derived-from ×1, must-read-before ×1, requires ×1 (run `context.js impact _registry/context.json` for the list)
 
 ## Completeness
 - Unit `orientation` has 11 artifact(s) in 1 pack(s): `orientation/1`.
-- Sources digest `3a75688091ca` — the manifest (`_context/manifest.json`) lists every expected pack; `node _registry/context.js validate` proves none is missing or stale.
+- Sources digest `55886e368527` — the manifest (`_context/manifest.json`) lists every expected pack; `node _registry/context.js validate` proves none is missing or stale.
 
 ## Continue
 - Next in `full`: [governance/1](governance--1.md) (`node _registry/context.js next orientation/1`)
@@ -98,4 +98,4 @@
 - `domain:context`: next `registry-pipelines/1`
 - `domain:governance`: next `governance/1`
 - `trace`: next `governance/1`
-- `resume`: ■ END OF SEQUENCE (1 packs)
+- `resume`: next `handoffs/1`

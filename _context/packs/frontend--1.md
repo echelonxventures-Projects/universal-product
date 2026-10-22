@@ -14,12 +14,12 @@
 **Domains:** runtime, frontend
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 32 / 41 | [runtime-server/8](runtime-server--8.md) | [frontend/2](frontend--2.md) |
-| dependency-first | 32 / 41 | [runtime-server/8](runtime-server--8.md) | [frontend/2](frontend--2.md) |
-| domain:frontend | 1 / 2 | ■ start | [frontend/2](frontend--2.md) |
-| domain:runtime | 9 / 10 | [runtime-server/8](runtime-server--8.md) | [frontend/2](frontend--2.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [runtime-server/8](runtime-server--8.md) | [frontend/2](frontend--2.md) |
+| dependency-first | [runtime-server/8](runtime-server--8.md) | [frontend/2](frontend--2.md) |
+| domain:frontend | ■ start | [frontend/2](frontend--2.md) |
+| domain:runtime | [runtime-server/8](runtime-server--8.md) | [frontend/2](frontend--2.md) |
 
 ## Prerequisite packs
 - `governance`: [governance/1](governance--1.md), [governance/2](governance--2.md), [governance/3](governance--3.md)

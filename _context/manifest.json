@@ -9,17 +9,17 @@
   "path": "_registry/context.json",
   "digest": "4ac251e6a2d90c33580748a30c99dc63fffe52aa5e4ed4fa55f888348676c5ad"
  },
- "inputsDigest": "87cd58580c0fa531fba5136967444dc50cec402ce38553cf4c9582ddd008bbb4",
+ "inputsDigest": "a606f2d4b7714e70f6dcca92456c345156ce1531fd3582834da51adb50a29faa",
  "budget": {
   "packChars": 12000,
   "reserveChars": 3000
  },
  "counts": {
-  "nodes": 341,
-  "files": 318,
-  "edges": 2558,
+  "nodes": 342,
+  "files": 319,
+  "edges": 2565,
   "units": 26,
-  "packs": 41,
+  "packs": 42,
   "sequences": 15
  },
  "authorityLevels": ["constitutional","repository-governance","corpus","projection","implementation","verification","operational-documentation","historical","agent-note"],
@@ -28,19 +28,19 @@
    "id": "full",
    "kind": "authored",
    "purpose": "Complete ordered assimilation of everything registered.",
-   "count": 41,
+   "count": 42,
    "end": "END:full",
-   "digest": "29b344ca0399358fd67b447954b513e55d5d307f84702d0f45f815832ec7bb06",
-   "packs": ["orientation/1","governance/1","governance/2","governance/3","canonical-registry/1","registry-pipelines/1","registry-pipelines/2","spec-SEM/1","spec-Core/1","spec-Core/2","spec-REA/1","spec-COM/1","spec-COM/2","spec-DTW/1","spec-AGT/1","spec-RUN/1","spec-DAT/1","spec-SEC/1","spec-OPS/1","spec-DEP/1","spec-QLT/1","spec-IMP/1","corpora/1","runtime-server/1","runtime-server/2","runtime-server/3","runtime-server/4","runtime-server/5","runtime-server/6","runtime-server/7","runtime-server/8","frontend/1","frontend/2","verification/1","verification/2","verification/3","verification/4","build-deploy/1","operational-docs/1","operational-docs/2","history/1"]
+   "digest": "b8037732d88ad1adf89623c0df6b34091dfba3e6371dc0448d24d8aa3c61902f",
+   "packs": ["orientation/1","governance/1","governance/2","governance/3","canonical-registry/1","registry-pipelines/1","registry-pipelines/2","spec-SEM/1","spec-Core/1","spec-Core/2","spec-REA/1","spec-COM/1","spec-COM/2","spec-DTW/1","spec-AGT/1","spec-RUN/1","spec-DAT/1","spec-SEC/1","spec-OPS/1","spec-DEP/1","spec-QLT/1","spec-IMP/1","corpora/1","runtime-server/1","runtime-server/2","runtime-server/3","runtime-server/4","runtime-server/5","runtime-server/6","runtime-server/7","runtime-server/8","frontend/1","frontend/2","verification/1","verification/2","verification/3","verification/4","build-deploy/1","operational-docs/1","operational-docs/2","history/1","handoffs/1"]
   },
   {
    "id": "dependency-first",
    "kind": "computed:dependency-first",
    "purpose": "Units ordered so every mandatory prerequisite precedes its dependents.",
-   "count": 41,
+   "count": 42,
    "end": "END:dependency-first",
-   "digest": "7cc30dd24265ed6f361c53478a384fea88952e2b41b2fa6297425e996ae978c6",
-   "packs": ["orientation/1","governance/1","governance/2","governance/3","canonical-registry/1","registry-pipelines/1","registry-pipelines/2","corpora/1","spec-SEM/1","spec-Core/1","spec-Core/2","spec-REA/1","spec-COM/1","spec-COM/2","spec-DTW/1","spec-AGT/1","spec-RUN/1","spec-DAT/1","spec-SEC/1","spec-OPS/1","spec-DEP/1","spec-QLT/1","spec-IMP/1","runtime-server/1","runtime-server/2","runtime-server/3","runtime-server/4","runtime-server/5","runtime-server/6","runtime-server/7","runtime-server/8","frontend/1","frontend/2","verification/1","verification/2","verification/3","verification/4","build-deploy/1","operational-docs/1","operational-docs/2","history/1"]
+   "digest": "364bd3aedfb34d8a4a56f99ffafa1415d1e4df882038be6a91d63ec0defce189",
+   "packs": ["orientation/1","governance/1","governance/2","governance/3","canonical-registry/1","registry-pipelines/1","registry-pipelines/2","corpora/1","spec-SEM/1","spec-Core/1","spec-Core/2","spec-REA/1","spec-COM/1","spec-COM/2","spec-DTW/1","spec-AGT/1","spec-RUN/1","spec-DAT/1","spec-SEC/1","spec-OPS/1","spec-DEP/1","spec-QLT/1","spec-IMP/1","runtime-server/1","runtime-server/2","runtime-server/3","runtime-server/4","runtime-server/5","runtime-server/6","runtime-server/7","runtime-server/8","frontend/1","frontend/2","verification/1","verification/2","verification/3","verification/4","build-deploy/1","operational-docs/1","operational-docs/2","history/1","handoffs/1"]
   },
   {
    "id": "domain:context",
@@ -100,10 +100,10 @@
    "id": "domain:resume",
    "kind": "computed:by-tag",
    "purpose": "Only the units tagged 'resume', in primary order.",
-   "count": 0,
+   "count": 1,
    "end": "END:domain:resume",
-   "digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-   "packs": []
+   "digest": "f60c2777d1b3fe4201deb1c2575e952f1baf1e1a3f85060aa8e581e06216c6bc",
+   "packs": ["handoffs/1"]
   },
   {
    "id": "domain:runtime",
@@ -127,10 +127,10 @@
    "id": "domain:trace",
    "kind": "computed:by-tag",
    "purpose": "Only the units tagged 'trace', in primary order.",
-   "count": 1,
+   "count": 2,
    "end": "END:domain:trace",
-   "digest": "49663da9cae873356bb3908e372ac7979e54116e3c985a0e714ff2e4edb05783",
-   "packs": ["history/1"]
+   "digest": "1b61d51175d7d11d5ec1a5083ddb34c7faca5c105e0ac63dbaaaafd518f7c8c5",
+   "packs": ["history/1","handoffs/1"]
   },
   {
    "id": "domain:verification",
@@ -145,19 +145,19 @@
    "id": "trace",
    "kind": "authored",
    "purpose": "Decision and historical traceability: decisions, laws, conflicts, provenance, handoffs.",
-   "count": 5,
+   "count": 6,
    "end": "END:trace",
-   "digest": "79257286149b604d2c303e2b7e3b2cf337749995c691ae88240aff0f8d8de8af",
-   "packs": ["orientation/1","governance/1","governance/2","governance/3","history/1"]
+   "digest": "b13677567f46c22140bcf3af82edca850b88a0139d693706bfff88c6f796132b",
+   "packs": ["orientation/1","governance/1","governance/2","governance/3","history/1","handoffs/1"]
   },
   {
    "id": "resume",
    "kind": "authored",
    "purpose": "Resume from a handoff: orientation, then the handoff records.",
-   "count": 1,
+   "count": 2,
    "end": "END:resume",
-   "digest": "8210401eb28d8d2bc4f4e62d00f3ee97f7c12eeb5a8aba4a116acf27280b7ae7",
-   "packs": ["orientation/1"]
+   "digest": "31e43278a2e323408daeb0a9e9bb49924584360f7975cad7e1f7d9b96be54e37",
+   "packs": ["orientation/1","handoffs/1"]
   }
  ],
  "units": [
@@ -365,9 +365,9 @@
    "id": "handoffs",
    "title": "Task handoffs",
    "tags": ["trace","resume"],
-   "prerequisites": ["orientation"],
-   "members": 0,
-   "packs": []
+   "prerequisites": ["orientation","governance"],
+   "members": 1,
+   "packs": ["handoffs/1"]
   }
  ],
  "packs": [
@@ -377,9 +377,9 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/orientation--1.md",
-   "chars": 8926,
-   "digest": "b94e95550a71474e6dd8c330800928cecebacc9e4f463dc05103f8b8971daff2",
-   "sourcesDigest": "3a75688091cae1825387e7995bc13c8ea7b5f23a4818fa22651d56baecabf787",
+   "chars": 8900,
+   "digest": "a1a02387778b2f22b2152b5f4a1f314ea4c685f6c73c7b8d3c47081b5ed22a55",
+   "sourcesDigest": "55886e368527df6c51e2e8d982358d2e3862d42abec38f7af66b44881de5599b",
    "members": ["DEC-CTX-001","DEC-CTX-002","DEC-CTX-003","DEC-CTX-004","DEC-CTX-005","DEC-CTX-006","file:AGENTS.md","file:CONTEXT_SYSTEM.md","file:README.md","file:UCOS-REPOSITORY-INDEX.md","file:_registry/context.json"]
   },
   {
@@ -388,8 +388,8 @@
    "part": 1,
    "parts": 3,
    "file": "_context/packs/governance--1.md",
-   "chars": 10894,
-   "digest": "693132e33d2086c973ff584c896d38bc4e0d94919e22347dcfb4ba2bec533bef",
+   "chars": 10845,
+   "digest": "8b80ae4d5420f1d947b6fe4f6db1566b1f9db5adfdcae76227cc150f4931fa5f",
    "sourcesDigest": "3a50afc52ade1eba16046722a0b920d92da938e806a82dc86f96a45239f4e64d",
    "members": ["CNF-001","CNF-002","CNF-003","CNF-004","CNF-005","CST-AGENT-DATA","CST-DEPENDENCY-LAW","CST-FAIL-CLOSED","CST-NO-DESTRUCTIVE-HYGIENE","CST-PRIMITIVE-FREEZE","CST-PROJECTION-EDITS","LAW-001","LAW-002","LAW-003","LAW-004","LAW-005"]
   },
@@ -399,8 +399,8 @@
    "part": 2,
    "parts": 3,
    "file": "_context/packs/governance--2.md",
-   "chars": 11269,
-   "digest": "df1c059495eb05559a6fed24c7662bd5513cabbe0feca1653ea775e692a07d7f",
+   "chars": 11220,
+   "digest": "05af5c300d6a4e8457d685b22bab1bacfbd286bf7e9c70d127ac24a28da63249",
    "sourcesDigest": "ca5d259300c3bcc08c5a1eda6093cc2d9f25000ab4538bfb63b379fbe14ba7bd",
    "members": ["UCOS-CON-000001","UCOS-CON-000002","UCOS-CON-000003","UCOS-CON-000004","UCOS-CON-000005","UCOS-CON-000006","UCOS-CON-000007","UCOS-CON-000008"]
   },
@@ -410,8 +410,8 @@
    "part": 3,
    "parts": 3,
    "file": "_context/packs/governance--3.md",
-   "chars": 4708,
-   "digest": "1477a373cc365496736c5ad70048866c3050f5314f463bcb9f74d17741bf9e7b",
+   "chars": 4659,
+   "digest": "8d30371168d0e7d9f9fb1c42f6228795a8c4d95396e2c24ba33fd693c4f52f40",
    "sourcesDigest": "7eee19640936a6939bc1aeba95a92c5633902e9abe45456b1944453d9e5c9cc9",
    "members": ["UCOS-CON-000009","UCOS-CON-000010"]
   },
@@ -421,8 +421,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/canonical-registry--1.md",
-   "chars": 10379,
-   "digest": "d1c8d5c06c19f512cba0e3131f1d72b8a854ea0159460fd85d8d0c68a3a9e952",
+   "chars": 10320,
+   "digest": "916c8e382126be96aa1f20ed616e7c0d6b25034487bd1107be4bc8fd0539f27e",
    "sourcesDigest": "447e2c21a7cf0be3ec326a205359e4baf6c3ed227b9ef29b69f0a66175b883dc",
    "members": ["file:_registry/content-commerce.json","file:_registry/content-core.json","file:_registry/content-ext.json","file:_registry/content-map.json","file:_registry/content-runtime-data.json","file:_registry/content-sec-ops-dep-qlt.json","file:_registry/content-twin-agent.json","file:_registry/domains.json","file:_registry/manifest.json","file:_registry/primitives.json","file:_registry/terminology.json"]
   },
@@ -432,9 +432,9 @@
    "part": 1,
    "parts": 2,
    "file": "_context/packs/registry-pipelines--1.md",
-   "chars": 10953,
-   "digest": "a8d3cdf365a94c4cf79f9f1c38ec2355214e7879adb6f158e7b93ab3d2485fb0",
-   "sourcesDigest": "588188d995c2cda11dfdf13f8807791a1b5c139d0af84a075ed8e87907892724",
+   "chars": 10904,
+   "digest": "eb8db82dc671ac8b4df4df86f6d0d9fc114feee5ab18d9ca47df42864935e5ee",
+   "sourcesDigest": "ab0dbb4eb4a2be2100978dd4a7e0a41cfbc7b642a9882aa42830aacd0e38eb37",
    "members": ["file:_registry/add-blueprints.js","file:_registry/audit.js","file:_registry/context-graph.js","file:_registry/context-hygiene.js","file:_registry/context-packs.js","file:_registry/context.js","file:_registry/project.js","file:lib/canonical.js","file:lib/ucos-registry.js","file:lib/ucos-universes.js"]
   },
   {
@@ -443,8 +443,8 @@
    "part": 2,
    "parts": 2,
    "file": "_context/packs/registry-pipelines--2.md",
-   "chars": 8000,
-   "digest": "8b7aebd104e16165520ef1274865d6d1d606fd34b533e52e66c76017f5a47428",
+   "chars": 7941,
+   "digest": "eac8b931fc49fc821db28609ef7b13999331a13dd00cd6296f57e3091309772f",
    "sourcesDigest": "8959d91412ee0f589f6ff530b5dde24a49a870971ab1727236809c0683f72aef",
    "members": ["file:lib/ucos.js","file:_registry/gate.js","file:_registry/compile.js","file:public/js/admin.js","file:public/js/platform.js","derived:_registry/canonical.lxr"]
   },
@@ -454,8 +454,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/spec-SEM--1.md",
-   "chars": 6209,
-   "digest": "978b0cb5d70a34e82b390395163546f47059f57cb8321c50bc42a19d43e1f6a9",
+   "chars": 6167,
+   "digest": "0d7f0f84e7d4cf0d7c8a1d59f154e4f1fe3c0748ce219103216f6668cea152ff",
    "sourcesDigest": "a8397be1d392db25344e77703a04b82ac238a5aaaa96c6204a9b2661aaf5e112",
    "members": ["UCOS-CLS-000001","UCOS-ONT-000001","UCOS-SEM-000001","UCOS-TAX-000001"]
   },
@@ -465,8 +465,8 @@
    "part": 1,
    "parts": 2,
    "file": "_context/packs/spec-Core--1.md",
-   "chars": 10390,
-   "digest": "3e7564a5706f240c099070e794db60c8101c582bddb2455863596a784682e65d",
+   "chars": 10347,
+   "digest": "19200332b1d42583dc1cecb986e9e2b5af213fb78bcba215afbd3dd0a00f4850",
    "sourcesDigest": "e736e006a9d921fdd856cd7885502460f1f9640428ee0f1d76bd368142c25873",
    "members": ["UCOS-AUT-000001","UCOS-CAU-000001","UCOS-CTX-000001","UCOS-EVD-000001","UCOS-EVO-000001","UCOS-IDN-000001","UCOS-INF-000001","UCOS-KNW-000001"]
   },
@@ -476,8 +476,8 @@
    "part": 2,
    "parts": 2,
    "file": "_context/packs/spec-Core--2.md",
-   "chars": 9388,
-   "digest": "70ad13b2bea4c0149c1668fd0904a3dd8b295abe3a2afe5c1d0dfebac123c9b7",
+   "chars": 9344,
+   "digest": "65cb009244496643cdd58c9376772ee20755dd31598123f9476669c6b06574dd",
    "sourcesDigest": "6173a99b9d540d48a2c4cc01b07afa6969e28557cde789bfb417d8c7ae09a06d",
    "members": ["UCOS-OBS-000001","UCOS-POL-000001","UCOS-REL-000001","UCOS-RSN-000001","UCOS-RUL-000001","UCOS-SIM-000001","UCOS-TRS-000001"]
   },
@@ -487,8 +487,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/spec-REA--1.md",
-   "chars": 8365,
-   "digest": "9beff8b4906e973751c89d54b793d5aa32db60a1579b19a17fe215100b2b1875",
+   "chars": 8321,
+   "digest": "e4a19a05043adaf62ee9b8aa826d0cb4266d0cdf439f6109a60e32380ecea097",
    "sourcesDigest": "e761a3efee2a0d1880e40b0c84e954fd405aa6fda1ae219335be1b0daaa2baaa",
    "members": ["UCOS-CONTR-000001","UCOS-EMG-000001","UCOS-PER-000001","UCOS-POSS-000001","UCOS-REA-000001","UCOS-UNC-000001"]
   },
@@ -498,8 +498,8 @@
    "part": 1,
    "parts": 2,
    "file": "_context/packs/spec-COM--1.md",
-   "chars": 10391,
-   "digest": "8f5407280a61d144360d5372ddf6ca4e690d0382142e27ae139f96179a40d474",
+   "chars": 10347,
+   "digest": "60257b81feaf9c4caaa6cb900ff3a550afa293828402d16425fee1c8c629ed1d",
    "sourcesDigest": "82feadef06f1994e75aacad7df1cdcebe4e2622947bbd0056bfc18d67c9d7fc1",
    "members": ["UCOS-CNT-000001","UCOS-COM-000001","UCOS-FUL-000001","UCOS-GPS-000001","UCOS-INV-000001","UCOS-MKT-000001","UCOS-OFR-000001","UCOS-ORD-000001"]
   },
@@ -509,8 +509,8 @@
    "part": 2,
    "parts": 2,
    "file": "_context/packs/spec-COM--2.md",
-   "chars": 4174,
-   "digest": "ddfe0c2b98079350f83feaec1a68473fd4ba9aaea4bf012cb3c1eb99ee7ba207",
+   "chars": 4130,
+   "digest": "6c78878ed33f252c9a7f289b811eacd0b3988057bbdb87097b8a58c51908b856",
    "sourcesDigest": "45602b9348139bb1b0509fdd64ba054d7f084611a23dc165e239f00f3bd9d2bc",
    "members": ["UCOS-PRC-000001","UCOS-SUB-000001"]
   },
@@ -520,8 +520,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/spec-DTW--1.md",
-   "chars": 5242,
-   "digest": "01389ae5cb81cb833e091fd5cee56983a6322a6191b7cbc2c04e758a4753232a",
+   "chars": 5198,
+   "digest": "a3a152db18708aa26e34db1870f298e3aaf7a6f97a149741a199b24e9087582e",
    "sourcesDigest": "53a34d5d9ab0404280c5d290ceef97e9687f9acef811d4033186f3d023efafef",
    "members": ["UCOS-DTW-000001","UCOS-DTW-000002","UCOS-DTW-000003"]
   },
@@ -531,8 +531,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/spec-AGT--1.md",
-   "chars": 9079,
-   "digest": "e9a44f1369b01b351e27d560ccd61c7c55e2b6da2de66af3c47761f07e918b48",
+   "chars": 9035,
+   "digest": "46d93380229cf2093fafc9367041a9158e4402fc88d84fa608089e3aca8b6097",
    "sourcesDigest": "61fb2c776f2086d3c50468d4949dc2da3072671a766f4d1baabd4dbed25fac0a",
    "members": ["UCOS-AGT-000001","UCOS-AGT-000002","UCOS-AGT-000003","UCOS-AGT-000004","UCOS-AGT-000005","UCOS-AGT-000006","UCOS-AGT-000007"]
   },
@@ -542,8 +542,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/spec-RUN--1.md",
-   "chars": 7221,
-   "digest": "79e125fbf3eccf2b7f21f75f7b807f92573750fc0b2d2b71df939a9e03ee3d95",
+   "chars": 7177,
+   "digest": "394e9c48862a9d50b33b4435617f7d67b6fa757260875bcd233616a063a14f34",
    "sourcesDigest": "776aeddbe8e8f927a768589ac3e90541461911a1d55626d8da643a926befab40",
    "members": ["UCOS-RUN-000001","UCOS-RUN-000002","UCOS-RUN-000003","UCOS-RUN-000004","UCOS-RUN-000005"]
   },
@@ -553,8 +553,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/spec-DAT--1.md",
-   "chars": 9162,
-   "digest": "740c943cf89fa59650765d952a0ca3595234e304730e68aee0c63d6b5195ec22",
+   "chars": 9117,
+   "digest": "1024e481baef8bf597ead51f0856959b889853f460389e41300428eddec35704",
    "sourcesDigest": "ce9c3f7ebda1335d411df928ad4f542b24e7988d56830e020ebeaf4bfbbae886",
    "members": ["UCOS-CCH-000001","UCOS-DB-000001","UCOS-EVT-000001","UCOS-GRF-000001","UCOS-IDX-000001","UCOS-MSG-000001","UCOS-SRC-000001"]
   },
@@ -564,8 +564,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/spec-SEC--1.md",
-   "chars": 9394,
-   "digest": "ce7e815e5bdd7f497b9bb173188706d89942590376383b48f5cf30a9f0d0ecde",
+   "chars": 9349,
+   "digest": "4cc6e923b32fd36c4545c28bb41d0481a803ff95042176acd13c510b8142e862",
    "sourcesDigest": "ebe1a82f14f00e137752ff000096e98df77d4d0d013c53e54569f60ea6425b84",
    "members": ["UCOS-CNS-000001","UCOS-CRY-000001","UCOS-DSP-000001","UCOS-IAM-000001","UCOS-KMS-000001","UCOS-SEC-000001","UCOS-ZTA-000001"]
   },
@@ -575,8 +575,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/spec-OPS--1.md",
-   "chars": 8369,
-   "digest": "c8bd61cbcd14442565e742b7b76c95da074e7194412c499b2ae63b2fcf551b9e",
+   "chars": 8324,
+   "digest": "8dac90065d40c87ad25a0c239aa800e1dc6c6047d27e7c7b5b34683c53275bba",
    "sourcesDigest": "5000aee2ec1f314eb1f9ce0039023f0923ef7145896030655bd619715c7bb193",
    "members": ["UCOS-AUD-000001","UCOS-BCP-000001","UCOS-DR-000001","UCOS-MON-000001","UCOS-OBSV-000001","UCOS-SRE-000001"]
   },
@@ -586,8 +586,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/spec-DEP--1.md",
-   "chars": 6231,
-   "digest": "8c23764bd6463eb5a2c20dc6f4962ea5b7b47c0a5baed1c81bf78edb978072db",
+   "chars": 6186,
+   "digest": "b3f187df538c3088de5321bf7e17a1f9a5afaf823c2d4620eb3ec76eed6d8d8b",
    "sourcesDigest": "fdb06c40511bfda7d56c1e0ff1fdb8c27eab8bd94c6c056fe55344d18dd13256",
    "members": ["UCOS-CLD-000001","UCOS-DEP-000001","UCOS-EDG-000001","UCOS-GEO-000001"]
   },
@@ -597,8 +597,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/spec-QLT--1.md",
-   "chars": 6228,
-   "digest": "50770353d77d682c2792660553b0ae4226d5aa3fe45ddad95673525147aa1cb4",
+   "chars": 6183,
+   "digest": "3a21945f224ef768a7dd7fdef23e09f3ce86f9666c92db8f69d5feafc9524640",
    "sourcesDigest": "537fe6f5dc001d6d95486387c71a2a01d06a10a0f2a008748e4b7534f77bfe29",
    "members": ["UCOS-CER-000001","UCOS-FML-000001","UCOS-TST-000001","UCOS-VER-000001"]
   },
@@ -608,8 +608,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/spec-IMP--1.md",
-   "chars": 7336,
-   "digest": "5ff707ce0ada649f6d2ec649223bf8ae0b9cc1e98ead9da9ece6132c30d427c8",
+   "chars": 7280,
+   "digest": "86dd08bf46f2d01e53be0573ffb3664e5264b43e9a01fb81561030fe84a9b339",
    "sourcesDigest": "2850fb54d3f0a923a0b99df0f08f8b729784af82c3ed2b11d30d0b869cf7ea64",
    "members": ["UCOS-IMP-000001","UCOS-IMP-000002","UCOS-IMP-000003","UCOS-IMP-000004","UCOS-IMP-000005"]
   },
@@ -619,8 +619,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/corpora--1.md",
-   "chars": 9401,
-   "digest": "d913b4ede11291e2e3f81e267ca456116638cd7f1f9ce66b6ca604210ff6c64f",
+   "chars": 9349,
+   "digest": "40365f73c8c8150470a2228131b8d88b7285505bdbdc6161374e7798ba0a2872",
    "sourcesDigest": "d24971cc685090ebce172d40453c86fc63cd688666656360f207108e24a5ca6e",
    "members": ["file:Architecture1.txt","file:Architecture2.txt","file:Architecture3.txt","file:Architecture4.txt","file:Architecture5.txt","file:Architecture6.txt","file:UCOS-Constitutional-Addendum.md","file:UCOS-Constitutional-Master-Architecture.md","file:UCOS-Universal-Capability-Operating-System.md","file:UCOS_Omega_Constitutional_Architecture_v1.0.md","file:UCRS-Zero-Hardcoding-Constitution.md"]
   },
@@ -630,8 +630,8 @@
    "part": 1,
    "parts": 8,
    "file": "_context/packs/runtime-server--1.md",
-   "chars": 10720,
-   "digest": "d5b01a1bd65d6eea51a820c83410654b5e6b3b5084322333fa2f8aeba03ac25b",
+   "chars": 10676,
+   "digest": "978fa0d4d213f1bc296dc429af243d2fb542f07cc9ad306018ffdc1d09512630",
    "sourcesDigest": "3c05bb80024d25afb926db0be8592eb46c47bd4c7b836e264815295f4c463fe3",
    "members": ["file:lib/bundle.js","file:lib/logger.js","file:lib/meta.js","file:lib/pg.js","file:lib/adapters.js","file:lib/pgbridge.js","file:lib/providers.js","file:lib/security.js","file:lib/spec.js","file:lib/sql.js","file:lib/pgworker.js","file:lib/subdivisions.js","file:lib/uid.js"]
   },
@@ -641,8 +641,8 @@
    "part": 2,
    "parts": 8,
    "file": "_context/packs/runtime-server--2.md",
-   "chars": 10580,
-   "digest": "906906c81abf19f0b0698407a71093170026ba28dcfff61203f60a04b8cbb233",
+   "chars": 10536,
+   "digest": "2cf39c49d8c544e2ba778b0186da5ad7e4dc2fc92d55a54a0d7ecb8bc4cd7577",
    "sourcesDigest": "199471ea10f234f601d5e58a379ec461c648c76982e2525aa022ce2d6099221b",
    "members": ["file:lib/webauthn.js","file:lib/affiliate.js","file:lib/ai.js","file:lib/authz.js","file:lib/billing.js","file:lib/capabilities.js","file:lib/compliance.js","file:lib/config.js","file:lib/connect.js","file:lib/dashboards.js"]
   },
@@ -652,8 +652,8 @@
    "part": 3,
    "parts": 8,
    "file": "_context/packs/runtime-server--3.md",
-   "chars": 10946,
-   "digest": "2da838ceb92a282505673eed5f2328d321a2afa523adc701e9e0d664946a468a",
+   "chars": 10902,
+   "digest": "bf7b8c44ed369d5c7213536feb1a40dce56b546870c229182862eeee4f834237",
    "sourcesDigest": "b9a11e79989dad590acc2d33a15473b36bada82c0a16e8c542c4609b590ff79f",
    "members": ["file:lib/db.js","file:lib/enterprise.js","file:lib/entity.js","file:lib/events.js","file:lib/experiments.js","file:lib/fin.js","file:lib/gcatalog.js","file:lib/goip.js","file:lib/helpdesk.js","file:lib/identity.js"]
   },
@@ -663,8 +663,8 @@
    "part": 4,
    "parts": 8,
    "file": "_context/packs/runtime-server--4.md",
-   "chars": 11032,
-   "digest": "66d8fad521463e5f8cd95a81681bb35ca3fdf8cd1e63947c02a9a3b9d4f39591",
+   "chars": 10988,
+   "digest": "a800e1c9bd7b0e984f18709d10195c30a7d20c0c4bb983390c894e24c7e16590",
    "sourcesDigest": "4f547ddc5222b50357f5215b41be020e030c9cc5b91da377193f1d1f5f258b6d",
    "members": ["file:lib/logistics.js","file:lib/marketplace.js","file:lib/migrate.js","file:lib/mobility.js","file:lib/modules.js","file:lib/offers.js","file:lib/operations.js","file:lib/parity-registries.js","file:lib/planning.js","file:lib/prbac.js"]
   },
@@ -674,8 +674,8 @@
    "part": 5,
    "parts": 8,
    "file": "_context/packs/runtime-server--5.md",
-   "chars": 11032,
-   "digest": "79d8f1eafb7be54bd8ce9e2343b6aafda1e8ee0ca763d3df955207a4cae375a4",
+   "chars": 10988,
+   "digest": "0e7de8d936a80774f80ca5c3662ca501eca9cb87828b2766713e307e39b5b2cc",
    "sourcesDigest": "67c405234968b1da7ab11319b06745c75781998a3676e8a1e240b58b4d52cd1b",
    "members": ["file:lib/qcommerce.js","file:lib/queue.js","file:lib/rbac.js","file:lib/recurring.js","file:lib/registry.js","file:lib/risk.js","file:lib/search.js","file:lib/settings.js","file:lib/shipping.js","file:lib/sitemap.js"]
   },
@@ -685,8 +685,8 @@
    "part": 6,
    "parts": 8,
    "file": "_context/packs/runtime-server--6.md",
-   "chars": 10588,
-   "digest": "07bb41f7b2fe6a1d07e8bc29e856f0f755579e53562c05af536ab3ee96762a0a",
+   "chars": 10544,
+   "digest": "324748bda6defecb4f4c6afd3a477bc524cf5557a3d86ffc9f1f262901a7e0e3",
    "sourcesDigest": "46f32e9916eb33ab63dec3d286aeaa9e0cb6dca8c71b315e704526b6326dbe74",
    "members": ["file:lib/tax.js","file:lib/tenancy.js","file:lib/themes.js","file:lib/ucos-catalog.js","file:lib/ucos-completeness.js","file:lib/ucos-monitor.js","file:lib/ugc.js","file:lib/branding.js","file:lib/compose.js","file:lib/dbpool.js"]
   },
@@ -696,8 +696,8 @@
    "part": 7,
    "parts": 8,
    "file": "_context/packs/runtime-server--7.md",
-   "chars": 10687,
-   "digest": "304c9a1f26a597caf50942baa0774bb5755c2f51deaa8b692b919e0c926cc397",
+   "chars": 10643,
+   "digest": "c5172048f254fb315d01057ec40cf0f0bd363a823731b23cecf1ee4cbfe2aa9b",
    "sourcesDigest": "fd49fe184032f63b623f7031b4ff615f85b5230bd3ecd6f2a2aaf78e2a455cae",
    "members": ["file:lib/env.js","file:lib/fintech.js","file:lib/global.js","file:lib/governance.js","file:lib/idempotency.js","file:lib/marketplace-ext.js","file:lib/metrics.js","file:lib/policies.js","file:lib/trade.js","file:lib/ucos-domain.js"]
   },
@@ -707,8 +707,8 @@
    "part": 8,
    "parts": 8,
    "file": "_context/packs/runtime-server--8.md",
-   "chars": 7936,
-   "digest": "25fc3ad64779fdbe95e4d39f5e8f4a1e5f487b584161f3778f93a4e3e1d88575",
+   "chars": 7892,
+   "digest": "be7b861eb1e233851b19798c59c36a839d30783af16645b54b43cc46e13b1361",
    "sourcesDigest": "a0a72167d2191c06d9d948265dc6940b8eeed6fbabf1a7660b8818e694e07687",
    "members": ["file:lib/ucos-foundations.js","file:lib/api.js","file:lib/ucos-trace.js","file:server.js"]
   },
@@ -718,8 +718,8 @@
    "part": 1,
    "parts": 2,
    "file": "_context/packs/frontend--1.md",
-   "chars": 11302,
-   "digest": "e517b9c4e80ca88472b8fba2ab70295d2d57633fedb9ca7bfc5bcf5b29204732",
+   "chars": 11250,
+   "digest": "7347a138d295929a12dcbebaacff5dd2b73fe550f1d94608d49ec5512719abb8",
    "sourcesDigest": "ed686e86bef4b5ac6552441157e4339860260298a50a1969cbdfdcd83733b2da",
    "members": ["file:public/404.html","file:public/admin.html","file:public/cart.html","file:public/checkout.html","file:public/console.html","file:public/css/platform.css","file:public/css/portal.css","file:public/css/styles.css","file:public/customer-service.html","file:public/deals.html","file:public/docs/architecture.html","file:public/docs/e2e-flow.html","file:public/docs/platform-reference.html","file:public/docs/provisioning-guide.html","file:public/docs/user-manual.html","file:public/docs/user-manual.js","file:public/gift-cards.html","file:public/index.html","file:public/js/app.js","file:public/js/console.js","file:public/js/data.js","file:public/js/editors.js","file:public/js/provisioning.js","file:public/orders.html","file:public/platform.html","file:public/product.html"]
   },
@@ -729,8 +729,8 @@
    "part": 2,
    "parts": 2,
    "file": "_context/packs/frontend--2.md",
-   "chars": 3166,
-   "digest": "e51631fa725973c1fc081368f072db135c27e5f551106a11e290220693cf1005",
+   "chars": 3092,
+   "digest": "d6005fd25e1225dbfad0367a522206754331ebcd214f8f19f27cad7c5ce51704",
    "sourcesDigest": "15e06bff9dfe8fae0175ae8c42bcda8253095b7d4cf502eb7c4d08be697e5654",
    "members": ["file:public/registry.html","file:public/results.html","file:public/sample/fx-feed.json"]
   },
@@ -740,9 +740,9 @@
    "part": 1,
    "parts": 4,
    "file": "_context/packs/verification--1.md",
-   "chars": 10965,
-   "digest": "f873b785e5a57fa0ed455df80e5aa5ef18f7bbbd725ab36dad75c3c1cbc085f5",
-   "sourcesDigest": "b2d98ef4069be86201250a3474a297b9ede9468ff0d4d400bb2edb7b17ed3a6e",
+   "chars": 10922,
+   "digest": "01b411f2921a946d791edf6d12a128ec1f23f89d490e8e236d94ab7de5ae3ade",
+   "sourcesDigest": "47e4d76d427d4f4569018ef720268c100fe6acbc7dcfb984069fc3040c476e67",
    "members": ["file:.github/workflows/ci.yml","file:test/authz.js","file:test/compose.js","file:test/console.js","file:test/context.js","file:test/dashboards.js","file:test/gcatalog.js","file:test/goip-audit.js","file:test/gops.js","file:test/gtable-tmp.js","file:test/identity-modes.js","file:test/identity.js","file:test/master.js"]
   },
   {
@@ -751,8 +751,8 @@
    "part": 2,
    "parts": 4,
    "file": "_context/packs/verification--2.md",
-   "chars": 11039,
-   "digest": "ae5e999209d23f69659c0c62079bf5465f3fde9090b7efc5902f8d0440fabb94",
+   "chars": 10996,
+   "digest": "5c787cd6ae0042a0a1bd5030456b95807ff7428f52cb3b6359ef38bdc26ef12e",
    "sourcesDigest": "ee7cbd88b58c9d2d43b6e0b776c9b290248cdb64b9af624a46a728e6405ddeeb",
    "members": ["file:test/mobility.js","file:test/navfit.js","file:test/operations.js","file:test/padmins.js","file:test/parity.js","file:test/propagate.js","file:test/registries.js","file:test/registry-gate.js","file:test/rel-primitive.js","file:test/roles.js","file:test/security.js"]
   },
@@ -762,8 +762,8 @@
    "part": 3,
    "parts": 4,
    "file": "_context/packs/verification--3.md",
-   "chars": 10884,
-   "digest": "ca897a0f9c8c47c61af7262dc4d566b54a74522dc221af8160d8ac411b566597",
+   "chars": 10841,
+   "digest": "d0e85ad304f8d7500ba584468f91ce5ea005f7a6c3ea5727e0c1dbd5fe2934ac",
    "sourcesDigest": "b2a8693bf1f4106418931ab472dfddbc8e581c068d7acdafc9f8893ddb443448",
    "members": ["file:test/smoke.js","file:test/tax-ssot.js","file:test/tenancy.js","file:test/themes.js","file:test/ucos-activation.js","file:test/ucos-audit.js","file:test/ucos-catalog.js","file:test/ucos-domains.js","file:test/ucos-master.js","file:test/ucos-mm.js"]
   },
@@ -773,8 +773,8 @@
    "part": 4,
    "parts": 4,
    "file": "_context/packs/verification--4.md",
-   "chars": 9008,
-   "digest": "5a68fcef15edb1255309f6e2c133c15f2dadd00031ad14bc935cd4318171a432",
+   "chars": 8955,
+   "digest": "4e9e4289571294e9f8116cb8e2cca53e9673c68dd8d95c7ae2ec5fe94b56e323",
    "sourcesDigest": "25f25338155d6ecd6bc20f490dbe1cd348a4bef29ea375ee9cfba5f6320b9d42",
    "members": ["file:test/ucos-omega.js","file:test/ucos-product-universes.js","file:test/ucos-registry.js","file:test/ucos-universes.js","file:test/ucos-upce.js","file:test/webauthn.js","file:test/wizard.js","file:test/zone-form.js"]
   },
@@ -784,8 +784,8 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/build-deploy--1.md",
-   "chars": 5941,
-   "digest": "9416504cf3c81bae959fde9c01d632a40d8ee8cc592654bd88b0d146745630d7",
+   "chars": 5888,
+   "digest": "484a470feff9c0b4bf473038d719db689eef867306cb708246260ef88d211613",
    "sourcesDigest": "7ab6d0e34285f71595ca3b6adb1f61bd32f13bb42c7e0a9e3def445b7988f341",
    "members": ["file:.dockerignore","file:.gitignore","file:Dockerfile","file:docker-compose.yml","file:package-lock.json","file:package.json","file:scripts/schema-dump.js","file:schema.sql","file:serve.sh","file:stop.sh","file:systemd/luxora.service"]
   },
@@ -795,8 +795,8 @@
    "part": 1,
    "parts": 2,
    "file": "_context/packs/operational-docs--1.md",
-   "chars": 10734,
-   "digest": "a7b842c59049a375ae156f9c25c7797f48794e25db35cf567d3bafd3ff42d41e",
+   "chars": 10691,
+   "digest": "c1b7ba3e816e07dbe76a52b775b4d14b3224bf05ca12cab91a6d9c55b0a3c32e",
    "sourcesDigest": "d3c585e00ac160dedfea8c3d72f0e0ab6c8d10e4cbe4659ffb494de97ee6abed",
    "members": ["file:BRAND_SYSTEM.md","file:FLOWS.md","file:FLOW_DIAGRAM.md","file:GOIP-ROADMAP-2.md","file:GOIP-ROADMAP.md","file:IDENTITY_IMPLEMENTATION.md","file:IDENTITY_PRODUCT.md","file:IDENTITY_TEMPLATES.md","file:IMPLEMENTATION_MAP.md","file:IMPLEMENTATION_SUMMARY.md","file:Identity_CONFIG.md","file:MODULE_CONFIG.md","file:MULTI_TENANT_BRANDING.md","file:PLATFORM_DYNAMIC_POLICIES.md","file:PLATFORM_GLOBAL_FEATURES.md","file:QUICKSHOP_SETUP.md"]
   },
@@ -806,8 +806,8 @@
    "part": 2,
    "parts": 2,
    "file": "_context/packs/operational-docs--2.md",
-   "chars": 2965,
-   "digest": "82e96872a5c38902833bf330b4dfccb386a387ccdf05f284868f1f38584f4242",
+   "chars": 2912,
+   "digest": "d44924da3bc157c7c2b8f9d04bf0bf46c9869846b339d32ef01f3d8589cba4e2",
    "sourcesDigest": "b1ff04e7b2477bb423f6810c61c808581513b14c3cdabec04d11786b1e096c57",
    "members": ["file:USER_MANUAL.md","file:configure-branding.md"]
   },
@@ -817,10 +817,21 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/history--1.md",
-   "chars": 7292,
-   "digest": "03c5e42f36d6eda6a83366944267844df02c2c3023987e2188e48ec6f5d41eae",
+   "chars": 7280,
+   "digest": "09ba208dc06209be6772087303610520e0e91c9d6efae29f29c489fe0e3fae12",
    "sourcesDigest": "587e57054277083f613bfa810d78cec565332b95a3d5a10ae84fa0ab90574771",
    "members": ["file:.workbuddy-ai/memory/2026-09-17.md","file:.workbuddy-ai/memory/MEMORY.md","file:REVIEW.md","file:_superseded/UCOS-Constitutional-Addendum.original.md","file:_superseded/UCOS-Constitutional-Master-Architecture.original.md","file:_superseded/UCRS-Zero-Hardcoding-Constitution.original.md"]
+  },
+  {
+   "id": "handoffs/1",
+   "unit": "handoffs",
+   "part": 1,
+   "parts": 1,
+   "file": "_context/packs/handoffs--1.md",
+   "chars": 3233,
+   "digest": "862d370b13628e5c478e51f98e77d1ead6bce2cbc52f686d54a9e48ec9e5e8a7",
+   "sourcesDigest": "5161a6e38e8831affa20a73c4e42b2888c6179d7b1b4a4df1fbf71b84e402e9e",
+   "members": ["file:_registry/handoffs/UCOS-CTX-001/0001.json"]
   }
  ],
  "nodes": [
@@ -2251,7 +2262,7 @@
    "lifecycle": "active-operational",
    "kind": "explanatory",
    "owner": "platform engineering",
-   "digest": "dde52d74b6c3df1f97ca0d73cea0a1ac58a99ba15185c1425c9ff6fbd341acea",
+   "digest": "c96363225864dadf403306203bccaf06d99501d6d03f1a8f35c0893651c69ad6",
    "unit": "orientation"
   },
   {
@@ -2669,7 +2680,7 @@
    "lifecycle": "active-operational",
    "kind": "authoritative",
    "owner": "platform engineering",
-   "digest": "7014bc0f6f8e4bc11b57e6d18915d7b0b1b2ec311801314b2079ce7bd95d3b21",
+   "digest": "c91c8b1d23cf724eef4c5c5253946c00525496c09be852aeb17ce9911090ae3b",
    "unit": "registry-pipelines"
   },
   {
@@ -2715,6 +2726,17 @@
    "owner": "platform engineering",
    "digest": "b7aece8f1b31a715c02fe9f7151e7e265155b3b924383c9088b50c5a36eef3d0",
    "unit": "registry-pipelines"
+  },
+  {
+   "id": "file:_registry/handoffs/UCOS-CTX-001/0001.json",
+   "path": "_registry/handoffs/UCOS-CTX-001/0001.json",
+   "class": "handoff-record",
+   "authority": "agent-note",
+   "lifecycle": "historical-evidence",
+   "kind": "agent-note",
+   "owner": "the recording agent session",
+   "digest": "f9eaac484f08aea18aececb089ff746402b660b8bd21a4c21a069994b4424b55",
+   "unit": "handoffs"
   },
   {
    "id": "file:_registry/manifest.json",
@@ -4165,7 +4187,7 @@
    "lifecycle": "active-operational",
    "kind": "verification",
    "owner": "platform engineering",
-   "digest": "c8076e1c70e5ad3d147beb3bd4f3b3528e603fe96b7a70d03d10d878310585f3",
+   "digest": "a3403ab70b5ae8e86e81733c242d21dc15fc35f90860bcd7b7a916bb89271186",
    "unit": "verification"
   },
   {
@@ -4591,6 +4613,7 @@
   ["CST-AGENT-DATA","constrains","file:.workbuddy-ai/memory/2026-09-17.md","constraint:CST-AGENT-DATA"],
   ["CST-AGENT-DATA","constrains","file:.workbuddy-ai/memory/MEMORY.md","constraint:CST-AGENT-DATA"],
   ["CST-AGENT-DATA","constrains","file:REVIEW.md","constraint:CST-AGENT-DATA"],
+  ["CST-AGENT-DATA","constrains","file:_registry/handoffs/UCOS-CTX-001/0001.json","constraint:CST-AGENT-DATA"],
   ["CST-AGENT-DATA","constrains","file:_superseded/UCOS-Constitutional-Addendum.original.md","constraint:CST-AGENT-DATA"],
   ["CST-AGENT-DATA","constrains","file:_superseded/UCOS-Constitutional-Master-Architecture.original.md","constraint:CST-AGENT-DATA"],
   ["CST-AGENT-DATA","constrains","file:_superseded/UCRS-Zero-Hardcoding-Constitution.original.md","constraint:CST-AGENT-DATA"],
@@ -4816,6 +4839,7 @@
   ["DEC-CTX-002","constrains","file:.github/workflows/ci.yml","decision:DEC-CTX-002"],
   ["DEC-CTX-002","constrains","file:_registry/context.js","decision:DEC-CTX-002"],
   ["DEC-CTX-003","constrains","file:_registry/context.json","decision:DEC-CTX-003"],
+  ["DEC-CTX-004","constrains","file:_registry/handoffs/UCOS-CTX-001/0001.json","decision:DEC-CTX-004"],
   ["DEC-CTX-005","constrains","file:.workbuddy-ai/memory/2026-09-17.md","decision:DEC-CTX-005"],
   ["DEC-CTX-005","constrains","file:.workbuddy-ai/memory/MEMORY.md","decision:DEC-CTX-005"],
   ["DEC-CTX-006","constrains","file:_registry/context-hygiene.js","decision:DEC-CTX-006"],
@@ -5214,6 +5238,7 @@
   ["LAW-004","constrains","file:AGENTS.md","constraint:LAW-004"],
   ["LAW-004","constrains","file:_registry/context.json","constraint:LAW-004"],
   ["LAW-005","constrains","file:AGENTS.md","constraint:LAW-005"],
+  ["LAW-005","constrains","file:_registry/handoffs/UCOS-CTX-001/0001.json","constraint:LAW-005"],
   ["UCOS-AGT-000001","derived-from","file:_registry/content-twin-agent.json","extractor:ucos-projection"],
   ["UCOS-AGT-000001","derived-from","file:_registry/domains.json","extractor:ucos-projection"],
   ["UCOS-AGT-000001","derived-from","file:_registry/manifest.json","extractor:ucos-projection"],
@@ -6681,6 +6706,10 @@
   ["file:_registry/gate.js","depends-on","file:lib/rbac.js","extractor:js-require"],
   ["file:_registry/gate.js","depends-on","file:lib/ucos.js","extractor:js-require"],
   ["file:_registry/gate.js","verified-by","file:test/registry-gate.js","authored"],
+  ["file:_registry/handoffs/UCOS-CTX-001/0001.json","requires","CNF-001","handoff:UCOS-CTX-001"],
+  ["file:_registry/handoffs/UCOS-CTX-001/0001.json","requires","CNF-002","handoff:UCOS-CTX-001"],
+  ["file:_registry/handoffs/UCOS-CTX-001/0001.json","requires","file:CONTEXT_SYSTEM.md","handoff:UCOS-CTX-001"],
+  ["file:_registry/handoffs/UCOS-CTX-001/0001.json","requires","file:_registry/context.json","handoff:UCOS-CTX-001"],
   ["file:_registry/manifest.json","supersedes","file:UCOS-Constitutional-Addendum.md","supersession:SUP-002"],
   ["file:_registry/manifest.json","supersedes","file:UCOS-Constitutional-Master-Architecture.md","supersession:SUP-001"],
   ["file:_registry/manifest.json","supersedes","file:UCRS-Zero-Hardcoding-Constitution.md","supersession:SUP-003"],

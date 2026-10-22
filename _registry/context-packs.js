@@ -338,12 +338,15 @@ function generate(root, opts) {
     L.push("**Scope:** " + u.scope);
     if (u.tags && u.tags.length) { L.push(""); L.push("**Domains:** " + u.tags.join(", ")); }
     L.push("");
+    /* only the neighbours, never "k of N": an absolute position or a count would
+       change in every pack whenever any pack is added, defeating precise
+       invalidation. Positions and counts live in the manifest (`sequence`). */
     L.push("## Position");
-    L.push("| sequence | position | previous | next |");
-    L.push("|---|---|---|---|");
+    L.push("| sequence | previous | next |");
+    L.push("|---|---|---|");
     for (const pos of positions) {
-      const link = id => (id ? "[" + id + "](" + rel(p.file, packById.get(id).file) + ")" : "■ start");
-      L.push("| " + pos.sequence + " | " + pos.position + " / " + pos.of + " | " + (pos.prev ? link(pos.prev) : "■ start") + " | " + (pos.next ? link(pos.next) : "■ END") + " |");
+      const link = id => "[" + id + "](" + rel(p.file, packById.get(id).file) + ")";
+      L.push("| " + pos.sequence + " | " + (pos.prev ? link(pos.prev) : "■ start") + " | " + (pos.next ? link(pos.next) : "■ END") + " |");
     }
     L.push("");
     L.push("## Prerequisite packs");
@@ -366,8 +369,8 @@ function generate(root, opts) {
     L.push("## Continue");
     const prim = positions.find(x => x.sequence === spec.primarySequence);
     if (prim && prim.next) L.push("- Next in " + code(spec.primarySequence) + ": [" + prim.next + "](" + rel(p.file, packById.get(prim.next).file) + ") (`node _registry/context.js next " + p.id + "`)");
-    else if (prim) L.push("- ■ **END OF SEQUENCE " + code(spec.primarySequence) + "** — " + prim.of + " packs. Verify nothing was skipped: `node _registry/context.js sequence " + spec.primarySequence + "`.");
-    for (const pos of positions) if (pos.sequence !== spec.primarySequence) L.push("- " + code(pos.sequence) + ": " + (pos.next ? "next " + code(pos.next) : "■ END OF SEQUENCE (" + pos.of + " packs)"));
+    else if (prim) L.push("- ■ **END OF SEQUENCE " + code(spec.primarySequence) + "**. Verify nothing was skipped against the manifest count: `node _registry/context.js sequence " + spec.primarySequence + "`.");
+    for (const pos of positions) if (pos.sequence !== spec.primarySequence) L.push("- " + code(pos.sequence) + ": " + (pos.next ? "next " + code(pos.next) : "■ END OF SEQUENCE"));
     const text = L.join("\n") + "\n";
     if (text.length > budget) find("error", "OVERSIZE_PACK", p.id, text.length + " chars exceeds the budget " + budget + " — raise budgets.reserveChars or budgets.packChars; the pack is never truncated");
     for (const r of secretRes) if (r.test(text)) find("error", "SECRET_CONTENT", p.id, "a secret-shaped string (" + r.source + ") reached a generated pack — it must never be projected");

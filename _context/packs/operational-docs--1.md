@@ -14,11 +14,11 @@
 **Domains:** docs
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 39 / 41 | [build-deploy/1](build-deploy--1.md) | [operational-docs/2](operational-docs--2.md) |
-| dependency-first | 39 / 41 | [build-deploy/1](build-deploy--1.md) | [operational-docs/2](operational-docs--2.md) |
-| domain:docs | 1 / 2 | ■ start | [operational-docs/2](operational-docs--2.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [build-deploy/1](build-deploy--1.md) | [operational-docs/2](operational-docs--2.md) |
+| dependency-first | [build-deploy/1](build-deploy--1.md) | [operational-docs/2](operational-docs--2.md) |
+| domain:docs | ■ start | [operational-docs/2](operational-docs--2.md) |
 
 ## Prerequisite packs
 - `orientation`: [orientation/1](orientation--1.md)

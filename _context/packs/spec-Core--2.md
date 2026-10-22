@@ -14,11 +14,11 @@
 **Domains:** spec
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 10 / 41 | [spec-Core/1](spec-Core--1.md) | [spec-REA/1](spec-REA--1.md) |
-| dependency-first | 11 / 41 | [spec-Core/1](spec-Core--1.md) | [spec-REA/1](spec-REA--1.md) |
-| domain:spec | 3 / 15 | [spec-Core/1](spec-Core--1.md) | [spec-REA/1](spec-REA--1.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [spec-Core/1](spec-Core--1.md) | [spec-REA/1](spec-REA--1.md) |
+| dependency-first | [spec-Core/1](spec-Core--1.md) | [spec-REA/1](spec-REA--1.md) |
+| domain:spec | [spec-Core/1](spec-Core--1.md) | [spec-REA/1](spec-REA--1.md) |
 
 ## Prerequisite packs
 - `spec-Core`: [spec-Core/1](spec-Core--1.md)

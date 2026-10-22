@@ -14,11 +14,11 @@
 **Domains:** spec
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 20 / 41 | [spec-OPS/1](spec-OPS--1.md) | [spec-QLT/1](spec-QLT--1.md) |
-| dependency-first | 21 / 41 | [spec-OPS/1](spec-OPS--1.md) | [spec-QLT/1](spec-QLT--1.md) |
-| domain:spec | 13 / 15 | [spec-OPS/1](spec-OPS--1.md) | [spec-QLT/1](spec-QLT--1.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [spec-OPS/1](spec-OPS--1.md) | [spec-QLT/1](spec-QLT--1.md) |
+| dependency-first | [spec-OPS/1](spec-OPS--1.md) | [spec-QLT/1](spec-QLT--1.md) |
+| domain:spec | [spec-OPS/1](spec-OPS--1.md) | [spec-QLT/1](spec-QLT--1.md) |
 
 ## Prerequisite packs
 - `governance`: [governance/1](governance--1.md), [governance/2](governance--2.md), [governance/3](governance--3.md)

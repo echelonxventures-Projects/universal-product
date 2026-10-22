@@ -14,11 +14,11 @@
 **Domains:** docs
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 40 / 41 | [operational-docs/1](operational-docs--1.md) | [history/1](history--1.md) |
-| dependency-first | 40 / 41 | [operational-docs/1](operational-docs--1.md) | [history/1](history--1.md) |
-| domain:docs | 2 / 2 | [operational-docs/1](operational-docs--1.md) | ■ END |
+| sequence | previous | next |
+|---|---|---|
+| full | [operational-docs/1](operational-docs--1.md) | [history/1](history--1.md) |
+| dependency-first | [operational-docs/1](operational-docs--1.md) | [history/1](history--1.md) |
+| domain:docs | [operational-docs/1](operational-docs--1.md) | ■ END |
 
 ## Prerequisite packs
 - `operational-docs`: [operational-docs/1](operational-docs--1.md)
@@ -43,4 +43,4 @@
 ## Continue
 - Next in `full`: [history/1](history--1.md) (`node _registry/context.js next operational-docs/2`)
 - `dependency-first`: next `history/1`
-- `domain:docs`: ■ END OF SEQUENCE (2 packs)
+- `domain:docs`: ■ END OF SEQUENCE

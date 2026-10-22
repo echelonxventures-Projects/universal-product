@@ -14,12 +14,12 @@
 **Domains:** runtime, frontend
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 33 / 41 | [frontend/1](frontend--1.md) | [verification/1](verification--1.md) |
-| dependency-first | 33 / 41 | [frontend/1](frontend--1.md) | [verification/1](verification--1.md) |
-| domain:frontend | 2 / 2 | [frontend/1](frontend--1.md) | ■ END |
-| domain:runtime | 10 / 10 | [frontend/1](frontend--1.md) | ■ END |
+| sequence | previous | next |
+|---|---|---|
+| full | [frontend/1](frontend--1.md) | [verification/1](verification--1.md) |
+| dependency-first | [frontend/1](frontend--1.md) | [verification/1](verification--1.md) |
+| domain:frontend | [frontend/1](frontend--1.md) | ■ END |
+| domain:runtime | [frontend/1](frontend--1.md) | ■ END |
 
 ## Prerequisite packs
 - `frontend`: [frontend/1](frontend--1.md)
@@ -47,5 +47,5 @@
 ## Continue
 - Next in `full`: [verification/1](verification--1.md) (`node _registry/context.js next frontend/2`)
 - `dependency-first`: next `verification/1`
-- `domain:frontend`: ■ END OF SEQUENCE (2 packs)
-- `domain:runtime`: ■ END OF SEQUENCE (10 packs)
+- `domain:frontend`: ■ END OF SEQUENCE
+- `domain:runtime`: ■ END OF SEQUENCE

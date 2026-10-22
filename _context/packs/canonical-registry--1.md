@@ -14,12 +14,12 @@
 **Domains:** registry, governance
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 5 / 41 | [governance/3](governance--3.md) | [registry-pipelines/1](registry-pipelines--1.md) |
-| dependency-first | 5 / 41 | [governance/3](governance--3.md) | [registry-pipelines/1](registry-pipelines--1.md) |
-| domain:governance | 5 / 5 | [governance/3](governance--3.md) | ■ END |
-| domain:registry | 1 / 4 | ■ start | [registry-pipelines/1](registry-pipelines--1.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [governance/3](governance--3.md) | [registry-pipelines/1](registry-pipelines--1.md) |
+| dependency-first | [governance/3](governance--3.md) | [registry-pipelines/1](registry-pipelines--1.md) |
+| domain:governance | [governance/3](governance--3.md) | ■ END |
+| domain:registry | ■ start | [registry-pipelines/1](registry-pipelines--1.md) |
 
 ## Prerequisite packs
 - `governance`: [governance/1](governance--1.md), [governance/2](governance--2.md), [governance/3](governance--3.md)
@@ -109,5 +109,5 @@
 ## Continue
 - Next in `full`: [registry-pipelines/1](registry-pipelines--1.md) (`node _registry/context.js next canonical-registry/1`)
 - `dependency-first`: next `registry-pipelines/1`
-- `domain:governance`: ■ END OF SEQUENCE (5 packs)
+- `domain:governance`: ■ END OF SEQUENCE
 - `domain:registry`: next `registry-pipelines/1`

@@ -14,11 +14,11 @@
 **Domains:** runtime
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 26 / 41 | [runtime-server/2](runtime-server--2.md) | [runtime-server/4](runtime-server--4.md) |
-| dependency-first | 26 / 41 | [runtime-server/2](runtime-server--2.md) | [runtime-server/4](runtime-server--4.md) |
-| domain:runtime | 3 / 10 | [runtime-server/2](runtime-server--2.md) | [runtime-server/4](runtime-server--4.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [runtime-server/2](runtime-server--2.md) | [runtime-server/4](runtime-server--4.md) |
+| dependency-first | [runtime-server/2](runtime-server--2.md) | [runtime-server/4](runtime-server--4.md) |
+| domain:runtime | [runtime-server/2](runtime-server--2.md) | [runtime-server/4](runtime-server--4.md) |
 
 ## Prerequisite packs
 - `runtime-server`: [runtime-server/1](runtime-server--1.md), [runtime-server/2](runtime-server--2.md)

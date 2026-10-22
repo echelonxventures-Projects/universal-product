@@ -3,27 +3,27 @@
 
 The human-readable index of the repository's context system. Start with [`AGENTS.md`](../AGENTS.md); the machine-readable inventory is [`manifest.json`](manifest.json).
 
-- 318 registered files + 23 authored/virtual nodes · 2558 typed edges · 26 units · 41 packs (≤ 12000 chars each) · 15 sequences
-- Inputs digest `87cd58580c0fa531` — changes whenever any registered source changes.
+- 319 registered files + 23 authored/virtual nodes · 2565 typed edges · 26 units · 42 packs (≤ 12000 chars each) · 15 sequences
+- Inputs digest `a606f2d4b7714e70` — changes whenever any registered source changes.
 
 ## Sequences
 | sequence | kind | packs | first | purpose |
 |---|---|---|---|---|
-| `full` | authored | 41 | [orientation/1](packs/orientation--1.md) | Complete ordered assimilation of everything registered. |
-| `dependency-first` | computed:dependency-first | 41 | [orientation/1](packs/orientation--1.md) | Units ordered so every mandatory prerequisite precedes its dependents. |
+| `full` | authored | 42 | [orientation/1](packs/orientation--1.md) | Complete ordered assimilation of everything registered. |
+| `dependency-first` | computed:dependency-first | 42 | [orientation/1](packs/orientation--1.md) | Units ordered so every mandatory prerequisite precedes its dependents. |
 | `domain:context` | computed:by-tag | 3 | [orientation/1](packs/orientation--1.md) | Only the units tagged 'context', in primary order. |
 | `domain:docs` | computed:by-tag | 2 | [operational-docs/1](packs/operational-docs--1.md) | Only the units tagged 'docs', in primary order. |
 | `domain:frontend` | computed:by-tag | 2 | [frontend/1](packs/frontend--1.md) | Only the units tagged 'frontend', in primary order. |
 | `domain:governance` | computed:by-tag | 5 | [orientation/1](packs/orientation--1.md) | Only the units tagged 'governance', in primary order. |
 | `domain:operations` | computed:by-tag | 1 | [build-deploy/1](packs/build-deploy--1.md) | Only the units tagged 'operations', in primary order. |
 | `domain:registry` | computed:by-tag | 4 | [canonical-registry/1](packs/canonical-registry--1.md) | Only the units tagged 'registry', in primary order. |
-| `domain:resume` | computed:by-tag | 0 | — | Only the units tagged 'resume', in primary order. |
+| `domain:resume` | computed:by-tag | 1 | [handoffs/1](packs/handoffs--1.md) | Only the units tagged 'resume', in primary order. |
 | `domain:runtime` | computed:by-tag | 10 | [runtime-server/1](packs/runtime-server--1.md) | Only the units tagged 'runtime', in primary order. |
 | `domain:spec` | computed:by-tag | 15 | [spec-SEM/1](packs/spec-SEM--1.md) | Only the units tagged 'spec', in primary order. |
-| `domain:trace` | computed:by-tag | 1 | [history/1](packs/history--1.md) | Only the units tagged 'trace', in primary order. |
+| `domain:trace` | computed:by-tag | 2 | [history/1](packs/history--1.md) | Only the units tagged 'trace', in primary order. |
 | `domain:verification` | computed:by-tag | 4 | [verification/1](packs/verification--1.md) | Only the units tagged 'verification', in primary order. |
-| `trace` | authored | 5 | [orientation/1](packs/orientation--1.md) | Decision and historical traceability: decisions, laws, conflicts, provenance, handoffs. |
-| `resume` | authored | 1 | [orientation/1](packs/orientation--1.md) | Resume from a handoff: orientation, then the handoff records. |
+| `trace` | authored | 6 | [orientation/1](packs/orientation--1.md) | Decision and historical traceability: decisions, laws, conflicts, provenance, handoffs. |
+| `resume` | authored | 2 | [orientation/1](packs/orientation--1.md) | Resume from a handoff: orientation, then the handoff records. |
 
 ## Units (primary order of declaration)
 | unit | members | packs | prerequisites |
@@ -53,7 +53,7 @@ The human-readable index of the repository's context system. Start with [`AGENTS
 | `build-deploy` — Build, configuration and deployment | 11 | [build-deploy/1](packs/build-deploy--1.md) | runtime-server |
 | `operational-docs` — Operational documentation | 18 | [operational-docs/1](packs/operational-docs--1.md) [operational-docs/2](packs/operational-docs--2.md) | orientation |
 | `history` — Historical evidence — provenance, reviews, agent memory | 6 | [history/1](packs/history--1.md) | orientation, governance |
-| `handoffs` — Task handoffs | 0 | — | orientation |
+| `handoffs` — Task handoffs | 1 | [handoffs/1](packs/handoffs--1.md) | orientation, governance |
 
 ## Open conflicts and decisions
 - `CNF-001` (conflict, open) — Committed projected artifacts differ from what project.js generates

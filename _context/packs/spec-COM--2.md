@@ -14,11 +14,11 @@
 **Domains:** spec
 
 ## Position
-| sequence | position | previous | next |
-|---|---|---|---|
-| full | 13 / 41 | [spec-COM/1](spec-COM--1.md) | [spec-DTW/1](spec-DTW--1.md) |
-| dependency-first | 14 / 41 | [spec-COM/1](spec-COM--1.md) | [spec-DTW/1](spec-DTW--1.md) |
-| domain:spec | 6 / 15 | [spec-COM/1](spec-COM--1.md) | [spec-DTW/1](spec-DTW--1.md) |
+| sequence | previous | next |
+|---|---|---|
+| full | [spec-COM/1](spec-COM--1.md) | [spec-DTW/1](spec-DTW--1.md) |
+| dependency-first | [spec-COM/1](spec-COM--1.md) | [spec-DTW/1](spec-DTW--1.md) |
+| domain:spec | [spec-COM/1](spec-COM--1.md) | [spec-DTW/1](spec-DTW--1.md) |
 
 ## Prerequisite packs
 - `spec-COM`: [spec-COM/1](spec-COM--1.md)
