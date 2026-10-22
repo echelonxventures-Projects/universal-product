@@ -48,9 +48,9 @@ Give any authorised agent — any model, client or context size — a governed, 
 
 1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (10788 B)
 2. `PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md` — Constitutional governance and the registry pipeline (8179 B)
-3. `PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.md` — Context continuity — design decisions and open design questions (11125 B)
+3. `PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.md` — Context continuity — design decisions and open design questions (10712 B)
 4. `PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.md` — Context continuity — requirements and code (20658 B)
-5. `PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md` — Source evidence — inventory, gaps and coverage (19867 B)
+5. `PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md` — Source evidence — inventory, gaps and coverage (19749 B)
 
 ## Requirements
 
@@ -71,15 +71,14 @@ Give any authorised agent — any model, client or context size — a governed, 
 
 ## Decisions
 
-- DEC-CTX-BYTE-BUDGETS — Budgets are enforced in bytes; token figures are estimates at 3 bytes/token and labelled as estimates. [proposed]
-- DEC-CTX-DERIVED-EDGES — Graph edges are derived from record fields through schemas/relations.json; there is no separate edge file. [proposed]
-- DEC-CTX-DETERMINISTIC-TIME — Generated files carry the knowledge snapshot date (knowledge/state.json asOf), not the wall clock; wall-clock time is recorded only in receipts and handoffs. [proposed]
-- DEC-CTX-GIT-AS-ARCHIVE — Repository evidence is archived by git blob id + sha256 in the manifest; private exports go to a write-once content-addressed store outside git. [proposed]
-- DEC-CTX-LOCATION — Continuity knowledge lives in PROJECT-CONTEXT/knowledge/*.json; its markdown views and packs are generated; UCOS artifacts are imported read-only from _registry/manifest.json. [proposed]
-- DEC-CTX-MEMORY-LEDGER-HISTORICAL — The existing .workbuddy-ai/memory/MEMORY.md is left untouched and archived as historical evidence; new continuity is recorded through schema-validated handoffs. [proposed]
-- DEC-CTX-ZERO-DEPENDENCIES — The continuity system uses only the Node standard library, including a small JSON Schema subset validator that rejects unsupported keywords. [proposed]
+- DEC-CTX-BYTE-BUDGETS — Budgets are enforced in bytes; token figures are estimates at 3 bytes/token and labelled as estimates. [approved]
+- DEC-CTX-DERIVED-EDGES — Graph edges are derived from record fields through schemas/relations.json; there is no separate edge file. [approved]
+- DEC-CTX-DETERMINISTIC-TIME — Generated files carry the knowledge snapshot date (knowledge/state.json asOf), not the wall clock; wall-clock time is recorded only in receipts and handoffs. [approved]
+- DEC-CTX-GIT-AS-ARCHIVE — Repository evidence is archived by git blob id + sha256 in the manifest; private exports go to a write-once content-addressed store outside git. [approved]
+- DEC-CTX-LOCATION — Continuity knowledge lives in PROJECT-CONTEXT/knowledge/*.json; its markdown views and packs are generated; UCOS artifacts are imported read-only from _registry/manifest.json. [approved]
+- DEC-CTX-MEMORY-LEDGER-HISTORICAL — The existing .workbuddy-ai/memory/MEMORY.md is left untouched and archived as historical evidence; new continuity is recorded through schema-validated handoffs. [approved]
+- DEC-CTX-ZERO-DEPENDENCIES — The continuity system uses only the Node standard library, including a small JSON Schema subset validator that rejects unsupported keywords. [approved]
 
-**Unapproved decisions (proposed, not owner-approved):** DEC-CTX-BYTE-BUDGETS, DEC-CTX-DERIVED-EDGES, DEC-CTX-DETERMINISTIC-TIME, DEC-CTX-GIT-AS-ARCHIVE, DEC-CTX-LOCATION, DEC-CTX-MEMORY-LEDGER-HISTORICAL, DEC-CTX-ZERO-DEPENDENCIES
 
 ## Blockers
 

@@ -29,12 +29,12 @@
       "title": "Constitutional governance and the registry pipeline"
     },
     {
-      "contentFingerprint": "b2f8b6f7bb47ead8a5dd0822b004c8654633ac6b5ca58ec84fab97055d27a953",
-      "depFingerprint": "d660e0d4e7dcf70529c48bd29ede1368aa770c9c8e5b3a3ab57bb1fa6898d1fb",
+      "contentFingerprint": "c17a8c426787536608e2955bac6cbd655ceff6606442a4baf4bdd5f70436c033",
+      "depFingerprint": "8769fcc77404d22c403936aa4e0eae16db1d3b75fbe6ea0a28be07e6d865b21f",
       "id": "CTX-CONTINUITY-DESIGN",
       "parts": [
         {
-          "bytes": 11125,
+          "bytes": 10712,
           "id": "CTX-CONTINUITY-DESIGN"
         }
       ],
@@ -42,8 +42,8 @@
       "title": "Context continuity — design decisions and open design questions"
     },
     {
-      "contentFingerprint": "ef1882a7c95b203fcce747ebe6c50cfbfac6b7926b4f7eefd00691b70fc0d572",
-      "depFingerprint": "b418f3364237dbe341c1ea84a85efc90c196996770b6613d7134ff51b0c593b5",
+      "contentFingerprint": "4e5f178ceae594674976be1169ebce58a7029412f0241be32fd374c372a40fa0",
+      "depFingerprint": "6fe2456dd18eaf08c6e4804b30543167567c1064be47388081c214d8d6e14789",
       "id": "CTX-CONTINUITY-SYSTEM",
       "parts": [
         {
@@ -55,12 +55,12 @@
       "title": "Context continuity — requirements and code"
     },
     {
-      "contentFingerprint": "4bd5eb0ba7e7866121d88dccb951747902b8b4bf7716eda7e9f2ee693661020f",
-      "depFingerprint": "8da28c1a09307361b71462b979aec4253bf78761043033b5c03af0a481b4ba4e",
+      "contentFingerprint": "982e199b46779af7ead7ee6a642ce47746a746433d74f7ba3a3464bf1612f631",
+      "depFingerprint": "213ca9d20a218716b3fcc89ba588257f4289182d367c35d53d68478e71e1c167",
       "id": "CTX-EVIDENCE-ARCHIVE",
       "parts": [
         {
-          "bytes": 19867,
+          "bytes": 19749,
           "id": "CTX-EVIDENCE-ARCHIVE"
         }
       ],

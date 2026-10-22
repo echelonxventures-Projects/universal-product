@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "b2f8b6f7bb47ead8a5dd0822b004c8654633ac6b5ca58ec84fab97055d27a953",
-  "depFingerprint": "d660e0d4e7dcf70529c48bd29ede1368aa770c9c8e5b3a3ab57bb1fa6898d1fb",
+  "contentFingerprint": "c17a8c426787536608e2955bac6cbd655ceff6606442a4baf4bdd5f70436c033",
+  "depFingerprint": "8769fcc77404d22c403936aa4e0eae16db1d3b75fbe6ea0a28be07e6d865b21f",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -70,31 +70,31 @@
     ],
     [
       "DEC-CTX-BYTE-BUDGETS",
-      "5a59f83717253aebc0cfe0976ff06bf3ef5297eec315ec4935afdd084781d577"
+      "c20ad3e31ab636b42a3300ea2efe6e6de63dab267ed0f17d53a3b63f1fb76eab"
     ],
     [
       "DEC-CTX-DERIVED-EDGES",
-      "42202034a7c7d572d40383f2b1717921f808adcfa9e7cc5e318ed79049ad5438"
+      "2ed4613560bbe7b5207e713be00ffe75d58d54c51e9d0fe9d177162ae4ec2533"
     ],
     [
       "DEC-CTX-DETERMINISTIC-TIME",
-      "885405803ca635735639fecd3814fba157388e81d303a94d5582a7b788d87475"
+      "b9e4767ca081873d23acf568d1dbea2c8079506dbd0000a0311059df6807ba2e"
     ],
     [
       "DEC-CTX-GIT-AS-ARCHIVE",
-      "c1f5e13676e56354141c5da01071dc8e96ea0c7d0d6fdda3c43e60bd9044a21d"
+      "4ead89c85a75122a75e94a949e81cd54d54012f6cfe64a16cf48c1e6be335f68"
     ],
     [
       "DEC-CTX-LOCATION",
-      "ba823b2b19cd0221a18d337181698f8c24835e3c07a0834cd3b7a2e294df9cea"
+      "8f548dca1638c606dfef10ec14b837738937a1b5493459a3e9c9458c0ae2b6a8"
     ],
     [
       "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
-      "eb0769ad9c4a74c26e2f462d403bbcdaea37ce28938e2829fc8e76d025a06ec2"
+      "b4b189711761e4e8575972276b536b66400572dda37a81c51484fee23176f822"
     ],
     [
       "DEC-CTX-ZERO-DEPENDENCIES",
-      "db534308d4bb13c5b454603e1c1bfa14c358b09b2b328c36b4ae3fceb82c36b8"
+      "2105fa1174e05bf660061f94e864e9569a444ac9ba91af17ca842e16d881f0f7"
     ],
     [
       "ISS-MASTER-PROMPT-NOT-ARCHIVED",
@@ -163,11 +163,11 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 11125,
-      "estimatedTokens": 3709,
+      "bytes": 10712,
+      "estimatedTokens": 3571,
       "file": "contexts/CTX-CONTINUITY-DESIGN.md",
       "id": "CTX-CONTINUITY-DESIGN",
-      "sha256": "d350f2304dc97d84535680d3b08f615f053501d25a84b53ccf37e319db1a4262"
+      "sha256": "b287ea9cb8cd553df9345ab916d854009f364e73e64198bc472e10fab144e1bc"
     }
   ],
   "prerequisites": [

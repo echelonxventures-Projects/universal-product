@@ -16,9 +16,9 @@
           "reason": "adds a dependency and is still model-specific"
         }
       ],
-      "authority": "proposed by the implementing agent; awaiting owner approval (TASK-CTX-0002)",
-      "decidedAt": null,
-      "status": "proposed",
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
       "provenance": "newly-proposed",
       "sources": [
         {
@@ -32,7 +32,18 @@
       "tags": [
         "continuity"
       ],
-      "lifecycle": "proposed"
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T13:37:32.148Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
     },
     {
       "id": "DEC-CTX-DERIVED-EDGES",
@@ -46,9 +57,9 @@
           "reason": "two places for one fact"
         }
       ],
-      "authority": "proposed by the implementing agent; awaiting owner approval (TASK-CTX-0002)",
-      "decidedAt": null,
-      "status": "proposed",
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
       "provenance": "newly-proposed",
       "sources": [
         {
@@ -62,7 +73,18 @@
       "tags": [
         "continuity"
       ],
-      "lifecycle": "proposed"
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T13:37:32.802Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
     },
     {
       "id": "DEC-CTX-DETERMINISTIC-TIME",
@@ -76,9 +98,9 @@
           "reason": "every rebuild would differ and drift detection would be meaningless"
         }
       ],
-      "authority": "proposed by the implementing agent; awaiting owner approval (TASK-CTX-0002)",
-      "decidedAt": null,
-      "status": "proposed",
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
       "provenance": "newly-proposed",
       "sources": [
         {
@@ -93,7 +115,18 @@
       "tags": [
         "continuity"
       ],
-      "lifecycle": "proposed"
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T13:37:33.428Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
     },
     {
       "id": "DEC-CTX-GIT-AS-ARCHIVE",
@@ -111,9 +144,9 @@
           "reason": "publishes private data (CST-NO-PRIVATE-ARCHIVES-IN-GIT)"
         }
       ],
-      "authority": "proposed by the implementing agent; awaiting owner approval (TASK-CTX-0002)",
-      "decidedAt": null,
-      "status": "proposed",
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
       "provenance": "newly-proposed",
       "sources": [
         {
@@ -127,7 +160,18 @@
       "tags": [
         "continuity"
       ],
-      "lifecycle": "proposed"
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T13:37:34.083Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
     },
     {
       "id": "DEC-CTX-LOCATION",
@@ -145,9 +189,9 @@
           "reason": "not machine-checkable, grows without bound (111 KB), no freshness or traceability"
         }
       ],
-      "authority": "proposed by the implementing agent; awaiting owner approval (TASK-CTX-0002)",
-      "decidedAt": null,
-      "status": "proposed",
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
       "provenance": "newly-proposed",
       "sources": [
         {
@@ -162,7 +206,18 @@
       "tags": [
         "continuity"
       ],
-      "lifecycle": "proposed"
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T13:37:34.727Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
     },
     {
       "id": "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
@@ -180,9 +235,9 @@
           "reason": "unbounded, unverifiable, not machine-readable"
         }
       ],
-      "authority": "proposed by the implementing agent; awaiting owner approval (TASK-CTX-0002)",
-      "decidedAt": null,
-      "status": "proposed",
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
       "provenance": "newly-proposed",
       "sources": [
         {
@@ -197,7 +252,18 @@
       "tags": [
         "continuity"
       ],
-      "lifecycle": "proposed"
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22T13:37:35.375Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
+      ]
     },
     {
       "id": "DEC-CTX-ZERO-DEPENDENCIES",
@@ -211,9 +277,9 @@
           "reason": "new dependency for a small, fixed schema surface"
         }
       ],
-      "authority": "proposed by the implementing agent; awaiting owner approval (TASK-CTX-0002)",
-      "decidedAt": null,
-      "status": "proposed",
+      "authority": "repository owner",
+      "decidedAt": "2026-10-22",
+      "status": "approved",
       "provenance": "newly-proposed",
       "sources": [
         {
@@ -227,9 +293,20 @@
       "tags": [
         "continuity"
       ],
-      "lifecycle": "proposed",
+      "lifecycle": "canonical-active",
       "dependsOn": [
         "DEC-CTX-LOCATION"
+      ],
+      "history": [
+        {
+          "at": "2026-10-22T13:37:36.011Z",
+          "change": "lifecycle",
+          "from": "proposed",
+          "to": "canonical-active",
+          "by": "repository owner",
+          "approvedBy": "repository owner",
+          "evidence": "Owner explicitly approved this decision in ChatGPT on 2026-10-22"
+        }
       ]
     },
     {

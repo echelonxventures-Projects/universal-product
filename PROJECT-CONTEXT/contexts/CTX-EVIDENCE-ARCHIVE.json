@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "4bd5eb0ba7e7866121d88dccb951747902b8b4bf7716eda7e9f2ee693661020f",
-  "depFingerprint": "8da28c1a09307361b71462b979aec4253bf78761043033b5c03af0a481b4ba4e",
+  "contentFingerprint": "982e199b46779af7ead7ee6a642ce47746a746433d74f7ba3a3464bf1612f631",
+  "depFingerprint": "213ca9d20a218716b3fcc89ba588257f4289182d367c35d53d68478e71e1c167",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -78,11 +78,11 @@
     ],
     [
       "DEC-CTX-GIT-AS-ARCHIVE",
-      "c1f5e13676e56354141c5da01071dc8e96ea0c7d0d6fdda3c43e60bd9044a21d"
+      "4ead89c85a75122a75e94a949e81cd54d54012f6cfe64a16cf48c1e6be335f68"
     ],
     [
       "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
-      "eb0769ad9c4a74c26e2f462d403bbcdaea37ce28938e2829fc8e76d025a06ec2"
+      "b4b189711761e4e8575972276b536b66400572dda37a81c51484fee23176f822"
     ],
     [
       "ISS-GIT-HISTORY-SHALLOW-CAPTURE",
@@ -329,11 +329,11 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 19867,
-      "estimatedTokens": 6623,
+      "bytes": 19749,
+      "estimatedTokens": 6583,
       "file": "contexts/CTX-EVIDENCE-ARCHIVE.md",
       "id": "CTX-EVIDENCE-ARCHIVE",
-      "sha256": "5cc46aa165a29769a36dcec64982f1249a1ad441ec9f21594d50265e116979e5"
+      "sha256": "2592c8cd7e3023f02e6907a9be074334de4002a1c88dbc4fcda3fce9ce53c037"
     }
   ],
   "prerequisites": [

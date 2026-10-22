@@ -73,8 +73,8 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 |---|---|---|---|---|---|
 | CTX-BOOTSTRAP | ok | 1 | 10788 (3596) | 18 | 0 |
 | CTX-GOVERNANCE | ok | 1 | 8179 (2727) | 22 | 0 |
-| CTX-CONTINUITY-DESIGN | ok | 1 | 11125 (3709) | 23 | 0 |
+| CTX-CONTINUITY-DESIGN | ok | 1 | 10712 (3571) | 23 | 0 |
 | CTX-CONTINUITY-SYSTEM | ok | 1 | 20658 (6886) | 29 | 0 |
-| CTX-EVIDENCE-ARCHIVE | ok | 1 | 19867 (6623) | 24 | 0 |
+| CTX-EVIDENCE-ARCHIVE | ok | 1 | 19749 (6583) | 24 | 0 |
 | CTX-PLATFORM-QUALITY | ok | 1 | 9302 (3101) | 21 | 0 |
 
