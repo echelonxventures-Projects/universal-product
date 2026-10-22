@@ -139,7 +139,7 @@
       "dependsOn": [
         "TASK-CTX-0001"
       ],
-      "state": "planned",
+      "state": "done",
       "acceptance": [
         "each DEC-CTX-* has status approved, superseded or reversed, with the owner as authority and a date",
         "ISS-CTX-DECISIONS-UNAPPROVED is resolved"
@@ -147,8 +147,18 @@
       "verification": [
         "npm run context:verify"
       ],
-      "nextAction": "Owner reads PROJECT-CONTEXT/03-DECISION-REGISTER.md and states a verdict per decision.",
-      "lifecycle": "canonical-active"
+      "nextAction": "No further owner review is required for these seven decisions; retain the canonical approval evidence and run verification after future changes.",
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "completed",
+          "from": "planned",
+          "to": "done",
+          "by": "repository owner",
+          "evidence": "Both acceptance criteria verified: all seven decisions have approved status, repository owner authority and decision date; ISS-CTX-DECISIONS-UNAPPROVED is resolved. Owner explicitly approved all seven DEC-CTX-* decisions in ChatGPT on 2026-10-22; each canonical decision records status approved, authority repository owner, and decidedAt 2026-10-22. Original master-prompt source remains unavailable and is not claimed as recovered."
+        }
+      ]
     },
     {
       "id": "TASK-CTX-0003",

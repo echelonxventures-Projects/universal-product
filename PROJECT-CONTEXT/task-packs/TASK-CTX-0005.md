@@ -47,7 +47,7 @@ Make the git-history archive verifiable in any full clone without rewriting hist
 
 ## Load these packs, in order
 
-1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (10788 B)
+1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (10819 B)
 2. `PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md` — Source evidence — inventory, gaps and coverage (19749 B)
 
 ## Requirements

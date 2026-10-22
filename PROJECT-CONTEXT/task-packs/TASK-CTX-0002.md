@@ -9,8 +9,8 @@ Have the owner approve, amend or reject each DEC-CTX-* decision so the continuit
 
 ## State
 
-- **planned** · authority: repository owner
-- Next action: **Owner reads PROJECT-CONTEXT/03-DECISION-REGISTER.md and states a verdict per decision.**
+- **done** · authority: repository owner
+- Next action: **No further owner review is required for these seven decisions; retain the canonical approval evidence and run verification after future changes.**
 - No handoff recorded yet.
 
 ## Scope
@@ -33,7 +33,7 @@ Have the owner approve, amend or reject each DEC-CTX-* decision so the continuit
 
 ## Load these packs, in order
 
-1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (10788 B)
+1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (10819 B)
 2. `PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md` — Constitutional governance and the registry pipeline (8179 B)
 3. `PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.md` — Context continuity — design decisions and open design questions (10712 B)
 

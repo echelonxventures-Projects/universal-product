@@ -42,7 +42,7 @@
 
 | # | Pack | Title | Parts (bytes) | Status |
 |---|---|---|---|---|
-| 1 | [CTX-BOOTSTRAP](contexts/CTX-BOOTSTRAP.md) | Bootstrap — mandatory rules and current state | 10788 | ok |
+| 1 | [CTX-BOOTSTRAP](contexts/CTX-BOOTSTRAP.md) | Bootstrap — mandatory rules and current state | 10819 | ok |
 | 2 | [CTX-GOVERNANCE](contexts/CTX-GOVERNANCE.md) | Constitutional governance and the registry pipeline | 8179 | ok |
 | 3 | [CTX-CONTINUITY-DESIGN](contexts/CTX-CONTINUITY-DESIGN.md) | Context continuity — design decisions and open design questions | 10712 | ok |
 | 4 | [CTX-CONTINUITY-SYSTEM](contexts/CTX-CONTINUITY-SYSTEM.md) | Context continuity — requirements and code | 20658 | ok |
@@ -54,7 +54,7 @@
 | Task | Title | State | Next action |
 |---|---|---|---|
 | [TASK-CTX-0001](task-packs/TASK-CTX-0001.md) | Implement the context continuity system | done | Owner reviews DEC-CTX-* in PROJECT-CONTEXT/03-DECISION-REGISTER.md (TASK-CTX-0002); open a PR so CI runs the workflow remotely. |
-| [TASK-CTX-0002](task-packs/TASK-CTX-0002.md) | Owner review of the continuity design decisions | planned | Owner reads PROJECT-CONTEXT/03-DECISION-REGISTER.md and states a verdict per decision. |
+| [TASK-CTX-0002](task-packs/TASK-CTX-0002.md) | Owner review of the continuity design decisions | done | No further owner review is required for these seven decisions; retain the canonical approval evidence and run verification after future changes. |
 | [TASK-CTX-0003](task-packs/TASK-CTX-0003.md) | Archive the 2026-10-22 session transcript | planned | Owner exports the transcript and provides an access-controlled CONTEXT_ARCHIVE_DIR. |
 | [TASK-CTX-0004](task-packs/TASK-CTX-0004.md) | Process the unprocessed source segments and audit segment accounting | done | Owner restores GitHub Actions for the repository so CI runs on PR #4, then reviews DEC-CTX-* (TASK-CTX-0002). |
 | [TASK-CTX-0005](task-packs/TASK-CTX-0005.md) | Repair git-history archive integrity | done | Owner restores GitHub Actions so CI runs on PR #4; then reviews DEC-CTX-* (TASK-CTX-0002). |
@@ -63,8 +63,8 @@
 
 ## Counts
 
-- Sources 26 · requirements 14 · decisions 9 · constraints 16 · artifacts 32 (+93 imported from `_registry/manifest.json`) · issues 14 (10 open) · tasks 7 · packs 6
-- Graph edges 405 (derived from record fields via `schemas/relations.json`)
+- Sources 26 · requirements 14 · decisions 9 · constraints 16 · artifacts 32 (+93 imported from `_registry/manifest.json`) · issues 14 (9 open) · tasks 7 · packs 6
+- Graph edges 406 (derived from record fields via `schemas/relations.json`)
 
 ## Commands
 

@@ -1,7 +1,7 @@
 {
   "budgetBytes": 12000,
-  "contentFingerprint": "9b3f4018a58f161c34512446b9def921279a27376551653714e4748406056799",
-  "depFingerprint": "71d790da0c799dd3997b03d05a839341f9f8eb7a94b922090a30eff96162b712",
+  "contentFingerprint": "0973a98a15a3840ccedc962daffed485119c6572a328f288cf635c28d93b55ef",
+  "depFingerprint": "07e2e9fab1984bc4d065f915f07d77bbc61147b8ead851cd580e9db039c9770c",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -78,7 +78,7 @@
     ],
     [
       "ISS-CTX-DECISIONS-UNAPPROVED",
-      "53df6285d9bd8af3fcfa19c71880bf46b04465bc82c45bbc90c4128382f7bc8a"
+      "b7ce82ffab0379f8c1a494eefae315028362fed88637b5eefa7ecea895ec6a91"
     ],
     [
       "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
@@ -130,7 +130,6 @@
     "CST-SUPERSEDED-NOT-AUTHORITY",
     "CST-ZERO-HARDCODING",
     "ISS-CI-RUNNERS-UNAVAILABLE",
-    "ISS-CTX-DECISIONS-UNAPPROVED",
     "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE"
   ],
   "members": {
@@ -166,11 +165,11 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 10788,
-      "estimatedTokens": 3596,
+      "bytes": 10819,
+      "estimatedTokens": 3607,
       "file": "contexts/CTX-BOOTSTRAP.md",
       "id": "CTX-BOOTSTRAP",
-      "sha256": "4fcdaac77d34712b512357d99a40864655b40f2a9a24432f9a50d8557e7953e6"
+      "sha256": "2aa30a22e55ee3b4882e648f3d5c5e2f902a23e91f9cad533fcd35934cbf3d19"
     }
   ],
   "prerequisites": [],

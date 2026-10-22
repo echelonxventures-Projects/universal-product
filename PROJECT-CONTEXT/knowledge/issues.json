@@ -102,11 +102,11 @@
     {
       "id": "ISS-CTX-DECISIONS-UNAPPROVED",
       "kind": "approval",
-      "title": "Continuity design decisions await owner approval",
-      "statement": "DEC-CTX-* were made by the implementing agent on 2026-10-22 and are recorded as proposed; nothing in the repository shows the owner approving them.",
-      "status": "open",
+      "title": "Continuity design decisions approved",
+      "statement": "RESOLVED. All seven DEC-CTX-* decisions have explicit owner approval recorded in canonical decisions.json, with status approved, repository owner authority, and decision date 2026-10-22. The original master-prompt source remains unavailable; the recorded approval evidence is the explicit owner approval in ChatGPT.",
+      "status": "resolved",
       "severity": "high",
-      "evidenceNeeded": "The owner approves, amends or rejects each DEC-CTX-* decision; record it via TASK-CTX-0002 (decision status → approved with authority and date).",
+      "evidenceNeeded": "",
       "affects": [
         "DEC-CTX-BYTE-BUDGETS",
         "DEC-CTX-DERIVED-EDGES",
@@ -119,7 +119,24 @@
       "tags": [
         "continuity"
       ],
-      "lifecycle": "canonical-active"
+      "lifecycle": "canonical-active",
+      "evidence": [
+        "Verified all seven canonical decisions: approved status, repository owner authority, decidedAt 2026-10-22.",
+        "Owner explicitly approved all seven DEC-CTX-* decisions in ChatGPT on 2026-10-22; each canonical decision records status approved, authority repository owner, and decidedAt 2026-10-22. Original master-prompt source remains unavailable and is not claimed as recovered."
+      ],
+      "resolvedBy": [
+        "TASK-CTX-0002"
+      ],
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "resolved",
+          "from": "open",
+          "to": "resolved",
+          "by": "repository owner",
+          "evidence": "Owner explicitly approved all seven DEC-CTX-* decisions in ChatGPT on 2026-10-22; each canonical decision records status approved, authority repository owner, and decidedAt 2026-10-22. Original master-prompt source remains unavailable and is not claimed as recovered."
+        }
+      ]
     },
     {
       "id": "ISS-GIT-HISTORY-SHALLOW-CAPTURE",
