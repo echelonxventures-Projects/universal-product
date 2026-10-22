@@ -26,11 +26,13 @@
 | TASK-CTX-0002 | planned | Owner reads PROJECT-CONTEXT/03-DECISION-REGISTER.md and states a verdict per decision. |
 | TASK-CTX-0003 | planned | Owner exports the transcript and provides an access-controlled CONTEXT_ARCHIVE_DIR. |
 | TASK-CTX-0004 | done | Owner restores GitHub Actions for the repository so CI runs on PR #4, then reviews DEC-CTX-* (TASK-CTX-0002). |
+| TASK-CTX-0005 | done | Owner restores GitHub Actions so CI runs on PR #4; then reviews DEC-CTX-* (TASK-CTX-0002). |
 | TASK-REG-0001 | planned | Confirm the intended file with the owner, then change lib/canonical.js:104 and re-run the registry checks. |
 | TASK-SEC-0001 | planned | Map each REVIEW.md finding to the commits of PR #1/#2 and the tests in test/security.js. |
 
 ## Resolved / accepted
 
+- ISS-GIT-HISTORY-SHALLOW-CAPTURE [resolved] SRC-GIT-HISTORY was captured from a shallow clone with a clone-dependent serializer
 - ISS-PG-CUTOVER-STATUS [resolved] Status of the Postgres-cutover blockers is unknown
 - ISS-RUNTIME-DEPENDENCY-CLAIM [resolved] 'Zero runtime dependencies' vs declared npm dependencies — resolved: no real conflict
 - ISS-SEGMENTS-UNPROCESSED [resolved] Some in-scope source segments are unprocessed

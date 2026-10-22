@@ -153,3 +153,10 @@ Also from reading the 23 previously unprocessed segments:
 - **ISS-PG-CUTOVER-STATUS** is resolved by code inspection.
 - **ISS-IMPLEMENTATION-MAP-STALE** is newly opened.
 - **Coverage now separates segments read individually (43/6006) from those covered only by a source-wide rule (5963/6006).**
+
+## 13. Correction: git-history archive (TASK-CTX-0005)
+
+- **§5 counted SRC-GIT-HISTORY among the "22/22" verified checksums. That only held in the capturing shallow clone.** The record came from a legacy serializer that ran in a shallow clone with boundary `3577ace`, which yields 61 commits. In any full clone the ancestry of `441d772` is 79 commits, so the record failed verification there.
+- **The record keeps its original identity and is now `not-retained`.** It is never reported as verified.
+- **Its exact bytes were recovered and are preserved as SRC-GIT-HISTORY-LEGACY-RECOVERED.** The SHA-256 matches the recorded one.
+- **The complete history is captured canonically as SRC-GIT-HISTORY-441D772-V1** (`ctx-git-history/1`, 79 commits).

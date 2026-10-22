@@ -280,7 +280,7 @@
       "provenance": "evidenced",
       "sources": [
         {
-          "ref": "SRC-GIT-HISTORY",
+          "ref": "SRC-GIT-HISTORY-LEGACY-RECOVERED",
           "segment": "S0036"
         },
         {

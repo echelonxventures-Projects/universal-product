@@ -40,6 +40,8 @@ const USAGE = `usage: node scripts/context.js <command> [args]
   restore-check [--dest DIR] [--keep] [--json]
                                      restore every preserved source into an isolated dir and verify checksums
   capture <repo-path> [--id SRC-…]   archive the current bytes of a repository file as a new source version
+  capture-history <commit> [--id SRC-…] [--dry-run]
+                                     archive the full ancestry of a commit as ctx-git-history/1 (needs a non-shallow clone)
   import <file> --id SRC-… [--category C] [--sensitivity S] [--title T] [--redact-name] [--store DIR]
                                      copy an export/attachment into the write-once store (never into git)
   transition <ID> <state> --by NAME [--approve NAME] [--superseded-by ID] [--evidence TEXT]
@@ -184,6 +186,14 @@ try {
       if (r.unchanged) { out(r, "· " + rel + " is already archived as " + r.id + " (identical bytes)"); break; }
       if (!F["dry-run"]) ctx.build(ROOT);
       out(r, "✓ captured " + rel + " as " + r.record.id + (r.supersedes ? " (supersedes " + r.supersedes + ")" : "") + "\n  " + r.note);
+      break;
+    }
+    case "capture-history": {
+      const commit = args._[1] || die("capture-history needs a commit");
+      const { K } = ctx.open(ROOT);
+      const r = A.captureGitHistory(K, commit, { id: F.id, dryRun: !!F["dry-run"] });
+      if (!F["dry-run"]) ctx.build(ROOT);
+      out(Object.assign({}, r, { bytes: undefined }), "✓ " + (F["dry-run"] ? "would capture " : "captured ") + r.record.id + ": " + r.record.storage.commits + " commits, " + r.record.storage.bytes + " B, sha256 " + r.record.storage.sha256.slice(0, 16) + "… (" + r.record.storage.format + ")");
       break;
     }
     case "import": {

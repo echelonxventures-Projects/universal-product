@@ -22,6 +22,7 @@
     "context:coverage": "node scripts/context.js coverage",
     "context:restore-check": "node scripts/context.js restore-check",
     "context:capture": "node scripts/context.js capture",
+    "context:capture-history": "node scripts/context.js capture-history",
     "context:import": "node scripts/context.js import",
     "context:transition": "node scripts/context.js transition",
     "context:consolidate": "node scripts/context.js consolidate",

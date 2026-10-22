@@ -2,7 +2,7 @@
   "failed": 0,
   "liveRepositoryTouched": false,
   "ok": true,
-  "restored": 22,
+  "restored": 23,
   "results": [
     {
       "bytes": 1254180,
@@ -51,10 +51,21 @@
       "status": "skipped"
     },
     {
-      "bytes": 7974,
+      "detail": "preservation not-retained",
       "id": "SRC-GIT-HISTORY",
+      "status": "skipped"
+    },
+    {
+      "bytes": 13831,
+      "id": "SRC-GIT-HISTORY-441D772-V1",
       "status": "restored",
-      "via": "git-rev-list"
+      "via": "ctx-git-history/1"
+    },
+    {
+      "bytes": 7974,
+      "id": "SRC-GIT-HISTORY-LEGACY-RECOVERED",
+      "status": "restored",
+      "via": "live-file"
     },
     {
       "bytes": 8583,
@@ -148,6 +159,6 @@
     }
   ],
   "schema": "ctx-restore-check/1",
-  "skipped": 2,
+  "skipped": 3,
   "unavailable": 0
 }

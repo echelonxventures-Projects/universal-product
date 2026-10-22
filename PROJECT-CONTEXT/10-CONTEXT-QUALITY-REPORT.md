@@ -7,19 +7,19 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 
 | Metric | Value | Num / Den | Formula |
 |---|---|---|---|
-| source-inventory-preserved | 91.67% | 22 / 24 | in-scope sources with preservation=preserved ÷ (in-scope sources − sources excluded by policy) |
-| source-checksum-verification | 100% | 22 / 22 | preserved sources whose archived bytes re-hash to the manifest sha256 ÷ preserved sources |
-| segment-accounting | 100% | 6006 / 6006 | segments in {represented, preserved, irrelevant, excluded} ÷ all segments of preserved in-scope sources |
-| segment-representation | 0.45% | 27 / 6006 | segments cited by at least one knowledge record ÷ all segments of preserved in-scope sources |
-| segment-individual-review | 0.72% | 43 / 6006 | segments cited by a record or classified individually with a rationale ÷ all segments of preserved in-scope sources |
-| segment-rule-classified | 99.28% | 5963 / 6006 | segments accounted for only by a source-wide classification rule (not individually read) ÷ all segments of preserved in-scope sources |
+| source-inventory-preserved | 88.46% | 23 / 26 | in-scope sources with preservation=preserved ÷ (in-scope sources − sources excluded by policy) |
+| source-checksum-verification | 100% | 23 / 23 | preserved sources whose archived bytes re-hash to the manifest sha256 ÷ preserved sources |
+| segment-accounting | 100% | 6085 / 6085 | segments in {represented, preserved, irrelevant, excluded} ÷ all segments of preserved in-scope sources |
+| segment-representation | 0.44% | 27 / 6085 | segments cited by at least one knowledge record ÷ all segments of preserved in-scope sources |
+| segment-individual-review | 0.71% | 43 / 6085 | segments cited by a record or classified individually with a rationale ÷ all segments of preserved in-scope sources |
+| segment-rule-classified | 99.29% | 6042 / 6085 | segments accounted for only by a source-wide classification rule (not individually read) ÷ all segments of preserved in-scope sources |
 | requirement-source-traceability | 100% | 14 / 14 | active requirements with ≥1 resolvable source reference ÷ active requirements |
 | decision-source-traceability | 100% | 9 / 9 | active decisions with ≥1 resolvable source or provenance=newly-proposed ÷ active decisions |
 | requirement-implementation-traceability | 100% | 14 / 14 | active requirements with an incoming 'implements' edge ÷ active requirements |
 | requirement-test-traceability | 100% | 14 / 14 | active requirements with an incoming 'verifies' edge ÷ active requirements |
 | context-dependency-completeness | 100% | 6 / 6 | active context specs whose prerequisites all exist and are active ÷ active context specs |
 | context-freshness | 100% | 6 / 6 | generated packs whose on-disk dependency fingerprint equals the recomputed one and whose parts match their sha256 ÷ active packs |
-| handoff-completeness | 100% | 3 / 3 | handoffs that validate against handoff.schema.json ÷ handoffs on disk |
+| handoff-completeness | 100% | 5 / 5 | handoffs that validate against handoff.schema.json ÷ handoffs on disk |
 
 ## Counts
 
@@ -29,7 +29,7 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 | unresolvedConflicts | 0 |
 | conflictsWithEdges | 0 |
 | unaccountedSegments | 0 |
-| sourcesWithoutBytes | SRC-CONV-2026-10-22-MASTER-PROMPT:not-retained, SRC-CONV-PRIOR-SESSIONS:inaccessible |
+| sourcesWithoutBytes | SRC-CONV-2026-10-22-MASTER-PROMPT:not-retained, SRC-CONV-PRIOR-SESSIONS:inaccessible, SRC-GIT-HISTORY:not-retained |
 | danglingSegmentCitations | 0 |
 
 - Broken knowledge references (graph): 0
@@ -48,7 +48,9 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 | SRC-ARCH-6 | preserved | 31 | 0 | 31 | 0 | 0 | 0 | 0 |
 | SRC-CONV-2026-10-22-MASTER-PROMPT | not-retained | 0 | — | — | — | — | — | — |
 | SRC-CONV-PRIOR-SESSIONS | inaccessible | 0 | — | — | — | — | — | — |
-| SRC-GIT-HISTORY | preserved | 61 | 3 | 58 | 0 | 0 | 0 | 0 |
+| SRC-GIT-HISTORY | not-retained | 0 | — | — | — | — | — | — |
+| SRC-GIT-HISTORY-441D772-V1 | preserved | 79 | 0 | 79 | 0 | 0 | 0 | 0 |
+| SRC-GIT-HISTORY-LEGACY-RECOVERED | preserved | 61 | 3 | 58 | 0 | 0 | 0 | 0 |
 | SRC-IMPLEMENTATION-MAP | preserved | 9 | 4 | 5 | 0 | 0 | 0 | 0 |
 | SRC-MEMORY-2026-09-17 | preserved | 2 | 1 | 0 | 1 | 0 | 0 | 0 |
 | SRC-MEMORY-LEDGER | preserved | 36 | 5 | 31 | 0 | 0 | 0 | 0 |
@@ -69,10 +71,10 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 
 | Pack | Status | Parts | Bytes (est. tokens @3 B/token) | Mandatory items | Excluded |
 |---|---|---|---|---|---|
-| CTX-BOOTSTRAP | ok | 1 | 10771 (3591) | 18 | 0 |
-| CTX-GOVERNANCE | ok | 1 | 8162 (2721) | 22 | 0 |
+| CTX-BOOTSTRAP | ok | 1 | 10788 (3596) | 18 | 0 |
+| CTX-GOVERNANCE | ok | 1 | 8179 (2727) | 22 | 0 |
 | CTX-CONTINUITY-DESIGN | ok | 1 | 11125 (3709) | 23 | 0 |
 | CTX-CONTINUITY-SYSTEM | ok | 1 | 20658 (6886) | 29 | 0 |
-| CTX-EVIDENCE-ARCHIVE | ok | 1 | 17738 (5913) | 24 | 0 |
+| CTX-EVIDENCE-ARCHIVE | ok | 1 | 19867 (6623) | 24 | 0 |
 | CTX-PLATFORM-QUALITY | ok | 1 | 9302 (3101) | 21 | 0 |
 

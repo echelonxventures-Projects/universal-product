@@ -108,7 +108,7 @@
       "rationale": "Superseded review version (replaced by 9c31597); preserved by blob id. Its blocker list is summarised in ISS-PG-CUTOVER-STATUS."
     },
     {
-      "source": "SRC-GIT-HISTORY",
+      "source": "SRC-GIT-HISTORY-LEGACY-RECOVERED",
       "segments": "*",
       "state": "preserved",
       "rationale": "Commit log; the diffs are in git itself. Commits cited by records are counted as represented."
@@ -218,6 +218,12 @@
       ],
       "state": "preserved",
       "rationale": "Order of work, recorded by the review itself as done, plus two follow-up notes also described as done. Read 2026-10-22."
+    },
+    {
+      "source": "SRC-GIT-HISTORY-441D772-V1",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Canonical commit log (ctx-git-history/1) of the full ancestry of 441d772; diffs live in git itself. Accounted by rule, not individually read."
     }
   ]
 }

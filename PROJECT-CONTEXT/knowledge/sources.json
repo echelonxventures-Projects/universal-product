@@ -223,7 +223,7 @@
     },
     {
       "id": "SRC-GIT-HISTORY",
-      "title": "Git history of master up to 441d772 (61 commits)",
+      "title": "Git history up to 441d772 — 2026-10-22 legacy capture (checksum only; bytes not retained)",
       "category": "vcs-history",
       "origin": "git rev-list of the repository",
       "locator": "git:441d772d661abc6626d4497391c6f6261b086a0a",
@@ -241,15 +241,80 @@
         "rule": "commits"
       },
       "sensitivity": "public",
-      "preservation": "preserved",
+      "preservation": "not-retained",
       "omissions": [
-        "Commit messages and ids only; diffs are in git itself. A shallow clone cannot verify this source."
+        "CORRECTED 2026-10-22 (TASK-CTX-0005): this record was captured with the legacy rev-list serializer in a SHALLOW clone whose only boundary was 3577ace, so its 61 lines / 7974 B / sha256 87deb12d… describe a truncated history (the full ancestry of 441d772 is 79 commits). Only the checksum was recorded — the bytes were never stored — so this record does not preserve them and is never reported as verified.",
+        "The recorded bytes were recovered and are preserved separately as SRC-GIT-HISTORY-LEGACY-RECOVERED (sha256 identical). The complete history is captured canonically as SRC-GIT-HISTORY-441D772-V1."
       ],
       "lifecycle": "historical-evidence",
       "owner": "PROJECT-CONTEXT/knowledge/sources.json",
       "capturedBy": [
         "ART-GIT-OBJECT-STORE"
-      ]
+      ],
+      "notes": "Identity (kind, commit, sha256, bytes, commits) is unchanged from its first commit (4d4e7fe); only the preservation claim was corrected."
+    },
+    {
+      "id": "SRC-GIT-HISTORY-441D772-V1",
+      "title": "Git history behind 441d772 (79 commits, ctx-git-history/1)",
+      "category": "vcs-history",
+      "origin": "canonical serialization of the full ancestry of 441d772d661abc6626d4497391c6f6261b086a0a",
+      "locator": "git:441d772d661abc6626d4497391c6f6261b086a0a",
+      "storage": {
+        "kind": "git-history",
+        "format": "ctx-git-history/1",
+        "commit": "441d772d661abc6626d4497391c6f6261b086a0a",
+        "sha256": "02356724458e0008e27cde8363a5acb48ab6911bdcab7f86cc29c1d78f4685c7",
+        "bytes": 13831,
+        "commits": 79
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22T10:07:54.169Z",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "commits"
+      },
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ],
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [
+        "Commit ids, parents, author times and subjects only; diffs live in git itself. Verifiable only in a full (non-shallow) clone."
+      ],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json"
+    },
+    {
+      "id": "SRC-GIT-HISTORY-LEGACY-RECOVERED",
+      "title": "Recovered bytes of the legacy SRC-GIT-HISTORY capture (61 commits, shallow-truncated)",
+      "category": "vcs-history",
+      "origin": "re-derived 2026-10-22 by re-running the legacy serializer (`git rev-list --reverse --format=\"%H %ad %s\" --date=short 441d772`, header lines removed, LF-joined, trailing LF) in the same shallow clone (sole boundary 3577ace, git 2.43.0) before it was unshallowed; the output's sha256 equals the one recorded by SRC-GIT-HISTORY",
+      "locator": "PROJECT-CONTEXT/archives/git-history/SRC-GIT-HISTORY.recovered-legacy-v0.txt",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "88b858a89cae47d995267e82305c44e372f78a59",
+        "sha256": "87deb12d5bd91b90cfcd1e05edf3680541d11861a98a89c4b3de4359ad93afa5",
+        "bytes": 7974
+      },
+      "createdAt": "2026-10-22",
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "commits"
+      },
+      "recovers": [
+        "SRC-GIT-HISTORY"
+      ],
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ],
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [
+        "Truncated history: excludes the 18 ancestors of 441d772 that lie beyond the shallow boundary 3577ace. Not a complete history — see SRC-GIT-HISTORY-441D772-V1."
+      ],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json"
     },
     {
       "id": "SRC-IMPLEMENTATION-MAP",

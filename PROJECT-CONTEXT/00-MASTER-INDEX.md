@@ -42,11 +42,11 @@
 
 | # | Pack | Title | Parts (bytes) | Status |
 |---|---|---|---|---|
-| 1 | [CTX-BOOTSTRAP](contexts/CTX-BOOTSTRAP.md) | Bootstrap — mandatory rules and current state | 10771 | ok |
-| 2 | [CTX-GOVERNANCE](contexts/CTX-GOVERNANCE.md) | Constitutional governance and the registry pipeline | 8162 | ok |
+| 1 | [CTX-BOOTSTRAP](contexts/CTX-BOOTSTRAP.md) | Bootstrap — mandatory rules and current state | 10788 | ok |
+| 2 | [CTX-GOVERNANCE](contexts/CTX-GOVERNANCE.md) | Constitutional governance and the registry pipeline | 8179 | ok |
 | 3 | [CTX-CONTINUITY-DESIGN](contexts/CTX-CONTINUITY-DESIGN.md) | Context continuity — design decisions and open design questions | 11125 | ok |
 | 4 | [CTX-CONTINUITY-SYSTEM](contexts/CTX-CONTINUITY-SYSTEM.md) | Context continuity — requirements and code | 20658 | ok |
-| 5 | [CTX-EVIDENCE-ARCHIVE](contexts/CTX-EVIDENCE-ARCHIVE.md) | Source evidence — inventory, gaps and coverage | 17738 | ok |
+| 5 | [CTX-EVIDENCE-ARCHIVE](contexts/CTX-EVIDENCE-ARCHIVE.md) | Source evidence — inventory, gaps and coverage | 19867 | ok |
 | 6 | [CTX-PLATFORM-QUALITY](contexts/CTX-PLATFORM-QUALITY.md) | Platform quality — open review findings and runtime risks | 9302 | ok |
 
 ## Tasks
@@ -57,13 +57,14 @@
 | [TASK-CTX-0002](task-packs/TASK-CTX-0002.md) | Owner review of the continuity design decisions | planned | Owner reads PROJECT-CONTEXT/03-DECISION-REGISTER.md and states a verdict per decision. |
 | [TASK-CTX-0003](task-packs/TASK-CTX-0003.md) | Archive the 2026-10-22 session transcript | planned | Owner exports the transcript and provides an access-controlled CONTEXT_ARCHIVE_DIR. |
 | [TASK-CTX-0004](task-packs/TASK-CTX-0004.md) | Process the unprocessed source segments and audit segment accounting | done | Owner restores GitHub Actions for the repository so CI runs on PR #4, then reviews DEC-CTX-* (TASK-CTX-0002). |
+| [TASK-CTX-0005](task-packs/TASK-CTX-0005.md) | Repair git-history archive integrity | done | Owner restores GitHub Actions so CI runs on PR #4; then reviews DEC-CTX-* (TASK-CTX-0002). |
 | [TASK-REG-0001](task-packs/TASK-REG-0001.md) | Correct the seal's misnamed zero-hardcoding input | planned | Confirm the intended file with the owner, then change lib/canonical.js:104 and re-run the registry checks. |
 | [TASK-SEC-0001](task-packs/TASK-SEC-0001.md) | Reconcile REVIEW.md findings with their fixes | planned | Map each REVIEW.md finding to the commits of PR #1/#2 and the tests in test/security.js. |
 
 ## Counts
 
-- Sources 24 · requirements 14 · decisions 9 · constraints 16 · artifacts 32 (+93 imported from `_registry/manifest.json`) · issues 13 (10 open) · tasks 6 · packs 6
-- Graph edges 387 (derived from record fields via `schemas/relations.json`)
+- Sources 26 · requirements 14 · decisions 9 · constraints 16 · artifacts 32 (+93 imported from `_registry/manifest.json`) · issues 14 (10 open) · tasks 7 · packs 6
+- Graph edges 405 (derived from record fields via `schemas/relations.json`)
 
 ## Commands
 

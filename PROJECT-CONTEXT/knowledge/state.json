@@ -148,6 +148,16 @@
         "TASK-CTX-0001",
         "CTX-BOOTSTRAP"
       ]
+    },
+    {
+      "id": "F-016",
+      "status": "verified",
+      "statement": "SRC-GIT-HISTORY's recorded bytes (61 lines, 7974 B, sha256 87deb12d…) were reproduced exactly by re-running its legacy serializer in the shallow clone (boundary 3577ace) before unshallowing; they are preserved as SRC-GIT-HISTORY-LEGACY-RECOVERED. In the full clone the ancestry of 441d772 is 79 commits (first-parent 68); its canonical ctx-git-history/1 capture SRC-GIT-HISTORY-441D772-V1 is 13831 B.",
+      "evidence": "sha256sum and git rev-list --count observed 2026-10-22 (TASK-CTX-0005)",
+      "about": [
+        "ISS-GIT-HISTORY-SHALLOW-CAPTURE",
+        "CTX-EVIDENCE-ARCHIVE"
+      ]
     }
   ]
 }

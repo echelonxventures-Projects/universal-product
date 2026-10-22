@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "6bcf93056f872f0f3f3b55e52bed462f5c80dff72ea30436b7415ba07dce7f4f",
-  "depFingerprint": "2c3e5ba999e644a1fd344a6da93a663733012174c0f45b9314fc6fb06a1f1de7",
+  "contentFingerprint": "f1d4b3d6b3a20aa065faac8f6a090b7d80d92e88352258a074972884528ae6eb",
+  "depFingerprint": "3dd4a229010d142cff145c9514649e61f6ff46ceec7dd1ebf3a5f56bd102e5f0",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -62,7 +62,7 @@
     ],
     [
       "CST-SEAL-DERIVED",
-      "bc333c19cdc11eb6c847dd269c615b6cc5c6e4baa950cd7a96fcf101373991a6"
+      "44150e62a9868196b07fcfe99986071508a95fe61d98d27c35688ad0e575af3a"
     ],
     [
       "CST-SUPERSEDED-NOT-AUTHORITY",
@@ -90,7 +90,7 @@
     ],
     [
       "ISS-REVIEW-FINDINGS-UNRECONCILED",
-      "2f68d3f510757ee77a662bdf113dfd044ff4d836e0f3f7436f3c8ae5960bd3eb"
+      "2be1ece995dc3e14c4588caf4ff541fcfe858e8d9c2aff7b99d15eea4b266054"
     ],
     [
       "ISS-RUNTIME-DEPENDENCY-CLAIM",
@@ -186,12 +186,12 @@
       "estimatedTokens": 3101,
       "file": "contexts/CTX-PLATFORM-QUALITY.md",
       "id": "CTX-PLATFORM-QUALITY",
-      "sha256": "f2d0e24a4e9ca6472d2273dcad203478ea7c256123aadc457783bef189855696"
+      "sha256": "a71f06eff44b97902a78849ffd957de3d3f9d134e3d7ddf76d0548e763677c39"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "8252e4dbae1980171888988d9e9f739e277a00b4b293dff99dca3bf5d375791a",
+      "fingerprint": "71d790da0c799dd3997b03d05a839341f9f8eb7a94b922090a30eff96162b712",
       "id": "CTX-BOOTSTRAP"
     }
   ],

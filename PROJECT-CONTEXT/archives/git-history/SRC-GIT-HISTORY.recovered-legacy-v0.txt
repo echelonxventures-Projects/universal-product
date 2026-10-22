@@ -1,0 +1,61 @@
+3577acee29f3e6ee6ea204efe3ab17233843ead1 2026-09-17 roadmap: enterprise capability gap analysis + 4-domain build plan (GOIP Ω∞)
+c8b0abc51438d859e387eaae394d0768e3ee1799 2026-09-17 feat(search): enterprise Search/Discovery at scale — faceted, typo-tolerant, co-purchase recommend
+646c8909bdbb39ba9eb5b453c3da30bdb354d132 2026-09-17 feat(logistics): fulfilment state machine, shipment tracking, 3PL abstraction, warehouse routing, SLA, return disposition
+ff9bf454e111ae06beb47cb9a72418b8883077be 2026-09-18 feat(finance): chargebacks, multi-gateway retries, batch payout runs, bank-feed reconciliation, FX ledger
+9b74a588aecac5b8d9cae94bd4f402fe358ab01d 2026-09-18 feat(marketplace): ads, GSP bidding, attribution, seller KPIs, take-rate settlement
+b0ad3b83d746dcd5cf037743aa5708cbb63a3a00 2026-09-21 Complete production readiness: fix test crash, implement all UGC/helpdesk/recurring/risk/experiments/planning features
+114526cde3a7e27dfddee44dba2a10aa1af438cb 2026-09-26 feat(ucos): monitoring, health and drift detection for the constitutional registry
+cba10c7c4fe430577878d14904fd6988f3e3a422 2026-09-26 perf(ucos): batch registry inserts, cutting cold-boot seed from 5.7s to 0.6s
+d674d70abb38298edb07816cfa7e45213d52a0be 2026-09-26 feat(ucos): paginated registry browsing, SVG graph explorer, chip-rendered lists
+88410d476d1f963ffaddf89bf43658c686239dcd 2026-09-26 feat(ucos): annotation write path — authoring without mutating the constitution
+7b3ab107fe05f4e3b3e04b7f41adb8073f47b66d 2026-09-26 chore(ucos): run the UCOS conformance audit as part of npm test
+ced33797415323137fde9298a23f212e024f1d08 2026-09-26 chore(ucos): commit the canonical Architecture documents
+2f6243dc11e7286182fe1ce98de5d25fe6d9a8f9 2026-09-26 fix(security): create data/ before the keyring is persisted
+3f16dbc2be57dc906e5e0ad751076a3557398f06 2026-09-26 chore: commit the affiliate, sitemap and shipping registry modules
+9f5e26692b74ecd9aa4e1da8c2e4c37292e47f19 2026-09-26 chore: declare jsdom as a devDependency
+1df6be378fbf6f64b67fd3677e6ced11d4142bcd 2026-09-26 chore: commit the branding, global, identity and policies modules
+2b5da7b4a4345295ffa669675fa7f95fad9de84f 2026-09-26 feat: entity universal IDs + sections, password policy settings, console polish
+3b2ecda85e64f676db60a73e28883c9dedf40542 2026-09-26 chore: commit platform console stylesheet, docs and identity test
+c998500fa877fcebf982406736ef15d6b94d498b 2026-09-26 feat(ucos): executable foundation-freeze audit + master index, fix docMeta aliasing
+f55f1e110d4a7628924c6868e7eb9e43df056d91 2026-09-26 chore: record project ownership
+24372033da58df51b0e582d8891d7013d5748dd8 2026-09-26 fix(ucos): the freeze criteria were measuring the wrong thing
+838959655252826ce7a3da29c9d1b2110145af67 2026-09-27 feat(ucos): operable constitution — foundation registry, universes, catalog bridge
+251c7b0b3dac91963494cff592f38a094d0c62e5 2026-09-27 fix(security): platform authority is exclusive, and a refused request can no longer kill the server
+5469ea50fa0aac4f797d69da74712164e4370660 2026-09-27 feat(ucos): activation, per-domain machines, theming, §394/§395 dashboards
+9c9fe54d8fa2bd713dd23899b5b2986bad0e6a53 2026-09-28 feat(gcatalog): universal global catalog — every UPIP archetype, platform-gated store import
+05416678aad73c812bb07c4c0f0c33744b93d7c6 2026-09-28 feat(console): grouped nav, structured universe-derived product form, rebuilt design system
+bb89757c566cda7886f511ea2716fc23c04df2af 2026-09-29 feat(parity): universal commerce parity layer — engines, capability catalog, authoring
+9f3b70e3e408f380e113c77953eecb56034751a5 2026-09-29 feat(console): Commerce Ops - the parity layer is operable, RBAC reachable, CSRF re-sends
+2a85d51523fbac99ba82dcaedde6c176e6992c53 2026-09-29 feat(console): the platform-to-store bridge works; affiliate/sitemap/shipping reachable
+61e71761f8d11a15742c60a4648ad1c00e2bd22a 2026-09-29 feat(console): guided setup wizard launches a store; brands are first-class data
+47495416deb894901e3e304a66021e6843b544b3 2026-09-30 feat: UPCE corpus, global operations, compliance-as-data; three latent defects fixed
+ecf3c56f81a0c520345be5d1af07a93aa62d500b 2026-10-01 feat(tenancy): the org hierarchy is wired — tree, cascade, console; two latent bugs fixed
+e8837c6beca8942f69daa9d14ac188b2bed1193e 2026-10-01 feat(ucos): three more corpora — markdown tables, lettered headings, declaration channels; trace substring false positive fixed
+a4f76ec00fb5534819648730dee8474c206aff0e 2026-10-02 fix(catalog): a store's universe records never publish into another store's catalogue
+d9e9d3d1719de12ac41cde64a1ae6c01b7c387a8 2026-10-06 feat(ucos): the frozen registry is a first-class corpus; the 93 artifacts are live universes
+7daf85b2bb7b31d406a57f1f967a677c05926201 2026-10-06 feat(registry): the constitution is one compiled, sealed source of truth; the grant surface resolved through the wrong namespace
+2d115b66a723a19a1a8ba746354c6209bb28bf3b 2026-10-07 feat(authz): one authorization engine, one console; the console surface is a shadow of the composition
+6fc0da2785f4909e08b9c8bbb99a51d1eb05a585 2026-10-07 docs(memory): record the composition-surface live check; qcops absence is first-boot by design
+d63d60fa8631f4f146b617114ede3f8657e3b140 2026-10-07 feat(ops): add production tooling - structured logging, metrics, background queues
+7fa7c1609ba63788b06d813397fe51ab1c963de5 2026-10-11 feat(mobility): E17 universe — ride hailing, dispatch, surge pricing, fleet
+9c31597a008b011ab77ceb7e218d9640ebf5a865 2026-10-12 feat(ops): E18 universe — ERP, HRMS, payroll, procurement, manufacturing, projects
+edc3bcf7432f6e2522c3769b517476a8168a3fda 2026-10-12 fix(queue): the job queue resolves LX_QUEUE, not NODE_ENV
+bf0e24c36748e151d9434e55fe38260963b6768f 2026-10-12 fix(ops): a production boot guards its own requirements
+b453c35d5a8564a7c1274a088c7462917825188e 2026-10-12 fix(mobility): a ride ref survives a same-millisecond collision
+ce22703b71913d54fa1aa87be9a5185ab9f055ef 2026-10-12 feat(mobility): surge zones are authorable in the store console
+6bdecaabf954db01130b644251c722269e9bee27 2026-10-12 chore: harden .gitignore — env secrets, strays, and editor/OS junk
+f7adffa7b48cfa54c6253166e7490229779df4cc 2026-10-13 feat(identity): authentication is chosen in the registration pass, not a second screen
+8adbd4be09321095861b96e98e01fd3b36d2b5b1 2026-10-13 feat(registries): every platform vocabulary is console-authorable, auto-discovered
+d33c3febf90e1042c1679f25031a1f3b43c88ca5 2026-10-14 fix(security): close the gaps from the full-project review
+a714c7b566bbba53d2b110c471615149456185e2 2026-10-14 Merge pull request #1 from echelonxventures-Projects/fix/security-gap-review
+6541579b749cba03dbe8f8ff3f35cd61b1b83f70 2026-10-14 fix(security): close the seven critical route-audit findings
+f94c431c065ce97d34755d5db6200f7a29c9bbf0 2026-10-14 fix(authz): restricted platform roles stay in their sections
+3bf30a9908d47927157cc2d9d85df40888852f40 2026-10-14 fix(authz): store staff roles are enforced on every store-admin route
+eb0be5624194c01eddf6c1e5b0782b946b7bc4e8 2026-10-14 fix(isolation): one store never reads or changes another's records
+acea67ea07ad31387710722c9d7d7ba4f4cc9525 2026-10-14 fix(money): nothing paid is free, nothing credited twice
+d1c0fb7d5524274ed6ca21a0d23622c9d33cfa55 2026-10-15 fix(hardening): no stranger's data, no internal requests
+5f49633dede00406d2e60fb5cb72400bcd40e13a 2026-10-15 fix(operations): output and spend only move through their transitions
+78ec6e6a39000fc9d9c7a61efab8286cec72c834 2026-10-15 fix(identity): adding a sign-in method needs a recent sign-in
+2b07382c5f166d762c777535a0555d7667a81c22 2026-10-15 perf(security): password hashing runs on the thread pool, not the event loop
+1cc8eed93fd90d39eb164e7cb9acacc96a8b2b82 2026-10-15 fix(fintech): simulated rails never settle in production
+441d772d661abc6626d4497391c6f6261b086a0a 2026-10-15 Merge pull request #2 from echelonxventures-Projects/fix/critical-route-audit

@@ -122,6 +122,39 @@
       "lifecycle": "canonical-active"
     },
     {
+      "id": "ISS-GIT-HISTORY-SHALLOW-CAPTURE",
+      "kind": "defect",
+      "title": "SRC-GIT-HISTORY was captured from a shallow clone with a clone-dependent serializer",
+      "statement": "RESOLVED. The original git-history capture (commit 4d4e7fe) ran `git rev-list --reverse --format=\"%H %ad %s\" 441d772` in a shallow clone whose only boundary was 3577ace, so it recorded a truncated 61-commit history (7974 B, sha256 87deb12d…). In any full clone the same command walks all 79 ancestors and the checksum can never match, which failed context:verify, restore-check, the generated quality report and 10 context tests. The verifier also downgraded a git-history mismatch to a warning whenever the clone was shallow, hiding the problem. Fixed: the historical record keeps its identity but is marked not-retained (its bytes were never stored); its exact bytes were recovered (sha256 match) as SRC-GIT-HISTORY-LEGACY-RECOVERED; future captures use the canonical, fail-closed ctx-git-history/1 serializer (SRC-GIT-HISTORY-441D772-V1); verify enforces append-only source identity.",
+      "status": "resolved",
+      "severity": "high",
+      "evidence": [
+        "legacy serializer in the shallow clone (boundary 3577ace): 61 lines, 7974 B, sha256 87deb12d… = recorded (observed 2026-10-22)",
+        "after `git fetch --unshallow`: rev-list --count 441d772 = 79, first-parent 68; legacy sha256 cabc4535… (mismatch) — matches the failure reported by the owner",
+        "test/context.js 167/177 before the fix in a full clone"
+      ],
+      "sources": [
+        {
+          "ref": "SRC-GIT-HISTORY"
+        },
+        {
+          "ref": "SRC-GIT-HISTORY-LEGACY-RECOVERED"
+        }
+      ],
+      "affects": [
+        "SRC-GIT-HISTORY",
+        "ART-CTX-ARCHIVE"
+      ],
+      "resolvedBy": [
+        "TASK-CTX-0005"
+      ],
+      "tags": [
+        "archive",
+        "defect"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
       "id": "ISS-IMPLEMENTATION-MAP-STALE",
       "kind": "gap",
       "title": "IMPLEMENTATION_MAP.md is stale and internally inconsistent",
@@ -338,11 +371,11 @@
           "segment": "S0006"
         },
         {
-          "ref": "SRC-GIT-HISTORY",
+          "ref": "SRC-GIT-HISTORY-LEGACY-RECOVERED",
           "segment": "S0049"
         },
         {
-          "ref": "SRC-GIT-HISTORY",
+          "ref": "SRC-GIT-HISTORY-LEGACY-RECOVERED",
           "segment": "S0051"
         }
       ],

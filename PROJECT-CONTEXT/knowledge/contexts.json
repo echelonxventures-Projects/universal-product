@@ -161,7 +161,8 @@
         "issues": [
           "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
           "ISS-MASTER-PROMPT-NOT-ARCHIVED",
-          "ISS-SEGMENTS-UNPROCESSED"
+          "ISS-SEGMENTS-UNPROCESSED",
+          "ISS-GIT-HISTORY-SHALLOW-CAPTURE"
         ],
         "artifacts": [
           "ART-GIT-OBJECT-STORE",
@@ -181,6 +182,8 @@
           "SRC-CONV-2026-10-22-MASTER-PROMPT",
           "SRC-CONV-PRIOR-SESSIONS",
           "SRC-GIT-HISTORY",
+          "SRC-GIT-HISTORY-441D772-V1",
+          "SRC-GIT-HISTORY-LEGACY-RECOVERED",
           "SRC-IMPLEMENTATION-MAP",
           "SRC-MEMORY-2026-09-17",
           "SRC-MEMORY-LEDGER",

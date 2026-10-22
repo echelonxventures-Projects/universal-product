@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "09ffd4dc7de324eec5424ccc30c3d87b3587a388e75e66760731c682d66cae9a",
-  "depFingerprint": "472991f0552126efc666e46ac5e8b92014072b11564e04041bef1070488eb048",
+  "contentFingerprint": "ce0eff3e95162f228049a287128c5a9166691adbcd791811ee161d2a77babc80",
+  "depFingerprint": "00d33c45011ce687da222d0d1c64adf8c4c8116414be799c7156fb3c03b92201",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -78,7 +78,7 @@
     ],
     [
       "CST-SEAL-DERIVED",
-      "bc333c19cdc11eb6c847dd269c615b6cc5c6e4baa950cd7a96fcf101373991a6"
+      "44150e62a9868196b07fcfe99986071508a95fe61d98d27c35688ad0e575af3a"
     ],
     [
       "CST-SUPERSEDED-NOT-AUTHORITY",
@@ -94,7 +94,7 @@
     ],
     [
       "DEC-SEALED-CANONICAL-COMPILE",
-      "9b4376d01debff97aaadde3fbc71392f059c45d111fe4ad4a6e1282339962245"
+      "b0778509b1250133836dca400a68b19f28047907e4faaa5f89ba16b231337667"
     ],
     [
       "ISS-CANONICAL-INPUT-MISNAMED",
@@ -192,16 +192,16 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 8162,
-      "estimatedTokens": 2721,
+      "bytes": 8179,
+      "estimatedTokens": 2727,
       "file": "contexts/CTX-GOVERNANCE.md",
       "id": "CTX-GOVERNANCE",
-      "sha256": "afd27dbe24199f73c3ee907c4e7470a4e9f0bd868d65548b5b37365605ca5531"
+      "sha256": "b2c72a3ec80cb72866566567bbfc8b8e3b5e0c7a5f68347aaa50dc5d3c596ff6"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "8252e4dbae1980171888988d9e9f739e277a00b4b293dff99dca3bf5d375791a",
+      "fingerprint": "71d790da0c799dd3997b03d05a839341f9f8eb7a94b922090a30eff96162b712",
       "id": "CTX-BOOTSTRAP"
     }
   ],

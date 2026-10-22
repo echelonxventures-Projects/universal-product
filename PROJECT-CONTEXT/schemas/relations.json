@@ -29,6 +29,8 @@
                       "fields": [{ "kind": "issue", "field": "blocks" }] },
     "resolves":     { "semantics": "<from> closes the open question or conflict <to>.", "from": ["decision", "task", "artifact"], "to": ["issue"], "acyclic": true,
                       "fields": [{ "kind": "issue", "field": "resolvedBy", "reverse": true }] },
+    "recovers":     { "semantics": "<from> holds bytes that hash to the checksum recorded by <to>, whose own storage does not preserve them. <to> stays unverified; <from> is verified on its own storage.", "from": ["source"], "to": ["source"], "acyclic": true,
+                      "fields": [{ "kind": "source", "field": "recovers" }] },
     "captured-by":  { "semantics": "<from> (original evidence) is preserved by archive store <to>.", "from": ["source"], "to": ["artifact"], "acyclic": true,
                       "fields": [{ "kind": "source", "field": "capturedBy" }] }
   }

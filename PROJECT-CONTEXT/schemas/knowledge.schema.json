@@ -67,7 +67,8 @@
             "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
             "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
             "bytes": { "type": "integer" },
-            "commits": { "type": "integer" }
+            "commits": { "type": "integer" },
+            "format": { "enum": ["ctx-git-history/1"] }
           }
         },
         "createdAt": { "type": ["string", "null"] },
@@ -84,6 +85,7 @@
           }
         },
         "attachmentOf": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+        "recovers": { "type": "array", "items": { "$ref": "#/definitions/id" } },
         "capturedBy": { "type": "array", "items": { "$ref": "#/definitions/id" } },
         "sensitivity": { "enum": ["public", "internal", "private", "secret"] },
         "preservation": { "enum": ["preserved", "missing", "inaccessible", "excluded", "corrupted", "not-retained"] },

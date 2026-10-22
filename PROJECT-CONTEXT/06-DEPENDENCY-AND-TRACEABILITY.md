@@ -9,15 +9,16 @@
 |---|---|---|
 | belongs-to | 0 | <from> is a part of <to> (an attachment of a source, a subpack of a pack). |
 | blocks | 1 | <from> must be resolved before <to> can proceed. |
-| captured-by | 22 | <from> (original evidence) is preserved by archive store <to>. |
+| captured-by | 24 | <from> (original evidence) is preserved by archive store <to>. |
 | conflicts-with | 0 | <from> and <to> cannot both hold as stated. Symmetric; recorded once. |
-| constrains | 41 | <from> limits what <to> may do. |
-| depends-on | 32 | <from> cannot be correct or complete without <to>. |
-| derived-from | 64 | <from> was derived from evidence or knowledge in <to>. |
-| implements | 47 | <from> realises <to>. |
-| included-in | 106 | <from> is part of the curated content of context pack <to>. |
-| references | 46 | <from> mentions <to> for navigation; no dependency implied. |
-| resolves | 3 | <from> closes the open question or conflict <to>. |
+| constrains | 43 | <from> limits what <to> may do. |
+| depends-on | 33 | <from> cannot be correct or complete without <to>. |
+| derived-from | 67 | <from> was derived from evidence or knowledge in <to>. |
+| implements | 49 | <from> realises <to>. |
+| included-in | 109 | <from> is part of the curated content of context pack <to>. |
+| recovers | 1 | <from> holds bytes that hash to the checksum recorded by <to>, whose own storage does not preserve them. <to> stays unverified; <from> is verified on its own storage. |
+| references | 49 | <from> mentions <to> for navigation; no dependency implied. |
+| resolves | 4 | <from> closes the open question or conflict <to>. |
 | supersedes | 1 | <from> replaces <to>; <to> must not govern active work. |
 | supports | 0 | <from> is evidence in favour of <to> without being its origin. |
 | verifies | 24 | <from> is executable evidence that <to> holds. |
@@ -26,7 +27,7 @@
 
 | Requirement | Implemented by | Verified by | Depends on | Derived from |
 |---|---|---|---|---|
-| REQ-CTX-ARCHIVE | ART-ARCHIVE-STORE, ART-CTX-ARCHIVE, ART-GIT-OBJECT-STORE, TASK-CTX-0001, TASK-CTX-0003, TASK-CTX-0004 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
+| REQ-CTX-ARCHIVE | ART-ARCHIVE-STORE, ART-CTX-ARCHIVE, ART-GIT-OBJECT-STORE, TASK-CTX-0001, TASK-CTX-0003, TASK-CTX-0004, TASK-CTX-0005 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
 | REQ-CTX-ASSIMILATION | ART-CTX-PROTOCOL, ART-CTX-SCHEMA-RECEIPT, TASK-CTX-0001 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
 | REQ-CTX-CI | ART-CI-WORKFLOW, ART-CTX-CLI, ART-PACKAGE-JSON, TASK-CTX-0001 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
 | REQ-CTX-COVERAGE | ART-CTX-COVERAGE, TASK-CTX-0001, TASK-CTX-0004 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
@@ -39,6 +40,6 @@
 | REQ-CTX-NO-COMPETING-SOT | ART-CTX-INDEX, ART-CTX-STORE, TASK-CTX-0001 | ART-TEST-CONTEXT | CST-KNOWLEDGE-ONCE, CST-PROJECTION-LAW | SRC-CONV-2026-10-22-MASTER-PROMPT |
 | REQ-CTX-PACKS | ART-CTX-PACKS, TASK-CTX-0001 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
 | REQ-CTX-SECURITY | ART-CTX-ARCHIVE, ART-CTX-UTIL, TASK-CTX-0001 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
-| REQ-CTX-VERIFICATION | ART-CTX-ARCHIVE, ART-TEST-CONTEXT, TASK-CTX-0001 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
+| REQ-CTX-VERIFICATION | ART-CTX-ARCHIVE, ART-TEST-CONTEXT, TASK-CTX-0001, TASK-CTX-0005 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
 
 Query instead of reading: `npm run context:query -- <query> [id]` — queries: affected-by, decisions-for-task, prerequisites, tests-for, active-without-owner, stale-contexts, requirements-lacking-implementation, requirements-lacking-verification, superseded-in-active-contexts, unaccounted-segments, tasks-blocked-by-decisions.

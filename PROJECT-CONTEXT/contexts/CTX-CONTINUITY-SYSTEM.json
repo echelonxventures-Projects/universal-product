@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "9d81ed527beeb0bf77a4a28e02111005ec3e1954efeb24474b9ba0760d2d3ee6",
-  "depFingerprint": "67935cdc973535abe90bb4296c50d020b224c5d42108106c81810683a31dc660",
+  "contentFingerprint": "ef1882a7c95b203fcce747ebe6c50cfbfac6b7926b4f7eefd00691b70fc0d572",
+  "depFingerprint": "b418f3364237dbe341c1ea84a85efc90c196996770b6613d7134ff51b0c593b5",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -14,11 +14,11 @@
     ],
     [
       "ART-CTX-ARCHIVE",
-      "26b78fe149b518768f90e3e959e87c860e7b1c5330c2dd1e5b1ef2782a5cd5c5"
+      "1b47a7e946f22ca3d0df0aa12edfc3961a2bd8ecb3e3c5107d27a355219473ca"
     ],
     [
       "ART-CTX-CLI",
-      "130b46836ed6c8d727f4b62409bde97d84e2ff92e70c75a3678c5580d5996d5e"
+      "ad773749bad93a387c8a15372338084297324e4b788bddce3228180760f024aa"
     ],
     [
       "ART-CTX-CONFIG",
@@ -38,7 +38,7 @@
     ],
     [
       "ART-CTX-INDEX",
-      "94330704cf91f9cb1d6db68c5a464be0cd5a3cb2bc37fe43ea8040f921c26ba4"
+      "8246b448e75e5e150cb0a57ab98f1f378881a72d34316511511a36b5d2f5873b"
     ],
     [
       "ART-CTX-PACKS",
@@ -54,7 +54,7 @@
     ],
     [
       "ART-CTX-REG-RELATIONS",
-      "0f28ab96239af48ce778f12d18813182934e467fbc2ce8f2ba35c7145d5e55dc"
+      "06bd8382bfeb5adb010f2175024ac7104e4f689b5547b85048e084c063bed4f3"
     ],
     [
       "ART-CTX-SCHEMA-HANDOFF",
@@ -62,7 +62,7 @@
     ],
     [
       "ART-CTX-SCHEMA-KNOWLEDGE",
-      "6faade84ac70a93c36b6f165b4e8fd44a91f943325977f89ed67c7b05eb5bbad"
+      "73de7cbaf3c7a51284b7d07e29857ad7470a1d6758463334414bb1e4ab648aa0"
     ],
     [
       "ART-CTX-SCHEMA-RECEIPT",
@@ -82,11 +82,11 @@
     ],
     [
       "ART-CTX-VIEWS",
-      "ec16292802de324e89666645eecedd91705e118534a96ead83def945b0f05071"
+      "ceca222a634e3e86e9f8544b49cb34be6bb7b1c449788b4d17f8e04c9535e6f0"
     ],
     [
       "ART-TEST-CONTEXT",
-      "1174e59542beb81cc2c6f2db436a82c596f4d3ba7143820877110c94740dd217"
+      "19aec8b86191807fff8eb795b6542d8bc9f24fe47dcea9a8a7923b3ca90dadc4"
     ],
     [
       "CST-AUTHORIZED-SIDE-EFFECTS",
@@ -138,7 +138,7 @@
     ],
     [
       "CST-SEAL-DERIVED",
-      "bc333c19cdc11eb6c847dd269c615b6cc5c6e4baa950cd7a96fcf101373991a6"
+      "44150e62a9868196b07fcfe99986071508a95fe61d98d27c35688ad0e575af3a"
     ],
     [
       "CST-SUPERSEDED-NOT-AUTHORITY",
@@ -319,12 +319,12 @@
       "estimatedTokens": 6886,
       "file": "contexts/CTX-CONTINUITY-SYSTEM.md",
       "id": "CTX-CONTINUITY-SYSTEM",
-      "sha256": "d84706c4c252a94b6ac44a11ef49bfc0dffc6af38adbb4561fc6aa7a7e38ecbc"
+      "sha256": "e7dd96a2a2daad83a1f4fadbf2deef8700b1699bf4c685a0b6f9635b30c3ea73"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "7005badd2988c00039f9eee1d3b279c43fd98b30efd3bea678b21287ed9c9889",
+      "fingerprint": "d660e0d4e7dcf70529c48bd29ede1368aa770c9c8e5b3a3ab57bb1fa6898d1fb",
       "id": "CTX-CONTINUITY-DESIGN"
     }
   ],

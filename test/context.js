@@ -569,6 +569,110 @@ section("§I fresh agent at a deliberately small budget (12 000 B ≈ 4k tokens,
   ok(tiny.code === 2 && JSON.parse(tiny.out).gaps.some(g => g.code === "over-budget"), "below the bootstrap's size (8 KB) the gate blocks with the reason instead of a partial pass");
 }
 
+/* ===================================================================== §J */
+section("§J git-history integrity: honest legacy record, canonical fail-closed capture");
+{
+  const HIST = { commit: "441d772d661abc6626d4497391c6f6261b086a0a", sha256: "87deb12d5bd91b90cfcd1e05edf3680541d11861a98a89c4b3de4359ad93afa5", bytes: 7974, commits: 61 };
+  /* a synthetic repository with a merge, a tab, unicode, and pinned dates */
+  const synth = path.join(TMP, "synth");
+  fs.mkdirSync(synth);
+  const g = (args, cwd, env) => cp.execFileSync("git", args, { cwd: cwd || synth, stdio: ["ignore", "pipe", "ignore"], env: Object.assign({}, process.env, { GIT_AUTHOR_NAME: "t", GIT_AUTHOR_EMAIL: "t@invalid", GIT_COMMITTER_NAME: "t", GIT_COMMITTER_EMAIL: "t@invalid" }, env || {}) }).toString().trim();
+  let tick = 1700000000;
+  const commit = msg => { fs.writeFileSync(path.join(synth, "f" + tick + ".txt"), msg); g(["add", "-A"]); const d = String(tick++) + " +0000"; g(["commit", "-qm", msg, "--no-verify"], synth, { GIT_AUTHOR_DATE: d, GIT_COMMITTER_DATE: d }); return g(["rev-parse", "HEAD"]); };
+  g(["init", "-q", "-b", "main"]);
+  commit("root");
+  commit("second");
+  g(["checkout", "-qb", "side"]); const sideTip = commit("side\twith tab — ünïcode");
+  g(["checkout", "-q", "main"]); commit("main work");
+  const md = String(tick++) + " +0000";
+  g(["merge", "-q", "--no-ff", "-m", "merge side", "side"], synth, { GIT_AUTHOR_DATE: md, GIT_COMMITTER_DATE: md });
+  const tip = g(["rev-parse", "HEAD"]);
+
+  /* canonical serialization: contract, determinism, completeness */
+  const a = A.serializeGitHistory(synth, tip), b = A.serializeGitHistory(synth, tip);
+  ok(!a.error && a.buf.equals(b.buf), "repeated canonical captures of the same pinned history are byte-identical", a.error);
+  const text = a.buf.toString("utf8"), lines = text.split("\n");
+  ok(lines[0] === "# ctx-git-history/1 pinned=" + tip + " commits=5" && a.commits === 5 && a.commits === Number(g(["rev-list", "--count", tip])), "header names format, pinned commit and the full reachable commit count (merge parents included)");
+  ok(text.endsWith("\n") && !text.endsWith("\n\n") && !text.includes("\r"), "LF line endings, exactly one trailing LF");
+  const recs = lines.slice(1).filter(Boolean).map(l => l.split("\t"));
+  const pos = new Map(recs.map((r, i) => [r[0], i]));
+  ok(recs.every(r => r.length === 4 && /^[0-9a-f]{40}$/.test(r[0]) && /^\d+$/.test(r[2])), "every record is hash \\t parents \\t author time \\t subject");
+  ok(recs.every(r => r[1] === "-" || r[1].split(" ").every(p => pos.get(p) < pos.get(r[0]))), "topological order: every parent precedes its child");
+  ok(text.includes("side\\twith tab — ünïcode"), "subjects keep UTF-8 and escape TAB so the record format stays unambiguous");
+  ok(A.serializeGitHistory(synth, sideTip).commits === 3, "selection is exactly the ancestry of the pinned commit");
+
+  /* fail closed: shallow, missing pinned commit, missing objects, malformed */
+  const shallow = path.join(TMP, "synth-shallow");
+  cp.execFileSync("git", ["clone", "-q", "--depth", "1", "--branch", "main", "file://" + synth, shallow], { stdio: "ignore" });
+  const sh = A.serializeGitHistory(shallow, tip);
+  ok(sh.error === "shallow-repository" && /fetch --unshallow/.test(sh.detail), "a shallow clone is refused with an actionable remediation, never serialized partially");
+  ok(A.serializeGitHistory(synth, "0".repeat(40)).error === "missing-pinned-commit", "a pinned commit absent from the object store is reported as missing");
+  ok(A.serializeGitHistory(synth, "abc").error === "malformed-metadata", "a malformed pinned commit is malformed metadata");
+  const broken = path.join(TMP, "synth-broken");
+  fs.cpSync(synth, broken, { recursive: true });
+  const victim = g(["rev-parse", "HEAD~1"], broken);
+  fs.rmSync(path.join(broken, ".git", "objects", victim.slice(0, 2), victim.slice(2)));
+  const br = A.serializeGitHistory(broken, tip);
+  ok(br.error === "incomplete-history", "a missing commit object in the ancestry fails closed as incomplete-history", JSON.stringify(br));
+
+  /* the historical record: identity untouched, never verified, its bytes recovered */
+  let { K, G } = ctx.open(ROOT);
+  const h = K.nodes.get("SRC-GIT-HISTORY");
+  ok(h.rec.storage.commit === HIST.commit && h.rec.storage.sha256 === HIST.sha256 && h.rec.storage.bytes === HIST.bytes && h.rec.storage.commits === HIST.commits && !h.rec.storage.format, "SRC-GIT-HISTORY keeps its original commit, sha256, byte and commit counts, and no new format is imposed on it");
+  ok(h.rec.preservation !== "preserved", "SRC-GIT-HISTORY no longer claims its bytes are preserved");
+  const hv = A.verifyOne(K, h);
+  ok(hv.status !== "verified" && hv.level !== "ok" && hv.status === "recovered-copy", "the verifier never reports SRC-GIT-HISTORY as verified (status " + hv.status + ")");
+  const full = U.gitText(ROOT, ["rev-parse", "--is-shallow-repository"]) === "false";
+  if (full) ok(hv.legacyCheck === "mismatch", "in a full clone the original checksum mismatch is still detected (legacy procedure no longer reproduces it)");
+  const rc = K.nodes.get("SRC-GIT-HISTORY-LEGACY-RECOVERED");
+  ok(rc && rc.rec.storage.sha256 === HIST.sha256 && rc.rec.storage.bytes === HIST.bytes && A.verifyOne(K, rc).status === "verified", "the recovered copy verifies on its own storage and hashes to the recorded sha256");
+  ok(A.segments(rc, A.bytesOf(K, rc).buf).length === HIST.commits, "the recovered bytes hold exactly the recorded 61 commits");
+  const v1 = K.nodes.get("SRC-GIT-HISTORY-441D772-V1");
+  ok(v1 && v1.rec.storage.format === "ctx-git-history/1" && v1.rec.storage.commit === HIST.commit && v1.id !== "SRC-GIT-HISTORY", "the canonical capture has its own id and declares its format");
+  if (full) {
+    const vv = A.verifyOne(K, v1);
+    ok(vv.status === "verified", "the canonical capture verifies in a full clone", JSON.stringify(vv));
+    const ser = A.serializeGitHistory(ROOT, HIST.commit);
+    ok(U.sha256(ser.buf) === v1.rec.storage.sha256 && ser.buf.length === v1.rec.storage.bytes && ser.commits === v1.rec.storage.commits && ser.commits === Number(U.gitText(ROOT, ["rev-list", "--count", HIST.commit])), "its sha256, bytes and commit count are derived from exactly the serializer's bytes");
+    const dest = path.join(TMP, "restore-v1");
+    const rs = A.restoreCheck(K, { dest, keep: true });
+    const restored = fs.readdirSync(dest).find(f => f.startsWith("SRC-GIT-HISTORY-441D772-V1__"));
+    ok(rs.ok && restored && fs.readFileSync(path.join(dest, restored)).equals(ser.buf), "restore-check restores the canonical capture byte-for-byte with the same serializer");
+    ok(["SRC-CONV-2026-10-22-MASTER-PROMPT", "SRC-CONV-PRIOR-SESSIONS", "SRC-GIT-HISTORY"].every(id => rs.results.find(x => x.id === id).status === "skipped") && !fs.readdirSync(dest).some(f => /^SRC-CONV-|^SRC-GIT-HISTORY__/.test(f)), "unavailable conversation sources and the unretained legacy record are never reported or written as restored");
+  }
+  let capErr = null; try { A.captureGitHistory(K, HIST.commit, { id: "SRC-GIT-HISTORY", dryRun: true }); } catch (e) { capErr = e; }
+  ok(capErr && /never reused|never recalculated/.test(capErr.message), "capture refuses to reuse an existing id (no recalculated checksum under the historical id)");
+
+  /* verifier semantics in disposable copies */
+  let root = sandbox("hist-bless");
+  editKind(root, "source", recs => { const r = recs.find(x => x.id === "SRC-GIT-HISTORY"); r.storage.sha256 = "c".repeat(64); r.storage.bytes = 10470; r.storage.commits = 79; r.preservation = "preserved"; });
+  let v = ctx.verify(root);
+  ok(codes(v).includes("source-identity-rewritten") && v.errors.some(e => e.code === "source-identity-rewritten" && e.id === "SRC-GIT-HISTORY"), "silently recalculating the historical checksum is detected as a rewritten source identity");
+  ok(codes(v).includes("archive-legacy-unverifiable") || codes(v).includes("archive-recovery-mismatch"), "…and the legacy record cannot be blessed as preserved");
+  root = sandbox("hist-preserved");
+  editKind(root, "source", recs => { recs.find(x => x.id === "SRC-GIT-HISTORY").preservation = "preserved"; });
+  v = ctx.verify(root);
+  ok(codes(v).includes("archive-legacy-unverifiable") && !codes(v).includes("source-identity-rewritten"), "re-claiming preservation for the legacy record (identity untouched) fails verification: legacy-unverifiable");
+  if (full) {
+    for (const [field, value, code] of [["bytes", 13830, "archive-byte-count-mismatch"], ["sha256", "d".repeat(64), "archive-checksum-mismatch"], ["commits", 78, "archive-commit-count-mismatch"]]) {
+      root = sandbox("v1-" + field);
+      editKind(root, "source", recs => { recs.find(x => x.id === "SRC-GIT-HISTORY-441D772-V1").storage[field] = value; });
+      ({ K } = ctx.open(root));
+      const r = A.verifyOne(K, K.nodes.get("SRC-GIT-HISTORY-441D772-V1"));
+      ok(r.level === "error" && "archive-" + r.status === code, "a wrong " + field + " on a canonical capture is " + code, JSON.stringify(r));
+    }
+  }
+  root = sandbox("v1-malformed");
+  editKind(root, "source", recs => { delete recs.find(x => x.id === "SRC-GIT-HISTORY-441D772-V1").storage.commit; });
+  ({ K } = ctx.open(root));
+  ok(A.verifyOne(K, K.nodes.get("SRC-GIT-HISTORY-441D772-V1")).status === "malformed-metadata", "a git-history record without a pinned commit is malformed metadata");
+  root = sandbox("v1-format");
+  editKind(root, "source", recs => { recs.find(x => x.id === "SRC-GIT-HISTORY-441D772-V1").storage.format = "ctx-git-history/9"; });
+  ok(codes(ctx.verify(root)).includes("schema"), "an unsupported git-history format is rejected by the schema");
+  ({ K } = ctx.open(ROOT));
+  ok(A.verifyOne(K, K.nodes.get("SRC-README")).status === "verified", "git-blob verification is unchanged");
+}
+
 /* ===================================================================== */
 const total = pass + fail;
 console.log("\ncontext continuity: " + pass + "/" + total + " passed" + (fail ? " — " + fail + " FAILED" : ""));
