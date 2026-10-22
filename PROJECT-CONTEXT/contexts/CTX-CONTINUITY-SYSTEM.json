@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "3f7f299142400da7092239a85f56c78885ec43285acd76e4600bc080fc14f1da",
-  "depFingerprint": "75c2ee29851e94ef59d64a4b24f957b825fd5d3773e0279412006da7b459ae4d",
+  "contentFingerprint": "12fa80a84fe4b4071fd34b66e2be4a36a526661d87d173746bbb8642d1c08cdc",
+  "depFingerprint": "f2517f8b38c7f33cc8d900229044d7d6f5f73cd0d5da139f30e9ab8bbf6a09b5",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -86,7 +86,7 @@
     ],
     [
       "ART-TEST-CONTEXT",
-      "19aec8b86191807fff8eb795b6542d8bc9f24fe47dcea9a8a7923b3ca90dadc4"
+      "027045aa930a1155d02636e0df1425ec724e518ed97898aacd94bf64ee0167da"
     ],
     [
       "CST-AUTHORIZED-SIDE-EFFECTS",
@@ -319,7 +319,7 @@
       "estimatedTokens": 6886,
       "file": "contexts/CTX-CONTINUITY-SYSTEM.md",
       "id": "CTX-CONTINUITY-SYSTEM",
-      "sha256": "558593db53c7eb332541ed98826d0f16eba1a5b55153ca232b34a9ab54b210fd"
+      "sha256": "3684fdd189d83e6c02074afc627eff3da466abf3c1180a5848f30d48742f8636"
     }
   ],
   "prerequisites": [
