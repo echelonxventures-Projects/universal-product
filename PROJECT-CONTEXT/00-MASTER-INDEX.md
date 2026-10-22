@@ -42,12 +42,12 @@
 
 | # | Pack | Title | Parts (bytes) | Status |
 |---|---|---|---|---|
-| 1 | [CTX-BOOTSTRAP](contexts/CTX-BOOTSTRAP.md) | Bootstrap — mandatory rules and current state | 8776 | ok |
-| 2 | [CTX-GOVERNANCE](contexts/CTX-GOVERNANCE.md) | Constitutional governance and the registry pipeline | 10725 | ok |
-| 3 | [CTX-CONTINUITY-DESIGN](contexts/CTX-CONTINUITY-DESIGN.md) | Context continuity — design decisions and open design questions | 13400 | ok |
-| 4 | [CTX-CONTINUITY-SYSTEM](contexts/CTX-CONTINUITY-SYSTEM.md) | Context continuity — requirements and code | 21961 | ok |
-| 5 | [CTX-EVIDENCE-ARCHIVE](contexts/CTX-EVIDENCE-ARCHIVE.md) | Source evidence — inventory, gaps and coverage | 18607 | ok |
-| 6 | [CTX-PLATFORM-QUALITY](contexts/CTX-PLATFORM-QUALITY.md) | Platform quality — open review findings and runtime risks | 8920 | ok |
+| 1 | [CTX-BOOTSTRAP](contexts/CTX-BOOTSTRAP.md) | Bootstrap — mandatory rules and current state | 8739 | ok |
+| 2 | [CTX-GOVERNANCE](contexts/CTX-GOVERNANCE.md) | Constitutional governance and the registry pipeline | 8162 | ok |
+| 3 | [CTX-CONTINUITY-DESIGN](contexts/CTX-CONTINUITY-DESIGN.md) | Context continuity — design decisions and open design questions | 10837 | ok |
+| 4 | [CTX-CONTINUITY-SYSTEM](contexts/CTX-CONTINUITY-SYSTEM.md) | Context continuity — requirements and code | 19466 | ok |
+| 5 | [CTX-EVIDENCE-ARCHIVE](contexts/CTX-EVIDENCE-ARCHIVE.md) | Source evidence — inventory, gaps and coverage | 16075 | ok |
+| 6 | [CTX-PLATFORM-QUALITY](contexts/CTX-PLATFORM-QUALITY.md) | Platform quality — open review findings and runtime risks | 6388 | ok |
 
 ## Tasks
 

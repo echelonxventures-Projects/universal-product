@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "b7d57f04839f94a0ad1e97e880f6bf96fd91ffc5b8e4025d72721c6d8acc9ca3",
-  "depFingerprint": "0fc30cfcfffc9c360619e25e7588ee585bdbe408c39598add2a5eb7e37fd602a",
+  "contentFingerprint": "1a2b64adca5315538281aba3ac65df9313bbb2b5795e8a6aea2600cea5886241",
+  "depFingerprint": "fca680a3c1cb56e1ff2a771f498a9a946f13fb13e069ed8e95cbc69b93d6abe9",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -123,7 +123,8 @@
     "DEC-CTX-GIT-AS-ARCHIVE",
     "DEC-CTX-LOCATION",
     "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
-    "DEC-CTX-ZERO-DEPENDENCIES"
+    "DEC-CTX-ZERO-DEPENDENCIES",
+    "ISS-MASTER-PROMPT-NOT-ARCHIVED"
   ],
   "members": {
     "artifacts": [],
@@ -162,20 +163,20 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 13400,
-      "estimatedTokens": 4467,
+      "bytes": 10837,
+      "estimatedTokens": 3613,
       "file": "contexts/CTX-CONTINUITY-DESIGN.md",
       "id": "CTX-CONTINUITY-DESIGN",
-      "sha256": "c0bd7dbb8cde8ceb4aeefde365701603ec6a3cf585afdfd1e4b66f4c6e2a8f89"
+      "sha256": "9c43e5d58e987ef195f8deefbe0a2c8e773cf448d31a241422d596d9e7588d86"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "4d7ad502df1c2bcba57e5b433191f74405b96410029a8ee872d1999a084ecc93",
+      "fingerprint": "6316ebad897a9a8b50ad7d4b92821ebc7adbde5d424e701cf3b762c29bb75642",
       "id": "CTX-BOOTSTRAP"
     },
     {
-      "fingerprint": "718613be3e705e2082bb314eb8cd25ad6437b098bf0ec4e059025b0fb11e02b2",
+      "fingerprint": "190c298e3779b496da080b89d06a96bbf2dcdea9077f19b24235ae9d7b6db404",
       "id": "CTX-GOVERNANCE"
     }
   ],

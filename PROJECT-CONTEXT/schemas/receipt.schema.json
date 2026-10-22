@@ -14,6 +14,7 @@
     "repository": { "type": "object" },
     "verdict": { "enum": ["pass", "pass-with-warnings", "blocked"] },
     "budgetBytes": { "type": "integer" },
+    "totalRequiredBytes": { "type": "integer" },
     "readingOrder": { "type": "array", "items": { "type": "object", "required": ["step", "ref", "bytes"], "additionalProperties": false, "properties": { "step": { "type": "string" }, "ref": { "type": "string" }, "bytes": { "type": "integer" }, "estimatedTokens": { "type": "integer" } } } },
     "packs": { "type": "array", "items": { "type": "object", "required": ["id", "fingerprint", "fresh"], "additionalProperties": false, "properties": { "id": { "type": "string" }, "fingerprint": { "type": "string" }, "fresh": { "type": "boolean" } } } },
     "requirements": { "type": "array", "items": { "type": "string" } },

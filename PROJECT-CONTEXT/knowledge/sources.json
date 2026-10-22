@@ -202,7 +202,7 @@
       "id": "SRC-CONV-PRIOR-SESSIONS",
       "title": "Conversations behind agent sessions 2026-09-17 → 2026-10-07",
       "category": "conversation",
-      "origin": "earlier agent sessions in another workspace (/Users/bipin/Desktop/... per MEMORY.md) and tool",
+      "origin": "earlier agent sessions in another workspace and tool (workspace recorded in SRC-MEMORY-LEDGER#S0002)",
       "locator": "not available to this repository",
       "storage": {
         "kind": "none"

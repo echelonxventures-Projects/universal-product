@@ -33,8 +33,8 @@ Record, for each finding in REVIEW.md (2026-10-12), whether it is fixed, by whic
 
 ## Load these packs, in order
 
-1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (8776 B)
-2. `PROJECT-CONTEXT/contexts/CTX-PLATFORM-QUALITY.md` — Platform quality — open review findings and runtime risks (8920 B)
+1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (8739 B)
+2. `PROJECT-CONTEXT/contexts/CTX-PLATFORM-QUALITY.md` — Platform quality — open review findings and runtime risks (6388 B)
 
 ## Requirements
 

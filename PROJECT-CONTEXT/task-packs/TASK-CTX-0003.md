@@ -35,8 +35,8 @@ Preserve the owner's master prompt as original evidence in access-controlled sto
 
 ## Load these packs, in order
 
-1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (8776 B)
-2. `PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md` — Source evidence — inventory, gaps and coverage (18607 B)
+1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (8739 B)
+2. `PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md` — Source evidence — inventory, gaps and coverage (16075 B)
 
 ## Requirements
 

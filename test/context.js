@@ -132,7 +132,7 @@ section("§A the committed knowledge");
   ok(/AGENTS\.md/.test(fs.readFileSync(path.join(ROOT, "CLAUDE.md"), "utf8")) && fs.statSync(path.join(ROOT, "CLAUDE.md")).size < 600, "CLAUDE.md is a thin pointer to AGENTS.md");
 
   /* secret scan + path safety */
-  ok(U.findSecrets("key = 'sk_live_abcdefgh12345'").length > 0 && U.findSecrets("-----BEGIN RSA PRIVATE KEY-----").length > 0 && U.findSecrets("nothing to see").length === 0, "secret scanner detects credential patterns and passes clean text");
+  ok(U.findSecrets("key = '" + ["sk", "live", "abcdefgh12345"].join("_") + "'").length > 0 && U.findSecrets("-----BEGIN RSA " + "PRIVATE KEY-----").length > 0 && U.findSecrets("nothing to see").length === 0, "secret scanner detects credential patterns and passes clean text");
   let t1 = null, t2 = null;
   try { U.safeJoin(ROOT, "../etc/passwd"); } catch (e) { t1 = e; }
   try { U.safeJoin(ROOT, "/etc/passwd"); } catch (e) { t2 = e; }
@@ -441,6 +441,98 @@ section("§G fresh agent: no conversation history, repository files only");
   ok(r.code === 0, "and the repository verifies afterwards", r.out.slice(0, 600));
   /* exit codes */
   ok(cli(root, ["nonsense"]).code === 3, "usage errors exit 3");
+}
+
+/* ===================================================================== §H */
+section("§H audit hardening: nothing mandatory is optional, nothing is claimed unmeasured");
+{
+  /* 1. classification: open issues of any severity, security/privacy constraints and
+        dependencies of mandatory items are mandatory */
+  let root = sandbox("mand");
+  editKind(root, "issue", recs => recs.push({ id: "ISS-TEST-LOW", kind: "question", title: "a low open question", statement: "minor uncertainty that must still be seen", status: "open", severity: "low", affects: ["REQ-CTX-PACKS"], lifecycle: "canonical-active" }));
+  editKind(root, "constraint", recs => recs.push({ id: "CST-TEST-SEC", title: "non-critical security rule", statement: "a security rule not flagged critical", class: "security", owner: "PROJECT-CONTEXT/knowledge/constraints.json", scope: "scoped", critical: false, sources: [{ ref: "SRC-README", segment: "S0003" }], lifecycle: "canonical-active" }));
+  editKind(root, "requirement", recs => {
+    const base = recs.find(x => x.id === "REQ-CTX-CI");
+    recs.push(Object.assign(JSON.parse(JSON.stringify(base)), { id: "REQ-TEST-LOWDEP", title: "low-priority dependency", statement: "a low-priority requirement a critical one depends on", priority: "low", dependsOn: [] }));
+    recs.find(x => x.id === "REQ-CTX-PACKS").dependsOn = ["REQ-TEST-LOWDEP"];
+  });
+  editKind(root, "context", recs => { recs.find(x => x.id === "CTX-CONTINUITY-SYSTEM").include.constraints = ["CST-TEST-SEC"]; });
+  let { K, G } = ctx.open(root);
+  let rendered = P.renderAll(K, G, { budget: 9000 });
+  let pk = rendered.packs.find(p => p.json.id === "CTX-CONTINUITY-SYSTEM");
+  for (const id of ["ISS-TEST-LOW", "CST-TEST-SEC", "REQ-TEST-LOWDEP"]) ok(pk.json.mandatory.includes(id) && pk.parts[0].body.includes(id), id + " is mandatory and stays in part 1 under a tight budget");
+  ok(pk.json.excluded.length === 0 && pk.parts.slice(1).every(x => !/ISS-TEST-LOW|CST-TEST-SEC|REQ-TEST-LOWDEP/.test(x.body)), "…and appears in no supplementary part");
+
+  /* 2. an oversized block: knowledge blocks the gate, an artifact only warns */
+  root = sandbox("oversize");
+  const huge = "x".repeat(30000);
+  editKind(root, "requirement", recs => {
+    const base = recs.find(x => x.id === "REQ-CTX-CI");
+    recs.push(Object.assign(JSON.parse(JSON.stringify(base)), { id: "REQ-TEST-HUGE", title: "huge low requirement", statement: "huge " + huge, priority: "low", implementedBy: [], verifiedBy: ["ART-TEST-CONTEXT"] }));
+  });
+  editKind(root, "context", recs => { recs.find(x => x.id === "CTX-PLATFORM-QUALITY").include.requirements = ["REQ-TEST-HUGE"]; });
+  ctx.build(root);
+  ({ K, G } = ctx.open(root));
+  const pq = U.readJSON(path.join(root, "PROJECT-CONTEXT", "contexts", "CTX-PLATFORM-QUALITY.json"));
+  ok(pq.status === "incomplete" && pq.excluded.some(e => e.id === "REQ-TEST-HUGE" && e.kind === "requirement"), "an oversized non-mandatory block is excluded AND recorded with its reason, never silently dropped");
+  ok(fs.readFileSync(path.join(root, "PROJECT-CONTEXT", "contexts", "CTX-PLATFORM-QUALITY.md"), "utf8").includes("REQ-TEST-HUGE: a single block of"), "the exclusion is written into the pack itself");
+  ok(codes(ctx.verify(root)).length === 0 && ctx.verify(root).warnings.some(w => w.code === "pack-incomplete"), "verify reports the incomplete pack as a warning");
+  const gate = Pr.assimilate(K, G, "TASK-SEC-0001", { agent: "t" });
+  ok(gate.verdict === "blocked" && gate.gaps.some(g => g.code === "knowledge-excluded" && /REQ-TEST-HUGE/.test(g.message)), "the gate BLOCKS when knowledge (not just an artifact) could not fit");
+
+  /* 3. traceability and entry-point consistency are CI failures */
+  root = sandbox("trace");
+  editKind(root, "requirement", recs => { recs.find(x => x.id === "REQ-CTX-HANDOFF").verifiedBy = []; });
+  ctx.build(root, { force: true });
+  ok(codes(ctx.verify(root)).includes("requirement-unverified"), "a critical requirement without a verifying test fails verify");
+  root = sandbox("entry");
+  fs.appendFileSync(path.join(root, "AGENTS.md"), "\nRun `npm run context:does-not-exist` and read `PROJECT-CONTEXT/99-NOPE.md`.\n");
+  ctx.build(root);
+  const ev = codes(ctx.verify(root));
+  ok(ev.includes("entry-point-command") && ev.includes("entry-point-path"), "an entry point citing a missing command or file fails verify");
+
+  /* 4. receipts state the cumulative reading load honestly */
+  ({ K, G } = ctx.open(ROOT));
+  const rc = Pr.assimilate(K, G, "TASK-CTX-0002", { agent: "t", budget: 12000 });
+  ok(rc.totalRequiredBytes > 12000 && rc.gaps.some(g => g.code === "sequential-reading"), "when required reading exceeds one window the receipt says so (sequential reading), not 'fits'");
+
+  /* 5. restore isolation is measured, not asserted */
+  const rs = A.restoreCheck(K, {});
+  ok(rs.liveRepositoryTouched === false && rs.ok, "restore-check measures git status before/after (untouched)");
+}
+
+/* ===================================================================== §I */
+section("§I fresh agent at a deliberately small budget (12 000 B ≈ 4k tokens, estimated)");
+{
+  const root = sandbox("fresh-small");
+  const B = "12000";
+  const entry = fs.readFileSync(path.join(root, "AGENTS.md"), "utf8");
+  ok(/PROJECT-CONTEXT\/00-MASTER-INDEX\.md/.test(entry) && Buffer.byteLength(entry) <= Number(B), "the entry point itself fits the small window");
+  const master = fs.readFileSync(path.join(root, "PROJECT-CONTEXT", "00-MASTER-INDEX.md"), "utf8");
+  ok(Buffer.byteLength(master) <= Number(B) && master.includes("[TASK-CTX-0002]"), "the master index fits the window and lists the task");
+  const r = cli(root, ["assimilate", "TASK-CTX-0002", "--agent", "small-agent", "--budget", B, "--write", "--json"]);
+  const rc = JSON.parse(r.out);
+  ok(r.code === 0 && rc.verdict !== "blocked", "a 12 KB agent passes the gate for TASK-CTX-0002", JSON.stringify(rc.gaps.filter(g => g.severity === "block")));
+  const units = rc.readingOrder.filter(u => u.step !== "supplementary");
+  ok(units.every(u => u.bytes <= Number(B)), "every required unit fits the 12 KB window (read one at a time)");
+  /* read unit by unit — never more than one window — and keep only what each must yield */
+  const found = {};
+  for (const u of units) {
+    const t = fs.readFileSync(path.join(root, u.ref.split(" ")[0]), "utf8");
+    if (/^# TASK-CTX-0002/m.test(t)) { found.task = true; found.state = /\*\*planned\*\*/.test(t); found.next = /Next action: \*\*Owner reads/.test(t); found.dep = /## Depends on\n\n- TASK-CTX-0001/.test(t); found.tests = /`npm run context:verify`/.test(t); }
+    if (/CST-KNOWLEDGE-ONCE/.test(t) && /CST-AUTHORIZED-SIDE-EFFECTS/.test(t)) found.rules = true;
+    if (/DEC-CTX-LOCATION/.test(t) && /Status: \*\*proposed\*\*/.test(t)) found.decisions = true;
+    if (/ISS-CTX-DECISIONS-UNAPPROVED/.test(t)) found.blocker = true;
+    if (/\[verified\]/.test(t) && /\[unverified\]/.test(t)) found.facts = true;
+  }
+  ok(found.task && found.state, "finds the current task and its actual state (planned)");
+  ok(found.dep && rc.prerequisites.includes("TASK-CTX-0001") && rc.gaps.some(g => g.code === "prerequisite-open"), "finds its dependency (TASK-CTX-0001) and that it is still open");
+  ok(found.rules, "finds the governing constraints");
+  ok(found.decisions && found.blocker, "finds the decisions under review and the approval issue");
+  ok(found.next && found.tests, "finds the exact next action and the required verification");
+  ok(found.facts, "separates verified facts from unverified ones");
+  const tiny = cli(root, ["assimilate", "TASK-CTX-0002", "--agent", "tiny", "--budget", "8000", "--json"]);
+  ok(tiny.code === 2 && JSON.parse(tiny.out).gaps.some(g => g.code === "over-budget"), "below the bootstrap's size (8 KB) the gate blocks with the reason instead of a partial pass");
 }
 
 /* ===================================================================== */

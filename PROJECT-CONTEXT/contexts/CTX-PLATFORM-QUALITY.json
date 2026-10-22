@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "bdd32dfe0af3adfb1d461a21af31ce7d2d9864a2b45dd2c8d0bfbe43db33de07",
-  "depFingerprint": "fac1ec559173e9d232dbf4096f9b31ed891921a49510196c0f9abc658f55b6eb",
+  "contentFingerprint": "f10338592d659c6e408b8987fea5eb88181f8ed97a85d4d530c8b66e26b3dc2b",
+  "depFingerprint": "76c8b3678db2b02afcbef672b34ecd7be71fdea12a955b5cb4742dcbdf7e6add",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -131,6 +131,8 @@
     "CST-SEAL-DERIVED",
     "CST-SUPERSEDED-NOT-AUTHORITY",
     "CST-ZERO-HARDCODING",
+    "ISS-NPM-TEST-DURATION",
+    "ISS-PG-CUTOVER-STATUS",
     "ISS-REVIEW-FINDINGS-UNRECONCILED",
     "ISS-RUNTIME-DEPENDENCY-CLAIM"
   ],
@@ -170,16 +172,16 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 8920,
-      "estimatedTokens": 2974,
+      "bytes": 6388,
+      "estimatedTokens": 2130,
       "file": "contexts/CTX-PLATFORM-QUALITY.md",
       "id": "CTX-PLATFORM-QUALITY",
-      "sha256": "b91788f50f30aaa61bfac476e7c1988ba10d276ebfb3694ab7b2109ee8507fad"
+      "sha256": "cda338508d60d2d7feffa2aea8d433acf5c5f0364025d9d6779f15e0b72efc96"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "4d7ad502df1c2bcba57e5b433191f74405b96410029a8ee872d1999a084ecc93",
+      "fingerprint": "6316ebad897a9a8b50ad7d4b92821ebc7adbde5d424e701cf3b762c29bb75642",
       "id": "CTX-BOOTSTRAP"
     }
   ],

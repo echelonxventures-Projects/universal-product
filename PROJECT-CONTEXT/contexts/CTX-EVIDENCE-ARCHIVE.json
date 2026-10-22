@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "35ec01ec5d7355eac3e7209186c567878f650ac7e1ac6e23ef5ed4b30f1282d1",
-  "depFingerprint": "065b32f58eff9feaa78cc9ca30df0664274ee2beb5cd4d47df5195e9285eeb68",
+  "contentFingerprint": "a0e794bb8eb7e5b4bd8c3494717a8a4951970724699905a4c3a36894d4c02b8d",
+  "depFingerprint": "06da1266f953aac840013ef8ed1a4ea84ef9c7c8b637013b8569228e2d8893ed",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -142,7 +142,7 @@
     ],
     [
       "SRC-CONV-PRIOR-SESSIONS",
-      "92340868dfd3516765a2b625b459580b3f9e94149fff48d0150bb325ea95cd1f"
+      "5484b472302f90929de9f749af53762f495b779dd93c2bac6466fcd9dfeaeb06"
     ],
     [
       "SRC-GIT-HISTORY",
@@ -232,7 +232,11 @@
     "CST-ZERO-HARDCODING",
     "DEC-CTX-GIT-AS-ARCHIVE",
     "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+    "ISS-MASTER-PROMPT-NOT-ARCHIVED",
+    "ISS-PG-CUTOVER-STATUS",
+    "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
     "ISS-REVIEW-FINDINGS-UNRECONCILED",
+    "ISS-SEGMENTS-UNPROCESSED",
     "REQ-CTX-ARCHIVE",
     "REQ-CTX-COVERAGE"
   ],
@@ -303,16 +307,16 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 18607,
-      "estimatedTokens": 6203,
+      "bytes": 16075,
+      "estimatedTokens": 5359,
       "file": "contexts/CTX-EVIDENCE-ARCHIVE.md",
       "id": "CTX-EVIDENCE-ARCHIVE",
-      "sha256": "bf3fd291503b1fcaee31def277c32e19ba9a07eaa76739099f8b09cd102cc407"
+      "sha256": "fcfbda086e6878bd0b76a85fdccdab7289ee6e6e0fb8a3efd3b6e351b93b8890"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "4d7ad502df1c2bcba57e5b433191f74405b96410029a8ee872d1999a084ecc93",
+      "fingerprint": "6316ebad897a9a8b50ad7d4b92821ebc7adbde5d424e701cf3b762c29bb75642",
       "id": "CTX-BOOTSTRAP"
     }
   ],

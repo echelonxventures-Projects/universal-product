@@ -66,10 +66,10 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 
 | Pack | Status | Parts | Bytes (est. tokens @3 B/token) | Mandatory items | Excluded |
 |---|---|---|---|---|---|
-| CTX-BOOTSTRAP | ok | 1 | 8776 (2926) | 16 | 0 |
-| CTX-GOVERNANCE | ok | 1 | 10725 (3575) | 20 | 0 |
-| CTX-CONTINUITY-DESIGN | ok | 1 | 13400 (4467) | 22 | 0 |
-| CTX-CONTINUITY-SYSTEM | ok | 1 | 21961 (7321) | 29 | 0 |
-| CTX-EVIDENCE-ARCHIVE | ok | 1 | 18607 (6203) | 21 | 0 |
-| CTX-PLATFORM-QUALITY | ok | 1 | 8920 (2974) | 19 | 0 |
+| CTX-BOOTSTRAP | ok | 1 | 8739 (2913) | 17 | 0 |
+| CTX-GOVERNANCE | ok | 1 | 8162 (2721) | 22 | 0 |
+| CTX-CONTINUITY-DESIGN | ok | 1 | 10837 (3613) | 23 | 0 |
+| CTX-CONTINUITY-SYSTEM | ok | 1 | 19466 (6489) | 29 | 0 |
+| CTX-EVIDENCE-ARCHIVE | ok | 1 | 16075 (5359) | 25 | 0 |
+| CTX-PLATFORM-QUALITY | ok | 1 | 6388 (2130) | 21 | 0 |
 
