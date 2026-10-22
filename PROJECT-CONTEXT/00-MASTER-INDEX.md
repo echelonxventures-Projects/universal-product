@@ -42,10 +42,10 @@
 
 | # | Pack | Title | Parts (bytes) | Status |
 |---|---|---|---|---|
-| 1 | [CTX-BOOTSTRAP](contexts/CTX-BOOTSTRAP.md) | Bootstrap — mandatory rules and current state | 8739 | ok |
+| 1 | [CTX-BOOTSTRAP](contexts/CTX-BOOTSTRAP.md) | Bootstrap — mandatory rules and current state | 9379 | ok |
 | 2 | [CTX-GOVERNANCE](contexts/CTX-GOVERNANCE.md) | Constitutional governance and the registry pipeline | 8162 | ok |
 | 3 | [CTX-CONTINUITY-DESIGN](contexts/CTX-CONTINUITY-DESIGN.md) | Context continuity — design decisions and open design questions | 10837 | ok |
-| 4 | [CTX-CONTINUITY-SYSTEM](contexts/CTX-CONTINUITY-SYSTEM.md) | Context continuity — requirements and code | 19466 | ok |
+| 4 | [CTX-CONTINUITY-SYSTEM](contexts/CTX-CONTINUITY-SYSTEM.md) | Context continuity — requirements and code | 20030 | ok |
 | 5 | [CTX-EVIDENCE-ARCHIVE](contexts/CTX-EVIDENCE-ARCHIVE.md) | Source evidence — inventory, gaps and coverage | 16075 | ok |
 | 6 | [CTX-PLATFORM-QUALITY](contexts/CTX-PLATFORM-QUALITY.md) | Platform quality — open review findings and runtime risks | 6388 | ok |
 
@@ -53,7 +53,7 @@
 
 | Task | Title | State | Next action |
 |---|---|---|---|
-| [TASK-CTX-0001](task-packs/TASK-CTX-0001.md) | Implement the context continuity system | in-progress | Finish the implementation, run the verification commands, record the outcome with `npm run context:handoff`. |
+| [TASK-CTX-0001](task-packs/TASK-CTX-0001.md) | Implement the context continuity system | done | Owner reviews DEC-CTX-* in PROJECT-CONTEXT/03-DECISION-REGISTER.md (TASK-CTX-0002); open a PR so CI runs the workflow remotely. |
 | [TASK-CTX-0002](task-packs/TASK-CTX-0002.md) | Owner review of the continuity design decisions | planned | Owner reads PROJECT-CONTEXT/03-DECISION-REGISTER.md and states a verdict per decision. |
 | [TASK-CTX-0003](task-packs/TASK-CTX-0003.md) | Archive the 2026-10-22 session transcript | planned | Owner exports the transcript and provides an access-controlled CONTEXT_ARCHIVE_DIR. |
 | [TASK-REG-0001](task-packs/TASK-REG-0001.md) | Correct the seal's misnamed zero-hardcoding input | planned | Confirm the intended file with the owner, then change lib/canonical.js:104 and re-run the registry checks. |

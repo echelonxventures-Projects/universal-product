@@ -14,5 +14,8 @@ Snapshot as of **2026-10-22** · recorded at branch `claude/modest-babbage-kyejd
 | F-005 | verified | package.json declares bull, ioredis and prom-client; no file in lib/ or server.js requires them. | grep observed 2026-10-22 |
 | F-006 | unverified | The last recorded session before this one (2026-10-07) reported the full suite green after ~18 minutes. | SRC-MEMORY-LEDGER#S0036 (agent-reported) |
 | F-008 | assumption | The REVIEW.md (2026-10-12) findings were addressed by PR #1 and PR #2, judging only by commit titles. | commit titles in SRC-GIT-HISTORY S0049–S0061; not verified |
+| F-009 | verified | Full `npm test` on the clean committed tree afea2f2 exited 0 with no failing assertion (context continuity 171/171; every suite green); HEAD and a clean working tree were confirmed before and after. | command run 2026-10-22 05:51:26→06:16:59 UTC, exit 0 |
+| F-010 | verified | The full `npm test` run on 120d364 exited 1: test/context.js §F aborted because `git commit` in its sandbox had nothing to commit on a clean checkout. Fixed in afea2f2 (--allow-empty); a regression of this work, not pre-existing. | command run 2026-10-22 05:49:27→05:49:43 UTC, exit 1; reproduced on the clean 120d364 tree |
+| F-011 | verified | No GitHub Actions run exists for branch claude/modest-babbage-kyejdn and no pull request is open for it; the workflow triggers only on push to main/master and on pull_request, so CI has not executed this work remotely. | GitHub API list_workflow_runs (branch filter) total_count 0; list_pull_requests head filter empty — 2026-10-22 |
 
 Live state always wins over this snapshot: run `git status`, `npm run context:verify`, and the task's verification commands.

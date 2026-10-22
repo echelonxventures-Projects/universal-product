@@ -67,7 +67,7 @@
         "CTX-CONTINUITY-SYSTEM",
         "CTX-EVIDENCE-ARCHIVE"
       ],
-      "state": "in-progress",
+      "state": "done",
       "acceptance": [
         "npm run context:verify exits 0 on the committed tree",
         "node test/context.js passes (determinism, invalidation, hygiene safety, restore, fresh-agent scenario)",
@@ -82,7 +82,7 @@
         "npm run registry",
         "npm test"
       ],
-      "nextAction": "Finish the implementation, run the verification commands, record the outcome with `npm run context:handoff`.",
+      "nextAction": "Owner reviews DEC-CTX-* in PROJECT-CONTEXT/03-DECISION-REGISTER.md (TASK-CTX-0002); open a PR so CI runs the workflow remotely.",
       "lifecycle": "canonical-active",
       "history": [
         {
@@ -90,6 +90,14 @@
           "change": "created",
           "to": "in-progress",
           "by": "implementing agent (Claude Code session 2026-10-22)"
+        },
+        {
+          "at": "2026-10-22T06:18:12.394Z",
+          "change": "handoff HO-CTX-0001-001",
+          "from": "in-progress",
+          "to": "done",
+          "by": "claude-code-session-2026-10-22",
+          "evidence": "PROJECT-CONTEXT/handoffs/HO-CTX-0001-001.json"
         }
       ]
     },

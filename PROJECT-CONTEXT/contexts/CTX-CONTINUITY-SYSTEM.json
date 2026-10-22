@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "19983ebb0933d45bbd29095dbb3d69dea360182ea31c51e4621fdb12c0ac1875",
-  "depFingerprint": "ea927fc5347d880c1aaea94e5191c1155de7416272621cab33f60ca44327aac2",
+  "contentFingerprint": "dec0de95c6ddf0e6d5a850557a46a3f2d4a6ae21608ff4167f5a9727a1b70c3c",
+  "depFingerprint": "e818d511bbc30c464e0ded647a60377e66c17763181c71a2640d3fe7bdabdb03",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -203,6 +203,14 @@
     [
       "REQ-CTX-VERIFICATION",
       "f1756548bb4c3dc6267b0f118995c49c6591696033137102a041518dab30d3b9"
+    ],
+    [
+      "fact:F-009",
+      "5d2ece71541f6d1f4a9b0aefebd4ef813898431f4ee484f1761be5fe5a4d7108"
+    ],
+    [
+      "fact:F-010",
+      "a73a13de299da697cb3b8ed0e18d8cc37cb0cd97d4bcb218e0e4c859c0b56a13"
     ]
   ],
   "mandatory": [
@@ -299,16 +307,16 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 19466,
-      "estimatedTokens": 6489,
+      "bytes": 20030,
+      "estimatedTokens": 6677,
       "file": "contexts/CTX-CONTINUITY-SYSTEM.md",
       "id": "CTX-CONTINUITY-SYSTEM",
-      "sha256": "6313494fef2c8b6274da0fb7c9f44f1b0313a15c3150b041854a664fa45b94f0"
+      "sha256": "68db0870c8862869346872e46ca1a8f0744285f9b21984da6d3c6514b490a310"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "fca680a3c1cb56e1ff2a771f498a9a946f13fb13e069ed8e95cbc69b93d6abe9",
+      "fingerprint": "283a263f20766d6b9533e00166eccb5c48d2a12d3e017bdf11dc8bc047a033bd",
       "id": "CTX-CONTINUITY-DESIGN"
     }
   ],

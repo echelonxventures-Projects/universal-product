@@ -1,7 +1,7 @@
 {
   "budgetBytes": 12000,
-  "contentFingerprint": "dbcb8c9a71c1bd9de58b67f97ace542201ca4bceaf62fbabc61b522ae7251186",
-  "depFingerprint": "6316ebad897a9a8b50ad7d4b92821ebc7adbde5d424e701cf3b762c29bb75642",
+  "contentFingerprint": "e66321c5fd7c94d3e73eb4484fe59e2d576b1eaa37f6a10ec0334c990292fc92",
+  "depFingerprint": "f6c35eca8085dfbc8975c472145e54972e863f1908dfe5dc27a037fc4e732cf6",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -91,6 +91,14 @@
     [
       "fact:F-006",
       "6e456b2904373ae6771644aca437e075f87fc7ec1c11c20edf5d462ede8afa49"
+    ],
+    [
+      "fact:F-009",
+      "5d2ece71541f6d1f4a9b0aefebd4ef813898431f4ee484f1761be5fe5a4d7108"
+    ],
+    [
+      "fact:F-011",
+      "0375d4722a3c78efd0f53c97428dbc19271f5fbc7ef9d853d60a6cc382b002ee"
     ]
   ],
   "mandatory": [
@@ -144,11 +152,11 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 8739,
-      "estimatedTokens": 2913,
+      "bytes": 9379,
+      "estimatedTokens": 3127,
       "file": "contexts/CTX-BOOTSTRAP.md",
       "id": "CTX-BOOTSTRAP",
-      "sha256": "c2347b172d9ec27a7b07c321fabcbfe3a4f5b6806e803f8a833ad9864959bc66"
+      "sha256": "a6ac70f1cff42849e1b505f6c83301421b9e986804925d50a2474b3f24cb68fc"
     }
   ],
   "prerequisites": [],
