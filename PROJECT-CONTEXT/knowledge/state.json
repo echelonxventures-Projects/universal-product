@@ -106,6 +106,27 @@
         "TASK-CTX-0001",
         "CTX-BOOTSTRAP"
       ]
+    },
+    {
+      "id": "F-012",
+      "status": "verified",
+      "statement": "HISTORICAL (fixed): on b18423f, test/context.js failed 7/171 because its assertions hard-coded the session's transient task state; fixed in 8207fd7 (assertions read canonical tasks.json; wall-clock check kept and mutation-proven).",
+      "evidence": "node test/context.js on clean b18423f, exit 1, 2026-10-22",
+      "about": [
+        "TASK-CTX-0001",
+        "CTX-CONTINUITY-SYSTEM"
+      ]
+    },
+    {
+      "id": "F-013",
+      "status": "verified",
+      "statement": "Full `npm test` on the clean tree 8207fd7 exited 0 (context continuity 171/171; all suites green; 33 ExperimentalWarning lines, identical to the 441d772 baseline; no skipped tests); HEAD and clean tree confirmed before and after.",
+      "evidence": "command run 2026-10-22 06:20:14→06:45:25 UTC, exit 0",
+      "about": [
+        "TASK-CTX-0001",
+        "CTX-BOOTSTRAP",
+        "CTX-CONTINUITY-SYSTEM"
+      ]
     }
   ]
 }

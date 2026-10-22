@@ -11,7 +11,7 @@ Give any authorised agent — any model, client or context size — a governed, 
 
 - **done** · authority: owner instruction, 2026-10-22 session (SRC-CONV-2026-10-22-MASTER-PROMPT)
 - Next action: **Owner reviews DEC-CTX-* in PROJECT-CONTEXT/03-DECISION-REGISTER.md (TASK-CTX-0002); open a PR so CI runs the workflow remotely.**
-- Latest handoff: `PROJECT-CONTEXT/handoffs/HO-CTX-0001-001.json` (2026-10-22T06:18:12.394Z, by claude-code-session-2026-10-22)
+- Latest handoff: `PROJECT-CONTEXT/handoffs/HO-CTX-0001-002.json` (2026-10-22T06:47:02.950Z, by claude-code-session-2026-10-22)
 
 ## Scope
 
@@ -46,10 +46,10 @@ Give any authorised agent — any model, client or context size — a governed, 
 
 ## Load these packs, in order
 
-1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (9379 B)
+1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (9691 B)
 2. `PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md` — Constitutional governance and the registry pipeline (8162 B)
 3. `PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.md` — Context continuity — design decisions and open design questions (10837 B)
-4. `PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.md` — Context continuity — requirements and code (20030 B)
+4. `PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.md` — Context continuity — requirements and code (20658 B)
 5. `PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md` — Source evidence — inventory, gaps and coverage (16075 B)
 
 ## Requirements

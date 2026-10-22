@@ -101,10 +101,10 @@
       "percent": 100
     },
     {
-      "denominator": 1,
+      "denominator": 2,
       "formula": "handoffs that validate against handoff.schema.json ÷ handoffs on disk",
       "name": "handoff-completeness",
-      "numerator": 1,
+      "numerator": 2,
       "percent": 100
     }
   ],

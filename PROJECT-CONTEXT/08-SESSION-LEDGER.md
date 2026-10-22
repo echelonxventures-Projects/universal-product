@@ -8,4 +8,5 @@ Durable handoffs written by `context:handoff` (schema `ctx-handoff/1`). The pre-
 | Handoff | Task | When | Agent | State | Valid | Next action |
 |---|---|---|---|---|---|---|
 | [HO-CTX-0001-001](handoffs/HO-CTX-0001-001.json) | TASK-CTX-0001 | 2026-10-22T06:18:12.394Z | claude-code-session-2026-10-22 | done | yes | Owner reviews DEC-CTX-* in PROJECT-CONTEXT/03-DECISION-REGISTER.md (TASK-CTX-0002); open a PR so CI runs the workflow remotely. |
+| [HO-CTX-0001-002](handoffs/HO-CTX-0001-002.json) | TASK-CTX-0001 | 2026-10-22T06:47:02.950Z | claude-code-session-2026-10-22 | done | yes | Owner reviews DEC-CTX-* in PROJECT-CONTEXT/03-DECISION-REGISTER.md (TASK-CTX-0002); open a PR so CI runs the workflow remotely. |
 
