@@ -21,6 +21,11 @@ jobs:
       # through jsdom, a devDependency — without the install `npm test` dies on require
       - name: Install
         run: npm ci
+      # the context continuity gate: registry valid, _context/ fresh and reproducible,
+      # packs bounded, hygiene ratchet held. Fails when a change leaves context stale —
+      # fix with `node _registry/context.js build` and commit _context/ (AGENTS.md).
+      - name: Context integrity
+        run: node _registry/context.js check
       - name: Syntax + E2E suite (own DB/port)
         run: npm test
       - name: Boot smoke (fresh DB, healthz)

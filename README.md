@@ -8,6 +8,8 @@
 
 ## Documentation
 
+**Agents and new contributors start at [AGENTS.md](AGENTS.md)**: the bootstrap protocol for the repository's context continuity system (`node _registry/context.js bootstrap`). It covers ordered, bounded context packs, assimilation receipts, and hash-chained task handoffs. The system itself is documented in [CONTEXT_SYSTEM.md](CONTEXT_SYSTEM.md).
+
 End‑to‑end guides for every role — **Customers, Store Admins, Support, Marketplace Sellers, and Platform (Super) Admins** — live in **[USER_MANUAL.md](USER_MANUAL.md)** (roles & capability matrix, per‑surface walkthroughs, security, glossary, troubleshooting).
 
 The complete **pictorial flow** of the whole platform — three planes, the 10‑layer request pipeline, multi‑tenant resolution, meta hierarchy, pricing/checkout, B2B (RFQ·Tender·Contract), supply (sellers vs suppliers), serialization, lifecycles, modules, data model and role matrix — is in **[FLOWS.md](FLOWS.md)**.
