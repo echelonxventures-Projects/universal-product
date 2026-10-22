@@ -42,8 +42,8 @@
       "title": "Context continuity — design decisions and open design questions"
     },
     {
-      "contentFingerprint": "dec0de95c6ddf0e6d5a850557a46a3f2d4a6ae21608ff4167f5a9727a1b70c3c",
-      "depFingerprint": "e818d511bbc30c464e0ded647a60377e66c17763181c71a2640d3fe7bdabdb03",
+      "contentFingerprint": "87e60e413af4ece56c064b1aff31c94fa3c594e885b2d1181b338dff63a3ec5d",
+      "depFingerprint": "690abed1b08ebe13076863b4cf42201bedbee6e3097fb47f84624cdf91420e93",
       "id": "CTX-CONTINUITY-SYSTEM",
       "parts": [
         {

@@ -87,7 +87,14 @@ section("§A the committed knowledge");
   ok(JSON.stringify(r1) === JSON.stringify(r2), "two renders over unchanged knowledge are byte-identical");
   const disk = generatedSnapshot(ROOT);
   ok(Object.keys(r1).every(f => disk[f] === r1[f]) && Object.keys(disk).every(f => f in r1), "on-disk generated files equal a fresh render (no drift)");
-  ok(!Object.values(r1).some(b => /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(b)), "generated files carry no wall-clock timestamps");
+  /* the only timestamps a generated file may carry are those already recorded in committed
+     knowledge (handoff createdAt, history entries) — never the build's wall clock */
+  const recorded = new Set();
+  const collect = v => { if (typeof v === "string") { for (const m of v.match(/\d{4}-\d{2}-\d{2}T[\d:.]+Z?/g) || []) recorded.add(m); } else if (v && typeof v === "object") Object.values(v).forEach(collect); };
+  for (const n of K.nodes.values()) collect(n.rec);
+  for (const h of Pr.loadHandoffs(K)) collect(h);
+  const stray = Object.values(r1).flatMap(b => (b.match(/\d{4}-\d{2}-\d{2}T[\d:.]+Z?/g) || []).filter(t => !recorded.has(t)));
+  ok(stray.length === 0, "generated files carry no wall-clock timestamps (only ones recorded in committed knowledge)", stray.slice(0, 3).join(", "));
 
   /* Knowledge Once: UCOS artifacts imported, not copied; generated output never an input */
   const M = U.readJSON(path.join(ROOT, "_registry", "manifest.json"));
@@ -336,7 +343,7 @@ section("§E protocol: budgets, receipts, handoffs");
   ok(!h.ok && h.errors.some(e => /state 'done' with notCompleted/.test(e)), "a handoff claiming done with incomplete work is rejected");
   h = Pr.handoff(K, G, "TASK-CTX-0001", { agent: "t", completed: [{ claim: "x" }], nextAction: "n" }, { dryRun: true });
   ok(!h.ok, "a completed claim without evidence fails the handoff schema");
-  h = Pr.handoff(K, G, "TASK-CTX-0001", { agent: "tester", completed: [{ claim: "added a test", evidence: "test/context.js §E" }], notCompleted: ["owner approval"], tests: [{ command: "node test/context.js", result: "passed", exitCode: 0, observed: "all passed" }], nextAction: "ask the owner to approve DEC-CTX-*" }, { now: "2026-10-22T12:00:00Z" });
+  h = Pr.handoff(K, G, "TASK-CTX-0001", { agent: "tester", state: "in-progress", completed: [{ claim: "added a test", evidence: "test/context.js §E" }], notCompleted: ["owner approval"], tests: [{ command: "node test/context.js", result: "passed", exitCode: 0, observed: "all passed" }], nextAction: "ask the owner to approve DEC-CTX-*" }, { now: "2026-10-22T12:00:00Z" });
   ok(h.ok && fs.existsSync(h.file), "a valid handoff is written", (h.errors || []).join(" | "));
   ctx.build(root);
   ({ K, G } = ctx.open(root));
@@ -416,7 +423,8 @@ section("§G fresh agent: no conversation history, repository files only");
   ok(receipt.readingOrder.filter(u => u.step !== "supplementary").every(u => u.bytes <= 24000), "every unit the agent must read fits its budget");
   /* 5. from that text alone, recover what continuing requires */
   ok(/CST-KNOWLEDGE-ONCE/.test(loaded) && /CST-EVIDENCE-BEFORE-CLAIMS/.test(loaded) && /CST-AUTHORIZED-SIDE-EFFECTS/.test(loaded), "recovers the governing constraints");
-  ok(/\*\*in-progress\*\*/.test(loaded) && /Next action: \*\*/.test(loaded), "recovers the task state and the exact next action");
+  const canon = U.readJSON(path.join(root, "PROJECT-CONTEXT", "knowledge", "tasks.json")).records.find(t => t.id === "TASK-CTX-0001");
+  ok(loaded.includes("**" + canon.state + "**") && loaded.includes("Next action: **" + canon.nextAction + "**"), "recovers the task's actual state and exact next action (as recorded in canonical knowledge)");
   ok(/DEC-CTX-LOCATION/.test(loaded) && /Status: \*\*proposed\*\*/.test(loaded), "recovers the relevant decisions and that they are only proposed");
   ok(/ISS-CTX-DECISIONS-UNAPPROVED/.test(loaded) && /ISS-MASTER-PROMPT-NOT-ARCHIVED/.test(loaded), "recovers open issues and recovery limits");
   ok(/`npm run context:verify`/.test(loaded) && /`node test\/context\.js`/.test(loaded), "recovers the required verification commands");
@@ -434,8 +442,8 @@ section("§G fresh agent: no conversation history, repository files only");
   ok(r.code === 0, "`context build` refreshes it");
   /* 8. the fresh agent hands off */
   const hf = path.join(TMP, "handoff.json");
-  fs.writeFileSync(hf, JSON.stringify({ agent: "fresh-agent", completed: [{ claim: "recovered context with no prior conversation", evidence: receipt.file }], notCompleted: ["remaining owner approvals"], unverified: [], tests: [{ command: "npm run context:verify", result: "passed", exitCode: 0, observed: "context verify passed" }], nextAction: "Ask the owner to review DEC-CTX-* (TASK-CTX-0002)." }));
-  r = cli(root, ["handoff", "TASK-CTX-0001", "--from", hf]);
+  fs.writeFileSync(hf, JSON.stringify({ agent: "fresh-agent", completed: [{ claim: "recovered context with no prior conversation", evidence: receipt.file }], notCompleted: ["remaining owner approvals"], unverified: [], tests: [{ command: "npm run context:verify", result: "passed", exitCode: 0, observed: "context verify passed" }], nextAction: "Ask the owner to review DEC-CTX-* (TASK-CTX-0002).", state: "in-progress" }));
+  r = cli(root, ["handoff", "TASK-CTX-0002", "--from", hf]);
   ok(r.code === 0, "step 10 — the fresh agent records a valid handoff", r.err + r.out);
   r = cli(root, ["verify"]);
   ok(r.code === 0, "and the repository verifies afterwards", r.out.slice(0, 600));
@@ -526,7 +534,8 @@ section("§I fresh agent at a deliberately small budget (12 000 B ≈ 4k tokens,
     if (/\[verified\]/.test(t) && /\[unverified\]/.test(t)) found.facts = true;
   }
   ok(found.task && found.state, "finds the current task and its actual state (planned)");
-  ok(found.dep && rc.prerequisites.includes("TASK-CTX-0001") && rc.gaps.some(g => g.code === "prerequisite-open"), "finds its dependency (TASK-CTX-0001) and that it is still open");
+  const depState = U.readJSON(path.join(root, "PROJECT-CONTEXT", "knowledge", "tasks.json")).records.find(t => t.id === "TASK-CTX-0001").state;
+  ok(found.dep && rc.prerequisites.includes("TASK-CTX-0001") && (depState === "done") === !rc.gaps.some(g => g.code === "prerequisite-open"), "finds its dependency (TASK-CTX-0001), and the gate flags it open exactly when it is not done (now: " + depState + ")");
   ok(found.rules, "finds the governing constraints");
   ok(found.decisions && found.blocker, "finds the decisions under review and the approval issue");
   ok(found.next && found.tests, "finds the exact next action and the required verification");
