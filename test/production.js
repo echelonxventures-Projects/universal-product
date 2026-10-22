@@ -117,6 +117,25 @@ const ADDR = { name: "Prod Test", address: "1 Test St", city: "Seattle", state: 
         codes.push(r.status);
       }
       ok(codes.every(c => c === 200), "ten customers paying cash on delivery in one hour all check out — none blocked as card velocity", codes);
+
+      /* a store showing a currency other than its base one charged the base-currency number
+         labelled in the display currency (shown 60.47 EUR, charged 65.31 EUR) */
+      const P = mk(); await P("/api/session");
+      await P("/api/platform/login", "POST", { email: "platform@luxora.shop", password: PROD.PLATFORM_PASSWORD });
+      const pol = (await P("/api/platform/config")).body.policy || {};
+      await P("/api/platform/config", "PUT", { provisioning: Object.assign({}, pol.provisioning, { currencyOverridesAllowed: true }) });
+      const A = mk(); await A("/api/session");
+      await A("/api/auth/login", "POST", { email: "admin@luxora.shop", password: PROD.ADMIN_PASSWORD });
+      const setEur = await A("/api/admin/settings", "PUT", { commerce: { currency: "EUR" } });
+      const X = mk(); await X("/api/session");
+      await X("/api/cart", "POST", { id: "LX-FAS-001", qty: 1 });
+      const fx = await X("/api/checkout", "POST", Object.assign({ gateway: "cod", method: "cod" }, ADDR, { address: "77 Fx St" }));
+      const { DatabaseSync } = require("node:sqlite"); const rd = new DatabaseSync(DB, { readOnly: true });
+      const pay = rd.prepare("SELECT p.amount, p.currency FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?").get(fx.body.order && fx.body.order.num);
+      rd.close();
+      ok(setEur.status === 200 && fx.status === 200 && fx.body.order.currency === "EUR" && pay && pay.currency === "EUR" && Math.abs(pay.amount - fx.body.order.total) < 1e-9,
+        "with a display currency other than the base, the payment is recorded for exactly the total the shopper was shown", { shown: fx.body.order && fx.body.order.total, recorded: pay });
+      await A("/api/admin/settings", "PUT", { commerce: { currency: "USD" } });
     }
 
     console.log("▸ BACKUP WHILE SERVING, RESTORE ONLY WHAT VERIFIES");
@@ -158,6 +177,38 @@ const ADDR = { name: "Prod Test", address: "1 Test St", city: "Seattle", state: 
       ok(/^HTTP\/1\.1 200/.test(out), "a request in flight at SIGTERM still gets its response", out.split("\r\n")[0]);
       ok(await exited(srv) === 0, "…and the process exits 0");
       srv = null;
+    }
+
+    console.log("▸ UNDER TLS, SIGTERM DRAINS TOO — AND A HUNG REQUEST CANNOT HOLD THE PROCESS");
+    {
+      /* under TLS the listener is the https server; shutdown used to close the plain http one,
+         which never listened, so nothing drained. The second half: a client that never finishes
+         its request must not keep the process alive past LX_SHUTDOWN_MS. */
+      const tls = require("tls"), https = require("https");
+      const TPORT = 8882;
+      const tsrv = spawn(process.execPath, [path.join(ROOT, "server.js")], { cwd: ROOT, env: env({ PORT: String(TPORT), LUX_TLS: "1", LX_SHUTDOWN_MS: "1500" }), stdio: ["ignore", "ignore", "pipe"] });
+      const ready = () => new Promise(r => { const q = https.get({ host: "127.0.0.1", port: TPORT, path: "/readyz", rejectUnauthorized: false }, x => { x.resume(); r(x.statusCode === 200); }); q.on("error", () => r(false)); });
+      let up = false; for (let i = 0; i < 240 && !up && tsrv.exitCode === null; i++) { up = await ready(); if (!up) await sleep(500); }
+      ok(up, "the server answers /readyz over TLS");
+      const body = JSON.stringify({ id: "LX-FAS-001", qty: 1 });
+      const open = () => new Promise(r => { const s = tls.connect({ host: "127.0.0.1", port: TPORT, rejectUnauthorized: false }, () => r(s)); });
+      const inflight = await open(); let out = ""; inflight.on("data", d => out += d);
+      const hung = await open(); hung.on("error", () => { });
+      const head = n => `POST /api/cart HTTP/1.1\r\nHost: localhost\r\nContent-Type: application/json\r\nContent-Length: ${n}\r\nConnection: close\r\n\r\n`;
+      inflight.write(head(body.length)); hung.write(head(body.length));   /* the hung one never sends its body */
+      await sleep(200);
+      const t0 = Date.now(); tsrv.kill("SIGTERM");
+      await sleep(300);
+      inflight.write(body);
+      /* every wait is bounded: a regression must fail this test, never hang the suite */
+      const within = (p, ms) => Promise.race([p, sleep(ms).then(() => "timeout")]);
+      await within(new Promise(r => inflight.on("close", r)), 6000);
+      ok(/^HTTP\/1\.1 200/.test(out), "a TLS request in flight at SIGTERM still gets its response", out.split("\r\n")[0]);
+      const code = await within(exited(tsrv), 8000); const took = Date.now() - t0;
+      if (tsrv.exitCode === null) tsrv.kill("SIGKILL");
+      inflight.destroy();
+      ok(code === 0 && took >= 1200 && took < 4000, "a request that never completes holds shutdown only until LX_SHUTDOWN_MS (1.5 s), then the process exits 0", { code, took });
+      hung.destroy();
     }
 
     console.log("▸ OPERATOR SETTINGS ARE HONOURED, AND ONLY THOSE");

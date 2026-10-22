@@ -84,7 +84,12 @@ losing the volume loses the key. Prefer the secret store.
    logged.
 4. **Plan** — the flagship store starts on *Growth* (2,000 orders/month; checkout returns 402 past
    it). Assign the plan that matches expected volume.
-5. **Rotate** the two first-boot admin passwords in the console. Keep `PLATFORM_PASSWORD` /
+5. **Refunds** — Store admin → Payments → Refund **records** a refund. It calls no provider. Refund
+   in the provider's dashboard first, then record it (PRODUCTION_READINESS.md, PR-029).
+6. **Display currency** — if the platform allows currency overrides, a store charges in the
+   currency it displays, converted at the registry rate (PR-028). Confirm the gateway account
+   settles that currency.
+7. **Rotate** the two first-boot admin passwords in the console. Keep `PLATFORM_PASSWORD` /
    `ADMIN_PASSWORD` set: they only create accounts that do not exist yet (rotating in the console
    is not undone by a restart), but the production guard checks that they are set, and not a
    documented default, on every boot.
