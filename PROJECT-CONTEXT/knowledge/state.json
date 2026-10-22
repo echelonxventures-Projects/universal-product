@@ -51,8 +51,8 @@
     {
       "id": "F-005",
       "status": "verified",
-      "statement": "package.json declares bull, ioredis and prom-client; no file in lib/ or server.js requires them.",
-      "evidence": "grep observed 2026-10-22",
+      "statement": "CORRECTED 2026-10-22: package.json declares bull, ioredis and prom-client as optional runtime packages, loaded lazily — lib/queue.js:51 requires bull and lib/metrics.js:121 requires prom-client, matching README S0001. (The first version of this fact said nothing required them; that observation was wrong because the grep output was truncated.)",
+      "evidence": "grep observed 2026-10-22 (TASK-CTX-0004)",
       "about": [
         "ISS-RUNTIME-DEPENDENCY-CLAIM"
       ]
@@ -69,9 +69,9 @@
     },
     {
       "id": "F-008",
-      "status": "assumption",
-      "statement": "The REVIEW.md (2026-10-12) findings were addressed by PR #1 and PR #2, judging only by commit titles.",
-      "evidence": "commit titles in SRC-GIT-HISTORY S0049–S0061; not verified",
+      "status": "unverified",
+      "statement": "REVIEW.md (2026-10-12) S0001 claims every finding S1–S11/T1 is fixed at a cited code location, verified by a full npm test run. This is the review's own claim; this record has not independently verified it per finding.",
+      "evidence": "SRC-REVIEW-2026-10-12#S0001 (read 2026-10-22)",
       "about": [
         "ISS-REVIEW-FINDINGS-UNRECONCILED"
       ]
@@ -126,6 +126,27 @@
         "TASK-CTX-0001",
         "CTX-BOOTSTRAP",
         "CTX-CONTINUITY-SYSTEM"
+      ]
+    },
+    {
+      "id": "F-014",
+      "status": "verified",
+      "statement": "The 23 previously unprocessed segments (IMPLEMENTATION_MAP ×9, README ×7, REVIEW 2026-10-12 ×7) were read in full; 11 are now cited by records and 12 are individually classified with segment-specific rationales. Accounting: 6006 segments of preserved sources — 27 cited, 16 individually classified, 5963 accounted for only by source-wide rules, 0 unprocessed; 2 sources have no bytes (1 inaccessible, 1 not retained) and contribute no segments.",
+      "evidence": "npm run context:coverage, 2026-10-22 (TASK-CTX-0004)",
+      "about": [
+        "TASK-CTX-0004",
+        "CTX-EVIDENCE-ARCHIVE"
+      ]
+    },
+    {
+      "id": "F-015",
+      "status": "verified",
+      "statement": "PR #4 (head e1a3613) triggered CI run 39740943856 on GitHub: all three jobs (Node 22.13, 22, 24) concluded 'failure' in ~4 s without a runner or any executed step. No CI result for this work exists from a job that actually ran.",
+      "evidence": "GitHub API, 2026-10-22 07:30 UTC run",
+      "about": [
+        "ISS-CI-RUNNERS-UNAVAILABLE",
+        "TASK-CTX-0001",
+        "CTX-BOOTSTRAP"
       ]
     }
   ]

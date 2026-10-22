@@ -21,7 +21,8 @@
       "include": {
         "issues": [
           "ISS-CTX-DECISIONS-UNAPPROVED",
-          "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE"
+          "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
+          "ISS-CI-RUNNERS-UNAVAILABLE"
         ],
         "artifacts": [
           "ART-AGENTS-MD"
@@ -286,7 +287,9 @@
           "ISS-REVIEW-FINDINGS-UNRECONCILED",
           "ISS-PG-CUTOVER-STATUS",
           "ISS-NPM-TEST-DURATION",
-          "ISS-RUNTIME-DEPENDENCY-CLAIM"
+          "ISS-RUNTIME-DEPENDENCY-CLAIM",
+          "ISS-BASE-ECONNRESET-FLAKE",
+          "ISS-IMPLEMENTATION-MAP-STALE"
         ],
         "sources": [
           "SRC-REVIEW-2026-10-12",

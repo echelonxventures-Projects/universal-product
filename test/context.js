@@ -509,6 +509,31 @@ section("§H audit hardening: nothing mandatory is optional, nothing is claimed 
   ok(rs.liveRepositoryTouched === false && rs.ok, "restore-check measures git status before/after (untouched)");
 }
 
+/* ===================================================================== §H2 */
+section("§H2 segment accounting: how a segment is accounted for is reported, not blurred");
+{
+  const root = sandbox("basis");
+  const covp = path.join(root, "PROJECT-CONTEXT", "knowledge", "coverage.json");
+  const cov = JSON.parse(fs.readFileSync(covp, "utf8"));
+  /* a segment-specific entry listed BEFORE a source-wide rule must still win */
+  cov.classifications.unshift({ source: "SRC-ARCH-6", segments: ["S0002"], state: "irrelevant", rationale: "test: individually read" });
+  fs.writeFileSync(covp, JSON.stringify(cov, null, 2) + "\n");
+  const { K, G } = ctx.open(root);
+  const seg = C.segmentAccounting(K);
+  const arch6 = seg.perSource.find(p => p.id === "SRC-ARCH-6");
+  ok(arch6.counts.irrelevant === 1 && arch6.basis.listed === 1 && arch6.basis.rule === arch6.segments - 1, "a segment-specific classification wins over a source-wide rule regardless of order", JSON.stringify(arch6));
+  const total = Object.values(seg.totals).reduce((a, b) => a + b, 0);
+  ok(seg.basis.cited + seg.basis.listed + seg.basis.rule + seg.basis.none === total, "every segment has exactly one basis: cited, listed, rule or none");
+  ok(seg.basis.cited === seg.totals.represented && seg.basis.none === seg.totals.unprocessed, "'cited' equals represented and 'none' equals unprocessed");
+  const m = C.compute(K, G, {}).metrics;
+  const ind = m.find(x => x.name === "segment-individual-review"), rule = m.find(x => x.name === "segment-rule-classified");
+  ok(ind && rule && ind.denominator === total && rule.numerator === seg.basis.rule, "individual-review and rule-classified metrics share the segment denominator");
+  /* live repository: nothing available is left unprocessed, and missing sources are not segments */
+  const live = C.segmentAccounting(ctx.open(ROOT).K);
+  ok(live.unaccounted.length === 0, "the repository has no unprocessed segment among sources whose bytes are available");
+  ok(live.perSource.filter(p => p.preservation !== "preserved").every(p => p.segments === 0), "inaccessible / not-retained sources contribute no segments (they are gaps, not counted coverage)");
+}
+
 /* ===================================================================== §I */
 section("§I fresh agent at a deliberately small budget (12 000 B ≈ 4k tokens, estimated)");
 {

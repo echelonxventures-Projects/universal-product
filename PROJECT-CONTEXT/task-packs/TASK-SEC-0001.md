@@ -33,8 +33,8 @@ Record, for each finding in REVIEW.md (2026-10-12), whether it is fixed, by whic
 
 ## Load these packs, in order
 
-1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (9691 B)
-2. `PROJECT-CONTEXT/contexts/CTX-PLATFORM-QUALITY.md` — Platform quality — open review findings and runtime risks (6388 B)
+1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (10771 B)
+2. `PROJECT-CONTEXT/contexts/CTX-PLATFORM-QUALITY.md` — Platform quality — open review findings and runtime risks (9302 B)
 
 ## Requirements
 
@@ -47,7 +47,7 @@ Record, for each finding in REVIEW.md (2026-10-12), whether it is fixed, by whic
 
 ## Blockers
 
-- **ISS-REVIEW-FINDINGS-UNRECONCILED** [validation, high, open] REVIEW.md findings are not mapped to their fixes. REVIEW.md (2026-10-12) lists critical/high findings S1–S11, P1 and T1. Later commits (PR #1 'close the gaps from the full-project review', PR #2 'close the seven critical route-audit findings') suggest they were addressed, but no record maps each finding to a fix and a test, and this session did not verify them. _Evidence needed:_ For each finding id: the fixing commit, the test that proves it, or an explicit 'still open'. **Blocks:** TASK-SEC-0001
+- **ISS-REVIEW-FINDINGS-UNRECONCILED** [validation, medium, open] REVIEW.md findings: fix locations recorded, independent verification not yet done. CORRECTED after reading the segments. REVIEW.md (2026-10-12) S0001 does map every finding S1–S11 and T1 to its fixing code location, records P1/S5/S6 as superseded, and states closure was verified by a full npm test run; S0003–S0006 hold the finding details and S0008 the order of work. What remains open is independent verification by this record: a per-finding link from finding → commit → test, checked rather than taken from the review's own claim. (The earlier statement that 'no record maps each finding to a fix' was wrong — written before S0001 was read.) _Evidence needed:_ For each finding id: confirm the cited code location fixes it and name the test that fails without the fix. **Blocks:** TASK-SEC-0001
 
 
 ## Depends on

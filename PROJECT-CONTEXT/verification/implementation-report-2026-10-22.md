@@ -140,3 +140,16 @@ Other simulated failures, each detected (§C and §E): corrupted, missing, stale
 1. **TASK-CTX-0002.** The owner reviews DEC-CTX-* in `03-DECISION-REGISTER.md`.
 2. **TASK-CTX-0003.** Export and import the session transcript into an access-controlled `CONTEXT_ARCHIVE_DIR`.
 3. **TASK-REG-0001**, then TASK-SEC-0001.
+
+## 12. Corrections recorded after this report (TASK-CTX-0004, same day)
+
+The body of this report is kept as written. Two of its statements were wrong.
+
+- **§5 and §10: "ISS-RUNTIME-DEPENDENCY-CLAIM" was not a real conflict.** `lib/queue.js:51` requires `bull` and `lib/metrics.js:121` requires `prom-client`, both lazily, exactly as README S0001 says. The original observation ("no file requires them") was this agent's error: the grep output was truncated by `| head`. The issue is now resolved, and fact F-005 is corrected in place, with the error noted.
+- **§10: "ISS-REVIEW-FINDINGS-UNRECONCILED" overstated the gap.** REVIEW.md S0001 already maps each finding to its fix location. What remains open is independent per-finding verification, and the issue's severity is now medium.
+
+Also from reading the 23 previously unprocessed segments:
+
+- **ISS-PG-CUTOVER-STATUS** is resolved by code inspection.
+- **ISS-IMPLEMENTATION-MAP-STALE** is newly opened.
+- **Coverage now separates segments read individually (43/6006) from those covered only by a source-wide rule (5963/6006).**

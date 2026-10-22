@@ -11,13 +11,13 @@
 | blocks | 1 | <from> must be resolved before <to> can proceed. |
 | captured-by | 22 | <from> (original evidence) is preserved by archive store <to>. |
 | conflicts-with | 0 | <from> and <to> cannot both hold as stated. Symmetric; recorded once. |
-| constrains | 39 | <from> limits what <to> may do. |
-| depends-on | 31 | <from> cannot be correct or complete without <to>. |
-| derived-from | 60 | <from> was derived from evidence or knowledge in <to>. |
-| implements | 45 | <from> realises <to>. |
-| included-in | 103 | <from> is part of the curated content of context pack <to>. |
-| references | 41 | <from> mentions <to> for navigation; no dependency implied. |
-| resolves | 0 | <from> closes the open question or conflict <to>. |
+| constrains | 41 | <from> limits what <to> may do. |
+| depends-on | 32 | <from> cannot be correct or complete without <to>. |
+| derived-from | 64 | <from> was derived from evidence or knowledge in <to>. |
+| implements | 47 | <from> realises <to>. |
+| included-in | 106 | <from> is part of the curated content of context pack <to>. |
+| references | 46 | <from> mentions <to> for navigation; no dependency implied. |
+| resolves | 3 | <from> closes the open question or conflict <to>. |
 | supersedes | 1 | <from> replaces <to>; <to> must not govern active work. |
 | supports | 0 | <from> is evidence in favour of <to> without being its origin. |
 | verifies | 24 | <from> is executable evidence that <to> holds. |
@@ -26,10 +26,10 @@
 
 | Requirement | Implemented by | Verified by | Depends on | Derived from |
 |---|---|---|---|---|
-| REQ-CTX-ARCHIVE | ART-ARCHIVE-STORE, ART-CTX-ARCHIVE, ART-GIT-OBJECT-STORE, TASK-CTX-0001, TASK-CTX-0003 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
+| REQ-CTX-ARCHIVE | ART-ARCHIVE-STORE, ART-CTX-ARCHIVE, ART-GIT-OBJECT-STORE, TASK-CTX-0001, TASK-CTX-0003, TASK-CTX-0004 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
 | REQ-CTX-ASSIMILATION | ART-CTX-PROTOCOL, ART-CTX-SCHEMA-RECEIPT, TASK-CTX-0001 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
 | REQ-CTX-CI | ART-CI-WORKFLOW, ART-CTX-CLI, ART-PACKAGE-JSON, TASK-CTX-0001 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
-| REQ-CTX-COVERAGE | ART-CTX-COVERAGE, TASK-CTX-0001 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
+| REQ-CTX-COVERAGE | ART-CTX-COVERAGE, TASK-CTX-0001, TASK-CTX-0004 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
 | REQ-CTX-ENTRY-POINTS | ART-AGENTS-MD, ART-CLAUDE-MD, TASK-CTX-0001 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
 | REQ-CTX-GRAPH | ART-CTX-GRAPH, ART-CTX-REG-RELATIONS, TASK-CTX-0001 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |
 | REQ-CTX-HANDOFF | ART-CTX-PROTOCOL, ART-CTX-SCHEMA-HANDOFF, TASK-CTX-0001 | ART-TEST-CONTEXT | — | SRC-CONV-2026-10-22-MASTER-PROMPT |

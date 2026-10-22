@@ -3,12 +3,12 @@
   "generator": "ctx-1.0.0",
   "packs": [
     {
-      "contentFingerprint": "2bc755a1d8b2afd5b0f81fd5ce9041de7936b92ea615e4bbc95f9217dbc93936",
-      "depFingerprint": "2c694e31819366ce19127a62a751dbb259027ec09b3ad629bd6e8f701aff94dd",
+      "contentFingerprint": "976ab9df92e71e26f3abf7a8ff0ce3236be30263c5ff14ac11a13be2a578c064",
+      "depFingerprint": "8252e4dbae1980171888988d9e9f739e277a00b4b293dff99dca3bf5d375791a",
       "id": "CTX-BOOTSTRAP",
       "parts": [
         {
-          "bytes": 9691,
+          "bytes": 10771,
           "id": "CTX-BOOTSTRAP"
         }
       ],
@@ -16,8 +16,8 @@
       "title": "Bootstrap — mandatory rules and current state"
     },
     {
-      "contentFingerprint": "a693d2358bb607046748b16da235fa3c8d860b67b2a067cd260d60695a2f6dd4",
-      "depFingerprint": "b8930d03e0f5cf288f4f4e8b1f05e725f17cc4c1956f393677393dbda44a5b7a",
+      "contentFingerprint": "09ffd4dc7de324eec5424ccc30c3d87b3587a388e75e66760731c682d66cae9a",
+      "depFingerprint": "472991f0552126efc666e46ac5e8b92014072b11564e04041bef1070488eb048",
       "id": "CTX-GOVERNANCE",
       "parts": [
         {
@@ -29,12 +29,12 @@
       "title": "Constitutional governance and the registry pipeline"
     },
     {
-      "contentFingerprint": "586d04f6a38ed23e978ef639262b40a6ffb7e6407352b891f45f20ab03954421",
-      "depFingerprint": "1f5dc3ccf170c0907c8ad550f79fcb96d0022738a72c9fbd343e51631d1cfcea",
+      "contentFingerprint": "e0c61970ada6bd8bc532cbf2fecf7f8b1903161d205383d65480ce1dcf09b900",
+      "depFingerprint": "7005badd2988c00039f9eee1d3b279c43fd98b30efd3bea678b21287ed9c9889",
       "id": "CTX-CONTINUITY-DESIGN",
       "parts": [
         {
-          "bytes": 10837,
+          "bytes": 11125,
           "id": "CTX-CONTINUITY-DESIGN"
         }
       ],
@@ -42,8 +42,8 @@
       "title": "Context continuity — design decisions and open design questions"
     },
     {
-      "contentFingerprint": "101b1515ccb396e790d6b1277d385fd5f34e0f0cb74c80ef0f0f7d9acf98f342",
-      "depFingerprint": "2c95cafcbbbcb6e8c5721717f0bd2ead5ef2bc5ddf2df7ded65ce0f14af4da3a",
+      "contentFingerprint": "9d81ed527beeb0bf77a4a28e02111005ec3e1954efeb24474b9ba0760d2d3ee6",
+      "depFingerprint": "67935cdc973535abe90bb4296c50d020b224c5d42108106c81810683a31dc660",
       "id": "CTX-CONTINUITY-SYSTEM",
       "parts": [
         {
@@ -55,12 +55,12 @@
       "title": "Context continuity — requirements and code"
     },
     {
-      "contentFingerprint": "30d0154ce78147c2849a893e4b5ce54075cf4d51c32aed863f1b93fce6d24b59",
-      "depFingerprint": "3744b5cb41eaab77b8801bde67b97b538c50563c4e8489f9b2fec46e86e41f18",
+      "contentFingerprint": "74c067b0b5720e38250ae11ef401896879c5776052e6b47b33889aaa27817bc2",
+      "depFingerprint": "edc0cb2c9e8f7a3afe58dae2e46a5ee4eb7cc0bbcd37a43ae451c25458a828e6",
       "id": "CTX-EVIDENCE-ARCHIVE",
       "parts": [
         {
-          "bytes": 16075,
+          "bytes": 17738,
           "id": "CTX-EVIDENCE-ARCHIVE"
         }
       ],
@@ -68,12 +68,12 @@
       "title": "Source evidence — inventory, gaps and coverage"
     },
     {
-      "contentFingerprint": "d8b715f005d1e161cff5fb09aa76f9da41bf9816aee339876cdfeb80a12c1681",
-      "depFingerprint": "f3ae696407be73a7e96c2aadd372e78918145617fc55e069e154a843a0f30586",
+      "contentFingerprint": "6bcf93056f872f0f3f3b55e52bed462f5c80dff72ea30436b7415ba07dce7f4f",
+      "depFingerprint": "2c3e5ba999e644a1fd344a6da93a663733012174c0f45b9314fc6fb06a1f1de7",
       "id": "CTX-PLATFORM-QUALITY",
       "parts": [
         {
-          "bytes": 6388,
+          "bytes": 9302,
           "id": "CTX-PLATFORM-QUALITY"
         }
       ],

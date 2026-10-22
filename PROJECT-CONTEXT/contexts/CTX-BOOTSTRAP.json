@@ -1,7 +1,7 @@
 {
   "budgetBytes": 12000,
-  "contentFingerprint": "2bc755a1d8b2afd5b0f81fd5ce9041de7936b92ea615e4bbc95f9217dbc93936",
-  "depFingerprint": "2c694e31819366ce19127a62a751dbb259027ec09b3ad629bd6e8f701aff94dd",
+  "contentFingerprint": "976ab9df92e71e26f3abf7a8ff0ce3236be30263c5ff14ac11a13be2a578c064",
+  "depFingerprint": "8252e4dbae1980171888988d9e9f739e277a00b4b293dff99dca3bf5d375791a",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -46,7 +46,7 @@
     ],
     [
       "CST-NO-SECRETS",
-      "f2f9df57ae02e8726712e2b5277f57f2267bb894772f1ca64ff076a887092551"
+      "919e69e7d19bb95c6a96a09c24eb09ef7bcf181442c86ff0456a47ac8afca47c"
     ],
     [
       "CST-NODE-ENGINE",
@@ -71,6 +71,10 @@
     [
       "CST-ZERO-HARDCODING",
       "1fa46b53f278850801081aba2f2922796813444f0b3279b033598f0a3e884ed0"
+    ],
+    [
+      "ISS-CI-RUNNERS-UNAVAILABLE",
+      "66a45c6ba85f8022388aa6c86b045bcb31649b91c5053b4af53b2a03042e335d"
     ],
     [
       "ISS-CTX-DECISIONS-UNAPPROVED",
@@ -103,6 +107,10 @@
     [
       "fact:F-013",
       "1b67cf490fa43bb78703c1e2ed2a7ff91bfd892cee4ec9482d6975ad65ffcc1b"
+    ],
+    [
+      "fact:F-015",
+      "ce8352d43c6698f4bde09bcfb2f6aec90a2bfc2928332a2de08953a6db005609"
     ]
   ],
   "mandatory": [
@@ -121,6 +129,7 @@
     "CST-SEAL-DERIVED",
     "CST-SUPERSEDED-NOT-AUTHORITY",
     "CST-ZERO-HARDCODING",
+    "ISS-CI-RUNNERS-UNAVAILABLE",
     "ISS-CTX-DECISIONS-UNAPPROVED",
     "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE"
   ],
@@ -147,6 +156,7 @@
     ],
     "decisions": [],
     "issues": [
+      "ISS-CI-RUNNERS-UNAVAILABLE",
       "ISS-CTX-DECISIONS-UNAPPROVED",
       "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE"
     ],
@@ -156,11 +166,11 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 9691,
-      "estimatedTokens": 3231,
+      "bytes": 10771,
+      "estimatedTokens": 3591,
       "file": "contexts/CTX-BOOTSTRAP.md",
       "id": "CTX-BOOTSTRAP",
-      "sha256": "c911cc26dad772e0828bb918b6b1bab5c1547eab8a2b1e3f8752178eff7f054b"
+      "sha256": "6b525b1b083f4cfb1899e24992306feb5fea0ec5e2f4a5579e8f06178a069a32"
     }
   ],
   "prerequisites": [],

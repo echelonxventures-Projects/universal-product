@@ -70,6 +70,10 @@
         {
           "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
           "locator": "§17"
+        },
+        {
+          "ref": "SRC-README",
+          "segment": "S0001"
         }
       ],
       "tags": [
@@ -235,6 +239,10 @@
         {
           "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
           "locator": "§15"
+        },
+        {
+          "ref": "SRC-README",
+          "segment": "S0007"
         }
       ],
       "verifiedBy": [

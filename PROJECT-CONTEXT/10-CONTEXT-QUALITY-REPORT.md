@@ -9,29 +9,32 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 |---|---|---|---|
 | source-inventory-preserved | 91.67% | 22 / 24 | in-scope sources with preservation=preserved ÷ (in-scope sources − sources excluded by policy) |
 | source-checksum-verification | 100% | 22 / 22 | preserved sources whose archived bytes re-hash to the manifest sha256 ÷ preserved sources |
-| segment-accounting | 99.62% | 5983 / 6006 | segments in {represented, preserved, irrelevant, excluded} ÷ all segments of preserved in-scope sources |
-| segment-representation | 0.27% | 16 / 6006 | segments cited by at least one knowledge record ÷ all segments of preserved in-scope sources |
+| segment-accounting | 100% | 6006 / 6006 | segments in {represented, preserved, irrelevant, excluded} ÷ all segments of preserved in-scope sources |
+| segment-representation | 0.45% | 27 / 6006 | segments cited by at least one knowledge record ÷ all segments of preserved in-scope sources |
+| segment-individual-review | 0.72% | 43 / 6006 | segments cited by a record or classified individually with a rationale ÷ all segments of preserved in-scope sources |
+| segment-rule-classified | 99.28% | 5963 / 6006 | segments accounted for only by a source-wide classification rule (not individually read) ÷ all segments of preserved in-scope sources |
 | requirement-source-traceability | 100% | 14 / 14 | active requirements with ≥1 resolvable source reference ÷ active requirements |
 | decision-source-traceability | 100% | 9 / 9 | active decisions with ≥1 resolvable source or provenance=newly-proposed ÷ active decisions |
 | requirement-implementation-traceability | 100% | 14 / 14 | active requirements with an incoming 'implements' edge ÷ active requirements |
 | requirement-test-traceability | 100% | 14 / 14 | active requirements with an incoming 'verifies' edge ÷ active requirements |
 | context-dependency-completeness | 100% | 6 / 6 | active context specs whose prerequisites all exist and are active ÷ active context specs |
 | context-freshness | 100% | 6 / 6 | generated packs whose on-disk dependency fingerprint equals the recomputed one and whose parts match their sha256 ÷ active packs |
-| handoff-completeness | 100% | 2 / 2 | handoffs that validate against handoff.schema.json ÷ handoffs on disk |
+| handoff-completeness | 100% | 3 / 3 | handoffs that validate against handoff.schema.json ÷ handoffs on disk |
 
 ## Counts
 
 | Count | Value |
 |---|---|
 | orphanedActiveArtifacts | 0 |
-| unresolvedConflicts | 1 |
+| unresolvedConflicts | 0 |
 | conflictsWithEdges | 0 |
-| unaccountedSegments | 23 |
+| unaccountedSegments | 0 |
+| sourcesWithoutBytes | SRC-CONV-2026-10-22-MASTER-PROMPT:not-retained, SRC-CONV-PRIOR-SESSIONS:inaccessible |
 | danglingSegmentCitations | 0 |
 
 - Broken knowledge references (graph): 0
 - Orphaned active artifacts: —
-- Unresolved conflicts: ISS-RUNTIME-DEPENDENCY-CLAIM
+- Unresolved conflicts: —
 
 ## Segment accounting per source
 
@@ -46,13 +49,13 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 | SRC-CONV-2026-10-22-MASTER-PROMPT | not-retained | 0 | — | — | — | — | — | — |
 | SRC-CONV-PRIOR-SESSIONS | inaccessible | 0 | — | — | — | — | — | — |
 | SRC-GIT-HISTORY | preserved | 61 | 3 | 58 | 0 | 0 | 0 | 0 |
-| SRC-IMPLEMENTATION-MAP | preserved | 9 | 0 | 0 | 0 | 0 | 0 | 9 |
+| SRC-IMPLEMENTATION-MAP | preserved | 9 | 4 | 5 | 0 | 0 | 0 | 0 |
 | SRC-MEMORY-2026-09-17 | preserved | 2 | 1 | 0 | 1 | 0 | 0 | 0 |
 | SRC-MEMORY-LEDGER | preserved | 36 | 5 | 31 | 0 | 0 | 0 | 0 |
-| SRC-README | preserved | 9 | 2 | 0 | 0 | 0 | 0 | 7 |
+| SRC-README | preserved | 9 | 4 | 5 | 0 | 0 | 0 | 0 |
 | SRC-REPOSITORY-INDEX | preserved | 7 | 4 | 3 | 0 | 0 | 0 | 0 |
 | SRC-REVIEW-2026-09-17 | preserved | 9 | 0 | 9 | 0 | 0 | 0 | 0 |
-| SRC-REVIEW-2026-10-12 | preserved | 8 | 1 | 0 | 0 | 0 | 0 | 7 |
+| SRC-REVIEW-2026-10-12 | preserved | 8 | 6 | 2 | 0 | 0 | 0 | 0 |
 | SRC-SUPERSEDED-ADDENDUM | preserved | 60 | 0 | 60 | 0 | 0 | 0 | 0 |
 | SRC-SUPERSEDED-MASTER-ARCH | preserved | 59 | 0 | 59 | 0 | 0 | 0 | 0 |
 | SRC-SUPERSEDED-ZERO-HARDCODING | preserved | 40 | 0 | 40 | 0 | 0 | 0 | 0 |
@@ -66,10 +69,10 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 
 | Pack | Status | Parts | Bytes (est. tokens @3 B/token) | Mandatory items | Excluded |
 |---|---|---|---|---|---|
-| CTX-BOOTSTRAP | ok | 1 | 9691 (3231) | 17 | 0 |
+| CTX-BOOTSTRAP | ok | 1 | 10771 (3591) | 18 | 0 |
 | CTX-GOVERNANCE | ok | 1 | 8162 (2721) | 22 | 0 |
-| CTX-CONTINUITY-DESIGN | ok | 1 | 10837 (3613) | 23 | 0 |
+| CTX-CONTINUITY-DESIGN | ok | 1 | 11125 (3709) | 23 | 0 |
 | CTX-CONTINUITY-SYSTEM | ok | 1 | 20658 (6886) | 29 | 0 |
-| CTX-EVIDENCE-ARCHIVE | ok | 1 | 16075 (5359) | 25 | 0 |
-| CTX-PLATFORM-QUALITY | ok | 1 | 6388 (2130) | 21 | 0 |
+| CTX-EVIDENCE-ARCHIVE | ok | 1 | 17738 (5913) | 24 | 0 |
+| CTX-PLATFORM-QUALITY | ok | 1 | 9302 (3101) | 21 | 0 |
 

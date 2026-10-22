@@ -5,6 +5,33 @@
   "version": 1,
   "records": [
     {
+      "id": "ISS-BASE-ECONNRESET-FLAKE",
+      "kind": "defect",
+      "title": "master (441d772) fails CI on an intermittent ECONNRESET in test/identity-modes.js",
+      "statement": "The last CI run that executed on master (run 38665829638, 2026-10-15, head 441d772 — the base of PR #4) failed in `npm test` on Node 22: test/identity-modes.js:33 `fetch failed … read ECONNRESET`; the other jobs were cancelled by fail-fast. The same class of flake is REVIEW.md finding T1, and a commit on the unmerged branch feat/production-readiness says it fixes the server keep-alive timeout that causes it (AMD-0022). Pre-existing; locally the full suite passed on 441d772 and on every commit of PR #4 except the two regressions recorded in HO-CTX-0001-001/002.",
+      "status": "open",
+      "severity": "medium",
+      "evidence": [
+        "GitHub job 116197455598 log tail (observed 2026-10-22)",
+        "commit message on feat/production-readiness (run 32 head 4598780) describing the keep-alive fix"
+      ],
+      "evidenceNeeded": "Land the keep-alive fix on master (or confirm it fixes this), then observe a green CI run on master.",
+      "sources": [
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0005"
+        }
+      ],
+      "tags": [
+        "ci",
+        "platform"
+      ],
+      "affects": [
+        "ART-CI-WORKFLOW"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
       "id": "ISS-CANONICAL-INPUT-MISNAMED",
       "kind": "defect",
       "title": "Seal manifest hashes a file that does not exist",
@@ -23,6 +50,28 @@
       "tags": [
         "governance",
         "defect"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-CI-RUNNERS-UNAVAILABLE",
+      "kind": "blocker",
+      "title": "GitHub Actions jobs never start: CI cannot produce evidence",
+      "statement": "Every CI run in the repository since 2026-10-19 fails in about 4 seconds with no runner assigned (runner_id 0, no steps executed, log download HTTP 404). That covers the eight runs on PR #3 (feat/production-readiness) and run 39740943856 on PR #4 (e1a3613, all three Node jobs). The last run that executed was on 2026-10-15. This happens before any repository code runs, so it is an account- or Actions-level condition, not a failure of the code under test. Not caused by the context continuity work.",
+      "status": "open",
+      "severity": "high",
+      "evidence": [
+        "GitHub API list_workflow_runs / get_workflow_job for run 39740943856, jobs 119697727787, 119697728280, 119697728347 (observed 2026-10-22)",
+        "runs 31–37 on PR #3 show the same ~4 s failure"
+      ],
+      "evidenceNeeded": "The repository owner checks the Actions settings and billing/spending limits for echelonxventures-Projects, then re-runs CI on PR #4.",
+      "tags": [
+        "ci",
+        "process"
+      ],
+      "affects": [
+        "ART-CI-WORKFLOW",
+        "REQ-CTX-CI"
       ],
       "lifecycle": "canonical-active"
     },
@@ -73,10 +122,49 @@
       "lifecycle": "canonical-active"
     },
     {
+      "id": "ISS-IMPLEMENTATION-MAP-STALE",
+      "kind": "gap",
+      "title": "IMPLEMENTATION_MAP.md is stale and internally inconsistent",
+      "statement": "IMPLEMENTATION_MAP.md says it is generated from live state (S0001) but describes only three corpora — 24,139 concepts, 1,877 universes (S0002) — while the current compile reports 12 documents, 32,220 concept rows and 2,919 universes (state fact F-002). It also contradicts itself: S0003 gives activation as '0% by default — opt-in per tenant', while S0008 says the flagship ships with 1,877/1,877 universes activated on boot.",
+      "status": "open",
+      "severity": "low",
+      "evidence": [
+        "IMPLEMENTATION_MAP.md lines 3–5, 9–14, 31–32, 98–105 (read 2026-10-22, TASK-CTX-0004)",
+        "npm run registry output 2026-10-22 (F-002)"
+      ],
+      "evidenceNeeded": "Regenerate the map from GET /api/ucos/matrix, or mark the document historical and point to the live endpoint.",
+      "sources": [
+        {
+          "ref": "SRC-IMPLEMENTATION-MAP",
+          "segment": "S0001"
+        },
+        {
+          "ref": "SRC-IMPLEMENTATION-MAP",
+          "segment": "S0002"
+        },
+        {
+          "ref": "SRC-IMPLEMENTATION-MAP",
+          "segment": "S0003"
+        },
+        {
+          "ref": "SRC-IMPLEMENTATION-MAP",
+          "segment": "S0008"
+        }
+      ],
+      "affects": [
+        "SRC-IMPLEMENTATION-MAP"
+      ],
+      "tags": [
+        "platform",
+        "docs"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
       "id": "ISS-MASTER-PROMPT-NOT-ARCHIVED",
       "kind": "gap",
-      "title": "The owner's master prompt is not archived",
-      "statement": "Requirements REQ-CTX-* paraphrase the 2026-10-22 master prompt and cite it by section; its original text is not in the repository or the private store, so the paraphrases cannot be re-checked against the source.",
+      "title": "Provenance gap: the owner's 2026-10-22 instructions are not archived",
+      "statement": "UNRESOLVED PROVENANCE GAP. Neither the owner's master prompt nor the follow-up instructions given in the same 2026-10-22 session (the acceptance-audit and PR-review requests) exist in the repository or in the private store. REQ-CTX-*, TASK-CTX-0001 and TASK-CTX-0004 paraphrase them and cite them by section; those paraphrases are NOT original evidence and cannot be re-checked against the source. No reconstruction has been made, and none may be recorded as the original.",
       "status": "open",
       "severity": "medium",
       "evidenceNeeded": "An export of the 2026-10-22 session transcript imported with `npm run context:import -- <file> --id SRC-CONV-2026-10-22-EXPORT --sensitivity private` into an access-controlled CONTEXT_ARCHIVE_DIR.",
@@ -104,9 +192,17 @@
       ],
       "tags": [
         "archive",
-        "continuity"
+        "continuity",
+        "provenance"
       ],
-      "lifecycle": "canonical-active"
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "scope widened to all owner instructions in the session; marked as a provenance gap",
+          "by": "claude-code-session-2026-10-22 (TASK-CTX-0004)"
+        }
+      ]
     },
     {
       "id": "ISS-NPM-TEST-DURATION",
@@ -135,8 +231,8 @@
       "id": "ISS-PG-CUTOVER-STATUS",
       "kind": "validation",
       "title": "Status of the Postgres-cutover blockers is unknown",
-      "statement": "The 2026-09-17 review found three runtime blockers on Postgres (untranslated INSERT OR REPLACE, INSERT OR IGNORE losing semantics, SQLite scalar MAX). README (current) describes the request-path cutover as a runbook step needing a live Postgres. Whether the blockers were fixed is not recorded.",
-      "status": "open",
+      "statement": "RESOLVED by code inspection. The 2026-09-17 review's three Postgres blockers are handled in the translator: INSERT OR REPLACE → ON CONFLICT … DO UPDATE (lib/sql.js:64–71), INSERT OR IGNORE → ON CONFLICT DO NOTHING (lib/sql.js:58–60, 109), scalar MAX(a,b) → GREATEST (lib/sql.js:57); REVIEW.md (2026-10-12) S0001 records all of H1–H8 and M1–M6 as closed. Residual, not a defect of this record: no live Postgres was exercised in this session, and README S0003 still describes the request-path cutover as a runbook step that needs a live Postgres.",
+      "status": "resolved",
       "severity": "medium",
       "evidenceNeeded": "A run against a real Postgres, or code inspection of lib/sql.js translation for the three constructs.",
       "sources": [
@@ -150,6 +246,10 @@
         {
           "ref": "SRC-README",
           "segment": "S0003"
+        },
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0001"
         }
       ],
       "affects": [
@@ -159,7 +259,24 @@
         "platform",
         "data"
       ],
-      "lifecycle": "canonical-active"
+      "lifecycle": "canonical-active",
+      "evidence": [
+        "lib/sql.js:38,57,58–71,79,109; lib/migrate.js:56–61; lib/enterprise.js:43–47 — inspected 2026-10-22 (TASK-CTX-0004)",
+        "REVIEW.md lines 9–15 (SRC-REVIEW-2026-10-12#S0001)"
+      ],
+      "resolvedBy": [
+        "TASK-CTX-0004"
+      ],
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "resolved by code inspection",
+          "from": "open",
+          "to": "resolved",
+          "by": "claude-code-session-2026-10-22 (TASK-CTX-0004)",
+          "evidence": "lib/sql.js; SRC-REVIEW-2026-10-12#S0001"
+        }
+      ]
     },
     {
       "id": "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
@@ -190,15 +307,35 @@
     {
       "id": "ISS-REVIEW-FINDINGS-UNRECONCILED",
       "kind": "validation",
-      "title": "REVIEW.md findings are not mapped to their fixes",
-      "statement": "REVIEW.md (2026-10-12) lists critical/high findings S1–S11, P1 and T1. Later commits (PR #1 'close the gaps from the full-project review', PR #2 'close the seven critical route-audit findings') suggest they were addressed, but no record maps each finding to a fix and a test, and this session did not verify them.",
+      "title": "REVIEW.md findings: fix locations recorded, independent verification not yet done",
+      "statement": "CORRECTED after reading the segments. REVIEW.md (2026-10-12) S0001 does map every finding S1–S11 and T1 to its fixing code location, records P1/S5/S6 as superseded, and states closure was verified by a full npm test run; S0003–S0006 hold the finding details and S0008 the order of work. What remains open is independent verification by this record: a per-finding link from finding → commit → test, checked rather than taken from the review's own claim. (The earlier statement that 'no record maps each finding to a fix' was wrong — written before S0001 was read.)",
       "status": "open",
-      "severity": "high",
-      "evidenceNeeded": "For each finding id: the fixing commit, the test that proves it, or an explicit 'still open'.",
+      "severity": "medium",
+      "evidenceNeeded": "For each finding id: confirm the cited code location fixes it and name the test that fails without the fix.",
       "sources": [
         {
           "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0001"
+        },
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
           "segment": "S0002"
+        },
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0003"
+        },
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0004"
+        },
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0005"
+        },
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0006"
         },
         {
           "ref": "SRC-GIT-HISTORY",
@@ -219,21 +356,34 @@
         "security",
         "platform"
       ],
-      "lifecycle": "canonical-active"
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "statement corrected and severity high → medium after reading S0001",
+          "by": "claude-code-session-2026-10-22 (TASK-CTX-0004)",
+          "evidence": "SRC-REVIEW-2026-10-12#S0001"
+        }
+      ]
     },
     {
       "id": "ISS-RUNTIME-DEPENDENCY-CLAIM",
       "kind": "conflict",
-      "title": "'Zero runtime dependencies' vs declared npm dependencies",
-      "statement": "MEMORY.md (S0002) says the platform has zero runtime dependencies and README says the runtime drivers are dependency-free, yet package.json declares bull, ioredis and prom-client as dependencies; a grep of lib/*.js and server.js finds no require of them.",
-      "status": "open",
+      "title": "'Zero runtime dependencies' vs declared npm dependencies — resolved: no real conflict",
+      "statement": "RESOLVED. README S0001 states the default boot is dependency-free and that bull/ioredis (the optional Redis queue, LX_QUEUE=redis) and prom-client are the only npm runtime packages, loaded only when configured. The code matches: lib/queue.js:51 requires bull and lib/metrics.js:121 requires prom-client, each lazily. The issue as originally opened rested on an incorrect observation by this agent (the grep output that would have shown those requires was truncated by `| head`, and 'no matches' was recorded). The only stale statement is MEMORY.md S0002's 'zero runtime dependencies', which is historical evidence, not authority.",
+      "status": "resolved",
       "severity": "low",
       "evidence": [
-        "package.json dependencies (observed 2026-10-22)",
-        "grep for require of bull/ioredis/prom-client in lib/*.js and server.js: no matches (observed 2026-10-22)"
+        "README.md lines 3 (SRC-README#S0001)",
+        "lib/queue.js:51 require(\"bull\"), lib/metrics.js:121 require(\"prom-client\") — grep observed 2026-10-22 (TASK-CTX-0004)",
+        "correction of the earlier observation recorded in state fact F-005"
       ],
       "evidenceNeeded": "Owner decides whether the three packages are vestigial (remove) or intended (correct the documentation).",
       "sources": [
+        {
+          "ref": "SRC-README",
+          "segment": "S0001"
+        },
         {
           "ref": "SRC-MEMORY-LEDGER",
           "segment": "S0002"
@@ -249,21 +399,46 @@
       "tags": [
         "runtime"
       ],
-      "lifecycle": "canonical-active"
+      "lifecycle": "canonical-active",
+      "resolvedBy": [
+        "TASK-CTX-0004"
+      ],
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "resolved; original premise corrected (agent observation error)",
+          "from": "open",
+          "to": "resolved",
+          "by": "claude-code-session-2026-10-22 (TASK-CTX-0004)",
+          "evidence": "SRC-README#S0001; lib/queue.js:51; lib/metrics.js:121"
+        }
+      ]
     },
     {
       "id": "ISS-SEGMENTS-UNPROCESSED",
       "kind": "gap",
       "title": "Some in-scope source segments are unprocessed",
-      "statement": "README, IMPLEMENTATION_MAP, REVIEW (2026-10-12) and parts of the repository index were archived but not every segment was read and classified during the 2026-10-22 implementation; they are counted as unprocessed, not preserved.",
-      "status": "open",
+      "statement": "RESOLVED for every source whose bytes are available: the 23 previously unprocessed segments (SRC-IMPLEMENTATION-MAP ×9, SRC-README ×7, SRC-REVIEW-2026-10-12 ×7) were read on 2026-10-22; each is now cited by a record or classified individually with a segment-specific rationale. Still true and NOT resolved by this: 99% of segments are accounted for only by source-wide rules (metric segment-rule-classified), and the two conversation sources have no bytes to segment.",
+      "status": "resolved",
       "severity": "low",
       "evidenceNeeded": "Classify each listed segment (`npm run context:query -- unaccounted-segments`) in knowledge/coverage.json or cite it from a record.",
       "tags": [
         "archive",
         "coverage"
       ],
-      "lifecycle": "canonical-active"
+      "lifecycle": "canonical-active",
+      "resolvedBy": [
+        "TASK-CTX-0004"
+      ],
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "resolved (available sources fully accounted)",
+          "from": "open",
+          "to": "resolved",
+          "by": "claude-code-session-2026-10-22 (TASK-CTX-0004)"
+        }
+      ]
     }
   ]
 }

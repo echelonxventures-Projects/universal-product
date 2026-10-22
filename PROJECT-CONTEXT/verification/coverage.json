@@ -8,11 +8,10 @@
     "orphanedActiveArtifactIds": [],
     "orphanedActiveArtifacts": 0,
     "recoveryTest": "passed",
-    "unaccountedSegments": 23,
-    "unresolvedConflictIds": [
-      "ISS-RUNTIME-DEPENDENCY-CLAIM"
-    ],
-    "unresolvedConflicts": 1
+    "sourcesWithoutBytes": "SRC-CONV-2026-10-22-MASTER-PROMPT:not-retained, SRC-CONV-PRIOR-SESSIONS:inaccessible",
+    "unaccountedSegments": 0,
+    "unresolvedConflictIds": [],
+    "unresolvedConflicts": 0
   },
   "dangling": [],
   "metrics": [
@@ -40,23 +39,43 @@
       "denominator": 6006,
       "formula": "segments in {represented, preserved, irrelevant, excluded} ÷ all segments of preserved in-scope sources",
       "name": "segment-accounting",
-      "numerator": 5983,
-      "percent": 99.62,
+      "numerator": 6006,
+      "percent": 100,
       "totals": {
         "ambiguous": 0,
         "excluded": 0,
         "irrelevant": 1,
-        "preserved": 5966,
-        "represented": 16,
-        "unprocessed": 23
+        "preserved": 5978,
+        "represented": 27,
+        "unprocessed": 0
       }
     },
     {
       "denominator": 6006,
       "formula": "segments cited by at least one knowledge record ÷ all segments of preserved in-scope sources",
       "name": "segment-representation",
-      "numerator": 16,
-      "percent": 0.27
+      "numerator": 27,
+      "percent": 0.45
+    },
+    {
+      "basis": {
+        "cited": 27,
+        "listed": 16,
+        "none": 0,
+        "rule": 5963
+      },
+      "denominator": 6006,
+      "formula": "segments cited by a record or classified individually with a rationale ÷ all segments of preserved in-scope sources",
+      "name": "segment-individual-review",
+      "numerator": 43,
+      "percent": 0.72
+    },
+    {
+      "denominator": 6006,
+      "formula": "segments accounted for only by a source-wide classification rule (not individually read) ÷ all segments of preserved in-scope sources",
+      "name": "segment-rule-classified",
+      "numerator": 5963,
+      "percent": 99.28
     },
     {
       "denominator": 14,
@@ -101,15 +120,21 @@
       "percent": 100
     },
     {
-      "denominator": 2,
+      "denominator": 3,
       "formula": "handoffs that validate against handoff.schema.json ÷ handoffs on disk",
       "name": "handoff-completeness",
-      "numerator": 2,
+      "numerator": 3,
       "percent": 100
     }
   ],
   "perSource": [
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 4763
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -123,6 +148,12 @@
       "segments": 4763
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 453
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -136,6 +167,12 @@
       "segments": 453
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 147
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -149,6 +186,12 @@
       "segments": 147
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 60
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -162,6 +205,12 @@
       "segments": 60
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 74
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -175,6 +224,12 @@
       "segments": 74
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 31
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -198,6 +253,12 @@
       "segments": 0
     },
     {
+      "basis": {
+        "cited": 3,
+        "listed": 0,
+        "none": 0,
+        "rule": 58
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -211,19 +272,31 @@
       "segments": 61
     },
     {
+      "basis": {
+        "cited": 4,
+        "listed": 5,
+        "none": 0,
+        "rule": 0
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
         "irrelevant": 0,
-        "preserved": 0,
-        "represented": 0,
-        "unprocessed": 9
+        "preserved": 5,
+        "represented": 4,
+        "unprocessed": 0
       },
       "id": "SRC-IMPLEMENTATION-MAP",
       "preservation": "preserved",
       "segments": 9
     },
     {
+      "basis": {
+        "cited": 1,
+        "listed": 1,
+        "none": 0,
+        "rule": 0
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -237,6 +310,12 @@
       "segments": 2
     },
     {
+      "basis": {
+        "cited": 5,
+        "listed": 0,
+        "none": 0,
+        "rule": 31
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -250,19 +329,31 @@
       "segments": 36
     },
     {
+      "basis": {
+        "cited": 4,
+        "listed": 5,
+        "none": 0,
+        "rule": 0
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
         "irrelevant": 0,
-        "preserved": 0,
-        "represented": 2,
-        "unprocessed": 7
+        "preserved": 5,
+        "represented": 4,
+        "unprocessed": 0
       },
       "id": "SRC-README",
       "preservation": "preserved",
       "segments": 9
     },
     {
+      "basis": {
+        "cited": 4,
+        "listed": 3,
+        "none": 0,
+        "rule": 0
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -276,6 +367,12 @@
       "segments": 7
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 9
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -289,19 +386,31 @@
       "segments": 9
     },
     {
+      "basis": {
+        "cited": 6,
+        "listed": 2,
+        "none": 0,
+        "rule": 0
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
         "irrelevant": 0,
-        "preserved": 0,
-        "represented": 1,
-        "unprocessed": 7
+        "preserved": 2,
+        "represented": 6,
+        "unprocessed": 0
       },
       "id": "SRC-REVIEW-2026-10-12",
       "preservation": "preserved",
       "segments": 8
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 60
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -315,6 +424,12 @@
       "segments": 60
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 59
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -328,6 +443,12 @@
       "segments": 59
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 40
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -341,6 +462,12 @@
       "segments": 40
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 61
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -354,6 +481,12 @@
       "segments": 61
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 6
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -367,6 +500,12 @@
       "segments": 6
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 60
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -380,6 +519,12 @@
       "segments": 60
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 10
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -393,6 +538,12 @@
       "segments": 10
     },
     {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 41
+      },
       "counts": {
         "ambiguous": 0,
         "excluded": 0,
@@ -407,167 +558,5 @@
     }
   ],
   "schema": "ctx-coverage/1",
-  "unaccountedSample": [
-    {
-      "lines": "1-6",
-      "segment": "S0001",
-      "source": "SRC-IMPLEMENTATION-MAP",
-      "state": "unprocessed",
-      "title": "IMPLEMENTATION MAP — the three corpora → runtime"
-    },
-    {
-      "lines": "7-15",
-      "segment": "S0002",
-      "source": "SRC-IMPLEMENTATION-MAP",
-      "state": "unprocessed",
-      "title": "What the corpora declare"
-    },
-    {
-      "lines": "16-33",
-      "segment": "S0003",
-      "source": "SRC-IMPLEMENTATION-MAP",
-      "state": "unprocessed",
-      "title": "How \"implementation\" is defined here"
-    },
-    {
-      "lines": "34-55",
-      "segment": "S0004",
-      "source": "SRC-IMPLEMENTATION-MAP",
-      "state": "unprocessed",
-      "title": "The eight runtime layers (per key, from `lib/ucos-trace.js`)"
-    },
-    {
-      "lines": "56-69",
-      "segment": "S0005",
-      "source": "SRC-IMPLEMENTATION-MAP",
-      "state": "unprocessed",
-      "title": "The generic engines (zero per-universe code, Architecture3 Article 4.2)"
-    },
-    {
-      "lines": "70-83",
-      "segment": "S0006",
-      "source": "SRC-IMPLEMENTATION-MAP",
-      "state": "unprocessed",
-      "title": "Activation — how to turn the whole corpus on"
-    },
-    {
-      "lines": "84-97",
-      "segment": "S0007",
-      "source": "SRC-IMPLEMENTATION-MAP",
-      "state": "unprocessed",
-      "title": "Proven by tests"
-    },
-    {
-      "lines": "98-126",
-      "segment": "S0008",
-      "source": "SRC-IMPLEMENTATION-MAP",
-      "state": "unprocessed",
-      "title": "Honest gaps that remain"
-    },
-    {
-      "lines": "127-136",
-      "segment": "S0009",
-      "source": "SRC-IMPLEMENTATION-MAP",
-      "state": "unprocessed",
-      "title": "The scaling defects activation exposed"
-    },
-    {
-      "lines": "1-8",
-      "segment": "S0001",
-      "source": "SRC-README",
-      "state": "unprocessed",
-      "title": "LUXORA Platform"
-    },
-    {
-      "lines": "9-14",
-      "segment": "S0002",
-      "source": "SRC-README",
-      "state": "unprocessed",
-      "title": "Documentation"
-    },
-    {
-      "lines": "47-56",
-      "segment": "S0004",
-      "source": "SRC-README",
-      "state": "unprocessed",
-      "title": "Surfaces"
-    },
-    {
-      "lines": "57-64",
-      "segment": "S0005",
-      "source": "SRC-README",
-      "state": "unprocessed",
-      "title": "The product model"
-    },
-    {
-      "lines": "65-92",
-      "segment": "S0006",
-      "source": "SRC-README",
-      "state": "unprocessed",
-      "title": "GOIP Ω∞ — Global Offer Infrastructure Platform"
-    },
-    {
-      "lines": "93-105",
-      "segment": "S0007",
-      "source": "SRC-README",
-      "state": "unprocessed",
-      "title": "The 10-layer security stack (`GET /api/platform/security` for the live scorecard)"
-    },
-    {
-      "lines": "110-162",
-      "segment": "S0009",
-      "source": "SRC-README",
-      "state": "unprocessed",
-      "title": "Architecture"
-    },
-    {
-      "lines": "1-40",
-      "segment": "S0001",
-      "source": "SRC-REVIEW-2026-10-12",
-      "state": "unprocessed",
-      "title": "Code Review — LUXORA Platform (HEAD `d63d60f` + uncommitted working tree)"
-    },
-    {
-      "lines": "61-127",
-      "segment": "S0003",
-      "source": "SRC-REVIEW-2026-10-12",
-      "state": "unprocessed",
-      "title": "Critical"
-    },
-    {
-      "lines": "128-257",
-      "segment": "S0004",
-      "source": "SRC-REVIEW-2026-10-12",
-      "state": "unprocessed",
-      "title": "High"
-    },
-    {
-      "lines": "258-335",
-      "segment": "S0005",
-      "source": "SRC-REVIEW-2026-10-12",
-      "state": "unprocessed",
-      "title": "Medium"
-    },
-    {
-      "lines": "336-347",
-      "segment": "S0006",
-      "source": "SRC-REVIEW-2026-10-12",
-      "state": "unprocessed",
-      "title": "Low"
-    },
-    {
-      "lines": "348-367",
-      "segment": "S0007",
-      "source": "SRC-REVIEW-2026-10-12",
-      "state": "unprocessed",
-      "title": "What's good"
-    },
-    {
-      "lines": "368-392",
-      "segment": "S0008",
-      "source": "SRC-REVIEW-2026-10-12",
-      "state": "unprocessed",
-      "title": "Suggested order of work"
-    }
-  ]
+  "unaccountedSample": []
 }

@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "586d04f6a38ed23e978ef639262b40a6ffb7e6407352b891f45f20ab03954421",
-  "depFingerprint": "1f5dc3ccf170c0907c8ad550f79fcb96d0022738a72c9fbd343e51631d1cfcea",
+  "contentFingerprint": "e0c61970ada6bd8bc532cbf2fecf7f8b1903161d205383d65480ce1dcf09b900",
+  "depFingerprint": "7005badd2988c00039f9eee1d3b279c43fd98b30efd3bea678b21287ed9c9889",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -42,7 +42,7 @@
     ],
     [
       "CST-NO-SECRETS",
-      "f2f9df57ae02e8726712e2b5277f57f2267bb894772f1ca64ff076a887092551"
+      "919e69e7d19bb95c6a96a09c24eb09ef7bcf181442c86ff0456a47ac8afca47c"
     ],
     [
       "CST-NODE-ENGINE",
@@ -98,7 +98,7 @@
     ],
     [
       "ISS-MASTER-PROMPT-NOT-ARCHIVED",
-      "9c5b458273668d8edbe6ac8aa09b0e4b2f51338a5cbac05c3573a5822f72d336"
+      "45be368da5a16146dd1a8ea0f2f48842d62224c0fe28f652cc73027844debf1e"
     ]
   ],
   "mandatory": [
@@ -163,20 +163,20 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 10837,
-      "estimatedTokens": 3613,
+      "bytes": 11125,
+      "estimatedTokens": 3709,
       "file": "contexts/CTX-CONTINUITY-DESIGN.md",
       "id": "CTX-CONTINUITY-DESIGN",
-      "sha256": "809a50f64119cb7f66d9dc13e35bf23e5f3022777bb854c266651423576ff5bf"
+      "sha256": "22ecdf5b2c1115a6df3c7ed3504afb9dfe349830ae2ca03a3eec4e8a0aaa8f5a"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "2c694e31819366ce19127a62a751dbb259027ec09b3ad629bd6e8f701aff94dd",
+      "fingerprint": "8252e4dbae1980171888988d9e9f739e277a00b4b293dff99dca3bf5d375791a",
       "id": "CTX-BOOTSTRAP"
     },
     {
-      "fingerprint": "b8930d03e0f5cf288f4f4e8b1f05e725f17cc4c1956f393677393dbda44a5b7a",
+      "fingerprint": "472991f0552126efc666e46ac5e8b92014072b11564e04041bef1070488eb048",
       "id": "CTX-GOVERNANCE"
     }
   ],

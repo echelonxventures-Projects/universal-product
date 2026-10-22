@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "d8b715f005d1e161cff5fb09aa76f9da41bf9816aee339876cdfeb80a12c1681",
-  "depFingerprint": "f3ae696407be73a7e96c2aadd372e78918145617fc55e069e154a843a0f30586",
+  "contentFingerprint": "6bcf93056f872f0f3f3b55e52bed462f5c80dff72ea30436b7415ba07dce7f4f",
+  "depFingerprint": "2c3e5ba999e644a1fd344a6da93a663733012174c0f45b9314fc6fb06a1f1de7",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -18,7 +18,7 @@
     ],
     [
       "CST-DEPENDENCY-MINIMAL",
-      "ec3cb9e044b7be7a8385c5a36ec1295d6d2d648cb9826e49fafdfb996f44c81b"
+      "a1c9b2e8a7d00b9c3bb945a97c3da18dcc9e3e4a481989e30bbfea57ec656195"
     ],
     [
       "CST-EVIDENCE-BEFORE-CLAIMS",
@@ -46,7 +46,7 @@
     ],
     [
       "CST-NO-SECRETS",
-      "f2f9df57ae02e8726712e2b5277f57f2267bb894772f1ca64ff076a887092551"
+      "919e69e7d19bb95c6a96a09c24eb09ef7bcf181442c86ff0456a47ac8afca47c"
     ],
     [
       "CST-NODE-ENGINE",
@@ -73,20 +73,28 @@
       "1fa46b53f278850801081aba2f2922796813444f0b3279b033598f0a3e884ed0"
     ],
     [
+      "ISS-BASE-ECONNRESET-FLAKE",
+      "a5733a561eaa6df7dcedcfa028861c4c839c91e0270fe38a9c128ef37c2f5158"
+    ],
+    [
+      "ISS-IMPLEMENTATION-MAP-STALE",
+      "f7872415c2c441264633ce113e73461d1490c87530b242f48d623e3a7fc790d7"
+    ],
+    [
       "ISS-NPM-TEST-DURATION",
       "47262ceaec869a24f7b260f99b50d323bff1f1bda495ffedb0f108f7ae97c046"
     ],
     [
       "ISS-PG-CUTOVER-STATUS",
-      "97b1cc8f56d56d17ae042636a27bb592d68df211d865f8e5e9f5c3359c2285ac"
+      "2271e9e4d78b4b54e6f32ee6234f80d14aa43e285b8b794213e8fb424564250a"
     ],
     [
       "ISS-REVIEW-FINDINGS-UNRECONCILED",
-      "e4e986b5820f802965334f0f8edf1163c5a79c21a345b0869d2a5a97e2d4e60a"
+      "2f68d3f510757ee77a662bdf113dfd044ff4d836e0f3f7436f3c8ae5960bd3eb"
     ],
     [
       "ISS-RUNTIME-DEPENDENCY-CLAIM",
-      "d7052e347d9a7d851120a6347f9d2a0931f91ffe4a334925531124b94a069483"
+      "cf14429e18e1d80e67202c41e0701b4da4437a712c2840fce140a3152fc42b96"
     ],
     [
       "SRC-REVIEW-2026-09-17",
@@ -102,7 +110,7 @@
     ],
     [
       "fact:F-005",
-      "dec020ae7e10d2090b0d1107e4e73df97bdb2f794f71d14fddafbd3aeddf5135"
+      "7a0196f96eda9aac1f15875e2c440aacef1b26f94f15d2d1fd2828035d40c9df"
     ],
     [
       "fact:F-006",
@@ -110,7 +118,7 @@
     ],
     [
       "fact:F-008",
-      "d28a49d2a2faf42fbc7b5e239629771e46bcbcdb0bf057e9b66234896b90de6f"
+      "51c0b05792661b56d9cf436a0550e634cf28a909ec41985e9b7a1424aeaf6ee9"
     ]
   ],
   "mandatory": [
@@ -131,10 +139,10 @@
     "CST-SEAL-DERIVED",
     "CST-SUPERSEDED-NOT-AUTHORITY",
     "CST-ZERO-HARDCODING",
+    "ISS-BASE-ECONNRESET-FLAKE",
+    "ISS-IMPLEMENTATION-MAP-STALE",
     "ISS-NPM-TEST-DURATION",
-    "ISS-PG-CUTOVER-STATUS",
-    "ISS-REVIEW-FINDINGS-UNRECONCILED",
-    "ISS-RUNTIME-DEPENDENCY-CLAIM"
+    "ISS-REVIEW-FINDINGS-UNRECONCILED"
   ],
   "members": {
     "artifacts": [],
@@ -158,6 +166,8 @@
     ],
     "decisions": [],
     "issues": [
+      "ISS-BASE-ECONNRESET-FLAKE",
+      "ISS-IMPLEMENTATION-MAP-STALE",
       "ISS-NPM-TEST-DURATION",
       "ISS-PG-CUTOVER-STATUS",
       "ISS-REVIEW-FINDINGS-UNRECONCILED",
@@ -172,16 +182,16 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 6388,
-      "estimatedTokens": 2130,
+      "bytes": 9302,
+      "estimatedTokens": 3101,
       "file": "contexts/CTX-PLATFORM-QUALITY.md",
       "id": "CTX-PLATFORM-QUALITY",
-      "sha256": "f8bf1cf704c141e7de17b7ec45b63e328dc5ac1fad340297d069b87669faa897"
+      "sha256": "f2d0e24a4e9ca6472d2273dcad203478ea7c256123aadc457783bef189855696"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "2c694e31819366ce19127a62a751dbb259027ec09b3ad629bd6e8f701aff94dd",
+      "fingerprint": "8252e4dbae1980171888988d9e9f739e277a00b4b293dff99dca3bf5d375791a",
       "id": "CTX-BOOTSTRAP"
     }
   ],

@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "30d0154ce78147c2849a893e4b5ce54075cf4d51c32aed863f1b93fce6d24b59",
-  "depFingerprint": "3744b5cb41eaab77b8801bde67b97b538c50563c4e8489f9b2fec46e86e41f18",
+  "contentFingerprint": "74c067b0b5720e38250ae11ef401896879c5776052e6b47b33889aaa27817bc2",
+  "depFingerprint": "edc0cb2c9e8f7a3afe58dae2e46a5ee4eb7cc0bbcd37a43ae451c25458a828e6",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -50,7 +50,7 @@
     ],
     [
       "CST-NO-SECRETS",
-      "f2f9df57ae02e8726712e2b5277f57f2267bb894772f1ca64ff076a887092551"
+      "919e69e7d19bb95c6a96a09c24eb09ef7bcf181442c86ff0456a47ac8afca47c"
     ],
     [
       "CST-NODE-ENGINE",
@@ -85,12 +85,12 @@
       "eb0769ad9c4a74c26e2f462d403bbcdaea37ce28938e2829fc8e76d025a06ec2"
     ],
     [
-      "ISS-MASTER-PROMPT-NOT-ARCHIVED",
-      "9c5b458273668d8edbe6ac8aa09b0e4b2f51338a5cbac05c3573a5822f72d336"
+      "ISS-IMPLEMENTATION-MAP-STALE",
+      "f7872415c2c441264633ce113e73461d1490c87530b242f48d623e3a7fc790d7"
     ],
     [
-      "ISS-PG-CUTOVER-STATUS",
-      "97b1cc8f56d56d17ae042636a27bb592d68df211d865f8e5e9f5c3359c2285ac"
+      "ISS-MASTER-PROMPT-NOT-ARCHIVED",
+      "45be368da5a16146dd1a8ea0f2f48842d62224c0fe28f652cc73027844debf1e"
     ],
     [
       "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
@@ -98,11 +98,11 @@
     ],
     [
       "ISS-REVIEW-FINDINGS-UNRECONCILED",
-      "e4e986b5820f802965334f0f8edf1163c5a79c21a345b0869d2a5a97e2d4e60a"
+      "2f68d3f510757ee77a662bdf113dfd044ff4d836e0f3f7436f3c8ae5960bd3eb"
     ],
     [
       "ISS-SEGMENTS-UNPROCESSED",
-      "71d0d996ba7afd1eccf385c6a5bc6b7382e7c30c46accc04188c38f1882ae642"
+      "57a50cffbeaa46a525cc3a0be6e6e587c06e7b03729b25c392f28ae8aa7ff25c"
     ],
     [
       "REQ-CTX-ARCHIVE",
@@ -210,7 +210,11 @@
     ],
     [
       "fact:F-008",
-      "d28a49d2a2faf42fbc7b5e239629771e46bcbcdb0bf057e9b66234896b90de6f"
+      "51c0b05792661b56d9cf436a0550e634cf28a909ec41985e9b7a1424aeaf6ee9"
+    ],
+    [
+      "fact:F-014",
+      "f0b40be08346679fa9b44e13a731bac39cd72c95693ce613a1b4052a8dd94e7f"
     ]
   ],
   "mandatory": [
@@ -232,11 +236,10 @@
     "CST-ZERO-HARDCODING",
     "DEC-CTX-GIT-AS-ARCHIVE",
     "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+    "ISS-IMPLEMENTATION-MAP-STALE",
     "ISS-MASTER-PROMPT-NOT-ARCHIVED",
-    "ISS-PG-CUTOVER-STATUS",
     "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
     "ISS-REVIEW-FINDINGS-UNRECONCILED",
-    "ISS-SEGMENTS-UNPROCESSED",
     "REQ-CTX-ARCHIVE",
     "REQ-CTX-COVERAGE"
   ],
@@ -267,8 +270,8 @@
       "DEC-CTX-MEMORY-LEDGER-HISTORICAL"
     ],
     "issues": [
+      "ISS-IMPLEMENTATION-MAP-STALE",
       "ISS-MASTER-PROMPT-NOT-ARCHIVED",
-      "ISS-PG-CUTOVER-STATUS",
       "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
       "ISS-REVIEW-FINDINGS-UNRECONCILED",
       "ISS-SEGMENTS-UNPROCESSED"
@@ -307,16 +310,16 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 16075,
-      "estimatedTokens": 5359,
+      "bytes": 17738,
+      "estimatedTokens": 5913,
       "file": "contexts/CTX-EVIDENCE-ARCHIVE.md",
       "id": "CTX-EVIDENCE-ARCHIVE",
-      "sha256": "bac2be801ca551bcdb299168084b9daf3d3ee488f59a9193b26569350f85a582"
+      "sha256": "190dc6a35bbd84b884e474f342160ae4d6183bc293f58cf45cc0ed2c9b5c3df1"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "2c694e31819366ce19127a62a751dbb259027ec09b3ad629bd6e8f701aff94dd",
+      "fingerprint": "8252e4dbae1980171888988d9e9f739e277a00b4b293dff99dca3bf5d375791a",
       "id": "CTX-BOOTSTRAP"
     }
   ],

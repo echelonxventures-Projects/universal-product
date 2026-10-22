@@ -46,11 +46,11 @@ Give any authorised agent — any model, client or context size — a governed, 
 
 ## Load these packs, in order
 
-1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (9691 B)
+1. `PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md` — Bootstrap — mandatory rules and current state (10771 B)
 2. `PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md` — Constitutional governance and the registry pipeline (8162 B)
-3. `PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.md` — Context continuity — design decisions and open design questions (10837 B)
+3. `PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.md` — Context continuity — design decisions and open design questions (11125 B)
 4. `PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.md` — Context continuity — requirements and code (20658 B)
-5. `PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md` — Source evidence — inventory, gaps and coverage (16075 B)
+5. `PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md` — Source evidence — inventory, gaps and coverage (17738 B)
 
 ## Requirements
 
