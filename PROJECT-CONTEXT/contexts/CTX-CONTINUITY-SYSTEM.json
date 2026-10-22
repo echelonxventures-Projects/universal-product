@@ -1,0 +1,321 @@
+{
+  "budgetBytes": 24000,
+  "contentFingerprint": "9bf7ae43e22e42ee3adcc05d6017cdec4468bac89bb6d29ed876bde267c0e333",
+  "depFingerprint": "7c9a2a1b2ee1e911e77e5041bfa85ac0781a98949482180b8bc3fc8a24068514",
+  "excluded": [],
+  "freshness": "fresh-at-build",
+  "generatedAt": "2026-10-22",
+  "generator": "ctx-1.0.0",
+  "id": "CTX-CONTINUITY-SYSTEM",
+  "inputs": [
+    [
+      "ART-CLAUDE-MD",
+      "b3982c035f68c10871236751212a7692bcba73a87d7b47176a295124ce4f0c44"
+    ],
+    [
+      "ART-CTX-ARCHIVE",
+      "e33bbe5e2259d3b677d2585cd3a63797c4d432e04fe8f58918a9419282326280"
+    ],
+    [
+      "ART-CTX-CLI",
+      "130b46836ed6c8d727f4b62409bde97d84e2ff92e70c75a3678c5580d5996d5e"
+    ],
+    [
+      "ART-CTX-CONFIG",
+      "b0559ed0d90f8d2fd57ed20d19703cb09207b6ddc52973249c42c9098205ba89"
+    ],
+    [
+      "ART-CTX-COVERAGE",
+      "556b5579a10837f022b14577f1aa3b546b2beb222a99c36f4508dc67da1bf7dd"
+    ],
+    [
+      "ART-CTX-GRAPH",
+      "8e590f0c4d16de22a0e98059a97c874735d3bdcf6065514ca550c8ced25ef341"
+    ],
+    [
+      "ART-CTX-HYGIENE",
+      "1e5a47ff8f835776d47ec4e77c921baa3bad95270debffba9e167c366203684e"
+    ],
+    [
+      "ART-CTX-INDEX",
+      "c2e6205adde18ed2fd5c8ad43fc8ada544fc7bd9c3a6295e55e833810cf1466d"
+    ],
+    [
+      "ART-CTX-PACKS",
+      "fb77b37e5c169c26bb709741e7d2661474861819327515b62bbe054e007013bb"
+    ],
+    [
+      "ART-CTX-PROTOCOL",
+      "d56e63cdca57a3e5325d2a62748b816d88b197b2dc363a58f164216b3e7a62b5"
+    ],
+    [
+      "ART-CTX-REG-LIFECYCLE",
+      "494cb9b96f0399c126306a7d1e73c9a192219ee7b04fdfce5ec70d5dbab7df44"
+    ],
+    [
+      "ART-CTX-REG-RELATIONS",
+      "0f28ab96239af48ce778f12d18813182934e467fbc2ce8f2ba35c7145d5e55dc"
+    ],
+    [
+      "ART-CTX-SCHEMA-HANDOFF",
+      "2032278356452007bb9d334d0cc8dd1c617589d0407e922206c3810317609a80"
+    ],
+    [
+      "ART-CTX-SCHEMA-KNOWLEDGE",
+      "6faade84ac70a93c36b6f165b4e8fd44a91f943325977f89ed67c7b05eb5bbad"
+    ],
+    [
+      "ART-CTX-SCHEMA-RECEIPT",
+      "fce82256693ca15beac07de8388bc2e480065689f599cc94bdc8486680a7c967"
+    ],
+    [
+      "ART-CTX-SCHEMA-VALIDATOR",
+      "0d49af53a6957ddc5b7e48e9970a7390f61c7d5eebd16219edb8acf32a021f34"
+    ],
+    [
+      "ART-CTX-STORE",
+      "e7793effa57e62035286028f63735c159ea0d5c8a3cc24b43f3d4379823fde51"
+    ],
+    [
+      "ART-CTX-UTIL",
+      "240cf1c4859a8b35c7a4a9b8626549635809f99182afd50d52aadcd39f63daf6"
+    ],
+    [
+      "ART-CTX-VIEWS",
+      "ec16292802de324e89666645eecedd91705e118534a96ead83def945b0f05071"
+    ],
+    [
+      "ART-TEST-CONTEXT",
+      "ae1670113225204d2bf6d32e2fd73b8a868493ece5ceb7442a56e124412b7092"
+    ],
+    [
+      "CST-AUTHORIZED-SIDE-EFFECTS",
+      "785e628fc900f335bc4c5658879db74191b1068494a65aa2fae44e57b6ec1336"
+    ],
+    [
+      "CST-CONFIG-OVER-CODE",
+      "78117e2e3be560e662e207c22b69c29fbd59594af1f186e61c1079db23183168"
+    ],
+    [
+      "CST-EVIDENCE-BEFORE-CLAIMS",
+      "336230e694eb86b8f4d1d42c3b588c7e58234ce809d5ba4695c14db0deff8b2d"
+    ],
+    [
+      "CST-EXPLAINABILITY",
+      "b64aa8200dca9443b769f3c923ce3a2fbe0d2e34debe40d7abacae7df655bed9"
+    ],
+    [
+      "CST-FROZEN-PRIMITIVES",
+      "78e9b8e40e3004618edd825d1637d33fccdf6dacdd2ab6b14c9b4b279e2e3fd9"
+    ],
+    [
+      "CST-KNOWLEDGE-ONCE",
+      "8e28da9351e3eb8a70825922df78adccc9c7fd4169b1e39a0b44297c5d5ba05d"
+    ],
+    [
+      "CST-NO-DESTRUCTIVE-CLEANUP",
+      "7747d31f2dd557226325ede059a0a0d92171227a89cf9e6a70b73d52e7c9cc86"
+    ],
+    [
+      "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "74f67f765383961295845131effc939a67ee9d4c79ca36283d54b5c15a3aaea2"
+    ],
+    [
+      "CST-NO-SECRETS",
+      "f2f9df57ae02e8726712e2b5277f57f2267bb894772f1ca64ff076a887092551"
+    ],
+    [
+      "CST-NODE-ENGINE",
+      "67523abb18530d49400744bdc703163e34b2a07b6d92d021bca716bb666b8ab6"
+    ],
+    [
+      "CST-PRESERVE-WORKING-TREE",
+      "7cbdf7102bdd684beb93c4596852524be125d7ad23dffbb20b2b21a0f2107e28"
+    ],
+    [
+      "CST-PROJECTION-LAW",
+      "b54e583d5f7cd522c3ee0f739fa479a0e4a830e9a715a50e7e760c7d184ad405"
+    ],
+    [
+      "CST-SEAL-DERIVED",
+      "bc333c19cdc11eb6c847dd269c615b6cc5c6e4baa950cd7a96fcf101373991a6"
+    ],
+    [
+      "CST-SUPERSEDED-NOT-AUTHORITY",
+      "c8dab4d9391d2e4683f0169fb7b040e527e1c5788fbed7e798f2d49b63ec93a1"
+    ],
+    [
+      "CST-ZERO-HARDCODING",
+      "1fa46b53f278850801081aba2f2922796813444f0b3279b033598f0a3e884ed0"
+    ],
+    [
+      "REQ-CTX-ARCHIVE",
+      "368ee4ab20bc3d970b644e4963b884f98fbbc38b72c5a6497ae891f2ff56c545"
+    ],
+    [
+      "REQ-CTX-ASSIMILATION",
+      "126a0d8ffa5bb3fc15c4d60ca82d490d093100ac3921f343e98518772495a012"
+    ],
+    [
+      "REQ-CTX-CI",
+      "0d94ab09f5a0094056abdc2f9c760d453824d3fe941109ae8331250bea7fea5c"
+    ],
+    [
+      "REQ-CTX-COVERAGE",
+      "853554dc2a7b4c9783d2882c5549de2eeb789ad3b9339254e1462e9e2be81e03"
+    ],
+    [
+      "REQ-CTX-ENTRY-POINTS",
+      "6b883e830e08d0f5184c90060200aa2fbafc517da364b50873b491134ef9975d"
+    ],
+    [
+      "REQ-CTX-GRAPH",
+      "36952ca3063278728e83878ee4923ff0261ca82e65ecc621c0377a0c5f651510"
+    ],
+    [
+      "REQ-CTX-HANDOFF",
+      "8bda1494f63a3b3bb773c737735c64c17efc70ebfd4c1c7997928ed21fa6685c"
+    ],
+    [
+      "REQ-CTX-HYGIENE",
+      "374a25ecbf2c74bcf3bd504a4866ce9b09cc9b98b5fbe59b9a333fc21c1d9c72"
+    ],
+    [
+      "REQ-CTX-INVALIDATION",
+      "c3efad630a0523aa31d574224bd50f4f817c3313873b53027e090d88873a443d"
+    ],
+    [
+      "REQ-CTX-KNOWLEDGE-MODEL",
+      "3877c8369e45859331afa99cc3504771ed28dd85c0f14234f3e3a235b01fee1e"
+    ],
+    [
+      "REQ-CTX-NO-COMPETING-SOT",
+      "2a7c31ebdab5f55563b114ccb0f79247f7e252eb3a97464e56bda605e342b345"
+    ],
+    [
+      "REQ-CTX-PACKS",
+      "aefce051316ea94e09fce454da3d8419974c022597dd4a7c3949452f7c51e27f"
+    ],
+    [
+      "REQ-CTX-SECURITY",
+      "872c140020f4935ae5a5ebfea66ed6695c4fa960ebe07b1f602e0effded7809e"
+    ],
+    [
+      "REQ-CTX-VERIFICATION",
+      "f1756548bb4c3dc6267b0f118995c49c6591696033137102a041518dab30d3b9"
+    ]
+  ],
+  "mandatory": [
+    "CST-AUTHORIZED-SIDE-EFFECTS",
+    "CST-CONFIG-OVER-CODE",
+    "CST-EVIDENCE-BEFORE-CLAIMS",
+    "CST-EXPLAINABILITY",
+    "CST-FROZEN-PRIMITIVES",
+    "CST-KNOWLEDGE-ONCE",
+    "CST-NO-DESTRUCTIVE-CLEANUP",
+    "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+    "CST-NO-SECRETS",
+    "CST-NODE-ENGINE",
+    "CST-PRESERVE-WORKING-TREE",
+    "CST-PROJECTION-LAW",
+    "CST-SEAL-DERIVED",
+    "CST-SUPERSEDED-NOT-AUTHORITY",
+    "CST-ZERO-HARDCODING",
+    "REQ-CTX-ARCHIVE",
+    "REQ-CTX-ASSIMILATION",
+    "REQ-CTX-CI",
+    "REQ-CTX-COVERAGE",
+    "REQ-CTX-ENTRY-POINTS",
+    "REQ-CTX-GRAPH",
+    "REQ-CTX-HANDOFF",
+    "REQ-CTX-HYGIENE",
+    "REQ-CTX-INVALIDATION",
+    "REQ-CTX-KNOWLEDGE-MODEL",
+    "REQ-CTX-NO-COMPETING-SOT",
+    "REQ-CTX-PACKS",
+    "REQ-CTX-SECURITY",
+    "REQ-CTX-VERIFICATION"
+  ],
+  "members": {
+    "artifacts": [
+      "ART-CLAUDE-MD",
+      "ART-CTX-ARCHIVE",
+      "ART-CTX-CLI",
+      "ART-CTX-CONFIG",
+      "ART-CTX-COVERAGE",
+      "ART-CTX-GRAPH",
+      "ART-CTX-HYGIENE",
+      "ART-CTX-INDEX",
+      "ART-CTX-PACKS",
+      "ART-CTX-PROTOCOL",
+      "ART-CTX-REG-LIFECYCLE",
+      "ART-CTX-REG-RELATIONS",
+      "ART-CTX-SCHEMA-HANDOFF",
+      "ART-CTX-SCHEMA-KNOWLEDGE",
+      "ART-CTX-SCHEMA-RECEIPT",
+      "ART-CTX-SCHEMA-VALIDATOR",
+      "ART-CTX-STORE",
+      "ART-CTX-UTIL",
+      "ART-CTX-VIEWS",
+      "ART-TEST-CONTEXT"
+    ],
+    "constraints": [
+      "CST-AUTHORIZED-SIDE-EFFECTS",
+      "CST-CONFIG-OVER-CODE",
+      "CST-EVIDENCE-BEFORE-CLAIMS",
+      "CST-EXPLAINABILITY",
+      "CST-FROZEN-PRIMITIVES",
+      "CST-KNOWLEDGE-ONCE",
+      "CST-NO-DESTRUCTIVE-CLEANUP",
+      "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "CST-NO-SECRETS",
+      "CST-NODE-ENGINE",
+      "CST-PRESERVE-WORKING-TREE",
+      "CST-PROJECTION-LAW",
+      "CST-SEAL-DERIVED",
+      "CST-SUPERSEDED-NOT-AUTHORITY",
+      "CST-ZERO-HARDCODING"
+    ],
+    "decisions": [],
+    "issues": [],
+    "requirements": [
+      "REQ-CTX-ARCHIVE",
+      "REQ-CTX-ASSIMILATION",
+      "REQ-CTX-CI",
+      "REQ-CTX-COVERAGE",
+      "REQ-CTX-ENTRY-POINTS",
+      "REQ-CTX-GRAPH",
+      "REQ-CTX-HANDOFF",
+      "REQ-CTX-HYGIENE",
+      "REQ-CTX-INVALIDATION",
+      "REQ-CTX-KNOWLEDGE-MODEL",
+      "REQ-CTX-NO-COMPETING-SOT",
+      "REQ-CTX-PACKS",
+      "REQ-CTX-SECURITY",
+      "REQ-CTX-VERIFICATION"
+    ],
+    "sources": []
+  },
+  "missing": [],
+  "parts": [
+    {
+      "bytes": 21961,
+      "estimatedTokens": 7321,
+      "file": "contexts/CTX-CONTINUITY-SYSTEM.md",
+      "id": "CTX-CONTINUITY-SYSTEM",
+      "sha256": "392815a8702009eb4b5b82fc3ca5bc45d5bda25c05bfd33f9f7a107395415961"
+    }
+  ],
+  "prerequisites": [
+    {
+      "fingerprint": "0fc30cfcfffc9c360619e25e7588ee585bdbe408c39598add2a5eb7e37fd602a",
+      "id": "CTX-CONTINUITY-DESIGN"
+    }
+  ],
+  "schema": "ctx-pack/1",
+  "secretFindings": [],
+  "sourceFingerprints": [],
+  "status": "ok",
+  "title": "Context continuity — requirements and code",
+  "withheld": []
+}

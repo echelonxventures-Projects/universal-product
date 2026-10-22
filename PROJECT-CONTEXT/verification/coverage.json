@@ -1,0 +1,573 @@
+{
+  "counts": {
+    "brokenLinks": 0,
+    "conflictsWithEdges": 0,
+    "consolidationCandidates": 14,
+    "danglingSegmentCitations": 0,
+    "duplicateGroups": 0,
+    "orphanedActiveArtifactIds": [],
+    "orphanedActiveArtifacts": 0,
+    "recoveryTest": "passed",
+    "unaccountedSegments": 23,
+    "unresolvedConflictIds": [
+      "ISS-RUNTIME-DEPENDENCY-CLAIM"
+    ],
+    "unresolvedConflicts": 1
+  },
+  "dangling": [],
+  "metrics": [
+    {
+      "denominator": 24,
+      "formula": "in-scope sources with preservation=preserved ÷ (in-scope sources − sources excluded by policy)",
+      "name": "source-inventory-preserved",
+      "numerator": 22,
+      "percent": 91.67,
+      "states": {
+        "inaccessible": 1,
+        "not-retained": 1,
+        "preserved": 22
+      }
+    },
+    {
+      "denominator": 22,
+      "formula": "preserved sources whose archived bytes re-hash to the manifest sha256 ÷ preserved sources",
+      "name": "source-checksum-verification",
+      "notVerified": [],
+      "numerator": 22,
+      "percent": 100
+    },
+    {
+      "denominator": 6006,
+      "formula": "segments in {represented, preserved, irrelevant, excluded} ÷ all segments of preserved in-scope sources",
+      "name": "segment-accounting",
+      "numerator": 5983,
+      "percent": 99.62,
+      "totals": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 1,
+        "preserved": 5966,
+        "represented": 16,
+        "unprocessed": 23
+      }
+    },
+    {
+      "denominator": 6006,
+      "formula": "segments cited by at least one knowledge record ÷ all segments of preserved in-scope sources",
+      "name": "segment-representation",
+      "numerator": 16,
+      "percent": 0.27
+    },
+    {
+      "denominator": 14,
+      "formula": "active requirements with ≥1 resolvable source reference ÷ active requirements",
+      "name": "requirement-source-traceability",
+      "numerator": 14,
+      "percent": 100
+    },
+    {
+      "denominator": 9,
+      "formula": "active decisions with ≥1 resolvable source or provenance=newly-proposed ÷ active decisions",
+      "name": "decision-source-traceability",
+      "numerator": 9,
+      "percent": 100
+    },
+    {
+      "denominator": 14,
+      "formula": "active requirements with an incoming 'implements' edge ÷ active requirements",
+      "name": "requirement-implementation-traceability",
+      "numerator": 14,
+      "percent": 100
+    },
+    {
+      "denominator": 14,
+      "formula": "active requirements with an incoming 'verifies' edge ÷ active requirements",
+      "name": "requirement-test-traceability",
+      "numerator": 14,
+      "percent": 100
+    },
+    {
+      "denominator": 6,
+      "formula": "active context specs whose prerequisites all exist and are active ÷ active context specs",
+      "name": "context-dependency-completeness",
+      "numerator": 6,
+      "percent": 100
+    },
+    {
+      "denominator": 6,
+      "formula": "generated packs whose on-disk dependency fingerprint equals the recomputed one and whose parts match their sha256 ÷ active packs",
+      "name": "context-freshness",
+      "numerator": 6,
+      "percent": 100
+    },
+    {
+      "denominator": 0,
+      "formula": "handoffs that validate against handoff.schema.json ÷ handoffs on disk",
+      "name": "handoff-completeness",
+      "numerator": 0,
+      "percent": null
+    }
+  ],
+  "perSource": [
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 4763,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-ARCH-1",
+      "preservation": "preserved",
+      "segments": 4763
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 453,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-ARCH-2",
+      "preservation": "preserved",
+      "segments": 453
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 147,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-ARCH-3",
+      "preservation": "preserved",
+      "segments": 147
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 60,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-ARCH-4",
+      "preservation": "preserved",
+      "segments": 60
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 74,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-ARCH-5",
+      "preservation": "preserved",
+      "segments": 74
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 31,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-ARCH-6",
+      "preservation": "preserved",
+      "segments": 31
+    },
+    {
+      "id": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+      "preservation": "not-retained",
+      "segments": 0
+    },
+    {
+      "id": "SRC-CONV-PRIOR-SESSIONS",
+      "preservation": "inaccessible",
+      "segments": 0
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 58,
+        "represented": 3,
+        "unprocessed": 0
+      },
+      "id": "SRC-GIT-HISTORY",
+      "preservation": "preserved",
+      "segments": 61
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 0,
+        "represented": 0,
+        "unprocessed": 9
+      },
+      "id": "SRC-IMPLEMENTATION-MAP",
+      "preservation": "preserved",
+      "segments": 9
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 1,
+        "preserved": 0,
+        "represented": 1,
+        "unprocessed": 0
+      },
+      "id": "SRC-MEMORY-2026-09-17",
+      "preservation": "preserved",
+      "segments": 2
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 31,
+        "represented": 5,
+        "unprocessed": 0
+      },
+      "id": "SRC-MEMORY-LEDGER",
+      "preservation": "preserved",
+      "segments": 36
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 0,
+        "represented": 2,
+        "unprocessed": 7
+      },
+      "id": "SRC-README",
+      "preservation": "preserved",
+      "segments": 9
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 3,
+        "represented": 4,
+        "unprocessed": 0
+      },
+      "id": "SRC-REPOSITORY-INDEX",
+      "preservation": "preserved",
+      "segments": 7
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 9,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-REVIEW-2026-09-17",
+      "preservation": "preserved",
+      "segments": 9
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 0,
+        "represented": 1,
+        "unprocessed": 7
+      },
+      "id": "SRC-REVIEW-2026-10-12",
+      "preservation": "preserved",
+      "segments": 8
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 60,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-SUPERSEDED-ADDENDUM",
+      "preservation": "preserved",
+      "segments": 60
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 59,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-SUPERSEDED-MASTER-ARCH",
+      "preservation": "preserved",
+      "segments": 59
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 40,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-SUPERSEDED-ZERO-HARDCODING",
+      "preservation": "preserved",
+      "segments": 40
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 61,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-UCOS-ADDENDUM",
+      "preservation": "preserved",
+      "segments": 61
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 6,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-UCOS-CAPABILITY-OS",
+      "preservation": "preserved",
+      "segments": 6
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 60,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-UCOS-MASTER-ARCH",
+      "preservation": "preserved",
+      "segments": 60
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 10,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-UCOS-OMEGA",
+      "preservation": "preserved",
+      "segments": 10
+    },
+    {
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 41,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-UCRS-ZERO-HARDCODING",
+      "preservation": "preserved",
+      "segments": 41
+    }
+  ],
+  "schema": "ctx-coverage/1",
+  "unaccountedSample": [
+    {
+      "lines": "1-6",
+      "segment": "S0001",
+      "source": "SRC-IMPLEMENTATION-MAP",
+      "state": "unprocessed",
+      "title": "IMPLEMENTATION MAP — the three corpora → runtime"
+    },
+    {
+      "lines": "7-15",
+      "segment": "S0002",
+      "source": "SRC-IMPLEMENTATION-MAP",
+      "state": "unprocessed",
+      "title": "What the corpora declare"
+    },
+    {
+      "lines": "16-33",
+      "segment": "S0003",
+      "source": "SRC-IMPLEMENTATION-MAP",
+      "state": "unprocessed",
+      "title": "How \"implementation\" is defined here"
+    },
+    {
+      "lines": "34-55",
+      "segment": "S0004",
+      "source": "SRC-IMPLEMENTATION-MAP",
+      "state": "unprocessed",
+      "title": "The eight runtime layers (per key, from `lib/ucos-trace.js`)"
+    },
+    {
+      "lines": "56-69",
+      "segment": "S0005",
+      "source": "SRC-IMPLEMENTATION-MAP",
+      "state": "unprocessed",
+      "title": "The generic engines (zero per-universe code, Architecture3 Article 4.2)"
+    },
+    {
+      "lines": "70-83",
+      "segment": "S0006",
+      "source": "SRC-IMPLEMENTATION-MAP",
+      "state": "unprocessed",
+      "title": "Activation — how to turn the whole corpus on"
+    },
+    {
+      "lines": "84-97",
+      "segment": "S0007",
+      "source": "SRC-IMPLEMENTATION-MAP",
+      "state": "unprocessed",
+      "title": "Proven by tests"
+    },
+    {
+      "lines": "98-126",
+      "segment": "S0008",
+      "source": "SRC-IMPLEMENTATION-MAP",
+      "state": "unprocessed",
+      "title": "Honest gaps that remain"
+    },
+    {
+      "lines": "127-136",
+      "segment": "S0009",
+      "source": "SRC-IMPLEMENTATION-MAP",
+      "state": "unprocessed",
+      "title": "The scaling defects activation exposed"
+    },
+    {
+      "lines": "1-8",
+      "segment": "S0001",
+      "source": "SRC-README",
+      "state": "unprocessed",
+      "title": "LUXORA Platform"
+    },
+    {
+      "lines": "9-14",
+      "segment": "S0002",
+      "source": "SRC-README",
+      "state": "unprocessed",
+      "title": "Documentation"
+    },
+    {
+      "lines": "47-56",
+      "segment": "S0004",
+      "source": "SRC-README",
+      "state": "unprocessed",
+      "title": "Surfaces"
+    },
+    {
+      "lines": "57-64",
+      "segment": "S0005",
+      "source": "SRC-README",
+      "state": "unprocessed",
+      "title": "The product model"
+    },
+    {
+      "lines": "65-92",
+      "segment": "S0006",
+      "source": "SRC-README",
+      "state": "unprocessed",
+      "title": "GOIP Ω∞ — Global Offer Infrastructure Platform"
+    },
+    {
+      "lines": "93-105",
+      "segment": "S0007",
+      "source": "SRC-README",
+      "state": "unprocessed",
+      "title": "The 10-layer security stack (`GET /api/platform/security` for the live scorecard)"
+    },
+    {
+      "lines": "110-162",
+      "segment": "S0009",
+      "source": "SRC-README",
+      "state": "unprocessed",
+      "title": "Architecture"
+    },
+    {
+      "lines": "1-40",
+      "segment": "S0001",
+      "source": "SRC-REVIEW-2026-10-12",
+      "state": "unprocessed",
+      "title": "Code Review — LUXORA Platform (HEAD `d63d60f` + uncommitted working tree)"
+    },
+    {
+      "lines": "61-127",
+      "segment": "S0003",
+      "source": "SRC-REVIEW-2026-10-12",
+      "state": "unprocessed",
+      "title": "Critical"
+    },
+    {
+      "lines": "128-257",
+      "segment": "S0004",
+      "source": "SRC-REVIEW-2026-10-12",
+      "state": "unprocessed",
+      "title": "High"
+    },
+    {
+      "lines": "258-335",
+      "segment": "S0005",
+      "source": "SRC-REVIEW-2026-10-12",
+      "state": "unprocessed",
+      "title": "Medium"
+    },
+    {
+      "lines": "336-347",
+      "segment": "S0006",
+      "source": "SRC-REVIEW-2026-10-12",
+      "state": "unprocessed",
+      "title": "Low"
+    },
+    {
+      "lines": "348-367",
+      "segment": "S0007",
+      "source": "SRC-REVIEW-2026-10-12",
+      "state": "unprocessed",
+      "title": "What's good"
+    },
+    {
+      "lines": "368-392",
+      "segment": "S0008",
+      "source": "SRC-REVIEW-2026-10-12",
+      "state": "unprocessed",
+      "title": "Suggested order of work"
+    }
+  ]
+}

@@ -1,0 +1,306 @@
+{
+  "$comment": "Context pack specifications. A pack's content is derived from these specs + the knowledge; the generated files in PROJECT-CONTEXT/contexts/ are never edited. previous/next are a navigation chain; prerequisites are the dependency truth.",
+  "registryId": "CTX-REG-CONTEXTS",
+  "kind": "context",
+  "version": 1,
+  "records": [
+    {
+      "id": "CTX-BOOTSTRAP",
+      "title": "Bootstrap — mandatory rules and current state",
+      "use": "Read first, in every session, before any task-specific pack. Small by design.",
+      "scope": [
+        "global critical constraints",
+        "the current-state snapshot",
+        "open approvals and recovery limits every agent must know"
+      ],
+      "exclusions": [
+        "task-specific requirements and decisions (see the task's packs)",
+        "product runtime details"
+      ],
+      "bootstrap": true,
+      "include": {
+        "issues": [
+          "ISS-CTX-DECISIONS-UNAPPROVED",
+          "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE"
+        ],
+        "artifacts": [
+          "ART-AGENTS-MD"
+        ]
+      },
+      "next": "CTX-GOVERNANCE",
+      "verification": [
+        "npm run context:verify",
+        "git status"
+      ],
+      "budgetBytes": 12000,
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CTX-CONTINUITY-DESIGN",
+      "title": "Context continuity — design decisions and open design questions",
+      "use": "Load before changing how the continuity system works; read before CTX-CONTINUITY-SYSTEM.",
+      "scope": [
+        "DEC-CTX-* (proposed, awaiting owner approval) with rationale and rejected options",
+        "open design gaps"
+      ],
+      "exclusions": [
+        "requirements and code artifacts (CTX-CONTINUITY-SYSTEM)",
+        "evidence inventory (CTX-EVIDENCE-ARCHIVE)"
+      ],
+      "include": {
+        "decisions": [
+          "DEC-CTX-BYTE-BUDGETS",
+          "DEC-CTX-DERIVED-EDGES",
+          "DEC-CTX-DETERMINISTIC-TIME",
+          "DEC-CTX-GIT-AS-ARCHIVE",
+          "DEC-CTX-LOCATION",
+          "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+          "DEC-CTX-ZERO-DEPENDENCIES"
+        ],
+        "issues": [
+          "ISS-MASTER-PROMPT-NOT-ARCHIVED"
+        ]
+      },
+      "prerequisites": [
+        "CTX-BOOTSTRAP",
+        "CTX-GOVERNANCE"
+      ],
+      "previous": "CTX-GOVERNANCE",
+      "next": "CTX-CONTINUITY-SYSTEM",
+      "verification": [
+        "npm run context:verify"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CTX-CONTINUITY-SYSTEM",
+      "title": "Context continuity — requirements and code",
+      "use": "Load to change, extend or debug PROJECT-CONTEXT, lib/context, scripts/context.js or the agent protocol.",
+      "scope": [
+        "REQ-CTX-* and their acceptance criteria",
+        "the code, schema and test artifacts"
+      ],
+      "exclusions": [
+        "design rationale (CTX-CONTINUITY-DESIGN, a prerequisite)",
+        "evidence inventory (CTX-EVIDENCE-ARCHIVE)",
+        "product runtime"
+      ],
+      "include": {
+        "requirements": [
+          "REQ-CTX-ARCHIVE",
+          "REQ-CTX-ASSIMILATION",
+          "REQ-CTX-CI",
+          "REQ-CTX-COVERAGE",
+          "REQ-CTX-ENTRY-POINTS",
+          "REQ-CTX-GRAPH",
+          "REQ-CTX-HANDOFF",
+          "REQ-CTX-HYGIENE",
+          "REQ-CTX-INVALIDATION",
+          "REQ-CTX-KNOWLEDGE-MODEL",
+          "REQ-CTX-NO-COMPETING-SOT",
+          "REQ-CTX-PACKS",
+          "REQ-CTX-SECURITY",
+          "REQ-CTX-VERIFICATION"
+        ],
+        "artifacts": [
+          "ART-CTX-UTIL",
+          "ART-CTX-SCHEMA-VALIDATOR",
+          "ART-CTX-STORE",
+          "ART-CTX-GRAPH",
+          "ART-CTX-PACKS",
+          "ART-CTX-ARCHIVE",
+          "ART-CTX-COVERAGE",
+          "ART-CTX-HYGIENE",
+          "ART-CTX-VIEWS",
+          "ART-CTX-PROTOCOL",
+          "ART-CTX-INDEX",
+          "ART-CTX-CLI",
+          "ART-CTX-SCHEMA-KNOWLEDGE",
+          "ART-CTX-SCHEMA-HANDOFF",
+          "ART-CTX-SCHEMA-RECEIPT",
+          "ART-CTX-REG-LIFECYCLE",
+          "ART-CTX-REG-RELATIONS",
+          "ART-CTX-CONFIG",
+          "ART-TEST-CONTEXT",
+          "ART-CLAUDE-MD"
+        ]
+      },
+      "prerequisites": [
+        "CTX-CONTINUITY-DESIGN"
+      ],
+      "previous": "CTX-CONTINUITY-DESIGN",
+      "next": "CTX-EVIDENCE-ARCHIVE",
+      "verification": [
+        "npm run context:verify",
+        "node test/context.js"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CTX-EVIDENCE-ARCHIVE",
+      "title": "Source evidence — inventory, gaps and coverage",
+      "use": "Load when citing evidence, importing or capturing sources, or judging what history is and is not preserved.",
+      "scope": [
+        "every archived source and its preservation status",
+        "known gaps",
+        "archive and coverage design"
+      ],
+      "exclusions": [
+        "the content of the sources (restore or read them at their locator)"
+      ],
+      "include": {
+        "requirements": [
+          "REQ-CTX-ARCHIVE",
+          "REQ-CTX-COVERAGE"
+        ],
+        "decisions": [
+          "DEC-CTX-GIT-AS-ARCHIVE",
+          "DEC-CTX-MEMORY-LEDGER-HISTORICAL"
+        ],
+        "issues": [
+          "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
+          "ISS-MASTER-PROMPT-NOT-ARCHIVED",
+          "ISS-SEGMENTS-UNPROCESSED"
+        ],
+        "artifacts": [
+          "ART-GIT-OBJECT-STORE",
+          "ART-ARCHIVE-STORE",
+          "ART-MEMORY-LEDGER"
+        ],
+        "tags": [
+          "archive"
+        ],
+        "sources": [
+          "SRC-ARCH-1",
+          "SRC-ARCH-2",
+          "SRC-ARCH-3",
+          "SRC-ARCH-4",
+          "SRC-ARCH-5",
+          "SRC-ARCH-6",
+          "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "SRC-CONV-PRIOR-SESSIONS",
+          "SRC-GIT-HISTORY",
+          "SRC-IMPLEMENTATION-MAP",
+          "SRC-MEMORY-2026-09-17",
+          "SRC-MEMORY-LEDGER",
+          "SRC-README",
+          "SRC-REPOSITORY-INDEX",
+          "SRC-REVIEW-2026-09-17",
+          "SRC-REVIEW-2026-10-12",
+          "SRC-SUPERSEDED-ADDENDUM",
+          "SRC-SUPERSEDED-MASTER-ARCH",
+          "SRC-SUPERSEDED-ZERO-HARDCODING",
+          "SRC-UCOS-ADDENDUM",
+          "SRC-UCOS-CAPABILITY-OS",
+          "SRC-UCOS-MASTER-ARCH",
+          "SRC-UCOS-OMEGA",
+          "SRC-UCRS-ZERO-HARDCODING"
+        ]
+      },
+      "prerequisites": [
+        "CTX-BOOTSTRAP"
+      ],
+      "previous": "CTX-CONTINUITY-SYSTEM",
+      "next": "CTX-PLATFORM-QUALITY",
+      "related": [
+        "CTX-CONTINUITY-SYSTEM"
+      ],
+      "verification": [
+        "npm run context:verify",
+        "npm run context:restore-check",
+        "npm run context:coverage"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CTX-GOVERNANCE",
+      "title": "Constitutional governance and the registry pipeline",
+      "use": "Load before touching _registry/, constitutional documents, the canonical compile, or anything claiming a single source of truth.",
+      "scope": [
+        "the laws and their owners",
+        "registry-as-truth and the sealed compile",
+        "registry tooling and its known defect"
+      ],
+      "exclusions": [
+        "the content of the 93 artifacts (read them at their owner)",
+        "continuity-system internals"
+      ],
+      "include": {
+        "constraints": [
+          "CST-FROZEN-PRIMITIVES",
+          "CST-SEAL-DERIVED",
+          "CST-SUPERSEDED-NOT-AUTHORITY"
+        ],
+        "decisions": [
+          "DEC-REGISTRY-AS-SOT",
+          "DEC-SEALED-CANONICAL-COMPILE"
+        ],
+        "artifacts": [
+          "ART-REGISTRY-AUDIT",
+          "ART-REGISTRY-PROJECT",
+          "ART-REGISTRY-COMPILE",
+          "ART-REGISTRY-GATE",
+          "ART-CANONICAL"
+        ],
+        "issues": [
+          "ISS-CANONICAL-INPUT-MISNAMED",
+          "ISS-CONTENT-MAP-SHARED-KEYS"
+        ],
+        "sources": [
+          "SRC-REPOSITORY-INDEX",
+          "SRC-UCRS-ZERO-HARDCODING",
+          "SRC-SUPERSEDED-ZERO-HARDCODING"
+        ]
+      },
+      "prerequisites": [
+        "CTX-BOOTSTRAP"
+      ],
+      "previous": "CTX-BOOTSTRAP",
+      "next": "CTX-CONTINUITY-DESIGN",
+      "verification": [
+        "node _registry/audit.js",
+        "npm run registry"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CTX-PLATFORM-QUALITY",
+      "title": "Platform quality — open review findings and runtime risks",
+      "use": "Load before security or data-layer work on the platform runtime.",
+      "scope": [
+        "unreconciled review findings",
+        "Postgres cutover status",
+        "test-suite duration risk",
+        "dependency-claim conflict"
+      ],
+      "exclusions": [
+        "the fixes themselves"
+      ],
+      "include": {
+        "constraints": [
+          "CST-NODE-ENGINE",
+          "CST-CONFIG-OVER-CODE",
+          "CST-DEPENDENCY-MINIMAL"
+        ],
+        "issues": [
+          "ISS-REVIEW-FINDINGS-UNRECONCILED",
+          "ISS-PG-CUTOVER-STATUS",
+          "ISS-NPM-TEST-DURATION",
+          "ISS-RUNTIME-DEPENDENCY-CLAIM"
+        ],
+        "sources": [
+          "SRC-REVIEW-2026-10-12",
+          "SRC-REVIEW-2026-09-17"
+        ]
+      },
+      "prerequisites": [
+        "CTX-BOOTSTRAP"
+      ],
+      "previous": "CTX-EVIDENCE-ARCHIVE",
+      "verification": [
+        "npm test"
+      ],
+      "lifecycle": "canonical-active"
+    }
+  ]
+}

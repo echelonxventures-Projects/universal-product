@@ -1,0 +1,225 @@
+{
+  "budgetBytes": 24000,
+  "contentFingerprint": "10e6e4e9f9d99813ffe0bc2a794ae1fd91f5235ca72a020fd516a2563631a799",
+  "depFingerprint": "718613be3e705e2082bb314eb8cd25ad6437b098bf0ec4e059025b0fb11e02b2",
+  "excluded": [],
+  "freshness": "fresh-at-build",
+  "generatedAt": "2026-10-22",
+  "generator": "ctx-1.0.0",
+  "id": "CTX-GOVERNANCE",
+  "inputs": [
+    [
+      "ART-CANONICAL",
+      "1df67ec124b02704a061ee00760b8e10ea9adb88bd8e892b2c4be02fe69e91c2"
+    ],
+    [
+      "ART-REGISTRY-AUDIT",
+      "47d9b65e000f0dc52e36bf0d6416223f6b09e320b69176dfab720e8bd135e95b"
+    ],
+    [
+      "ART-REGISTRY-COMPILE",
+      "570e9fb53dde18f9b20d4023142114dc519726b64b9e78e53dfdf927446f8924"
+    ],
+    [
+      "ART-REGISTRY-GATE",
+      "bd532580552435bbf4077464e7935f98a5069b2078bf001b81926269caabc4e1"
+    ],
+    [
+      "ART-REGISTRY-PROJECT",
+      "493ec3b50b0973d8c01e435ceee7edcf03afcde589c2ff2b539c7a0761edc99c"
+    ],
+    [
+      "CST-AUTHORIZED-SIDE-EFFECTS",
+      "785e628fc900f335bc4c5658879db74191b1068494a65aa2fae44e57b6ec1336"
+    ],
+    [
+      "CST-CONFIG-OVER-CODE",
+      "78117e2e3be560e662e207c22b69c29fbd59594af1f186e61c1079db23183168"
+    ],
+    [
+      "CST-EVIDENCE-BEFORE-CLAIMS",
+      "336230e694eb86b8f4d1d42c3b588c7e58234ce809d5ba4695c14db0deff8b2d"
+    ],
+    [
+      "CST-EXPLAINABILITY",
+      "b64aa8200dca9443b769f3c923ce3a2fbe0d2e34debe40d7abacae7df655bed9"
+    ],
+    [
+      "CST-FROZEN-PRIMITIVES",
+      "78e9b8e40e3004618edd825d1637d33fccdf6dacdd2ab6b14c9b4b279e2e3fd9"
+    ],
+    [
+      "CST-KNOWLEDGE-ONCE",
+      "8e28da9351e3eb8a70825922df78adccc9c7fd4169b1e39a0b44297c5d5ba05d"
+    ],
+    [
+      "CST-NO-DESTRUCTIVE-CLEANUP",
+      "7747d31f2dd557226325ede059a0a0d92171227a89cf9e6a70b73d52e7c9cc86"
+    ],
+    [
+      "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "74f67f765383961295845131effc939a67ee9d4c79ca36283d54b5c15a3aaea2"
+    ],
+    [
+      "CST-NO-SECRETS",
+      "f2f9df57ae02e8726712e2b5277f57f2267bb894772f1ca64ff076a887092551"
+    ],
+    [
+      "CST-NODE-ENGINE",
+      "67523abb18530d49400744bdc703163e34b2a07b6d92d021bca716bb666b8ab6"
+    ],
+    [
+      "CST-PRESERVE-WORKING-TREE",
+      "7cbdf7102bdd684beb93c4596852524be125d7ad23dffbb20b2b21a0f2107e28"
+    ],
+    [
+      "CST-PROJECTION-LAW",
+      "b54e583d5f7cd522c3ee0f739fa479a0e4a830e9a715a50e7e760c7d184ad405"
+    ],
+    [
+      "CST-SEAL-DERIVED",
+      "bc333c19cdc11eb6c847dd269c615b6cc5c6e4baa950cd7a96fcf101373991a6"
+    ],
+    [
+      "CST-SUPERSEDED-NOT-AUTHORITY",
+      "c8dab4d9391d2e4683f0169fb7b040e527e1c5788fbed7e798f2d49b63ec93a1"
+    ],
+    [
+      "CST-ZERO-HARDCODING",
+      "1fa46b53f278850801081aba2f2922796813444f0b3279b033598f0a3e884ed0"
+    ],
+    [
+      "DEC-REGISTRY-AS-SOT",
+      "caec308b02fbaeca3ab4a4d59bf31b3ffca0e6904cf9bf977e2018dc3f7e933b"
+    ],
+    [
+      "DEC-SEALED-CANONICAL-COMPILE",
+      "9b4376d01debff97aaadde3fbc71392f059c45d111fe4ad4a6e1282339962245"
+    ],
+    [
+      "ISS-CANONICAL-INPUT-MISNAMED",
+      "a7a6a7cf7ca242bfa748ca4f42216ebea0e9dc9c2ac0ea46480aed56ace811c9"
+    ],
+    [
+      "ISS-CONTENT-MAP-SHARED-KEYS",
+      "1a4b22c6cb973c1255ad5c6fb99b9f6367a0c0d87f4e26648eed1a0d42a0083d"
+    ],
+    [
+      "SRC-REPOSITORY-INDEX",
+      "1723bb68d9ab80430ef1722c88ecff51952119273f31806b26678ac1534aeb2b"
+    ],
+    [
+      "SRC-SUPERSEDED-ZERO-HARDCODING",
+      "ba9293125c87d0220a6383f040e82dc233a953d8485f2126677780e61eddc33c"
+    ],
+    [
+      "SRC-UCRS-ZERO-HARDCODING",
+      "0ab7628cfee438939d720ad59eef5c376f43d9cb8d9e37608815e3616420000c"
+    ],
+    [
+      "fact:F-002",
+      "c3e4797f4dee2c3000190edd22980b7f0071cf2304ee91cbf36001ac1a8f2ad2"
+    ],
+    [
+      "fact:F-004",
+      "786f855adec24df763853913994075d3ae10ff101551571040f887a89bd1802b"
+    ]
+  ],
+  "mandatory": [
+    "CST-AUTHORIZED-SIDE-EFFECTS",
+    "CST-CONFIG-OVER-CODE",
+    "CST-EVIDENCE-BEFORE-CLAIMS",
+    "CST-EXPLAINABILITY",
+    "CST-FROZEN-PRIMITIVES",
+    "CST-FROZEN-PRIMITIVES",
+    "CST-KNOWLEDGE-ONCE",
+    "CST-NO-DESTRUCTIVE-CLEANUP",
+    "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+    "CST-NO-SECRETS",
+    "CST-NODE-ENGINE",
+    "CST-PRESERVE-WORKING-TREE",
+    "CST-PROJECTION-LAW",
+    "CST-SEAL-DERIVED",
+    "CST-SEAL-DERIVED",
+    "CST-SUPERSEDED-NOT-AUTHORITY",
+    "CST-SUPERSEDED-NOT-AUTHORITY",
+    "CST-ZERO-HARDCODING",
+    "DEC-REGISTRY-AS-SOT",
+    "DEC-SEALED-CANONICAL-COMPILE"
+  ],
+  "members": {
+    "artifacts": [
+      "ART-CANONICAL",
+      "ART-REGISTRY-AUDIT",
+      "ART-REGISTRY-COMPILE",
+      "ART-REGISTRY-GATE",
+      "ART-REGISTRY-PROJECT"
+    ],
+    "constraints": [
+      "CST-AUTHORIZED-SIDE-EFFECTS",
+      "CST-CONFIG-OVER-CODE",
+      "CST-EVIDENCE-BEFORE-CLAIMS",
+      "CST-EXPLAINABILITY",
+      "CST-FROZEN-PRIMITIVES",
+      "CST-KNOWLEDGE-ONCE",
+      "CST-NO-DESTRUCTIVE-CLEANUP",
+      "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "CST-NO-SECRETS",
+      "CST-NODE-ENGINE",
+      "CST-PRESERVE-WORKING-TREE",
+      "CST-PROJECTION-LAW",
+      "CST-SEAL-DERIVED",
+      "CST-SUPERSEDED-NOT-AUTHORITY",
+      "CST-ZERO-HARDCODING"
+    ],
+    "decisions": [
+      "DEC-REGISTRY-AS-SOT",
+      "DEC-SEALED-CANONICAL-COMPILE"
+    ],
+    "issues": [
+      "ISS-CANONICAL-INPUT-MISNAMED",
+      "ISS-CONTENT-MAP-SHARED-KEYS"
+    ],
+    "requirements": [],
+    "sources": [
+      "SRC-REPOSITORY-INDEX",
+      "SRC-SUPERSEDED-ZERO-HARDCODING",
+      "SRC-UCRS-ZERO-HARDCODING"
+    ]
+  },
+  "missing": [],
+  "parts": [
+    {
+      "bytes": 10725,
+      "estimatedTokens": 3575,
+      "file": "contexts/CTX-GOVERNANCE.md",
+      "id": "CTX-GOVERNANCE",
+      "sha256": "45b08f39fe8170a84af6b42e0392ed41e525eb5cf0aa877911515c8f75e3e5eb"
+    }
+  ],
+  "prerequisites": [
+    {
+      "fingerprint": "4d7ad502df1c2bcba57e5b433191f74405b96410029a8ee872d1999a084ecc93",
+      "id": "CTX-BOOTSTRAP"
+    }
+  ],
+  "schema": "ctx-pack/1",
+  "secretFindings": [],
+  "sourceFingerprints": [
+    {
+      "id": "SRC-REPOSITORY-INDEX",
+      "sha256": "11fa373278aa1f9921f0bdf39a7da3fdeb82ea4174ce5cf2058273ee7843411e"
+    },
+    {
+      "id": "SRC-SUPERSEDED-ZERO-HARDCODING",
+      "sha256": "787d7e4daa821870f4961e4ae31e6ce8735d195ce7e576f79e2e13f5b193b868"
+    },
+    {
+      "id": "SRC-UCRS-ZERO-HARDCODING",
+      "sha256": "ca7be7c64d72a269e80bbe0f2a75d238bc934d98bc0825f746bccc103910bf3c"
+    }
+  ],
+  "status": "ok",
+  "title": "Constitutional governance and the registry pipeline",
+  "withheld": []
+}

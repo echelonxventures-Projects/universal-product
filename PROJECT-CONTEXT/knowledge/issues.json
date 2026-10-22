@@ -1,0 +1,269 @@
+{
+  "$comment": "Open questions, gaps, conflicts, assumptions, risks, approvals and known defects. Every open item names the evidence that would resolve it. An open 'conflict' blocks any task it lists in 'blocks'; it may never be treated as settled.",
+  "registryId": "CTX-REG-ISSUES",
+  "kind": "issue",
+  "version": 1,
+  "records": [
+    {
+      "id": "ISS-CANONICAL-INPUT-MISNAMED",
+      "kind": "defect",
+      "title": "Seal manifest hashes a file that does not exist",
+      "statement": "lib/canonical.js:104 lists 'UCOS-Zero-Hardcoding-Constitution.md' in INPUT_FILES, but the repository file is 'UCRS-Zero-Hardcoding-Constitution.md' (which lib/ucos.js:72 parses). The seal manifest records the listed file as missing, so an edit to the real UCRS constitution does not drift the seal. Pre-existing; tracked separately from the continuity work.",
+      "status": "open",
+      "severity": "medium",
+      "evidence": [
+        "grep: lib/canonical.js:104 vs lib/ucos.js:72 and _registry/audit.js:30 (observed 2026-10-22)",
+        "`npm run registry` reports 'sources 28 files' including the missing entry (observed 2026-10-22)"
+      ],
+      "evidenceNeeded": "Confirm UCRS-Zero-Hardcoding-Constitution.md is the intended input, correct INPUT_FILES, re-run `npm run registry` and `node test/registry-gate.js`.",
+      "affects": [
+        "ART-CANONICAL",
+        "CST-ZERO-HARDCODING"
+      ],
+      "tags": [
+        "governance",
+        "defect"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-CONTENT-MAP-SHARED-KEYS",
+      "kind": "question",
+      "title": "Eleven projected artifacts share another artifact's content block",
+      "statement": "_registry/content-map.json maps each constitution UCOS-CON-000001…010 to the same content key as a core-domain artifact (e.g. CON-000001 Constitutional Foundation and IDN-000001 Identity Architecture both → core/IDN; CON-000007 Privacy Constitution → core/AUT, the Authority Architecture block), and UCOS-CLS-000001 shares ext/SEM with UCOS-SEM-000001. The projections are 83–91% identical by word-shingle Jaccard, and some titles do not match the content they project. Pre-existing; found by context:hygiene on 2026-10-22.",
+      "status": "open",
+      "severity": "medium",
+      "evidence": [
+        "_registry/content-map.json lines 11–41 (observed 2026-10-22)",
+        "PROJECT-CONTEXT/verification/hygiene.json nearDuplicates (Jaccard 0.83–0.91)"
+      ],
+      "evidenceNeeded": "Owner decides whether each constitution needs its own content block in _registry/content-*.json (then re-project and audit) or whether the sharing is intended (then record that as a decision).",
+      "affects": [
+        "UCOS-CON-000001",
+        "UCOS-CON-000007",
+        "UCOS-CLS-000001",
+        "CST-KNOWLEDGE-ONCE"
+      ],
+      "tags": [
+        "governance",
+        "hygiene"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-CTX-DECISIONS-UNAPPROVED",
+      "kind": "approval",
+      "title": "Continuity design decisions await owner approval",
+      "statement": "DEC-CTX-* were made by the implementing agent on 2026-10-22 and are recorded as proposed; nothing in the repository shows the owner approving them.",
+      "status": "open",
+      "severity": "high",
+      "evidenceNeeded": "The owner approves, amends or rejects each DEC-CTX-* decision; record it via TASK-CTX-0002 (decision status → approved with authority and date).",
+      "affects": [
+        "DEC-CTX-BYTE-BUDGETS",
+        "DEC-CTX-DERIVED-EDGES",
+        "DEC-CTX-DETERMINISTIC-TIME",
+        "DEC-CTX-GIT-AS-ARCHIVE",
+        "DEC-CTX-LOCATION",
+        "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+        "DEC-CTX-ZERO-DEPENDENCIES"
+      ],
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-MASTER-PROMPT-NOT-ARCHIVED",
+      "kind": "gap",
+      "title": "The owner's master prompt is not archived",
+      "statement": "Requirements REQ-CTX-* paraphrase the 2026-10-22 master prompt and cite it by section; its original text is not in the repository or the private store, so the paraphrases cannot be re-checked against the source.",
+      "status": "open",
+      "severity": "medium",
+      "evidenceNeeded": "An export of the 2026-10-22 session transcript imported with `npm run context:import -- <file> --id SRC-CONV-2026-10-22-EXPORT --sensitivity private` into an access-controlled CONTEXT_ARCHIVE_DIR.",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT"
+        }
+      ],
+      "affects": [
+        "REQ-CTX-ARCHIVE",
+        "REQ-CTX-ASSIMILATION",
+        "REQ-CTX-CI",
+        "REQ-CTX-COVERAGE",
+        "REQ-CTX-ENTRY-POINTS",
+        "REQ-CTX-GRAPH",
+        "REQ-CTX-HANDOFF",
+        "REQ-CTX-HYGIENE",
+        "REQ-CTX-INVALIDATION",
+        "REQ-CTX-KNOWLEDGE-MODEL",
+        "REQ-CTX-NO-COMPETING-SOT",
+        "REQ-CTX-PACKS",
+        "REQ-CTX-SECURITY",
+        "REQ-CTX-VERIFICATION",
+        "SRC-CONV-2026-10-22-MASTER-PROMPT"
+      ],
+      "tags": [
+        "archive",
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-NPM-TEST-DURATION",
+      "kind": "risk",
+      "title": "The full test suite takes ~18 minutes",
+      "statement": "MEMORY.md reports the full `npm test` chain takes about 18 minutes and must run with a long timeout on a free port; agents that budget a short timeout will misreport results.",
+      "status": "open",
+      "severity": "low",
+      "evidenceNeeded": "Measured duration of `npm test` in this environment (see state fact F-003).",
+      "sources": [
+        {
+          "ref": "SRC-MEMORY-LEDGER",
+          "segment": "S0036"
+        }
+      ],
+      "affects": [
+        "CST-EVIDENCE-BEFORE-CLAIMS"
+      ],
+      "tags": [
+        "process",
+        "platform"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-PG-CUTOVER-STATUS",
+      "kind": "validation",
+      "title": "Status of the Postgres-cutover blockers is unknown",
+      "statement": "The 2026-09-17 review found three runtime blockers on Postgres (untranslated INSERT OR REPLACE, INSERT OR IGNORE losing semantics, SQLite scalar MAX). README (current) describes the request-path cutover as a runbook step needing a live Postgres. Whether the blockers were fixed is not recorded.",
+      "status": "open",
+      "severity": "medium",
+      "evidenceNeeded": "A run against a real Postgres, or code inspection of lib/sql.js translation for the three constructs.",
+      "sources": [
+        {
+          "ref": "SRC-REVIEW-2026-09-17"
+        },
+        {
+          "ref": "SRC-MEMORY-2026-09-17",
+          "segment": "S0002"
+        },
+        {
+          "ref": "SRC-README",
+          "segment": "S0003"
+        }
+      ],
+      "affects": [
+        "SRC-REVIEW-2026-09-17"
+      ],
+      "tags": [
+        "platform",
+        "data"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
+      "kind": "recovery-limit",
+      "title": "Conversations behind sessions 2026-09-17 → 2026-10-07 are inaccessible",
+      "statement": "Only the agents' own summaries (MEMORY.md) survive; owner directives quoted there (e.g. the 'packs' directive in session 21) cannot be checked against the original wording.",
+      "status": "open",
+      "severity": "medium",
+      "evidenceNeeded": "Exports of those conversations, if they still exist in the originating tool, imported as private sources.",
+      "sources": [
+        {
+          "ref": "SRC-CONV-PRIOR-SESSIONS"
+        },
+        {
+          "ref": "SRC-MEMORY-LEDGER",
+          "segment": "S0036"
+        }
+      ],
+      "affects": [
+        "SRC-CONV-PRIOR-SESSIONS",
+        "SRC-MEMORY-LEDGER"
+      ],
+      "tags": [
+        "archive"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-REVIEW-FINDINGS-UNRECONCILED",
+      "kind": "validation",
+      "title": "REVIEW.md findings are not mapped to their fixes",
+      "statement": "REVIEW.md (2026-10-12) lists critical/high findings S1–S11, P1 and T1. Later commits (PR #1 'close the gaps from the full-project review', PR #2 'close the seven critical route-audit findings') suggest they were addressed, but no record maps each finding to a fix and a test, and this session did not verify them.",
+      "status": "open",
+      "severity": "high",
+      "evidenceNeeded": "For each finding id: the fixing commit, the test that proves it, or an explicit 'still open'.",
+      "sources": [
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0002"
+        },
+        {
+          "ref": "SRC-GIT-HISTORY",
+          "segment": "S0049"
+        },
+        {
+          "ref": "SRC-GIT-HISTORY",
+          "segment": "S0051"
+        }
+      ],
+      "affects": [
+        "SRC-REVIEW-2026-10-12"
+      ],
+      "blocks": [
+        "TASK-SEC-0001"
+      ],
+      "tags": [
+        "security",
+        "platform"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-RUNTIME-DEPENDENCY-CLAIM",
+      "kind": "conflict",
+      "title": "'Zero runtime dependencies' vs declared npm dependencies",
+      "statement": "MEMORY.md (S0002) says the platform has zero runtime dependencies and README says the runtime drivers are dependency-free, yet package.json declares bull, ioredis and prom-client as dependencies; a grep of lib/*.js and server.js finds no require of them.",
+      "status": "open",
+      "severity": "low",
+      "evidence": [
+        "package.json dependencies (observed 2026-10-22)",
+        "grep for require of bull/ioredis/prom-client in lib/*.js and server.js: no matches (observed 2026-10-22)"
+      ],
+      "evidenceNeeded": "Owner decides whether the three packages are vestigial (remove) or intended (correct the documentation).",
+      "sources": [
+        {
+          "ref": "SRC-MEMORY-LEDGER",
+          "segment": "S0002"
+        },
+        {
+          "ref": "SRC-README",
+          "segment": "S0003"
+        }
+      ],
+      "affects": [
+        "CST-DEPENDENCY-MINIMAL"
+      ],
+      "tags": [
+        "runtime"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-SEGMENTS-UNPROCESSED",
+      "kind": "gap",
+      "title": "Some in-scope source segments are unprocessed",
+      "statement": "README, IMPLEMENTATION_MAP, REVIEW (2026-10-12) and parts of the repository index were archived but not every segment was read and classified during the 2026-10-22 implementation; they are counted as unprocessed, not preserved.",
+      "status": "open",
+      "severity": "low",
+      "evidenceNeeded": "Classify each listed segment (`npm run context:query -- unaccounted-segments`) in knowledge/coverage.json or cite it from a record.",
+      "tags": [
+        "archive",
+        "coverage"
+      ],
+      "lifecycle": "canonical-active"
+    }
+  ]
+}

@@ -1,0 +1,383 @@
+{
+  "brokenLinks": [],
+  "exactDuplicates": [],
+  "files": 130,
+  "knowledge": {
+    "conflicts": [],
+    "duplicateStatements": [],
+    "historicalAsAuthority": [],
+    "missingOwner": [],
+    "obsolete": [],
+    "orphans": [],
+    "supersededInActive": []
+  },
+  "nearDuplicates": [
+    {
+      "files": [
+        "00-constitutions/UCOS-CON-000001-constitutional-foundation.md",
+        "02-core-domains/UCOS-IDN-000001-identity-architecture.md"
+      ],
+      "jaccard": 0.847
+    },
+    {
+      "files": [
+        "00-constitutions/UCOS-CON-000002-canonical-terminology-constitution.md",
+        "02-core-domains/UCOS-KNW-000001-knowledge-architecture.md"
+      ],
+      "jaccard": 0.84
+    },
+    {
+      "files": [
+        "00-constitutions/UCOS-CON-000003-domain-ownership-constitution.md",
+        "02-core-domains/UCOS-REL-000001-relationship-architecture.md"
+      ],
+      "jaccard": 0.837
+    },
+    {
+      "files": [
+        "00-constitutions/UCOS-CON-000004-dependency-constitution.md",
+        "02-core-domains/UCOS-CTX-000001-context-architecture.md"
+      ],
+      "jaccard": 0.837
+    },
+    {
+      "files": [
+        "00-constitutions/UCOS-CON-000005-governance-constitution.md",
+        "02-core-domains/UCOS-POL-000001-policy-architecture.md"
+      ],
+      "jaccard": 0.84
+    },
+    {
+      "files": [
+        "00-constitutions/UCOS-CON-000006-security-constitution.md",
+        "02-core-domains/UCOS-RUL-000001-rule-architecture.md"
+      ],
+      "jaccard": 0.832
+    },
+    {
+      "files": [
+        "00-constitutions/UCOS-CON-000007-privacy-constitution.md",
+        "02-core-domains/UCOS-AUT-000001-authority-architecture.md"
+      ],
+      "jaccard": 0.834
+    },
+    {
+      "files": [
+        "00-constitutions/UCOS-CON-000008-trust-constitution.md",
+        "02-core-domains/UCOS-TRS-000001-trust-architecture.md"
+      ],
+      "jaccard": 0.912
+    },
+    {
+      "files": [
+        "00-constitutions/UCOS-CON-000009-evolution-constitution.md",
+        "02-core-domains/UCOS-EVO-000001-evolution-architecture.md"
+      ],
+      "jaccard": 0.912
+    },
+    {
+      "files": [
+        "00-constitutions/UCOS-CON-000010-certification-constitution.md",
+        "02-core-domains/UCOS-EVD-000001-evidence-architecture.md"
+      ],
+      "jaccard": 0.834
+    },
+    {
+      "files": [
+        "01-semantics/UCOS-CLS-000001-universal-classification-architecture.md",
+        "01-semantics/UCOS-SEM-000001-universal-semantic-architecture.md"
+      ],
+      "jaccard": 0.912
+    },
+    {
+      "files": [
+        "UCOS-Constitutional-Addendum.md",
+        "_superseded/UCOS-Constitutional-Addendum.original.md"
+      ],
+      "jaccard": 0.956
+    },
+    {
+      "files": [
+        "UCOS-Constitutional-Master-Architecture.md",
+        "_superseded/UCOS-Constitutional-Master-Architecture.original.md"
+      ],
+      "jaccard": 0.972
+    },
+    {
+      "files": [
+        "UCRS-Zero-Hardcoding-Constitution.md",
+        "_superseded/UCRS-Zero-Hardcoding-Constitution.original.md"
+      ],
+      "jaccard": 0.962
+    }
+  ],
+  "oversizedActive": [],
+  "oversizedAny": [
+    {
+      "bytes": 111638,
+      "file": ".workbuddy-ai/memory/MEMORY.md"
+    },
+    {
+      "bytes": 1254180,
+      "file": "Architecture1.txt"
+    },
+    {
+      "bytes": 571014,
+      "file": "Architecture2.txt"
+    },
+    {
+      "bytes": 139745,
+      "file": "UCOS-Universal-Capability-Operating-System.md"
+    },
+    {
+      "bytes": 207987,
+      "file": "UCOS_Omega_Constitutional_Architecture_v1.0.md"
+    },
+    {
+      "bytes": 64029,
+      "file": "USER_MANUAL.md"
+    }
+  ],
+  "policy": "findings and proposals only — nothing is deleted or merged by this command",
+  "proposals": [
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "00-constitutions/UCOS-CON-000001-constitutional-foundation.md",
+        "02-core-domains/UCOS-IDN-000001-identity-architecture.md"
+      ],
+      "id": "CONSOLIDATE-001",
+      "jaccard": 0.847,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "00-constitutions/UCOS-CON-000002-canonical-terminology-constitution.md",
+        "02-core-domains/UCOS-KNW-000001-knowledge-architecture.md"
+      ],
+      "id": "CONSOLIDATE-002",
+      "jaccard": 0.84,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "00-constitutions/UCOS-CON-000003-domain-ownership-constitution.md",
+        "02-core-domains/UCOS-REL-000001-relationship-architecture.md"
+      ],
+      "id": "CONSOLIDATE-003",
+      "jaccard": 0.837,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "00-constitutions/UCOS-CON-000004-dependency-constitution.md",
+        "02-core-domains/UCOS-CTX-000001-context-architecture.md"
+      ],
+      "id": "CONSOLIDATE-004",
+      "jaccard": 0.837,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "00-constitutions/UCOS-CON-000005-governance-constitution.md",
+        "02-core-domains/UCOS-POL-000001-policy-architecture.md"
+      ],
+      "id": "CONSOLIDATE-005",
+      "jaccard": 0.84,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "00-constitutions/UCOS-CON-000006-security-constitution.md",
+        "02-core-domains/UCOS-RUL-000001-rule-architecture.md"
+      ],
+      "id": "CONSOLIDATE-006",
+      "jaccard": 0.832,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "00-constitutions/UCOS-CON-000007-privacy-constitution.md",
+        "02-core-domains/UCOS-AUT-000001-authority-architecture.md"
+      ],
+      "id": "CONSOLIDATE-007",
+      "jaccard": 0.834,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "00-constitutions/UCOS-CON-000008-trust-constitution.md",
+        "02-core-domains/UCOS-TRS-000001-trust-architecture.md"
+      ],
+      "id": "CONSOLIDATE-008",
+      "jaccard": 0.912,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "00-constitutions/UCOS-CON-000009-evolution-constitution.md",
+        "02-core-domains/UCOS-EVO-000001-evolution-architecture.md"
+      ],
+      "id": "CONSOLIDATE-009",
+      "jaccard": 0.912,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "00-constitutions/UCOS-CON-000010-certification-constitution.md",
+        "02-core-domains/UCOS-EVD-000001-evidence-architecture.md"
+      ],
+      "id": "CONSOLIDATE-010",
+      "jaccard": 0.834,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "01-semantics/UCOS-CLS-000001-universal-classification-architecture.md",
+        "01-semantics/UCOS-SEM-000001-universal-semantic-architecture.md"
+      ],
+      "id": "CONSOLIDATE-011",
+      "jaccard": 0.912,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "UCOS-Constitutional-Addendum.md",
+        "_superseded/UCOS-Constitutional-Addendum.original.md"
+      ],
+      "id": "CONSOLIDATE-012",
+      "jaccard": 0.956,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "UCOS-Constitutional-Master-Architecture.md",
+        "_superseded/UCOS-Constitutional-Master-Architecture.original.md"
+      ],
+      "id": "CONSOLIDATE-013",
+      "jaccard": 0.972,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    },
+    {
+      "action": "review",
+      "automated": false,
+      "files": [
+        "UCRS-Zero-Hardcoding-Constitution.md",
+        "_superseded/UCRS-Zero-Hardcoding-Constitution.original.md"
+      ],
+      "id": "CONSOLIDATE-014",
+      "jaccard": 0.962,
+      "steps": [
+        "compare meaning, authority, scope and exceptions of both files",
+        "map every unique statement to one canonical owner",
+        "record retained-separately items with a reason",
+        "transition the replaced artifact to superseded (requires approval)",
+        "rebuild contexts and re-run context:verify"
+      ]
+    }
+  ],
+  "schema": "ctx-hygiene/1"
+}

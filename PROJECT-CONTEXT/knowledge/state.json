@@ -1,0 +1,80 @@
+{
+  "$comment": "Current-state snapshot. status: verified (a command/inspection was observed, evidence says which) · unverified (reported elsewhere, not re-checked) · assumption. 'about' links a fact to the records it concerns, so packs carry the facts relevant to them. asOf is the date stamped on every generated file.",
+  "asOf": "2026-10-22",
+  "baseline": {
+    "branch": "claude/modest-babbage-kyejdn",
+    "head": "441d772d661abc6626d4497391c6f6261b086a0a",
+    "note": "state before the continuity work; working tree was clean"
+  },
+  "facts": [
+    {
+      "id": "F-001",
+      "status": "verified",
+      "statement": "Before this work the checkout was branch claude/modest-babbage-kyejdn at 441d772 with a clean working tree.",
+      "evidence": "git status / git log observed 2026-10-22",
+      "about": [
+        "TASK-CTX-0001",
+        "CTX-BOOTSTRAP"
+      ]
+    },
+    {
+      "id": "F-002",
+      "status": "verified",
+      "statement": "`npm run registry` (compile --gate, then --verify) exits 0: 12 documents, 2919 universes, 32220 concept rows, 15 integrity-gate checks green, seal verified with no drift.",
+      "evidence": "command run 2026-10-22, exit 0",
+      "about": [
+        "DEC-SEALED-CANONICAL-COMPILE",
+        "ART-REGISTRY-COMPILE",
+        "CTX-GOVERNANCE"
+      ]
+    },
+    {
+      "id": "F-003",
+      "status": "verified",
+      "statement": "Baseline `npm test` on the unmodified tree (441d772) exited 0: every suite in the chain green (e.g. smoke 760, security 158), in about 23 minutes.",
+      "evidence": "command run 2026-10-22 04:58→05:21 UTC, exit 0",
+      "about": [
+        "ISS-NPM-TEST-DURATION",
+        "TASK-CTX-0001",
+        "CTX-BOOTSTRAP"
+      ]
+    },
+    {
+      "id": "F-004",
+      "status": "verified",
+      "statement": "lib/canonical.js:104 lists a zero-hardcoding input file that does not exist; the real file is UCRS-Zero-Hardcoding-Constitution.md.",
+      "evidence": "grep observed 2026-10-22",
+      "about": [
+        "ISS-CANONICAL-INPUT-MISNAMED"
+      ]
+    },
+    {
+      "id": "F-005",
+      "status": "verified",
+      "statement": "package.json declares bull, ioredis and prom-client; no file in lib/ or server.js requires them.",
+      "evidence": "grep observed 2026-10-22",
+      "about": [
+        "ISS-RUNTIME-DEPENDENCY-CLAIM"
+      ]
+    },
+    {
+      "id": "F-006",
+      "status": "unverified",
+      "statement": "The last recorded session before this one (2026-10-07) reported the full suite green after ~18 minutes.",
+      "evidence": "SRC-MEMORY-LEDGER#S0036 (agent-reported)",
+      "about": [
+        "ISS-NPM-TEST-DURATION",
+        "CTX-BOOTSTRAP"
+      ]
+    },
+    {
+      "id": "F-008",
+      "status": "assumption",
+      "statement": "The REVIEW.md (2026-10-12) findings were addressed by PR #1 and PR #2, judging only by commit titles.",
+      "evidence": "commit titles in SRC-GIT-HISTORY S0049–S0061; not verified",
+      "about": [
+        "ISS-REVIEW-FINDINGS-UNRECONCILED"
+      ]
+    }
+  ]
+}

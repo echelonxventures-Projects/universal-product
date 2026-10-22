@@ -1,0 +1,685 @@
+{
+  "$comment": "Layer A archive manifest. Owner of source identity, checksums, sensitivity and preservation status. Never edit sha256/blob by hand: re-capture with `npm run context:capture` (a changed file becomes a NEW source that supersedes the old).",
+  "registryId": "CTX-REG-SOURCES",
+  "kind": "source",
+  "version": 1,
+  "records": [
+    {
+      "id": "SRC-ARCH-1",
+      "title": "Architecture corpus 1 — UPIP Ω∞ (Universal Product Intelligence Platform)",
+      "category": "specification-corpus",
+      "origin": "repository file Architecture1.txt (present at commit 441d772)",
+      "locator": "Architecture1.txt",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "137277729ff171cd2fd26f2d7f0925d25b1ffd9c",
+        "sha256": "aec7b3f72985f77696bf7606412c84d783217cdadc9efd0905999d5ff7808fca",
+        "bytes": 1254180
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 1
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "notes": "Compiled into the sealed canonical registry by lib/canonical.js (document 'upip'); that compile is the canonical owner of its declarations, with document+line provenance on every row.",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-ARCH-2",
+      "title": "Architecture corpus 2 — UMQSOCR Ω∞ universe",
+      "category": "specification-corpus",
+      "origin": "repository file Architecture2.txt (present at commit 441d772)",
+      "locator": "Architecture2.txt",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "6d58ec6ea5fde0b3f0c11c4f56393c7382b2308d",
+        "sha256": "468471982922c23e953468fa976271b15408b41096ec78041e6811d93a2603c3",
+        "bytes": 571014
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 1
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "notes": "Compiled by lib/canonical.js.",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-ARCH-3",
+      "title": "Architecture corpus 3 — UCOS Ω∞ Universal Civilization Operating System",
+      "category": "specification-corpus",
+      "origin": "repository file Architecture3.txt (present at commit 441d772)",
+      "locator": "Architecture3.txt",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "a98e5240dc5204f90a3a3969177843b3e89216a4",
+        "sha256": "01bb5d270950893a831ebf1d4be9139128894718ab5495ef60ba83ed68047904",
+        "bytes": 37737
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 1
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "notes": "Compiled by lib/canonical.js; declares the lifecycle states (§5.1) read by lib/ucos.js.",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-ARCH-4",
+      "title": "Architecture corpus 4 — Universal Industry · Product · Service · Commerce Universe",
+      "category": "specification-corpus",
+      "origin": "repository file Architecture4.txt (present at commit 441d772)",
+      "locator": "Architecture4.txt",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "dd705f693666ea822f5f508388efe6f096ee429f",
+        "sha256": "e5f2911c89b4f971642d393a7c8c041c875df2156172d64dba37c4bb9a64e753",
+        "bytes": 15265
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-ARCH-5",
+      "title": "Architecture corpus 5 — Universal Capability Platform master reference",
+      "category": "specification-corpus",
+      "origin": "repository file Architecture5.txt (present at commit 441d772)",
+      "locator": "Architecture5.txt",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "c2f39b4c96f5d51954d2ccd15c72ac457d01ed40",
+        "sha256": "1a2624201fa4473875e3490b6b8e3aef825a541242000826bf6b6103c1c0dc3a",
+        "bytes": 19152
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-ARCH-6",
+      "title": "Architecture corpus 6 — Universal Capability Platform composition",
+      "category": "specification-corpus",
+      "origin": "repository file Architecture6.txt (present at commit 441d772)",
+      "locator": "Architecture6.txt",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "138c2f77d2900234da661b57621b28f1fc335787",
+        "sha256": "a447fdf0f9c4d8767555107eb0e27a688c95ad2814c85226a27475358fb54026",
+        "bytes": 8149
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+      "title": "Owner's master prompt for the context continuity system (session 2026-10-22)",
+      "category": "conversation",
+      "origin": "claude.ai/code session of 2026-10-22 (owner instruction)",
+      "locator": "Claude Code cloud session transcript (not exported)",
+      "storage": {
+        "kind": "external"
+      },
+      "createdAt": "2026-10-22",
+      "capturedAt": null,
+      "importedAt": null,
+      "segmentation": {
+        "rule": "none"
+      },
+      "sensitivity": "private",
+      "preservation": "not-retained",
+      "omissions": [
+        "The prompt's text was not exported into the repository: conversation archives are not committed by default (CST-NO-PRIVATE-ARCHIVES-IN-GIT). Requirements REQ-CTX-* paraphrase it and cite its section numbers; to preserve the original, export the transcript and run `npm run context:import -- <file> --id SRC-CONV-2026-10-22-EXPORT --sensitivity private` against an access-controlled CONTEXT_ARCHIVE_DIR."
+      ],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json"
+    },
+    {
+      "id": "SRC-CONV-PRIOR-SESSIONS",
+      "title": "Conversations behind agent sessions 2026-09-17 → 2026-10-07",
+      "category": "conversation",
+      "origin": "earlier agent sessions in another workspace (/Users/bipin/Desktop/... per MEMORY.md) and tool",
+      "locator": "not available to this repository",
+      "storage": {
+        "kind": "none"
+      },
+      "createdAt": null,
+      "capturedAt": null,
+      "importedAt": null,
+      "segmentation": {
+        "rule": "none"
+      },
+      "sensitivity": "private",
+      "preservation": "inaccessible",
+      "omissions": [
+        "No export of these conversations or their attachments was supplied. Only the agents' own summaries survive (SRC-MEMORY-LEDGER). Owner decisions quoted there cannot be re-checked against the original wording."
+      ],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json"
+    },
+    {
+      "id": "SRC-GIT-HISTORY",
+      "title": "Git history of master up to 441d772 (61 commits)",
+      "category": "vcs-history",
+      "origin": "git rev-list of the repository",
+      "locator": "git:441d772d661abc6626d4497391c6f6261b086a0a",
+      "storage": {
+        "kind": "git-history",
+        "commit": "441d772d661abc6626d4497391c6f6261b086a0a",
+        "sha256": "87deb12d5bd91b90cfcd1e05edf3680541d11861a98a89c4b3de4359ad93afa5",
+        "bytes": 7974,
+        "commits": 61
+      },
+      "createdAt": "2026-10-15",
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "commits"
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [
+        "Commit messages and ids only; diffs are in git itself. A shallow clone cannot verify this source."
+      ],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-IMPLEMENTATION-MAP",
+      "title": "IMPLEMENTATION_MAP.md — corpus → runtime map",
+      "category": "project-doc",
+      "origin": "repository file IMPLEMENTATION_MAP.md (present at commit 441d772)",
+      "locator": "IMPLEMENTATION_MAP.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "30572e8e0bec5ee81a3313fb2e5d1f0c392595de",
+        "sha256": "1c60ef60e3bfafadbf15ebc765e6fd8ac64e922e2602aa7e1afa0561d4c55f13",
+        "bytes": 8583
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-MEMORY-2026-09-17",
+      "title": "Agent daily note 2026-09-17 (Postgres cutover review)",
+      "category": "agent-memory",
+      "origin": "repository file .workbuddy-ai/memory/2026-09-17.md (present at commit 441d772)",
+      "locator": ".workbuddy-ai/memory/2026-09-17.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "cf9e775d6d33889b1c2a3c1dd2f406973076578e",
+        "sha256": "f90c0b6e592c0c24cb696bf71330ca9689314b04062a04f553246fca85491b84",
+        "bytes": 1655
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-MEMORY-LEDGER",
+      "title": "Agent memory ledger (sessions 2026-09-17 → 2026-10-07)",
+      "category": "agent-memory",
+      "origin": "repository file .workbuddy-ai/memory/MEMORY.md (present at commit 441d772)",
+      "locator": ".workbuddy-ai/memory/MEMORY.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "028bdf85246fdd32d3274fe8e0a3919af24799c3",
+        "sha256": "5eb2ac32ffb490a86636ba96596398f1453226c88e2990db462eb34393509d7d",
+        "bytes": 111638
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 3
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [
+        "A narrative written by earlier agents; the conversations it summarises are not in the repository (see SRC-CONV-PRIOR-SESSIONS). Statements in it are evidence of what those agents reported, not independently verified facts."
+      ],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-README",
+      "title": "README.md — platform overview",
+      "category": "project-doc",
+      "origin": "repository file README.md (present at commit 441d772)",
+      "locator": "README.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "c0aac5edf204796bdea46af52f252f43c82216b4",
+        "sha256": "d83c823acccef7514b9f05820be7464ff29e68ee55b1e3d2b9751df02bfe037c",
+        "bytes": 22489
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-REPOSITORY-INDEX",
+      "title": "UCOS-REPOSITORY-INDEX.md — constitutional repository index",
+      "category": "project-doc",
+      "origin": "repository file UCOS-REPOSITORY-INDEX.md (present at commit 441d772)",
+      "locator": "UCOS-REPOSITORY-INDEX.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "66df9500090275a0a44ac192cd6a7be1772158df",
+        "sha256": "11fa373278aa1f9921f0bdf39a7da3fdeb82ea4174ce5cf2058273ee7843411e",
+        "bytes": 4434
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-REVIEW-2026-09-17",
+      "title": "REVIEW.md (version of 2026-09-17) — review of the uncommitted Postgres-cutover work",
+      "category": "review-evidence",
+      "origin": "REVIEW.md as committed in 3577ace (2026-09-17); overwritten by 9c31597",
+      "locator": "REVIEW.md",
+      "version": "3577ace",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "e7605eebe3c448070168d95eff95c8716f90dba0",
+        "sha256": "5828c55364f624b8bfb7c83e5c5209300840180011e8a168f2ed06c95a2f05d3",
+        "bytes": 20713
+      },
+      "createdAt": "2026-09-17",
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "supersededBy": [
+        "SRC-REVIEW-2026-10-12"
+      ],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "notes": "Same path, different content: the file was replaced, so this version is restorable only from git's object store (blob id).",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-REVIEW-2026-10-12",
+      "title": "REVIEW.md (version of 2026-10-12) — code review at HEAD d63d60f: security and correctness findings S1–S11, P1, T1",
+      "category": "review-evidence",
+      "origin": "repository file REVIEW.md, introduced in commit 9c31597 (2026-10-12), present at 441d772",
+      "locator": "REVIEW.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "2aa534fc8153c1e2c10a057101d31095b25dcb0d",
+        "sha256": "4aa4c580b931fb80caf1c722e813fc07da4e20aedb0ce18a9eccd03c61b91a61",
+        "bytes": 22627
+      },
+      "createdAt": "2026-10-12",
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-SUPERSEDED-ADDENDUM",
+      "title": "UCOS Constitutional Addendum — superseded original",
+      "category": "constitution",
+      "origin": "repository file _superseded/UCOS-Constitutional-Addendum.original.md (present at commit 441d772)",
+      "locator": "_superseded/UCOS-Constitutional-Addendum.original.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "bbc3a394b3853ebbf320a2df3aa408898a9e2055",
+        "sha256": "ba0d0c8fdc38bee4a40e5f53d4ac2e9398a3a8adf9e8519e426d0ada8ed420b5",
+        "bytes": 10015
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "notes": "Explicitly not a source of truth (UCOS-REPOSITORY-INDEX.md §Provenance).",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-SUPERSEDED-MASTER-ARCH",
+      "title": "UCOS Constitutional Master Architecture — superseded original",
+      "category": "constitution",
+      "origin": "repository file _superseded/UCOS-Constitutional-Master-Architecture.original.md (present at commit 441d772)",
+      "locator": "_superseded/UCOS-Constitutional-Master-Architecture.original.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "4a52a3a45ea3a4b52407607025af4de6b43b8308",
+        "sha256": "4313a78a366fb83595d438a22244b8d9993bbfa3ee18a87f845160746dcbe650",
+        "bytes": 14860
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "notes": "Explicitly not a source of truth.",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-SUPERSEDED-ZERO-HARDCODING",
+      "title": "UCRS Zero-Hardcoding Constitution — superseded original",
+      "category": "constitution",
+      "origin": "repository file _superseded/UCRS-Zero-Hardcoding-Constitution.original.md (present at commit 441d772)",
+      "locator": "_superseded/UCRS-Zero-Hardcoding-Constitution.original.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "fefa0a95bb59814eb653bb361e60478b5baeaf46",
+        "sha256": "787d7e4daa821870f4961e4ae31e6ce8735d195ce7e576f79e2e13f5b193b868",
+        "bytes": 11131
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "notes": "Explicitly not a source of truth.",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-UCOS-ADDENDUM",
+      "title": "UCOS Constitutional Addendum (current)",
+      "category": "constitution",
+      "origin": "repository file UCOS-Constitutional-Addendum.md (present at commit 441d772)",
+      "locator": "UCOS-Constitutional-Addendum.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "892d39421eecb24b4fdea71dfd7744daed93927a",
+        "sha256": "97f0f66291ff87b1bbc724b260546fb34ceb22f9253b2e275103186570d5e000",
+        "bytes": 10373
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-UCOS-CAPABILITY-OS",
+      "title": "UCOS Universal Capability Operating System (source document)",
+      "category": "constitution",
+      "origin": "repository file UCOS-Universal-Capability-Operating-System.md (present at commit 441d772)",
+      "locator": "UCOS-Universal-Capability-Operating-System.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "2662d5417e53ced56e035f4af1947967d612503f",
+        "sha256": "5870bfb170f292e90ce8b85a198d45cf133dd09370a1f946e67e13ab9d125a86",
+        "bytes": 139745
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "lines",
+        "lines": 500
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-UCOS-MASTER-ARCH",
+      "title": "UCOS Constitutional Master Architecture (current)",
+      "category": "constitution",
+      "origin": "repository file UCOS-Constitutional-Master-Architecture.md (present at commit 441d772)",
+      "locator": "UCOS-Constitutional-Master-Architecture.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "103bfb8c530d54d2ffb743c29f29597f2b906553",
+        "sha256": "277fe64e24e175c512c574588077eb53ac2bf24d00acce16a76c47c2833656c8",
+        "bytes": 15218
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-UCOS-OMEGA",
+      "title": "UCOS Ω Constitutional Architecture v1.0 (source document)",
+      "category": "constitution",
+      "origin": "repository file UCOS_Omega_Constitutional_Architecture_v1.0.md (present at commit 441d772)",
+      "locator": "UCOS_Omega_Constitutional_Architecture_v1.0.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "ef5610c95966378c4d77f6a19a546c240e3b1322",
+        "sha256": "e88afc858018fa21e22edfa7855e4c1b2365cddc844461fe02946c67e7855875",
+        "bytes": 207987
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 1
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    },
+    {
+      "id": "SRC-UCRS-ZERO-HARDCODING",
+      "title": "UCRS Zero-Hardcoding Constitution (current)",
+      "category": "constitution",
+      "origin": "repository file UCRS-Zero-Hardcoding-Constitution.md (present at commit 441d772)",
+      "locator": "UCRS-Zero-Hardcoding-Constitution.md",
+      "storage": {
+        "kind": "git-blob",
+        "blob": "a25dc8f8c7c463e5bb2089e73b64b7ad7052f641",
+        "sha256": "ca7be7c64d72a269e80bbe0f2a75d238bc934d98bc0825f746bccc103910bf3c",
+        "bytes": 11489
+      },
+      "createdAt": null,
+      "capturedAt": "2026-10-22",
+      "importedAt": null,
+      "segmentation": {
+        "rule": "headings",
+        "maxLevel": 2
+      },
+      "sensitivity": "public",
+      "preservation": "preserved",
+      "omissions": [],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json",
+      "capturedBy": [
+        "ART-GIT-OBJECT-STORE"
+      ]
+    }
+  ]
+}

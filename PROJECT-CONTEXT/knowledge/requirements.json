@@ -1,0 +1,537 @@
+{
+  "$comment": "Requirements owned by the continuity system. Type 'explicit-user' = stated by the owner (here: the 2026-10-22 master prompt, cited by section because its text is not retained — see ISS-MASTER-PROMPT-NOT-ARCHIVED). Constitutional rules are constraints (constraints.json), not duplicated here.",
+  "registryId": "CTX-REG-REQUIREMENTS",
+  "kind": "requirement",
+  "version": 1,
+  "records": [
+    {
+      "id": "REQ-CTX-ARCHIVE",
+      "title": "Immutable source evidence archive",
+      "statement": "Original source bytes are preserved with sha256, size, provenance, sensitivity, capture/creation/import times and segment boundaries; missing, inaccessible or not-retained sources are recorded as such; originals are never replaced by summaries.",
+      "type": "explicit-user",
+      "priority": "critical",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§4 Layer A"
+        }
+      ],
+      "acceptance": [
+        "Every preserved source re-hashes to its manifest sha256 from the archive (not only the live file).",
+        "An altered or missing archived object is detected as an error.",
+        "Duplicate source ids are rejected.",
+        "Missing and inaccessible sources are listed in 09-ARCHIVE-MANIFEST.md.",
+        "Private imports go to the write-once store outside git; path traversal and symlinks are refused."
+      ],
+      "implementedBy": [
+        "ART-CTX-ARCHIVE",
+        "ART-ARCHIVE-STORE",
+        "ART-GIT-OBJECT-STORE"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js",
+          "npm run context:verify"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "REQ-CTX-ASSIMILATION",
+      "title": "Assimilation gate and receipts",
+      "statement": "Before changing code or canonical knowledge an agent runs the assimilation gate, which checks repository identity, knowledge validity, pack freshness, prerequisites, conflicts and budget, and records a receipt of what was loaded; it fails closed.",
+      "type": "explicit-user",
+      "priority": "critical",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§7"
+        }
+      ],
+      "acceptance": [
+        "A stale pack blocks.",
+        "An open conflict that blocks the task blocks.",
+        "The receipt validates against schemas/receipt.schema.json.",
+        "A clean pass is possible on the committed repository."
+      ],
+      "implementedBy": [
+        "ART-CTX-PROTOCOL",
+        "ART-CTX-SCHEMA-RECEIPT"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js",
+          "npm run context:assimilate -- TASK-CTX-0001"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "REQ-CTX-CI",
+      "title": "CI integration",
+      "statement": "CI validates schema, ids, ownership, graph integrity, links, generated-output drift, fingerprints and freshness, handoffs, hygiene invariants and regression tests through the repository's own npm scripts, with exit codes and actionable diagnostics; warnings are never reported as success.",
+      "type": "explicit-user",
+      "priority": "high",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§13"
+        }
+      ],
+      "acceptance": [
+        "npm run context:verify exits non-zero on any correctness error.",
+        "The CI workflow runs context:verify and the context test."
+      ],
+      "implementedBy": [
+        "ART-CI-WORKFLOW",
+        "ART-CTX-CLI",
+        "ART-PACKAGE-JSON"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "npm run context:verify"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "REQ-CTX-COVERAGE",
+      "title": "Coverage and traceability audit",
+      "statement": "Coverage is reported as numerator ÷ denominator with stated formulas, covering source inventory, checksums, segment accounting, requirement/decision traceability, implementation and test traceability, context dependency completeness and freshness, broken links, orphans, conflicts, duplicates, handoff completeness and recovery status; unknowns are reported separately.",
+      "type": "explicit-user",
+      "priority": "high",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§11"
+        }
+      ],
+      "acceptance": [
+        "Every metric publishes numerator, denominator and formula.",
+        "Missing or inaccessible sources are never counted as preserved.",
+        "Represented segments are computed from citations, not claimed."
+      ],
+      "implementedBy": [
+        "ART-CTX-COVERAGE"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "REQ-CTX-ENTRY-POINTS",
+      "title": "Thin, tool-agnostic agent entry points",
+      "statement": "Agents on any model or client find one concise entry point (AGENTS.md, with CLAUDE.md pointing to it) that leads to the master index, verification, task resolution, bounded loading, receipts, work, verification and handoff; nothing assumes a client-specific command is available.",
+      "type": "explicit-user",
+      "priority": "high",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§14"
+        }
+      ],
+      "acceptance": [
+        "AGENTS.md lists the ten protocol steps and stays under 6 KB.",
+        "CLAUDE.md only points to AGENTS.md."
+      ],
+      "implementedBy": [
+        "ART-AGENTS-MD",
+        "ART-CLAUDE-MD"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "REQ-CTX-GRAPH",
+      "title": "Typed traceability graph",
+      "statement": "Sources, requirements, decisions, artifacts, tasks, contexts and tests are connected by typed relations with documented direction and semantics; endpoints and kinds are validated; cycles in acyclic relations are errors; named queries answer impact, prerequisite, verification and blocking questions without loading the graph into a prompt.",
+      "type": "explicit-user",
+      "priority": "high",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§5"
+        }
+      ],
+      "acceptance": [
+        "A reference to a missing id is reported as broken-reference.",
+        "A cycle in depends-on is reported with its path.",
+        "All eleven named queries run from the CLI."
+      ],
+      "implementedBy": [
+        "ART-CTX-GRAPH",
+        "ART-CTX-REG-RELATIONS"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "REQ-CTX-HANDOFF",
+      "title": "Durable task ledger and handoffs",
+      "statement": "Each task has a durable record and handoffs that capture objective, completed work with evidence, incomplete work, unverified claims, commands and tests with observed results, repository state, packs used and the exact next action, so a fresh agent can continue without the previous conversation.",
+      "type": "explicit-user",
+      "priority": "critical",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§8"
+        }
+      ],
+      "acceptance": [
+        "A test marked passed without exit code 0 and an observed result is rejected.",
+        "State done with incomplete items is rejected.",
+        "Writing a handoff updates the task record and the session ledger."
+      ],
+      "implementedBy": [
+        "ART-CTX-PROTOCOL",
+        "ART-CTX-SCHEMA-HANDOFF"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "REQ-CTX-HYGIENE",
+      "title": "Context hygiene and safe consolidation",
+      "statement": "Exact and near duplicates, conflicts, broken references, oversized active files, missing owners, orphans, superseded content in active packs and historical evidence used as authority are detected; consolidation is proposed, never automatic, and applied only when every unique item is mapped and an approver is named.",
+      "type": "explicit-user",
+      "priority": "high",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§10"
+        }
+      ],
+      "acceptance": [
+        "Hygiene never deletes or merges files.",
+        "A consolidation plan that loses an item is refused.",
+        "A transition requiring approval is refused without --approve."
+      ],
+      "implementedBy": [
+        "ART-CTX-HYGIENE",
+        "ART-CTX-REG-LIFECYCLE"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "REQ-CTX-INVALIDATION",
+      "title": "Automatic invalidation and refresh",
+      "statement": "A change to any record, schema, artifact file or prerequisite a pack depends on makes that pack stale (with the changed inputs named), stale packs fail verification and assimilation, and the build regenerates only what changed, with a full-rebuild mode that produces identical bytes.",
+      "type": "explicit-user",
+      "priority": "high",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§9"
+        }
+      ],
+      "acceptance": [
+        "Changing a requirement stales exactly the packs that include it.",
+        "An unrelated change leaves other packs fresh.",
+        "Changing a schema stales every pack.",
+        "Incremental and full builds agree byte for byte."
+      ],
+      "implementedBy": [
+        "ART-CTX-PACKS",
+        "ART-CTX-INDEX"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "REQ-CTX-KNOWLEDGE-MODEL",
+      "title": "Canonical institutional knowledge",
+      "statement": "Requirements, decisions, artifacts, constraints, open issues and tasks are schema-validated records with stable ids, canonical owners, source references, lifecycle state and history, distinguishing explicit user requirements, constitutional rules, inferred requirements, recommendations and assumptions.",
+      "type": "explicit-user",
+      "priority": "critical",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§4 Layer B"
+        }
+      ],
+      "acceptance": [
+        "Every record validates against schemas/knowledge.schema.json.",
+        "Lifecycle values come from schemas/lifecycle.json.",
+        "Decisions without historical evidence are marked provenance newly-proposed and status proposed."
+      ],
+      "implementedBy": [
+        "ART-CTX-STORE",
+        "ART-CTX-SCHEMA-KNOWLEDGE",
+        "ART-CTX-SCHEMA-VALIDATOR"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "REQ-CTX-NO-COMPETING-SOT",
+      "title": "One source of truth per concept",
+      "statement": "The continuity system extends the existing governance without creating a parallel registry: each concept has one canonical owner, UCOS artifacts are imported from _registry/manifest.json rather than copied, and generated context never becomes its own source.",
+      "type": "explicit-user",
+      "priority": "critical",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§2; §4 B6; §9"
+        }
+      ],
+      "acceptance": [
+        "Every continuity record has exactly one owner that resolves to a record or repository file.",
+        "The 93 UCOS artifacts appear as read-only imported nodes, not as records in PROJECT-CONTEXT/knowledge.",
+        "No generated file under PROJECT-CONTEXT is read as an input by the build."
+      ],
+      "implementedBy": [
+        "ART-CTX-STORE",
+        "ART-CTX-INDEX"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active",
+      "dependsOn": [
+        "CST-KNOWLEDGE-ONCE",
+        "CST-PROJECTION-LAW"
+      ]
+    },
+    {
+      "id": "REQ-CTX-PACKS",
+      "title": "Deterministic, bounded context packs",
+      "statement": "Context packs are deterministic views of canonical knowledge with fingerprints, explicit reading order, prerequisites, scope and exclusions; they fit a byte budget by splitting into linked parts and never by silently dropping mandatory knowledge.",
+      "type": "explicit-user",
+      "priority": "critical",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§6"
+        }
+      ],
+      "acceptance": [
+        "Two builds over unchanged knowledge are byte-identical.",
+        "At a small budget a pack splits into parts; the mandatory block stays whole in part 1.",
+        "If the mandatory block cannot fit, the pack is marked mandatory-over-budget and the gate blocks.",
+        "Token counts are labelled estimates."
+      ],
+      "implementedBy": [
+        "ART-CTX-PACKS"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "REQ-CTX-SECURITY",
+      "title": "Security and privacy of context",
+      "statement": "Derived context carries no secrets; imported paths cannot escape the repository; git and file access use argument vectors, never shell strings; source text is treated as evidence, not instructions; sensitive exports require explicit import into access-controlled storage.",
+      "type": "explicit-user",
+      "priority": "critical",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§15"
+        }
+      ],
+      "acceptance": [
+        "A pack containing a credential pattern fails build and verify.",
+        "safeJoin refuses absolute and escaping paths.",
+        "Import refuses symlinks and never overwrites a store object."
+      ],
+      "implementedBy": [
+        "ART-CTX-UTIL",
+        "ART-CTX-ARCHIVE"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "REQ-CTX-VERIFICATION",
+      "title": "Verification, recovery and fresh-agent readiness",
+      "statement": "A verification suite proves archive integrity, traceability, determinism, invalidation and hygiene safety; restoring the archive into an isolated destination verifies every checksum without touching the live repository; a fresh agent with no conversation history can recover the task, constraints, decisions, blockers, next action and verification commands from repository files alone, including under small budgets and missing, stale, corrupted, conflicting or oversized context.",
+      "type": "explicit-user",
+      "priority": "high",
+      "owner": "PROJECT-CONTEXT/knowledge/requirements.json",
+      "scope": "context continuity system",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§12"
+        }
+      ],
+      "acceptance": [
+        "restore-check restores every preserved repository source and leaves git status unchanged.",
+        "The fresh-agent scenario passes using only generated files.",
+        "Corrupted, stale, missing, conflicting and oversized cases are detected."
+      ],
+      "implementedBy": [
+        "ART-CTX-ARCHIVE",
+        "ART-TEST-CONTEXT"
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "verification": {
+        "method": "test",
+        "commands": [
+          "node test/context.js",
+          "npm run context:restore-check"
+        ]
+      },
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "$comment": "Segment classifications for in-scope sources. 'represented' is never written here — it is computed from records that cite a segment. Every classification needs a rationale. Unlisted segments count as unprocessed.",
+  "registryId": "CTX-REG-COVERAGE",
+  "version": 1,
+  "classifications": [
+    {
+      "source": "SRC-ARCH-1",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Specification corpus compiled into the sealed canonical registry by lib/canonical.js with document+line provenance on every row (searchable: node _registry/compile.js --search <q>). The compile is the canonical owner of these declarations; continuity knowledge does not duplicate them."
+    },
+    {
+      "source": "SRC-ARCH-2",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Specification corpus compiled into the sealed canonical registry by lib/canonical.js with document+line provenance on every row (searchable: node _registry/compile.js --search <q>). The compile is the canonical owner of these declarations; continuity knowledge does not duplicate them."
+    },
+    {
+      "source": "SRC-ARCH-3",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Specification corpus compiled into the sealed canonical registry by lib/canonical.js with document+line provenance on every row (searchable: node _registry/compile.js --search <q>). The compile is the canonical owner of these declarations; continuity knowledge does not duplicate them."
+    },
+    {
+      "source": "SRC-ARCH-4",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Specification corpus compiled into the sealed canonical registry by lib/canonical.js with document+line provenance on every row (searchable: node _registry/compile.js --search <q>). The compile is the canonical owner of these declarations; continuity knowledge does not duplicate them."
+    },
+    {
+      "source": "SRC-ARCH-5",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Specification corpus compiled into the sealed canonical registry by lib/canonical.js with document+line provenance on every row (searchable: node _registry/compile.js --search <q>). The compile is the canonical owner of these declarations; continuity knowledge does not duplicate them."
+    },
+    {
+      "source": "SRC-ARCH-6",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Specification corpus compiled into the sealed canonical registry by lib/canonical.js with document+line provenance on every row (searchable: node _registry/compile.js --search <q>). The compile is the canonical owner of these declarations; continuity knowledge does not duplicate them."
+    },
+    {
+      "source": "SRC-UCOS-CAPABILITY-OS",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Specification corpus compiled into the sealed canonical registry by lib/canonical.js with document+line provenance on every row (searchable: node _registry/compile.js --search <q>). The compile is the canonical owner of these declarations; continuity knowledge does not duplicate them."
+    },
+    {
+      "source": "SRC-UCOS-OMEGA",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Specification corpus compiled into the sealed canonical registry by lib/canonical.js with document+line provenance on every row (searchable: node _registry/compile.js --search <q>). The compile is the canonical owner of these declarations; continuity knowledge does not duplicate them."
+    },
+    {
+      "source": "SRC-UCRS-ZERO-HARDCODING",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Specification corpus compiled into the sealed canonical registry by lib/canonical.js with document+line provenance on every row (searchable: node _registry/compile.js --search <q>). The compile is the canonical owner of these declarations; continuity knowledge does not duplicate them."
+    },
+    {
+      "source": "SRC-UCOS-ADDENDUM",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Specification corpus compiled into the sealed canonical registry by lib/canonical.js with document+line provenance on every row (searchable: node _registry/compile.js --search <q>). The compile is the canonical owner of these declarations; continuity knowledge does not duplicate them."
+    },
+    {
+      "source": "SRC-UCOS-MASTER-ARCH",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Specification corpus compiled into the sealed canonical registry by lib/canonical.js with document+line provenance on every row (searchable: node _registry/compile.js --search <q>). The compile is the canonical owner of these declarations; continuity knowledge does not duplicate them."
+    },
+    {
+      "source": "SRC-SUPERSEDED-ADDENDUM",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Superseded constitutional original kept as provenance (UCOS-REPOSITORY-INDEX.md §Provenance); never current authority."
+    },
+    {
+      "source": "SRC-SUPERSEDED-MASTER-ARCH",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Superseded constitutional original kept as provenance (UCOS-REPOSITORY-INDEX.md §Provenance); never current authority."
+    },
+    {
+      "source": "SRC-SUPERSEDED-ZERO-HARDCODING",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Superseded constitutional original kept as provenance (UCOS-REPOSITORY-INDEX.md §Provenance); never current authority."
+    },
+    {
+      "source": "SRC-MEMORY-LEDGER",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Historical narrative of agent sessions 2026-09-17 → 2026-10-07; archived by blob id and searchable with git grep. Segments cited by records are counted as represented; the rest are preserved evidence whose product facts were not re-verified."
+    },
+    {
+      "source": "SRC-MEMORY-2026-09-17",
+      "segments": [
+        "S0001"
+      ],
+      "state": "irrelevant",
+      "rationale": "Date heading only; no content."
+    },
+    {
+      "source": "SRC-REVIEW-2026-09-17",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Superseded review version (replaced by 9c31597); preserved by blob id. Its blocker list is summarised in ISS-PG-CUTOVER-STATUS."
+    },
+    {
+      "source": "SRC-GIT-HISTORY",
+      "segments": "*",
+      "state": "preserved",
+      "rationale": "Commit log; the diffs are in git itself. Commits cited by records are counted as represented."
+    },
+    {
+      "source": "SRC-REPOSITORY-INDEX",
+      "segments": [
+        "S0001",
+        "S0003",
+        "S0004"
+      ],
+      "state": "preserved",
+      "rationale": "Title, repository map and command list — navigation already projected into 01/05 views and the governance pack via the cited segments; kept as evidence."
+    }
+  ]
+}

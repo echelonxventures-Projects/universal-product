@@ -85,3 +85,8 @@ $RECYCLE.BIN/
 
 # ───────────────────────── scratch ─────────────────────────
 /tmp
+
+# ───────────────────────── context continuity ─────────────────────────
+# the default private evidence store (context:import). Private conversation exports and
+# attachments are archived here or in CONTEXT_ARCHIVE_DIR — never committed.
+.context-archive/

@@ -1,0 +1,292 @@
+{
+  "acceptance": [
+    "npm run context:verify exits 0 on the committed tree",
+    "node test/context.js passes (determinism, invalidation, hygiene safety, restore, fresh-agent scenario)",
+    "npm run context:assimilate -- TASK-CTX-0001 passes on the committed tree",
+    "the pre-existing npm test and npm run registry results are unchanged by this work",
+    "a schema-valid handoff records the outcome"
+  ],
+  "agent": "claude-code-session-2026-10-22",
+  "budgetBytes": 24000,
+  "checks": [
+    {
+      "detail": "claude/modest-babbage-kyejdn @ 441d772d661a (dirty: 9 paths)",
+      "name": "repository identified",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "knowledge valid",
+      "ok": true
+    },
+    {
+      "detail": "367 edges",
+      "name": "graph valid",
+      "ok": true
+    },
+    {
+      "detail": "PROJECT-CONTEXT/00-MASTER-INDEX.md",
+      "name": "master index present",
+      "ok": true
+    },
+    {
+      "detail": "Implement the context continuity system",
+      "name": "task resolved",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "packs fresh",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "prerequisites available",
+      "ok": true
+    }
+  ],
+  "constraints": [
+    "CST-AUTHORIZED-SIDE-EFFECTS",
+    "CST-CONFIG-OVER-CODE",
+    "CST-EVIDENCE-BEFORE-CLAIMS",
+    "CST-EXPLAINABILITY",
+    "CST-FROZEN-PRIMITIVES",
+    "CST-KNOWLEDGE-ONCE",
+    "CST-NO-DESTRUCTIVE-CLEANUP",
+    "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+    "CST-NO-SECRETS",
+    "CST-NODE-ENGINE",
+    "CST-PRESERVE-WORKING-TREE",
+    "CST-PROJECTION-LAW",
+    "CST-SEAL-DERIVED",
+    "CST-SUPERSEDED-NOT-AUTHORITY",
+    "CST-ZERO-HARDCODING"
+  ],
+  "createdAt": "2026-10-22T05:26:18.215Z",
+  "decisions": [
+    "DEC-CTX-BYTE-BUDGETS",
+    "DEC-CTX-DERIVED-EDGES",
+    "DEC-CTX-DETERMINISTIC-TIME",
+    "DEC-CTX-GIT-AS-ARCHIVE",
+    "DEC-CTX-LOCATION",
+    "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+    "DEC-CTX-ZERO-DEPENDENCIES",
+    "DEC-REGISTRY-AS-SOT",
+    "DEC-SEALED-CANONICAL-COMPILE"
+  ],
+  "exclusions": [
+    "No change to the marketplace/product runtime (lib/*.js outside lib/context, server.js, public/)",
+    "No change to _registry/*.json or the constitutional projections",
+    "Pre-existing defects (ISS-CANONICAL-INPUT-MISNAMED, ISS-REVIEW-FINDINGS-UNRECONCILED) are tracked, not fixed here",
+    "No push, PR or deployment without owner authorisation"
+  ],
+  "gaps": [
+    {
+      "code": "decision-unapproved",
+      "message": "DEC-CTX-BYTE-BUDGETS is proposed, not owner-approved",
+      "severity": "warn"
+    },
+    {
+      "code": "decision-unapproved",
+      "message": "DEC-CTX-DERIVED-EDGES is proposed, not owner-approved",
+      "severity": "warn"
+    },
+    {
+      "code": "decision-unapproved",
+      "message": "DEC-CTX-DETERMINISTIC-TIME is proposed, not owner-approved",
+      "severity": "warn"
+    },
+    {
+      "code": "decision-unapproved",
+      "message": "DEC-CTX-GIT-AS-ARCHIVE is proposed, not owner-approved",
+      "severity": "warn"
+    },
+    {
+      "code": "decision-unapproved",
+      "message": "DEC-CTX-LOCATION is proposed, not owner-approved",
+      "severity": "warn"
+    },
+    {
+      "code": "decision-unapproved",
+      "message": "DEC-CTX-MEMORY-LEDGER-HISTORICAL is proposed, not owner-approved",
+      "severity": "warn"
+    },
+    {
+      "code": "decision-unapproved",
+      "message": "DEC-CTX-ZERO-DEPENDENCIES is proposed, not owner-approved",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-ARCHIVE cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-ASSIMILATION cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-CI cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-COVERAGE cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-ENTRY-POINTS cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-GRAPH cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-HANDOFF cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-HYGIENE cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-INVALIDATION cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-KNOWLEDGE-MODEL cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-NO-COMPETING-SOT cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-PACKS cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-SECURITY cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    },
+    {
+      "code": "source-not-retained",
+      "message": "REQ-CTX-VERIFICATION cites SRC-CONV-2026-10-22-MASTER-PROMPT, which is not-retained — its original wording cannot be re-checked",
+      "severity": "warn"
+    }
+  ],
+  "id": "RCPT-CTX-0001-001",
+  "packs": [
+    {
+      "fingerprint": "4d7ad502df1c2bcba57e5b433191f74405b96410029a8ee872d1999a084ecc93",
+      "fresh": true,
+      "id": "CTX-BOOTSTRAP"
+    },
+    {
+      "fingerprint": "718613be3e705e2082bb314eb8cd25ad6437b098bf0ec4e059025b0fb11e02b2",
+      "fresh": true,
+      "id": "CTX-GOVERNANCE"
+    },
+    {
+      "fingerprint": "0fc30cfcfffc9c360619e25e7588ee585bdbe408c39598add2a5eb7e37fd602a",
+      "fresh": true,
+      "id": "CTX-CONTINUITY-DESIGN"
+    },
+    {
+      "fingerprint": "7c9a2a1b2ee1e911e77e5041bfa85ac0781a98949482180b8bc3fc8a24068514",
+      "fresh": true,
+      "id": "CTX-CONTINUITY-SYSTEM"
+    },
+    {
+      "fingerprint": "065b32f58eff9feaa78cc9ca30df0664274ee2beb5cd4d47df5195e9285eeb68",
+      "fresh": true,
+      "id": "CTX-EVIDENCE-ARCHIVE"
+    }
+  ],
+  "prerequisites": [],
+  "readingOrder": [
+    {
+      "bytes": 5209,
+      "ref": "PROJECT-CONTEXT/00-MASTER-INDEX.md",
+      "step": "master-index"
+    },
+    {
+      "bytes": 5062,
+      "ref": "PROJECT-CONTEXT/task-packs/TASK-CTX-0001.md",
+      "step": "task-pack"
+    },
+    {
+      "bytes": 8776,
+      "estimatedTokens": 2926,
+      "ref": "PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md",
+      "step": "mandatory-bootstrap"
+    },
+    {
+      "bytes": 10725,
+      "estimatedTokens": 3575,
+      "ref": "PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md",
+      "step": "pack"
+    },
+    {
+      "bytes": 13400,
+      "estimatedTokens": 4467,
+      "ref": "PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.md",
+      "step": "pack"
+    },
+    {
+      "bytes": 21961,
+      "estimatedTokens": 7321,
+      "ref": "PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.md",
+      "step": "pack"
+    },
+    {
+      "bytes": 18607,
+      "estimatedTokens": 6203,
+      "ref": "PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md",
+      "step": "pack"
+    }
+  ],
+  "repository": {
+    "branch": "claude/modest-babbage-kyejdn",
+    "dirty": true,
+    "head": "441d772d661abc6626d4497391c6f6261b086a0a"
+  },
+  "requirements": [
+    "REQ-CTX-ARCHIVE",
+    "REQ-CTX-ASSIMILATION",
+    "REQ-CTX-CI",
+    "REQ-CTX-COVERAGE",
+    "REQ-CTX-ENTRY-POINTS",
+    "REQ-CTX-GRAPH",
+    "REQ-CTX-HANDOFF",
+    "REQ-CTX-HYGIENE",
+    "REQ-CTX-INVALIDATION",
+    "REQ-CTX-KNOWLEDGE-MODEL",
+    "REQ-CTX-NO-COMPETING-SOT",
+    "REQ-CTX-PACKS",
+    "REQ-CTX-SECURITY",
+    "REQ-CTX-VERIFICATION"
+  ],
+  "schema": "ctx-receipt/1",
+  "scope": [
+    "PROJECT-CONTEXT/ (schemas, knowledge, generated views, packs, task packs, handoffs, receipts, verification)",
+    "lib/context/*.js and scripts/context.js",
+    "test/context.js",
+    "AGENTS.md, CLAUDE.md",
+    "package.json context:* scripts and .github/workflows/ci.yml"
+  ],
+  "task": "TASK-CTX-0001",
+  "verdict": "pass-with-warnings"
+}

@@ -1,0 +1,153 @@
+{
+  "failed": 0,
+  "liveRepositoryTouched": false,
+  "ok": true,
+  "restored": 22,
+  "results": [
+    {
+      "bytes": 1254180,
+      "id": "SRC-ARCH-1",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 571014,
+      "id": "SRC-ARCH-2",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 37737,
+      "id": "SRC-ARCH-3",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 15265,
+      "id": "SRC-ARCH-4",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 19152,
+      "id": "SRC-ARCH-5",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 8149,
+      "id": "SRC-ARCH-6",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "detail": "preservation not-retained",
+      "id": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+      "status": "skipped"
+    },
+    {
+      "detail": "preservation inaccessible",
+      "id": "SRC-CONV-PRIOR-SESSIONS",
+      "status": "skipped"
+    },
+    {
+      "bytes": 7974,
+      "id": "SRC-GIT-HISTORY",
+      "status": "restored",
+      "via": "git-rev-list"
+    },
+    {
+      "bytes": 8583,
+      "id": "SRC-IMPLEMENTATION-MAP",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 1655,
+      "id": "SRC-MEMORY-2026-09-17",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 111638,
+      "id": "SRC-MEMORY-LEDGER",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 22489,
+      "id": "SRC-README",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 4434,
+      "id": "SRC-REPOSITORY-INDEX",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 20713,
+      "id": "SRC-REVIEW-2026-09-17",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 22627,
+      "id": "SRC-REVIEW-2026-10-12",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 10015,
+      "id": "SRC-SUPERSEDED-ADDENDUM",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 14860,
+      "id": "SRC-SUPERSEDED-MASTER-ARCH",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 11131,
+      "id": "SRC-SUPERSEDED-ZERO-HARDCODING",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 10373,
+      "id": "SRC-UCOS-ADDENDUM",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 139745,
+      "id": "SRC-UCOS-CAPABILITY-OS",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 15218,
+      "id": "SRC-UCOS-MASTER-ARCH",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 207987,
+      "id": "SRC-UCOS-OMEGA",
+      "status": "restored",
+      "via": "git-object"
+    },
+    {
+      "bytes": 11489,
+      "id": "SRC-UCRS-ZERO-HARDCODING",
+      "status": "restored",
+      "via": "git-object"
+    }
+  ],
+  "schema": "ctx-restore-check/1",
+  "skipped": 2,
+  "unavailable": 0
+}
