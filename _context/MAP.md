@@ -3,8 +3,8 @@
 
 The human-readable index of the repository's context system. Start with [`AGENTS.md`](../AGENTS.md); the machine-readable inventory is [`manifest.json`](manifest.json).
 
-- 319 registered files + 23 authored/virtual nodes · 2565 typed edges · 26 units · 42 packs (≤ 12000 chars each) · 15 sequences
-- Inputs digest `a606f2d4b7714e70` — changes whenever any registered source changes.
+- 320 registered files + 23 authored/virtual nodes · 2575 typed edges · 26 units · 42 packs (≤ 12000 chars each) · 15 sequences
+- Inputs digest `2b9249e1c7e8376b` — changes whenever any registered source changes.
 
 ## Sequences
 | sequence | kind | packs | first | purpose |
@@ -53,7 +53,7 @@ The human-readable index of the repository's context system. Start with [`AGENTS
 | `build-deploy` — Build, configuration and deployment | 11 | [build-deploy/1](packs/build-deploy--1.md) | runtime-server |
 | `operational-docs` — Operational documentation | 18 | [operational-docs/1](packs/operational-docs--1.md) [operational-docs/2](packs/operational-docs--2.md) | orientation |
 | `history` — Historical evidence — provenance, reviews, agent memory | 6 | [history/1](packs/history--1.md) | orientation, governance |
-| `handoffs` — Task handoffs | 1 | [handoffs/1](packs/handoffs--1.md) | orientation, governance |
+| `handoffs` — Task handoffs | 2 | [handoffs/1](packs/handoffs--1.md) | orientation, governance |
 
 ## Open conflicts and decisions
 - `CNF-001` (conflict, open) — Committed projected artifacts differ from what project.js generates

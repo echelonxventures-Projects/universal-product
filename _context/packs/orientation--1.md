@@ -70,7 +70,7 @@
 - **path** `CONTEXT_SYSTEM.md` · **class** operational-doc · **authority** operational-documentation · **lifecycle** active-operational · **owner** platform engineering
 - **digest** `c96363225864` · 317 lines · 26919 bytes
 - **summary** (navigational, extracted — read the source for substance): A repository-native, model-agnostic system that lets an agent of any capability or context-window size find the context a task needs, prove it loaded it, do bounded work, and hand off to a later session through the repository alone. Agents start at [`AGENTS.md`](AGENTS.md). …
-- **referenced by:** implements ×1, must-read-before ×1, requires ×1 (run `context.js impact CONTEXT_SYSTEM.md` for the list)
+- **referenced by:** implements ×1, must-read-before ×1, requires ×2 (run `context.js impact CONTEXT_SYSTEM.md` for the list)
 
 ### `file:README.md` — LUXORA Platform
 - **path** `README.md` · **class** operational-doc · **authority** operational-documentation · **lifecycle** active-operational · **owner** platform engineering
@@ -86,7 +86,7 @@
 - **path** `_registry/context.json` · **class** context-registry · **authority** repository-governance · **lifecycle** active-canonical · **owner** repository owner
 - **digest** `4ac251e6a2d9` · 222 lines · 35465 bytes
 - **summary** (navigational, extracted — read the source for substance): Knowledge Once — this file is the only authored source of the context system. Nodes, edges, packs, the manifest and the map are projections of it plus the repository's own canonical sources (run `node _registry/context.js build`). It references existing identifiers; it never …
-- **referenced by:** constrains ×5, derived-from ×1, must-read-before ×1, requires ×1 (run `context.js impact _registry/context.json` for the list)
+- **referenced by:** constrains ×5, derived-from ×1, must-read-before ×1, requires ×2 (run `context.js impact _registry/context.json` for the list)
 
 ## Completeness
 - Unit `orientation` has 11 artifact(s) in 1 pack(s): `orientation/1`.

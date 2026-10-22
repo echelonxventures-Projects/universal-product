@@ -9,15 +9,15 @@
   "path": "_registry/context.json",
   "digest": "4ac251e6a2d90c33580748a30c99dc63fffe52aa5e4ed4fa55f888348676c5ad"
  },
- "inputsDigest": "a606f2d4b7714e70f6dcca92456c345156ce1531fd3582834da51adb50a29faa",
+ "inputsDigest": "2b9249e1c7e8376b7931ee43bb96178474504ca7e26fead95fadbead045d3c63",
  "budget": {
   "packChars": 12000,
   "reserveChars": 3000
  },
  "counts": {
-  "nodes": 342,
-  "files": 319,
-  "edges": 2565,
+  "nodes": 343,
+  "files": 320,
+  "edges": 2575,
   "units": 26,
   "packs": 42,
   "sequences": 15
@@ -366,7 +366,7 @@
    "title": "Task handoffs",
    "tags": ["trace","resume"],
    "prerequisites": ["orientation","governance"],
-   "members": 1,
+   "members": 2,
    "packs": ["handoffs/1"]
   }
  ],
@@ -378,7 +378,7 @@
    "parts": 1,
    "file": "_context/packs/orientation--1.md",
    "chars": 8900,
-   "digest": "a1a02387778b2f22b2152b5f4a1f314ea4c685f6c73c7b8d3c47081b5ed22a55",
+   "digest": "c24129ec1c0853975efdf3da069236ee221b7a5ea05fe96ce6cbb64f7451e037",
    "sourcesDigest": "55886e368527df6c51e2e8d982358d2e3862d42abec38f7af66b44881de5599b",
    "members": ["DEC-CTX-001","DEC-CTX-002","DEC-CTX-003","DEC-CTX-004","DEC-CTX-005","DEC-CTX-006","file:AGENTS.md","file:CONTEXT_SYSTEM.md","file:README.md","file:UCOS-REPOSITORY-INDEX.md","file:_registry/context.json"]
   },
@@ -828,10 +828,10 @@
    "part": 1,
    "parts": 1,
    "file": "_context/packs/handoffs--1.md",
-   "chars": 3233,
-   "digest": "862d370b13628e5c478e51f98e77d1ead6bce2cbc52f686d54a9e48ec9e5e8a7",
-   "sourcesDigest": "5161a6e38e8831affa20a73c4e42b2888c6179d7b1b4a4df1fbf71b84e402e9e",
-   "members": ["file:_registry/handoffs/UCOS-CTX-001/0001.json"]
+   "chars": 4444,
+   "digest": "2e8cedfb69ad761ba71d70fa99663215aebd06f26a81afe0d2df745149a9f365",
+   "sourcesDigest": "f662b3098170357caf5faaa72139879f8304b5523bf1098fa031824f564e5f2a",
+   "members": ["file:_registry/handoffs/UCOS-CTX-001/0001.json","file:_registry/handoffs/UCOS-CTX-001/0002.json"]
   }
  ],
  "nodes": [
@@ -2739,6 +2739,17 @@
    "unit": "handoffs"
   },
   {
+   "id": "file:_registry/handoffs/UCOS-CTX-001/0002.json",
+   "path": "_registry/handoffs/UCOS-CTX-001/0002.json",
+   "class": "handoff-record",
+   "authority": "agent-note",
+   "lifecycle": "historical-evidence",
+   "kind": "agent-note",
+   "owner": "the recording agent session",
+   "digest": "213312b4b30471f9d0dc2afdb6c0b4982b9aa9caa145d607186b88a675d65d86",
+   "unit": "handoffs"
+  },
+  {
    "id": "file:_registry/manifest.json",
    "path": "_registry/manifest.json",
    "class": "canonical-registry",
@@ -4614,6 +4625,7 @@
   ["CST-AGENT-DATA","constrains","file:.workbuddy-ai/memory/MEMORY.md","constraint:CST-AGENT-DATA"],
   ["CST-AGENT-DATA","constrains","file:REVIEW.md","constraint:CST-AGENT-DATA"],
   ["CST-AGENT-DATA","constrains","file:_registry/handoffs/UCOS-CTX-001/0001.json","constraint:CST-AGENT-DATA"],
+  ["CST-AGENT-DATA","constrains","file:_registry/handoffs/UCOS-CTX-001/0002.json","constraint:CST-AGENT-DATA"],
   ["CST-AGENT-DATA","constrains","file:_superseded/UCOS-Constitutional-Addendum.original.md","constraint:CST-AGENT-DATA"],
   ["CST-AGENT-DATA","constrains","file:_superseded/UCOS-Constitutional-Master-Architecture.original.md","constraint:CST-AGENT-DATA"],
   ["CST-AGENT-DATA","constrains","file:_superseded/UCRS-Zero-Hardcoding-Constitution.original.md","constraint:CST-AGENT-DATA"],
@@ -4840,6 +4852,7 @@
   ["DEC-CTX-002","constrains","file:_registry/context.js","decision:DEC-CTX-002"],
   ["DEC-CTX-003","constrains","file:_registry/context.json","decision:DEC-CTX-003"],
   ["DEC-CTX-004","constrains","file:_registry/handoffs/UCOS-CTX-001/0001.json","decision:DEC-CTX-004"],
+  ["DEC-CTX-004","constrains","file:_registry/handoffs/UCOS-CTX-001/0002.json","decision:DEC-CTX-004"],
   ["DEC-CTX-005","constrains","file:.workbuddy-ai/memory/2026-09-17.md","decision:DEC-CTX-005"],
   ["DEC-CTX-005","constrains","file:.workbuddy-ai/memory/MEMORY.md","decision:DEC-CTX-005"],
   ["DEC-CTX-006","constrains","file:_registry/context-hygiene.js","decision:DEC-CTX-006"],
@@ -5239,6 +5252,7 @@
   ["LAW-004","constrains","file:_registry/context.json","constraint:LAW-004"],
   ["LAW-005","constrains","file:AGENTS.md","constraint:LAW-005"],
   ["LAW-005","constrains","file:_registry/handoffs/UCOS-CTX-001/0001.json","constraint:LAW-005"],
+  ["LAW-005","constrains","file:_registry/handoffs/UCOS-CTX-001/0002.json","constraint:LAW-005"],
   ["UCOS-AGT-000001","derived-from","file:_registry/content-twin-agent.json","extractor:ucos-projection"],
   ["UCOS-AGT-000001","derived-from","file:_registry/domains.json","extractor:ucos-projection"],
   ["UCOS-AGT-000001","derived-from","file:_registry/manifest.json","extractor:ucos-projection"],
@@ -6706,10 +6720,17 @@
   ["file:_registry/gate.js","depends-on","file:lib/rbac.js","extractor:js-require"],
   ["file:_registry/gate.js","depends-on","file:lib/ucos.js","extractor:js-require"],
   ["file:_registry/gate.js","verified-by","file:test/registry-gate.js","authored"],
+  ["file:_registry/handoffs/UCOS-CTX-001/0001.json","hands-off-to","file:_registry/handoffs/UCOS-CTX-001/0002.json","handoff:UCOS-CTX-001"],
   ["file:_registry/handoffs/UCOS-CTX-001/0001.json","requires","CNF-001","handoff:UCOS-CTX-001"],
   ["file:_registry/handoffs/UCOS-CTX-001/0001.json","requires","CNF-002","handoff:UCOS-CTX-001"],
   ["file:_registry/handoffs/UCOS-CTX-001/0001.json","requires","file:CONTEXT_SYSTEM.md","handoff:UCOS-CTX-001"],
   ["file:_registry/handoffs/UCOS-CTX-001/0001.json","requires","file:_registry/context.json","handoff:UCOS-CTX-001"],
+  ["file:_registry/handoffs/UCOS-CTX-001/0002.json","continues","file:_registry/handoffs/UCOS-CTX-001/0001.json","handoff:UCOS-CTX-001"],
+  ["file:_registry/handoffs/UCOS-CTX-001/0002.json","requires","CNF-001","handoff:UCOS-CTX-001"],
+  ["file:_registry/handoffs/UCOS-CTX-001/0002.json","requires","CNF-002","handoff:UCOS-CTX-001"],
+  ["file:_registry/handoffs/UCOS-CTX-001/0002.json","requires","file:CONTEXT_SYSTEM.md","handoff:UCOS-CTX-001"],
+  ["file:_registry/handoffs/UCOS-CTX-001/0002.json","requires","file:_registry/context.json","handoff:UCOS-CTX-001"],
+  ["file:_registry/handoffs/UCOS-CTX-001/0002.json","requires","file:_registry/handoffs/UCOS-CTX-001/0001.json","handoff:UCOS-CTX-001"],
   ["file:_registry/manifest.json","supersedes","file:UCOS-Constitutional-Addendum.md","supersession:SUP-002"],
   ["file:_registry/manifest.json","supersedes","file:UCOS-Constitutional-Master-Architecture.md","supersession:SUP-001"],
   ["file:_registry/manifest.json","supersedes","file:UCRS-Zero-Hardcoding-Constitution.md","supersession:SUP-003"],

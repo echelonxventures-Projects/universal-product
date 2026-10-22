@@ -1,0 +1,364 @@
+{
+ "schema": "ucos.context.handoff.v1",
+ "taskId": "UCOS-CTX-001",
+ "seq": 2,
+ "previousDigest": "f9eaac484f08aea18aececb089ff746402b660b8bd21a4c21a069994b4424b55",
+ "status": "completed",
+ "objective": "Establish a repository-native, model-agnostic context continuity system (UCOS Ω∞ mission §1–§15): canonical context registry, typed graph, bounded ordered packs, bootstrap protocol and receipts, hash-chained handoffs, automatic invalidation, hygiene/lifecycle governance, CI gate.",
+ "authority": {
+  "instruction": "Repository owner's UCOS Ω∞ context continuity mission (session 2026-10-22, including the §15 hygiene addendum); branch claude/awesome-mayer-r4z6v9",
+  "governedBy": [
+   "DEC-CTX-001",
+   "DEC-CTX-002",
+   "DEC-CTX-003",
+   "DEC-CTX-004",
+   "DEC-CTX-005",
+   "DEC-CTX-006",
+   "LAW-002",
+   "LAW-003",
+   "LAW-004"
+  ]
+ },
+ "verified": {
+  "note": "Produced by context.js from git and from executing each command; not agent assertions.",
+  "revisions": {
+   "start": "d0f778749b5c7da03ee5de12720bf35b560c4c15",
+   "end": "322b3007a65c2dfe196401fbf8cc596c06ecf22b",
+   "branch": "claude/awesome-mayer-r4z6v9"
+  },
+  "changedFiles": [
+   {
+    "path": "CONTEXT_SYSTEM.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/MAP.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/manifest.json",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/build-deploy--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/canonical-registry--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/corpora--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/frontend--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/frontend--2.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/governance--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/governance--2.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/governance--3.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/handoffs--1.md",
+    "status": "A",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/history--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/operational-docs--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/operational-docs--2.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/orientation--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/registry-pipelines--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/registry-pipelines--2.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/runtime-server--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/runtime-server--2.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/runtime-server--3.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/runtime-server--4.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/runtime-server--5.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/runtime-server--6.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/runtime-server--7.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/runtime-server--8.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-AGT--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-COM--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-COM--2.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-Core--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-Core--2.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-DAT--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-DEP--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-DTW--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-IMP--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-OPS--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-QLT--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-REA--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-RUN--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-SEC--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/spec-SEM--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/verification--1.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/verification--2.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/verification--3.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_context/packs/verification--4.md",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_registry/context-packs.js",
+    "status": "M",
+    "state": "committed"
+   },
+   {
+    "path": "_registry/handoffs/UCOS-CTX-001/0001.json",
+    "status": "A",
+    "state": "committed"
+   },
+   {
+    "path": "test/context.js",
+    "status": "M",
+    "state": "committed"
+   }
+  ],
+  "commands": [
+   {
+    "cmd": "node _registry/context.js check",
+    "exitCode": 0,
+    "ms": 1742,
+    "outputSha256": "18591a8ceefbf079aabac521c8cfe8d1be68d1fdd9e7ed5bd3667643474012bd",
+    "outputTail": "✓ validate: 342 nodes, 2565 edges, 0 error(s)\n✓ fresh: every generated file matches the repository\n✓ deterministic: two generations over unchanged inputs are byte-identical (44 files)\n✓ bounded: 42 packs, largest 11250 ≤ budget 12000\n✓ hygiene ratchet: 13 metrics, 0 regression(s)\n✓ context check passed in 1692 ms"
+   },
+   {
+    "cmd": "node test/context.js",
+    "exitCode": 0,
+    "ms": 5837,
+    "outputSha256": "1e539237950c4724cb3ea5e512463b6814a3bae64e0daf1f20a50586a71fcdca",
+    "outputTail": "▸ §I HYGIENE — duplication, deprecated references, drift, ratchet\n  ✓ near-duplicate documents are detected (line-level)\n  ✓ the plan proposes consolidation and marks it as needing authorization\n  ✓ a reference from active text to a superseded artifact is found\n  ✓ a generated artifact that drifted from its generator is detected\n  ✓ the drift check never writes into the repository\n  ✓ a metric above its ratchet threshold is a regression\n  ✓ hygiene deletes nothing\n  ✓ the repository meets every ratchet threshold\n  ✓ the repository's known projection drift (CNF-001) is measured, not hidden, and ranked first\n  ✓ search labels superseded/historical results so they are never mistaken for requirements\n✓ context: 85 passed, 0 failed"
+   }
+  ],
+  "contextManifestDigest": "906dbec8c1e5b92a34dca7e48087de6f1f158c5cbaa25b98a4654085bcee5f7f"
+ },
+ "asserted": {
+  "decisions": [
+   {
+    "id": "DEC-CTX-001..006",
+    "statement": "Recorded in _registry/context.json decisions[]; authorized under Laws 002–005 as additive registry data + projection (no new primitive)."
+   }
+  ],
+  "results": [
+   "Recording 0001 exposed an invalidation defect: packs printed absolute positions/counts, so adding one pack rewrote all 44 files. Fixed in 322b300 (packs carry previous/next only); regression test added (test/context.js 85/85).",
+   "Full `npm test` EXIT 0 was observed on d0f7787 (see record 0001). The 322b300 change touches only _registry/context-packs.js rendering and test/context.js; the full chain was not re-run for it — test/context.js and `context.js check` were (verified below)."
+  ],
+  "failures": [
+   "Invalidation defect described above (now fixed)."
+  ],
+  "limitations": [
+   "Pack summaries are extracted, not semantic (G-2); code↔spec implements edges mostly absent (G-3); schema.sql drift unchecked (G-4); only verbatim duplication detected (G-5).",
+   "Scale limits measured only at the current size (318 files, ~1.7 s check)."
+  ],
+  "risks": [
+   "Every commit that changes a registered file must also commit the regenerated _context/ — CI fails otherwise (intended, but new to contributors).",
+   "CNF-002 (seal hashes a non-existent input) means edits to UCRS-Zero-Hardcoding-Constitution.md do not drift the seal until the G1 fix lands."
+  ],
+  "unresolved": [
+   "CNF-001",
+   "CNF-002",
+   "CNF-003",
+   "CNF-004",
+   "CNF-005"
+  ],
+  "notDone": [
+   "Did not re-project the 93 artifacts (CNF-001) — out of scope, needs its own reviewed change.",
+   "Did not apply the G1 seal fix (CNF-002) — kept separate as instructed.",
+   "Did not retire _superseded/*.original.md or consolidate .workbuddy-ai memory — hygiene proposals HYG-004..006 / G-6 await owner authorization.",
+   "Did not open a pull request (not requested)."
+  ]
+ },
+ "context": {
+  "packsUsed": [
+   "orientation/1",
+   "governance/1",
+   "registry-pipelines/1",
+   "verification/1",
+   "handoffs/1"
+  ],
+  "sourcesUsed": [
+   "README.md",
+   "UCOS-REPOSITORY-INDEX.md",
+   "UCOS-Constitutional-Master-Architecture.md",
+   "_registry/project.js",
+   "_registry/compile.js",
+   "_registry/gate.js",
+   "_registry/audit.js",
+   "lib/canonical.js",
+   "lib/ucos.js",
+   "_registry/manifest.json",
+   "_registry/domains.json",
+   "_registry/primitives.json",
+   ".github/workflows/ci.yml",
+   "package.json",
+   ".workbuddy-ai/memory/MEMORY.md"
+  ]
+ },
+ "resume": {
+  "prerequisites": [
+   "_registry/context.json",
+   "CONTEXT_SYSTEM.md",
+   "CNF-001",
+   "CNF-002",
+   "_registry/handoffs/UCOS-CTX-001/0001.json"
+  ],
+  "nextAction": "Owner: decide CNF-002 (approve the one-line INPUT_FILES fix as the separate G1 change) and CNF-001 (re-project the 93 artifacts in their own commit); after each lands, remove its acknowledgement/conflict in _registry/context.json, lower the derivedDrift/openSourceOfTruthConflicts thresholds, run `node _registry/context.js build && node _registry/context.js check`."
+ },
+ "references": {
+  "pullRequest": null
+ }
+}
