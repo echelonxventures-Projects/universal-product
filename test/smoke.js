@@ -11,6 +11,20 @@ const BASE = `http://localhost:${PORT}`;
    bearer token the operator sets. 32 hex chars so timingSafeEqual has room and
    the length gate (>= 16) is satisfied */
 const METRICS_TOKEN = "4f8c2b1e9d7a6053c8e2b4f60d1a9c7e";
+/* T1 (as in test/roles.js, test/padmins.js): a pooled keep-alive socket can be closed by the
+   server just as a request reuses it — CI saw `fetch failed … other side closed` on a GET here.
+   Every fetch in this file goes through one wrapper: a read that hits a network error is retried
+   once; a write is surfaced, never re-sent (it may already have landed). A server that is really
+   down fails the retry too, so liveness checks still fail. */
+const fetchOnce = globalThis.fetch;
+globalThis.fetch = async (u, o) => {
+  try { return await fetchOnce(u, o); }
+  catch (e) {
+    const m = String((o && o.method) || "GET").toUpperCase();
+    if (m !== "GET" && m !== "HEAD") throw e;
+    return fetchOnce(u, o);
+  }
+};
 const jar = new Map();
 let passed = 0, failed = 0;
 function ok(cond, name, extra) { if (cond) { passed++; console.log("  ✓ " + name); } else { failed++; console.log("  ✗ " + name + (extra ? "  → " + extra : "")); } }
