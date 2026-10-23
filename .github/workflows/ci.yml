@@ -9,6 +9,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      # every runtime reports: with fail-fast, one red job cancelled the other two mid-suite and
+      # the commit had no result at all on 22.13 and 22
+      fail-fast: false
       matrix:
         # 22.13 is the floor: node:sqlite is behind --experimental-sqlite before it
         node: [22.13, 22, 24]
@@ -21,13 +24,31 @@ jobs:
       # through jsdom, a devDependency — without the install `npm test` dies on require
       - name: Install
         run: npm ci
+      # what ships in the image (--omit=dev); a high or critical advisory there fails the build
+      - name: Runtime dependency audit
+        if: matrix.node == 22
+        run: npm audit --omit=dev --audit-level=high
       - name: Syntax + E2E suite (own DB/port)
         run: npm test
-      - name: Boot smoke (fresh DB, healthz)
+      - name: Boot smoke (fresh DB, healthz + readyz)
         run: |
           LX_DB=/tmp/ci.db PORT=3055 nohup node server.js >/tmp/ci.log 2>&1 &
-          for i in $(seq 1 30); do sleep 1; curl -sf http://localhost:3055/healthz && break; done
-          curl -sf http://localhost:3055/healthz >/dev/null && echo OK
+          for i in $(seq 1 60); do sleep 1; curl -sf http://localhost:3055/readyz && break; done
+          curl -sf http://localhost:3055/healthz >/dev/null && curl -sf http://localhost:3055/readyz >/dev/null && echo OK
+      - name: Backup + restore drill (the boot-smoke database)
+        run: |
+          node scripts/backup.js --db /tmp/ci.db --out /tmp/ci-backups
+          node scripts/restore.js "$(ls -d /tmp/ci-backups/luxora-* | tail -1)" --to /tmp/ci-restored.db
       - name: Docker image builds
         if: matrix.node == 22
         run: docker build -t luxora-ci .
+      # the image as it ships: refuses seed credentials, then boots non-root in production
+      - name: Docker production smoke
+        if: matrix.node == 22
+        run: |
+          if docker run --rm luxora-ci; then echo "booted with seed-default credentials"; exit 1; fi
+          docker run -d --name lx -p 3056:3000 -e PLATFORM_PASSWORD="ci-$(openssl rand -hex 12)" -e ADMIN_PASSWORD="ci-$(openssl rand -hex 12)" -e LUXORA_MASTER_KEY="$(openssl rand -hex 32)" luxora-ci
+          for i in $(seq 1 120); do sleep 1; curl -sf http://localhost:3056/readyz && break; done
+          curl -sf http://localhost:3056/readyz >/dev/null
+          test "$(docker exec lx id -u)" != "0"
+          docker stop lx && test "$(docker inspect lx --format '{{.State.ExitCode}}')" = "0"

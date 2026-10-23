@@ -1,9 +1,11 @@
 version: '3.8'
 services:
   redis:
-    image: redis:alpine
-    ports:
-      - "6379:6379"
+    image: redis:7-alpine
+    # no `ports:` — Redis has no password here, so it is reachable only on the compose
+    # network, by the app. Publishing 6379 put an unauthenticated queue on the host's
+    # public interfaces. appendonly keeps queued jobs across a Redis restart.
+    command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - redis_data:/data
     healthcheck:
@@ -11,11 +13,15 @@ services:
       interval: 10s
       timeout: 3s
       retries: 5
+    restart: unless-stopped
 
   luxora:
     build: .
+    # loopback only: the app speaks plain HTTP, so it belongs behind a TLS-terminating
+    # reverse proxy on this host (set LX_TRUST_PROXY=1 then). Publish it wider only with
+    # LUX_TLS=1 and real certificates (LUX_TLS_KEY / LUX_TLS_CERT).
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     environment:
       - NODE_ENV=production
       - PORT=3000
@@ -23,9 +29,15 @@ services:
       # opting the queue in here is what makes the worker at server boot come alive
       - LX_QUEUE=redis
       - LX_REDIS_URL=redis://redis:6379
-      # required in production — the seed defaults below are rejected by the boot guard
+      # required in production on every boot — the seed defaults are rejected by the boot guard
       - PLATFORM_PASSWORD=${PLATFORM_PASSWORD:?set PLATFORM_PASSWORD (the platform admin's password)}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:?set ADMIN_PASSWORD (the flagship store admin's password)}
+      # set both before the FIRST boot (see DEPLOYMENT_RUNBOOK.md, Operator configuration). The master key is
+      # 64 hex chars (openssl rand -hex 32); without it the keyring is generated into the
+      # data volume. The pepper cannot be changed later without resetting every password.
+      - LUXORA_MASTER_KEY=${LUXORA_MASTER_KEY:-}
+      - LUXORA_PEPPER=${LUXORA_PEPPER:-}
+      - LX_TRUST_PROXY=${LX_TRUST_PROXY:-0}
       # 16+ chars, or /metrics answers only to a live platform session
       - LX_METRICS_TOKEN=${LX_METRICS_TOKEN:-}
     volumes:
@@ -36,6 +48,8 @@ services:
       redis:
         condition: service_healthy
     restart: unless-stopped
+    stop_grace_period: 15s
+    mem_limit: 2g
 
 volumes:
   redis_data:
