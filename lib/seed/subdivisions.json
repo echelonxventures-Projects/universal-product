@@ -1,0 +1,1630 @@
+{
+ "SUBDIVISIONS": {
+  "US": [
+   {
+    "code": "US-AL",
+    "name": "Alabama",
+    "level": "state"
+   },
+   {
+    "code": "US-AK",
+    "name": "Alaska",
+    "level": "state"
+   },
+   {
+    "code": "US-AZ",
+    "name": "Arizona",
+    "level": "state"
+   },
+   {
+    "code": "US-AR",
+    "name": "Arkansas",
+    "level": "state"
+   },
+   {
+    "code": "US-CA",
+    "name": "California",
+    "level": "state"
+   },
+   {
+    "code": "US-CO",
+    "name": "Colorado",
+    "level": "state"
+   },
+   {
+    "code": "US-CT",
+    "name": "Connecticut",
+    "level": "state"
+   },
+   {
+    "code": "US-DE",
+    "name": "Delaware",
+    "level": "state"
+   },
+   {
+    "code": "US-FL",
+    "name": "Florida",
+    "level": "state"
+   },
+   {
+    "code": "US-GA",
+    "name": "Georgia",
+    "level": "state"
+   },
+   {
+    "code": "US-HI",
+    "name": "Hawaii",
+    "level": "state"
+   },
+   {
+    "code": "US-ID",
+    "name": "Idaho",
+    "level": "state"
+   },
+   {
+    "code": "US-IL",
+    "name": "Illinois",
+    "level": "state"
+   },
+   {
+    "code": "US-IN",
+    "name": "Indiana",
+    "level": "state"
+   },
+   {
+    "code": "US-IA",
+    "name": "Iowa",
+    "level": "state"
+   },
+   {
+    "code": "US-KS",
+    "name": "Kansas",
+    "level": "state"
+   },
+   {
+    "code": "US-KY",
+    "name": "Kentucky",
+    "level": "state"
+   },
+   {
+    "code": "US-LA",
+    "name": "Louisiana",
+    "level": "state"
+   },
+   {
+    "code": "US-ME",
+    "name": "Maine",
+    "level": "state"
+   },
+   {
+    "code": "US-MD",
+    "name": "Maryland",
+    "level": "state"
+   },
+   {
+    "code": "US-MA",
+    "name": "Massachusetts",
+    "level": "state"
+   },
+   {
+    "code": "US-MI",
+    "name": "Michigan",
+    "level": "state"
+   },
+   {
+    "code": "US-MN",
+    "name": "Minnesota",
+    "level": "state"
+   },
+   {
+    "code": "US-MS",
+    "name": "Mississippi",
+    "level": "state"
+   },
+   {
+    "code": "US-MO",
+    "name": "Missouri",
+    "level": "state"
+   },
+   {
+    "code": "US-MT",
+    "name": "Montana",
+    "level": "state"
+   },
+   {
+    "code": "US-NE",
+    "name": "Nebraska",
+    "level": "state"
+   },
+   {
+    "code": "US-NV",
+    "name": "Nevada",
+    "level": "state"
+   },
+   {
+    "code": "US-NH",
+    "name": "New Hampshire",
+    "level": "state"
+   },
+   {
+    "code": "US-NJ",
+    "name": "New Jersey",
+    "level": "state"
+   },
+   {
+    "code": "US-NM",
+    "name": "New Mexico",
+    "level": "state"
+   },
+   {
+    "code": "US-NY",
+    "name": "New York",
+    "level": "state"
+   },
+   {
+    "code": "US-NC",
+    "name": "North Carolina",
+    "level": "state"
+   },
+   {
+    "code": "US-ND",
+    "name": "North Dakota",
+    "level": "state"
+   },
+   {
+    "code": "US-OH",
+    "name": "Ohio",
+    "level": "state"
+   },
+   {
+    "code": "US-OK",
+    "name": "Oklahoma",
+    "level": "state"
+   },
+   {
+    "code": "US-OR",
+    "name": "Oregon",
+    "level": "state"
+   },
+   {
+    "code": "US-PA",
+    "name": "Pennsylvania",
+    "level": "state"
+   },
+   {
+    "code": "US-RI",
+    "name": "Rhode Island",
+    "level": "state"
+   },
+   {
+    "code": "US-SC",
+    "name": "South Carolina",
+    "level": "state"
+   },
+   {
+    "code": "US-SD",
+    "name": "South Dakota",
+    "level": "state"
+   },
+   {
+    "code": "US-TN",
+    "name": "Tennessee",
+    "level": "state"
+   },
+   {
+    "code": "US-TX",
+    "name": "Texas",
+    "level": "state"
+   },
+   {
+    "code": "US-UT",
+    "name": "Utah",
+    "level": "state"
+   },
+   {
+    "code": "US-VT",
+    "name": "Vermont",
+    "level": "state"
+   },
+   {
+    "code": "US-VA",
+    "name": "Virginia",
+    "level": "state"
+   },
+   {
+    "code": "US-WA",
+    "name": "Washington",
+    "level": "state"
+   },
+   {
+    "code": "US-WV",
+    "name": "West Virginia",
+    "level": "state"
+   },
+   {
+    "code": "US-WI",
+    "name": "Wisconsin",
+    "level": "state"
+   },
+   {
+    "code": "US-WY",
+    "name": "Wyoming",
+    "level": "state"
+   },
+   {
+    "code": "US-DC",
+    "name": "District of Columbia",
+    "level": "district"
+   },
+   {
+    "code": "US-PR",
+    "name": "Puerto Rico",
+    "level": "territory"
+   },
+   {
+    "code": "US-GU",
+    "name": "Guam",
+    "level": "territory"
+   },
+   {
+    "code": "US-VI",
+    "name": "U.S. Virgin Islands",
+    "level": "territory"
+   },
+   {
+    "code": "US-AS",
+    "name": "American Samoa",
+    "level": "territory"
+   },
+   {
+    "code": "US-MP",
+    "name": "Northern Mariana Islands",
+    "level": "territory"
+   }
+  ],
+  "IN": [
+   {
+    "code": "IN-AN",
+    "name": "Andaman and Nicobar Islands",
+    "level": "union territory"
+   },
+   {
+    "code": "IN-AP",
+    "name": "Andhra Pradesh",
+    "level": "state"
+   },
+   {
+    "code": "IN-AR",
+    "name": "Arunachal Pradesh",
+    "level": "state"
+   },
+   {
+    "code": "IN-AS",
+    "name": "Assam",
+    "level": "state"
+   },
+   {
+    "code": "IN-BR",
+    "name": "Bihar",
+    "level": "state"
+   },
+   {
+    "code": "IN-CH",
+    "name": "Chandigarh",
+    "level": "union territory"
+   },
+   {
+    "code": "IN-CT",
+    "name": "Chhattisgarh",
+    "level": "state"
+   },
+   {
+    "code": "IN-DD",
+    "name": "Daman and Diu",
+    "level": "union territory"
+   },
+   {
+    "code": "IN-DL",
+    "name": "Delhi",
+    "level": "union territory"
+   },
+   {
+    "code": "IN-GA",
+    "name": "Goa",
+    "level": "state"
+   },
+   {
+    "code": "IN-GJ",
+    "name": "Gujarat",
+    "level": "state"
+   },
+   {
+    "code": "IN-HP",
+    "name": "Himachal Pradesh",
+    "level": "state"
+   },
+   {
+    "code": "IN-HR",
+    "name": "Haryana",
+    "level": "state"
+   },
+   {
+    "code": "IN-JH",
+    "name": "Jharkhand",
+    "level": "state"
+   },
+   {
+    "code": "IN-JK",
+    "name": "Jammu and Kashmir",
+    "level": "union territory"
+   },
+   {
+    "code": "IN-KA",
+    "name": "Karnataka",
+    "level": "state"
+   },
+   {
+    "code": "IN-KL",
+    "name": "Kerala",
+    "level": "state"
+   },
+   {
+    "code": "IN-LA",
+    "name": "Ladakh",
+    "level": "union territory"
+   },
+   {
+    "code": "IN-LD",
+    "name": "Lakshadweep",
+    "level": "union territory"
+   },
+   {
+    "code": "IN-MH",
+    "name": "Maharashtra",
+    "level": "state"
+   },
+   {
+    "code": "IN-ML",
+    "name": "Meghalaya",
+    "level": "state"
+   },
+   {
+    "code": "IN-MN",
+    "name": "Manipur",
+    "level": "state"
+   },
+   {
+    "code": "IN-MP",
+    "name": "Madhya Pradesh",
+    "level": "state"
+   },
+   {
+    "code": "IN-MZ",
+    "name": "Mizoram",
+    "level": "state"
+   },
+   {
+    "code": "IN-NL",
+    "name": "Nagaland",
+    "level": "state"
+   },
+   {
+    "code": "IN-OR",
+    "name": "Odisha",
+    "level": "state"
+   },
+   {
+    "code": "IN-PB",
+    "name": "Punjab",
+    "level": "state"
+   },
+   {
+    "code": "IN-PY",
+    "name": "Puducherry",
+    "level": "union territory"
+   },
+   {
+    "code": "IN-RJ",
+    "name": "Rajasthan",
+    "level": "state"
+   },
+   {
+    "code": "IN-SK",
+    "name": "Sikkim",
+    "level": "state"
+   },
+   {
+    "code": "IN-TG",
+    "name": "Telangana",
+    "level": "state"
+   },
+   {
+    "code": "IN-TN",
+    "name": "Tamil Nadu",
+    "level": "state"
+   },
+   {
+    "code": "IN-TR",
+    "name": "Tripura",
+    "level": "state"
+   },
+   {
+    "code": "IN-UP",
+    "name": "Uttar Pradesh",
+    "level": "state"
+   },
+   {
+    "code": "IN-UT",
+    "name": "Uttarakhand",
+    "level": "state"
+   },
+   {
+    "code": "IN-WB",
+    "name": "West Bengal",
+    "level": "state"
+   }
+  ],
+  "GB": [
+   {
+    "code": "GB-ENG",
+    "name": "England",
+    "level": "country"
+   },
+   {
+    "code": "GB-SCT",
+    "name": "Scotland",
+    "level": "country"
+   },
+   {
+    "code": "GB-WLS",
+    "name": "Wales",
+    "level": "country"
+   },
+   {
+    "code": "GB-NIR",
+    "name": "Northern Ireland",
+    "level": "province"
+   },
+   {
+    "code": "GB-LND",
+    "name": "Greater London",
+    "level": "region",
+    "parent": "GB-ENG"
+   },
+   {
+    "code": "GB-NYK",
+    "name": "North Yorkshire",
+    "level": "county",
+    "parent": "GB-ENG"
+   },
+   {
+    "code": "GB-LAN",
+    "name": "Lancashire",
+    "level": "county",
+    "parent": "GB-ENG"
+   },
+   {
+    "code": "GB-KEN",
+    "name": "Kent",
+    "level": "county",
+    "parent": "GB-ENG"
+   },
+   {
+    "code": "GB-ESS",
+    "name": "Essex",
+    "level": "county",
+    "parent": "GB-ENG"
+   },
+   {
+    "code": "GB-SRY",
+    "name": "Surrey",
+    "level": "county",
+    "parent": "GB-ENG"
+   },
+   {
+    "code": "GB-HAM",
+    "name": "Hampshire",
+    "level": "county",
+    "parent": "GB-ENG"
+   },
+   {
+    "code": "GLG",
+    "name": "Glasgow City",
+    "level": "council area",
+    "parent": "GB-SCT",
+    "_code": "GB-GLG"
+   },
+   {
+    "code": "EDH",
+    "name": "City of Edinburgh",
+    "level": "council area",
+    "parent": "GB-SCT",
+    "_code": "GB-EDH"
+   },
+   {
+    "code": "ZET",
+    "name": "Shetland",
+    "level": "council area",
+    "parent": "GB-SCT",
+    "_code": "GB-ZET"
+   },
+   {
+    "code": "CRY",
+    "name": "Cardiff",
+    "level": "principal area",
+    "parent": "GB-WLS",
+    "_code": "GB-CRY"
+   },
+   {
+    "code": "GWN",
+    "name": "Gwynedd",
+    "level": "principal area",
+    "parent": "GB-WLS",
+    "_code": "GB-GWN"
+   },
+   {
+    "code": "ANT",
+    "name": "Antrim",
+    "level": "county",
+    "parent": "GB-NIR",
+    "_code": "GB-ANT"
+   },
+   {
+    "code": "ARM",
+    "name": "Armagh",
+    "level": "county",
+    "parent": "GB-NIR",
+    "_code": "GB-ARM"
+   },
+   {
+    "code": "DOW",
+    "name": "Down",
+    "level": "county",
+    "parent": "GB-NIR",
+    "_code": "GB-DOW"
+   },
+   {
+    "code": "FER",
+    "name": "Fermanagh",
+    "level": "county",
+    "parent": "GB-NIR",
+    "_code": "GB-FER"
+   },
+   {
+    "code": "LDY",
+    "name": "Londonderry",
+    "level": "county",
+    "parent": "GB-NIR",
+    "_code": "GB-LDY"
+   },
+   {
+    "code": "TYR",
+    "name": "Tyrone",
+    "level": "county",
+    "parent": "GB-NIR",
+    "_code": "GB-TYR"
+   }
+  ],
+  "DE": [
+   {
+    "code": "DE-BW",
+    "name": "Baden-Württemberg",
+    "level": "state"
+   },
+   {
+    "code": "DE-BY",
+    "name": "Bavaria",
+    "level": "state"
+   },
+   {
+    "code": "DE-BE",
+    "name": "Berlin",
+    "level": "state"
+   },
+   {
+    "code": "DE-BB",
+    "name": "Brandenburg",
+    "level": "state"
+   },
+   {
+    "code": "DE-HB",
+    "name": "Bremen",
+    "level": "state"
+   },
+   {
+    "code": "DE-HH",
+    "name": "Hamburg",
+    "level": "state"
+   },
+   {
+    "code": "DE-HE",
+    "name": "Hesse",
+    "level": "state"
+   },
+   {
+    "code": "DE-MV",
+    "name": "Mecklenburg-Vorpommern",
+    "level": "state"
+   },
+   {
+    "code": "DE-NI",
+    "name": "Lower Saxony",
+    "level": "state"
+   },
+   {
+    "code": "DE-NW",
+    "name": "North Rhine-Westphalia",
+    "level": "state"
+   },
+   {
+    "code": "DE-RP",
+    "name": "Rhineland-Palatinate",
+    "level": "state"
+   },
+   {
+    "code": "DE-SL",
+    "name": "Saarland",
+    "level": "state"
+   },
+   {
+    "code": "DE-SN",
+    "name": "Saxony",
+    "level": "state"
+   },
+   {
+    "code": "DE-ST",
+    "name": "Saxony-Anhalt",
+    "level": "state"
+   },
+   {
+    "code": "DE-SH",
+    "name": "Schleswig-Holstein",
+    "level": "state"
+   },
+   {
+    "code": "DE-TH",
+    "name": "Thuringia",
+    "level": "state"
+   }
+  ],
+  "FR": [
+   {
+    "code": "FR-ARA",
+    "name": "Auvergne-Rhône-Alpes",
+    "level": "region"
+   },
+   {
+    "code": "FR-BFC",
+    "name": "Bourgogne-Franche-Comté",
+    "level": "region"
+   },
+   {
+    "code": "FR-BRE",
+    "name": "Brittany",
+    "level": "region"
+   },
+   {
+    "code": "FR-CVL",
+    "name": "Centre-Val de Loire",
+    "level": "region"
+   },
+   {
+    "code": "FR-COR",
+    "name": "Corsica",
+    "level": "region"
+   },
+   {
+    "code": "FR-GES",
+    "name": "Grand Est",
+    "level": "region"
+   },
+   {
+    "code": "FR-HDF",
+    "name": "Hauts-de-France",
+    "level": "region"
+   },
+   {
+    "code": "FR-IDF",
+    "name": "Île-de-France",
+    "level": "region"
+   },
+   {
+    "code": "FR-NOR",
+    "name": "Normandy",
+    "level": "region"
+   },
+   {
+    "code": "FR-NAQ",
+    "name": "Nouvelle-Aquitaine",
+    "level": "region"
+   },
+   {
+    "code": "FR-OCC",
+    "name": "Occitanie",
+    "level": "region"
+   },
+   {
+    "code": "FR-PDL",
+    "name": "Pays de la Loire",
+    "level": "region"
+   },
+   {
+    "code": "FR-PAC",
+    "name": "Provence-Alpes-Côte d'Azur",
+    "level": "region"
+   },
+   {
+    "code": "FR-75",
+    "name": "Paris",
+    "level": "metropolitan department",
+    "parent": "FR-IDF"
+   },
+   {
+    "code": "FR-69",
+    "name": "Rhône",
+    "level": "metropolitan department",
+    "parent": "FR-ARA"
+   },
+   {
+    "code": "FR-13",
+    "name": "Bouches-du-Rhône",
+    "level": "metropolitan department",
+    "parent": "FR-PAC"
+   },
+   {
+    "code": "FR-33",
+    "name": "Gironde",
+    "level": "metropolitan department",
+    "parent": "FR-NAQ"
+   },
+   {
+    "code": "FR-59",
+    "name": "Nord",
+    "level": "metropolitan department",
+    "parent": "FR-HDF"
+   },
+   {
+    "code": "FR-67",
+    "name": "Bas-Rhin",
+    "level": "metropolitan department",
+    "parent": "FR-GES"
+   }
+  ],
+  "NL": [
+   {
+    "code": "NL-DR",
+    "name": "Drenthe",
+    "level": "province"
+   },
+   {
+    "code": "NL-FL",
+    "name": "Flevoland",
+    "level": "province"
+   },
+   {
+    "code": "NL-FR",
+    "name": "Friesland",
+    "level": "province"
+   },
+   {
+    "code": "NL-GE",
+    "name": "Gelderland",
+    "level": "province"
+   },
+   {
+    "code": "NL-GR",
+    "name": "Groningen",
+    "level": "province"
+   },
+   {
+    "code": "NL-LI",
+    "name": "Limburg",
+    "level": "province"
+   },
+   {
+    "code": "NL-NB",
+    "name": "North Brabant",
+    "level": "province"
+   },
+   {
+    "code": "NL-NH",
+    "name": "North Holland",
+    "level": "province"
+   },
+   {
+    "code": "NL-OV",
+    "name": "Overijssel",
+    "level": "province"
+   },
+   {
+    "code": "NL-ZE",
+    "name": "Zeeland",
+    "level": "province"
+   },
+   {
+    "code": "NL-ZH",
+    "name": "South Holland",
+    "level": "province"
+   },
+   {
+    "code": "NL-UT",
+    "name": "Utrecht",
+    "level": "province"
+   }
+  ],
+  "BR": [
+   {
+    "code": "BR-AC",
+    "name": "Acre",
+    "level": "state"
+   },
+   {
+    "code": "BR-AL",
+    "name": "Alagoas",
+    "level": "state"
+   },
+   {
+    "code": "BR-AP",
+    "name": "Amapá",
+    "level": "state"
+   },
+   {
+    "code": "BR-AM",
+    "name": "Amazonas",
+    "level": "state"
+   },
+   {
+    "code": "BR-BA",
+    "name": "Bahia",
+    "level": "state"
+   },
+   {
+    "code": "BR-CE",
+    "name": "Ceará",
+    "level": "state"
+   },
+   {
+    "code": "BR-DF",
+    "name": "Distrito Federal",
+    "level": "federal district"
+   },
+   {
+    "code": "BR-ES",
+    "name": "Espírito Santo",
+    "level": "state"
+   },
+   {
+    "code": "BR-GO",
+    "name": "Goiás",
+    "level": "state"
+   },
+   {
+    "code": "BR-MA",
+    "name": "Maranhão",
+    "level": "state"
+   },
+   {
+    "code": "BR-MT",
+    "name": "Mato Grosso",
+    "level": "state"
+   },
+   {
+    "code": "BR-MS",
+    "name": "Mato Grosso do Sul",
+    "level": "state"
+   },
+   {
+    "code": "BR-MG",
+    "name": "Minas Gerais",
+    "level": "state"
+   },
+   {
+    "code": "BR-PA",
+    "name": "Pará",
+    "level": "state"
+   },
+   {
+    "code": "BR-PB",
+    "name": "Paraíba",
+    "level": "state"
+   },
+   {
+    "code": "BR-PR",
+    "name": "Paraná",
+    "level": "state"
+   },
+   {
+    "code": "BR-PE",
+    "name": "Pernambuco",
+    "level": "state"
+   },
+   {
+    "code": "BR-PI",
+    "name": "Piauí",
+    "level": "state"
+   },
+   {
+    "code": "BR-RJ",
+    "name": "Rio de Janeiro",
+    "level": "state"
+   },
+   {
+    "code": "BR-RN",
+    "name": "Rio Grande do Norte",
+    "level": "state"
+   },
+   {
+    "code": "BR-RS",
+    "name": "Rio Grande do Sul",
+    "level": "state"
+   },
+   {
+    "code": "BR-RO",
+    "name": "Rondônia",
+    "level": "state"
+   },
+   {
+    "code": "BR-RR",
+    "name": "Roraima",
+    "level": "state"
+   },
+   {
+    "code": "BR-SC",
+    "name": "Santa Catarina",
+    "level": "state"
+   },
+   {
+    "code": "BR-SP",
+    "name": "São Paulo",
+    "level": "state"
+   },
+   {
+    "code": "BR-SE",
+    "name": "Sergipe",
+    "level": "state"
+   },
+   {
+    "code": "BR-TO",
+    "name": "Tocantins",
+    "level": "state"
+   }
+  ],
+  "KE": [
+   {
+    "code": "KE-01",
+    "name": "Baringo",
+    "level": "county"
+   },
+   {
+    "code": "KE-02",
+    "name": "Bomet",
+    "level": "county"
+   },
+   {
+    "code": "KE-03",
+    "name": "Bungoma",
+    "level": "county"
+   },
+   {
+    "code": "KE-04",
+    "name": "Busia",
+    "level": "county"
+   },
+   {
+    "code": "KE-05",
+    "name": "Embu",
+    "level": "county"
+   },
+   {
+    "code": "KE-06",
+    "name": "Garissa",
+    "level": "county"
+   },
+   {
+    "code": "KE-07",
+    "name": "Homa Bay",
+    "level": "county"
+   },
+   {
+    "code": "KE-08",
+    "name": "Isiolo",
+    "level": "county"
+   },
+   {
+    "code": "KE-09",
+    "name": "Kajiado",
+    "level": "county"
+   },
+   {
+    "code": "KE-10",
+    "name": "Kakamega",
+    "level": "county"
+   },
+   {
+    "code": "KE-11",
+    "name": "Kericho",
+    "level": "county"
+   },
+   {
+    "code": "KE-12",
+    "name": "Kiambu",
+    "level": "county"
+   },
+   {
+    "code": "KE-13",
+    "name": "Kilifi",
+    "level": "county"
+   },
+   {
+    "code": "KE-14",
+    "name": "Kirinyaga",
+    "level": "county"
+   },
+   {
+    "code": "KE-15",
+    "name": "Kisii",
+    "level": "county"
+   },
+   {
+    "code": "KE-16",
+    "name": "Kisumu",
+    "level": "county"
+   },
+   {
+    "code": "KE-17",
+    "name": "Kitui",
+    "level": "county"
+   },
+   {
+    "code": "KE-18",
+    "name": "Kwale",
+    "level": "county"
+   },
+   {
+    "code": "KE-19",
+    "name": "Laikipia",
+    "level": "county"
+   },
+   {
+    "code": "KE-20",
+    "name": "Lamu",
+    "level": "county"
+   },
+   {
+    "code": "KE-21",
+    "name": "Machakos",
+    "level": "county"
+   },
+   {
+    "code": "KE-22",
+    "name": "Makueni",
+    "level": "county"
+   },
+   {
+    "code": "KE-23",
+    "name": "Mandera",
+    "level": "county"
+   },
+   {
+    "code": "KE-24",
+    "name": "Marsabit",
+    "level": "county"
+   },
+   {
+    "code": "KE-25",
+    "name": "Meru",
+    "level": "county"
+   },
+   {
+    "code": "KE-26",
+    "name": "Migori",
+    "level": "county"
+   },
+   {
+    "code": "KE-27",
+    "name": "Mombasa",
+    "level": "county"
+   },
+   {
+    "code": "KE-28",
+    "name": "Nairobi",
+    "level": "county"
+   },
+   {
+    "code": "KE-29",
+    "name": "Nakuru",
+    "level": "county"
+   },
+   {
+    "code": "KE-30",
+    "name": "Nandi",
+    "level": "county"
+   },
+   {
+    "code": "KE-31",
+    "name": "Narok",
+    "level": "county"
+   },
+   {
+    "code": "KE-32",
+    "name": "Nyamira",
+    "level": "county"
+   },
+   {
+    "code": "KE-33",
+    "name": "Nyandarua",
+    "level": "county"
+   },
+   {
+    "code": "KE-34",
+    "name": "Nyeri",
+    "level": "county"
+   },
+   {
+    "code": "KE-35",
+    "name": "Samburu",
+    "level": "county"
+   },
+   {
+    "code": "KE-36",
+    "name": "Siaya",
+    "level": "county"
+   },
+   {
+    "code": "KE-37",
+    "name": "Taita-Taveta",
+    "level": "county"
+   },
+   {
+    "code": "KE-38",
+    "name": "Tana River",
+    "level": "county"
+   },
+   {
+    "code": "KE-39",
+    "name": "Tharaka-Nithi",
+    "level": "county"
+   },
+   {
+    "code": "KE-40",
+    "name": "Trans Nzoia",
+    "level": "county"
+   },
+   {
+    "code": "KE-41",
+    "name": "Turkana",
+    "level": "county"
+   },
+   {
+    "code": "KE-42",
+    "name": "Uasin Gishu",
+    "level": "county"
+   },
+   {
+    "code": "KE-43",
+    "name": "Vihiga",
+    "level": "county"
+   },
+   {
+    "code": "KE-44",
+    "name": "Wajir",
+    "level": "county"
+   },
+   {
+    "code": "KE-45",
+    "name": "West Pokot",
+    "level": "county"
+   }
+  ],
+  "AE": [
+   {
+    "code": "AE-AZ",
+    "name": "Abu Dhabi",
+    "level": "emirate"
+   },
+   {
+    "code": "AE-AJ",
+    "name": "Ajman",
+    "level": "emirate"
+   },
+   {
+    "code": "AE-DU",
+    "name": "Dubai",
+    "level": "emirate"
+   },
+   {
+    "code": "AE-FU",
+    "name": "Fujairah",
+    "level": "emirate"
+   },
+   {
+    "code": "AE-RK",
+    "name": "Ras Al Khaimah",
+    "level": "emirate"
+   },
+   {
+    "code": "AE-SH",
+    "name": "Sharjah",
+    "level": "emirate"
+   },
+   {
+    "code": "AE-UQ",
+    "name": "Umm Al Quwain",
+    "level": "emirate"
+   }
+  ],
+  "JP": [
+   {
+    "code": "JP-01",
+    "name": "Hokkaido",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-02",
+    "name": "Aomori",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-03",
+    "name": "Iwate",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-04",
+    "name": "Miyagi",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-05",
+    "name": "Akita",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-06",
+    "name": "Yamagata",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-07",
+    "name": "Fukushima",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-08",
+    "name": "Ibaraki",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-09",
+    "name": "Tochigi",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-10",
+    "name": "Gunma",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-11",
+    "name": "Saitama",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-12",
+    "name": "Chiba",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-13",
+    "name": "Tokyo",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-14",
+    "name": "Kanagawa",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-15",
+    "name": "Niigata",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-16",
+    "name": "Toyama",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-17",
+    "name": "Ishikawa",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-18",
+    "name": "Fukui",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-19",
+    "name": "Yamanashi",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-20",
+    "name": "Nagano",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-21",
+    "name": "Gifu",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-22",
+    "name": "Shizuoka",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-23",
+    "name": "Aichi",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-24",
+    "name": "Mie",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-25",
+    "name": "Shiga",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-26",
+    "name": "Kyoto",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-27",
+    "name": "Osaka",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-28",
+    "name": "Hyogo",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-29",
+    "name": "Nara",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-30",
+    "name": "Wakayama",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-31",
+    "name": "Tottori",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-32",
+    "name": "Shimane",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-33",
+    "name": "Okayama",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-34",
+    "name": "Hiroshima",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-35",
+    "name": "Yamaguchi",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-36",
+    "name": "Tokushima",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-37",
+    "name": "Kagawa",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-38",
+    "name": "Ehime",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-39",
+    "name": "Kochi",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-40",
+    "name": "Fukuoka",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-41",
+    "name": "Saga",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-42",
+    "name": "Nagasaki",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-43",
+    "name": "Kumamoto",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-44",
+    "name": "Oita",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-45",
+    "name": "Miyazaki",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-46",
+    "name": "Kagoshima",
+    "level": "prefecture"
+   },
+   {
+    "code": "JP-47",
+    "name": "Okinawa",
+    "level": "prefecture"
+   }
+  ],
+  "SG": [
+   {
+    "code": "SG-01",
+    "name": "Central Region",
+    "level": "region"
+   },
+   {
+    "code": "SG-02",
+    "name": "East Region",
+    "level": "region"
+   },
+   {
+    "code": "SG-03",
+    "name": "North Region",
+    "level": "region"
+   },
+   {
+    "code": "SG-04",
+    "name": "North-East Region",
+    "level": "region"
+   },
+   {
+    "code": "SG-05",
+    "name": "West Region",
+    "level": "region"
+   }
+  ],
+  "AU": [
+   {
+    "code": "AU-NSW",
+    "name": "New South Wales",
+    "level": "state"
+   },
+   {
+    "code": "AU-VIC",
+    "name": "Victoria",
+    "level": "state"
+   },
+   {
+    "code": "AU-QLD",
+    "name": "Queensland",
+    "level": "state"
+   },
+   {
+    "code": "AU-SA",
+    "name": "South Australia",
+    "level": "state"
+   },
+   {
+    "code": "AU-WA",
+    "name": "Western Australia",
+    "level": "state"
+   },
+   {
+    "code": "AU-TAS",
+    "name": "Tasmania",
+    "level": "state"
+   },
+   {
+    "code": "AU-NT",
+    "name": "Northern Territory",
+    "level": "territory"
+   },
+   {
+    "code": "AU-ACT",
+    "name": "Australian Capital Territory",
+    "level": "territory"
+   }
+  ],
+  "CA": [
+   {
+    "code": "CA-AB",
+    "name": "Alberta",
+    "level": "province"
+   },
+   {
+    "code": "CA-BC",
+    "name": "British Columbia",
+    "level": "province"
+   },
+   {
+    "code": "CA-MB",
+    "name": "Manitoba",
+    "level": "province"
+   },
+   {
+    "code": "CA-NB",
+    "name": "New Brunswick",
+    "level": "province"
+   },
+   {
+    "code": "CA-NL",
+    "name": "Newfoundland and Labrador",
+    "level": "province"
+   },
+   {
+    "code": "CA-NS",
+    "name": "Nova Scotia",
+    "level": "province"
+   },
+   {
+    "code": "CA-ON",
+    "name": "Ontario",
+    "level": "province"
+   },
+   {
+    "code": "CA-PE",
+    "name": "Prince Edward Island",
+    "level": "province"
+   },
+   {
+    "code": "CA-QC",
+    "name": "Quebec",
+    "level": "province"
+   },
+   {
+    "code": "CA-SK",
+    "name": "Saskatchewan",
+    "level": "province"
+   },
+   {
+    "code": "CA-NT",
+    "name": "Northwest Territories",
+    "level": "territory"
+   },
+   {
+    "code": "CA-NU",
+    "name": "Nunavut",
+    "level": "territory"
+   },
+   {
+    "code": "CA-YT",
+    "name": "Yukon",
+    "level": "territory"
+   }
+  ]
+ }
+}

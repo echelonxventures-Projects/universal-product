@@ -1,0 +1,114 @@
+{
+ "PLATFORM_ROLES": [
+  {
+   "key": "owner",
+   "name": "Platform Owner",
+   "desc": "Full control of the platform",
+   "sections": {
+    "*": "write"
+   }
+  },
+  {
+   "key": "support",
+   "name": "Support",
+   "desc": "Sell and operate stores — no platform security or billing",
+   "sections": {
+    "dash": "write",
+    "tenants": "write",
+    "geo": "read",
+    "providers": "read",
+    "plans": "read",
+    "subs": "read",
+    "modules": "read",
+    "gorders": "write",
+    "gcatalog": "read",
+    "gb2b": "read",
+    "gmarket": "read",
+    "gfinance": "read",
+    "gsupport": "write",
+    "gcontent": "read",
+    "ganalytics": "read",
+    "gops": "write",
+    "gdata": "read",
+    "gteam": "read",
+    "grisk": "read",
+    "trace": "read",
+    "monitor": "read",
+    "brands": "read",
+    "taxonomy": "read",
+    "gproducts": "read"
+   }
+  },
+  {
+   "key": "finance",
+   "name": "Finance",
+   "desc": "Plans, subscriptions, invoices and payments oversight",
+   "sections": {
+    "dash": "read",
+    "plans": "write",
+    "subs": "write",
+    "invoices": "write",
+    "billing": "write",
+    "gfinance": "write",
+    "tenants": "read",
+    "geo": "read",
+    "audit": "read",
+    "ganalytics": "read",
+    "monitor": "read"
+   }
+  },
+  {
+   "key": "catalog",
+   "name": "Catalog",
+   "desc": "Global catalog, taxonomy, brands and product oversight",
+   "sections": {
+    "dash": "read",
+    "gproducts": "write",
+    "gcatalog": "write",
+    "taxonomy": "write",
+    "brands": "write",
+    "gb2b": "read",
+    "gmarket": "read",
+    "gcontent": "read",
+    "ganalytics": "read",
+    "tenants": "read"
+   }
+  },
+  {
+   "key": "auditor",
+   "name": "Auditor",
+   "desc": "Read-only everywhere; can verify the audit chain",
+   "sections": {
+    "dash": "read",
+    "tenants": "read",
+    "geo": "read",
+    "providers": "read",
+    "plans": "read",
+    "subs": "read",
+    "invoices": "read",
+    "billing": "read",
+    "modules": "read",
+    "offers": "read",
+    "gorders": "read",
+    "gcatalog": "read",
+    "gb2b": "read",
+    "gmarket": "read",
+    "gfinance": "read",
+    "gsupport": "read",
+    "gcontent": "read",
+    "ganalytics": "read",
+    "gops": "read",
+    "gdata": "read",
+    "audit": "write",
+    "security": "read",
+    "runtime": "read",
+    "monitor": "read",
+    "policies": "read",
+    "trace": "write",
+    "gteam": "read",
+    "grisk": "read",
+    "padmins": "read"
+   }
+  }
+ ]
+}

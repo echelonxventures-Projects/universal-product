@@ -35,8 +35,7 @@ There are three "surfaces". Which one you use depends on your role.
 | Surface | URL (default install) | Who uses it |
 |---|---|---|
 | **Storefront** | `http://localhost:8787/` | End customers |
-| **Store Console** | `http://localhost:8787/admin.html` | Store administrators, support staff |
-| **Platform Console** | `http://localhost:8787/platform.html` | Platform (super) administrators |
+| **Console** | `http://localhost:8787/console.html` | Everyone who runs the platform or a store — one sign-in; the menu shows the store and platform sections your roles grant. The old `/admin.html` and `/platform.html` addresses redirect here. |
 | **The One Console** | `http://localhost:8787/console.html` | Anyone holding **both** a store and a platform role |
 
 > The **One Console** is the two consoles as one app: a single sign‑in, one nav grouped by
@@ -53,7 +52,7 @@ There are three "surfaces". Which one you use depends on your role.
 LUXORA serves many independent stores ("tenants") from one install. You select a store
 in three ways — all equivalent:
 
-- **Query string:** append `?store=<slug>` to any URL, e.g. `/admin.html?store=aurum`.
+- **Query string:** append `?store=<slug>` to any URL, e.g. `/console.html?store=aurum`.
 - **Subdomain:** visit `<slug>.localhost:<port>` (e.g. `aurum.localhost:8787`).
 - **Store picker cookie:** once you've used `?store=` it is remembered for later visits.
 
@@ -140,6 +139,18 @@ an account lets you track orders, save items and earn faster checkout.
 
 ## A2. Save & track
 - **Wishlist / Saved list** — tap the save/heart on any product; find them under *Saved*.
+- **Lists** (where the store offers them) — **♡ Add to List** on any product puts it on one of
+  your lists, or a new one: a wish list, a shopping list, an idea list (the kinds are the
+  store's). Give each item a priority, a quantity and a note. Under **Lists** in the header you
+  can rename a list, move items between lists, add them to your bag, and choose who sees it:
+  only you, anyone with the link (**Copy link**; **New link** cuts off the old one) or everyone
+  (public lists can be found by name). Someone shopping from your shared wish list can mark an
+  item **bought**, so nobody buys it twice. A small "↓ was …" shows when a price fell since
+  you added the item.
+- **Price & stock alerts** — **🔔 Price alert** on a product tells you when its price drops
+  (by more than the store's threshold) or reaches a price you set; on a sold-out product,
+  **Tell me when it's back** tells you when it returns. Alerts arrive in your notifications and
+  by email; manage or stop them under **Lists → Your alerts**.
 - **Recently viewed** — surfaced on your account/home so you can jump back.
 - **Delivery estimate** — enter your ZIP / postal code to see whether an item reaches you
   and roughly when.
@@ -158,8 +169,16 @@ card. Recipients apply the code at checkout.
 
 ## A5. Checkout
 1. Review the cart, then **Proceed to checkout**.
-2. Enter **shipping details** (name, address, city, state, ZIP, phone).
-3. Choose a **delivery option** (standard/express; cost and ETA are shown).
+2. Enter **shipping details** (name, address, city, state, ZIP, phone) — or, where the store
+   has pickup points, choose **Collect from a pickup point**, search by postcode or town and
+   pick a locker, counter or shop. You then need only your name; the summary shows the point's
+   fee and when your parcel will be there. After ordering you get a **pickup code** (on the
+   confirmation, by email and on **Your Orders**); you're told when the parcel is ready and
+   until when it is held. Show the code to collect it.
+3. Choose a **delivery option** (standard/express; cost and ETA are shown). On a store that
+   charges **live carrier rates**, the carriers' own rates to your address appear once the
+   address is entered — pick one; the cheapest is preselected. The order summary is priced by
+   the store itself, so the total you see is the total you are charged.
 4. Choose a **payment method**. Stores present only the rails valid for their country — for
    example card/Stripe (US), Razorpay/UPI (India), or Tabby "buy now, pay later" (UAE). Cash
    on delivery may also appear.
@@ -189,7 +208,7 @@ card. Recipients apply the code at checkout.
 # Part B — Store Administrator guide
 
 You run **one** store. Everything under this section happens in the **Store Console**
-(`admin.html`). Sign in with the store's admin account, and make sure you're pointed at the
+(`console.html`, store scope). Sign in with the store's admin account, and make sure you're pointed at the
 right store (see §1 "Switching between stores").
 
 ## B1. The console layout
@@ -233,6 +252,12 @@ Left rail navigation, grouped:
 ## B3. Sell & fulfil (Orders, Returns, RFQs)
 - **Orders** — move orders through their status; record shipping; issue **refunds** from a
   payment line. Search and filter by customer, status, date.
+- **Shipping & Tracking** — the ship-from address, and **What shoppers pay for shipping**:
+  a *flat fee* (the store's fee, or the carrier's base fee) or the *live carrier rate* from
+  the connected carrier account (needs the platform's EasyPost key and a ship-from address).
+  Products are weighed from their own `weight_kg` / `weight_g`; anything without a weight
+  ships as the *weight per item* you set. The rate a shopper paid for is attached to the
+  order, so the label bought later is that rate.
 - **Returns** — review incoming requests (see Part C for the support workflow).
 - **RFQs (B2B)** — a buyer has asked for a price/quantity; respond with an offer. Accepted
   RFQs lead to an order.
@@ -261,7 +286,16 @@ Left rail navigation, grouped:
 ## B6. Money & compliance (Payments, Billing, Audit, Monitor)
 - **Payment Gateways** — enable providers available for your country, choose a **primary**,
   set **sandbox vs live** mode, and **test** a gateway before going live. Shipping and
-  notification providers appear here too.
+  notification providers appear here too. For a live gateway, **Configure** also takes its
+  webhook credential — Stripe/Razorpay *webhook secret*, Square *signature key* plus the
+  *notification URL* exactly as registered, PayPal *webhook ID* — and the provider's webhook
+  points at `/api/webhooks/inbound/<gateway>`. Only a correctly signed event moves money.
+- **Payments ledger** (same screen) — every payment with what it is waiting on. A live
+  payment still **pending** has **Check with gateway**: the gateway is asked where it stands
+  (an approved PayPal order is captured) — the platform also does this on its own every few
+  minutes, so a webhook that never arrived still settles the order. **Cash on delivery** or a
+  **bank transfer** has **Record received** once the money is in, which releases the order.
+  A captured payment has **Refund**.
 - **Billing** — see invoices issued by the platform (e.g. for paid modules) and pay them.
 - **Audit Trail** — an append‑only, **hash‑chained** log of actions in your store. Use **Verify
   chain** to prove no entry has been altered. This is your compliance record.
@@ -330,6 +364,82 @@ Usage is metered to an AI ledger and can appear on your invoice.
   dates) shown as badges on the storefront.
 - **🌐 Localizations (i18n)** — per-product (and other objects) translations applied at the
   shopper's locale.
+
+## B12. Options, bookings, offers, auctions, shopper selling, messages, group buying, substitutions
+Each is a capability (⚙️ Capabilities: `product_options`, `bookings`, `price_negotiation`,
+`auctions`, `peer_listings`, `conversations`, `group_buying`, `substitutions`); its section
+appears in the menu when it is on. Which platform types use them is in
+[PLATFORM_TYPES.md](PLATFORM_TYPES.md).
+- **🧩 Product Options** — define a group once (a size, extras, an engraving): a list to choose
+  from (values one per line, `code | name | price change`) or personal text, how many must or
+  may be chosen. Attach groups to a product by its id. Shoppers choose on the product page; each
+  choice adds its price change and is kept on the order.
+- **📅 Bookings** — add resources (staff, rooms, assets, venues) with a capacity and weekly hours
+  (one line per weekday, `1 09:00-13:00, 14:00-18:00`) in their own time zone (blank: the store's).
+  Make a product bookable: its mode (time slots, or a date range priced per day), the resources
+  that deliver it, the slot length, step, gap after and notice. Shoppers pick a time, which is
+  held while they check out; the list shows the next 30 days with the moves each booking allows
+  (check in, complete, no-show, cancel).
+- **🤝 Offers** — shoppers' offers on the store's own products: accept, counter with a price, or
+  refuse. Floors and automatic accept/refuse thresholds are the capability's params. An agreed
+  price is bought within its window.
+- **🔨 Auctions** — open an auction on a product: starting price, optional reserve and
+  buy-it-now, start and end. Bidders state their maximum and the platform bids for them; a bid in
+  the last minutes extends the end. The winner pays within the window. *Close ended auctions now*
+  settles any that ended.
+- **🏷️ Shopper Listings** — items shoppers list from *Sell an item*. Approve (it goes on sale as an
+  ordinary product) or reject with notes. The store keeps its commission; the rest is credited to
+  the seller's wallet after the holding period.
+- **💬 Messages** — the store's conversations with shoppers, and — where staff may read them —
+  conversations between shoppers. Open one to reply as the store, hide a message, flag or close it.
+- **👥 Group Buying** — a group price, how many members it needs and by when. A group that fills
+  goes ahead; one that falls short cancels every member's order and refunds it to their wallet.
+- **🔄 Substitutions** — open an order at picking: every line shows the shopper's own choice
+  (refund it, best match, ask me, a named item). Propose a substitute (applied at once where the
+  choice allows) or mark a line unavailable to refund it.
+
+Shoppers see the matching pieces on the product page (options, a booking picker, the auction,
+the group, *Make an offer*, *Ask the seller*), choose a substitution per line in the bag, sell
+from *Sell an item*, read *Messages*, and follow their bookings, offers, auctions, groups and
+substitution proposals under *Your Orders → Your activity*.
+
+## B11. Lists, alerts, pickup points, brand content, brand registry and sponsored products
+Each is a capability: switch it on and tune it in **⚙️ Capabilities** (`wish_lists`,
+`product_alerts`, `pickup_points`, `rich_content`, `brand_registry`, `sponsored_ads`). A
+section appears in the menu only when its capability is on. The kinds and statuses behind each
+are registries a platform admin edits in Data Studio — a new kind of list, alert, pickup point,
+content module or infringement report needs no code.
+- **Lists and alerts** run themselves once on: shoppers keep lists and set alerts on the
+  storefront. Tune how many lists and items a shopper may keep, whether lists may be shared or
+  public, the smallest price drop that alerts, how often one alert may fire, and whether alerts
+  are also emailed.
+- **📍 Pickup Points** — **＋ New point**: a short code, a name, a kind (locker, counter, shop…),
+  the address, opening hours, a capacity (0 = no limit) and how many days parcels take to
+  arrive. A full point drops out of checkout until it has room. Under **Parcels**, each order
+  collected from a point offers only the next legal steps: **Arrive** when the parcel is in
+  (the shopper is told, with their code and a collect-by date), **Collect** when they come — type
+  the code they show you; after too many wrong codes the parcel locks — and **Expire / Return**
+  for parcels never collected (**Expire overdue parcels now** does it at once; the platform
+  also does it on a timer). You never see the code. The fee, holding days, code length and
+  lock-out are the capability's params.
+- **✨ Rich Content** — enter a product id, choose the seller you're publishing for (if any),
+  **＋ Add** modules (banner, image with text, feature list, comparison table, Q&A) and fill
+  their fields; lists take one entry per line and tables one row per line with cells separated
+  by `|`. **Save draft**, then **Submit**; a reviewer **Approves** (it goes live below the
+  product details, replacing the previous version) or **Rejects** with notes. Images must be
+  the store's own (`/media/…`) or on a host the platform allows. With *review* turned off,
+  submitting publishes at once; with *owner-only* on, only the brand's registered owner may
+  publish.
+- **™️ Brand Registry** — record a seller's claim to a brand (trademark number and office,
+  evidence) and **Approve** or **Reject** it; a brand has one approved owner unless the
+  capability says otherwise. An approved owner's **infringement report** names an offer (or a
+  product and seller) and a kind; **Uphold** moves the offending offer to the state the
+  capability names (by default suspended) and re-runs the buy-box, **Dismiss** closes it.
+  Product pages of a registered brand show a **✔ Registered brand** badge.
+- **📢 Marketplace & Ads → New sponsored product** — the product, keywords (blank = every
+  search), the bid model and bid, an optional budget and start/end. Ads appear labelled at the
+  top of search results that name a keyword, ranked by the auction; an ad stops when it has
+  spent its budget or passed its end, and a bid under the reserve price never serves.
 
 ---
 
@@ -404,7 +514,7 @@ on top of LUXORA (Data Studio + providers). The workflow you care about:
 
 You run the **whole platform**: you provision it once, launch stores, set the rules every
 store inherits, sell subscriptions and modules, and keep the fleet healthy, compliant and
-paid. All of it happens in the **Platform Console** (`platform.html`) — sign in with the
+paid. All of it happens in the **Platform Console** (`console.html`, platform scope) — sign in with the
 platform account (`platform@luxora.shop` in the seed).
 
 Platform identity is separate from any store. A platform admin is *not* "the admin of a
@@ -418,7 +528,7 @@ store" — you see every store, a store admin sees exactly one.
 
 ## E1. Sign in & find your way
 
-1. Open **Platform Console** → `http://localhost:8787/platform.html`.
+1. Open the console → `http://localhost:8787/console.html`.
 2. Sign in with your platform email + password (`POST /platform/login`). Repeated failures
    trigger the lockout you configure in Provisioning.
 3. The top bar shows your email, your **role**, and **Sign out**. On tablet/phone the rail
@@ -441,7 +551,7 @@ view's section auto-opens.
 | **08** | Governance | Policies, Standards/Regulations, Compliance & privacy, Risk & Security, Oversight (**Global Audit**, **Traceability**, risk/compliance/trash) |
 | **09** | Platform | **Capabilities**, **Capability Tree**, **Composition Engine**, Extension (Provider Registry, **Module Marketplace**, connectors), Runtime · Infra (environments, feature flags), Evolution (versioning, migration, self-healing) |
 | **10** | Observability | **◈ Command** (KPIs), Monitoring, metrics/logs/traces, health, **Dashboards**, **Data Explorer**, **Data Studio**, Entity Definitions |
-| **11** | Administration | Tenancy (**🏬 Tenants**), Access (**Platform Admins**, Roles, Users, Licenses), Configuration (**🛡️ Provisioning**, settings, feature flags) |
+| **11** | Administration | Tenancy (**🏬 Platforms & Kinds**), Access (**Platform Admins**, Roles, Users, Licenses), Configuration (**🛡️ Provisioning**, settings, feature flags) |
 | **12** | Architecture | Constitution Ω∞ (**UCII Registry**, **UCOS Constitution**, **Foundations**, **Universes**, **Domains**), Canonical Model, Graphs, Reference architectures, **📘 User Manual** |
 
 ### How any leaf resolves
@@ -496,11 +606,24 @@ pending."** Walk this path top to bottom; afterwards you can launch stores.
      rotated credentials. Existing hashes upgrade transparently on next login.
    - **Abuse control** — auth and API rate limits per IP, lockout threshold and backoff.
    - **Session & transport** — CSRF double-submit, HSTS under TLS, demo hints on login
-     screens, CSP inline-style allowance. *HttpOnly + SameSite cookies are structural and
-     cannot be disabled.*
+     screens, CSP inline-style allowance, and the **image hosts** storefronts may load images
+     from (e.g. a brand's CDN for rich product content — each becomes an `https:` source in the
+     content security policy; leave it empty to allow only the platform's own images).
+     *HttpOnly + SameSite cookies are structural and cannot be disabled.*
    - **New-store defaults** — default plan, whether new stores get a seeded demo catalogue,
      whether gateways start in **sandbox**, and the policy gates stores inherit: currency
      overrides, customer coupons, **global offers**, fiscal-context pickers.
+   - **New-store starting set** — what a store is given whenever its registration leaves
+     the choice open: the **default country** (also what any address or warehouse falls
+     back to), the default **deploy mode** (from the `deployModes` registry), how
+     many of its country's **payment gateways** and **carriers**, the **cash / offline
+     gateway** and **house shipping method** (or *None*), and the **priority / standard
+     delivery promise** in days, and how often pending **gateway payments are checked**
+     with their gateway (0 = never). Every list is read from the live registries, so a mode or
+     provider added later appears here. Saving changes only the fields you changed.
+   - **Shopper sweep** — how often shoppers' price and stock alerts are re-checked (prices
+     also move through imports and rules, not only edits) and uncollected pickup parcels
+     past their holding time are expired; 0 turns the timer off.
    - **Save platform policy** — the platform is now marked *Provisioned* (status card shows
      when, plus master-key version and whether the pepper is set).
    - The **Layer scorecard** at the bottom shows the live 10-layer security posture.
@@ -525,16 +648,50 @@ your first store.
 
 ---
 
-## E3. The tenant lifecycle — launch, manage, suspend, close
+## E3. Platform kinds — launch any kind, any number of each
 
-Work in **🏬 Tenants** (*11 Administration → Tenancy*). The table shows every store: slug,
-jurisdiction, owner, mode, industries, product/order counts, GMV, plan and status.
+This platform launches other platforms. A shop is only one kind; a ride-hailing operator, an
+ERP company or a financial-services provider is another. Work in **🏬 Platforms & Kinds**
+(*11 Administration → Tenancy*). The screen has two tables.
 
-**Launch a store.** Click **+ New tenant**. It is one form (a tenant is an identity record
-the platform provisions): name, slug, country, owner name + email + password, and the
-deployment **mode** — `marketplace` (many sellers, all industries), `industry` (one
-vertical) or `brand` (single label). Save and the store exists with its own admin account;
-hand the credentials to the owner.
+**Platform kinds** lists every kind you can launch and how many of each exist. Six ship:
+
+| Kind | One is a… | Starts with | Provisioned |
+|---|---|---|---|
+| Universal Marketplace | store | composed by hand | payments, shipping, warehouse, shopfront |
+| Industry Marketplace | store | composed by hand | payments, shipping, warehouse, shopfront |
+| Brand Store | store | composed by hand | payments, shipping, warehouse, shopfront |
+| Mobility Platform | operator | Mobility blend | payments |
+| Business Operations (ERP) | company | Operations blend | payments, warehouse |
+| Financial Services | provider | Fintech rails blend | payments |
+
+**Add or edit a kind** with **＋ New kind** or a row's **Edit**. A kind is data — no code:
+
+- **Name, key, description**, and what **one** and **many** are called (*clinic / clinics*).
+  The platform's own console is titled with it ("Clinic Console").
+- **Starts with this capability blend** — the blend (⚙️ Capabilities presets, E7) a new
+  platform of this kind is switched on with, unless registration picks another.
+- **Registration must name industries** — for catalogue-scoped kinds.
+- **Provisioned when one is registered** — payment gateways, shipping carriers, a warehouse
+  (in the platform's own country), and a shopfront (departments, home page, demo shop
+  products). Anything left off is not created, and its setup step disappears.
+- **Console sections** — which of the platform console's screens apply. All ticked means
+  every section, including ones added later. Screens a capability owns (Rides, Fleet, People
+  & Payroll, Manufacturing, Marketplace Ops…) are not on this list: they appear when the
+  platform's capability is on.
+
+An edit applies at once to every platform of that kind. A kind with platforms cannot be
+removed; retire or move its platforms first.
+
+**Launch a platform.** Click a kind's **＋ Launch one**, or **＋ Register platform**. The
+guided walk asks for name, kind, slug, country and admin account; then language and the
+identity policy; then the capability blend (pre-selected from the kind — pick another or
+*No archetype*); then industries and catalogue content; then the plan. Repeat as often as
+you like — there is no limit on how many platforms of a kind exist.
+
+**Platforms** lists every platform launched, of every kind: slug, jurisdiction, owner, kind,
+industries, product/order counts, GMV, plan and status. The owner's password must meet the
+platform's credential policy; hand the credentials to the owner.
 
 **Per-store actions** (row buttons):
 
@@ -542,7 +699,7 @@ hand the credentials to the owner.
 |---|---|
 | **Open** | Opens the store's storefront in a new tab. |
 | **Edit** | Changes the tenant's identity (name, country, owner). Slug is locked after creation. |
-| **Manage · Catalog** | **Impersonates** the store — opens its *Store Console* (Part B) with full admin scope, so you can operate a store without its password. Use for support escalations and store setup. |
+| **Manage** | **Impersonates** the platform — opens its own console (Part B) with full admin scope, so you can operate it without its password. Use for support escalations and setup. |
 | **Suspend / Resume** | The kill-switch. A suspended store blocks storefront/API mutations for everyone except platform admins (abuse, non-payment). Resume restores it. |
 | **Invoice** | Issues the store's monthly + usage invoice immediately. |
 | **✕** | Deletes the store and **all** its data, after a confirm. Destructive — audit trail survives. |
@@ -654,8 +811,16 @@ grouped by domain (Marketplace, Quick-commerce, Fintech, B2B trust & trade…):
   default stores inherit.
 - **⚙ params** — configure each declared parameter (boolean / number / JSON / text) with
   its unit and live effective value. An **edited** badge marks overrides.
-- **Presets** — save a whole capability set as a named preset and **Apply** it to any store
-  in one click (or delete it).
+- **Archetypes (presets)** — save a whole capability set as a named archetype and **Apply**
+  it to any store in one click (or delete it). An archetype also names the **catalogue
+  content** (universe keys) a store registered from it opens with, shown in the *Opens with
+  content* column. **Everything-store blend** ships ready-made: a multi-seller marketplace
+  with the full shopper storefront (reviews, Q&A, deals and countdowns, promo codes, gift
+  cards, registries, subscribe & save, membership, buy-now, risk screening) over
+  fulfilment-centre inbound, seller payouts and pay-later. To make your own platform type,
+  tune one store until it is right, then under *Define a new archetype* tick **Take the
+  capabilities and their tuning from the store being composed above**, add the content keys,
+  and save. Every store registered from it starts identical.
 
 ### Capability Tree (*09 Platform*)
 
@@ -677,6 +842,110 @@ security policy. The path contains **no per-capability code**.
    the composition produced (model, endpoint, field count, records).
 4. The **composition ledger** is append-only — every composition and recomposition with its
    provenance, so the platform's evolution is itself traceable.
+
+---
+
+## E7a. Availability Rules — where, for whom and for what anything applies (*09 Platform → 🧭 Availability Rules*)
+
+Blends and capabilities decide *what a platform has*. Availability Rules decide **where, for whom
+and for what each thing may be used**. One rule engine decides everything the platform offers, and every
+engine that makes a choice asks it.
+
+**A rule** has three parts:
+
+- **Subject** — one named thing, or ✱ every thing of a type. The types are registry rows
+  (`ruleSubjectTypes`): payment gateway, payment method, bank, shipping carrier, notification
+  channel, marketing integration, AI provider, AI model, AI capability, capability, module
+  capability, service, promotion, offer, coupon, sign-in method.
+- **Scope** — any combination of the registered dimensions (`ruleDimensions`): platform kinds,
+  platforms, countries **or country groups** (EU, GCC, APAC… — the `countryGroups` registry),
+  states/regions, currencies, services, customer segments, channels, plus an amount range (in a
+  stated currency, converted at the live FX rate) and a date window. A blank dimension means *any*.
+- **Effect** — *allow*, *deny* or *prefer* (with a priority: preferred options are offered first),
+  plus **overrides** applied when the rule matches (for example `fee_pct`, `fee_fixed`, `base_fee`, `label`, or
+  any parameter a capability reads).
+
+**How a decision is made**
+1. The most specific matching rule wins: a named subject beats ✱, then the rule with more dimensions set.
+   At a tie, deny wins.
+2. A subject with an *allow* rule is **allow-listed**: it is offered only where one of its allow
+   rules matches. A subject with no rules is open.
+3. The platform owner's rules bound every platform. A platform's own rules (store console →
+   *Settings → 🧭 Availability Rules*) can only narrow them; an allow there never lifts an owner's deny.
+4. Rules also apply when a platform is launched. Registration starts a platform with its
+   country's own gateways and carriers, ranked ahead of worldwide ones. So an Indian platform gets
+   Razorpay and UPI, and a US one gets Stripe. A provider an owner's rule denies for that kind or
+   country is never provisioned, and a *preferred* one is provisioned first.
+5. A context that doesn't know a fact yet (no buyer signed in, no amount yet) is treated
+   optimistically for allow rules and never triggers a deny on that fact. Checkout re-decides with
+   the full context at the moment of payment.
+
+**Examples**
+
+| Goal | Rule |
+|---|---|
+| Razorpay only in India, Stripe in the US/EU | allow `razorpay` · countries IN; allow `stripe` · countries US, EU |
+| No cash on delivery above ₹5,000 | deny `cod` · min amount 5000 · currency INR |
+| HDFC may not receive payouts | deny bank `hdfc` · services payout |
+| BNPL only for premium customers in the app | allow service `bnpl` · segments premium · channels app |
+| Reviews off for every Indian marketplace | deny capability `reviews` · kinds marketplace · countries IN |
+| GPT-4o not used in the EU | deny AI model `gpt-4o` · countries EU |
+| A Diwali coupon for premium customers, 1–15 Nov | allow coupon `DIWALI10` · segments premium · from/until dates |
+| Prefer UPI for Indian orders | prefer `upi` · countries IN · priority 10 |
+
+**Segments** combine three sources: hand-assigned members (store console → *Availability Rules →
+Customer segments*), automatic ones (guest / signed in), and the offers engine's computed
+audiences (new, returning, high-value, member…). The segment list is the `segments` registry.
+
+**Banks** are the `banks` registry (key, name, country, IFSC/SWIFT prefix). A payout or mandate
+names its bank by key, or the bank is recognised from the account's IFSC or SWIFT code.
+
+**🔎 Explain** describes a context (platform, country, segment, service, channel, amount, date) and
+lists every subject of a type with its verdict (*open · allowed · conditional · blocked*) and the
+rule that decided it.
+
+**Extending it — no code**
+- *A new kind of thing becomes rule-able* by adding a `ruleSubjectTypes` row whose source is
+  `list:<registry list>`, `entity:<Data Studio entity>`,
+  `rows:<table>:<id column>:<label column>[:<column>=<value>]` or
+  `values:<table>:<JSON column>[.<path>]`. Sources can be joined with `+`. A row's `params`
+  maps a rule's overrides onto the fields the engine reads.
+- *Where each engine asks* is a `ruleBindings` row. A row names the decision point
+  (`checkout.gateways`, `fintech.payout`…), the subject type it decides, the facts it sets
+  (its service) and, for a guarded entry point, the checks it runs and which input fields feed
+  which facts. Engines name only their point, so re-pointing one (say, dropping the bank check
+  on payouts) is a data edit.
+- *A new dimension* is a `ruleDimensions` row (`key`, `name`, `fact`, `match`: in · any · prefix ·
+  group, `options`, and where the fact comes from: `source` platform with a `column` or
+  `derive` lookup, request with an optional `header`, binding, or computed). The request supplies its fact as `body.context.<fact>`, header
+  `x-ctx-<fact>` or query `ctx_<fact>`.
+- *Any engine or integration* can ask `POST /api/rules/check {type, id, context}`. A shopper gets
+  only the verdict; console callers also get the reasons.
+
+---
+
+## E7b. State machines — what a status means and what it does (*Data Studio → `stateMachines`*)
+
+Every lifecycle (rides, drivers, purchase requests, payroll, work orders, replenishment,
+disputes, deliveries, RFQs, tenders, shipments, experiments, support tickets and more) is a
+row of the `stateMachines` registry. The engines no longer name statuses; they ask the machine.
+
+| Field | What it declares |
+|---|---|
+| `states` | the statuses: a registry list (`list:mobilityRideStatuses`) or an inline list |
+| `transitions` | the legal moves: a list of `from>to` keys, a `{ from: [to…] }` map, or `free: true` for any move. `*` means any status. |
+| `initial` | the status a new record starts in |
+| `meta.<status>.tags` | what the status **means** to the engines: `terminal`, `success`, `failure`, `rateable`, `available`, `committed`, `bookable`… |
+| `meta.<status>.stamps` | time columns written on entering it (`{ "col": "resolved_at", "once": true }` writes only the first time) |
+| `actions` | verbs a console or API uses (`approve → approved`, `pause → paused`); the verb's target is data |
+| `can:<action>` tags | which actions a status allows (the storefront shows Skip, Pause, Resume and Cancel from them) |
+| `meta.<status>.label` · `icon` · `tone` | how the status shows: the storefront's order list, the console's badges and buttons. `/api/meta` serves every machine's statuses, meanings and labelled moves to the consoles. |
+| `on["from>to"]` | effects of a move: `set` fields, `stamp` a time, `run` a named side effect (pay the driver, claw back a chargeback, deliver the orders), or `guard` (refuse the move, e.g. above an approval threshold) |
+
+**Examples of changes that need no code:**
+- **Add a status**, say an inspection hold for rides: add it to the status list, add its moves, and give it tags. Every count, filter and check that asks by meaning includes it.
+- **Change what a status means.** Tag `cancelled` as `rateable` and riders can rate cancelled trips.
+- **Re-sequence a flow:** edit `transitions`. Illegal moves are refused, and the error lists the legal next statuses.
 
 ---
 
@@ -737,6 +1006,15 @@ The **grants editor** gives one control per section the scope knows. A grant is 
 wildcard), **read**, or **write**. The **wildcard** row sets the default every inherited
 section resolves to. With ~200 sections possible, use the filter plus the bulk
 *filtered → read / write / inherit* buttons to scope just the ones you're editing.
+
+**Configured apps are granted here.** When you compose a capability into an application
+or define a new entity in Data Studio, it becomes its own section (listed by name, marked
+*app*) and its own entry under **Configured apps** in the console menu. Only the **Owner**
+role gets it automatically — the wildcard row of any other role does *not* reach it — so
+give each role access deliberately: pick **read** or **write** for that app in its role
+here (or in the store's *Team & Roles*). The app appears in those people's menus on their
+next screen; revoke it the same way. One store's own entities are never offered to
+another store.
 
 ### Users
 
@@ -925,9 +1203,10 @@ double-run. Outbound webhooks are HMAC-signed, delivered through a retrying ledg
 | Configure the platform for the first time | 11 → 🛡️ Provisioning | Save the policy (banner disappears) |
 | Set the countries / currencies / taxes | 01 → 🌍 Geo Registry · Taxes | Edit countries, FX, tax modes |
 | Create subscription tiers | 04 → 💼 Plans | + New plan |
-| Launch a store | 11 → 🏬 Tenants | + New tenant (one form) |
-| Operate a store without its password | 11 → 🏬 Tenants | Manage · Catalog (impersonate) |
-| Suspend an abusive / non-paying store | 11 → 🏬 Tenants | Suspend |
+| Add or change a kind of platform | 11 → 🏬 Platforms & Kinds | ＋ New kind / Edit |
+| Launch a platform of any kind | 11 → 🏬 Platforms & Kinds | ＋ Launch one on the kind's row |
+| Operate a platform without its password | 11 → 🏬 Platforms & Kinds | Manage (impersonate) |
+| Suspend an abusive / non-paying store | 11 → 🏬 Platforms & Kinds | Suspend |
 | Bind a store to a plan | 04 → 🔁 Subscriptions | + Assign plan |
 | Collect money / chase arrears | 04 → 🧾 Invoices · 💳 Billing Ops | Collect · Run dunning sweep |
 | Sell an add-on to a store | 09 → 🧩 Module Marketplace | Click the store's chip |
@@ -935,6 +1214,8 @@ double-run. Outbound webhooks are HMAC-signed, delivered through a retrying ledg
 | Allow a store to list a master product | 02 → 🌐 Global Products | Store access |
 | See every store's orders / stock / disputes | 05 → 🧭 Ops Hub (+ E6 views) | Use the store filter + toolbar |
 | Turn a feature on for one store | 09 → ⚙️ Capabilities | Pick store → toggle / params / preset |
+| Decide which gateway/bank/carrier/capability/offer/AI model applies where, for whom, for what | 09 → 🧭 Availability Rules | ＋ New rule · 🔎 Explain |
+| Restrict one platform further | Store console → Settings → 🧭 Availability Rules | ＋ New rule |
 | Materialize a capability's full surface | 09 → 🧬 Composition Engine | Compose |
 | Publish the corpus into a store | 12 → 🧬 Universes | Pick target store → Activate |
 | Check the corpus is intact | 12 → 🏛️ Foundations | Verify invariants |
@@ -1024,7 +1305,7 @@ name/wordmark once signed in — double‑check you're in the intended store bef
 | Can't enable a gateway | Provider not available in the country | Enable it in Platform → Provider Registry availability |
 
 ### F. Reference — surfaces & key endpoints
-- Surfaces: `/` (storefront), `/admin.html` (store), `/platform.html` (platform),
+- Surfaces: `/` (storefront), `/console.html` (store and platform; `/admin.html` and `/platform.html` redirect to it),
   `/console.html` (both scopes, one sign‑in).
 - Health: `GET /healthz`.
 - Security scorecard (platform admin): `GET /api/platform/security`.

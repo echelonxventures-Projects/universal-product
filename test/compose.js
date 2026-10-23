@@ -102,8 +102,9 @@ async function render(p, wait = 2000) {
     const ents = await f("/api/meta/entities");
     const served = Object.keys(ents.entities || {}).includes("cp_insurance");
     ok(served, "the composed entity is served by the entity engine", JSON.stringify(Object.keys(ents.entities || {}).filter(k => k.startsWith("cp_"))));
-    ok(rbac.sectionForEntity("cp_insurance") === "compose", "a composed entity authorizes against the composition section", rbac.sectionForEntity("cp_insurance"));
-    ok(rbac.SECTIONS.includes("compose"), "composition is a first-class grantable section");
+    const proles = await f("/api/platform/roles");
+    ok((proles.sections || []).includes("app_cp_insurance") && (proles.apps || []).some(a => a.key === "cp_insurance"), "a composed entity is its own grantable section", (proles.sections || []).filter(k => /^app_/.test(k)));
+    ok((proles.sections || []).includes("compose"), "composition is a first-class grantable section");
     const rec = await f("/api/meta/entity/cp_insurance", "POST", { name: "Motor Policy", code: "MOT-1", status: "drafted" });
     ok(!rec.error && rec.id, "a record is created through the composed API", rec.error || rec.id);
     await f("/api/meta/entity/cp_insurance", "POST", { name: "Home Policy", code: "HOM-1", status: "canonical" });

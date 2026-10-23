@@ -1,0 +1,4033 @@
+{
+ "$comment": "Seed data for the state-machine kernel (lib/states.js). Becomes the stateMachines registry list on first boot and is edited in the console from then on. states/transitions may reference a registry list as list:<name>. Tags are what a state MEANS to the engines (they ask by tag, never by name); stamps are time columns written on entering a state; 'on' declares per-move guards and effects: set, stamp, run <handler>, guard <handler>.",
+ "stateMachines": [
+  {
+   "key": "tenant",
+   "name": "Platform (tenant)",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": [
+    "active",
+    "suspended"
+   ],
+   "meta": {
+    "active": {
+     "tags": [
+      "operating"
+     ],
+     "label": "active",
+     "tone": "published"
+    },
+    "suspended": {
+     "tags": [
+      "blocked"
+     ],
+     "label": "suspended",
+     "tone": "failed"
+    }
+   }
+  },
+  {
+   "key": "org_unit",
+   "name": "Org unit",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": [
+    "active",
+    "suspended"
+   ],
+   "meta": {
+    "active": {
+     "tags": [
+      "operating"
+     ]
+    },
+    "suspended": {
+     "tags": [
+      "blocked"
+     ]
+    }
+   }
+  },
+  {
+   "key": "order",
+   "name": "Order",
+   "column": "status",
+   "initial": "processing",
+   "free": true,
+   "states": [
+    "pending_payment",
+    "processing",
+    "shipped",
+    "delivered",
+    "cancelled",
+    "refunded"
+   ],
+   "meta": {
+    "pending_payment": {
+     "tags": [
+      "awaiting_payment",
+      "cancellable",
+      "not_shippable"
+     ],
+     "label": "Awaiting payment",
+     "icon": "⏳",
+     "tone": "info"
+    },
+    "processing": {
+     "tags": [
+      "open",
+      "accepted",
+      "cancellable",
+      "shippable",
+      "fulfilment"
+     ],
+     "label": "Processing",
+     "icon": "⏳",
+     "tone": "info"
+    },
+    "shipped": {
+     "tags": [
+      "open",
+      "fulfilment",
+      "in_transit",
+      "cancellable",
+      "dispatched"
+     ],
+     "label": "Shipped",
+     "icon": "🚚",
+     "tone": "info"
+    },
+    "delivered": {
+     "tags": [
+      "fulfilled",
+      "success",
+      "fulfilment",
+      "dispatched"
+     ],
+     "label": "Delivered",
+     "icon": "✓",
+     "tone": "ok"
+    },
+    "cancelled": {
+     "tags": [
+      "aborted",
+      "void",
+      "terminal",
+      "failure",
+      "not_shippable"
+     ],
+     "label": "Cancelled",
+     "icon": "✕",
+     "tone": "cancel"
+    },
+    "refunded": {
+     "tags": [
+      "void",
+      "terminal"
+     ],
+     "label": "Refunded",
+     "icon": "↩",
+     "tone": "cancel"
+    }
+   }
+  },
+  {
+   "key": "payment",
+   "name": "Payment",
+   "column": "status",
+   "initial": "initiated",
+   "free": true,
+   "states": [
+    "initiated",
+    "pending",
+    "approved",
+    "captured",
+    "succeeded",
+    "retrying",
+    "failed",
+    "refunded",
+    "disputed_lost",
+    "disputed_won"
+   ],
+   "meta": {
+    "initiated": {
+     "tags": [
+      "awaiting",
+      "created"
+     ]
+    },
+    "pending": {
+     "tags": [
+      "awaiting",
+      "held"
+     ]
+    },
+    "captured": {
+     "tags": [
+      "settled",
+      "refundable",
+      "booked",
+      "success"
+     ]
+    },
+    "succeeded": {
+     "tags": [
+      "settled",
+      "booked",
+      "success"
+     ]
+    },
+    "retrying": {
+     "tags": [
+      "retrying"
+     ]
+    },
+    "failed": {
+     "tags": [
+      "failure",
+      "terminal"
+     ]
+    },
+    "refunded": {
+     "tags": [
+      "reversed",
+      "terminal"
+     ]
+    },
+    "disputed_lost": {
+     "tags": [
+      "lost",
+      "booked"
+     ]
+    },
+    "disputed_won": {
+     "tags": [
+      "booked",
+      "settled"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "authorized",
+      "awaiting_capture"
+     ]
+    }
+   }
+  },
+  {
+   "key": "invoice",
+   "name": "Invoice",
+   "column": "status",
+   "initial": "draft",
+   "free": true,
+   "states": [
+    "draft",
+    "overdue",
+    "paid"
+   ],
+   "meta": {
+    "draft": {
+     "tags": [
+      "collectable",
+      "open"
+     ],
+     "label": "draft",
+     "tone": "processing"
+    },
+    "overdue": {
+     "tags": [
+      "collectable",
+      "open",
+      "late"
+     ],
+     "label": "overdue",
+     "tone": "failed"
+    },
+    "paid": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      "paid_at"
+     ],
+     "label": "paid",
+     "tone": "published"
+    }
+   }
+  },
+  {
+   "key": "credit_note",
+   "name": "Credit note",
+   "column": "status",
+   "initial": "issued",
+   "free": true,
+   "states": [
+    "issued",
+    "voided"
+   ],
+   "meta": {
+    "issued": {
+     "tags": [
+      "live"
+     ]
+    },
+    "voided": {
+     "tags": [
+      "void",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "return",
+   "name": "Return",
+   "column": "status",
+   "initial": "requested",
+   "free": true,
+   "states": [
+    "requested",
+    "approved",
+    "received",
+    "refunded",
+    "rejected"
+   ],
+   "meta": {
+    "refunded": {
+     "tags": [
+      "terminal",
+      "refunded"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   },
+   "on": {
+    "*>refunded": [
+     {
+      "run": "claw_back_offers"
+     }
+    ]
+   }
+  },
+  {
+   "key": "ride",
+   "name": "Ride",
+   "column": "status",
+   "initial": "requested",
+   "states": "list:mobilityRideStatuses",
+   "transitions": "list:mobilityTransitions",
+   "meta": {
+    "accepted": {
+     "tags": [
+      "open",
+      "active",
+      "assigned"
+     ],
+     "stamps": [
+      "accepted_at"
+     ]
+    },
+    "arrived": {
+     "tags": [
+      "active"
+     ],
+     "stamps": [
+      "arrived_at"
+     ]
+    },
+    "trip_start": {
+     "tags": [
+      "active",
+      "in_progress"
+     ],
+     "stamps": [
+      "started_at"
+     ]
+    },
+    "completed": {
+     "tags": [
+      "terminal",
+      "success",
+      "rateable",
+      "billable"
+     ],
+     "stamps": [
+      "completed_at"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal",
+      "failure",
+      "billable"
+     ],
+     "stamps": [
+      "cancelled_at"
+     ]
+    },
+    "requested": {
+     "tags": [
+      "open",
+      "active"
+     ]
+    }
+   },
+   "on": {
+    "*>completed": [
+     {
+      "run": "settle_fare"
+     }
+    ],
+    "*>cancelled": [
+     {
+      "run": "release_driver"
+     }
+    ],
+    "trip_start>cancelled": [
+     {
+      "run": "cancel_fee",
+      "param": "cancel_fee_midtrip"
+     }
+    ],
+    "accepted>cancelled": [
+     {
+      "run": "cancel_fee",
+      "param": "cancel_fee_accepted"
+     }
+    ]
+   }
+  },
+  {
+   "key": "driver",
+   "name": "Driver",
+   "column": "status",
+   "initial": "offline",
+   "free": true,
+   "states": [
+    "offline",
+    "online",
+    "busy",
+    "suspended"
+   ],
+   "meta": {
+    "offline": {
+     "tags": [
+      "off"
+     ]
+    },
+    "online": {
+     "tags": [
+      "available",
+      "online"
+     ]
+    },
+    "busy": {
+     "tags": [
+      "engaged",
+      "online"
+     ]
+    },
+    "suspended": {
+     "tags": [
+      "blocked"
+     ]
+    }
+   }
+  },
+  {
+   "key": "vehicle",
+   "name": "Vehicle",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": [
+    "active",
+    "maintenance",
+    "retired"
+   ],
+   "meta": {
+    "retired": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "purchase_request",
+   "name": "Purchase request",
+   "column": "status",
+   "initial": "draft",
+   "states": "list:opsPrStatuses",
+   "transitions": {
+    "draft": [
+     "submitted"
+    ],
+    "submitted": [
+     "approved"
+    ],
+    "approved": [
+     "ordered"
+    ],
+    "ordered": [
+     "received"
+    ]
+   },
+   "meta": {
+    "approved": {
+     "tags": [
+      "approved"
+     ],
+     "stamps": [
+      "approved_at"
+     ]
+    },
+    "received": {
+     "tags": [
+      "terminal",
+      "success"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "terminal",
+      "failure"
+     ]
+    },
+    "draft": {
+     "tags": [
+      "creatable"
+     ]
+    },
+    "submitted": {
+     "tags": [
+      "creatable"
+     ]
+    }
+   },
+   "on": {
+    "*>approved": [
+     {
+      "guard": "approval_threshold"
+     },
+     {
+      "run": "record_approver"
+     }
+    ]
+   }
+  },
+  {
+   "key": "approval",
+   "name": "Approval",
+   "column": "status",
+   "initial": "pending",
+   "free": true,
+   "states": [
+    "pending",
+    "approved",
+    "rejected"
+   ],
+   "meta": {
+    "approved": {
+     "tags": [
+      "decision",
+      "granted"
+     ],
+     "stamps": [
+      "decided_at"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "decision",
+      "refused"
+     ],
+     "stamps": [
+      "decided_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "payroll_run",
+   "name": "Payroll run",
+   "column": "status",
+   "initial": "draft",
+   "free": true,
+   "states": [
+    "draft",
+    "approved",
+    "paid"
+   ],
+   "meta": {
+    "approved": {
+     "stamps": [
+      "approved_at"
+     ],
+     "tags": [
+      "can:pay"
+     ]
+    },
+    "paid": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      "paid_at",
+      {
+       "col": "approved_at",
+       "once": true
+      }
+     ]
+    },
+    "draft": {
+     "tags": [
+      "can:approve"
+     ]
+    }
+   },
+   "on": {
+    "*>paid": [
+     {
+      "run": "pay_lines"
+     }
+    ]
+   },
+   "actions": {
+    "approve": "approved",
+    "pay": "paid"
+   }
+  },
+  {
+   "key": "payroll_line",
+   "name": "Payroll line",
+   "column": "status",
+   "initial": "pending",
+   "free": true,
+   "states": [
+    "pending",
+    "paid"
+   ],
+   "meta": {
+    "paid": {
+     "tags": [
+      "terminal",
+      "success"
+     ]
+    }
+   }
+  },
+  {
+   "key": "work_order",
+   "name": "Work order",
+   "column": "status",
+   "initial": "planned",
+   "states": "list:opsWoStatuses",
+   "transitions": {
+    "planned": [
+     "planned",
+     "released",
+     "in_progress",
+     "scrapped"
+    ],
+    "released": [
+     "released",
+     "in_progress",
+     "scrapped"
+    ],
+    "in_progress": [
+     "in_progress",
+     "scrapped"
+    ],
+    "done": [
+     "done"
+    ],
+    "scrapped": [
+     "scrapped"
+    ]
+   },
+   "meta": {
+    "planned": {
+     "tags": [
+      "creatable"
+     ]
+    },
+    "released": {
+     "tags": [
+      "creatable"
+     ]
+    },
+    "in_progress": {
+     "tags": [
+      "creatable",
+      "completable"
+     ]
+    },
+    "done": {
+     "tags": [
+      "terminal",
+      "success",
+      "locked",
+      "completion"
+     ]
+    },
+    "scrapped": {
+     "tags": [
+      "terminal",
+      "failure",
+      "locked"
+     ]
+    }
+   }
+  },
+  {
+   "key": "employee",
+   "name": "Employee",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": [
+    "active",
+    "on_leave",
+    "terminated"
+   ],
+   "meta": {
+    "terminated": {
+     "tags": [
+      "terminal",
+      "exited"
+     ],
+     "stamps": [
+      {
+       "col": "exited_at",
+       "once": true
+      }
+     ]
+    },
+    "active": {
+     "tags": [
+      "current",
+      "payable"
+     ]
+    }
+   }
+  },
+  {
+   "key": "project",
+   "name": "Project",
+   "column": "status",
+   "initial": "planning",
+   "free": true,
+   "states": "list:opsProjectStatuses",
+   "meta": {
+    "done": {
+     "tags": [
+      "terminal",
+      "completed"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal"
+     ]
+    },
+    "active": {
+     "tags": [
+      "running"
+     ]
+    }
+   }
+  },
+  {
+   "key": "task",
+   "name": "Task",
+   "column": "status",
+   "initial": "todo",
+   "free": true,
+   "states": "list:opsTaskStatuses",
+   "meta": {
+    "done": {
+     "tags": [
+      "terminal",
+      "completed"
+     ]
+    }
+   }
+  },
+  {
+   "key": "replenishment",
+   "name": "Replenishment",
+   "column": "status",
+   "initial": "suggested",
+   "free": true,
+   "states": "list:planStatuses",
+   "meta": {
+    "suggested": {
+     "tags": [
+      "proposed"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "po_open"
+     ]
+    },
+    "ordered": {
+     "tags": [
+      "po_open",
+      "committed",
+      "issued"
+     ]
+    },
+    "received": {
+     "tags": [
+      "terminal",
+      "success",
+      "committed"
+     ],
+     "stamps": [
+      "closed_at"
+     ]
+    },
+    "skipped": {
+     "tags": [
+      "terminal",
+      "failure",
+      "not_needed"
+     ],
+     "stamps": [
+      "closed_at"
+     ]
+    }
+   },
+   "on": {
+    "*>approved": [
+     {
+      "set": {
+       "po_status": "draft"
+      }
+     },
+     {
+      "run": "mint_po_ref"
+     }
+    ],
+    "*>ordered": [
+     {
+      "set": {
+       "po_status": "issued"
+      }
+     },
+     {
+      "run": "mint_po_ref"
+     }
+    ],
+    "*>received": [
+     {
+      "set": {
+       "po_status": "received"
+      }
+     }
+    ],
+    "*>skipped": [
+     {
+      "set": {
+       "po_status": "skipped"
+      }
+     }
+    ]
+   }
+  },
+  {
+   "key": "dispute",
+   "name": "Payment dispute",
+   "column": "state",
+   "initial": "opened",
+   "free": true,
+   "states": "list:finDisputeStates",
+   "meta": {
+    "won": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      "closed_at"
+     ]
+    },
+    "lost": {
+     "tags": [
+      "terminal",
+      "failure"
+     ],
+     "stamps": [
+      "closed_at"
+     ]
+    },
+    "closed": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   },
+   "on": {
+    "*>lost": [
+     {
+      "run": "claw_back"
+     }
+    ]
+   }
+  },
+  {
+   "key": "seller_payout",
+   "name": "Seller payout run",
+   "column": "status",
+   "initial": "open",
+   "free": true,
+   "states": [
+    "open",
+    "disbursed"
+   ],
+   "meta": {
+    "disbursed": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      "disbursed_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "emi",
+   "name": "BNPL instalment (EMI)",
+   "column": "status",
+   "initial": "upcoming",
+   "free": true,
+   "states": "list:finEmiStatuses",
+   "meta": {
+    "paid": {
+     "tags": [
+      "settled",
+      "terminal"
+     ],
+     "stamps": [
+      "paid_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "upi_handle",
+   "name": "UPI handle",
+   "column": "status",
+   "initial": "pending_verification",
+   "free": true,
+   "states": "list:finUpiStatuses",
+   "meta": {
+    "active": {
+     "tags": [
+      "usable",
+      "visible"
+     ]
+    },
+    "pending_verification": {
+     "tags": [
+      "visible"
+     ]
+    }
+   }
+  },
+  {
+   "key": "upi_collect",
+   "name": "UPI collect request",
+   "column": "status",
+   "initial": "initiated",
+   "free": true,
+   "states": "list:finCollectStatuses",
+   "meta": {
+    "success": {
+     "tags": [
+      "success",
+      "terminal"
+     ]
+    },
+    "failed": {
+     "tags": [
+      "failure",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "qr_code",
+   "name": "QR code",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": "list:finQrStatuses",
+   "meta": {
+    "active": {
+     "tags": [
+      "live"
+     ]
+    }
+   }
+  },
+  {
+   "key": "payment_link",
+   "name": "Payment link",
+   "column": "status",
+   "initial": "issued",
+   "free": true,
+   "states": "list:finLinkStatuses",
+   "meta": {
+    "issued": {
+     "tags": [
+      "payable"
+     ]
+    },
+    "paid": {
+     "tags": [
+      "success",
+      "terminal"
+     ],
+     "stamps": [
+      "paid_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "mandate",
+   "name": "Recurring mandate",
+   "column": "status",
+   "initial": "registered",
+   "free": true,
+   "states": "list:finMandateStatuses",
+   "meta": {
+    "registered": {
+     "tags": [
+      "chargeable"
+     ]
+    },
+    "active": {
+     "tags": [
+      "chargeable"
+     ]
+    }
+   }
+  },
+  {
+   "key": "escrow",
+   "name": "Escrow hold",
+   "column": "status",
+   "initial": "held",
+   "free": true,
+   "states": "list:finEscrowStatuses",
+   "meta": {
+    "held": {
+     "tags": [
+      "holding"
+     ]
+    },
+    "released": {
+     "tags": [
+      "released",
+      "terminal"
+     ],
+     "stamps": [
+      "released_at"
+     ]
+    },
+    "disputed": {
+     "tags": [
+      "in_dispute"
+     ]
+    }
+   }
+  },
+  {
+   "key": "split_payment",
+   "name": "Split payment",
+   "column": "status",
+   "initial": "pending",
+   "free": true,
+   "states": "list:finSplitStatuses",
+   "meta": {
+    "settled": {
+     "tags": [
+      "settled",
+      "terminal"
+     ],
+     "stamps": [
+      "settled_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "kyc",
+   "name": "KYC profile",
+   "column": "status",
+   "initial": "pending",
+   "free": true,
+   "states": "list:finKycStatuses",
+   "meta": {
+    "min_kyc": {
+     "tags": [
+      "level:min"
+     ]
+    },
+    "full_kyc": {
+     "tags": [
+      "level:full",
+      "full"
+     ]
+    },
+    "verified": {
+     "tags": [
+      "full"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "refused"
+     ]
+    }
+   }
+  },
+  {
+   "key": "kyc_doc",
+   "name": "KYC document",
+   "column": "status",
+   "initial": "pending",
+   "free": true,
+   "states": "list:finKycDocStatuses",
+   "meta": {
+    "approved": {
+     "tags": [
+      "passed"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "refused"
+     ]
+    }
+   }
+  },
+  {
+   "key": "bank_payout",
+   "name": "Bank payout",
+   "column": "status",
+   "initial": "queued",
+   "free": true,
+   "states": "list:finPayoutStatuses",
+   "meta": {
+    "queued": {
+     "tags": [
+      "processable"
+     ]
+    },
+    "success": {
+     "tags": [
+      "success",
+      "terminal"
+     ]
+    },
+    "failed": {
+     "tags": [
+      "failure",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "biller",
+   "name": "Biller",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": [
+    "active",
+    "inactive"
+   ],
+   "meta": {
+    "active": {
+     "tags": [
+      "listed"
+     ]
+    }
+   }
+  },
+  {
+   "key": "recharge_plan",
+   "name": "Recharge plan",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": [
+    "active",
+    "inactive"
+   ],
+   "meta": {
+    "active": {
+     "tags": [
+      "listed"
+     ]
+    }
+   }
+  },
+  {
+   "key": "bill_payment",
+   "name": "Bill payment",
+   "column": "status",
+   "initial": "initiated",
+   "free": true,
+   "states": "list:finBillStatuses",
+   "meta": {
+    "success": {
+     "tags": [
+      "success",
+      "terminal"
+     ]
+    },
+    "failed": {
+     "tags": [
+      "failure",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "recharge",
+   "name": "Recharge",
+   "column": "status",
+   "initial": "initiated",
+   "free": true,
+   "states": "list:finRechargeStatuses",
+   "meta": {
+    "success": {
+     "tags": [
+      "success",
+      "terminal"
+     ]
+    },
+    "failed": {
+     "tags": [
+      "failure",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "bnpl_account",
+   "name": "BNPL account",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": "list:finBnplStatuses",
+   "meta": {
+    "active": {
+     "tags": [
+      "spendable"
+     ]
+    }
+   }
+  },
+  {
+   "key": "loan",
+   "name": "Loan",
+   "column": "status",
+   "initial": "applied",
+   "free": true,
+   "states": "list:finLoanStatuses",
+   "meta": {
+    "approved": {
+     "tags": [
+      "disbursable"
+     ]
+    },
+    "disbursed": {
+     "tags": [
+      "disbursed"
+     ],
+     "stamps": [
+      "disbursed_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "insurance_policy",
+   "name": "Insurance policy",
+   "column": "status",
+   "initial": "quoted",
+   "free": true,
+   "states": "list:finInsuranceStatuses",
+   "meta": {
+    "quoted": {
+     "tags": [
+      "activatable"
+     ]
+    },
+    "active": {
+     "tags": [
+      "in_force"
+     ]
+    }
+   }
+  },
+  {
+   "key": "gift_voucher",
+   "name": "Gift voucher",
+   "column": "status",
+   "initial": "issued",
+   "free": true,
+   "states": "list:finVoucherStatuses",
+   "meta": {
+    "issued": {
+     "tags": [
+      "redeemable"
+     ]
+    },
+    "redeemed": {
+     "tags": [
+      "used",
+      "terminal"
+     ],
+     "stamps": [
+      "redeemed_at"
+     ]
+    },
+    "expired": {
+     "tags": [
+      "lapsed",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "rider",
+   "name": "Delivery rider",
+   "column": "status",
+   "initial": "offline",
+   "free": true,
+   "states": "list:qcRiderStatuses",
+   "meta": {
+    "online": {
+     "tags": [
+      "available"
+     ]
+    },
+    "on_delivery": {
+     "tags": [
+      "en_route"
+     ]
+    }
+   }
+  },
+  {
+   "key": "dark_store",
+   "name": "Dark store",
+   "column": "status",
+   "initial": "onboarding",
+   "free": true,
+   "states": "list:qcStoreStatuses",
+   "meta": {
+    "active": {
+     "tags": [
+      "serving"
+     ]
+    }
+   }
+  },
+  {
+   "key": "service_area",
+   "name": "Service area",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": "list:qcAreaStatuses",
+   "meta": {
+    "active": {
+     "tags": [
+      "serving"
+     ]
+    }
+   }
+  },
+  {
+   "key": "delivery_slot",
+   "name": "Delivery slot",
+   "column": "status",
+   "initial": "open",
+   "free": true,
+   "states": "list:qcSlotStatuses",
+   "meta": {
+    "open": {
+     "tags": [
+      "bookable"
+     ]
+    }
+   }
+  },
+  {
+   "key": "dispatch_run",
+   "name": "Quick-commerce dispatch",
+   "column": "status",
+   "initial": "assigned",
+   "free": true,
+   "states": "list:qcDispatchStatuses",
+   "meta": {
+    "out_for_delivery": {
+     "tags": [
+      "en_route"
+     ]
+    },
+    "delivered": {
+     "tags": [
+      "terminal",
+      "success",
+      "hides_otp"
+     ],
+     "stamps": [
+      "pod_at"
+     ]
+    }
+   },
+   "on": {
+    "*>delivered": [
+     {
+      "run": "deliver_orders"
+     }
+    ],
+    "*>out_for_delivery": [
+     {
+      "run": "rider_en_route"
+     }
+    ]
+   }
+  },
+  {
+   "key": "rfq",
+   "name": "Request for quotation",
+   "column": "status",
+   "initial": "open",
+   "free": true,
+   "states": [
+    "open",
+    "quoted",
+    "accepted",
+    "rejected",
+    "closed"
+   ],
+   "meta": {
+    "open": {
+     "tags": [
+      "unquoted"
+     ]
+    },
+    "quoted": {
+     "tags": [
+      "quoted"
+     ]
+    },
+    "accepted": {
+     "tags": [
+      "terminal",
+      "closed",
+      "awarded"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "terminal",
+      "closed"
+     ]
+    },
+    "closed": {
+     "tags": [
+      "terminal",
+      "closed"
+     ]
+    }
+   }
+  },
+  {
+   "key": "rfq_quote",
+   "name": "RFQ quote",
+   "column": "status",
+   "initial": "submitted",
+   "free": true,
+   "states": "list:b2bQuoteStatuses",
+   "meta": {
+    "submitted": {
+     "tags": [
+      "competing"
+     ]
+    },
+    "accepted": {
+     "tags": [
+      "terminal",
+      "awarded"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "terminal",
+      "lost"
+     ]
+    }
+   }
+  },
+  {
+   "key": "tender",
+   "name": "Tender",
+   "column": "status",
+   "initial": "open",
+   "free": true,
+   "states": "list:tenderStatuses",
+   "meta": {
+    "awarded": {
+     "tags": [
+      "terminal",
+      "awarded"
+     ]
+    }
+   }
+  },
+  {
+   "key": "tender_bid",
+   "name": "Tender bid",
+   "column": "status",
+   "initial": "submitted",
+   "free": true,
+   "states": "list:b2bBidStatuses",
+   "meta": {
+    "submitted": {
+     "tags": [
+      "competing"
+     ]
+    },
+    "awarded": {
+     "tags": [
+      "terminal",
+      "awarded"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "terminal",
+      "lost"
+     ]
+    }
+   }
+  },
+  {
+   "key": "verification",
+   "name": "Supplier verification",
+   "column": "verification_status",
+   "initial": "pending",
+   "free": true,
+   "states": "list:b2bVerificationStatuses",
+   "meta": {
+    "approved": {
+     "tags": [
+      "passed"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "failed"
+     ]
+    }
+   }
+  },
+  {
+   "key": "supplier",
+   "name": "Supplier",
+   "column": "status",
+   "initial": "trial",
+   "free": true,
+   "states": "list:supplierStatuses",
+   "meta": {
+    "active": {
+     "tags": [
+      "trusted"
+     ]
+    }
+   }
+  },
+  {
+   "key": "gold_membership",
+   "name": "Gold supplier membership",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": [
+    "active",
+    "expired",
+    "cancelled"
+   ],
+   "meta": {
+    "active": {
+     "tags": [
+      "current"
+     ]
+    }
+   }
+  },
+  {
+   "key": "price_list",
+   "name": "Price list",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": [
+    "active",
+    "inactive"
+   ],
+   "meta": {
+    "active": {
+     "tags": [
+      "live"
+     ]
+    }
+   }
+  },
+  {
+   "key": "shipment",
+   "name": "Shipment",
+   "column": "status",
+   "initial": "pending",
+   "free": true,
+   "states": "list:logisticsStates",
+   "meta": {
+    "dispatched": {
+     "tags": [
+      "handed_over"
+     ],
+     "stamps": [
+      "dispatched_at"
+     ]
+    },
+    "delivered": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      "delivered_at"
+     ]
+    },
+    "failed": {
+     "tags": [
+      "terminal",
+      "failure"
+     ]
+    }
+   },
+   "on": {
+    "*>dispatched": [
+     {
+      "run": "push_3pl"
+     }
+    ]
+   }
+  },
+  {
+   "key": "experiment",
+   "name": "Experiment",
+   "column": "status",
+   "initial": "draft",
+   "free": true,
+   "clock": "iso",
+   "states": "list:expStatuses",
+   "meta": {
+    "running": {
+     "tags": [
+      "live"
+     ],
+     "stamps": [
+      {
+       "col": "started_at",
+       "once": true
+      }
+     ]
+    },
+    "completed": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "ended_at",
+       "once": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "ticket",
+   "name": "Support ticket",
+   "column": "status",
+   "initial": "new",
+   "free": true,
+   "states": "list:hdStatuses",
+   "meta": {
+    "open": {
+     "stamps": [
+      {
+       "col": "first_response_at",
+       "once": true
+      }
+     ],
+     "tags": [
+      "working"
+     ]
+    },
+    "pending": {
+     "stamps": [
+      {
+       "col": "first_response_at",
+       "once": true
+      }
+     ],
+     "tags": [
+      "awaiting"
+     ]
+    },
+    "resolved": {
+     "tags": [
+      "resolved"
+     ],
+     "stamps": [
+      {
+       "col": "first_response_at",
+       "once": true
+      },
+      {
+       "col": "resolved_at",
+       "once": true
+      }
+     ]
+    },
+    "closed": {
+     "tags": [
+      "resolved",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "first_response_at",
+       "once": true
+      },
+      {
+       "col": "resolved_at",
+       "once": true
+      }
+     ]
+    },
+    "new": {
+     "tags": [
+      "unanswered"
+     ]
+    }
+   }
+  },
+  {
+   "key": "agent",
+   "name": "Support agent",
+   "column": "status",
+   "initial": "offline",
+   "free": true,
+   "states": [
+    "online",
+    "busy",
+    "away",
+    "offline"
+   ]
+  },
+  {
+   "key": "control",
+   "name": "Compliance control",
+   "column": "status",
+   "initial": "pending_evidence",
+   "free": true,
+   "states": [
+    "satisfied",
+    "partial",
+    "pending_evidence",
+    "violated",
+    "not_applicable"
+   ],
+   "meta": {
+    "satisfied": {
+     "tags": [
+      "met"
+     ]
+    },
+    "partial": {
+     "tags": [
+      "incomplete",
+      "verdict_partial"
+     ]
+    },
+    "pending_evidence": {
+     "tags": [
+      "incomplete"
+     ]
+    },
+    "violated": {
+     "tags": [
+      "violation"
+     ]
+    },
+    "not_applicable": {
+     "tags": [
+      "exempt"
+     ]
+    }
+   }
+  },
+  {
+   "key": "consent",
+   "name": "Consent",
+   "column": "status",
+   "initial": "pending",
+   "free": true,
+   "clock": "iso",
+   "states": [
+    "pending",
+    "granted",
+    "withdrawn",
+    "denied"
+   ],
+   "meta": {
+    "granted": {
+     "tags": [
+      "live"
+     ]
+    },
+    "withdrawn": {
+     "tags": [
+      "withdrawal",
+      "revoked"
+     ]
+    },
+    "denied": {
+     "tags": [
+      "revoked"
+     ]
+    }
+   }
+  },
+  {
+   "key": "privacy_request",
+   "name": "Data-subject request",
+   "column": "status",
+   "initial": "received",
+   "clock": "iso",
+   "states": "list:privacyRequestStates",
+   "transitions": {
+    "received": [
+     "verified",
+     "rejected"
+    ],
+    "verified": [
+     "verified",
+     "in_progress",
+     "fulfilled",
+     "rejected",
+     "closed"
+    ],
+    "in_progress": [
+     "in_progress",
+     "fulfilled",
+     "rejected",
+     "closed"
+    ],
+    "rejected": [
+     "rejected",
+     "closed"
+    ]
+   },
+   "meta": {
+    "fulfilled": {
+     "tags": [
+      "terminal",
+      "done"
+     ],
+     "stamps": [
+      "fulfilled_at"
+     ]
+    },
+    "closed": {
+     "tags": [
+      "terminal",
+      "done"
+     ],
+     "stamps": [
+      "fulfilled_at"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "refused"
+     ]
+    }
+   },
+   "on": {
+    "*>fulfilled": [
+     {
+      "run": "execute_kind"
+     }
+    ]
+   }
+  },
+  {
+   "key": "goip_settlement",
+   "name": "Offer settlement",
+   "column": "status",
+   "initial": "accrued",
+   "free": true,
+   "states": "list:goipSettlementStatuses",
+   "meta": {
+    "accrued": {
+     "tags": [
+      "open",
+      "approvable",
+      "accruing"
+     ],
+     "label": "accrued",
+     "tone": "processing"
+    },
+    "approved": {
+     "tags": [
+      "open",
+      "approved"
+     ]
+    },
+    "paid": {
+     "tags": [
+      "paid_out",
+      "reconcilable"
+     ],
+     "stamps": [
+      "paid_at"
+     ]
+    },
+    "reconciled": {
+     "tags": [
+      "paid_out",
+      "terminal",
+      "reconciled"
+     ]
+    },
+    "reversed": {
+     "tags": [
+      "reversal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "entitlement",
+   "name": "Entitlement",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": "list:goipEntitlementStatuses",
+   "meta": {
+    "active": {
+     "tags": [
+      "live"
+     ]
+    },
+    "consumed": {
+     "tags": [
+      "used",
+      "terminal"
+     ]
+    },
+    "revoked": {
+     "tags": [
+      "revoked",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "goip_budget",
+   "name": "Offer budget",
+   "column": "status",
+   "initial": "open",
+   "free": true,
+   "states": [
+    "open",
+    "exhausted",
+    "closed"
+   ],
+   "meta": {
+    "open": {
+     "tags": [
+      "available"
+     ]
+    },
+    "exhausted": {
+     "tags": [
+      "spent"
+     ]
+    }
+   }
+  },
+  {
+   "key": "redemption",
+   "name": "Coupon redemption",
+   "column": "status",
+   "initial": "redeemed",
+   "free": true,
+   "states": "list:redemptionStatuses",
+   "meta": {
+    "redeemed": {
+     "tags": [
+      "counted"
+     ]
+    },
+    "voided": {
+     "tags": [
+      "void",
+      "terminal"
+     ]
+    },
+    "reserved": {
+     "tags": [
+      "held"
+     ]
+    }
+   }
+  },
+  {
+   "key": "offer",
+   "name": "Offer",
+   "column": "status",
+   "initial": "draft",
+   "free": true,
+   "states": "list:offerStatuses",
+   "meta": {
+    "active": {
+     "tags": [
+      "live"
+     ]
+    },
+    "inactive": {
+     "tags": [
+      "off"
+     ]
+    }
+   }
+  },
+  {
+   "key": "offer_governance",
+   "name": "Offer governance",
+   "column": "state",
+   "initial": "draft",
+   "states": "list:goipGovernanceStates",
+   "transitions": "list:goipGovernanceTransitions",
+   "actions": {
+    "submit": "submitted",
+    "approve": "approved",
+    "reject": "rejected",
+    "certify": "certified",
+    "publish": "published",
+    "suspend": "suspended",
+    "retire": "retired",
+    "reopen": "draft"
+   },
+   "meta": {
+    "approved": {
+     "tags": [
+      "in_force"
+     ]
+    },
+    "certified": {
+     "tags": [
+      "in_force"
+     ]
+    },
+    "published": {
+     "tags": [
+      "in_force",
+      "publishes"
+     ]
+    },
+    "suspended": {
+     "tags": [
+      "withdraws"
+     ]
+    },
+    "retired": {
+     "tags": [
+      "withdraws",
+      "retired"
+     ]
+    }
+   }
+  },
+  {
+   "key": "seller_onboarding",
+   "name": "Seller application",
+   "column": "status",
+   "initial": "submitted",
+   "free": true,
+   "states": "list:mktOnboardingStatuses",
+   "meta": {
+    "approved": {
+     "tags": [
+      "approved",
+      "decision"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "decision",
+      "rejected"
+     ]
+    },
+    "documents_pending": {
+     "tags": [
+      "decision"
+     ]
+    },
+    "verification": {
+     "tags": [
+      "decision"
+     ]
+    },
+    "submitted": {
+     "tags": [
+      "awaiting_review"
+     ]
+    }
+   }
+  },
+  {
+   "key": "seller_offer",
+   "name": "Seller offer",
+   "column": "offer_status",
+   "initial": "active",
+   "free": true,
+   "states": "list:mktOfferStatuses",
+   "meta": {
+    "active": {
+     "tags": [
+      "live"
+     ]
+    },
+    "suspended": {
+     "tags": [
+      "health_suspended"
+     ]
+    }
+   }
+  },
+  {
+   "key": "fba_inbound",
+   "name": "Inbound shipment",
+   "column": "status",
+   "initial": "created",
+   "free": true,
+   "states": "list:mktFbaStatuses",
+   "meta": {
+    "created": {
+     "tags": [
+      "receivable"
+     ]
+    },
+    "in_transit": {
+     "tags": [
+      "receivable"
+     ]
+    },
+    "receiving": {
+     "tags": [
+      "receivable"
+     ]
+    },
+    "received": {
+     "tags": [
+      "received"
+     ],
+     "stamps": [
+      "received_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "buyer_claim",
+   "name": "Buyer protection claim",
+   "column": "status",
+   "initial": "opened",
+   "free": true,
+   "states": "list:mktClaimStatuses",
+   "meta": {
+    "resolved_buyer": {
+     "tags": [
+      "resolution",
+      "resolution:buyer",
+      "refunds_buyer"
+     ]
+    },
+    "resolved_seller": {
+     "tags": [
+      "resolution",
+      "resolution:seller"
+     ]
+    }
+   }
+  },
+  {
+   "key": "smart_fulfilment",
+   "name": "Smart fulfilment enrolment",
+   "column": "status",
+   "initial": "enrolled",
+   "free": true,
+   "states": "list:mktSmartStatuses",
+   "meta": {}
+  },
+  {
+   "key": "foundation",
+   "name": "UCOS foundation",
+   "column": "lifecycle",
+   "initial": "proposed",
+   "free": true,
+   "states": [
+    "proposed",
+    "drafted",
+    "reviewed",
+    "certified",
+    "canonical",
+    "deprecated",
+    "retired"
+   ],
+   "meta": {
+    "proposed": {
+     "tags": [
+      "draft"
+     ]
+    },
+    "drafted": {
+     "tags": [
+      "draft"
+     ]
+    },
+    "reviewed": {
+     "tags": [
+      "draft"
+     ]
+    },
+    "canonical": {
+     "tags": [
+      "canonical"
+     ]
+    },
+    "deprecated": {
+     "tags": [
+      "deprecated",
+      "winding_down"
+     ]
+    },
+    "retired": {
+     "tags": [
+      "retired",
+      "winding_down",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "subscription_schedule",
+   "name": "Subscribe & Save schedule",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": "list:recSchedStatuses",
+   "actions": {
+    "pause": "paused",
+    "resume": "active",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "active": {
+     "tags": [
+      "live",
+      "can:skip",
+      "can:pause",
+      "can:cancel"
+     ]
+    },
+    "paused": {
+     "tags": [
+      "on_hold",
+      "can:resume",
+      "can:cancel"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "ended",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "subscription_cycle",
+   "name": "Subscription cycle",
+   "column": "status",
+   "initial": "scheduled",
+   "free": true,
+   "states": "list:recCycleStatuses",
+   "meta": {
+    "scheduled": {
+     "tags": [
+      "pending_ship"
+     ]
+    },
+    "skipped": {
+     "tags": [
+      "skipped"
+     ]
+    },
+    "shipped": {
+     "tags": [
+      "dispatched"
+     ]
+    }
+   }
+  },
+  {
+   "key": "membership",
+   "name": "Membership",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": "list:membershipStatuses",
+   "meta": {
+    "active": {
+     "tags": [
+      "live"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "ended",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "webhook_delivery",
+   "name": "Webhook delivery",
+   "column": "status",
+   "initial": "queued",
+   "free": true,
+   "states": [
+    "queued",
+    "in_flight",
+    "delivered",
+    "failed",
+    "skipped"
+   ],
+   "meta": {
+    "queued": {
+     "tags": [
+      "due"
+     ],
+     "tone": "processing"
+    },
+    "in_flight": {
+     "tags": [
+      "sending"
+     ],
+     "tone": "processing"
+    },
+    "delivered": {
+     "tags": [
+      "success"
+     ],
+     "tone": "published"
+    },
+    "failed": {
+     "tags": [
+      "failure",
+      "due"
+     ],
+     "tone": "failed"
+    },
+    "skipped": {
+     "tags": [
+      "terminal"
+     ],
+     "tone": "processing"
+    }
+   }
+  },
+  {
+   "key": "plan_subscription",
+   "name": "Platform plan subscription",
+   "column": "status",
+   "initial": "trialing",
+   "free": true,
+   "states": [
+    "trialing",
+    "active",
+    "past_due",
+    "cancelled"
+   ],
+   "meta": {
+    "trialing": {
+     "tags": [
+      "current",
+      "trial"
+     ]
+    },
+    "active": {
+     "tags": [
+      "current",
+      "paying"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "module",
+   "name": "Marketplace module",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": [
+    "active",
+    "inactive"
+   ],
+   "meta": {
+    "active": {
+     "tags": [
+      "listed"
+     ]
+    }
+   }
+  },
+  {
+   "key": "promotion",
+   "name": "Promotion",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": [
+    "active",
+    "inactive"
+   ],
+   "meta": {
+    "active": {
+     "tags": [
+      "running"
+     ]
+    }
+   }
+  },
+  {
+   "key": "contract",
+   "name": "B2B contract",
+   "column": "status",
+   "initial": "draft",
+   "free": true,
+   "states": "list:contractStatuses",
+   "meta": {
+    "active": {
+     "tags": [
+      "in_force"
+     ]
+    }
+   }
+  },
+  {
+   "key": "ad",
+   "name": "Sponsored ad",
+   "column": "status",
+   "initial": "active",
+   "free": true,
+   "states": [
+    "draft",
+    "in_review",
+    "approved",
+    "rejected",
+    "live",
+    "active",
+    "paused",
+    "completed"
+   ],
+   "meta": {
+    "live": {
+     "tags": [
+      "serving"
+     ]
+    },
+    "active": {
+     "tags": [
+      "serving"
+     ]
+    },
+    "completed": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "product_watch",
+   "name": "Product watch",
+   "column": "status",
+   "initial": "active",
+   "states": "list:watchStatuses",
+   "transitions": {
+    "active": [
+     "fired",
+     "cancelled"
+    ],
+    "fired": [
+     "active",
+     "cancelled"
+    ]
+   },
+   "actions": {
+    "cancel": "cancelled",
+    "rearm": "active"
+   },
+   "meta": {
+    "active": {
+     "tags": [
+      "watching",
+      "live"
+     ]
+    },
+    "fired": {
+     "tags": [
+      "fired",
+      "ended"
+     ],
+     "stamps": [
+      {
+       "col": "fired_at"
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "ended",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "pickup",
+   "name": "Pickup reservation",
+   "column": "status",
+   "initial": "reserved",
+   "states": "list:pickupStatuses",
+   "transitions": {
+    "reserved": [
+     "ready",
+     "cancelled"
+    ],
+    "ready": [
+     "collected",
+     "expired",
+     "cancelled"
+    ],
+    "expired": [
+     "returned"
+    ]
+   },
+   "actions": {
+    "arrive": "ready",
+    "collect": "collected",
+    "expire": "expired",
+    "return": "returned",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "reserved": {
+     "tags": [
+      "holding",
+      "awaiting_parcel",
+      "cancellable"
+     ]
+    },
+    "ready": {
+     "tags": [
+      "holding",
+      "collectable",
+      "expirable",
+      "cancellable"
+     ],
+     "stamps": [
+      {
+       "col": "ready_at",
+       "once": true
+      }
+     ]
+    },
+    "collected": {
+     "tags": [
+      "success",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "collected_at",
+       "once": true
+      },
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "expired": {
+     "tags": [
+      "failure",
+      "returnable"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "returned": {
+     "tags": [
+      "terminal"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "void",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "rich_content",
+   "name": "Rich product content",
+   "column": "status",
+   "initial": "draft",
+   "states": "list:richContentStatuses",
+   "transitions": {
+    "draft": [
+     "submitted",
+     "approved"
+    ],
+    "submitted": [
+     "approved",
+     "rejected"
+    ],
+    "rejected": [
+     "submitted",
+     "approved"
+    ],
+    "approved": [
+     "retired"
+    ]
+   },
+   "actions": {
+    "submit": "submitted",
+    "approve": "approved",
+    "reject": "rejected",
+    "retire": "retired"
+   },
+   "meta": {
+    "draft": {
+     "tags": [
+      "editable"
+     ]
+    },
+    "submitted": {
+     "tags": [
+      "in_review"
+     ],
+     "stamps": [
+      {
+       "col": "submitted_at"
+      }
+     ]
+    },
+    "approved": {
+     "tags": [
+      "live",
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "editable",
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    },
+    "retired": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "brand_claim",
+   "name": "Brand registry claim",
+   "column": "status",
+   "initial": "submitted",
+   "states": "list:brandClaimStatuses",
+   "transitions": {
+    "submitted": [
+     "approved",
+     "rejected"
+    ],
+    "rejected": [
+     "submitted"
+    ],
+    "approved": [
+     "revoked"
+    ]
+   },
+   "actions": {
+    "approve": "approved",
+    "reject": "rejected",
+    "resubmit": "submitted",
+    "revoke": "revoked"
+   },
+   "meta": {
+    "submitted": {
+     "tags": [
+      "in_review",
+      "pending"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "owner",
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    },
+    "revoked": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "brand_report",
+   "name": "Brand infringement report",
+   "column": "status",
+   "initial": "open",
+   "states": "list:brandReportStatuses",
+   "transitions": {
+    "open": [
+     "actioned",
+     "dismissed"
+    ]
+   },
+   "actions": {
+    "uphold": "actioned",
+    "dismiss": "dismissed"
+   },
+   "meta": {
+    "open": {
+     "tags": [
+      "in_review"
+     ]
+    },
+    "actioned": {
+     "tags": [
+      "upheld",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    },
+    "dismissed": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "reviewed_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "booking",
+   "name": "Booking",
+   "column": "status",
+   "initial": "held",
+   "states": "list:bookingStatuses",
+   "transitions": {
+    "held": [
+     "confirmed",
+     "cancelled",
+     "expired"
+    ],
+    "confirmed": [
+     "checked_in",
+     "completed",
+     "cancelled",
+     "no_show"
+    ],
+    "checked_in": [
+     "completed"
+    ]
+   },
+   "actions": {
+    "confirm": "confirmed",
+    "check_in": "checked_in",
+    "complete": "completed",
+    "cancel": "cancelled",
+    "no_show": "no_show",
+    "expire": "expired"
+   },
+   "meta": {
+    "held": {
+     "tags": [
+      "holding",
+      "occupies",
+      "cancellable",
+      "expirable"
+     ]
+    },
+    "confirmed": {
+     "tags": [
+      "occupies",
+      "cancellable",
+      "attendable"
+     ],
+     "stamps": [
+      {
+       "col": "confirmed_at",
+       "once": true
+      }
+     ]
+    },
+    "checked_in": {
+     "tags": [
+      "occupies"
+     ]
+    },
+    "completed": {
+     "tags": [
+      "success",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "void",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "no_show": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "expired": {
+     "tags": [
+      "void",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "price_offer",
+   "name": "Price offer",
+   "column": "status",
+   "initial": "open",
+   "states": "list:priceOfferStatuses",
+   "transitions": {
+    "open": [
+     "countered",
+     "accepted",
+     "refused",
+     "withdrawn",
+     "expired"
+    ],
+    "countered": [
+     "open",
+     "accepted",
+     "refused",
+     "withdrawn",
+     "expired"
+    ],
+    "accepted": [
+     "used",
+     "expired"
+    ]
+   },
+   "actions": {
+    "counter": "countered",
+    "rebid": "open",
+    "accept": "accepted",
+    "refuse": "refused",
+    "withdraw": "withdrawn",
+    "expire": "expired",
+    "use": "used"
+   },
+   "meta": {
+    "open": {
+     "tags": [
+      "live",
+      "awaiting_seller"
+     ]
+    },
+    "countered": {
+     "tags": [
+      "live",
+      "awaiting_buyer"
+     ]
+    },
+    "accepted": {
+     "tags": [
+      "live",
+      "agreed"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "refused": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "withdrawn": {
+     "tags": [
+      "terminal"
+     ]
+    },
+    "expired": {
+     "tags": [
+      "terminal"
+     ]
+    },
+    "used": {
+     "tags": [
+      "terminal",
+      "success"
+     ]
+    }
+   }
+  },
+  {
+   "key": "auction",
+   "name": "Auction",
+   "column": "status",
+   "initial": "scheduled",
+   "states": "list:auctionStatuses",
+   "transitions": {
+    "scheduled": [
+     "live",
+     "cancelled"
+    ],
+    "live": [
+     "sold",
+     "unsold",
+     "cancelled"
+    ],
+    "sold": [
+     "paid",
+     "unsold"
+    ]
+   },
+   "actions": {
+    "open": "live",
+    "sell": "sold",
+    "close_unsold": "unsold",
+    "cancel": "cancelled",
+    "pay": "paid"
+   },
+   "meta": {
+    "scheduled": {
+     "tags": [
+      "upcoming"
+     ]
+    },
+    "live": {
+     "tags": [
+      "accepting_bids"
+     ]
+    },
+    "sold": {
+     "tags": [
+      "won",
+      "awaiting_payment"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "unsold": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at",
+       "once": true
+      }
+     ]
+    },
+    "paid": {
+     "tags": [
+      "terminal",
+      "success"
+     ]
+    }
+   }
+  },
+  {
+   "key": "listing",
+   "name": "Peer listing",
+   "column": "status",
+   "initial": "draft",
+   "states": "list:listingStatuses",
+   "transitions": {
+    "draft": [
+     "submitted",
+     "live",
+     "withdrawn"
+    ],
+    "submitted": [
+     "live",
+     "rejected",
+     "withdrawn"
+    ],
+    "rejected": [
+     "submitted",
+     "draft",
+     "withdrawn"
+    ],
+    "live": [
+     "sold",
+     "withdrawn",
+     "submitted"
+    ],
+    "withdrawn": [
+     "draft"
+    ]
+   },
+   "actions": {
+    "submit": "submitted",
+    "approve": "live",
+    "publish": "live",
+    "reject": "rejected",
+    "withdraw": "withdrawn",
+    "reopen": "draft",
+    "sell_out": "sold"
+   },
+   "meta": {
+    "draft": {
+     "tags": [
+      "editable"
+     ]
+    },
+    "submitted": {
+     "tags": [
+      "in_review"
+     ]
+    },
+    "live": {
+     "tags": [
+      "on_sale"
+     ],
+     "stamps": [
+      {
+       "col": "published_at"
+      }
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "editable",
+      "decision"
+     ]
+    },
+    "withdrawn": {
+     "tags": [
+      "off_sale"
+     ]
+    },
+    "sold": {
+     "tags": [
+      "terminal",
+      "success"
+     ]
+    }
+   }
+  },
+  {
+   "key": "peer_earning",
+   "name": "Seller earning",
+   "column": "status",
+   "initial": "pending",
+   "states": "list:earningStatuses",
+   "transitions": {
+    "pending": [
+     "credited",
+     "void"
+    ]
+   },
+   "actions": {
+    "credit": "credited",
+    "void": "void"
+   },
+   "meta": {
+    "pending": {
+     "tags": [
+      "held"
+     ]
+    },
+    "credited": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "credited_at"
+      }
+     ]
+    },
+    "void": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "conversation",
+   "name": "Conversation",
+   "column": "status",
+   "initial": "open",
+   "states": "list:conversationStatuses",
+   "transitions": {
+    "open": [
+     "closed",
+     "flagged"
+    ],
+    "flagged": [
+     "open",
+     "closed"
+    ],
+    "closed": [
+     "open"
+    ]
+   },
+   "actions": {
+    "close": "closed",
+    "flag": "flagged",
+    "reopen": "open"
+   },
+   "meta": {
+    "open": {
+     "tags": [
+      "writable"
+     ]
+    },
+    "flagged": {
+     "tags": [
+      "writable",
+      "needs_review"
+     ]
+    },
+    "closed": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "group_campaign",
+   "name": "Group-buy campaign",
+   "column": "status",
+   "initial": "open",
+   "states": "list:groupCampaignStatuses",
+   "transitions": {
+    "open": [
+     "succeeded",
+     "failed",
+     "cancelled"
+    ]
+   },
+   "actions": {
+    "succeed": "succeeded",
+    "fail": "failed",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "open": {
+     "tags": [
+      "joinable"
+     ]
+    },
+    "succeeded": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at"
+      }
+     ]
+    },
+    "failed": {
+     "tags": [
+      "terminal",
+      "refunds_members"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at"
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal",
+      "refunds_members"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "substitution",
+   "name": "Substitution",
+   "column": "status",
+   "initial": "proposed",
+   "states": "list:substitutionStatuses",
+   "transitions": {
+    "proposed": [
+     "applied",
+     "rejected",
+     "refunded"
+    ],
+    "rejected": [
+     "refunded"
+    ]
+   },
+   "actions": {
+    "apply": "applied",
+    "reject": "rejected",
+    "refund": "refunded"
+   },
+   "meta": {
+    "proposed": {
+     "tags": [
+      "awaiting_shopper"
+     ]
+    },
+    "applied": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "refunded": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "contribution",
+   "name": "Contribution to the platform master",
+   "column": "status",
+   "initial": "proposed",
+   "states": "list:contributionStatuses",
+   "transitions": {
+    "proposed": [
+     "approved",
+     "rejected",
+     "withdrawn"
+    ]
+   },
+   "actions": {
+    "approve": "approved",
+    "reject": "rejected",
+    "withdraw": "withdrawn"
+   },
+   "meta": {
+    "proposed": {
+     "tags": [
+      "awaiting_review"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "terminal",
+      "success"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "terminal",
+      "decision"
+     ]
+    },
+    "withdrawn": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "case",
+   "name": "A case a store decides",
+   "column": "status",
+   "initial": "submitted",
+   "states": "list:caseStatuses",
+   "transitions": {
+    "submitted": [
+     "in_review",
+     "approved",
+     "rejected",
+     "withdrawn"
+    ],
+    "in_review": [
+     "approved",
+     "rejected",
+     "withdrawn"
+    ]
+   },
+   "actions": {
+    "review": "in_review",
+    "approve": "approved",
+    "reject": "rejected",
+    "withdraw": "withdrawn"
+   },
+   "meta": {
+    "submitted": {
+     "tags": [
+      "open"
+     ]
+    },
+    "in_review": {
+     "tags": [
+      "open"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "terminal",
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "withdrawn": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "enquiry",
+   "name": "An enquiry a seller follows up",
+   "column": "status",
+   "initial": "new",
+   "states": "list:leadStatuses",
+   "transitions": {
+    "new": [
+     "contacted",
+     "won",
+     "lost",
+     "withdrawn"
+    ],
+    "contacted": [
+     "won",
+     "lost"
+    ]
+   },
+   "actions": {
+    "contact": "contacted",
+    "win": "won",
+    "lose": "lost",
+    "withdraw": "withdrawn"
+   },
+   "meta": {
+    "new": {
+     "tags": [
+      "open"
+     ]
+    },
+    "contacted": {
+     "tags": [
+      "open"
+     ]
+    },
+    "won": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "lost": {
+     "tags": [
+      "terminal",
+      "decision"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "withdrawn": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "media_session",
+   "name": "A live audio or video session",
+   "column": "status",
+   "initial": "scheduled",
+   "states": "list:mediaSessionStatuses",
+   "transitions": {
+    "scheduled": [
+     "live",
+     "missed",
+     "cancelled"
+    ],
+    "live": [
+     "ended"
+    ]
+   },
+   "actions": {
+    "start": "live",
+    "end": "ended",
+    "miss": "missed",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "scheduled": {
+     "tags": [
+      "upcoming"
+     ]
+    },
+    "live": {
+     "tags": [
+      "live"
+     ]
+    },
+    "ended": {
+     "tags": [
+      "terminal",
+      "success"
+     ]
+    },
+    "missed": {
+     "tags": [
+      "terminal"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "trial",
+   "name": "An item tried before buying",
+   "column": "status",
+   "initial": "on_trial",
+   "states": "list:trialStatuses",
+   "transitions": {
+    "on_trial": [
+     "kept",
+     "returned",
+     "lapsed"
+    ]
+   },
+   "actions": {
+    "keep": "kept",
+    "return": "returned",
+    "lapse": "lapsed"
+   },
+   "meta": {
+    "on_trial": {
+     "tags": [
+      "open"
+     ]
+    },
+    "kept": {
+     "tags": [
+      "terminal",
+      "kept",
+      "success",
+      "by_shopper"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "lapsed": {
+     "tags": [
+      "terminal",
+      "kept"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "returned": {
+     "tags": [
+      "terminal",
+      "returned",
+      "by_shopper"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "deliverable",
+   "name": "What an order hands the shopper",
+   "column": "status",
+   "initial": "awaited",
+   "states": "list:deliverableStatuses",
+   "transitions": {
+    "awaited": [
+     "delivered",
+     "revoked"
+    ],
+    "delivered": [
+     "revoked"
+    ]
+   },
+   "actions": {
+    "deliver": "delivered",
+    "revoke": "revoked"
+   },
+   "meta": {
+    "awaited": {
+     "tags": [
+      "open"
+     ]
+    },
+    "delivered": {
+     "tags": [
+      "delivered",
+      "success"
+     ]
+    },
+    "revoked": {
+     "tags": [
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "service_visit",
+   "name": "A visit a chosen service leaves to book (installation, assembly)",
+   "column": "status",
+   "initial": "to_schedule",
+   "states": "list:serviceVisitStatuses",
+   "transitions": {
+    "to_schedule": [
+     "scheduled",
+     "cancelled"
+    ],
+    "scheduled": [
+     "scheduled",
+     "done",
+     "cancelled"
+    ]
+   },
+   "actions": {
+    "schedule": "scheduled",
+    "complete": "done",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "to_schedule": {
+     "tags": [
+      "to_do"
+     ]
+    },
+    "scheduled": {
+     "tags": [
+      "to_do",
+      "booked"
+     ],
+     "asks": {
+      "field": "scheduled_for",
+      "label": "When is the visit? (YYYY-MM-DD HH:MM, UTC)"
+     }
+    },
+    "done": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "cover_plan",
+   "name": "A plan in force for the months its value declares (an extended warranty)",
+   "column": "status",
+   "initial": "in_force",
+   "states": "list:coverPlanStatuses",
+   "transitions": {
+    "in_force": [
+     "ended",
+     "cancelled"
+    ]
+   },
+   "actions": {
+    "end": "ended",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "in_force": {
+     "tags": [
+      "in_force"
+     ]
+    },
+    "ended": {
+     "tags": [
+      "terminal",
+      "success",
+      "lapsed"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "artwork_proof",
+   "name": "The shopper's artwork, proofed before making",
+   "column": "status",
+   "initial": "awaiting_proof",
+   "states": "list:artworkProofStatuses",
+   "transitions": {
+    "awaiting_proof": [
+     "proof_sent",
+     "cancelled"
+    ],
+    "proof_sent": [
+     "approved",
+     "awaiting_proof",
+     "cancelled"
+    ]
+   },
+   "actions": {
+    "send_proof": "proof_sent",
+    "approve": "approved",
+    "request_changes": "awaiting_proof",
+    "cancel": "cancelled"
+   },
+   "meta": {
+    "awaiting_proof": {
+     "tags": [
+      "to_do"
+     ],
+     "asks": {
+      "field": "note",
+      "label": "What should change?"
+     }
+    },
+    "proof_sent": {
+     "tags": [
+      "awaiting_shopper"
+     ],
+     "asks": {
+      "field": "proof_url",
+      "label": "A link to the proof"
+     }
+    },
+    "approved": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "wallet",
+   "name": "A wallet's life",
+   "column": "status",
+   "initial": "active",
+   "states": "list:walletStatuses",
+   "transitions": {
+    "active": [
+     "restricted",
+     "suspended",
+     "closed"
+    ],
+    "restricted": [
+     "active",
+     "suspended",
+     "closed"
+    ],
+    "suspended": [
+     "active",
+     "restricted",
+     "closed"
+    ]
+   },
+   "actions": {
+    "reactivate": "active",
+    "restrict": "restricted",
+    "suspend": "suspended",
+    "close": "closed"
+   },
+   "meta": {
+    "active": {
+     "tags": [
+      "operates",
+      "receives"
+     ]
+    },
+    "restricted": {
+     "tags": [
+      "receives"
+     ],
+     "label": "Restricted — may only receive"
+    },
+    "suspended": {
+     "tags": [
+      "blocked"
+     ]
+    },
+    "closed": {
+     "tags": [
+      "closed",
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "closed_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "wallet_hold",
+   "name": "Value a wallet keeps for a purpose",
+   "column": "status",
+   "initial": "active",
+   "states": "list:walletHoldStatuses",
+   "transitions": {
+    "active": [
+     "spent",
+     "partly_spent",
+     "released",
+     "expired"
+    ],
+    "partly_spent": [
+     "spent",
+     "partly_spent",
+     "released",
+     "expired"
+    ]
+   },
+   "actions": {
+    "capture": "spent",
+    "capture_part": "partly_spent",
+    "release": "released",
+    "expire": "expired"
+   },
+   "meta": {
+    "active": {
+     "tags": [
+      "keeps"
+     ]
+    },
+    "partly_spent": {
+     "tags": [
+      "keeps"
+     ]
+    },
+    "spent": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "released": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "expired": {
+     "tags": [
+      "terminal",
+      "lapsed"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  }
+ ]
+}

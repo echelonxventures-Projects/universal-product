@@ -159,7 +159,8 @@ ok(zbParent && zbRoot && zbParent.parent_id === zbRoot.id, "a nested child resol
    subdivision master is EDITABLE data, not frozen seed */
 registry.reconcileSubdivisions();
 ok(db.all("SELECT COUNT(*) c FROM subdivisions WHERE country_code='ZB'")[0].c === 3, "re-reconciling a warm country adds nothing");
-db.run("UPDATE subdivisions SET name='Renamed By Operator', active=0 WHERE code='ZB-01'");
+const opEdit = entity.updateEntity(0, "subdivision", "ZB-01", { name: "Renamed By Operator", active: false });
+ok(!opEdit.error, "an operator renames and switches off a subdivision in the console", opEdit.error);
 registry.reconcileSubdivisions();
 const edit = one("SELECT name, active FROM subdivisions WHERE code='ZB-01'");
 ok(edit && edit.name === "Renamed By Operator" && edit.active === 0, "an operator's rename and deactivation survive reconciliation", edit && JSON.stringify(edit));

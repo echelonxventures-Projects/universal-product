@@ -2,15 +2,23 @@
 /* globals api, esc, $, $$, toast, money, render, P */
 "use strict";
 
-function pol_num(k, label, hint) {
-  return '<label><span>' + label + '</span><input data-pol="' + k + '" type="number" step="1" min="1" value="__V' + k + '__"><em class="p-tag">' + (hint || "") + '</em></label>';
+function pol_num(k, label, hint, min) {
+  return '<label><span>' + label + '</span><input data-pol="' + k + '" type="number" step="1" min="' + (min == null ? 1 : min) + '" value="__V' + k + '__"><em class="p-tag">' + (hint || "") + '</em></label>';
+}
+/* a choice from a live registry; `none` adds an empty option that means "nothing" */
+function pol_pick(k, label, rows, none, hint) {
+  return '<label><span>' + label + '</span><select data-pol="' + k + '">' + (none ? '<option value="">' + esc(none) + '</option>' : '')
+    + rows.map(function (r) { return '<option value="' + esc(r.key) + '">' + esc(r.name) + '</option>'; }).join("") + '</select>'
+    + (hint ? '<em class="p-tag">' + hint + '</em>' : '') + '</label>';
 }
 function pol_bool(k, label) {
   return '<label class="chk"><input type="checkbox" data-pol="' + k + '"> ' + label + '</label>';
 }
 
 async function vProvisioning() {
-  const [cfg, sc, plans] = await Promise.all([api("/platform/config"), api("/platform/security"), api("/platform/plans")]);
+  const [cfg, sc, plans, meta] = await Promise.all([api("/platform/config"), api("/platform/security"), api("/platform/plans"), api("/meta")]);
+  const prv = (meta && meta.providers) || {};
+  const asRows = function (list) { return (list || []).map(function (x) { return { key: x.id || x.key, name: (x.emoji ? x.emoji + " " : "") + (x.name || x.id) }; }); };
   P.provisioned = !!cfg.provisionedAt;
   const pol = cfg.policy;
   let h = "";
@@ -41,6 +49,7 @@ async function vProvisioning() {
     + pol_bool("hsts", "Strict-Transport-Security (when TLS)")
     + pol_bool("demoHints", "Demo account hints on login screens")
     + pol_bool("cspInlineStyles", "Allow inline style attributes in CSP (disable for strictest mode)")
+    + '<label><span>Image hosts the storefront may load (comma-separated, e.g. cdn.example.com, *.brand.com)</span><input data-pol="cspImgHosts" placeholder="none — only this platform\'s own images"></label>'
     + '<p class="p-tag">HttpOnly + SameSite cookie flags are structural and cannot be disabled.</p></div></div>';
   h += '<div class="p-panel"><h2>New-store defaults (applied at launch)</h2><div class="p-form">'
     + '<label><span>Default plan</span><select data-pol="provisioning.defaultPlanId">' + plans.plans.map(function (x) { return '<option value="' + x.id + '" ' + (pol.provisioning.defaultPlanId === x.id ? "selected" : "") + '>' + esc(x.name) + '</option>'; }).join("") + '</select></label>'
@@ -50,6 +59,22 @@ async function vProvisioning() {
     + pol_bool("provisioning.couponsAllowed", "Stores may offer promo codes to customers")
     + pol_bool("provisioning.globalOffersAllowed", "Platform global offers/coupons apply across every store")
     + pol_bool("provisioning.fiscalContextsAllowed", "Allow customer-facing fiscal context pickers (procurement portals)")
+    + '</div></div></div>';
+  /* what a store is given when its registration does not say — each a registry choice */
+  h += '<div class="p-panel"><h2>New-store starting set</h2><p class="p-tag">Used whenever a registration leaves the choice open. Every option lists the live registries, so a mode or provider added in Data Studio or the Provider Registry appears here.</p><div class="p-form">'
+    + pol_pick("provisioning.defaultCountry", "Default country", (meta.countries || []).map(function (c) { return { key: c.code, name: c.name + " (" + c.code + ")" }; }), null, "registry: countries")
+    + pol_pick("provisioning.defaultMode", "Default deploy mode", (meta.deployModes || []).map(function (m) { return { key: m.key, name: m.name || m.label || m.key }; }), null, "registry: deployModes")
+    + '<div class="row3">'
+    + pol_num("provisioning.paymentGatewaysPerStore", "Payment gateways from the store's country", "", 0)
+    + pol_pick("provisioning.cashGateway", "Cash / offline gateway", asRows(prv.payment), "None")
+    + '</div><div class="row3">'
+    + pol_num("provisioning.carriersPerStore", "Carriers from the store's country", "", 0)
+    + pol_pick("provisioning.houseShipping", "House shipping method", asRows(prv.shipping), "None")
+    + '</div><div class="row3">'
+    + pol_num("provisioning.shipDaysPriority", "Priority delivery promise (days)")
+    + pol_num("provisioning.shipDaysStandard", "Standard delivery promise (days)")
+    + pol_num("paymentReconcileMinutes", "Check pending gateway payments every (minutes, 0 = never)", "", 0)
+    + pol_num("shopperSweepMinutes", "Re-check price/stock alerts and expire uncollected pickup parcels every (minutes, 0 = never)", "", 0)
     + '</div></div></div>';
   h += '<p><button class="p-btn primary" id="polSave">Save platform policy</button></p>';
   h += '<div class="p-panel"><h2>Layer scorecard</h2><div class="p-scroll-x"><table class="p-table"><thead><tr><th>#</th><th>Layer</th><th>Status</th><th>Detail</th></tr></thead><tbody>'

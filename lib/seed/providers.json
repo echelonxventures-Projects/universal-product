@@ -1,0 +1,2251 @@
+{
+ "GATEWAY_PREFIX": {
+  "$comment": "A store's enabled provider (tenant_gateways.provider_id) is the provider's id, prefixed by its kind's entry here; a kind with no entry is unprefixed.",
+  "shipping": "ship:",
+  "notification": "notify:"
+ },
+ "PROVIDER_SPECS": {
+  "payment:stripe": {
+   "method": "POST",
+   "url": "https://api.stripe.com/v1/checkout/sessions",
+   "form": true,
+   "auth": {
+    "type": "basic",
+    "user": "{{cfg.secretKey}}",
+    "pass": ""
+   },
+   "idempotencyHeader": "Idempotency-Key",
+   "body": {
+    "mode": "payment",
+    "client_reference_id": "{{idempotency}}",
+    "success_url": "{{returnUrl}}",
+    "cancel_url": "{{cancelUrl}}",
+    "metadata[order]": "{{idempotency}}",
+    "line_items": {
+     "0": {
+      "quantity": "1",
+      "price_data": {
+       "currency": "{{currencyLower}}",
+       "unit_amount": "{{amountCents}}",
+       "product_data": {
+        "name": "Order {{idempotency}}"
+       }
+      }
+     }
+    }
+   },
+   "idPath": "id",
+   "statusPath": "payment_status",
+   "statusMap": {
+    "paid": "captured",
+    "no_payment_required": "captured",
+    "unpaid": "pending"
+   },
+   "redirectPath": "url",
+   "errorPath": "error.message",
+   "refund": {
+    "method": "POST",
+    "url": "https://api.stripe.com/v1/refunds",
+    "form": true,
+    "auth": {
+     "type": "basic",
+     "user": "{{cfg.secretKey}}",
+     "pass": ""
+    },
+    "idempotencyHeader": "Idempotency-Key",
+    "body": {
+     "payment_intent": "{{paymentId}}"
+    },
+    "idPath": "id",
+    "statusPath": "status",
+    "statusMap": {
+     "succeeded": "refunded",
+     "pending": "refund_pending",
+     "requires_action": "refund_pending",
+     "failed": "failed",
+     "canceled": "failed"
+    },
+    "errorPath": "error.message"
+   },
+   "webhook": {
+    "typePath": "type",
+    "refPath": "data.object.id",
+    "paymentIdPath": "data.object.payment_intent",
+    "amountPath": "data.object.amount_total",
+    "events": {
+     "checkout.session.completed": {
+      "statusPath": "data.object.payment_status",
+      "statusMap": {
+       "paid": "captured",
+       "no_payment_required": "captured"
+      }
+     },
+     "checkout.session.async_payment_succeeded": {
+      "status": "captured"
+     },
+     "checkout.session.async_payment_failed": {
+      "status": "failed"
+     },
+     "checkout.session.expired": {
+      "status": "failed"
+     }
+    },
+    "signature": {
+     "header": "stripe-signature",
+     "scheme": "timestamped"
+    }
+   },
+   "lookup": {
+    "method": "GET",
+    "url": "https://api.stripe.com/v1/checkout/sessions/{{ref}}",
+    "auth": {
+     "type": "basic",
+     "user": "{{cfg.secretKey}}",
+     "pass": ""
+    },
+    "statusPath": "payment_status",
+    "statusMap": {
+     "paid": "captured",
+     "no_payment_required": "captured",
+     "unpaid": "pending"
+    },
+    "failWhen": {
+     "path": "status",
+     "values": [
+      "expired"
+     ]
+    },
+    "paymentIdPath": "payment_intent",
+    "amountPath": "amount_total",
+    "errorPath": "error.message"
+   }
+  },
+  "payment:razorpay": {
+   "method": "POST",
+   "url": "https://api.razorpay.com/v1/orders",
+   "auth": {
+    "type": "basic",
+    "user": "{{cfg.keyId}}",
+    "pass": "{{cfg.keySecret}}"
+   },
+   "body": {
+    "amount": "{{amountCents}}",
+    "currency": "{{currency}}",
+    "receipt": "{{idempotency}}"
+   },
+   "idPath": "id",
+   "statusPath": "status",
+   "statusMap": {
+    "paid": "captured",
+    "created": "pending",
+    "attempted": "pending"
+   },
+   "errorPath": "error.description",
+   "webhook": {
+    "signature": {
+     "header": "x-razorpay-signature",
+     "algo": "sha256",
+     "encoding": "hex"
+    },
+    "typePath": "event",
+    "events": {
+     "order.paid": {
+      "status": "captured",
+      "refPath": "payload.order.entity.id",
+      "paymentIdPath": "payload.payment.entity.id",
+      "amountPath": "payload.order.entity.amount_paid"
+     },
+     "payment.captured": {
+      "status": "captured",
+      "refPath": "payload.payment.entity.order_id",
+      "paymentIdPath": "payload.payment.entity.id",
+      "amountPath": "payload.payment.entity.amount"
+     }
+    }
+   },
+   "lookup": {
+    "method": "GET",
+    "url": "https://api.razorpay.com/v1/orders/{{ref}}",
+    "auth": {
+     "type": "basic",
+     "user": "{{cfg.keyId}}",
+     "pass": "{{cfg.keySecret}}"
+    },
+    "statusPath": "status",
+    "statusMap": {
+     "paid": "captured",
+     "created": "pending",
+     "attempted": "pending"
+    },
+    "amountPath": "amount_paid",
+    "errorPath": "error.description"
+   }
+  },
+  "payment:paypal": {
+   "optionalCfg": [
+    "env",
+    "webhookId"
+   ],
+   "token": {
+    "url": "https://api-m.{{cfg.env}}paypal.com/v1/oauth2/token",
+    "form": true,
+    "auth": {
+     "type": "basic",
+     "user": "{{cfg.clientId}}",
+     "pass": "{{cfg.secret}}"
+    },
+    "body": {
+     "grant_type": "client_credentials"
+    },
+    "path": "access_token"
+   },
+   "method": "POST",
+   "url": "https://api-m.{{cfg.env}}paypal.com/v2/checkout/orders",
+   "auth": {
+    "type": "bearer",
+    "token": "{{token}}"
+   },
+   "idempotencyHeader": "PayPal-Request-Id",
+   "body": {
+    "intent": "CAPTURE",
+    "purchase_units": [
+     {
+      "custom_id": "{{idempotency}}",
+      "amount": {
+       "currency_code": "{{currency}}",
+       "value": "{{money}}"
+      }
+     }
+    ],
+    "application_context": {
+     "return_url": "{{returnUrl}}",
+     "cancel_url": "{{cancelUrl}}"
+    }
+   },
+   "idPath": "id",
+   "statusPath": "status",
+   "statusMap": {
+    "COMPLETED": "captured",
+    "APPROVED": "approved",
+    "CREATED": "pending",
+    "SAVED": "pending",
+    "PAYER_ACTION_REQUIRED": "pending",
+    "VOIDED": "failed"
+   },
+   "redirectFind": {
+    "path": "links",
+    "match": {
+     "rel": "approve"
+    },
+    "field": "href"
+   },
+   "errorPath": "message",
+   "webhook": {
+    "typePath": "event_type",
+    "amountUnit": "major",
+    "signature": {
+     "api": {
+      "token": {
+       "url": "https://api-m.{{cfg.env}}paypal.com/v1/oauth2/token",
+       "form": true,
+       "auth": {
+        "type": "basic",
+        "user": "{{cfg.clientId}}",
+        "pass": "{{cfg.secret}}"
+       },
+       "body": {
+        "grant_type": "client_credentials"
+       },
+       "path": "access_token"
+      },
+      "method": "POST",
+      "url": "https://api-m.{{cfg.env}}paypal.com/v1/notifications/verify-webhook-signature",
+      "auth": {
+       "type": "bearer",
+       "token": "{{token}}"
+      },
+      "body": {
+       "auth_algo": "{{headers.paypal-auth-algo}}",
+       "cert_url": "{{headers.paypal-cert-url}}",
+       "transmission_id": "{{headers.paypal-transmission-id}}",
+       "transmission_sig": "{{headers.paypal-transmission-sig}}",
+       "transmission_time": "{{headers.paypal-transmission-time}}",
+       "webhook_id": "{{cfg.webhookId}}",
+       "webhook_event": "{{event}}"
+      },
+      "okPath": "verification_status",
+      "okValue": "SUCCESS"
+     }
+    },
+    "events": {
+     "CHECKOUT.ORDER.APPROVED": {
+      "status": "approved",
+      "refPath": "resource.id"
+     },
+     "PAYMENT.CAPTURE.COMPLETED": {
+      "status": "captured",
+      "refPath": "resource.supplementary_data.related_ids.order_id",
+      "paymentIdPath": "resource.id",
+      "amountPath": "resource.amount.value"
+     },
+     "PAYMENT.CAPTURE.DENIED": {
+      "status": "failed",
+      "refPath": "resource.supplementary_data.related_ids.order_id"
+     }
+    }
+   },
+   "lookup": {
+    "token": {
+     "url": "https://api-m.{{cfg.env}}paypal.com/v1/oauth2/token",
+     "form": true,
+     "auth": {
+      "type": "basic",
+      "user": "{{cfg.clientId}}",
+      "pass": "{{cfg.secret}}"
+     },
+     "body": {
+      "grant_type": "client_credentials"
+     },
+     "path": "access_token"
+    },
+    "method": "GET",
+    "url": "https://api-m.{{cfg.env}}paypal.com/v2/checkout/orders/{{ref}}",
+    "auth": {
+     "type": "bearer",
+     "token": "{{token}}"
+    },
+    "statusPath": "status",
+    "statusMap": {
+     "COMPLETED": "captured",
+     "APPROVED": "approved",
+     "CREATED": "pending",
+     "SAVED": "pending",
+     "PAYER_ACTION_REQUIRED": "pending",
+     "VOIDED": "failed"
+    },
+    "amountPath": "purchase_units.0.amount.value",
+    "amountUnit": "major",
+    "paymentIdPath": "purchase_units.0.payments.captures.0.id",
+    "errorPath": "message"
+   },
+   "capture": {
+    "token": {
+     "url": "https://api-m.{{cfg.env}}paypal.com/v1/oauth2/token",
+     "form": true,
+     "auth": {
+      "type": "basic",
+      "user": "{{cfg.clientId}}",
+      "pass": "{{cfg.secret}}"
+     },
+     "body": {
+      "grant_type": "client_credentials"
+     },
+     "path": "access_token"
+    },
+    "method": "POST",
+    "url": "https://api-m.{{cfg.env}}paypal.com/v2/checkout/orders/{{ref}}/capture",
+    "auth": {
+     "type": "bearer",
+     "token": "{{token}}"
+    },
+    "idempotencyHeader": "PayPal-Request-Id",
+    "body": {},
+    "statusPath": "status",
+    "statusMap": {
+     "COMPLETED": "captured",
+     "APPROVED": "approved",
+     "CREATED": "pending",
+     "SAVED": "pending",
+     "PAYER_ACTION_REQUIRED": "pending",
+     "VOIDED": "failed"
+    },
+    "amountPath": "purchase_units.0.payments.captures.0.amount.value",
+    "paymentIdPath": "purchase_units.0.payments.captures.0.id",
+    "errorPath": "message"
+   }
+  },
+  "payment:square": {
+   "method": "POST",
+   "url": "https://connect.squareup.com/v2/payments",
+   "auth": {
+    "type": "bearer",
+    "token": "{{cfg.token}}"
+   },
+   "idempotencyHeader": "Idempotency-Key",
+   "body": {
+    "amount_money": {
+     "amount": "{{amountCents}}",
+     "currency": "{{currency}}"
+    },
+    "source_id": "{{cfg.sourceId}}"
+   },
+   "idPath": "payment.id",
+   "statusPath": "payment.status",
+   "statusMap": {
+    "COMPLETED": "captured",
+    "APPROVED": "pending",
+    "PENDING": "pending",
+    "FAILED": "failed",
+    "CANCELED": "failed"
+   },
+   "webhook": {
+    "signature": {
+     "header": "x-square-hmacsha256-signature",
+     "algo": "sha256",
+     "encoding": "base64",
+     "over": "url+body"
+    },
+    "typePath": "type",
+    "events": {
+     "payment.updated": {
+      "statusPath": "data.object.payment.status",
+      "statusMap": {
+       "COMPLETED": "captured",
+       "FAILED": "failed",
+       "CANCELED": "failed"
+      },
+      "refPath": "data.object.payment.id",
+      "paymentIdPath": "data.object.payment.id",
+      "amountPath": "data.object.payment.amount_money.amount"
+     }
+    }
+   },
+   "lookup": {
+    "method": "GET",
+    "url": "https://connect.squareup.com/v2/payments/{{ref}}",
+    "auth": {
+     "type": "bearer",
+     "token": "{{cfg.token}}"
+    },
+    "statusPath": "payment.status",
+    "statusMap": {
+     "COMPLETED": "captured",
+     "APPROVED": "pending",
+     "PENDING": "pending",
+     "FAILED": "failed",
+     "CANCELED": "failed"
+    },
+    "paymentIdPath": "payment.id",
+    "amountPath": "payment.amount_money.amount",
+    "errorPath": "errors.0.detail"
+   }
+  },
+  "payment:braintree": {
+   "method": "POST",
+   "url": "https://api.braintreegateway.com:443/merchants/{{cfg.merchantId}}/transactions",
+   "auth": {
+    "type": "basic",
+    "user": "{{cfg.publicKey}}",
+    "pass": "{{cfg.privateKey}}"
+   },
+   "body": {
+    "transaction": {
+     "amount": "{{money}}",
+     "order_id": "{{idempotency}}",
+     "channel": "luxe"
+    }
+   },
+   "idPath": "transaction.id",
+   "statusPath": "transaction.status",
+   "statusMap": {
+    "submitted_for_settlement": "captured",
+    "settling": "captured",
+    "settled": "captured",
+    "authorized": "pending",
+    "authorizing": "pending",
+    "settlement_pending": "pending",
+    "voided": "failed",
+    "failed": "failed",
+    "gateway_rejected": "failed",
+    "processor_declined": "failed",
+    "settlement_declined": "failed"
+   },
+   "lookup": {
+    "method": "GET",
+    "url": "https://api.braintreegateway.com:443/merchants/{{cfg.merchantId}}/transactions/{{ref}}",
+    "auth": {
+     "type": "basic",
+     "user": "{{cfg.publicKey}}",
+     "pass": "{{cfg.privateKey}}"
+    },
+    "statusPath": "transaction.status",
+    "statusMap": {
+     "submitted_for_settlement": "captured",
+     "settling": "captured",
+     "settled": "captured",
+     "authorized": "pending",
+     "authorizing": "pending",
+     "settlement_pending": "pending",
+     "voided": "failed",
+     "failed": "failed",
+     "gateway_rejected": "failed",
+     "processor_declined": "failed",
+     "settlement_declined": "failed"
+    },
+    "paymentIdPath": "transaction.id",
+    "amountPath": "transaction.amount",
+    "amountUnit": "major"
+   }
+  },
+  "shipping:house-std": {
+   "in_house": true
+  },
+  "shipping:house-exp": {
+   "in_house": true
+  },
+  "notification:log": {
+   "transport": "log"
+  },
+  "notification:smtp": {
+   "transport": "smtp"
+  },
+  "notification:resend": {
+   "method": "POST",
+   "url": "https://api.resend.com/emails",
+   "auth": {
+    "type": "bearer",
+    "token": "{{cfg.apiKey}}"
+   },
+   "body": {
+    "from": "{{cfg.from}}",
+    "to": [
+     "{{to}}"
+    ],
+    "subject": "{{subject}}",
+    "text": "{{text}}"
+   },
+   "idPath": "id",
+   "errorPath": "message"
+  },
+  "notification:sendgrid": {
+   "method": "POST",
+   "url": "https://api.sendgrid.com/v3/mail/send",
+   "auth": {
+    "type": "bearer",
+    "token": "{{cfg.apiKey}}"
+   },
+   "body": {
+    "personalizations": [
+     {
+      "to": [
+       {
+        "email": "{{to}}"
+       }
+      ]
+     }
+    ],
+    "from": {
+     "email": "{{cfg.from}}"
+    },
+    "subject": "{{subject}}",
+    "content": [
+     {
+      "type": "text/plain",
+      "value": "{{text}}"
+     }
+    ]
+   },
+   "errorPath": "errors.0.message"
+  },
+  "notification:twilio": {
+   "method": "POST",
+   "url": "https://api.twilio.com/2010-04-01/Accounts/{{cfg.sid}}/Messages.json",
+   "form": true,
+   "auth": {
+    "type": "basic",
+    "user": "{{cfg.sid}}",
+    "pass": "{{cfg.token}}"
+   },
+   "body": {
+    "To": "{{to}}",
+    "From": "{{cfg.from}}",
+    "Body": "{{text}}"
+   },
+   "idPath": "sid",
+   "errorPath": "message"
+  },
+  "marketing:meta": {
+   "method": "POST",
+   "url": "https://graph.facebook.com/v21.0/{{cfg.adAccountId}}/activities",
+   "auth": {
+    "type": "apikey",
+    "header": "Authorization",
+    "value": "Bearer {{cfg.accessToken}}"
+   },
+   "body": {
+    "event": "custom_update",
+    "user_data": {
+     "em": [
+      "{{payload.hash}}"
+     ]
+    },
+    "custom_data": {
+     "currency": "{{payload.currency}}",
+     "value": "{{payload.value}}"
+    },
+    "action_source": "website"
+   },
+   "okStatus": "captured"
+  },
+  "marketing:google-ads": {
+   "method": "POST",
+   "url": "https://googleads.googleapis.com/v18/customers/{{cfg.customerId}}:uploadConversionActions:upload",
+   "form": false,
+   "auth": {
+    "type": "bearer",
+    "token": "{{cfg.accessToken}}"
+   },
+   "body": {
+    "conversionActions": [
+     {
+      "conversionAction": "customers/{{cfg.customerId}}/conversionActions/{{cfg.conversionActionId}}",
+      "gclid": "{{payload.gclid}}",
+      "conversionDateTime": "{{iso}}",
+      "value": "{{payload.value}}",
+      "currencyCode": "{{payload.currency}}"
+     }
+    ]
+   },
+   "okStatus": "captured"
+  },
+  "marketing:ga4": {
+   "method": "POST",
+   "url": "https://www.google-analytics.com/mp/collect?measurement_id={{cfg.measurementId}}&api_secret={{cfg.apiSecret}}",
+   "body": {
+    "client_id": "{{payload.clientId}}",
+    "events": [
+     {
+      "name": "{{payload.event}}",
+      "params": {
+       "value": "{{payload.value}}"
+      }
+     }
+    ]
+   },
+   "okStatus": "captured"
+  },
+  "marketing:tiktok": {
+   "method": "POST",
+   "url": "https://business-api.tiktok.com/open_api/v1.3/event/track/",
+   "auth": {
+    "type": "apikey",
+    "header": "Access-Token",
+    "value": "{{cfg.accessToken}}"
+   },
+   "body": {
+    "event_source": "web",
+    "event_source_id": "{{cfg.pixelId}}",
+    "user": {
+     "email": "{{payload.hash}}"
+    },
+    "events": [
+     {
+      "event": "{{payload.event}}",
+      "event_time": "{{ts}}",
+      "channel": "web",
+      "properties": {
+       "value": "{{payload.value}}"
+      }
+     }
+    ]
+   },
+   "okStatus": "captured"
+  }
+ },
+ "CURRENCIES": [
+  {
+   "code": "USD",
+   "name": "US Dollar",
+   "symbol": "$",
+   "decimals": 2,
+   "usd": 1
+  },
+  {
+   "code": "EUR",
+   "name": "Euro",
+   "symbol": "€",
+   "decimals": 2,
+   "usd": 1.08
+  },
+  {
+   "code": "GBP",
+   "name": "British Pound",
+   "symbol": "£",
+   "decimals": 2,
+   "usd": 1.27
+  },
+  {
+   "code": "INR",
+   "name": "Indian Rupee",
+   "symbol": "₹",
+   "decimals": 2,
+   "usd": 0.012
+  },
+  {
+   "code": "JPY",
+   "name": "Japanese Yen",
+   "symbol": "¥",
+   "decimals": 0,
+   "usd": 0.0067
+  },
+  {
+   "code": "AED",
+   "name": "UAE Dirham",
+   "symbol": "د.إ",
+   "decimals": 2,
+   "usd": 0.2723
+  },
+  {
+   "code": "BRL",
+   "name": "Brazilian Real",
+   "symbol": "R$",
+   "decimals": 2,
+   "usd": 0.19
+  },
+  {
+   "code": "KES",
+   "name": "Kenyan Shilling",
+   "symbol": "KSh",
+   "decimals": 2,
+   "usd": 0.0078
+  },
+  {
+   "code": "SGD",
+   "name": "Singapore Dollar",
+   "symbol": "S$",
+   "decimals": 2,
+   "usd": 0.74
+  },
+  {
+   "code": "AUD",
+   "name": "Australian Dollar",
+   "symbol": "A$",
+   "decimals": 2,
+   "usd": 0.66
+  },
+  {
+   "code": "CAD",
+   "name": "Canadian Dollar",
+   "symbol": "C$",
+   "decimals": 2,
+   "usd": 0.73
+  },
+  {
+   "code": "CHF",
+   "name": "Swiss Franc",
+   "symbol": "CHF",
+   "decimals": 2,
+   "usd": 1.12
+  },
+  {
+   "code": "CNY",
+   "name": "Chinese Yuan",
+   "symbol": "¥",
+   "decimals": 2,
+   "usd": 0.14
+  },
+  {
+   "code": "SAR",
+   "name": "Saudi Riyal",
+   "symbol": "﷼",
+   "decimals": 2,
+   "usd": 0.267
+  },
+  {
+   "code": "SEK",
+   "name": "Swedish Krona",
+   "symbol": "kr",
+   "decimals": 2,
+   "usd": 0.095
+  },
+  {
+   "code": "ZAR",
+   "name": "South African Rand",
+   "symbol": "R",
+   "decimals": 2,
+   "usd": 0.055
+  },
+  {
+   "code": "MXN",
+   "name": "Mexican Peso",
+   "symbol": "Mex$",
+   "decimals": 2,
+   "usd": 0.058
+  },
+  {
+   "code": "TRY",
+   "name": "Turkish Lira",
+   "symbol": "₺",
+   "decimals": 2,
+   "usd": 0.03
+  },
+  {
+   "code": "NGN",
+   "name": "Nigerian Naira",
+   "symbol": "₦",
+   "decimals": 2,
+   "usd": 0.00065
+  },
+  {
+   "code": "NZD",
+   "name": "New Zealand Dollar",
+   "symbol": "NZ$",
+   "decimals": 2,
+   "usd": 0.61
+  },
+  {
+   "code": "NOK",
+   "name": "Norwegian Krone",
+   "symbol": "kr",
+   "decimals": 2,
+   "usd": 0.095
+  },
+  {
+   "code": "DKK",
+   "name": "Danish Krone",
+   "symbol": "kr",
+   "decimals": 2,
+   "usd": 0.145
+  },
+  {
+   "code": "PLN",
+   "name": "Polish Złoty",
+   "symbol": "zł",
+   "decimals": 2,
+   "usd": 0.25
+  },
+  {
+   "code": "KRW",
+   "name": "South Korean Won",
+   "symbol": "₩",
+   "decimals": 0,
+   "usd": 0.00073
+  },
+  {
+   "code": "IDR",
+   "name": "Indonesian Rupiah",
+   "symbol": "Rp",
+   "decimals": 2,
+   "usd": 6.2e-05
+  },
+  {
+   "code": "MYR",
+   "name": "Malaysian Ringgit",
+   "symbol": "RM",
+   "decimals": 2,
+   "usd": 0.23
+  },
+  {
+   "code": "THB",
+   "name": "Thai Baht",
+   "symbol": "฿",
+   "decimals": 2,
+   "usd": 0.029
+  },
+  {
+   "code": "PHP",
+   "name": "Philippine Peso",
+   "symbol": "₱",
+   "decimals": 2,
+   "usd": 0.017
+  },
+  {
+   "code": "VND",
+   "name": "Vietnamese Đồng",
+   "symbol": "₫",
+   "decimals": 0,
+   "usd": 3.9e-05
+  },
+  {
+   "code": "HKD",
+   "name": "Hong Kong Dollar",
+   "symbol": "HK$",
+   "decimals": 2,
+   "usd": 0.128
+  },
+  {
+   "code": "TWD",
+   "name": "New Taiwan Dollar",
+   "symbol": "NT$",
+   "decimals": 2,
+   "usd": 0.031
+  },
+  {
+   "code": "ILS",
+   "name": "Israeli New Shekel",
+   "symbol": "₪",
+   "decimals": 2,
+   "usd": 0.27
+  },
+  {
+   "code": "EGP",
+   "name": "Egyptian Pound",
+   "symbol": "E£",
+   "decimals": 2,
+   "usd": 0.02
+  },
+  {
+   "code": "QAR",
+   "name": "Qatari Riyal",
+   "symbol": "QR",
+   "decimals": 2,
+   "usd": 0.27
+  },
+  {
+   "code": "KWD",
+   "name": "Kuwaiti Dinar",
+   "symbol": "KD",
+   "decimals": 3,
+   "usd": 3.26
+  },
+  {
+   "code": "PKR",
+   "name": "Pakistani Rupee",
+   "symbol": "Rs",
+   "decimals": 2,
+   "usd": 0.0036
+  },
+  {
+   "code": "BDT",
+   "name": "Bangladeshi Taka",
+   "symbol": "৳",
+   "decimals": 2,
+   "usd": 0.0082
+  },
+  {
+   "code": "ARS",
+   "name": "Argentine Peso",
+   "symbol": "AR$",
+   "decimals": 2,
+   "usd": 0.00085
+  },
+  {
+   "code": "CLP",
+   "name": "Chilean Peso",
+   "symbol": "CLP$",
+   "decimals": 0,
+   "usd": 0.00105
+  },
+  {
+   "code": "COP",
+   "name": "Colombian Peso",
+   "symbol": "COL$",
+   "decimals": 2,
+   "usd": 0.00025
+  }
+ ],
+ "COUNTRIES": [
+  {
+   "code": "US",
+   "name": "United States",
+   "currency": "USD",
+   "symbol": "$",
+   "locale": "en-US"
+  },
+  {
+   "code": "IN",
+   "name": "India",
+   "currency": "INR",
+   "symbol": "₹",
+   "locale": "en-IN"
+  },
+  {
+   "code": "GB",
+   "name": "United Kingdom",
+   "currency": "GBP",
+   "symbol": "£",
+   "locale": "en-GB"
+  },
+  {
+   "code": "DE",
+   "name": "Germany",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "de-DE"
+  },
+  {
+   "code": "FR",
+   "name": "France",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "fr-FR"
+  },
+  {
+   "code": "NL",
+   "name": "Netherlands",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "nl-NL"
+  },
+  {
+   "code": "BR",
+   "name": "Brazil",
+   "currency": "BRL",
+   "symbol": "R$",
+   "locale": "pt-BR"
+  },
+  {
+   "code": "KE",
+   "name": "Kenya",
+   "currency": "KES",
+   "symbol": "KSh",
+   "locale": "en-KE"
+  },
+  {
+   "code": "AE",
+   "name": "United Arab Emirates",
+   "currency": "AED",
+   "symbol": "د.إ",
+   "locale": "ar-AE"
+  },
+  {
+   "code": "JP",
+   "name": "Japan",
+   "currency": "JPY",
+   "symbol": "¥",
+   "locale": "ja-JP"
+  },
+  {
+   "code": "SG",
+   "name": "Singapore",
+   "currency": "SGD",
+   "symbol": "S$",
+   "locale": "en-SG"
+  },
+  {
+   "code": "AU",
+   "name": "Australia",
+   "currency": "AUD",
+   "symbol": "A$",
+   "locale": "en-AU"
+  },
+  {
+   "code": "CA",
+   "name": "Canada",
+   "currency": "CAD",
+   "symbol": "C$",
+   "locale": "en-CA"
+  },
+  {
+   "code": "SE",
+   "name": "Sweden",
+   "currency": "SEK",
+   "symbol": "kr",
+   "locale": "sv-SE"
+  },
+  {
+   "code": "SA",
+   "name": "Saudi Arabia",
+   "currency": "SAR",
+   "symbol": "﷼",
+   "locale": "ar-SA"
+  },
+  {
+   "code": "CN",
+   "name": "China",
+   "currency": "CNY",
+   "symbol": "¥",
+   "locale": "zh-CN"
+  },
+  {
+   "code": "CH",
+   "name": "Switzerland",
+   "currency": "CHF",
+   "symbol": "CHF",
+   "locale": "de-CH"
+  },
+  {
+   "code": "ZA",
+   "name": "South Africa",
+   "currency": "ZAR",
+   "symbol": "R",
+   "locale": "en-ZA"
+  },
+  {
+   "code": "MX",
+   "name": "Mexico",
+   "currency": "MXN",
+   "symbol": "Mex$",
+   "locale": "es-MX"
+  },
+  {
+   "code": "TR",
+   "name": "Türkiye",
+   "currency": "TRY",
+   "symbol": "₺",
+   "locale": "tr-TR"
+  },
+  {
+   "code": "NG",
+   "name": "Nigeria",
+   "currency": "NGN",
+   "symbol": "₦",
+   "locale": "en-NG"
+  },
+  {
+   "code": "NZ",
+   "name": "New Zealand",
+   "currency": "NZD",
+   "symbol": "NZ$",
+   "locale": "en-NZ"
+  },
+  {
+   "code": "IT",
+   "name": "Italy",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "it-IT"
+  },
+  {
+   "code": "ES",
+   "name": "Spain",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "es-ES"
+  },
+  {
+   "code": "IE",
+   "name": "Ireland",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "en-IE"
+  },
+  {
+   "code": "AT",
+   "name": "Austria",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "de-AT"
+  },
+  {
+   "code": "BE",
+   "name": "Belgium",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "nl-BE"
+  },
+  {
+   "code": "PT",
+   "name": "Portugal",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "pt-PT"
+  },
+  {
+   "code": "FI",
+   "name": "Finland",
+   "currency": "EUR",
+   "symbol": "€",
+   "locale": "fi-FI"
+  },
+  {
+   "code": "PL",
+   "name": "Poland",
+   "currency": "PLN",
+   "symbol": "zł",
+   "locale": "pl-PL"
+  },
+  {
+   "code": "DK",
+   "name": "Denmark",
+   "currency": "DKK",
+   "symbol": "kr",
+   "locale": "da-DK"
+  },
+  {
+   "code": "NO",
+   "name": "Norway",
+   "currency": "NOK",
+   "symbol": "kr",
+   "locale": "nb-NO"
+  },
+  {
+   "code": "KR",
+   "name": "South Korea",
+   "currency": "KRW",
+   "symbol": "₩",
+   "locale": "ko-KR"
+  },
+  {
+   "code": "ID",
+   "name": "Indonesia",
+   "currency": "IDR",
+   "symbol": "Rp",
+   "locale": "id-ID"
+  },
+  {
+   "code": "MY",
+   "name": "Malaysia",
+   "currency": "MYR",
+   "symbol": "RM",
+   "locale": "ms-MY"
+  },
+  {
+   "code": "TH",
+   "name": "Thailand",
+   "currency": "THB",
+   "symbol": "฿",
+   "locale": "th-TH"
+  },
+  {
+   "code": "PH",
+   "name": "Philippines",
+   "currency": "PHP",
+   "symbol": "₱",
+   "locale": "en-PH"
+  },
+  {
+   "code": "VN",
+   "name": "Vietnam",
+   "currency": "VND",
+   "symbol": "₫",
+   "locale": "vi-VN"
+  },
+  {
+   "code": "HK",
+   "name": "Hong Kong",
+   "currency": "HKD",
+   "symbol": "HK$",
+   "locale": "zh-HK"
+  },
+  {
+   "code": "TW",
+   "name": "Taiwan",
+   "currency": "TWD",
+   "symbol": "NT$",
+   "locale": "zh-TW"
+  },
+  {
+   "code": "IL",
+   "name": "Israel",
+   "currency": "ILS",
+   "symbol": "₪",
+   "locale": "he-IL"
+  },
+  {
+   "code": "EG",
+   "name": "Egypt",
+   "currency": "EGP",
+   "symbol": "E£",
+   "locale": "ar-EG"
+  },
+  {
+   "code": "QA",
+   "name": "Qatar",
+   "currency": "QAR",
+   "symbol": "QR",
+   "locale": "ar-QA"
+  },
+  {
+   "code": "KW",
+   "name": "Kuwait",
+   "currency": "KWD",
+   "symbol": "KD",
+   "locale": "ar-KW"
+  },
+  {
+   "code": "PK",
+   "name": "Pakistan",
+   "currency": "PKR",
+   "symbol": "Rs",
+   "locale": "en-PK"
+  },
+  {
+   "code": "BD",
+   "name": "Bangladesh",
+   "currency": "BDT",
+   "symbol": "৳",
+   "locale": "bn-BD"
+  },
+  {
+   "code": "AR",
+   "name": "Argentina",
+   "currency": "ARS",
+   "symbol": "AR$",
+   "locale": "es-AR"
+  },
+  {
+   "code": "CL",
+   "name": "Chile",
+   "currency": "CLP",
+   "symbol": "CLP$",
+   "locale": "es-CL"
+  },
+  {
+   "code": "CO",
+   "name": "Colombia",
+   "currency": "COP",
+   "symbol": "COL$",
+   "locale": "es-CO"
+  }
+ ],
+ "FIELD_SETS": {
+  "set1": [
+   {
+    "key": "apiKey",
+    "label": "API key",
+    "secret": true
+   },
+   {
+    "key": "from",
+    "label": "From address"
+   }
+  ]
+ },
+ "PAYMENT_PROVIDERS": [
+  {
+   "id": "stripe",
+   "name": "Stripe",
+   "emoji": "💳",
+   "countries": [
+    "US",
+    "GB",
+    "DE",
+    "FR",
+    "JP",
+    "SG",
+    "AU",
+    "CA"
+   ],
+   "methods": [
+    "card",
+    "apple_pay",
+    "google_pay"
+   ],
+   "feePct": 2.9,
+   "feeFixed": 0.3,
+   "fields": [
+    {
+     "key": "publishableKey",
+     "label": "Publishable key"
+    },
+    {
+     "key": "secretKey",
+     "label": "Secret key",
+     "secret": true
+    },
+    {
+     "key": "webhookSecret",
+     "label": "Webhook signing secret",
+     "secret": true
+    }
+   ],
+   "desc": "Cards, wallets & global payments"
+  },
+  {
+   "id": "paypal",
+   "name": "PayPal",
+   "emoji": "🅿️",
+   "countries": [
+    "*"
+   ],
+   "methods": [
+    "paypal",
+    "card"
+   ],
+   "feePct": 3.49,
+   "feeFixed": 0.49,
+   "fields": [
+    {
+     "key": "clientId",
+     "label": "Client ID"
+    },
+    {
+     "key": "secret",
+     "label": "Secret",
+     "secret": true
+    },
+    {
+     "key": "env",
+     "label": "Environment prefix (\"sandbox.\" to test, blank for live)"
+    },
+    {
+     "key": "webhookId",
+     "label": "Webhook ID (from the PayPal app's webhook)"
+    }
+   ],
+   "desc": "Wallet & checkout worldwide"
+  },
+  {
+   "id": "square",
+   "name": "Square",
+   "emoji": "⬛",
+   "countries": [
+    "US",
+    "GB",
+    "AU",
+    "CA",
+    "JP"
+   ],
+   "methods": [
+    "card",
+    "afterpay"
+   ],
+   "feePct": 2.6,
+   "feeFixed": 0.1,
+   "fields": [
+    {
+     "key": "appId",
+     "label": "Square App ID"
+    },
+    {
+     "key": "token",
+     "label": "Access token",
+     "secret": true
+    },
+    {
+     "key": "webhookSecret",
+     "label": "Webhook signature key",
+     "secret": true
+    },
+    {
+     "key": "webhookUrl",
+     "label": "Notification URL exactly as registered in Square"
+    }
+   ],
+   "desc": "Cards & buy-now-pay-later"
+  },
+  {
+   "id": "braintree",
+   "name": "Braintree (PayPal)",
+   "emoji": "🧩",
+   "countries": [
+    "US",
+    "GB",
+    "AU",
+    "CA"
+   ],
+   "methods": [
+    "card",
+    "paypal",
+    "venmo"
+   ],
+   "feePct": 2.59,
+   "feeFixed": 0.49,
+   "fields": [
+    {
+     "key": "merchantId",
+     "label": "Merchant ID"
+    },
+    {
+     "key": "publicKey",
+     "label": "Public key"
+    },
+    {
+     "key": "privateKey",
+     "label": "Private key",
+     "secret": true
+    }
+   ],
+   "desc": "Enterprise card processing"
+  },
+  {
+   "id": "adyen",
+   "name": "Adyen",
+   "emoji": "🟢",
+   "countries": [
+    "*"
+   ],
+   "methods": [
+    "card",
+    "ideal",
+    "klarna",
+    "wechatpay"
+   ],
+   "feePct": 2.6,
+   "feeFixed": 0.12,
+   "fields": [
+    {
+     "key": "apiKey",
+     "label": "API key",
+     "secret": true
+    },
+    {
+     "key": "merchantAccount",
+     "label": "Merchant account"
+    }
+   ],
+   "desc": "Global omnichannel acquiring"
+  },
+  {
+   "id": "razorpay",
+   "name": "Razorpay",
+   "emoji": "⚡",
+   "countries": [
+    "IN"
+   ],
+   "methods": [
+    "card",
+    "upi",
+    "netbanking",
+    "wallet"
+   ],
+   "feePct": 2,
+   "feeFixed": 0,
+   "fields": [
+    {
+     "key": "keyId",
+     "label": "Key ID"
+    },
+    {
+     "key": "keySecret",
+     "label": "Key secret",
+     "secret": true
+    },
+    {
+     "key": "webhookSecret",
+     "label": "Webhook secret",
+     "secret": true
+    }
+   ],
+   "desc": "India's payments stack — UPI, cards, netbanking"
+  },
+  {
+   "id": "upi",
+   "name": "UPI",
+   "emoji": "📱",
+   "countries": [
+    "IN"
+   ],
+   "methods": [
+    "upi"
+   ],
+   "feePct": 0,
+   "feeFixed": 0,
+   "fields": [],
+   "desc": "Unified Payments Interface — zero MDR"
+  },
+  {
+   "id": "pix",
+   "name": "PIX",
+   "emoji": "🔎",
+   "countries": [
+    "BR"
+   ],
+   "methods": [
+    "pix"
+   ],
+   "feePct": 0.99,
+   "feeFixed": 0,
+   "fields": [
+    {
+     "key": "clientId",
+     "label": "Client ID"
+    },
+    {
+     "key": "clientSecret",
+     "label": "Client secret",
+     "secret": true
+    }
+   ],
+   "desc": "Brazil's instant payment rail"
+  },
+  {
+   "id": "ideal",
+   "name": "iDEAL",
+   "emoji": "🟠",
+   "countries": [
+    "NL"
+   ],
+   "methods": [
+    "bank_transfer"
+   ],
+   "feePct": 0.8,
+   "feeFixed": 0.35,
+   "fields": [
+    {
+     "key": "merchantId",
+     "label": "Merchant ID"
+    }
+   ],
+   "desc": "Dutch online bank transfer"
+  },
+  {
+   "id": "klarna",
+   "name": "Klarna",
+   "emoji": "🩷",
+   "countries": [
+    "GB",
+    "DE",
+    "NL",
+    "FR",
+    "SE"
+   ],
+   "methods": [
+    "bnpl",
+    "pay_now"
+   ],
+   "feePct": 3.29,
+   "feeFixed": 0.5,
+   "fields": [
+    {
+     "key": "country",
+     "label": "Klarna country"
+    },
+    {
+     "key": "apiKey",
+     "label": "API key",
+     "secret": true
+    }
+   ],
+   "desc": "Buy now, pay later"
+  },
+  {
+   "id": "mpesa",
+   "name": "M-Pesa",
+   "emoji": "📲",
+   "countries": [
+    "KE"
+   ],
+   "methods": [
+    "mobile_money"
+   ],
+   "feePct": 1.5,
+   "feeFixed": 0,
+   "fields": [
+    {
+     "key": "shortcode",
+     "label": "Paybill shortcode"
+    },
+    {
+     "key": "apikey",
+     "label": "API key",
+     "secret": true
+    }
+   ],
+   "desc": "Mobile money in East Africa"
+  },
+  {
+   "id": "tabby",
+   "name": "Tabby",
+   "emoji": "🟪",
+   "countries": [
+    "AE",
+    "SA"
+   ],
+   "methods": [
+    "bnpl"
+   ],
+   "feePct": 4.5,
+   "feeFixed": 0,
+   "fields": [
+    {
+     "key": "publicKey",
+     "label": "Public key"
+    },
+    {
+     "key": "secretKey",
+     "label": "Secret key",
+     "secret": true
+    }
+   ],
+   "desc": "Split-in-4 payments, MENA"
+  },
+  {
+   "id": "alipay",
+   "name": "Alipay+",
+   "emoji": "🔷",
+   "countries": [
+    "CN",
+    "SG",
+    "JP"
+   ],
+   "methods": [
+    "wallet",
+    "qr"
+   ],
+   "feePct": 2.2,
+   "feeFixed": 0,
+   "fields": [
+    {
+     "key": "appId",
+     "label": "App ID"
+    },
+    {
+     "key": "privateKey",
+     "label": "Private key",
+     "secret": true
+    }
+   ],
+   "desc": "APAC wallets & QR"
+  },
+  {
+   "id": "cod",
+   "name": "Cash on Delivery",
+   "emoji": "💵",
+   "countries": [
+    "*"
+   ],
+   "methods": [
+    "cod"
+   ],
+   "feePct": 0,
+   "feeFixed": 0,
+   "fields": [],
+   "desc": "Pay at the doorstep"
+  },
+  {
+   "id": "bank",
+   "name": "Bank Transfer / NEFT",
+   "emoji": "🏦",
+   "countries": [
+    "*"
+   ],
+   "methods": [
+    "bank_transfer"
+   ],
+   "feePct": 0,
+   "feeFixed": 0,
+   "fields": [
+    {
+     "key": "account",
+     "label": "Settlement account"
+    }
+   ],
+   "desc": "Direct bank transfer"
+  }
+ ],
+ "SHIPPING_PROVIDERS": [
+  {
+   "id": "house-std",
+   "name": "House Standard",
+   "emoji": "📦",
+   "countries": [
+    "*"
+   ],
+   "eta": [
+    3,
+    5
+   ],
+   "baseFee": 0,
+   "freeOver": 35,
+   "desc": "Complimentary over threshold"
+  },
+  {
+   "id": "house-exp",
+   "name": "House Express",
+   "emoji": "⚡",
+   "countries": [
+    "*"
+   ],
+   "eta": [
+    1,
+    2
+   ],
+   "baseFee": 9.99,
+   "freeOver": 0,
+   "desc": "Priority next-day"
+  },
+  {
+   "id": "fedex",
+   "name": "FedEx",
+   "emoji": "🟣",
+   "countries": [
+    "US",
+    "CA",
+    "AU",
+    "SG"
+   ],
+   "eta": [
+    1,
+    3
+   ],
+   "baseFee": 12.5,
+   "freeOver": 0
+  },
+  {
+   "id": "ups",
+   "name": "UPS",
+   "emoji": "🟤",
+   "countries": [
+    "US",
+    "CA",
+    "GB",
+    "DE"
+   ],
+   "eta": [
+    2,
+    4
+   ],
+   "baseFee": 10.9,
+   "freeOver": 0
+  },
+  {
+   "id": "usps",
+   "name": "USPS",
+   "emoji": "🦅",
+   "countries": [
+    "US"
+   ],
+   "eta": [
+    2,
+    5
+   ],
+   "baseFee": 5.5,
+   "freeOver": 0
+  },
+  {
+   "id": "dhl",
+   "name": "DHL Express",
+   "emoji": "🟡",
+   "countries": [
+    "*"
+   ],
+   "eta": [
+    1,
+    3
+   ],
+   "baseFee": 14.9,
+   "freeOver": 0
+  },
+  {
+   "id": "royalmail",
+   "name": "Royal Mail",
+   "emoji": "👑",
+   "countries": [
+    "GB"
+   ],
+   "eta": [
+    2,
+    4
+   ],
+   "baseFee": 6.2,
+   "freeOver": 0
+  },
+  {
+   "id": "deutschepost",
+   "name": "Deutsche Post",
+   "emoji": "🏤",
+   "countries": [
+    "DE",
+    "NL",
+    "FR"
+   ],
+   "eta": [
+    2,
+    4
+   ],
+   "baseFee": 5.9,
+   "freeOver": 0
+  },
+  {
+   "id": "delhivery",
+   "name": "Delhivery",
+   "emoji": "🇮🇳",
+   "countries": [
+    "IN"
+   ],
+   "eta": [
+    2,
+    5
+   ],
+   "baseFee": 49,
+   "freeOver": 0
+  },
+  {
+   "id": "bluedart",
+   "name": "BlueDart",
+   "emoji": "🔷",
+   "countries": [
+    "IN"
+   ],
+   "eta": [
+    1,
+    3
+   ],
+   "baseFee": 89,
+   "freeOver": 0
+  },
+  {
+   "id": "correios",
+   "name": "Correios",
+   "emoji": "🇧🇷",
+   "countries": [
+    "BR"
+   ],
+   "eta": [
+    3,
+    8
+   ],
+   "baseFee": 18,
+   "freeOver": 0
+  }
+ ],
+ "NOTIFICATION_PROVIDERS": [
+  {
+   "id": "log",
+   "name": "Console (dev)",
+   "emoji": "🖥️",
+   "countries": [
+    "*"
+   ],
+   "fields": [],
+   "desc": "Writes to server log — always available"
+  },
+  {
+   "id": "smtp",
+   "name": "SMTP Email",
+   "emoji": "✉️",
+   "countries": [
+    "*"
+   ],
+   "fields": [
+    {
+     "key": "host",
+     "label": "Host"
+    },
+    {
+     "key": "port",
+     "label": "Port"
+    },
+    {
+     "key": "user",
+     "label": "User"
+    },
+    {
+     "key": "pass",
+     "label": "Password",
+     "secret": true
+    },
+    {
+     "key": "from",
+     "label": "From address"
+    }
+   ]
+  },
+  {
+   "id": "resend",
+   "name": "Resend",
+   "emoji": "📨",
+   "countries": [
+    "*"
+   ],
+   "fields": "set:set1"
+  },
+  {
+   "id": "sendgrid",
+   "name": "SendGrid",
+   "emoji": "📤",
+   "countries": [
+    "*"
+   ],
+   "fields": "set:set1"
+  },
+  {
+   "id": "mailrelay",
+   "name": "Cloud Email Relay",
+   "emoji": "🅂",
+   "countries": [
+    "*"
+   ],
+   "fields": [
+    {
+     "key": "region",
+     "label": "Region"
+    },
+    {
+     "key": "key",
+     "label": "Access key"
+    },
+    {
+     "key": "secret",
+     "label": "Secret",
+     "secret": true
+    },
+    {
+     "key": "from",
+     "label": "From address"
+    }
+   ]
+  },
+  {
+   "id": "twilio",
+   "name": "Twilio SMS",
+   "emoji": "💬",
+   "countries": [
+    "*"
+   ],
+   "fields": [
+    {
+     "key": "sid",
+     "label": "Account SID"
+    },
+    {
+     "key": "token",
+     "label": "Auth token",
+     "secret": true
+    },
+    {
+     "key": "from",
+     "label": "From number"
+    }
+   ]
+  },
+  {
+   "id": "whatsapp",
+   "name": "WhatsApp Business",
+   "emoji": "🟩",
+   "countries": [
+    "*"
+   ],
+   "fields": [
+    {
+     "key": "phoneId",
+     "label": "Phone number ID"
+    },
+    {
+     "key": "token",
+     "label": "Access token",
+     "secret": true
+    }
+   ]
+  }
+ ],
+ "TAX_PROVIDERS": [
+  {
+   "id": "manual",
+   "name": "Manual rate",
+   "desc": "Flat percentage configured by the store"
+  },
+  {
+   "id": "gst",
+   "name": "GST (India)",
+   "desc": "Goods & Services Tax"
+  },
+  {
+   "id": "vat",
+   "name": "VAT",
+   "desc": "Value Added Tax"
+  },
+  {
+   "id": "avalara",
+   "name": "Avalara",
+   "desc": "Automated global tax engine",
+   "fields": [
+    {
+     "key": "licenseKey",
+     "label": "License key",
+     "secret": true
+    }
+   ]
+  }
+ ],
+ "MARKETING_PROVIDERS": [
+  {
+   "id": "meta",
+   "name": "Meta (Facebook/Instagram)",
+   "emoji": "📘",
+   "countries": [
+    "*"
+   ],
+   "fields": [
+    {
+     "key": "adAccountId",
+     "label": "Ad Account ID"
+    },
+    {
+     "key": "accessToken",
+     "label": "Access token",
+     "secret": true
+    }
+   ],
+   "desc": "Server-side conversions API (CAPI)"
+  },
+  {
+   "id": "google-ads",
+   "name": "Google Ads",
+   "emoji": "🔍",
+   "countries": [
+    "*"
+   ],
+   "fields": [
+    {
+     "key": "customerId",
+     "label": "Customer ID"
+    },
+    {
+     "key": "conversionActionId",
+     "label": "Conversion action ID"
+    },
+    {
+     "key": "accessToken",
+     "label": "OAuth token",
+     "secret": true
+    }
+   ],
+   "desc": "Enhanced conversions / offline upload"
+  },
+  {
+   "id": "ga4",
+   "name": "Google Analytics 4",
+   "emoji": "📊",
+   "countries": [
+    "*"
+   ],
+   "fields": [
+    {
+     "key": "measurementId",
+     "label": "Measurement ID"
+    },
+    {
+     "key": "apiSecret",
+     "label": "API secret",
+     "secret": true
+    }
+   ],
+   "desc": "Measurement Protocol events"
+  },
+  {
+   "id": "tiktok",
+   "name": "TikTok",
+   "emoji": "🎵",
+   "countries": [
+    "*"
+   ],
+   "fields": [
+    {
+     "key": "pixelId",
+     "label": "Pixel ID"
+    },
+    {
+     "key": "accessToken",
+     "label": "Access token",
+     "secret": true
+    }
+   ],
+   "desc": "Events API conversions"
+  }
+ ],
+ "FIXTURE_CONNECTORS": {
+  "$comment": "the connectors each seeded deployment starts with (the master's carriers are the in-house ones the shipping rows declare). Data, edited per store from the console afterwards.",
+  "master": [
+   {
+    "provider_id": "stripe",
+    "primary": true,
+    "mode": "sandbox",
+    "position": 0
+   },
+   {
+    "provider_id": "paypal",
+    "primary": false,
+    "mode": "sandbox",
+    "position": 1
+   },
+   {
+    "provider_id": "cod",
+    "primary": false,
+    "mode": "live",
+    "position": 2
+   },
+   {
+    "provider_id": "notify:log",
+    "primary": true,
+    "mode": "live",
+    "position": 0
+   }
+  ],
+  "aurum": [
+   {
+    "provider_id": "razorpay",
+    "primary": true,
+    "mode": "sandbox",
+    "position": 0
+   },
+   {
+    "provider_id": "upi",
+    "primary": false,
+    "mode": "live",
+    "position": 1
+   },
+   {
+    "provider_id": "cod",
+    "primary": false,
+    "mode": "live",
+    "position": 2
+   },
+   {
+    "provider_id": "ship:delhivery",
+    "primary": true,
+    "mode": "live",
+    "position": 0
+   },
+   {
+    "provider_id": "ship:bluedart",
+    "primary": false,
+    "mode": "live",
+    "position": 1
+   },
+   {
+    "provider_id": "notify:log",
+    "primary": true,
+    "mode": "live",
+    "position": 0
+   }
+  ],
+  "velora": [
+   {
+    "provider_id": "tabby",
+    "primary": true,
+    "mode": "sandbox",
+    "position": 0
+   },
+   {
+    "provider_id": "stripe",
+    "primary": false,
+    "mode": "sandbox",
+    "position": 1
+   },
+   {
+    "provider_id": "cod",
+    "primary": false,
+    "mode": "live",
+    "position": 2
+   },
+   {
+    "provider_id": "ship:dhl",
+    "primary": true,
+    "mode": "live",
+    "position": 0
+   },
+   {
+    "provider_id": "notify:log",
+    "primary": true,
+    "mode": "live",
+    "position": 0
+   }
+  ]
+ },
+ "DELIVERY_CHANNELS": [
+  {
+   "key": "email",
+   "name": "Email",
+   "default": true,
+   "address": "email",
+   "pattern": "^[^@\\s<>]+@[^@\\s<>]+\\.[^@\\s<>]+$",
+   "env": "mail",
+   "providers": [
+    {
+     "key": "smtp"
+    },
+    {
+     "key": "sendgrid"
+    },
+    {
+     "key": "resend"
+    }
+   ]
+  },
+  {
+   "key": "sms",
+   "name": "SMS",
+   "address": "phone",
+   "pattern": "^\\+?[0-9][0-9 ()-]{5,19}$",
+   "env": "sms",
+   "providers": [
+    {
+     "key": "twilio"
+    }
+   ]
+  }
+ ]
+}

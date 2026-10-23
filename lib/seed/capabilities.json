@@ -1,0 +1,2748 @@
+{
+ "CATALOG": [
+  {
+   "key": "buy_box",
+   "label": "Buy-box competition",
+   "domain": "marketplace",
+   "icon": "🏆",
+   "description": "Multiple sellers compete for one product's featured offer. The winner is the best composite of price, fulfilment speed and seller trust — each weight is tunable here.",
+   "params": {
+    "price_weight": {
+     "type": "number",
+     "default": 0.6,
+     "label": "Price weight",
+     "unit": "0-1"
+    },
+    "speed_weight": {
+     "type": "number",
+     "default": 0.25,
+     "label": "Fulfilment-speed weight",
+     "unit": "0-1"
+    },
+    "trust_weight": {
+     "type": "number",
+     "default": 0.15,
+     "label": "Seller-trust weight",
+     "unit": "0-1"
+    },
+    "speed_baseline_days": {
+     "type": "number",
+     "default": 3,
+     "label": "Speed baseline (days assumed when unknown)"
+    },
+    "handling_baseline_hours": {
+     "type": "number",
+     "default": 12,
+     "label": "Handling baseline (hours assumed when unknown)"
+    },
+    "recompute_on_change": {
+     "type": "bool",
+     "default": true,
+     "label": "Recompute the winner when an offer or health row changes"
+    }
+   }
+  },
+  {
+   "key": "seller_health",
+   "label": "Seller account health",
+   "domain": "marketplace",
+   "icon": "❤️",
+   "description": "Account health: defect, cancellation and late-shipment rates roll into a score that decides the tier and suspension.",
+   "params": {
+    "odr_weight": {
+     "type": "number",
+     "default": 2,
+     "label": "Order-defect-rate weight"
+    },
+    "cancellation_weight": {
+     "type": "number",
+     "default": 1.5,
+     "label": "Cancellation-rate weight"
+    },
+    "late_weight": {
+     "type": "number",
+     "default": 1,
+     "label": "Late-shipment weight"
+    },
+    "tier_thresholds": {
+     "type": "json",
+     "default": {
+      "platinum": 95,
+      "gold": 85,
+      "premium": 70,
+      "growth": 50
+     },
+     "label": "Tier thresholds (score → tier), highest first"
+    },
+    "suspend_below": {
+     "type": "number",
+     "default": 40,
+     "label": "Health score below which a seller's offers are suspended"
+    },
+    "late_shipment_days": {
+     "type": "number",
+     "default": 3,
+     "label": "A shipment is 'late' after this many days undelivered"
+    }
+   }
+  },
+  {
+   "key": "buyer_protection",
+   "label": "Buyer protection (A-to-z)",
+   "domain": "marketplace",
+   "icon": "🛡️",
+   "description": "A buyer may raise a claim against a seller; a claim resolved in the buyer's favour credits the buyer from the ledger.",
+   "params": {
+    "auto_dispute_escrow": {
+     "type": "bool",
+     "default": true,
+     "label": "Mark an order's escrow hold disputed while a claim is open"
+    },
+    "refund_kind": {
+     "type": "text",
+     "default": "refund",
+     "label": "Wallet ledger kind used for a buyer-favour refund"
+    }
+   }
+  },
+  {
+   "key": "smart_fulfilment",
+   "label": "Smart-fulfilment grading",
+   "domain": "marketplace",
+   "icon": "⚡",
+   "description": "Fulfilment grading: each grade carries a dispatch SLA in hours.",
+   "params": {
+    "sla_hours": {
+     "type": "json",
+     "default": {
+      "a_plus": 4,
+      "a": 8,
+      "b": 24,
+      "c": 48,
+      "d": 72
+     },
+     "label": "Grade → dispatch SLA hours"
+    },
+    "default_sla_hours": {
+     "type": "number",
+     "default": 24,
+     "label": "SLA for an unmapped grade"
+    }
+   }
+  },
+  {
+   "key": "fba_inbound",
+   "label": "Fulfilment-centre inbound",
+   "domain": "marketplace",
+   "icon": "📦",
+   "description": "Sellers ship units to a fulfilment centre; receiving closes the inbound and adds the units to FC inventory.",
+   "params": {
+    "default_status": {
+     "type": "text",
+     "default": "created",
+     "label": "Initial status of an inbound shipment"
+    }
+   }
+  },
+  {
+   "key": "upi_collect",
+   "label": "UPI collect",
+   "domain": "fintech",
+   "icon": "💸",
+   "description": "Raise a collect request against a payer VPA; settlement credits the single wallet ledger.",
+   "params": {
+    "new_handle_status": {
+     "type": "text",
+     "default": "pending_verification",
+     "label": "Status of a freshly added VPA"
+    },
+    "collect_expiry_hours": {
+     "type": "number",
+     "default": 1,
+     "label": "A collect request expires after this many hours"
+    },
+    "min_amount": {
+     "type": "number",
+     "default": 0.01,
+     "label": "Lowest collectable amount (0 disables the floor)"
+    }
+   }
+  },
+  {
+   "key": "qr_pay",
+   "label": "QR scan-pay",
+   "domain": "fintech",
+   "icon": "▦",
+   "description": "Issue QR records from the registry's kinds; a scan is counted and (optionally) a payment completed.",
+   "params": {
+    "default_kind": {
+     "type": "text",
+     "default": "upi",
+     "label": "QR kind when none is supplied"
+    }
+   }
+  },
+  {
+   "key": "payment_links",
+   "label": "Payment links",
+   "domain": "fintech",
+   "icon": "🔗",
+   "description": "Issue a tokenised link that credits the owner's wallet when paid. Single-use by default.",
+   "params": {
+    "expiry_days": {
+     "type": "number",
+     "default": 7,
+     "label": "A link is payable for this many days"
+    },
+    "single_use": {
+     "type": "bool",
+     "default": true,
+     "label": "A paid link cannot be paid again"
+    }
+   }
+  },
+  {
+   "key": "mandates",
+   "label": "Mandates / auto-debit",
+   "domain": "fintech",
+   "icon": "🔁",
+   "description": "Register an auto-debit mandate and charge it up to its cap. Subscriptions ride on this.",
+   "params": {
+    "default_frequency": {
+     "type": "text",
+     "default": "monthly",
+     "label": "Frequency when none is supplied"
+    },
+    "recharge_window_days": {
+     "type": "number",
+     "default": 30,
+     "label": "Days added to the next-charge-at on each charge"
+    }
+   }
+  },
+  {
+   "key": "escrow",
+   "label": "Escrow hold & release",
+   "domain": "fintech",
+   "icon": "🔒",
+   "description": "Hold funds at order time and release to the seller only on confirmation. Trade assurance composes this capability.",
+   "params": {
+    "dispute_freezes": {
+     "type": "bool",
+     "default": true,
+     "label": "A dispute prevents release until resolved"
+    },
+    "release_kind": {
+     "type": "text",
+     "default": "deposit",
+     "label": "Wallet ledger kind used for a seller release"
+    }
+   }
+  },
+  {
+   "key": "split_payments",
+   "label": "Split payments",
+   "domain": "fintech",
+   "icon": "✂️",
+   "description": "Divide a payment across parties at order time. The parts must sum to the total, or the ledger would drift.",
+   "params": {
+    "tolerance": {
+     "type": "number",
+     "default": 0.01,
+     "label": "Rounding tolerance when comparing the split sum with the total"
+    },
+    "settle_immediately": {
+     "type": "bool",
+     "default": true,
+     "label": "Settle the parts when the payment lands"
+    }
+   }
+  },
+  {
+   "key": "kyc",
+   "label": "KYC verification",
+   "domain": "fintech",
+   "icon": "🪪",
+   "description": "Identity verification that gates credit: BNPL and loans require the full tier.",
+   "params": {
+    "full_tier_status": {
+     "type": "text",
+     "default": "full_kyc",
+     "label": "KYC profile status that satisfies the full tier"
+    },
+    "min_tier_status": {
+     "type": "text",
+     "default": "min_kyc",
+     "label": "Status for the limited tier"
+    }
+   }
+  },
+  {
+   "key": "bnpl",
+   "label": "Buy-now-pay-later",
+   "domain": "fintech",
+   "icon": "💳",
+   "description": "A KYC-gated credit account that generates an EMI schedule on each spend.",
+   "params": {
+    "default_tenure_months": {
+     "type": "number",
+     "default": 3,
+     "label": "Tenure when none is supplied"
+    },
+    "min_amount": {
+     "type": "number",
+     "default": 0.01,
+     "label": "Lowest financeable amount"
+    }
+   }
+  },
+  {
+   "key": "lending",
+   "label": "Loans & credit lines",
+   "domain": "fintech",
+   "icon": "🏦",
+   "description": "Apply, approve and disburse credit. The EMI is computed from the principal, tenure and rate.",
+   "params": {
+    "default_tenure_months": {
+     "type": "number",
+     "default": 12,
+     "label": "Tenure when none is supplied"
+    },
+    "default_rate_pct": {
+     "type": "number",
+     "default": 0,
+     "label": "Annual rate when none is supplied (0 = flat)"
+    }
+   }
+  },
+  {
+   "key": "bank_payouts",
+   "label": "Bank payouts",
+   "domain": "fintech",
+   "icon": "🏦",
+   "description": "Queue a payout to a bank account or VPA and process it through the configured gateway.",
+   "params": {
+    "default_status": {
+     "type": "text",
+     "default": "queued",
+     "label": "Initial status of a queued payout"
+    }
+   }
+  },
+  {
+   "key": "bbps",
+   "label": "Bill payments (BBPS)",
+   "domain": "fintech",
+   "icon": "🧾",
+   "description": "Pay electricity, water, gas and similar bills through registered billers.",
+   "params": {
+    "default_category": {
+     "type": "text",
+     "default": "electricity",
+     "label": "Category when the biller is unknown"
+    }
+   }
+  },
+  {
+   "key": "recharge",
+   "label": "Mobile / DTH recharge",
+   "domain": "fintech",
+   "icon": "📱",
+   "description": "Prepaid recharge against a plan catalogue; a recharge debits the wallet on success.",
+   "params": {
+    "default_kind": {
+     "type": "text",
+     "default": "mobile",
+     "label": "Recharge kind when none is supplied"
+    }
+   }
+  },
+  {
+   "key": "p2p_transfer",
+   "label": "P2P wallet transfer",
+   "domain": "fintech",
+   "icon": "⇄",
+   "description": "Wallet-to-wallet transfer between two owners. Self-transfer and overdraft are refused.",
+   "params": {
+    "ledger_unit": {
+     "type": "text",
+     "default": "USD",
+     "label": "Unit the transfer row is written in"
+    }
+   }
+  },
+  {
+   "key": "insurance",
+   "label": "Insurance distribution",
+   "domain": "fintech",
+   "icon": "🛡️",
+   "description": "Quote a policy and activate it; activation debits the premium from the wallet.",
+   "params": {
+    "activation_debits_premium": {
+     "type": "bool",
+     "default": true,
+     "label": "Activating a policy charges the premium"
+    }
+   }
+  },
+  {
+   "key": "gift_vouchers",
+   "label": "Gift vouchers",
+   "domain": "fintech",
+   "icon": "🎁",
+   "description": "Issue a code with a balance; redemption credits the holder's wallet. Expired codes are retired on use.",
+   "params": {
+    "code_length": {
+     "type": "number",
+     "default": 12,
+     "label": "Length of the generated voucher code"
+    }
+   }
+  },
+  {
+   "key": "instant_delivery",
+   "label": "Instant / quick-commerce delivery",
+   "domain": "qc",
+   "icon": "⚡",
+   "description": "Dark stores, serviceability, delivery slots and proof-of-delivery OTP. The promise is the store's own advertised minutes plus prep time.",
+   "params": {
+    "default_promise_minutes": {
+     "type": "number",
+     "default": 10,
+     "label": "Promise minutes a store advertises when unset"
+    },
+    "default_prep_minutes": {
+     "type": "number",
+     "default": 4,
+     "label": "Prep minutes added to every promise"
+    },
+    "default_radius_km": {
+     "type": "number",
+     "default": 3,
+     "label": "Service radius for geo resolution when unset"
+    },
+    "promise_includes_prep": {
+     "type": "bool",
+     "default": true,
+     "label": "The shown promise is store minutes + prep"
+    },
+    "otp_length": {
+     "type": "number",
+     "default": 6,
+     "label": "Digits in a proof-of-delivery OTP"
+    }
+   }
+  },
+  {
+   "key": "store_inventory",
+   "label": "Store-inventory pinning",
+   "domain": "qc",
+   "icon": "📍",
+   "description": "Per-store stock pinning so a dark store cannot oversell. Safety stock is held back from the sellable count.",
+   "params": {
+    "reserve_at_pin": {
+     "type": "bool",
+     "default": true,
+     "label": "Reserve the units when a cart is pinned to a store"
+    },
+    "consume_on_delivery": {
+     "type": "bool",
+     "default": true,
+     "label": "Decrement the store's qty when a run is delivered"
+    }
+   }
+  },
+  {
+   "key": "dispatch_batching",
+   "label": "Dispatch batching & PoD",
+   "domain": "qc",
+   "icon": "🧺",
+   "description": "Batch orders onto one rider for one slot and close delivery with an OTP handshake.",
+   "params": {
+    "release_slot_on_delivery": {
+     "type": "bool",
+     "default": true,
+     "label": "Return the slot seat when the run closes"
+    },
+    "rider_goes_online_after": {
+     "type": "bool",
+     "default": true,
+     "label": "A rider returns to online after delivering"
+    }
+   }
+  },
+  {
+   "key": "trade_assurance",
+   "label": "Trade assurance",
+   "domain": "trade",
+   "icon": "🤝",
+   "description": "Order-level escrow with milestones: funds release to the seller only when the buyer confirms receipt.",
+   "params": {
+    "assurance_fee_pct": {
+     "type": "number",
+     "default": 0.02,
+     "label": "Assurance fee as a fraction of the order (0.02 = 2%)",
+     "unit": "fraction"
+    },
+    "default_milestones": {
+     "type": "json",
+     "default": [
+      "paid",
+      "production",
+      "shipped",
+      "delivered"
+     ],
+     "label": "Milestone sequence when none is supplied"
+    }
+   }
+  },
+  {
+   "key": "gold_supplier",
+   "label": "Gold-supplier membership",
+   "domain": "trade",
+   "icon": "🥇",
+   "description": "Paid supplier memberships with a verification level that drives storefront badges.",
+   "params": {
+    "default_tier": {
+     "type": "text",
+     "default": "gold",
+     "label": "Tier when none is supplied"
+    }
+   }
+  },
+  {
+   "key": "company_verification",
+   "label": "Company verification audit",
+   "domain": "trade",
+   "icon": "🔍",
+   "description": "An audit of a supplier's identity and export record; approval stamps badges and activates the membership.",
+   "params": {
+    "approval_activates_membership": {
+     "type": "bool",
+     "default": true,
+     "label": "An approved audit marks the supplier's gold membership verified"
+    }
+   }
+  },
+  {
+   "key": "export_documents",
+   "label": "Export / customs documents",
+   "domain": "trade",
+   "icon": "📄",
+   "description": "Generate commercial invoices, packing lists, bills of lading and certificates deterministically from the order's own fields.",
+   "params": {
+    "default_doc_kind": {
+     "type": "text",
+     "default": "commercial_invoice",
+     "label": "Document kind when none is supplied"
+    },
+    "default_incoterms": {
+     "type": "text",
+     "default": "EXW",
+     "label": "Incoterms when none is supplied"
+    },
+    "default_origin": {
+     "type": "text",
+     "default": "US",
+     "label": "Origin country when none is supplied"
+    }
+   }
+  },
+  {
+   "key": "letters_of_credit",
+   "label": "Letters of credit",
+   "domain": "trade",
+   "icon": "🏦",
+   "description": "Issue, present and settle an LC. A clean presentation pays; a discrepant one is recorded, not thrown.",
+   "params": {
+    "presentable_statuses": {
+     "type": "json",
+     "default": [
+      "issued",
+      "advised",
+      "confirmed"
+     ],
+     "label": "LC statuses from which a presentation is allowed"
+    }
+   }
+  },
+  {
+   "key": "rfq_bidding",
+   "label": "RFQ multi-seller bidding",
+   "domain": "trade",
+   "icon": "💬",
+   "description": "Suppliers quote against a buyer's RFQ; quotes rank by unit price then lead time. Accepting one closes the rest.",
+   "params": {
+    "rank_by": {
+     "type": "json",
+     "default": [
+      "unit_price",
+      "lead_days"
+     ],
+     "label": "Columns the ranking orders by, ascending"
+    },
+    "default_validity_days": {
+     "type": "number",
+     "default": 30,
+     "label": "Quote validity when none is supplied"
+    }
+   }
+  },
+  {
+   "key": "reverse_auction",
+   "label": "Tender reverse auction",
+   "domain": "trade",
+   "icon": "🔨",
+   "description": "Open tenders take sealed bids and rank them lowest-first; awarding rejects every other bid.",
+   "params": {
+    "mirror_to_tender_column": {
+     "type": "bool",
+     "default": true,
+     "label": "Keep the legacy tenders.bids column in sync for the existing console"
+    }
+   }
+  },
+  {
+   "key": "segment_pricing",
+   "label": "Segment price lists",
+   "domain": "trade",
+   "icon": "🏷️",
+   "description": "Per-segment prices with quantity tiers; the storefront resolves the buyer's segment and reads the override.",
+   "params": {
+    "best_price_wins": {
+     "type": "bool",
+     "default": true,
+     "label": "When several tiers fit, the lowest price wins"
+    }
+   }
+  },
+  {
+   "key": "moq_enforcement",
+   "label": "MOQ enforcement",
+   "domain": "trade",
+   "icon": "≥",
+   "description": "The cart must respect each line's minimum order quantity — from the product, the supplier link or the price list.",
+   "params": {
+    "default_moq": {
+     "type": "number",
+     "default": 1,
+     "label": "MOQ when no source declares one"
+    }
+   }
+  },
+  {
+   "key": "reviews",
+   "label": "Product reviews",
+   "domain": "storefront",
+   "icon": "⭐",
+   "description": "Shopper-written product reviews with ratings, replies and moderation.",
+   "params": {
+    "moderation": {
+     "type": "bool",
+     "default": false,
+     "label": "A review is published only after a moderator approves it"
+    }
+   },
+   "settings_atom": true
+  },
+  {
+   "key": "qna",
+   "label": "Questions & Answers",
+   "domain": "storefront",
+   "icon": "❓",
+   "description": "Shoppers ask and answer questions on a product page.",
+   "params": {
+    "buyer_answers": {
+     "type": "bool",
+     "default": true,
+     "label": "Other shoppers may answer a question, not only staff"
+    }
+   },
+   "settings_atom": true
+  },
+  {
+   "key": "deals",
+   "label": "Deals page & strip",
+   "domain": "storefront",
+   "icon": "🏷️",
+   "description": "The /deals page, the header deal link and the storefront offers strip.",
+   "params": {},
+   "settings_atom": true
+  },
+  {
+   "key": "coupons",
+   "label": "Promo codes",
+   "domain": "storefront",
+   "icon": "🎟️",
+   "description": "Shopper-redeemable coupon codes at cart and checkout. Platform policy may refuse this independently.",
+   "params": {},
+   "settings_atom": true,
+   "policy": "couponsAllowed",
+   "policy_message": "Coupons are disabled by platform policy (Platform → Provisioning)"
+  },
+  {
+   "key": "gift_cards",
+   "label": "Gift cards & balance",
+   "domain": "storefront",
+   "icon": "🎁",
+   "description": "The gift-cards page, the gift-balance line in checkout and the wallet top-up path.",
+   "params": {},
+   "settings_atom": true
+  },
+  {
+   "key": "registry",
+   "label": "Registries",
+   "domain": "storefront",
+   "icon": "📋",
+   "description": "Wish-list style product registries a shopper shares by link.",
+   "params": {},
+   "settings_atom": true
+  },
+  {
+   "key": "customer_service",
+   "label": "Client care",
+   "domain": "storefront",
+   "icon": "🎧",
+   "description": "The customer-service page and the shopper-facing contact channel.",
+   "params": {},
+   "settings_atom": true
+  },
+  {
+   "key": "save_for_later",
+   "label": "Save for later",
+   "domain": "storefront",
+   "icon": "📌",
+   "description": "Moving a cart line to a saved list and back.",
+   "params": {},
+   "settings_atom": true
+  },
+  {
+   "key": "countdown",
+   "label": "Deal countdown",
+   "domain": "storefront",
+   "icon": "⏳",
+   "description": "A live countdown badge on time-limited offers.",
+   "params": {},
+   "settings_atom": true
+  },
+  {
+   "key": "suggestions",
+   "label": "Search suggestions",
+   "domain": "storefront",
+   "icon": "💡",
+   "description": "Type-ahead suggestions on the storefront search box.",
+   "params": {
+    "max": {
+     "type": "number",
+     "default": 8,
+     "label": "Suggestions shown"
+    }
+   },
+   "settings_atom": true
+  },
+  {
+   "key": "buy_now",
+   "label": "Buy now",
+   "domain": "storefront",
+   "icon": "⚡",
+   "description": "Skip the cart: a product's Buy Now goes straight to checkout.",
+   "params": {},
+   "settings_atom": true
+  },
+  {
+   "key": "fiscal_selection",
+   "label": "Fiscal context picker",
+   "domain": "storefront",
+   "icon": "🧾",
+   "description": "Customer-facing selection of a tax/invoice context at checkout. Platform policy may refuse this independently.",
+   "params": {},
+   "settings_atom": true,
+   "seed_enabled": false,
+   "policy": "fiscalContextsAllowed",
+   "policy_message": "Customer-facing fiscal context selection is disabled by platform policy"
+  },
+  {
+   "key": "subscribe_save",
+   "label": "Subscribe & Save",
+   "domain": "storefront",
+   "icon": "🔁",
+   "description": "Recurring purchase schedules with a discount and a cadence.",
+   "params": {
+    "discount_pct": {
+     "type": "number",
+     "default": 5,
+     "label": "Default discount for a scheduled purchase",
+     "unit": "%"
+    }
+   },
+   "settings_atom": true
+  },
+  {
+   "key": "membership",
+   "label": "Membership program",
+   "domain": "storefront",
+   "icon": "🎟️",
+   "description": "Paid or free tiers with perks applied at checkout (free shipping, bonus credit).",
+   "params": {
+    "bonus_pct": {
+     "type": "number",
+     "default": 0,
+     "label": "Checkout bonus credit a member earns",
+     "unit": "%"
+    }
+   },
+   "settings_atom": true
+  },
+  {
+   "key": "fraud_screen",
+   "label": "Risk screening",
+   "domain": "storefront",
+   "icon": "🛡️",
+   "description": "Order-time risk screening that may flag or block a suspicious order.",
+   "params": {
+    "block_above": {
+     "type": "number",
+     "default": 90,
+     "label": "A risk score above this blocks the order"
+    }
+   },
+   "settings_atom": true
+  },
+  {
+   "key": "experiments",
+   "label": "Experiments",
+   "domain": "storefront",
+   "icon": "🧪",
+   "description": "A/B experiment assignment for storefront surfaces.",
+   "params": {},
+   "settings_atom": true
+  },
+  {
+   "key": "planning",
+   "label": "Supply-chain planning",
+   "domain": "storefront",
+   "icon": "🗺️",
+   "description": "Purchase suggestions, replenishment and demand planning for the store's buyers.",
+   "params": {},
+   "settings_atom": true
+  },
+  {
+   "key": "admin_portal",
+   "label": "Admin portal link",
+   "domain": "storefront",
+   "icon": "⬡",
+   "description": "The 'Admin Console' link shown to a store's own staff on the storefront.",
+   "params": {},
+   "settings_atom": true
+  },
+  {
+   "key": "ride_hailing",
+   "label": "Ride hailing",
+   "domain": "mobility",
+   "icon": "🚗",
+   "description": "The ride lifecycle: request → accept → arrive → trip start → complete/cancel, with fare construction and per-state cancellation fees.",
+   "params": {
+    "base_fare": {
+     "type": "number",
+     "default": 2.5,
+     "label": "Base fare (pickup charge)"
+    },
+    "per_km_rate": {
+     "type": "number",
+     "default": 1.2,
+     "label": "Rate per kilometre"
+    },
+    "per_min_rate": {
+     "type": "number",
+     "default": 0.35,
+     "label": "Rate per minute"
+    },
+    "min_fare": {
+     "type": "number",
+     "default": 5,
+     "label": "Floor below which a completed fare is not charged"
+    },
+    "booking_fee": {
+     "type": "number",
+     "default": 0.5,
+     "label": "Fixed platform booking fee added to every fare"
+    },
+    "platform_take_rate_pct": {
+     "type": "number",
+     "default": 15,
+     "label": "Platform commission on a driver's fare",
+     "unit": "%"
+    },
+    "cancel_fee_accepted": {
+     "type": "number",
+     "default": 1,
+     "label": "Cancellation fee once a driver accepted"
+    },
+    "cancel_fee_midtrip": {
+     "type": "number",
+     "default": 5,
+     "label": "Cancellation fee once the trip started"
+    }
+   }
+  },
+  {
+   "key": "dynamic_pricing",
+   "label": "Surge / dynamic pricing",
+   "domain": "mobility",
+   "icon": "📈",
+   "description": "A multiplier raised by active surge zones and by the live demand/supply ratio, capped by configuration.",
+   "params": {
+    "surge_cap_multiplier": {
+     "type": "number",
+     "default": 3,
+     "label": "The multiplier is never raised above this ceiling"
+    },
+    "demand_supply_enabled": {
+     "type": "bool",
+     "default": true,
+     "label": "Raise the multiplier from the live open-rides / idle-drivers ratio"
+    },
+    "demand_supply_step": {
+     "type": "number",
+     "default": 1,
+     "label": "Each whole step of ratio above 1 adds one increment"
+    },
+    "demand_supply_bps": {
+     "type": "number",
+     "default": 15,
+     "label": "Points added per step (15 = +0.15%)",
+     "unit": "bps"
+    },
+    "demand_supply_max_ratio": {
+     "type": "number",
+     "default": 3,
+     "label": "The ratio assumed when no driver is idle"
+    }
+   }
+  },
+  {
+   "key": "dispatch",
+   "label": "Dispatch & matching",
+   "domain": "mobility",
+   "icon": "🛰️",
+   "description": "Match a request to the nearest idle driver of the requested kind, with a search radius, ETA construction and auto-dispatch.",
+   "params": {
+    "auto_dispatch": {
+     "type": "bool",
+     "default": true,
+     "label": "Assign a driver automatically on request (off = a manual dispatcher works the queue)"
+    },
+    "match_radius_km": {
+     "type": "number",
+     "default": 5,
+     "label": "Maximum distance a candidate driver may be",
+     "unit": "km"
+    },
+    "eta_per_km_minutes": {
+     "type": "number",
+     "default": 3,
+     "label": "ETA minutes per km of approach distance"
+    },
+    "eta_pickup_buffer_minutes": {
+     "type": "number",
+     "default": 2,
+     "label": "Flat minutes added to every ETA"
+    },
+    "unknown_position_penalty_km": {
+     "type": "number",
+     "default": 2,
+     "label": "Distance assumed for a driver with no last-known position",
+     "unit": "km"
+    },
+    "city_centre_offset_km": {
+     "type": "number",
+     "default": 0,
+     "label": "Subtracted from a driver's stored city distance",
+     "unit": "km"
+    }
+   }
+  },
+  {
+   "key": "fleet_management",
+   "label": "Fleet & driver management",
+   "domain": "mobility",
+   "icon": "🚙",
+   "description": "Drivers and vehicles: onboarding, online/offline state, vehicle kinds, maintenance state and the health that dispatch ranks on.",
+   "params": {
+    "driver_kinds": {
+     "type": "json",
+     "default": [
+      "car",
+      "suv",
+      "bike",
+      "auto",
+      "van"
+     ],
+     "label": "Vehicle kinds the console offers"
+    },
+    "min_rating_to_dispatch": {
+     "type": "number",
+     "default": 4,
+     "label": "A driver below this rating is held out of dispatch"
+    }
+   }
+  },
+  {
+   "key": "workforce",
+   "label": "HRMS & payroll",
+   "domain": "operations",
+   "icon": "🧑‍💼",
+   "description": "Employees, attendance and the payroll run: base + overtime + allowances, less configured deductions and tax, pro-rated by worked days.",
+   "params": {
+    "standard_hours_per_day": {
+     "type": "number",
+     "default": 8,
+     "label": "Standard hours before overtime begins"
+    },
+    "overtime_multiplier": {
+     "type": "number",
+     "default": 1.5,
+     "label": "Overtime pay multiple of the hourly rate"
+    },
+    "allowance_amount": {
+     "type": "number",
+     "default": 0,
+     "label": "Flat allowance added to every payslip"
+    },
+    "deduction_flat": {
+     "type": "number",
+     "default": 0,
+     "label": "Flat deduction before tax"
+    },
+    "deduction_pct": {
+     "type": "number",
+     "default": 0,
+     "label": "Deduction as a fraction of gross",
+     "unit": "%"
+    },
+    "tax_rate_pct": {
+     "type": "number",
+     "default": 0,
+     "label": "Tax applied to the taxable amount",
+     "unit": "%"
+    }
+   }
+  },
+  {
+   "key": "procurement",
+   "label": "Procurement & SCM",
+   "domain": "operations",
+   "icon": "🛒",
+   "description": "Purchase requests with lines and an approval gate: below the threshold a request self-approves, above it a sign-off is required before the status can advance.",
+   "params": {
+    "approval_threshold": {
+     "type": "number",
+     "default": 0,
+     "label": "A request costing more than this needs an approval row (0 = no gate)"
+    },
+    "default_currency": {
+     "type": "text",
+     "default": "USD",
+     "label": "Currency a purchase request is estimated in"
+    }
+   }
+  },
+  {
+   "key": "manufacturing",
+   "label": "Manufacturing",
+   "domain": "operations",
+   "icon": "🏭",
+   "description": "Work orders consuming a bill of materials, completing at a configured yield with a configured scrap loss, and posting the finished good to inventory.",
+   "params": {
+    "yield_pct": {
+     "type": "number",
+     "default": 100,
+     "label": "Good units as a share of the run",
+     "unit": "%"
+    },
+    "scrap_pct": {
+     "type": "number",
+     "default": 0,
+     "label": "Units lost to scrap",
+     "unit": "%"
+    },
+    "backflush": {
+     "type": "bool",
+     "default": true,
+     "label": "Consume the BOM components on completion rather than on release"
+    }
+   }
+  },
+  {
+   "key": "projects",
+   "label": "Projects & approvals",
+   "domain": "operations",
+   "icon": "📐",
+   "description": "Projects, tasks and time-logging that accrues to a project's spend at a configured internal cost rate, plus the approval chain gating operational actions.",
+   "params": {
+    "internal_cost_per_hour": {
+     "type": "number",
+     "default": 0,
+     "label": "Cost rate applied to logged hours (0 = time is free)",
+     "unit": "/hr"
+    },
+    "approval_levels": {
+     "type": "number",
+     "default": 1,
+     "label": "Sign-off levels an approval passes through"
+    }
+   }
+  },
+  {
+   "key": "wish_lists",
+   "label": "Wish lists",
+   "domain": "shopper",
+   "icon": "💝",
+   "description": "Shoppers keep named lists of products — private, shared by link or public. What a kind of list is and what each visibility means are registry rows (listKinds, listVisibilities).",
+   "params": {
+    "max_lists": {
+     "type": "number",
+     "default": 20,
+     "label": "Lists one shopper may keep"
+    },
+    "max_items": {
+     "type": "number",
+     "default": 200,
+     "label": "Items one list may hold"
+    },
+    "allow_sharing": {
+     "type": "bool",
+     "default": true,
+     "label": "Shoppers may share a list by link"
+    },
+    "allow_public": {
+     "type": "bool",
+     "default": true,
+     "label": "Shoppers may make a list public"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "product_alerts",
+   "label": "Price & stock alerts",
+   "domain": "shopper",
+   "icon": "🔔",
+   "description": "A shopper watches a product and is told when its price drops, reaches their target, or it is back in stock. Each kind of alert is an alertKinds row naming its trigger and its message.",
+   "params": {
+    "min_drop_pct": {
+     "type": "number",
+     "default": 5,
+     "label": "Smallest drop that alerts",
+     "unit": "%"
+    },
+    "max_watches": {
+     "type": "number",
+     "default": 50,
+     "label": "Active alerts one shopper may keep"
+    },
+    "cooldown_hours": {
+     "type": "number",
+     "default": 24,
+     "label": "Hours before one alert may fire again"
+    },
+    "rearm": {
+     "type": "bool",
+     "default": true,
+     "label": "A fired alert keeps watching from the new price"
+    },
+    "email": {
+     "type": "bool",
+     "default": true,
+     "label": "Also email the shopper"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "pickup_points",
+   "label": "Pickup points & lockers",
+   "domain": "shopper",
+   "icon": "📍",
+   "description": "Shoppers choose a locker, counter or store at checkout instead of a home address and collect with a one-time code. The kinds of point are pickupKinds rows; holding time, fee and code length are tuned here.",
+   "params": {
+    "fee": {
+     "type": "number",
+     "default": 0,
+     "label": "Pickup fee (store base currency)"
+    },
+    "free_shipping_applies": {
+     "type": "bool",
+     "default": true,
+     "label": "Free-shipping rules also waive the pickup fee"
+    },
+    "hold_days": {
+     "type": "number",
+     "default": 7,
+     "label": "Days a parcel waits once it is ready"
+    },
+    "code_length": {
+     "type": "number",
+     "default": 6,
+     "label": "Digits in a pickup code"
+    },
+    "max_attempts": {
+     "type": "number",
+     "default": 5,
+     "label": "Wrong codes before a parcel locks"
+    },
+    "default_eta_days": {
+     "type": "number",
+     "default": 3,
+     "label": "Days to reach a point that sets none"
+    },
+    "email_on_ready": {
+     "type": "bool",
+     "default": true,
+     "label": "Email the shopper when the parcel is ready"
+    },
+    "notify_kind": {
+     "type": "text",
+     "default": "pickup_ready",
+     "label": "Notification kind sent when a parcel is ready"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "rich_content",
+   "label": "Rich product content",
+   "domain": "marketplace",
+   "icon": "✨",
+   "description": "Brand-authored modules (banners, image-and-text, feature lists, comparison tables, Q&A) below the product details. Module kinds and their fields are contentModules rows; content can be reviewed before it goes live.",
+   "params": {
+    "require_approval": {
+     "type": "bool",
+     "default": true,
+     "label": "Content is reviewed before it goes live"
+    },
+    "max_modules": {
+     "type": "number",
+     "default": 7,
+     "label": "Modules on one product"
+    },
+    "brand_owner_only": {
+     "type": "bool",
+     "default": false,
+     "label": "Only the brand's registered owner may publish"
+    }
+   }
+  },
+  {
+   "key": "brand_registry",
+   "label": "Brand registry",
+   "domain": "marketplace",
+   "icon": "™️",
+   "description": "A seller proves it owns a brand; once approved it may report counterfeit or infringing offers, which staff uphold or dismiss. Upholding moves the offending offer to the offer state named here.",
+   "params": {
+    "require_trademark": {
+     "type": "bool",
+     "default": true,
+     "label": "A claim must carry a trademark number"
+    },
+    "one_owner_per_brand": {
+     "type": "bool",
+     "default": true,
+     "label": "A brand has at most one approved owner"
+    },
+    "offer_state_on_infringement": {
+     "type": "text",
+     "default": "suspended",
+     "label": "Offer state an upheld report moves the offer to"
+    },
+    "badge": {
+     "type": "bool",
+     "default": true,
+     "label": "Show a registered-brand badge on product pages"
+    }
+   }
+  },
+  {
+   "key": "sponsored_ads",
+   "label": "Sponsored products",
+   "domain": "marketplace",
+   "icon": "📢",
+   "description": "Sellers' ads compete in a second-price auction for slots in search results and other surfaces, targeted by keyword and paid per click, thousand impressions or sale. Budgets and schedules are enforced.",
+   "params": {
+    "slots": {
+     "type": "number",
+     "default": 3,
+     "label": "Sponsored slots per surface"
+    },
+    "reserve_price": {
+     "type": "number",
+     "default": 0,
+     "label": "Lowest bid that may serve (per charged unit)"
+    },
+    "pctr_baseline": {
+     "type": "number",
+     "default": 0.05,
+     "label": "Predicted click rate of a new ad"
+    },
+    "pctr_spend_lift": {
+     "type": "number",
+     "default": 0.05,
+     "label": "Most an ad's past spend can add to its predicted click rate"
+    },
+    "spend_divisor": {
+     "type": "number",
+     "default": 10000,
+     "label": "Past spend is divided by this and added to the predicted click rate (up to the lift)"
+    },
+    "runner_up_factor": {
+     "type": "number",
+     "default": 0.5,
+     "label": "Share of its own score the last ad pays when no one bids below it"
+    },
+    "enforce_budget": {
+     "type": "bool",
+     "default": true,
+     "label": "An ad stops serving once it has spent its budget"
+    },
+    "enforce_schedule": {
+     "type": "bool",
+     "default": true,
+     "label": "An ad serves only between its start and end"
+    },
+    "record_impressions": {
+     "type": "bool",
+     "default": true,
+     "label": "Serving an ad records an impression (charged under per-thousand bidding)"
+    },
+    "impression_event": {
+     "type": "text",
+     "default": "impression",
+     "label": "Ad event recorded when an ad is served (an adEventKinds row)"
+    },
+    "label": {
+     "type": "text",
+     "default": "Sponsored",
+     "label": "Label shown on an ad"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "product_options",
+   "label": "Product options",
+   "domain": "shopper",
+   "icon": "🧩",
+   "shopper": true,
+   "description": "Modifiers, add-ons and personalisation: option groups defined once, attached to any product, each value with its own price change. What a kind of group does is an optionKinds row. Kinds of group also cover services done for the item (installation, assembly), plans that run for months (warranty, protection), the shopper’s own artwork proofed before making, and samples at their own price.",
+   "params": {
+    "max_text_length": {
+     "type": "number",
+     "default": 60,
+     "label": "Longest personal text a shopper may enter"
+    }
+   }
+  },
+  {
+   "key": "bookings",
+   "label": "Bookings",
+   "domain": "shopper",
+   "icon": "📅",
+   "shopper": true,
+   "description": "Appointments, stays, rentals and experiences: resources with weekly hours in their own time zone and a capacity; a shopper holds a time, pays for it, and staff check them in. Modes and resource kinds are registry rows.",
+   "params": {
+    "hold_minutes": {
+     "type": "number",
+     "default": 15,
+     "label": "Minutes a chosen time is held while the shopper checks out"
+    },
+    "cancel_cutoff_hours": {
+     "type": "number",
+     "default": 24,
+     "label": "Hours before the start a shopper may still cancel"
+    },
+    "max_horizon_days": {
+     "type": "number",
+     "default": 365,
+     "label": "Furthest ahead anything may be booked"
+    }
+   }
+  },
+  {
+   "key": "price_negotiation",
+   "label": "Make an offer",
+   "domain": "marketplace",
+   "icon": "🤝",
+   "shopper": true,
+   "description": "A shopper offers a price; the seller accepts, counters or declines; an agreed price is bought within a window. Thresholds can accept or decline automatically.",
+   "params": {
+    "min_offer_pct": {
+     "type": "number",
+     "default": 50,
+     "label": "Lowest offer, as a share of the list price",
+     "unit": "%"
+    },
+    "auto_accept_pct": {
+     "type": "number",
+     "default": 0,
+     "label": "Offers at or above this share are accepted at once (0 = never)",
+     "unit": "%"
+    },
+    "auto_decline_pct": {
+     "type": "number",
+     "default": 0,
+     "label": "Offers below this share are declined at once (0 = never)",
+     "unit": "%"
+    },
+    "expiry_hours": {
+     "type": "number",
+     "default": 48,
+     "label": "Hours an offer or counter stays open"
+    },
+    "buy_within_hours": {
+     "type": "number",
+     "default": 24,
+     "label": "Hours to buy at an agreed price"
+    },
+    "max_open_per_shopper": {
+     "type": "number",
+     "default": 20,
+     "label": "Open offers one shopper may have"
+    }
+   }
+  },
+  {
+   "key": "auctions",
+   "label": "Auctions",
+   "domain": "marketplace",
+   "icon": "🔨",
+   "shopper": true,
+   "description": "Timed auctions with automatic (proxy) bidding, a reserve, a buy-it-now price and protection against last-second bids; the winner pays within a window.",
+   "params": {
+    "increments": {
+     "type": "json",
+     "default": [
+      [
+       0,
+       0.5
+      ],
+      [
+       20,
+       1
+      ],
+      [
+       100,
+       2.5
+      ],
+      [
+       500,
+       5
+      ],
+      [
+       1000,
+       10
+      ],
+      [
+       5000,
+       25
+      ]
+     ],
+     "label": "Bid increments: [from price, step] pairs"
+    },
+    "anti_snipe_minutes": {
+     "type": "number",
+     "default": 2,
+     "label": "A bid this close to the end extends the auction"
+    },
+    "extend_minutes": {
+     "type": "number",
+     "default": 2,
+     "label": "Minutes an auction is extended by"
+    },
+    "payment_window_hours": {
+     "type": "number",
+     "default": 48,
+     "label": "Hours the winner has to pay"
+    },
+    "buy_now_until_first_bid": {
+     "type": "bool",
+     "default": true,
+     "label": "Buy-it-now disappears once anyone bids"
+    },
+    "max_duration_days": {
+     "type": "number",
+     "default": 30,
+     "label": "Longest an auction may run"
+    }
+   }
+  },
+  {
+   "key": "peer_listings",
+   "label": "Shopper selling",
+   "domain": "marketplace",
+   "icon": "🏷️",
+   "shopper": true,
+   "description": "Any signed-in shopper lists their own items — used, refurbished or new — reviewed before they go on sale; the store keeps a commission and credits the rest after a holding period.",
+   "params": {
+    "require_review": {
+     "type": "bool",
+     "default": true,
+     "label": "Listings are reviewed before they go on sale"
+    },
+    "commission_pct": {
+     "type": "number",
+     "default": 10,
+     "label": "Store commission on a sale",
+     "unit": "%"
+    },
+    "hold_days": {
+     "type": "number",
+     "default": 7,
+     "label": "Days a sale's proceeds are held before they are credited"
+    },
+    "max_live": {
+     "type": "number",
+     "default": 50,
+     "label": "Listings one shopper may have on sale"
+    },
+    "seller_role": {
+     "type": "text",
+     "default": "individual",
+     "label": "Seller role a shopper is registered under (a sellerRoles row)"
+    },
+    "source_kind": {
+     "type": "text",
+     "default": "peer",
+     "label": "Product source recorded for a listed item"
+    },
+    "earnings_kind": {
+     "type": "text",
+     "default": "sale_proceeds",
+     "label": "Wallet ledger kind used to credit proceeds"
+    }
+   }
+  },
+  {
+   "key": "conversations",
+   "label": "Buyer–seller messages",
+   "domain": "marketplace",
+   "icon": "💬",
+   "shopper": true,
+   "description": "Conversations between a shopper and whoever sells a product, an order or a booking — the store or another shopper. What a conversation may be about is a conversationSubjects row; staff can review and flag.",
+   "params": {
+    "max_length": {
+     "type": "number",
+     "default": 2000,
+     "label": "Longest message"
+    },
+    "hide_contact_details": {
+     "type": "bool",
+     "default": true,
+     "label": "Hide email addresses and phone numbers in messages"
+    },
+    "staff_can_read": {
+     "type": "bool",
+     "default": true,
+     "label": "Staff can read every conversation"
+    }
+   }
+  },
+  {
+   "key": "group_buying",
+   "label": "Group buying",
+   "domain": "shopper",
+   "icon": "👥",
+   "shopper": true,
+   "description": "A lower price that applies when enough shoppers join before a deadline; if the group falls short, every member's order is cancelled and refunded.",
+   "params": {
+    "max_qty_per_member": {
+     "type": "number",
+     "default": 5,
+     "label": "Most one member may buy"
+    },
+    "close_when_full": {
+     "type": "bool",
+     "default": true,
+     "label": "A campaign closes as soon as it is full"
+    },
+    "refund_kind": {
+     "type": "text",
+     "default": "refund",
+     "label": "Wallet ledger kind used to refund a failed group"
+    }
+   }
+  },
+  {
+   "key": "substitutions",
+   "label": "Substitutions",
+   "domain": "shopper",
+   "icon": "🔄",
+   "shopper": true,
+   "description": "When an item is unavailable at picking: the shopper's own choice per line — refund, best match, ask me, or a named item — and the picker's proposal; a cheaper substitute refunds the difference. Policies are substitutionPolicies rows.",
+   "params": {
+    "charge_more": {
+     "type": "bool",
+     "default": false,
+     "label": "Charge the shopper when a substitute costs more"
+    },
+    "refund_kind": {
+     "type": "text",
+     "default": "refund",
+     "label": "Wallet ledger kind used for a refunded difference"
+    }
+   }
+  },
+  {
+   "key": "price_match",
+   "label": "Price match",
+   "domain": "shopper",
+   "icon": "🏷️",
+   "shopper": true,
+   "description": "A shopper shows the item cheaper elsewhere; staff approve the difference, credited to their wallet (a caseKinds row).",
+   "params": {}
+  },
+  {
+   "key": "prescriptions",
+   "label": "Prescriptions",
+   "domain": "shopper",
+   "icon": "📄",
+   "shopper": true,
+   "description": "An item whose facts say it needs a prescription is bought only with an approved, still-valid prescription on its line (a caseKinds row that gates).",
+   "params": {}
+  },
+  {
+   "key": "practitioner_verification",
+   "label": "Practitioner verification",
+   "domain": "shopper",
+   "icon": "🪪",
+   "shopper": true,
+   "description": "A practitioner (a doctor, a lawyer, a consultant, a teacher) submits a licence or registration; staff verify it for the time the kind declares.",
+   "params": {}
+  },
+  {
+   "key": "lead_capture",
+   "label": "Enquiries",
+   "domain": "shopper",
+   "icon": "📨",
+   "shopper": true,
+   "description": "A shopper asks about an item (a vehicle, a property, a service); the seller follows the enquiry up to won or lost.",
+   "params": {}
+  },
+  {
+   "key": "exchange_offers",
+   "label": "Trade-in",
+   "domain": "shopper",
+   "icon": "♻️",
+   "shopper": true,
+   "description": "A shopper describes what they trade in; staff value it, and the value comes off one item in their bag.",
+   "params": {}
+  },
+  {
+   "key": "service_fees",
+   "label": "Service fees",
+   "domain": "shopper",
+   "icon": "🧾",
+   "shopper": true,
+   "description": "Fees a store adds to an order when their conditions hold — a small-order fee, a late-night fee, a service or packing fee — waived for members or with free shipping where the rule says, taxed or not.",
+   "params": {}
+  },
+  {
+   "key": "tips",
+   "label": "Tips",
+   "domain": "shopper",
+   "icon": "💝",
+   "shopper": true,
+   "description": "A tip the shopper adds for whoever serves them, among the amounts offered or their own up to a limit.",
+   "params": {
+    "choices": {
+     "type": "text",
+     "default": "2,5,10",
+     "label": "Tip amounts offered (comma separated)"
+    },
+    "max": {
+     "type": "number",
+     "default": 50,
+     "label": "Largest tip"
+    },
+    "label": {
+     "type": "text",
+     "default": "Tip",
+     "label": "What the tip line is called"
+    }
+   }
+  },
+  {
+   "key": "media_sessions",
+   "label": "Live audio and video",
+   "domain": "shopper",
+   "icon": "🎥",
+   "shopper": true,
+   "description": "A booked consultation, class or call held live, by audio or video: carried by the platform itself (the two browsers connect directly, the platform relaying only the handshake) or by a media connector from the Provider Registry.",
+   "params": {
+    "subject": {
+     "type": "text",
+     "default": "booking",
+     "label": "What a session belongs to"
+    },
+    "default_mode": {
+     "type": "text",
+     "default": "video_call",
+     "label": "The fulfilment mode a session takes when its booking names none"
+    },
+    "transport": {
+     "type": "text",
+     "default": "",
+     "label": "The connector that carries sessions (empty: the platform's own)"
+    },
+    "room_url": {
+     "type": "text",
+     "default": "",
+     "label": "A connector's room link, with {room} for the session's room"
+    },
+    "provider_kind": {
+     "type": "text",
+     "default": "media",
+     "label": "The Provider Registry kind media connectors are registered under"
+    },
+    "page": {
+     "type": "text",
+     "default": "session.html",
+     "label": "The page that holds a session on the platform's own transport"
+    },
+    "ice_servers": {
+     "type": "json",
+     "default": [],
+     "label": "Network relay servers the browsers may use (STUN/TURN)"
+    },
+    "signal_types": {
+     "type": "text",
+     "default": "offer,answer,candidate,bye",
+     "label": "What the two sides may hand each other"
+    },
+    "rate_basis_attr": {
+     "type": "text",
+     "default": "price_basis",
+     "label": "The item fact that says how it is charged"
+    },
+    "rate_basis_value": {
+     "type": "text",
+     "default": "per_minute",
+     "label": "The value of that fact for a price per minute"
+    },
+    "offering_side": {
+     "type": "text",
+     "default": "guest",
+     "label": "Which side makes the connection offer"
+    }
+   }
+  },
+  {
+   "key": "per_minute_billing",
+   "label": "Charged by the minute",
+   "domain": "shopper",
+   "icon": "⏱️",
+   "shopper": true,
+   "description": "A live session charged by the minute to the guest's wallet, at the item's price per minute or a default rate, in increments with a minimum — how communication itself is sold. Works on live sessions.",
+   "params": {
+    "default_rate": {
+     "type": "number",
+     "default": 1,
+     "label": "Rate per minute when the item names none"
+    },
+    "minimum_minutes": {
+     "type": "number",
+     "default": 1,
+     "label": "Minutes always charged"
+    },
+    "increment_seconds": {
+     "type": "number",
+     "default": 60,
+     "label": "Charged in steps of"
+    },
+    "ledger_kind": {
+     "type": "text",
+     "default": "redeem",
+     "label": "Wallet ledger kind for the charge"
+    }
+   }
+  },
+  {
+   "key": "try_and_buy",
+   "label": "Try and buy",
+   "domain": "shopper",
+   "icon": "👟",
+   "shopper": true,
+   "description": "An item taken on trial costs a deposit share at checkout; within the window the shopper keeps it (the rest is charged to their wallet) or returns it (the deposit comes back). What is not returned when the window closes is kept.",
+   "params": {
+    "deposit_percent": {
+     "type": "number",
+     "default": 0,
+     "label": "Share of the price paid at checkout (%)"
+    },
+    "window_days": {
+     "type": "number",
+     "default": 7,
+     "label": "Days to decide"
+    },
+    "max_qty": {
+     "type": "number",
+     "default": 3,
+     "label": "Most of one item on trial"
+    },
+    "allow_attr": {
+     "type": "text",
+     "default": "",
+     "label": "The item fact that allows a trial (empty: every item)"
+    },
+    "ledger_kind": {
+     "type": "text",
+     "default": "redeem",
+     "label": "Wallet ledger kind for the rest of the price"
+    },
+    "refund_kind": {
+     "type": "text",
+     "default": "refund",
+     "label": "Wallet ledger kind for a returned deposit"
+    }
+   }
+  },
+  {
+   "key": "licence_keys",
+   "label": "Licence keys",
+   "domain": "shopper",
+   "icon": "🔑",
+   "shopper": true,
+   "description": "An item whose facts carry the licence fact hands over one key per unit from the store's pool the moment it is ordered; staff are told when a pool runs low or out.",
+   "params": {
+    "fact": {
+     "type": "text",
+     "default": "licence",
+     "label": "The item fact that makes it deliver a licence key"
+    },
+    "low_stock": {
+     "type": "number",
+     "default": 5,
+     "label": "Warn staff when a pool holds fewer keys than"
+    }
+   }
+  },
+  {
+   "key": "lab_tests",
+   "label": "Lab tests",
+   "domain": "shopper",
+   "icon": "🧫",
+   "shopper": true,
+   "description": "An ordered lab test awaits its report; staff upload it within the due days and the shopper is told it is ready.",
+   "params": {
+    "fact": {
+     "type": "text",
+     "default": "lab_test",
+     "label": "The item fact that makes it a lab test"
+    },
+    "due_days": {
+     "type": "number",
+     "default": 3,
+     "label": "Days to upload a report before it shows as late"
+    }
+   }
+  },
+  {
+   "key": "course_progress",
+   "label": "Course progress",
+   "domain": "shopper",
+   "icon": "🎓",
+   "shopper": true,
+   "description": "An ordered course grants access at once and counts the lessons the shopper finishes.",
+   "params": {
+    "fact": {
+     "type": "text",
+     "default": "course",
+     "label": "The item fact that makes it a course"
+    },
+    "steps_fact": {
+     "type": "text",
+     "default": "lessons",
+     "label": "The item fact counting its lessons"
+    },
+    "access_url": {
+     "type": "text",
+     "default": "account.html?deliverable={id}",
+     "label": "Where the course opens, with {id} for the shopper's access"
+    }
+   }
+  },
+  {
+   "key": "health_records",
+   "label": "Health records",
+   "domain": "shopper",
+   "icon": "🩺",
+   "shopper": true,
+   "description": "The shopper's own vault of records (a prescription, a report, a scan) beside what their orders delivered; private, shared with a party for some days and taken back, every share recorded.",
+   "params": {
+    "vault_limit": {
+     "type": "number",
+     "default": 200,
+     "label": "Most records a shopper keeps"
+    },
+    "max_share_days": {
+     "type": "number",
+     "default": 90,
+     "label": "Longest a record may be shared for (days)"
+    }
+   }
+  },
+  {
+   "key": "installation_booking",
+   "label": "Installation booking",
+   "domain": "shopper",
+   "icon": "🔧",
+   "shopper": true,
+   "description": "Installation offered as an option on an item: chosen at the bag, it leaves a visit for staff to book and complete.",
+   "params": {
+    "earliest_days": {
+     "type": "number",
+     "default": 1,
+     "label": "Soonest a installation visit may be booked (days after the order)"
+    }
+   }
+  },
+  {
+   "key": "assembly_booking",
+   "label": "Assembly booking",
+   "domain": "shopper",
+   "icon": "🪛",
+   "shopper": true,
+   "description": "Assembly offered as an option on an item: chosen at the bag, it leaves a visit for staff to book and complete.",
+   "params": {
+    "earliest_days": {
+     "type": "number",
+     "default": 1,
+     "label": "Soonest a assembly visit may be booked (days after the order)"
+    }
+   }
+  },
+  {
+   "key": "extended_warranty",
+   "label": "Extended warranties",
+   "domain": "shopper",
+   "icon": "🛡️",
+   "shopper": true,
+   "description": "A plan covering an item for months (an extended warranty, a protection plan), sold as an option; in force from the order until its months run out.",
+   "params": {
+    "default_months": {
+     "type": "number",
+     "default": 12,
+     "label": "Months a plan runs when its value names none"
+    },
+    "max_months": {
+     "type": "number",
+     "default": 60,
+     "label": "Longest a plan may run (months)"
+    }
+   }
+  },
+  {
+   "key": "customisation_proofs",
+   "label": "Customisation proofs",
+   "domain": "shopper",
+   "icon": "🎨",
+   "shopper": true,
+   "description": "The shopper's own artwork taken as an option; staff send a proof, the shopper approves it or asks for changes, before anything is made.",
+   "params": {
+    "max_rounds": {
+     "type": "number",
+     "default": 3,
+     "label": "Most rounds of changes a shopper may ask for"
+    }
+   }
+  },
+  {
+   "key": "sample_orders",
+   "label": "Sample orders",
+   "domain": "shopper",
+   "icon": "🧪",
+   "shopper": true,
+   "description": "A sample of an item sold as an option at its own price, with a cap on how many a bag holds.",
+   "params": {
+    "max_qty": {
+     "type": "number",
+     "default": 2,
+     "label": "Most samples of one item a bag may hold"
+    }
+   }
+  }
+ ],
+ "PRESETS": [
+  {
+   "key": "blend_marketplace",
+   "label": "Marketplace blend",
+   "description": "A worked example: multi-seller competition with buyer protection and trade assurance — the composition a marketplace operator would recognise.",
+   "universes": [
+    "uv_marketplace",
+    "uv_marketplace_universe",
+    "uv_universal_commerce_architecture",
+    "uv_commerce_product",
+    "uv_seller_account"
+   ],
+   "capabilities": {
+    "buy_box": {
+     "params": {
+      "price_weight": 0.6,
+      "speed_weight": 0.25,
+      "trust_weight": 0.15
+     }
+    },
+    "seller_health": {
+     "params": {
+      "suspend_below": 40
+     }
+    },
+    "buyer_protection": {},
+    "smart_fulfilment": {},
+    "fba_inbound": {},
+    "escrow": {},
+    "split_payments": {},
+    "kyc": {},
+    "payment_links": {},
+    "bank_payouts": {},
+    "sponsored_ads": {},
+    "brand_registry": {},
+    "rich_content": {}
+   },
+   "capabilitiesWas": {
+    "buy_box": {
+     "params": {
+      "price_weight": 0.6,
+      "speed_weight": 0.25,
+      "trust_weight": 0.15
+     }
+    },
+    "seller_health": {
+     "params": {
+      "suspend_below": 40
+     }
+    },
+    "buyer_protection": {},
+    "smart_fulfilment": {},
+    "fba_inbound": {},
+    "escrow": {},
+    "split_payments": {},
+    "kyc": {},
+    "payment_links": {},
+    "bank_payouts": {}
+   }
+  },
+  {
+   "key": "blend_quick_commerce",
+   "label": "Quick-commerce blend",
+   "description": "A worked example: dark stores, a minutes-level promise, OTP proof-of-delivery and wallet rails — the composition a quick-commerce operator would recognise.",
+   "universes": [
+    "uv_delivery",
+    "uv_logistics_universe",
+    "uv_commerce_product",
+    "uv_marketplace"
+   ],
+   "capabilities": {
+    "instant_delivery": {
+     "params": {
+      "default_promise_minutes": 10,
+      "default_prep_minutes": 4,
+      "default_radius_km": 3
+     }
+    },
+    "store_inventory": {},
+    "dispatch_batching": {},
+    "qr_pay": {},
+    "upi_collect": {},
+    "p2p_transfer": {},
+    "gift_vouchers": {},
+    "substitutions": {}
+   },
+   "capabilitiesWas": {
+    "instant_delivery": {
+     "params": {
+      "default_promise_minutes": 10,
+      "default_prep_minutes": 4,
+      "default_radius_km": 3
+     }
+    },
+    "store_inventory": {},
+    "dispatch_batching": {},
+    "qr_pay": {},
+    "upi_collect": {},
+    "p2p_transfer": {},
+    "gift_vouchers": {}
+   }
+  },
+  {
+   "key": "blend_b2b_trade",
+   "label": "B2B trade blend",
+   "description": "A worked example: assurance escrow, memberships, verification audits, export documents, LCs and RFQ bidding — the composition a B2B-trade operator would recognise.",
+   "universes": [
+    "uv_marketplace",
+    "uv_procurement_universe",
+    "uv_seller_account",
+    "uv_supply_operations"
+   ],
+   "capabilities": {
+    "trade_assurance": {
+     "params": {
+      "assurance_fee_pct": 0.02
+     }
+    },
+    "gold_supplier": {},
+    "company_verification": {},
+    "export_documents": {},
+    "letters_of_credit": {},
+    "rfq_bidding": {},
+    "reverse_auction": {},
+    "segment_pricing": {},
+    "moq_enforcement": {}
+   }
+  },
+  {
+   "key": "blend_fintech",
+   "label": "Fintech rails blend",
+   "description": "A worked example: the full money rail set — UPI, QR, links, mandates, escrow, splits, KYC, payouts, BBPS, recharge, BNPL, lending, insurance and vouchers.",
+   "universes": [
+    "uv_fintech_engine_universe",
+    "uv_payments",
+    "uv_wallets",
+    "uv_lending",
+    "uv_insurance_product",
+    "uv_banking"
+   ],
+   "universesWas": [
+    "uv_marketplace_ecosystem",
+    "uv_commerce_product",
+    "uv_marketplace"
+   ],
+   "capabilities": {
+    "upi_collect": {},
+    "qr_pay": {},
+    "payment_links": {},
+    "mandates": {},
+    "escrow": {},
+    "split_payments": {},
+    "kyc": {},
+    "bank_payouts": {},
+    "bbps": {},
+    "recharge": {},
+    "p2p_transfer": {},
+    "bnpl": {},
+    "lending": {},
+    "insurance": {},
+    "gift_vouchers": {}
+   }
+  },
+  {
+   "key": "blend_mixed",
+   "label": "Mixed commerce blend",
+   "description": "Proof of composition: marketplace buy-box and buyer protection, quick-commerce dispatch and store pinning, and UPI rails from fintech — none of which comes from one vendor.",
+   "universes": [
+    "uv_marketplace",
+    "uv_commerce_product",
+    "uv_delivery"
+   ],
+   "capabilities": {
+    "buy_box": {
+     "params": {
+      "price_weight": 0.7,
+      "speed_weight": 0.2,
+      "trust_weight": 0.1
+     }
+    },
+    "buyer_protection": {},
+    "instant_delivery": {
+     "params": {
+      "default_promise_minutes": 15
+     }
+    },
+    "store_inventory": {},
+    "dispatch_batching": {},
+    "upi_collect": {},
+    "escrow": {},
+    "kyc": {}
+   }
+  },
+  {
+   "key": "blend_mobility",
+   "label": "Mobility blend",
+   "description": "A worked example: ride hailing with surge pricing, nearest-driver dispatch and a fleet registry — the composition a ride-hailing or delivery operator would recognise.",
+   "universes": [
+    "uv_mobility_universe",
+    "uv_ride_hailing",
+    "uv_dispatch",
+    "uv_fleet_management",
+    "uv_passenger_mobility"
+   ],
+   "capabilities": {
+    "ride_hailing": {
+     "params": {
+      "base_fare": 2.5,
+      "per_km_rate": 1.2,
+      "per_min_rate": 0.35,
+      "min_fare": 5,
+      "booking_fee": 0.5,
+      "platform_take_rate_pct": 15
+     }
+    },
+    "dynamic_pricing": {
+     "params": {
+      "surge_cap_multiplier": 3,
+      "demand_supply_enabled": true
+     }
+    },
+    "dispatch": {
+     "params": {
+      "auto_dispatch": true,
+      "match_radius_km": 5,
+      "eta_per_km_minutes": 3
+     }
+    },
+    "fleet_management": {
+     "params": {
+      "driver_kinds": [
+       "car",
+       "suv",
+       "bike",
+       "auto",
+       "van"
+      ],
+      "min_rating_to_dispatch": 4
+     }
+    }
+   }
+  },
+  {
+   "key": "blend_everything_store",
+   "label": "Everything-store blend",
+   "description": "A worked example: a multi-seller marketplace with the full shopper storefront — reviews, Q&A, deals with countdowns, promo codes, gift cards, registries, subscribe & save, a membership with free shipping, buy-now, save-for-later, risk screening — over fulfilment-centre inbound, seller payouts and pay-later credit.",
+   "universes": [
+    "uv_marketplace",
+    "uv_marketplace_universe",
+    "uv_universal_commerce_architecture",
+    "uv_commerce_product",
+    "uv_seller_account"
+   ],
+   "capabilities": {
+    "buy_box": {
+     "params": {
+      "price_weight": 0.6,
+      "speed_weight": 0.25,
+      "trust_weight": 0.15
+     }
+    },
+    "seller_health": {},
+    "buyer_protection": {},
+    "smart_fulfilment": {},
+    "fba_inbound": {},
+    "split_payments": {},
+    "bank_payouts": {},
+    "kyc": {},
+    "bnpl": {},
+    "gift_vouchers": {},
+    "reviews": {},
+    "qna": {},
+    "deals": {},
+    "countdown": {},
+    "coupons": {},
+    "gift_cards": {},
+    "registry": {},
+    "customer_service": {},
+    "save_for_later": {},
+    "suggestions": {},
+    "buy_now": {},
+    "subscribe_save": {},
+    "membership": {},
+    "fraud_screen": {},
+    "experiments": {},
+    "wish_lists": {},
+    "product_alerts": {},
+    "pickup_points": {},
+    "rich_content": {},
+    "brand_registry": {},
+    "sponsored_ads": {},
+    "product_options": {},
+    "bookings": {},
+    "price_negotiation": {},
+    "conversations": {},
+    "group_buying": {},
+    "substitutions": {}
+   },
+   "capabilitiesWas": {
+    "buy_box": {
+     "params": {
+      "price_weight": 0.6,
+      "speed_weight": 0.25,
+      "trust_weight": 0.15
+     }
+    },
+    "seller_health": {},
+    "buyer_protection": {},
+    "smart_fulfilment": {},
+    "fba_inbound": {},
+    "split_payments": {},
+    "bank_payouts": {},
+    "kyc": {},
+    "bnpl": {},
+    "gift_vouchers": {},
+    "reviews": {},
+    "qna": {},
+    "deals": {},
+    "countdown": {},
+    "coupons": {},
+    "gift_cards": {},
+    "registry": {},
+    "customer_service": {},
+    "save_for_later": {},
+    "suggestions": {},
+    "buy_now": {},
+    "subscribe_save": {},
+    "membership": {},
+    "fraud_screen": {},
+    "experiments": {}
+   }
+  },
+  {
+   "key": "blend_operations",
+   "label": "Operations blend",
+   "description": "A worked example: HRMS and payroll, procurement with an approval gate, manufacturing with yield and scrap, and projects with an approval chain — the composition an ERP operator would recognise.",
+   "universes": [
+    "uv_operations_universe",
+    "uv_erp",
+    "uv_payroll_run",
+    "uv_procurement_universe",
+    "uv_manufacturing",
+    "uv_projects"
+   ],
+   "capabilities": {
+    "workforce": {
+     "params": {
+      "standard_hours_per_day": 8,
+      "overtime_multiplier": 1.5,
+      "tax_rate_pct": 0
+     }
+    },
+    "procurement": {
+     "params": {
+      "approval_threshold": 0,
+      "default_currency": "USD"
+     }
+    },
+    "manufacturing": {
+     "params": {
+      "yield_pct": 100,
+      "scrap_pct": 0,
+      "backflush": true
+     }
+    },
+    "projects": {
+     "params": {
+      "approval_levels": 1,
+      "internal_cost_per_hour": 0
+     }
+    }
+   }
+  },
+  {
+   "key": "blend_omnichannel_retail",
+   "label": "Omnichannel retail blend",
+   "description": "A worked example: a retail chain selling online and through its shops — store stock, pickup at a shop or locker, fast local delivery, substitutions, memberships and repeat orders.",
+   "universes": [],
+   "capabilities": {
+    "reviews": {},
+    "qna": {},
+    "deals": {},
+    "coupons": {},
+    "gift_cards": {},
+    "wish_lists": {},
+    "product_alerts": {},
+    "customer_service": {},
+    "save_for_later": {},
+    "suggestions": {},
+    "buy_now": {},
+    "fraud_screen": {},
+    "store_inventory": {},
+    "pickup_points": {},
+    "instant_delivery": {},
+    "smart_fulfilment": {},
+    "substitutions": {},
+    "membership": {},
+    "subscribe_save": {},
+    "product_options": {}
+   }
+  },
+  {
+   "key": "blend_super_app",
+   "label": "Payments-led super app blend",
+   "description": "A worked example: a wallet and payments app that also sells — UPI and QR payments, bill payments, recharges, pay later and lending, beside a marketplace and fast delivery.",
+   "universes": [],
+   "capabilities": {
+    "reviews": {},
+    "qna": {},
+    "deals": {},
+    "coupons": {},
+    "gift_cards": {},
+    "wish_lists": {},
+    "product_alerts": {},
+    "customer_service": {},
+    "save_for_later": {},
+    "suggestions": {},
+    "buy_now": {},
+    "fraud_screen": {},
+    "upi_collect": {},
+    "qr_pay": {},
+    "payment_links": {},
+    "bbps": {},
+    "recharge": {},
+    "p2p_transfer": {},
+    "bnpl": {},
+    "lending": {},
+    "insurance": {},
+    "gift_vouchers": {},
+    "kyc": {},
+    "buy_box": {},
+    "instant_delivery": {},
+    "store_inventory": {}
+   }
+  },
+  {
+   "key": "blend_resale",
+   "label": "Resale and classifieds blend",
+   "description": "A worked example: shoppers sell to shoppers — their own listings, offers and counter-offers, auctions, messages between buyer and seller, escrow and buyer protection.",
+   "universes": [],
+   "capabilities": {
+    "peer_listings": {},
+    "conversations": {},
+    "price_negotiation": {},
+    "auctions": {},
+    "escrow": {},
+    "buyer_protection": {},
+    "reviews": {},
+    "wish_lists": {},
+    "product_alerts": {},
+    "fraud_screen": {},
+    "kyc": {}
+   }
+  },
+  {
+   "key": "blend_auction_house",
+   "label": "Auction house blend",
+   "description": "A worked example: timed auctions with automatic bidding, reserves and buy-it-now, buyer messages, escrow and buyer protection.",
+   "universes": [],
+   "capabilities": {
+    "auctions": {},
+    "conversations": {},
+    "escrow": {},
+    "buyer_protection": {},
+    "reviews": {},
+    "wish_lists": {},
+    "product_alerts": {},
+    "fraud_screen": {}
+   }
+  },
+  {
+   "key": "blend_services",
+   "label": "Services and appointments blend",
+   "description": "A worked example: appointments with staff, rooms or venues — held while the customer pays, checked in on the day — with options, messages and memberships.",
+   "universes": [],
+   "capabilities": {
+    "bookings": {},
+    "product_options": {},
+    "conversations": {},
+    "reviews": {},
+    "qna": {},
+    "coupons": {},
+    "gift_cards": {},
+    "membership": {},
+    "customer_service": {}
+   }
+  },
+  {
+   "key": "blend_rentals",
+   "label": "Rentals and stays blend",
+   "description": "A worked example: date-range bookings of assets, rooms or venues with escrow, buyer protection, messages and reviews.",
+   "universes": [],
+   "capabilities": {
+    "bookings": {},
+    "conversations": {},
+    "escrow": {},
+    "buyer_protection": {},
+    "reviews": {},
+    "qna": {},
+    "coupons": {},
+    "wish_lists": {},
+    "fraud_screen": {}
+   }
+  },
+  {
+   "key": "blend_food_delivery",
+   "label": "Food and restaurant delivery blend",
+   "description": "A worked example: restaurant menus with modifiers and add-ons, minutes-fast delivery, batched dispatch, reviews and memberships.",
+   "universes": [],
+   "capabilities": {
+    "product_options": {},
+    "instant_delivery": {},
+    "store_inventory": {},
+    "dispatch_batching": {},
+    "reviews": {},
+    "deals": {},
+    "coupons": {},
+    "membership": {},
+    "customer_service": {},
+    "conversations": {}
+   }
+  },
+  {
+   "key": "blend_group_buying",
+   "label": "Social and group buying blend",
+   "description": "A worked example: group prices that unlock when enough shoppers join, flash deals with countdowns, coupons and shareable lists.",
+   "universes": [],
+   "capabilities": {
+    "group_buying": {},
+    "deals": {},
+    "countdown": {},
+    "coupons": {},
+    "reviews": {},
+    "wish_lists": {},
+    "product_alerts": {},
+    "buy_now": {}
+   }
+  }
+ ],
+ "SECTIONS": {
+  "buy_box": [
+   "marketplace",
+   "mktops"
+  ],
+  "seller_health": [
+   "sellers",
+   "mktops"
+  ],
+  "buyer_protection": [
+   "mktops"
+  ],
+  "smart_fulfilment": [
+   "mktops"
+  ],
+  "fba_inbound": [
+   "mktops"
+  ],
+  "trade_assurance": [
+   "contracts",
+   "tradeops"
+  ],
+  "gold_supplier": [
+   "sellers",
+   "tradeops"
+  ],
+  "company_verification": [
+   "tradeops"
+  ],
+  "export_documents": [
+   "tradeops"
+  ],
+  "letters_of_credit": [
+   "contracts",
+   "tradeops"
+  ],
+  "rfq_bidding": [
+   "rfqs",
+   "tradeops"
+  ],
+  "reverse_auction": [
+   "tenders",
+   "tradeops"
+  ],
+  "segment_pricing": [
+   "tradeops"
+  ],
+  "moq_enforcement": [
+   "contracts",
+   "tradeops"
+  ],
+  "instant_delivery": [
+   "qcops"
+  ],
+  "store_inventory": [
+   "qcops"
+  ],
+  "dispatch_batching": [
+   "qcops"
+  ],
+  "upi_collect": [
+   "finops"
+  ],
+  "qr_pay": [
+   "finops"
+  ],
+  "payment_links": [
+   "finops"
+  ],
+  "mandates": [
+   "finops"
+  ],
+  "escrow": [
+   "finops"
+  ],
+  "split_payments": [
+   "finops"
+  ],
+  "kyc": [
+   "finops"
+  ],
+  "bnpl": [
+   "finops"
+  ],
+  "lending": [
+   "finops"
+  ],
+  "bank_payouts": [
+   "finops"
+  ],
+  "bbps": [
+   "finops"
+  ],
+  "recharge": [
+   "finops"
+  ],
+  "p2p_transfer": [
+   "finops"
+  ],
+  "insurance": [
+   "finops"
+  ],
+  "gift_vouchers": [
+   "finops"
+  ],
+  "ride_hailing": [
+   "rides"
+  ],
+  "dynamic_pricing": [
+   "rides"
+  ],
+  "dispatch": [
+   "rides"
+  ],
+  "fleet_management": [
+   "fleet"
+  ],
+  "workforce": [
+   "ops_hr"
+  ],
+  "procurement": [
+   "ops_proc"
+  ],
+  "manufacturing": [
+   "ops_mfg"
+  ],
+  "projects": [
+   "ops_proj"
+  ],
+  "pickup_points": [
+   "pickup"
+  ],
+  "rich_content": [
+   "richcontent"
+  ],
+  "brand_registry": [
+   "brandreg"
+  ],
+  "sponsored_ads": [
+   "marketplace"
+  ],
+  "product_options": [
+   "prodoptions"
+  ],
+  "bookings": [
+   "bookings"
+  ],
+  "price_negotiation": [
+   "negotiation"
+  ],
+  "auctions": [
+   "auctions"
+  ],
+  "peer_listings": [
+   "listings"
+  ],
+  "conversations": [
+   "conversations"
+  ],
+  "group_buying": [
+   "groupbuy"
+  ],
+  "substitutions": [
+   "substitutions"
+  ],
+  "price_match": [
+   "pricematch"
+  ],
+  "prescriptions": [
+   "prescriptions"
+  ],
+  "lead_capture": [
+   "enquiries"
+  ],
+  "exchange_offers": [
+   "tradeins"
+  ],
+  "media_sessions": [
+   "sessions"
+  ],
+  "try_and_buy": [
+   "trials"
+  ],
+  "service_fees": [
+   "fees"
+  ],
+  "tips": [
+   "tips"
+  ],
+  "practitioner_verification": [
+   "credentials"
+  ],
+  "per_minute_billing": [
+   "metering"
+  ],
+  "licence_keys": [
+   "licencekeys"
+  ],
+  "lab_tests": [
+   "labtests"
+  ],
+  "course_progress": [
+   "courses"
+  ],
+  "health_records": [
+   "healthrecords"
+  ],
+  "installation_booking": [
+   "installations"
+  ],
+  "assembly_booking": [
+   "assemblies"
+  ],
+  "extended_warranty": [
+   "warranties"
+  ],
+  "customisation_proofs": [
+   "proofs"
+  ],
+  "sample_orders": [
+   "samples"
+  ]
+ },
+ "ROUTES": {
+  "admin/charges": "fees",
+  "admin/tips": "tips",
+  "admin/trials": "trials",
+  "admin/per-minute": "metering",
+  "admin/health-records": "healthrecords",
+  "admin/wallets": "wallets",
+  "admin/journals": "wallets",
+  "admin/ledger": "wallets",
+  "admin/wallet-definitions": "wallets",
+  "admin/wallet-default": "wallets"
+ }
+}

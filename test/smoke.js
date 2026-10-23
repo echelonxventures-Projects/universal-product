@@ -60,6 +60,11 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   console.log("▸ booting platform server…");
   const dbBase = path.join(__dirname, "..", "data", "smoke.db");
   for (const suffix of ["", "-wal", "-shm"]) { try { require("fs").rmSync(dbBase + suffix, { force: true }); } catch (e) { } }
+  /* this process loads platform modules too (config, adapters, pg, dbpool). Point it at the
+     same test database as the server, before any of them opens one: otherwise it booted the
+     default data/luxora.db — the developer's own database locally, and on a fresh CI machine a
+     full first seed that blocked this process past the server's keep-alive and failed the run */
+  process.env.LX_DB = dbBase;
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")],
     { env: { ...process.env, PORT, LX_DB: dbBase, LX_METRICS_TOKEN: METRICS_TOKEN, LUXORA_DEMO_BRANDS: "1" }, stdio: ["ignore", "ignore", "inherit"] });
   /* first boot seeds three stores, 156 products and every registry — on a slow or network-backed
@@ -130,7 +135,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     const prov = await f("/api/providers");
     ok(prov.gateways[0].id === "stripe" && prov.country.code === "US", "US store → Stripe primary", prov.gateways.map(g => g.id).join(","));
     const order = await f("/api/checkout", "POST", { name: "Smoke Tester", address: "1 Test St", city: "Seattle", state: "WA", zip: "98109", gateway: "stripe", method: "card", carrier: "house-std", contexts: { tax: "gst_profile", payment: "online_capture" } });
-    ok(order.order && /stripe_sim_/.test(order.order.txn_ref), "stripe txn ref", order.order && order.order.txn_ref);
+    ok(order.order && /stripe_sim_/.test(order.order.txn_ref), "stripe txn ref", order.order ? order.order.txn_ref : order.error);
     ok(order.order.payment_status === "captured", "payment captured");
     ok(order.order.contexts && (order.order.contexts.tax || []).includes("gst_profile"), "contexts persisted on order", JSON.stringify(order.order && order.order.contexts));
     const badGw = await f("/api/cart", "POST", { id: "LX-BKS-001", qty: 1 });
@@ -214,9 +219,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(/MRR|Collected/i.test(page.doc.body.textContent), "console lands on the constitutional command dashboard (platform front door)");
     ok(page.doc.querySelectorAll(".p-nav-sec").length === 12, "canonical nav: 12 constitutional sections", page.doc.querySelectorAll(".p-nav-sec").length);
     ok(page.doc.querySelectorAll("[data-v]").length >= 100, "canonical nav: 100+ capability leaves (zero-gap tree)", page.doc.querySelectorAll("[data-v]").length);
-    ok(!!page.doc.querySelector(".p-nav-sec[open]"), "the section holding the current view stays expanded");
+    ok(!!page.doc.querySelector('.p-nav-pin button.on[data-v="dash"]') && !page.doc.querySelector(".p-nav-sec[open]"), "the home is pinned above the sections, which start folded");
     const tBtn = [...page.doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "tenants-admin");
     click(page.win, tBtn); await sleep(900);
+    ok(!!page.doc.querySelector('.p-nav-sec[open] button.on[data-v="tenants-admin"]'), "the section holding the current view is expanded");
     const tRows = page.doc.querySelectorAll("table tbody tr").length;
     ok(tRows >= 3, "tenants table (3 seeded tenants)", tRows);
     ok(page.errs.length === 0, "platform no JS errors", page.errs.slice(0, 2).join("|"));
@@ -488,7 +494,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     console.log("▸ PLATFORM: launch store → billing → invoice collect");
     // re-establish a clean platform session (the jsdom render above rotates azs/azc)
     jar.clear(); await f("/api/session"); await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
-    const created = await f("/api/platform/tenants", "POST", { name: "TEST CO", slug: "testco", mode: "marketplace", industries: [], adminEmail: "admin@test.co", adminPassword: "test1234", seedCatalog: false });
+    const created = await f("/api/platform/tenants", "POST", { name: "TEST CO", slug: "testco", mode: "marketplace", industries: [], adminEmail: "admin@test.co", adminPassword: "Testco-2026x", seedCatalog: false });
     ok(created.tenant && created.tenant.slug === "testco", "store launched");
     const tid = created.tenant.id || (await f("/api/platform/tenants")).tenants.find(t => t.slug === "testco")?.id;
     const invGen = await f(`/api/platform/tenants/${tid}/invoice`, "POST", {});
@@ -598,13 +604,14 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     await f("/api/platform/fx/provider", "PUT", { provider: "manual", url: "" });
     /* registries themselves are entity data (incl. UOM conversions) */
     const ml = await f("/api/meta/entity/meta_list");
-    ok(ml.rows.some(x => x.name === "uomConversions") && ml.rows.some(x => x.name === "lifecycle"), "meta registries listed as entities", ml.rows.length);
-    const uomRow = ml.rows.find(x => x.name === "uomConversions");
-    const items = JSON.parse(uomRow.items);
-    items["furlong→m"] = 201.168;
-    await f("/api/meta/entity/meta_list/uomConversions", "PUT", { items });
-    ok((await f("/api/meta")).uomConversions["furlong→m"] === 201.168, "UOM conversion editable at runtime");
-    await f("/api/meta/entity/meta_list/uomConversions", "PUT", { items: JSON.stringify(JSON.parse(uomRow.items)) });
+    ok(ml.rows.length > 0, "meta registries listed as entities", ml.rows.length);
+    /* units and lifecycle are the platform master's: listed for authoring beside the registry's own */
+    const regs = await f("/api/platform/registries");
+    ok(regs.registries.some(x => x.name === "uomConversions") && regs.registries.some(x => x.name === "lifecycle"), "the master's lists are authorable beside the registry's", regs.registries.length);
+    /* a conversion follows from a unit: adding the unit at runtime adds its conversion */
+    await f("/api/platform/registries/uomUnits", "POST", { item: { key: "furlong", name: "Furlong", symbol: "fur", dim: "length", factor: 201.168 } });
+    ok((await f("/api/meta")).uomConversions["furlong→m"] === 201.168, "UOM conversion editable at runtime (through its unit)");
+    await f("/api/platform/registries/uomUnits/furlong", "DELETE", {});
 
     console.log("▸ SECURITY STACK — 10 layers");
     const sc = await f("/api/platform/security");
@@ -1039,7 +1046,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
         ok(vb && /Marketplace Ops/i.test(vb.textContent), "marketplace ops renders when its capabilities are on");
         ok(vb && /Seller onboarding/i.test(vb.textContent), "marketplace ops lists the onboarding surface");
         ok(!!ap.doc.querySelector("#mktBb"), "the buy-box recompute action is reachable");
-        ok(vb && !/Amazon|Flipkart|Zepto|Blinkit|Paytm|Alibaba/i.test(vb.textContent),
+        ok(vb && require("../scripts/white-label.js").clean(vb.textContent),
           "no vendor name appears on the marketplace ops surface");
         ok(ap.errs.length === 0, "marketplace ops no JS errors", ap.errs.slice(0, 2).join("|"));
       } else ok(false, "marketplace capability on for the flagship store (test precondition)");
@@ -1070,7 +1077,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
          after one use. Needs a PLATFORM session, so re-auth as the platform owner. */
       await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
       const impUrl = (await f("/api/platform/tenants/2/impersonate", "POST")).url;
-      ok(impUrl && /admin\.html\?store=aurum&token=/.test(impUrl), "impersonate returns a store-console url", impUrl);
+      ok(impUrl && /console\.html\?store=aurum&scope=store&token=/.test(impUrl), "impersonate returns a store-console url", impUrl);
       /* a fresh tab for the target store: capture ITS cookies, because token-exchange
          refuses a token whose tenant is not the session's tenant (the azs cookie must
          travel with the request, or the server builds an unrelated session) */
@@ -1115,7 +1122,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
         const vb = cp.doc.querySelector("#vBody");
         ok(vb && /the configurable platform/i.test(vb.textContent), "the capabilities console renders");
         ok(vb && /Buy-box competition/i.test(vb.textContent), "the catalog lists a capability with its declared tunables");
-        ok(vb && !/Amazon|Flipkart|Zepto|Blinkit|Paytm|Alibaba/i.test(vb.textContent),
+        ok(vb && require("../scripts/white-label.js").clean(vb.textContent),
           "no vendor or brand name appears anywhere on the configuration surface");
         const rows = vb ? vb.querySelectorAll("tbody tr").length : 0;
         ok(rows >= 30, "the entire catalog renders as rows (" + rows + ")");
@@ -1469,7 +1476,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const reds = (await AD("/api/offers/coupons")).body.redemptions || [];
       ok(reds.some(x => x.status === "voided" && x.code === "CB10"), "refund voided the redemption (clawback)");
       const ledB = (await AD("/api/wallet/ledger?owner=" + encodeURIComponent(owner))).body.entries || [];
-      ok(ledB.some(e => e.kind === "refund" && /clawback/.test(e.ref || "")), "wallet reward clawed back on refund");
+      ok(ledB.some(e => Number(e.amount) < 0 && /^reversal:/.test(e.ref || "")), "wallet reward clawed back on refund, as a reversal linked to its journal", ledB.map(e => e.kind + ":" + e.amount + ":" + e.ref));
 
       // currency guard: EUR fixed offer invisible on USD store, valid on EUR
       ok((await AD("/api/offers/preview", "POST", { amount: 500, coupon: "EURFIX", currency: "USD" })).body.discount === 0, "EUR offer skipped on USD store");
@@ -1619,7 +1626,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     {
       const sqlm = require("../lib/sql.js");
       ok(/now\(\)/.test(sqlm.toPg("SELECT * FROM t WHERE d>datetime('now')")) && /\$1/.test(sqlm.toPg("SELECT * FROM t WHERE x=?")), "translator: datetime→now(), ?→$n");
-      ok(/to_char\(ts, 'YYYY-MM'\)/.test(sqlm.toPg("SELECT strftime('%Y-%m', ts) FROM t")), "translator: strftime→to_char");
+      /* a stored timestamp is text 'YYYY-MM-DD HH:MM:SS': a format that is a prefix of it is the
+         text's prefix; any other format parses it first (and %H is the 24-hour clock) */
+      ok(/substring\(CAST\(ts AS TEXT\) from 1 for 7\)/.test(sqlm.toPg("SELECT strftime('%Y-%m', ts) FROM t")), "translator: strftime of a layout prefix → the text's prefix", sqlm.toPg("SELECT strftime('%Y-%m', ts) FROM t"));
+      ok(/to_char\(CAST\(ts AS timestamp\), 'HH24:MI'\)/.test(sqlm.toPg("SELECT strftime('%H:%M', ts) FROM t")), "translator: strftime of any other format → to_char of the parsed timestamp", sqlm.toPg("SELECT strftime('%H:%M', ts) FROM t"));
       ok(/substring\(|from 1 for 10/.test(sqlm.toPg("SELECT substr(name,1,10) FROM t")), "translator: substr→substring");
       ok(/ON CONFLICT DO NOTHING|INSERT INTO/.test(sqlm.toPg("INSERT OR IGNORE INTO t VALUES(?,?)")) && !/OR IGNORE/.test(sqlm.toPg("INSERT OR IGNORE INTO t VALUES(?,?)")), "translator: INSERT OR IGNORE→plain (no OR IGNORE)");
       const iv = sqlm.toPg("SELECT datetime('now','+1 month')");
@@ -1633,6 +1643,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       ok(ord.indexOf("parent") < ord.indexOf("child"), "migrate: FK dependency ordering (parent before child)", ord);
       const pgm = require("../lib/pg.js");
       ok(pgm.normalizeConn({ connectionString: "postgres://u:p@h:5433/db" }).database === "db" && pgm.normalizeConn({ url: "postgres://u:p@h:5433/db2" }).database === "db2", "pg: normalizeConn parses {connectionString|url}");
+      /* sslmode as libpq reads it: verify-* is TLS (it once fell through to plaintext), and only
+         prefer/allow may fall back to plaintext when the server refuses TLS */
+      ok(["require", "prefer", "allow", "verify-ca", "verify-full"].every(m => pgm.wantsSsl("postgres://h/d?sslmode=" + m)) && !pgm.wantsSsl("postgres://h/d?sslmode=disable") && !pgm.wantsSsl("postgres://h/d"), "pg: every TLS sslmode asks for TLS, verify-* included");
+      ok(["require", "verify-ca", "verify-full"].every(m => pgm.mustSsl("postgres://h/d?sslmode=" + m)) && !pgm.mustSsl("postgres://h/d?sslmode=prefer"), "pg: require and verify-* never fall back to plaintext");
       const dbp = require("../lib/dbpool.js");
       ok(dbp.driver() === "sqlite", "async pool defaults to sqlite driver (no behavior change)");
       ok((await dbp.get("SELECT 1 AS one")) !== null, "async pool reads through sqlite");
@@ -1667,7 +1681,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       /* T5: setval is emitted by apply() after the data load, not by plan(). An off-by-one here
          would collide every subsequent INSERT, so assert the exact expression apply() runs. */
       const setvalSrc = require("fs").readFileSync(require("path").join(__dirname, "..", "lib", "migrate.js"), "utf8").replace(/\s+/g, " ");
-      ok(setvalSrc.includes("SELECT setval(pg_get_serial_sequence('\"${t}\"','id'), COALESCE((SELECT MAX(id) FROM \"${t}\"), 0) + 1, false)"), "migrate: setval advances identity sequences past copied rows (T5)", "apply() setval clause verified");
+      ok(setvalSrc.includes("SELECT setval(pg_get_serial_sequence('\"${t}\"','${col}'), COALESCE((SELECT MAX(\"${col}\") FROM \"${t}\"), 0) + 1, false)"), "migrate: setval advances identity sequences past copied rows (T5)", "apply() setval clause verified");
       ok(/partial/i.test(idx.find(s => /WHERE/i.test(s.sql) || /partial/i.test(s.sql)) ? "yes" : "no") || idx.some(s => /WHERE/i.test(s.sql)), "migrate: partial-index WHERE clauses carried through", idx.filter(s => /WHERE/i.test(s.sql)).length);
     }
     console.log("▸ ENTERPRISE OPS (cutover · SSO/SCIM · regions/CDN · metrics · feeds · transfers · tax)");
@@ -2034,15 +2048,21 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       /* a paid tier is charged to the member's wallet — fund it first, then show an unfunded
          upgrade is refused */
       { const { DatabaseSync } = require("node:sqlite"); const wdb = new DatabaseSync(dbBase);
-        const du = wdb.prepare("SELECT id, tenant_id FROM users WHERE email='demo@luxora.shop'").get();
-        wdb.prepare("INSERT INTO wallets(tenant_id,owner,balance) VALUES(?,?,0) ON CONFLICT(tenant_id,owner) DO UPDATE SET balance=0").run(du.tenant_id, "t" + du.tenant_id + ":u:" + du.id);
-        const broke = await C("/api/membership/subscribe", "POST", { tier: "prime" });
+        const du = wdb.prepare("SELECT id, tenant_id FROM users WHERE email='demo@luxora.shop'").get(); wdb.close();
+        const memOwner = "t" + du.tenant_id + ":u:" + du.id;
+        /* the wallet is emptied and funded through the ledger (staff adjustments, each with a reason) */
+        await C("/api/wallets"); /* opens the default wallet if the member has none */
+        const ws = (await A("/api/admin/wallets?owner=" + encodeURIComponent(memOwner))).body.wallets || [];
+        const mw = ws.find(w => w.definition && w.definition.key) || {};
+        if (mw.posted > 0) await A("/api/admin/wallets/" + encodeURIComponent(mw.id) + "/adjust", "POST", { amount: -mw.posted, reason: "test: empty the wallet", idempotency_key: "smoke-empty" });
+        const broke = await C("/api/membership/subscribe", "POST", { tier: "premier" });
         ok(broke.status === 400 && /Insufficient/i.test(broke.body.error || ""), "a paid membership is refused from an empty wallet", broke.body);
-        wdb.prepare("UPDATE wallets SET balance=500 WHERE tenant_id=? AND owner=?").run(du.tenant_id, "t" + du.tenant_id + ":u:" + du.id); wdb.close(); }
-      const mem1 = await C("/api/membership/subscribe", "POST", { tier: "prime" });
-      ok(mem1.status === 200 && mem1.body.membership.tier === "prime", "customer upgrades membership tier", JSON.stringify(mem1.body));
+        const fund = await A("/api/admin/wallets/" + encodeURIComponent(mw.id) + "/adjust", "POST", { amount: 500, reason: "test: fund the wallet", idempotency_key: "smoke-fund" });
+        ok(fund.status === 200, "staff fund the wallet through the ledger", fund.body); }
+      const mem1 = await C("/api/membership/subscribe", "POST", { tier: "premier" });
+      ok(mem1.status === 200 && mem1.body.membership.tier === "premier", "customer upgrades membership tier", JSON.stringify(mem1.body));
       const mem2 = await C("/api/membership");
-      ok(mem2.body.membership.tier === "prime", "membership persists across sessions", mem2.body.membership.tier);
+      ok(mem2.body.membership.tier === "premier", "membership persists across sessions", mem2.body.membership.tier);
       const addr = await C("/api/addresses");
       ok(addr.body.addresses.length >= 1 && addr.body.addresses.some(a => a.is_default === 1), "seeded address book has a default");
       const sub = await C("/api/subscriptions");
@@ -2068,7 +2088,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const cancel = await C("/api/subscriptions/" + newSub.body.schedule.id, "PUT", { action: "cancel" });
       ok(cancel.body.schedule.status === "cancelled", "cancel subscription");
       const mem3 = await A("/api/admin/memberships");
-      ok(mem3.body.memberships.some(m => m.tier === "prime" && m.status === "active"), "admin memberships view");
+      ok(mem3.body.memberships.some(m => m.tier === "premier" && m.status === "active"), "admin memberships view");
       const memCancel = await C("/api/membership/cancel", "POST");
       ok(memCancel.body.membership.status === "cancelled", "customer cancels membership");
       const memReNew = await C("/api/membership/subscribe", "POST", { tier: "plus", renew: true });

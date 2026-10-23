@@ -43,7 +43,7 @@ const LX = { store: null, platform: null };      /* each bundle's captured surfa
 const SCOPE_LABEL = { store: "Store", platform: "Platform" };
 let scope = null;                                /* the surface a view renders in */
 let view = "dash";
-const me = { store: null, platform: null, tenant: null, grants: {}, storeAllowed: [], platformAllowed: [] };
+const me = { store: null, platform: null, tenant: null, grants: {}, storeAllowed: [], platformAllowed: [], apps: { store: [], platform: [] } };
 
 const $ = (s, r) => (r || document).querySelector(s);
 const $$ = (s, r) => [...(r || document).querySelectorAll(s)];
@@ -116,36 +116,89 @@ function bundleFor(v) {
    holds store grants — each filtered to what THIS identity may see, each
    leaf labelled with its surface. Nothing renders that is not granted, and a
    leaf an identity lacks is absent from the nav for the same reason its API
-   refuses: the same grant map drives both. */
+   refuses: the same grant map drives both.
+
+   The tree is rebuilt on every render, so what the operator did to it lives here:
+   which folds they opened or closed (navFold), what they typed in the filter
+   (navQuery) and how far the sidebar was scrolled (navScroll). A platform section
+   starts closed unless it holds the current screen — 300 leaves open at once is a
+   wall, not a menu; a store group starts open. Each home screen is pinned at the
+   top of its scope, and an alias leaf (a: <key>, same screen as <key>) shows only
+   when its twin is not granted, so no one meets one screen twice. */
+const navFold = {};
+let navQuery = "", navScroll = 0;
+function navLeaf(s, k, l) {
+  return `<button data-s="${s}" data-v="${esc(k)}" class="${scope === s && view === k ? "on" : ""}">${esc(l)}</button>`;
+}
+function navFoldOpen(id, holdsView, byDefault) {
+  if (holdsView) delete navFold[id];
+  return id in navFold ? navFold[id] : (holdsView || byDefault);
+}
 function navTree() {
-  const parts = [];
+  const parts = [`<div class="p-nav-find"><input type="search" id="navFind" placeholder="Find a screen…" aria-label="Find a screen" value="${esc(navQuery)}" autocomplete="off"></div>`];
   /* the platform surface: the platform bundle's canonical NAV (sections → groups → leaves) */
   if (me.platform && LX.platform && LX.platform.nav) {
     const plat = LX.platform;
+    const may = k => me.platformAllowed.includes("*") || me.platformAllowed.includes(k);
     parts.push(`<div class="p-nav-scope"><small>PLATFORM</small></div>`);
+    if (may("dash")) parts.push(`<div class="p-nav-pin">${navLeaf("platform", "dash", "◈ Command")}</div>`);
     for (const sec of plat.nav) {
+      let holds = false;
       const groups = (sec.g || []).map(grp => {
-        const items = (grp.l || []).filter(([k]) => me.platformAllowed.includes("*") || me.platformAllowed.includes(k));
+        const items = (grp.l || []).filter(([k, , res]) => k !== "dash" && may(k) && !(res && res.a && may(res.a)));
+        if (scope === "platform" && items.some(([k]) => k === view)) holds = true;
         return items.length
-          ? `<div class="p-nav-grp"><small>${esc(grp.g)}</small>${items.map(([k, l]) =>
-            `<button data-s="platform" data-v="${k}" class="${scope === "platform" && view === k ? "on" : ""}">${l}</button>`).join("")}</div>`
+          ? `<div class="p-nav-grp"><small>${esc(grp.g)}</small>${items.map(([k, l]) => navLeaf("platform", k, l)).join("")}</div>`
           : "";
       }).join("");
-      if (groups) parts.push(`<details class="p-nav-sec" open><summary>${esc(sec.n)}</summary>${groups}</details>`);
+      const id = "platform:" + sec.n;
+      if (groups) parts.push(`<details class="p-nav-sec" data-fold="${esc(id)}"${navFoldOpen(id, holds, false) ? " open" : ""}><summary>${esc(sec.n)}</summary>${groups}</details>`);
     }
   }
   /* the store surface: the store bundle's grouped NAV, filtered by the store grants */
   if (me.store && LX.store && LX.store.nav) {
     const store = LX.store;
     parts.push(`<div class="p-nav-scope"><small>THIS STORE · ${esc(me.tenant ? me.tenant.slug : "")}</small></div>`);
+    /* a leaf is granted through the section it maps to (promotions → offers, structure →
+       tenancy, sso → settings) — the same NAVSEC rule the store bundle's canSee applies */
+    const secOf = k => (store.NAVSEC && store.NAVSEC[k]) || k;
     for (const grp of store.nav) {
-      const items = (grp.items || []).filter(([k]) => me.storeAllowed.includes("*") || me.storeAllowed.includes(k) || k === "dash");
-      if (items.length)
-        parts.push(`<div class="p-nav-grp"><small>${esc(grp.g)}</small>${items.map(([k, l]) =>
-          `<button data-s="store" data-v="${k}" class="${scope === "store" && view === k ? "on" : ""}">${l}</button>`).join("")}</div>`);
+      const items = (grp.items || []).filter(([k]) => me.storeAllowed.includes("*") || me.storeAllowed.includes(secOf(k)) || k === "dash");
+      if (!items.length) continue;
+      /* the store's home stays pinned: its group never folds away */
+      if (items.some(([k]) => k === "dash")) {
+        parts.push(`<div class="p-nav-grp p-nav-pin"><small>${esc(grp.g)}</small>${items.map(([k, l]) => navLeaf("store", k, l)).join("")}</div>`);
+        continue;
+      }
+      const id = "store:" + grp.g;
+      const holds = scope === "store" && items.some(([k]) => k === view);
+      parts.push(`<details class="p-nav-fold" data-fold="${esc(id)}"${navFoldOpen(id, holds, true) ? " open" : ""}><summary>${esc(grp.g)}</summary>${items.map(([k, l]) => navLeaf("store", k, l)).join("")}</details>`);
     }
   }
   return parts.join("");
+}
+/* the filter narrows the tree in place — every fold holding a match opens, every leaf
+   and group without one hides — and clearing it puts the folds back as they were */
+function navFilter() {
+  const nav = $("#pSide .p-nav");
+  if (!nav) return;
+  const q = navQuery.trim().toLowerCase();
+  /* a word has to start with what was typed ("ship" finds Shipping, not Relationships),
+     and the group and section names count, so "finance" lists the whole Finance group */
+  const re = q ? new RegExp("(^|[^\\p{L}\\p{N}])" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "iu") : null;
+  const head = b => { const g = b.closest(".p-nav-grp"), d = b.closest("details[data-fold]"); return [g && g.querySelector("small"), d && d.querySelector("summary")].map(x => x ? x.textContent : "").join(" "); };
+  nav.querySelectorAll("button[data-v]").forEach(b => { b.hidden = !!re && !re.test(b.textContent + " " + head(b)); });
+  nav.querySelectorAll(".p-nav-grp").forEach(g => { g.hidden = !!q && !g.querySelector("button[data-v]:not([hidden])"); });
+  nav.querySelectorAll("details[data-fold]").forEach(d => {
+    const hit = !!d.querySelector("button[data-v]:not([hidden])");
+    d.hidden = !!q && !hit;
+    if (q) { if (!("was" in d.dataset)) d.dataset.was = d.open ? "1" : ""; d.open = hit; }
+    else if ("was" in d.dataset) { d.open = !!d.dataset.was; delete d.dataset.was; }
+  });
+  let none = nav.querySelector(".p-nav-none");
+  const empty = !!q && !nav.querySelector("button[data-v]:not([hidden])");
+  if (empty && !none) { none = document.createElement("div"); none.className = "p-nav-none"; none.textContent = "No screen matches."; nav.appendChild(none); }
+  if (none) none.hidden = !empty;
 }
 
 function shell(content) {
@@ -157,12 +210,11 @@ function shell(content) {
   <div class="p-shell">
     <aside class="p-side" id="pSide">
       <div class="p-logo"><b>${esc((me.tenant && me.tenant.name) || "LUXORA")}</b>
-        <small>${scope === "platform" ? "Platform Console" : "Store Console"} · ${esc(me.tenant ? me.tenant.slug : "platform")}</small>
+        <small>${scope === "platform" ? "Platform Console" : ((me.tenant && me.tenant.kind && me.tenant.kind.noun ? me.tenant.kind.noun.charAt(0).toUpperCase() + me.tenant.kind.noun.slice(1) : "Store") + " Console")} · ${esc(me.tenant ? me.tenant.slug : "platform")}</small>
         <button class="p-side-close" id="pSideClose" aria-label="Close navigation">✕</button></div>
       <nav class="p-nav">${navTree()}</nav>
       <div style="padding:12px 18px;border-top:1px solid rgba(255,255,255,.1);margin-top:12px">
         <a href="${me.tenant ? "/index.html?store=" + esc(me.tenant.slug) : "/index.html"}" target="_blank" style="color:var(--p-side-text)">↗ Open storefront</a>
-        ${me.platform && me.tenant ? ` · <a href="/platform.html" style="color:var(--p-side-text)">Legacy platform ↗</a>` : ""}
       </div>
     </aside>
     <div class="p-scrim" id="pScrim"></div>
@@ -184,7 +236,63 @@ function shell(content) {
 /* a click on the one nav sets the scope AND the leaf — the button carries both — and
    dispatches through the shell, so the bundle's view follows the shell's authority */
 function wireNav() {
-  $$(".p-nav button").forEach(b => b.onclick = () => { scope = b.dataset.s; view = b.dataset.v; render(); });
+  const side = $("#pSide");
+  /* a pick also closes the phone drawer — this nav is rebuilt after the bundle's own
+     drawer wiring ran, so its buttons would otherwise leave the drawer covering the page */
+  $$("#pSide .p-nav button").forEach(b => b.onclick = () => {
+    if (side) side.classList.remove("p-side-open");
+    const scrim = $("#pScrim"); if (scrim) scrim.style.display = "none";
+    scope = b.dataset.s; view = b.dataset.v; render();
+  });
+  /* a fold the operator opens or closes stays that way across renders — except while the
+     filter is driving it, when the toggle is the filter's, not theirs */
+  $$("#pSide details[data-fold]").forEach(d => d.addEventListener("toggle", () => { if (!navQuery.trim()) navFold[d.dataset.fold] = d.open; }));
+  const find = $("#navFind");
+  if (find) {
+    find.oninput = () => { navQuery = find.value; navFilter(); };
+    find.onkeydown = e => {
+      if (e.key === "Escape") { find.value = navQuery = ""; navFilter(); }
+      if (e.key === "Enter") { const hit = $("#pSide .p-nav button[data-v]:not([hidden])"); if (hit) { e.preventDefault(); find.value = navQuery = ""; hit.click(); } }
+    };
+  }
+  if (navQuery) navFilter();
+  /* the sidebar comes back where it was, and the current screen is in view */
+  if (side) {
+    side.scrollTop = navScroll;
+    side.onscroll = () => { navScroll = side.scrollTop; };
+    const on = side.querySelector(".p-nav button.on");
+    if (on && !navQuery) { const r = on.getBoundingClientRect(), sr = side.getBoundingClientRect(); if (r.top < sr.top || r.bottom > sr.bottom) on.scrollIntoView({ block: "nearest" }); }
+  }
+}
+/* the address bar names the scope and the screen, so a refresh or a shared link reopens it */
+function syncUrl() {
+  try {
+    const q = new URLSearchParams(location.search);
+    q.delete("token");
+    if (scope) q.set("scope", scope); else q.delete("scope");
+    if (view && view !== "dash") q.set("view", view); else q.delete("view");
+    const next = location.pathname + (q.toString() ? "?" + q.toString() : "") + location.hash;
+    if (next !== location.pathname + location.search + location.hash) history.replaceState(null, "", next);
+  } catch (e) { }
+}
+/* configured apps come and go (composed, granted, revoked) without a reload: the identity
+   is re-read after every render and, when the apps changed, the bundles' navs follow */
+let appsSig = "";
+function registerApps() {
+  for (const w of ["store", "platform"]) if (LX[w] && LX[w].registerApps) LX[w].registerApps(me.apps[w] || []);
+  appsSig = JSON.stringify(me.apps);
+}
+async function refreshApps() {
+  const r = await api("/api/auth/me").catch(() => null);
+  if (!r || !r.apps) return;
+  me.storeAllowed = r.allowedSections || me.storeAllowed;
+  me.platformAllowed = r.platformAllowed || me.platformAllowed;
+  me.apps = r.apps;
+  if (JSON.stringify(r.apps) === appsSig) return;
+  await seedBundles();
+  registerApps();
+  const nav = $("#pSide .p-nav");
+  if (nav) { nav.innerHTML = navTree(); wireNav(); }
 }
 function titleFor(v) {
   if (scope === "platform" && LX.platform) {
@@ -203,7 +311,7 @@ function wireDrawer() {
   const shut = () => { if (side) side.classList.remove("p-side-open"); if (scrim) scrim.style.display = "none"; };
   if (close) close.onclick = shut;
   if (scrim) scrim.onclick = shut;
-  $$(".p-nav button").forEach(b => b.addEventListener("click", shut));
+  $$("#pSide .p-nav button").forEach(b => b.addEventListener("click", shut));
 }
 
 /* ---------- rendering: dispatch a view to the bundle that owns it ----------
@@ -222,6 +330,7 @@ async function render() {
     await bundle.render();
     view = bundle.getView();        /* a view may redirect within the bundle; follow it */
     afterBundleRender();
+    syncUrl();
   } catch (e) { body.innerHTML = `<div class="p-empty">⚠️ ${esc(e.message)}</div>`; }
 }
 /* the bundle's render replaced #app with its own shell — its own nav, its own
@@ -234,11 +343,11 @@ async function render() {
    shell too, so the unified chrome would silently vanish mid-session. The bundle's render
    is wrapped at load time to re-apply this chrome once it settles, so a re-render from
    anywhere keeps the one console's nav and its ⇄ switcher */
-window.__lxRechrome = function () { try { afterBundleRender(); } catch (e) { } };
+window.__lxRechrome = function () { try { afterBundleRender(); } catch (e) { } refreshApps(); };
 function afterBundleRender() {
   const top = $(".p-top");
   if (!top) return;
-  const nav = $(".p-nav");
+  const nav = $("#pSide .p-nav");
   if (nav) { nav.innerHTML = navTree(); wireNav(); }
   const chip = top.querySelector(".p-chip");
   if (chip) chip.textContent = SCOPE_LABEL[scope];   /* the chip marks the surface, not the tenant's mode */
@@ -292,7 +401,17 @@ async function seedBundles() {
 
 /* ---------- boot ---------- */
 async function boot() {
+  const q = new URLSearchParams(location.search);
+  /* the platform hands a store over with a single-use ?token= (Tenants → Manage); it is
+     redeemed once, then dropped from the address bar */
+  const token = q.get("token");
+  if (token) {
+    await api("/api/auth/token-exchange", "POST", { token }).catch(() => null);
+    q.delete("token");
+    try { history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q.toString() : "") + location.hash); } catch (e) { }
+  }
   const r = await api("/api/auth/me");
+  if (r && r.money) window.LX_MONEY = r.money;
   if (!r || (!r.hasStore && !r.hasPlatform)) return loginForm(r);
   me.store = r.identity.store || null;
   me.platform = r.identity.platform || null;
@@ -300,12 +419,21 @@ async function boot() {
   me.grants = r.grants || {};
   me.storeAllowed = r.allowedSections || [];
   me.platformAllowed = r.platformAllowed || [];
-  scope = me.platform ? "platform" : "store";
+  me.apps = r.apps || { store: [], platform: [] };
+  /* a link may name the scope and the screen (?scope=store&view=orders); the legacy
+     /admin.html and /platform.html addresses redirect here with their scope */
+  const want = q.get("scope");
+  scope = want === "store" && me.store ? "store" : want === "platform" && me.platform ? "platform" : (token && me.store ? "store" : (me.platform ? "platform" : "store"));
+  if (q.get("view") && /^[A-Za-z0-9_-]{1,64}$/.test(q.get("view"))) view = q.get("view");
   /* load whichever bundles this identity can actually use */
   if (me.platform) await loadBundle("platform");
   if (me.store) await loadBundle("store");
   if (!LX[scope]) scope = me.platform ? "platform" : "store";
+  /* the store bundle's own boot created the shared #modal its forms open into; under this
+     shell that boot is suppressed, so the shell provides it (else + New / Edit throw) */
+  if (!document.getElementById("modal")) { const m = document.createElement("div"); m.id = "modal"; m.className = "hidden"; document.body.appendChild(m); }
   await seedBundles();
+  registerApps();
   render();
 }
 
@@ -318,6 +446,7 @@ function loginForm(r) {
     <label><span>Password</span><input id="lp" type="password" required></label>
     <button class="p-btn primary" style="width:100%">Sign in</button></form>
     <p class="p-err hidden" id="lfErr" style="color:var(--p-red);font-size:13px;margin:10px 0 0"></p>
+    <p class="hint"><a href="/reset.html?store=${esc(hint)}">Forgot your password?</a></p>
     <p class="hint">One sign-in for both the platform and the store console.<br>
     Store: <code>admin@${esc(hint)}.shop</code> · Platform: <code>platform@luxora.shop</code><br>
     <a href="/index.html">← Storefront</a></p></div></div>`;
@@ -330,7 +459,10 @@ function loginForm(r) {
       if (plat.ok) { boot(); return; }
       const store = await api("/api/auth/login", "POST", { email, password: pw });
       if (store.ok) { boot(); return; }
-      box.textContent = "⚠️ " + (plat.error || store.error || "Invalid credentials");
+      /* both authorities refused: a lockout or rate limit is worth saying; otherwise the
+         plain answer, since naming which console "owns" the email would leak accounts */
+      const why = [store.error, plat.error].find(m => /too many|locked|retry|disabled/i.test(m || ""));
+      box.textContent = "⚠️ " + (why || "Invalid email or password");
       box.classList.remove("hidden");
     } catch (err) { box.textContent = "⚠️ " + err.message; box.classList.remove("hidden"); }
   };

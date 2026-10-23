@@ -79,10 +79,12 @@ const parsedConcepts = Object.values(fresh).reduce((a, p) => a + p.concepts.leng
 ok(liveConcepts === parsedConcepts, "live concept count equals a fresh independent parse", liveConcepts + " vs " + parsedConcepts);
 ok(parsedConcepts > 20000, "the constitution is genuinely registered at scale", parsedConcepts);
 ok(ucos.keyOf("Universal Product Object") === "universal_product_object", "keys are derived from content, never invented");
-/* no hardcoded concept list in the module: the only constants must be document paths */
-const srcUcos = fs.readFileSync(path.join(__dirname, "..", "lib", "ucos.js"), "utf8");
-ok(ucos.DOCS.every(d => srcUcos.includes(d.file)), "module references every document by filename", ucos.DOCS.map(d => d.file).join(","));
-ok(!/const CONCEPTS\s*=/.test(srcUcos) && !/const SECTIONS\s*=/.test(srcUcos), "no hardcoded concept/section constant in the module");
+/* no hardcoded concept list in the module: the documents it parses are its seed file
+   (lib/seed/ucos.json), named by filename there and nowhere else */
+const srcUcos = fs.readFileSync(path.join(__dirname, "..", "lib", "seed", "ucos.json"), "utf8");
+ok(ucos.DOCS.every(d => srcUcos.includes(JSON.stringify(d.file))), "the seed file references every document by filename", ucos.DOCS.map(d => d.file).join(","));
+const modUcos = fs.readFileSync(path.join(__dirname, "..", "lib", "ucos.js"), "utf8");
+ok(!/const CONCEPTS\s*=/.test(modUcos) && !/const SECTIONS\s*=/.test(modUcos), "no hardcoded concept/section constant in the module");
 
 console.log("\n▸ KNOWLEDGE GRAPH (part → section → concept)");
 ok(count("ucos_edges") > 0, "graph edges were built", count("ucos_edges"));

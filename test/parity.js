@@ -220,11 +220,13 @@ console.log("\n▸ FINTECH — one ledger, escrow, KYC-gated credit");
   /* mandates */
   const m = fin.registerMandate(T, { owner: "u:1", max_amount: 100, frequency: "monthly", purpose: "subscription" });
   ok(m.status === "registered" && m.frequency === "monthly", "a mandate registers with a registry frequency");
-  const charged = fin.chargeMandate(T, m.id, 40);
-  ok(charged.charged_amount === 40 && charged.charges_done === 1, "a mandate charge accumulates");
+  const charged = fin.chargeMandate(T, m.id, 30);
+  ok(charged.charged_amount === 30 && charged.charges_done === 1, "a mandate charge accumulates");
   let overCap = false; try { fin.chargeMandate(T, m.id, 100); } catch (e) { overCap = /cap/.test(e.message); }
   ok(overCap, "a charge past the mandate cap is refused");
-  ok(one("SELECT balance FROM wallets WHERE tenant_id=? AND owner=?", T, "u:1").balance === 0, "the mandate debited the same ledger");
+  let short = false; try { fin.chargeMandate(T, m.id, 10); } catch (e) { short = /Not enough/.test(e.message); }
+  ok(short && one("SELECT charges_done FROM mandates WHERE id=?", m.id).charges_done === 1, "a charge beyond what the wallet holds is refused and not counted");
+  ok(one("SELECT balance FROM wallets WHERE tenant_id=? AND owner=?", T, "u:1").balance === 5, "the mandate debited the same ledger");
   /* escrow */
   const e = fin.hold(T, 555, "u:buyer", "u:seller", 200, "USD", { source: "test" });
   ok(e.status === "held" && e.held === 1, "escrow holds the funds");
@@ -584,7 +586,7 @@ console.log("\n▸ THE CONFIGURATION LAYER — any platform is composed, never t
   const view = call("GET", "/api/capabilities", {}, ADMIN);
   ok(view.catalog.length >= 30, "the catalog lists every capability as rows (" + view.catalog.length + ")");
   ok(view.presets.length >= 5 && view.composition.capabilities, "the read returns archetypes and the store's live composition");
-  ok(view.catalog.every(c => !/(amazon|flipkart|zepto|blinkit|paytm|alibaba)/i.test(c.label + " " + c.description)),
+  ok(view.catalog.every(c => require("../scripts/white-label.js").clean(c.label + " " + c.description)),
     "no capability definition carries a vendor or brand name — the catalog describes what, never whose");
   ok(view.catalog.some(c => c.params && Object.keys(c.params).length), "capabilities expose typed tunables (standards, not constants)");
   /* a store admin may compose only its own store; cross-store configuration is platform-only */

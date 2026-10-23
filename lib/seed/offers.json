@@ -1,0 +1,292 @@
+{
+ "REGISTRIES": {
+  "offerTypes": [
+   {
+    "key": "percent",
+    "percentage": true,
+    "uncapped_risk": true,
+    "name": "% off",
+    "direction": "discount",
+    "unit": "%"
+   },
+   {
+    "key": "fixed",
+    "absolute": true,
+    "name": "Fixed amount off",
+    "direction": "discount",
+    "unit": "amount"
+   },
+   {
+    "key": "fixed_per_item",
+    "absolute": true,
+    "name": "Fixed off per item",
+    "direction": "discount",
+    "unit": "amount"
+   },
+   {
+    "key": "free_ship",
+    "rank_weight": 5,
+    "cart_wide": true,
+    "name": "Free shipping",
+    "direction": "free_ship",
+    "unit": ""
+   },
+   {
+    "key": "threshold_free_ship",
+    "rank_weight": 5,
+    "cart_wide": true,
+    "name": "Free ship over threshold",
+    "direction": "free_ship",
+    "unit": "amount"
+   },
+   {
+    "key": "bogo",
+    "pro": true,
+    "name": "Buy 1 Get 1",
+    "direction": "discount",
+    "unit": "items"
+   },
+   {
+    "key": "buy_x_get_y",
+    "pro": true,
+    "name": "Buy X Get Y free",
+    "direction": "discount",
+    "unit": "items"
+   },
+   {
+    "key": "x_for_y",
+    "pro": true,
+    "name": "X for the price of Y",
+    "direction": "discount",
+    "unit": "items"
+   },
+   {
+    "key": "multi_buy",
+    "absolute": true,
+    "pro": true,
+    "name": "Multi-buy tier",
+    "direction": "discount",
+    "unit": "amount"
+   },
+   {
+    "key": "bundle_price",
+    "absolute": true,
+    "pro": true,
+    "name": "Bundle price",
+    "direction": "discount",
+    "unit": "amount"
+   },
+   {
+    "key": "tier_qty",
+    "cart_wide": true,
+    "name": "Quantity tier (whole cart)",
+    "direction": "discount",
+    "unit": "amount"
+   },
+   {
+    "key": "flash_percent",
+    "percentage": true,
+    "uncapped_risk": true,
+    "name": "Flash % off (time-bound)",
+    "direction": "discount",
+    "unit": "%"
+   },
+   {
+    "key": "cashback",
+    "name": "Cashback to wallet",
+    "direction": "credit",
+    "unit": "%"
+   },
+   {
+    "key": "spend_get_credit",
+    "absolute": true,
+    "cart_wide": true,
+    "name": "Spend ≥ min, get credit",
+    "direction": "reward",
+    "unit": "amount"
+   },
+   {
+    "key": "gift_card_credit",
+    "name": "Gift-card credit",
+    "direction": "credit",
+    "unit": "amount"
+   }
+  ],
+  "offerDirections": [
+   "discount",
+   "credit",
+   "reward",
+   "free_ship",
+   "exchange",
+   "gift"
+  ],
+  "offerChannels": [
+   {
+    "key": "commerce",
+    "name": "commerce",
+    "includes_promotions": true,
+    "gates_pro": true
+   },
+   {
+    "key": "subscription",
+    "name": "subscription"
+   },
+   {
+    "key": "ai",
+    "name": "ai"
+   },
+   {
+    "key": "any",
+    "name": "any"
+   }
+  ],
+  "offerScopes": [
+   {
+    "key": "store",
+    "name": "store",
+    "match": "all"
+   },
+   {
+    "key": "category",
+    "name": "category",
+    "match": "in",
+    "item": "dept",
+    "scope": [
+     "categories",
+     "category"
+    ]
+   },
+   {
+    "key": "node",
+    "name": "node",
+    "match": "taxonomy",
+    "scope": [
+     "node"
+    ]
+   },
+   {
+    "key": "product",
+    "name": "product",
+    "match": "in",
+    "item": "id",
+    "scope": [
+     "products"
+    ]
+   },
+   {
+    "key": "brand",
+    "name": "brand",
+    "match": "in",
+    "item": "brand",
+    "scope": [
+     "brands"
+    ]
+   },
+   {
+    "key": "customer",
+    "name": "customer",
+    "match": "all"
+   },
+   {
+    "key": "cart",
+    "name": "cart",
+    "match": "all"
+   },
+   {
+    "key": "line",
+    "name": "line",
+    "match": "all"
+   },
+   {
+    "key": "subscription",
+    "name": "subscription",
+    "match": "all"
+   },
+   {
+    "key": "ai",
+    "name": "ai",
+    "match": "all"
+   }
+  ],
+  "offerFunders": [
+   "self",
+   "bank",
+   "brand",
+   "partner",
+   "platform"
+  ],
+  "couponKinds": [
+   {
+    "key": "code",
+    "name": "code"
+   },
+   {
+    "key": "single_use",
+    "name": "single_use"
+   },
+   {
+    "key": "multi_use",
+    "name": "multi_use"
+   },
+   {
+    "key": "first_order",
+    "name": "first_order",
+    "new_customers_only": true
+   },
+   {
+    "key": "bulk_issued",
+    "name": "bulk_issued"
+   },
+   {
+    "key": "gift_card",
+    "name": "gift_card"
+   },
+   {
+    "key": "bank_voucher",
+    "name": "bank_voucher"
+   },
+   {
+    "key": "referral",
+    "name": "referral"
+   }
+  ],
+  "stackingPolicies": [
+   {
+    "key": "stack_with_others",
+    "name": "stack_with_others"
+   },
+   {
+    "key": "group_exclusive",
+    "name": "group_exclusive",
+    "blocks": "group"
+   },
+   {
+    "key": "exclusive",
+    "name": "exclusive",
+    "blocks": "others"
+   },
+   {
+    "key": "max_count",
+    "name": "max_count"
+   }
+  ],
+  "offerStatuses": [
+   "draft",
+   "scheduled",
+   "active",
+   "expired",
+   "inactive"
+  ],
+  "couponStatuses": [
+   "active",
+   "exhausted",
+   "revoked",
+   "expired"
+  ],
+  "redemptionStatuses": [
+   "redeemed",
+   "voided",
+   "reserved"
+  ]
+ }
+}

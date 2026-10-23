@@ -58,7 +58,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       const tBtn = [...hp.doc.querySelectorAll("[data-v]")].find(x => x.dataset.v === "tenants-admin");
       click(hp.win, tBtn); await sleep(1600);
       ok(hp.doc.querySelectorAll("[data-tedit]").length >= 3, "tenants view lists every tenant with an Edit action", hp.doc.querySelectorAll("[data-tedit]").length);
-      ok(/Tenants \(/.test(hp.doc.body.textContent), "the surface is the tenant registry, not a store hub");
+      ok(/Platforms \(/.test(hp.doc.body.textContent) && /Platform kinds \(/.test(hp.doc.body.textContent), "the surface is the platform registry with its kinds, not a store hub");
       ok(hp.errs.length === 0, "tenants view: no JS errors", hp.errs.slice(0, 2).join("|"));
       click(hp.win, hp.doc.querySelector("[data-tedit]")); await sleep(1200);
       ok(!!hp.doc.getElementById("tnName"), "edit opens a single tenant modal (no guided wizard)");

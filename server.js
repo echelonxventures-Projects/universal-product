@@ -218,7 +218,8 @@ const handler = async (req, res) => {
       if (sec.policy().csrfEnabled && ["POST", "PUT", "DELETE"].includes(req.method) && cookies.azs && !sec.csrfOk({ headers: { "x-csrf": req.headers["x-csrf"] || req.headers["x-csrf-token"] } }, session)) {
         res.writeHead(403, { "Content-Type": "application/json" }); return res.end(JSON.stringify({ error: "Missing or invalid CSRF token" }));
       }
-      if (session.tenant.status === "suspended" && !session.platform_admin) return api.bad(res, "This store is suspended", 403);
+      /* a platform whose state means "blocked" (the tenant machine, lib/states.js) is closed */
+      if (!session.platform_admin && require("./lib/states.js").has("tenant", session.tenant.status) && require("./lib/states.js").is("tenant", session.tenant.status, "blocked")) return api.bad(res, "This store is suspended", 403);
       let body = {};
       if (["POST", "PUT", "DELETE"].includes(req.method)) {
         const rb = await readBody(req);
@@ -268,10 +269,24 @@ const handler = async (req, res) => {
     }
     /* the unified console's bundles, wrapped server-side (lib/bundle.js) so the browser
        never has to eval fetched source */
+    const pm = /^\/js\/plain\/(store|platform)\.js$/.exec(url.pathname);
+    if (pm) {
+      res.writeHead(200, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" });
+      return res.end(require("./lib/bundle.js").plain(pm[1], PUB));
+    }
     const bm = /^\/js\/bundle\/(store|platform)\.js$/.exec(url.pathname);
     if (bm) {
       res.writeHead(200, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" });
       return res.end(require("./lib/bundle.js").wrap(bm[1], PUB));
+    }
+    /* one console: the old store and platform pages open /console.html in their scope,
+       keeping whatever the link carried (?store=, a hand-off ?token=, ?view=) */
+    const legacy = { "/admin.html": "store", "/platform.html": "platform" }[url.pathname];
+    if (legacy && (req.method === "GET" || req.method === "HEAD")) {
+      const q = new URLSearchParams(url.search);
+      if (!q.has("scope")) q.set("scope", legacy);
+      res.writeHead(302, { Location: "/console.html?" + q.toString(), "Cache-Control": "no-store" });
+      return res.end();
     }
     if (url.searchParams.get("store") && SLUG_RE.test(url.searchParams.get("store"))) res.appendHeader("Set-Cookie", `store=${url.searchParams.get("store")}; Path=/; Max-Age=${365 * DAY}; SameSite=Lax${IS_TLS ? "; Secure" : ""}`);
     serveStatic(req, res, url.pathname);
@@ -284,6 +299,11 @@ const handler = async (req, res) => {
 
 const server = http.createServer(handler);
 const listenServer = IS_TLS ? https.createServer(TLS, handler) : server;
+/* an idle keep-alive connection outlives a load balancer's idle timeout (commonly 60 s), so the
+   balancer, never this server, closes it: a server that closes first races the client's next
+   request on the same socket (ECONNRESET, or a 502 at the balancer). LX_KEEPALIVE_MS overrides. */
+const KEEPALIVE_MS = Number(process.env.LX_KEEPALIVE_MS) || 65000;
+for (const sv of new Set([server, listenServer])) { sv.keepAliveTimeout = KEEPALIVE_MS; sv.headersTimeout = KEEPALIVE_MS + 1000; }
 
 /* P0: the seed ships documented default passwords (admin123 / platform123) so a first
    boot is observable. In production they are an open door — refuse to serve until the
@@ -308,12 +328,36 @@ function prodCredentialGuard() {
   process.exit(1);
 }
 prodCredentialGuard();
+/* sign-in codes, magic links and password resets reach a signed-out person only by email/SMS:
+   with no platform transport, any store that hasn't set its own can't recover an account */
+if (process.env.NODE_ENV === "production" && !require("./lib/mailer.js").transportFor(0, "email"))
+  console.warn("  ⚠️  No platform email transport (LX_MAIL_PROVIDER / LX_SMTP_URL / LX_MAIL_FROM) — password resets and sign-in codes are only delivered for stores with their own live email gateway.");
 
-function shutdown(sig) { console.log(`\n${sig} — closing`); sec.persistState(); server.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000); }
+function shutdown(sig) { console.log(`\n${sig} — closing`); sec.persistState(); listenServer.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000); }
 /* a stray rejected promise in an async handler must not take the process down (Node
    >= 15 exits on unhandled rejections); log it with enough context to fix the source */
 /* expired idempotency keys are swept hourly (they were only ever deleted lazily on lookup) */
 setInterval(() => { try { idem.purge(); } catch (e) { } }, 3600 * 1000).unref();
+/* live payments whose webhook never came are looked up with their gateway on a cadence */
+require("./lib/api.js").startPaymentSweep();
+/* shoppers' alerts are re-checked (prices also move by imports and rules, not only edits) and
+   pickup parcels past their holding time expire, on the platform policy's cadence */
+(function shopperSweep() {
+  const mins = Number(sec.policy().shopperSweepMinutes);
+  const t = setTimeout(() => {
+    /* each engine with a clock: alerts re-checked, pickup parcels and booking holds expired,
+       offers expired, auctions opened and closed, group buys settled, sellers' proceeds released */
+    if (mins > 0) for (const m of ["alerts", "pickup", "bookings", "negotiation", "auctions", "groupbuy", "listings", "trials", "options", "wallet"]) { try { require("./lib/" + m + ".js").sweepAll(); } catch (e) { } }
+    shopperSweep();
+  }, Math.max(1, mins > 0 ? mins : 15) * 60000);
+  if (t.unref) t.unref();
+})();
+/* platform setup answers given for a later minute are applied when that minute comes */
+(function setupSweep() {
+  const SU = require("./lib/platform-setup.js");
+  const t = setTimeout(() => { try { SU.sweepAll(); } catch (e) { console.error("setup sweep:", e.message); } setupSweep(); }, SU.resolutionMs());
+  if (t.unref) t.unref();
+})();
 process.on("unhandledRejection", (e) => { console.error("unhandledRejection:", e && e.stack || e); });
 process.on("SIGINT", () => shutdown("SIGINT"));
 process.on("SIGTERM", () => shutdown("SIGTERM"));
@@ -332,9 +376,7 @@ listenServer.listen(PORT, () => {
    P L A T F O R M  ·  the master global platform, configured into any platform  ·  🛡 10-layer security${IS_TLS ? " (TLS ON)" : " (HTTP — set LUX_TLS=1 for HTTPS)"}
 
    🏬 Master:      http${IS_TLS ? "s" : ""}://${(master || { slug: "luxora" }).slug}.localhost:${PORT} (the master's own deployment${fixtures.length ? `, +${fixtures.length} fixture${fixtures.length > 1 ? "s" : ""}` : ""})
-   🧾 Store admin: http${IS_TLS ? "s" : ""}://localhost:${PORT}/admin.html      (admin@luxora.shop / admin123)
-   🛰  Platform:   http${IS_TLS ? "s" : ""}://localhost:${PORT}/platform.html   (platform@luxora.shop / platform123)
-   🌐 One console: http${IS_TLS ? "s" : ""}://localhost:${PORT}/console.html    (both scopes, one sign-in)
+   🌐 Console:    http${IS_TLS ? "s" : ""}://localhost:${PORT}/console.html    (platform@luxora.shop / platform123 · store admin admin@luxora.shop / admin123)
    🔐 Scorecard:   GET /api/platform/security
 `);
   /* optional multi-node Redis queue worker (config-driven; off unless queue=redis and LX_WORKER≠0) */

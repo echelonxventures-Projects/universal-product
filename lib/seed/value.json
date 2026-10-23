@@ -1,0 +1,32 @@
+{
+  "$comment": "Value's declarations (lib/registry.js units). Every unit of value is one row of Value's master (the currencies table): an ISO 4217 currency, a colony's credits, carbon credits, loyalty points — any of them, by configuration. A unit's class says what kind of value it is (the class list is Value's registry; a class that is `money` prices goods), and `settleable` whether it can be paid out. A unit's code is letters, digits and underscores — ISO 4217's three letters are one case of it, not an assumption. `units` are the units this platform ships beyond the currency seed; they arrive switched off, for an operator to switch on. Units an operator added to the offer engine's old list (legacyUnitList) are imported once.",
+  "classList": "valueClasses",
+  "defaultClass": "fiat",
+  "codePattern": "^[A-Z][A-Z0-9_]{1,31}$",
+  "codeHint": "capital letters, digits and _ (an ISO 4217 code, or any unit's own)",
+  "legacyUnitList": "goipEconomicUnits",
+  "legacyClassList": "goipAssetClasses",
+  "classes": [
+    { "key": "fiat", "name": "Fiat money", "money": true },
+    { "key": "colonial", "name": "Colonial credit" },
+    { "key": "federation", "name": "Federation credit" },
+    { "key": "environmental", "name": "Environmental credit" },
+    { "key": "utility", "name": "Utility credit" },
+    { "key": "commodity", "name": "Commodity unit" },
+    { "key": "loyalty", "name": "Loyalty points" },
+    { "key": "digital", "name": "Digital token" },
+    { "key": "entitlement", "name": "Entitlement" },
+    { "key": "declared", "name": "Declared unit" }
+  ],
+  "units": [
+    { "code": "MARS_CREDIT", "name": "Mars Credits", "symbol": "MC", "class": "colonial", "decimals": 2, "usd": 0, "settleable": false },
+    { "code": "LUNAR_TOKEN", "name": "Lunar Tokens", "symbol": "LT", "class": "colonial", "decimals": 0, "usd": 0, "settleable": false },
+    { "code": "FED_CREDIT", "name": "Federation Credits", "symbol": "FC", "class": "federation", "decimals": 2, "usd": 0, "settleable": false },
+    { "code": "CARBON", "name": "Carbon Credits", "symbol": "tCO₂e", "class": "environmental", "decimals": 3, "usd": 0, "settleable": true },
+    { "code": "ENERGY", "name": "Energy Credits", "symbol": "kWh", "class": "utility", "decimals": 3, "usd": 0, "settleable": true },
+    { "code": "RESOURCE", "name": "Resource Units", "symbol": "RU", "class": "commodity", "decimals": 3, "usd": 0, "settleable": true },
+    { "code": "POINT", "name": "Reward Points", "symbol": "pt", "class": "loyalty", "decimals": 0, "usd": 0.01, "settleable": false },
+    { "code": "COIN", "name": "Coins", "symbol": "¢", "class": "loyalty", "decimals": 0, "usd": 0.01, "settleable": false },
+    { "code": "TOKEN", "name": "Tokens", "symbol": "tk", "class": "digital", "decimals": 0, "usd": 0, "settleable": false }
+  ]
+}

@@ -4,652 +4,678 @@
   "canonicalName": "Repository Artifact Manifest",
   "version": "Omega-1",
   "status": "Constitutional Freeze",
-  "totalArtifacts": 93,
   "sectionTemplate": 50,
-  "categories": [
-    {
-      "code": "CON",
-      "name": "Constitutions",
-      "path": "00-constitutions",
-      "count": 10
-    },
-    {
-      "code": "SEM",
-      "name": "Semantics",
-      "path": "01-semantics",
-      "count": 4
-    },
-    {
-      "code": "Core",
-      "name": "Core Domains",
-      "path": "02-core-domains",
-      "count": 15
-    },
-    {
-      "code": "REA",
-      "name": "Reality Systems",
-      "path": "03-reality-systems",
-      "count": 6
-    },
-    {
-      "code": "COM",
-      "name": "Commerce",
-      "path": "04-commerce",
-      "count": 10
-    },
-    {
-      "code": "DTW",
-      "name": "Digital Twins",
-      "path": "05-digital-twins",
-      "count": 3
-    },
-    {
-      "code": "AGT",
-      "name": "Agents",
-      "path": "06-agents",
-      "count": 7
-    },
-    {
-      "code": "RUN",
-      "name": "Runtime",
-      "path": "07-runtime",
-      "count": 5
-    },
-    {
-      "code": "DAT",
-      "name": "Data",
-      "path": "08-data",
-      "count": 7
-    },
-    {
-      "code": "SEC",
-      "name": "Security",
-      "path": "09-security",
-      "count": 7
-    },
-    {
-      "code": "OPS",
-      "name": "Operations",
-      "path": "10-operations",
-      "count": 6
-    },
-    {
-      "code": "DEP",
-      "name": "Deployment",
-      "path": "11-deployment",
-      "count": 4
-    },
-    {
-      "code": "QLT",
-      "name": "Quality",
-      "path": "12-quality",
-      "count": 4
-    },
-    {
-      "code": "IMP",
-      "name": "Implementation",
-      "path": "13-implementation",
-      "count": 5
-    }
-  ],
+  "projection": {
+    "masterFile": "UCOS-MASTER.md",
+    "volumeDir": "volumes",
+    "maxVolumeBytes": 102400
+  },
   "artifacts": [
     {
       "id": "UCOS-CON-000001",
       "title": "Constitutional Foundation",
-      "cat": "CON",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Constitutional Authority"
     },
     {
       "id": "UCOS-CON-000002",
       "title": "Canonical Terminology Constitution",
-      "cat": "CON",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Constitutional Authority"
     },
     {
       "id": "UCOS-CON-000003",
       "title": "Domain Ownership Constitution",
-      "cat": "CON",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Constitutional Authority"
     },
     {
       "id": "UCOS-CON-000004",
       "title": "Dependency Constitution",
-      "cat": "CON",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Constitutional Authority"
     },
     {
       "id": "UCOS-CON-000005",
       "title": "Governance Constitution",
-      "cat": "CON",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Constitutional Authority"
     },
     {
       "id": "UCOS-CON-000006",
       "title": "Security Constitution",
-      "cat": "CON",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Constitutional Authority"
     },
     {
       "id": "UCOS-CON-000007",
       "title": "Privacy Constitution",
-      "cat": "CON",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Constitutional Authority"
     },
     {
       "id": "UCOS-CON-000008",
       "title": "Trust Constitution",
-      "cat": "CON",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Constitutional Authority"
     },
     {
       "id": "UCOS-CON-000009",
       "title": "Evolution Constitution",
-      "cat": "CON",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Constitutional Authority"
     },
     {
       "id": "UCOS-CON-000010",
       "title": "Certification Constitution",
-      "cat": "CON",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Constitutional Authority"
     },
     {
       "id": "UCOS-SEM-000001",
       "title": "Universal Semantic Architecture",
-      "cat": "SEM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Semantic"
     },
     {
       "id": "UCOS-ONT-000001",
       "title": "Universal Ontology",
-      "cat": "SEM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Semantic"
     },
     {
       "id": "UCOS-TAX-000001",
       "title": "Universal Taxonomy",
-      "cat": "SEM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Semantic"
     },
     {
       "id": "UCOS-CLS-000001",
       "title": "Universal Classification Architecture",
-      "cat": "SEM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Semantic"
     },
     {
       "id": "UCOS-IDN-000001",
       "title": "Identity Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Identity"
     },
     {
       "id": "UCOS-KNW-000001",
       "title": "Knowledge Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Knowledge"
     },
     {
       "id": "UCOS-REL-000001",
       "title": "Relationship Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Relationship"
     },
     {
       "id": "UCOS-CTX-000001",
       "title": "Context Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Context"
     },
     {
       "id": "UCOS-POL-000001",
       "title": "Policy Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Policy"
     },
     {
       "id": "UCOS-RUL-000001",
       "title": "Rule Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Rule"
     },
     {
       "id": "UCOS-AUT-000001",
       "title": "Authority Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Authority"
     },
     {
       "id": "UCOS-TRS-000001",
       "title": "Trust Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Trust"
     },
     {
       "id": "UCOS-EVD-000001",
       "title": "Evidence Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Evidence"
     },
     {
       "id": "UCOS-OBS-000001",
       "title": "Observation Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Observation"
     },
     {
       "id": "UCOS-INF-000001",
       "title": "Inference Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Inference"
     },
     {
       "id": "UCOS-RSN-000001",
       "title": "Reasoning Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Reasoning"
     },
     {
       "id": "UCOS-SIM-000001",
       "title": "Simulation Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Simulation"
     },
     {
       "id": "UCOS-CAU-000001",
       "title": "Causality Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Causality"
     },
     {
       "id": "UCOS-EVO-000001",
       "title": "Evolution Architecture",
-      "cat": "Core",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Evolution"
     },
     {
       "id": "UCOS-REA-000001",
       "title": "Multi-Reality Architecture",
-      "cat": "REA",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Possibility"
     },
     {
       "id": "UCOS-PER-000001",
       "title": "Perspective Architecture",
-      "cat": "REA",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Perspective"
     },
     {
       "id": "UCOS-UNC-000001",
       "title": "Uncertainty Architecture",
-      "cat": "REA",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Inference"
     },
     {
       "id": "UCOS-CONTR-000001",
       "title": "Contradiction Architecture",
-      "cat": "REA",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Reasoning"
     },
     {
       "id": "UCOS-POSS-000001",
       "title": "Possibility Architecture",
-      "cat": "REA",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Possibility"
     },
     {
       "id": "UCOS-EMG-000001",
       "title": "Emergence Architecture",
-      "cat": "REA",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Evolution"
     },
     {
       "id": "UCOS-COM-000001",
       "title": "Universal Commerce Architecture",
-      "cat": "COM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Commerce"
     },
     {
       "id": "UCOS-GPS-000001",
       "title": "Global Products & Services Architecture",
-      "cat": "COM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Commerce"
     },
     {
       "id": "UCOS-PRC-000001",
       "title": "Pricing Architecture",
-      "cat": "COM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Commerce"
     },
     {
       "id": "UCOS-OFR-000001",
       "title": "Offer Architecture",
-      "cat": "COM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Commerce"
     },
     {
       "id": "UCOS-SUB-000001",
       "title": "Subscription Architecture",
-      "cat": "COM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Commerce"
     },
     {
       "id": "UCOS-CNT-000001",
       "title": "Contract Architecture",
-      "cat": "COM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Commerce"
     },
     {
       "id": "UCOS-MKT-000001",
       "title": "Marketplace Architecture",
-      "cat": "COM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Commerce"
     },
     {
       "id": "UCOS-INV-000001",
       "title": "Inventory Architecture",
-      "cat": "COM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Commerce"
     },
     {
       "id": "UCOS-ORD-000001",
       "title": "Order Architecture",
-      "cat": "COM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Commerce"
     },
     {
       "id": "UCOS-FUL-000001",
       "title": "Fulfillment Architecture",
-      "cat": "COM",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Commerce"
     },
     {
       "id": "UCOS-DTW-000001",
       "title": "Digital Twin Architecture",
-      "cat": "DTW",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Twin"
     },
     {
       "id": "UCOS-DTW-000002",
       "title": "Twin Federation Architecture",
-      "cat": "DTW",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Twin"
     },
     {
       "id": "UCOS-DTW-000003",
       "title": "Twin Synchronization Architecture",
-      "cat": "DTW",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Twin"
     },
     {
       "id": "UCOS-AGT-000001",
       "title": "Agent Constitution",
-      "cat": "AGT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Agent"
     },
     {
       "id": "UCOS-AGT-000002",
       "title": "Agent Runtime",
-      "cat": "AGT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Agent"
     },
     {
       "id": "UCOS-AGT-000003",
       "title": "Agent Governance",
-      "cat": "AGT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Agent"
     },
     {
       "id": "UCOS-AGT-000004",
       "title": "Agent Trust",
-      "cat": "AGT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Agent"
     },
     {
       "id": "UCOS-AGT-000005",
       "title": "Agent Safety",
-      "cat": "AGT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Agent"
     },
     {
       "id": "UCOS-AGT-000006",
       "title": "Agent Economics",
-      "cat": "AGT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Agent"
     },
     {
       "id": "UCOS-AGT-000007",
       "title": "Agent Society",
-      "cat": "AGT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Agent"
     },
     {
       "id": "UCOS-RUN-000001",
       "title": "Runtime Constitution",
-      "cat": "RUN",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Runtime"
     },
     {
       "id": "UCOS-RUN-000002",
       "title": "Execution Architecture",
-      "cat": "RUN",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Runtime"
     },
     {
       "id": "UCOS-RUN-000003",
       "title": "Orchestration Architecture",
-      "cat": "RUN",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Runtime"
     },
     {
       "id": "UCOS-RUN-000004",
       "title": "Workflow Architecture",
-      "cat": "RUN",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Runtime"
     },
     {
       "id": "UCOS-RUN-000005",
       "title": "State Machine Architecture",
-      "cat": "RUN",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Runtime"
     },
     {
       "id": "UCOS-DB-000001",
       "title": "Storage Architecture",
-      "cat": "DAT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Persistence"
     },
     {
       "id": "UCOS-GRF-000001",
       "title": "Graph Architecture",
-      "cat": "DAT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Persistence"
     },
     {
       "id": "UCOS-IDX-000001",
       "title": "Index Architecture",
-      "cat": "DAT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Persistence"
     },
     {
       "id": "UCOS-SRC-000001",
       "title": "Search Architecture",
-      "cat": "DAT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Search"
     },
     {
       "id": "UCOS-CCH-000001",
       "title": "Cache Architecture",
-      "cat": "DAT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Persistence"
     },
     {
       "id": "UCOS-EVT-000001",
       "title": "Event Architecture",
-      "cat": "DAT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Runtime"
     },
     {
       "id": "UCOS-MSG-000001",
       "title": "Messaging Architecture",
-      "cat": "DAT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Runtime"
     },
     {
       "id": "UCOS-IAM-000001",
       "title": "Identity & Access Management",
-      "cat": "SEC",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Security"
     },
     {
       "id": "UCOS-ZTA-000001",
       "title": "Zero Trust Architecture",
-      "cat": "SEC",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Security"
     },
     {
       "id": "UCOS-CRY-000001",
       "title": "Cryptography Architecture",
-      "cat": "SEC",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Security"
     },
     {
       "id": "UCOS-KMS-000001",
       "title": "Key Management Architecture",
-      "cat": "SEC",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Security"
     },
     {
       "id": "UCOS-SEC-000001",
       "title": "Security Runtime Architecture",
-      "cat": "SEC",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Security"
     },
     {
       "id": "UCOS-DSP-000001",
       "title": "Data Sovereignty Architecture",
-      "cat": "SEC",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Compliance"
     },
     {
       "id": "UCOS-CNS-000001",
       "title": "Consent Architecture",
-      "cat": "SEC",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Compliance"
     },
     {
       "id": "UCOS-SRE-000001",
       "title": "Reliability Architecture",
-      "cat": "OPS",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Operations"
     },
     {
       "id": "UCOS-MON-000001",
       "title": "Monitoring Architecture",
-      "cat": "OPS",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Operations"
     },
     {
       "id": "UCOS-OBSV-000001",
       "title": "Observability Architecture",
-      "cat": "OPS",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Operations"
     },
     {
       "id": "UCOS-AUD-000001",
       "title": "Audit Architecture",
-      "cat": "OPS",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Audit"
     },
     {
       "id": "UCOS-DR-000001",
       "title": "Disaster Recovery Architecture",
-      "cat": "OPS",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Operations"
     },
     {
       "id": "UCOS-BCP-000001",
       "title": "Business Continuity Architecture",
-      "cat": "OPS",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Operations"
     },
     {
       "id": "UCOS-DEP-000001",
       "title": "Deployment Architecture",
-      "cat": "DEP",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Operations"
     },
     {
       "id": "UCOS-CLD-000001",
       "title": "Multi-Cloud Architecture",
-      "cat": "DEP",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Operations"
     },
     {
       "id": "UCOS-EDG-000001",
       "title": "Edge Architecture",
-      "cat": "DEP",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Operations"
     },
     {
       "id": "UCOS-GEO-000001",
       "title": "Geo-Distribution Architecture",
-      "cat": "DEP",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Operations"
     },
     {
       "id": "UCOS-TST-000001",
       "title": "Testing Architecture",
-      "cat": "QLT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Quality"
     },
     {
       "id": "UCOS-VER-000001",
       "title": "Verification Architecture",
-      "cat": "QLT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Quality"
     },
     {
       "id": "UCOS-CER-000001",
       "title": "Certification Architecture",
-      "cat": "QLT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Quality"
     },
     {
       "id": "UCOS-FML-000001",
       "title": "Formal Verification Architecture",
-      "cat": "QLT",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Quality"
     },
     {
       "id": "UCOS-IMP-000001",
       "title": "Master Implementation Blueprint",
-      "cat": "IMP",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Guidance"
     },
     {
       "id": "UCOS-IMP-000002",
       "title": "Reference Platform Architecture",
-      "cat": "IMP",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Guidance"
     },
     {
       "id": "UCOS-IMP-000003",
       "title": "Engineering Playbook",
-      "cat": "IMP",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Guidance"
     },
     {
       "id": "UCOS-IMP-000004",
       "title": "Migration Blueprint",
-      "cat": "IMP",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Guidance"
     },
     {
       "id": "UCOS-IMP-000005",
       "title": "Delivery Roadmap",
-      "cat": "IMP",
-      "status": "generated"
+      "status": "generated",
+      "owner": "Guidance"
+    },
+    {
+      "id": "UCOS-DEC-000001",
+      "title": "Decision Architecture",
+      "status": "generated",
+      "owner": "Decision"
+    },
+    {
+      "id": "UCOS-PLC-000001",
+      "title": "Geo Architecture",
+      "status": "generated",
+      "owner": "Geo"
+    },
+    {
+      "id": "UCOS-TIM-000001",
+      "title": "Time Architecture",
+      "status": "generated",
+      "owner": "Time"
+    },
+    {
+      "id": "UCOS-MEA-000001",
+      "title": "Measure Architecture",
+      "status": "generated",
+      "owner": "Measure"
+    },
+    {
+      "id": "UCOS-VAL-000001",
+      "title": "Value Architecture",
+      "status": "generated",
+      "owner": "Value"
+    },
+    {
+      "id": "UCOS-EXR-000001",
+      "title": "Expression Architecture",
+      "status": "generated",
+      "owner": "Expression"
+    },
+    {
+      "id": "UCOS-REG-000001",
+      "title": "Registry Architecture",
+      "status": "generated",
+      "owner": "Registry"
+    },
+    {
+      "id": "UCOS-CMP-000001",
+      "title": "Compliance Architecture",
+      "status": "generated",
+      "owner": "Compliance"
+    },
+    {
+      "id": "UCOS-EXP-000001",
+      "title": "Experience Architecture",
+      "status": "generated",
+      "owner": "Experience"
+    },
+    {
+      "id": "UCOS-CMN-000001",
+      "title": "Communication Architecture",
+      "status": "generated",
+      "owner": "Communication"
+    },
+    {
+      "id": "UCOS-NTF-000001",
+      "title": "Notification Architecture",
+      "status": "generated",
+      "owner": "Notification"
+    },
+    {
+      "id": "UCOS-GDN-000001",
+      "title": "Guidance Architecture",
+      "status": "generated",
+      "owner": "Guidance"
+    },
+    {
+      "id": "UCOS-INT-000001",
+      "title": "Integration Architecture",
+      "status": "generated",
+      "owner": "Integration"
+    },
+    {
+      "id": "UCOS-INS-000001",
+      "title": "Insight Architecture",
+      "status": "generated",
+      "owner": "Insight"
+    },
+    {
+      "id": "UCOS-MED-000001",
+      "title": "Content Architecture",
+      "status": "generated",
+      "owner": "Content"
+    },
+    {
+      "id": "UCOS-OFG-000001",
+      "title": "Offering Architecture",
+      "status": "generated",
+      "owner": "Offering"
+    },
+    {
+      "id": "UCOS-PKG-000001",
+      "title": "Package Architecture",
+      "status": "generated",
+      "owner": "Package"
+    },
+    {
+      "id": "UCOS-PTY-000001",
+      "title": "Party Architecture",
+      "status": "generated",
+      "owner": "Party"
     }
   ]
 }

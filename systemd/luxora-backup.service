@@ -1,0 +1,17 @@
+[Unit]
+Description=LUXORA database + keyring backup
+After=luxora.service
+
+[Service]
+Type=oneshot
+User=www-data
+WorkingDirectory=/var/www/luxora
+# Must point at the same database the server uses (LX_DB) when it is not data/luxora.db.
+# Keep 14 nightly sets locally; copy each off the machine as well, either by setting
+#   Environment="LX_BACKUP_S3_BUCKET=..." "LX_BACKUP_S3_ACCESS=..." "LX_BACKUP_S3_SECRET=..."
+#   (+ LX_BACKUP_S3_REGION / LX_BACKUP_S3_ENDPOINT for R2, MinIO, B2)
+# or by syncing data/backups/ elsewhere. A backup on the same disk is not a backup.
+Environment="LX_BACKUP_KEEP=14"
+ExecStart=/usr/bin/node scripts/backup.js
+StandardOutput=journal
+StandardError=journal

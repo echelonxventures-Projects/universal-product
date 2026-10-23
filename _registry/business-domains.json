@@ -1,0 +1,2742 @@
+{
+ "$schema": "https://ucos.io/registry/business-domains.v1.json",
+ "registryId": "UCOS-REG-BUSINESS-DOMAINS",
+ "canonicalName": "Business Domain Catalogue",
+ "version": "1",
+ "law": "Every artifact the platform is built from — a code file, a table, an API route, a state machine, a capability, a registry list, a console screen, a page — belongs to exactly one business domain below. A business domain is a sub-entity of the foundation domain named as its `foundation`. Nothing is owned twice and nothing is unowned (test/domain-map.js); each domain's documentation — overview, API, architecture, data model, data flow, process flows, user interface and a manual for each of its users — is generated from this file and the code (scripts/domain-docs.js), so it cannot drift.",
+ "userTypes": [
+  {
+   "key": "guest",
+   "name": "Guest"
+  },
+  {
+   "key": "shopper",
+   "name": "Shopper"
+  },
+  {
+   "key": "seller",
+   "name": "Seller"
+  },
+  {
+   "key": "practitioner",
+   "name": "Practitioner"
+  },
+  {
+   "key": "driver",
+   "name": "Driver or rider"
+  },
+  {
+   "key": "partner",
+   "name": "Partner or affiliate"
+  },
+  {
+   "key": "store_staff",
+   "name": "Store staff"
+  },
+  {
+   "key": "store_admin",
+   "name": "Store administrator"
+  },
+  {
+   "key": "platform_admin",
+   "name": "Platform administrator"
+  },
+  {
+   "key": "developer",
+   "name": "Developer"
+  }
+ ],
+ "domains": [
+  {
+   "key": "identity",
+   "name": "Identity",
+   "foundation": "Identity",
+   "purpose": "Who someone is: accounts, sign-in by every method (password, one-time code, magic link, passkey, single sign-on), sessions, provisioning from directories, and platform administrators' own accounts.",
+   "users": [
+    "guest",
+    "shopper",
+    "seller",
+    "store_staff",
+    "store_admin",
+    "platform_admin",
+    "developer"
+   ],
+   "owns": {
+    "files": [
+     "lib/identity.js",
+     "lib/webauthn.js"
+    ],
+    "tables": [
+     "users",
+     "sessions",
+     "password_resets",
+     "identity_biometric_challenges",
+     "identity_login_states",
+     "identity_magic_links",
+     "identity_otps",
+     "identity_providers",
+     "user_identity_methods",
+     "sso_connections",
+     "sso_states",
+     "scim_tokens",
+     "platform_sessions",
+     "platform_admins",
+     "platform_identity_templates",
+     "tokens"
+    ],
+    "routes": [
+     "^/api/(auth|session|user|scim)(/|$)",
+     "^/api/admin/(sso|scim|identity-provider-types|identity-providers|identity-settings|users|account)(/|$)",
+     "^/api/platform/(login|logout|me|identity-templates|admins|users)(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "sso"
+    ],
+    "platformScreens": [
+     "identity",
+     "padmins",
+     "users"
+    ],
+    "platformGroups": [
+     "Identity"
+    ],
+    "pages": [
+     "reset"
+    ]
+   }
+  },
+  {
+   "key": "access",
+   "name": "Access and roles",
+   "foundation": "Authority",
+   "purpose": "What someone may do: store roles and staff, platform roles, permission sections and scopes, and the policies that grant or refuse.",
+   "users": [
+    "store_staff",
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/authz.js",
+     "lib/rbac.js",
+     "lib/prbac.js"
+    ],
+    "tables": [
+     "policies"
+    ],
+    "routes": [
+     "^/api/admin/(roles|staff)(/|$)",
+     "^/api/platform/(roles|policies|branding-permissions)(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "team"
+    ],
+    "platformScreens": [
+     "roles",
+     "policies"
+    ],
+    "platformGroups": [
+     "Access"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "customers",
+   "name": "Customers",
+   "foundation": "Party",
+   "purpose": "The people and organisations a store sells to: their profiles and addresses, segments they belong to, and leads not yet customers.",
+   "users": [
+    "shopper",
+    "store_staff",
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [],
+    "tables": [
+     "addresses",
+     "segment_members"
+    ],
+    "routes": [
+     "^/api/addresses(/|$)",
+     "^/api/admin/segments(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [],
+    "platformScreens": [],
+    "platformGroups": [
+     "Parties",
+     "CRM"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "stores",
+   "name": "Stores and organisation",
+   "foundation": "Party",
+   "purpose": "The stores on the platform and how each is organised: creating and configuring a store from its setup answers, its departments and org units, its tenancy tree and its look.",
+   "users": [
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/stores.js",
+     "lib/tenancy.js",
+     "lib/platform-setup.js",
+     "lib/platform-discovery.js",
+     "lib/compose.js",
+     "lib/branding.js"
+    ],
+    "tables": [
+     "tenants",
+     "tenancy_config",
+     "tenancy_nodes",
+     "tenant_state",
+     "tenant_entities",
+     "departments",
+     "store_branding",
+     "store_branding_perms",
+     "platform_branding"
+    ],
+    "routes": [
+     "^/api/(tenancy|stores|branding|compose)(/|$)",
+     "^/api/platform/(tenants|setup|branding|tenant-entities|tenant-fields|regions|fanout)(/|$)",
+     "^/api/admin/departments(/|$)"
+    ],
+    "machines": [
+     "tenant",
+     "org_unit"
+    ],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "structure"
+    ],
+    "platformScreens": [
+     "tenants",
+     "provisioning",
+     "compose",
+     "brands"
+    ],
+    "platformGroups": [
+     "Tenancy"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "modules",
+   "name": "Modules and capabilities",
+   "foundation": "Offering",
+   "purpose": "What a store has switched on: the modules the platform sells to stores, the capabilities inside them, their parameters, presets and availability rules.",
+   "users": [
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/modules.js",
+     "lib/capabilities.js",
+     "lib/gates.js"
+    ],
+    "tables": [
+     "modules",
+     "tenant_modules",
+     "capabilities",
+     "capability_values",
+     "capability_presets",
+     "capability_preset_assignments",
+     "platform_capabilities",
+     "applicability_rules"
+    ],
+    "routes": [
+     "^/api/(modules|capabilities|market)(/|$)",
+     "^/api/platform/(modules|flags)(/|$)"
+    ],
+    "machines": [
+     "module"
+    ],
+    "capabilities": [
+     "admin_portal"
+    ],
+    "registries": [],
+    "screens": [
+     "modules",
+     "applicability"
+    ],
+    "platformScreens": [
+     "modules",
+     "capabilities",
+     "applicability"
+    ],
+    "platformGroups": [
+     "Capabilities"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "platform_billing",
+   "name": "Platform billing",
+   "foundation": "Value",
+   "purpose": "What the platform charges its stores: plans, subscriptions to plans, usage metering, invoices and credit notes.",
+   "users": [
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/billing.js"
+    ],
+    "tables": [
+     "plans",
+     "invoices",
+     "invoice_lines",
+     "invoice_documents",
+     "credit_notes",
+     "billing_events",
+     "usage_events",
+     "usage_records"
+    ],
+    "routes": [
+     "^/api/billing(/|$)",
+     "^/api/admin/billing(/|$)",
+     "^/api/platform/(billing|plans|invoices|revenue|usage)(/|$)"
+    ],
+    "machines": [
+     "invoice",
+     "credit_note",
+     "plan_subscription"
+    ],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "billing"
+    ],
+    "platformScreens": [
+     "billing",
+     "invoices",
+     "plans",
+     "subs"
+    ],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "catalog",
+   "name": "Catalogue",
+   "foundation": "Offering",
+   "purpose": "Everything a store sells, described once: products and their variants and SKUs, brands, the category tree, attributes, the platform master every product is described on, the global catalogue and contributions back to it.",
+   "users": [
+    "shopper",
+    "seller",
+    "store_staff",
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/gcatalog.js",
+     "lib/platform-master.js",
+     "lib/master-contributions.js",
+     "lib/master-permissions.js",
+     "lib/store-taxonomy.js",
+     "lib/store-attributes.js"
+    ],
+    "tables": [
+     "products",
+     "product_bullets",
+     "variant_groups",
+     "skus",
+     "brands",
+     "taxonomy",
+     "attribute_defs",
+     "relationships"
+    ],
+    "routes": [
+     "^/api/(products|taxonomy|tenant/(catalog|products|master))(/|$)",
+     "^/api/admin/(products|skus|taxonomy|attributes|relationships)(/|$)",
+     "^/api/platform/(master|global-catalog|global-products|attributes|store-product-config)(/|$)"
+    ],
+    "machines": [
+     "contribution"
+    ],
+    "capabilities": [],
+    "registries": [
+     "contributionStatuses"
+    ],
+    "screens": [
+     "products",
+     "skus",
+     "brands",
+     "taxonomy",
+     "attributes",
+     "gcatalog",
+     "mastercontrib"
+    ],
+    "platformScreens": [
+     "gcatalog",
+     "gproducts",
+     "taxonomy",
+     "definitions"
+    ],
+    "platformGroups": [
+     "Products",
+     "Catalog & Taxonomy",
+     "Provenance"
+    ],
+    "pages": [
+     "product"
+    ]
+   }
+  },
+  {
+   "key": "product_content",
+   "name": "Product content",
+   "foundation": "Content",
+   "purpose": "How a product is presented beyond its facts: rich content modules, images and comparison blocks, reviewed before they show.",
+   "users": [
+    "seller",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/richcontent.js"
+    ],
+    "tables": [
+     "rich_content"
+    ],
+    "routes": [
+     "^/api/admin/rich-content(/|$)"
+    ],
+    "machines": [
+     "rich_content"
+    ],
+    "capabilities": [
+     "rich_content"
+    ],
+    "registries": [
+     "richContentStatuses",
+     "contentModules"
+    ],
+    "screens": [
+     "richcontent"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "product_options",
+   "name": "Product options",
+   "foundation": "Offering",
+   "purpose": "Choices on one product instead of a product per combination: option groups (sizes, toppings, engravings) with their values and price changes, attached to any product.",
+   "users": [
+    "shopper",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/options.js"
+    ],
+    "tables": [
+     "option_groups",
+     "option_values",
+     "product_option_groups",
+     "option_follow_ups"
+    ],
+    "routes": [
+     "^/api/(admin/)?options(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [
+     "product_options"
+    ],
+    "registries": [
+     "optionKinds"
+    ],
+    "screens": [
+     "prodoptions"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "inventory",
+   "name": "Inventory",
+   "foundation": "Offering",
+   "purpose": "How much of what is where: stock per SKU and warehouse, store-level stock, transfers between locations and serial-numbered items.",
+   "users": [
+    "store_staff",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [],
+    "tables": [
+     "inventory",
+     "warehouses",
+     "stock_transfers",
+     "serialized_items",
+     "store_inventory"
+    ],
+    "routes": [
+     "^/api/admin/(inventory|warehouses|transfers|serialized)(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [
+     "store_inventory"
+    ],
+    "registries": [
+     "qcInvStatuses"
+    ],
+    "screens": [
+     "serialized"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "pricing",
+   "name": "Pricing",
+   "foundation": "Value",
+   "purpose": "The price a buyer pays before any offer: price lists per segment with quantity tiers, and demand-based surge pricing.",
+   "users": [
+    "store_admin",
+    "seller"
+   ],
+   "owns": {
+    "files": [],
+    "tables": [
+     "price_lists",
+     "price_list_items",
+     "surge_zones"
+    ],
+    "routes": [],
+    "machines": [
+     "price_list"
+    ],
+    "capabilities": [
+     "segment_pricing",
+     "dynamic_pricing"
+    ],
+    "registries": [
+     "b2bSegments"
+    ],
+    "screens": [],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "currency",
+   "name": "Currencies and exchange",
+   "foundation": "Value",
+   "purpose": "Every unit of value and how they convert: currencies, points and credits, and exchange rates.",
+   "users": [
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [],
+    "tables": [
+     "currencies",
+     "fx_rates"
+    ],
+    "routes": [
+     "^/api/(fx|platform/fx)(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [],
+    "platformScreens": [],
+    "platformGroups": [
+     "Currency"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "offer",
+   "name": "Offers",
+   "foundation": "Commerce",
+   "purpose": "Every reason a buyer pays less or gets more: offers and discounts of every type, coupons, cashback, rewards, gift cards and vouchers, deals and countdowns, group buying, price matching and trade-ins, the funding and settlement of each, and their governance.",
+   "users": [
+    "shopper",
+    "seller",
+    "store_admin",
+    "platform_admin",
+    "partner"
+   ],
+   "owns": {
+    "files": [
+     "lib/offers.js",
+     "lib/goip.js",
+     "lib/groupbuy.js"
+    ],
+    "tables": [
+     "offers",
+     "promotions",
+     "coupons",
+     "coupon_redemptions",
+     "goip_budgets",
+     "goip_entitlements",
+     "goip_settlements",
+     "goip_touchpoints",
+     "gift_vouchers",
+     "group_campaigns",
+     "group_members",
+     "attribution"
+    ],
+    "routes": [
+     "^/api/(offers|coupon|promos|giftcard|goip|group-buys)(/|$)",
+     "^/api/goip/",
+     "^/api/admin/(promotions|group-buys)(/|$)",
+     "^/api/platform/offers(/|$)",
+     "^/api/fintech/vouchers(/|$)"
+    ],
+    "machines": [
+     "offer",
+     "offer_governance",
+     "redemption",
+     "entitlement",
+     "goip_budget",
+     "goip_settlement",
+     "promotion",
+     "gift_voucher",
+     "group_campaign"
+    ],
+    "capabilities": [
+     "deals",
+     "coupons",
+     "gift_cards",
+     "gift_vouchers",
+     "countdown",
+     "group_buying",
+     "price_match",
+     "exchange_offers"
+    ],
+    "registries": [
+     "groupCampaignStatuses",
+     "finVoucherStatuses"
+    ],
+    "screens": [
+     "promotions",
+     "goip",
+     "groupbuy",
+     "pricematch",
+     "tradeins"
+    ],
+    "platformScreens": [
+     "goffers"
+    ],
+    "platformGroups": [
+     "Offers & Incentives"
+    ],
+    "pages": [
+     "deals",
+     "gift-cards"
+    ]
+   }
+  },
+  {
+   "key": "affiliate",
+   "name": "Affiliates and creators",
+   "foundation": "Commerce",
+   "purpose": "Who brings buyers and what they earn: affiliate networks and tiers, tracked clicks and conversions, commission rules and affiliate payouts.",
+   "users": [
+    "partner",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/affiliate.js"
+    ],
+    "tables": [
+     "affiliates",
+     "affiliate_networks",
+     "affiliate_tiers",
+     "affiliate_clicks",
+     "affiliate_conversions",
+     "affiliate_payouts",
+     "commission_rules"
+    ],
+    "routes": [
+     "^/api/affiliate(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "affiliate"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "advertising",
+   "name": "Advertising",
+   "foundation": "Commerce",
+   "purpose": "Paid placement: sellers' sponsored products and creatives competing in an auction for slots, and what each impression and click costs.",
+   "users": [
+    "seller",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [],
+    "tables": [
+     "ads",
+     "ad_events",
+     "sponsored_creatives"
+    ],
+    "routes": [
+     "^/api/marketplace/(ads|sponsored)(/|$)"
+    ],
+    "machines": [
+     "ad"
+    ],
+    "capabilities": [
+     "sponsored_ads"
+    ],
+    "registries": [
+     "mktAdKinds",
+     "mktCreativeStatuses"
+    ],
+    "screens": [],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "cart",
+   "name": "Cart and checkout",
+   "foundation": "Commerce",
+   "purpose": "From the bag to a placed order: bag lines and their terms, service fees and tips, buy now, try and buy, the payment step and the order it writes.",
+   "users": [
+    "guest",
+    "shopper"
+   ],
+   "owns": {
+    "files": [
+     "lib/lineterms.js",
+     "lib/fees.js",
+     "lib/tips.js",
+     "lib/trials.js"
+    ],
+    "tables": [
+     "cart_items",
+     "bag_tips",
+     "order_charge_rules",
+     "trials"
+    ],
+    "routes": [
+     "^/api/(cart|checkout|trials)(/|$)",
+     "^/api/admin/(charges|tips|trials)(/|$)"
+    ],
+    "machines": [
+     "trial"
+    ],
+    "capabilities": [
+     "buy_now",
+     "service_fees",
+     "tips",
+     "try_and_buy",
+     "fiscal_selection"
+    ],
+    "registries": [
+     "trialStatuses"
+    ],
+    "screens": [
+     "fees",
+     "tips",
+     "trials"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": [
+     "cart",
+     "checkout"
+    ]
+   }
+  },
+  {
+   "key": "order",
+   "name": "Orders",
+   "foundation": "Commerce",
+   "purpose": "What was bought and what happens to it: orders and their lines, their life from placement to delivery, and substitutions proposed when an item is out.",
+   "users": [
+    "shopper",
+    "store_staff",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/substitutions.js"
+    ],
+    "tables": [
+     "orders",
+     "order_items",
+     "order_substitutions"
+    ],
+    "routes": [
+     "^/api/(orders|substitutions)(/|$)",
+     "^/api/admin/(orders|substitutions)(/|$)"
+    ],
+    "machines": [
+     "order",
+     "substitution"
+    ],
+    "capabilities": [
+     "substitutions"
+    ],
+    "registries": [
+     "substitutionPolicies",
+     "substitutionStatuses",
+     "shopEvents",
+     "shopDocKinds",
+     "shopDocStatuses"
+    ],
+    "screens": [
+     "orders",
+     "substitutions"
+    ],
+    "platformScreens": [
+     "gorders"
+    ],
+    "platformGroups": [
+     "Transactions"
+    ],
+    "pages": [
+     "orders"
+    ]
+   }
+  },
+  {
+   "key": "returns",
+   "name": "Returns and refunds",
+   "foundation": "Commerce",
+   "purpose": "Sending something back: return requests, their inspection and refund, and payment disputes.",
+   "users": [
+    "shopper",
+    "store_staff",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [],
+    "tables": [
+     "returns",
+     "disputes"
+    ],
+    "routes": [
+     "^/api/(admin/)?returns(/|$)"
+    ],
+    "machines": [
+     "return",
+     "dispute"
+    ],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "returns"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "payments",
+   "name": "Payment gateways",
+   "foundation": "Integration",
+   "purpose": "Taking money: the gateways a store accepts and their methods, payment attempts and captures, gateway callbacks, payment links, QR and instant-bank collection, mandates, escrow and split payments.",
+   "users": [
+    "shopper",
+    "store_admin",
+    "platform_admin",
+    "developer"
+   ],
+   "owns": {
+    "files": [],
+    "tables": [
+     "payments",
+     "payment_attempts",
+     "tenant_gateways",
+     "payment_links",
+     "qr_codes",
+     "upi_collects",
+     "upi_handles",
+     "mandates",
+     "escrow_holds",
+     "split_payments"
+    ],
+    "routes": [
+     "^/api/admin/(payments|gateway|gateways)(/|$)",
+     "^/api/fintech/(links|qr|upi|mandates|escrow|splits)(/|$)"
+    ],
+    "machines": [
+     "payment",
+     "payment_link",
+     "qr_code",
+     "upi_handle",
+     "upi_collect",
+     "mandate",
+     "escrow",
+     "split_payment"
+    ],
+    "capabilities": [
+     "upi_collect",
+     "qr_pay",
+     "payment_links",
+     "mandates",
+     "escrow",
+     "split_payments"
+    ],
+    "registries": [
+     "finLinkStatuses",
+     "finQrKinds",
+     "finQrStatuses",
+     "finUpiStatuses",
+     "finCollectStatuses",
+     "finMandateFrequencies",
+     "finMandateStatuses",
+     "finEscrowStatuses",
+     "finSplitStatuses"
+    ],
+    "screens": [
+     "payments"
+    ],
+    "platformScreens": [],
+    "platformGroups": [
+     "Billing & Payment"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "wallet",
+   "name": "Wallets",
+   "foundation": "Value",
+   "purpose": "Value a party holds: wallets of any definition, the ledger every movement is posted to, holds, transfers between wallets and between people.",
+   "users": [
+    "shopper",
+    "seller",
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/wallet.js"
+    ],
+    "tables": [
+     "wallets",
+     "wallet_entries",
+     "wallet_holds",
+     "ledger_accounts",
+     "ledger_journals",
+     "ledger_postings"
+    ],
+    "routes": [
+     "^/api/(wallet|wallets|wallet-definitions)(/|$)",
+     "^/api/admin/(wallets|journals|ledger|wallet-definitions|wallet-default)(/|$)",
+     "^/api/platform/wallet-definitions(/|$)",
+     "^/api/fintech/transfer(/|$)"
+    ],
+    "machines": [
+     "wallet",
+     "wallet_hold"
+    ],
+    "capabilities": [
+     "p2p_transfer"
+    ],
+    "registries": [
+     "walletStatuses",
+     "walletHoldStatuses"
+    ],
+    "screens": [
+     "wallets"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "settlement",
+   "name": "Settlements and payouts",
+   "foundation": "Value",
+   "purpose": "Paying those who are owed: seller settlements, payout batches, bank payouts, reconciliation of what the bank says against what the ledger says, and remittances.",
+   "users": [
+    "seller",
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/fin.js"
+    ],
+    "tables": [
+     "settlements",
+     "payouts",
+     "payout_items",
+     "bank_payouts",
+     "recon_batches",
+     "recon_lines",
+     "remittance_records"
+    ],
+    "routes": [
+     "^/api/admin/(settlements|fin)(/|$)",
+     "^/api/fintech/payouts(/|$)"
+    ],
+    "machines": [
+     "seller_payout",
+     "bank_payout"
+    ],
+    "capabilities": [
+     "bank_payouts"
+    ],
+    "registries": [
+     "finPayoutStatuses"
+    ],
+    "screens": [
+     "settlements",
+     "finance",
+     "finops"
+    ],
+    "platformScreens": [
+     "gfinance"
+    ],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "financial_services",
+   "name": "Financial services",
+   "foundation": "Value",
+   "purpose": "Financial products sold to buyers: bill payments, recharges, insurance, and credit — pay later and loans with their instalments.",
+   "users": [
+    "shopper",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/fintech.js"
+    ],
+    "tables": [
+     "billers",
+     "bill_payments",
+     "recharge_plans",
+     "recharges",
+     "insurance_policies",
+     "bnpl_accounts",
+     "bnpl_emis",
+     "loans"
+    ],
+    "routes": [
+     "^/api/fintech/(billers|bills|plans|recharge|insurance|bnpl|emi|loans)(/|$)"
+    ],
+    "machines": [
+     "biller",
+     "bill_payment",
+     "recharge_plan",
+     "recharge",
+     "insurance_policy",
+     "bnpl_account",
+     "emi",
+     "loan"
+    ],
+    "capabilities": [
+     "bbps",
+     "recharge",
+     "insurance",
+     "bnpl",
+     "lending"
+    ],
+    "registries": [
+     "finBillStatuses",
+     "finBillerCategories",
+     "finCircles",
+     "finOperators",
+     "finRechargeKinds",
+     "finRechargeStatuses",
+     "finInsuranceStatuses",
+     "finBnplStatuses",
+     "finEmiStatuses",
+     "finLoanStatuses"
+    ],
+    "screens": [],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "tax",
+   "name": "Tax",
+   "foundation": "Rule",
+   "purpose": "What tax applies and how much: tax modes, rules by place and product, and how tax is shown and charged.",
+   "users": [
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/tax.js"
+    ],
+    "tables": [
+     "tax_rules",
+     "tax_modes"
+    ],
+    "routes": [
+     "^/api/admin/tax(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "subscriptions",
+   "name": "Subscriptions and memberships",
+   "foundation": "Commerce",
+   "purpose": "Buying again on a schedule and belonging to a programme: subscribe-and-save schedules and their cycles, and membership tiers with their perks.",
+   "users": [
+    "shopper",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/recurring.js"
+    ],
+    "tables": [
+     "subscriptions",
+     "recurring_schedules",
+     "recurring_cycles",
+     "memberships"
+    ],
+    "routes": [
+     "^/api/(subscriptions|membership)(/|$)",
+     "^/api/admin/(recurring|memberships|retention)(/|$)"
+    ],
+    "machines": [
+     "subscription_schedule",
+     "subscription_cycle",
+     "membership"
+    ],
+    "capabilities": [
+     "subscribe_save",
+     "membership"
+    ],
+    "registries": [],
+    "screens": [
+     "retention"
+    ],
+    "platformScreens": [],
+    "platformGroups": [
+     "Recurring"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "shipping",
+   "name": "Shipping and delivery",
+   "foundation": "Commerce",
+   "purpose": "Getting goods to the buyer: carriers and rates, shipments and tracking, pickup points and lockers, and fast local delivery from dark stores with slots, riders and dispatch runs.",
+   "users": [
+    "shopper",
+    "store_staff",
+    "store_admin",
+    "driver",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/shipping.js",
+     "lib/logistics.js",
+     "lib/pickup.js",
+     "lib/qcommerce.js"
+    ],
+    "tables": [
+     "shipments",
+     "shipment_events",
+     "shipping_providers",
+     "shipping_quotes",
+     "package_tracking",
+     "pickup_points",
+     "pickup_reservations",
+     "dark_stores",
+     "delivery_slots",
+     "dispatch_runs",
+     "riders",
+     "service_areas"
+    ],
+    "routes": [
+     "^/api/(shipping|shipments|carriers|pickup|zip|qc)(/|$)",
+     "^/api/qc/",
+     "^/api/admin/(shipments|pickup)(/|$)",
+     "^/api/platform/shipping(/|$)"
+    ],
+    "machines": [
+     "shipment",
+     "pickup",
+     "rider",
+     "dark_store",
+     "service_area",
+     "delivery_slot",
+     "dispatch_run"
+    ],
+    "capabilities": [
+     "instant_delivery",
+     "dispatch_batching",
+     "pickup_points"
+    ],
+    "registries": [
+     "pickupKinds",
+     "pickupStatuses",
+     "qcAreaStatuses",
+     "qcDeliveryKinds",
+     "qcDispatchStatuses",
+     "qcRiderStatuses",
+     "qcSlotStatuses",
+     "qcStoreKinds",
+     "qcStoreStatuses",
+     "qcVehicles"
+    ],
+    "screens": [
+     "shipping",
+     "pickup",
+     "logistics",
+     "qcops"
+    ],
+    "platformScreens": [],
+    "platformGroups": [
+     "Fulfilment"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "supply",
+   "name": "Supply and planning",
+   "foundation": "Operations",
+   "purpose": "Keeping shelves full: suppliers, which supplier provides what, purchase requests and their approval, and replenishment plans.",
+   "users": [
+    "store_staff",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/planning.js"
+    ],
+    "tables": [
+     "suppliers",
+     "product_suppliers",
+     "purchase_requests",
+     "purchase_request_lines",
+     "replenishments",
+     "approvals"
+    ],
+    "routes": [
+     "^/api/admin/planning(/|$)"
+    ],
+    "machines": [
+     "supplier",
+     "purchase_request",
+     "approval",
+     "replenishment"
+    ],
+    "capabilities": [
+     "planning",
+     "procurement"
+    ],
+    "registries": [],
+    "screens": [
+     "suppliers",
+     "ops_proc",
+     "planning"
+    ],
+    "platformScreens": [],
+    "platformGroups": [
+     "Supply"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "services",
+   "name": "Services and appointments",
+   "foundation": "Offering",
+   "purpose": "Selling time and work: bookings of resources and slots, live audio and video sessions and charging them by the minute, and services attached to an item — installation, assembly and extended warranties.",
+   "users": [
+    "shopper",
+    "practitioner",
+    "store_staff",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/bookings.js",
+     "lib/media-sessions.js"
+    ],
+    "tables": [
+     "bookings",
+     "booking_resources",
+     "product_bookings",
+     "media_sessions",
+     "media_signals"
+    ],
+    "routes": [
+     "^/api/(bookings|sessions)(/|$)",
+     "^/api/admin/(bookings|per-minute)(/|$)"
+    ],
+    "machines": [
+     "booking",
+     "media_session",
+     "service_visit",
+     "cover_plan"
+    ],
+    "capabilities": [
+     "bookings",
+     "media_sessions",
+     "per_minute_billing",
+     "installation_booking",
+     "assembly_booking",
+     "extended_warranty"
+    ],
+    "registries": [
+     "bookingModes",
+     "bookingResourceKinds",
+     "bookingStatuses",
+     "mediaSessionStatuses",
+     "serviceVisitStatuses",
+     "coverPlanStatuses"
+    ],
+    "screens": [
+     "bookings",
+     "sessions",
+     "metering",
+     "installations",
+     "assemblies",
+     "warranties"
+    ],
+    "platformScreens": [],
+    "platformGroups": [
+     "Services",
+     "Service Delivery"
+    ],
+    "pages": [
+     "session"
+    ]
+   }
+  },
+  {
+   "key": "digital_goods",
+   "name": "Digital goods",
+   "foundation": "Offering",
+   "purpose": "What is delivered without shipping: licence keys from a pool, course access and progress, and the deliverables machinery other domains use.",
+   "users": [
+    "shopper",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/deliverables.js"
+    ],
+    "tables": [
+     "deliverables",
+     "deliverable_pool"
+    ],
+    "routes": [
+     "^/api/(deliverables|deliverable-kinds)(/|$)",
+     "^/api/admin/deliverables(/|$)"
+    ],
+    "machines": [
+     "deliverable"
+    ],
+    "capabilities": [
+     "licence_keys",
+     "course_progress"
+    ],
+    "registries": [
+     "deliverableKinds",
+     "deliverableStatuses"
+    ],
+    "screens": [
+     "licencekeys",
+     "courses"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "health",
+   "name": "Health and pharmacy",
+   "foundation": "Offering",
+   "purpose": "What health commerce needs: prescriptions checked before sale, verified practitioners, lab tests and their reports, and the shopper's own health records shared with consent.",
+   "users": [
+    "shopper",
+    "practitioner",
+    "store_staff",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/health-records.js"
+    ],
+    "tables": [
+     "vault_records",
+     "vault_shares"
+    ],
+    "routes": [
+     "^/api/health-records(/|$)",
+     "^/api/admin/health-records(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [
+     "prescriptions",
+     "practitioner_verification",
+     "lab_tests",
+     "health_records"
+    ],
+    "registries": [],
+    "screens": [
+     "prescriptions",
+     "credentials",
+     "labtests",
+     "healthrecords"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "made_to_order",
+   "name": "Made to order",
+   "foundation": "Offering",
+   "purpose": "Items made for one buyer: the buyer's own artwork proofed before making, and samples sold at their own price.",
+   "users": [
+    "shopper",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [],
+    "tables": [],
+    "routes": [],
+    "machines": [
+     "artwork_proof"
+    ],
+    "capabilities": [
+     "customisation_proofs",
+     "sample_orders"
+    ],
+    "registries": [
+     "artworkProofStatuses"
+    ],
+    "screens": [
+     "proofs",
+     "samples"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "mobility",
+   "name": "Mobility",
+   "foundation": "Operations",
+   "purpose": "Moving people: rides requested and dispatched, drivers and their vehicles, and fleets.",
+   "users": [
+    "shopper",
+    "driver",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/mobility.js"
+    ],
+    "tables": [
+     "rides",
+     "ride_events",
+     "drivers",
+     "vehicles"
+    ],
+    "routes": [
+     "^/api/admin/mobility(/|$)"
+    ],
+    "machines": [
+     "ride",
+     "driver",
+     "vehicle"
+    ],
+    "capabilities": [
+     "ride_hailing",
+     "dispatch",
+     "fleet_management"
+    ],
+    "registries": [],
+    "screens": [
+     "rides",
+     "fleet"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "business_operations",
+   "name": "Business operations",
+   "foundation": "Operations",
+   "purpose": "Running the business behind the store: people and payroll, manufacturing work orders, and projects with their tasks.",
+   "users": [
+    "store_staff",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/operations.js"
+    ],
+    "tables": [
+     "employees",
+     "attendance",
+     "payroll_runs",
+     "payroll_lines",
+     "work_orders",
+     "projects",
+     "tasks",
+     "workflows"
+    ],
+    "routes": [
+     "^/api/admin/(ops|operations)(/|$)"
+    ],
+    "machines": [
+     "employee",
+     "payroll_run",
+     "payroll_line",
+     "work_order",
+     "project",
+     "task"
+    ],
+    "capabilities": [
+     "workforce",
+     "manufacturing",
+     "projects"
+    ],
+    "registries": [],
+    "screens": [
+     "ops_hr",
+     "ops_mfg",
+     "ops_proj"
+    ],
+    "platformScreens": [
+     "gops"
+    ],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "marketplace",
+   "name": "Marketplace",
+   "foundation": "Commerce",
+   "purpose": "Many sellers in one store: seller onboarding and health, offers competing for the buy box, fulfilment by the store, buyer protection claims, brand protection, and shoppers selling their own items.",
+   "users": [
+    "seller",
+    "shopper",
+    "store_staff",
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/marketplace.js",
+     "lib/marketplace-ext.js",
+     "lib/listings.js",
+     "lib/brandreg.js"
+    ],
+    "tables": [
+     "sellers",
+     "seller_offers",
+     "seller_onboarding",
+     "seller_performance",
+     "seller_metrics",
+     "peer_listings",
+     "peer_earnings",
+     "buyer_claims",
+     "fba_inbound",
+     "smart_fulfilment",
+     "brand_claims",
+     "brand_reports",
+     "gold_suppliers"
+    ],
+    "routes": [
+     "^/api/listings(/|$)",
+     "^/api/marketplace/(buybox|claims|fba|offers|onboarding|performance|portal|rank|smart-fulfilment)(/|$)",
+     "^/api/admin/(sellers|marketplace|listings|brand-registry)(/|$)"
+    ],
+    "machines": [
+     "seller_onboarding",
+     "seller_offer",
+     "fba_inbound",
+     "buyer_claim",
+     "smart_fulfilment",
+     "listing",
+     "peer_earning",
+     "brand_claim",
+     "brand_report"
+    ],
+    "capabilities": [
+     "buy_box",
+     "seller_health",
+     "buyer_protection",
+     "smart_fulfilment",
+     "fba_inbound",
+     "peer_listings",
+     "brand_registry"
+    ],
+    "registries": [
+     "mktBusinessTypes",
+     "mktClaimKinds",
+     "mktClaimStatuses",
+     "mktConditions",
+     "mktFbaStatuses",
+     "mktFulfillment",
+     "mktOfferStatuses",
+     "mktOnboardingStatuses",
+     "mktSmartGrades",
+     "mktSmartStatuses",
+     "mktTiers",
+     "listingStatuses",
+     "earningStatuses",
+     "brandClaimStatuses",
+     "brandReportKinds",
+     "brandReportStatuses"
+    ],
+    "screens": [
+     "sellers",
+     "marketplace",
+     "mktops",
+     "listings",
+     "brandreg"
+    ],
+    "platformScreens": [
+     "gmarket"
+    ],
+    "platformGroups": [
+     "Marketplace"
+    ],
+    "pages": [
+     "sell"
+    ]
+   }
+  },
+  {
+   "key": "price_discovery",
+   "name": "Negotiation and auctions",
+   "foundation": "Commerce",
+   "purpose": "Prices agreed rather than listed: offers and counter-offers between a buyer and a seller, and timed auctions with proxy bidding.",
+   "users": [
+    "shopper",
+    "seller",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/negotiation.js",
+     "lib/auctions.js"
+    ],
+    "tables": [
+     "price_offers",
+     "auctions",
+     "auction_bids"
+    ],
+    "routes": [
+     "^/api/(price-offers|auctions)(/|$)",
+     "^/api/admin/(price-offers|auctions)(/|$)"
+    ],
+    "machines": [
+     "price_offer",
+     "auction"
+    ],
+    "capabilities": [
+     "price_negotiation",
+     "auctions"
+    ],
+    "registries": [
+     "priceOfferStatuses",
+     "auctionStatuses"
+    ],
+    "screens": [
+     "negotiation",
+     "auctions"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "trade",
+   "name": "Business-to-business trade",
+   "foundation": "Commerce",
+   "purpose": "Buying between businesses: requests for quotation and quotes, tenders and bids, contracts, trade assurance, supplier verification and membership tiers, export documents, letters of credit and minimum order quantities.",
+   "users": [
+    "seller",
+    "store_admin",
+    "store_staff"
+   ],
+   "owns": {
+    "files": [
+     "lib/trade.js"
+    ],
+    "tables": [
+     "rfqs",
+     "rfq_quotes",
+     "tenders",
+     "tender_bids",
+     "contracts",
+     "trade_assurance",
+     "company_verifications",
+     "export_documents",
+     "letters_of_credit"
+    ],
+    "routes": [
+     "^/api/(rfqs|trade)(/|$)",
+     "^/api/trade/",
+     "^/api/admin/(rfqs|tenders|contracts)(/|$)"
+    ],
+    "machines": [
+     "rfq",
+     "rfq_quote",
+     "tender",
+     "tender_bid",
+     "verification",
+     "gold_membership",
+     "contract"
+    ],
+    "capabilities": [
+     "trade_assurance",
+     "gold_supplier",
+     "company_verification",
+     "export_documents",
+     "letters_of_credit",
+     "rfq_bidding",
+     "reverse_auction",
+     "moq_enforcement"
+    ],
+    "registries": [
+     "b2bAssuranceStatuses",
+     "b2bBidStatuses",
+     "b2bDocKinds",
+     "b2bDocStatuses",
+     "b2bGoldTiers",
+     "b2bLcStatuses",
+     "b2bQuoteStatuses",
+     "b2bVerificationLevels",
+     "b2bVerificationStatuses"
+    ],
+    "screens": [
+     "rfqs",
+     "contracts",
+     "tenders",
+     "tradeops"
+    ],
+    "platformScreens": [],
+    "platformGroups": [
+     "Agreements",
+     "Trade"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "engagement",
+   "name": "Lists, alerts and history",
+   "foundation": "Experience",
+   "purpose": "What a shopper keeps and watches: wish lists and gift registries, saved and compared items, price and stock alerts, and what they viewed.",
+   "users": [
+    "shopper",
+    "guest"
+   ],
+   "owns": {
+    "files": [
+     "lib/lists.js",
+     "lib/alerts.js"
+    ],
+    "tables": [
+     "shopper_lists",
+     "shopper_list_items",
+     "gift_registries",
+     "product_watches",
+     "view_history",
+     "saved_items",
+     "compare_lists"
+    ],
+    "routes": [
+     "^/api/(lists|list-items|shared-lists|alerts|saved|viewed|compare)(/|$)"
+    ],
+    "machines": [
+     "product_watch"
+    ],
+    "capabilities": [
+     "wish_lists",
+     "product_alerts",
+     "registry",
+     "save_for_later"
+    ],
+    "registries": [
+     "alertKinds",
+     "watchStatuses",
+     "listKinds",
+     "listPriorities",
+     "listVisibilities",
+     "shopRegistryStatuses"
+    ],
+    "screens": [],
+    "platformScreens": [],
+    "platformGroups": [
+     "Journeys"
+    ],
+    "pages": [
+     "registry"
+    ]
+   }
+  },
+  {
+   "key": "reviews",
+   "name": "Reviews and questions",
+   "foundation": "Experience",
+   "purpose": "What buyers say: ratings and reviews with replies and votes, and questions with answers.",
+   "users": [
+    "shopper",
+    "seller",
+    "store_staff",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/ugc.js"
+    ],
+    "tables": [
+     "reviews",
+     "review_replies",
+     "qna_questions",
+     "qna_answers",
+     "ugc_votes"
+    ],
+    "routes": [
+     "^/api/(reviews|qna)(/|$)",
+     "^/api/admin/(reviews|qna|ugc)(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [
+     "reviews",
+     "qna"
+    ],
+    "registries": [],
+    "screens": [
+     "ugc"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "communication",
+   "name": "Messages and notifications",
+   "foundation": "Communication",
+   "purpose": "Talking to people: conversations between buyers, sellers and staff, notifications to shoppers and staff, email, and marketing campaigns sent through connected messaging providers.",
+   "users": [
+    "shopper",
+    "seller",
+    "store_staff",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/conversations.js",
+     "lib/mailer.js",
+     "lib/tell.js"
+    ],
+    "tables": [
+     "conversations",
+     "conversation_messages",
+     "notifications"
+    ],
+    "routes": [
+     "^/api/(conversations|notifications|marketing)(/|$)",
+     "^/api/admin/conversations(/|$)"
+    ],
+    "machines": [
+     "conversation"
+    ],
+    "capabilities": [
+     "conversations"
+    ],
+    "registries": [
+     "conversationStatuses",
+     "conversationSubjects",
+     "shopNotifKinds"
+    ],
+    "screens": [
+     "conversations"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": [
+     "messages"
+    ]
+   }
+  },
+  {
+   "key": "support",
+   "name": "Customer support",
+   "foundation": "Communication",
+   "purpose": "Helping people: tickets with service levels and agents, and requests a store decides — price matches, prescriptions, credentials, enquiries, trade-ins — as cases of declared kinds.",
+   "users": [
+    "shopper",
+    "store_staff",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/helpdesk.js",
+     "lib/cases.js"
+    ],
+    "tables": [
+     "tickets",
+     "ticket_notes",
+     "agent_availability",
+     "cases"
+    ],
+    "routes": [
+     "^/api/(helpdesk|support|cases|case-kinds)(/|$)",
+     "^/api/admin/(helpdesk|sla|cases)(/|$)"
+    ],
+    "machines": [
+     "ticket",
+     "agent",
+     "case",
+     "enquiry"
+    ],
+    "capabilities": [
+     "customer_service",
+     "lead_capture"
+    ],
+    "registries": [
+     "caseKinds",
+     "caseStatuses",
+     "caseSubjects",
+     "leadStatuses"
+    ],
+    "screens": [
+     "helpdesk",
+     "enquiries"
+    ],
+    "platformScreens": [
+     "gsupport"
+    ],
+    "platformGroups": [
+     "Support"
+    ],
+    "pages": [
+     "customer-service"
+    ]
+   }
+  },
+  {
+   "key": "storefront",
+   "name": "Storefront and content",
+   "foundation": "Experience",
+   "purpose": "What a shopper sees: the home page's banners and cards, themes and their assignment, and the pages and their layout.",
+   "users": [
+    "guest",
+    "shopper",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/themes.js",
+     "lib/bundle.js"
+    ],
+    "tables": [
+     "home_banners",
+     "home_cards",
+     "theme_presets",
+     "theme_assignments"
+    ],
+    "routes": [
+     "^/api/(themes|config)(/|$)",
+     "^/api/admin/(banners|cards)(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "content",
+     "dash"
+    ],
+    "platformScreens": [
+     "themes",
+     "gcontent"
+    ],
+    "platformGroups": [
+     "Merchandising",
+     "Surfaces",
+     "Presentation",
+     "Channels"
+    ],
+    "pages": [
+     "index",
+     "404",
+     "console"
+    ]
+   }
+  },
+  {
+   "key": "search",
+   "name": "Search and discovery",
+   "foundation": "Search",
+   "purpose": "Finding things: search, suggestions and facets, and recommendations.",
+   "users": [
+    "guest",
+    "shopper",
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/search.js"
+    ],
+    "tables": [],
+    "routes": [
+     "^/api/(search|suggest|facets|reco|recommend|hint)(/|$)",
+     "^/api/platform/hint(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [
+     "suggestions"
+    ],
+    "registries": [],
+    "screens": [
+     "search"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": [
+     "results"
+    ]
+   }
+  },
+  {
+   "key": "seo",
+   "name": "Search engine optimisation",
+   "foundation": "Experience",
+   "purpose": "Being found from outside: the sitemap and its files, page metadata and product feeds.",
+   "users": [
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/sitemap.js"
+    ],
+    "tables": [
+     "sitemap_config",
+     "sitemap_entries",
+     "sitemap_files"
+    ],
+    "routes": [
+     "^/api/(seo|sitemap|sitemap.xml|feeds)(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "sitemap"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "localisation",
+   "name": "Languages and localisation",
+   "foundation": "Expression",
+   "purpose": "Speaking the buyer's language: the message catalogues of every language and a store's own wording.",
+   "users": [
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/expression.js"
+    ],
+    "tables": [
+     "messages",
+     "localizations"
+    ],
+    "routes": [],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "localizations"
+    ],
+    "platformScreens": [],
+    "platformGroups": [
+     "Localization"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "consoles",
+   "name": "Consoles",
+   "foundation": "Experience",
+   "purpose": "The frames every domain's screens sit in: the store console and the platform console — signing in, navigation, layout, the shared table, form and chart parts — and nothing of any domain's own.",
+   "users": [
+    "store_staff",
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [],
+    "tables": [],
+    "routes": [],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": [
+     "admin",
+     "platform"
+    ]
+   }
+  },
+  {
+   "key": "analytics",
+   "name": "Analytics and reports",
+   "foundation": "Insight",
+   "purpose": "Knowing how the business does: dashboards and their widgets, reports and store statistics.",
+   "users": [
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/dashboards.js"
+    ],
+    "tables": [
+     "dashboards",
+     "dashboard_widgets",
+     "dashboard_prefs",
+     "reports"
+    ],
+    "routes": [
+     "^/api/(dashboards|reports)(/|$)",
+     "^/api/admin/(analytics|stats)(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "analytics"
+    ],
+    "platformScreens": [
+     "dashboards",
+     "ganalytics",
+     "dash"
+    ],
+    "platformGroups": [
+     "Analytics",
+     "Insight"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "experiments",
+   "name": "Experiments",
+   "foundation": "Insight",
+   "purpose": "Testing what works: experiments with variants, who sees which, and what converts.",
+   "users": [
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/experiments.js"
+    ],
+    "tables": [
+     "experiments",
+     "exp_assignments",
+     "exp_conversions"
+    ],
+    "routes": [
+     "^/api/(experiments|admin/experiments)(/|$)"
+    ],
+    "machines": [
+     "experiment"
+    ],
+    "capabilities": [
+     "experiments"
+    ],
+    "registries": [],
+    "screens": [
+     "experiments"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "risk",
+   "name": "Risk and fraud",
+   "foundation": "Security",
+   "purpose": "Stopping abuse: fraud screening of orders and payments, risk events and the block list.",
+   "users": [
+    "store_staff",
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/risk.js"
+    ],
+    "tables": [
+     "risk_events",
+     "risk_blocklist"
+    ],
+    "routes": [
+     "^/api/admin/risk(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [
+     "fraud_screen"
+    ],
+    "registries": [],
+    "screens": [
+     "risk"
+    ],
+    "platformScreens": [
+     "grisk"
+    ],
+    "platformGroups": [
+     "Trust Intelligence",
+     "Risk & Security"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "compliance",
+   "name": "Compliance and privacy",
+   "foundation": "Compliance",
+   "purpose": "Meeting obligations: controls and their evidence, certifications, know-your-customer checks, consent, and privacy requests to see or erase data.",
+   "users": [
+    "shopper",
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/compliance.js"
+    ],
+    "tables": [
+     "compliance_controls",
+     "compliance_evidence",
+     "compliance_records",
+     "consents",
+     "privacy_requests",
+     "privacy_request_events",
+     "erasure_log",
+     "kyc_profiles"
+    ],
+    "routes": [
+     "^/api/(consent|privacy)(/|$)",
+     "^/api/admin/(compliance|privacy)(/|$)",
+     "^/api/fintech/kyc(/|$)"
+    ],
+    "machines": [
+     "control",
+     "consent",
+     "privacy_request",
+     "kyc",
+     "kyc_doc"
+    ],
+    "capabilities": [
+     "kyc"
+    ],
+    "registries": [
+     "finKycDocs",
+     "finKycKinds",
+     "finKycStatuses",
+     "finKycDocStatuses"
+    ],
+    "screens": [
+     "compliance"
+    ],
+    "platformScreens": [],
+    "platformGroups": [
+     "Compliance"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "audit",
+   "name": "Audit",
+   "foundation": "Audit",
+   "purpose": "What happened, provably: the hash-chained audit trail, its verification, retention, the trash and exports.",
+   "users": [
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/ucos-trace.js"
+    ],
+    "tables": [
+     "audit_log"
+    ],
+    "routes": [
+     "^/api/admin/(audit|chain|trash|export)(/|$)",
+     "^/api/platform/(audit|chain|purge-expired)(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "audit",
+     "trash"
+    ],
+    "platformScreens": [
+     "audit"
+    ],
+    "platformGroups": [
+     "Oversight"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "security",
+   "name": "Security",
+   "foundation": "Security",
+   "purpose": "Protecting the platform: encryption and key rotation, the security policy and scorecard, idempotency and request protection.",
+   "users": [
+    "platform_admin",
+    "developer"
+   ],
+   "owns": {
+    "files": [
+     "lib/security.js",
+     "lib/idempotency.js"
+    ],
+    "tables": [
+     "idempotency_keys"
+    ],
+    "routes": [
+     "^/api/platform/(security|keys)(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "ai",
+   "name": "AI",
+   "foundation": "Agent",
+   "purpose": "Machine help: AI providers and gateways, AI tasks and their metering.",
+   "users": [
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/ai.js"
+    ],
+    "tables": [
+     "ai_tasks",
+     "ai_usage"
+    ],
+    "routes": [
+     "^/api/(ai|admin/ai-gateways|platform/ai)(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "ai"
+    ],
+    "platformScreens": [
+     "ai"
+    ],
+    "platformGroups": [
+     "Models & Agents",
+     "Engines",
+     "Autonomy"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "integration",
+   "name": "Integrations and webhooks",
+   "foundation": "Integration",
+   "purpose": "Connecting outside systems: connectors and providers registered as data, custom providers, outgoing webhooks and their deliveries, incoming events.",
+   "users": [
+    "store_admin",
+    "platform_admin",
+    "developer"
+   ],
+   "owns": {
+    "files": [
+     "lib/providers.js",
+     "lib/connect.js",
+     "lib/spec.js",
+     "lib/adapters.js"
+    ],
+    "tables": [
+     "webhooks",
+     "webhook_deliveries",
+     "inbound_events",
+     "provider_defs",
+     "provider_availability",
+     "custom_providers"
+    ],
+    "routes": [
+     "^/api/(webhooks|providers)(/|$)",
+     "^/api/admin/(webhooks|custom-providers)(/|$)",
+     "^/api/platform/custom-providers(/|$)"
+    ],
+    "machines": [
+     "webhook_delivery"
+    ],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "webhooks"
+    ],
+    "platformScreens": [
+     "providers"
+    ],
+    "platformGroups": [
+     "Extension"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "kernel",
+   "name": "Kernel and registries",
+   "foundation": "Registry",
+   "purpose": "The foundation every domain is built on: kinds, entities, identifiers, hierarchies, versions in time, settings resolved by context, the event log, and the registries and entity definitions the console edits.",
+   "users": [
+    "platform_admin",
+    "developer"
+   ],
+   "owns": {
+    "files": [
+     "lib/kernel.js",
+     "lib/kernel-context.js",
+     "lib/kernel-shape.js",
+     "lib/kernel-lifecycle.js",
+     "lib/registry.js",
+     "lib/parity-registries.js",
+     "lib/entity.js",
+     "lib/meta.js",
+     "lib/uid.js",
+     "lib/events.js",
+     "lib/global.js"
+    ],
+    "tables": [
+     "k_assignments",
+     "k_changes",
+     "k_coord_systems",
+     "k_declarations",
+     "k_events",
+     "k_hierarchies",
+     "k_identifiers",
+     "k_kinds",
+     "k_node_states",
+     "k_nodes",
+     "k_placements",
+     "k_shapes",
+     "k_versions",
+     "meta_lists",
+     "entity_attributes",
+     "entity_data",
+     "entity_defs",
+     "entity_field_config",
+     "entity_meta",
+     "entity_types",
+     "entity_usage",
+     "links",
+     "knowledge_graph",
+     "context_types",
+     "composition_ledger"
+    ],
+    "routes": [
+     "^/api/(meta|registries)(/|$)",
+     "^/api/platform/(global|kinds|registries|entity-types|entity-attributes|data|universe-fields)(/|$)",
+     "^/api/tenant/entity-def(/|$)",
+     "^/api/admin/(entity-meta|entity-usage)(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "studio"
+    ],
+    "platformScreens": [
+     "registries",
+     "studio",
+     "gdata",
+     "universes"
+    ],
+    "platformGroups": [
+     "Knowledge Graph",
+     "Evolution"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "rules",
+   "name": "Rules, states and settings",
+   "foundation": "Rule",
+   "purpose": "How behaviour is configured: applicability rules, state machines, settings and their defaults, and platform policy.",
+   "users": [
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/rules.js",
+     "lib/states.js",
+     "lib/settings.js",
+     "lib/defaults.js",
+     "lib/policies.js"
+    ],
+    "tables": [
+     "settings",
+     "platform_settings",
+     "config_store"
+    ],
+    "routes": [
+     "^/api/(rules|admin/rules|platform/rules)(/|$)",
+     "^/api/admin/(settings|mode)(/|$)",
+     "^/api/platform/config(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "settings"
+    ],
+    "platformScreens": [],
+    "platformGroups": [
+     "Policy",
+     "Configuration"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "geography",
+   "name": "Places and time",
+   "foundation": "Geo",
+   "purpose": "Where and when: countries, subdivisions and places, coordinate systems, calendars and time.",
+   "users": [
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/places.js",
+     "lib/subdivisions.js",
+     "lib/time.js"
+    ],
+    "tables": [
+     "countries",
+     "subdivisions"
+    ],
+    "routes": [],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [],
+    "platformScreens": [
+     "geo"
+    ],
+    "platformGroups": [
+     "Geography",
+     "Temporal"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "knowledge",
+   "name": "Platform knowledge",
+   "foundation": "Guidance",
+   "purpose": "The platform describing itself: the constitution, its foundations, universes, catalogue, coverage, traceability and documents.",
+   "users": [
+    "platform_admin",
+    "developer"
+   ],
+   "owns": {
+    "files": [
+     "lib/canonical.js",
+     "lib/ucos.js",
+     "lib/ucos-registry.js",
+     "lib/ucos-foundations.js",
+     "lib/ucos-universes.js",
+     "lib/ucos-domain.js",
+     "lib/ucos-catalog.js",
+     "lib/ucos-completeness.js",
+     "lib/ucos-monitor.js",
+     "lib/governance.js"
+    ],
+    "tables": [
+     "ucos_annotations",
+     "ucos_concepts",
+     "ucos_documents",
+     "ucos_edges",
+     "ucos_foundation_audit",
+     "ucos_foundation_composition",
+     "ucos_foundation_deps",
+     "ucos_foundation_evolution",
+     "ucos_foundations",
+     "ucos_parts",
+     "ucos_record_transitions",
+     "ucos_registries",
+     "ucos_sections",
+     "ucos_universes",
+     "domains"
+    ],
+    "routes": [
+     "^/api/(ucos|ucii)(/|$)",
+     "^/api/ucos/",
+     "^/api/ucii/"
+    ],
+    "machines": [
+     "foundation"
+    ],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "architecture",
+     "manual"
+    ],
+    "platformScreens": [
+     "ucos",
+     "ucii",
+     "foundations",
+     "domains",
+     "trace",
+     "architecture",
+     "manual"
+    ],
+    "platformGroups": [
+     "Constitution Ω∞",
+     "Canonical Model",
+     "Graphs",
+     "Reference",
+     "Documentation"
+    ],
+    "pages": []
+   }
+  },
+  {
+   "key": "runtime",
+   "name": "Runtime and operations",
+   "foundation": "Operations",
+   "purpose": "Running the platform: environments, configuration, the database and its migrations, queues, monitoring, metrics, logs, backup and restore.",
+   "users": [
+    "platform_admin",
+    "developer"
+   ],
+   "owns": {
+    "files": [
+     "lib/db.js",
+     "lib/dbpool.js",
+     "lib/sql.js",
+     "lib/pg.js",
+     "lib/pgbridge.js",
+     "lib/pgworker.js",
+     "lib/migrate.js",
+     "lib/env.js",
+     "lib/config.js",
+     "lib/enterprise.js",
+     "lib/logger.js",
+     "lib/metrics.js",
+     "lib/queue.js",
+     "lib/api.js"
+    ],
+    "tables": [
+     "sqlite_sequence"
+    ],
+    "routes": [
+     "^/api/(env)(/|$)",
+     "^/api/platform/(db|environments|environments-export|environments-import|runtime|queue|monitor)(/|$)",
+     "^/api/admin/monitor(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "monitor"
+    ],
+    "platformScreens": [
+     "runtime",
+     "monitor"
+    ],
+    "platformGroups": [
+     "Runtime",
+     "Telemetry",
+     "Health"
+    ],
+    "pages": []
+   }
+  }
+ ]
+}

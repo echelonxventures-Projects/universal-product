@@ -20,6 +20,8 @@
      node _registry/compile.js --verify     verify the seal and the input manifest
      node _registry/compile.js --decrypt    write the readable registry to stdout
      node _registry/compile.js --search Q   search every declaration with provenance
+                                            [--kind category|domain|primitive|term|artifact|universe|concept|document]
+                                            [--category C04|"Universal Dimensions"] [--owner Geo] [--limit N]
      node _registry/compile.js --gate       run the integrity gate (Zero Duplicate /
                                             Zero Partial / Zero Overlap / Zero Missing /
                                             No Leakage) over the compiled registry */
@@ -62,9 +64,10 @@ if (arg.includes("--decrypt")) {
 }
 if (arg.includes("--search")) {
   const q = arg[arg.indexOf("--search") + 1];
-  const rows = can.search(q, { limit: 30 });
+  const opt = name => { const i = arg.indexOf("--" + name); return i >= 0 ? arg[i + 1] : undefined; };
+  const rows = can.search(q, { limit: Number(opt("limit")) || 30, kind: opt("kind"), category: opt("category"), owner: opt("owner") });
   if (!rows.length) console.log("no declaration matches '" + q + "'");
-  for (const r of rows) console.log("  " + r.kind.padEnd(9) + " " + r.key.padEnd(34) + " " + r.provenance.padEnd(18) + " " + r.name);
+  for (const r of rows) console.log("  " + r.kind.padEnd(9) + " " + String(r.key).padEnd(22) + " " + String(r.name).padEnd(34) + " " + (r.category ? r.category + " · " + r.owner : r.provenance));
   console.log(rows.length + " declaration(s)");
   process.exit(0);
 }
