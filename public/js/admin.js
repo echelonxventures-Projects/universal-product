@@ -345,16 +345,15 @@ async function vFinOps() {
   const upi = (await api("/fintech/upi", {})).upi || [];
   const billers = (await api("/fintech/billers", {})).billers || [];
   const plans = (await api("/fintech/plans", {})).plans || [];
-  const [escrowR, kycR, payoutR, loanR, polR, vchR] = await Promise.all([
+  const [escrowR, kycR, payoutR, loanR, polR] = await Promise.all([
     api("/meta/entity/escrow_hold", {}).catch(() => ({ rows: [] })),
     api("/meta/entity/kyc_profile", {}).catch(() => ({ rows: [] })),
     api("/meta/entity/bank_payout", {}).catch(() => ({ rows: [] })),
     api("/meta/entity/loan", {}).catch(() => ({ rows: [] })),
     api("/meta/entity/payment_link", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/gift_voucher", {}).catch(() => ({ rows: [] })),
   ]);
   const escrows = escrowR.rows || [], kycs = kycR.rows || [], payouts = payoutR.rows || [],
-    loans = loanR.rows || [], pols = polR.rows || [], vchs = vchR.rows || [];
+    loans = loanR.rows || [], pols = polR.rows || [];
   return `<div class="a-head"><h2>💸 Fintech Ops</h2>
     <p class="a-sub">The payment rails: UPI collect, QR scan-pay, tokenised links, auto-debit mandates, escrow hold/release, split settlements, KYC-gated credit (BNPL, loans), bank payouts, bills, recharge, P2P, insurance and gift vouchers. Money never leaves the single wallet ledger. Statuses, kinds and frequencies are registries: <code>finUpiStatuses</code>, <code>finLinkStatuses</code>, <code>finEscrowStatuses</code>.</p>
     <p class="a-sub"><b>On for this store:</b> ${gate.on.map(k => `<span class="a-chip">${esc(k)}</span>`).join(" ")}${gate.off.length ? ` <span class="p-tag">${esc(gate.off.length)} off</span>` : ""}</p></div>
@@ -378,8 +377,6 @@ async function vFinOps() {
       ${hasCap(gate, "bank_payouts") ? `<button class="p-btn sm primary" data-act="co-new" data-key="bank_payout">+ Queue payout</button>` : ""}</div>
     <div class="a-card"><h3>Loans · ${loans.length}</h3>
       ${coTbl(["loan", "owner", "principal", "emi", "status"], loans, l => [`<code>${esc(l.ref)}</code>`, esc(l.owner), money(l.principal), l.emi ? money(l.emi) : "—", coBadge(l.status)], "No credit issued.")}</div>
-    <div class="a-card"><h3>Gift vouchers · ${vchs.length}</h3>
-      ${coTbl(["code", "amount", "buyer", "status"], vchs, v => [`<code>${esc(v.code)}</code>`, money(v.amount), esc(v.buyer || "—"), coBadge(v.status)], "No vouchers issued.")}</div>
   </div>
   <div class="a-card"><h3>UPI handles · ${upi.length}</h3>
     ${coTbl(["owner", "vpa", "verified", "default", "status"], upi,

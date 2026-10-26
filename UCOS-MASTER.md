@@ -69,7 +69,7 @@ A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A c
 | [V10](volumes/V10-intelligence.md) | C10 Intelligence | 1 of 1 | 1 | 1 | 7 KB |
 | [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 85 KB |
 | [V11.2](volumes/V11.2-platform.md) | C11 Platform | 2 of 2 | 3 | 6 | 39 KB |
-| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 78 KB |
+| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 79 KB |
 | [V13](volumes/V13-composition.md) | C13 Composition | 1 of 1 | 1 | 1 | 7 KB |
 
 <a id="index"></a>
@@ -1269,7 +1269,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 180 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 187 files.
 
 ### C02 · Meaning
 
@@ -1493,6 +1493,10 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/billing.js` | [Commerce](volumes/V12-business.md#d-biz) | customer invoices, credit notes, dunning |
 | `lib/routes/offer.js` | [Commerce](volumes/V12-business.md#d-biz) | the Offers domain's API routes and handlers |
 | `lib/offers.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/grants.js` | [Commerce](volumes/V12-business.md#d-biz) | the shared registry where each domain registers the writer for the thing it grants |
+| `lib/coupons.js` | [Commerce](volumes/V12-business.md#d-biz) | the Coupon domain: the codes a shopper types at the cart, their kinds and the redemption ledger |
+| `lib/vouchers.js` | [Commerce](volumes/V12-business.md#d-biz) | the Voucher domain: an instrument of value issued by someone other than the shop |
+| `lib/giftcards.js` | [Commerce](volumes/V12-business.md#d-biz) | the Gift Card domain: a code with a value, on the kernel, redeemable into a wallet |
 | `lib/goip.js` | [Commerce](volumes/V12-business.md#d-biz) | its spatial, temporal, value and context registries move to Geo, Time, Value and Context |
 | `lib/shipping.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/logistics.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
@@ -1524,6 +1528,9 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/gcatalog.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/seed/goip.json` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/seed/offers.json` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/seed/coupons.json` | [Commerce](volumes/V12-business.md#d-biz) | the Coupon domain's kinds |
+| `lib/seed/vouchers.json` | [Commerce](volumes/V12-business.md#d-biz) | the Voucher domain's kinds |
+| `lib/seed/giftcards.json` | [Commerce](volumes/V12-business.md#d-biz) | the gift card's kind, hierarchy, states, occasions and sources |
 
 ### C13 · Composition
 

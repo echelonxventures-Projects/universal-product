@@ -114,7 +114,7 @@ const mk = () => {
        foundations, subscriptions, webhook deliveries */
     Object.assign(BY_FILE, {
       tenancy: ["org_unit"], compliance: ["control", "consent", "privacy_request"], events: ["webhook_delivery"],
-      fintech: ["upi_handle", "upi_collect", "qr_code", "payment_link", "mandate", "escrow", "split_payment", "kyc", "kyc_doc", "bank_payout", "biller", "recharge_plan", "bill_payment", "recharge", "bnpl_account", "emi", "loan", "insurance_policy", "gift_voucher"],
+      fintech: ["upi_handle", "upi_collect", "qr_code", "payment_link", "mandate", "escrow", "split_payment", "kyc", "kyc_doc", "bank_payout", "biller", "recharge_plan", "bill_payment", "recharge", "bnpl_account", "emi", "loan", "insurance_policy"],
       goip: ["goip_settlement", "entitlement", "goip_budget", "redemption", "offer", "offer_governance"],
       "marketplace-ext": ["seller_onboarding", "seller_offer", "fba_inbound", "buyer_claim", "smart_fulfilment", "escrow", "order", "shipment"],
       "ucos-foundations": ["foundation"], connect: ["payment"] });

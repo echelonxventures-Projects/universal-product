@@ -1,0 +1,31 @@
+{
+ "$comment": "Gift cards (lib/giftcards.js), on the kernel. A card is a node of the gift-card kind in its store's namespace: its amount, unit, state, occasion, source and dates are attributes in time; its code, recipient, recipient's address, message, buyer and redeemer are sealed; it is found by a keyed blind index of its code, never by the code. The cards a party bought or was given sit under that party's holder node in the held hierarchy. A card's life is the gift_card machine. Its money lands, when redeemed, in the wallet of the definition the gift_cards capability names.",
+ "namespace": "platform",
+ "keys": { "kind": "offer.gift_card", "codeScheme": "offer.gift_card.code", "held": "offer.gift_cards.held", "holderKind": "party.holder", "machine": "gift_card", "tenantNamespace": "tenant", "capability": "gift_cards" },
+ "kind": {
+  "kind": "offer.gift_card", "owner": "Commerce", "label": "Gift card",
+  "attributes": [
+   { "key": "tenant", "type": "integer", "required": true, "label": "Store" },
+   { "key": "amount", "type": "integer", "required": true, "label": "Value in minor units" },
+   { "key": "unit", "type": "text", "required": true, "label": "Unit of value" },
+   { "key": "status", "type": "text", "required": true, "label": "State" },
+   { "key": "source", "type": "text", "required": true, "label": "How it came to be (bought, issued by staff, granted)" },
+   { "key": "occasion", "type": "text", "label": "Occasion" },
+   { "key": "order_ref", "type": "text", "label": "The order it was bought in" },
+   { "key": "expires_at", "type": "text", "label": "Expires at" },
+   { "key": "last4", "type": "text", "required": true, "label": "Last four of the code" },
+   { "key": "code", "type": "text", "required": true, "sensitive": true, "label": "Code" },
+   { "key": "recipient", "type": "text", "sensitive": true, "label": "Recipient's name" },
+   { "key": "recipient_email", "type": "text", "sensitive": true, "label": "Recipient's address" },
+   { "key": "message", "type": "text", "sensitive": true, "label": "Message" },
+   { "key": "buyer", "type": "text", "sensitive": true, "label": "Who bought or was given it" },
+   { "key": "redeemed_by", "type": "text", "sensitive": true, "label": "Who redeemed it" },
+   { "key": "redeemed_at", "type": "text", "label": "Redeemed at" },
+   { "key": "reason", "type": "text", "label": "Why it was voided" },
+   { "key": "decided_at", "type": "text", "label": "When it was decided" }
+  ],
+  "parents": ["party.holder"], "root": true, "schemes": ["offer.gift_card.code"]
+ },
+ "hierarchy": { "hierarchy": "offer.gift_cards.held", "owner": "Commerce", "label": "The gift cards a party bought or was given" },
+ "events": { "issued": "offer.gift_card.issued", "redeemed": "offer.gift_card.redeemed", "moved": "offer.gift_card.moved", "ported": "offer.gift_card.ported" }
+}

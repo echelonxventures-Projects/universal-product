@@ -1294,36 +1294,6 @@
    }
   },
   {
-   "key": "gift_voucher",
-   "name": "Gift voucher",
-   "column": "status",
-   "initial": "issued",
-   "free": true,
-   "states": "list:finVoucherStatuses",
-   "meta": {
-    "issued": {
-     "tags": [
-      "redeemable"
-     ]
-    },
-    "redeemed": {
-     "tags": [
-      "used",
-      "terminal"
-     ],
-     "stamps": [
-      "redeemed_at"
-     ]
-    },
-    "expired": {
-     "tags": [
-      "lapsed",
-      "terminal"
-     ]
-    }
-   }
-  },
-  {
    "key": "rider",
    "name": "Delivery rider",
    "column": "status",
@@ -2441,24 +2411,6 @@
     "active": {
      "tags": [
       "listed"
-     ]
-    }
-   }
-  },
-  {
-   "key": "promotion",
-   "name": "Promotion",
-   "column": "status",
-   "initial": "active",
-   "free": true,
-   "states": [
-    "active",
-    "inactive"
-   ],
-   "meta": {
-    "active": {
-     "tags": [
-      "running"
      ]
     }
    }
@@ -4020,6 +3972,64 @@
      "tags": [
       "terminal",
       "lapsed"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "key": "gift_card",
+   "name": "A gift card's life",
+   "column": "status",
+   "initial": "issued",
+   "states": "list:giftCardStatuses",
+   "transitions": {
+    "issued": [
+     "redeemed",
+     "expired",
+     "voided"
+    ]
+   },
+   "actions": {
+    "redeem": "redeemed",
+    "expire": "expired",
+    "void": "voided"
+   },
+   "meta": {
+    "issued": {
+     "tags": [
+      "redeemable"
+     ]
+    },
+    "redeemed": {
+     "tags": [
+      "terminal",
+      "success"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "expired": {
+     "tags": [
+      "terminal",
+      "lapsed"
+     ],
+     "stamps": [
+      {
+       "col": "decided_at"
+      }
+     ]
+    },
+    "voided": {
+     "tags": [
+      "terminal"
      ],
      "stamps": [
       {

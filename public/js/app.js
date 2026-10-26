@@ -1030,16 +1030,34 @@ async function goipStrip() {
     try { await api("/goip/track", "POST", { kind: "view", channel: "commerce", distribution: "in_app", context: { page: "deals", shown: d.items.length } }); } catch (e) { }
   } catch (e) { /* GOIP feed is additive — the page never depends on it */ }
 }
+/* gift cards (the gift_cards capability, lib/giftcards.js): buy one for someone, redeem one into
+   your gift balance, check what a code is worth, and see your own — every value, occasion and
+   validity from the store's settings */
 async function pageGift() {
   if (!CFG.features.giftCards) { location.href = "index.html"; return; }
   const wallet = !!(CFG.gates || {})["checkout.wallet"];
   document.title = `Gift Cards — ${CFG.brand.name}`;
+  let G;
+  try { G = await api("/gift-cards"); } catch (e) { $("#page").innerHTML = `<div class="gc"><p>${esc(e.message)}</p></div>`; return; }
+  const valid = Number(G.validity_days) ? `Valid for ${Number(G.validity_days)} days from purchase.` : "It does not expire.";
+  const occ = G.occasions || [];
   $("#page").innerHTML = `
-  <div class="gc"><div class="gc-hero"><div class="gc-copy"><h1>Gift of Choice</h1><p>${wallet ? "No expiration, no minimum — delivered instantly." : "Digital wallets are not offered by this store — gift options are available in-store."}</p>
-    ${wallet ? `<div class="gc-amounts">${CFG.commerce.giftAmounts.map(a => `<button class="gamt" data-act="gift" data-amt="${a}">${money(a)}</button>`).join("")}</div>` : ""}</div>
-    <div class="gc-card"><div class="gc-face"><b>${esc(CFG.brand.wordmark)}</b><span>gift card</span></div><div class="gc-face-btn">Choose an amount</div></div></div>
-  ${wallet ? `<div class="gc-bal">${esc(T("giftBalanceLabel"))}: <b>${money(S.gift)}</b></div>` : ""}
-  <div class="gc-grid">${["Birthday", "Graduation", "Wedding", "Holidays", "Thank You", "Housewarming"].map((t, i) => `<div class="gc-cat"><span>${["🎂", "🎓", "💍", "🎄", "🙏", "🏠"][i]}</span><h3>${t}</h3><a href="deals.html">Shop now</a></div>`).join("")}</div></div>`;
+  <div class="gc"><div class="gc-hero"><div class="gc-copy"><h1>Gift Cards</h1><p>A card worth ${money(G.min_amount)} to ${money(G.max_amount)}, sent with your message. ${esc(valid)}</p></div>
+    <div class="gc-card"><div class="gc-face"><b>${esc(CFG.brand.wordmark)}</b><span>gift card</span></div></div></div>
+  ${wallet && S.user ? `<div class="gc-bal">${esc(T("giftBalanceLabel"))}: <b>${money(S.gift)}</b></div>` : ""}
+  ${(G.items || []).length ? `<section class="gc-buy"><h2>Give one</h2>
+    <div class="row"><label><span>Card</span><select id="gcItem">${G.items.map(x => `<option value="${esc(x.id)}">${esc(x.title)}</option>`).join("")}</select></label>
+    <label><span>Occasion</span><select id="gcOcc"><option value="">—</option>${occ.map(o => `<option value="${esc(o.key || o)}">${esc((o.icon ? o.icon + " " : "") + (o.name || o.key || o))}</option>`).join("")}</select></label></div>
+    <div class="gc-amounts">${(G.denominations || []).map(a => `<button class="gamt" data-act="gc-amt" data-amt="${a}">${money(a)}</button>`).join("")}</div>
+    <div class="row"><label><span>Or any amount</span><input id="gcAmt" type="number" step="0.01" min="${Number(G.min_amount)}" max="${Number(G.max_amount)}"></label></div>
+    <div class="row"><label><span>Their name</span><input id="gcTo"></label><label><span>Their email</span><input id="gcEmail" type="email"></label></div>
+    <label><span>Your message</span><textarea id="gcMsg" rows="2" maxlength="500"></textarea></label>
+    <button class="btn-yellow" data-act="gc-buy">Add to bag</button></section>` : `<section class="gc-buy"><p>This store has no gift card to buy yet.</p></section>`}
+  ${wallet ? `<section class="gc-redeem"><h2>Redeem a card</h2>${S.user ? `<div class="row"><input id="gcCode" placeholder="Card code"><button class="btn-white" data-act="gc-redeem">Redeem</button></div>` : `<p><a href="#" data-act="signin-open">Sign in</a> to redeem a card into your gift balance.</p>`}</section>` : ""}
+  <section class="gc-check"><h2>Check a card</h2><div class="row"><input id="gcCheck" placeholder="Card code"><button class="btn-white" data-act="gc-check">Check</button></div><p id="gcCheckOut"></p></section>
+  ${(G.cards || []).length ? `<section class="gc-mine"><h2>Your cards</h2>${G.cards.map(c => `<div class="act-row"><span><b>${money(c.amount)}</b>${c.recipient ? " for " + esc(c.recipient) : ""}${c.occasion ? " · " + esc(c.occasion) : ""}</span>
+    <span><code>${esc(c.code || "…" + c.last4)}</code></span><span class="a-chip">${esc(c.state.label)}</span>${c.expires_at ? `<span class="pay-meta">until ${esc(c.expires_at.slice(0, 10))}</span>` : ""}</div>`).join("")}</section>` : ""}
+  ${occ.length ? `<div class="gc-grid">${occ.map(o => `<div class="gc-cat" data-act="gc-occ" data-occ="${esc(o.key || o)}"><span>${esc(o.icon || "")}</span><h3>${esc(o.name || o.key || o)}</h3></div>`).join("")}</div>` : ""}</div>`;
 }
 function pageCS() {
   document.title = `Client Care — ${CFG.brand.name}`;
@@ -1288,7 +1306,7 @@ document.addEventListener("click", async e => {
   const el = e.target.closest("[data-act]");
   if (!el) return;
   const act = el.dataset.act, id = el.dataset.id;
-  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "gift", "open-review", "buy-again", "list", "rfq-open", "return-open", "coupon", "select-variant", "ugc-vote", "qna-ask", "sub-save", "mem-subscribe", "mem-cancel", "sub-skip", "sub-pause", "sub-resume", "sub-cancel", "lst-add", "alert-open", "grp-join", "au-bid", "au-buynow", "au-pay", "offer-open", "msg-open", "bk-hold", "act-do", "terms-buy"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
+  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "open-review", "buy-again", "list", "rfq-open", "return-open", "coupon", "select-variant", "ugc-vote", "qna-ask", "sub-save", "mem-subscribe", "mem-cancel", "sub-skip", "sub-pause", "sub-resume", "sub-cancel", "lst-add", "alert-open", "grp-join", "au-bid", "au-buynow", "au-pay", "offer-open", "msg-open", "bk-hold", "act-do", "terms-buy", "gc-amt", "gc-occ", "gc-buy", "gc-redeem", "gc-check"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
   try {
     switch (act) {
       case "select-variant": {
@@ -1318,10 +1336,19 @@ document.addEventListener("click", async e => {
       case "save-later": await api("/saved", "POST", { id }); applyCart(await api("/cart")); return;
       case "move-cart": await api(`/saved/${encodeURIComponent(id)}/move`, "POST"); applyCart(await api("/cart")); return;
       case "unsave": await api("/saved/" + encodeURIComponent(id), "DELETE"); applyCart(await api("/cart")); return;
-      case "gift": {
-        const amt = Number(el.dataset.amt);
-        const r = await api("/giftcard", "POST", { amount: amt });
-        S.gift = r.balance; pageGift(); toast("🎁 " + money(amt) + " added to your gift balance"); break;
+      case "gc-amt": { const box = $("#gcAmt"); if (box) box.value = el.dataset.amt; break; }
+      case "gc-occ": { const sel = $("#gcOcc"); if (sel) { sel.value = el.dataset.occ; sel.scrollIntoView({ block: "center" }); } break; }
+      case "gc-buy": {
+        const terms = { gift_card: { amount: Number(($("#gcAmt") || {}).value), recipient: ($("#gcTo") || {}).value || "", recipient_email: ($("#gcEmail") || {}).value || "", message: ($("#gcMsg") || {}).value || "", occasion: ($("#gcOcc") || {}).value || "" } };
+        await addWithTerms(($("#gcItem") || {}).value, terms); toast("🎁 Gift card added to your bag"); break;
+      }
+      case "gc-redeem": {
+        const r = await api("/gift-cards/redeem", "POST", { code: ($("#gcCode") || {}).value || "" });
+        S.gift = (await api("/session")).gift; toast("🎁 " + money(r.card.amount) + " added to your gift balance"); pageGift(); break;
+      }
+      case "gc-check": {
+        const r = await api("/gift-cards/check", "POST", { code: ($("#gcCheck") || {}).value || "" });
+        $("#gcCheckOut").textContent = money(r.card.amount) + " · " + r.card.state.label + (r.card.expires_at ? " · until " + r.card.expires_at.slice(0, 10) : ""); break;
       }
       case "coupon": {
         const cv = $("#couponInput");
