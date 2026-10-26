@@ -4,6 +4,11 @@ const fs = require("fs");
 
 // Set up minimal test environment
 process.env.TZ = "UTC";
+/* a throwaway database: lib/identity.js opens one as soon as it loads */
+const TMP_DB = path.join(require("os").tmpdir(), "identity-test-" + process.pid + ".db");
+for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP_DB + s, { force: true }); } catch (e) { } }
+process.env.LX_DB = TMP_DB;
+process.on("exit", () => { for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP_DB + s, { force: true }); } catch (e) { } } });
 
 // Import identity module
 const identity = require("../lib/identity.js");

@@ -1,0 +1,1627 @@
+{
+ "REG": {
+  "qcStoreKinds": {
+   "label": "QC · Store kinds",
+   "items": [
+    "dark_store",
+    "micro_warehouse",
+    "partner_store",
+    "pickup_point",
+    "cloud_store"
+   ]
+  },
+  "qcStoreStatuses": {
+   "label": "QC · Store statuses",
+   "items": [
+    "active",
+    "paused",
+    "offline",
+    "onboarding"
+   ]
+  },
+  "qcSlotStatuses": {
+   "label": "QC · Slot statuses",
+   "items": [
+    "open",
+    "filling",
+    "full",
+    "closed",
+    "cancelled"
+   ]
+  },
+  "qcAreaStatuses": {
+   "label": "QC · Service-area statuses",
+   "items": [
+    "active",
+    "inactive",
+    "restricted"
+   ]
+  },
+  "qcInvStatuses": {
+   "label": "QC · Store-inventory statuses",
+   "items": [
+    "active",
+    "low",
+    "out",
+    "blocked"
+   ]
+  },
+  "qcVehicles": {
+   "label": "QC · Rider vehicles",
+   "items": [
+    "bicycle",
+    "scooter",
+    "motorbike",
+    "van",
+    "car",
+    "on_foot"
+   ]
+  },
+  "qcRiderStatuses": {
+   "label": "QC · Rider statuses",
+   "items": [
+    "offline",
+    "online",
+    "assigned",
+    "on_delivery",
+    "break"
+   ]
+  },
+  "qcDispatchStatuses": {
+   "label": "QC · Dispatch statuses",
+   "items": [
+    "assigned",
+    "out_for_delivery",
+    "delivered",
+    "failed",
+    "cancelled"
+   ]
+  },
+  "qcDeliveryKinds": {
+   "label": "QC · Delivery kinds",
+   "items": [
+    "standard",
+    "express",
+    "instant",
+    "scheduled",
+    "click_and_collect"
+   ]
+  },
+  "finUpiStatuses": {
+   "label": "Fin · UPI statuses",
+   "items": [
+    "active",
+    "pending_verification",
+    "suspended",
+    "failed"
+   ]
+  },
+  "finCollectStatuses": {
+   "label": "Fin · UPI collect statuses",
+   "items": [
+    "initiated",
+    "pending",
+    "success",
+    "failed",
+    "expired",
+    "cancelled"
+   ]
+  },
+  "finQrKinds": {
+   "label": "Fin · QR kinds",
+   "items": [
+    "upi",
+    "bharatqr",
+    "static",
+    "dynamic",
+    "order",
+    "merchant"
+   ]
+  },
+  "finQrStatuses": {
+   "label": "Fin · QR statuses",
+   "items": [
+    "active",
+    "paused",
+    "expired",
+    "revoked"
+   ]
+  },
+  "finLinkStatuses": {
+   "label": "Fin · Payment-link statuses",
+   "items": [
+    "issued",
+    "viewed",
+    "paid",
+    "expired",
+    "cancelled",
+    "failed"
+   ]
+  },
+  "finMandateFrequencies": {
+   "label": "Fin · Mandate frequencies",
+   "items": [
+    "onetime",
+    "weekly",
+    "monthly",
+    "quarterly",
+    "yearly",
+    "asperbill"
+   ]
+  },
+  "finMandateStatuses": {
+   "label": "Fin · Mandate statuses",
+   "items": [
+    "registered",
+    "active",
+    "paused",
+    "revoked",
+    "failed",
+    "completed"
+   ]
+  },
+  "finEscrowStatuses": {
+   "label": "Fin · Escrow statuses",
+   "items": [
+    "held",
+    "released",
+    "refunded",
+    "disputed",
+    "cancelled"
+   ]
+  },
+  "finSplitStatuses": {
+   "label": "Fin · Split statuses",
+   "items": [
+    "pending",
+    "settled",
+    "failed",
+    "reversed"
+   ]
+  },
+  "finKycKinds": {
+   "label": "Fin · KYC kinds",
+   "items": [
+    "individual",
+    "proprietor",
+    "partnership",
+    "private_ltd",
+    "public_ltd",
+    "llp",
+    "trust",
+    "society"
+   ]
+  },
+  "finKycDocs": {
+   "label": "Fin · KYC documents",
+   "items": [
+    "pan",
+    "aadhaar",
+    "passport",
+    "voter_id",
+    "driving_licence",
+    "gstin_cert",
+    "company_reg",
+    "bank_statement",
+    "utility_bill"
+   ]
+  },
+  "finKycDocStatuses": {
+   "label": "Fin · KYC doc statuses",
+   "items": [
+    "unverified",
+    "pending",
+    "approved",
+    "rejected"
+   ]
+  },
+  "finKycStatuses": {
+   "label": "Fin · KYC statuses",
+   "items": [
+    "pending",
+    "min_kyc",
+    "full_kyc",
+    "verified",
+    "rejected",
+    "expired"
+   ]
+  },
+  "finPayoutStatuses": {
+   "label": "Fin · Payout statuses",
+   "items": [
+    "queued",
+    "processing",
+    "success",
+    "failed",
+    "reversed",
+    "cancelled"
+   ]
+  },
+  "finBillerCategories": {
+   "label": "Fin · Biller categories (BBPS)",
+   "items": [
+    "electricity",
+    "water",
+    "gas",
+    "broadband",
+    "landline",
+    "mobile_postpaid",
+    "dth",
+    "cable_tv",
+    "insurance",
+    "loan_emi",
+    "credit_card",
+    "rent",
+    "education",
+    "donation",
+    "fastag",
+    "lpg"
+   ]
+  },
+  "finBillStatuses": {
+   "label": "Fin · Bill-payment statuses",
+   "items": [
+    "initiated",
+    "pending",
+    "success",
+    "failed",
+    "refunded"
+   ]
+  },
+  "finOperators": {
+   "label": "Fin · Mobile/DTH operators",
+   "items": [
+    "jio",
+    "airtel",
+    "vi",
+    "bsnl",
+    "mtnl",
+    "dish_tv",
+    "tata_sky",
+    "d2h",
+    "sun_direct",
+    "videocon"
+   ]
+  },
+  "finCircles": {
+   "label": "Fin · Telecom circles",
+   "items": [
+    "national",
+    "delhi",
+    "mumbai",
+    "kolkata",
+    "chennai",
+    "karnataka",
+    "maharashtra",
+    "gujarat",
+    "rajasthan",
+    "up_east",
+    "up_west",
+    "west_bengal",
+    "tamil_nadu",
+    "kerala",
+    "andhra_pradesh",
+    "telangana",
+    "punjab",
+    "haryana",
+    "bihar",
+    "jharkhand",
+    "odisha",
+    "assam",
+    "mp",
+    "cg",
+    "hp",
+    "jk",
+    "north_east"
+   ]
+  },
+  "finRechargeKinds": {
+   "label": "Fin · Recharge kinds",
+   "items": [
+    "mobile",
+    "dth",
+    "broadband",
+    "fastag",
+    "metro"
+   ]
+  },
+  "finRechargeStatuses": {
+   "label": "Fin · Recharge statuses",
+   "items": [
+    "initiated",
+    "pending",
+    "success",
+    "failed",
+    "refunded"
+   ]
+  },
+  "finBnplStatuses": {
+   "label": "Fin · BNPL statuses",
+   "items": [
+    "inactive",
+    "active",
+    "suspended",
+    "closed",
+    "defaulted"
+   ]
+  },
+  "finEmiStatuses": {
+   "label": "Fin · EMI statuses",
+   "items": [
+    "upcoming",
+    "due",
+    "paid",
+    "overdue",
+    "failed",
+    "settled"
+   ]
+  },
+  "finLoanStatuses": {
+   "label": "Fin · Loan statuses",
+   "items": [
+    "applied",
+    "under_review",
+    "approved",
+    "rejected",
+    "disbursed",
+    "closed",
+    "defaulted"
+   ]
+  },
+  "finInsuranceStatuses": {
+   "label": "Fin · Insurance statuses",
+   "items": [
+    "quoted",
+    "active",
+    "lapsed",
+    "cancelled",
+    "claimed",
+    "matured"
+   ]
+  },
+  "finVoucherStatuses": {
+   "label": "Fin · Voucher statuses",
+   "items": [
+    "issued",
+    "active",
+    "redeemed",
+    "expired",
+    "cancelled"
+   ]
+  },
+  "mktBusinessTypes": {
+   "label": "Mkt · Business types",
+   "items": [
+    "proprietorship",
+    "partnership",
+    "private_limited",
+    "public_limited",
+    "llp",
+    "huf",
+    "society",
+    "trust",
+    "foreign_company"
+   ]
+  },
+  "mktOnboardingStatuses": {
+   "label": "Mkt · Onboarding statuses",
+   "items": [
+    "submitted",
+    "documents_pending",
+    "verification",
+    "approved",
+    "rejected",
+    "suspended"
+   ]
+  },
+  "mktConditions": {
+   "label": "Mkt · Offer conditions",
+   "items": [
+    "new",
+    "renewed",
+    "refurbished",
+    "used",
+    "open_box",
+    "damaged"
+   ]
+  },
+  "mktFulfillment": {
+   "label": "Mkt · Fulfilment channels",
+   "items": [
+    "fbm",
+    "fba",
+    "seller_fulfilled_prime",
+    "qcommerce",
+    "dropship"
+   ]
+  },
+  "mktOfferStatuses": {
+   "label": "Mkt · Offer statuses",
+   "items": [
+    "active",
+    "inactive",
+    "suspended",
+    "buybox_revoked"
+   ]
+  },
+  "mktFbaStatuses": {
+   "label": "Mkt · FBA inbound statuses",
+   "items": [
+    "created",
+    "in_transit",
+    "receiving",
+    "received",
+    "closed",
+    "cancelled"
+   ]
+  },
+  "mktTiers": {
+   "label": "Mkt · Seller tiers",
+   "items": [
+    "standard",
+    "growth",
+    "premium",
+    "gold",
+    "platinum"
+   ]
+  },
+  "mktClaimKinds": {
+   "label": "Mkt · Buyer-claim kinds",
+   "items": [
+    "atoz",
+    "product_not_as_described",
+    "damaged",
+    "wrong_item",
+    "never_arrived",
+    "return_refund",
+    "warranty"
+   ]
+  },
+  "mktClaimStatuses": {
+   "label": "Mkt · Buyer-claim statuses",
+   "items": [
+    "opened",
+    "under_review",
+    "evidence_requested",
+    "evidence_submitted",
+    "deciding",
+    "resolved_buyer",
+    "resolved_seller",
+    "closed"
+   ]
+  },
+  "mktSmartGrades": {
+   "label": "Mkt · Smart-fulfilment grades",
+   "items": [
+    "a_plus",
+    "a",
+    "b",
+    "c",
+    "d"
+   ]
+  },
+  "mktSmartStatuses": {
+   "label": "Mkt · Smart-fulfilment statuses",
+   "items": [
+    "enrolled",
+    "probation",
+    "suspended",
+    "opted_out"
+   ]
+  },
+  "mktAdKinds": {
+   "label": "Mkt · Sponsored ad kinds",
+   "items": [
+    "sponsored_product",
+    "sponsored_brand",
+    "sponsored_display",
+    "sponsored_brand_video",
+    "dsp",
+    "store_spotlight"
+   ]
+  },
+  "mktCreativeStatuses": {
+   "label": "Mkt · Creative statuses",
+   "items": [
+    "draft",
+    "in_review",
+    "approved",
+    "rejected",
+    "live",
+    "paused",
+    "completed"
+   ]
+  },
+  "b2bAssuranceStatuses": {
+   "label": "B2B · Trade-assurance statuses",
+   "items": [
+    "holding",
+    "production",
+    "shipped",
+    "delivered",
+    "released",
+    "refunded",
+    "disputed",
+    "cancelled"
+   ]
+  },
+  "b2bGoldTiers": {
+   "label": "B2B · Gold-supplier tiers",
+   "items": [
+    "gold",
+    "gold_plus",
+    "premium",
+    "verified_pro",
+    "standard"
+   ]
+  },
+  "b2bVerificationLevels": {
+   "label": "B2B · Verification levels",
+   "items": [
+    "unverified",
+    "basic",
+    "verified",
+    "gold_verified",
+    "audited_pro"
+   ]
+  },
+  "b2bVerificationStatuses": {
+   "label": "B2B · Verification statuses",
+   "items": [
+    "pending",
+    "document_review",
+    "audit_scheduled",
+    "audited",
+    "approved",
+    "rejected",
+    "expired"
+   ]
+  },
+  "b2bDocKinds": {
+   "label": "B2B · Export document kinds",
+   "items": [
+    "commercial_invoice",
+    "packing_list",
+    "bill_of_lading",
+    "air_waybill",
+    "certificate_of_origin",
+    "insurance_certificate",
+    "inspection_cert",
+    "packing_declaration",
+    "msds",
+    "dangerous_goods_declaration"
+   ]
+  },
+  "b2bDocStatuses": {
+   "label": "B2B · Export document statuses",
+   "items": [
+    "draft",
+    "pending_review",
+    "approved",
+    "issued",
+    "amended",
+    "cancelled"
+   ]
+  },
+  "b2bLcStatuses": {
+   "label": "B2B · LC statuses",
+   "items": [
+    "issued",
+    "advised",
+    "confirmed",
+    "documents_presented",
+    "discrepant",
+    "accepted",
+    "paid",
+    "amended",
+    "cancelled"
+   ]
+  },
+  "b2bQuoteStatuses": {
+   "label": "B2B · RFQ quote statuses",
+   "items": [
+    "submitted",
+    "shortlisted",
+    "accepted",
+    "rejected",
+    "expired",
+    "withdrawn"
+   ]
+  },
+  "b2bBidStatuses": {
+   "label": "B2B · Tender-bid statuses",
+   "items": [
+    "submitted",
+    "technically_qualified",
+    "shortlisted",
+    "awarded",
+    "rejected",
+    "withdrawn"
+   ]
+  },
+  "b2bSegments": {
+   "label": "B2B · Price-list segments",
+   "items": [
+    "retail_customer",
+    "wholesale",
+    "distributor",
+    "dealer",
+    "enterprise",
+    "gov",
+    "export",
+    "vip"
+   ]
+  },
+  "shopEvents": {
+   "label": "Shop · Registry events",
+   "items": [
+    "wedding",
+    "baby_shower",
+    "birthday",
+    "house_warming",
+    "anniversary",
+    "festival",
+    "graduation",
+    "corporate_gifting",
+    "new_home"
+   ]
+  },
+  "shopRegistryStatuses": {
+   "label": "Shop · Registry statuses",
+   "items": [
+    "open",
+    "closed",
+    "fulfilled",
+    "cancelled"
+   ]
+  },
+  "shopNotifKinds": {
+   "label": "Shop · Notification kinds",
+   "items": [
+    "order_placed",
+    "order_paid",
+    "order_shipped",
+    "order_out_for_delivery",
+    "order_delivered",
+    "order_cancelled",
+    "return_update",
+    "refund_credit",
+    "deal_alert",
+    "back_in_stock",
+    "price_drop",
+    "registry_update",
+    "wishlist_offer",
+    "support_reply",
+    "kyc_update",
+    "payout_update",
+    "bill_due",
+    "emi_due",
+    "pickup_ready",
+    "offer_update",
+    "auction_update",
+    "booking_update",
+    "listing_update",
+    "message",
+    "group_update",
+    "substitution",
+    "case",
+    "deliverable",
+    "media_session",
+    "option_follow_up",
+    "trial"
+   ]
+  },
+  "shopDocKinds": {
+   "label": "Shop · Document kinds",
+   "items": [
+    "tax_invoice",
+    "retail_invoice",
+    "gst_invoice",
+    "credit_note",
+    "debit_note",
+    "delivery_challan",
+    "export_invoice",
+    "proforma"
+   ]
+  },
+  "shopDocStatuses": {
+   "label": "Shop · Document statuses",
+   "items": [
+    "generated",
+    "issued",
+    "emailed",
+    "amended",
+    "cancelled"
+   ]
+  },
+  "listKinds": {
+   "label": "Lists · Kinds",
+   "items": [
+    {
+     "key": "wish_list",
+     "name": "Wish list",
+     "default_visibility": "private",
+     "gifting": true,
+     "default": true
+    },
+    {
+     "key": "shopping_list",
+     "name": "Shopping list",
+     "default_visibility": "private",
+     "gifting": false
+    },
+    {
+     "key": "idea_list",
+     "name": "Idea list",
+     "default_visibility": "public",
+     "gifting": false
+    }
+   ]
+  },
+  "listVisibilities": {
+   "label": "Lists · Visibility",
+   "items": [
+    {
+     "key": "private",
+     "name": "Only me",
+     "shared": false,
+     "listed": false,
+     "default": true
+    },
+    {
+     "key": "shared",
+     "name": "Anyone with the link",
+     "shared": true,
+     "listed": false
+    },
+    {
+     "key": "public",
+     "name": "Public — anyone can find it",
+     "shared": true,
+     "listed": true
+    }
+   ]
+  },
+  "listPriorities": {
+   "label": "Lists · Item priorities",
+   "items": [
+    {
+     "key": "low",
+     "name": "Low",
+     "rank": 1
+    },
+    {
+     "key": "medium",
+     "name": "Medium",
+     "rank": 2,
+     "default": true
+    },
+    {
+     "key": "high",
+     "name": "High",
+     "rank": 3
+    },
+    {
+     "key": "must_have",
+     "name": "Must have",
+     "rank": 4
+    }
+   ]
+  },
+  "alertKinds": {
+   "label": "Alerts · Kinds",
+   "items": [
+    {
+     "key": "price_drop",
+     "name": "Price drop",
+     "trigger": "price_below_baseline",
+     "watchable": "any",
+     "needs_target": false,
+     "notification_kind": "price_drop",
+     "title": "Price drop: {title}",
+     "body": "{title} is now {price} (was {was})."
+    },
+    {
+     "key": "price_target",
+     "name": "Price at or below my target",
+     "trigger": "price_at_or_below_target",
+     "watchable": "any",
+     "needs_target": true,
+     "notification_kind": "price_drop",
+     "title": "Your target price was reached: {title}",
+     "body": "{title} is now {price}, at or below your target of {target}."
+    },
+    {
+     "key": "back_in_stock",
+     "name": "Back in stock",
+     "trigger": "stock_restored",
+     "watchable": "out_of_stock",
+     "needs_target": false,
+     "notification_kind": "back_in_stock",
+     "title": "Back in stock: {title}",
+     "body": "{title} is available again at {price}."
+    }
+   ]
+  },
+  "watchStatuses": {
+   "label": "Alerts · Watch statuses",
+   "items": [
+    "active",
+    "fired",
+    "cancelled"
+   ]
+  },
+  "pickupKinds": {
+   "label": "Pickup · Point kinds",
+   "items": [
+    {
+     "key": "locker",
+     "name": "Locker",
+     "self_service": true,
+     "default": true
+    },
+    {
+     "key": "counter",
+     "name": "Staffed counter",
+     "self_service": false
+    },
+    {
+     "key": "store",
+     "name": "Store pickup",
+     "self_service": false
+    }
+   ]
+  },
+  "pickupStatuses": {
+   "label": "Pickup · Reservation statuses",
+   "items": [
+    "reserved",
+    "ready",
+    "collected",
+    "expired",
+    "returned",
+    "cancelled"
+   ]
+  },
+  "contentModules": {
+   "label": "Rich content · Module kinds",
+   "items": [
+    {
+     "key": "banner",
+     "name": "Banner",
+     "fields": [
+      {
+       "key": "image",
+       "label": "Image URL",
+       "type": "image",
+       "required": true
+      },
+      {
+       "key": "headline",
+       "label": "Headline",
+       "type": "text",
+       "max": 120
+      }
+     ]
+    },
+    {
+     "key": "image_text",
+     "name": "Image with text",
+     "fields": [
+      {
+       "key": "image",
+       "label": "Image URL",
+       "type": "image",
+       "required": true
+      },
+      {
+       "key": "headline",
+       "label": "Headline",
+       "type": "text",
+       "max": 120,
+       "required": true
+      },
+      {
+       "key": "body",
+       "label": "Text",
+       "type": "textarea",
+       "max": 1500
+      }
+     ]
+    },
+    {
+     "key": "feature_list",
+     "name": "Feature list",
+     "fields": [
+      {
+       "key": "headline",
+       "label": "Headline",
+       "type": "text",
+       "max": 120
+      },
+      {
+       "key": "items",
+       "label": "Features (one per line)",
+       "type": "list",
+       "max_items": 10,
+       "max": 200,
+       "required": true
+      }
+     ]
+    },
+    {
+     "key": "comparison",
+     "name": "Comparison table",
+     "fields": [
+      {
+       "key": "headline",
+       "label": "Headline",
+       "type": "text",
+       "max": 120
+      },
+      {
+       "key": "rows",
+       "label": "Rows (one per line, cells separated by |; the first row is the header)",
+       "type": "table",
+       "max_rows": 12,
+       "max_cols": 6,
+       "max": 120,
+       "required": true,
+       "header_row": true
+      }
+     ]
+    },
+    {
+     "key": "faq",
+     "name": "Questions and answers",
+     "fields": [
+      {
+       "key": "rows",
+       "label": "Question | Answer (one pair per line)",
+       "type": "table",
+       "max_rows": 12,
+       "max_cols": 2,
+       "max": 600,
+       "required": true
+      }
+     ]
+    }
+   ]
+  },
+  "richContentStatuses": {
+   "label": "Rich content · Statuses",
+   "items": [
+    "draft",
+    "submitted",
+    "approved",
+    "rejected",
+    "retired"
+   ]
+  },
+  "brandClaimStatuses": {
+   "label": "Brand registry · Claim statuses",
+   "items": [
+    "submitted",
+    "approved",
+    "rejected",
+    "revoked"
+   ]
+  },
+  "brandReportKinds": {
+   "label": "Brand registry · Report kinds",
+   "items": [
+    {
+     "key": "counterfeit",
+     "name": "Counterfeit product"
+    },
+    {
+     "key": "trademark",
+     "name": "Trademark misuse"
+    },
+    {
+     "key": "copyright",
+     "name": "Copyright (images or text)"
+    },
+    {
+     "key": "listing_abuse",
+     "name": "Wrong brand or listing abuse"
+    }
+   ]
+  },
+  "brandReportStatuses": {
+   "label": "Brand registry · Report statuses",
+   "items": [
+    "open",
+    "actioned",
+    "dismissed"
+   ]
+  },
+  "optionKinds": {
+   "label": "Options · Group kinds",
+   "items": [
+    {
+     "key": "choice",
+     "name": "Choose from a list",
+     "atom": "product_options",
+     "section": "prodoptions",
+     "takes_text": false,
+     "default": true
+    },
+    {
+     "key": "text",
+     "name": "Personal text",
+     "atom": "product_options",
+     "section": "prodoptions",
+     "takes_text": true
+    },
+    {
+     "key": "installation",
+     "name": "Installation of this item",
+     "atom": "installation_booking",
+     "section": "installations",
+     "screen": "🔧 Installations",
+     "takes_text": false,
+     "follow_up": true,
+     "machine": "service_visit"
+    },
+    {
+     "key": "assembly",
+     "name": "Assembly of this item",
+     "atom": "assembly_booking",
+     "section": "assemblies",
+     "screen": "🪛 Assembly",
+     "takes_text": false,
+     "follow_up": true,
+     "machine": "service_visit"
+    },
+    {
+     "key": "plan",
+     "name": "An extended warranty or protection plan for months",
+     "atom": "extended_warranty",
+     "section": "warranties",
+     "screen": "🛡️ Extended Warranties",
+     "takes_text": false,
+     "follow_up": true,
+     "runs_months": true,
+     "machine": "cover_plan"
+    },
+    {
+     "key": "artwork",
+     "name": "The shopper’s own artwork, proofed before making",
+     "atom": "customisation_proofs",
+     "section": "proofs",
+     "screen": "🎨 Customisation Proofs",
+     "takes_text": true,
+     "follow_up": true,
+     "machine": "artwork_proof"
+    },
+    {
+     "key": "sample",
+     "name": "A sample of the item at its own price",
+     "atom": "sample_orders",
+     "section": "samples",
+     "screen": "🧪 Sample Orders",
+     "takes_text": false,
+     "sets_price": true,
+     "limits_qty": true
+    }
+   ]
+  },
+  "bookingResourceKinds": {
+   "label": "Bookings · Resource kinds",
+   "items": [
+    {
+     "key": "staff",
+     "name": "Staff member",
+     "default": true
+    },
+    {
+     "key": "room",
+     "name": "Room or space"
+    },
+    {
+     "key": "asset",
+     "name": "Asset or vehicle"
+    },
+    {
+     "key": "venue",
+     "name": "Venue"
+    }
+   ]
+  },
+  "bookingModes": {
+   "label": "Bookings · Modes",
+   "items": [
+    {
+     "key": "timed",
+     "name": "Time slots (appointments, sessions)",
+     "engine": "slots",
+     "default": true
+    },
+    {
+     "key": "stay",
+     "name": "Date range (stays, rentals)",
+     "engine": "days"
+    }
+   ]
+  },
+  "bookingStatuses": {
+   "label": "Bookings · Statuses",
+   "items": [
+    "held",
+    "confirmed",
+    "checked_in",
+    "completed",
+    "cancelled",
+    "no_show",
+    "expired"
+   ]
+  },
+  "priceOfferStatuses": {
+   "label": "Negotiation · Offer statuses",
+   "items": [
+    "open",
+    "countered",
+    "accepted",
+    "refused",
+    "withdrawn",
+    "expired",
+    "used"
+   ]
+  },
+  "auctionStatuses": {
+   "label": "Auctions · Statuses",
+   "items": [
+    "scheduled",
+    "live",
+    "sold",
+    "unsold",
+    "cancelled",
+    "paid"
+   ]
+  },
+  "listingStatuses": {
+   "label": "Peer listings · Statuses",
+   "items": [
+    "draft",
+    "submitted",
+    "live",
+    "rejected",
+    "withdrawn",
+    "sold"
+   ]
+  },
+  "earningStatuses": {
+   "label": "Peer listings · Earning statuses",
+   "items": [
+    "pending",
+    "credited",
+    "void"
+   ]
+  },
+  "conversationSubjects": {
+   "label": "Conversations · Subjects",
+   "items": [
+    {
+     "key": "product",
+     "name": "A product or listing",
+     "resolver": "product",
+     "default": true
+    },
+    {
+     "key": "order",
+     "name": "An order",
+     "resolver": "order"
+    },
+    {
+     "key": "booking",
+     "name": "A booking",
+     "resolver": "booking"
+    }
+   ]
+  },
+  "conversationStatuses": {
+   "label": "Conversations · Statuses",
+   "items": [
+    "open",
+    "closed",
+    "flagged"
+   ]
+  },
+  "groupCampaignStatuses": {
+   "label": "Group buying · Campaign statuses",
+   "items": [
+    "open",
+    "succeeded",
+    "failed",
+    "cancelled"
+   ]
+  },
+  "substitutionPolicies": {
+   "label": "Substitutions · Shopper policies",
+   "items": [
+    {
+     "key": "none",
+     "name": "Don't substitute — refund it",
+     "allows": false,
+     "default": true
+    },
+    {
+     "key": "best_match",
+     "name": "Best match",
+     "allows": true,
+     "auto_accept": true
+    },
+    {
+     "key": "ask_me",
+     "name": "Ask me first",
+     "allows": true,
+     "auto_accept": false
+    },
+    {
+     "key": "specific",
+     "name": "This item instead",
+     "allows": true,
+     "auto_accept": true,
+     "needs_item": true
+    }
+   ]
+  },
+  "substitutionStatuses": {
+   "label": "Substitutions · Statuses",
+   "items": [
+    "proposed",
+    "applied",
+    "rejected",
+    "refunded"
+   ]
+  },
+  "contributionStatuses": {
+   "label": "Platform master · Contribution statuses",
+   "items": [
+    "proposed",
+    "approved",
+    "rejected",
+    "withdrawn"
+   ]
+  },
+  "caseKinds": {
+   "label": "Cases · Kinds",
+   "items": [
+    {
+     "key": "price_match",
+     "name": "Price match",
+     "atom": "price_match",
+     "subject": "product",
+     "opens": [
+      "shopper"
+     ],
+     "machine": "case",
+     "fields": [
+      {
+       "key": "seen_at",
+       "label": "Where it is cheaper (a link)",
+       "type": "url",
+       "required": true
+      },
+      {
+       "key": "seen_price",
+       "label": "The price seen",
+       "type": "number",
+       "required": true
+      },
+      {
+       "key": "note",
+       "label": "Note",
+       "type": "text"
+      }
+     ],
+     "effect": {
+      "amount": true,
+      "wallet": true,
+      "ledger_kind": "refund"
+     },
+     "section": "pricematch",
+     "screen": "🏷️ Price Match"
+    },
+    {
+     "key": "prescription",
+     "name": "Prescription",
+     "atom": "prescriptions",
+     "subject": null,
+     "opens": [
+      "shopper"
+     ],
+     "machine": "case",
+     "fields": [
+      {
+       "key": "patient",
+       "label": "Patient",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "prescriber",
+       "label": "Prescriber",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "issued_on",
+       "label": "Issued on",
+       "type": "date",
+       "required": true
+      },
+      {
+       "key": "document",
+       "label": "The prescription (a link to the file)",
+       "type": "url",
+       "required": true
+      }
+     ],
+     "effect": {
+      "valid_days": 180
+     },
+     "gates": {
+      "attr": "prescription_required",
+      "equals": true
+     },
+     "section": "prescriptions",
+     "screen": "📄 Prescriptions"
+    },
+    {
+     "key": "credential",
+     "name": "Practitioner verification",
+     "atom": "practitioner_verification",
+     "subject": null,
+     "opens": [
+      "shopper",
+      "seller",
+      "staff"
+     ],
+     "machine": "case",
+     "fields": [
+      {
+       "key": "credential",
+       "label": "What it is (a licence, a registration…)",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "number",
+       "label": "Its number",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "authority",
+       "label": "Who issued it",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "expires_on",
+       "label": "Valid until",
+       "type": "date"
+      },
+      {
+       "key": "document",
+       "label": "A copy (a link to the file)",
+       "type": "url"
+      }
+     ],
+     "effect": {
+      "valid_days": 365
+     },
+     "section": "credentials",
+     "screen": "🪪 Practitioner Verification"
+    },
+    {
+     "key": "enquiry",
+     "name": "Enquiry",
+     "atom": "lead_capture",
+     "subject": "product",
+     "opens": [
+      "shopper"
+     ],
+     "machine": "enquiry",
+     "fields": [
+      {
+       "key": "name",
+       "label": "Your name",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "contact",
+       "label": "How to reach you",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "message",
+       "label": "Your question",
+       "type": "text"
+      }
+     ],
+     "effect": {},
+     "section": "enquiries",
+     "screen": "📨 Enquiries"
+    },
+    {
+     "key": "trade_in",
+     "name": "Trade-in",
+     "atom": "exchange_offers",
+     "subject": null,
+     "opens": [
+      "shopper"
+     ],
+     "machine": "case",
+     "fields": [
+      {
+       "key": "item",
+       "label": "What you are trading in",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "condition",
+       "label": "Its condition",
+       "type": "text",
+       "required": true
+      },
+      {
+       "key": "photo",
+       "label": "A photo (a link)",
+       "type": "url"
+      }
+     ],
+     "effect": {
+      "amount": true,
+      "line_credit": true,
+      "valid_days": 14
+     },
+     "section": "tradeins",
+     "screen": "♻️ Trade-ins"
+    }
+   ]
+  },
+  "caseStatuses": {
+   "label": "Cases · Statuses",
+   "items": [
+    "submitted",
+    "in_review",
+    "approved",
+    "rejected",
+    "withdrawn"
+   ]
+  },
+  "leadStatuses": {
+   "label": "Enquiries · Statuses",
+   "items": [
+    "new",
+    "contacted",
+    "won",
+    "lost",
+    "withdrawn"
+   ]
+  },
+  "caseSubjects": {
+   "label": "Cases · What a case may be about",
+   "items": [
+    {
+     "key": "product",
+     "name": "An item",
+     "lookup": "product",
+     "line_item": true
+    },
+    {
+     "key": "order",
+     "name": "An order",
+     "lookup": "order"
+    }
+   ]
+  },
+  "mediaSessionStatuses": {
+   "label": "Live sessions · Statuses",
+   "items": [
+    "scheduled",
+    "live",
+    "ended",
+    "missed",
+    "cancelled"
+   ]
+  },
+  "trialStatuses": {
+   "label": "Try and buy · Statuses",
+   "items": [
+    "on_trial",
+    "kept",
+    "returned",
+    "lapsed"
+   ]
+  },
+  "deliverableKinds": {
+   "label": "Deliverables · Kinds",
+   "items": [
+    {
+     "key": "licence_key",
+     "name": "Licence key",
+     "atom": "licence_keys",
+     "section": "licencekeys",
+     "screen": "🔑 Licence Keys",
+     "pooled": true
+    },
+    {
+     "key": "lab_report",
+     "name": "Lab report",
+     "atom": "lab_tests",
+     "section": "labtests",
+     "screen": "🧫 Lab Tests",
+     "uploaded": true
+    },
+    {
+     "key": "course",
+     "name": "Course access",
+     "atom": "course_progress",
+     "section": "courses",
+     "screen": "🎓 Course Progress",
+     "access": true
+    }
+   ]
+  },
+  "deliverableStatuses": {
+   "label": "Deliverables · Statuses",
+   "items": [
+    "awaited",
+    "delivered",
+    "revoked"
+   ]
+  },
+  "serviceVisitStatuses": {
+   "label": "Installation and assembly · Visit statuses",
+   "items": [
+    "to_schedule",
+    "scheduled",
+    "done",
+    "cancelled"
+   ]
+  },
+  "coverPlanStatuses": {
+   "label": "Extended warranties · Plan statuses",
+   "items": [
+    "in_force",
+    "ended",
+    "cancelled"
+   ]
+  },
+  "artworkProofStatuses": {
+   "label": "Customisation proofs · Proof statuses",
+   "items": [
+    "awaiting_proof",
+    "proof_sent",
+    "approved",
+    "cancelled"
+   ]
+  },
+  "walletStatuses": {
+   "label": "Wallet · Statuses",
+   "items": [
+    "active",
+    "restricted",
+    "suspended",
+    "closed"
+   ]
+  },
+  "walletHoldStatuses": {
+   "label": "Wallet · Hold statuses",
+   "items": [
+    "active",
+    "partly_spent",
+    "spent",
+    "released",
+    "expired"
+   ]
+  }
+ }
+}

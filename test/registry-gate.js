@@ -40,8 +40,102 @@ console.log("\n▸ §A THE GATE — the five criteria over the compiled registry
   console.log("  the gate checked " + report.checked + " properties (" + report.passed + " passed):");
   ok(report.ok, "the compiled registry passes all five criteria", report.fails.map(f => f.name).join("; "));
   for (const f of report.fails) ok(false, "  ✗ " + f.name, f.detail);
-  ok(report.counts.universes === 2919, "the compiled registry declares the constitutional universes", report.counts.universes);
+  /* 2914 + the 18 contract artifacts. Was 2919: the integration universe's connector list named
+     ten vendors one by one; it now names the kinds of system (ERP, CRM, ITSM and HR systems,
+     payment processors, public clouds) — the platform is white-label (scripts/white-label.js) */
+  ok(report.counts.universes === 2932, "the compiled registry declares the constitutional universes (2914 + the 18 contract artifacts)", report.counts.universes);
   ok(report.counts.concepts > 30000, "and the full concept layer", report.counts.concepts);
+}
+
+console.log("\n▸ §A1 THE REGISTER — one categorised owner for every declaration");
+{
+  const payload = can.load();
+  const report = gate.run(payload);
+  const rf = payload.registryFiles, reg = report.register;
+  ok(reg && reg.categories >= 13 && reg.domains === rf.domains.domains.length, "the register reports its categories and domains", JSON.stringify(reg && { c: reg.categories, d: reg.domains }));
+  ok(rf.primitives.primitives.every(p => !("owner" in p)) && rf.terminology.terms.every(t => !("ownerDomain" in t)),
+    "ownership is declared once — primitives and terms carry no owner of their own");
+  const hits = can.search("time", { limit: 3 });
+  ok(hits[0] && hits[0].kind === "domain" && hits[0].name === "Time" && /^C04 /.test(hits[0].category), "search ranks the owning domain first, with its category", JSON.stringify(hits[0]));
+  const c04 = can.search("e", { kind: "domain", category: "C04", limit: 50 });
+  ok(c04.length > 0 && c04.every(h => h.kind === "domain" && /^C04 /.test(h.category)), "a category facet returns only that category's domains", c04.map(h => h.name).join(", "));
+  const byOwner = can.search("a", { owner: "Security", limit: 50 });
+  ok(byOwner.length > 0 && byOwner.every(h => h.owner === "Security"), "an owner facet returns only what that domain owns", byOwner.length + " hits");
+
+  const twice = JSON.parse(JSON.stringify(payload));
+  twice.registryFiles.domains.domains[1].owns.push(twice.registryFiles.domains.domains[0].owns[0]);
+  const r1 = gate.run(twice);
+  ok(r1.fails.some(f => /owned by at most one domain/.test(f.name)), "a name owned by two domains fails the gate");
+  const loose = JSON.parse(JSON.stringify(payload));
+  loose.registryFiles.domains.domains[0].category = "C99";
+  loose.registryFiles.manifest.artifacts[0].owner = "Nobody";
+  const r2 = gate.run(loose);
+  ok(r2.fails.some(f => /declared category/.test(f.name)) && r2.fails.some(f => /owning domain/.test(f.name)), "an uncategorised domain and an unowned artifact fail the gate");
+  const reserved = JSON.parse(JSON.stringify(payload));
+  reserved.registryFiles.terminology.terms.push({ termId: "T-X", canonicalName: rf.primitives.prohibited[0], definition: "x" });
+  reserved.registryFiles.domains.domains[0].owns.push(rf.primitives.prohibited[0]);
+  ok(gate.run(reserved).fails.some(f => /reserves for projections/.test(f.name)), "a term named like a projection fails the gate");
+
+  /* the law register, the kernel, the code map and the build path are gated too */
+  ok(reg.laws >= 26 && reg.kernel >= 12 && reg.modules > 100, "the register reports laws, kernel parts and code modules", JSON.stringify({ l: reg.laws, k: reg.kernel, m: reg.modules }));
+  const law = JSON.parse(JSON.stringify(payload));
+  law.registryFiles.domains.laws[0].sources = [];
+  law.registryFiles.domains.laws[1].sources = ["no-such-doc:1"];
+  const r3 = gate.run(law);
+  ok(r3.fails.some(f => /every law has a statement/.test(f.name)) && r3.fails.some(f => /law source/.test(f.name)), "a law without a source, or with a source that does not exist, fails the gate");
+  const code = JSON.parse(JSON.stringify(payload));
+  code.registryFiles.codebase.modules = code.registryFiles.codebase.modules.slice(1);
+  code.registryFiles.codebase.modules.push({ path: "lib/no-such-file.js", owner: "Registry" });
+  const r4 = gate.run(code);
+  ok(r4.fails.some(f => /every code file has a home/.test(f.name)), "an unmapped code file, or a mapping to a file that does not exist, fails the gate");
+  const step = JSON.parse(JSON.stringify(payload));
+  step.registryFiles.roadmap.steps[0].deliveredBy = ["AMD-9999"];
+  ok(gate.run(step).fails.some(f => /build step/.test(f.name)), "a done step naming an amendment that does not exist fails the gate");
+  ok(can.search("fundamental axiom", { kind: "law" })[0]?.key === "LAW-001", "a law is found by any of its names (Fundamental Axiom → LAW-001)");
+
+  /* the concept register: every concept placed once, every container reviewed, and the seal is exactly a derivation */
+  ok(reg.concepts > 18000 && reg.conceptsUnplaced === 0 && reg.containersUnreviewed === 0, "every corpus concept has one owner and every container is reviewed", JSON.stringify({ c: reg.concepts, u: reg.conceptsUnplaced, r: reg.containersUnreviewed }));
+  const tamper = JSON.parse(JSON.stringify(payload));
+  tamper.register.rows[0][2] = "Someone Else";
+  ok(gate.run(tamper).fails.some(f => /concept register is exactly/.test(f.name)), "an owner edited into the sealed register, not the rules or reviews, fails the gate");
+  const badReview = JSON.parse(JSON.stringify(payload));
+  badReview.registryFiles.classification.concepts[Object.keys(badReview.registryFiles.classification.concepts)[0]].owner = "Nobody";
+  ok(gate.run(badReview).fails.some(f => /reviewed container names a declared domain/.test(f.name)), "a review naming an undeclared domain fails the gate");
+  const owned = can.search("markov", { kind: "concept", owner: "Inference", limit: 50 });
+  ok(owned.length > 0 && owned.every(h => h.owner === "Inference" && /^C03 /.test(h.category)), "concepts are searchable by owner, with their category", owned.length + " hits");
+
+  /* one set of domains: every other domain system is aligned to the register */
+  const al = JSON.parse(JSON.stringify(payload));
+  const goipSys = al.registryFiles.alignment.systems.find(x => x.owners && x.list === "DOMAINS");
+  delete goipSys.owners[Object.keys(goipSys.owners)[0]];
+  goipSys.owners.no_such_goip_domain = "Commerce";
+  const r5 = gate.run(al);
+  ok(r5.fails.some(f => /aligned to one register owner/.test(f.name)), "an unmapped GOIP domain, or a mapping to one that no longer exists, fails the gate");
+  ok(can.search("cashback", { kind: "aligned" }).some(h => h.owner === "Commerce"), "a GOIP domain is found with its register owner");
+  const engines = require(path.join(__dirname, "..", "lib", "ucos-domain.js")).domains();
+  ok(engines.length > 2000 && engines.every(e => "owner" in e) && engines.filter(e => e.owner).every(e => e.category), "every per-universe record engine reports its register owner and category", engines.length + " engines, " + engines.filter(e => !e.owner).length + " structural");
+
+  /* documents: one registered status and owner each, in the place their status says */
+  const docs = JSON.parse(JSON.stringify(payload));
+  docs.registryFiles.documents.documents = docs.registryFiles.documents.documents.filter(d => d.path !== "README.md");
+  const sup = docs.registryFiles.documents.documents.find(d => d.status === "superseded");
+  sup.status = "guidance";
+  const r6 = gate.run(docs);
+  ok(r6.fails.some(f => /every document has one registered status/.test(f.name) && /README\.md unregistered/.test(f.detail) && /sits in _superseded/.test(f.detail)),
+    "an unregistered document, or a superseded one claimed as current, fails the gate", (r6.fails.find(f => /document/.test(f.name)) || {}).detail);
+  ok(Object.keys(can.liveManifest()).includes("UCRS-Zero-Hardcoding-Constitution.md"), "every parsed constitution is in the seal's manifest (the UCRS constitution was missing)");
+
+  /* the live API and each domain's build status are gated */
+  ok(payload.api && payload.api.routes.length >= 700 && payload.api.routes.every(r => r[3]), "every live API route has one owning domain", payload.api && payload.api.routes.length);
+  const apiCut = JSON.parse(JSON.stringify(payload));
+  apiCut.api.routes = apiCut.api.routes.slice(10);
+  ok(gate.run(apiCut).fails.some(f => /live API route/.test(f.name)), "a register missing routes from the live table fails the gate");
+  const status = JSON.parse(JSON.stringify(payload));
+  status.registryFiles.domains.domains.find(d => d.status === "designed").status = "built";
+  ok(gate.run(status).fails.some(f => /build status matches/.test(f.name)), "a domain claiming to be built with no code and no routes fails the gate");
+  const gapBad = JSON.parse(JSON.stringify(payload));
+  gapBad.registryFiles.roadmap.gaps[0].closedBy = "AMD-9999";
+  ok(gate.run(gapBad).fails.some(f => /recorded gap/.test(f.name)), "a closed gap naming an amendment that does not exist fails the gate");
 }
 
 console.log("\n▸ §A2 THE GATE REFUSES A BROKEN COMPILE");

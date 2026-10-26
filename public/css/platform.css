@@ -114,16 +114,31 @@ footer { text-align: center; padding: 20px; color: var(--text-muted); font-size:
 /* the canonical sidebar: 12 constitutional sections as collapsible <details>. Each section
    keeps its own group rules, so the tree reads as one declaration per capability. */
 .p-nav-sec { border-bottom: 1px solid rgba(255, 255, 255, .08); }
-.p-nav-sec > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
+.p-nav-sec > summary, .p-nav-fold > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
   background: none; border: none; color: #8FA1B8; padding: 11px 18px 5px; font-size: 9.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-.p-nav-sec > summary::-webkit-details-marker { display: none; }
-.p-nav-sec > summary::before { content: "▸"; color: var(--p-muted); font-size: 10px; transition: transform .12s; }
-.p-nav-sec[open] > summary::before { transform: rotate(90deg); }
-.p-nav-sec > summary:hover { color: #fff; }
+.p-nav-sec > summary::-webkit-details-marker, .p-nav-fold > summary::-webkit-details-marker { display: none; }
+.p-nav-sec > summary::before, .p-nav-fold > summary::before { content: "▸"; color: var(--p-muted); font-size: 10px; transition: transform .12s; }
+.p-nav-sec[open] > summary::before, .p-nav-fold[open] > summary::before { transform: rotate(90deg); }
+.p-nav-sec > summary:hover, .p-nav-fold > summary:hover { color: #fff; }
 .p-nav-sec .p-nav-grp { padding-top: 2px; padding-bottom: 6px; }
 .p-nav-sec .p-nav-grp > small { display: block; color: #6E8097; letter-spacing: .1em; font-size: 9px; text-transform: uppercase; padding: 4px 18px 2px; font-weight: 600; }
 .p-nav-sec .p-nav-grp + .p-nav-grp { border-top: none; margin-top: 0; }
-.p-nav-sec .p-nav button { padding: 6px 18px 6px 26px; font-size: 12.5px; }
+.p-nav-sec button, .p-nav-fold button { padding: 6px 18px 6px 26px; font-size: 12.5px; }
+.p-nav-fold > summary { padding: 10px 18px 4px; font-size: 9.5px; }
+.p-nav-fold[open] { padding-bottom: 6px; }
+.p-nav-fold + .p-nav-fold, .p-nav-pin + .p-nav-fold { border-top: 1px solid rgba(255, 255, 255, .06); }
+
+/* the console's one nav: a filter on top, a header per scope, each home pinned above the folds */
+.p-nav-find { padding: 10px 14px 6px; position: sticky; top: 0; background: var(--p-side); z-index: 1; }
+.p-nav-find input { width: 100%; box-sizing: border-box; background: rgba(255, 255, 255, .07); border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 6px; color: #fff; padding: 7px 10px; font-size: 12.5px; }
+.p-nav-find input::placeholder { color: #7E8FA6; }
+.p-nav-find input:focus { outline: none; border-color: var(--p-accent); background: rgba(255, 255, 255, .1); }
+.p-nav-scope { padding: 14px 18px 4px; }
+.p-nav-scope small { color: #C6A15B; letter-spacing: .14em; font-size: 9.5px; font-weight: 700; }
+.p-nav-pin { padding-top: 2px; padding-bottom: 4px; }
+.p-nav-none { padding: 12px 18px; color: #7E8FA6; font-size: 12.5px; }
+.p-nav [hidden] { display: none !important; }
 
 /* Responsive */
 @media (max-width: 768px) {

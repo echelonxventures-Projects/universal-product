@@ -1,0 +1,1032 @@
+{
+  "$schema": "https://ucos.io/registry/content-platform.v1.json",
+  "registryId": "UCOS-REG-CONTENT-PLATFORM",
+  "canonicalName": "Platform Domain Content Registry",
+  "version": "Omega-1",
+  "status": "Constitutional Freeze",
+  "ownerDomain": "Constitutional Authority",
+  "law": "Knowledge Once — the substance of the platform domains' contracts is defined here once and projected everywhere.",
+  "content": {
+    "DEC": {
+      "concepts": "Decision Architecture records the outcome of evaluating rules against evidence, with its lineage, so every outcome the platform acts on can be traced to the rule versions, evidence and authority that produced it. A decision is recorded once and never edited; a reversal is a new decision that references the old one.",
+      "ontology": "A Decision has an Outcome, the Rules evaluated (with versions), the Evidence considered, the Context it applied in, the Authority under which it was taken, and a Lineage to earlier decisions it supersedes.",
+      "taxonomy": "By maker: Rule-evaluated / Person / Agent / Hybrid. By reversibility: Reversible / Irreversible. By scope: Platform / Tenant / Store / Single subject.",
+      "dataModel": "```yaml\nDecision:\n  decisionId: <Identity>\n  outcome: <registry outcome>\n  rules: [<Rule identity + version>]\n  evidence: [<Evidence>]\n  context: <Context>\n  authority: <Authority>\n  supersedes: <Decision identity | null>\n  temporal: {decidedAt, validFrom, validTo}\n```",
+      "graphModel": "(:Decision)-[:EVALUATED]->(:Rule); (:Decision)-[:CONSIDERED]->(:Evidence); (:Decision)-[:UNDER]->(:Authority); (:Decision)-[:SUPERSEDES]->(:Decision)",
+      "apis": [
+        "POST /dec.v1.record",
+        "GET  /dec.v1/{id}",
+        "GET  /dec.v1/{id}/lineage",
+        "POST /dec.v1.supersede",
+        "POST /dec.v1.query"
+      ],
+      "commands": [
+        "decision.record",
+        "decision.supersede",
+        "decision.explain"
+      ],
+      "queries": [
+        "decision.lineage",
+        "decision.bySubject",
+        "decision.byRule"
+      ],
+      "events": [
+        "DecisionRecorded",
+        "DecisionSuperseded",
+        "DecisionExplained"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Evaluated\n    Evaluated --> Recorded\n    Recorded --> Effective\n    Effective --> Superseded\n    Superseded --> [*]\n```",
+      "workflow": [
+        "context resolved → rules selected → rules evaluated against evidence → outcome recorded with lineage → effects released to Runtime"
+      ],
+      "authorities": [
+        "Decision Authority records; the Authority domain decides who may take each class of decision."
+      ],
+      "permissions": [
+        "decision.record (engine or authorised party)",
+        "decision.supersede (authority over the original)",
+        "decision.read (subject and auditors)"
+      ],
+      "privacy": "A decision about a person is readable by that person; inputs that are sensitive attributes are referenced, never copied.",
+      "audit": "Every decision is an audit record with its seven explainability answers.",
+      "twin": "Decision twin tracks outcome distributions per rule to detect drift.",
+      "agent": "Agents may propose decisions; money and irreversible classes need the approval their rule declares.",
+      "runtime": "Decisions are recorded synchronously before their effects run, so no effect exists without its decision.",
+      "scaling": "Decisions shard by subject; lineage queries walk a bounded supersession chain.",
+      "multiTenant": "A tenant's decisions are isolated; platform decisions bound tenant decisions.",
+      "geo": "A decision carries the place it applied to, so a jurisdiction's decisions can be listed and audited.",
+      "failure": "Missing evidence, rule version drift between evaluation and recording, effects run without a decision.",
+      "recovery": "Decisions are immutable; recovery replays effects from the decision log.",
+      "certification": "Every effect must point to a recorded decision; an orphan effect fails certification.",
+      "migration": "New decision classes are registry additions.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant E as Rule engine\n    participant D as Decision\n    participant R as Runtime\n    E->>D: record(outcome, rules, evidence)\n    D-->>E: decision id\n    D->>R: release effects\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Evaluating\n    Evaluating --> Recording\n    Recording --> Releasing\n    Releasing --> [*]\n```",
+      "blueprint": "Build order for DEC: (1) the decision record and its lineage; (2) record-before-effect in Runtime; (3) supersession instead of edits; (4) the explain query; (5) tests that fail on an effect without a decision. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "PLC": {
+      "concepts": "Geo Architecture holds every place at every scale, physical and not: from a single coordinate, shelf or room to a city, an ocean, a planet or a galaxy, and virtual realms. Places sit in many named hierarchies at once. Everything that depends on where (clock, value units, expressions, rules) relates to a place; nothing is stored on it.",
+      "ontology": "A Place has a Kind, Identifiers in any scheme, an optional Shape in a declared coordinate system, membership in any number of Hierarchies, and Relationships to other domains (uses a value unit, follows a clock, speaks expressions, is governed by rules).",
+      "taxonomy": "Kinds, by declaration: universe, galaxy, star system, star, planet, moon, ocean, sea, continent, country, region, city, district, site, building, floor, room, shelf, point, virtual realm, any kind added. Hierarchies: physical, political, postal, carrier zones, sales territories, any declared.",
+      "dataModel": "```yaml\nPlace:\n  placeId: <Identity>\n  kind: <Kind>\n  identifiers: [{scheme, code}]\n  shape: {system, point | area | volume} | null\n  hierarchies: [{hierarchy, parent}]\n  addressFormat: <declared by kind> | null\n  placement: <data-placement rule> | null\n  temporal: {validFrom, validTo, recordedAt}\n```",
+      "graphModel": "(:Place)-[:WITHIN {hierarchy}]->(:Place); (:Place)-[:USES]->(:ValueUnit); (:Place)-[:FOLLOWS]->(:Clock); (:Place)-[:EXPRESSED_IN]->(:Expression); (:Place)-[:GOVERNED_BY]->(:Rule)",
+      "apis": [
+        "POST /plc.v1.place",
+        "GET  /plc.v1/{id}",
+        "POST /plc.v1.resolve-coordinate",
+        "GET  /plc.v1/{id}/ancestors",
+        "POST /plc.v1.import"
+      ],
+      "commands": [
+        "place.declare",
+        "place.move",
+        "place.import",
+        "hierarchy.declare"
+      ],
+      "queries": [
+        "place.ancestors",
+        "place.descendants",
+        "place.containing",
+        "place.near"
+      ],
+      "events": [
+        "PlaceDeclared",
+        "PlaceMoved",
+        "PlaceRetired",
+        "HierarchyDeclared"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Draft\n    Draft --> Active\n    Active --> Retired\n    Retired --> [*]\n```",
+      "workflow": [
+        "declare kind → declare or import places from a declared source → attach to hierarchies → relate to clock, value units, expressions and rules → publish through the change lifecycle"
+      ],
+      "authorities": [
+        "The platform owner governs shared hierarchies; a tenant governs its own zones and territories."
+      ],
+      "permissions": [
+        "place.declare (scope owner)",
+        "hierarchy.edit (hierarchy owner)",
+        "place.read (any principal, filtered by view)"
+      ],
+      "privacy": "The coordinates and addresses of people and private sites are sensitive by default and encrypted at field level; public places are not.",
+      "audit": "Border moves, renames and re-parenting are versioned events, so any past geography can be reproduced.",
+      "twin": "A place twin mirrors live signals tied to a place (occupancy, demand) without changing the place itself.",
+      "agent": "An import agent loads deeper levels (cities, postcodes, streets) on demand from a declared source.",
+      "runtime": "Coordinate resolution uses a spatial cell index per coordinate system; ancestor lookups are constant-depth reads.",
+      "scaling": "The core ships to first-level regions; deeper levels load on demand because full depth is millions of rows.",
+      "multiTenant": "Places are platform master data; a tenant selects through views and adds only its own zones.",
+      "geo": "This domain defines geography itself; data placement rules declared on places are enforced by Operations.",
+      "failure": "A place with no kind, a cycle in a hierarchy, a coordinate in an undeclared system, overlapping zones a carrier did not intend.",
+      "recovery": "Versions are bi-temporal; a bad import is rolled back through the change lifecycle.",
+      "certification": "Every place has a kind, every hierarchy is acyclic, and every coordinate resolves in its declared system.",
+      "migration": "Today's country and subdivision tables and GOIP's spatial systems migrate into Earth's political hierarchy and the declared spatial systems.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant G as Geo\n    participant I as Spatial index\n    C->>G: resolve(coordinate, system)\n    G->>I: cells containing the point\n    I-->>G: candidate places\n    G-->>C: every containing place, by hierarchy\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Declaring\n    Declaring --> Relating\n    Relating --> Publishing\n    Publishing --> [*]\n```",
+      "blueprint": "Build order for PLC: (1) place kinds and the hierarchy store; (2) identifiers and import from declared sources; (3) shapes and the spatial index; (4) relationships to Time, Value, Expression and Rule; (5) migration of the country tables; (6) tests for acyclic hierarchies and coordinate resolution. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "TIM": {
+      "concepts": "Time Architecture owns every way of measuring and scheduling time, for any body: chronologies, calendars, epochs, clocks and zones, business hours and holidays, periods, recurrences, availability, validity windows and the signal delay between bodies.",
+      "ontology": "A Chronology has a base unit and rotation; a Calendar names days and periods within it; a Clock gives local time for a place; a Period, Recurrence or Availability is expressed in a calendar and clock.",
+      "taxonomy": "Chronologies: solar, lunar, lunisolar, martian, declared. Calendars: Gregorian, Hijri, Hebrew, fiscal, academic, Darian, declared. Clocks: per zone or per body.",
+      "dataModel": "```yaml\nCalendar:\n  calendarId: <Identity>\n  chronology: <Chronology>\n  epoch: <declared>\n  dayLength: <Quantity in Measure>\n  yearLength: <Quantity in Measure>\n  periods: [<declared period kinds>]\n```",
+      "graphModel": "(:Calendar)-[:IN]->(:Chronology); (:Place)-[:FOLLOWS]->(:Clock); (:Availability)-[:EXPRESSED_IN]->(:Calendar); (:Body)-[:DELAY {seconds}]->(:Body)",
+      "apis": [
+        "POST /tim.v1.calendar",
+        "POST /tim.v1.convert",
+        "POST /tim.v1.next-occurrence",
+        "GET  /tim.v1/clock/{place}",
+        "GET  /tim.v1/delay/{from}/{to}"
+      ],
+      "commands": [
+        "calendar.declare",
+        "clock.declare",
+        "recurrence.declare",
+        "holidays.declare"
+      ],
+      "queries": [
+        "time.convert",
+        "time.nextOccurrence",
+        "time.businessHours",
+        "time.delay"
+      ],
+      "events": [
+        "CalendarDeclared",
+        "ClockChanged",
+        "HolidaysPublished"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Draft\n    Draft --> Active\n    Active --> Retired\n    Retired --> [*]\n```",
+      "workflow": [
+        "declare chronology → declare calendar → relate places to clocks → declare business hours and holidays → services schedule in the place's own clock"
+      ],
+      "authorities": [
+        "The platform owner governs chronologies and calendars; a tenant governs its business hours and holidays."
+      ],
+      "permissions": [
+        "calendar.declare (platform)",
+        "hours.edit (scope owner)",
+        "time.read (any principal)"
+      ],
+      "privacy": "Time carries no personal data; a person's schedule is owned by the domain that holds it.",
+      "audit": "Zone and holiday changes are versioned, so a past deadline is re-computed in the rules then in force.",
+      "twin": "A clock twin watches drift between declared and observed time sources.",
+      "agent": "A calendar agent imports public holiday sets from declared sources for review.",
+      "runtime": "All timestamps are stored on one base timeline and converted on read; no engine assumes one calendar or one clock.",
+      "scaling": "Conversions are pure functions over declared rules and cache freely.",
+      "multiTenant": "Calendars are platform master data; business hours are per tenant scope.",
+      "geo": "A place's clock and calendar come from its relationships, inherited down its hierarchies.",
+      "failure": "An undeclared calendar, a zone rule change mid-period, a deadline computed in the wrong clock, assuming an instant network between bodies.",
+      "recovery": "Conversions recompute from versioned rules.",
+      "certification": "Every scheduled deadline names its calendar and clock.",
+      "migration": "GOIP's calendars, chronologies and temporal units, and today's UTC-only timestamps, move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant S as Service\n    participant T as Time\n    participant G as Geo\n    S->>T: deadline(place, period)\n    T->>G: clock and calendar of place\n    G-->>T: inherited relationships\n    T-->>S: deadline in local and base time\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Resolving clock\n    Resolving clock --> Converting\n    Converting --> Scheduling\n    Scheduling --> [*]\n```",
+      "blueprint": "Build order for TIM: (1) chronologies and calendars as kinds; (2) clocks and the conversion function; (3) business hours, holidays and recurrence; (4) signal delay between bodies; (5) migrate GOIP's temporal registries; (6) tests across calendars and bodies. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "MEA": {
+      "concepts": "Measure Architecture owns every quantity and unit, from Planck scale to light-years, including time and data units, and the conversions between any systems.",
+      "ontology": "A Quantity has a dimension (length, mass, time, data, …), a magnitude and a Unit; a Unit belongs to a system and converts to the dimension's base unit by a declared factor or function.",
+      "taxonomy": "By dimension: length, area, volume, mass, time, temperature, data, energy, any declared. By system: metric, imperial, local, declared.",
+      "dataModel": "```yaml\nUnit:\n  unitId: <Identity>\n  dimension: <declared dimension>\n  system: <declared system>\n  toBase: {factor | function}\n  symbol: <Expression>\n```",
+      "graphModel": "(:Quantity)-[:IN]->(:Unit); (:Unit)-[:CONVERTS_TO]->(:Unit); (:Unit)-[:MEASURES]->(:Dimension)",
+      "apis": [
+        "POST /mea.v1.unit",
+        "POST /mea.v1.convert",
+        "GET  /mea.v1/dimension/{id}/units"
+      ],
+      "commands": [
+        "unit.declare",
+        "conversion.declare"
+      ],
+      "queries": [
+        "measure.convert",
+        "measure.unitsOf"
+      ],
+      "events": [
+        "UnitDeclared",
+        "ConversionDeclared"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Draft\n    Draft --> Active\n    Active --> Retired\n    Retired --> [*]\n```",
+      "workflow": [
+        "declare dimension → declare units and their base conversion → consumers convert on read"
+      ],
+      "authorities": [
+        "The platform owner governs units; a tenant may add local units within its scope."
+      ],
+      "permissions": [
+        "unit.declare (scope owner)",
+        "measure.read (any principal)"
+      ],
+      "privacy": "Measures carry no personal data.",
+      "audit": "Conversion factor changes are versioned so historical quantities re-read correctly.",
+      "twin": "A measurement twin compares declared and observed values from devices.",
+      "agent": "Agents convert units through this domain and never with their own factors.",
+      "runtime": "Conversion is a pure function over declared factors.",
+      "scaling": "Conversion tables are tiny and cache everywhere.",
+      "multiTenant": "Units are master data; tenant-local units are scoped.",
+      "geo": "A place may prefer a unit system through a relationship; the quantity is stored once in base terms.",
+      "failure": "Mixing dimensions, a missing conversion path, rounding below a unit's precision.",
+      "recovery": "Quantities are stored with their unit; recomputation is deterministic.",
+      "certification": "Every conversion path resolves, and dimensions never mix.",
+      "migration": "Today's units of measure and GOIP's temporal units move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant M as Measure\n    C->>M: convert(quantity, toUnit)\n    M-->>C: quantity in the target unit\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Validating dimension\n    Validating dimension --> Converting\n    Converting --> [*]\n```",
+      "blueprint": "Build order for MEA: (1) dimensions and units as kinds; (2) conversion function; (3) migrate today's unit lists; (4) tests that refuse cross-dimension conversion. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "VAL": {
+      "concepts": "Value Architecture owns every unit in which value is held or exchanged — fiat, colonial, federation, points, carbon, energy, commodity — with its minor units, its rates over time from declared sources, and whether it can be settled.",
+      "ontology": "A Value Unit has a class, minor units, a settleability flag, and Rates to other value units over time, each from a declared source.",
+      "taxonomy": "By class: fiat, colonial, federation, loyalty, environmental, utility, commodity, any declared. By settleability: settleable / non-settleable.",
+      "dataModel": "```yaml\nValueUnit:\n  valueUnitId: <Identity>\n  class: <declared class>\n  minorUnits: <integer>\n  settleable: <boolean>\n  identifiers: [{scheme, code}]\n  rates: [{to, rate, source, validFrom}]\n```",
+      "graphModel": "(:ValueUnit)-[:RATE {at, source}]->(:ValueUnit); (:Place)-[:USES]->(:ValueUnit); (:Offering)-[:PRICED_IN]->(:ValueUnit)",
+      "apis": [
+        "POST /val.v1.unit",
+        "POST /val.v1.rate",
+        "POST /val.v1.convert",
+        "GET  /val.v1/rates/{unit}"
+      ],
+      "commands": [
+        "valueUnit.declare",
+        "rate.record",
+        "rate.sync"
+      ],
+      "queries": [
+        "value.convert",
+        "value.rateAt",
+        "value.unitsOf"
+      ],
+      "events": [
+        "ValueUnitDeclared",
+        "RateRecorded",
+        "RateSourceFailed"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Draft\n    Draft --> Active\n    Active --> Retired\n    Retired --> [*]\n```",
+      "workflow": [
+        "declare value unit → relate places to it → record or sync rates from declared sources → convert at the dated rate"
+      ],
+      "authorities": [
+        "The platform owner governs value units and rate sources."
+      ],
+      "permissions": [
+        "valueUnit.declare (platform)",
+        "rate.record (rate source or platform)",
+        "value.read (any principal)"
+      ],
+      "privacy": "Value units carry no personal data.",
+      "audit": "Every rate carries its source and time, so any past conversion is reproducible.",
+      "twin": "A rate twin watches source freshness and divergence between sources.",
+      "agent": "A rate agent syncs from declared sources and flags anomalies for approval.",
+      "runtime": "Conversion uses the rate valid at the transaction time, or a chosen time, and states the method.",
+      "scaling": "Rates are append-only time series per pair.",
+      "multiTenant": "Value units are master data; a store selects the units it sells in.",
+      "geo": "A place's units come from its relationships; nothing is stored on the place.",
+      "failure": "A missing rate defaulting to 1, rounding at the wrong minor units, a stale source.",
+      "recovery": "Rates are immutable; conversions recompute from the dated series.",
+      "certification": "No conversion uses an undeclared rate; amounts round at their unit's minor units.",
+      "migration": "Today's currency and rate tables and GOIP's economic units move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant C as Caller\n    participant V as Value\n    C->>V: convert(amount, from, to, at)\n    V->>V: rate valid at time\n    V-->>C: amount, rate, source, method\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Selecting rate\n    Selecting rate --> Converting\n    Converting --> Rounding\n    Rounding --> [*]\n```",
+      "blueprint": "Build order for VAL: (1) value-unit kinds and minor units; (2) dated rates with sources; (3) conversion with stated method; (4) migrate today's tables and GOIP units; (5) tests on minor units and dated rates. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "EXR": {
+      "concepts": "Expression Architecture owns how meaning is expressed for people: languages, scripts and their direction, plural rules, message catalogues for every interface string, and the multilingual names of every node in every domain. Meaning stays with the Semantic domain; this domain owns its renderings.",
+      "ontology": "An Expression renders a Meaning in a language and Script; a Message Catalogue holds expressions for interface strings; a Name is an expression attached to a node.",
+      "taxonomy": "By direction: left-to-right / right-to-left / vertical. By origin: authored / translated by a person / translated by an agent. By scope: interface text / node names / content.",
+      "dataModel": "```yaml\nExpression:\n  expressionId: <Identity>\n  meaning: <Meaning identity>\n  languageTag: <declared tag>\n  script: <Script>\n  text: <string>\n  origin: <authored | translated>\n  status: <draft | approved>\n```",
+      "graphModel": "(:Expression)-[:RENDERS]->(:Meaning); (:Expression)-[:IN]->(:Script); (:Node)-[:NAMED]->(:Expression); (:Place)-[:EXPRESSED_IN]->(:LanguageTag)",
+      "apis": [
+        "POST /exr.v1.expression",
+        "GET  /exr.v1/catalogue/{tag}",
+        "POST /exr.v1.translate",
+        "GET  /exr.v1/names/{node}"
+      ],
+      "commands": [
+        "expression.add",
+        "expression.approve",
+        "catalogue.publish",
+        "translation.request"
+      ],
+      "queries": [
+        "expression.forMeaning",
+        "catalogue.missing",
+        "names.of"
+      ],
+      "events": [
+        "ExpressionAdded",
+        "ExpressionApproved",
+        "CataloguePublished"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Draft\n    Draft --> Translated\n    Translated --> Approved\n    Approved --> Published\n    Published --> [*]\n```",
+      "workflow": [
+        "interface string declared → expression per tag requested → translated by person or agent → approved → catalogue published through the change lifecycle"
+      ],
+      "authorities": [
+        "The platform owner governs languages and scripts; a tenant governs its own catalogue overrides."
+      ],
+      "permissions": [
+        "expression.add (translator role)",
+        "expression.approve (reviewer role)",
+        "catalogue.read (any principal)"
+      ],
+      "privacy": "Expressions carry no personal data; content a person writes stays with the domain that owns it.",
+      "audit": "Every approved expression records its translator and reviewer.",
+      "twin": "A coverage twin tracks missing expressions per tag and screen.",
+      "agent": "A translation agent drafts expressions; a person or an approval rule approves them.",
+      "runtime": "The resolver picks the expression for the viewer's tag, falling back along the declared tag chain; direction comes from the script.",
+      "scaling": "Catalogues are versioned bundles cached per tag.",
+      "multiTenant": "Catalogues are master data with tenant overrides as overlays.",
+      "geo": "A place's expected tags come from its relationships; the viewer's choice wins.",
+      "failure": "Missing expression, wrong plural form, right-to-left text rendered left-to-right.",
+      "recovery": "Catalogues roll back through the change lifecycle.",
+      "certification": "Every interface string has an expression in every published tag, or a declared fallback.",
+      "migration": "Today's product localisations and the English text in the consoles move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant U as Interface\n    participant X as Expression\n    U->>X: text(key, viewer tag)\n    X->>X: tag chain fallback\n    X-->>U: expression, script, direction\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Drafting\n    Drafting --> Approving\n    Approving --> Publishing\n    Publishing --> [*]\n```",
+      "blueprint": "Build order for EXR: (1) language tags and scripts with direction; (2) message catalogues; (3) node names; (4) translation workflow with approval; (5) migrate the console text; (6) coverage tests per tag. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "REG": {
+      "concepts": "Registry Architecture owns the declarations themselves: kinds, attributes, types, validation, defaults, sensitivity, indexes and composite kinds, and where each domain is stored. Every change is a versioned migration with preview and rollback. This is the Registry primitive made operable.",
+      "ontology": "A Declaration defines a Kind with Attributes; a Composite Kind is a named set of dimensions, each a reference to a domain; a Storage Binding says which adapter holds a domain.",
+      "taxonomy": "By declaration: domain, kind, attribute, relation type, composite kind, view, index. By storage adapter: SQLite, PostgreSQL, document, graph, spatial, declared.",
+      "dataModel": "```yaml\nDeclaration:\n  declarationId: <Identity>\n  domain: <Domain>\n  kind: <Kind>\n  attributes: [{name, type, required, default, sensitive, validation}]\n  storage: <adapter binding>\n  version: <integer>\n```",
+      "graphModel": "(:Kind)-[:IN]->(:Domain); (:Attribute)-[:OF]->(:Kind); (:CompositeKind)-[:DIMENSION]->(:Domain); (:Domain)-[:STORED_IN]->(:Adapter)",
+      "apis": [
+        "POST /reg.v1.declare",
+        "POST /reg.v1.preview",
+        "POST /reg.v1.apply",
+        "POST /reg.v1.rollback",
+        "GET  /reg.v1/{domain}"
+      ],
+      "commands": [
+        "declaration.add",
+        "declaration.edit",
+        "declaration.hide",
+        "declaration.archive",
+        "declaration.purge",
+        "storage.move"
+      ],
+      "queries": [
+        "registry.diff",
+        "registry.consumers",
+        "registry.history"
+      ],
+      "events": [
+        "DeclarationAdded",
+        "MigrationApplied",
+        "MigrationRolledBack",
+        "StorageMoved"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Draft\n    Draft --> Previewed\n    Previewed --> Applied\n    Applied --> Hidden\n    Hidden --> Archived\n    Archived --> Purged\n    Purged --> [*]\n```",
+      "workflow": [
+        "declare → validate → preview (rows and consumers affected) → approve → apply live with background backfill → roll back if needed"
+      ],
+      "authorities": [
+        "The Constitutional Authority governs kernel declarations; scope owners govern their own extensions."
+      ],
+      "permissions": [
+        "declaration.add (schema role at scope)",
+        "declaration.purge (separate purge permission)",
+        "registry.read (any principal)"
+      ],
+      "privacy": "Sensitivity is declared here, per attribute, and enforced by Security as field-level encryption.",
+      "audit": "Every declaration change is an audit record with its migration diff.",
+      "twin": "A registry twin compares declared and stored structure to detect drift.",
+      "agent": "Agents extend the registry only through preview and approval.",
+      "runtime": "Code may only use declarations the registry holds; storage is reached through the bound adapter.",
+      "scaling": "Declarations are small and cached; migrations backfill in the background.",
+      "multiTenant": "Platform declarations are master data; a tenant extends only within its scope.",
+      "geo": "Storage bindings may differ per region to meet placement rules.",
+      "failure": "An edit that orphans data, a purge of something still referenced, a storage move without verification.",
+      "recovery": "Every migration is reversible until purge; purge needs a separate permission.",
+      "certification": "No code references an undeclared table or field.",
+      "migration": "Today's five registry sets (entity, meta, parity, global, canonical) consolidate here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant O as Operator\n    participant R as Registry\n    participant S as Storage adapter\n    O->>R: preview(change)\n    R-->>O: affected rows and consumers\n    O->>R: apply\n    R->>S: migrate with backfill\n    S-->>R: verified\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Declaring\n    Declaring --> Previewing\n    Previewing --> Applying\n    Applying --> [*]\n```",
+      "blueprint": "Build order for REG: (1) the declaration store; (2) preview and apply with rollback; (3) storage adapter interface (SQLite, then PostgreSQL); (4) consolidate today's registries; (5) gate test for undeclared tables and fields. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "CMP": {
+      "concepts": "Compliance Architecture owns every obligation the platform is under and the evidence it is met: regulations, obligations, controls, consent, data-subject requests, retention and legal holds, residency obligations and the processor register.",
+      "ontology": "A Regulation lists Obligations; an Obligation maps to Controls; a Control maps to platform features, rules and gate tests; applicability is a Rule by place, industry, activity and size.",
+      "taxonomy": "Regulations: privacy, payments, security, consumer, tax, accessibility, AI, any added. Privacy rights: access, correction, erasure, export, restriction, objection.",
+      "dataModel": "```yaml\nObligation:\n  obligationId: <Identity>\n  regulation: <Regulation>\n  controls: [<Control>]\n  applicability: <Rule>\n  evidence: [<Evidence>]\n  status: <met | at risk | unmet>\n```",
+      "graphModel": "(:Regulation)-[:REQUIRES]->(:Obligation); (:Obligation)-[:SATISFIED_BY]->(:Control); (:Control)-[:PROVEN_BY]->(:Evidence); (:Party)-[:CONSENTED {purpose}]->(:Purpose)",
+      "apis": [
+        "POST /cmp.v1.regulation",
+        "POST /cmp.v1.consent",
+        "POST /cmp.v1.subject-request",
+        "GET  /cmp.v1/obligations",
+        "GET  /cmp.v1/evidence-pack"
+      ],
+      "commands": [
+        "regulation.adopt",
+        "consent.record",
+        "consent.withdraw",
+        "subjectRequest.open",
+        "legalHold.place"
+      ],
+      "queries": [
+        "obligations.forScope",
+        "consent.of",
+        "retention.due",
+        "processors.list"
+      ],
+      "events": [
+        "ConsentRecorded",
+        "ConsentWithdrawn",
+        "SubjectRequestOpened",
+        "SubjectRequestFulfilled",
+        "ControlFailed",
+        "LegalHoldPlaced"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Adopted\n    Adopted --> Mapped\n    Mapped --> Evidenced\n    Evidenced --> Attested\n    Attested --> [*]\n```",
+      "workflow": [
+        "regulation adopted → obligations mapped to controls → evidence collected from Audit, configuration and gate tests → controls monitored → attestation"
+      ],
+      "authorities": [
+        "The platform owner adopts regulations; a data protection role owns subject requests and holds."
+      ],
+      "permissions": [
+        "regulation.adopt (platform)",
+        "subjectRequest.fulfil (privacy role)",
+        "consent.read-own (the person)"
+      ],
+      "privacy": "This domain is the privacy programme: lawful basis, consent, rights, retention and residency.",
+      "audit": "Evidence packs are assembled from Audit records; every consent change is recorded.",
+      "twin": "A compliance twin shows control status per scope continuously.",
+      "agent": "A compliance agent drafts evidence packs and flags failing controls; it never closes a subject request alone.",
+      "runtime": "Retention and legal holds are enforced by the change lifecycle; residency by Operations placement.",
+      "scaling": "Controls are evaluated incrementally from events.",
+      "multiTenant": "Regulations apply by rule to each tenant's places and activities.",
+      "geo": "Applicability and residency come from Geo through rules.",
+      "failure": "Processing without consent, a missed subject-request deadline, a purge under legal hold, data outside its residency.",
+      "recovery": "Breach notification runs with Security's incident response.",
+      "certification": "Every obligation maps to at least one control with current evidence.",
+      "migration": "Today's compliance module, governance retention and the consent and data-sovereignty artifacts move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant P as Person\n    participant C as Compliance\n    participant W as Workflow\n    P->>C: open subject request\n    C->>W: start fulfilment workflow\n    W-->>C: fulfilled with evidence\n    C-->>P: response\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Mapping\n    Mapping --> Evidencing\n    Evidencing --> Attesting\n    Attesting --> [*]\n```",
+      "blueprint": "Build order for CMP: (1) regulation, obligation and control registries; (2) consent and subject-request workflows; (3) retention and legal hold through the change lifecycle; (4) evidence packs from Audit; (5) gate test that every obligation has a control. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "EXP": {
+      "concepts": "Experience Architecture owns everything people see and touch, on every device: device types, design tokens, themes, components, screens, layouts, navigation, forms and lists, and sites with their web domains and SEO. All of it is configured, versioned and previewed per device.",
+      "ontology": "A Device Type declares its capabilities; a Theme is a set of Tokens; a Screen places registered Components in a Layout for device types; Forms and Lists render from Registry declarations.",
+      "taxonomy": "Device types: phone, tablet, desktop, TV, watch, wearable, kiosk, point of sale, in-car, voice, AR/VR, print, email, any declared. Token families: colour, type, spacing, radius, elevation, motion, iconography.",
+      "dataModel": "```yaml\nScreen:\n  screenId: <Identity>\n  deviceTypes: [<Device Type>]\n  layout: <declared layout>\n  components: [{component, props, binding}]\n  theme: <Theme> | inherited\n  scope: <K10 scope>\n```",
+      "graphModel": "(:Screen)-[:USES]->(:Component); (:Screen)-[:FOR]->(:DeviceType); (:Theme)-[:APPLIES_AT]->(:Scope); (:Site)-[:SERVES]->(:Screen)",
+      "apis": [
+        "POST /exp.v1.theme",
+        "POST /exp.v1.screen",
+        "POST /exp.v1.preview",
+        "GET  /exp.v1/render/{screen}",
+        "POST /exp.v1.site"
+      ],
+      "commands": [
+        "theme.edit",
+        "screen.edit",
+        "component.register",
+        "site.bind-domain"
+      ],
+      "queries": [
+        "screen.resolve",
+        "theme.resolve",
+        "accessibility.report"
+      ],
+      "events": [
+        "ThemePublished",
+        "ScreenPublished",
+        "AccessibilityCheckFailed"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Draft\n    Draft --> Previewed\n    Previewed --> Checked\n    Checked --> Published\n    Published --> [*]\n```",
+      "workflow": [
+        "edit theme or screen → preview on every declared device → accessibility and performance checks → publish at a scope → roll back if needed"
+      ],
+      "authorities": [
+        "The platform owner governs components and device types; a tenant governs its themes, screens and sites."
+      ],
+      "permissions": [
+        "theme.edit (design role at scope)",
+        "component.register (platform)",
+        "screen.read (any principal)"
+      ],
+      "privacy": "Screens bind data through permissioned queries; nothing sensitive is rendered without the viewer's grant.",
+      "audit": "Every publish records who changed what at which scope.",
+      "twin": "An experience twin tracks render performance and errors per device type.",
+      "agent": "A design agent proposes themes and layouts for preview; publishing follows approval rules.",
+      "runtime": "The resolver picks the nearest theme and layout for scope and device; direction comes from Expression.",
+      "scaling": "Rendered bundles are cached per scope, device and version.",
+      "multiTenant": "Components are master data; themes and screens are tenant scope.",
+      "geo": "A theme or layout may apply to a place, for example a festival theme for one country.",
+      "failure": "An injected script, an inaccessible theme, a layout broken on one device type.",
+      "recovery": "Publishes roll back in one step.",
+      "certification": "Only registry components render; every published theme passes accessibility checks.",
+      "migration": "Today's themes, branding, console bundles, sitemaps and hand-written screens move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant V as Viewer\n    participant E as Experience\n    participant X as Expression\n    V->>E: open screen on device\n    E->>E: resolve theme and layout\n    E->>X: texts for viewer tag\n    E-->>V: rendered screen\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Resolving\n    Resolving --> Rendering\n    Rendering --> Serving\n    Serving --> [*]\n```",
+      "blueprint": "Build order for EXP: (1) device types and tokens; (2) component registry; (3) screens from configuration with preview; (4) accessibility and performance gates; (5) migrate themes, branding and console screens. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "CMN": {
+      "concepts": "Communication Architecture owns every exchange of messages with people: channels, messages one-way and two-way, conversations across channels, the shared inbox, templates, sender identities and delivery. Who is told what, and when, belongs to Notification.",
+      "ontology": "A Message travels over a Communication Channel through a provider connector, from a Sender Identity; a Conversation threads messages between parties; a Template renders a message per purpose, channel and language tag.",
+      "taxonomy": "Channels: email, SMS, RCS, WhatsApp and other chat apps, push, in-app, voice and IVR, video, social messaging, postal mail, any declared. Direction: outbound / inbound / two-way.",
+      "dataModel": "```yaml\nMessage:\n  messageId: <Identity>\n  conversation: <Conversation> | null\n  channel: <Communication Channel>\n  template: <Template> | null\n  from: <Sender Identity>\n  to: <Party>\n  status: <queued | sent | delivered | read | failed | bounced>\n```",
+      "graphModel": "(:Message)-[:IN]->(:Conversation); (:Message)-[:VIA]->(:Channel); (:Channel)-[:SERVED_BY]->(:Connector); (:Conversation)-[:BETWEEN]->(:Party)",
+      "apis": [
+        "POST /cmn.v1.send",
+        "POST /cmn.v1.inbound",
+        "GET  /cmn.v1/conversation/{id}",
+        "POST /cmn.v1.template",
+        "GET  /cmn.v1/delivery/{id}"
+      ],
+      "commands": [
+        "message.send",
+        "message.receive",
+        "conversation.assign",
+        "template.edit",
+        "sender.verify"
+      ],
+      "queries": [
+        "inbox.list",
+        "conversation.history",
+        "delivery.report"
+      ],
+      "events": [
+        "MessageSent",
+        "MessageDelivered",
+        "MessageFailed",
+        "MessageReceived",
+        "ConversationAssigned"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Queued\n    Queued --> Sent\n    Sent --> Delivered\n    Delivered --> Read\n    Read --> [*]\n```",
+      "workflow": [
+        "render template in recipient's tag → choose channel and provider for place → send → track delivery → retry or fall back to the next channel"
+      ],
+      "authorities": [
+        "The platform owner governs channels; a tenant governs its templates, senders and inbox."
+      ],
+      "permissions": [
+        "message.send (service or role)",
+        "inbox.read (assigned agent or role)",
+        "template.edit (scope owner)"
+      ],
+      "privacy": "Content and recipients are personal data; recording and retention follow Compliance, and consent is honoured per channel.",
+      "audit": "Every send and delivery outcome is recorded.",
+      "twin": "A deliverability twin tracks bounce and failure rates per channel and provider.",
+      "agent": "Agents handle conversations and hand off to a person by rule.",
+      "runtime": "Sends are queued and retried with back-off; channel fallback follows the declared order.",
+      "scaling": "Sends batch per provider within its rate limits.",
+      "multiTenant": "Each tenant has its own senders, templates and inbox.",
+      "geo": "Channel and provider routing is per place.",
+      "failure": "Unverified sender, provider outage, opt-out ignored, wrong-language template.",
+      "recovery": "Failed messages wait in a dead-letter queue and can be resent.",
+      "certification": "No message is sent without consent where the channel's law requires it.",
+      "migration": "Today's mailer, notification provider transports and helpdesk conversations move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant N as Notification\n    participant C as Communication\n    participant P as Provider\n    N->>C: send(recipient, purpose)\n    C->>C: template and channel\n    C->>P: deliver\n    P-->>C: delivery status\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Rendering\n    Rendering --> Sending\n    Sending --> Tracking\n    Tracking --> [*]\n```",
+      "blueprint": "Build order for CMN: (1) channels and sender identities; (2) templates per tag; (3) send with retry and fallback; (4) conversations and inbox; (5) migrate the mailer and helpdesk. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "NTF": {
+      "concepts": "Notification Architecture decides who is told what, and when. It subscribes recipients to events, honours their preferences and consent, and times delivery. It owns no channel, template or delivery; it sends through Communication.",
+      "ontology": "A Subscription links an Event to Recipients (a person, role, group, segment or a party resolved from the entity); Preferences choose channel and frequency per topic; Timing applies quiet hours, digests and rate limits.",
+      "taxonomy": "By purpose: transactional / marketing / operational / security. By urgency: normal / urgent override.",
+      "dataModel": "```yaml\nEventSubscription:\n  subscriptionId: <Identity>\n  event: <Event kind>\n  recipients: <resolver expression>\n  purpose: <transactional | marketing | operational | security>\n  timing: {quietHours, digest, ratePerRecipient}\n```",
+      "graphModel": "(:Subscription)-[:ON]->(:EventKind); (:Subscription)-[:TO]->(:RecipientRule); (:Party)-[:PREFERS {topic}]->(:Channel)",
+      "apis": [
+        "POST /ntf.v1.subscription",
+        "PUT  /ntf.v1/preferences/{party}",
+        "GET  /ntf.v1/preferences/{party}"
+      ],
+      "commands": [
+        "subscription.declare",
+        "preferences.set",
+        "notification.mute"
+      ],
+      "queries": [
+        "subscriptions.forEvent",
+        "preferences.of",
+        "digest.pending"
+      ],
+      "events": [
+        "NotificationDecided",
+        "NotificationSuppressed",
+        "DigestReleased"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Matched\n    Matched --> Timed\n    Timed --> Handed off\n    Handed off --> [*]\n```",
+      "workflow": [
+        "event arrives → matching subscriptions → recipients resolved → preferences and consent applied → quiet hours and digest timing → handed to Communication"
+      ],
+      "authorities": [
+        "A tenant governs its subscriptions; each person governs their own preferences."
+      ],
+      "permissions": [
+        "subscription.declare (scope owner)",
+        "preferences.set (the person)"
+      ],
+      "privacy": "Preferences and consent are honoured before any send; marketing never rides on a transactional purpose.",
+      "audit": "Suppressions are recorded with their reason.",
+      "twin": "A notification twin tracks volume and suppression per event.",
+      "agent": "Agents may subscribe to events like any recipient.",
+      "runtime": "Decisions run off the event log; timing uses the recipient's own clock from Time.",
+      "scaling": "Fan-out is batched per event.",
+      "multiTenant": "Subscriptions are tenant scope.",
+      "geo": "Quiet hours follow the recipient's place and clock.",
+      "failure": "Sending at night in the recipient's zone, marketing without consent, notification storms.",
+      "recovery": "Decisions are idempotent per event and recipient.",
+      "certification": "Every send traces to a subscription and passes the consent check.",
+      "migration": "Today's notification triggers move here; their channels move to Communication.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant R as Runtime\n    participant N as Notification\n    participant C as Communication\n    R->>N: event\n    N->>N: recipients, preferences, timing\n    N->>C: send(recipient, purpose)\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Matching\n    Matching --> Timing\n    Timing --> Handing off\n    Handing off --> [*]\n```",
+      "blueprint": "Build order for NTF: (1) subscriptions over the event log; (2) recipient resolution; (3) preferences and consent; (4) timing; (5) migrate today's triggers. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "GDN": {
+      "concepts": "Guidance Architecture owns the user manual and all help, generated from declarations: domains, kinds, blueprints, packages, workflows and API contracts produce their own guides in every language, kept current by events. People and agents follow the same guides.",
+      "ontology": "A Guide is generated from a Declaration or authored; it has Steps, references to the declarations it explains, and expressions per language tag.",
+      "taxonomy": "By audience: operator / developer / shopper / agent. By origin: generated / authored. By form: guide, tutorial, reference, glossary.",
+      "dataModel": "```yaml\nGuide:\n  guideId: <Identity>\n  source: <Declaration> | authored\n  audience: <declared audience>\n  steps: [<step>]\n  expressions: [<Expression>]\n```",
+      "graphModel": "(:Guide)-[:EXPLAINS]->(:Declaration); (:Guide)-[:EXPRESSED_IN]->(:Expression)",
+      "apis": [
+        "GET  /gdn.v1/guide/{id}",
+        "GET  /gdn.v1/for/{declaration}",
+        "POST /gdn.v1.guide"
+      ],
+      "commands": [
+        "guide.author",
+        "guide.regenerate"
+      ],
+      "queries": [
+        "guide.forDeclaration",
+        "guide.search"
+      ],
+      "events": [
+        "GuideRegenerated",
+        "GuideAuthored"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Generated\n    Generated --> Reviewed\n    Reviewed --> Published\n    Published --> [*]\n```",
+      "workflow": [
+        "declaration changes → guide regenerated → reviewed → published in every tag"
+      ],
+      "authorities": [
+        "The platform owner governs generated guides; authors govern their own."
+      ],
+      "permissions": [
+        "guide.author (author role)",
+        "guide.read (any principal)"
+      ],
+      "privacy": "Guides carry no personal data.",
+      "audit": "Guide publishes are recorded.",
+      "twin": "A guidance twin tracks which guides people open before raising support requests.",
+      "agent": "Agents read the same guides to carry out an operator's request.",
+      "runtime": "Guides regenerate from events, so they never drift from the declarations.",
+      "scaling": "Guides are static bundles per version and tag.",
+      "multiTenant": "Guides are master data with tenant-authored additions.",
+      "geo": "Guides render in the viewer's language tag.",
+      "failure": "A guide describing a declaration that changed, a missing translation.",
+      "recovery": "Regeneration rebuilds every generated guide.",
+      "certification": "Every blueprint, package and public API operation has a guide.",
+      "migration": "Today's user manual, references and the implementation artifacts move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant R as Registry\n    participant G as Guidance\n    R->>G: declaration changed\n    G->>G: regenerate guide\n    G-->>R: guide published\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Generating\n    Generating --> Reviewing\n    Reviewing --> Publishing\n    Publishing --> [*]\n```",
+      "blueprint": "Build order for GDN: (1) guide generation from declarations; (2) authoring; (3) translation through Expression; (4) migrate the manual; (5) coverage test. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "INT": {
+      "concepts": "Integration Architecture owns the platform's API, generated from the registry and used by everyone including the console and agents, and every connection to an outside system: connectors as data, mapping, sync, webhooks and their monitoring.",
+      "ontology": "An API Contract is generated per version from declarations; a Connector declares protocol, authentication, endpoints and a mapping onto kinds; a Sync moves data in, out or both on a schedule or trigger.",
+      "taxonomy": "API styles: REST, GraphQL, bulk, event streams, query. Protocols: REST, GraphQL, SOAP, gRPC, webhooks, files (CSV, XML, JSON, EDI), queues, database replication, email in, declared.",
+      "dataModel": "```yaml\nConnector:\n  connectorId: <Identity>\n  protocol: <declared protocol>\n  auth: <declared scheme; secrets in Security>\n  endpoints: [<endpoint>]\n  mapping: [{external, kind, attribute, conversion}]\n  direction: <in | out | both>\n```",
+      "graphModel": "(:Contract)-[:GENERATED_FROM]->(:Declaration); (:Connector)-[:MAPS_TO]->(:Kind); (:Connector)-[:SERVES]->(:Channel)",
+      "apis": [
+        "GET  /int.v1/contract/{version}",
+        "POST /int.v1.connector",
+        "POST /int.v1.sync",
+        "POST /int.v1.webhook",
+        "GET  /int.v1/health/{connector}"
+      ],
+      "commands": [
+        "connector.declare",
+        "connector.test",
+        "sync.run",
+        "webhook.subscribe",
+        "key.issue"
+      ],
+      "queries": [
+        "contract.diff",
+        "sync.status",
+        "deadLetters.list"
+      ],
+      "events": [
+        "ContractPublished",
+        "SyncCompleted",
+        "DeliveryFailed",
+        "ConnectorUnhealthy"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Declared\n    Declared --> Tested\n    Tested --> Live\n    Live --> Paused\n    Paused --> [*]\n```",
+      "workflow": [
+        "declare connector → map onto kinds → test → go live → sync with checkpoints → dead-letter and resend on failure"
+      ],
+      "authorities": [
+        "The platform owner governs the contract; a tenant governs its connectors and keys."
+      ],
+      "permissions": [
+        "connector.declare (integration role)",
+        "key.issue (scope owner)",
+        "contract.read (any principal)"
+      ],
+      "privacy": "Sensitive data leaves only to connectors approved for it in that region.",
+      "audit": "Every call is logged with secrets redacted.",
+      "twin": "An integration twin tracks throughput, latency and errors per connection.",
+      "agent": "Every API operation is an agent tool; agents never get a private path.",
+      "runtime": "Idempotency keys, optimistic concurrency, retries with back-off and circuit breakers.",
+      "scaling": "Syncs are incremental with checkpoints; webhooks are queued.",
+      "multiTenant": "Keys and connectors are tenant scope; the contract is shared.",
+      "geo": "Outbound calls go only to declared hosts; data residency follows Compliance.",
+      "failure": "A breaking change without a new version, a silent sync gap, an unsigned inbound webhook.",
+      "recovery": "Replay of a time window; dead letters resend from the console.",
+      "certification": "Every API change is compatible or a new version; every inbound webhook is signed.",
+      "migration": "Today's hand-written routes, the spec engine, the connect dispatcher and idempotency move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant X as Outside system\n    participant I as Integration\n    participant R as Registry\n    X->>I: inbound webhook\n    I->>I: verify signature\n    I->>R: map and validate\n    R-->>I: accepted\n    I-->>X: 200\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Mapping\n    Mapping --> Syncing\n    Syncing --> Monitoring\n    Monitoring --> [*]\n```",
+      "blueprint": "Build order for INT: (1) contract generation from the registry; (2) keys and OAuth clients; (3) connectors on today's spec engine; (4) sync, webhooks and dead letters; (5) replace hand-written routes per domain. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "INS": {
+      "concepts": "Insight Architecture owns every measurement of the platform and the business: a semantic layer of declared metrics and dimensions taken from the domains, reports, dashboards, alerts, forecasts and experiments, all from one definition per metric.",
+      "ontology": "A Metric declares a formula over kinds, a unit, an aggregation and an owner; Dimensions come from domains; a Report or Dashboard is a view over metrics and dimensions; an Alert watches a metric.",
+      "taxonomy": "Builders: report, pivot, dashboard, chart, map, funnel, cohort, retention, attribution, experiment. Intelligence: forecast, anomaly, segmentation, what-if.",
+      "dataModel": "```yaml\nMetric:\n  metricId: <Identity>\n  formula: <expression over kinds>\n  unit: <Unit | Value Unit>\n  aggregation: <sum | avg | count | declared>\n  owner: <Party>\n  preAggregations: [<declared>]\n```",
+      "graphModel": "(:Metric)-[:OVER]->(:Kind); (:Report)-[:SHOWS]->(:Metric); (:Report)-[:BY]->(:Dimension); (:Alert)-[:WATCHES]->(:Metric)",
+      "apis": [
+        "POST /ins.v1.metric",
+        "POST /ins.v1.query",
+        "POST /ins.v1.report",
+        "POST /ins.v1.alert",
+        "GET  /ins.v1/export/{report}"
+      ],
+      "commands": [
+        "metric.declare",
+        "report.build",
+        "alert.declare",
+        "experiment.start"
+      ],
+      "queries": [
+        "insight.query",
+        "report.render",
+        "forecast.of"
+      ],
+      "events": [
+        "MetricDeclared",
+        "AlertTriggered",
+        "ReportScheduled",
+        "ExperimentConcluded"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Declared\n    Declared --> Validated\n    Validated --> Published\n    Published --> [*]\n```",
+      "workflow": [
+        "declare metric → validate against the registry → build report or dashboard → schedule delivery through Notification → alert on threshold or anomaly"
+      ],
+      "authorities": [
+        "Each metric has an owner; the platform owner governs shared metrics."
+      ],
+      "permissions": [
+        "metric.declare (analyst role)",
+        "insight.query (row and column access from Security)",
+        "report.share (owner)"
+      ],
+      "privacy": "Sensitive values are masked or aggregated, and small groups are suppressed.",
+      "audit": "Every view and export of a report is recorded.",
+      "twin": "Insight is the platform's own twin of its business signals.",
+      "agent": "Agents answer questions through the semantic layer and show the query they ran.",
+      "runtime": "Queries run on a separate analytical store fed from the event log, so reporting never slows transactions.",
+      "scaling": "Pre-aggregations are declared per metric.",
+      "multiTenant": "Row access isolates tenants; platform reports aggregate across tenants by rule.",
+      "geo": "Maps use Geo shapes at any level; money converts through Value at dated rates.",
+      "failure": "Two definitions of one metric, a report leaking a small group, a stale analytical store.",
+      "recovery": "The analytical store rebuilds from the event log.",
+      "certification": "One definition per metric; every report respects row and column access.",
+      "migration": "Today's dashboards, experiments, planning forecasts and GOIP intelligence move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant U as User or agent\n    participant I as Insight\n    participant A as Analytical store\n    U->>I: question\n    I->>I: compose query from metrics\n    I->>A: execute with access filters\n    A-->>I: rows\n    I-->>U: answer and query\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Composing\n    Composing --> Executing\n    Executing --> Delivering\n    Delivering --> [*]\n```",
+      "blueprint": "Build order for INS: (1) semantic layer; (2) analytical store fed from events; (3) report and dashboard builders; (4) alerts and scheduled delivery; (5) migrate dashboards and experiments. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "MED": {
+      "concepts": "Content Architecture owns files and media for any entity: images, video, audio, documents, 3D and AR assets, with storage adapters, a CDN, transforms and malware scanning.",
+      "ontology": "A Media Asset is attached to a node, stored through an adapter, scanned, transformed into declared renditions and served through a CDN.",
+      "taxonomy": "By type: image, video, audio, document, 3D, AR, declared. By sensitivity: public / private / sensitive.",
+      "dataModel": "```yaml\nMediaAsset:\n  assetId: <Identity>\n  attachedTo: <node>\n  type: <declared type>\n  storage: <adapter binding>\n  renditions: [<declared rendition>]\n  sensitivity: <declared>\n  scan: <clean | quarantined>\n```",
+      "graphModel": "(:MediaAsset)-[:ATTACHED_TO]->(:Node); (:MediaAsset)-[:RENDITION]->(:MediaAsset)",
+      "apis": [
+        "POST /med.v1.upload",
+        "GET  /med.v1/{id}",
+        "POST /med.v1.transform",
+        "DELETE /med.v1/{id}"
+      ],
+      "commands": [
+        "asset.upload",
+        "asset.transform",
+        "asset.quarantine"
+      ],
+      "queries": [
+        "assets.of",
+        "asset.renditions"
+      ],
+      "events": [
+        "AssetUploaded",
+        "AssetScanned",
+        "AssetQuarantined"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Uploaded\n    Uploaded --> Scanned\n    Scanned --> Available\n    Available --> Archived\n    Archived --> [*]\n```",
+      "workflow": [
+        "upload → scan → transform into renditions → serve through CDN → archive per retention"
+      ],
+      "authorities": [
+        "The owner of the attached node governs its assets."
+      ],
+      "permissions": [
+        "asset.upload (node editor)",
+        "asset.read (per node access)"
+      ],
+      "privacy": "Sensitive assets are encrypted and served only to permitted viewers; retention follows Compliance.",
+      "audit": "Uploads, quarantines and deletions are recorded.",
+      "twin": "A content twin tracks storage use and CDN performance.",
+      "agent": "Agents may generate assets; generated assets are labelled.",
+      "runtime": "Uploads stream to the bound storage adapter; renditions are generated in the background.",
+      "scaling": "CDN caching per rendition.",
+      "multiTenant": "Assets are tenant scope.",
+      "geo": "Storage placement follows the node's residency rules.",
+      "failure": "Malware, an oversize upload, a broken rendition.",
+      "recovery": "Renditions regenerate from the original.",
+      "certification": "No asset is served before it is scanned.",
+      "migration": "Today's product media and review uploads move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant U as User\n    participant C as Content\n    participant S as Scanner\n    U->>C: upload\n    C->>S: scan\n    S-->>C: clean\n    C-->>U: asset id\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Scanning\n    Scanning --> Transforming\n    Transforming --> Serving\n    Serving --> [*]\n```",
+      "blueprint": "Build order for MED: (1) asset store behind adapters; (2) scanning; (3) renditions and CDN; (4) migrate today's media. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "OFG": {
+      "concepts": "Offering Architecture owns everything LUXORA sells and on what terms: an offering on every option (free, paid, metered, trial, included), plans, subscriptions, metering, the platform's own invoices, licences and the publishing of domain catalogues and packages to other platforms.",
+      "ontology": "An Offering attaches terms to an option; a Plan bundles offerings; a Licence grants a subscriber a view; metering counts usage from events against quotas.",
+      "taxonomy": "Terms: free / paid / metered / trial / included. Options: sign-in methods, connectors, agents, themes, packages, domain catalogues and their hierarchies, depth and regions, update feeds, API usage, seats, any declared.",
+      "dataModel": "```yaml\nOffering:\n  offeringId: <Identity>\n  option: <node of any domain>\n  terms: <free | paid | metered | trial | included>\n  charge: {amount, valueUnit} | null\n  quota: <declared> | null\n  plans: [<Plan>]\n```",
+      "graphModel": "(:Offering)-[:FOR]->(:Option); (:Plan)-[:INCLUDES]->(:Offering); (:Licence)-[:GRANTS]->(:View); (:Subscriber)-[:HOLDS]->(:Licence)",
+      "apis": [
+        "POST /ofg.v1.offering",
+        "POST /ofg.v1.plan",
+        "POST /ofg.v1.subscribe",
+        "GET  /ofg.v1/bill-preview",
+        "POST /ofg.v1.publish"
+      ],
+      "commands": [
+        "offering.declare",
+        "plan.declare",
+        "subscription.start",
+        "catalogue.publish"
+      ],
+      "queries": [
+        "bill.preview",
+        "usage.of",
+        "licences.of"
+      ],
+      "events": [
+        "SubscriptionStarted",
+        "UsageMetered",
+        "QuotaExceeded",
+        "InvoiceIssued",
+        "CataloguePublished"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Draft\n    Draft --> Published\n    Published --> Retired\n    Retired --> [*]\n```",
+      "workflow": [
+        "declare offerings on options → bundle into plans → subscriber selects → metering from events → invoice → licence bounds what is readable"
+      ],
+      "authorities": [
+        "The platform owner governs offerings, plans and publishing."
+      ],
+      "permissions": [
+        "offering.declare (platform)",
+        "subscription.start (tenant owner)",
+        "bill.read (tenant owner)"
+      ],
+      "privacy": "Billing contacts are personal data handled under Compliance.",
+      "audit": "Every price change, subscription and invoice is recorded.",
+      "twin": "A revenue twin tracks usage against quotas and plans.",
+      "agent": "Agents may recommend plans; changing a subscription follows approval rules.",
+      "runtime": "Quotas are enforced by Integration; usage is metered from the event log.",
+      "scaling": "Metering aggregates per period.",
+      "multiTenant": "Each tenant's subscription is isolated; publishing reaches other platforms through licences.",
+      "geo": "Prices are in any value unit; tax on the platform's invoices comes from Rule.",
+      "failure": "An option with no offering, a quota not enforced, a licence wider than paid.",
+      "recovery": "Invoices are immutable; corrections are credit notes.",
+      "certification": "Every option shown in a setup flow has an offering.",
+      "migration": "Today's platform billing, module catalogue and capability marketplace move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant T as Tenant\n    participant O as Offering\n    participant I as Integration\n    T->>O: select options\n    O-->>T: bill preview\n    T->>O: subscribe\n    O->>I: quotas and licence\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Offering\n    Offering --> Subscribing\n    Subscribing --> Metering\n    Metering --> [*]\n```",
+      "blueprint": "Build order for OFG: (1) offerings on options; (2) plans and subscriptions; (3) metering and quotas; (4) platform invoices; (5) licences and publishing; (6) migrate billing and the module catalogue. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "PKG": {
+      "concepts": "Package Architecture owns ready-made, editable compositions of domains: the entities a kind of platform needs (mandatory and optional), their relationships, starting selections, workflows, templates and subscriptions, screens, agents, reports, connectors, a blueprint and offerings. Customisation is an overlay that survives upgrades.",
+      "ontology": "A Package composes Entities (mandatory or optional) and declarations from every domain, includes other packages, and carries a Blueprint; an Overlay records a platform's changes on an installed package version.",
+      "taxonomy": "Packages: Commerce, Marketplace, Quick commerce, Appointments, Mobility, Operations, Financial services, Marketing, any built. Parts: entities, relationships, selections, workflows, templates, subscriptions, screens, agents, reports, connectors, blueprint, offerings.",
+      "dataModel": "```yaml\nPackage:\n  packageId: <Identity>\n  version: <semantic version>\n  includes: [<Package>]\n  entities: [{kind, mandatory}]\n  parts: [<declaration>]\n  blueprint: <Blueprint>\n  offerings: [<Offering>]\n```",
+      "graphModel": "(:Package)-[:INCLUDES]->(:Package); (:Package)-[:COMPOSES]->(:Kind); (:Platform)-[:INSTALLED {version}]->(:Package); (:Overlay)-[:ON]->(:Installation)",
+      "apis": [
+        "POST /pkg.v1.package",
+        "POST /pkg.v1.install",
+        "POST /pkg.v1.upgrade",
+        "GET  /pkg.v1/overlay/{installation}",
+        "POST /pkg.v1.save-as"
+      ],
+      "commands": [
+        "package.build",
+        "package.install",
+        "package.upgrade",
+        "overlay.resolve",
+        "package.saveAs"
+      ],
+      "queries": [
+        "package.contents",
+        "installation.conflicts",
+        "blueprint.questions"
+      ],
+      "events": [
+        "PackageInstalled",
+        "PackageUpgraded",
+        "OverlayConflict",
+        "PackagePublished"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Built\n    Built --> Published\n    Published --> Installed\n    Installed --> Upgraded\n    Upgraded --> [*]\n```",
+      "workflow": [
+        "install package → answer its blueprint → customise through the overlay → on upgrade re-apply the overlay and resolve conflicts"
+      ],
+      "authorities": [
+        "A package's publisher governs its versions; the installing platform governs its overlay."
+      ],
+      "permissions": [
+        "package.build (builder role)",
+        "package.install (platform owner)",
+        "overlay.edit (platform owner)"
+      ],
+      "privacy": "Packages carry declarations, never personal data.",
+      "audit": "Installs, upgrades and overlay changes are recorded.",
+      "twin": "An installation twin shows drift between an overlay and the package.",
+      "agent": "An agent walks a package's blueprint through the API, like a person with the manual.",
+      "runtime": "Installing merges shared entities instead of duplicating them; mandatory entities can be extended or hidden but not removed.",
+      "scaling": "Packages are versioned bundles.",
+      "multiTenant": "Packages are published master data; overlays are per platform or store.",
+      "geo": "A blueprint's place question answers from Geo; everything place-dependent is inherited.",
+      "failure": "An overlay conflict on upgrade, removing a mandatory entity, two packages duplicating a shared entity.",
+      "recovery": "Upgrades roll back to the previous package version with the overlay intact.",
+      "certification": "Every package's mandatory entities exist and its blueprint answers resolve to owning domains.",
+      "migration": "Today's deploy modes, capability blends and composition engine move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant O as Operator\n    participant P as Package\n    participant R as Registry\n    O->>P: install(Commerce)\n    P->>R: compose declarations\n    P-->>O: blueprint questions\n    O->>P: answers\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Installing\n    Installing --> Configuring\n    Configuring --> Upgrading\n    Upgrading --> [*]\n```",
+      "blueprint": "Build order for PKG: (1) package declarations and composition; (2) install with shared-entity merge; (3) overlays and upgrades; (4) the package builder; (5) first packages from today's platform kinds. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    },
+    "PTY": {
+      "concepts": "Party Architecture owns everyone and everything that acts: platforms, tenants and their hierarchy (organisation, business unit, brand, store, channel), organisations, people, agents and providers, and the roles they play. A customer or a seller is a party in a role, never a separate copy.",
+      "ontology": "A Party has an Identity, a kind, a place in the tenancy hierarchy and any number of Roles, each held in a Context (a store, a channel, a place) for a validity window.",
+      "taxonomy": "Kinds: platform, tenant, organisation, business unit, brand, store, channel, person, agent, provider, any declared. Roles: customer, seller, staff, carrier, partner, any declared.",
+      "dataModel": "```yaml\nParty:\n  partyId: <Identity>\n  kind: <declared kind>\n  parent: <Party> | null\n  roles: [{role, context, validFrom, validTo}]\n  temporal: {validFrom, validTo, recordedAt}\n```",
+      "graphModel": "(:Party)-[:WITHIN]->(:Party); (:Party)-[:PLAYS {context}]->(:Role); (:Party)-[:IDENTIFIED_BY]->(:Identity)",
+      "apis": [
+        "POST /pty.v1.party",
+        "GET  /pty.v1/{id}",
+        "POST /pty.v1.role",
+        "GET  /pty.v1/{id}/roles"
+      ],
+      "commands": [
+        "party.register",
+        "party.move",
+        "role.assign",
+        "role.end"
+      ],
+      "queries": [
+        "party.ancestors",
+        "party.roles",
+        "parties.inRole"
+      ],
+      "events": [
+        "PartyRegistered",
+        "RoleAssigned",
+        "RoleEnded",
+        "PartyMoved"
+      ],
+      "stateMachine": "```mermaid\nstateDiagram-v2\n    [*] --> Registered\n    Registered --> Active\n    Active --> Suspended\n    Suspended --> Closed\n    Closed --> [*]\n```",
+      "workflow": [
+        "register party → place in the hierarchy → assign roles in contexts → act through its roles"
+      ],
+      "authorities": [
+        "The platform owner governs platforms and tenants; a tenant governs its own hierarchy and roles."
+      ],
+      "permissions": [
+        "party.register (scope owner)",
+        "role.assign (role administrator)",
+        "party.read (by view)"
+      ],
+      "privacy": "People are parties with personal data; it is declared sensitive and handled under Compliance.",
+      "audit": "Registrations, moves and role changes are recorded.",
+      "twin": "A party twin shows a party's roles and activity across contexts.",
+      "agent": "An agent is a party with its own roles; it acts only within them.",
+      "runtime": "Role checks resolve the party's roles in the current context through the resolver.",
+      "scaling": "The hierarchy is read by ancestor path; roles are indexed by context.",
+      "multiTenant": "Each tenant's parties are isolated; platform parties bound tenant parties.",
+      "geo": "A party relates to the places it serves; its place-dependent settings are inherited.",
+      "failure": "A customer copied per store, a role without a context, a cycle in the hierarchy.",
+      "recovery": "Parties are never deleted outright; they close and keep their history.",
+      "certification": "One party per real actor; roles carry their context and validity.",
+      "migration": "Today's tenancy hierarchy, users and staff move here.",
+      "sequence": "```mermaid\nsequenceDiagram\n    participant O as Operator\n    participant P as Party\n    O->>P: register(party, parent)\n    O->>P: assign(role, context)\n    P-->>O: party with roles\n```",
+      "state": "```mermaid\nstateDiagram-v2\n    [*] --> Registering\n    Registering --> Assigning\n    Assigning --> Acting\n    Acting --> [*]\n```",
+      "blueprint": "Build order for PTY: (1) party kinds and the hierarchy; (2) roles in contexts; (3) migrate the tenancy hierarchy, users and staff; (4) tests that a customer is one party across stores. Every build step also inherits Kernel parts K1–K11 (kinds, nodes, hierarchies, identifiers, shape, attributes, versions, events, change lifecycle, views and scope, resolution)."
+    }
+  }
+}

@@ -1,8 +1,8 @@
 /* LUXORA · Universal console design system.
    --------------------------------------------------------------------------
    One stylesheet serves the store console (admin.html) and the platform console
-   (platform.html). The goal is the dense, professional feel of the Amazon / AWS
-   consoles: a light canvas, a quiet but present sidebar, tabular data that breathes,
+   (platform.html). The goal is the dense, professional feel of large cloud
+   operations consoles: a light canvas, a quiet but present sidebar, tabular data that breathes,
    and controls that are comfortable on a 27" display AND on a phone with a thumb.
 
    Design tokens are CSS custom properties so a theme (lib/themes.js) can re-skin the

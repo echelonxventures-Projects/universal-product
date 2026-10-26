@@ -38,6 +38,14 @@ LX_BACKUP_PASSPHRASE=… node scripts/backup.js --db /path/to/luxora.db --out /b
 - With `LX_BACKUP_PASSPHRASE` the snapshot is written as AES-256-GCM (`luxora.db.enc`, scrypt
   key derivation). Without it the backup is plaintext and the tool says so.
 - `backups/` is git- and docker-ignored.
+- `--keep N` (or `LX_BACKUP_KEEP`) keeps the newest N sets in the output directory; without it
+  nothing is deleted. Only sets this tool wrote are ever pruned.
+- `--upload` (or any `LX_BACKUP_S3_BUCKET`) copies each set to S3-compatible storage
+  (`LX_BACKUP_S3_ACCESS`, `_SECRET`, `_REGION`, `_ENDPOINT`, `_PREFIX`). Only encrypted sets are
+  uploaded unless `LX_BACKUP_ALLOW_PLAINTEXT_UPLOAD=1`; an upload failure exits non-zero.
+- The last line of output is JSON (`ok`, `backup`, `uploaded`, `kept`, `pruned`) for a timer or
+  cron job. `systemd/luxora-backup.{service,timer}` runs it nightly with `--keep 14` semantics and
+  reads the passphrase and S3 credentials from `/etc/luxora/backup.env`.
 
 ### Schedule and retention (recommended — to be confirmed by the owner)
 
@@ -72,7 +80,10 @@ against the payment provider's records and order notification mail.
 LX_BACKUP_PASSPHRASE=… node scripts/restore.js /backups/luxora-<stamp> --verify-only
 # 2. stop the application (it must not hold the database open)
 docker compose stop luxora
-# 3. restore into place — refuses to overwrite unless --force; removes the old -wal/-shm
+# 3. see the plan (verifies everything, changes nothing), then restore into place — refuses to
+#    overwrite unless --force, and refuses while a serve.sh server's pid file is live. The current
+#    database and its -wal/-shm are moved aside to <db>.pre-restore-<stamp>, never deleted.
+LX_BACKUP_PASSPHRASE=… node scripts/restore.js /backups/luxora-<stamp> --to /path/to/luxora.db --force --dry-run
 LX_BACKUP_PASSPHRASE=… node scripts/restore.js /backups/luxora-<stamp> --to /path/to/luxora.db --force
 # 4. start, with the SAME LUXORA_MASTER_KEY / LUXORA_PEPPER (or the same master.json)
 docker compose start luxora
@@ -83,6 +94,11 @@ curl -fsS https://<host>/readyz
 manifest, the passphrase is wrong or the ciphertext was altered (GCM authentication), the
 decrypted data's checksum differs, `integrity_check` fails, or any table's row count differs
 from the manifest.
+
+A set written by the earlier tool (a `files` checksum map, possibly with `master.json` /
+`registry.json` beside the database) still restores: its database is checksummed and integrity-
+checked, and any key files in it are reported and **left unrestored** — keys come back only from
+the secret store, by the procedure above.
 
 ## Restore drill
 
@@ -96,8 +112,9 @@ Run monthly and after every change to the backup job, on a machine that is **not
 5. Record the date, backup stamp, row counts and time taken.
 
 CI runs a backup and a restore of the boot-smoke database on every push
-(`.github/workflows/ci.yml`), and `test/production.js` covers live backup, encryption, wrong
-passphrase, tampering and no-overwrite.
+(`.github/workflows/ci.yml`); `test/production.js` covers live backup, encryption, wrong
+passphrase, tampering and no-overwrite, and `test/backup.js` the CLI end to end: retention,
+dry run, the replaced file kept aside, no keyring in any set, no plaintext upload, older sets.
 
 ## Disk-full behaviour (measured)
 

@@ -11,8 +11,9 @@ RUN npm ci --omit=dev && npm cache clean --force
 
 COPY . .
 
-# Runs as the image's unprivileged `node` user. The code stays root-owned and read-only to
-# it; the only writable places are
+# Runs as the image's unprivileged `node` user, never root: a compromise of the process
+# cannot rewrite the code or the system. The code stays root-owned and read-only to it; the
+# only writable places are
 #   /app/data      the database, the keyring (master.json), the registry seal key
 #                  (registry.json), TLS material and exports — mount a volume, or every
 #                  redeploy loses the ability to decrypt secrets and verify the seal

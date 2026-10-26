@@ -394,7 +394,7 @@ const raw = (text) => new Promise((resolve) => {
       const fin = require(path.join(__dirname, "..", "lib", "fin.js"));
       const rec = require(path.join(__dirname, "..", "lib", "recurring.js"));
       const throwsLike = (fn, re) => { try { fn(); return false; } catch (e) { return re.test(e.message); } };
-      ok(throwsLike(() => rec.subscribeMembership(1, "t1:u:8888", "prime"), /Insufficient/), "a paid membership needs wallet funds");
+      ok(throwsLike(() => rec.subscribeMembership(1, "t1:u:8888", "premier"), /Insufficient/), "a paid membership needs wallet funds");
       /* a payout disburses once */
       const pid = D.run("INSERT INTO payouts(tenant_id,ref,seller_id,kind,period,gross,fee,net,currency,status) VALUES(1,'PO-SEC',1,'seller','2026-10',10,0,10,'USD','open')").lastInsertRowid;
       fin.disbursePayout(1, Number(pid));
@@ -527,7 +527,9 @@ const raw = (text) => new Promise((resolve) => {
       ok(fin.simulatedAllowed() === true, "outside production the sandbox rails still work");
     }
   } catch (e) {
-    failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e));
+    failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e) + (e && e.cause ? "\n    cause: " + (e.cause.stack || e.cause) : ""));
+    /* what the server said before it went away */
+    console.log(stderr.split("\n").filter(l => l && !/ExperimentalWarning|trace-warnings/.test(l)).slice(-25).join("\n"));
   } finally {
     srv.kill();
     await sleep(300);

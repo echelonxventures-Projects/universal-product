@@ -292,18 +292,18 @@ resolves nowhere is a gap the platform measures rather than ignores.
 
 ## Five Compositions
 ```text
-Amazon-like Solution = Identity + Product + Catalog + Inventory + Pricing + Offer
+General-marketplace Solution = Identity + Product + Catalog + Inventory + Pricing + Offer
 + Cart + Order + Payment + Logistics + Review + Recommendation + Analytics
 
-Uber-like Solution = Identity + Geo + Dispatch + Routing + Matching
+Ride-hailing Solution = Identity + Geo + Dispatch + Routing + Matching
 + Dynamic Pricing + Payment + Rating + Tracking
 
-Netflix-like Solution = Identity + Subscription + Media + Streaming
+Video-on-demand Solution = Identity + Subscription + Media + Streaming
 + Recommendation + Billing + Analytics
 
-Salesforce-like Solution = Identity + CRM + Workflow + Analytics + AI + Communication
+CRM-platform Solution = Identity + CRM + Workflow + Analytics + AI + Communication
 
-SAP-like Solution = Identity + ERP + Finance + Procurement + Inventory
+ERP-platform Solution = Identity + ERP + Finance + Procurement + Inventory
 + Manufacturing + Workforce + Analytics
 ```
 

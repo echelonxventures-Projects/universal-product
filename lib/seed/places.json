@@ -1,0 +1,299 @@
+{
+  "$comment": "Geo's declarations on the kernel (lib/places.js). The place kind, the place tree and its identifier schemes are data: a new level (a planet, an ocean, a district, a shelf) is a node of this kind or a new kind, never code. Every write to a country or subdivision goes to the kernel first, in the same transaction as its master row; the boot pass only imports rows the kernel has never seen. A place's currency and locale are not facts of the place: they are settings owned by Value and Expression, assigned at the place's node and answered by the resolver; `column` names the field a write carries them in, and the legacy column an import reads them from on an install that predates the place tree; master.retiredColumns are dropped from the country table once their values are on the kernel. Places above and beside the countries are declared here too (`declared`): bodies such as a planet, a moon, a galaxy or a network realm head their own place system (its levels, its coordinate system, its calendar as Time's setting at the place), and every place has a path identifier (place-path) — its parent's path and its own segment — by which the offer engine scopes an exchange to a place and everything in it. A declared entry with a `code` names the path of an existing country or subdivision. Countries sit under master.countryParent.",
+  "namespace": "platform",
+  "kind": {
+    "kind": "place",
+    "owner": "Geo",
+    "label": "Place",
+    "root": true,
+    "shape": true,
+    "parents": [
+      "place"
+    ],
+    "schemes": [
+      "iso3166-1",
+      "iso3166-2",
+      "place-path"
+    ],
+    "attributes": [
+      {
+        "key": "name",
+        "type": "text",
+        "required": true,
+        "label": "Name"
+      },
+      {
+        "key": "level",
+        "type": "text",
+        "label": "What this level is called"
+      },
+      {
+        "key": "system",
+        "type": "text",
+        "label": "The place system this place heads (its levels, coordinates and calendar)"
+      },
+      {
+        "key": "levels",
+        "type": "list",
+        "label": "What each level below is called"
+      },
+      {
+        "key": "coordinate",
+        "type": "text",
+        "label": "Coordinate system"
+      }
+    ]
+  },
+  "hierarchy": {
+    "hierarchy": "places",
+    "owner": "Geo",
+    "label": "The place tree"
+  },
+  "master": {
+    "table": "countries",
+    "countryScheme": "iso3166-1",
+    "subdivisionScheme": "iso3166-2",
+    "countryLevel": "country",
+    "actor": "geo",
+    "importActor": "geo.import",
+    "currencySetting": "value.currency",
+    "retiredColumns": [
+      "currency",
+      "symbol",
+      "locale",
+      "decimals",
+      "tax_mode",
+      "tax_rate"
+    ],
+    "pathScheme": "place-path",
+    "countryParent": "earth",
+    "declaredSystem": "declared",
+    "calendarSetting": "time.calendar",
+    "legacyPathList": "goipSpatialNodes"
+  },
+  "settings": [
+    {
+      "name": "value.currency",
+      "owner": "Value",
+      "type": "text",
+      "label": "Currency in use",
+      "column": "currency"
+    },
+    {
+      "name": "expression.locale",
+      "owner": "Expression",
+      "type": "text",
+      "label": "Locale",
+      "column": "locale"
+    }
+  ],
+  "placeSettings": [
+    {
+      "name": "time.calendar",
+      "owner": "Time",
+      "type": "text",
+      "label": "Calendar"
+    }
+  ],
+  "coordinateSystems": [
+    {
+      "system": "wgs84",
+      "label": "WGS-84 geodetic",
+      "axes": [
+        {
+          "key": "lat",
+          "min": -90,
+          "max": 90,
+          "unit": "degree"
+        },
+        {
+          "key": "lon",
+          "min": -180,
+          "max": 180,
+          "wrap": true,
+          "unit": "degree"
+        },
+        {
+          "key": "alt",
+          "unit": "metre"
+        }
+      ]
+    },
+    {
+      "system": "mars_areographic",
+      "label": "Areographic",
+      "axes": [
+        {
+          "key": "lat",
+          "min": -90,
+          "max": 90,
+          "unit": "degree"
+        },
+        {
+          "key": "lon",
+          "min": 0,
+          "max": 360,
+          "wrap": true,
+          "unit": "degree"
+        },
+        {
+          "key": "elev",
+          "unit": "metre"
+        }
+      ]
+    },
+    {
+      "system": "lunar_selenographic",
+      "label": "Selenographic",
+      "axes": [
+        {
+          "key": "lat",
+          "min": -90,
+          "max": 90,
+          "unit": "degree"
+        },
+        {
+          "key": "lon",
+          "min": -180,
+          "max": 180,
+          "wrap": true,
+          "unit": "degree"
+        },
+        {
+          "key": "elev",
+          "unit": "metre"
+        }
+      ]
+    },
+    {
+      "system": "galactic_polar",
+      "label": "Galactic polar",
+      "axes": [
+        {
+          "key": "l",
+          "min": 0,
+          "max": 360,
+          "wrap": true,
+          "unit": "degree"
+        },
+        {
+          "key": "b",
+          "min": -90,
+          "max": 90,
+          "unit": "degree"
+        },
+        {
+          "key": "r",
+          "unit": "parsec"
+        }
+      ]
+    }
+  ],
+  "declared": [
+    {
+      "path": "earth",
+      "name": "Earth",
+      "level": "planet",
+      "system": "earth_admin",
+      "levels": [
+        "planet",
+        "country",
+        "region",
+        "city",
+        "district"
+      ],
+      "coordinate": "wgs84",
+      "settings": {
+        "time.calendar": "gregorian"
+      }
+    },
+    {
+      "path": "earth.in.bihar",
+      "code": "IN-BR"
+    },
+    {
+      "path": "earth.in.bihar.patna",
+      "name": "Patna",
+      "level": "city"
+    },
+    {
+      "path": "mars",
+      "name": "Mars",
+      "level": "planet",
+      "system": "mars_admin",
+      "levels": [
+        "planet",
+        "territory",
+        "sector",
+        "habitat"
+      ],
+      "coordinate": "mars_areographic",
+      "settings": {
+        "time.calendar": "mars_darian"
+      }
+    },
+    {
+      "path": "mars.olympus",
+      "name": "Olympus Territory",
+      "level": "territory"
+    },
+    {
+      "path": "mars.olympus.sector-7",
+      "name": "Sector-7",
+      "level": "sector"
+    },
+    {
+      "path": "moon",
+      "name": "Moon",
+      "level": "body",
+      "system": "lunar_admin",
+      "levels": [
+        "body",
+        "colony",
+        "dome",
+        "bay"
+      ],
+      "coordinate": "lunar_selenographic",
+      "settings": {
+        "time.calendar": "lunar"
+      }
+    },
+    {
+      "path": "moon.alpha",
+      "name": "Colony Alpha",
+      "level": "colony"
+    },
+    {
+      "path": "galaxy-7",
+      "name": "Galaxy-7",
+      "level": "galaxy",
+      "system": "galactic",
+      "levels": [
+        "galaxy",
+        "zone",
+        "system",
+        "station"
+      ],
+      "coordinate": "galactic_polar",
+      "settings": {
+        "time.calendar": "federation"
+      }
+    },
+    {
+      "path": "galaxy-7.zone-22",
+      "name": "Zone-22",
+      "level": "zone"
+    },
+    {
+      "path": "virtual",
+      "name": "Virtual realm",
+      "level": "realm",
+      "system": "network",
+      "levels": [
+        "realm",
+        "shard",
+        "room"
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # MEMORY.md — project facts
 
-## Project: LUXORA (workspace `/Users/bipin/Desktop/Desktop-10-Sept-26/Amazon`)
+## Project: LUXORA (workspace `<workspace>`)
 
 Universal white-label multi-tenant commerce platform. **Zero runtime dependencies** — Node ≥ 22.5 with
 `node:http` / `node:sqlite` / `node:crypto` only, plus vanilla-JS frontends. The guiding principle is
@@ -138,7 +138,7 @@ no store-console UI — the gate was readable but had no consequence. Closed wit
   grant/revoke modal (read/list/sell/none per tenant).
 - **Suite: 620 E2E + 921 audit assertions, all green** (58 new global-catalog checks).
 
-### 2026-09-28 (later) — console design system rebuilt (Amazon/AWS caliber, touch-first)
+### 2026-09-28 (later) — console design system rebuilt (large cloud-console caliber, touch-first)
 Both consoles were described as "pathetic and cheap". Root causes found by auditing the
 CSS: the old `portal.css` was a dark gold-on-black theme, several view classes were
 **completely unstyled** (`p-sub`, `p-head`, `p-code`, `p-err`, `p-stats`, all `a-*`), the
@@ -271,8 +271,8 @@ surfaced two defects when the generic form's SAVE path (not just render) was wal
 - **Suite: 659 E2E + 828 audit, 0 failures** (13 new store-console assertions).
 
 ### 2026-09-29 (session 2) — the six-platform parity layer is now real, and 14 of its writes were broken
-The uncommitted "Universal Commerce Parity Layer" (Amazon · Flipkart · Zepto · Blinkit ·
-Paytm · Alibaba) shipped five engines + 40 tables + 46 registries, but it had **no test at
+The uncommitted "Universal Commerce Parity Layer" (general marketplace · regional marketplace · two quick-commerce apps ·
+payments super app · B2B wholesale) shipped five engines + 40 tables + 46 registries, but it had **no test at
 all** and was never wired into `npm test`. `test/parity.js` (new, 191 assertions) proved the
 engines work and, in proving them, found **14 real defects** — the kind that only appear when
 a write path is actually walked:
@@ -353,18 +353,18 @@ Resumed on the uncommitted parity work. The memory above claimed "659 + 191, 0 f
   is the authoritative "is it running" check, not pgrep.**
 
 ### 2026-09-29 (session 4) — no vendor name is a definition; the platform is configured, never templated
-Reviewing the parity layer, the owner's standing rule was violated: **Amazon · Flipkart · Zepto ·
-Blinkit · Paytm · Alibaba were baked into the code as definitions** — 62 occurrences across
+Reviewing the parity layer, the owner's standing rule was violated: **six named marketplace, quick-commerce,
+payments and wholesale brands were baked into the code as definitions** — 62 occurrences across
 `lib/*.js` and `test/parity.js`. An audit proved NONE was in an identifier, key, table or branch;
-all of it was in comments and in the *seeded descriptions an operator reads* ("Amazon-style account
-health", "the composition an Alibaba-style operator would recognise"). The two remaining hits are
-legitimate third-party *integrations* (the `paytm` payment gateway in providers.js, the S3 endpoint
+all of it was in comments and in the *seeded descriptions an operator reads* ("<brand>-style account
+health", "the composition a <brand>-style operator would recognise"). The two remaining hits are
+legitimate third-party *integrations* (a wallet payment gateway in providers.js — since removed as a shipped connector, the S3 endpoint
 in adapters.js) — those are external services the platform connects to, not branding the platform
 defines. Closed in one pass:
 
 - **Every definition de-vendored.** The catalog now describes what a capability does, never whose
   it is; the test header/banner reframed from "six-platform parity" to "the configurable platform",
-  and `parity.js` now *asserts* the invariant (`/amazon|flipkart|zepto|blinkit|paytm|alibaba/i` must
+  and `parity.js` now *asserts* the invariant (now a hashed word list, scripts/white-label.js, must
   not match any served label or description) so it cannot creep back. Key names were already clean
   (`buy_box`, `blend_marketplace`, `qcStoreKinds`).
 - **The catalog is now a revisioned, self-healing row set.** `seed()` stamps `cap_v2`; a row nobody
@@ -965,11 +965,11 @@ Universe, AI & Agentic Intelligence Universe…), so they are naming shorthand, 
 gaps. Declaring them would have DUPLICATED existing universes, violating the corpora's own
 zero-duplication rule — §13's Review/Rating/Matching were declared precisely because no corpus
 had them. **The vendor names in the five compositions stay**: they are the document's own
-illustrative equations, exactly like Omega's "Amazon, Uber, Netflix… become configurations of one
-platform" and "Salesforce-class CRM"; the owner's de-vendoring rule governs the platform's own
+illustrative equations, exactly like Omega's "<marketplace>, <ride-hailing>, <streaming>… become configurations of one
+platform" and "<vendor>-class CRM"; the owner's de-vendoring rule governs the platform's own
 definitions (the capability catalog, `parity.js:563`), not the corpora quoting real platforms.
-(Pre-existing, untouched, worth knowing: Omega's "Salesforce-class CRM" row reduces through
-`cleanName` to a universe literally named "Salesforce" — the only vendor-named universe in the
+(Pre-existing, untouched, worth knowing: Omega's "<vendor>-class CRM" row reduces through
+`cleanName` to a universe literally named after the vendor (since reworded to "Sales and service CRM") — the only vendor-named universe in the
 registry, from a committed corpus, out of scope here.)
 
 **Live proof (8787, restarted twice)**: healthz green; after the fix `declared` = 2,828 and the

@@ -1,0 +1,10112 @@
+{
+ "ENTITY_DEFS": {
+  "country": {
+   "table": "countries",
+   "noTenant": true,
+   "pk": "code",
+   "pkType": "text",
+   "label": "Countries",
+   "icon": "🌍",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "code",
+     "label": "Code",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "upper": true,
+     "pattern": "^[A-Z]{2}$",
+     "patternHint": "two letters (ISO 3166-1 alpha-2)"
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "upper": true,
+     "pattern": "^[A-Z][A-Z0-9_]{1,31}$",
+     "patternHint": "capital letters, digits and _ (an ISO 4217 code, or any unit's own)",
+     "stored": false
+    },
+    {
+     "key": "symbol",
+     "label": "Symbol (of a new currency)",
+     "type": "text",
+     "list": true,
+     "stored": false,
+     "createOnly": true
+    },
+    {
+     "key": "locale",
+     "label": "Locale",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "format": "locale",
+     "stored": false
+    },
+    {
+     "key": "decimals",
+     "label": "Decimals (of a new currency)",
+     "type": "number",
+     "list": true,
+     "stored": false,
+     "createOnly": true
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ],
+   "writer": "places"
+  },
+  "subdivision": {
+   "table": "subdivisions",
+   "noTenant": true,
+   "pk": "code",
+   "pkType": "text",
+   "label": "States / Provinces",
+   "icon": "🗺️",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "code",
+     "label": "Code",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "upper": true
+    },
+    {
+     "key": "country_code",
+     "label": "Country",
+     "type": "ref:country",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "level",
+     "label": "Level",
+     "type": "text",
+     "list": true,
+     "hint": "state / province / region / county / prefecture / emirate / territory / district"
+    },
+    {
+     "key": "parent_id",
+     "label": "Parent Division",
+     "type": "ref:subdivision",
+     "hint": "blank = directly under the country; the tree is unbounded (state → province → district)"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool",
+     "list": true
+    }
+   ],
+   "writer": "places"
+  },
+  "currency": {
+   "table": "currencies",
+   "noTenant": true,
+   "pk": "code",
+   "pkType": "text",
+   "label": "Currencies",
+   "icon": "💱",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "code",
+     "label": "Code",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "upper": true,
+     "pattern": "^[A-Z][A-Z0-9_]{1,31}$",
+     "patternHint": "capital letters, digits and _ (an ISO 4217 code, or any unit's own)"
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "symbol",
+     "label": "Symbol",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "decimals",
+     "label": "Decimals",
+     "type": "number",
+     "required": true,
+     "list": true,
+     "min": 0,
+     "max": 4
+    },
+    {
+     "key": "usd",
+     "label": "Value in USD (1 unit = x USD; 0 = no exchange value)",
+     "type": "number",
+     "required": true,
+     "list": true,
+     "min": 0
+    },
+    {
+     "key": "class",
+     "label": "Class",
+     "type": "select",
+     "options": "valueClasses",
+     "list": true
+    },
+    {
+     "key": "settleable",
+     "label": "Can be paid out",
+     "type": "bool"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool"
+    }
+   ]
+  },
+  "module": {
+   "table": "modules",
+   "noTenant": true,
+   "pk": "id",
+   "pkType": "text",
+   "label": "Marketplace Modules",
+   "icon": "🧩",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "upper": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "category",
+     "label": "Category",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "summary",
+     "label": "Summary",
+     "type": "textarea"
+    },
+    {
+     "key": "price_type",
+     "label": "Price type",
+     "type": "select",
+     "options": [
+      "free",
+      "one_time",
+      "monthly"
+     ]
+    },
+    {
+     "key": "price",
+     "label": "Price (USD)",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "version",
+     "label": "Version",
+     "type": "text"
+    },
+    {
+     "key": "vendor",
+     "label": "Vendor",
+     "type": "text"
+    },
+    {
+     "key": "manifest",
+     "label": "Manifest",
+     "type": "json"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "active",
+      "retired"
+     ],
+     "display": "badge"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "tenant_module": {
+   "table": "tenant_modules",
+   "noTenant": true,
+   "pk": "module_id",
+   "pk2": "tenant_id",
+   "pkType": "text",
+   "composite": true,
+   "label": "Module Installs",
+   "icon": "🔌",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "module_id",
+     "label": "Module",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "tenant_id",
+     "label": "Store",
+     "type": "ref:tenant",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "installed",
+      "disabled"
+     ],
+     "display": "badge"
+    },
+    {
+     "key": "config",
+     "label": "Config",
+     "type": "json"
+    }
+   ]
+  },
+  "dashboard": {
+   "table": "dashboards",
+   "pk": "id",
+   "label": "Dashboards",
+   "icon": "📊",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin",
+     "platform"
+    ]
+   },
+   "fields": [
+    {
+     "key": "key",
+     "label": "Key",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "type",
+     "label": "Type",
+     "type": "select",
+     "options": "dashboardTypes",
+     "list": true
+    },
+    {
+     "key": "audience",
+     "label": "Audience",
+     "type": "select",
+     "options": [
+      "admin",
+      "platform",
+      "all"
+     ],
+     "list": true
+    },
+    {
+     "key": "description",
+     "label": "Description",
+     "type": "textarea"
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "dashboard_widget": {
+   "table": "dashboard_widgets",
+   "pk": "id",
+   "label": "Dashboard Widgets",
+   "icon": "🧩",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin",
+     "platform"
+    ]
+   },
+   "fields": [
+    {
+     "key": "dashboard_id",
+     "label": "Dashboard",
+     "type": "number",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Visualization",
+     "type": "select",
+     "options": [
+      "kpi",
+      "table",
+      "bar",
+      "line",
+      "donut",
+      "text"
+     ],
+     "required": true,
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "label",
+     "label": "Label",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "entity",
+     "label": "Entity",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "hint": "any entity key, e.g. orders"
+    },
+    {
+     "key": "metric",
+     "label": "Metric",
+     "type": "select",
+     "options": [
+      "count",
+      "sum",
+      "avg",
+      "min",
+      "max",
+      "distinct"
+     ],
+     "list": true
+    },
+    {
+     "key": "column",
+     "label": "Column",
+     "type": "text",
+     "hint": "column for sum/avg/min/max/distinct"
+    },
+    {
+     "key": "dimension",
+     "label": "Group by",
+     "type": "text",
+     "hint": "column to break the metric down by"
+    },
+    {
+     "key": "ord",
+     "label": "Order",
+     "type": "select",
+     "options": [
+      "desc",
+      "asc"
+     ]
+    },
+    {
+     "key": "lim",
+     "label": "Limit",
+     "type": "number"
+    },
+    {
+     "key": "filter",
+     "label": "Filters",
+     "type": "json",
+     "hint": "{\"field\": \"value\"}"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    },
+    {
+     "key": "span",
+     "label": "Span (1-6)",
+     "type": "number"
+    }
+   ]
+  },
+  "report": {
+   "table": "reports",
+   "pk": "id",
+   "label": "Reports",
+   "icon": "📄",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin",
+     "platform"
+    ]
+   },
+   "fields": [
+    {
+     "key": "key",
+     "label": "Key",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": [
+      "scheduled",
+      "event",
+      "regulatory",
+      "operational",
+      "executive",
+      "ai"
+     ],
+     "required": true,
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "entity",
+     "label": "Entity",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "metrics",
+     "label": "Metrics",
+     "type": "json",
+     "hint": "[{\"metric\":\"sum\",\"column\":\"total\",\"alias\":\"revenue\"}]"
+    },
+    {
+     "key": "dimensions",
+     "label": "Dimensions",
+     "type": "json",
+     "hint": "[\"status\"]"
+    },
+    {
+     "key": "filter",
+     "label": "Filters",
+     "type": "json"
+    },
+    {
+     "key": "schedule",
+     "label": "Schedule",
+     "type": "select",
+     "options": [
+      "manual",
+      "daily",
+      "weekly",
+      "monthly"
+     ],
+     "list": true
+    },
+    {
+     "key": "format",
+     "label": "Format",
+     "type": "select",
+     "options": [
+      "table",
+      "csv",
+      "json"
+     ],
+     "list": true
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "last_run",
+     "label": "Last Run",
+     "type": "date",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "meta_list": {
+   "table": "meta_lists",
+   "noTenant": true,
+   "pk": "name",
+   "pkType": "text",
+   "label": "Registries (lists)",
+   "icon": "📚",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "editedStamp": true,
+   "fields": [
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "label",
+     "label": "Label",
+     "type": "text"
+    },
+    {
+     "key": "items",
+     "label": "Items (JSON)",
+     "type": "json",
+     "required": true
+    }
+   ]
+  },
+  "compliance_control": {
+   "table": "compliance_controls",
+   "pk": "id",
+   "label": "Compliance Controls",
+   "icon": "🛡️",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "fields": [
+    {
+     "key": "regulation",
+     "label": "Regulation",
+     "type": "select",
+     "options": "regulations",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "control_id",
+     "label": "Control",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Control name",
+     "type": "text",
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "evidence",
+     "label": "Evidence",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "controlStatuses",
+     "required": true,
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "consent": {
+   "table": "consents",
+   "pk": "id",
+   "label": "Consent Ledger",
+   "icon": "🔐",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin",
+     "platform"
+    ]
+   },
+   "fields": [
+    {
+     "key": "subject",
+     "label": "Subject",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "purpose",
+     "label": "Purpose",
+     "type": "select",
+     "options": "privacyPurposes",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "granted",
+      "withdrawn",
+      "denied"
+     ],
+     "required": true,
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "lawful_basis",
+     "label": "Lawful basis",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "source",
+     "label": "Source",
+     "type": "text"
+    },
+    {
+     "key": "granted_at",
+     "label": "Granted",
+     "type": "date",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "withdrawn_at",
+     "label": "Withdrawn",
+     "type": "date",
+     "readonly": true
+    }
+   ]
+  },
+  "privacy_request": {
+   "table": "privacy_requests",
+   "pk": "id",
+   "pkType": "text",
+   "label": "Privacy Requests (DSR)",
+   "icon": "📨",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin",
+     "platform"
+    ]
+   },
+   "fields": [
+    {
+     "key": "id",
+     "label": "Request ID",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "subject",
+     "label": "Subject",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": "privacyRequestKinds",
+     "required": true,
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "privacyRequestStates",
+     "required": true,
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "due_at",
+     "label": "Due",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "fulfilled_at",
+     "label": "Fulfilled",
+     "type": "date",
+     "readonly": true
+    }
+   ]
+  },
+  "erasure_log": {
+   "table": "erasure_log",
+   "pk": "id",
+   "label": "Erasure Log",
+   "icon": "🧽",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "fields": [
+    {
+     "key": "subject",
+     "label": "Subject",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "removed",
+     "label": "Removed (JSON)",
+     "type": "json",
+     "list": true
+    },
+    {
+     "key": "executed_by",
+     "label": "Executed by",
+     "type": "text",
+     "list": true
+    }
+   ]
+  },
+  "tax_mode": {
+   "table": "tax_modes",
+   "noTenant": true,
+   "pk": "key",
+   "pkType": "text",
+   "label": "Tax Modes",
+   "icon": "🧾",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "key",
+     "label": "Key",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "label",
+     "label": "Label",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "description",
+     "label": "Description",
+     "type": "text"
+    },
+    {
+     "key": "fields",
+     "label": "Extra Fields",
+     "type": "json"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "tax_rule": {
+   "table": "tax_rules",
+   "noTenant": true,
+   "pk": "country",
+   "pkType": "text",
+   "label": "Tax Rules (by Country)",
+   "icon": "💸",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "country",
+     "label": "Country",
+     "type": "ref:country",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "mode",
+     "label": "Mode",
+     "type": "ref:tax_mode",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "standard",
+     "label": "Standard rate",
+     "type": "number",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "reduced",
+     "label": "Reduced rate",
+     "type": "number"
+    },
+    {
+     "key": "digital",
+     "label": "Digital rate",
+     "type": "number"
+    },
+    {
+     "key": "zero",
+     "label": "Zero rate",
+     "type": "number"
+    },
+    {
+     "key": "note",
+     "label": "Note",
+     "type": "textarea"
+    }
+   ]
+  },
+  "provider_def": {
+   "table": "provider_defs",
+   "noTenant": true,
+   "pk": "id",
+   "pk2": "kind",
+   "composite": true,
+   "label": "Provider Catalog",
+   "icon": "🔌",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": "providerKinds",
+     "required": true,
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "emoji",
+     "label": "Icon",
+     "type": "text"
+    },
+    {
+     "key": "description",
+     "label": "Description",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "methods",
+     "label": "Methods",
+     "type": "json"
+    },
+    {
+     "key": "fee_pct",
+     "label": "Fee %",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "fee_fixed",
+     "label": "Fixed Fee",
+     "type": "number"
+    },
+    {
+     "key": "fields",
+     "label": "Credential Fields",
+     "type": "json"
+    },
+    {
+     "key": "base_fee",
+     "label": "Base Fee (ship)",
+     "type": "number"
+    },
+    {
+     "key": "eta_min",
+     "label": "ETA min",
+     "type": "number"
+    },
+    {
+     "key": "eta_max",
+     "label": "ETA max",
+     "type": "number"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    },
+    {
+     "key": "enabled",
+     "label": "Enabled",
+     "type": "bool"
+    }
+   ]
+  },
+  "provider_availability": {
+   "table": "provider_availability",
+   "noTenant": true,
+   "pk": "provider_id",
+   "pk2": "country_code",
+   "pkType": "text",
+   "composite": true,
+   "label": "Provider × Country",
+   "icon": "🗺️",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "provider_id",
+     "label": "Provider",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "country_code",
+     "label": "Country",
+     "type": "ref:country",
+     "required": true,
+     "list": true
+    }
+   ]
+  },
+  "product": {
+   "table": "products",
+   "pk": "id",
+   "pkType": "text",
+   "label": "Products",
+   "icon": "📦",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "sec": "P2",
+   "fields": [
+    {
+     "key": "uid",
+     "label": "Universal ID",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "id",
+     "label": "Reference",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "title",
+     "label": "Title",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "brand",
+     "label": "Brand",
+     "type": "ref:brand",
+     "required": true,
+     "list": true,
+     "refValue": "label"
+    },
+    {
+     "key": "dept",
+     "label": "Department",
+     "type": "ref:department",
+     "list": true
+    },
+    {
+     "key": "type",
+     "label": "Product Type",
+     "type": "select",
+     "options": "productTypes",
+     "list": true
+    },
+    {
+     "key": "node_id",
+     "label": "Taxonomy Node",
+     "type": "ref:taxonomy"
+    },
+    {
+     "key": "price",
+     "label": "Price",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "list",
+     "label": "List Price",
+     "type": "money",
+     "col": "list_price"
+    },
+    {
+     "key": "stock",
+     "label": "Stock",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "rating",
+     "label": "Rating",
+     "type": "number"
+    },
+    {
+     "key": "count",
+     "label": "Ratings Count",
+     "type": "number",
+     "col": "ratings_count"
+    },
+    {
+     "key": "emoji",
+     "label": "Icon",
+     "type": "text"
+    },
+    {
+     "key": "hue",
+     "label": "Tint",
+     "type": "number"
+    },
+    {
+     "key": "priority",
+     "label": "Priority Eligible",
+     "type": "bool",
+     "display": "badge"
+    },
+    {
+     "key": "flags",
+     "label": "Flags",
+     "type": "text",
+     "hint": "bs,new,ac"
+    },
+    {
+     "key": "keywords",
+     "label": "Keywords",
+     "type": "textarea"
+    },
+    {
+     "key": "lifecycle",
+     "label": "Lifecycle",
+     "type": "select",
+     "options": "lifecycle",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "identity",
+     "label": "Identity (GTIN/HSN/…)",
+     "type": "json"
+    },
+    {
+     "key": "attrs",
+     "label": "Attributes",
+     "type": "json",
+     "editor": "attrs"
+    },
+    {
+     "key": "vertical",
+     "label": "Vertical Profile",
+     "type": "json"
+    },
+    {
+     "key": "media",
+     "label": "Media",
+     "type": "json",
+     "editor": "media"
+    },
+    {
+     "key": "seo",
+     "label": "SEO",
+     "type": "json"
+    },
+    {
+     "key": "pricing_rules",
+     "label": "Pricing Rules",
+     "type": "json"
+    },
+    {
+     "key": "logistics",
+     "label": "Logistics",
+     "type": "json"
+    },
+    {
+     "key": "packaging",
+     "label": "Packaging",
+     "type": "json"
+    },
+    {
+     "key": "uom",
+     "label": "Unit of Measure",
+     "type": "json"
+    },
+    {
+     "key": "tax_rule",
+     "label": "Tax Rule",
+     "type": "json"
+    },
+    {
+     "key": "geo_rules",
+     "label": "Geo Rules",
+     "type": "json"
+    },
+    {
+     "key": "docs",
+     "label": "Documents",
+     "type": "json"
+    },
+    {
+     "key": "supplier_id",
+     "label": "Marketplace Seller",
+     "type": "ref:seller"
+    },
+    {
+     "key": "source_kind",
+     "label": "Source",
+     "type": "select",
+     "options": [
+      "seed",
+      "universe",
+      "import"
+     ],
+     "readonly": true,
+     "list": true,
+     "hint": "seeded, activated from a corpus universe, or imported"
+    },
+    {
+     "key": "source_universe",
+     "label": "Source Universe",
+     "type": "text",
+     "readonly": true,
+     "list": true,
+     "hint": "the corpus universe this offering was activated from"
+    }
+   ]
+  },
+  "sku": {
+   "table": "skus",
+   "pk": "id",
+   "label": "SKUs",
+   "icon": "🔖",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "sec": "P2",
+   "fields": [
+    {
+     "key": "uid",
+     "label": "Universal ID",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "code",
+     "label": "SKU Code",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Variant Name",
+     "type": "text",
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "group_id",
+     "label": "Variant Group",
+     "type": "ref:variant_group",
+     "list": true
+    },
+    {
+     "key": "price",
+     "label": "Price",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "mrp",
+     "label": "MRP",
+     "type": "money"
+    },
+    {
+     "key": "stock",
+     "label": "Stock",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool"
+    },
+    {
+     "key": "identity",
+     "label": "Identity",
+     "type": "json"
+    },
+    {
+     "key": "variant",
+     "label": "Variant Attributes",
+     "type": "json"
+    }
+   ]
+  },
+  "inventory": {
+   "table": "inventory",
+   "pk": "id",
+   "label": "Inventory",
+   "icon": "🏬",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "sku_id",
+     "label": "SKU",
+     "type": "ref:sku",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "warehouse_id",
+     "label": "Warehouse",
+     "type": "ref:warehouse",
+     "list": true
+    },
+    {
+     "key": "qty",
+     "label": "Quantity",
+     "type": "number",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "reserved",
+     "label": "Reserved",
+     "type": "number"
+    },
+    {
+     "key": "lot",
+     "label": "Lot",
+     "type": "text"
+    },
+    {
+     "key": "batch",
+     "label": "Batch",
+     "type": "text"
+    },
+    {
+     "key": "expiry",
+     "label": "Expiry",
+     "type": "date"
+    }
+   ]
+  },
+  "warehouse": {
+   "table": "warehouses",
+   "pk": "id",
+   "label": "Warehouses",
+   "icon": "🏭",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "sec": "P2",
+   "fields": [
+    {
+     "key": "uid",
+     "label": "Universal ID",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "code",
+     "label": "Code",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "country",
+     "label": "Country",
+     "type": "text"
+    },
+    {
+     "key": "region",
+     "label": "Region",
+     "type": "text"
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool"
+    }
+   ]
+  },
+  "serialized": {
+   "table": "serialized_items",
+   "pk": "id",
+   "label": "Serialized Items",
+   "icon": "🔢",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "sec": "P3",
+   "fields": [
+    {
+     "key": "uid",
+     "label": "Universal ID",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "sku_id",
+     "label": "SKU",
+     "type": "ref:sku",
+     "list": true
+    },
+    {
+     "key": "warehouse_id",
+     "label": "Warehouse",
+     "type": "ref:warehouse",
+     "list": true
+    },
+    {
+     "key": "serial",
+     "label": "Serial Number",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "imei",
+     "label": "IMEI",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "rfid",
+     "label": "RFID / Tag",
+     "type": "text"
+    },
+    {
+     "key": "asset_tag",
+     "label": "Asset Tag",
+     "type": "text"
+    },
+    {
+     "key": "batch",
+     "label": "Batch",
+     "type": "text"
+    },
+    {
+     "key": "lot",
+     "label": "Lot",
+     "type": "text"
+    },
+    {
+     "key": "expiry",
+     "label": "Expiry",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "serializedStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "condition",
+     "label": "Condition",
+     "type": "select",
+     "options": "serializedConditions",
+     "list": true
+    },
+    {
+     "key": "order_id",
+     "label": "Order",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "purchase_date",
+     "label": "Purchase Date",
+     "type": "date"
+    },
+    {
+     "key": "warranty_end",
+     "label": "Warranty End",
+     "type": "date"
+    },
+    {
+     "key": "meta",
+     "label": "Meta",
+     "type": "json"
+    }
+   ]
+  },
+  "variant_group": {
+   "table": "variant_groups",
+   "pk": "id",
+   "label": "Variant Groups",
+   "icon": "🎛️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "axis",
+     "label": "Axis",
+     "type": "select",
+     "options": "variantAxes",
+     "list": true
+    },
+    {
+     "key": "attr_key",
+     "label": "Attribute Key",
+     "type": "text"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool"
+    }
+   ]
+  },
+  "compliance": {
+   "table": "compliance_records",
+   "pk": "id",
+   "label": "Compliance & Certifications",
+   "icon": "✅",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "scope",
+     "label": "Applies To",
+     "type": "select",
+     "options": "complianceScopes",
+     "list": true
+    },
+    {
+     "key": "ref_id",
+     "label": "Reference",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": "complianceKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "code",
+     "label": "Code / Number",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "issuer",
+     "label": "Issuing Body",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "jurisdiction",
+     "label": "Jurisdiction",
+     "type": "text",
+     "list": true,
+     "hint": "country code"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "complianceStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "valid_from",
+     "label": "Valid From",
+     "type": "date"
+    },
+    {
+     "key": "valid_to",
+     "label": "Valid To",
+     "type": "date"
+    },
+    {
+     "key": "doc_media",
+     "label": "Document Ref",
+     "type": "text"
+    },
+    {
+     "key": "notes",
+     "label": "Notes",
+     "type": "textarea"
+    }
+   ]
+  },
+  "supplier": {
+   "table": "suppliers",
+   "pk": "id",
+   "label": "Suppliers",
+   "icon": "🚚",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "party_role",
+     "label": "Party Role",
+     "type": "select",
+     "options": "supplierRoles",
+     "list": true
+    },
+    {
+     "key": "tax_id",
+     "label": "Tax / GSTIN",
+     "type": "text"
+    },
+    {
+     "key": "country",
+     "label": "Country",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "region",
+     "label": "Region",
+     "type": "text"
+    },
+    {
+     "key": "address",
+     "label": "Address",
+     "type": "textarea"
+    },
+    {
+     "key": "email",
+     "label": "Email",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "phone",
+     "label": "Phone",
+     "type": "text"
+    },
+    {
+     "key": "lead_time_days",
+     "label": "Lead Time (days)",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "moq",
+     "label": "Min Order Qty",
+     "type": "number"
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "payment_terms",
+     "label": "Payment Terms",
+     "type": "select",
+     "options": "paymentTerms",
+     "list": true
+    },
+    {
+     "key": "on_time_pct",
+     "label": "On-time %",
+     "type": "number"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "supplierStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "certifications",
+     "label": "Certifications",
+     "type": "json"
+    },
+    {
+     "key": "price_list",
+     "label": "Price List",
+     "type": "json"
+    }
+   ]
+  },
+  "product_supplier": {
+   "table": "product_suppliers",
+   "pk": "id",
+   "label": "Supplier Links",
+   "icon": "🔗",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "supplier_id",
+     "label": "Supplier",
+     "type": "ref:supplier",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "supplier_sku",
+     "label": "Supplier SKU",
+     "type": "text"
+    },
+    {
+     "key": "price",
+     "label": "Unit Cost",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "lead_days",
+     "label": "Lead Days",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "moq",
+     "label": "Min Order",
+     "type": "number"
+    },
+    {
+     "key": "is_primary",
+     "label": "Primary",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "linkStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "localization": {
+   "table": "localizations",
+   "pk": "id",
+   "label": "Localizations (i18n)",
+   "icon": "🌐",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "entity",
+     "label": "Object Type",
+     "type": "select",
+     "options": "localizationEntities",
+     "list": true
+    },
+    {
+     "key": "ref_id",
+     "label": "Object Reference",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "locale",
+     "label": "Locale",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "hint": "e.g. fr-FR"
+    },
+    {
+     "key": "name",
+     "label": "Localized Name",
+     "type": "text",
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "description",
+     "label": "Description",
+     "type": "textarea"
+    },
+    {
+     "key": "bullets",
+     "label": "Bullets",
+     "type": "json"
+    },
+    {
+     "key": "attrs",
+     "label": "Attributes",
+     "type": "json",
+     "editor": "attrs"
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool"
+    }
+   ]
+  },
+  "contract": {
+   "table": "contracts",
+   "pk": "id",
+   "label": "B2B Contracts",
+   "icon": "📝",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "ref",
+     "label": "Contract #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "buyer_name",
+     "label": "Buyer",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "buyer_email",
+     "label": "Buyer Email",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "buyer_org",
+     "label": "Buyer Org",
+     "type": "text"
+    },
+    {
+     "key": "supplier_id",
+     "label": "Supplier",
+     "type": "ref:supplier",
+     "list": true
+    },
+    {
+     "key": "product_ids",
+     "label": "Products",
+     "type": "json",
+     "hint": "[\"prodId\", …]"
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "pricing",
+     "label": "Pricing",
+     "type": "json",
+     "hint": "{\"fixed\":{\"id\":price},\"tiers\":[…]}"
+    },
+    {
+     "key": "min_qty",
+     "label": "Min Qty",
+     "type": "number"
+    },
+    {
+     "key": "incoterms",
+     "label": "Incoterms",
+     "type": "select",
+     "options": "incoterms"
+    },
+    {
+     "key": "payment_terms",
+     "label": "Payment Terms",
+     "type": "select",
+     "options": "paymentTerms"
+    },
+    {
+     "key": "valid_from",
+     "label": "Valid From",
+     "type": "date"
+    },
+    {
+     "key": "valid_to",
+     "label": "Valid To",
+     "type": "date"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "contractStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "notes",
+     "label": "Notes",
+     "type": "textarea"
+    }
+   ]
+  },
+  "tender": {
+   "table": "tenders",
+   "pk": "id",
+   "label": "Tenders (Procurement)",
+   "icon": "🏛️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "ref",
+     "label": "Tender #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "title",
+     "label": "Title",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "buyer_org",
+     "label": "Issuing Org",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "buyer_email",
+     "label": "Contact Email",
+     "type": "text"
+    },
+    {
+     "key": "description",
+     "label": "Description",
+     "type": "textarea"
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "budget",
+     "label": "Budget",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "open_at",
+     "label": "Opens",
+     "type": "date"
+    },
+    {
+     "key": "close_at",
+     "label": "Closes",
+     "type": "date"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "tenderStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "awarded_seller_id",
+     "label": "Awarded Seller",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "awarded_contract_id",
+     "label": "Awarded Contract",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "items",
+     "label": "Line Items",
+     "type": "json"
+    },
+    {
+     "key": "bids",
+     "label": "Bids",
+     "type": "json"
+    }
+   ]
+  },
+  "ai_usage": {
+   "table": "ai_usage",
+   "pk": "id",
+   "label": "AI Usage Ledger",
+   "icon": "🧮",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "capability",
+     "label": "Capability",
+     "type": "select",
+     "options": "aiCapabilityKeys",
+     "list": true
+    },
+    {
+     "key": "provider",
+     "label": "Provider",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "model",
+     "label": "Model",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "units",
+     "label": "Units",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "cost",
+     "label": "Cost",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "tier",
+     "label": "Tier",
+     "type": "select",
+     "options": [
+      "free",
+      "premium"
+     ],
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "text",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "actor",
+     "label": "Actor",
+     "type": "text"
+    },
+    {
+     "key": "created_at",
+     "label": "At",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "ai_task": {
+   "table": "ai_tasks",
+   "pk": "id",
+   "label": "AI Tasks",
+   "icon": "🤖",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "capability",
+     "label": "Capability",
+     "type": "select",
+     "options": "aiCapabilityKeys",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "queued",
+      "running",
+      "done",
+      "failed"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "params",
+     "label": "Params",
+     "type": "json"
+    },
+    {
+     "key": "result",
+     "label": "Result",
+     "type": "json",
+     "readonly": true
+    },
+    {
+     "key": "cost",
+     "label": "Cost",
+     "type": "money",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "actor",
+     "label": "Actor",
+     "type": "text",
+     "readonly": true
+    },
+    {
+     "key": "created_at",
+     "label": "Created",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "stock_transfer": {
+   "table": "stock_transfers",
+   "pk": "id",
+   "label": "Stock Transfers",
+   "icon": "🔄",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "from_warehouse",
+     "label": "From",
+     "type": "ref:warehouse",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "to_warehouse",
+     "label": "To",
+     "type": "ref:warehouse",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "sku_id",
+     "label": "SKU",
+     "type": "ref:sku",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "qty",
+     "label": "Qty",
+     "type": "number",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "draft",
+      "in_transit",
+      "completed",
+      "cancelled"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "reference",
+     "label": "Reference",
+     "type": "text"
+    },
+    {
+     "key": "note",
+     "label": "Note",
+     "type": "textarea"
+    },
+    {
+     "key": "created_at",
+     "label": "When",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "remittance": {
+   "table": "remittance_records",
+   "pk": "id",
+   "label": "Tax Remittance",
+   "icon": "🧾",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "id",
+     "label": "ID",
+     "type": "number",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "period",
+     "label": "Period",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "jurisdiction",
+     "label": "Jurisdiction",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "tax_type",
+     "label": "Type",
+     "type": "select",
+     "options": [
+      "vat",
+      "gst",
+      "sales",
+      "withholding"
+     ],
+     "list": true
+    },
+    {
+     "key": "taxable",
+     "label": "Taxable",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "tax_collected",
+     "label": "Tax Collected",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "pending",
+      "filed",
+      "paid",
+      "amended"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "reference",
+     "label": "Reference",
+     "type": "text"
+    },
+    {
+     "key": "filed_at",
+     "label": "Filed",
+     "type": "date"
+    }
+   ]
+  },
+  "order": {
+   "table": "orders",
+   "pk": "id",
+   "label": "Orders",
+   "icon": "🧾",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "sec": "P2",
+   "fields": [
+    {
+     "key": "uid",
+     "label": "Universal ID",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "num",
+     "label": "Order #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Customer",
+     "type": "text",
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "address",
+     "label": "Address",
+     "type": "textarea"
+    },
+    {
+     "key": "city",
+     "label": "City",
+     "type": "text"
+    },
+    {
+     "key": "state",
+     "label": "State",
+     "type": "text",
+     "display": "badge"
+    },
+    {
+     "key": "zip",
+     "label": "ZIP",
+     "type": "text"
+    },
+    {
+     "key": "sub",
+     "label": "Subtotal",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "ship_fee",
+     "label": "Shipping",
+     "type": "money"
+    },
+    {
+     "key": "tax",
+     "label": "Tax",
+     "type": "money"
+    },
+    {
+     "key": "gift_used",
+     "label": "Gift Applied",
+     "type": "money"
+    },
+    {
+     "key": "total",
+     "label": "Total",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "processing",
+      "shipped",
+      "delivered",
+      "cancelled"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "pay_method",
+     "label": "Gateway",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "ship_option",
+     "label": "Carrier",
+     "type": "text"
+    },
+    {
+     "key": "created_at",
+     "label": "Placed",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "ret": {
+   "table": "returns",
+   "pk": "id",
+   "label": "Returns",
+   "icon": "↩️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Return #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "order_id",
+     "label": "Order",
+     "type": "ref:order",
+     "list": true
+    },
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product"
+    },
+    {
+     "key": "qty",
+     "label": "Qty",
+     "type": "number"
+    },
+    {
+     "key": "reason",
+     "label": "Reason",
+     "type": "textarea",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "requested",
+      "approved",
+      "received",
+      "refunded",
+      "rejected"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "created_at",
+     "label": "Date",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "rfq": {
+   "table": "rfqs",
+   "pk": "id",
+   "label": "RFQs (B2B)",
+   "icon": "📋",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "RFQ #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product",
+     "list": true
+    },
+    {
+     "key": "buyer_name",
+     "label": "Buyer",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "buyer_email",
+     "label": "Email",
+     "type": "text"
+    },
+    {
+     "key": "qty",
+     "label": "Quantity",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "target_price",
+     "label": "Target Price",
+     "type": "money"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "open",
+      "quoted",
+      "accepted",
+      "rejected",
+      "closed"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "quotes",
+     "label": "Quotes",
+     "type": "json"
+    }
+   ]
+  },
+  "settlement": {
+   "table": "settlements",
+   "pk": "id",
+   "label": "Settlements",
+   "icon": "🤝",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Settlement #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "seller_id",
+     "label": "Seller",
+     "type": "ref:seller",
+     "list": true
+    },
+    {
+     "key": "order_id",
+     "label": "Order",
+     "type": "ref:order"
+    },
+    {
+     "key": "gross",
+     "label": "Gross",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "commission",
+     "label": "Commission",
+     "type": "money"
+    },
+    {
+     "key": "net",
+     "label": "Net Payable",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "pending",
+      "paid"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "period",
+     "label": "Period",
+     "type": "text"
+    }
+   ]
+  },
+  "seller": {
+   "table": "sellers",
+   "pk": "id",
+   "label": "Sellers",
+   "icon": "🏪",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "role",
+     "label": "Role",
+     "type": "select",
+     "options": "sellerRoles",
+     "list": true
+    },
+    {
+     "key": "email",
+     "label": "Email",
+     "type": "text"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "active",
+      "suspended"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "commission_pct",
+     "label": "Commission %",
+     "type": "number"
+    }
+   ]
+  },
+  "promotion": {
+   "table": "promotions",
+   "pk": "id",
+   "label": "Promotions",
+   "icon": "🎯",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "type",
+     "label": "Type",
+     "type": "select",
+     "options": "promoTypes",
+     "list": true
+    },
+    {
+     "key": "value",
+     "label": "Value",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "code",
+     "label": "Coupon Code",
+     "type": "text"
+    },
+    {
+     "key": "starts",
+     "label": "Starts",
+     "type": "date"
+    },
+    {
+     "key": "ends",
+     "label": "Ends",
+     "type": "date"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "active",
+      "inactive"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "rules",
+     "label": "Rules",
+     "type": "json"
+    },
+    {
+     "key": "scope",
+     "label": "Scope",
+     "type": "json"
+    }
+   ]
+  },
+  "department": {
+   "table": "departments",
+   "pk": "key",
+   "pkType": "text",
+   "label": "Departments",
+   "icon": "🗂️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "key",
+     "label": "Key",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "label",
+     "label": "Label",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "icon",
+     "label": "Icon",
+     "type": "text"
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "brand": {
+   "table": "brands",
+   "pk": "key",
+   "pkType": "text",
+   "label": "Brands",
+   "icon": "🏷️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "key",
+     "label": "Key",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "label",
+     "label": "Brand Name",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "icon",
+     "label": "Icon (emoji)",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "logo",
+     "label": "Logo (URL or inline SVG)",
+     "type": "text"
+    },
+    {
+     "key": "story",
+     "label": "Brand Story",
+     "type": "textarea"
+    },
+    {
+     "key": "country",
+     "label": "Country of Origin",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "taxonomy": {
+   "table": "taxonomy",
+   "pk": "id",
+   "label": "Taxonomy",
+   "icon": "🌳",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "parent_id",
+     "label": "Parent",
+     "type": "ref:taxonomy",
+     "list": true
+    },
+    {
+     "key": "level",
+     "label": "Level",
+     "type": "select",
+     "options": [
+      "domain",
+      "industry",
+      "category",
+      "subcategory",
+      "family",
+      "model"
+     ],
+     "list": true
+    },
+    {
+     "key": "key",
+     "label": "Key",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "icon",
+     "label": "Icon",
+     "type": "text"
+    },
+    {
+     "key": "attrs",
+     "label": "Attributes",
+     "type": "json",
+     "editor": "attrs"
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    },
+    {
+     "key": "node_uid",
+     "label": "Master node",
+     "type": "readonly"
+    }
+   ],
+   "writeThrough": "store-taxonomy"
+  },
+  "attribute": {
+   "table": "attribute_defs",
+   "pk": "key",
+   "pkType": "text",
+   "label": "Attribute Definitions",
+   "icon": "🧬",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "key",
+     "label": "Key",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "label",
+     "label": "Label",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "grp",
+     "label": "Group",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "type",
+     "label": "Type",
+     "type": "select",
+     "options": [
+      "text",
+      "number",
+      "bool",
+      "date",
+      "select",
+      "multi",
+      "json"
+     ],
+     "list": true
+    },
+    {
+     "key": "unit",
+     "label": "Unit",
+     "type": "text"
+    },
+    {
+     "key": "options",
+     "label": "Options",
+     "type": "json"
+    },
+    {
+     "key": "validation",
+     "label": "Validation",
+     "type": "json"
+    },
+    {
+     "key": "industry",
+     "label": "Industry",
+     "type": "text"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ],
+   "writeThrough": "store-attributes"
+  },
+  "context_type": {
+   "table": "context_types",
+   "noTenant": true,
+   "pk": "id",
+   "pkType": "number",
+   "label": "Context Types",
+   "icon": "🧭",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "grp",
+     "label": "Dimension",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "key",
+     "label": "Profile Key",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "label",
+     "label": "Label",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "type",
+     "label": "Kind",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "fields",
+     "label": "Fields",
+     "type": "json"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "link": {
+   "table": "links",
+   "noTenant": true,
+   "pk": "id",
+   "pkType": "number",
+   "label": "Universal Links",
+   "icon": "🔗",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "type",
+     "label": "Relationship Type",
+     "type": "select",
+     "options": "relTypes",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "from_entity",
+     "label": "From Entity",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "from_uid",
+     "label": "From UID",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "to_entity",
+     "label": "To Entity",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "to_uid",
+     "label": "To UID",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "meta",
+     "label": "Metadata",
+     "type": "json"
+    },
+    {
+     "key": "created_at",
+     "label": "When",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "banner": {
+   "table": "home_banners",
+   "pk": "id",
+   "label": "Home Banners",
+   "icon": "🖼️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "title",
+     "label": "Title",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "subtitle",
+     "label": "Subtitle",
+     "type": "text"
+    },
+    {
+     "key": "cta",
+     "label": "CTA",
+     "type": "text"
+    },
+    {
+     "key": "hue",
+     "label": "Tint",
+     "type": "number"
+    },
+    {
+     "key": "dept",
+     "label": "Department",
+     "type": "ref:department"
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "card": {
+   "table": "home_cards",
+   "pk": "id",
+   "label": "Home Cards",
+   "icon": "🃏",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "title",
+     "label": "Title",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "dept",
+     "label": "Department",
+     "type": "ref:department",
+     "list": true
+    },
+    {
+     "key": "tiles",
+     "label": "Tiles",
+     "type": "json"
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "review": {
+   "table": "reviews",
+   "pk": "id",
+   "label": "Reviews",
+   "icon": "⭐",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product",
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Author",
+     "type": "text",
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "rating",
+     "label": "Rating",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "title",
+     "label": "Title",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "body",
+     "label": "Body",
+     "type": "textarea"
+    },
+    {
+     "key": "verified",
+     "label": "Verified",
+     "type": "bool"
+    },
+    {
+     "key": "state",
+     "label": "Moderation",
+     "type": "select",
+     "options": "ugcStates",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "votes_helpful",
+     "label": "Helpful votes",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "votes_total",
+     "label": "Total votes",
+     "type": "number"
+    },
+    {
+     "key": "media",
+     "label": "Media",
+     "type": "json",
+     "editor": "media"
+    },
+    {
+     "key": "created_at",
+     "label": "Date",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "review_reply": {
+   "table": "review_replies",
+   "pk": "id",
+   "label": "Review Replies",
+   "icon": "💬",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "review_id",
+     "label": "Review",
+     "type": "number",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "author",
+     "label": "Author",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "role",
+     "label": "Role",
+     "type": "select",
+     "options": "ugcRoles",
+     "list": true
+    },
+    {
+     "key": "body",
+     "label": "Reply",
+     "type": "textarea"
+    },
+    {
+     "key": "created_at",
+     "label": "Date",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "qna_question": {
+   "table": "qna_questions",
+   "pk": "id",
+   "label": "Product Questions",
+   "icon": "❓",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product",
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Asked by",
+     "type": "text",
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "body",
+     "label": "Question",
+     "type": "textarea",
+     "list": true
+    },
+    {
+     "key": "state",
+     "label": "Moderation",
+     "type": "select",
+     "options": "ugcStates",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "votes_helpful",
+     "label": "Helpful votes",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "votes_total",
+     "label": "Total votes",
+     "type": "number"
+    },
+    {
+     "key": "answered_at",
+     "label": "Answered",
+     "type": "readonly"
+    },
+    {
+     "key": "created_at",
+     "label": "Asked",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "qna_answer": {
+   "table": "qna_answers",
+   "pk": "id",
+   "label": "Question Answers",
+   "icon": "💡",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "question_id",
+     "label": "Question",
+     "type": "number",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Answered by",
+     "type": "text",
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "role",
+     "label": "Role",
+     "type": "select",
+     "options": "ugcRoles",
+     "list": true
+    },
+    {
+     "key": "body",
+     "label": "Answer",
+     "type": "textarea"
+    },
+    {
+     "key": "state",
+     "label": "Moderation",
+     "type": "select",
+     "options": "ugcStates",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "votes_helpful",
+     "label": "Helpful votes",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "votes_total",
+     "label": "Total votes",
+     "type": "number"
+    },
+    {
+     "key": "created_at",
+     "label": "Date",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "ticket": {
+   "table": "tickets",
+   "pk": "id",
+   "label": "Support Tickets",
+   "icon": "🎧",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Reference",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "subject",
+     "label": "Subject",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "reason",
+     "label": "Reason",
+     "type": "select",
+     "options": "hdReasons",
+     "list": true
+    },
+    {
+     "key": "priority",
+     "label": "Priority",
+     "type": "select",
+     "options": "hdPriorities",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "hdStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "assignee",
+     "label": "Assignee",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "owner_name",
+     "label": "Customer",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "owner_email",
+     "label": "Email",
+     "type": "text"
+    },
+    {
+     "key": "order_ref",
+     "label": "Order ref",
+     "type": "text"
+    },
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product"
+    },
+    {
+     "key": "body",
+     "label": "Message",
+     "type": "textarea"
+    },
+    {
+     "key": "csat",
+     "label": "CSAT",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "sla_response",
+     "label": "SLA · response",
+     "type": "date"
+    },
+    {
+     "key": "sla_resolution",
+     "label": "SLA · resolution",
+     "type": "date"
+    },
+    {
+     "key": "created_at",
+     "label": "Opened",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "ticket_note": {
+   "table": "ticket_notes",
+   "pk": "id",
+   "label": "Ticket Notes",
+   "icon": "📝",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ticket_id",
+     "label": "Ticket",
+     "type": "number",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "author",
+     "label": "Author",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "role",
+     "label": "Role",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "body",
+     "label": "Note",
+     "type": "textarea"
+    },
+    {
+     "key": "visibility",
+     "label": "Visibility",
+     "type": "select",
+     "options": [
+      "public",
+      "internal"
+     ],
+     "list": true
+    },
+    {
+     "key": "created_at",
+     "label": "Date",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "address": {
+   "table": "addresses",
+   "pk": "id",
+   "label": "Address Book",
+   "icon": "📍",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "label",
+     "label": "Label",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Recipient",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "address",
+     "label": "Address",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "city",
+     "label": "City",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "state",
+     "label": "State / Province",
+     "type": "ref:subdivision",
+     "display": "badge"
+    },
+    {
+     "key": "zip",
+     "label": "ZIP",
+     "type": "text"
+    },
+    {
+     "key": "country",
+     "label": "Country",
+     "type": "ref:country"
+    },
+    {
+     "key": "phone",
+     "label": "Phone",
+     "type": "text"
+    },
+    {
+     "key": "is_default",
+     "label": "Default",
+     "type": "bool",
+     "list": true
+    }
+   ]
+  },
+  "recurring_schedule": {
+   "table": "recurring_schedules",
+   "pk": "id",
+   "label": "Subscribe & Save",
+   "icon": "🔁",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product",
+     "list": true
+    },
+    {
+     "key": "qty",
+     "label": "Qty",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "frequency_days",
+     "label": "Frequency (days)",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "discount_pct",
+     "label": "Discount %",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "next_ship_at",
+     "label": "Next shipment",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "recSchedStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "cycles_completed",
+     "label": "Cycles done",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "created_at",
+     "label": "Started",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "recurring_cycle": {
+   "table": "recurring_cycles",
+   "pk": "id",
+   "label": "Delivery Cycles",
+   "icon": "📦",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "schedule_id",
+     "label": "Schedule",
+     "type": "number",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "order_ref",
+     "label": "Order",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "recCycleStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "at",
+     "label": "Ships at",
+     "type": "date",
+     "list": true
+    }
+   ]
+  },
+  "membership": {
+   "table": "memberships",
+   "pk": "id",
+   "label": "Memberships",
+   "icon": "🎟️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "tier",
+     "label": "Tier",
+     "type": "select",
+     "options": "membershipTiers",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "membershipStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "started_at",
+     "label": "Started",
+     "type": "readonly",
+     "list": true
+    },
+    {
+     "key": "renews_at",
+     "label": "Renews",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "cancelled_at",
+     "label": "Cancelled",
+     "type": "date"
+    }
+   ]
+  },
+  "risk_event": {
+   "table": "risk_events",
+   "pk": "id",
+   "label": "Risk Events",
+   "icon": "🛡️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "ip",
+     "label": "IP",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Amount",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "score",
+     "label": "Risk score",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "action",
+     "label": "Decision",
+     "type": "select",
+     "options": "riskActions",
+     "list": true
+    },
+    {
+     "key": "signals",
+     "label": "Signals",
+     "type": "json"
+    },
+    {
+     "key": "ref",
+     "label": "Reference",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "resolved",
+     "label": "Resolved",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "resolution",
+     "label": "Resolution",
+     "type": "text"
+    },
+    {
+     "key": "created_at",
+     "label": "At",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "risk_block": {
+   "table": "risk_blocklist",
+   "pk": "id",
+   "label": "Risk Blocklists",
+   "icon": "⛔",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": [
+      "email",
+      "card",
+      "address",
+      "ip"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "value",
+     "label": "Fingerprint",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "note",
+     "label": "Note",
+     "type": "text"
+    },
+    {
+     "key": "created_at",
+     "label": "Added",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "experiment": {
+   "table": "experiments",
+   "pk": "id",
+   "label": "Experiments",
+   "icon": "🧪",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "key",
+     "label": "Key",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "variants",
+     "label": "Variants",
+     "type": "json"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "expStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "metric",
+     "label": "Metric",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "started_at",
+     "label": "Started",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "ended_at",
+     "label": "Ended",
+     "type": "date"
+    }
+   ]
+  },
+  "replenishment": {
+   "table": "replenishments",
+   "pk": "id",
+   "label": "Replenishments",
+   "icon": "📦",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "sku_id",
+     "label": "SKU",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "on_hand",
+     "label": "On hand",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "reserved",
+     "label": "Reserved",
+     "type": "number"
+    },
+    {
+     "key": "available",
+     "label": "Available",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "avg_daily",
+     "label": "Avg / day",
+     "type": "number"
+    },
+    {
+     "key": "forecast_30d",
+     "label": "Forecast 30d",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "trend",
+     "label": "Trend",
+     "type": "number"
+    },
+    {
+     "key": "lead_days",
+     "label": "Lead days",
+     "type": "number"
+    },
+    {
+     "key": "safety_stock",
+     "label": "Safety stock",
+     "type": "number"
+    },
+    {
+     "key": "reorder_point",
+     "label": "Reorder point",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "reorder_qty",
+     "label": "Reorder qty",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "min_qty",
+     "label": "Min qty",
+     "type": "number"
+    },
+    {
+     "key": "max_qty",
+     "label": "Max qty",
+     "type": "number"
+    },
+    {
+     "key": "supplier_name",
+     "label": "Supplier",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "unit_cost",
+     "label": "Unit cost",
+     "type": "money"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "planStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "priority",
+     "label": "Priority",
+     "type": "select",
+     "options": "planPriorities",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "po_ref",
+     "label": "PO ref",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "generated_at",
+     "label": "Generated",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "customer": {
+   "table": "users",
+   "pk": "id",
+   "label": "Customers",
+   "icon": "👥",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "sec": "P3",
+   "fields": [
+    {
+     "key": "uid",
+     "label": "Universal ID",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "email",
+     "label": "Email",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "role",
+     "label": "Role",
+     "type": "select",
+     "options": [
+      "customer",
+      "admin"
+     ],
+     "list": true
+    },
+    {
+     "key": "created_at",
+     "label": "Joined",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "gateway": {
+   "table": "tenant_gateways",
+   "pk": "provider_id",
+   "pkType": "text",
+   "label": "Payment Gateways",
+   "icon": "💳",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "provider_id",
+     "label": "Provider",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "enabled",
+     "label": "Enabled",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "is_primary",
+     "label": "Primary",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "mode",
+     "label": "Mode",
+     "type": "select",
+     "options": [
+      "sandbox",
+      "live"
+     ],
+     "list": true
+    },
+    {
+     "key": "config",
+     "label": "Config",
+     "type": "json"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "payment": {
+   "table": "payments",
+   "pk": "id",
+   "label": "Payments",
+   "icon": "🧮",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "sec": "P4",
+   "fields": [
+    {
+     "key": "uid",
+     "label": "Universal ID",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": [
+      "order",
+      "subscription"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "gateway",
+     "label": "Gateway",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "method",
+     "label": "Method",
+     "type": "text"
+    },
+    {
+     "key": "amount",
+     "label": "Amount",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "fee",
+     "label": "Fee",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "initiated",
+      "pending",
+      "captured",
+      "failed",
+      "refunded"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "txn_ref",
+     "label": "Txn Ref",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "created_at",
+     "label": "Date",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "tenant": {
+   "table": "tenants",
+   "pk": "id",
+   "label": "Stores (Tenants)",
+   "icon": "🏬",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "sec": "P3",
+   "fields": [
+    {
+     "key": "uid",
+     "label": "Universal ID",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "slug",
+     "label": "Slug",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "domain",
+     "label": "Domain",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "mode",
+     "label": "Mode",
+     "type": "select",
+     "options": "deployModes",
+     "list": true
+    },
+    {
+     "key": "industries",
+     "label": "Industries",
+     "type": "json"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "active",
+      "suspended"
+     ],
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "plan": {
+   "table": "plans",
+   "pk": "id",
+   "label": "Plans",
+   "icon": "💼",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "price_month",
+     "label": "Price / Month",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "max_products",
+     "label": "Max Products",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "max_orders_month",
+     "label": "Max Orders / Month",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "subscription": {
+   "table": "subscriptions",
+   "pk": "id",
+   "label": "Subscriptions",
+   "icon": "🔁",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "tenant_id",
+     "label": "Store",
+     "type": "ref:tenant",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "plan_id",
+     "label": "Plan",
+     "type": "ref:plan",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "trialing",
+      "active",
+      "past_due",
+      "cancelled"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "renews_at",
+     "label": "Renews",
+     "type": "date"
+    }
+   ]
+  },
+  "invoice": {
+   "table": "invoices",
+   "pk": "id",
+   "label": "Invoices",
+   "icon": "🧾",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "sec": "P4",
+   "fields": [
+    {
+     "key": "uid",
+     "label": "Universal ID",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "tenant_id",
+     "label": "Store",
+     "type": "ref:tenant",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "number",
+     "label": "Number",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Amount",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "draft",
+      "paid",
+      "overdue",
+      "void"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "period_start",
+     "label": "Period Start",
+     "type": "date"
+    },
+    {
+     "key": "period_end",
+     "label": "Period End",
+     "type": "date"
+    },
+    {
+     "key": "note",
+     "label": "Note",
+     "type": "text"
+    },
+    {
+     "key": "issued_at",
+     "label": "Issued",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "custom_provider": {
+   "table": "custom_providers",
+   "pk": "id",
+   "label": "Custom Providers",
+   "icon": "🔌",
+   "perm": {
+    "read": [
+     "platform",
+     "admin"
+    ],
+    "write": [
+     "platform",
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "scope",
+     "label": "Scope",
+     "type": "select",
+     "options": [
+      "platform",
+      "tenant"
+     ],
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": "providerKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "manifest",
+     "label": "Manifest",
+     "type": "json",
+     "required": true
+    }
+   ]
+  },
+  "goip_touchpoint": {
+   "table": "goip_touchpoints",
+   "pk": "id",
+   "label": "GOIP · Touchpoints",
+   "icon": "🔗",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "fields": [
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": "goipTouchpointKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "party",
+     "label": "Party",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "party_type",
+     "label": "Party type",
+     "type": "select",
+     "options": "goipPartyTypes",
+     "list": true
+    },
+    {
+     "key": "channel",
+     "label": "Channel",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "distribution",
+     "label": "Distribution",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "owner",
+     "label": "Subject",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "subject_uid",
+     "label": "Value exchange (uid)",
+     "type": "text"
+    },
+    {
+     "key": "offer_id",
+     "label": "Value exchange",
+     "type": "number"
+    },
+    {
+     "key": "code",
+     "label": "Code",
+     "type": "text"
+    },
+    {
+     "key": "order_id",
+     "label": "Order",
+     "type": "number"
+    },
+    {
+     "key": "value",
+     "label": "Value",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "unit",
+     "label": "Unit",
+     "type": "text"
+    },
+    {
+     "key": "device",
+     "label": "Device",
+     "type": "text"
+    },
+    {
+     "key": "session",
+     "label": "Session",
+     "type": "text"
+    },
+    {
+     "key": "context",
+     "label": "Context",
+     "type": "json"
+    },
+    {
+     "key": "created_at",
+     "label": "When",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "goip_budget": {
+   "table": "goip_budgets",
+   "pk": "id",
+   "label": "GOIP · Funding budgets",
+   "icon": "🏦",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "fields": [
+    {
+     "key": "funder",
+     "label": "Funder",
+     "type": "select",
+     "options": "goipFunders",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "funder_ref",
+     "label": "Funder ref",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "domain",
+     "label": "Domain",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "unit",
+     "label": "Economic unit",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "allocated",
+     "label": "Allocated",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "reserved",
+     "label": "Reserved",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "consumed",
+     "label": "Consumed",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "period",
+     "label": "Period",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "open",
+      "exhausted",
+      "closed"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "policy",
+     "label": "Policy",
+     "type": "json"
+    }
+   ]
+  },
+  "goip_settlement": {
+   "table": "goip_settlements",
+   "pk": "id",
+   "label": "GOIP · Settlements",
+   "icon": "💱",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "fields": [
+    {
+     "key": "period",
+     "label": "Period",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "party",
+     "label": "Party",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "party_type",
+     "label": "Party type",
+     "type": "select",
+     "options": "goipPartyTypes",
+     "list": true
+    },
+    {
+     "key": "unit",
+     "label": "Unit",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "gross",
+     "label": "Gross",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "fees",
+     "label": "Fees",
+     "type": "money"
+    },
+    {
+     "key": "net",
+     "label": "Net",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "redemptions",
+     "label": "Redemptions",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "goipSettlementStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "reference",
+     "label": "Payout reference",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "paid_at",
+     "label": "Paid",
+     "type": "readonly"
+    },
+    {
+     "key": "meta",
+     "label": "Meta",
+     "type": "json"
+    }
+   ]
+  },
+  "goip_entitlement": {
+   "table": "goip_entitlements",
+   "pk": "id",
+   "label": "GOIP · Entitlements",
+   "icon": "🎟️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "fields": [
+    {
+     "key": "owner",
+     "label": "Subject",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "benefit",
+     "label": "Benefit",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "unit",
+     "label": "Unit",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "qty",
+     "label": "Quantity",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "tier",
+     "label": "Tier",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "scope",
+     "label": "Scope",
+     "type": "json"
+    },
+    {
+     "key": "starts",
+     "label": "Starts",
+     "type": "date"
+    },
+    {
+     "key": "ends",
+     "label": "Ends / due",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "goipEntitlementStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "source_offer",
+     "label": "From value exchange",
+     "type": "number"
+    },
+    {
+     "key": "source_redemption",
+     "label": "From redemption",
+     "type": "number"
+    },
+    {
+     "key": "meta",
+     "label": "Meta",
+     "type": "json"
+    }
+   ]
+  },
+  "message": {
+   "table": "messages",
+   "noTenant": true,
+   "pk": "lang",
+   "pk2": "key",
+   "pkType": "text",
+   "composite": true,
+   "label": "Messages",
+   "icon": "🗣️",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "fields": [
+    {
+     "key": "lang",
+     "label": "Language",
+     "type": "select",
+     "options": "languages",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "key",
+     "label": "Message key",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "text",
+     "label": "Text",
+     "type": "textarea",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    }
+   ]
+  }
+ },
+ "PARITY_DEFS": {
+  "dark_store": {
+   "table": "dark_stores",
+   "pk": "id",
+   "label": "Dark Stores",
+   "icon": "🏬",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "uid",
+     "label": "Universal ID",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Store Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "code",
+     "label": "Store Code",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Store Type",
+     "type": "select",
+     "options": "qcStoreKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "address",
+     "label": "Address",
+     "type": "textarea"
+    },
+    {
+     "key": "city",
+     "label": "City",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "region",
+     "label": "Region",
+     "type": "text"
+    },
+    {
+     "key": "pincode",
+     "label": "Pincode",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "country",
+     "label": "Country",
+     "type": "text"
+    },
+    {
+     "key": "lat",
+     "label": "Latitude",
+     "type": "number"
+    },
+    {
+     "key": "lng",
+     "label": "Longitude",
+     "type": "number"
+    },
+    {
+     "key": "service_radius_km",
+     "label": "Service Radius (km)",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "promise_minutes",
+     "label": "Promise (minutes)",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "prep_minutes",
+     "label": "Prep (minutes)",
+     "type": "number"
+    },
+    {
+     "key": "min_order",
+     "label": "Min Order",
+     "type": "money"
+    },
+    {
+     "key": "delivery_fee",
+     "label": "Delivery Fee",
+     "type": "money"
+    },
+    {
+     "key": "service_pincodes",
+     "label": "Service Pincodes",
+     "type": "json"
+    },
+    {
+     "key": "service_days",
+     "label": "Service Days",
+     "type": "json"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "qcStoreStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "delivery_slot": {
+   "table": "delivery_slots",
+   "pk": "id",
+   "label": "Delivery Slots",
+   "icon": "🕐",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "store_id",
+     "label": "Store",
+     "type": "ref:dark_store",
+     "list": true
+    },
+    {
+     "key": "day_offset",
+     "label": "Day Offset",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "window_start",
+     "label": "Window Start",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "window_end",
+     "label": "Window End",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "capacity",
+     "label": "Capacity",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "booked",
+     "label": "Booked",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "cutoff_minutes",
+     "label": "Cutoff (min)",
+     "type": "number"
+    },
+    {
+     "key": "fee",
+     "label": "Slot Fee",
+     "type": "money"
+    },
+    {
+     "key": "promise_minutes",
+     "label": "Promise (min)",
+     "type": "number"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "qcSlotStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "service_area": {
+   "table": "service_areas",
+   "pk": "id",
+   "label": "Service Areas",
+   "icon": "🗺️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "store_id",
+     "label": "Store",
+     "type": "ref:dark_store",
+     "list": true
+    },
+    {
+     "key": "pincode",
+     "label": "Pincode / ZIP",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "area_name",
+     "label": "Area Name",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "serviceable",
+     "label": "Serviceable",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "eta_minutes",
+     "label": "ETA (min)",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "fee",
+     "label": "Delivery Fee",
+     "type": "money"
+    },
+    {
+     "key": "min_order",
+     "label": "Min Order",
+     "type": "money"
+    },
+    {
+     "key": "cod_available",
+     "label": "COD Available",
+     "type": "bool"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "qcAreaStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "store_inventory": {
+   "table": "store_inventory",
+   "pk": "id",
+   "label": "Store Inventory",
+   "icon": "📦",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "store_id",
+     "label": "Store",
+     "type": "ref:dark_store",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product",
+     "list": true
+    },
+    {
+     "key": "sku_id",
+     "label": "SKU",
+     "type": "ref:sku",
+     "list": true
+    },
+    {
+     "key": "qty",
+     "label": "Quantity",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "reserved",
+     "label": "Reserved",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "safety_stock",
+     "label": "Safety Stock",
+     "type": "number"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "qcInvStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "rider": {
+   "table": "riders",
+   "pk": "id",
+   "label": "Riders",
+   "icon": "🛵",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "uid",
+     "label": "Universal ID",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Rider Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "phone",
+     "label": "Phone",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "vehicle",
+     "label": "Vehicle",
+     "type": "select",
+     "options": "qcVehicles",
+     "list": true
+    },
+    {
+     "key": "store_id",
+     "label": "Home Store",
+     "type": "ref:dark_store",
+     "list": true
+    },
+    {
+     "key": "city",
+     "label": "City",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "qcRiderStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "shift_start",
+     "label": "Shift Start",
+     "type": "text"
+    },
+    {
+     "key": "shift_end",
+     "label": "Shift End",
+     "type": "text"
+    },
+    {
+     "key": "rating",
+     "label": "Rating",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "deliveries",
+     "label": "Deliveries",
+     "type": "number",
+     "list": true
+    }
+   ]
+  },
+  "dispatch_run": {
+   "table": "dispatch_runs",
+   "pk": "id",
+   "label": "Dispatch Runs",
+   "icon": "🧺",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Run #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "store_id",
+     "label": "Store",
+     "type": "ref:dark_store",
+     "list": true
+    },
+    {
+     "key": "slot_id",
+     "label": "Slot",
+     "type": "ref:delivery_slot",
+     "list": true
+    },
+    {
+     "key": "rider_id",
+     "label": "Rider",
+     "type": "ref:rider",
+     "list": true
+    },
+    {
+     "key": "order_ids",
+     "label": "Orders",
+     "type": "json"
+    },
+    {
+     "key": "batch_count",
+     "label": "Batch Size",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "pod_otp",
+     "label": "PoD OTP",
+     "type": "text"
+    },
+    {
+     "key": "pod_at",
+     "label": "Delivered At",
+     "type": "readonly",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "qcDispatchStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "notes",
+     "label": "Notes",
+     "type": "textarea"
+    }
+   ]
+  },
+  "upi_handle": {
+   "table": "upi_handles",
+   "pk": "id",
+   "label": "UPI Handles (VPA)",
+   "icon": "📱",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "vpa",
+     "label": "VPA",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name at Bank",
+     "type": "text",
+     "display": "lead"
+    },
+    {
+     "key": "verified",
+     "label": "Verified",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "is_default",
+     "label": "Default",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finUpiStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "upi_collect": {
+   "table": "upi_collects",
+   "pk": "id",
+   "label": "UPI Collect Requests",
+   "icon": "💸",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Request #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "owner",
+     "label": "Payee",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "payer_vpa",
+     "label": "Payer VPA",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Amount",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "note",
+     "label": "Note",
+     "type": "text"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finCollectStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "txn_ref",
+     "label": "Txn Ref",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "expires_at",
+     "label": "Expires",
+     "type": "date",
+     "list": true
+    }
+   ]
+  },
+  "qr_code": {
+   "table": "qr_codes",
+   "pk": "id",
+   "label": "QR Codes",
+   "icon": "▦",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "QR #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": "finQrKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "payload",
+     "label": "Payload",
+     "type": "textarea",
+     "required": true
+    },
+    {
+     "key": "label",
+     "label": "Label",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Amount",
+     "type": "money"
+    },
+    {
+     "key": "owner",
+     "label": "Owner",
+     "type": "text"
+    },
+    {
+     "key": "svg",
+     "label": "SVG",
+     "type": "json",
+     "readonly": true
+    },
+    {
+     "key": "scans",
+     "label": "Scans",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finQrStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "payment_link": {
+   "table": "payment_links",
+   "pk": "id",
+   "label": "Payment Links",
+   "icon": "🔗",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Link #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "token",
+     "label": "Token",
+     "type": "text",
+     "readonly": true
+    },
+    {
+     "key": "title",
+     "label": "Title",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "amount",
+     "label": "Amount",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "owner",
+     "label": "Payer",
+     "type": "text"
+    },
+    {
+     "key": "gateway",
+     "label": "Gateway",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "purpose",
+     "label": "Purpose",
+     "type": "text"
+    },
+    {
+     "key": "expires_at",
+     "label": "Expires",
+     "type": "date"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finLinkStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "txn_ref",
+     "label": "Txn Ref",
+     "type": "text"
+    }
+   ]
+  },
+  "mandate": {
+   "table": "mandates",
+   "pk": "id",
+   "label": "Mandates (Auto-Debit)",
+   "icon": "🔁",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Mandate #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "mandate_id",
+     "label": "Mandate ID",
+     "type": "text"
+    },
+    {
+     "key": "gateway",
+     "label": "Gateway",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "max_amount",
+     "label": "Max Amount",
+     "type": "money"
+    },
+    {
+     "key": "frequency",
+     "label": "Frequency",
+     "type": "select",
+     "options": "finMandateFrequencies",
+     "list": true
+    },
+    {
+     "key": "purpose",
+     "label": "Purpose",
+     "type": "text"
+    },
+    {
+     "key": "next_charge_at",
+     "label": "Next Charge",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "charged_amount",
+     "label": "Charged So Far",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "charges_done",
+     "label": "Charges Done",
+     "type": "number"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finMandateStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "escrow_hold": {
+   "table": "escrow_holds",
+   "pk": "id",
+   "label": "Escrow Holds",
+   "icon": "🛡️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Escrow #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "order_id",
+     "label": "Order",
+     "type": "ref:order",
+     "list": true
+    },
+    {
+     "key": "buyer",
+     "label": "Buyer",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "seller",
+     "label": "Seller",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Amount Held",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "held",
+     "label": "Held",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "released_at",
+     "label": "Released",
+     "type": "readonly",
+     "list": true
+    },
+    {
+     "key": "dispute_opened",
+     "label": "Dispute Opened",
+     "type": "bool"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finEscrowStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "meta",
+     "label": "Meta",
+     "type": "json"
+    }
+   ]
+  },
+  "split_payment": {
+   "table": "split_payments",
+   "pk": "id",
+   "label": "Split Payments",
+   "icon": "➗",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Split #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "payment_id",
+     "label": "Payment",
+     "type": "ref:payment",
+     "list": true
+    },
+    {
+     "key": "order_id",
+     "label": "Order",
+     "type": "ref:order",
+     "list": true
+    },
+    {
+     "key": "splits",
+     "label": "Splits",
+     "type": "json",
+     "hint": "[{\"party\":\"seller:1\",\"amount\":10}]"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finSplitStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "settled_at",
+     "label": "Settled",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "kyc_profile": {
+   "table": "kyc_profiles",
+   "pk": "id",
+   "label": "KYC Profiles",
+   "icon": "🪪",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Type",
+     "type": "select",
+     "options": "finKycKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "full_name",
+     "label": "Full Name",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "dob",
+     "label": "Date of Birth",
+     "type": "date"
+    },
+    {
+     "key": "pan",
+     "label": "PAN",
+     "type": "text"
+    },
+    {
+     "key": "aadhaar_masked",
+     "label": "Aadhaar (masked)",
+     "type": "text"
+    },
+    {
+     "key": "gstin",
+     "label": "GSTIN",
+     "type": "text"
+    },
+    {
+     "key": "company",
+     "label": "Company",
+     "type": "text"
+    },
+    {
+     "key": "website",
+     "label": "Website",
+     "type": "text"
+    },
+    {
+     "key": "doc_type",
+     "label": "Document Type",
+     "type": "select",
+     "options": "finKycDocs",
+     "list": true
+    },
+    {
+     "key": "doc_ref",
+     "label": "Document Ref",
+     "type": "text"
+    },
+    {
+     "key": "doc_status",
+     "label": "Doc Status",
+     "type": "select",
+     "options": "finKycDocStatuses",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finKycStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "verified_at",
+     "label": "Verified",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "bank_payout": {
+   "table": "bank_payouts",
+   "pk": "id",
+   "label": "Bank Payouts",
+   "icon": "🏦",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Payout #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "payee",
+     "label": "Payee",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Amount",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "account_name",
+     "label": "Account Name",
+     "type": "text"
+    },
+    {
+     "key": "account_number",
+     "label": "Account Number",
+     "type": "text"
+    },
+    {
+     "key": "ifsc",
+     "label": "IFSC",
+     "type": "text"
+    },
+    {
+     "key": "upi_vpa",
+     "label": "UPI VPA",
+     "type": "text"
+    },
+    {
+     "key": "gateway",
+     "label": "Gateway",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finPayoutStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "txn_ref",
+     "label": "Txn Ref",
+     "type": "text"
+    },
+    {
+     "key": "failure_reason",
+     "label": "Failure Reason",
+     "type": "text"
+    }
+   ]
+  },
+  "biller": {
+   "table": "billers",
+   "pk": "id",
+   "label": "Billers (BBPS)",
+   "icon": "🧾",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "name",
+     "label": "Biller Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "category",
+     "label": "Category",
+     "type": "select",
+     "options": "finBillerCategories",
+     "list": true
+    },
+    {
+     "key": "code",
+     "label": "Biller Code",
+     "type": "text"
+    },
+    {
+     "key": "fetch_required",
+     "label": "Bill Fetch Required",
+     "type": "bool"
+    },
+    {
+     "key": "fields",
+     "label": "Input Fields",
+     "type": "json"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "active",
+      "inactive"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "bill_payment": {
+   "table": "bill_payments",
+   "pk": "id",
+   "label": "Bill Payments",
+   "icon": "💡",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Payment #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "biller_id",
+     "label": "Biller",
+     "type": "ref:biller",
+     "list": true
+    },
+    {
+     "key": "category",
+     "label": "Category",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "account_no",
+     "label": "Account / Consumer No",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Amount",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "convenience_fee",
+     "label": "Convenience Fee",
+     "type": "money"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finBillStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "txn_ref",
+     "label": "Txn Ref",
+     "type": "text"
+    }
+   ]
+  },
+  "recharge": {
+   "table": "recharges",
+   "pk": "id",
+   "label": "Mobile / DTH Recharges",
+   "icon": "📡",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Recharge #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "number",
+     "label": "Number",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "operator",
+     "label": "Operator",
+     "type": "select",
+     "options": "finOperators",
+     "list": true
+    },
+    {
+     "key": "circle",
+     "label": "Circle",
+     "type": "select",
+     "options": "finCircles",
+     "list": true
+    },
+    {
+     "key": "plan_id",
+     "label": "Plan",
+     "type": "ref:recharge_plan"
+    },
+    {
+     "key": "amount",
+     "label": "Amount",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": "finRechargeKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finRechargeStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "txn_ref",
+     "label": "Txn Ref",
+     "type": "text"
+    }
+   ]
+  },
+  "recharge_plan": {
+   "table": "recharge_plans",
+   "pk": "id",
+   "label": "Recharge Plans",
+   "icon": "📋",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "operator",
+     "label": "Operator",
+     "type": "select",
+     "options": "finOperators",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "circle",
+     "label": "Circle",
+     "type": "select",
+     "options": "finCircles",
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": "finRechargeKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "amount",
+     "label": "Price",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "validity",
+     "label": "Validity",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "data",
+     "label": "Data",
+     "type": "text"
+    },
+    {
+     "key": "sms",
+     "label": "SMS",
+     "type": "text"
+    },
+    {
+     "key": "calls",
+     "label": "Calls",
+     "type": "text"
+    },
+    {
+     "key": "description",
+     "label": "Description",
+     "type": "textarea"
+    },
+    {
+     "key": "popular",
+     "label": "Popular",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "active",
+      "inactive"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number"
+    }
+   ]
+  },
+  "bnpl_account": {
+   "table": "bnpl_accounts",
+   "pk": "id",
+   "label": "BNPL Accounts",
+   "icon": "💳",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "provider",
+     "label": "Provider",
+     "type": "text"
+    },
+    {
+     "key": "credit_limit",
+     "label": "Credit Limit",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "used",
+     "label": "Used",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "available",
+     "label": "Available",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "tenure_months",
+     "label": "Tenure (months)",
+     "type": "number"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finBnplStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "kyc_id",
+     "label": "KYC Profile",
+     "type": "ref:kyc_profile"
+    }
+   ]
+  },
+  "bnpl_emi": {
+   "table": "bnpl_emis",
+   "pk": "id",
+   "label": "BNPL EMIs",
+   "icon": "📅",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "account_id",
+     "label": "Account",
+     "type": "ref:bnpl_account",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "order_id",
+     "label": "Order",
+     "type": "ref:order",
+     "list": true
+    },
+    {
+     "key": "installment_no",
+     "label": "Installment #",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Amount",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "due_at",
+     "label": "Due",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finEmiStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "paid_at",
+     "label": "Paid At",
+     "type": "readonly"
+    }
+   ]
+  },
+  "loan": {
+   "table": "loans",
+   "pk": "id",
+   "label": "Loans & Credit Lines",
+   "icon": "🏦",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Loan #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "principal",
+     "label": "Principal",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "tenure_months",
+     "label": "Tenure (months)",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "rate",
+     "label": "Interest Rate %",
+     "type": "number"
+    },
+    {
+     "key": "emi",
+     "label": "EMI",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "processing_fee",
+     "label": "Processing Fee",
+     "type": "money"
+    },
+    {
+     "key": "disbursed_at",
+     "label": "Disbursed",
+     "type": "date"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finLoanStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "kyc_id",
+     "label": "KYC Profile",
+     "type": "ref:kyc_profile"
+    }
+   ]
+  },
+  "insurance_policy": {
+   "table": "insurance_policies",
+   "pk": "id",
+   "label": "Insurance Policies",
+   "icon": "☂️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Policy #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "product_id",
+     "label": "Insurance Product",
+     "type": "ref:product",
+     "list": true
+    },
+    {
+     "key": "plan_name",
+     "label": "Plan",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "premium",
+     "label": "Premium",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "cover",
+     "label": "Cover Amount",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "starts_at",
+     "label": "Starts",
+     "type": "date"
+    },
+    {
+     "key": "ends_at",
+     "label": "Ends",
+     "type": "date"
+    },
+    {
+     "key": "nominees",
+     "label": "Nominees",
+     "type": "json"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finInsuranceStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "gift_voucher": {
+   "table": "gift_vouchers",
+   "pk": "id",
+   "label": "Gift Vouchers",
+   "icon": "🎁",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "code",
+     "label": "Voucher Code",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Face Value",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "buyer",
+     "label": "Buyer",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "recipient",
+     "label": "Recipient",
+     "type": "text"
+    },
+    {
+     "key": "recipient_email",
+     "label": "Recipient Email",
+     "type": "text"
+    },
+    {
+     "key": "message",
+     "label": "Message",
+     "type": "textarea"
+    },
+    {
+     "key": "expires_at",
+     "label": "Expires",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "redeemed_at",
+     "label": "Redeemed",
+     "type": "readonly",
+     "list": true
+    },
+    {
+     "key": "redeemed_by",
+     "label": "Redeemed By",
+     "type": "text"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "finVoucherStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "seller_onboarding": {
+   "table": "seller_onboarding",
+   "pk": "id",
+   "label": "Seller Onboarding",
+   "icon": "🧾",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Application #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "seller_id",
+     "label": "Seller",
+     "type": "ref:seller",
+     "list": true
+    },
+    {
+     "key": "business_name",
+     "label": "Business Name",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "business_type",
+     "label": "Business Type",
+     "type": "select",
+     "options": "mktBusinessTypes",
+     "list": true
+    },
+    {
+     "key": "gstin",
+     "label": "GSTIN",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "pan",
+     "label": "PAN",
+     "type": "text"
+    },
+    {
+     "key": "tan",
+     "label": "TAN",
+     "type": "text"
+    },
+    {
+     "key": "bank_name",
+     "label": "Bank Name",
+     "type": "text"
+    },
+    {
+     "key": "bank_account",
+     "label": "Bank Account",
+     "type": "text"
+    },
+    {
+     "key": "bank_ifsc",
+     "label": "IFSC",
+     "type": "text"
+    },
+    {
+     "key": "docs",
+     "label": "Documents",
+     "type": "json"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "mktOnboardingStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "submitted_at",
+     "label": "Submitted",
+     "type": "readonly",
+     "list": true
+    },
+    {
+     "key": "reviewed_at",
+     "label": "Reviewed",
+     "type": "readonly"
+    },
+    {
+     "key": "reviewed_by",
+     "label": "Reviewed By",
+     "type": "text"
+    },
+    {
+     "key": "notes",
+     "label": "Notes",
+     "type": "textarea"
+    }
+   ]
+  },
+  "seller_offer": {
+   "table": "seller_offers",
+   "pk": "id",
+   "label": "Seller Offers (Buy-Box)",
+   "icon": "🏆",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "sku_id",
+     "label": "SKU",
+     "type": "ref:sku"
+    },
+    {
+     "key": "seller_id",
+     "label": "Seller",
+     "type": "ref:seller",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "price",
+     "label": "Offer Price",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "condition",
+     "label": "Condition",
+     "type": "select",
+     "options": "mktConditions",
+     "list": true
+    },
+    {
+     "key": "fulfillment",
+     "label": "Fulfilment",
+     "type": "select",
+     "options": "mktFulfillment",
+     "list": true
+    },
+    {
+     "key": "handling_hours",
+     "label": "Handling (hrs)",
+     "type": "number"
+    },
+    {
+     "key": "shipping_days",
+     "label": "Shipping Days",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "offer_status",
+     "label": "Status",
+     "type": "select",
+     "options": "mktOfferStatuses",
+     "list": true
+    },
+    {
+     "key": "buybox",
+     "label": "Buy-Box Winner",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "buybox_score",
+     "label": "Buy-Box Score",
+     "type": "number",
+     "list": true
+    }
+   ]
+  },
+  "fba_inbound": {
+   "table": "fba_inbound",
+   "pk": "id",
+   "label": "FBA Inbound",
+   "icon": "📥",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Inbound #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "seller_id",
+     "label": "Seller",
+     "type": "ref:seller",
+     "list": true
+    },
+    {
+     "key": "warehouse_id",
+     "label": "Fulfilment Centre",
+     "type": "ref:warehouse",
+     "list": true
+    },
+    {
+     "key": "sku_id",
+     "label": "SKU",
+     "type": "ref:sku",
+     "list": true
+    },
+    {
+     "key": "units",
+     "label": "Units",
+     "type": "number",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "fee",
+     "label": "FBA Fee",
+     "type": "money"
+    },
+    {
+     "key": "tracking_ref",
+     "label": "Tracking Ref",
+     "type": "text"
+    },
+    {
+     "key": "received_at",
+     "label": "Received",
+     "type": "readonly",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "mktFbaStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "seller_performance": {
+   "table": "seller_performance",
+   "pk": "id",
+   "label": "Seller Performance",
+   "icon": "📈",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "seller_id",
+     "label": "Seller",
+     "type": "ref:seller",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "period",
+     "label": "Period",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "orders",
+     "label": "Orders",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "odr",
+     "label": "ODR %",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "odr_targets",
+     "label": "ODR Count",
+     "type": "number"
+    },
+    {
+     "key": "late_ship_rate",
+     "label": "Late Ship %",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "late_shipments",
+     "label": "Late Shipments",
+     "type": "number"
+    },
+    {
+     "key": "cancel_rate",
+     "label": "Cancel %",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "cancellations",
+     "label": "Cancellations",
+     "type": "number"
+    },
+    {
+     "key": "valid_tracked_rate",
+     "label": "Valid Tracking %",
+     "type": "number"
+    },
+    {
+     "key": "health_score",
+     "label": "Health Score",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "tier",
+     "label": "Tier",
+     "type": "select",
+     "options": "mktTiers",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "computed",
+      "archived"
+     ],
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "buyer_claim": {
+   "table": "buyer_claims",
+   "pk": "id",
+   "label": "Buyer Protection Claims",
+   "icon": "⚖️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Claim #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "order_id",
+     "label": "Order",
+     "type": "ref:order",
+     "list": true
+    },
+    {
+     "key": "buyer",
+     "label": "Buyer",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "seller_id",
+     "label": "Seller",
+     "type": "ref:seller",
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Claim Type",
+     "type": "select",
+     "options": "mktClaimKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "reason",
+     "label": "Reason",
+     "type": "textarea",
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Claim Amount",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "evidence",
+     "label": "Evidence",
+     "type": "json"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "mktClaimStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "resolution",
+     "label": "Resolution",
+     "type": "text"
+    },
+    {
+     "key": "resolved_at",
+     "label": "Resolved",
+     "type": "readonly",
+     "list": true
+    },
+    {
+     "key": "resolved_by",
+     "label": "Resolved By",
+     "type": "text"
+    }
+   ]
+  },
+  "smart_fulfilment": {
+   "table": "smart_fulfilment",
+   "pk": "id",
+   "label": "Smart Fulfilment",
+   "icon": "🎯",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Enrolment #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "seller_id",
+     "label": "Seller",
+     "type": "ref:seller",
+     "list": true
+    },
+    {
+     "key": "grade",
+     "label": "Grade",
+     "type": "select",
+     "options": "mktSmartGrades",
+     "list": true
+    },
+    {
+     "key": "sla_hours",
+     "label": "SLA (hours)",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "packed_same_day",
+     "label": "Same-Day Packing",
+     "type": "bool"
+    },
+    {
+     "key": "score",
+     "label": "Quality Score",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "mktSmartStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "sponsored_creative": {
+   "table": "sponsored_creatives",
+   "pk": "id",
+   "label": "Sponsored Brands / Display",
+   "icon": "📣",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ad_id",
+     "label": "Sponsored Ad",
+     "type": "ref:ad",
+     "list": true
+    },
+    {
+     "key": "seller_id",
+     "label": "Seller",
+     "type": "ref:seller",
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Ad Type",
+     "type": "select",
+     "options": "mktAdKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "headline",
+     "label": "Headline",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "creative",
+     "label": "Creative / Asset",
+     "type": "json"
+    },
+    {
+     "key": "landing",
+     "label": "Landing Page",
+     "type": "text"
+    },
+    {
+     "key": "bid_model",
+     "label": "Bid Model",
+     "type": "select",
+     "options": "mktBidModels",
+     "list": true
+    },
+    {
+     "key": "bid_amount",
+     "label": "Bid",
+     "type": "money"
+    },
+    {
+     "key": "budget",
+     "label": "Budget",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "spent",
+     "label": "Spent",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "mktCreativeStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "start_at",
+     "label": "Starts",
+     "type": "date"
+    },
+    {
+     "key": "end_at",
+     "label": "Ends",
+     "type": "date"
+    }
+   ]
+  },
+  "trade_assurance": {
+   "table": "trade_assurance",
+   "pk": "id",
+   "label": "Trade Assurance",
+   "icon": "🛡️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Order #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "order_id",
+     "label": "Order",
+     "type": "ref:order",
+     "list": true
+    },
+    {
+     "key": "buyer",
+     "label": "Buyer",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "seller",
+     "label": "Seller",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Order Amount",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "fee",
+     "label": "Assurance Fee",
+     "type": "money"
+    },
+    {
+     "key": "milestones",
+     "label": "Milestones",
+     "type": "json"
+    },
+    {
+     "key": "current_milestone",
+     "label": "Current Milestone",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "held",
+     "label": "Funds Held",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "released_at",
+     "label": "Released",
+     "type": "readonly",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "b2bAssuranceStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "gold_supplier": {
+   "table": "gold_suppliers",
+   "pk": "id",
+   "label": "Gold Suppliers",
+   "icon": "🥇",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "supplier_id",
+     "label": "Supplier",
+     "type": "ref:supplier",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "tier",
+     "label": "Tier",
+     "type": "select",
+     "options": "b2bGoldTiers",
+     "list": true
+    },
+    {
+     "key": "starts_at",
+     "label": "Starts",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "ends_at",
+     "label": "Renews",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "fee",
+     "label": "Membership Fee",
+     "type": "money"
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "verified",
+     "label": "Verified",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "verification_level",
+     "label": "Verification Level",
+     "type": "select",
+     "options": "b2bVerificationLevels",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "active",
+      "expired",
+      "cancelled"
+     ],
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "company_verification": {
+   "table": "company_verifications",
+   "pk": "id",
+   "label": "Company Verifications",
+   "icon": "✅",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Audit #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "supplier_id",
+     "label": "Supplier",
+     "type": "ref:supplier",
+     "list": true
+    },
+    {
+     "key": "company_name",
+     "label": "Company Name",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "country",
+     "label": "Country",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "registration_no",
+     "label": "Registration No",
+     "type": "text"
+    },
+    {
+     "key": "year_established",
+     "label": "Year Established",
+     "type": "text"
+    },
+    {
+     "key": "employees",
+     "label": "Employees",
+     "type": "text"
+    },
+    {
+     "key": "revenue",
+     "label": "Revenue Range",
+     "type": "text"
+    },
+    {
+     "key": "export_share",
+     "label": "Export Share",
+     "type": "text"
+    },
+    {
+     "key": "audit_docs",
+     "label": "Audit Documents",
+     "type": "json"
+    },
+    {
+     "key": "audit_by",
+     "label": "Audited By",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "audit_at",
+     "label": "Audit Date",
+     "type": "date"
+    },
+    {
+     "key": "verification_status",
+     "label": "Status",
+     "type": "select",
+     "options": "b2bVerificationStatuses",
+     "list": true
+    },
+    {
+     "key": "badges",
+     "label": "Badges",
+     "type": "json"
+    },
+    {
+     "key": "notes",
+     "label": "Notes",
+     "type": "textarea"
+    }
+   ]
+  },
+  "export_document": {
+   "table": "export_documents",
+   "pk": "id",
+   "label": "Export / Customs Documents",
+   "icon": "📄",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Doc #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "order_id",
+     "label": "Order",
+     "type": "ref:order",
+     "list": true
+    },
+    {
+     "key": "doc_kind",
+     "label": "Document Type",
+     "type": "select",
+     "options": "b2bDocKinds",
+     "list": true
+    },
+    {
+     "key": "buyer",
+     "label": "Buyer",
+     "type": "text"
+    },
+    {
+     "key": "consignee",
+     "label": "Consignee",
+     "type": "text"
+    },
+    {
+     "key": "shipper",
+     "label": "Shipper",
+     "type": "text"
+    },
+    {
+     "key": "origin_country",
+     "label": "Origin",
+     "type": "text"
+    },
+    {
+     "key": "dest_country",
+     "label": "Destination",
+     "type": "text"
+    },
+    {
+     "key": "port_loading",
+     "label": "Port of Loading",
+     "type": "text"
+    },
+    {
+     "key": "port_discharge",
+     "label": "Port of Discharge",
+     "type": "text"
+    },
+    {
+     "key": "incoterms",
+     "label": "Incoterms",
+     "type": "select",
+     "options": "incoterms",
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "total_value",
+     "label": "Total Value",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "hs_codes",
+     "label": "HS Codes",
+     "type": "json"
+    },
+    {
+     "key": "packages",
+     "label": "Packages",
+     "type": "number"
+    },
+    {
+     "key": "gross_weight",
+     "label": "Gross Weight",
+     "type": "number"
+    },
+    {
+     "key": "net_weight",
+     "label": "Net Weight",
+     "type": "number"
+    },
+    {
+     "key": "marks",
+     "label": "Marks & Numbers",
+     "type": "textarea"
+    },
+    {
+     "key": "body",
+     "label": "Line Items",
+     "type": "json"
+    },
+    {
+     "key": "rendered",
+     "label": "Rendered Document",
+     "type": "textarea",
+     "readonly": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "b2bDocStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "letter_of_credit": {
+   "table": "letters_of_credit",
+   "pk": "id",
+   "label": "Letters of Credit",
+   "icon": "📜",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "LC #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "order_id",
+     "label": "Order",
+     "type": "ref:order",
+     "list": true
+    },
+    {
+     "key": "buyer",
+     "label": "Applicant",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "seller",
+     "label": "Beneficiary",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "issuing_bank",
+     "label": "Issuing Bank",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "advising_bank",
+     "label": "Advising Bank",
+     "type": "text"
+    },
+    {
+     "key": "lc_number",
+     "label": "LC Number",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Amount",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "issue_date",
+     "label": "Issue Date",
+     "type": "date"
+    },
+    {
+     "key": "expiry_date",
+     "label": "Expiry Date",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "port_loading",
+     "label": "Port of Loading",
+     "type": "text"
+    },
+    {
+     "key": "port_discharge",
+     "label": "Port of Discharge",
+     "type": "text"
+    },
+    {
+     "key": "latest_shipment",
+     "label": "Latest Shipment",
+     "type": "date"
+    },
+    {
+     "key": "docs_required",
+     "label": "Documents Required",
+     "type": "json"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "b2bLcStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "rfq_quote": {
+   "table": "rfq_quotes",
+   "pk": "id",
+   "label": "RFQ Quotes (Seller Bids)",
+   "icon": "💹",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "rfq_id",
+     "label": "RFQ",
+     "type": "ref:rfq",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "supplier_id",
+     "label": "Supplier",
+     "type": "ref:supplier",
+     "list": true
+    },
+    {
+     "key": "seller_id",
+     "label": "Seller",
+     "type": "ref:seller",
+     "list": true
+    },
+    {
+     "key": "unit_price",
+     "label": "Unit Price",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "moq",
+     "label": "MOQ",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "lead_days",
+     "label": "Lead Days",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "payment_terms",
+     "label": "Payment Terms",
+     "type": "select",
+     "options": "paymentTerms",
+     "list": true
+    },
+    {
+     "key": "validity_days",
+     "label": "Valid (days)",
+     "type": "number"
+    },
+    {
+     "key": "quote_ref",
+     "label": "Quote #",
+     "type": "text"
+    },
+    {
+     "key": "attachments",
+     "label": "Attachments",
+     "type": "json"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "b2bQuoteStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "rank",
+     "label": "Rank",
+     "type": "number",
+     "list": true
+    }
+   ]
+  },
+  "tender_bid": {
+   "table": "tender_bids",
+   "pk": "id",
+   "label": "Tender Bids",
+   "icon": "🗳️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "tender_id",
+     "label": "Tender",
+     "type": "ref:tender",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "bidder",
+     "label": "Bidder",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "amount",
+     "label": "Bid Amount",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "terms",
+     "label": "Terms",
+     "type": "textarea"
+    },
+    {
+     "key": "bid_ref",
+     "label": "Bid #",
+     "type": "text"
+    },
+    {
+     "key": "attachments",
+     "label": "Attachments",
+     "type": "json"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "b2bBidStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "rank",
+     "label": "Rank",
+     "type": "number",
+     "list": true
+    }
+   ]
+  },
+  "price_list": {
+   "table": "price_lists",
+   "pk": "id",
+   "label": "Price Lists",
+   "icon": "🏷️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "name",
+     "label": "Price List Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "segment",
+     "label": "Segment",
+     "type": "select",
+     "options": "b2bSegments",
+     "list": true
+    },
+    {
+     "key": "starts_at",
+     "label": "Starts",
+     "type": "date"
+    },
+    {
+     "key": "ends_at",
+     "label": "Ends",
+     "type": "date"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "active",
+      "inactive"
+     ],
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "price_list_item": {
+   "table": "price_list_items",
+   "pk": "id",
+   "label": "Price List Items",
+   "icon": "📐",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "price_list_id",
+     "label": "Price List",
+     "type": "ref:price_list",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "ref:product",
+     "list": true
+    },
+    {
+     "key": "sku_id",
+     "label": "SKU",
+     "type": "ref:sku"
+    },
+    {
+     "key": "price",
+     "label": "Price",
+     "type": "money",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "min_qty",
+     "label": "Min Qty",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "max_qty",
+     "label": "Max Qty",
+     "type": "number"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "active",
+      "inactive"
+     ],
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "gift_registry": {
+   "table": "gift_registries",
+   "pk": "id",
+   "label": "Gift Registries",
+   "icon": "🎁",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Registry #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "owner",
+     "label": "Creator",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Registry Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "event",
+     "label": "Event",
+     "type": "select",
+     "options": "shopEvents",
+     "list": true
+    },
+    {
+     "key": "event_date",
+     "label": "Event Date",
+     "type": "date",
+     "list": true
+    },
+    {
+     "key": "shipping_address",
+     "label": "Shipping Address",
+     "type": "textarea"
+    },
+    {
+     "key": "notes",
+     "label": "Notes",
+     "type": "textarea"
+    },
+    {
+     "key": "items",
+     "label": "Wishlist Items",
+     "type": "json"
+    },
+    {
+     "key": "contributors",
+     "label": "Contributors",
+     "type": "json"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "shopRegistryStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "notification": {
+   "table": "notifications",
+   "pk": "id",
+   "label": "Notifications",
+   "icon": "🔔",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "owner",
+     "label": "Recipient",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": "shopNotifKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "title",
+     "label": "Title",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "body",
+     "label": "Body",
+     "type": "textarea"
+    },
+    {
+     "key": "link",
+     "label": "Link",
+     "type": "text"
+    },
+    {
+     "key": "read",
+     "label": "Read",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "meta",
+     "label": "Meta",
+     "type": "json"
+    },
+    {
+     "key": "created_at",
+     "label": "When",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "compare_list": {
+   "table": "compare_lists",
+   "pk": "id",
+   "label": "Compare Lists",
+   "icon": "⚖️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": []
+   },
+   "fields": [
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "product_ids",
+     "label": "Products",
+     "type": "json"
+    },
+    {
+     "key": "created_at",
+     "label": "Created",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "invoice_document": {
+   "table": "invoice_documents",
+   "pk": "id",
+   "label": "Invoice / Tax Docs",
+   "icon": "🧾",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Doc #",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "order_id",
+     "label": "Order",
+     "type": "ref:order",
+     "list": true
+    },
+    {
+     "key": "owner",
+     "label": "Customer",
+     "type": "text"
+    },
+    {
+     "key": "doc_kind",
+     "label": "Document Type",
+     "type": "select",
+     "options": "shopDocKinds",
+     "list": true
+    },
+    {
+     "key": "invoice_number",
+     "label": "Invoice Number",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "place_of_supply",
+     "label": "Place of Supply",
+     "type": "text"
+    },
+    {
+     "key": "gstin",
+     "label": "GSTIN",
+     "type": "text"
+    },
+    {
+     "key": "pan",
+     "label": "PAN",
+     "type": "text"
+    },
+    {
+     "key": "taxable",
+     "label": "Taxable",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "tax",
+     "label": "Tax",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "total",
+     "label": "Total",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "currency",
+     "label": "Currency",
+     "type": "text"
+    },
+    {
+     "key": "body",
+     "label": "Line Items",
+     "type": "json"
+    },
+    {
+     "key": "rendered",
+     "label": "Rendered",
+     "type": "textarea",
+     "readonly": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "shopDocStatuses",
+     "list": true,
+     "display": "badge"
+    }
+   ]
+  },
+  "ride": {
+   "table": "rides",
+   "pk": "id",
+   "label": "Rides",
+   "icon": "🚗",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Reference",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "rider",
+     "label": "Rider",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "rider_phone",
+     "label": "Rider phone",
+     "type": "text"
+    },
+    {
+     "key": "pickup",
+     "label": "Pickup",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "dropoff",
+     "label": "Drop-off",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "vehicle_kind",
+     "label": "Vehicle",
+     "type": "select",
+     "options": "mobilityVehicleKinds",
+     "list": true
+    },
+    {
+     "key": "driver_id",
+     "label": "Driver",
+     "type": "ref:driver"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "mobilityRideStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "distance_km",
+     "label": "Distance (km)",
+     "type": "number"
+    },
+    {
+     "key": "duration_min",
+     "label": "Duration (min)",
+     "type": "number"
+    },
+    {
+     "key": "fare",
+     "label": "Fare",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "surge",
+     "label": "Surge ×",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "eta_min",
+     "label": "ETA (min)",
+     "type": "number"
+    },
+    {
+     "key": "payment_method",
+     "label": "Payment",
+     "type": "select",
+     "options": [
+      "cash",
+      "wallet",
+      "card",
+      "upi"
+     ],
+     "list": true
+    },
+    {
+     "key": "rating",
+     "label": "Rating",
+     "type": "number"
+    },
+    {
+     "key": "note",
+     "label": "Note",
+     "type": "text"
+    },
+    {
+     "key": "requested_at",
+     "label": "Requested",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "driver": {
+   "table": "drivers",
+   "pk": "id",
+   "label": "Drivers",
+   "icon": "🧑‍✈️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "email",
+     "label": "Email",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "phone",
+     "label": "Phone",
+     "type": "text"
+    },
+    {
+     "key": "city",
+     "label": "City",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "vehicle_kind",
+     "label": "Vehicle",
+     "type": "select",
+     "options": "mobilityVehicleKinds",
+     "list": true
+    },
+    {
+     "key": "plate",
+     "label": "Plate",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "license",
+     "label": "Licence",
+     "type": "text"
+    },
+    {
+     "key": "status",
+     "label": "State",
+     "type": "select",
+     "options": [
+      "offline",
+      "online",
+      "busy",
+      "suspended"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "rating",
+     "label": "Rating",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "rides_completed",
+     "label": "Rides",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "earnings",
+     "label": "Earnings",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "city_latency",
+     "label": "Distance from centre (km)",
+     "type": "number"
+    },
+    {
+     "key": "joined_at",
+     "label": "Joined",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "vehicle": {
+   "table": "vehicles",
+   "pk": "id",
+   "label": "Vehicles",
+   "icon": "🚙",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "plate",
+     "label": "Plate",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": "mobilityVehicleKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "capacity",
+     "label": "Capacity",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "active",
+      "maintenance",
+      "retired"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "odometer",
+     "label": "Odometer (km)",
+     "type": "number"
+    },
+    {
+     "key": "insurance_until",
+     "label": "Insurance until",
+     "type": "date"
+    },
+    {
+     "key": "driver_id",
+     "label": "Driver",
+     "type": "ref:driver"
+    },
+    {
+     "key": "created_at",
+     "label": "Added",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "surge_zone": {
+   "table": "surge_zones",
+   "pk": "id",
+   "label": "Surge Zones",
+   "icon": "📈",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "name",
+     "label": "Zone",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": [
+      "geofence",
+      "event",
+      "weather"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "multiplier",
+     "label": "Multiplier ×",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "center_lat",
+     "label": "Centre latitude",
+     "type": "number"
+    },
+    {
+     "key": "center_lng",
+     "label": "Centre longitude",
+     "type": "number"
+    },
+    {
+     "key": "radius_km",
+     "label": "Radius (km)",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "active",
+     "label": "Active",
+     "type": "bool",
+     "list": true
+    },
+    {
+     "key": "starts_at",
+     "label": "Starts",
+     "type": "date"
+    },
+    {
+     "key": "ends_at",
+     "label": "Ends",
+     "type": "date"
+    }
+   ]
+  },
+  "employee": {
+   "table": "employees",
+   "pk": "id",
+   "label": "Employees",
+   "icon": "🧑‍💼",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "code",
+     "label": "Code",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "email",
+     "label": "Email",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "department",
+     "label": "Department",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "designation",
+     "label": "Designation",
+     "type": "text"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "active",
+      "on_leave",
+      "terminated"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "base_salary",
+     "label": "Base salary",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "pay_frequency",
+     "label": "Pay frequency",
+     "type": "select",
+     "options": [
+      "monthly",
+      "biweekly",
+      "weekly"
+     ],
+     "list": true
+    },
+    {
+     "key": "bank_account",
+     "label": "Bank account",
+     "type": "text"
+    },
+    {
+     "key": "tax_id",
+     "label": "Tax ID",
+     "type": "text"
+    },
+    {
+     "key": "joined_at",
+     "label": "Joined",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "attendance": {
+   "table": "attendance",
+   "pk": "id",
+   "label": "Attendance",
+   "icon": "🕐",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "employee_id",
+     "label": "Employee",
+     "type": "ref:employee",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "date",
+     "label": "Date",
+     "type": "date",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "check_in",
+     "label": "Check-in",
+     "type": "text"
+    },
+    {
+     "key": "check_out",
+     "label": "Check-out",
+     "type": "text"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "present",
+      "late",
+      "half_day",
+      "absent",
+      "leave"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "hours",
+     "label": "Hours",
+     "type": "number",
+     "list": true
+    }
+   ]
+  },
+  "payroll_run": {
+   "table": "payroll_runs",
+   "pk": "id",
+   "label": "Payroll Runs",
+   "icon": "💰",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "period",
+     "label": "Period",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "headcount",
+     "label": "Headcount",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "gross",
+     "label": "Gross",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "deductions",
+     "label": "Deductions",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "net",
+     "label": "Net",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "draft",
+      "approved",
+      "paid"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "run_at",
+     "label": "Run at",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "purchase_request": {
+   "table": "purchase_requests",
+   "pk": "id",
+   "label": "Purchase Requests",
+   "icon": "🛒",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Reference",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "requested_by",
+     "label": "Requested by",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "department",
+     "label": "Department",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "opsPrStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "note",
+     "label": "Note",
+     "type": "text"
+    },
+    {
+     "key": "required_by",
+     "label": "Required by",
+     "type": "date"
+    },
+    {
+     "key": "approved_by",
+     "label": "Approved by",
+     "type": "text"
+    },
+    {
+     "key": "approved_at",
+     "label": "Approved at",
+     "type": "readonly"
+    }
+   ]
+  },
+  "purchase_request_line": {
+   "table": "purchase_request_lines",
+   "pk": "id",
+   "label": "Request Lines",
+   "icon": "📝",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "request_id",
+     "label": "Request",
+     "type": "ref:purchase_request",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "item",
+     "label": "Item",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "qty",
+     "label": "Qty",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "unit",
+     "label": "Unit",
+     "type": "text"
+    },
+    {
+     "key": "est_unit_cost",
+     "label": "Est. unit cost",
+     "type": "money",
+     "list": true
+    }
+   ]
+  },
+  "work_order": {
+   "table": "work_orders",
+   "pk": "id",
+   "label": "Work Orders",
+   "icon": "🏭",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "ref",
+     "label": "Reference",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "product_id",
+     "label": "Product",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "qty",
+     "label": "Qty",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "completed_qty",
+     "label": "Completed",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "opsWoStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "bom",
+     "label": "Bill of materials",
+     "type": "json"
+    },
+    {
+     "key": "unit_cost",
+     "label": "Unit cost",
+     "type": "money"
+    },
+    {
+     "key": "planned_start",
+     "label": "Planned start",
+     "type": "date"
+    },
+    {
+     "key": "planned_end",
+     "label": "Planned end",
+     "type": "date"
+    },
+    {
+     "key": "completed_at",
+     "label": "Completed",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  },
+  "project": {
+   "table": "projects",
+   "pk": "id",
+   "label": "Projects",
+   "icon": "📐",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "code",
+     "label": "Code",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "owner",
+     "label": "Owner",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "client",
+     "label": "Client",
+     "type": "text"
+    },
+    {
+     "key": "budget",
+     "label": "Budget",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "spent",
+     "label": "Spent",
+     "type": "money",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "opsProjectStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "start_date",
+     "label": "Start",
+     "type": "date"
+    },
+    {
+     "key": "due_date",
+     "label": "Due",
+     "type": "date",
+     "list": true
+    }
+   ]
+  },
+  "task": {
+   "table": "tasks",
+   "pk": "id",
+   "label": "Tasks",
+   "icon": "✅",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "project_id",
+     "label": "Project",
+     "type": "ref:project",
+     "list": true
+    },
+    {
+     "key": "title",
+     "label": "Title",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "assignee",
+     "label": "Assignee",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": "opsTaskStatuses",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "priority",
+     "label": "Priority",
+     "type": "select",
+     "options": [
+      "low",
+      "normal",
+      "high",
+      "urgent"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "estimate_hours",
+     "label": "Estimate (h)",
+     "type": "number"
+    },
+    {
+     "key": "logged_hours",
+     "label": "Logged (h)",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "due_date",
+     "label": "Due",
+     "type": "date",
+     "list": true
+    }
+   ]
+  },
+  "approval": {
+   "table": "approvals",
+   "pk": "id",
+   "label": "Approvals",
+   "icon": "🖋️",
+   "perm": {
+    "read": [
+     "admin",
+     "platform"
+    ],
+    "write": [
+     "admin"
+    ]
+   },
+   "fields": [
+    {
+     "key": "kind",
+     "label": "Kind",
+     "type": "select",
+     "options": "opsApprovalKinds",
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "ref",
+     "label": "Reference",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "requester",
+     "label": "Requester",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "approver",
+     "label": "Approver",
+     "type": "text"
+    },
+    {
+     "key": "status",
+     "label": "Status",
+     "type": "select",
+     "options": [
+      "pending",
+      "approved",
+      "rejected"
+     ],
+     "list": true,
+     "display": "badge"
+    },
+    {
+     "key": "note",
+     "label": "Note",
+     "type": "text"
+    },
+    {
+     "key": "decided_at",
+     "label": "Decided",
+     "type": "readonly",
+     "list": true
+    }
+   ]
+  }
+ },
+ "WRITERS": {
+  "$comment": "the modules a built-in entity may name as its writer: the owner's write path, which records the change on the kernel and writes the row in one transaction (lib/entity.js). Tenant-defined entities cannot name a writer.",
+  "places": "./places.js"
+ }
+}

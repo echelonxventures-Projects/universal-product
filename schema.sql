@@ -2,7 +2,7 @@ CREATE TABLE tenants (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   slug TEXT NOT NULL UNIQUE, name TEXT NOT NULL, domain TEXT DEFAULT '',
   status TEXT NOT NULL DEFAULT 'active', created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, mode TEXT NOT NULL DEFAULT 'marketplace', industries TEXT DEFAULT '[]', profile TEXT DEFAULT '{}', country TEXT DEFAULT 'US', region TEXT DEFAULT 'global', sso_provider TEXT DEFAULT '', cdn TEXT DEFAULT '', uid TEXT);
+, mode TEXT NOT NULL DEFAULT 'marketplace', industries TEXT DEFAULT '[]', profile TEXT DEFAULT '{}', region TEXT DEFAULT 'global', sso_provider TEXT DEFAULT '', cdn TEXT DEFAULT '', uid TEXT);
 CREATE TABLE sqlite_sequence(name,seq);
 CREATE TABLE plans (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -54,7 +54,7 @@ CREATE TABLE users (
 CREATE TABLE sessions (
   sid TEXT PRIMARY KEY, user_id INTEGER REFERENCES users(id),
   created_at TEXT NOT NULL DEFAULT (datetime('now')), expires_at TEXT NOT NULL
-, csrf TEXT, uid TEXT);
+, csrf TEXT, auth_at TEXT, uid TEXT);
 CREATE TABLE tenant_state (
   sid TEXT NOT NULL, tenant_id INTEGER NOT NULL, zip TEXT NOT NULL DEFAULT '98109',
   gift_balance REAL NOT NULL DEFAULT 0, coupon TEXT DEFAULT '', uid TEXT,
@@ -74,7 +74,8 @@ CREATE TABLE product_bullets (
 );
 CREATE TABLE cart_items (
   owner TEXT NOT NULL, product_id TEXT NOT NULL, qty INTEGER NOT NULL DEFAULT 1, sku_id INTEGER,
-  added_at TEXT NOT NULL DEFAULT (datetime('now')), slot_id INTEGER, store_id INTEGER, gift_wrap INTEGER DEFAULT 0, uid TEXT, PRIMARY KEY (owner, product_id)
+  line TEXT NOT NULL DEFAULT '', terms TEXT NOT NULL DEFAULT '{}',
+  added_at TEXT NOT NULL DEFAULT (datetime('now')), slot_id INTEGER, store_id INTEGER, gift_wrap INTEGER DEFAULT 0, uid TEXT, PRIMARY KEY (owner, product_id, line)
 );
 CREATE TABLE saved_items (
   owner TEXT NOT NULL, product_id TEXT NOT NULL, added_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT,
@@ -88,9 +89,10 @@ CREATE TABLE orders (
   sub REAL, ship_fee REAL, gift_used REAL, tax REAL, total REAL,
   eta_days INTEGER DEFAULT 5, status TEXT DEFAULT 'processing',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, store_id INTEGER, slot_id INTEGER, promise_minutes INTEGER, delivery_kind TEXT DEFAULT 'standard', cancel_reason TEXT, seller_id INTEGER, escrow_ref TEXT, invoice_ref TEXT, gift_wrap INTEGER DEFAULT 0, gift_message TEXT, contexts TEXT DEFAULT '{}', currency TEXT DEFAULT '', fx REAL DEFAULT 1, trace_id TEXT, deleted_at TEXT, uid TEXT);
+, store_id INTEGER, slot_id INTEGER, promise_minutes INTEGER, delivery_kind TEXT DEFAULT 'standard', cancel_reason TEXT, seller_id INTEGER, escrow_ref TEXT, invoice_ref TEXT, gift_wrap INTEGER DEFAULT 0, gift_message TEXT, contexts TEXT DEFAULT '{}', currency TEXT DEFAULT '', fx REAL DEFAULT 1, trace_id TEXT, charges TEXT NOT NULL DEFAULT '[]', deleted_at TEXT, uid TEXT);
 CREATE TABLE order_items (
-  order_id INTEGER NOT NULL, product_id TEXT NOT NULL, qty INTEGER NOT NULL, price REAL NOT NULL, sku_id INTEGER
+  order_id INTEGER NOT NULL, product_id TEXT NOT NULL, qty INTEGER NOT NULL, price REAL NOT NULL, sku_id INTEGER,
+  terms TEXT DEFAULT '{}'
 , uid TEXT);
 CREATE TABLE reviews (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 1,
@@ -138,7 +140,7 @@ CREATE TABLE payments (
   gateway TEXT NOT NULL, method TEXT, amount REAL NOT NULL, currency TEXT,
   fee REAL DEFAULT 0, status TEXT NOT NULL DEFAULT 'initiated',
   txn_ref TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, uid TEXT);
+, provider_payment_id TEXT, live INTEGER DEFAULT 0, uid TEXT);
 CREATE TABLE custom_providers (
   id INTEGER PRIMARY KEY AUTOINCREMENT, scope TEXT NOT NULL DEFAULT 'platform',
   tenant_id INTEGER, kind TEXT NOT NULL, manifest TEXT NOT NULL,
@@ -148,11 +150,11 @@ CREATE TABLE taxonomy (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
   parent_id INTEGER, level TEXT NOT NULL, key TEXT NOT NULL, name TEXT NOT NULL,
   icon TEXT DEFAULT '', attrs TEXT DEFAULT '{}', active INTEGER DEFAULT 1, position INTEGER DEFAULT 0
-, deleted_at TEXT);
+, deleted_at TEXT, node_uid TEXT);
 CREATE TABLE attribute_defs (
   tenant_id INTEGER NOT NULL, key TEXT NOT NULL, label TEXT NOT NULL, grp TEXT DEFAULT 'General',
   type TEXT DEFAULT 'text', unit TEXT DEFAULT '', options TEXT DEFAULT '[]', validation TEXT DEFAULT '{}',
-  industry TEXT DEFAULT '', position INTEGER DEFAULT 0, category TEXT DEFAULT '', deleted_at TEXT, PRIMARY KEY (tenant_id, key)
+  industry TEXT DEFAULT '', position INTEGER DEFAULT 0, category TEXT DEFAULT '', deleted_at TEXT, node_uid TEXT, PRIMARY KEY (tenant_id, key)
 );
 CREATE TABLE skus (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL,
@@ -181,7 +183,7 @@ CREATE TABLE promotions (
 CREATE TABLE sellers (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, name TEXT NOT NULL,
   role TEXT DEFAULT 'retailer', email TEXT, status TEXT DEFAULT 'active', commission_pct REAL DEFAULT 5
-, onboarding_status TEXT DEFAULT 'pending', verified INTEGER DEFAULT 0, rating REAL DEFAULT 0, tier TEXT DEFAULT 'standard', health_score REAL DEFAULT 0, deleted_at TEXT);
+, onboarding_status TEXT DEFAULT 'pending', verified INTEGER DEFAULT 0, rating REAL DEFAULT 0, tier TEXT DEFAULT 'standard', health_score REAL DEFAULT 0, deleted_at TEXT, owner TEXT);
 CREATE TABLE rfqs (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL UNIQUE,
   product_id TEXT, buyer_name TEXT, buyer_email TEXT, qty REAL, target_price REAL, currency TEXT,
@@ -215,14 +217,15 @@ CREATE TABLE meta_lists (
   name TEXT PRIMARY KEY, label TEXT, items TEXT NOT NULL, seeded_from TEXT
 , edited INTEGER DEFAULT 0, uid TEXT);
 CREATE TABLE countries (
-  code TEXT PRIMARY KEY, name TEXT NOT NULL, currency TEXT NOT NULL, symbol TEXT NOT NULL,
-  locale TEXT NOT NULL, decimals INTEGER NOT NULL DEFAULT 2, tax_mode TEXT DEFAULT 'manual',
-  tax_rate REAL DEFAULT 0, position INTEGER DEFAULT 0, active INTEGER DEFAULT 1
+  code TEXT PRIMARY KEY, name TEXT NOT NULL, position INTEGER DEFAULT 0, active INTEGER DEFAULT 1
 , uid TEXT);
 CREATE TABLE currencies (
   code TEXT PRIMARY KEY, name TEXT NOT NULL, symbol TEXT NOT NULL, decimals INTEGER NOT NULL DEFAULT 2,
-  usd REAL NOT NULL DEFAULT 1, position INTEGER DEFAULT 0, active INTEGER DEFAULT 1
+  usd REAL NOT NULL DEFAULT 1, position INTEGER DEFAULT 0, active INTEGER DEFAULT 1, class TEXT, settleable INTEGER DEFAULT 1
 , uid TEXT);
+CREATE TABLE messages (
+  lang TEXT NOT NULL, key TEXT NOT NULL, text TEXT NOT NULL, PRIMARY KEY (lang, key)
+);
 CREATE TABLE tax_modes (
   key TEXT PRIMARY KEY, label TEXT NOT NULL, description TEXT, fields TEXT DEFAULT '[]', position INTEGER DEFAULT 0
 , uid TEXT);
@@ -786,6 +789,26 @@ CREATE TABLE wallet_entries (
   channel TEXT DEFAULT 'commerce', actor TEXT DEFAULT 'system',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 , uid TEXT);
+CREATE TABLE ledger_accounts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, wallet_id TEXT, system_key TEXT, unit TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(wallet_id), UNIQUE(tenant_id, system_key, unit)
+);
+CREATE TABLE ledger_journals (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, op TEXT NOT NULL, ref TEXT NOT NULL DEFAULT '', idem_key TEXT,
+  request_hash TEXT NOT NULL DEFAULT '', actor TEXT NOT NULL DEFAULT '', reason TEXT NOT NULL DEFAULT '', reverses INTEGER, event_seq INTEGER,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(tenant_id, idem_key), UNIQUE(reverses)
+);
+CREATE TABLE ledger_postings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, journal_id INTEGER NOT NULL, account_id INTEGER NOT NULL, unit TEXT NOT NULL, amount INTEGER NOT NULL
+);
+CREATE INDEX ix_ledger_postings_account ON ledger_postings(account_id);
+CREATE INDEX ix_ledger_postings_journal ON ledger_postings(journal_id);
+CREATE TABLE wallet_holds (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, wallet_id TEXT NOT NULL, amount INTEGER NOT NULL, captured INTEGER NOT NULL DEFAULT 0,
+  purpose TEXT NOT NULL DEFAULT '', ref TEXT NOT NULL DEFAULT '', idem_key TEXT, expires_at TEXT, status TEXT NOT NULL, decided_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(wallet_id, idem_key)
+);
+CREATE INDEX ix_wallet_holds ON wallet_holds(wallet_id, status);
 CREATE TABLE goip_touchpoints (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 0,
   subject_uid TEXT DEFAULT '', offer_id INTEGER, code TEXT DEFAULT '', kind TEXT NOT NULL DEFAULT 'view',
@@ -879,12 +902,6 @@ CREATE TABLE policies (
   status TEXT NOT NULL DEFAULT 'active', created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_policy_domain ON policies(domain, priority, status);
-CREATE TABLE store_product_config (
-  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
-  global_product_id TEXT NOT NULL, category TEXT DEFAULT '', permissions TEXT DEFAULT 'read',
-  config TEXT DEFAULT '{}', enabled INTEGER DEFAULT 1,
-  created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE (tenant_id, global_product_id)
-);
 CREATE TABLE identity_providers (
   id TEXT PRIMARY KEY, tenant_id INTEGER NOT NULL, provider_type TEXT NOT NULL, name TEXT NOT NULL,
   enabled INTEGER DEFAULT 1, config TEXT DEFAULT '{}', display_order INTEGER DEFAULT 0,
@@ -921,23 +938,6 @@ CREATE TABLE identity_login_states (
   expires_at INTEGER NOT NULL, created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_login_state ON identity_login_states(tenant_id, expires_at);
-CREATE TABLE global_products (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  sku TEXT NOT NULL UNIQUE,
-  name TEXT NOT NULL,
-  description TEXT DEFAULT '',
-  category TEXT DEFAULT '',
-  universe TEXT DEFAULT 'physical_products',
-  price REAL DEFAULT 0,
-  tax_class TEXT DEFAULT 'standard',
-  is_service INTEGER DEFAULT 0,
-  attributes TEXT DEFAULT '{}',
-  media TEXT DEFAULT '[]',
-  profile TEXT DEFAULT '{}',
-  status TEXT DEFAULT 'draft',
-  created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  updated_at TEXT
-);
 CREATE INDEX ix_goip_touch ON goip_touchpoints(tenant_id, owner, created_at);
 CREATE INDEX ix_goip_touch_party ON goip_touchpoints(tenant_id, party_type, party);
 CREATE INDEX ix_goip_budget ON goip_budgets(tenant_id, funder, unit, period, status);
@@ -1262,6 +1262,21 @@ CREATE TABLE bank_payouts (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_payouts_tenant ON bank_payouts(tenant_id, status);
+CREATE TABLE applicability_rules (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER,
+  subject_type TEXT NOT NULL, subject TEXT NOT NULL DEFAULT '*',
+  effect TEXT NOT NULL DEFAULT 'allow', priority INTEGER NOT NULL DEFAULT 0,
+  scope TEXT NOT NULL DEFAULT '{}', params TEXT NOT NULL DEFAULT '{}',
+  note TEXT DEFAULT '', active INTEGER NOT NULL DEFAULT 1, created_by TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT
+);
+CREATE INDEX ix_rules_subject ON applicability_rules(subject_type, tenant_id, active);
+CREATE TABLE segment_members (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
+  owner TEXT NOT NULL, segment TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE(tenant_id, owner, segment)
+);
 CREATE TABLE billers (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
   name TEXT NOT NULL, category TEXT NOT NULL, code TEXT,
@@ -1503,6 +1518,214 @@ CREATE TABLE compare_lists (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_compare_owner ON compare_lists(tenant_id, owner);
+CREATE TABLE shopper_lists (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, owner TEXT NOT NULL, owner_name TEXT DEFAULT '',
+  kind TEXT NOT NULL, name TEXT NOT NULL, visibility TEXT NOT NULL, token TEXT NOT NULL, notes TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT
+);
+CREATE INDEX ix_slist_owner ON shopper_lists(tenant_id, owner);
+CREATE UNIQUE INDEX ux_slist_token ON shopper_lists(token);
+CREATE TABLE shopper_list_items (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, list_id INTEGER NOT NULL,
+  product_id TEXT NOT NULL, qty INTEGER NOT NULL DEFAULT 1, purchased INTEGER NOT NULL DEFAULT 0,
+  priority TEXT, note TEXT DEFAULT '', price_added REAL,
+  added_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX ux_slist_item ON shopper_list_items(list_id, product_id);
+CREATE TABLE product_watches (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, owner TEXT NOT NULL,
+  product_id TEXT NOT NULL, kind TEXT NOT NULL, target_price REAL, baseline_price REAL, baseline_stock INTEGER,
+  status TEXT NOT NULL DEFAULT 'active', fired_at TEXT, fired_price REAL, fires INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_watch_product ON product_watches(tenant_id, product_id, status);
+CREATE INDEX ix_watch_owner ON product_watches(tenant_id, owner);
+CREATE TABLE pickup_points (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, code TEXT NOT NULL,
+  name TEXT NOT NULL, kind TEXT NOT NULL, address TEXT NOT NULL, city TEXT DEFAULT '', region TEXT DEFAULT '', postcode TEXT DEFAULT '',
+  lat REAL, lng REAL, capacity INTEGER NOT NULL DEFAULT 0, hours TEXT DEFAULT '', eta_days INTEGER,
+  active INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX ux_pickup_code ON pickup_points(tenant_id, code);
+CREATE TABLE pickup_reservations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, point_id INTEGER NOT NULL,
+  order_id INTEGER NOT NULL, owner TEXT NOT NULL, code TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'reserved',
+  hold_until TEXT, ready_at TEXT, collected_at TEXT, closed_at TEXT, attempts INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_pickup_res ON pickup_reservations(tenant_id, point_id, status);
+CREATE UNIQUE INDEX ux_pickup_order ON pickup_reservations(tenant_id, order_id);
+CREATE TABLE rich_content (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL,
+  seller_id INTEGER, author TEXT DEFAULT '', modules TEXT NOT NULL DEFAULT '[]',
+  status TEXT NOT NULL DEFAULT 'draft', version INTEGER NOT NULL DEFAULT 1, review_notes TEXT DEFAULT '',
+  submitted_at TEXT, reviewed_at TEXT, reviewed_by TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT
+);
+CREATE INDEX ix_rich_product ON rich_content(tenant_id, product_id, status);
+CREATE TABLE brand_claims (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, brand TEXT NOT NULL,
+  seller_id INTEGER, claimant TEXT DEFAULT '', trademark_number TEXT DEFAULT '', trademark_office TEXT DEFAULT '',
+  evidence TEXT DEFAULT '[]', status TEXT NOT NULL DEFAULT 'submitted', notes TEXT DEFAULT '',
+  reviewed_by TEXT, reviewed_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_brand_claims ON brand_claims(tenant_id, brand, status);
+CREATE TABLE brand_reports (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, brand TEXT NOT NULL, claim_id INTEGER NOT NULL,
+  kind TEXT NOT NULL, product_id TEXT, offer_id INTEGER, seller_id INTEGER, details TEXT DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'open', outcome TEXT DEFAULT '', reviewed_by TEXT, reviewed_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_brand_reports ON brand_reports(tenant_id, brand, status);
+CREATE TABLE option_groups (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, code TEXT NOT NULL, name TEXT NOT NULL, kind TEXT NOT NULL,
+  min_select INTEGER NOT NULL DEFAULT 0, max_select INTEGER NOT NULL DEFAULT 1, max_length INTEGER, position INTEGER NOT NULL DEFAULT 0,
+  active INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX ux_option_group ON option_groups(tenant_id, code);
+CREATE TABLE option_values (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, group_id INTEGER NOT NULL, code TEXT NOT NULL, name TEXT NOT NULL,
+  price_delta REAL NOT NULL DEFAULT 0, position INTEGER NOT NULL DEFAULT 0, active INTEGER NOT NULL DEFAULT 1, extra TEXT NOT NULL DEFAULT '{}'
+);
+CREATE UNIQUE INDEX ux_option_value ON option_values(group_id, code);
+CREATE TABLE option_follow_ups (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, order_id INTEGER NOT NULL, product_id TEXT NOT NULL,
+  owner TEXT NOT NULL, group_code TEXT NOT NULL, value_code TEXT NOT NULL DEFAULT '', kind TEXT NOT NULL, detail TEXT NOT NULL DEFAULT '',
+  scheduled_for TEXT, ends_at TEXT, proof_url TEXT NOT NULL DEFAULT '', note TEXT NOT NULL DEFAULT '', rounds INTEGER NOT NULL DEFAULT 0, status TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), decided_at TEXT
+);
+CREATE INDEX ix_option_follow_ups ON option_follow_ups(tenant_id, order_id);
+CREATE TABLE cases (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, kind TEXT NOT NULL, subject_type TEXT NOT NULL DEFAULT '', subject_id TEXT,
+  owner TEXT NOT NULL, fields TEXT NOT NULL DEFAULT '{}', docs TEXT NOT NULL DEFAULT '[]', status TEXT NOT NULL, amount REAL, valid_until TEXT,
+  used_order INTEGER, decided_by TEXT NOT NULL DEFAULT '', reason TEXT NOT NULL DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now')), decided_at TEXT
+);
+CREATE INDEX ix_cases ON cases(tenant_id, kind, owner);
+CREATE TABLE order_charge_rules (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, code TEXT NOT NULL, name TEXT NOT NULL, amount REAL NOT NULL DEFAULT 0, percent REAL NOT NULL DEFAULT 0,
+  below_amount REAL, from_hour INTEGER, to_hour INTEGER, waive_for_members INTEGER NOT NULL DEFAULT 0, waive_with_free_shipping INTEGER NOT NULL DEFAULT 0,
+  taxable INTEGER NOT NULL DEFAULT 0, active INTEGER NOT NULL DEFAULT 1, position INTEGER NOT NULL DEFAULT 0, UNIQUE(tenant_id, code)
+);
+CREATE TABLE bag_tips (tenant_id INTEGER NOT NULL, owner TEXT NOT NULL, amount REAL NOT NULL, PRIMARY KEY (tenant_id, owner));
+CREATE TABLE media_sessions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, subject_type TEXT NOT NULL, subject_id TEXT NOT NULL, guest TEXT NOT NULL, host TEXT NOT NULL DEFAULT '',
+  mode TEXT NOT NULL DEFAULT '', transport TEXT NOT NULL DEFAULT '', room TEXT NOT NULL, rate REAL NOT NULL DEFAULT 0, status TEXT NOT NULL,
+  started_at TEXT, ended_at TEXT, seconds INTEGER NOT NULL DEFAULT 0, charged REAL NOT NULL DEFAULT 0, shortfall REAL NOT NULL DEFAULT 0, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_media_sessions ON media_sessions(tenant_id, subject_type, subject_id);
+CREATE TABLE media_signals (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, session_id INTEGER NOT NULL, side TEXT NOT NULL, type TEXT NOT NULL, data TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_media_signals ON media_signals(session_id, id);
+CREATE TABLE trials (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, order_id INTEGER NOT NULL, product_id TEXT NOT NULL, owner TEXT NOT NULL, qty INTEGER NOT NULL DEFAULT 1,
+  unit REAL NOT NULL, deposit REAL NOT NULL DEFAULT 0, charged REAL NOT NULL DEFAULT 0, refunded REAL NOT NULL DEFAULT 0, notified_short INTEGER NOT NULL DEFAULT 0, ends_at TEXT NOT NULL, status TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), decided_at TEXT
+);
+CREATE INDEX ix_trials ON trials(tenant_id, owner);
+CREATE TABLE deliverables (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, order_id INTEGER NOT NULL, product_id TEXT NOT NULL, owner TEXT NOT NULL, kind TEXT NOT NULL,
+  value TEXT, status TEXT NOT NULL, steps_total INTEGER NOT NULL DEFAULT 0, steps_done INTEGER NOT NULL DEFAULT 0, delivered_at TEXT, delivered_by TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_deliverables ON deliverables(tenant_id, owner);
+CREATE TABLE deliverable_pool (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, code TEXT NOT NULL, taken_by INTEGER, UNIQUE(tenant_id, product_id, code)
+);
+CREATE TABLE vault_records (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, owner TEXT NOT NULL, title TEXT NOT NULL, url TEXT NOT NULL, kind TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE vault_shares (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, owner TEXT NOT NULL, what TEXT NOT NULL, ref INTEGER NOT NULL, party TEXT NOT NULL, until TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE product_option_groups (
+  tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, group_id INTEGER NOT NULL, position INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (tenant_id, product_id, group_id)
+);
+CREATE TABLE booking_resources (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, code TEXT NOT NULL, name TEXT NOT NULL, kind TEXT NOT NULL,
+  capacity INTEGER NOT NULL DEFAULT 1, tz TEXT, hours TEXT NOT NULL DEFAULT '{}', active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE UNIQUE INDEX ux_booking_resource ON booking_resources(tenant_id, code);
+CREATE TABLE product_bookings (
+  tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, mode TEXT NOT NULL, resource_ids TEXT NOT NULL DEFAULT '[]',
+  duration_min INTEGER NOT NULL DEFAULT 60, step_min INTEGER NOT NULL DEFAULT 60, buffer_min INTEGER NOT NULL DEFAULT 0,
+  lead_hours INTEGER NOT NULL DEFAULT 0, horizon_days INTEGER NOT NULL DEFAULT 365, min_units INTEGER NOT NULL DEFAULT 1, max_units INTEGER NOT NULL DEFAULT 30,
+  PRIMARY KEY (tenant_id, product_id)
+);
+CREATE TABLE bookings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, product_id TEXT NOT NULL, resource_id INTEGER NOT NULL,
+  owner TEXT NOT NULL, starts_at TEXT NOT NULL, ends_at TEXT NOT NULL, units INTEGER NOT NULL DEFAULT 1, qty INTEGER NOT NULL DEFAULT 1,
+  status TEXT NOT NULL DEFAULT 'held', hold_until TEXT, order_id INTEGER, confirmed_at TEXT, closed_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_bookings_resource ON bookings(tenant_id, resource_id, starts_at);
+CREATE INDEX ix_bookings_owner ON bookings(tenant_id, owner);
+CREATE TABLE price_offers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, owner TEXT NOT NULL, seller TEXT NOT NULL DEFAULT '',
+  qty INTEGER NOT NULL DEFAULT 1, amount REAL NOT NULL, counter_amount REAL, note TEXT DEFAULT '', status TEXT NOT NULL DEFAULT 'open',
+  history TEXT NOT NULL DEFAULT '[]', expires_at TEXT, decided_at TEXT, order_id INTEGER, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_price_offers ON price_offers(tenant_id, product_id, status);
+CREATE INDEX ix_price_offers_owner ON price_offers(tenant_id, owner);
+CREATE TABLE auctions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, seller TEXT NOT NULL DEFAULT '',
+  start_price REAL NOT NULL, reserve_price REAL, buy_now_price REAL, current_price REAL, leader TEXT, leader_max REAL,
+  bids INTEGER NOT NULL DEFAULT 0, starts_at TEXT NOT NULL, ends_at TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'scheduled',
+  winner TEXT, final_price REAL, pay_by TEXT, order_id INTEGER, closed_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_auctions ON auctions(tenant_id, status, ends_at);
+CREATE TABLE auction_bids (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, auction_id INTEGER NOT NULL, owner TEXT NOT NULL,
+  max_amount REAL NOT NULL, at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_auction_bids ON auction_bids(auction_id, max_amount);
+CREATE TABLE peer_listings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, owner TEXT NOT NULL, owner_name TEXT DEFAULT '', seller_id INTEGER, product_id TEXT,
+  title TEXT NOT NULL, description TEXT DEFAULT '', price REAL NOT NULL, qty INTEGER NOT NULL DEFAULT 1, sold INTEGER NOT NULL DEFAULT 0,
+  condition TEXT, dept TEXT, images TEXT NOT NULL DEFAULT '[]', status TEXT NOT NULL DEFAULT 'draft', review_notes TEXT DEFAULT '',
+  published_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT
+);
+CREATE INDEX ix_peer_listings ON peer_listings(tenant_id, status);
+CREATE INDEX ix_peer_listings_owner ON peer_listings(tenant_id, owner);
+CREATE TABLE peer_earnings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, listing_id INTEGER NOT NULL, owner TEXT NOT NULL, order_id INTEGER NOT NULL,
+  gross REAL NOT NULL, commission REAL NOT NULL, net REAL NOT NULL, currency TEXT, status TEXT NOT NULL DEFAULT 'pending',
+  release_at TEXT, credited_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_peer_earnings ON peer_earnings(tenant_id, status, release_at);
+CREATE TABLE conversations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, subject_kind TEXT NOT NULL, subject_ref TEXT NOT NULL,
+  buyer TEXT NOT NULL, counterpart TEXT NOT NULL DEFAULT '', title TEXT DEFAULT '', status TEXT NOT NULL DEFAULT 'open',
+  last_at TEXT NOT NULL DEFAULT (datetime('now')), created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_conversations ON conversations(tenant_id, buyer);
+CREATE INDEX ix_conversations_cp ON conversations(tenant_id, counterpart);
+CREATE TABLE conversation_messages (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, conversation_id INTEGER NOT NULL, sender TEXT NOT NULL, side TEXT NOT NULL,
+  body TEXT NOT NULL, hidden INTEGER NOT NULL DEFAULT 0, read_by_other INTEGER NOT NULL DEFAULT 0, at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_conversation_messages ON conversation_messages(conversation_id, id);
+CREATE TABLE group_campaigns (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, title TEXT DEFAULT '', group_price REAL NOT NULL,
+  min_members INTEGER NOT NULL, max_members INTEGER, ends_at TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'open', closed_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_group_campaigns ON group_campaigns(tenant_id, status, ends_at);
+CREATE TABLE group_members (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, campaign_id INTEGER NOT NULL, owner TEXT NOT NULL, order_id INTEGER NOT NULL,
+  qty INTEGER NOT NULL DEFAULT 1, paid REAL NOT NULL DEFAULT 0, refunded INTEGER NOT NULL DEFAULT 0, joined_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_group_members ON group_members(campaign_id);
+CREATE TABLE order_substitutions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, order_id INTEGER NOT NULL, product_id TEXT NOT NULL, substitute_id TEXT,
+  qty INTEGER NOT NULL DEFAULT 1, original_unit REAL NOT NULL DEFAULT 0, substitute_unit REAL, refund REAL NOT NULL DEFAULT 0,
+  status TEXT NOT NULL DEFAULT 'proposed', decided_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_order_substitutions ON order_substitutions(tenant_id, order_id);
 CREATE TABLE invoice_documents (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
   ref TEXT, order_id INTEGER, owner TEXT,
@@ -1545,6 +1768,7 @@ CREATE TABLE capability_presets (
   label TEXT NOT NULL,
   description TEXT,
   capabilities TEXT NOT NULL DEFAULT '{}',  /* {key: {enabled, params}} */
+  universes TEXT,                           /* JSON [universe key] a new store opens with; NULL = none declared */
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_cappreset_key ON capability_presets(key);
@@ -1733,6 +1957,16 @@ CREATE TABLE approvals (
 CREATE INDEX ix_approvals ON approvals(tenant_id, status, kind);
 CREATE UNIQUE INDEX ux_composition_key ON composition_ledger(key);
 CREATE INDEX ix_products_source_global ON products(tenant_id, source_global_id);
+CREATE TRIGGER ledger_journals_no_update BEFORE UPDATE ON ledger_journals BEGIN SELECT RAISE(ABORT, 'posted ledger records are immutable'); END;
+CREATE TRIGGER ledger_journals_no_delete BEFORE DELETE ON ledger_journals BEGIN SELECT RAISE(ABORT, 'posted ledger records are immutable'); END;
+CREATE TRIGGER ledger_postings_no_update BEFORE UPDATE ON ledger_postings BEGIN SELECT RAISE(ABORT, 'posted ledger records are immutable'); END;
+CREATE TRIGGER ledger_postings_no_delete BEFORE DELETE ON ledger_postings BEGIN SELECT RAISE(ABORT, 'posted ledger records are immutable'); END;
+CREATE TABLE password_resets (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, user_id INTEGER NOT NULL,
+  token_hash TEXT NOT NULL UNIQUE, expires_at INTEGER NOT NULL, used_at TEXT, ip TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX ix_pwreset_user ON password_resets(user_id, created_at);
+CREATE INDEX ix_payments_ref ON payments(gateway, txn_ref);
 CREATE UNIQUE INDEX ux_tenants_uid ON tenants(uid);
 CREATE TRIGGER trg_tenants_uid AFTER INSERT ON tenants
                BEGIN UPDATE tenants SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
@@ -2048,6 +2282,62 @@ CREATE TRIGGER trg_tasks_uid AFTER INSERT ON tasks
 CREATE UNIQUE INDEX ux_approvals_uid ON approvals(uid);
 CREATE TRIGGER trg_approvals_uid AFTER INSERT ON approvals
                BEGIN UPDATE approvals SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE TABLE k_events (
+    seq INTEGER PRIMARY KEY AUTOINCREMENT, at TEXT NOT NULL, type TEXT NOT NULL,
+    namespace TEXT NOT NULL, subject TEXT, actor TEXT, payload TEXT NOT NULL DEFAULT '{}',
+    prev_hash TEXT NOT NULL, hash TEXT NOT NULL);
+CREATE INDEX ix_k_events_subject ON k_events(subject, seq);
+CREATE INDEX ix_k_events_at ON k_events(at);
+CREATE TABLE k_kinds (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, kind TEXT NOT NULL,
+    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER, scope TEXT);
+CREATE INDEX ix_k_kinds ON k_kinds(namespace, kind, rec_to);
+CREATE TABLE k_nodes (
+    uid TEXT PRIMARY KEY, namespace TEXT NOT NULL, kind TEXT NOT NULL, rec_from INTEGER NOT NULL, scope TEXT);
+CREATE INDEX ix_k_nodes_kind ON k_nodes(namespace, kind);
+CREATE TABLE k_identifiers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, node TEXT NOT NULL, scheme TEXT NOT NULL, value TEXT NOT NULL,
+    valid_from TEXT NOT NULL, valid_to TEXT, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_ident_value ON k_identifiers(scheme, value, rec_to);
+CREATE INDEX ix_k_ident_node ON k_identifiers(node, rec_to);
+CREATE TABLE k_hierarchies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, hierarchy TEXT NOT NULL,
+    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER, scope TEXT);
+CREATE INDEX ix_k_hier ON k_hierarchies(namespace, hierarchy, rec_to);
+CREATE TABLE k_placements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, hierarchy TEXT NOT NULL, node TEXT NOT NULL, parent TEXT,
+    valid_from TEXT NOT NULL, valid_to TEXT, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_place_parent ON k_placements(hierarchy, parent, rec_to);
+CREATE INDEX ix_k_place_node ON k_placements(hierarchy, node, rec_to);
+CREATE TABLE k_versions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, node TEXT NOT NULL, attrs TEXT NOT NULL,
+    valid_from TEXT NOT NULL, valid_to TEXT, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_versions ON k_versions(node, rec_to, valid_from);
+CREATE TABLE k_node_states (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, node TEXT NOT NULL, state TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_node_states ON k_node_states(node, rec_to);
+CREATE TABLE k_coord_systems (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, system TEXT NOT NULL,
+    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_coord ON k_coord_systems(namespace, system, rec_to);
+CREATE TABLE k_shapes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, node TEXT NOT NULL, system TEXT NOT NULL, geom TEXT NOT NULL,
+    valid_from TEXT NOT NULL, valid_to TEXT, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_shapes ON k_shapes(system, rec_to);
+CREATE INDEX ix_k_shapes_node ON k_shapes(node, system, rec_to);
+CREATE TABLE k_declarations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, family TEXT NOT NULL, namespace TEXT NOT NULL, name TEXT NOT NULL,
+    owner TEXT NOT NULL, spec TEXT NOT NULL, rec_from INTEGER NOT NULL, rec_to INTEGER, scope TEXT);
+CREATE INDEX ix_k_decl ON k_declarations(family, namespace, name, rec_to);
+CREATE TABLE k_assignments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, setting TEXT NOT NULL, scope TEXT,
+    value TEXT NOT NULL, valid_from TEXT NOT NULL, valid_to TEXT, rec_from INTEGER NOT NULL, rec_to INTEGER);
+CREATE INDEX ix_k_assign ON k_assignments(setting, namespace, scope, rec_to);
+CREATE TABLE k_changes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, namespace TEXT NOT NULL, title TEXT NOT NULL, ops TEXT NOT NULL,
+    state TEXT NOT NULL, author TEXT, approver TEXT, publish_at TEXT, seq_from INTEGER, seq_to INTEGER,
+    rolled_back_seq INTEGER, result TEXT, report TEXT, created_at TEXT NOT NULL);
+CREATE INDEX ix_k_changes_state ON k_changes(state, publish_at);
 CREATE TABLE affiliate_networks (
     id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, slug TEXT UNIQUE, tenant_id INTEGER DEFAULT 1,
     status TEXT DEFAULT 'active', default_commission_pct REAL DEFAULT 5.0, cookie_days INTEGER DEFAULT 30,
@@ -2155,7 +2445,7 @@ CREATE TABLE package_tracking (
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now')),
     uid TEXT
-  , tenant_id INTEGER);
+  , tenant_id INTEGER, label_url TEXT);
 CREATE INDEX ix_package_tracking_tenant ON package_tracking(tenant_id, tracking_number);
 CREATE TABLE shipping_quotes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -2170,4 +2460,4 @@ CREATE TABLE shipping_quotes (
     status TEXT DEFAULT 'pending',
     created_at TEXT DEFAULT (datetime('now')),
     uid TEXT
-  );
+  , tenant_id INTEGER, shipment_ref TEXT, rate_ref TEXT, carrier TEXT);

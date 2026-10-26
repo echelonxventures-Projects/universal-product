@@ -25,7 +25,13 @@ function linkify(m) {
     return '<a href="' + s + '" style="text-decoration:underline">' + (s.indexOf("platform") >= 0 ? "Platform console" : "Store console") + " →</a>";
   });
 }
-function money(n) { return "$" + (+n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+/* the platform's amounts in the platform's currency and locale, which /platform/me and
+   /auth/me serve (window.LX_MONEY) — never a symbol or locale written here */
+function money(n) {
+  const m = (typeof window !== "undefined" && window.LX_MONEY) || {};
+  try { return new Intl.NumberFormat(m.locale || undefined, { style: "currency", currency: m.currency }).format(+n); }
+  catch (e) { return (+n).toFixed(2) + (m.currency ? " " + m.currency : ""); }
+}
 let toastT;
 function toast(msg, type = "info") {
   /* re-query after the fallback create: render() may have replaced the shell, leaving
@@ -60,7 +66,12 @@ function toast(msg, type = "info") {
      u:<uv>     → a universe registry record (any of 2831 instantiated universes)
    The menu is not a hand-maintained list that can drift from the platform — a leaf with
    no dedicated view resolves through the same metadata-driven readers the Data Studio
-   uses, so nothing is orphaned and nothing is duplicated. */
+   uses, so nothing is orphaned and nothing is duplicated.
+
+   ALIASES. A leaf whose resolver carries a: <key> opens the same screen as that key. It
+   stays a leaf — its key is a grant section and a deep link that stored roles and the
+   route map name — but the menu shows it only when the identity cannot see <key>, so
+   no one meets the same screen twice. */
 const NAV = [
   { n: "01 · Foundation", g: [
     { g: "Identity", l: [
@@ -68,10 +79,11 @@ const NAV = [
       ["identity-templates", "📋 Identity Templates", { v: "identity-templates" }],
       ["persons", "👥 Persons", { u: "person" }],
       ["organizations", "🏢 Organizations", { u: "organization" }],
-      ["tenants", "🏬 Tenants", { e: "tenant" }],
-      ["users", "👤 Users", { v: "users" }],
-      ["roles", "🎭 Roles", { v: "roles" }],
-      ["permissions", "🔑 Permissions", { u: "permission" }],
+      ["tenants", "🏬 Tenants", { e: "tenant", a: "tenants-admin" }],
+      ["platform-setup", "🧭 Platform Setup", { v: "platform-setup" }],
+      ["users", "👤 Users", { v: "users", a: "users-admin" }],
+      ["roles", "🎭 Roles", { v: "roles", a: "roles-admin" }],
+      ["permissions", "🔑 Permissions", { u: "permission", a: "permissions-admin" }],
       ["credentials", "🧷 Credentials", { u: "credential_chain" }],
       ["authentication", "🔓 Authentication", { u: "authentication" }],
       ["authorization", "🛂 Authorization", { u: "authorization" }],
@@ -117,6 +129,8 @@ const NAV = [
   { n: "02 · Knowledge", g: [
     { g: "Products", l: [
       ["gproducts", "🌐 Global Products", { v: "gproducts" }],
+      ["master-review", "🗳️ Master Review", { v: "master-review" }],
+      ["master-permissions", "🔐 Master Permissions", { v: "master-permissions" }],
       ["product-families", "👨‍👩‍👧 Product Families", { u: "product_family" }],
       ["product-types", "📦 Product Types", { u: "product_type" }],
       ["variants", "🧬 Variants", { u: "product_variants" }],
@@ -165,7 +179,7 @@ const NAV = [
       ["partners", "🤝 Partners", { u: "partner" }],
       ["distributors", "🚚 Distributors", { u: "distributor" }],
       ["dealers", "🏪 Dealers", { u: "dealer" }],
-      ["franchises", " franchises", { u: "franchise" }],
+      ["franchises", "🏪 Franchises", { u: "franchise" }],
       ["workforce", "👷 Workforce", { u: "workforce" }],
     ] },
     { g: "CRM", l: [
@@ -179,11 +193,11 @@ const NAV = [
     { g: "Agreements", l: [
       ["contracts", "📜 Contracts", { e: "contract" }],
       ["agreements", "✍️ Agreements", { u: "agreement" }],
-      ["relationships", " 🔗 Relationships", { u: "relationship" }],
+      ["relationships", "🔗 Relationships", { u: "relationship" }],
       ["universal-links", "🔗 Universal Links (Primitive)", { e: "link" }],
       ["context-types", "🧭 Context Types (Primitive)", { e: "context_type" }],
       ["business-networks", "🌐 Business Networks", { u: "business_network" }],
-      ["business-organizations", "🏢 Organizations", { u: "organization" }],
+      ["business-organizations", "🏢 Organizations", { u: "organization", a: "organizations" }],
     ] },
   ] },
   { n: "04 · Commerce", g: [
@@ -200,7 +214,7 @@ const NAV = [
       ["loyalty", "⭐ Loyalty", { u: "loyalty" }],
       ["rewards", "🎁 Rewards", { u: "reward" }],
       ["referrals", "🔗 Referrals", { u: "referral" }],
-      ["goffers-affiliates", "🏷️ Offers · Affiliates", { v: "goffers" }],
+      ["goffers-affiliates", "🏷️ Offers · Affiliates", { v: "goffers", a: "goffers" }],
       ["goip", "Ω∞ GOIP · Value Exchange", { v: "offers" }],
     ] },
     { g: "Marketplace", l: [
@@ -230,7 +244,7 @@ const NAV = [
     ] },
     { g: "Billing & Payment", l: [
       ["plans", "💼 Plans", { v: "plans" }],
-      ["subs-plans", "🔁 Subscriptions", { v: "subs" }],
+      ["subs-plans", "🔁 Subscriptions", { v: "subs", a: "subs" }],
       ["invoices", "🧾 Invoices", { v: "invoices" }],
       ["billing", "💳 Billing Ops", { v: "billing" }],
       ["gfinance", "💸 Finance · Payments", { v: "gfinance" }],
@@ -240,10 +254,8 @@ const NAV = [
     ] },
   ] },
   { n: "05 · Operations", g: [
-    { g: "Overview", l: [
-      ["gops", "🧭 Ops Hub", { v: "gops" }],
-    ] },
     { g: "Supply", l: [
+      ["gops", "🧭 Ops Hub", { v: "gops" }],
       ["inventory", "📦 Inventory", { e: "inventory" }],
       ["warehousing", "🏬 Warehousing", { e: "warehouse" }],
       ["procurement", "🛒 Procurement", { u: "procurement" }],
@@ -327,7 +339,7 @@ const NAV = [
     ] },
     { g: "Autonomy", l: [
       ["autonomous-planning", "🗓️ Autonomous Planning", { u: "autonomous_planning" }],
-      ["autonomous-execution", " ▶️ Autonomous Execution", { u: "autonomous_execution" }],
+      ["autonomous-execution", "▶️ Autonomous Execution", { u: "autonomous_execution" }],
       ["autonomous-verification", "✔️ Autonomous Verification", { u: "autonomous_verification" }],
       ["learning", "📚 Learning Engine", { u: "learning" }],
       ["evolution", "🧬 Evolution Engine", { u: "evolution" }],
@@ -376,12 +388,11 @@ const NAV = [
   { n: "09 · Platform", g: [
     { g: "Capabilities", l: [
       ["capabilities", "⚙️ Capabilities", { v: "capabilities" }],
+      ["applicability", "🧭 Availability Rules", { v: "applicability" }],
       ["capability-tree", "🌳 Capability Tree", { v: "capability-tree" }],
       ["capability-registry", "🗄️ Capability Registry", { u: "capability_registry" }],
       ["capability-composition", "🧩 Capability Composition", { u: "capability_composition" }],
       ["capability-discovery", "🧭 Capability Discovery", { u: "capability_discovery" }],
-    ] },
-    { g: "Composition", l: [
       ["compose", "🧬 Composition Engine", { v: "compose" }],
     ] },
     { g: "Extension", l: [
@@ -415,12 +426,12 @@ const NAV = [
       ["monitor", "📈 Monitoring", { v: "monitor" }],
       ["metrics", "📊 Metrics", { u: "metrics" }],
       ["logs", "🪵 Logs", { u: "logs" }],
-      ["traces", " 🔗 Traces", { u: "traces" }],
+      ["traces", "🧵 Traces", { u: "traces" }],
       ["alerting", "🚨 Alerting", { u: "alerting" }],
     ] },
     { g: "Health", l: [
       ["reliability", "🛡️ Reliability", { u: "reliability" }],
-      ["health-availability", "🟢 Availability", { u: "availability" }],
+      ["health-availability", "🟢 Availability", { u: "availability", a: "availability" }],
       ["capacity", "📦 Capacity", { u: "capacity" }],
       ["performance", "⚡ Performance", { u: "performance" }],
       ["health", "💚 Health", { u: "health" }],
@@ -438,7 +449,7 @@ const NAV = [
   ] },
   { n: "11 · Administration", g: [
     { g: "Tenancy", l: [
-      ["tenants-admin", "🏬 Tenants", { v: "tenants" }],
+      ["tenants-admin", "🏬 Platforms & Kinds", { v: "tenants" }],
       ["companies", "🏢 Companies", { u: "company" }],
       ["workspaces", "🗂️ Workspaces", { u: "workspace" }],
       ["environments", "🌍 Environments", { v: "runtime" }],
@@ -454,8 +465,8 @@ const NAV = [
     { g: "Configuration", l: [
       ["registries", "📚 Platform Registries", { v: "registries" }],
       ["configurations", "⚙️ Configurations", { u: "configuration" }],
-      ["secrets", "保密 Secrets", { u: "secrets_management" }],
-      ["settings", "⚙️ Settings", { v: "gteam" }],
+      ["secrets", "🗝️ Secrets", { u: "secrets_management" }],
+      ["settings", "⚙️ Settings", { v: "gteam", a: "gteam" }],
       ["feature-flags", "🚩 Feature Flags", { v: "runtime" }],
       ["provisioning", "🛡️ Provisioning", { v: "provisioning" }],
     ] },
@@ -478,7 +489,7 @@ const NAV = [
     ] },
     { g: "Graphs", l: [
       ["capability-graph", "🕸️ Capability Graph", { u: "capability_graph" }],
-      ["knowledge-graph-arch", "🕸️ Knowledge Graph", { u: "knowledge_graph" }],
+      ["knowledge-graph-arch", "🕸️ Knowledge Graph", { u: "knowledge_graph", a: "knowledge-graph" }],
       ["dependency-graph", "🕸️ Dependency Graph", { u: "dependency_graph" }],
       ["traceability-graph", "🕸️ Traceability Graph", { u: "traceability_graph" }],
     ] },
@@ -502,6 +513,20 @@ const NAVKEY = {};
 for (const sec of NAV) for (const grp of sec.g) for (const [k, l, res] of grp.l) {
   NAVFLAT.push([k, l, res, sec.n + " · " + grp.g]);
   NAVKEY[k] = { label: l, res, home: sec.n + " · " + grp.g };
+}
+/* configured apps (composed capabilities, platform-level Data Studio entities) join the
+   nav as their own leaves — "app_<key>", each its own grant — in one section the console
+   fills from the identity's allowed apps; each renders through the generic dataset reader */
+function registerApps(apps) {
+  const i = NAV.findIndex(sec => sec.apps);
+  if (i >= 0) NAV.splice(i, 1);
+  for (let j = NAVFLAT.length - 1; j >= 0; j--) if (/^app_/.test(NAVFLAT[j][0])) NAVFLAT.splice(j, 1);
+  for (const k of Object.keys(NAVKEY)) if (/^app_/.test(k)) delete NAVKEY[k];
+  const list = (apps || []).filter(a => a && /^app_[A-Za-z0-9_-]+$/.test(a.section));
+  if (!list.length) return;
+  const sec = { n: "Configured apps", apps: true, g: [{ g: "Apps", l: list.map(a => [a.section, (a.icon || "🧩") + " " + a.label, { e: a.key }]) }] };
+  NAV.push(sec);
+  for (const [k, l, res] of sec.g[0].l) { NAVFLAT.push([k, l, res, sec.n + " · Apps"]); NAVKEY[k] = { label: l, res, home: sec.n + " · Apps" }; }
 }
 /* the console opens on the constitutional dashboard — the platform's front door is the
    command view, not any single store's setup */
@@ -583,23 +608,88 @@ async function vDash() {
   </div>
   <div class="p-panel"><h2>System</h2><div class="p-kv"><em>Uptime</em><span>${Math.floor(mon.system.uptimeSec / 60)} min</span><em>Memory</em><span>${mon.system.rssMB} MB</span><em>Database</em><span>${mon.system.dbKB} KB</span><em>Node</em><span>${esc(mon.system.node)}</span></div></div>`;
 }
+/* the kinds of platform this platform launches — each a registry row an operator adds or
+   edits here, launched any number of times. What a kind is called, the blend it starts
+   from, what it is provisioned with and which console sections apply all live on the row. */
+function kindsPanel(kd) {
+  const pre = Object.fromEntries((kd.presets || []).map(p => [p.key, p.label]));
+  const PROV = { payments: "payments", shipping: "shipping", warehouse: "warehouse", storefront: "shopfront" };
+  return `<div class="p-panel" id="kindsPanel"><div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
+    <h2 style="margin:0">Platform kinds (${kd.kinds.length})</h2><span style="flex:1"></span>
+    <button class="p-btn sm" id="newKind">＋ New kind</button></div>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Every kind of platform you can launch, and how many of each exist. A kind sets what one is called, the capability blend it starts with, what is provisioned for it and which console sections it gets. Launch as many of each as you need.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Kind</th><th>One is a…</th><th>Starts with</th><th>Provisioned</th><th>Console</th><th class="num">Platforms</th><th></th></tr></thead>
+    <tbody>${kd.kinds.map(k => `<tr><td><b>${esc(k.name)}</b><br><span class="p-tag">${esc(k.desc || "")}</span></td><td>${esc(k.noun)}</td>
+      <td>${k.archetype ? esc(pre[k.archetype] || k.archetype) : '<span class="p-tag">composed by hand</span>'}</td>
+      <td>${Object.entries(PROV).filter(([x]) => k.provision[x]).map(([, l]) => `<span class="a-chip">${l}</span>`).join(" ") || '<span class="p-tag">nothing</span>'}</td>
+      <td class="p-tag">${k.sections ? k.sections.length + " sections + its capabilities" : "every section"}</td>
+      <td class="num">${k.platforms}</td>
+      <td style="white-space:nowrap"><button class="p-btn sm primary" data-klaunch="${esc(k.key)}">＋ Launch one</button>
+        <button class="p-btn sm" data-kedit="${esc(k.key)}">Edit</button>
+        <button class="p-btn sm danger" data-kdel="${esc(k.key)}" ${k.platforms ? 'disabled title="Platforms of this kind exist"' : ""}>✕</button></td></tr>`).join("")}</tbody></table></div></div>`;
+}
+/* add or edit one kind. Sections a capability owns are not on the list — the platform's
+   capabilities decide those — so the form offers the rest, all on for "every section". */
+function kindModal(kd, key) {
+  const k = key ? kd.kinds.find(x => x.key === key) : null;
+  const d = k || { key: "", name: "", desc: "", noun: kd.defaults.noun, nounPlural: kd.defaults.nounPlural, archetype: "", needsIndustries: false, provision: kd.defaults.provision, sections: null };
+  const free = kd.sections.filter(x => !x.capabilities.length), owned = kd.sections.filter(x => x.capabilities.length);
+  const on = x => !d.sections || d.sections.includes(x);
+  const PROV = [["payments", "Payment gateways"], ["shipping", "Shipping carriers"], ["warehouse", "A warehouse"], ["storefront", "A shopfront (departments, home page, demo shop products)"]];
+  const m = modal(`<div class="p-modal-head"><h3>${k ? "Edit kind · " + esc(k.name) : "New platform kind"}</h3><button data-mclose>✕</button></div>
+    <div class="p-form">
+      <div class="row"><label><span>Name *</span><input id="kdName" value="${esc(d.name)}" placeholder="Healthcare Network"></label>
+        <label><span>Key *</span><input id="kdKey" value="${esc(d.key)}" placeholder="healthcare" ${k ? "disabled" : ""}></label></div>
+      <label><span>Description</span><input id="kdDesc" value="${esc(d.desc)}" placeholder="Clinics, appointments and patient billing"></label>
+      <div class="row"><label><span>One is called a…</span><input id="kdNoun" value="${esc(d.noun)}" placeholder="clinic"></label>
+        <label><span>Many are called…</span><input id="kdNouns" value="${esc(d.nounPlural)}" placeholder="clinics"></label></div>
+      <label><span>Starts with this capability blend</span><select id="kdArch"><option value="">None — composed by hand in Capabilities</option>
+        ${kd.presets.map(p => `<option value="${esc(p.key)}" ${d.archetype === p.key ? "selected" : ""}>${esc(p.label)}</option>`).join("")}</select></label>
+      <label class="checkbox-group"><input type="checkbox" id="kdInd" ${d.needsIndustries ? "checked" : ""}> Registration must name the industries its catalogue covers</label>
+      <p class="p-tag" style="margin:8px 0 2px">Provisioned when one is registered</p>
+      ${PROV.map(([x, l]) => `<label class="checkbox-group"><input type="checkbox" data-kprov="${x}" ${d.provision[x] ? "checked" : ""}> ${esc(l)}</label>`).join("")}
+      <p class="p-tag" style="margin:8px 0 2px">Console sections · <a href="#" id="kdAll">all</a> · <a href="#" id="kdNone">none</a></p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:2px 10px">${free.map(x => `<label class="checkbox-group"><input type="checkbox" data-ksec="${esc(x.key)}" ${on(x.key) ? "checked" : ""}> ${esc(x.label)}</label>`).join("")}</div>
+      <p class="p-tag" style="margin:8px 0 2px">These follow the platform's capabilities, not the kind: ${owned.map(x => esc(x.label)).join(", ")}</p>
+      <button class="p-btn primary" id="kdSave">${k ? "Save kind" : "Add kind"}</button></div>`);
+  const all = v => m.querySelectorAll("[data-ksec]").forEach(c => c.checked = v);
+  m.querySelector("#kdAll").onclick = e => { e.preventDefault(); all(true); };
+  m.querySelector("#kdNone").onclick = e => { e.preventDefault(); all(false); };
+  m.querySelector("#kdName").oninput = e => { const kk = m.querySelector("#kdKey"); if (!k && !kk.dataset.touched) kk.value = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "").slice(0, 40); };
+  m.querySelector("#kdKey").oninput = e => { e.target.dataset.touched = "1"; };
+  m.querySelector("#kdSave").onclick = async () => {
+    const boxes = [...m.querySelectorAll("[data-ksec]")];
+    const picked = boxes.filter(c => c.checked).map(c => c.dataset.ksec);
+    const kind = {
+      key: m.querySelector("#kdKey").value.trim(), name: m.querySelector("#kdName").value.trim(), desc: m.querySelector("#kdDesc").value.trim(),
+      noun: m.querySelector("#kdNoun").value.trim(), nounPlural: m.querySelector("#kdNouns").value.trim(), archetype: m.querySelector("#kdArch").value,
+      needsIndustries: m.querySelector("#kdInd").checked,
+      provision: Object.fromEntries([...m.querySelectorAll("[data-kprov]")].map(c => [c.dataset.kprov, c.checked])),
+      /* every box ticked is "every section" — a section added to the console later joins it too */
+      sections: picked.length === boxes.length ? null : picked
+    };
+    if (!kind.name || !kind.key) return toast("A kind needs a name and a key");
+    try { await api("/platform/kinds", "POST", { kind }); m.innerHTML = ""; toast((k ? "Saved " : "Added ") + kind.name); render(); }
+    catch (e) { toast(e.message); }
+  };
+}
 async function vTenants() {
-  const { tenants } = await api("/platform/tenants");
-  P.tenants = tenants;
-  return `
+  const [{ tenants }, kd] = await Promise.all([api("/platform/tenants"), api("/platform/kinds").catch(() => null)]);
+  P.tenants = tenants; P.kinds = kd;
+  return `${kd ? kindsPanel(kd) : ""}
   <div class="p-panel"><div style="display:flex;align-items:center;gap:12px;margin-bottom:6px">
-    <h2 style="margin:0">Tenants (${tenants.length})</h2><span style="flex:1"></span>
+    <h2 style="margin:0">Platforms (${tenants.length})</h2><span style="flex:1"></span>
     <button class="p-btn primary sm" id="newTenant">＋ Register platform</button></div>
-    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">The platform's tenancy registry. A tenant's <b>Products</b>, SKUs &amp; inventory, orders, suppliers, compliance and settings live in its <b>Store Console</b> — click <b>Manage · Catalog</b> to open it.</p>
-    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Tenant</th><th>Slug</th><th>Jurisdiction</th><th>Owner</th><th>Mode</th><th>Industries</th><th class="num">Products</th><th class="num">Orders</th><th class="num">GMV</th><th>Plan</th><th>Status</th><th></th></tr></thead>
-    <tbody>${tenants.map(t => `<tr><td><b>${esc(t.name)}</b></td><td>${esc(t.slug)}</td><td>${esc(t.country || "—")}</td><td class="p-tag">${esc((t.profile && t.profile.ownerEmail) || "—")}</td><td>${esc(t.mode)}</td>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Every platform launched on this one, of every kind. Each runs its own console — click <b>Manage</b> to open it.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Platform</th><th>Slug</th><th>Jurisdiction</th><th>Owner</th><th>Kind</th><th>Industries</th><th class="num">Products</th><th class="num">Orders</th><th class="num">GMV</th><th>Plan</th><th>Status</th><th></th></tr></thead>
+    <tbody>${tenants.map(t => `<tr><td><b>${esc(t.name)}</b></td><td>${esc(t.slug)}</td><td>${esc(t.country || "—")}</td><td class="p-tag">${esc((t.profile && t.profile.ownerEmail) || "—")}</td><td>${esc(t.kind ? t.kind.name : t.mode)}</td>
       <td class="p-tag">${esc((t.industries || "[]").replace(/["[\]]/g, "").slice(0, 40))}</td>
       <td class="num">${t.products}</td><td class="num">${t.orders}</td><td class="num">${money(t.gmv)}</td>
       <td>${esc(t.plan || "—")}</td><td><span class="badge ${esc(t.status)}">${esc(t.status)}</span></td>
       <td style="white-space:nowrap"><button class="p-btn sm" data-open="${t.id}">Open</button>
         <button class="p-btn sm" data-tedit="${t.id}" title="Edit this tenant's identity">Edit</button>
-        <button class="p-btn sm primary" data-imp="${t.id}" title="Enter this store's Store Console — Products, SKUs, Orders and more">Manage · Catalog</button>
-        <button class="p-btn sm" data-susp="${t.id}">${t.status === "active" ? "Suspend" : "Resume"}</button>
+        <button class="p-btn sm primary" data-imp="${t.id}" title="Open this ${esc(t.kind ? t.kind.noun : "platform")}'s own console">Manage</button>
+        <button class="p-btn sm" data-susp="${t.id}">${t.operating ? "Suspend" : "Resume"}</button>
         <button class="p-btn sm" data-inv="${t.id}">Invoice</button>
         <button class="p-btn sm danger" data-del="${t.id}">✕</button></td></tr>`).join("")}</tbody></table></div></div>`;
 }
@@ -612,8 +702,8 @@ async function vTenants() {
    a separate screen — so a platform is registered complete: type, capabilities, catalogue
    AND authentication policy.
    The console remains the place to TUNE a platform; this is the place to REGISTER one. */
-async function registerModal() {
-  const [meta, capd, pland, idtd] = await Promise.all([api("/meta"), api("/capabilities"), api("/platform/plans"), api("/platform/identity-templates")]);
+async function registerModal(kindKey) {
+  const [meta, capd, pland, idtd, pcfg] = await Promise.all([api("/meta"), api("/capabilities"), api("/platform/plans"), api("/platform/identity-templates"), api("/platform/config").catch(() => ({}))]);
   const industries = meta.industries || [], countries = (meta.countries || []).filter(c => c.active), modes = meta.deployModes || [];
   const presets = (capd.presets || []).filter(p => p.key !== "blend_mixed" || true);
   const plans = pland.plans || [];
@@ -622,9 +712,21 @@ async function registerModal() {
      never registered without a deliberate authentication policy */
   const idTemplates = (idtd.templates || []).slice().sort((a, b) => (b.is_default || 0) - (a.is_default || 0));
   const defTmpl = idTemplates.find(t => t.is_default) || idTemplates[0];
-  const R = { name: "", slug: "", country: "US", mode: "marketplace", ownerName: "", ownerEmail: "", ownerPassword: "",
+  const polProv = pcfg && pcfg.policy && pcfg.policy.provisioning ? pcfg.policy.provisioning : {};
+  const polMode = polProv.defaultMode || null;
+  const polCountry = countries.some(c => c.code === polProv.defaultCountry) ? polProv.defaultCountry : (countries[0] ? countries[0].code : "");
+  /* launched from a kind's row, the walk opens on that kind; otherwise on the policy default */
+  const firstMode = modes.some(x => x.key === kindKey) ? kindKey : (modes.some(x => x.key === polMode) ? polMode : (modes[0] ? modes[0].key : ""));
+  const R = { name: "", slug: "", country: polCountry, mode: firstMode, ownerName: "", ownerEmail: "", ownerPassword: "",
     legalName: "", taxId: "", language: "", archetype: "", industries: [], seedUniverses: true, seedCatalog: false,
     identityTemplate: defTmpl ? defTmpl.id : null, planId: plans[0] ? plans[0].id : 1 };
+  const kindOf = () => modes.find(x => x.key === R.mode) || {};
+  /* the blend follows the kind until the operator picks one themselves */
+  let archPicked = false;
+  const followKind = () => { if (!archPicked) R.archetype = presets.some(p => p.key === kindOf().archetype) ? kindOf().archetype : ""; };
+  followKind();
+  const needInd = () => !!kindOf().needsIndustries;
+  const shopfront = () => !kindOf().provision || kindOf().provision.storefront !== false;
   let step = 0;
   const m = modal(`<div class="p-modal-head"><h3>Register a platform</h3><button data-mclose>✕</button></div>
     <div id="regBody"></div>`);
@@ -637,7 +739,9 @@ async function registerModal() {
       R.name = g("rName") !== undefined ? g("rName") : R.name;
       R.slug = g("rSlug") !== undefined ? g("rSlug") : R.slug;
       R.country = g("rCountry") || R.country;
+      const wasMode = R.mode;
       R.mode = g("rMode") || R.mode;
+      if (R.mode !== wasMode) followKind();
       R.ownerName = g("rOwnerName") !== undefined ? g("rOwnerName") : R.ownerName;
       R.ownerEmail = g("rOwnerEmail") !== undefined ? g("rOwnerEmail") : R.ownerEmail;
       R.ownerPassword = g("rOwnerPass") !== undefined ? g("rOwnerPass") : R.ownerPassword;
@@ -645,7 +749,7 @@ async function registerModal() {
       R.taxId = g("rTax") !== undefined ? g("rTax") : R.taxId;
       R.language = g("rLang") !== undefined ? g("rLang") : R.language;
       R.planId = m.querySelector("#rPlan") ? Number(m.querySelector("#rPlan").value) : R.planId;
-      const arch = m.querySelector("input[name='rArch']:checked"); if (arch) R.archetype = arch.value;
+      const arch = m.querySelector("input[name='rArch']:checked"); if (arch) { if (arch.value !== R.archetype) archPicked = true; R.archetype = arch.value; }
       const idt = m.querySelector("input[name='rIdTmpl']:checked"); if (idt) R.identityTemplate = idt.value ? Number(idt.value) : null;
       m.querySelectorAll("[data-ind]").forEach(c => { const k = c.dataset.ind; const on = c.classList.contains("on"); R.industries = R.industries.includes(k) ? (on ? R.industries : R.industries.filter(x => x !== k)) : (on ? R.industries.concat(k) : R.industries); });
       const su = m.querySelector("#rSeedUv"); if (su) R.seedUniverses = su.checked;
@@ -656,12 +760,12 @@ async function registerModal() {
     const dots = STEPS.map((s, i) => `<span class="a-chip" style="${i === step ? "background:var(--p-accent);color:#111" : "opacity:.5"}">${i + 1}. ${s}</span>`).join(" ");
     if (step === 0) return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div><div class="p-form">
       <label><span>Platform name *</span><input id="rName" value="${esc(R.name)}" placeholder="Acme Commerce"></label>
-      <label><span>Slug (store URL) *</span><input id="rSlug" value="${esc(R.slug)}" placeholder="acme"></label>
+      <label><span>Kind of platform *</span><select id="rMode">${modes.map(x => `<option value="${x.key}" ${R.mode === x.key ? "selected" : ""}>${esc(x.name)} — ${esc(x.desc)}</option>`).join("")}</select></label>
+      <label><span>Slug (web address) *</span><input id="rSlug" value="${esc(R.slug)}" placeholder="acme"></label>
       <label><span>Country / jurisdiction *</span><select id="rCountry">${countries.map(c => `<option value="${c.code}" ${R.country === c.code ? "selected" : ""}>${esc(c.name)} · ${c.currency}</option>`).join("")}</select></label>
-      <label><span>Platform mode *</span><select id="rMode">${modes.map(x => `<option value="${x.key}" ${R.mode === x.key ? "selected" : ""}>${esc(x.name)} — ${esc(x.desc)}</option>`).join("")}</select></label>
       <label><span>Admin name *</span><input id="rOwnerName" value="${esc(R.ownerName)}" placeholder="Ava One"></label>
       <label><span>Admin email *</span><input id="rOwnerEmail" value="${esc(R.ownerEmail)}" placeholder="admin@acme.com"></label>
-      <label><span>Admin password *</span><input id="rOwnerPass" type="password" value="${esc(R.ownerPassword)}" placeholder="6+ characters"></label>
+      <label><span>Admin password *</span><input id="rOwnerPass" type="password" value="${esc(R.ownerPassword)}" placeholder="meets the platform password policy"></label>
       <label><span>Legal name (optional)</span><input id="rLegal" value="${esc(R.legalName)}" placeholder="Acme Commerce Pvt Ltd"></label>
       <label><span>Tax ID (optional)</span><input id="rTax" value="${esc(R.taxId)}" placeholder="GSTIN / EIN"></label></div>`;
     if (step === 1) { const ctry = countries.find(c => c.code === R.country);
@@ -672,7 +776,7 @@ async function registerModal() {
         + (p.expiryDays ? " · expires " + p.expiryDays + "d" : " · never expires"); };
       const mfOf = t => { const c = cfgOf(t), m = c.mfa || {}; return m.enabled ? "MFA on" + (m.requireForStaff ? " · required for all staff" : m.requireForAdmin ? " · required for admins" : "") : "no MFA"; };
       return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div><div class="p-form">
-      <label><span>Language / locale</span><input id="rLang" value="${esc(R.language || (ctry && ctry.locale) || "en-US")}" placeholder="en-US"></label>
+      <label><span>Language / locale</span><input id="rLang" value="${esc(R.language || (ctry && ctry.locale) || (window.LX_MONEY || {}).locale || "")}" placeholder="${esc((window.LX_MONEY || {}).locale || "")}"></label>
       <p class="p-tag" style="margin:4px 0 2px">The locale defaults from the chosen jurisdiction (${esc(R.country)} → ${ctry ? ctry.locale : "—"}). The authentication policy is picked here from the identity registry (${idTemplates.length} templates) — a platform is never registered without one. Tune it later from <b>01 · Foundation → Identity</b>.</p>
       <div style="display:grid;gap:8px">${idTemplates.map(t => `<label style="display:flex;gap:10px;align-items:flex-start;border:1px solid var(--p-border);border-radius:10px;padding:10px;cursor:pointer;${R.identityTemplate === t.id ? "border-color:var(--p-accent)" : ""}">
         <input type="radio" name="rIdTmpl" value="${t.id}" ${R.identityTemplate === t.id ? "checked" : ""} style="margin-top:3px">
@@ -680,7 +784,7 @@ async function registerModal() {
         <span class="p-tag">${esc(t.description || "")}</span><br>
         <code style="font-size:10px">${pwOf(t)} · ${mfOf(t)}</code></span></label>`).join("") || '<p class="p-empty">No identity templates registered — the engine defaults will apply. Create one from 01 · Foundation → Identity Templates.</p>'}</div></div>`; }
     if (step === 2) return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div>
-      <p class="p-tag">An archetype writes the store's capability rows in one call — this is what the platform <b>is</b>. Tuning afterwards is kept.</p>
+      <p class="p-tag">A blend switches on the platform's capabilities in one go${kindOf().archetype ? " — the <b>" + esc(kindOf().name || "") + "</b> kind starts with the one pre-selected" : ""}. Tuning afterwards is kept.</p>
       <div style="display:grid;gap:8px">${presets.map(p => `<label style="display:flex;gap:10px;align-items:flex-start;border:1px solid var(--p-border);border-radius:10px;padding:10px;cursor:pointer;${R.archetype === p.key ? "border-color:var(--p-accent)" : ""}">
         <input type="radio" name="rArch" value="${esc(p.key)}" ${R.archetype === p.key ? "checked" : ""} style="margin-top:3px">
         <span><b>${esc(p.label)}</b> <code style="font-size:10px">${esc(p.key)}</code><br><span class="p-tag">${esc(p.description || "")}</span></span></label>`).join("")}
@@ -688,11 +792,11 @@ async function registerModal() {
         <input type="radio" name="rArch" value="" ${R.archetype === "" ? "checked" : ""}>
         <span><b>No archetype</b><br><span class="p-tag">Register an empty platform and compose it capability-by-capability in ⚙️ Capabilities.</span></span></label></div>`;
     if (step === 3) return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div>
-      <p class="p-tag">Industries scope the catalogue${R.mode === "marketplace" ? "" : " — required for this mode"}. Picked from the registry (${industries.length} registered).</p>
+      <p class="p-tag">Industries scope the catalogue${needInd() ? " — required for this mode" : ""}. Picked from the registry (${industries.length} registered).</p>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${industries.map(i => `<button class="p-btn sm ${R.industries.includes(i.key) ? "primary on" : ""}" data-ind="${esc(i.key)}" type="button">${esc(i.icon || "▪")} ${esc(i.name)}</button>`).join("")}</div>
       <div class="p-form">
       <label class="checkbox-group"><input type="checkbox" id="rSeedUv" ${R.seedUniverses ? "checked" : ""}> Activate the archetype's catalog content (universes publish products, SKUs and inventory)</label>
-      <label class="checkbox-group"><input type="checkbox" id="rSeedCat" ${R.seedCatalog ? "checked" : ""}> Also seed the demo product catalogue</label></div>`;
+      ${shopfront() ? `<label class="checkbox-group"><input type="checkbox" id="rSeedCat" ${R.seedCatalog ? "checked" : ""}> Also seed the demo product catalogue</label>` : ""}</div>`;
     const arch = presets.find(p => p.key === R.archetype);
     return `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">${dots}</div>
       <div class="p-form">
@@ -701,7 +805,7 @@ async function registerModal() {
       <tr><td>Platform</td><td><b>${esc(R.name)}</b> <code>${esc(R.slug)}</code></td></tr>
       <tr><td>Jurisdiction</td><td>${esc(R.country)}${R.legalName ? " · " + esc(R.legalName) : ""}${R.taxId ? " · " + esc(R.taxId) : ""}</td></tr>
       <tr><td>Admin</td><td>${esc(R.ownerEmail)}</td></tr>
-      <tr><td>Mode</td><td>${esc(R.mode)}</td></tr>
+      <tr><td>Kind</td><td>${esc(kindOf().name || R.mode)}${kindOf().noun ? " · one " + esc(kindOf().noun) : ""}</td></tr>
       <tr><td>Language</td><td>${esc(R.language)}</td></tr>
       <tr><td>Identity policy</td><td>${(() => { const t = idTemplates.find(x => x.id === R.identityTemplate); return t ? "<b>" + esc(t.name) + "</b> · password &amp; MFA policy" : "engine defaults"; })()}</td></tr>
       <tr><td>Platform type</td><td>${arch ? "<b>" + esc(arch.label) + "</b> · " + Object.keys(arch.capabilities || {}).length + " capabilities" : "no archetype — composed by hand"}</td></tr>
@@ -722,16 +826,17 @@ async function registerModal() {
     if (go) go.onclick = async () => {
       sync();
       if (!R.name || !R.slug) return toast("Name and slug are required");
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(R.ownerEmail) || String(R.ownerPassword).length < 6) return toast("Admin needs a valid email and a 6+ character password");
-      if ((R.mode === "industry" || R.mode === "brand") && !R.industries.length) return toast("Pick at least one industry for this mode");
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(R.ownerEmail) || !R.ownerPassword) return toast("Admin needs a valid email and a password");
+      if (needInd() && !R.industries.length) return toast("Pick at least one industry for this mode");
       go.disabled = true; go.textContent = "Registering…";
       try {
         const r = await api("/platform/tenants", "POST", {
           name: R.name, slug: R.slug, country: R.country, mode: R.mode,
           owner: { name: R.ownerName, email: R.ownerEmail, password: R.ownerPassword },
           jurisdiction: { legalName: R.legalName, taxId: R.taxId, country: R.country },
-          language: R.language, archetype: R.archetype || undefined, identity_template: R.identityTemplate || undefined,
-          industries: R.industries, seedUniverses: R.seedUniverses, seedCatalog: R.seedCatalog,
+          /* "" is an explicit "no blend" — omitting it would apply the kind's own */
+          language: R.language, archetype: R.archetype, identity_template: R.identityTemplate || undefined,
+          industries: R.industries, seedUniverses: R.seedUniverses, seedCatalog: shopfront() && R.seedCatalog,
           plan_id: R.planId
         });
         if (r.error) { go.disabled = false; go.textContent = "⚡ Register platform"; return toast(r.error); }
@@ -747,16 +852,21 @@ async function registerModal() {
    the constitutional model treats a tenant as an identity record the platform provisions */
 async function tenantModal(id) {
   const t = id ? P.tenants.find(x => x.id === id) : null;
+  const [tmeta, tcfg] = await Promise.all([api("/meta").catch(() => ({})), api("/platform/config").catch(() => ({}))]);
+  const modes = (tmeta.deployModes || []).map(x => x.key);
+  const tCountries = (tmeta.countries || []).filter(c => c.active);
+  const tCountry = t ? (t.country || "") : ((tcfg.policy && tcfg.policy.provisioning && tcfg.policy.provisioning.defaultCountry) || "");
+  if (tCountry && !tCountries.some(c => c.code === tCountry)) tCountries.unshift({ code: tCountry, name: tCountry });
   const isEdit = !!t;
   const m = modal(`<div class="p-modal-head"><h3>${isEdit ? "Edit · " + esc(t.name) : "New tenant"}</h3><button data-mclose>✕</button></div>
     <div class="p-form">
       <label><span>Name</span><input id="tnName" value="${t ? esc(t.name) : ""}" placeholder="Acme Commerce"></label>
       <label><span>Slug</span><input id="tnSlug" value="${t ? esc(t.slug) : ""}" placeholder="acme" ${isEdit ? "disabled" : ""}></label>
-      <label><span>Country</span><input id="tnCountry" value="${t ? esc(t.country || "") : ""}" placeholder="US"></label>
+      <label><span>Country</span><select id="tnCountry">${tCountries.map(c => `<option value="${esc(c.code)}" ${c.code === tCountry ? "selected" : ""}>${esc(c.name)} (${esc(c.code)})</option>`).join("")}</select></label>
       <label><span>Owner name</span><input id="tnOwnerName" value="${t && t.profile ? esc(t.profile.ownerName || "") : ""}" placeholder="Ava One"></label>
       <label><span>Owner email</span><input id="tnOwner" value="${t && t.profile ? esc(t.profile.ownerEmail || "") : ""}" placeholder="owner@acme.com"></label>
-      ${isEdit ? "" : '<label><span>Owner password</span><input id="tnPass" type="password" placeholder="6+ characters" minlength="6"></label>'}
-      <label><span>Mode</span><select id="tnMode">${["marketplace", "industry", "brand"].map(x => `<option ${t && t.mode === x ? "selected" : ""}>${x}</option>`).join("")}</select></label>
+      ${isEdit ? "" : '<label><span>Owner password</span><input id="tnPass" type="password" placeholder="meets the platform password policy"></label>'}
+      <label><span>Mode</span><select id="tnMode">${modes.map(x => `<option ${t && t.mode === x ? "selected" : ""}>${esc(x)}</option>`).join("")}</select></label>
       <button class="p-btn primary" id="tnSave">${isEdit ? "Save changes" : "Create tenant"}</button>
     </div>`);
   m.querySelector("#tnSave").onclick = async () => {
@@ -799,12 +909,36 @@ async function vSubs() {
       <td><span class="badge ${esc(s.status)}">${esc(s.status)}</span></td><td>${esc(s.started_at)}</td><td>${esc(s.renews_at)}</td></tr>`).join("")}</tbody></table></div>`;
 }
 async function vInvoices() {
+  /* collectable is what the invoice machine's states mean, served by /api/meta */
+  const SMV = ((await api("/meta").catch(() => ({}))).stateMachines || {}).invoice || { states: {} };
   const { invoices } = await api("/platform/invoices");
   return `<div class="p-panel"><h2>Invoices</h2>
     <table class="p-table"><thead><tr><th>Number</th><th>Store</th><th>Period</th><th class="num">Amount</th><th>Status</th><th>Issued</th><th></th></tr></thead>
     <tbody>${invoices.map(i => `<tr><td>${esc(i.number)}</td><td>${esc(i.tenant_name)}</td><td>${esc(i.period_start)} → ${esc(i.period_end || "")}</td>
       <td class="num">${money(i.amount)}</td><td><span class="badge ${esc(i.status)}">${esc(i.status)}</span></td><td class="p-tag">${esc(i.issued_at)}</td>
-      <td>${i.status !== "paid" ? `<button class="p-btn sm primary" data-payinv="${i.id}">Collect</button>` : "✓"}</td></tr>`).join("")}</tbody></table></div>`;
+      <td>${!((SMV.states[i.status] || {}).tags || []).includes("success") ? `<button class="p-btn sm primary" data-payinv="${i.id}">Collect</button>` : "✓"}</td></tr>`).join("")}</tbody></table></div>`;
+}
+/* live carrier accounts: the credentials every store's rates and labels use. Keys are
+   sealed on save and never come back — the form shows only whether one is on file, and a
+   blank field keeps the stored value. */
+async function vCarrierAccounts() {
+  const { providers, public_url } = await api("/platform/shipping/providers").catch(() => ({ providers: [] }));
+  const ep = providers.find(p => p.provider_id === "easypost");
+  if (!ep) return "";
+  const k = ep.keys || {};
+  const hook = (public_url || location.origin) + "/api/shipping/webhook/easypost";
+  const onFile = has => has ? '<span class="badge active">on file</span>' : '<span class="badge inactive">not set</span>';
+  return `<div class="p-panel" id="carrierAccounts"><h2>🚚 Carrier account · EasyPost <span class="badge ${esc(ep.status)}">${ep.status === "active" ? "connected" : "not connected"}</span></h2>
+    <p class="p-tag">One EasyPost account gives every store live rates, labels and tracking for USPS, UPS, FedEx, DHL and ~100 more carriers. Get the keys at <b>easypost.com → Account → API Keys</b> (a <code>EZTK…</code> test key buys free sample labels). Each store then sets its own ship-from address in <b>Store console → Shipping &amp; Tracking</b>.</p>
+    <div class="p-form">
+      <div class="row"><label><span>API key ${onFile(k.apiKey)}</span><input id="epKey" type="password" autocomplete="off" placeholder="${k.apiKey ? "•••• leave blank to keep" : "EZAK… or EZTK…"}"></label>
+      <label><span>Webhook secret ${onFile(k.webhookSecret)}</span><input id="epSecret" type="password" autocomplete="off" placeholder="${k.webhookSecret ? "•••• leave blank to keep" : "the secret you type into EasyPost's webhook form"}"></label></div>
+      <label><span>Webhook URL — add it in EasyPost → Account → Webhooks, with the secret above</span><input id="epHook" readonly value="${esc(hook)}"></label>
+      ${!public_url && /localhost|127\.0\.0\.1/.test(location.hostname) ? '<p class="p-tag">EasyPost can\'t reach localhost. Locally, tracking updates won\'t arrive unless you expose the server with a tunnel; rates and labels still work. In production set <code>LX_PUBLIC_URL</code>.</p>' : ""}
+      <div style="display:flex;gap:8px"><button class="p-btn primary" id="epSave">Save</button>
+      <button class="p-btn" id="epCopy">Copy webhook URL</button>
+      ${ep.status === "active" || k.apiKey ? '<button class="p-btn danger" id="epDisconnect">Disconnect</button>' : ""}</div>
+    </div></div>`;
 }
 async function vProviders() {
   const { custom, availability } = await api("/platform/custom-providers");
@@ -824,6 +958,7 @@ async function vProviders() {
   };
   return `
   <p class="p-tag" style="margin:0 0 14px">Provider catalogue is entity data — provider_def + provider_availability (countries) + country + tax_mode. Edit here or via the entity APIs; every storefront and checkout reads these live.</p>
+  ${await vCarrierAccounts()}
   ${kindTable("payment", "Payment providers")}
   <div class="p-grid2">${kindTable("shipping", "Shipping carriers")}${kindTable("notification", "Notification channels")}</div>
   <div class="p-panel"><h2>Custom providers (${custom.length})</h2>
@@ -1041,7 +1176,7 @@ async function vGeo() {
     <button class="p-btn primary sm" id="addCur">+ Add currency</button></div>
   <div class="p-panel"><h2>Conversions &amp; FX feed</h2>
     <div class="row3" style="display:grid;grid-template-columns:1fr 2fr auto;gap:12px;align-items:end">
-      <label><span>Rate source</span><select id="fxProv"><option value="manual" ${(fx.provider.provider||"manual")==="manual"?"selected":""}>Manual (offline)</option><option value="feed" ${fx.provider.provider==="feed"?"selected":""}>HTTP JSON feed</option></select></label>
+      <label><span>Rate source</span><select id="fxProv">${(fx.sources || []).map(x => `<option value="${esc(x.key)}" ${fx.provider.provider === x.key ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
       <label><span>Feed URL — JSON of {"CODE": usdValue}</span><input id="fxUrl" value="${esc(fx.provider.url||"")}" placeholder="https://your-fx-provider.example/rates.json"></label>
       <span><button class="p-btn sm" id="fxProvSave">Save</button> <button class="p-btn sm primary" id="fxSync">⟳ Sync now</button></span></div>
     <p class="p-tag">Last sync: ${fx.lastSync ? esc(fx.lastSync.at)+" — applied "+fx.lastSync.applied.length+(fx.lastSync.skipped.length?" skipped "+fx.lastSync.skipped.join(","):"") : "never"} · USD is always the 1.0 anchor.</p>
@@ -1051,7 +1186,7 @@ async function vGeo() {
     <div class="row3" style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:10px">
       <label><span>Convert amount</span><input id="cxAmount" type="number" step="any" value="100"></label>
       <label><span>From</span><select id="cxFrom">${cy.rows.map(x => `<option>${x.code}</option>`).join("")}</select></label>
-      <label><span>To</span><select id="cxTo">${cy.rows.map(x => `<option value="${x.code}" ${x.code==="INR"?"selected":""}>${x.code}</option>`).join("")}</select></label>
+      <label><span>To</span><select id="cxTo">${cy.rows.map(x => `<option value="${x.code}" ${x.code === (cy.rows[1] || cy.rows[0] || {}).code ? "selected" : ""}>${x.code}</option>`).join("")}</select></label>
       <button class="p-btn sm" id="cxGo">Convert →</button><div class="p-tag" id="cxOut"></div></div>
     <table class="p-table"><thead><tr><th>When</th><th>Currency</th><th class="num">USD value</th><th>Source</th><th>Detail</th></tr></thead>
     <tbody>${fx.history.slice(0, 25).map(h => `<tr><td class="p-tag">${esc(h.created_at)}</td><td><b>${esc(h.currency)}</b></td><td class="num">${h.usd}</td><td><span class="badge ${h.source==="feed"?"published":"draft"}">${esc(h.source)}</span></td><td class="p-tag">${esc((h.note||"").slice(0,48))}</td></tr>`).join("") || '<tr><td colspan="5" class="p-empty">No rate changes recorded yet — edit a rate or sync a feed</td></tr>'}</tbody></table></div>
@@ -1070,7 +1205,7 @@ async function wireGeoFx() {
   g("cxGo").onclick = async () => { try { const r = await api("/fx?amount=" + encodeURIComponent(g("cxAmount").value || 1) + "&from=" + g("cxFrom").value + "&to=" + g("cxTo").value); g("cxOut").textContent = `= ${r.result.toLocaleString()} ${r.to} (rate ${r.rate})`; } catch (e) { g("cxOut").textContent = e.message; } };
 }
 /* ============ GLOBAL PRODUCTS: platform-level master catalog tenants subscribe to ============ */
-let gpFilter = "", gpUniverse = "", gpUniverses = [], gpKinds = [], gpTaxClasses = [], gpCategories = [], gpProfileFields = [];
+let gpFilter = "", gpUniverse = "", gpUniverses = [], gpKinds = [], gpTaxClasses = [], gpCategories = [], gpProfileFields = [], gpLifecycles = [];
 /* universe → product type, from the registry's own map (universeProductTypes) — the form
    shows the type as a consequence of the universe instead of a checkbox that can
    contradict it. Filled once from the list response. */
@@ -1085,12 +1220,13 @@ async function vGproducts() {
   const q = new URLSearchParams();
   if (gpFilter) q.set("category", gpFilter);
   if (gpUniverse) q.set("universe", gpUniverse);
-  const { products, universes, kinds, taxClasses, categories, universeProductTypes, profileFields } = await api("/platform/global-products" + (q.toString() ? "?" + q.toString() : ""));
+  const { products, universes, kinds, taxClasses, categories, universeProductTypes, profileFields, lifecycles } = await api("/platform/global-products" + (q.toString() ? "?" + q.toString() : ""));
   gpUniverses = universes || [];
   gpKinds = kinds || [];
   gpTaxClasses = taxClasses || [];
   gpCategories = categories || [];
   gpProfileFields = profileFields || [];
+  gpLifecycles = lifecycles || [];
   gpTypeMap = null; window.__universeProductTypes = universeProductTypes || [];
   const cats = [...new Set(products.map(p => p.category).filter(Boolean))];
   const uOf = p => (gpUniverses.find(u => u.key === p.universe) || {});
@@ -1105,7 +1241,7 @@ async function vGproducts() {
     </select>
     <span style="flex:1"></span>
     <button class="p-btn primary sm" id="gpNew">+ New global product</button></div>
-    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Platform-level master products, populated <b>automatically</b> from the corpus (one canonical archetype per universe UPIP §1 declares) and <b>manually</b> by you. Stores may import one into their own catalogue only when you permit it — <b>Store access</b> below is that gate (the "if the Global Platform permits" clause, as data).</p>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Every product and service in the platform master, described once: its taxonomy, its product universe, its codes and the profile stores receive. Stores may import one into their own catalogue only when you permit it — <b>Store access</b> below is that gate (the "if the Global Platform permits" clause, as data).</p>
     <div class="p-scroll-x"><table class="p-table"><thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Universe</th><th class="num">Price</th><th>Tax class</th><th>Type</th><th>Status</th><th>Store access</th><th></th></tr></thead>
     <tbody>${products.map(p => `<tr><td><b>${esc(p.sku)}</b></td><td>${esc(p.name)}</td><td class="p-tag">${esc(p.category || "—")}</td>
       <td><span title="${esc(p.universe || "physical_products")}">${esc(uOf(p).icon || "🧩")} ${esc(uOf(p).name || p.universe)}</span></td>
@@ -1122,12 +1258,13 @@ function wireGproducts() {
   if (univ) univ.onchange = () => { gpUniverse = univ.value; render(); };
   document.getElementById("gpNew").onclick = () => gpModal(null);
   $$("[data-gpedit]").forEach(b => b.onclick = () => {
-    api("/platform/global-products").then(({ products, universes, kinds, taxClasses, categories, universeProductTypes, profileFields }) => {
+    api("/platform/global-products").then(({ products, universes, kinds, taxClasses, categories, universeProductTypes, profileFields, lifecycles }) => {
       gpUniverses = universes || [];
       gpKinds = kinds || [];
       gpTaxClasses = taxClasses || [];
       gpCategories = categories || [];
       gpProfileFields = profileFields || [];
+      gpLifecycles = lifecycles || [];
       gpTypeMap = null; window.__universeProductTypes = universeProductTypes || [];
       const p = products.find(x => String(x.id) === b.dataset.gpedit);
       if (p) gpModal(p);
@@ -1143,11 +1280,13 @@ function wireGproducts() {
   });
 }
 /* the platform side of "if the Global Platform permits": grant or revoke a store's
-   access to list a global product. Pure data — one store_product_config row — and the
-   store console reads the consequence on its next render, never a code deployment. */
+   access to a global product. Pure data — a permission on the platform master at one of the
+   master's access levels — and the store console reads the consequence on its next render. */
 async function gpAccessModal(productId) {
-  const [{ products }, { tenants }] = await Promise.all([
+  const [{ products, accessLevels }, { tenants }] = await Promise.all([
     api("/platform/global-products"), api("/platform/tenants")]);
+  const levels = accessLevels || [];
+  const none = (levels.find(l => !l.actions.length) || {}).key;
   const p = products.find(x => String(x.id) === String(productId));
   if (!p) return toast("Product not found");
   const perms = (p.permissions || []);
@@ -1159,7 +1298,7 @@ async function gpAccessModal(productId) {
       const row = perms.find(x => Number(x.tenant_id) === Number(t.id));
       return `<tr><td><b>${esc(t.name)}</b> <span style="color:var(--p-muted);font-size:12px">${esc(t.slug)}</span></td>
         <td><select data-accsel="${t.id}" style="padding:4px 8px;border:1px solid var(--p-border);border-radius:6px;background:var(--p-bg)">
-          ${["none", "read", "list", "sell"].map(l => `<option value="${l}" ${row ? (row.permissions === l ? "selected" : "") : (l === "none" ? "selected" : "")}>${l}</option>`).join("")}
+          ${levels.map(l => `<option value="${esc(l.key)}" ${row ? (row.permissions === l.key ? "selected" : "") : (l.key === none ? "selected" : "")}>${esc(l.name)}</option>`).join("")}
         </select></td>
         <td>${row ? '<span class="badge active">granted</span>' : '<span class="badge">—</span>'}</td></tr>`;
     }).join("") || '<tr><td colspan="3" class="p-empty">No stores provisioned</td></tr>'}</tbody></table></div>
@@ -1169,9 +1308,9 @@ async function gpAccessModal(productId) {
   m.querySelectorAll("[data-accsel]").forEach(sel => sel.onchange = async () => {
     const tenantId = sel.dataset.accsel, level = sel.value;
     try {
-      if (level === "none") await api("/platform/store-product-config/" + tenantId + "/" + productId, "DELETE", {});
-      else await api("/platform/store-product-config", "POST", { tenant_id: Number(tenantId), global_product_id: Number(productId), permissions: level, enabled: 1 });
-      toast(level === "none" ? "Access revoked" : "Granted " + level);
+      if (level === none) await api("/platform/store-product-config/" + tenantId + "/" + encodeURIComponent(productId), "DELETE", {});
+      else await api("/platform/store-product-config", "POST", { tenant_id: Number(tenantId), global_product_id: String(productId), permissions: level, enabled: 1 });
+      toast(level === none ? "Access revoked" : "Granted " + level);
       m.innerHTML = ""; render();
     } catch (e) { toast(e.message); }
   });
@@ -1233,7 +1372,7 @@ async function gpModal(p, draft = {}) {
       <label><span>Product universe</span><select id="gpUnivSel">${gpUniverses.map(u => `<option value="${esc(u.key)}" ${universe === u.key ? "selected" : ""}>${esc(u.icon || "🧩")} ${esc(u.name)}</option>`).join("")}</select>
         <small class="medit-hint">Sets the product's type and the configuration section below — the universe is the authority on both.</small></label>
       <div class="gp-derived"><span>Product type</span><b id="gpTypeBadge">${esc(typeName)}</b><small>· derived from the universe, never hand-set</small></div>
-      <label><span>Status</span><select id="gpStatus">${["draft", "active", "retired"].map(s => `<option value="${s}" ${(draft.status != null ? draft.status : (p ? p.status : "draft")) === s ? "selected" : ""}>${s}</option>`).join("")}</select></label>
+      <label><span>Status</span><select id="gpStatus">${gpLifecycles.map((s, i) => `<option value="${esc(s.key)}" ${(draft.status != null ? draft.status : (p ? p.status : (gpLifecycles[0] || {}).key)) === s.key ? "selected" : ""}>${esc(s.name)}</option>`).join("")}</select></label>
       <div class="gp-sec"><h4>Configuration <small>· declared by the ${esc(uName)} universe</small></h4>
         ${fields.length ? fields.map(f => `<label><span>${esc(f.label)}${f.required ? " *" : ""}</span>
           ${f.type === "select" ? `<select data-uf="${esc(f.key)}">${(f.options || []).map(o => `<option ${String(attrs[f.key] || "") === String(o) ? "selected" : ""}>${esc(o)}</option>`).join("")}</select>`
@@ -1290,6 +1429,128 @@ async function gpModal(p, draft = {}) {
     } catch (e) { err.textContent = e.message; err.classList.remove("hidden"); }
   };
 }
+/* ============ THE PLATFORM MASTER: review what platforms propose, grant what they may do ============
+   Every contribution a platform makes is reviewed here: approved with a placement (applied to the
+   master, added as new, attached as an addendum for the platforms named) or rejected with a reason.
+   The placements, actions, objects and review modes are the master's vocabularies, read from the API. */
+const titleOf = t => (t && t.title && (t.title.en || Object.values(t.title)[0])) || (t && t.name) || "";
+let mrHolder = "";
+async function vMasterReview() {
+  const [{ contributions, placements }, all] = await Promise.all([api("/platform/master/contributions?awaiting=1"), api("/platform/master/contributions")]);
+  const pending = contributions || [];
+  const row = c => `<tr><td><b>${esc(c.holder)}</b><div style="color:var(--p-muted);font-size:12px">${esc(c.by || "")}</div></td><td>${esc(c.action)}</td>
+    <td><code>${esc(c.target || "—")}</code></td><td><code style="white-space:pre-wrap">${esc(JSON.stringify(c.patch || c.proposal || {}, null, 1).slice(0, 300))}</code></td><td>${esc(c.review || "")}</td>
+    <td style="white-space:nowrap"><select data-mr-place="${esc(c.uid)}">${(placements || []).filter(p => (p.for || []).includes(c.action)).map(p => `<option value="${esc(p.name)}">${esc(titleOf(p))}</option>`).join("")}</select>
+      <button class="p-btn sm primary" data-mr-approve="${esc(c.uid)}">Approve</button>
+      <input data-mr-reason="${esc(c.uid)}" placeholder="reason to reject" style="width:160px"> <button class="p-btn sm danger" data-mr-reject="${esc(c.uid)}">Reject</button></td></tr>`;
+  const done = (all.contributions || []).filter(c => !c.awaiting).slice(0, 50);
+  return `<div class="p-panel"><h2 style="margin:0 0 6px">Master Review (${pending.length})</h2>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">What platforms propose to the master. Nothing a platform proposes changes the master until it is approved here, and only where you place it.</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Platform</th><th>Proposal</th><th>On</th><th>Change</th><th>Review</th><th>Decision</th></tr></thead>
+    <tbody>${pending.map(row).join("") || '<tr><td colspan="6" class="p-empty">Nothing awaits review</td></tr>'}</tbody></table></div>
+    <h3 style="margin:18px 0 8px">Decided</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Platform</th><th>Proposal</th><th>State</th><th>Landed as</th><th>Reason</th></tr></thead>
+    <tbody>${done.map(c => `<tr><td>${esc(c.holder)}</td><td>${esc(c.action)}</td><td><span class="badge">${esc(c.state && c.state.label)}</span></td><td>${esc(c.placement || "")}</td><td>${esc(c.reason || "")}</td></tr>`).join("") || '<tr><td colspan="5" class="p-empty">None yet</td></tr>'}</tbody></table></div></div>`;
+}
+function wireMasterReview() {
+  const decide = async (uid, body, msg) => { try { await api("/platform/master/contributions/" + encodeURIComponent(uid) + "/review", "POST", body); toast(msg); render(); } catch (e) { toast(e.message); } };
+  $$("[data-mr-approve]").forEach(b => b.onclick = () => decide(b.dataset.mrApprove, { action: "approve", placement: (document.querySelector(`[data-mr-place="${b.dataset.mrApprove}"]`) || {}).value }, "Approved"));
+  $$("[data-mr-reject]").forEach(b => b.onclick = () => decide(b.dataset.mrReject, { action: "reject", reason: (document.querySelector(`[data-mr-reason="${b.dataset.mrReject}"]`) || {}).value }, "Rejected"));
+}
+async function vMasterPermissions() {
+  const { tenants } = await api("/platform/tenants");
+  if (!mrHolder && (tenants || []).length) mrHolder = "tenant:" + tenants[0].id;
+  const d = await api("/platform/master/permissions" + (mrHolder ? "?holder=" + encodeURIComponent(mrHolder) : ""));
+  const top = await api("/platform/master/tree?depth=2");
+  const scopes = (top.nodes || []).flatMap(dm => [dm, ...(dm.children || [])]);
+  const check = (name, list) => list.map(t => `<label style="display:inline-flex;gap:4px;margin-right:10px"><input type="checkbox" data-${name}="${esc(t.name)}" ${t.default ? "checked" : ""}> ${esc(titleOf(t))}</label>`).join("");
+  return `<div class="p-panel"><h2 style="margin:0 0 6px">Master Permissions</h2>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">What each platform may see and do with the platform master: the parts it covers (each with everything under it), the actions, the attributes it sees and when its changes are reviewed. Revoking keeps the history of what it allowed.</p>
+    <label>Platform <select id="mpHolder">${(tenants || []).map(t => `<option value="tenant:${t.id}" ${mrHolder === "tenant:" + t.id ? "selected" : ""}>${esc(t.name)} (${esc(t.slug)})</option>`).join("")}</select></label>
+    <div class="p-scroll-x" style="margin-top:12px"><table class="p-table"><thead><tr><th>Covers</th><th>Objects</th><th>Actions</th><th>Visible</th><th>Review</th><th></th></tr></thead>
+    <tbody>${(d.permissions || []).map(p => `<tr><td>${esc((p.scope || []).length ? p.scope.length + " node(s)" : "the whole master")}</td><td>${esc((p.objects || []).join(", "))}</td><td>${esc((p.actions || []).join(", "))}</td><td>${esc((p.visible || []).join(", ") || "all")}</td><td>${esc(p.review || "")}</td>
+      <td><button class="p-btn sm danger" data-mp-revoke="${esc(p.uid)}">Revoke</button></td></tr>`).join("") || '<tr><td colspan="6" class="p-empty">No permissions</td></tr>'}</tbody></table></div>
+    <h3 style="margin:18px 0 8px">Grant</h3>
+    <div style="display:grid;gap:10px">
+      <label>Covers <select id="mpScope" multiple size="8">${scopes.map(n => `<option value="${esc(n.key)}">${esc(n.attributes && (n.attributes.icon || ""))} ${esc(titleOf({ title: n.attributes && n.attributes.title }))}</option>`).join("")}</select></label>
+      <div>Objects: ${check("mp-obj", d.objects || [])}</div>
+      <div>Actions: ${check("mp-act", d.actions || [])}</div>
+      <label>Review <select id="mpReview">${(d.reviews || []).map(t => `<option value="${esc(t.name)}" ${t.default ? "selected" : ""}>${esc(titleOf(t))}</option>`).join("")}</select></label>
+      <label>Visible attributes (comma separated, empty for all) <input id="mpVisible"></label>
+      <div><button class="p-btn primary" id="mpGrant">Grant</button></div></div></div>`;
+}
+function wireMasterPermissions() {
+  const h = document.getElementById("mpHolder");
+  if (h) h.onchange = () => { mrHolder = h.value; render(); };
+  $$("[data-mp-revoke]").forEach(b => b.onclick = async () => { try { await api("/platform/master/permissions/" + encodeURIComponent(b.dataset.mpRevoke), "DELETE", {}); toast("Revoked"); render(); } catch (e) { toast(e.message); } });
+  const g = document.getElementById("mpGrant");
+  if (g) g.onclick = async () => {
+    const picked = attr => $$(`[data-${attr}]`).filter(x => x.checked).map(x => x.dataset[attr.replace(/-([a-z])/g, (m, c) => c.toUpperCase())]);
+    const body = { holder: mrHolder, scope: Array.from(document.getElementById("mpScope").selectedOptions).map(o => o.value),
+      objects: picked("mp-obj"), actions: picked("mp-act"), review: document.getElementById("mpReview").value,
+      visible: document.getElementById("mpVisible").value.split(",").map(x => x.trim()).filter(Boolean) };
+    try { await api("/platform/master/permissions", "POST", body); toast("Granted"); render(); } catch (e) { toast(e.message); }
+  };
+}
+/* ============ PLATFORM SETUP: a platform configured by answering the setup steps ============
+   The steps, their options, the discovery classes and the requests all come from the API (the
+   master's vocabularies); every answer takes effect from the minute chosen. */
+let psTenant = null;
+async function vPlatformSetup() {
+  const { tenants } = await api("/platform/tenants");
+  if (!psTenant && (tenants || []).length) psTenant = tenants[0].id;
+  const [{ steps }, st] = await Promise.all([api("/platform/setup/steps"), psTenant ? api("/platform/tenants/" + psTenant + "/blueprint") : Promise.resolve({ answers: {}, discovery: [] })]);
+  const a = st.answers || {};
+  const field = s => {
+    const cur = a[s.answer];
+    const has = v => s.many ? (cur || []).map(String).includes(String(v)) : String(cur || "") === String(v);
+    const opts = (s.options || []).map(o => `<option value="${esc(o.key)}" ${has(o.key) ? "selected" : ""}>${esc(o.name || o.key)}</option>`).join("");
+    const extra = s.many ? (cur || []).filter(v => !(s.options || []).some(o => String(o.key) === String(v))) : [];
+    return `<label style="display:grid;gap:4px"><span><b>${esc(s.title)}</b>${s.required ? " *" : ""}</span>
+      ${s.many ? `<select data-ps="${esc(s.answer)}" multiple size="${Math.min(8, Math.max(3, (s.options || []).length))}">${opts}${extra.map(v => `<option value="${esc(v)}" selected>${esc(v)}</option>`).join("")}</select>`
+        : `<select data-ps="${esc(s.answer)}"><option value="">—</option>${opts}</select>`}
+      ${s.many ? `<input data-ps-more="${esc(s.answer)}" placeholder="others, comma separated">` : ""}</label>`;
+  };
+  const classes = [...new Set((st.discovery || []).map(d => d.class))];
+  return `<div class="p-panel"><h2 style="margin:0 0 6px">Platform Setup</h2>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">A platform is configured by its answers. Each answer is kept on its own and takes effect from the minute you choose; discovery derives every capability from them, with its reasons.</p>
+    <label>Platform <select id="psTenant">${(tenants || []).map(t => `<option value="${t.id}" ${Number(psTenant) === t.id ? "selected" : ""}>${esc(t.name)} (${esc(t.slug)})</option>`).join("")}</select></label>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:14px">${(steps || []).map(field).join("")}</div>
+    <div style="display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap">
+      <label>Takes effect <input type="datetime-local" id="psAt"></label>
+      <button class="p-btn" id="psPreview">Preview discovery</button>
+      <button class="p-btn primary" id="psApply">Apply answers</button></div>
+    <div id="psFound">${foundTable(st.discovery || [], classes)}</div></div>`;
+}
+function foundTable(found, classes) {
+  const cls = classes.length ? classes : [...new Set(found.map(d => d.class))];
+  return cls.map(c => `<h3 style="margin:16px 0 6px">${esc(c)} (${found.filter(d => d.class === c).length})</h3>
+    <div class="p-scroll-x"><table class="p-table"><tbody>${found.filter(d => d.class === c).map(d => `<tr><td><b>${esc(d.key)}</b>${d.available ? "" : ' <span class="badge">not built yet</span>'}</td><td style="color:var(--p-muted)">${esc((d.reasons || []).join(" · "))}</td></tr>`).join("")}</tbody></table></div>`).join("");
+}
+function psAnswers() {
+  const out = {};
+  $$("[data-ps]").forEach(el => {
+    const k = el.dataset.ps;
+    if (el.multiple) {
+      const more = (document.querySelector(`[data-ps-more="${k}"]`) || {}).value || "";
+      out[k] = Array.from(el.selectedOptions).map(o => o.value).concat(more.split(",").map(x => x.trim()).filter(Boolean));
+    } else if (el.value) out[k] = el.value;
+  });
+  return out;
+}
+function wirePlatformSetup() {
+  const t = document.getElementById("psTenant");
+  if (t) t.onchange = () => { psTenant = Number(t.value); render(); };
+  const pv = document.getElementById("psPreview");
+  if (pv) pv.onclick = async () => { try { const r = await api("/platform/setup/discover", "POST", { answers: psAnswers() }); document.getElementById("psFound").innerHTML = foundTable(r.discovery || [], []); } catch (e) { toast(e.message); } };
+  const ap = document.getElementById("psApply");
+  if (ap) ap.onclick = async () => {
+    const at = document.getElementById("psAt").value;
+    try {
+      const r = await api("/platform/tenants/" + psTenant + "/blueprint", "POST", { answers: psAnswers(), at: at ? new Date(at).toISOString() : undefined });
+      toast(r.applied ? "Applied" : "Scheduled from " + new Date(r.from).toLocaleString()); render();
+    } catch (e) { toast(e.message); }
+  };
+}
 /* ============ MODULE MARKETPLACE: every capability is a purchasable product ============ */
 async function vModules() {
   const { modules, installs, tenants } = await api("/platform/modules");
@@ -1302,7 +1563,7 @@ async function vModules() {
   ${Object.entries(cats).map(([cat, ms]) => `
   <div class="p-panel"><h2>${esc(cat)}</h2><div class="mod-grid">${ms.map(m => {
     const caps = (m.manifest.capabilities || []).join(", ");
-    return `<div class="mod-card"><div class="mod-head"><b>${esc(m.name)}</b><span class="price">${m.price > 0 ? "$" + m.price : "free"}</span></div>
+    return `<div class="mod-card"><div class="mod-head"><b>${esc(m.name)}</b><span class="price">${m.price > 0 ? money(m.price) : "free"}</span></div>
       <p class="p-tag">${esc(m.summary || "")}</p><p class="p-tag"><code>${esc(caps || m.id)}</code></p>
       <div class="mod-installs">${tenants.map(t => {
         const on = installedSet.has(t.id + "|" + m.id);
@@ -1320,8 +1581,8 @@ async function wireModules() {
       const mm = modal(`<div class="p-modal-head"><h3>${esc(m.name)} → ${esc(t.name)}</h3><button data-mclose>✕</button></div>
         <div class="p-form">
         ${installed ? `<p class="p-tag">${m.price > 0 ? "Purchased (invoice on record)." : "Baseline — auto-purchased at provisioning."}</p><button class="p-btn danger" id="mUn">Uninstall / disable</button>` :
-          `<p class="p-tag">${m.price > 0 ? "Price: $" + m.price + " — a paid invoice will be created and marked collected." : "Free — installs instantly."}</p>
-           ${fields.map(f => `<label><span>${esc(f.label || f.key)}</span><input data-cfg="${esc(f.key)}" placeholder="e.g. ${f.key === "requireLoginCheckout" ? "true" : "…"}"></label>`).join("")}
+          `<p class="p-tag">${m.price > 0 ? "Price: " + money(m.price) + " — a paid invoice will be created and marked collected." : "Free — installs instantly."}</p>
+           ${fields.map(f => `<label><span>${esc(f.label || f.key)}</span><input data-cfg="${esc(f.key)}" placeholder="e.g. ${esc(f.placeholder || (f.type === "bool" ? "true" : "…"))}"></label>`).join("")}
            <button class="p-btn primary" id="mBuy">Purchase & install</button>`}
         </div>`);
       if (installed) mm.querySelector("#mUn").onclick = async () => {
@@ -1372,6 +1633,8 @@ function modal(html) {
   let m = $("#modal");
   if (!m) { m = document.createElement("div"); m.id = "modal"; document.body.appendChild(m); }
   m.innerHTML = `<div class="p-modal"><div class="p-modal-box">${html}</div></div>`;
+  /* the console shell creates #modal hidden (the forms that open it un-hide it), so opening must too */
+  m.classList.remove("hidden");
   m.querySelector(".p-modal").addEventListener("click", e => { if (e.target.classList.contains("p-modal")) m.innerHTML = ""; });
   return m;
 }
@@ -1382,7 +1645,13 @@ document.addEventListener("click", async e => {
       editp = e.target.closest("[data-editplan]"), delprov = e.target.closest("[data-delprov]");
     if (open) window.open("/index.html?store=" + P.tenants.find(t => t.id == open.dataset.open).slug, "_blank");
     if (imp) { const r = await api(`/platform/tenants/${imp.dataset.imp}/impersonate`, "POST", {}); window.open(r.url, "_blank"); }
-    if (susp) { const t = P.tenants.find(x => x.id == susp.dataset.susp); await api("/platform/tenants/" + t.id, "PUT", { status: t.status === "active" ? "suspended" : "active" }); render(); }
+    if (susp) {
+      /* suspend / resume moves between the tenant machine's "operating" and "blocked" states */
+      const t = P.tenants.find(x => x.id == susp.dataset.susp);
+      const tm = ((await api("/meta")).stateMachines || {}).tenant || { states: {} };
+      const pick = tag => Object.keys(tm.states).find(k => (tm.states[k].tags || []).includes(tag));
+      await api("/platform/tenants/" + t.id, "PUT", { status: pick(t.operating ? "blocked" : "operating") }); render();
+    }
     if (del) { if (confirm("Delete store and ALL its data?")) { await api("/platform/tenants/" + del.dataset.del, "DELETE", {}); render(); } }
     if (inv) { await api(`/platform/tenants/${inv.dataset.inv}/invoice`, "POST", {}); toast("Invoice generated"); render(); }
     if (pay) {
@@ -1407,6 +1676,17 @@ document.addEventListener("click", async e => {
     }
     if (delprov) { await api("/platform/custom-providers/" + delprov.dataset.delprov, "DELETE", {}); render(); }
     if (e.target.id === "newTenant") return registerModal();
+    if (e.target.id === "newKind") return kindModal(P.kinds || await api("/platform/kinds"), null);
+    const klaunch = e.target.closest("[data-klaunch]");
+    if (klaunch) return registerModal(klaunch.dataset.klaunch);
+    const kedit = e.target.closest("[data-kedit]");
+    if (kedit) return kindModal(P.kinds || await api("/platform/kinds"), kedit.dataset.kedit);
+    const kdel = e.target.closest("[data-kdel]");
+    if (kdel && !kdel.disabled) {
+      if (!confirm("Remove the kind " + kdel.dataset.kdel + "?")) return;
+      try { await api("/platform/kinds/" + encodeURIComponent(kdel.dataset.kdel), "DELETE", {}); toast("Kind removed"); render(); } catch (err) { toast(err.message); }
+      return;
+    }
     const regopen = e.target.closest("[data-regopen]");
     if (regopen) return registryEditor(regopen.dataset.regopen);
     const edit = e.target.closest("[data-tedit]");
@@ -1498,6 +1778,19 @@ document.addEventListener("click", async e => {
       }
       return { valid: true };
     };
+    if (e.target.id === "epSave") {
+      const apiKey = $("#epKey").value.trim(), webhookSecret = $("#epSecret").value.trim();
+      if (!apiKey && !webhookSecret) return toast("Enter the API key or the webhook secret to save", "error");
+      if (apiKey && !/^EZ[AT]K/.test(apiKey) && !confirm("EasyPost keys start with EZAK (live) or EZTK (test). Save this key anyway?")) return;
+      const r = await api("/shipping/providers/config", "POST", { provider_id: "easypost", config: { apiKey, webhookSecret } });
+      toast(r.provider && r.provider.status === "active" ? "EasyPost connected — every store can rate and buy labels" : "Saved — add the API key to connect"); render();
+    }
+    if (e.target.id === "epCopy") { const h = $("#epHook"); h.select(); try { await navigator.clipboard.writeText(h.value); toast("Webhook URL copied"); } catch (x) { toast("Select the URL and copy it"); } }
+    if (e.target.id === "epDisconnect") {
+      if (!confirm("Disconnect EasyPost? The stored keys are deleted and no store can rate or buy labels until it is connected again.")) return;
+      await api("/platform/shipping/providers/easypost/disconnect", "POST", {});
+      toast("EasyPost disconnected"); render();
+    }
     if (e.target.id === "cpSave") {
       const kind = $("#cpKind").value;
       const id = $("#cpId").value.trim();
@@ -1718,7 +2011,7 @@ function gDomains(m, d) {
 }
 function gExchanges(m, d) {
   const opt = (arrx, val) => (arrx || []).map(x => `<option value="${esc(x.key || x)}" ${val === (x.key || x) ? "selected" : ""}>${esc(x.name || x)}</option>`).join("");
-  const benefits = m.benefits, domains = m.domains, units = m.economic.units, places = m.spatial.nodes, cals = m.temporal.calendars, dist = m.fabrics.distribution;
+  const benefits = m.benefits, domains = m.domains, dDomain = ((m.domains || []).find(x => x.default) || (m.domains || [])[0] || {}).key, units = m.economic.units, places = m.spatial.nodes, cals = m.temporal.calendars, dist = m.fabrics.distribution;
   return `<div class="p-panel"><h3>Publish a global value exchange</h3>
     <p class="p-tag">Scope = <b>global</b> — every store inherits it (bank cashbacks, brand vouchers, government subsidies, marketplace-wide sales, partner benefits). Stores honour global exchanges only while <b>Provisioning → global offers</b> allows it.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;align-items:end">
@@ -1726,9 +2019,9 @@ function gExchanges(m, d) {
       <label><span>Benefit</span><select id="gBenefit">${opt(benefits, "percentage_discount")}</select></label>
       <label><span>Value</span><input id="gValue" type="number" step="0.01" value="10"></label>
       <label><span>Code (optional)</span><input id="gCode" placeholder="GLOBAL10"></label>
-      <label><span>Domain</span><select id="gDomain">${opt(domains, "incentive")}</select></label>
+      <label><span>Domain</span><select id="gDomain">${opt(domains, dDomain)}</select></label>
       <label><span>Channel</span><select id="gChan"><option>commerce</option><option>subscription</option><option>ai</option><option>any</option></select></label>
-      <label><span>Funder</span><select id="gFunder">${opt(m.fabrics.funding.filter(f => f.kind === "source").map(f => ({ key: f.party_type === "split" ? "split" : f.key, name: f.name })))}</select></label>
+      <label><span>Funder</span><select id="gFunder">${opt(m.fabrics.funding.filter(f => f.selectable).map(f => ({ key: f.funder || f.key, name: f.name })))}</select></label>
       <label><span>Funder ref</span><input id="gFunderRef" placeholder="HDFC / Nike / Ministry"></label>
       <label><span>Economic unit</span><select id="gUnit"><option value="">store currency</option>${opt(units)}</select></label>
       <label><span>Reality</span><select id="gReality">${opt(m.realities, "any")}</select></label>
@@ -1745,7 +2038,7 @@ function gExchanges(m, d) {
   </div>
   <div class="p-panel"><h3>Global value exchanges</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Name</th><th>Domain · Benefit</th><th>Context</th><th>Funder</th><th class="num">Value</th><th class="num">Used/Limit</th><th>State</th><th></th></tr></thead>
     <tbody>${(d.global || []).map(o => `<tr><td><b>${esc(o.name)}</b>${o.code ? ` <code>${esc(o.code)}</code>` : ""}${o.version > 1 ? ` <span class="p-tag">v${o.version}</span>` : ""}</td>
-      <td class="p-tag">${esc(o.domain || "incentive")}<br>${esc(o.benefit || o.type)}</td>
+      <td class="p-tag">${esc(o.domain || dDomain)}<br>${esc(o.benefit || o.type)}</td>
       <td class="p-tag">${esc(o.reality || "any")} · ${esc((pj(o.spatial_spec).include || []).join(",") || "anywhere")} · ${esc(pj(o.temporal_spec).calendar || "any calendar")} · ${esc(o.economic_unit || o.currency)}</td>
       <td>${esc(o.funder)}${o.funder_ref ? " " + esc(o.funder_ref) : ""}</td><td class="num">${esc(o.value)}</td><td class="num">${o.used}/${o.usage_limit || "∞"}</td>
       <td><span class="badge ${(pj(o.governance).state || o.status) === "published" || o.status === "active" ? "published" : "draft"}">${esc(pj(o.governance).state || o.status)}</span></td>
@@ -1783,7 +2076,7 @@ function gFunding(m, d) {
         <label><span>Funder</span><select id="fFunder">${(m.fabrics.funding.filter(f => f.kind === "source")).map(f => `<option value="${esc(f.party_type === "split" ? "split" : f.key)}">${esc(f.name)}</option>`).join("")}</select></label>
         <label><span>Funder ref</span><input id="fRef" placeholder="HDFC"></label>
         <label><span>Unit</span><select id="fUnit">${m.economic.units.map(u => `<option value="${esc(u.key)}">${esc(u.key)}</option>`).join("")}</select></label>
-        <label><span>Domain</span><select id="fDomain">${m.domains.map(x => `<option value="${esc(x.key)}" ${x.key === "incentive" ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
+        <label><span>Domain</span><select id="fDomain">${m.domains.map(x => `<option value="${esc(x.key)}" ${x === m.domains[0] ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
         <label><span>Amount</span><input id="fAmount" type="number" value="1000"></label>
         <button class="p-btn primary sm" id="fGo">Allocate</button>
       </div></div>
@@ -1798,7 +2091,7 @@ function gFunding(m, d) {
       </div>
       <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Period</th><th>Party</th><th>Type</th><th>Unit</th><th class="num">Gross</th><th class="num">Fees</th><th class="num">Net</th><th class="num">Redemptions</th><th>Status</th><th></th></tr></thead><tbody>
         ${(d.settlements || []).map(x => `<tr><td class="p-tag">${esc(x.period)}</td><td><b>${esc(x.party)}</b></td><td class="p-tag">${esc(x.party_type)}</td><td>${esc(x.unit)}</td><td class="num">${x.gross}</td><td class="num">${x.fees}</td><td class="num">${x.net}</td><td class="num">${x.redemptions}</td><td><span class="badge ${x.status === "paid" || x.status === "reconciled" ? "published" : "draft"}">${esc(x.status)}</span>${x.reference ? `<br><code>${esc(x.reference)}</code>` : ""}</td>
-          <td style="text-align:right;white-space:nowrap">${x.status === "accrued" ? `<button class="p-btn sm" data-sapprove="${x.id}" data-stenant="${x.tenant_id}">approve</button> ` : ""}${x.status === "accrued" || x.status === "approved" ? `<button class="p-btn sm primary" data-spay="${x.id}" data-stenant="${x.tenant_id}">pay</button>` : ""}${x.status === "paid" ? `<button class="p-btn sm" data-srec="${x.id}" data-stenant="${x.tenant_id}">reconcile</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="10">Nothing accrued yet — run a settlement.</td></tr>'}
+          <td style="text-align:right;white-space:nowrap">${(x.can || {}).approve ? `<button class="p-btn sm" data-sapprove="${x.id}" data-stenant="${x.tenant_id}">approve</button> ` : ""}${(x.can || {}).pay ? `<button class="p-btn sm primary" data-spay="${x.id}" data-stenant="${x.tenant_id}">pay</button>` : ""}${(x.can || {}).reconcile ? `<button class="p-btn sm" data-srec="${x.id}" data-stenant="${x.tenant_id}">reconcile</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="10">Nothing accrued yet — run a settlement.</td></tr>'}
       </tbody></table></div></div>
     <div class="p-panel"><h3>Redemption split by funder (all stores)</h3>${byFunder.length ? `<table class="p-table"><thead><tr><th>Funder</th><th class="num">Value granted</th><th class="num">Redemptions</th></tr></thead><tbody>${byFunder.map(f => `<tr><td>${esc(f.funder)}</td><td class="num">${money(f.amount)}</td><td class="num">${f.redemptions}</td></tr>`).join("")}</tbody></table>` : '<p class="p-tag">No redemptions yet.</p>'}</div>`;
 }
@@ -1817,7 +2110,7 @@ async function gAttribution(m, d) {
     <pre id="aOut" class="p-scroll-x" style="background:var(--p-bg2,#0b1020);color:#9ae6b4;padding:10px;border-radius:8px;margin-top:8px;max-height:260px;overflow:auto;font-size:12px">—</pre>
   </div>
   <div class="p-panel"><h3>Recent touchpoints</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>When</th><th>Kind</th><th>Party</th><th>Channel</th><th>Subject</th><th class="num">Value</th></tr></thead><tbody>
-    ${(tp.touchpoints || []).slice(-25).reverse().map(t => `<tr><td class="p-tag">${esc(String(t.created_at || "").slice(0, 19))}</td><td><span class="badge ${t.kind === "conversion" ? "published" : "draft"}">${esc(t.kind)}</span></td><td>${esc(t.party)}<div class="p-tag">${esc(t.party_type)}</div></td><td class="p-tag">${esc(t.channel)} · ${esc(t.distribution)}</td><td class="p-tag">${esc((t.owner || "").slice(0, 22))}</td><td class="num">${t.value}</td></tr>`).join("") || '<tr><td colspan="6">No touchpoints recorded yet.</td></tr>'}
+    ${(tp.touchpoints || []).slice(-25).reverse().map(t => `<tr><td class="p-tag">${esc(String(t.created_at || "").slice(0, 19))}</td><td><span class="badge ${t.carries_value ? "published" : "draft"}">${esc(t.kind)}</span></td><td>${esc(t.party)}<div class="p-tag">${esc(t.party_type)}</div></td><td class="p-tag">${esc(t.channel)} · ${esc(t.distribution)}</td><td class="p-tag">${esc((t.owner || "").slice(0, 22))}</td><td class="num">${t.value}</td></tr>`).join("") || '<tr><td colspan="6">No touchpoints recorded yet.</td></tr>'}
   </tbody></table></div></div>
   <div class="p-panel"><h3>Universal incentive graph</h3>
     <p class="p-tag">${m.graph.nodes.length} node kinds · ${m.graph.edges.length} relationships, projected onto the platform's existing <code>links</code> table — every edge is queryable with <code>GET /api/goip/exchanges/:id</code>.</p>
@@ -2609,7 +2902,9 @@ function wireRuntime() {
 async function vBillingOps() {
   const d = await api("/platform/billing/aging"); const tenants = (await api("/platform/tenants")).tenants;
   const ag = d.aging, inv = (d.all && d.all.invoices) || [], notes = (d.all && d.all.notes) || [], events = (d.all && d.all.events) || [];
-  const bStatus = s => `<span class="badge ${s === "paid" ? "published" : s === "overdue" ? "failed" : "processing"}">${esc(s)}</span>`;
+  /* an invoice's badge is its state's tone (the invoice machine's display data) */
+  const SMI = ((await api("/meta").catch(() => ({}))).stateMachines || {}).invoice || { states: {} };
+  const bStatus = s => `<span class="badge ${esc((SMI.states[s] || {}).tone || "processing")}">${esc((SMI.states[s] || {}).label || s)}</span>`;
   return `<div class="p-panel"><h2>💳 Billing Ops</h2>
     <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Line-item subscription + usage invoicing, tax (via the Tax engine), credit notes / refunds-to-wallet (via the Offers wallet), dunning, and receivables aging.</p>
     <div class="p-cards" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px">
@@ -2669,8 +2964,8 @@ function gCell(v, f) {
   if (v == null) return "";
   if (f.type === "bool") return v ? "✓" : "—";
   if (f.type === "money") return money(v);
-  const badge = ["status", "lifecycle", "state", "priority", "kind"];
-  if (badge.includes(f.key)) return `<span class="badge ${esc(v)}">${esc(v)}</span>`;
+  /* a field declares how it shows (`display`): a badge column renders its value as a tone */
+  if (f.display === "badge") return `<span class="badge ${esc(v)}">${esc(v)}</span>`;
   return esc(String(v).slice(0, 64));
 }
 /* the shared store-filter + search bar. Both apply to every dataset on the view, and the
@@ -2746,7 +3041,10 @@ async function gTable(key, opts = {}) {
    A platform-level registry (countries, currencies, the uv_* universes…) writes at scope
    0 so every store inherits the row; a store-scoped dataset makes the operator name the
    store rather than silently filing the record under whichever one was open */
-async function gFieldInput(f, val) {
+/* a field the platform manages, or one given only when its record is created (createOnly), is
+   shown but not edited */
+const gLocked = (f, editing) => f.readonly || (f.createOnly && editing);
+async function gFieldInput(f, val, editing) {
   const fid = "gf_" + f.key;
   const req = f.required ? ' <em style="color:var(--p-red)" title="required">*</em>' : "";
   if (f.type === "bool") return `<label class="p-check"><input type="checkbox" id="${fid}" ${val ? "checked" : ""}> <span>${esc(f.label)}${req}</span></label>`;
@@ -2768,14 +3066,14 @@ async function gFieldInput(f, val) {
     const unmatched = val != null && val !== "" && !items.some(o => String(o.v) === String(val));
     return `<label><span>${esc(f.label)}${req}</span><select id="${fid}"><option value="">—</option>${unmatched ? `<option value="${esc(val)}" selected>${esc(val)}</option>` : ""}${items.map(o => `<option value="${esc(o.v)}" ${String(o.v) === String(val) ? "selected" : ""}>${esc(o.l)}</option>`).join("")}</select></label>`;
   }
-  if (f.readonly) return `<label><span>${esc(f.label)}${req}</span><input id="${fid}" type="text" value="${esc(val == null ? "" : val)}" disabled title="managed by the platform"></label>`;
+  if (gLocked(f, editing)) return `<label><span>${esc(f.label)}${req}</span><input id="${fid}" type="text" value="${esc(val == null ? "" : val)}" disabled title="${f.readonly ? "managed by the platform" : "given when the record is created"}"></label>`;
   const t = f.type === "money" || f.type === "number" ? "number" : f.type === "date" ? "date" : "text";
   return `<label><span>${esc(f.label)}${req}</span><input id="${fid}" type="${t}" step="any" value="${esc(val == null ? "" : val)}"></label>`;
 }
-function gCollect(def, m) {
+function gCollect(def, m, editing) {
   const row = {};
   for (const f of def.fields) {
-    if (f.readonly) continue;
+    if (gLocked(f, editing)) continue;
     const el = m.querySelector("#gf_" + f.key);
     if (!el) continue;
     if (f.type === "bool") { row[f.key] = el.checked ? 1 : 0; continue; }
@@ -2811,11 +3109,11 @@ async function gRecordForm(key, id) {
   }
   const m = modal(`<div class="p-modal-head"><h3>${id != null ? "Edit" : "New"} · ${esc(def.label || def.name || key)}</h3><button data-mclose>✕</button></div>
     <div class="p-form">${gScopeSelect(def, "gf_tenant")}
-      ${(await Promise.all(def.fields.map(f => gFieldInput(f, row[f.key])))).join("")}
+      ${(await Promise.all(def.fields.map(f => gFieldInput(f, row[f.key], id != null)))).join("")}
       <div style="display:flex;gap:10px;margin-top:8px"><button class="p-btn primary" id="gfSave">${id != null ? "Save" : "Create"}</button><button class="p-btn" data-mclose>Cancel</button></div></div>`);
   m.querySelector("#gfSave").onclick = async () => {
     try {
-      const body = gCollect(def, m);
+      const body = gCollect(def, m, id != null);
       const tidEl = m.querySelector("#gf_tenant");
       if (tidEl) body.tenant_id = tidEl.value ? Number(tidEl.value) : "";
       if (!def.platformLevel && def.storage !== "json" && !body.tenant_id) { toast("Pick a store — this dataset is store-scoped"); return; }
@@ -3315,10 +3613,11 @@ async function vTaxonomy() {
   const t = await api("/taxonomy");
   const renderNode = (n, d) => `<details class="p-node" ${d < 1 ? "open" : ""} style="margin-left:${d * 14}px">
     <summary><span class="p-ico">${esc(n.icon || "📂")}</span> <b>${esc(n.name)}</b>
-      <span class="p-tag">${esc(n.level || "category")}${n.key ? " · " + esc(n.key) : ""}</span>
+      <span class="p-tag">${esc(n.level || "—")}${n.key ? " · " + esc(n.key) : ""}</span>
       ${n.active ? "" : '<span class="p-tag" style="background:var(--p-red);color:#fff">inactive</span>'}</summary>
     ${(n.children || []).map(c => renderNode(c, d + 1)).join("")}</details>`;
-  const roots = (t.tree || []).filter(n => n.level === "industry");
+  const root = ((t.levels || []).find(l => l.root) || {}).key;
+  const roots = (t.tree || []).filter(n => n.level === root);
   return gBar("Industry · Categories", "🗂️", "The platform's canonical industry → category tree. Every store inherits this taxonomy; nothing here is per-store.", roots.length)
     + `<div class="p-panel">${roots.map(n => renderNode(n, 0)).join("") || '<div class="p-empty">No taxonomy seeded</div>'}</div>`
     + await gTable("taxonomy");
@@ -3339,7 +3638,7 @@ async function vCapabilityTree() {
   const d = capData;
   const byDomain = {};
   for (const c of d.catalog) (byDomain[c.domain] = byDomain[c.domain] || []).push(c);
-  const DOMAINS = { marketplace: "🛒 Marketplace", qc: "⚡ Quick-commerce", fintech: "💸 Fintech", trade: "🤝 B2B trust & trade" };
+  const DOMAINS = Object.fromEntries((capData.domains || []).map(x => [x.key, x.name]));
   const tenantOpts = (d.tenants || []).map(t => `<option value="${t.id}" ${t.id === capTenant ? "selected" : ""}>${t.master ? "★ Master platform" : "deployment · " + esc(t.name)} · ${esc(t.slug)}</option>`).join("");
   const domHtml = Object.keys(byDomain).map(dom => {
     const caps = byDomain[dom];
@@ -3355,7 +3654,7 @@ async function vCapabilityTree() {
         ${c.description ? `<div style="font-size:12px;color:var(--p-muted)">${esc(c.description)}</div>` : ""}
       </div></details>`).join("");
     return `<div class="p-panel"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
-      <h2 style="margin:0">${DOMAINS[dom] || "◈ " + esc(dom)}</h2>
+      <h2 style="margin:0">${DOMAINS[dom] ? esc(DOMAINS[dom]) : "◈ " + esc(dom)}</h2>
       <span class="p-tag">${on}/${caps.length} enabled</span></div>${capHtml}</div>`;
   }).join("");
   return gBar("Capability Tree", "🌳", "Every capability in the constitutional registry and its sub-capabilities, grouped by domain. Toggle and tune in Capabilities; this is the map of what composes.", d.catalog.length)
@@ -3466,12 +3765,17 @@ function wireCompose() {
    DOM node (the order bug that made gproducts throw on a null #gpNew). */
 const VIEWFNS = {
   dash: () => vDash(),
+  /* where, for whom and for what anything applies — the shared rules screen (js/rules-ui.js) */
+  applicability: () => `<div id="rulesRoot"></div>`,
   tenants: () => vTenants(),
   plans: () => vPlans(),
   subs: () => vSubs(),
   invoices: () => vInvoices(),
   billing: () => vBillingOps(),
   gproducts: () => vGproducts(),
+  "master-review": () => vMasterReview(),
+  "platform-setup": () => vPlatformSetup(),
+  "master-permissions": () => vMasterPermissions(),
   modules: () => vModules(),
   providers: () => vProviders(),
   ucii: () => vUCII(),
@@ -3523,8 +3827,12 @@ const VIEWFNS = {
   architecture: () => { window.open("/docs/architecture.html", "_blank"); return Promise.resolve('<div class="p-empty">Opened the Architecture reference in a new tab.</div>'); },
 };
 const WIREFNS = {
+  applicability: () => LXRulesUI.mount($("#rulesRoot"), { api, base: "/platform/rules", scope: "platform" }),
   billing: () => wireBillingOps(),
   gproducts: () => wireGproducts(),
+  "master-review": () => wireMasterReview(),
+  "platform-setup": () => wirePlatformSetup(),
+  "master-permissions": () => wireMasterPermissions(),
   modules: () => wireModules(),
   ucii: () => wireUCII(),
   ucos: () => wireUCOS(),
@@ -3590,6 +3898,7 @@ document.addEventListener("click", e => { if (e.target.closest("[data-mclose]"))
   if (typeof LX_GUEST !== "undefined" && LX_GUEST) return;
   try {
     const me = await api("/platform/me");
+    if (me.money) window.LX_MONEY = me.money;
     if (!me.admin) {
       $("#app").innerHTML = `<div class="p-login"><div class="p-login-box"><h1>LUXORA</h1><p>Platform Console</p>
         <form id="pf" class="p-form"><label><span>Email</span><input id="pe" type="email" required></label>
@@ -3598,7 +3907,7 @@ document.addEventListener("click", e => { if (e.target.closest("[data-mclose]"))
         <p class="p-err hidden" id="pfErr" style="color:var(--p-red);font-size:13px;margin:10px 0 0"></p>
         <p class="hint" id="pfHint"></p>
         <p class="hint" id="pfStores">Store consoles: loading…</p></div></div>`;
-      api("/stores").then(st => { const el = document.getElementById("pfStores"); if (el) el.innerHTML = "Store consoles: " + (st.stores || []).map(x => `<a href="/admin.html?store=${esc(x.slug)}">${esc(x.name)}</a>`).join(" · ") + " · <a href='/index.html'>Storefronts</a>"; }).catch(() => { });
+      api("/stores").then(st => { const el = document.getElementById("pfStores"); if (el) el.innerHTML = "Store consoles: " + (st.stores || []).map(x => `<a href="/console.html?scope=store&store=${esc(x.slug)}">${esc(x.name)}</a>`).join(" · ") + " · <a href='/index.html'>Storefronts</a>"; }).catch(() => { });
       api("/platform/hint").then(h => { const el = document.getElementById("pfHint"); if (el && h.demo && h.email) el.innerHTML = "Owner sign-in: <code>" + esc(h.email) + "</code>" + (h.password ? " / <code>" + esc(h.password) + "</code>" : "") + " — set via env PLATFORM_EMAIL / PLATFORM_PASSWORD."; }).catch(() => { });
       $("#pf").onsubmit = async e => {
         e.preventDefault();
@@ -3632,9 +3941,8 @@ async function vDocs() {
     
     <h3>📚 Quick Links</h3>
     <ul>
-      <li><a href="/GOIP-ROADMAP-2.md" target="_blank">GOIP Roadmap</a></li>
-      <li><a href="/README.md" target="_blank">README</a></li>
-      <li><a href="/USER_MANUAL.md" target="_blank">Full Manual (Source)</a></li>
+      <li><a href="/docs/user-manual.html" target="_blank">User manual</a></li>
+      <li><a href="/docs/platform-reference.html" target="_blank">Platform reference</a></li>
     </ul>
   </div>
   <div class="p-card">
@@ -3845,11 +4153,12 @@ async function vCapabilities() {
     <td><b>${esc(p.label)}</b><br><code>${esc(p.key)}</code></td>
     <td class="p-tag">${esc(p.description || "—")}</td>
     <td class="num">${Object.keys(p.capabilities || {}).length}</td>
+    <td class="p-tag">${(p.universes || []).length ? (p.universes || []).map(u => `<code>${esc(u)}</code>`).join(" ") : "—"}</td>
     <td style="white-space:nowrap">
       <button class="p-btn sm primary" data-cappreset="${esc(p.key)}">Apply</button>
       <button class="p-btn sm danger" data-cappdel="${esc(p.key)}">✕</button></td></tr>`).join("");
-  const DOMAINS = { marketplace: "🛒 Marketplace", qc: "⚡ Quick-commerce", fintech: "💸 Fintech", trade: "🤝 B2B trust & trade" };
-  const domLabel = dom => DOMAINS[dom] || "◈ " + esc(dom).replace(/^\w/, c => c.toUpperCase());
+  const DOMAINS = Object.fromEntries((capData.domains || []).map(x => [x.key, x.name]));
+  const domLabel = dom => DOMAINS[dom] ? esc(DOMAINS[dom]) : "◈ " + esc(dom).replace(/^\w/, c => c.toUpperCase());
   const catHtml = Object.keys(byDomain).map(dom => {
     const rows = byDomain[dom].map(c => {
       const ps = c.params || {}, pkeys = Object.keys(ps);
@@ -3891,14 +4200,18 @@ async function vCapabilities() {
     </div>
     <h3>Archetypes — named, reusable compositions</h3>
     <p class="p-tag">An archetype is a starter set. Applying one writes capability rows for the store; from that moment the store owns them and any tuning is kept.</p>
-    <div class="p-scroll-x" style="margin-bottom:14px"><table class="p-table"><thead><tr><th>Archetype</th><th>Intent</th><th>Caps</th><th></th></tr></thead>
-      <tbody>${presetRows || '<tr><td colspan="4" class="p-empty">No archetypes defined</td></tr>'}</tbody></table></div>
+    <div class="p-scroll-x" style="margin-bottom:14px"><table class="p-table"><thead><tr><th>Archetype</th><th>Intent</th><th>Caps</th><th>Opens with content</th><th></th></tr></thead>
+      <tbody>${presetRows || '<tr><td colspan="5" class="p-empty">No archetypes defined</td></tr>'}</tbody></table></div>
     <details><summary class="p-tag" style="cursor:pointer">＋ Define a new archetype (custom platform or service)</summary>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0">
         <input id="capNewKey" placeholder="key (e.g. blend_luxury)" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:210px">
         <input id="capNewLabel" placeholder="Label" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:180px">
+        <input id="capNewDesc" placeholder="What it is for" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);flex:1;min-width:200px">
         <button class="p-btn sm primary" id="capNewSave">Create archetype</button>
       </div>
+      <label style="display:flex;gap:6px;align-items:center;margin:4px 0 8px" class="p-tag"><input type="checkbox" id="capNewFromStore"> Take the capabilities <b>and their tuning</b> from the store being composed above (the ticks below are ignored)</label>
+      <label style="display:flex;flex-direction:column;gap:3px;margin-bottom:8px"><span class="p-tag">Catalogue content a new store opens with — universe keys, comma-separated (see 12 · Architecture → Universes)</span>
+        <input id="capNewUv" placeholder="uv_marketplace, uv_commerce_product" style="padding:7px 10px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg)"></label>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">${checkList}</div></details>
     <details><summary class="p-tag" style="cursor:pointer">＋ Define a new capability (the catalog is open-ended — any platform, any domain)</summary>
       <p class="p-tag" style="margin:8px 0">The seeded catalog covers commerce. A platform beyond that — mobility, streaming, ERP, CRM, anything not yet named — is built by <b>defining its capabilities here</b> with typed parameters. Engines read them through the same <code>cap()</code> call, so a new domain is live the moment it is saved.</p>
@@ -3967,11 +4280,15 @@ function wireCapabilities() {
   if (ns) ns.onclick = async () => {
     const key = document.getElementById("capNewKey").value.trim();
     if (!key) return toast("give the archetype a key");
-    const capsOn = Array.from(document.querySelectorAll("[data-capnew]")).filter(c => c.checked).map(c => c.dataset.capnew);
-    if (!capsOn.length) return toast("select at least one capability");
+    /* from the store: every capability it has on, with the values it is tuned to */
+    const fromStore = document.getElementById("capNewFromStore").checked;
+    const capObj = {};
+    if (fromStore) (capData.catalog || []).filter(c => c.on).forEach(c => { capObj[c.key] = { enabled: true, params: c.effective || {} }; });
+    else Array.from(document.querySelectorAll("[data-capnew]")).filter(c => c.checked).forEach(c => { capObj[c.dataset.capnew] = { enabled: true, params: {} }; });
+    if (!Object.keys(capObj).length) return toast(fromStore ? "that store has no capabilities switched on" : "select at least one capability");
+    const universes = document.getElementById("capNewUv").value.split(/[\s,]+/).map(x => x.trim()).filter(Boolean);
     try {
-      const capObj = {}; capsOn.forEach(c => capObj[c] = { enabled: true, params: {} });
-      await api("/capabilities/preset", "POST", { key, label: document.getElementById("capNewLabel").value.trim() || key, capabilities: capObj });
+      await api("/capabilities/preset", "POST", { key, label: document.getElementById("capNewLabel").value.trim() || key, description: document.getElementById("capNewDesc").value.trim(), capabilities: capObj, universes });
       toast("Archetype '" + key + "' created — apply it to any store");
       render();
     } catch (e) { toast(e.message); }
@@ -4679,7 +4996,7 @@ function wirePAdmins() {
     if (!name || !email || !password) return toast("Name, email and password are required");
     try {
       await api("/platform/admins", "POST", { name, email, password, role });
-      toast("Platform admin created — they can sign in at /platform.html");
+      toast("Platform admin created — they can sign in at /console.html");
       render();
     } catch (e) { toast("Error: " + e.message); }
   };
@@ -4740,6 +5057,7 @@ async function vUsers() {
   const staff = await gFan("/api/admin/roles").catch(() => ({}));
   const srow = (staff.results || []).find(r => r.ok && r.data);
   window.__userStaffRoles = srow ? (srow.data.roles || []) : [];
+  window.__userStaffDefault = srow ? srow.data.defaultRole : null;
   return gBar("Users", "👤", "Every account the platform holds across every store — read through the generic dataset reader.", 1)
     + (canWrite ? `<div class="p-panel" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px">
         <button class="p-btn sm primary" data-unew="1">＋ New user</button>
@@ -4761,7 +5079,7 @@ function userFormModal() {
       <label><span>Password <span class="p-tag">blank to generate</span></span><input type="password" id="unPw" placeholder="6+ characters, letter + digit"></label>
       <label><span>Role</span><select id="unRole"><option value="customer">Customer</option><option value="admin">Store admin</option></select></label>
       <label id="unStaffWrap"><span>Staff role</span><select id="unStaff">${/* the store surface lists owner first, but full store control is the wrong default
-          for a new admin — the platform API defaults an omitted staff role to manager */ staffRoles.map(r => `<option value="${esc(r.key)}" ${r.key === "manager" ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>
+          for a new admin — the pre-selected role is the staffRoles row flagged default */ staffRoles.map(r => `<option value="${esc(r.key)}" ${r.key === window.__userStaffDefault ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>
       <div style="display:flex;gap:8px;margin-top:4px">
         <button class="p-btn primary" id="unSave">Create user</button>
         <button class="p-btn" data-mclose>Cancel</button>
@@ -4807,7 +5125,7 @@ const GRANT_OPTS = [["", "inherit"], ["off", "off"], ["read", "read"], ["write",
    ╚════════════════════════════════════════════════════════════════════╝
    The list of lists is fetched from the API, never hardcoded, so a registry
    created by any engine (or a future seed) is authorable here the moment it
-   exists. Adding a platform mode here is what makes "register an Uber-like
+   exists. Adding a platform mode here is what makes "register a ride-hailing
    platform" a data change: the registration walk, every form select and every
    engine read the same rows on the next request.
 
@@ -4958,6 +5276,7 @@ async function vRoles() {
      role being edited, and the console re-fetches on every render, never holds a
      second source of truth beyond the DOM's own lifetime */
   window.__roleSections = { platform: psections, staff: ssections };
+  window.__roleApps = Object.fromEntries([...(plat.apps || []), ...(srows.length ? (srows[0].data.apps || []) : [])].map(a => [a.section, a]));
   window.__roleRoles = { platform: proles, staff: sroles };
   const canWrite = !P.allowed || P.allowed.includes("*") || P.allowed.includes("roles");
   const grants = r => Object.entries(r.sections || {}).map(([k, v]) => `${esc(k)}=${esc(v)}`).join(" · ") || "—";
@@ -5004,7 +5323,7 @@ function grantsEditor(sections, role) {
       <button class="p-btn sm" data-grbulk="">filtered → inherit</button>
     </div>
     <div id="grGrid" class="p-scroll-y" style="max-height:340px;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px 14px;padding:4px">
-      ${sections.map(k => row(k)).join("")}
+      ${sections.map(k => { const a = (window.__roleApps || {})[k]; return row(k, a ? (a.icon || "🧩") + " " + a.label + " · app" : null); }).join("")}
     </div>`;
 }
 /* read the editor's DOM back into a grant map; 'inherit' is absent by design, so a

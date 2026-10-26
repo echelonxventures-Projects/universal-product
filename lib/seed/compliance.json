@@ -1,0 +1,292 @@
+{
+ "REGULATIONS": [
+  {
+   "key": "gdpr",
+   "name": "GDPR",
+   "jurisdiction": "EU",
+   "kind": "privacy",
+   "desc": "General Data Protection Regulation — lawful processing, consent, data-subject rights",
+   "controls": [
+    {
+     "id": "gdpr-6.1",
+     "name": "Lawful basis recorded for each processing purpose",
+     "evidence": "consent registry"
+    },
+    {
+     "id": "gdpr-7.1",
+     "name": "Consent captured, withdrawable, and honored on withdrawal",
+     "evidence": "consent ledger"
+    },
+    {
+     "id": "gdpr-15.1",
+     "name": "Data-subject access requests fulfilled within the deadline",
+     "evidence": "privacy request workflow"
+    },
+    {
+     "id": "gdpr-17.1",
+     "name": "Erasure executed on lawful request or retention expiry",
+     "evidence": "erasure ledger"
+    },
+    {
+     "id": "gdpr-32.1",
+     "name": "Personal data encrypted at rest and in transit",
+     "evidence": "security L3/L6 envelope"
+    }
+   ]
+  },
+  {
+   "key": "ccpa",
+   "name": "CCPA",
+   "jurisdiction": "US-CA",
+   "kind": "privacy",
+   "desc": "California Consumer Privacy Act — notice, opt-out of sale, deletion rights",
+   "controls": [
+    {
+     "id": "ccpa-1798.100",
+     "name": "Notice at collection published",
+     "evidence": "privacy policy record"
+    },
+    {
+     "id": "ccpa-1798.105",
+     "name": "Deletion requests honored",
+     "evidence": "erasure ledger"
+    },
+    {
+     "id": "ccpa-1798.120",
+     "name": "Opt-out of sale / sharing enforced",
+     "evidence": "consent ledger"
+    }
+   ]
+  },
+  {
+   "key": "dpdp",
+   "name": "DPDP",
+   "jurisdiction": "IN",
+   "kind": "privacy",
+   "desc": "Digital Personal Data Protection Act (India) — consent, data-principal rights",
+   "controls": [
+    {
+     "id": "dpdp-6",
+     "name": "Consent obtained for a specified, lawful purpose",
+     "evidence": "consent ledger"
+    },
+    {
+     "id": "dpdp-11",
+     "name": "Data-principal rights (access, correction, erasure) actionable",
+     "evidence": "privacy request workflow"
+    },
+    {
+     "id": "dpdp-8.5",
+     "name": "Data breaches notified to the authority",
+     "evidence": "incident log"
+    }
+   ]
+  },
+  {
+   "key": "hipaa",
+   "name": "HIPAA",
+   "jurisdiction": "US",
+   "kind": "health",
+   "desc": "Health Insurance Portability and Accountability Act — PHI safeguards",
+   "controls": [
+    {
+     "id": "hipaa-164.312.a",
+     "name": "Access to PHI controlled and audited",
+     "evidence": "audit chain"
+    },
+    {
+     "id": "hipaa-164.312.e",
+     "name": "PHI encrypted in transit and at rest",
+     "evidence": "security L3/L6 envelope"
+    },
+    {
+     "id": "hipaa-164.530.c",
+     "name": "Audit controls record PHI access",
+     "evidence": "audit chain"
+    }
+   ]
+  },
+  {
+   "key": "pci-dss",
+   "name": "PCI-DSS",
+   "jurisdiction": "global",
+   "kind": "payments",
+   "desc": "Payment Card Industry Data Security Standard — cardholder data protection",
+   "controls": [
+    {
+     "id": "pci-3.4",
+     "name": "Cardholder data rendered unreadable wherever stored",
+     "evidence": "tokenization + envelope"
+    },
+    {
+     "id": "pci-4.1",
+     "name": "Strong cryptography on transmission over open networks",
+     "evidence": "TLS config"
+    },
+    {
+     "id": "pci-10.1",
+     "name": "Audit trails for all access to cardholder data",
+     "evidence": "audit chain"
+    },
+    {
+     "id": "pci-12.3",
+     "name": "Payment gateway credentials sealed, not logged",
+     "evidence": "sealed gateway config"
+    }
+   ]
+  },
+  {
+   "key": "soc2",
+   "name": "SOC 2",
+   "jurisdiction": "global",
+   "kind": "assurance",
+   "desc": "System and Organization Controls — trust services criteria",
+   "controls": [
+    {
+     "id": "soc2-cc6.1",
+     "name": "Logical and physical access controls",
+     "evidence": "RBAC + audit chain"
+    },
+    {
+     "id": "soc2-cc7.1",
+     "name": "System monitoring and anomaly detection",
+     "evidence": "monitoring + audit"
+    },
+    {
+     "id": "soc2-cc8.1",
+     "name": "Change management with approvals",
+     "evidence": "audit chain"
+    }
+   ]
+  },
+  {
+   "key": "iso27001",
+   "name": "ISO 27001",
+   "jurisdiction": "global",
+   "kind": "assurance",
+   "desc": "Information security management system controls",
+   "controls": [
+    {
+     "id": "iso-a.5.15",
+     "name": "Access control policy enforced",
+     "evidence": "RBAC"
+    },
+    {
+     "id": "iso-a.5.34",
+     "name": "Privacy and protection of PII",
+     "evidence": "consent + retention"
+    },
+    {
+     "id": "iso-a.8.16",
+     "name": "Monitoring and logging of activities",
+     "evidence": "audit chain"
+    }
+   ]
+  },
+  {
+   "key": "nist",
+   "name": "NIST CSF",
+   "jurisdiction": "US",
+   "kind": "framework",
+   "desc": "NIST Cybersecurity Framework — identify, protect, detect, respond, recover",
+   "controls": [
+    {
+     "id": "nist-pr.ac",
+     "name": "Identity management and access control",
+     "evidence": "RBAC + sessions"
+    },
+    {
+     "id": "nist-pr.ds",
+     "name": "Data security at rest and in transit",
+     "evidence": "security envelope"
+    },
+    {
+     "id": "nist-de.ae",
+     "name": "Adverse event detection",
+     "evidence": "risk + anomaly signals"
+    }
+   ]
+  },
+  {
+   "key": "fedramp",
+   "name": "FedRAMP",
+   "jurisdiction": "US",
+   "kind": "government",
+   "desc": "Federal Risk and Authorization Management Program — cloud service baseline",
+   "controls": [
+    {
+     "id": "fedramp-ac",
+     "name": "Access control and separation of duties",
+     "evidence": "RBAC + roles"
+    },
+    {
+     "id": "fedramp-au",
+     "name": "Audit logging, protection and review",
+     "evidence": "hash-chained audit"
+    },
+    {
+     "id": "fedramp-sc",
+     "name": "System and communications protection",
+     "evidence": "TLS + envelope"
+    }
+   ]
+  },
+  {
+   "key": "sebi",
+   "name": "SEBI",
+   "jurisdiction": "IN",
+   "kind": "financial",
+   "desc": "Securities and Exchange Board of India — market intermediary obligations",
+   "controls": [
+    {
+     "id": "sebi-kyc",
+     "name": "KYC completed before granting credit or market access",
+     "evidence": "KYC gate"
+    },
+    {
+     "id": "sebi-audit",
+     "name": "Transaction audit trail retained and immutable",
+     "evidence": "audit chain"
+    }
+   ]
+  },
+  {
+   "key": "rbi",
+   "name": "RBI",
+   "jurisdiction": "IN",
+   "kind": "financial",
+   "desc": "Reserve Bank of India — payment data storage and tokenization directives",
+   "controls": [
+    {
+     "id": "rbi-tokenization",
+     "name": "Card data tokenized; raw PAN not stored",
+     "evidence": "tokenization"
+    },
+    {
+     "id": "rbi-storage",
+     "name": "Payment data localisation and retention limits",
+     "evidence": "retention config"
+    }
+   ]
+  },
+  {
+   "key": "trai",
+   "name": "TRAI",
+   "jurisdiction": "IN",
+   "kind": "telecom",
+   "desc": "Telecom Regulatory Authority of India — commercial communication consent",
+   "controls": [
+    {
+     "id": "trai-consent",
+     "name": "Marketing communication sent only with registered consent",
+     "evidence": "consent ledger"
+    },
+    {
+     "id": "trai-pref",
+     "name": "Preference registry honored for marketing channels",
+     "evidence": "consent purposes"
+    }
+   ]
+  }
+ ]
+}

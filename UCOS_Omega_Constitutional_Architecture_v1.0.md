@@ -199,11 +199,11 @@ The platform contains no applications. It contains only nine kinds of constituti
 
 Applications become compositions. For example:
 
-| Amazon-class platform  =  Identity + Organization + Merchant + Catalog + Inventory <br>                           + Pricing + Offer + Cart + Order + Payment + Logistics <br>                           + Review + Recommendation + Advertising + Analytics |
+| General-marketplace platform  =  Identity + Organization + Merchant + Catalog + Inventory <br>                           + Pricing + Offer + Cart + Order + Payment + Logistics <br>                           + Review + Recommendation + Advertising + Analytics |
 | --- |
 
 
-No Amazon code exists. The full set of reference compositions — and what the completeness engine adds to them — is in §21.
+No marketplace-specific code exists. The full set of reference compositions — and what the completeness engine adds to them — is in §21.
 
 ### 1.4 The Universal Platform Equation
 
@@ -213,7 +213,7 @@ The sources expressed the platform equation in several forms. They are consolida
 | --- |
 
 
-"+" denotes composition through registered contracts, never source code. If the equation holds, Amazon, Uber, Netflix, YouTube, SAP, Salesforce, Shopify, ServiceNow, banking, government and healthcare systems, future AI systems and industries not yet invented become configurations of one platform rather than separate products.
+"+" denotes composition through registered contracts, never source code. If the equation holds, general marketplaces, ride-hailing, video-on-demand, video-sharing, ERP, CRM, hosted store-builder and IT-service-management platforms, banking, government and healthcare systems, future AI systems and industries not yet invented become configurations of one platform rather than separate products.
 
 ### 1.5 Mission
 
@@ -227,12 +227,12 @@ In this sense UCOS is a generator, not a product: a platform generator, system g
 
 | Family | Reference systems (capability-class benchmarks, not clones — D-34) |
 | --- | --- |
-| Commerce & marketplaces | Amazon, Flipkart, Walmart, Alibaba, Shopify |
-| Mobility & delivery | Uber, Ola, DoorDash, Swiggy, Zomato |
-| Hospitality & reservations | Airbnb; travel, hotel and booking platforms |
-| Media, streaming & learning | Netflix, YouTube, Spotify, Prime Video, Udemy |
-| Fintech, banking & capital markets | Zerodha, Robinhood, Paytm, Stripe, Square; core banking; insurance |
-| Enterprise systems | SAP, Oracle, Workday (ERP, HRMS, SCM); Salesforce (CRM); ServiceNow (ITSM, workflow) |
+| Commerce & marketplaces | general multi-seller marketplaces, regional marketplaces, omnichannel retail chains, B2B wholesale marketplaces, hosted store builders |
+| Mobility & delivery | ride hailing, cab aggregation, local delivery, food delivery, restaurant marketplaces |
+| Hospitality & reservations | short-stay rental marketplaces; travel, hotel and booking platforms |
+| Media, streaming & learning | video on demand, video sharing, music streaming, subscription video, online courses |
+| Fintech, banking & capital markets | retail brokerage, commission-free trading, payments-led super apps, card processing, point-of-sale payments; core banking; insurance |
+| Enterprise systems | ERP, HRMS and SCM suites; CRM; ITSM and workflow |
 | Public & regulated sectors | Government, healthcare, education, defence, energy, telecom |
 | Industrial & physical | Manufacturing, agriculture, logistics, IoT, robotics, digital-twin platforms |
 | Intelligence | AI platforms, agent platforms, research and scientific platforms |
@@ -328,7 +328,7 @@ Discover everything · Govern everything · Verify everything · Audit everythin
 
 ### 2.6 The Adapter Principle
 
-Universes never know implementations. Stripe, Razorpay, PayPal and Visa are payment adapters. GPT, Claude, Gemini, DeepSeek, Llama and open models are model plugins. SAP, Salesforce, ServiceNow, Oracle, Workday, AWS, Azure and GCP are integration adapters. Every adapter is registered (adapter registry U60, model registry U51), certified (U74), observed (U66) and replaceable without changing any universe.
+Universes never know implementations. Card processors, wallets, bank rails and card networks are payment adapters. Hosted and open language models are model plugins. ERP, CRM, ITSM and HR systems and public clouds are integration adapters. Every adapter is registered (adapter registry U60, model registry U51), certified (U74), observed (U66) and replaceable without changing any universe.
 
 ### 2.7 The Independence Principle
 
@@ -887,7 +887,7 @@ A platform administrator composes a platform by configuration alone, in this ord
 
 Tenant → Company → Brand → Marketplace → Industry → Business & commerce model → Geography & countries → Languages → Channels → Capability packs → Product & service models → Pricing models → Payments → Logistics → Tax → Policies → Workflows → Compliance → Security models → Trust models → AI → Experiences & portals → APIs & integrations → Reports & dashboards → Deployment model.
 
-The output is a certified platform definition — an Amazon-class configuration, an Uber-class configuration, a bank, an ERP, a government system, a healthcare system or a configuration nobody has yet imagined — without changing platform source code.
+The output is a certified platform definition — a general-marketplace configuration, a ride-hailing configuration, a bank, an ERP, a government system, a healthcare system or a configuration nobody has yet imagined — without changing platform source code.
 
 Declarative example:
 
@@ -1381,7 +1381,7 @@ Coverage: every product, service, category, taxonomy, specification, manufacture
 
 Attributes are open-ended: colour, weight, dimension, size, duration, temperature, voltage, power, interest rate, currency, bandwidth, latency, risk score — and any future attribute, registered with its unit (U11) rather than added as a column.
 
-Global record, tenant overlay. A global record (for example one specific phone model) is stored once. An Amazon-class store, a Flipkart-class store, a B2B marketplace, an ERP, a CRM, a point-of-sale system, a warehouse, analytics and AI agents all reference the same record. Each tenant adds only an overlay — its own offer, price, stock, content and assortment — owned by U23, U22, U32, U46 and U30 respectively.
+Global record, tenant overlay. A global record (for example one specific phone model) is stored once. A general-marketplace store, a regional-marketplace store, a B2B marketplace, an ERP, a CRM, a point-of-sale system, a warehouse, analytics and AI agents all reference the same record. Each tenant adds only an overlay — its own offer, price, stock, content and assortment — owned by U23, U22, U32, U46 and U30 respectively.
 
 Ingestion functions: automatic import, crawl, normalise, match, de-duplicate, classify, enrich and translate. Ingestion records provenance (U59) and respects the licences and terms of every source (D-31).
 
@@ -1568,7 +1568,7 @@ Gap detection: missing products, missing services, missing attributes and missin
 
 | Stratum 4 — Commerce & Enterprise	U46 |  |
 | --- | --- |
-| Purpose | Creates, publishes and streams any content — enough to compose Netflix-, YouTube-, Spotify- or Udemy-class platforms by configuration. |
+| Purpose | Creates, publishes and streams any content — enough to compose video-on-demand, video-sharing, music-streaming or online-course platforms by configuration. |
 | Owns | Content Item, Article, Page, Video, Audio, Live Stream, Playlist, Series and Episode, Media Channel, Creator, Course content, Knowledge Article, Publication. |
 | Capabilities | CMS; editorial workflows (U57); publishing to web, apps and syndication channels; video and audio platforms; live streaming and broadcasting; OTT delivery; transcoding and adaptive streaming (delivery through U64 CDN); creator management; course engine (learning content); knowledge publishing; content moderation (with U51 and U17). |
 | Consumes | U17, U36 (DRM), U47, U51, U57, U64. |
@@ -1748,7 +1748,7 @@ Industries are compositions, not universes (D-20). Where an industry needs canon
 | --- | --- |
 | Purpose | Connects UCOS to every external system, protocol and agent — without hard-coded integrations. |
 | Owns | API (contract), API Product, Endpoint, Connector, Adapter, Protocol, Webhook Subscription, Mapping and Transformation, EDI Message, File-Exchange Job, External System, Federation Link. |
-| Capabilities | API registry and API gateway (REST, GraphQL, gRPC, asynchronous and event APIs); webhooks; connector and adapter registry (SAP, Salesforce, ServiceNow, Oracle, Workday, Stripe, PayPal, AWS, Azure, GCP, legacy and future systems); protocol registry and protocol translation; mappings and transformations; EDI; file exchange; external message queues; data synchronisation with external systems; MCP and agent-to-agent protocols; open-banking APIs; integration monitoring. |
+| Capabilities | API registry and API gateway (REST, GraphQL, gRPC, asynchronous and event APIs); webhooks; connector and adapter registry (ERP, CRM, ITSM and HR systems, payment processors, public clouds, legacy and future systems); protocol registry and protocol translation; mappings and transformations; EDI; file exchange; external message queues; data synchronisation with external systems; MCP and agent-to-agent protocols; open-banking APIs; integration monitoring. |
 | Consumes | U16, U58, U63, U66. |
 | Boundary | Internal event transport → U63. Internal data pipelines → U59. SDK and API code generation → U71. |
 
@@ -2115,16 +2115,16 @@ Every reference system below is a composition — a certified blueprint (U04) pl
 
 | Reference class | Core composition | Completeness additions |
 | --- | --- | --- |
-| Amazon-class commerce marketplace | Identity U05, Organization U06, Merchant (U37), Commerce Object U29, Catalog U30, Inventory U32, Pricing U22, Offer U23, Cart and Order U31, Payment U24, Logistics U34, Review (U17), Recommendation (U53), Advertising U39, Analytics U62 | Tax U27, Fraud (U18), Settlement and Chargeback (U24), Ledger U25, Fees and Commissions U26, Fulfillment U33, Disputes U20, Support U40, Compliance U14, Privacy U15 |
-| Uber-class mobility | Identity, Geo U07, Dispatch (U34), Routing (U07 + U34), Matching (U53), Dynamic Pricing (U22 with U51 and U54), Payment U24, Rating (U17), Tracking (U34) | Gig workforce (U42), vehicle telemetry (U49), Temporal U08, Trust & safety (U17, U18), Payouts (U24), Disputes U20 |
-| Netflix-class streaming | Identity, Subscription U35, Media U46, Streaming (U46 + U64 CDN), Recommendation U53, Billing U26, Analytics U62 | Entitlements and DRM (U36), Digital Assets U47, Experience on TV, mobile and web (U61), Tax U27, Privacy U15 |
-| YouTube-class video | Identity, Content & Media U46, Digital Asset U47, Search & Discovery U53, Advertising U39, Creator revenue share (U26) | Content trust and moderation (U17, U51), Communities and comments (U45), Analytics U62, Disputes and appeals U20 |
-| Airbnb-class reservations | Identity, Marketplace U37, Commerce Object (rental, experience) U29, Availability U08, Booking U31, Payment with escrow U24 | Trust & Reputation U17, Geo U07, Search U53, Disputes U20, Messaging U45, Tax U27 |
-| Salesforce-class CRM | Identity, CRM & Engagement U38, Workflow U57, Analytics U62, AI U51, Communication U45 | Integration U60, Document U48, Agents U52, Data U59 |
-| SAP-class ERP | Identity, Ledger & Finance U25, Procurement U41, Inventory U32, Manufacturing U43, Workforce U42, Analytics U62 | Organization U06, Project U44, Tax U27, Document U48, Compliance U14 |
-| ServiceNow-class workflow | Support & Service Management U40, Workflow U57, Knowledge U11 | Integration U60, Analytics U62, Agents U52, Observability U66 |
-| Shopify-class commerce enablement | Tenancy U06, Commerce Object U29, Catalog U30, Order U31, Payment U24, Experience (storefront themes) U61 | Capability Marketplace (apps) U69, Revenue (merchant subscriptions) U26, Tax U27, Fulfillment U33, Integration U60 |
-| Zerodha-class brokerage | Identity with KYC U05, Financial Services (trading) U28, Ledger U25, Payment U24 | Compliance (e.g. SEBI) U14, Risk U18, Communication U45, Analytics U62, Audit U19 |
+| General commerce marketplace | Identity U05, Organization U06, Merchant (U37), Commerce Object U29, Catalog U30, Inventory U32, Pricing U22, Offer U23, Cart and Order U31, Payment U24, Logistics U34, Review (U17), Recommendation (U53), Advertising U39, Analytics U62 | Tax U27, Fraud (U18), Settlement and Chargeback (U24), Ledger U25, Fees and Commissions U26, Fulfillment U33, Disputes U20, Support U40, Compliance U14, Privacy U15 |
+| Ride-hailing mobility | Identity, Geo U07, Dispatch (U34), Routing (U07 + U34), Matching (U53), Dynamic Pricing (U22 with U51 and U54), Payment U24, Rating (U17), Tracking (U34) | Gig workforce (U42), vehicle telemetry (U49), Temporal U08, Trust & safety (U17, U18), Payouts (U24), Disputes U20 |
+| Video-on-demand streaming | Identity, Subscription U35, Media U46, Streaming (U46 + U64 CDN), Recommendation U53, Billing U26, Analytics U62 | Entitlements and DRM (U36), Digital Assets U47, Experience on TV, mobile and web (U61), Tax U27, Privacy U15 |
+| Video-sharing platform | Identity, Content & Media U46, Digital Asset U47, Search & Discovery U53, Advertising U39, Creator revenue share (U26) | Content trust and moderation (U17, U51), Communities and comments (U45), Analytics U62, Disputes and appeals U20 |
+| Short-stay rental reservations | Identity, Marketplace U37, Commerce Object (rental, experience) U29, Availability U08, Booking U31, Payment with escrow U24 | Trust & Reputation U17, Geo U07, Search U53, Disputes U20, Messaging U45, Tax U27 |
+| Sales and service CRM | Identity, CRM & Engagement U38, Workflow U57, Analytics U62, AI U51, Communication U45 | Integration U60, Document U48, Agents U52, Data U59 |
+| Enterprise resource planning | Identity, Ledger & Finance U25, Procurement U41, Inventory U32, Manufacturing U43, Workforce U42, Analytics U62 | Organization U06, Project U44, Tax U27, Document U48, Compliance U14 |
+| IT service workflow | Support & Service Management U40, Workflow U57, Knowledge U11 | Integration U60, Analytics U62, Agents U52, Observability U66 |
+| Hosted store-builder commerce enablement | Tenancy U06, Commerce Object U29, Catalog U30, Order U31, Payment U24, Experience (storefront themes) U61 | Capability Marketplace (apps) U69, Revenue (merchant subscriptions) U26, Tax U27, Fulfillment U33, Integration U60 |
+| Retail brokerage | Identity with KYC U05, Financial Services (trading) U28, Ledger U25, Payment U24 | Compliance (e.g. SEBI) U14, Risk U18, Communication U45, Analytics U62, Audit U19 |
 | Healthcare platform | The declaration in §8.8 | Privacy U15, Clinical extension (§13.2), Audit U19, Consent U15 |
 
 
@@ -2534,7 +2534,7 @@ Concepts that appeared in more than one source universe, layer or engine, with t
 | D-16 | "Channel" means sales channel, device surface and messaging channel in different sources. | Distribution channel → U37; interaction surface → U61; communication channel → U45. |
 | D-17 | "Asset" means sellable asset, financial asset, media file and physical equipment. | Sellable → U29; financial → U28; media file → U47; equipment maintenance → U43. |
 | D-18 | "Discovery" means content discovery, knowledge discovery and capability discovery. | Content and product discovery → U53; knowledge discovery → U11; capability and gap discovery → U72. |
-| D-19 | ERP, Mobility, CRM and ITSM appear as "engines" that create SAP-, Uber-, Salesforce- or ServiceNow-class systems. | ERP and Mobility are compositions (§21). CRM is retained as a universe of relationships (not only sales); ITSM is part of U40. |
+| D-19 | ERP, Mobility, CRM and ITSM appear as "engines" that create ERP, ride-hailing, CRM or ITSM systems. | ERP and Mobility are compositions (§21). CRM is retained as a universe of relationships (not only sales); ITSM is part of U40. |
 | D-20 | Industries (healthcare, education, government…) appear as universes and layers. | Industries are compositions. Industry-specific canonical objects live in Domain Extension Universes (§13.2). |
 | D-21 | Provenance and lineage appear in Knowledge, Data and Audit. | U59 owns lineage and provenance for all data; U11 consumes it for truth and confidence. |
 | D-22 | Evidence appears in Knowledge, Governance and Audit. | One Evidence object, owned by U19. |

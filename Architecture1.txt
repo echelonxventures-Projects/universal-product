@@ -591,8 +591,8 @@ Scheduling
 
 Supports:
 
-- Uber
-- Ola
+- Ride Hailing
+- Cab Aggregation
 - Taxi
 - Logistics
 - Courier
@@ -642,12 +642,12 @@ Dispatch
 
 Supports:
 
-- Netflix
-- Prime Video
-- Disney+
-- Spotify
-- Audible
-- YouTube Premium
+- Video on Demand
+- Subscription Video
+- Family Streaming
+- Music Streaming
+- Audiobooks
+- Premium Video Sharing
 - Future Platforms
 
 ---
@@ -709,9 +709,9 @@ DRM
 
 Supports:
 
-- YouTube
-- TikTok
-- Instagram
+- Video Sharing
+- Short Video
+- Photo Sharing
 - Podcasts
 - Creator Platforms
 
@@ -9083,20 +9083,20 @@ Product
 # Examples
 
 ```text
-Zoom
+Video Conferencing
  ├── Meetings
  ├── Recording
  ├── Webinar
  ├── Phone
  └── AI Assistant
 
-Uber
+Ride Hailing
  ├── Ride Booking
  ├── Route Optimization
  ├── Driver Matching
  └── Payments
 
-Netflix
+Video Streaming
  ├── Streaming
  ├── Recommendations
  ├── Offline Viewing
@@ -9835,9 +9835,9 @@ Certified
 # Examples
 
 ```text
-Uber
-Zoom
-Netflix Support
+Ride Hailing
+Video Conferencing
+Streaming Support
 SEO Agency
 Hospital Consultation
 Cloud Service
@@ -9967,10 +9967,10 @@ Service
 Supports:
 
 ```text
-Zoom
-Teams
-Meet
-Slack
+Video Meetings
+Team Chat Suites
+Browser Meetings
+Workspace Messaging
 Email
 API
 Cloud
@@ -10097,11 +10097,11 @@ AI Service
 Supports:
 
 ```text
-Netflix
-Prime
-Disney
-YouTube
-Spotify
+Video on Demand
+Subscription Video
+Family Streaming
+Video Sharing
+Music Streaming
 Gaming Streaming
 Education Streaming
 Enterprise Streaming
@@ -10202,14 +10202,14 @@ Professional Service
 Supports:
 
 ```text
-Uber
-Ola
-Swiggy
-Zomato
-Urban Company
-Upwork
-Fiverr
-Airbnb Experiences
+Ride Hailing
+Cab Aggregation
+Food Delivery
+Restaurant Marketplace
+Home Services
+Freelance Marketplace
+Gig Services
+Local Experiences
 ```
 
 ---
@@ -10922,9 +10922,9 @@ Bundles
 # Supports
 
 ```text
-Uber Matching
-Airbnb Matching
-Amazon Matching
+Rider-Driver Matching
+Guest-Host Matching
+Buyer-Seller Matching
 Tender Matching
 Freelancer Matching
 Procurement Matching

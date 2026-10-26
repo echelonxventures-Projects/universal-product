@@ -1,0 +1,16 @@
+{
+ "featureGates": [
+  { "key": "checkout.wallet", "name": "Checkout — customer wallet balance", "capability": "wallet", "source": "module", "message": "Wallets are not enabled for this store — purchase the Customer Wallets module (Platform → Modules)", "live_state": "Wallets module has live balances — clear them first" },
+  { "key": "checkout.logistics_guard", "name": "Checkout — logistics guard surcharge", "capability": "logisticsGuard", "source": "module" },
+  { "key": "checkout.tax_per_line", "name": "Checkout — per-line tax rules", "capability": "taxPerLine", "source": "module" },
+  { "key": "checkout.login_required", "name": "Checkout — a store may require sign-in", "capability": "identityPro", "source": "module", "config": "requireLoginCheckout", "message": "This store requires customers to sign in before checkout" },
+  { "key": "identity.hardening", "name": "Identity — hardened defaults applied on install", "capability": "identityPro", "source": "module" },
+  { "key": "seo.tools", "name": "SEO tools", "capability": "seoPro", "source": "module", "message": "SEO Pro module not installed" },
+  { "key": "reco.engine", "name": "Recommendation engine", "capability": "recoPro", "source": "module", "message": "Recommendation Engine module not installed" },
+  { "key": "listing.tools", "name": "Listing quality tools", "capability": "listingPro", "source": "module", "message": "Listing Pro module not installed" },
+  { "key": "billing.self_pay", "name": "Billing — the store pays its own invoices", "capability": "billingPro", "source": "module", "message": "Billing Pro module not installed — request platform billing instead" },
+  { "key": "ai.premium", "name": "AI — premium tier", "capability": "aiPro", "source": "module" },
+  { "key": "offers.pro", "name": "Offers — pro offer types", "capability": "offersPro", "source": "module" },
+  { "key": "storefront.currency_switch", "name": "Storefront — shoppers view prices in their currency", "capability": "geoPro", "source": "module" }
+ ]
+}
