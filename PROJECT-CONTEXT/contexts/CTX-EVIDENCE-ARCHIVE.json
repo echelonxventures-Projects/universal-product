@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "6190e55f13558c363ef14be69199d5bbe0a0b67cf54034045eac23360cf04d79",
-  "depFingerprint": "99217f14687ae8411d308a5c2d022f2653e23cdfa18830adfb886fa597a268ae",
+  "contentFingerprint": "51a158cb745e79055e0f51d4f9a6ea8590d341a4f9d198ffda7f9a457bf0d2d5",
+  "depFingerprint": "1c99c81aef199f085cfa22b6eceea690199640e9663bc016e8d91ef81236a20f",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -30,7 +30,7 @@
     ],
     [
       "CST-EXPLAINABILITY",
-      "b64aa8200dca9443b769f3c923ce3a2fbe0d2e34debe40d7abacae7df655bed9"
+      "672f9206cde3fb878da4c1f7cc1fa6987d443276791a83e9c6b1aacf412fc619"
     ],
     [
       "CST-FROZEN-PRIMITIVES",
@@ -38,7 +38,7 @@
     ],
     [
       "CST-KNOWLEDGE-ONCE",
-      "8e28da9351e3eb8a70825922df78adccc9c7fd4169b1e39a0b44297c5d5ba05d"
+      "eb8e2db602768642e5245a41a87b5e569c64226df0022669d23a1a9c37520281"
     ],
     [
       "CST-NO-DESTRUCTIVE-CLEANUP",
@@ -62,7 +62,7 @@
     ],
     [
       "CST-PROJECTION-LAW",
-      "b54e583d5f7cd522c3ee0f739fa479a0e4a830e9a715a50e7e760c7d184ad405"
+      "7136d1d554d21422a84d9a1345a4ec606268e8b79622a844584a78d50b045bcc"
     ],
     [
       "CST-SEAL-DERIVED",
@@ -70,11 +70,11 @@
     ],
     [
       "CST-SUPERSEDED-NOT-AUTHORITY",
-      "c8dab4d9391d2e4683f0169fb7b040e527e1c5788fbed7e798f2d49b63ec93a1"
+      "eb1736646d40100edf494707c25a4f5fd3f860101905bc4571c2fd1c09d3fe0f"
     ],
     [
       "CST-ZERO-HARDCODING",
-      "1fa46b53f278850801081aba2f2922796813444f0b3279b033598f0a3e884ed0"
+      "6dc1daf2094b5cca9d8233d457e557e175632f4fdc655f5604d2b1f982170748"
     ],
     [
       "DEC-CTX-GIT-AS-ARCHIVE",
@@ -333,12 +333,12 @@
       "estimatedTokens": 6549,
       "file": "contexts/CTX-EVIDENCE-ARCHIVE.md",
       "id": "CTX-EVIDENCE-ARCHIVE",
-      "sha256": "f6595570bbade36a20cc182e00fdd113bed72a5aacda8c29afd7cc3a66bc36cf"
+      "sha256": "c94368e713635a8efc6bf0e1914988a310ed6e9ba8ce8bcc48472fe381b4a6ce"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "07e2e9fab1984bc4d065f915f07d77bbc61147b8ead851cd580e9db039c9770c",
+      "fingerprint": "87e9740aa6302d30b9acff491f9a1104934566e89e126ac6ea0bf4516df6ab25",
       "id": "CTX-BOOTSTRAP"
     }
   ],

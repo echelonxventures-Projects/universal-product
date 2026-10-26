@@ -38,4 +38,4 @@
 | ART-REGISTRY-PROJECT | Constitutional document projector | `_registry/project.js` | code | canonical | canonical-active | `_registry/project.js` |
 | ART-TEST-CONTEXT | Continuity test suite incl. fresh-agent recovery scenario | `test/context.js` | test | canonical | canonical-active | `test/context.js` |
 
-Plus **93 UCOS artifacts** imported read-only from `_registry/manifest.json` (owner), e.g. UCOS-AGT-000001, UCOS-AGT-000002, UCOS-AGT-000003 … — list them with `node _registry/project.js --list`.
+Plus **111 UCOS artifacts** imported read-only from `_registry/manifest.json` (owner), e.g. UCOS-AGT-000001, UCOS-AGT-000002, UCOS-AGT-000003 … — list them with `node _registry/project.js --list`.

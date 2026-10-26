@@ -42,7 +42,7 @@
 
 | # | Pack | Title | Parts (bytes) | Status |
 |---|---|---|---|---|
-| 1 | [CTX-BOOTSTRAP](contexts/CTX-BOOTSTRAP.md) | Bootstrap — mandatory rules and current state | 10819 | ok |
+| 1 | [CTX-BOOTSTRAP](contexts/CTX-BOOTSTRAP.md) | Bootstrap — mandatory rules and current state | 10809 | ok |
 | 2 | [CTX-GOVERNANCE](contexts/CTX-GOVERNANCE.md) | Constitutional governance and the registry pipeline | 8179 | ok |
 | 3 | [CTX-CONTINUITY-DESIGN](contexts/CTX-CONTINUITY-DESIGN.md) | Context continuity — design decisions and open design questions | 10355 | ok |
 | 4 | [CTX-CONTINUITY-SYSTEM](contexts/CTX-CONTINUITY-SYSTEM.md) | Context continuity — requirements and code | 20658 | ok |
@@ -63,7 +63,7 @@
 
 ## Counts
 
-- Sources 26 · requirements 14 · decisions 9 · constraints 16 · artifacts 32 (+93 imported from `_registry/manifest.json`) · issues 14 (9 open) · tasks 7 · packs 6
+- Sources 26 · requirements 14 · decisions 9 · constraints 16 · artifacts 32 (+111 imported from `_registry/manifest.json`) · issues 14 (9 open) · tasks 7 · packs 6
 - Graph edges 406 (derived from record fields via `schemas/relations.json`)
 
 ## Commands

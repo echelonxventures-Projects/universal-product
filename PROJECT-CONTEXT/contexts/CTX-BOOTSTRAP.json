@@ -1,7 +1,7 @@
 {
   "budgetBytes": 12000,
-  "contentFingerprint": "0973a98a15a3840ccedc962daffed485119c6572a328f288cf635c28d93b55ef",
-  "depFingerprint": "07e2e9fab1984bc4d065f915f07d77bbc61147b8ead851cd580e9db039c9770c",
+  "contentFingerprint": "34fb97fd93aa28a72f570500c30c88a16f5d64d17a3f147beac1c2b3a93aa8b8",
+  "depFingerprint": "87e9740aa6302d30b9acff491f9a1104934566e89e126ac6ea0bf4516df6ab25",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -26,7 +26,7 @@
     ],
     [
       "CST-EXPLAINABILITY",
-      "b64aa8200dca9443b769f3c923ce3a2fbe0d2e34debe40d7abacae7df655bed9"
+      "672f9206cde3fb878da4c1f7cc1fa6987d443276791a83e9c6b1aacf412fc619"
     ],
     [
       "CST-FROZEN-PRIMITIVES",
@@ -34,7 +34,7 @@
     ],
     [
       "CST-KNOWLEDGE-ONCE",
-      "8e28da9351e3eb8a70825922df78adccc9c7fd4169b1e39a0b44297c5d5ba05d"
+      "eb8e2db602768642e5245a41a87b5e569c64226df0022669d23a1a9c37520281"
     ],
     [
       "CST-NO-DESTRUCTIVE-CLEANUP",
@@ -58,7 +58,7 @@
     ],
     [
       "CST-PROJECTION-LAW",
-      "b54e583d5f7cd522c3ee0f739fa479a0e4a830e9a715a50e7e760c7d184ad405"
+      "7136d1d554d21422a84d9a1345a4ec606268e8b79622a844584a78d50b045bcc"
     ],
     [
       "CST-SEAL-DERIVED",
@@ -66,11 +66,11 @@
     ],
     [
       "CST-SUPERSEDED-NOT-AUTHORITY",
-      "c8dab4d9391d2e4683f0169fb7b040e527e1c5788fbed7e798f2d49b63ec93a1"
+      "eb1736646d40100edf494707c25a4f5fd3f860101905bc4571c2fd1c09d3fe0f"
     ],
     [
       "CST-ZERO-HARDCODING",
-      "1fa46b53f278850801081aba2f2922796813444f0b3279b033598f0a3e884ed0"
+      "6dc1daf2094b5cca9d8233d457e557e175632f4fdc655f5604d2b1f982170748"
     ],
     [
       "ISS-CI-RUNNERS-UNAVAILABLE",
@@ -165,11 +165,11 @@
   "missing": [],
   "parts": [
     {
-      "bytes": 10819,
-      "estimatedTokens": 3607,
+      "bytes": 10809,
+      "estimatedTokens": 3603,
       "file": "contexts/CTX-BOOTSTRAP.md",
       "id": "CTX-BOOTSTRAP",
-      "sha256": "2aa30a22e55ee3b4882e648f3d5c5e2f902a23e91f9cad533fcd35934cbf3d19"
+      "sha256": "23bfe42a64d862ba25e3c31b69b895a5518e48d40520340714fe183af35b5d94"
     }
   ],
   "prerequisites": [],

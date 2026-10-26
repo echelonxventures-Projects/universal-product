@@ -68,11 +68,63 @@ More: [Currencies and exchange](../domains/currency.md)
 
 ## Offers
 
-Every reason a buyer pays less or gets more: offers and discounts of every type, coupons, cashback, rewards, gift cards and vouchers, deals and countdowns, group buying, price matching and trade-ins, the funding and settlement of each, and their governance.
+The offers themselves: every price a buyer pays less or gets more, and every rule about how they apply — the offer record, its types, its scopes, its channels, its funders, its stacking policy and its governance. A coupon, a voucher, a gift card, a cashback, a reward and a group buy are their own domains; this one decides which of them applies.
 
 _Not yet written._
 
 More: [Offers](../domains/offer.md)
+
+## Group buying
+
+A lower price when enough shoppers join before a deadline: staff open a campaign on a product with a group price, how many members it needs and how many it may take; a shopper joins by buying at the group price. A campaign that reaches its members succeeds and its orders go ahead; one that falls short fails and every member's order is cancelled and refunded.
+
+1. A campaign's life is the `group_campaign` state machine, asked by meaning (joinable, refunds
+   members); its states are the platform registry `groupCampaignStatuses`.
+2. The **Group buying** capability and its defaults are declared by the platform; each store sets its
+   own values and decides whether to offer it.
+3. Refunds to members are wallet credits of the capability's refund kind, so they appear in each
+   member's wallet statement and in the store's ledger check.
+
+More: [Group buying](../domains/groupbuy.md)
+
+## Coupons
+
+The codes a shopper types at the cart: a code that carries a value, issued by staff or in bulk, validated against its kind and its limits, redeemed into the redemption ledger, and voided when the order is refunded. The kinds — a single-use code, a bulk lot, a referral code — are rows.
+
+1. **Platform → Provisioning → coupons allowed** switches codes on or off for every store. When it is
+   off, shoppers are told codes are disabled and the cart refuses them.
+2. The coupon kinds, coupon statuses and redemption statuses are platform registries (`couponKinds`,
+   `couponStatuses`, `redemptionStatuses`); a store reads them as they are declared.
+3. A code that belongs to no store (the platform's own) appears in every store's list marked
+   **GLOBAL** and applies in every store.
+4. An offer of type `coupon_issue` grants a code worth the offer's value once the cart reaches the
+   offer's minimum; the code is written by the Coupon domain like any other.
+
+More: [Coupons](../domains/coupon.md)
+
+## Vouchers
+
+An instrument of value that is not the shop's own discount and not a gift card: a bank voucher, a benefits note, an organisation's credit. Who stands behind it, whether it may be spent in part and how long it lives are its kind's rows; the code it travels on belongs to the Coupon domain.
+
+1. The voucher kinds are a platform registry (`voucherKinds`): for each, who issues it, whether it may
+   be partly spent, how long it lives and the coupon kind its code travels as.
+2. A voucher kind backed by a bank, an organisation or a benefits programme names that funder, so the
+   value it carries is attributed to them in every store's redemption ledger.
+
+More: [Vouchers](../domains/voucher.md)
+
+## Gift cards
+
+A card bought as an item or issued by staff: a code with a value, sent to its recipient with a message, redeemable into the recipient's gift balance, checked for its balance, voided with a reason and expired after its validity. A card is a node on the kernel; its code is sealed and found by a blind index.
+
+1. The card's life is the `gift_card` state machine; its states, occasions and sources are platform
+   registries (`giftCardStatuses`, `giftCardOccasions`, `giftCardSources`).
+2. The **Gift cards** capability and its defaults (amounts, validity, code length, the wallet
+   definition a redeemed card pays into) are declared by the platform; each store sets its own values.
+3. An offer of type `gift_card_issue` issues a card when it applies; the incentive engine asks the
+   Gift card domain to write it.
+
+More: [Gift cards](../domains/giftcard.md)
 
 ## Payment gateways
 

@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "8a22f6870afff9ddb53404e22eb82fb0f0b759b361144ca3ff9171b1fccc27f3",
-  "depFingerprint": "4e8bd55e94121ad2362cce746fb9fd0dc4f87f65573fea182b36b54994679ef0",
+  "contentFingerprint": "5addfa895c35aeeb08e0f139241be48015435f6ae514c239465076daf65824ca",
+  "depFingerprint": "73d1ccaa8b96e322fbe47f7e962841c3cefe73204f19c3c4ac1681543d66f8b5",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -10,23 +10,23 @@
   "inputs": [
     [
       "ART-CANONICAL",
-      "1df67ec124b02704a061ee00760b8e10ea9adb88bd8e892b2c4be02fe69e91c2"
+      "fda1c0ac2692abe7bec9e02eed2c21dc25b858b8f3ace89b7308e8906157c908"
     ],
     [
       "ART-REGISTRY-AUDIT",
-      "47d9b65e000f0dc52e36bf0d6416223f6b09e320b69176dfab720e8bd135e95b"
+      "eb2d3bac5f064ce6bca454618d7369b35cfbb744c29ecfaec4246e3b9a8e912b"
     ],
     [
       "ART-REGISTRY-COMPILE",
-      "570e9fb53dde18f9b20d4023142114dc519726b64b9e78e53dfdf927446f8924"
+      "0ac633066aa15ef223b9b1ac44d462663263ca88071def0b37b61e424c484810"
     ],
     [
       "ART-REGISTRY-GATE",
-      "bd532580552435bbf4077464e7935f98a5069b2078bf001b81926269caabc4e1"
+      "253ba68b8eed6f7b586c30f05186c1d433d3164693f9541b7cd3bf347223e944"
     ],
     [
       "ART-REGISTRY-PROJECT",
-      "493ec3b50b0973d8c01e435ceee7edcf03afcde589c2ff2b539c7a0761edc99c"
+      "8f3f6b8ab1be5606bea30fd6f4d226e7fcbb08c275f3f3a01a2fb2d7496629be"
     ],
     [
       "CST-AUTHORIZED-SIDE-EFFECTS",
@@ -42,7 +42,7 @@
     ],
     [
       "CST-EXPLAINABILITY",
-      "b64aa8200dca9443b769f3c923ce3a2fbe0d2e34debe40d7abacae7df655bed9"
+      "672f9206cde3fb878da4c1f7cc1fa6987d443276791a83e9c6b1aacf412fc619"
     ],
     [
       "CST-FROZEN-PRIMITIVES",
@@ -50,7 +50,7 @@
     ],
     [
       "CST-KNOWLEDGE-ONCE",
-      "8e28da9351e3eb8a70825922df78adccc9c7fd4169b1e39a0b44297c5d5ba05d"
+      "eb8e2db602768642e5245a41a87b5e569c64226df0022669d23a1a9c37520281"
     ],
     [
       "CST-NO-DESTRUCTIVE-CLEANUP",
@@ -74,7 +74,7 @@
     ],
     [
       "CST-PROJECTION-LAW",
-      "b54e583d5f7cd522c3ee0f739fa479a0e4a830e9a715a50e7e760c7d184ad405"
+      "7136d1d554d21422a84d9a1345a4ec606268e8b79622a844584a78d50b045bcc"
     ],
     [
       "CST-SEAL-DERIVED",
@@ -82,11 +82,11 @@
     ],
     [
       "CST-SUPERSEDED-NOT-AUTHORITY",
-      "c8dab4d9391d2e4683f0169fb7b040e527e1c5788fbed7e798f2d49b63ec93a1"
+      "eb1736646d40100edf494707c25a4f5fd3f860101905bc4571c2fd1c09d3fe0f"
     ],
     [
       "CST-ZERO-HARDCODING",
-      "1fa46b53f278850801081aba2f2922796813444f0b3279b033598f0a3e884ed0"
+      "6dc1daf2094b5cca9d8233d457e557e175632f4fdc655f5604d2b1f982170748"
     ],
     [
       "DEC-REGISTRY-AS-SOT",
@@ -196,12 +196,12 @@
       "estimatedTokens": 2727,
       "file": "contexts/CTX-GOVERNANCE.md",
       "id": "CTX-GOVERNANCE",
-      "sha256": "263dd23b6a1f04d1eb06045855ff4e54c0d0d224ed30b805b6edab49c48d8e23"
+      "sha256": "c4edf6bae3089bd43bb416da02b8eacdce4456edbba77725a89eb6644eeaa7f2"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "07e2e9fab1984bc4d065f915f07d77bbc61147b8ead851cd580e9db039c9770c",
+      "fingerprint": "87e9740aa6302d30b9acff491f9a1104934566e89e126ac6ea0bf4516df6ab25",
       "id": "CTX-BOOTSTRAP"
     }
   ],

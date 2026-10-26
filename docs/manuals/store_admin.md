@@ -100,11 +100,77 @@ More: [Currencies and exchange](../domains/currency.md)
 
 ## Offers
 
-Every reason a buyer pays less or gets more: offers and discounts of every type, coupons, cashback, rewards, gift cards and vouchers, deals and countdowns, group buying, price matching and trade-ins, the funding and settlement of each, and their governance.
+The offers themselves: every price a buyer pays less or gets more, and every rule about how they apply — the offer record, its types, its scopes, its channels, its funders, its stacking policy and its governance. A coupon, a voucher, a gift card, a cashback, a reward and a group buy are their own domains; this one decides which of them applies.
 
 _Not yet written._
 
 More: [Offers](../domains/offer.md)
+
+## Group buying
+
+A lower price when enough shoppers join before a deadline: staff open a campaign on a product with a group price, how many members it needs and how many it may take; a shopper joins by buying at the group price. A campaign that reaches its members succeeds and its orders go ahead; one that falls short fails and every member's order is cancelled and refunded.
+
+1. Group buying needs the **Group buying** capability (⚙️ Capabilities). Its settings are the most one
+   member may buy, whether a campaign closes as soon as it is full, and the ledger kind used for
+   refunds.
+2. Open **Offers → 👥 Group Buying**.
+3. **New group**: give the product id, the group price, the members needed, the most members (optional)
+   and the end, then **Open group**.
+4. The list shows each campaign with its price, members against those needed, its end and its state.
+   **Cancel & refund** cancels an open campaign and refunds every member.
+5. **Settle ended groups now** closes every campaign whose deadline has passed (or that is full),
+   without waiting for the sweep.
+
+More: [Group buying](../domains/groupbuy.md)
+
+## Coupons
+
+The codes a shopper types at the cart: a code that carries a value, issued by staff or in bulk, validated against its kind and its limits, redeemed into the redemption ledger, and voided when the order is refunded. The kinds — a single-use code, a bulk lot, a referral code — are rows.
+
+1. Codes need the **Promo codes** capability (⚙️ Capabilities). Platform policy may refuse codes for
+   every store; the store then says so instead of accepting them.
+2. Open **Offers → 🎟️ Coupons**.
+3. **Issue a coupon**: choose the kind, leave the code blank for one to be made up (or type your own),
+   give the value, the funder and its reference, the most uses in all and the most per shopper, then
+   **+ Coupon**. **Generate 10 codes** makes a batch with the same settings.
+4. The list shows every code with its kind, funder, value, uses and state. Codes marked **GLOBAL**
+   belong to the platform and apply in every store. **Void** revokes one of your own codes at once.
+5. **Redemption performance** shows how many redemptions there were, the discount given and the
+   credits rewarded, the top codes and the split by funder. **Recent redemptions** lists the latest,
+   each with its amount, funder, channel and shopper.
+6. The kinds are rows you can edit in **Data Studio** (`couponKinds`).
+
+More: [Coupons](../domains/coupon.md)
+
+## Vouchers
+
+An instrument of value that is not the shop's own discount and not a gift card: a bank voucher, a benefits note, an organisation's credit. Who stands behind it, whether it may be spent in part and how long it lives are its kind's rows; the code it travels on belongs to the Coupon domain.
+
+1. Vouchers are issued by offers of type `voucher_issue`: create the offer in **Offers → 🎟️ Offers**
+   with its value, its minimum and the voucher kind.
+2. Each voucher's code appears in **Offers → 🎟️ Coupons** with its funder, so its redemptions and
+   what each funder bore show in the redemption performance there.
+3. The voucher kinds are rows you can edit in **Data Studio** (`voucherKinds`). A screen of its own for
+   issued vouchers is not built yet.
+
+More: [Vouchers](../domains/voucher.md)
+
+## Gift cards
+
+A card bought as an item or issued by staff: a code with a value, sent to its recipient with a message, redeemable into the recipient's gift balance, checked for its balance, voided with a reason and expired after its validity. A card is a node on the kernel; its code is sealed and found by a blind index.
+
+1. Gift cards need the **Gift cards** capability (⚙️ Capabilities). Its settings are the smallest and
+   largest card, the denominations offered, how long a card is valid and the gift-balance wallet.
+2. Open **Offers → 🎁 Gift Cards**. The heading states your limits and validity.
+3. **Issue a card**: give its value, occasion, recipient and their email, the holder (an owner key such
+   as `t1:u:42`, optional) and a message, then **Issue**. The code is shown once — give it to its
+   recipient.
+4. The list shows every card by its last four digits, with its value, how it came to be, recipient,
+   occasion, validity and state. **Void** cancels a card that can still be redeemed; you are asked why.
+5. To sell cards, publish a product whose facts mark it as a gift card; shoppers then find it on the
+   **Gift Cards** page.
+
+More: [Gift cards](../domains/giftcard.md)
 
 ## Affiliates and creators
 

@@ -76,8 +76,10 @@ const ADDR = { name: "Prod Test", address: "1 Test St", city: "Seattle", state: 
          naming the next version "k" + count + 1 gave k2 again and replaced the live key.
          Run against an isolated copy — security.js keeps its keyring next to itself. */
       const iso = fs.mkdtempSync(path.join(os.tmpdir(), "lx-keyring-"));
-      fs.mkdirSync(path.join(iso, "lib")); fs.mkdirSync(path.join(iso, "data"));
+      fs.mkdirSync(path.join(iso, "lib", "seed"), { recursive: true }); fs.mkdirSync(path.join(iso, "data"));
       fs.copyFileSync(path.join(ROOT, "lib", "security.js"), path.join(iso, "lib", "security.js"));
+      /* the one file security.js reads at load: its provisioning defaults */
+      fs.copyFileSync(path.join(ROOT, "lib", "seed", "defaults.json"), path.join(iso, "lib", "seed", "defaults.json"));
       fs.writeFileSync(path.join(iso, "data", "master.json"), JSON.stringify({ current: "k2", keys: { k2: require("crypto").randomBytes(32).toString("hex") } }));
       const script = `const s = require(${JSON.stringify(path.join(iso, "lib", "security.js"))});
         const sealed = s.encryptSecret("sk_test_value", "1|stripe|secretKey");
@@ -136,6 +138,24 @@ const ADDR = { name: "Prod Test", address: "1 Test St", city: "Seattle", state: 
       ok(setEur.status === 200 && fx.status === 200 && fx.body.order.currency === "EUR" && pay && pay.currency === "EUR" && Math.abs(pay.amount - fx.body.order.total) < 1e-9,
         "with a display currency other than the base, the payment is recorded for exactly the total the shopper was shown", { shown: fx.body.order && fx.body.order.total, recorded: pay });
       await A("/api/admin/settings", "PUT", { commerce: { currency: "USD" } });
+
+      /* a priced module installed by the platform used to book its invoice as paid with a
+         simulated "captured" payment — no provider, no guard. In production it is issued open
+         and can only be settled by a real capture */
+      const mods = (await P("/api/platform/modules")).body;
+      const installed = new Set((mods.installs || []).filter(i => i.tenant_id === 1 && i.status === "installed").map(i => i.module_id));
+      /* whether a module may be installed is the module machine's call (its `listed` tag) — the
+         route answers 404 for one that is not; any priced module this store lacks will do */
+      const priced = (mods.modules || []).find(m => m.price > 0 && !installed.has(m.id));
+      const inst = priced ? await P("/api/platform/modules/" + priced.id + "/install", "POST", { tenant_id: 1 }) : { status: 0, body: {} };
+      const rdm = new DatabaseSync(DB, { readOnly: true });
+      const inv = inst.body.invoice ? rdm.prepare("SELECT id, status, paid_at FROM invoices WHERE number=?").get(inst.body.invoice) : null;
+      const modPays = inv ? rdm.prepare("SELECT status, txn_ref FROM payments WHERE invoice_id=?").all(inv.id) : [];
+      rdm.close();
+      ok(priced && inst.status === 200 && inv && inv.status !== "paid" && !inv.paid_at && modPays.length === 0,
+        "a priced module installed in production leaves its invoice open, with no payment recorded", { module: priced && priced.id, priced: (mods.modules || []).filter(m => m.price > 0).length, inst: inst.status, body: inst.body, inv, modPays });
+      const payInv = inv ? await P("/api/platform/invoices/" + inv.id + "/pay", "POST", { gateway: "stripe" }) : { status: 0, body: {} };
+      ok(payInv.status === 402, "…and paying it with no live gateway is declined, not simulated", payInv);
     }
 
     console.log("▸ BACKUP WHILE SERVING, RESTORE ONLY WHAT VERIFIES");

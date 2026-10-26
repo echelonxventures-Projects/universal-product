@@ -30,17 +30,17 @@
 | CST-CONFIG-OVER-CODE | Configuration over code | architecture | global | yes | `README.md` |
 | CST-DEPENDENCY-MINIMAL | Prefer the standard library | architecture | global | no | `package.json` |
 | CST-EVIDENCE-BEFORE-CLAIMS | No claim without observed evidence | process | global | yes | `PROJECT-CONTEXT/knowledge/constraints.json` |
-| CST-EXPLAINABILITY | Law 005 — Explainability | constitutional | global | yes | `UCOS-REPOSITORY-INDEX.md` |
+| CST-EXPLAINABILITY | Law 005 — Explainability | constitutional | global | yes | `_registry/domains.json` |
 | CST-FROZEN-PRIMITIVES | 27 frozen primitives | constitutional | global | yes | `_registry/primitives.json` |
-| CST-KNOWLEDGE-ONCE | Law 002 — Knowledge Once | constitutional | global | yes | `UCOS-REPOSITORY-INDEX.md` |
+| CST-KNOWLEDGE-ONCE | Law 002 — Knowledge Once | constitutional | global | yes | `_registry/domains.json` |
 | CST-NO-DESTRUCTIVE-CLEANUP | No loss of unique knowledge | process | global | yes | `PROJECT-CONTEXT/schemas/lifecycle.json` |
 | CST-NO-PRIVATE-ARCHIVES-IN-GIT | Private conversation archives stay out of git | privacy | global | yes | `PROJECT-CONTEXT/schemas/config.json` |
 | CST-NO-SECRETS | No credentials in the repository or in derived context | security | global | yes | `.gitignore` |
 | CST-NODE-ENGINE | Node ≥ 22.13 | compatibility | global | yes | `package.json` |
 | CST-PRESERVE-WORKING-TREE | Preserve the owner's working tree | process | global | yes | `PROJECT-CONTEXT/knowledge/constraints.json` |
-| CST-PROJECTION-LAW | Law 003 — Projection Law | constitutional | global | yes | `UCOS-REPOSITORY-INDEX.md` |
+| CST-PROJECTION-LAW | Law 003 — Projection Law | constitutional | global | yes | `_registry/domains.json` |
 | CST-SEAL-DERIVED | The compiled registry seal is derived, never committed | security | global | yes | `.gitignore` |
-| CST-SUPERSEDED-NOT-AUTHORITY | Superseded originals are provenance, not truth | constitutional | global | yes | `UCOS-REPOSITORY-INDEX.md` |
-| CST-ZERO-HARDCODING | Law 001 — Zero Hard Coding | constitutional | global | yes | `UCOS-REPOSITORY-INDEX.md` |
+| CST-SUPERSEDED-NOT-AUTHORITY | Superseded originals are provenance, not truth | constitutional | global | yes | `_registry/domains.json` |
+| CST-ZERO-HARDCODING | Law 001 — Zero Hard Coding | constitutional | global | yes | `_registry/domains.json` |
 
 Type legend: constitutional (from the repository's constitution) · explicit-user (stated by the owner) · inferred · recommendation · assumption.

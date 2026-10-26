@@ -14,6 +14,8 @@ What tax applies and how much: tax modes, rules by place and product, and how ta
 |---|---|
 | `lib/tax.js` | first-class Tax engine (all configuration, single source of truth for checkout + invoicing + reports). Rates are DATA: a jurisdiction rate registry (taxRules) with classes, plus per-product tax_rule overrides and compliance-based exemptions. Supports inclusive vs exclusive pricing, VAT/GST number validation, nexus, and digital-goods rules — so a store in any market/configures tax by data, not code. |
 
+**Registry lists** (editable in Data Studio): `taxClasses`, `taxRules`, `exemptionReasons`, `taxNumberFormats`
+
 ## Data model
 
 ### `tax_modes`

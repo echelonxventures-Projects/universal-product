@@ -36,11 +36,62 @@ More: [Product options](../domains/product_options.md)
 
 ## Offers
 
-Every reason a buyer pays less or gets more: offers and discounts of every type, coupons, cashback, rewards, gift cards and vouchers, deals and countdowns, group buying, price matching and trade-ins, the funding and settlement of each, and their governance.
+The offers themselves: every price a buyer pays less or gets more, and every rule about how they apply — the offer record, its types, its scopes, its channels, its funders, its stacking policy and its governance. A coupon, a voucher, a gift card, a cashback, a reward and a group buy are their own domains; this one decides which of them applies.
 
 _Not yet written._
 
 More: [Offers](../domains/offer.md)
+
+## Group buying
+
+A lower price when enough shoppers join before a deadline: staff open a campaign on a product with a group price, how many members it needs and how many it may take; a shopper joins by buying at the group price. A campaign that reaches its members succeeds and its orders go ahead; one that falls short fails and every member's order is cancelled and refunded.
+
+1. On a product with a group offer, the panel shows the group price, how many have joined, how many
+   more are needed and until when.
+2. **Join the group** adds the product at the group price; check out as usual.
+3. If the group fills in time, your order goes ahead at the group price. If it does not, your order is
+   cancelled and what you paid is returned to your wallet. You are told either way.
+4. Your groups are listed under **Your activity → 👥 Group buys**.
+
+More: [Group buying](../domains/groupbuy.md)
+
+## Coupons
+
+The codes a shopper types at the cart: a code that carries a value, issued by staff or in bulk, validated against its kind and its limits, redeemed into the redemption ledger, and voided when the order is refunded. The kinds — a single-use code, a bulk lot, a referral code — are rows.
+
+1. In your bag, type the code into the code box under your items and apply it. If it cannot be used, you are told
+   why (for example "Coupon already used on this account" or "New customers only").
+2. The discount shows in your bag and at checkout. Only one code is applied at a time; applying
+   another replaces it.
+3. Clear the code to remove it.
+4. If your order is refunded, the code's use is given back where the code allows more than one use.
+
+More: [Coupons](../domains/coupon.md)
+
+## Vouchers
+
+An instrument of value that is not the shop's own discount and not a gift card: a bank voucher, a benefits note, an organisation's credit. Who stands behind it, whether it may be spent in part and how long it lives are its kind's rows; the code it travels on belongs to the Coupon domain.
+
+1. A voucher reaches you as a code — from your bank, your employer or a benefits programme, or from an
+   offer you qualified for.
+2. Type the code into the code box in your bag, as for any code. You are told if it cannot be used
+   here or has run out.
+
+More: [Vouchers](../domains/voucher.md)
+
+## Gift cards
+
+A card bought as an item or issued by staff: a code with a value, sent to its recipient with a message, redeemable into the recipient's gift balance, checked for its balance, voided with a reason and expired after its validity. A card is a node on the kernel; its code is sealed and found by a blind index.
+
+1. Open **Gift Cards** from the store's menu.
+2. **Give one**: choose the card, an amount (or type any amount within the limits shown), an occasion,
+   the recipient's name and email and your message, then **Add to bag** and check out as usual. The
+   card's code appears under **Your cards** once the order is placed.
+3. **Redeem a card** (signed in): type the code and **Redeem**. The value is added to your gift
+   balance, which is used first when you next check out.
+4. **Check a card**: type a code to see what it is worth, whether it can still be used and until when.
+
+More: [Gift cards](../domains/giftcard.md)
 
 ## Cart and checkout
 

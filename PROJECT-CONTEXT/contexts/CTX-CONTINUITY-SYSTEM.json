@@ -1,7 +1,7 @@
 {
   "budgetBytes": 24000,
-  "contentFingerprint": "5a200af8613d27127583786a5d4002af7a42c58dc7cbc3e3f433b14b9c785176",
-  "depFingerprint": "9a9763bcd7180af983a94c3146fab8233c5adfc412f2b89ecddba65a88facd4f",
+  "contentFingerprint": "3c45336879df35c866a0ca5751e34316bd3cdb0c7ef3ee3c128eacb259ba880d",
+  "depFingerprint": "430cd4ea72a707a4f64da3f9d6535c15833d7afc4659d197f5ea9955c7e21318",
   "excluded": [],
   "freshness": "fresh-at-build",
   "generatedAt": "2026-10-22",
@@ -102,7 +102,7 @@
     ],
     [
       "CST-EXPLAINABILITY",
-      "b64aa8200dca9443b769f3c923ce3a2fbe0d2e34debe40d7abacae7df655bed9"
+      "672f9206cde3fb878da4c1f7cc1fa6987d443276791a83e9c6b1aacf412fc619"
     ],
     [
       "CST-FROZEN-PRIMITIVES",
@@ -110,7 +110,7 @@
     ],
     [
       "CST-KNOWLEDGE-ONCE",
-      "8e28da9351e3eb8a70825922df78adccc9c7fd4169b1e39a0b44297c5d5ba05d"
+      "eb8e2db602768642e5245a41a87b5e569c64226df0022669d23a1a9c37520281"
     ],
     [
       "CST-NO-DESTRUCTIVE-CLEANUP",
@@ -134,7 +134,7 @@
     ],
     [
       "CST-PROJECTION-LAW",
-      "b54e583d5f7cd522c3ee0f739fa479a0e4a830e9a715a50e7e760c7d184ad405"
+      "7136d1d554d21422a84d9a1345a4ec606268e8b79622a844584a78d50b045bcc"
     ],
     [
       "CST-SEAL-DERIVED",
@@ -142,11 +142,11 @@
     ],
     [
       "CST-SUPERSEDED-NOT-AUTHORITY",
-      "c8dab4d9391d2e4683f0169fb7b040e527e1c5788fbed7e798f2d49b63ec93a1"
+      "eb1736646d40100edf494707c25a4f5fd3f860101905bc4571c2fd1c09d3fe0f"
     ],
     [
       "CST-ZERO-HARDCODING",
-      "1fa46b53f278850801081aba2f2922796813444f0b3279b033598f0a3e884ed0"
+      "6dc1daf2094b5cca9d8233d457e557e175632f4fdc655f5604d2b1f982170748"
     ],
     [
       "REQ-CTX-ARCHIVE",
@@ -319,12 +319,12 @@
       "estimatedTokens": 6886,
       "file": "contexts/CTX-CONTINUITY-SYSTEM.md",
       "id": "CTX-CONTINUITY-SYSTEM",
-      "sha256": "d5a9b19764319e3df481dc3f01088c080aa512dddb1a8e76398b9254d94d1f38"
+      "sha256": "c46feee2057c1c9fe504eac087f463ff4358af21538426fc1e7201f0da4abbf4"
     }
   ],
   "prerequisites": [
     {
-      "fingerprint": "b0f9addc39075ca47bfc163e34e11e2df01a2b14aaca54927b35a8a4440d1fcb",
+      "fingerprint": "0ad12f29ef72270e8c1c6c19984b42562a875fae7ad478a9c67376005a48af76",
       "id": "CTX-CONTINUITY-DESIGN"
     }
   ],

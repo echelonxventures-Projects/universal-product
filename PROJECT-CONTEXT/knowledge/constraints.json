@@ -114,7 +114,7 @@
       "title": "Law 005 — Explainability",
       "statement": "Every artifact must answer what happened, who authorized it, which policy allowed it, what evidence supports it, and with what confidence.",
       "class": "constitutional",
-      "owner": "UCOS-REPOSITORY-INDEX.md",
+      "owner": "_registry/domains.json",
       "scope": "global",
       "critical": true,
       "sources": [
@@ -155,7 +155,7 @@
       "title": "Law 002 — Knowledge Once",
       "statement": "Every artifact id, primitive and canonical term is defined exactly once; every concept has one canonical owner, and everything else references or derives from it.",
       "class": "constitutional",
-      "owner": "UCOS-REPOSITORY-INDEX.md",
+      "owner": "_registry/domains.json",
       "scope": "global",
       "critical": true,
       "sources": [
@@ -296,7 +296,7 @@
       "title": "Law 003 — Projection Law",
       "statement": "Documents are generated from the registry, never authored; editing a projected document directly is a constitutional violation — change the registry and re-project.",
       "class": "constitutional",
-      "owner": "UCOS-REPOSITORY-INDEX.md",
+      "owner": "_registry/domains.json",
       "scope": "global",
       "critical": true,
       "sources": [
@@ -346,7 +346,7 @@
       "title": "Superseded originals are provenance, not truth",
       "statement": "Files in _superseded/ (and any record in lifecycle superseded or historical-evidence) are preserved provenance and must never be used as current authority.",
       "class": "constitutional",
-      "owner": "UCOS-REPOSITORY-INDEX.md",
+      "owner": "_registry/domains.json",
       "scope": "global",
       "critical": true,
       "sources": [
@@ -369,7 +369,7 @@
       "title": "Law 001 — Zero Hard Coding",
       "statement": "No product, service, offer, contract, currency, country, language, industry or marketplace concept may appear as a schema type; they are runtime projections of configuration.",
       "class": "constitutional",
-      "owner": "UCOS-REPOSITORY-INDEX.md",
+      "owner": "_registry/domains.json",
       "scope": "global",
       "critical": true,
       "sources": [
