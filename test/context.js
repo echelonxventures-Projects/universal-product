@@ -696,7 +696,10 @@ section("§J git-history integrity: honest legacy record, canonical fail-closed 
   editKind(root, "source", recs => { recs.find(x => x.id === "SRC-GIT-HISTORY-441D772-V1").storage.format = "ctx-git-history/9"; });
   ok(codes(ctx.verify(root)).includes("schema"), "an unsupported git-history format is rejected by the schema");
   ({ K } = ctx.open(ROOT));
-  ok(A.verifyOne(K, K.nodes.get("SRC-README")).status === "verified", "git-blob verification is unchanged");
+  /* the archived blob must still verify; a README edited after capture is live-diverged, which
+     verifyOne reports only after the archived bytes re-hash (archive.js) — as coverage.js counts it */
+  const rv = A.verifyOne(K, K.nodes.get("SRC-README"));
+  ok((rv.status === "verified" || rv.status === "live-diverged") && rv.level !== "error", "git-blob verification is unchanged", JSON.stringify(rv));
 }
 
 /* ===================================================================== §K */
