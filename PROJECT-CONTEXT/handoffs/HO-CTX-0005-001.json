@@ -1,0 +1,161 @@
+{
+  "agent": "claude-code-session-2026-10-22",
+  "blockers": [],
+  "commands": [
+    {
+      "command": "node test/context.js (full clone, before the fix)",
+      "exitCode": 1,
+      "observed": "167/177 — the reported baseline, reproduced",
+      "preExisting": true,
+      "result": "failed"
+    },
+    {
+      "command": "npm run context:verify (after the fix)",
+      "exitCode": 0,
+      "observed": "0 errors",
+      "result": "passed"
+    },
+    {
+      "command": "npm run context:restore-check (after the fix)",
+      "exitCode": 0,
+      "observed": "23 restored, 3 skipped (not preserved), 0 failed",
+      "result": "passed"
+    }
+  ],
+  "completed": [
+    {
+      "claim": "Root cause established: SRC-GIT-HISTORY was captured with a clone-dependent legacy serializer in a shallow clone (boundary 3577ace) — 61 commits; the full ancestry of 441d772 is 79",
+      "evidence": "legacy serializer output in the shallow clone = 61 lines / 7974 B / sha256 87deb12d…; after git fetch --unshallow: rev-list --count 441d772 = 79, first-parent 68, legacy sha256 cabc4535…"
+    },
+    {
+      "claim": "Original bytes recovered and preserved without changing the historical record's identity",
+      "evidence": "PROJECT-CONTEXT/archives/git-history/SRC-GIT-HISTORY.recovered-legacy-v0.txt sha256 87deb12d… (= recorded); SRC-GIT-HISTORY storage identity unchanged, preservation corrected to not-retained"
+    },
+    {
+      "claim": "Canonical ctx-git-history/1 serializer used by capture, verify and restore; fails closed on shallow, missing pinned commit, missing objects and malformed metadata",
+      "evidence": "lib/context/archive.js serializeGitHistory; test/context.js §J"
+    },
+    {
+      "claim": "Canonical capture SRC-GIT-HISTORY-441D772-V1: 79 commits, 13831 B",
+      "evidence": "npm run context:capture-history -- 441d772; commit count equals git rev-list --count; restored byte-for-byte in §J"
+    },
+    {
+      "claim": "Append-only source identity enforced by verify; checksum-first mismatch precedence",
+      "evidence": "§J anti-blessing tests; mutation (identity audit disabled) → 203/209"
+    }
+  ],
+  "contextPacks": [
+    {
+      "fingerprint": "8da28c1a09307361b71462b979aec4253bf78761043033b5c03af0a481b4ba4e",
+      "id": "CTX-EVIDENCE-ARCHIVE"
+    }
+  ],
+  "createdAt": "2026-10-22T10:14:12.780Z",
+  "filesChanged": [
+    "lib/context/archive.js",
+    "lib/context/index.js",
+    "lib/context/views.js",
+    "scripts/context.js",
+    "package.json",
+    "test/context.js",
+    "PROJECT-CONTEXT/schemas/{knowledge.schema,relations}.json",
+    "PROJECT-CONTEXT/knowledge/*.json",
+    "PROJECT-CONTEXT/archives/git-history/SRC-GIT-HISTORY.recovered-legacy-v0.txt",
+    "PROJECT-CONTEXT (regenerated)"
+  ],
+  "filesInspected": [],
+  "id": "HO-CTX-0005-001",
+  "mustNotChange": [
+    "No change to SRC-GIT-HISTORY's recorded identity (commit, sha256, bytes, commits)",
+    "No reconstruction of unavailable conversation sources",
+    "No push without owner authorisation",
+    "The seal defect (ISS-CANONICAL-INPUT-MISNAMED) stays separate"
+  ],
+  "nextAction": "Run the acceptance ledger (test/context.js, context:verify, _registry/audit.js, project.js --check, npm run registry, context:restore-check, npm test) on the final tree; commit/push only with owner authorisation.",
+  "notCompleted": [
+    "Final seven-command acceptance ledger on the final tree (run after this handoff; result reported outside this record)"
+  ],
+  "objective": "Make the git-history archive verifiable in any full clone without rewriting historical evidence: represent the legacy capture honestly, recover its bytes if possible, introduce a canonical fail-closed serializer used by capture/verify/restore, and cover the failure modes with regression tests.",
+  "prerequisites": [
+    "TASK-CTX-0001",
+    "TASK-CTX-0004"
+  ],
+  "previous": null,
+  "regressions": [],
+  "repository": {
+    "branch": "claude/modest-babbage-kyejdn",
+    "dirty": true,
+    "head": "388855c374b2624099423f3ee89f841d90f053db",
+    "status": [
+      "M PROJECT-CONTEXT/00-MASTER-INDEX.md",
+      " M PROJECT-CONTEXT/02-CURRENT-STATE.md",
+      " M PROJECT-CONTEXT/03-DECISION-REGISTER.md",
+      " M PROJECT-CONTEXT/06-DEPENDENCY-AND-TRACEABILITY.md",
+      " M PROJECT-CONTEXT/07-OPEN-ISSUES-AND-NEXT-ACTIONS.md",
+      " M PROJECT-CONTEXT/09-ARCHIVE-MANIFEST.md",
+      " M PROJECT-CONTEXT/10-CONTEXT-QUALITY-REPORT.md",
+      " M PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.json",
+      " M PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.json",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.md",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.json",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.md",
+      " M PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.json",
+      " M PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md",
+      " M PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.json",
+      " M PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md",
+      " M PROJECT-CONTEXT/contexts/CTX-PLATFORM-QUALITY.json",
+      " M PROJECT-CONTEXT/contexts/CTX-PLATFORM-QUALITY.md",
+      " M PROJECT-CONTEXT/contexts/index.json",
+      " M PROJECT-CONTEXT/knowledge/constraints.json",
+      " M PROJECT-CONTEXT/knowledge/contexts.json",
+      " M PROJECT-CONTEXT/knowledge/coverage.json",
+      " M PROJECT-CONTEXT/knowledge/decisions.json",
+      " M PROJECT-CONTEXT/knowledge/issues.json",
+      " M PROJECT-CONTEXT/knowledge/sources.json",
+      " M PROJECT-CONTEXT/knowledge/state.json",
+      " M PROJECT-CONTEXT/knowledge/tasks.json",
+      " M PROJECT-CONTEXT/schemas/knowledge.schema.json",
+      " M PROJECT-CONTEXT/schemas/relations.json",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0001.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0002.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0003.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0004.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-REG-0001.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-SEC-0001.md",
+      " M lib/context/archive.js",
+      " M lib/context/index.js",
+      " M lib/context/views.js",
+      " M package.json",
+      " M scripts/context.js",
+      " M test/context.js",
+      "?? PROJECT-CONTEXT/archives/",
+      "?? PROJECT-CONTEXT/task-packs/TASK-CTX-0005.md"
+    ],
+    "upstream": "origin/claude/modest-babbage-kyejdn"
+  },
+  "schema": "ctx-handoff/1",
+  "state": "in-progress",
+  "task": "TASK-CTX-0005",
+  "tests": [
+    {
+      "command": "node test/context.js",
+      "exitCode": 0,
+      "observed": "209/209",
+      "result": "passed"
+    }
+  ],
+  "unverified": [
+    "Full npm test on the final tree — runs after this handoff",
+    "No CI job has run (GitHub runners unavailable — ISS-CI-RUNNERS-UNAVAILABLE)"
+  ],
+  "verification": [
+    "node test/context.js",
+    "npm run context:verify",
+    "npm run context:restore-check",
+    "node _registry/audit.js",
+    "node _registry/project.js --check",
+    "npm run registry",
+    "npm test"
+  ]
+}

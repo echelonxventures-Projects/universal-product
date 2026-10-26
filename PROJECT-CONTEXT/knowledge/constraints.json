@@ -1,0 +1,393 @@
+{
+  "$comment": "Constraints and invariants every agent must obey. Owner of each rule is its 'owner' (a canonical repository file); this file is the continuity index of those rules, not a second constitution.",
+  "registryId": "CTX-REG-CONSTRAINTS",
+  "kind": "constraint",
+  "version": 1,
+  "records": [
+    {
+      "id": "CST-AUTHORIZED-SIDE-EFFECTS",
+      "title": "External side effects need authorization",
+      "statement": "No commit, push, merge, release, deployment, billing change or other external write without the owner's authorization for that action.",
+      "class": "process",
+      "owner": "PROJECT-CONTEXT/knowledge/constraints.json",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§2"
+        }
+      ],
+      "tags": [
+        "process"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-CONFIG-OVER-CODE",
+      "title": "Configuration over code",
+      "statement": "Features, providers, vocabularies and runtime backends are entity/config data, never code branches; features ship OFF by default and are enabled by writing configuration.",
+      "class": "architecture",
+      "owner": "README.md",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-README",
+          "segment": "S0008"
+        },
+        {
+          "ref": "SRC-MEMORY-LEDGER",
+          "segment": "S0005"
+        },
+        {
+          "ref": "SRC-MEMORY-LEDGER",
+          "segment": "S0018"
+        }
+      ],
+      "tags": [
+        "architecture"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-DEPENDENCY-MINIMAL",
+      "title": "Prefer the standard library",
+      "statement": "Prefer Node's standard library and existing code; a new dependency needs a justified trade-off.",
+      "class": "architecture",
+      "owner": "package.json",
+      "scope": "global",
+      "critical": false,
+      "sources": [
+        {
+          "ref": "SRC-MEMORY-LEDGER",
+          "segment": "S0002"
+        },
+        {
+          "ref": "SRC-README",
+          "segment": "S0003"
+        },
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§17"
+        },
+        {
+          "ref": "SRC-README",
+          "segment": "S0001"
+        }
+      ],
+      "tags": [
+        "architecture",
+        "runtime"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-EVIDENCE-BEFORE-CLAIMS",
+      "title": "No claim without observed evidence",
+      "statement": "Never report a test as passed, a feature as implemented or a state as verified unless the command ran or the inspection happened and its result was observed and recorded; a plan, prompt or generated file is not an implementation.",
+      "class": "process",
+      "owner": "PROJECT-CONTEXT/knowledge/constraints.json",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§8; §20"
+        },
+        {
+          "ref": "SRC-MEMORY-LEDGER",
+          "segment": "S0036"
+        }
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "tags": [
+        "process",
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-EXPLAINABILITY",
+      "title": "Law 005 — Explainability",
+      "statement": "Every artifact must answer what happened, who authorized it, which policy allowed it, what evidence supports it, and with what confidence.",
+      "class": "constitutional",
+      "owner": "UCOS-REPOSITORY-INDEX.md",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-REPOSITORY-INDEX",
+          "segment": "S0005"
+        }
+      ],
+      "verifiedBy": [
+        "ART-REGISTRY-AUDIT"
+      ],
+      "tags": [
+        "governance"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-FROZEN-PRIMITIVES",
+      "title": "27 frozen primitives",
+      "statement": "The 27 primitives in _registry/primitives.json are frozen; none may be added without constitutional amendment and proof of mathematical unavoidability.",
+      "class": "constitutional",
+      "owner": "_registry/primitives.json",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-REPOSITORY-INDEX",
+          "segment": "S0006"
+        }
+      ],
+      "tags": [
+        "governance"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-KNOWLEDGE-ONCE",
+      "title": "Law 002 — Knowledge Once",
+      "statement": "Every artifact id, primitive and canonical term is defined exactly once; every concept has one canonical owner, and everything else references or derives from it.",
+      "class": "constitutional",
+      "owner": "UCOS-REPOSITORY-INDEX.md",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-REPOSITORY-INDEX",
+          "segment": "S0005"
+        },
+        {
+          "ref": "SRC-REPOSITORY-INDEX",
+          "segment": "S0002"
+        }
+      ],
+      "verifiedBy": [
+        "ART-REGISTRY-AUDIT",
+        "ART-REGISTRY-GATE"
+      ],
+      "tags": [
+        "governance"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-NO-DESTRUCTIVE-CLEANUP",
+      "title": "No loss of unique knowledge",
+      "statement": "Unique requirements, decisions, constraints, rationale, evidence and unresolved issues are never deleted or summarised away; retirement is a lifecycle transition with approval, and consolidation must map every unique item to its destination.",
+      "class": "process",
+      "owner": "PROJECT-CONTEXT/schemas/lifecycle.json",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§2; §10"
+        }
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "tags": [
+        "hygiene",
+        "continuity"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+      "title": "Private conversation archives stay out of git",
+      "statement": "Private conversation exports and attachments are archived only in access-controlled storage (CONTEXT_ARCHIVE_DIR); the repository holds their manifest metadata, never their bytes; CI uses synthetic fixtures.",
+      "class": "privacy",
+      "owner": "PROJECT-CONTEXT/schemas/config.json",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§4 Layer A req. 11; §13; §15"
+        }
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "tags": [
+        "security",
+        "archive"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-NO-SECRETS",
+      "title": "No credentials in the repository or in derived context",
+      "statement": "Secrets (.env, keys, the keyring, the registry key) are never committed, and never copied into context packs, logs, reports or handoffs.",
+      "class": "security",
+      "owner": ".gitignore",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-README",
+          "segment": "S0003"
+        },
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§15"
+        },
+        {
+          "ref": "SRC-README",
+          "segment": "S0007"
+        }
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "tags": [
+        "security"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-NODE-ENGINE",
+      "title": "Node ≥ 22.13",
+      "statement": "The runtime requires Node 22.13 or newer (built-in node:sqlite); CI runs 22.13, 22 and 24.",
+      "class": "compatibility",
+      "owner": "package.json",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-README",
+          "segment": "S0003"
+        }
+      ],
+      "tags": [
+        "runtime"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-PRESERVE-WORKING-TREE",
+      "title": "Preserve the owner's working tree",
+      "statement": "Never reset, clean or overwrite uncommitted user changes to make work easier; record them in the baseline and work around them.",
+      "class": "process",
+      "owner": "PROJECT-CONTEXT/knowledge/constraints.json",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+          "locator": "§3"
+        }
+      ],
+      "tags": [
+        "process"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-PROJECTION-LAW",
+      "title": "Law 003 — Projection Law",
+      "statement": "Documents are generated from the registry, never authored; editing a projected document directly is a constitutional violation — change the registry and re-project.",
+      "class": "constitutional",
+      "owner": "UCOS-REPOSITORY-INDEX.md",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-REPOSITORY-INDEX",
+          "segment": "S0002"
+        },
+        {
+          "ref": "SRC-REPOSITORY-INDEX",
+          "segment": "S0005"
+        }
+      ],
+      "verifiedBy": [
+        "ART-REGISTRY-AUDIT"
+      ],
+      "tags": [
+        "governance"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-SEAL-DERIVED",
+      "title": "The compiled registry seal is derived, never committed",
+      "statement": "_registry/canonical.json and canonical.lxr are compiled deterministically from the corpora and registry JSON and are not committed; data/registry.json and data/master.json are per-deployment secrets.",
+      "class": "security",
+      "owner": ".gitignore",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-README",
+          "segment": "S0003"
+        },
+        {
+          "ref": "SRC-GIT-HISTORY-LEGACY-RECOVERED",
+          "segment": "S0036"
+        }
+      ],
+      "tags": [
+        "governance",
+        "security"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-SUPERSEDED-NOT-AUTHORITY",
+      "title": "Superseded originals are provenance, not truth",
+      "statement": "Files in _superseded/ (and any record in lifecycle superseded or historical-evidence) are preserved provenance and must never be used as current authority.",
+      "class": "constitutional",
+      "owner": "UCOS-REPOSITORY-INDEX.md",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-REPOSITORY-INDEX",
+          "segment": "S0007"
+        }
+      ],
+      "verifiedBy": [
+        "ART-TEST-CONTEXT"
+      ],
+      "tags": [
+        "governance",
+        "hygiene"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "CST-ZERO-HARDCODING",
+      "title": "Law 001 — Zero Hard Coding",
+      "statement": "No product, service, offer, contract, currency, country, language, industry or marketplace concept may appear as a schema type; they are runtime projections of configuration.",
+      "class": "constitutional",
+      "owner": "UCOS-REPOSITORY-INDEX.md",
+      "scope": "global",
+      "critical": true,
+      "sources": [
+        {
+          "ref": "SRC-REPOSITORY-INDEX",
+          "segment": "S0005"
+        },
+        {
+          "ref": "SRC-UCRS-ZERO-HARDCODING"
+        }
+      ],
+      "verifiedBy": [
+        "ART-REGISTRY-AUDIT"
+      ],
+      "tags": [
+        "governance"
+      ],
+      "lifecycle": "canonical-active"
+    }
+  ]
+}

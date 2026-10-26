@@ -1,0 +1,292 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ctx/knowledge.schema.json",
+  "$comment": "One schema for every authored knowledge file in PROJECT-CONTEXT/knowledge/. Each file holds records of exactly one kind; the kind's definition below is the contract. Lifecycle values are checked against lifecycle.json in code (the registry is extensible, so the enum is not duplicated here).",
+  "type": "object",
+  "required": ["registryId", "kind", "version", "records"],
+  "additionalProperties": false,
+  "properties": {
+    "$comment": { "type": "string" },
+    "registryId": { "type": "string", "pattern": "^CTX-REG-[A-Z-]+$" },
+    "kind": { "enum": ["source", "requirement", "decision", "constraint", "artifact", "issue", "task", "context"] },
+    "version": { "type": "integer" },
+    "records": { "type": "array" }
+  },
+  "definitions": {
+    "id": { "type": "string", "pattern": "^[A-Z][A-Z0-9]*(-[A-Z0-9]+)+$" },
+    "ids": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+    "lifecycle": { "type": "string", "minLength": 1 },
+    "text": { "type": "string", "minLength": 1 },
+    "texts": { "type": "array", "items": { "$ref": "#/definitions/text" } },
+    "sourceRef": {
+      "type": "object",
+      "required": ["ref"],
+      "additionalProperties": false,
+      "properties": {
+        "ref": { "$ref": "#/definitions/id" },
+        "segment": { "type": "string", "pattern": "^S[0-9]{4,}$" },
+        "locator": { "type": "string" },
+        "quote": { "type": "string" }
+      }
+    },
+    "sourceRefs": { "type": "array", "items": { "$ref": "#/definitions/sourceRef" } },
+    "historyEntry": {
+      "type": "object",
+      "required": ["at", "change"],
+      "additionalProperties": false,
+      "properties": {
+        "at": { "type": "string" },
+        "change": { "type": "string" },
+        "from": { "type": "string" },
+        "to": { "type": "string" },
+        "by": { "type": "string" },
+        "approvedBy": { "type": "string" },
+        "evidence": { "type": "string" }
+      }
+    },
+    "history": { "type": "array", "items": { "$ref": "#/definitions/historyEntry" } },
+
+    "source": {
+      "type": "object",
+      "required": ["id", "title", "category", "origin", "storage", "sensitivity", "preservation", "lifecycle", "segmentation"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "title": { "$ref": "#/definitions/text" },
+        "category": { "enum": ["specification-corpus", "constitution", "agent-memory", "review-evidence", "project-doc", "vcs-history", "conversation", "conversation-export", "attachment", "tool-output", "test-evidence", "other"] },
+        "origin": { "$ref": "#/definitions/text" },
+        "locator": { "type": "string" },
+        "version": { "type": "string" },
+        "storage": {
+          "type": "object",
+          "required": ["kind"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "enum": ["git-blob", "git-history", "store", "external", "none"] },
+            "blob": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+            "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+            "bytes": { "type": "integer" },
+            "commits": { "type": "integer" },
+            "format": { "enum": ["ctx-git-history/1"] }
+          }
+        },
+        "createdAt": { "type": ["string", "null"] },
+        "capturedAt": { "type": ["string", "null"] },
+        "importedAt": { "type": ["string", "null"] },
+        "segmentation": {
+          "type": "object",
+          "required": ["rule"],
+          "additionalProperties": false,
+          "properties": {
+            "rule": { "enum": ["headings", "lines", "commits", "whole", "none"] },
+            "maxLevel": { "type": "integer" },
+            "lines": { "type": "integer" }
+          }
+        },
+        "attachmentOf": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+        "recovers": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+        "capturedBy": { "type": "array", "items": { "$ref": "#/definitions/id" } },
+        "sensitivity": { "enum": ["public", "internal", "private", "secret"] },
+        "preservation": { "enum": ["preserved", "missing", "inaccessible", "excluded", "corrupted", "not-retained"] },
+        "omissions": { "$ref": "#/definitions/texts" },
+        "supersededBy": { "$ref": "#/definitions/ids" },
+        "lifecycle": { "$ref": "#/definitions/lifecycle" },
+        "owner": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "requirement": {
+      "type": "object",
+      "required": ["id", "title", "statement", "type", "priority", "owner", "sources", "acceptance", "lifecycle", "verification"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "title": { "$ref": "#/definitions/text" },
+        "statement": { "$ref": "#/definitions/text" },
+        "type": { "enum": ["constitutional", "explicit-user", "inferred", "recommendation", "assumption"] },
+        "priority": { "enum": ["critical", "high", "medium", "low"] },
+        "owner": { "$ref": "#/definitions/text" },
+        "scope": { "type": "string" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "sources": { "$ref": "#/definitions/sourceRefs" },
+        "acceptance": { "$ref": "#/definitions/texts" },
+        "dependsOn": { "$ref": "#/definitions/ids" },
+        "conflictsWith": { "$ref": "#/definitions/ids" },
+        "implementedBy": { "$ref": "#/definitions/ids" },
+        "verifiedBy": { "$ref": "#/definitions/ids" },
+        "verification": {
+          "type": "object",
+          "required": ["method"],
+          "additionalProperties": false,
+          "properties": {
+            "method": { "enum": ["test", "audit", "inspection", "demonstration", "none-yet"] },
+            "commands": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "supersededBy": { "$ref": "#/definitions/ids" },
+        "lifecycle": { "$ref": "#/definitions/lifecycle" },
+        "history": { "$ref": "#/definitions/history" }
+      }
+    },
+
+    "decision": {
+      "type": "object",
+      "required": ["id", "statement", "context", "selected", "rationale", "status", "sources", "lifecycle"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "statement": { "$ref": "#/definitions/text" },
+        "context": { "$ref": "#/definitions/text" },
+        "options": { "type": "array", "items": { "type": "string" } },
+        "selected": { "$ref": "#/definitions/text" },
+        "rationale": { "$ref": "#/definitions/text" },
+        "rejected": { "type": "array", "items": { "type": "object", "required": ["option", "reason"], "additionalProperties": false, "properties": { "option": { "type": "string" }, "reason": { "type": "string" } } } },
+        "authority": { "type": "string" },
+        "decidedAt": { "type": ["string", "null"] },
+        "status": { "enum": ["proposed", "approved", "superseded", "reversed"] },
+        "provenance": { "enum": ["evidenced", "newly-proposed"] },
+        "sources": { "$ref": "#/definitions/sourceRefs" },
+        "consequences": { "type": "array", "items": { "type": "string" } },
+        "affects": { "$ref": "#/definitions/ids" },
+        "dependsOn": { "$ref": "#/definitions/ids" },
+        "conflictsWith": { "$ref": "#/definitions/ids" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "supersededBy": { "$ref": "#/definitions/ids" },
+        "lifecycle": { "$ref": "#/definitions/lifecycle" },
+        "history": { "$ref": "#/definitions/history" }
+      }
+    },
+
+    "constraint": {
+      "type": "object",
+      "required": ["id", "title", "statement", "class", "owner", "sources", "critical", "lifecycle"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "title": { "$ref": "#/definitions/text" },
+        "statement": { "$ref": "#/definitions/text" },
+        "class": { "enum": ["constitutional", "security", "privacy", "compatibility", "performance", "architecture", "process", "non-functional"] },
+        "owner": { "$ref": "#/definitions/text" },
+        "scope": { "enum": ["global", "scoped"] },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "critical": { "type": "boolean" },
+        "sources": { "$ref": "#/definitions/sourceRefs" },
+        "verifiedBy": { "$ref": "#/definitions/ids" },
+        "conflictsWith": { "$ref": "#/definitions/ids" },
+        "supersededBy": { "$ref": "#/definitions/ids" },
+        "lifecycle": { "$ref": "#/definitions/lifecycle" },
+        "history": { "$ref": "#/definitions/history" }
+      }
+    },
+
+    "artifact": {
+      "type": "object",
+      "required": ["id", "title", "type", "owner", "authority", "lifecycle", "access"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "title": { "$ref": "#/definitions/text" },
+        "path": { "type": "string" },
+        "locator": { "type": "string" },
+        "type": { "enum": ["code", "test", "registry", "schema", "doc", "generated", "config", "ledger", "ci", "entry-point", "archive-store"] },
+        "owner": { "$ref": "#/definitions/text" },
+        "authority": { "enum": ["canonical", "derived", "operational", "historical"] },
+        "derivedFrom": { "$ref": "#/definitions/ids" },
+        "dependsOn": { "$ref": "#/definitions/ids" },
+        "sources": { "$ref": "#/definitions/sourceRefs" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "supersededBy": { "$ref": "#/definitions/ids" },
+        "lifecycle": { "$ref": "#/definitions/lifecycle" },
+        "access": { "enum": ["public", "internal", "private"] },
+        "notes": { "type": "string" },
+        "history": { "$ref": "#/definitions/history" }
+      }
+    },
+
+    "issue": {
+      "type": "object",
+      "required": ["id", "kind", "title", "statement", "status", "severity", "lifecycle"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "kind": { "enum": ["question", "gap", "conflict", "assumption", "blocker", "risk", "approval", "validation", "recovery-limit", "defect"] },
+        "title": { "$ref": "#/definitions/text" },
+        "statement": { "$ref": "#/definitions/text" },
+        "status": { "enum": ["open", "resolved", "accepted"] },
+        "severity": { "enum": ["critical", "high", "medium", "low"] },
+        "evidenceNeeded": { "type": "string" },
+        "evidence": { "type": "array", "items": { "type": "string" } },
+        "sources": { "$ref": "#/definitions/sourceRefs" },
+        "affects": { "$ref": "#/definitions/ids" },
+        "blocks": { "$ref": "#/definitions/ids" },
+        "resolvedBy": { "$ref": "#/definitions/ids" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "lifecycle": { "$ref": "#/definitions/lifecycle" },
+        "history": { "$ref": "#/definitions/history" }
+      }
+    },
+
+    "task": {
+      "type": "object",
+      "required": ["id", "title", "objective", "scope", "authority", "state", "acceptance", "verification", "nextAction", "lifecycle"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "title": { "$ref": "#/definitions/text" },
+        "objective": { "$ref": "#/definitions/text" },
+        "scope": { "$ref": "#/definitions/texts" },
+        "exclusions": { "$ref": "#/definitions/texts" },
+        "authority": { "$ref": "#/definitions/text" },
+        "sources": { "$ref": "#/definitions/sourceRefs" },
+        "requirements": { "$ref": "#/definitions/ids" },
+        "decisions": { "$ref": "#/definitions/ids" },
+        "constraints": { "$ref": "#/definitions/ids" },
+        "contexts": { "$ref": "#/definitions/ids" },
+        "dependsOn": { "$ref": "#/definitions/ids" },
+        "state": { "enum": ["planned", "in-progress", "blocked", "done", "abandoned"] },
+        "acceptance": { "$ref": "#/definitions/texts" },
+        "verification": { "$ref": "#/definitions/texts" },
+        "nextAction": { "$ref": "#/definitions/text" },
+        "lifecycle": { "$ref": "#/definitions/lifecycle" },
+        "history": { "$ref": "#/definitions/history" }
+      }
+    },
+
+    "context": {
+      "type": "object",
+      "required": ["id", "title", "use", "scope", "include", "lifecycle"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "title": { "$ref": "#/definitions/text" },
+        "use": { "$ref": "#/definitions/text" },
+        "scope": { "$ref": "#/definitions/texts" },
+        "exclusions": { "$ref": "#/definitions/texts" },
+        "bootstrap": { "type": "boolean" },
+        "include": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "requirements": { "$ref": "#/definitions/ids" },
+            "decisions": { "$ref": "#/definitions/ids" },
+            "constraints": { "$ref": "#/definitions/ids" },
+            "artifacts": { "$ref": "#/definitions/ids" },
+            "issues": { "$ref": "#/definitions/ids" },
+            "sources": { "$ref": "#/definitions/ids" },
+            "tags": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "prerequisites": { "$ref": "#/definitions/ids" },
+        "related": { "$ref": "#/definitions/ids" },
+        "previous": { "$ref": "#/definitions/id" },
+        "next": { "$ref": "#/definitions/id" },
+        "verification": { "type": "array", "items": { "type": "string" } },
+        "budgetBytes": { "type": "integer" },
+        "supersededBy": { "$ref": "#/definitions/ids" },
+        "lifecycle": { "$ref": "#/definitions/lifecycle" }
+      }
+    }
+  }
+}
