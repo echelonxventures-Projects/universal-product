@@ -25,6 +25,8 @@ Env: `PORT`, `LX_DB` (db path), `LUX_TLS=1` (HTTPS; self-signed generated via op
 
 ### Production
 
+Start with [PRODUCTION_READINESS.md](PRODUCTION_READINESS.md) (status, known limitations, go/no-go), then [DEPLOYMENT_RUNBOOK.md](DEPLOYMENT_RUNBOOK.md) (operator configuration, deploy, rollback), [DATABASE_RECOVERY_RUNBOOK.md](DATABASE_RECOVERY_RUNBOOK.md) (`npm run backup` / `scripts/restore.js`, RPO/RTO) and [OPERATIONS_RUNBOOK.md](OPERATIONS_RUNBOOK.md) (`/healthz`, `/readyz`, `/metrics`, alerts, incidents). In production a card checkout with no live gateway is **declined** — a simulated capture is refused unless `LX_ALLOW_SIMULATED_PAYMENTS=1` (staging only).
+
 The runtime needs **Node ≥ 22.13** — `lib/db.js` uses the built-in `node:sqlite`, which is unavailable (22.5–22.12: behind `--experimental-sqlite`) before that. The boot checks the version before loading the database layer and exits with the required one rather than a bare module error.
 
 Behind a reverse proxy or load balancer, set `LX_TRUST_PROXY=1` so per-client rate limits and audit IPs use `X-Forwarded-For` (without it the header is ignored, since a client could forge it). Request bodies are capped at 1 MB (413 beyond).

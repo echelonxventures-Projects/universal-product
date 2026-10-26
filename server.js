@@ -243,6 +243,21 @@ const handler = async (req, res) => {
       return;
     }
     if (req.method !== "GET" && req.method !== "HEAD") { res.writeHead(405); return res.end("Method Not Allowed"); }
+    /* readiness, for the load balancer / orchestrator: 503 while draining for shutdown or
+       when the database does not answer, so traffic moves before requests fail. /healthz
+       stays the liveness probe — a slow database must not get a live process restarted. */
+    if (url.pathname === "/readyz") {
+      let dbOk = false;
+      try { dbOk = !!get("SELECT 1 AS ok"); } catch (e) { }
+      const ready = dbOk && !draining;
+      /* free space where the database lives, for alerting: a full disk fails every API call
+         (each one touches the session table) while SELECT 1 still answers. Reported, not
+         gated on — taking the only instance out of rotation would not free a byte. */
+      let diskFreeMb = null;
+      try { const st = fs.statfsSync(path.dirname(path.resolve(process.env.LX_DB || path.join(__dirname, "data", "luxora.db")))); diskFreeMb = Math.floor(st.bavail * st.bsize / 1048576); } catch (e) { }
+      res.writeHead(ready ? 200 : 503, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+      return res.end(JSON.stringify({ ready, db: dbOk, draining, diskFreeMb }));
+    }
     if (url.pathname === "/healthz") {
       const t = resolveTenant(req, url, cookies);
       res.writeHead(200, { "Content-Type": "application/json" });
@@ -291,9 +306,16 @@ const listenServer = IS_TLS ? https.createServer(TLS, handler) : server;
    NODE_ENV=test or leave it unset, so the guard never fires there. */
 function prodCredentialGuard() {
   if (process.env.NODE_ENV !== "production") return;
+  /* setting the variable TO the documented default is the same open door */
+  const DEFAULTS = ["platform123", "admin123", "demo123", "password"];
   const weak = [];
-  if (!process.env.PLATFORM_PASSWORD) weak.push(["PLATFORM_PASSWORD", "platform@luxora.shop", "platform123"]);
-  if (!process.env.ADMIN_PASSWORD) weak.push(["ADMIN_PASSWORD", "admin@luxora.shop", "admin123"]);
+  if (!process.env.PLATFORM_PASSWORD || DEFAULTS.includes(process.env.PLATFORM_PASSWORD)) weak.push(["PLATFORM_PASSWORD", "platform@luxora.shop", "platform123"]);
+  if (!process.env.ADMIN_PASSWORD || DEFAULTS.includes(process.env.ADMIN_PASSWORD)) weak.push(["ADMIN_PASSWORD", "admin@luxora.shop", "admin123"]);
+  /* opt-ins that are legitimate for a staging rehearsal but never silent in production */
+  if (process.env.LX_ALLOW_SIMULATED_PAYMENTS === "1")
+    console.error("WARNING  LX_ALLOW_SIMULATED_PAYMENTS=1 — orders and invoices can be marked paid with no money taken. Staging only.");
+  if (!process.env.LUXORA_PEPPER)
+    console.error("WARNING  LUXORA_PEPPER is unset — password hashes carry no server-side pepper. Set it before the first boot (changing it later invalidates existing passwords).");
   if (!weak.length) return;
   console.error("\n" + "=".repeat(78));
   console.error("REFUSING TO START IN PRODUCTION WITH SEED-DEFAULT CREDENTIALS");
@@ -302,14 +324,27 @@ function prodCredentialGuard() {
     console.error(`  ${email} still boots with the documented default "${pw}".`);
   console.error("  Set the environment variables and restart:");
   for (const [env] of weak) console.error(`    ${env}=<a strong password>`);
-  console.error("  (a password already seeded into an existing DB is unaffected — this gate\n"
-    + "   only blocks a first boot that would create the accounts with a default.)");
+  console.error("  (the variables only create accounts that do not exist yet — an existing\n"
+    + "   account's password is unaffected — but they are checked on every production boot.)");
   console.error("=".repeat(78) + "\n");
   process.exit(1);
 }
 prodCredentialGuard();
 
-function shutdown(sig) { console.log(`\n${sig} — closing`); sec.persistState(); server.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000); }
+/* graceful stop: /readyz turns 503, the listener stops accepting, idle keep-alive sockets
+   close, in-flight requests finish. It closes listenServer — under TLS the plain `server`
+   never listened, so closing it returned at once and in-flight requests were cut off.
+   LX_SHUTDOWN_MS bounds the drain (default 8s, inside docker's 10s stop grace). */
+let draining = false;
+function shutdown(sig) {
+  if (draining) return;
+  draining = true;
+  console.log(`\n${sig} — draining`);
+  try { sec.persistState(); } catch (e) { console.error("persist state:", e.message); }
+  listenServer.close(() => process.exit(0));
+  listenServer.closeIdleConnections();
+  setTimeout(() => { console.error("shutdown: drain timed out, exiting"); process.exit(0); }, Number(process.env.LX_SHUTDOWN_MS || 8000)).unref();
+}
 /* a stray rejected promise in an async handler must not take the process down (Node
    >= 15 exits on unhandled rejections); log it with enough context to fix the source */
 /* expired idempotency keys are swept hourly (they were only ever deleted lazily on lookup) */
