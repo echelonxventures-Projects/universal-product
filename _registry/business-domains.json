@@ -1027,7 +1027,8 @@
      "upi_handles",
      "mandates",
      "escrow_holds",
-     "split_payments"
+     "split_payments",
+     "gateway_events"
     ],
     "routes": [
      "^/api/admin/(payments|gateway|gateways)(/|$)",

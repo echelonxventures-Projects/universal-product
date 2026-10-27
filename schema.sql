@@ -735,6 +735,11 @@ CREATE TABLE inbound_events (
   payload TEXT DEFAULT '{}', signature_ok INTEGER DEFAULT 0, processed INTEGER DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 , uid TEXT);
+CREATE TABLE gateway_events (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 0,
+  provider TEXT NOT NULL, event_id TEXT NOT NULL, type TEXT, outcome TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE(tenant_id, provider, event_id)
+);
 CREATE TABLE sso_connections (
   tenant_id INTEGER PRIMARY KEY, provider TEXT DEFAULT 'okta', entity_id TEXT DEFAULT '',
   sso_url TEXT DEFAULT '', cert TEXT DEFAULT '', enabled INTEGER DEFAULT 0, domains TEXT DEFAULT '[]',

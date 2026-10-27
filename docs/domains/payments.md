@@ -120,6 +120,18 @@ Divide a payment across parties at order time. The parts must sum to the total, 
 | `error` | TEXT |
 | `at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 
+### `gateway_events`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL DEFAULT 0 |
+| `provider` | TEXT NOT NULL |
+| `event_id` | TEXT NOT NULL |
+| `type` | TEXT |
+| `outcome` | TEXT DEFAULT '' |
+| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+
 ### `upi_handles`
 
 | Column | Type |
@@ -359,7 +371,7 @@ flowchart LR
   U([Shopper / Store administrator / Platform administrator / Developer]) --> UI[store console, platform console]
   UI --> API[22 API routes]
   API --> ENG[engines]
-  ENG --> DB[(tenant_gateways, payments, payment_attempts, upi_handles, upi_collects, qr_codes, …)]
+  ENG --> DB[(tenant_gateways, payments, payment_attempts, gateway_events, upi_handles, upi_collects, …)]
   ENG --> SM{{8 state machines}}
 ```
 

@@ -88,6 +88,33 @@
      },
      "checkout.session.expired": {
       "status": "failed"
+     },
+     "charge.refunded": {
+      "status": "refunded",
+      "refPath": null,
+      "paymentIdPath": "data.object.payment_intent",
+      "amountPath": "data.object.amount_refunded"
+     },
+     "charge.dispute.created": {
+      "dispute": "opened",
+      "refPath": null,
+      "paymentIdPath": "data.object.payment_intent",
+      "disputeIdPath": "data.object.id",
+      "amountPath": "data.object.amount",
+      "reasonPath": "data.object.reason"
+     },
+     "charge.dispute.closed": {
+      "disputeStatusPath": "data.object.status",
+      "disputeMap": {
+       "won": "won",
+       "lost": "lost",
+       "warning_closed": "closed"
+      },
+      "refPath": null,
+      "paymentIdPath": "data.object.payment_intent",
+      "disputeIdPath": "data.object.id",
+      "amountPath": "data.object.amount",
+      "reasonPath": "data.object.reason"
      }
     },
     "signature": {
@@ -161,7 +188,8 @@
       "paymentIdPath": "payload.payment.entity.id",
       "amountPath": "payload.payment.entity.amount"
      }
-    }
+    },
+    "idHeader": "x-razorpay-event-id"
    },
    "lookup": {
     "method": "GET",
@@ -407,8 +435,18 @@
       "refPath": "data.object.payment.id",
       "paymentIdPath": "data.object.payment.id",
       "amountPath": "data.object.payment.amount_money.amount"
+     },
+     "refund.updated": {
+      "statusPath": "data.object.refund.status",
+      "statusMap": {
+       "COMPLETED": "refunded"
+      },
+      "refPath": null,
+      "paymentIdPath": "data.object.refund.payment_id",
+      "amountPath": "data.object.refund.amount_money.amount"
      }
-    }
+    },
+    "idPath": "event_id"
    },
    "lookup": {
     "method": "GET",

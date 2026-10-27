@@ -149,6 +149,56 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
     const twice = await A("/api/admin/payments/" + pid + "/refund?store=luxora", "POST", {});
     ok(twice.status >= 400 && calls.slice(before).filter(c => c.url.endsWith("/refunds")).length === 1, "a payment is refunded once", twice.status);
 
+    console.log("▸ PROVIDER EVENTS ARE APPLIED ONCE; REFUNDS AND CHARGEBACKS MADE AT THE PROVIDER ARE APPLIED");
+    {
+      const pending = async () => {
+        const o = (await buy()).co.body.order || {};
+        const rowOf = () => db.get("SELECT p.*, o.status ostatus FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?", o.num);
+        return { rowOf, c: Math.round(o.total * 100) };
+      };
+      const captured = async () => {
+        const x = await pending();
+        await hook(sessionEvent("checkout.session.completed", x.rowOf().txn_ref, { amount_total: x.c }));
+        return Object.assign(x, { pi: x.rowOf().provider_payment_id });
+      };
+      const evt = (id, type, obj) => ({ id, type, data: { object: obj } });
+      const audits = (pid, action) => db.get("SELECT COUNT(*) n FROM audit_log WHERE entity='payment' AND entity_id=? AND action=?", String(pid), action).n;
+
+      const a = await captured();
+      ok(a.rowOf().status === "captured" && /^pi_/.test(a.pi || ""), "a fresh payment is captured with its payment intent", a.rowOf());
+      const partial = evt("evt_part_1", "charge.refunded", { id: "ch_a", object: "charge", payment_intent: a.pi, amount: a.c, amount_refunded: a.c - 100 });
+      const p1 = await hook(partial);
+      ok(p1.status === 200 && p1.body.applied && p1.body.applied.partial === true && a.rowOf().status === "captured", "a partial refund at the provider is recorded and changes nothing", p1.body);
+      const p1again = await hook(partial);
+      ok(p1again.body.applied && p1again.body.applied.duplicate === true && audits(a.rowOf().id, "payment.partial_refund") === 1, "the same event delivered again is acknowledged and applied once", [p1again.body, audits(a.rowOf().id, "payment.partial_refund")]);
+      const full = evt("evt_full_1", "charge.refunded", { id: "ch_a", object: "charge", payment_intent: a.pi, amount: a.c, amount_refunded: a.c });
+      const f1 = await hook(full);
+      ok(f1.status === 200 && a.rowOf().status === "refunded", "a full refund made at the provider marks the payment refunded", [f1.body, a.rowOf().status]);
+      const f2 = await hook(full);
+      ok(f2.body.applied && f2.body.applied.duplicate === true && audits(a.rowOf().id, "payment.refunded") === 1, "re-delivering the refund does not refund twice", f2.body);
+
+      const b = await captured();
+      const stray = await hook(evt("evt_stray_1", "charge.refunded", { id: "ch_x", object: "charge", payment_intent: "pi_unknown", amount: b.c, amount_refunded: b.c }));
+      ok(stray.body.applied && stray.body.applied.ignored === true && b.rowOf().status === "captured", "a refund for a payment this store does not have changes nothing", stray.body);
+      const m = await pending();
+      const mm = await hook(evt("evt_cap_mm", "checkout.session.completed", { id: m.rowOf().txn_ref, object: "checkout.session", payment_status: "paid", amount_total: m.c - 1 }));
+      ok(mm.body.applied && mm.body.applied.ok === false && m.rowOf().status === "pending" && !db.get("SELECT 1 x FROM gateway_events WHERE event_id='evt_cap_mm'"), "an event that was not applied is not claimed, so the provider's retry can be", mm.body);
+
+      const dsp = (id, type, extra) => evt(id, type, Object.assign({ id: "dp_b", object: "dispute", payment_intent: b.pi, amount: b.c, reason: "fraudulent" }, extra || {}));
+      const dRow = () => db.get("SELECT * FROM disputes WHERE ref='stripe:dp_b'");
+      const d1 = await hook(dsp("evt_dsp_1", "charge.dispute.created", { status: "needs_response" }));
+      ok(d1.status === 200 && dRow() && dRow().state === "opened" && dRow().payment_id === b.rowOf().id && b.rowOf().status === "captured", "a chargeback at the provider opens a dispute on the payment", [d1.body, dRow()]);
+      ok(dRow() && Math.abs(dRow().amount - b.rowOf().amount) < 1e-9 && dRow().reason === "fraudulent", "the dispute carries the provider's amount and reason", dRow());
+      await hook(dsp("evt_dsp_1b", "charge.dispute.created", { status: "needs_response" }));
+      ok(db.get("SELECT COUNT(*) n FROM disputes WHERE ref='stripe:dp_b'").n === 1, "a second event for the same chargeback opens no second dispute");
+      const lost = await hook(dsp("evt_dsp_2", "charge.dispute.closed", { status: "lost" }));
+      ok(lost.status === 200 && dRow().state === "lost" && b.rowOf().status === "disputed_lost", "a lost chargeback closes the dispute and marks the payment lost", [lost.body, dRow() && dRow().state, b.rowOf().status]);
+      const won = await hook(dsp("evt_dsp_3", "charge.dispute.closed", { status: "won" }));
+      ok(won.body.applied && won.body.applied.unchanged === true && dRow().state === "lost", "a closed dispute is not reopened by a later event", won.body);
+      const forged = await hook(dsp("evt_dsp_4", "charge.dispute.created", { id: "dp_c" }), "whsec_wrong");
+      ok(forged.status === 401 && !db.get("SELECT 1 x FROM disputes WHERE ref='stripe:dp_c'") && !db.get("SELECT 1 x FROM gateway_events WHERE event_id='evt_dsp_4'"), "a wrongly signed chargeback opens nothing and claims no event id", forged.status);
+    }
+
 
     console.log("▸ EVERY GATEWAY CONFIRMS FROM ITS SPEC, NOT FROM CODE");
     {
