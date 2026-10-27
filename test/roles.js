@@ -73,9 +73,15 @@ const navTo = async (doc, key, ms = 1800) => { const b = [...doc.querySelectorAl
 (async () => {
   for (const s of ["", "-wal", "-shm"]) { try { require("fs").rmSync(DB + s, { force: true }); } catch (e) { } }
   const boot = async () => {
-    const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB }, stdio: ["ignore", "ignore", "inherit"] });
-    for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) return srv; } catch (e) { } await sleep(500); }
-    srv.kill("SIGKILL"); throw new Error("server failed to boot");
+    const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB }, stdio: ["ignore", "pipe", "inherit"] });
+    let out = ""; srv.stdout.on("data", d => { out = (out + d).slice(-4000); });
+    const t0 = Date.now(); let lastErr = "";
+    for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) return srv; } catch (e) { lastErr = String(e.cause && e.cause.code || e.message); } await sleep(500); }
+    /* CI has failed this boot after padmins.js several times while it passes locally: say what
+       the server was doing, so the next failure explains itself */
+    const alive = srv.exitCode === null && !srv.signalCode;
+    srv.kill("SIGKILL");
+    throw new Error("server failed to boot in " + Math.round((Date.now() - t0) / 1000) + " s (process " + (alive ? "alive" : "exited " + (srv.exitCode !== null ? srv.exitCode : srv.signalCode)) + ", last fetch error " + lastErr + ")\n--- server stdout tail ---\n" + out.slice(-1500));
   };
   let srv = await boot();
   try {
