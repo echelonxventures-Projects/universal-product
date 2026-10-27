@@ -180,7 +180,7 @@ const navTo = async (doc, key, ms = 1800) => { const b = [...doc.querySelectorAl
     console.log("▸ SELF-HEAL — an operator's roles survive a reboot (the seed never reverts an edit)");
     /* T1: wait for the old server to actually exit before rebooting, so no pooled
        socket is left talking to a dead peer (and the port is free for the reboot) */
-    await new Promise(r => { srv.once("exit", r); srv.kill("SIGTERM"); setTimeout(r, 1500); });
+    await new Promise(r => { if (srv.exitCode !== null || srv.signalCode) return r(); srv.once("exit", r); srv.kill("SIGTERM"); setTimeout(() => { try { srv.kill("SIGKILL"); } catch (e) { } }, 10000); });
     srv = await boot();
     /* the session lives in the DB, so the same cookie still authenticates after restart */
     const after = await f("/api/platform/roles");

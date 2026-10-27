@@ -83,7 +83,12 @@ if (require.main === module) (async () => {
   delete env.NODE_ENV;
   const srv = spawn(process.execPath, [path.join(ROOT, "server.js")], { env, stdio: ["ignore", "ignore", "pipe"] });
   let srvErr = ""; srv.stderr.on("data", d => { srvErr += d; });
-  for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(500); }
+  /* a server that is not up fails the check as that, not as page errors on whichever pages
+     were visited before it came up (CI run 40499956199) */
+  const t0 = Date.now(); let up = false;
+  for (let i = 0; i < 120 && !up; i++) { try { up = (await fetch(BASE + "/healthz")).ok; } catch (e) { } if (!up) await sleep(500); }
+  if (!up) { console.error("✗ the server did not answer /healthz within " + Math.round((Date.now() - t0) / 1000) + " s\n" + srvErr.slice(-2000)); try { srv.kill("SIGKILL"); } catch (e) { } process.exit(1); }
+  console.log("  server up in " + ((Date.now() - t0) / 1000).toFixed(1) + " s");
 
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "luxora-chrome-"));
   const br = spawn(chrome, ["--headless=new", "--remote-debugging-port=0", "--user-data-dir=" + profile, "--no-first-run", "--no-default-browser-check", "--disable-gpu", "--disable-extensions", ...(process.getuid && process.getuid() === 0 ? ["--no-sandbox"] : []), "about:blank"], { stdio: "ignore" });

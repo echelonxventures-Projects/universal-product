@@ -116,7 +116,11 @@ const makeIdToken = (payload, secret) => {
     ok((await f("/api/admin/roles")).roles.some(r => r.key === "scheduler") === false, "and in no other store's");
 
     console.log("▸ A5 — an operator's fork survives a reboot (the seed never reverts an edit)");
-    srv.kill(); srv = await boot();
+    /* wait for the old server to exit before booting the new one: while it drains it still
+       answers /healthz, so boot() returned on it and the next request was reset when it
+       exited (CI run 40499956199, test (24)) */
+    await new Promise(r => { if (srv.exitCode !== null || srv.signalCode) return r(); srv.once("exit", r); srv.kill("SIGTERM"); setTimeout(() => { try { srv.kill("SIGKILL"); } catch (e) { } }, 10000); });
+    srv = await boot();
     await storeLogin("luxora", "hr@luxora.shop", "hr12345678");
     ok((await f("/api/admin/roles")).roles.some(r => r.key === "scheduler"), "the store-defined role survived the reboot");
     ok((fresh("SELECT edited FROM meta_lists WHERE name='staffRoles:t" + luxora.id + "'") || {}).edited === 1, "the fork is stamped edited, so the seed leaves it alone");
