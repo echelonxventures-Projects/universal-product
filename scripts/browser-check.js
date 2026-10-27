@@ -84,21 +84,24 @@ if (require.main === module) (async () => {
   const srv = spawn(process.execPath, [path.join(ROOT, "server.js")], { env, stdio: ["ignore", "ignore", "pipe"] });
   let srvErr = ""; srv.stderr.on("data", d => { srvErr += d; });
   /* a server that is not up fails the check as that, not as page errors on whichever pages
-     were visited before it came up (CI run 40499956199) */
+     were visited before it came up (CI run 40499956199). A first boot of a fresh checkout
+     builds the registry, and on a CI runner it has run past 60 s (run 40518301534), so it
+     gets 180 s; the time it took is printed, so a slow boot stays visible. */
   const t0 = Date.now(); let up = false;
-  for (let i = 0; i < 120 && !up; i++) { try { up = (await fetch(BASE + "/healthz")).ok; } catch (e) { } if (!up) await sleep(500); }
+  for (let i = 0; i < 360 && !up; i++) { try { up = (await fetch(BASE + "/healthz")).ok; } catch (e) { } if (!up) await sleep(500); }
   if (!up) { console.error("✗ the server did not answer /healthz within " + Math.round((Date.now() - t0) / 1000) + " s\n" + srvErr.slice(-2000)); try { srv.kill("SIGKILL"); } catch (e) { } process.exit(1); }
   console.log("  server up in " + ((Date.now() - t0) / 1000).toFixed(1) + " s");
 
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "luxora-chrome-"));
-  const br = spawn(chrome, ["--headless=new", "--remote-debugging-port=0", "--user-data-dir=" + profile, "--no-first-run", "--no-default-browser-check", "--disable-gpu", "--disable-extensions", ...(process.getuid && process.getuid() === 0 ? ["--no-sandbox"] : []), "about:blank"], { stdio: "ignore" });
+  const br = spawn(chrome, ["--headless=new", "--remote-debugging-port=0", "--user-data-dir=" + profile, "--no-first-run", "--no-default-browser-check", "--disable-gpu", "--disable-extensions", ...(process.getuid && process.getuid() === 0 ? ["--no-sandbox"] : []), "about:blank"], { stdio: ["ignore", "ignore", "pipe"] });
+  let brErr = ""; if (br.stderr) br.stderr.on("data", d => { brErr += d; if (brErr.length > 20000) brErr = brErr.slice(-10000); });
   let port = null;
   /* up to 30 s: on a loaded runner (the postgres job starts Chrome beside PostgreSQL and the
      platform booting on it) 10 s was not always enough, and the job failed before any check ran */
   for (let i = 0; i < 300 && !port; i++) { try { port = fs.readFileSync(path.join(profile, "DevToolsActivePort"), "utf8").split("\n")[0]; } catch (e) { await sleep(100); } }
   const done = code => { try { br.kill(); } catch (e) { } try { srv.kill("SIGTERM"); } catch (e) { }
     setTimeout(() => { for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(DB + s, { force: true }); } catch (e) { } } try { fs.rmSync(profile, { recursive: true, force: true }); } catch (e) { } process.exit(code); }, 500); };
-  if (!port) { console.error("Chrome did not start its DevTools endpoint"); return done(1); }
+  if (!port) { console.error("Chrome did not start its DevTools endpoint" + (br.exitCode !== null ? " (it exited with " + br.exitCode + ")" : "") + "\n" + brErr.slice(-2000)); return done(1); }
 
   const product = await fetch(BASE + "/api/products?limit=1&store=luxora").then(r => r.json()).then(j => (j.items && j.items[0] && j.items[0].id) || "").catch(() => "");
   const report = [];
