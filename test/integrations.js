@@ -230,6 +230,32 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
       ok((await A("/api/admin/payments/" + l2.id + "/received?store=luxora", "POST", {})).status === 409, "a gateway payment cannot be marked received by hand");
     }
 
+    console.log("▸ THE GATEWAY IS ASKED FOR WHAT THE SHOPPER WAS SHOWN, IN THEIR CURRENCY");
+    {
+      /* a store showing a currency other than its base one: the session the gateway creates must
+         carry the shown total in the shown currency — the payment row alone cannot prove it,
+         because it is written separately from the request */
+      const Pf = mk(); await Pf("/api/session");
+      await Pf("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
+      const pol = (await Pf("/api/platform/config")).body.policy || {};
+      await Pf("/api/platform/config", "PUT", { provisioning: Object.assign({}, pol.provisioning, { currencyOverridesAllowed: true }) });
+      const base = String(((await A("/api/cart?store=luxora")).body.currency || {}).base || "");
+      const other = ["EUR", "GBP", "JPY", "USD"].find(c => c !== base);
+      const set = await A("/api/admin/settings?store=luxora", "PUT", { commerce: { currency: other } });
+      const before = calls.length;
+      const fx = await buy();
+      const o2 = fx.co.body.order || {};
+      const sess = calls.slice(before).find(c => c.url.endsWith("/checkout/sessions"));
+      const minor = require("../lib/spec.js").minorUnits(o2.total, o2.currency);
+      ok(set.status === 200 && o2.currency === other && o2.currency !== base && sess
+        && sess.form["line_items[0][price_data][unit_amount]"] === String(minor) && sess.form["line_items[0][price_data][currency]"] === other.toLowerCase(),
+        "with a display currency other than the base, the gateway is asked for exactly the shown total in the shown currency", { base, shown: [o2.total, o2.currency], sent: sess && [sess.form["line_items[0][price_data][unit_amount]"], sess.form["line_items[0][price_data][currency]"]] });
+      const prow = db.get("SELECT p.amount, p.currency FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?", o2.num);
+      ok(prow && prow.currency === other && Math.abs(prow.amount - o2.total) < 1e-9, "…and the payment row records the same amount and currency", prow);
+      await A("/api/admin/settings?store=luxora", "PUT", { commerce: { currency: base } });
+      await Pf("/api/platform/config", "PUT", { provisioning: Object.assign({}, pol.provisioning) });
+    }
+
     console.log("▸ CARRIER RATES, LABELS AND TRACKING");
     {
       const none = await A("/api/shipping/quote?store=luxora", "POST", { order_id: 1, parcel: { weight_oz: 10 } });
