@@ -43,7 +43,9 @@ const shopper = async (tag) => {
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB, LX_LOG: "", LX_OFFLINE: "1" }, stdio: ["ignore", "ignore", "pipe"] });
   let stderr = ""; srv.stderr.on("data", d => { stderr += d; });
   for (let i = 0; i < 120 && !(await alive()); i++) await sleep(500);
-  if (!(await alive())) { console.error("server failed to boot\n" + stderr); process.exit(1); }
+  /* a server still booting when the wait gives up must not outlive the test: an orphan keeps the
+     port and the database, and every later run talks to it instead of its own server */
+  if (!(await alive())) { srv.kill("SIGKILL"); console.error("server failed to boot\n" + stderr); process.exit(1); }
   const db = require(path.join(__dirname, "..", "lib", "db.js"));
 
   try {

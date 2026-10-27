@@ -39,7 +39,9 @@ const register = async email => {
   const srv = spawn(process.execPath, [path.join(ROOT, "server.js")], { env, stdio: ["ignore", "ignore", "pipe"] });
   let stderr = ""; srv.stderr.on("data", d => { stderr += d; });
   for (let i = 0; i < 120 && !(await alive()); i++) await sleep(500);
-  if (!(await alive())) { console.error("server failed to boot\n" + stderr); process.exit(1); }
+  /* a server still booting when the wait gives up must not outlive the test: an orphan keeps the
+     port and the database, and every later run talks to it instead of its own server */
+  if (!(await alive())) { srv.kill("SIGKILL"); console.error("server failed to boot\n" + stderr); process.exit(1); }
   try {
     console.log("▸ AN ONLINE BACKUP");
     ok(await register("before@example.com") === 200, "a customer registers before the backup");
