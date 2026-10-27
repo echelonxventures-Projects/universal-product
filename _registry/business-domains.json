@@ -555,7 +555,9 @@
     "platform_admin"
    ],
    "owns": {
-    "files": [],
+    "files": [
+     "lib/money.js"
+    ],
     "tables": [
      "currencies",
      "fx_rates"

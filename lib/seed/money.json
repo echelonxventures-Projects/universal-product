@@ -1,0 +1,5 @@
+{
+ "note": "How money is rounded (lib/money.js). `rounding` is the platform default rule; `currencies` overrides it per currency code, e.g. {\"XYZ\": {\"rounding\": \"half-even\"}}. Rules: half-up (half away from zero), half-even, half-down, up, down, ceiling, floor. The default below is the engineering default awaiting the owner's written policy (PRODUCTION_READINESS.md PR-016, gate 4).",
+ "rounding": "half-up",
+ "currencies": {}
+}

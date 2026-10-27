@@ -10,6 +10,10 @@ Every unit of value and how they convert: currencies, points and credits, and ex
 
 ## Architecture
 
+| Module | What it is |
+|---|---|
+| `lib/money.js` | money, exactly (PR-016). One representation: an amount is a whole number of MINOR units of one currency, and a currency's minor unit is data (its `decimals` in Value's master, lib/registry.js). Nothing here does binary floating-point arithmetic on money: a JS number coming in is read through its shortest decimal spelling (String(n): 1.005 is "1.005", not 1.00499999999999989…), held as a BigInt scaled by a power of ten, and rounded once, by a NAMED rule. |
+
 ## Data model
 
 ### `currencies`
@@ -57,7 +61,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[platform console]
   UI --> API[5 API routes]
-  API --> ENG[engines]
+  API --> ENG[money.js]
   ENG --> DB[(currencies, fx_rates)]
 
 ```
