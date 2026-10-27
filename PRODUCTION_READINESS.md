@@ -81,7 +81,10 @@ It is local: nothing is pushed, merged into `master` or deployed.
 | 5 | `63b48d7` | the preserved local work, unchanged (39 files byte-identical, 4 combined) | — (it does not boot: PR-030) |
 | 6 | `376f45b` | the Offers split completed: boots, one owner per screen/route, ratchets unchanged | gates + targeted suites |
 | 7 | `7e2981f` | PR-028 checked at the gateway boundary | integrations 78/0 + mutation; full chain 162/168 |
-| 8 | `532c195` | the six chain failures fixed (PR-038) | see Release evidence |
+| 8 | `532c195` | the six chain failures fixed (PR-038) | targeted suites |
+| 9 | `5ed4a76` | Postgres: category-sync SQL, engine-neutral table checks; TASK-REL-0001 | `check:postgres` pass (PR-007) |
+| 10 | `b162c4e` | seller roles from the platform master (PR-037) | `test/platform-types.js` 144/0 |
+| 11 | `cf65575` | the task record names no other platform | **full chain 168/168** (Release evidence) |
 
 Decisions taken in the merge (each recorded in its commit): backups never carry the keyring
 (PR #5's policy) and gain PR #3's retention and off-host upload (encrypted sets only); restore
@@ -235,6 +238,12 @@ Until this is done or a business owner accepts the risk under an independently r
 
 | Item | Value |
 |---|---|
+| **Integrated candidate `cf655752cd341548bc25d773248f4689cda407ed`** — full `npm test` chain (local) | **168/168 steps pass, 0 failing**, 59 min, Node 22.21.1, fresh checkout (ignored artifacts removed). Run step by step so no failure can hide behind an earlier one; about 5,760 passing assertions summed from each suite's summary line; no ✗ in any step log. |
+| Candidate — earlier full runs | `3f83262` (PR #5 + PR #4): `npm test` exit 0, 32 min 48 s. `7e2981f`: 162/168 — the six failures are PR-038 and PR-037, fixed in `532c195`/`b162c4e` |
+| Candidate — mutation checks | PR-001 guard (literal state name), PR-031 module billing, PR-028 at the gateway boundary, PR-002 card fingerprint: each reverted alone, each makes its test fail |
+| Candidate — Postgres (local) | `npm run check:postgres` on `5ed4a76` against PostgreSQL 16.13, SCRAM-SHA-256: pass (PR-007) |
+| Candidate — gates | `npm run registry` 40/40, seal verified, no drift; `npm run context:verify` 0 errors; `test/audit-gate.js`, `test/domain-map.js`, `test/white-label.js` pass |
+| Candidate — CI | **none**: the branch is not pushed (needs owner authorization) |
 | Draft PR | [echelonxventures-Projects/universal-product#5](https://github.com/echelonxventures-Projects/universal-product/pull/5), `claude/exciting-hamilton-kqmbhr` → `master` (`441d772d661abc6626d4497391c6f6261b086a0a`) |
 | CI, first head `2a9089655bdad93991d1620e035cbc2b525dffd9` | [run 39869509372](https://github.com/echelonxventures-Projects/universal-product/actions/runs/39869509372): **success** on all three jobs, `test (22.13)`, `test (22)` and `test (24)`. Every step succeeded, including the full suite on each runtime (`test/security.js` 158/0, `test/production.js` 23/0 in the log), boot smoke with `/readyz`, and the backup/restore drill (245 tables, integrity ok). On `test (22)`, the audit, the Docker build (pinned digest resolved) and the Docker production smoke (seed credentials refused; `/readyz` ready; non-root; clean stop) also ran. The audit and Docker steps were skipped on 22.13 and 24 by `if: matrix.node == 22`. |
 | CI, final head | recorded on PR #5: a file cannot carry the CI result of the commit that adds it |

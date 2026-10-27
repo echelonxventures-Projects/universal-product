@@ -1,0 +1,112 @@
+{
+  "agent": "claude-opus-5-5",
+  "blockers": [],
+  "commands": [
+    {
+      "command": "node run-chain.js (npm test chain, step by step) on cf65575",
+      "exitCode": 0,
+      "observed": "168/168 steps",
+      "result": "passed"
+    },
+    {
+      "command": "npm run registry",
+      "exitCode": 0,
+      "observed": "integrity gate 40/40, seal verified, no drift",
+      "result": "passed"
+    },
+    {
+      "command": "npm run check:postgres (local PG 16.13, SCRAM)",
+      "exitCode": 0,
+      "observed": "the platform runs on Postgres; 381 page loads clean",
+      "result": "passed"
+    }
+  ],
+  "completed": [
+    {
+      "claim": "PR #5, PR #4 (squashed) and PR #3 are integrated on integration/luxora-production-go-2026-10-27 from master 441d772",
+      "evidence": "commits e778743, 2dfc884, b5e8c88; conflict resolutions recorded in each commit message"
+    },
+    {
+      "claim": "The preserved local working-tree work is restored unchanged, then completed so the server boots",
+      "evidence": "63b48d7 (39 files byte-identical to the checksum-verified preservation copies), 376f45b"
+    },
+    {
+      "claim": "The full npm test chain passes on the candidate",
+      "evidence": "run step by step on cf655752cd341548bc25d773248f4689cda407ed: 168/168 steps, 0 failing, 59 min, Node 22.21.1 (PRODUCTION_READINESS.md, Release evidence)"
+    },
+    {
+      "claim": "PR #5's payment, currency and card-fingerprint fixes survive the integration",
+      "evidence": "test/production.js 29/0, test/integrations.js 78/0; mutation checks of PR-001, PR-002, PR-028 (gateway boundary) and PR-031 each fail their test"
+    },
+    {
+      "claim": "The platform runs on Postgres 16 with SCRAM",
+      "evidence": "npm run check:postgres on 5ed4a76 against a local PostgreSQL 16.13: pass"
+    },
+    {
+      "claim": "The registry gate, seal and context checks pass",
+      "evidence": "npm run registry 40/40, seal verified, no drift; npm run context:verify 0 errors"
+    }
+  ],
+  "contextPacks": [
+    {
+      "fingerprint": "11222e6802a0556d5390a7b66175c854d73f964e58f3da5715ea51118329f632",
+      "id": "CTX-PLATFORM-QUALITY"
+    }
+  ],
+  "createdAt": "2026-10-27T03:27:52.367Z",
+  "filesChanged": [
+    "see git log 441d772..HEAD"
+  ],
+  "filesInspected": [],
+  "id": "HO-REL-0001-001",
+  "mustNotChange": [
+    "The original local workspace and the context worktree on the iCloud Desktop",
+    "The preservation set in ~/LUXORA-preservation",
+    "Remote branches and PRs #3, #4, #5"
+  ],
+  "nextAction": "Ask the owner to authorise pushing integration/luxora-production-go-2026-10-27 for CI; then run the Docker build and production smoke and record both in PRODUCTION_READINESS.md.",
+  "notCompleted": [
+    "Branch not pushed; no CI run exists for the candidate",
+    "Container build and smoke not re-run on the candidate (Docker daemon not running)",
+    "PR-016 money representation, PR-014/029 provider refunds and disputes, PR-025 live provider, PR-026/027 staging and deployment remain open"
+  ],
+  "objective": "One local branch that keeps every fix from PR #5, the context system from PR #4, PR #3's functionality and the preserved local working tree's Offers work, with the full suite green and the release register re-baselined to it.",
+  "prerequisites": [],
+  "previous": null,
+  "regressions": [],
+  "repository": {
+    "branch": "integration/luxora-production-go-2026-10-27",
+    "dirty": true,
+    "head": "f64304050c75f765ae2b355fbd1af61f03666bf6",
+    "status": [
+      "M PRODUCTION_READINESS.md"
+    ],
+    "upstream": null
+  },
+  "schema": "ctx-handoff/1",
+  "state": "in-progress",
+  "task": "TASK-REL-0001",
+  "tests": [
+    {
+      "command": "npm test (all 168 steps)",
+      "exitCode": 0,
+      "observed": "0 failing",
+      "result": "passed"
+    },
+    {
+      "command": "npm run context:verify",
+      "exitCode": 0,
+      "observed": "0 error(s), 12 warning(s)",
+      "result": "passed"
+    }
+  ],
+  "unverified": [
+    "Postgres request-path connection handling and migration time at production size",
+    "CI behaviour on Node 22.13 and 24 for the candidate (only 22.21.1 run locally)"
+  ],
+  "verification": [
+    "npm test",
+    "npm run registry",
+    "npm run context:verify"
+  ]
+}

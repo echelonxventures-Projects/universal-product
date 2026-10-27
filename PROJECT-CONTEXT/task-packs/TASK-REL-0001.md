@@ -10,8 +10,8 @@ One local branch, integration/luxora-production-go-2026-10-27, that keeps every 
 ## State
 
 - **in-progress** · authority: repository owner (go-live programme, phase 2, 2026-10-27)
-- Next action: **Record the full-suite result on the candidate in PRODUCTION_READINESS.md, then ask the owner to authorise publishing the branch for CI.**
-- No handoff recorded yet.
+- Next action: **Ask the owner to authorise pushing integration/luxora-production-go-2026-10-27 for CI; then run the Docker build and production smoke and record both in PRODUCTION_READINESS.md.**
+- Latest handoff: `PROJECT-CONTEXT/handoffs/HO-REL-0001-001.json` (2026-10-27T03:27:52.367Z, by claude-opus-5-5)
 
 ## Scope
 
