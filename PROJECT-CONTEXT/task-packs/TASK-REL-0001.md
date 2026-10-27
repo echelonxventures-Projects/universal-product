@@ -5,7 +5,7 @@
 
 ## Objective
 
-One local branch, integration/luxora-production-go-2026-10-27, that keeps every fix from PR #5, the context system from PR #4, PR #3's functionality and the Amazon working tree's Offers work, with the full suite green and the release register (PRODUCTION_READINESS.md) re-baselined to it.
+One local branch, integration/luxora-production-go-2026-10-27, that keeps every fix from PR #5, the context system from PR #4, PR #3's functionality and the local working tree's Offers work, with the full suite green and the release register (PRODUCTION_READINESS.md) re-baselined to it.
 
 ## State
 
@@ -22,7 +22,7 @@ One local branch, integration/luxora-production-go-2026-10-27, that keeps every 
 ## Must not change / excluded
 
 - No push, merge into master, PR change or deployment without the owner's authorisation
-- No change to the original Amazon or context workspaces
+- No change to the original local and context workspaces
 
 ## Acceptance criteria
 

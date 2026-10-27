@@ -408,7 +408,7 @@
     {
       "id": "TASK-REL-0001",
       "title": "Integrate PR #3, PR #4, PR #5 and the preserved Offers work into one verified release candidate",
-      "objective": "One local branch, integration/luxora-production-go-2026-10-27, that keeps every fix from PR #5, the context system from PR #4, PR #3's functionality and the Amazon working tree's Offers work, with the full suite green and the release register (PRODUCTION_READINESS.md) re-baselined to it.",
+      "objective": "One local branch, integration/luxora-production-go-2026-10-27, that keeps every fix from PR #5, the context system from PR #4, PR #3's functionality and the local working tree's Offers work, with the full suite green and the release register (PRODUCTION_READINESS.md) re-baselined to it.",
       "scope": [
         "the integration branch in a fresh clone outside iCloud",
         "conflict resolution, defects the integration exposes, regeneration of derived artifacts",
@@ -416,7 +416,7 @@
       ],
       "exclusions": [
         "No push, merge into master, PR change or deployment without the owner's authorisation",
-        "No change to the original Amazon or context workspaces"
+        "No change to the original local and context workspaces"
       ],
       "authority": "repository owner (go-live programme, phase 2, 2026-10-27)",
       "constraints": [
