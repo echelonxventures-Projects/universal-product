@@ -410,7 +410,7 @@
         "npm run registry",
         "npm run context:verify"
       ],
-      "nextAction": "Ask the owner to authorise pushing integration/luxora-production-go-2026-10-27 for CI; then run the Docker build and production smoke and record both in PRODUCTION_READINESS.md.",
+      "nextAction": "Read the CI result for the head after a9b6436 on PR #6; fix PR-043 (sync in one transaction or set-based, or at boot) and re-run check:postgres; then continue PR-016's minor-unit migration design.",
       "lifecycle": "canonical-active",
       "history": [
         {
@@ -420,6 +420,14 @@
           "to": "in-progress",
           "by": "claude-opus-5-5",
           "evidence": "PROJECT-CONTEXT/handoffs/HO-REL-0001-001.json"
+        },
+        {
+          "at": "2026-10-27T17:19:58.289Z",
+          "change": "handoff HO-REL-0001-002",
+          "from": "in-progress",
+          "to": "in-progress",
+          "by": "claude-opus-5-5",
+          "evidence": "PROJECT-CONTEXT/handoffs/HO-REL-0001-002.json"
         }
       ]
     },

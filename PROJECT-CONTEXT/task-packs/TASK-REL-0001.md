@@ -10,8 +10,8 @@ One local branch, integration/luxora-production-go-2026-10-27, that keeps every 
 ## State
 
 - **in-progress** · authority: repository owner (go-live programme, phase 2, 2026-10-27)
-- Next action: **Ask the owner to authorise pushing integration/luxora-production-go-2026-10-27 for CI; then run the Docker build and production smoke and record both in PRODUCTION_READINESS.md.**
-- Latest handoff: `PROJECT-CONTEXT/handoffs/HO-REL-0001-001.json` (2026-10-27T03:27:52.367Z, by claude-opus-5-5)
+- Next action: **Read the CI result for the head after a9b6436 on PR #6; fix PR-043 (sync in one transaction or set-based, or at boot) and re-run check:postgres; then continue PR-016's minor-unit migration design.**
+- Latest handoff: `PROJECT-CONTEXT/handoffs/HO-REL-0001-002.json` (2026-10-27T17:19:58.289Z, by claude-opus-5-5)
 
 ## Scope
 

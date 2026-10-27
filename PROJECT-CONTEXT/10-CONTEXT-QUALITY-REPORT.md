@@ -19,7 +19,7 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 | requirement-test-traceability | 100% | 14 / 14 | active requirements with an incoming 'verifies' edge ÷ active requirements |
 | context-dependency-completeness | 100% | 6 / 6 | active context specs whose prerequisites all exist and are active ÷ active context specs |
 | context-freshness | 100% | 6 / 6 | generated packs whose on-disk dependency fingerprint equals the recomputed one and whose parts match their sha256 ÷ active packs |
-| handoff-completeness | 100% | 6 / 6 | handoffs that validate against handoff.schema.json ÷ handoffs on disk |
+| handoff-completeness | 100% | 7 / 7 | handoffs that validate against handoff.schema.json ÷ handoffs on disk |
 
 ## Counts
 

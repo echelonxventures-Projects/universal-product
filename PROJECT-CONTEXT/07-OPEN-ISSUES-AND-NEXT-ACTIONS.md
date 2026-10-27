@@ -27,7 +27,7 @@
 | TASK-CTX-0004 | done | Owner restores GitHub Actions for the repository so CI runs on PR #4, then reviews DEC-CTX-* (TASK-CTX-0002). |
 | TASK-CTX-0005 | done | Owner restores GitHub Actions so CI runs on PR #4; then reviews DEC-CTX-* (TASK-CTX-0002). |
 | TASK-REG-0001 | planned | Confirm the intended file with the owner, then change lib/canonical.js:104 and re-run the registry checks. |
-| TASK-REL-0001 | in-progress | Ask the owner to authorise pushing integration/luxora-production-go-2026-10-27 for CI; then run the Docker build and production smoke and record both in PRODUCTION_READINESS.md. |
+| TASK-REL-0001 | in-progress | Read the CI result for the head after a9b6436 on PR #6; fix PR-043 (sync in one transaction or set-based, or at boot) and re-run check:postgres; then continue PR-016's minor-unit migration design. |
 | TASK-SEC-0001 | planned | Map each REVIEW.md finding to the commits of PR #1/#2 and the tests in test/security.js. |
 
 ## Resolved / accepted

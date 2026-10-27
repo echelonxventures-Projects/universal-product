@@ -1,0 +1,119 @@
+{
+  "agent": "claude-opus-5-5",
+  "blockers": [],
+  "commands": [
+    {
+      "command": "gh run view 40535132730 (CI on 98713e8)",
+      "exitCode": 0,
+      "observed": "test x3 and browser success; postgres failure (PR-043)",
+      "result": "failed"
+    },
+    {
+      "command": "npm run registry",
+      "exitCode": 0,
+      "observed": "gate green, seal verified, no drift",
+      "result": "passed"
+    },
+    {
+      "command": "npm run context:verify",
+      "exitCode": 0,
+      "observed": "0 errors, 11 warnings",
+      "result": "passed"
+    }
+  ],
+  "completed": [
+    {
+      "claim": "The branch is pushed (fast-forward only, never forced) and draft PR #6 into master is open; PRs #3, #4 and #5 are untouched",
+      "evidence": "https://github.com/echelonxventures-Projects/universal-product/pull/6; remote tip equals local HEAD after each push"
+    },
+    {
+      "claim": "CI on 98713e8 (run 40535132730): test (22.13), test (22), test (24) and browser pass; each test job ran the full chain, 3,221 passing checks and 0 failing",
+      "evidence": "run 40535132730 job logs; PRODUCTION_READINESS.md Release evidence"
+    },
+    {
+      "claim": "The Postgres bridge accepted a stale-looking but ready reply as an error; fixed with a regression test",
+      "evidence": "5d6f73b; test/pgbridge.js 8/0; mutation fails 5 (PR-040)"
+    },
+    {
+      "claim": "Gateway amounts use the currency's own minor unit through one exact money module",
+      "evidence": "bfeabcb; test/money.js 30/0; mutations fail (PR-039, PR-016 partial)"
+    },
+    {
+      "claim": "Provider events are applied once; full refunds and chargebacks made at the provider are applied",
+      "evidence": "2152f48; test/integrations.js 91/0; four mutations fail (PR-021, PR-014)"
+    },
+    {
+      "claim": "An interrupted Postgres migration leaves its target empty",
+      "evidence": "f16ca6e; check:postgres on CI PostgreSQL 16 and locally; mutation leaves 267 tables (PR-007)"
+    },
+    {
+      "claim": "Test-harness and CI defects that hid or invented failures are fixed, including a regression this pass introduced (c4a1dad) and corrected",
+      "evidence": "a3f9346, c4a1dad, a9e4616, ab78607, 98713e8 (PR-041)"
+    }
+  ],
+  "contextPacks": [
+    {
+      "fingerprint": "11222e6802a0556d5390a7b66175c854d73f964e58f3da5715ea51118329f632",
+      "id": "CTX-PLATFORM-QUALITY"
+    }
+  ],
+  "createdAt": "2026-10-27T17:19:58.289Z",
+  "filesChanged": [
+    "see git log 45be83b..HEAD"
+  ],
+  "filesInspected": [],
+  "id": "HO-REL-0001-002",
+  "mustNotChange": [
+    "master, and PRs #3, #4, #5 and their branches",
+    "No merge, no deployment, no real-money transaction, no production secret change",
+    "The original iCloud workspace and the preservation set"
+  ],
+  "nextAction": "Read the CI result for the head after a9b6436 on PR #6; fix PR-043 (sync in one transaction or set-based, or at boot) and re-run check:postgres; then continue PR-016's minor-unit migration design.",
+  "notCompleted": [
+    "postgres CI job fails: a cold first page waits for a ~2,092-statement sync over one serialized connection (PR-043)",
+    "Intermittent CI stalls not explained: roles.js boot after padmins.js; gops.js on Node 24 (PR-041); a9b6436 adds diagnostics, not yet run in CI",
+    "PR-016 storage migration and owner rounding policy; PR-029 partial refunds; PayPal/Razorpay refund and dispute rules",
+    "External prerequisites (gates 2, 3, 4, 7-9, 11-14, 16-20) remain BLOCKED"
+  ],
+  "objective": "Publish the integrated candidate for CI on a draft PR, fix what real CI exposes, and continue the P0 programme (financial integrity, database qualification), with every outcome recorded in PRODUCTION_READINESS.md.",
+  "prerequisites": [],
+  "previous": "HO-REL-0001-001",
+  "regressions": [
+    "c4a1dad's reboot kill fallback killed the new server; found by CI, fixed in 98713e8 with a check that fails on the old code"
+  ],
+  "repository": {
+    "branch": "integration/luxora-production-go-2026-10-27",
+    "dirty": false,
+    "head": "c9f59483783fb00158b3f981f100d6882c0498d0",
+    "status": [],
+    "upstream": "origin/integration/luxora-production-go-2026-10-27"
+  },
+  "schema": "ctx-handoff/1",
+  "state": "in-progress",
+  "task": "TASK-REL-0001",
+  "tests": [
+    {
+      "command": "CI npm test chain on Node 22.13, 22 and 24 (run 40535132730)",
+      "exitCode": 0,
+      "observed": "3,221 passing, 0 failing per runtime",
+      "result": "passed"
+    },
+    {
+      "command": "npm run check:postgres (CI, PostgreSQL 16)",
+      "exitCode": 1,
+      "observed": "migration and kernel checks pass; first page did not render in time",
+      "result": "failed"
+    }
+  ],
+  "unverified": [
+    "Anything against a live or sandbox payment provider",
+    "Postgres throughput and migration time at production size",
+    "CI on heads after 98713e8 (recorded on PR #6)"
+  ],
+  "verification": [
+    "npm test",
+    "npm run registry",
+    "npm run context:verify",
+    "npm run check:postgres"
+  ]
+}
