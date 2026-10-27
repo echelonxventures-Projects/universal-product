@@ -4,6 +4,8 @@
    postgres://postgres@127.0.0.1:5432/postgres), this:
      1. creates a throwaway database on it,
      2. boots a fresh install on SQLite and migrates it there (lib/migrate.js, one transaction),
+        and shows that a migration interrupted part-way (a failing statement, a killed process)
+        leaves its target empty,
      3. boots the platform on Postgres and checks the kernel's transactions, places, stores, time,
         expression and Value on it — a write the row refuses must leave the kernel untouched,
      4. runs the real-browser check (every page and console section) with the server on Postgres,
@@ -37,9 +39,45 @@ const node = (code, env) => spawnSync(process.execPath, ["-e", code], { cwd: ROO
       const s = console.log; console.log = () => {}; require("./lib/db.js"); console.log = s;
       const M = require("./lib/migrate.js"); const st = M.plan();
       M.apply(st, { connectionString: ${JSON.stringify(target)} }).then(o => { console.log(JSON.stringify({ ok: o.ok, failed: o.failed.slice(0, 3), tables: M.summary(st).tables })); process.exit(o.failed.length ? 1 : 0); });`, {});
-    for (const x of ["", "-wal", "-shm"]) { try { fs.rmSync(sqlite + x, { force: true }); } catch (e) { } }
     const mo = (mig.stdout.trim().split("\n").pop() || "");
     step(mig.status === 0, "a fresh install migrates to Postgres in one transaction " + mo, mig.stderr.split("\n").filter(l => !/Experimental|trace-warn/.test(l)).join(" ").slice(0, 400) || mo);
+
+    /* 2b · an interrupted migration leaves its target empty, so a retry starts clean: one
+       whose statement fails part-way, and one whose process is killed part-way (the server
+       rolls back a transaction whose connection is gone) */
+    const tablesIn = async db => {
+      const u = new URL(ADMIN); u.pathname = "/" + db;
+      const c = await pg.connect(u.toString()); const r = await c.query("SELECT COUNT(*) AS n FROM information_schema.tables WHERE table_schema='public'"); c.close();
+      return r.error ? r.error : Number(r.rows[0][0]); /* rows are arrays in column order (lib/pg.js) */
+    };
+    const urlOf = db => { const u = new URL(ADMIN); u.pathname = "/" + db; return u.toString(); };
+    for (const db of [NAME + "_fail", NAME + "_kill"]) { const r = await admin.simple(`CREATE DATABASE "${db}"`); if (r.error) step(false, "a throwaway database " + db, r.error); }
+    const failRun = node(`
+      process.env.LX_DB = ${JSON.stringify(sqlite)};
+      const s = console.log; console.log = () => {}; require("./lib/db.js"); console.log = s;
+      const M = require("./lib/migrate.js"); const st = M.plan(); const at = Math.floor(st.length / 2);
+      st.splice(at, 0, { table: "interrupt", kind: "data", sql: "INSERT INTO no_such_table VALUES (1)" });
+      M.apply(st, { connectionString: ${JSON.stringify(urlOf(NAME + "_fail"))} }).then(o => { console.log(JSON.stringify({ ok: o.ok, failed: o.failed.length, at, of: st.length })); process.exit(0); });`);
+    const fo = (() => { try { return JSON.parse(failRun.stdout.trim().split("\n").pop()); } catch (e) { return null; } })();
+    const failLeft = await tablesIn(NAME + "_fail");
+    step(fo && fo.failed > 0 && fo.ok === 0 && failLeft === 0, "a migration whose statement fails part-way leaves no table behind " + JSON.stringify({ result: fo, tables: failLeft }), (failRun.stderr || "").slice(0, 400));
+    const killed = await new Promise(resolve => {
+      const { spawn } = require("child_process");
+      const ch = spawn(process.execPath, ["-e", `
+        process.env.LX_DB = ${JSON.stringify(sqlite)};
+        const s = console.log; console.log = () => {}; require("./lib/db.js"); console.log = s;
+        const M = require("./lib/migrate.js"); const st = M.plan();
+        M.apply(st, { connectionString: ${JSON.stringify(urlOf(NAME + "_kill"))} }, (i, n) => console.log("progress " + i + " " + n)).then(() => console.log("finished"));`], { cwd: ROOT, env: process.env, stdio: ["ignore", "pipe", "pipe"] });
+      let out = "", at = null;
+      const timer = setTimeout(() => { ch.kill("SIGKILL"); }, 900000);
+      ch.stdout.on("data", d => { out += d; const m = /progress (\d+) (\d+)/.exec(String(d)); if (m && at === null && Number(m[1]) >= Number(m[2]) / 2) { at = m[1] + "/" + m[2]; ch.kill("SIGKILL"); } });
+      ch.on("exit", () => { clearTimeout(timer); resolve({ at, finished: /finished/.test(out) }); });
+    });
+    /* the server notices the dead connection and rolls back; give it a moment */
+    let killLeft = null;
+    for (let i = 0; i < 20; i++) { killLeft = await tablesIn(NAME + "_kill"); if (killLeft === 0) break; await new Promise(r => setTimeout(r, 500)); }
+    step(killed.at && !killed.finished && killLeft === 0, "a migration killed part-way leaves no table behind " + JSON.stringify({ killedAt: killed.at, tables: killLeft }));
+    for (const x of ["", "-wal", "-shm"]) { try { fs.rmSync(sqlite + x, { force: true }); } catch (e) { } }
 
     /* 3 · the platform booted on Postgres */
     const boot = node(`
@@ -89,8 +127,10 @@ const node = (code, env) => spawnSync(process.execPath, ["-e", code], { cwd: ROO
   } finally {
     /* a fresh connection: the first one sat idle through the browser run */
     admin.close();
-    try { const a2 = await pg.connect(ADMIN); const dr = await a2.simple(`DROP DATABASE IF EXISTS "${NAME}" WITH (FORCE)`); if (dr.error) console.log("  (could not drop " + NAME + ": " + dr.error + ")"); a2.close(); }
-    catch (e) { console.log("  (could not drop " + NAME + ": " + e.message + ")"); }
+    for (const db of [NAME, NAME + "_fail", NAME + "_kill"]) {
+      try { const a2 = await pg.connect(ADMIN); const dr = await a2.simple(`DROP DATABASE IF EXISTS "${db}" WITH (FORCE)`); if (dr.error) console.log("  (could not drop " + db + ": " + dr.error + ")"); a2.close(); }
+      catch (e) { console.log("  (could not drop " + db + ": " + e.message + ")"); }
+    }
   }
   console.log(failed ? `\n✗ ${failed} failed` : "\n✓ the platform runs on Postgres");
   process.exit(failed ? 1 : 0);
