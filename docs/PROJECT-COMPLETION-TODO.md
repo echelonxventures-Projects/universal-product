@@ -1,5 +1,12 @@
 # LUXORA — the complete remaining todo list
 
+> **Release readiness is not tracked here.** The single release register is
+> [PRODUCTION_READINESS.md](../PRODUCTION_READINESS.md) (findings `PR-001`…, gates, evidence, go/no-go).
+> This list is the domain and product completion backlog. Two entries below, read from
+> `_registry/roadmap.json`, disagree with the register's evidence and need an amendment there:
+> **GAP-29** (CI runs again since 2026-10-22 — PRs #4 and #5 have green runs) and **GAP-15**
+> (the Postgres path is not production-ready — register PR-007).
+
 Everything below is read out of the project's own registers, not invented: `_registry/roadmap.json`
 (the build path, the decisions and the gap register), `_registry/domains.json` (the 26 laws, the 12
 kernel parts, the 47 domains and their build status), `_registry/business-domains.json` (the 57 business
