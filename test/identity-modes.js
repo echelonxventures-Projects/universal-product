@@ -51,7 +51,7 @@ const makeIdToken = (payload, secret) => {
   const boot = async () => {
     const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB }, stdio: ["ignore", "ignore", "inherit"] });
     for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) return srv; } catch (e) { } await sleep(500); }
-    throw new Error("server failed to boot");
+    srv.kill("SIGKILL"); throw new Error("server failed to boot");
   };
   let srv = await boot();
   try {
@@ -119,8 +119,8 @@ const makeIdToken = (payload, secret) => {
     /* wait for the old server to exit before booting the new one: while it drains it still
        answers /healthz, so boot() returned on it and the next request was reset when it
        exited (CI run 40499956199, test (24)) */
-    await new Promise(r => { if (srv.exitCode !== null || srv.signalCode) return r(); srv.once("exit", r); srv.kill("SIGTERM"); setTimeout(() => { try { srv.kill("SIGKILL"); } catch (e) { } }, 10000); });
-    srv = await boot();
+    { const prev = srv; await new Promise(r => { if (prev.exitCode !== null || prev.signalCode) return r(); const t = setTimeout(() => { try { prev.kill("SIGKILL"); } catch (e) { } }, 10000); prev.once("exit", () => { clearTimeout(t); r(); }); prev.kill("SIGTERM"); }); }
+    srv = await boot(); const rebootedAt = Date.now();
     await storeLogin("luxora", "hr@luxora.shop", "hr12345678");
     ok((await f("/api/admin/roles")).roles.some(r => r.key === "scheduler"), "the store-defined role survived the reboot");
     ok((fresh("SELECT edited FROM meta_lists WHERE name='staffRoles:t" + luxora.id + "'") || {}).edited === 1, "the fork is stamped edited, so the seed leaves it alone");
@@ -220,10 +220,15 @@ const makeIdToken = (payload, secret) => {
     ok(!!disabledMethod.error && Array.isArray(disabledMethod.available), "an unregistered method is refused with the alternatives", disabledMethod.error);
     const tamper = await f("/api/auth/login-init?store=luxora", "POST", { email: "admin@luxora.shop", method: "otp", config: { ttl: 99999, length: 4 } });
     ok(!!tamper.ok && tamper.ttl_minutes === 5, "client-supplied ttl/length are ignored — the store's provider row decides", JSON.stringify(tamper.ttl_minutes));
+    /* the reboot's kill fallback (10 s) once fired at the NEW server, because it read the
+       reassigned variable (CI runs 40518301534, 40520710141): past that window the rebooted
+       server must still be serving */
+    if (Date.now() - rebootedAt < 11000) await sleep(11000 - (Date.now() - rebootedAt));
+    ok(srv.exitCode === null && !srv.signalCode && (await fetch(BASE + "/healthz")).ok, "the rebooted server is still serving after the old one's kill window");
   } finally {
     srv.kill();
     for (const s of ["", "-wal", "-shm"]) { try { require("fs").rmSync(DB + s, { force: true }); } catch (e) { } }
   }
   console.log(failed ? `\n${passed} passed, ${failed} FAILED` : `\n${passed} passed, 0 failed`);
   process.exit(failed ? 1 : 0);
-})();
+})().catch(e => { console.log("ABORT", e && e.stack || e); process.exit(1); });

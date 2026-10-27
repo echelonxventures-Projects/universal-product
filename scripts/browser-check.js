@@ -124,13 +124,18 @@ if (require.main === module) (async () => {
     for (const [p, ready] of pages) {
       tab.events = [];
       const url = BASE + p.replace("__PRODUCT__", encodeURIComponent(product));
+      const tNav = Date.now();
       await tab.send("Page.navigate", { url });
-      await tab.once("Page.loadEventFired", 15000);
+      const loaded = await tab.once("Page.loadEventFired", 15000), tLoad = Date.now();
       let ok = false;
       for (let i = 0; i < 40 && !ok; i++) { ok = !!(await tab.eval("(" + ready + ")()").catch(() => false)); if (!ok) await sleep(150); }
       await sleep(700); /* let late async boot work surface its errors */
       const issues = problems(tab.events);
-      if (!ok) issues.unshift("page did not render");
+      /* how long it waited and what the page showed, so a slow page is told from a broken one */
+      if (!ok) {
+        const shown = await tab.eval("(() => { const m = document.querySelector('#page') || document.body; return m ? m.innerText.trim().slice(0, 120) : '' })()").catch(() => "");
+        issues.unshift("page did not render (load event " + (loaded ? "after " + ((tLoad - tNav) / 1000).toFixed(1) + " s" : "not fired in 15 s") + ", waited " + ((Date.now() - tNav) / 1000).toFixed(1) + " s; it shows " + JSON.stringify(shown) + ")");
+      }
       checked++;
       report.push({ page: p, who, issues });
     }

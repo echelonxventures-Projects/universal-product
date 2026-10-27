@@ -40,7 +40,7 @@ async function boot(extra) {
     try { if ((await fetch(BASE + "/readyz")).ok) return p; } catch (e) { }
     await sleep(500);
   }
-  console.error("server failed to boot\n" + err); process.exit(1);
+  p.kill("SIGKILL"); console.error("server failed to boot\n" + err); process.exit(1);
 }
 const exited = p => p.exitCode !== null ? Promise.resolve(p.exitCode) : new Promise(r => p.on("exit", c => r(c)));
 const mk = () => {

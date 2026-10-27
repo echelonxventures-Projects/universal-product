@@ -42,7 +42,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: db, LUXORA_DEMO_BRANDS: "1" }, stdio: ["ignore", "ignore", "inherit"] });
   let up = false;
   for (let i = 0; i < 120; i++) { try { const h = await fetch(BASE + "/healthz"); if (h.ok) { up = true; break; } } catch (e) { } await sleep(1000); }
-  if (!up) { console.log("server failed to boot"); process.exit(1); }
+  if (!up) { srv.kill("SIGKILL"); console.log("server failed to boot"); process.exit(1); }
   try {
     await f("/api/session");
     const pl = await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });

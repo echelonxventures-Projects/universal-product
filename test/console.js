@@ -76,7 +76,7 @@ const waitForSettled = async (doc, ms = 7000) => waitFor(() => settled(doc), ms)
   const boot = async () => {
     const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB }, stdio: ["ignore", "ignore", "inherit"] });
     for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) return srv; } catch (e) { } await sleep(500); }
-    throw new Error("server failed to boot");
+    srv.kill("SIGKILL"); throw new Error("server failed to boot");
   };
   const srv = await boot();
   try {

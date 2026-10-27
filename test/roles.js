@@ -75,7 +75,7 @@ const navTo = async (doc, key, ms = 1800) => { const b = [...doc.querySelectorAl
   const boot = async () => {
     const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB }, stdio: ["ignore", "ignore", "inherit"] });
     for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) return srv; } catch (e) { } await sleep(500); }
-    throw new Error("server failed to boot");
+    srv.kill("SIGKILL"); throw new Error("server failed to boot");
   };
   let srv = await boot();
   try {
@@ -180,7 +180,7 @@ const navTo = async (doc, key, ms = 1800) => { const b = [...doc.querySelectorAl
     console.log("▸ SELF-HEAL — an operator's roles survive a reboot (the seed never reverts an edit)");
     /* T1: wait for the old server to actually exit before rebooting, so no pooled
        socket is left talking to a dead peer (and the port is free for the reboot) */
-    await new Promise(r => { if (srv.exitCode !== null || srv.signalCode) return r(); srv.once("exit", r); srv.kill("SIGTERM"); setTimeout(() => { try { srv.kill("SIGKILL"); } catch (e) { } }, 10000); });
+    { const prev = srv; await new Promise(r => { if (prev.exitCode !== null || prev.signalCode) return r(); const t = setTimeout(() => { try { prev.kill("SIGKILL"); } catch (e) { } }, 10000); prev.once("exit", () => { clearTimeout(t); r(); }); prev.kill("SIGTERM"); }); }
     srv = await boot();
     /* the session lives in the DB, so the same cookie still authenticates after restart */
     const after = await f("/api/platform/roles");
@@ -255,4 +255,4 @@ const navTo = async (doc, key, ms = 1800) => { const b = [...doc.querySelectorAl
   }
   console.log(failed ? `\n${passed} passed, ${failed} FAILED` : `\n${passed} passed, 0 failed`);
   process.exit(failed ? 1 : 0);
-})();
+})().catch(e => { console.log("ABORT", e && e.stack || e); process.exit(1); });

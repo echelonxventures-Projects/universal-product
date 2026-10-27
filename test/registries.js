@@ -59,7 +59,7 @@ async function render(p, wait = 1600) {
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: db }, stdio: ["ignore", "ignore", "inherit"] });
   let up = false;
   for (let i = 0; i < 120; i++) { try { const h = await fetch(BASE + "/healthz"); if (h.ok) { up = true; break; } } catch (e) { } await sleep(1000); }
-  if (!up) { console.log("server failed to boot"); process.exit(1); }
+  if (!up) { srv.kill("SIGKILL"); console.log("server failed to boot"); process.exit(1); }
   try {
     console.log("▸ GATING — registry authoring is platform-only");
     await f("/api/session?store=luxora");
@@ -159,4 +159,4 @@ async function render(p, wait = 1600) {
   await sleep(400);
   for (const s of ["", "-wal", "-shm"]) { try { require("fs").rmSync(db + s, { force: true }); } catch (e) { } }
   process.exit(failed ? 1 : 0);
-})();
+})().catch(e => { console.log("ABORT", e && e.stack || e); process.exit(1); });

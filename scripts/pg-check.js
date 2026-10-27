@@ -119,7 +119,7 @@ const node = (code, env) => spawnSync(process.execPath, ["-e", code], { cwd: ROO
       const br = spawnSync(process.execPath, [path.join(ROOT, "scripts", "browser-check.js")], { cwd: ROOT, env: { ...process.env, LX_DB_DRIVER: "postgres", LX_PG_URL: target, CHECK_PORT: process.env.CHECK_PORT || "8869" }, encoding: "utf8", timeout: 1800000 });
       const lines = (br.stdout || "").split("\n");
       /* each failing page with what went wrong on it */
-      lines.forEach((l, i) => { if (/✗/.test(l)) console.log("    " + l.trim() + (lines[i + 1] && !/✓|✗/.test(lines[i + 1]) ? "\n      " + lines[i + 1].trim() : "")); else if (/page loads/.test(l)) console.log("    " + l.trim()); });
+      lines.forEach((l, i) => { if (/✗/.test(l)) console.log("    " + l.trim() + (lines[i + 1] && !/✓|✗/.test(lines[i + 1]) ? "\n      " + lines[i + 1].trim() : "")); else if (/page loads|server up in/.test(l)) console.log("    " + l.trim()); });
       for (const l of (br.stdout || "").split("\n").filter(l => /^\[[0-9a-f-]{36}\]/.test(l)).slice(0, 5)) console.log("      server: " + l.slice(0, 300));
       const why = lines.filter(l => /✗/.test(l)).slice(0, 5).join(" | ") || ("exit " + br.status + (br.signal ? " " + br.signal : "") + (br.error ? " " + br.error.message : "") + ": " + String(br.stderr || "").split("\n").filter(l => l && !/Experimental|trace-warn/.test(l)).slice(-6).join(" / "));
       step(br.status === 0, "Postgres: every page and console section loads clean", why);
