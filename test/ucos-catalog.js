@@ -150,6 +150,28 @@ const bad = cat.publish(999, "uv_nonexistent", "Ghost", { name: null, price: "no
 ok(bad.ok === true, "publishing a malformed record still yields a valid catalog row", JSON.stringify(bad));
 run("DELETE FROM products WHERE tenant_id=999");
 
+/* the universe's type is resolved once per publish, not once per record: resolving reads the
+   whole item-kinds vocabulary, and per record it made a fresh boot take over a minute on CI */
+{
+  const gc = require("../lib/gcatalog.js"), real = gc.typeOfUniverse; let calls = 0;
+  gc.typeOfUniverse = k => (calls++, real(k));
+  const ek = univ.list().find(u => u.name === "Insurance").entity_key;
+  for (let i = 0; i < 3; i++) entity.createEntity(0, ek, { name: "Type probe " + i, code: "TP-" + i, status: "canonical" });
+  let many;
+  try { many = cat.publishUniverse(999, ek); } finally { gc.typeOfUniverse = real; }
+  ok(many.published >= 3 && calls === 1, "a universe's type is resolved once for all its records", JSON.stringify({ published: many.published, calls }));
+  ok(db.all("SELECT DISTINCT type FROM products WHERE tenant_id=999").length === 1, "every record of the universe carries that one type");
+  cat.withdrawUniverse(999, ek);
+  run("DELETE FROM entity_data WHERE entity=? AND data LIKE '%Type probe%'", ek);
+  /* and an activation of many universes reads the item-kinds vocabulary once, handing it to each */
+  const seen = [];
+  gc.typeOfUniverse = (k, kinds) => (seen.push(Array.isArray(kinds)), real(k, kinds));
+  let act;
+  try { act = cat.activateAll(999, { limit: 5 }); } finally { gc.typeOfUniverse = real; }
+  ok(act.activated >= 2 && seen.length >= 2 && seen.every(Boolean), "an activation types every universe from one read of the kinds vocabulary", JSON.stringify({ activated: act.activated, typed: seen.length, givenKinds: seen.filter(Boolean).length }));
+  for (const r of db.all("SELECT DISTINCT source_universe k FROM products WHERE tenant_id=999")) cat.withdrawUniverse(999, r.k);
+}
+
 console.log("\n▸ CATALOG STATS (the measurable deployment picture)");
 const st = cat.catalogStats();
 ok(Array.isArray(st.tenants), "catalog stats enumerate active tenants", "tenants=" + (st.tenants || []).length);
