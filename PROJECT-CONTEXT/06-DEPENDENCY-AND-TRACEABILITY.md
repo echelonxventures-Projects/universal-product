@@ -11,13 +11,13 @@
 | blocks | 1 | <from> must be resolved before <to> can proceed. |
 | captured-by | 24 | <from> (original evidence) is preserved by archive store <to>. |
 | conflicts-with | 0 | <from> and <to> cannot both hold as stated. Symmetric; recorded once. |
-| constrains | 43 | <from> limits what <to> may do. |
+| constrains | 46 | <from> limits what <to> may do. |
 | depends-on | 33 | <from> cannot be correct or complete without <to>. |
 | derived-from | 67 | <from> was derived from evidence or knowledge in <to>. |
 | implements | 49 | <from> realises <to>. |
 | included-in | 109 | <from> is part of the curated content of context pack <to>. |
 | recovers | 1 | <from> holds bytes that hash to the checksum recorded by <to>, whose own storage does not preserve them. <to> stays unverified; <from> is verified on its own storage. |
-| references | 49 | <from> mentions <to> for navigation; no dependency implied. |
+| references | 50 | <from> mentions <to> for navigation; no dependency implied. |
 | resolves | 5 | <from> closes the open question or conflict <to>. |
 | supersedes | 1 | <from> replaces <to>; <to> must not govern active work. |
 | supports | 0 | <from> is evidence in favour of <to> without being its origin. |
