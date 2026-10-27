@@ -8,6 +8,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-24.04
+    # a hung suite fails the job instead of holding the runner for GitHub's 6-hour default
+    # (run 40476015559: test (22.13) and test (24) sat in the E2E step for over 5 hours)
+    timeout-minutes: 120
     strategy:
       # every runtime reports: with fail-fast, one red job cancelled the other two mid-suite and
       # the commit had no result at all on 22.13 and 22
@@ -68,6 +71,7 @@ jobs:
     # every page and console section in real Chrome under the production CSP:
     # fails on a CSP violation, an uncaught exception, a console error or a failed load
     runs-on: ubuntu-24.04
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -84,6 +88,7 @@ jobs:
     # section with the server on Postgres (scripts/pg-check.js). The service authenticates with
     # SCRAM-SHA-256, Postgres's default, as managed Postgres does.
     runs-on: ubuntu-24.04
+    timeout-minutes: 60
     services:
       postgres:
         image: postgres:16
