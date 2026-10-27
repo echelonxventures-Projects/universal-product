@@ -4,10 +4,10 @@
 "use strict";
 
 /* gift cards (lib/giftcards.js): every card of the store with its last four, value, state and
-   recipient; staff issue one (its code is shown once) or void one with a reason */
+   recipient; staff issue one (its code is shown once) or void one with a reason. gift_cards is a
+   storefront atom: it lights no console leaf of its own (the screen sits in the Offers section,
+   like coupons), and when the store does not offer gift cards the API says so and this shows it */
 async function vGiftCards() {
-  const gate = await coGate("giftcards");
-  if (!gate.any) return coOff("gift cards", "🎁 Gift Cards", gate.off);
   const d = await api("/admin/gift-cards", {}).catch(e => ({ error: e.message, cards: [] }));
   if (d.error) return `<div class="a-head"><h2>🎁 Gift Cards</h2><p class="a-sub">${esc(d.error)}</p></div>`;
   return `<div class="a-head"><h2>🎁 Gift Cards</h2><p class="a-sub">Cards worth ${money(d.min_amount)}–${money(d.max_amount)}, ${Number(d.validity_days) ? "valid " + Number(d.validity_days) + " days" : "never expiring"} — the <code>gift_cards</code> capability's settings. Shoppers buy them as an item${(d.items || []).length ? " (" + d.items.map(x => esc(x.title)).join(", ") + ")" : " — no item is a gift card yet: set its <code>gift_card</code> fact"}; a redeemed card lands in the gift balance, spent first at checkout.</p></div>
@@ -29,4 +29,4 @@ function wireGiftCards() {
   };
   wireCoPosts();
 }
-screen("giftcards", { group: "Offers", label: "🎁 Gift Cards", render: vGiftCards, wire: wireGiftCards });
+screen("giftcards", { group: "Offers", label: "🎁 Gift Cards", section: "offers", render: vGiftCards, wire: wireGiftCards });

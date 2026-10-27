@@ -946,7 +946,10 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       jar.clear(); await f("/api/session?store=luxora"); await f("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });
       const ap = await render("/admin.html");
       const ovNav = [...ap.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === "promotions");
-      if (ovNav) { click(ap.win, ovNav); await sleep(1500); const vb = ap.doc.querySelector("#vBody"); ok(vb && /Offers & Coupons/i.test(vb.textContent) && !/⚠️/.test(vb.textContent), "store Offers & Coupons builder renders"); } else ok(false, "offers nav present");
+      /* the builder is the Offers domain's screen; codes have their own (Coupon domain) screen */
+      if (ovNav) { click(ap.win, ovNav); await sleep(1500); const vb = ap.doc.querySelector("#vBody"); ok(vb && /Offers/.test(vb.textContent) && !/⚠️/.test(vb.textContent), "store Offers builder renders"); } else ok(false, "offers nav present");
+      const cpNav = [...ap.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === "coupons");
+      if (cpNav) { click(ap.win, cpNav); await sleep(1500); const cb = ap.doc.querySelector("#vBody"); ok(cb && /Coupons/.test(cb.textContent) && /Redemption performance/.test(cb.textContent) && !/⚠️/.test(cb.textContent), "store Coupons screen renders with its redemption performance"); } else ok(false, "coupons nav present");
       const gzNav = [...ap.doc.querySelectorAll(".p-nav button")].find(b => b.dataset.v === "goip");
       if (gzNav) {
         click(ap.win, gzNav); await sleep(1600);
@@ -2069,11 +2072,15 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
         /* the wallet is emptied and funded through the ledger (staff adjustments, each with a reason) */
         await C("/api/wallets"); /* opens the default wallet if the member has none */
         const ws = (await A("/api/admin/wallets?owner=" + encodeURIComponent(memOwner))).body.wallets || [];
-        const mw = ws.find(w => w.definition && w.definition.key) || {};
-        if (mw.posted > 0) await A("/api/admin/wallets/" + encodeURIComponent(mw.id) + "/adjust", "POST", { amount: -mw.posted, reason: "test: empty the wallet", idempotency_key: "smoke-empty" });
+        /* a shopper may hold several wallets in the money unit (the gift balance beside the main
+           one): every one of them is emptied, so nothing the membership could spend from is left */
+        const baseUnit = ((await C("/api/cart")).body.currency || {}).base;   /* what a membership charges in */
+        const money = ws.filter(w => w.definition && w.definition.key && w.unit === baseUnit);
+        const spendsFrom = money.find(w => w.posted > 0) || money[0] || {};   /* the wallet that held the money */
+        for (const mw of money) if (mw.posted > 0) await A("/api/admin/wallets/" + encodeURIComponent(mw.id) + "/adjust", "POST", { amount: -mw.posted, reason: "test: empty the wallet", idempotency_key: "smoke-empty-" + mw.id });
         const broke = await C("/api/membership/subscribe", "POST", { tier: "premier" });
         ok(broke.status === 400 && /Insufficient/i.test(broke.body.error || ""), "a paid membership is refused from an empty wallet", broke.body);
-        const fund = await A("/api/admin/wallets/" + encodeURIComponent(mw.id) + "/adjust", "POST", { amount: 500, reason: "test: fund the wallet", idempotency_key: "smoke-fund" });
+        const fund = await A("/api/admin/wallets/" + encodeURIComponent(spendsFrom.id) + "/adjust", "POST", { amount: 500, reason: "test: fund the wallet", idempotency_key: "smoke-fund" });
         ok(fund.status === 200, "staff fund the wallet through the ledger", fund.body); }
       const mem1 = await C("/api/membership/subscribe", "POST", { tier: "premier" });
       ok(mem1.status === 200 && mem1.body.membership.tier === "premier", "customer upgrades membership tier", JSON.stringify(mem1.body));

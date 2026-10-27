@@ -76,7 +76,7 @@ const cov = goip.coverage();
 ok(cov.capabilities.declared === 22 && cov.capabilities.bound === 22, "22/22 capabilities bound to an implementation", JSON.stringify(cov.capabilities.gap));
 ok(cov.benefits.declared === 25 && cov.benefits.handled === 25, "25/25 benefits bound to a math handler", JSON.stringify(cov.benefits.gap));
 ok(cov.intelligence.declared === 15 && cov.intelligence.implemented === 15, "15/15 intelligence readings implemented");
-for (const b of SPEC.goipBenefits) { const ben = reg("goipBenefits").find(x => x.key === b); ok(ben && typeof offers.HANDLERS[ben.type] === "function", "benefit " + b + " resolves through offers.HANDLERS." + (ben && ben.type)); }
+for (const b of SPEC.goipBenefits) { const ben = reg("goipBenefits").find(x => x.key === b); ok(ben && typeof offers.handlerFor(ben.type) === "function", "benefit " + b + " resolves through offers.handlerFor(" + (ben && ben.type) + ")"); }
 for (const c of SPEC.goipCapabilities) { const r = goip.invoke(c, 1, { id: 1, amount: 10, owner: "t1:u:1", months: 1, sample: 1, action: "attest", model: "linear" }, { platform: true }); ok(!(r && r.code === 501), "capability " + c + " is not a stub", r && r.error); }
 for (const e of SPEC.goipEngines) { const def = reg("goipEngines").find(x => x.key === e); ok(def && def.impl, "engine " + e + " names its implementation"); }
 ok(typeof goip.feed === "function" && typeof goip.widget === "function", "distribution feeds + embeddable component are real surfaces");
@@ -112,7 +112,9 @@ const api = src("api.js");
 ok((api.match(/INSERT INTO offers\(/g) || []).length === 0, "api.js never writes `offers` directly — it goes through goip.createExchange");
 ok((api.match(/INSERT INTO coupons\(/g) || []).length === 0, "api.js never writes `coupons` directly — it goes through goip.issue");
 ok((src("goip.js").match(/INSERT INTO offers\(/g) || []).length === 1, "exactly one INSERT INTO offers in the whole platform");
-ok((src("goip.js").match(/INSERT INTO coupons\(/g) || []).length === 1, "exactly one INSERT INTO coupons in the GOIP kernel");
+/* the Coupon domain owns codes: one writer in the platform, lib/coupons.js; the kernel asks it */
+const couponWriters = fs.readdirSync(path.join(__dirname, "..", "lib")).filter(f => f.endsWith(".js")).filter(f => /INSERT INTO coupons\(/.test(src(f)));
+ok(couponWriters.length === 1 && couponWriters[0] === "coupons.js" && (src("coupons.js").match(/INSERT INTO coupons\(/g) || []).length === 1, "exactly one INSERT INTO coupons in the platform, in the Coupon domain", couponWriters);
 ok(!/function evaluate|HANDLERS *=/.test(src("goip.js").replace(/GOIP_HANDLERS/g, "")), "GOIP does not fork the decision/math engine");
 ok(typeof offers.onRedeem === "function" && typeof offers.ledgerEntry === "function", "offers.js exposes the hook + unit ledger GOIP extends it through");
 for (const t of ["goip_touchpoints", "goip_budgets", "goip_settlements", "goip_entitlements"]) {

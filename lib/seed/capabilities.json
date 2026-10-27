@@ -2759,9 +2759,6 @@
   ],
   "sample_orders": [
    "samples"
-  ],
-  "gift_cards": [
-   "giftcards"
   ]
  },
  "ROUTES": {
@@ -2775,6 +2772,6 @@
   "admin/ledger": "wallets",
   "admin/wallet-definitions": "wallets",
   "admin/wallet-default": "wallets",
-  "admin/gift-cards": "giftcards"
+  "admin/gift-cards": "offers"
  }
 }
