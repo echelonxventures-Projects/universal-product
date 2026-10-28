@@ -1,5 +1,22 @@
 {
- "note": "How money is rounded (lib/money.js). `rounding` is the platform default rule; `currencies` overrides it per currency code, e.g. {\"XYZ\": {\"rounding\": \"half-even\"}}. Rules: half-up (half away from zero), half-even, half-down, up, down, ceiling, floor. The default below is the engineering default awaiting the owner's written policy (PRODUCTION_READINESS.md PR-016, gate 4).",
+ "note": "How money is rounded and stored (lib/money.js, lib/money-store.js). `rounding` is the platform default rule; `currencies` overrides it per currency code, e.g. {\"XYZ\": {\"rounding\": \"half-even\"}}. Rules: half-up (half away from zero), half-even, half-down, up, down, ceiling, floor. The default below is the engineering default awaiting the owner's written policy (PRODUCTION_READINESS.md PR-016, gate 4). `store` names every persisted money column of the payment spine: each is kept as exact minor units (`<column>_minor`, a 64-bit integer) at the row's `money_scale` in the row's `currency`; the REAL column beside it is a projection written from the minor value and checked against it by the database (docs/money.md). `zero` names the amounts whose column defaults to 0: written as that currency's exact zero when a row does not state them.",
  "rounding": "half-up",
- "currencies": {}
+ "currencies": {},
+ "store": {
+  "version": 1,
+  "migration": "money-0001",
+  "states": { "row": { "quarantined": "quarantined" }, "entry": { "open": "open", "normalized": "normalized", "resolved": "resolved" }, "migration": { "running": "running", "done": "done" } },
+  "tables": [
+   { "table": "orders", "key": "id", "amounts": ["sub", "ship_fee", "gift_used", "tax", "total"] },
+   { "table": "order_items", "key": "rowid", "amounts": ["price"], "addCurrency": true, "noTenant": true, "currencyFrom": { "table": "orders", "column": "order_id" } },
+   { "table": "payments", "key": "id", "amounts": ["amount", "fee"], "zero": ["fee"], "refunds": true },
+   { "table": "invoices", "key": "id", "amounts": ["amount"] },
+   { "table": "invoice_lines", "key": "id", "amounts": ["unit_amount", "amount", "tax"], "zero": ["unit_amount", "amount", "tax"], "addCurrency": true, "currencyFrom": { "table": "invoices", "column": "invoice_id" } },
+   { "table": "credit_notes", "key": "id", "amounts": ["amount"] },
+   { "table": "settlements", "key": "id", "amounts": ["gross", "commission", "net"], "addCurrency": true },
+   { "table": "disputes", "key": "id", "amounts": ["amount"] },
+   { "table": "payouts", "key": "id", "amounts": ["gross", "fee", "net"], "zero": ["gross", "fee", "net"] },
+   { "table": "payout_items", "key": "id", "amounts": ["amount"] }
+  ]
+ }
 }

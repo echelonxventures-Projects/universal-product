@@ -556,14 +556,18 @@
    ],
    "owns": {
     "files": [
-     "lib/money.js"
+     "lib/money.js",
+     "lib/money-store.js"
     ],
     "tables": [
      "currencies",
-     "fx_rates"
+     "fx_rates",
+     "money_migrations",
+     "money_quarantine"
     ],
     "routes": [
-     "^/api/(fx|platform/fx)(/|$)"
+     "^/api/(fx|platform/fx)(/|$)",
+     "^/api/platform/money(/|$)"
     ],
     "machines": [],
     "capabilities": [],
@@ -1016,7 +1020,9 @@
     "developer"
    ],
    "owns": {
-    "files": [],
+    "files": [
+     "lib/refunds.js"
+    ],
     "tables": [
      "payments",
      "payment_attempts",
@@ -1028,11 +1034,13 @@
      "mandates",
      "escrow_holds",
      "split_payments",
-     "gateway_events"
+     "gateway_events",
+     "refunds"
     ],
     "routes": [
      "^/api/admin/(payments|gateway|gateways)(/|$)",
-     "^/api/fintech/(links|qr|upi|mandates|escrow|splits)(/|$)"
+     "^/api/fintech/(links|qr|upi|mandates|escrow|splits)(/|$)",
+     "^/api/admin/refunds(/|$)"
     ],
     "machines": [
      "payment",
@@ -1042,7 +1050,8 @@
      "upi_collect",
      "mandate",
      "escrow",
-     "split_payment"
+     "split_payment",
+     "refund"
     ],
     "capabilities": [
      "upi_collect",

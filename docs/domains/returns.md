@@ -43,6 +43,9 @@ Sending something back: return requests, their inspection and refund, and paymen
 | `resolution` | TEXT |
 | `closed_at` | TEXT |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+| `amount_minor` | INTEGER |
+| `money_scale` | INTEGER |
+| `money_state` | TEXT |
 
 ## API reference
 

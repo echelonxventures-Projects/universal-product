@@ -398,7 +398,7 @@ const raw = (text) => new Promise((resolve) => {
       const throwsLike = (fn, re) => { try { fn(); return false; } catch (e) { return re.test(e.message); } };
       ok(throwsLike(() => rec.subscribeMembership(1, "t1:u:8888", "premier"), /Insufficient/), "a paid membership needs wallet funds");
       /* a payout disburses once */
-      const pid = D.run("INSERT INTO payouts(tenant_id,ref,seller_id,kind,period,gross,fee,net,currency,status) VALUES(1,'PO-SEC',1,'seller','2026-10',10,0,10,'USD','open')").lastInsertRowid;
+      const pid = require(path.join(__dirname, "..", "lib", "money-store.js")).insert("payouts", { tenant_id: 1, ref: "PO-SEC", seller_id: 1, kind: "seller", period: "2026-10", status: "open" }, "USD", { gross: "10", fee: "0", net: "10" }).lastInsertRowid;
       fin.disbursePayout(1, Number(pid));
       ok(throwsLike(() => fin.disbursePayout(1, Number(pid)), /already/), "a payout cannot be disbursed twice");
       /* store-side module purchase bills an open invoice, never a fabricated paid one */

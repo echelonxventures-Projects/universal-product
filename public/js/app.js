@@ -676,7 +676,7 @@ async function pageCart() {
       ${carousel(T("bestSellers"), (await api("/products?sort=best&limit=12")).items)}`;
     wireCarousels(); return;
   }
-  const row = ({ product: p, qty, unit, line, term_labels, problems, max_qty }) => `
+  const row = ({ product: p, qty, unit, line, term_labels, problems, max_qty, line_total }) => `
   <div class="ci"><a class="ci-img" href="${prodLink(p)}">${img(p, "big")}</a>
     <div class="ci-mid"><a class="ci-title" href="${prodLink(p)}">${esc(p.t)}</a>
       <div class="ci-stock">${stockText(p)}</div>
@@ -689,7 +689,7 @@ async function pageCart() {
         ${f.saveForLater && !line ? `<span class="sep">|</span><a href="#" data-act="save-later" data-id="${p.id}">Save for later</a>` : ""}
         ${atoms().substitutions && window.__subPolicies ? `<span class="sep">|</span><select class="ci-sub" data-id="${p.id}" data-line="${esc(line || "")}" data-qty="${qty}" title="If this item is unavailable">${window.__subPolicies.filter(x => !x.needs_item).map(x => `<option value="${esc(x.key)}" ${(term_labels || []).some(l => l.endsWith(x.name)) ? "selected" : ""}>If unavailable: ${esc(x.name)}</option>`).join("")}</select>` : ""}</div>
       ${unit < p.p ? `<div class="ci-tier">Volume price applied: ${money(unit)} ea</div>` : ""}</div>
-    <div class="ci-price">${priceHtml((unit * qty).toFixed(2))}</div></div>`;
+    <div class="ci-price">${priceHtml(line_total)}</div></div>`;
   main.innerHTML = `
   <div class="cart-layout"><div class="cart-main">
     <div class="cart-card"><div class="cc-head"><h2>Your Bag</h2><span class="cc-price-h">Price</span></div>
@@ -728,6 +728,9 @@ async function pageCart() {
 /* ============ CHECKOUT ============ */
 async function pageCheckout() {
   const main = $("#page");
+  /* where the shopper agrees to pay, amounts are shown in the currency they are charged in,
+     exactly as the server priced them — never an indicative conversion (computeDisp) */
+  S.disp = null;
   const [c, prov] = await Promise.all([api("/cart"), api("/providers")]);
   if (!c.items.length) { location.href = "cart.html"; return; }
   document.title = `Checkout — ${CFG.brand.name}`;
@@ -747,7 +750,7 @@ async function pageCheckout() {
       ${CFG.features.giftCards && S.gift > 0 ? `<p class="pay-gift">🎁 Gift balance ${money(S.gift)} applied automatically</p>` : ""}</div>
     ${CFG.features.fiscalSelection ? `<div class="co-sec" id="coCtx" hidden><h3><span class="co-num">＋</span> Fiscal &amp; billing contexts</h3><div id="ctxPicks"></div><p class="pay-meta">Chosen contexts are validated against the platform context entities.</p></div>` : ""}
     <div class="co-sec"><h3><span class="co-num">3</span> Review items and shipping</h3>
-      ${c.items.map(({ product: p, qty, unit }) => `<div class="co-item">${img(p, "tile")}<div class="co-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><span class="co-i-qty">Qty: ${qty}${unit < p.p ? " · volume price" : ""}</span></div><div class="co-i-price">${priceHtml(unit * qty)}</div></div>`).join("")}
+      ${c.items.map(({ product: p, qty, unit, line_total }) => `<div class="co-item">${img(p, "tile")}<div class="co-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><span class="co-i-qty">Qty: ${qty}${unit < p.p ? " · volume price" : ""}</span></div><div class="co-i-price">${priceHtml(line_total)}</div></div>`).join("")}
       ${carriers.map((x, i) => `<div class="co-del"><label><input type="radio" name="ship" value="${x.id}" ${i === 0 ? "checked" : ""}> ${x.emoji} <b>${esc(x.name)}</b> · ${x.eta[0]}–${x.eta[1]} days · ${c.qualifies ? "Complimentary" : money(x.baseFee || cm.shipFee)}</label></div>`).join("")}
       <div id="coRates"></div></div>
   </div>

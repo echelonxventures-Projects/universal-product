@@ -44,6 +44,12 @@ Queue a payout to a bank account or VPA and process it through the configured ga
 | `net` | REAL |
 | `status` | TEXT DEFAULT 'pending' |
 | `period` | TEXT |
+| `currency` | TEXT |
+| `gross_minor` | INTEGER |
+| `commission_minor` | INTEGER |
+| `net_minor` | INTEGER |
+| `money_scale` | INTEGER |
+| `money_state` | TEXT |
 
 ### `payouts`
 
@@ -63,6 +69,11 @@ Queue a payout to a bank account or VPA and process it through the configured ga
 | `disbursed_at` | TEXT |
 | `note` | TEXT DEFAULT '' |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+| `gross_minor` | INTEGER |
+| `fee_minor` | INTEGER |
+| `net_minor` | INTEGER |
+| `money_scale` | INTEGER |
+| `money_state` | TEXT |
 
 ### `payout_items`
 
@@ -77,6 +88,9 @@ Queue a payout to a bank account or VPA and process it through the configured ga
 | `amount` | REAL |
 | `currency` | TEXT |
 | `settled` | INTEGER DEFAULT 0 |
+| `amount_minor` | INTEGER |
+| `money_scale` | INTEGER |
+| `money_state` | TEXT |
 
 ### `recon_batches`
 

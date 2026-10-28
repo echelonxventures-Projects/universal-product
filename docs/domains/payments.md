@@ -68,6 +68,11 @@ Divide a payment across parties at order time. The parts must sum to the total, 
 
 ## Architecture
 
+| Module | What it is |
+|---|---|
+| `lib/refunds.js` | refunds, full and partial, exactly (PR-016, PR-029). |
+| `lib/routes/payments.js` | payments domain routes (_registry/business-domains.json `payments`). A payment's refunds — each an exact amount of the payment's currency (lib/refunds.js) — and the operator's settlement of a refund whose outcome the provider never gave. The refund itself (POST /api/admin/payments/:id/refund) predates this file and stays in lib/api.js. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
+
 **Registry lists** (editable in Data Studio): `finUpiStatuses`, `finCollectStatuses`, `finQrKinds`, `finQrStatuses`, `finLinkStatuses`, `finMandateFrequencies`, `finMandateStatuses`, `finEscrowStatuses`, `finSplitStatuses`
 
 ## Data model
@@ -104,6 +109,11 @@ Divide a payment across parties at order time. The parts must sum to the total, 
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 | `provider_payment_id` | TEXT |
 | `live` | INTEGER DEFAULT 0 |
+| `amount_minor` | INTEGER |
+| `fee_minor` | INTEGER |
+| `money_scale` | INTEGER |
+| `money_state` | TEXT |
+| `refunded_minor` | INTEGER NOT NULL DEFAULT 0 |
 | `uid` | TEXT |
 
 ### `payment_attempts`
@@ -252,6 +262,27 @@ Divide a payment across parties at order time. The parts must sum to the total, 
 | `settled_at` | TEXT |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 
+### `refunds`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `payment_id` | INTEGER NOT NULL |
+| `amount_minor` | INTEGER NOT NULL CHECK (amount_minor > 0) |
+| `currency` | TEXT NOT NULL |
+| `money_scale` | INTEGER NOT NULL |
+| `status` | TEXT NOT NULL |
+| `source` | TEXT NOT NULL DEFAULT 'console' |
+| `reason` | TEXT DEFAULT '' |
+| `idem_key` | TEXT NOT NULL |
+| `provider_refund_id` | TEXT |
+| `error` | TEXT |
+| `actor` | TEXT DEFAULT '' |
+| `attempts` | INTEGER NOT NULL DEFAULT 1 |
+| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+| `settled_at` | TEXT |
+
 ## API reference
 
 Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the session; mutating calls accept an `Idempotency-Key` header where noted.
@@ -276,10 +307,12 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `PUT /api/admin/gateways` | `apiAdminGatewaysPut` | — |
 | `POST /api/admin/gateways/:id/test` | `apiAdminGatewayTest` | — |
 | `GET /api/admin/payments` | `apiAdminPayments` | — |
-| `POST /api/admin/payments/:id/refund` | `apiAdminPaymentRefund` | — |
+| `POST /api/admin/payments/:id/refund` | `apiAdminPaymentRefund` | refund all of a payment, or part of it (body.amount, in the payment's currency), exactly and once per Idempotency-Key (lib/refunds.js). A live payment goes back through its provider; a simulated one, or one refunded elsewhere and recorded with manual: true, without a call. |
 | `POST /api/admin/payments/:id/reconcile` | `apiAdminPaymentReconcile` | staff: ask the gateway now (live), or record money received offline (cash, a transfer) |
 | `POST /api/admin/payments/:id/received` | `apiAdminPaymentReceived` | — |
 | `POST /api/admin/gateway/preview/:id` | `apiGatewayPreview` | — |
+| `GET /api/admin/payments/:id/refunds` | `apiAdminPaymentRefunds` | a payment's refunds and what is left to refund |
+| `POST /api/admin/refunds/:id/resolve` | `apiAdminRefundResolve` | staff settle a refund whose outcome the provider never gave (unknown) or that is still processing, after checking the provider's own record: success keeps it, failure gives it back |
 
 ## Process flows
 
@@ -292,6 +325,17 @@ stateDiagram-v2
   [*] --> initiated
   failed --> [*]
   refunded --> [*]
+```
+
+Actions: 
+
+### Refund (`refund`)
+
+```mermaid
+stateDiagram-v2
+  [*] --> pending
+  succeeded --> [*]
+  failed --> [*]
 ```
 
 Actions: 
@@ -369,10 +413,10 @@ Actions:
 ```mermaid
 flowchart LR
   U([Shopper / Store administrator / Platform administrator / Developer]) --> UI[store console, platform console]
-  UI --> API[22 API routes]
-  API --> ENG[engines]
+  UI --> API[24 API routes]
+  API --> ENG[refunds.js, payments.js]
   ENG --> DB[(tenant_gateways, payments, payment_attempts, gateway_events, upi_handles, upi_collects, …)]
-  ENG --> SM{{8 state machines}}
+  ENG --> SM{{9 state machines}}
 ```
 
 ## User interface

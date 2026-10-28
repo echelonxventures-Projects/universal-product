@@ -54,7 +54,8 @@
     },
     "idempotencyHeader": "Idempotency-Key",
     "body": {
-     "payment_intent": "{{paymentId}}"
+     "payment_intent": "{{paymentId}}",
+     "amount": "{{amountCents}}"
     },
     "idPath": "id",
     "statusPath": "status",
@@ -93,7 +94,8 @@
       "status": "refunded",
       "refPath": null,
       "paymentIdPath": "data.object.payment_intent",
-      "amountPath": "data.object.amount_refunded"
+      "amountPath": "data.object.amount_refunded",
+      "amountMeaning": "cumulative"
      },
      "charge.dispute.created": {
       "dispute": "opened",
@@ -443,7 +445,9 @@
       },
       "refPath": null,
       "paymentIdPath": "data.object.refund.payment_id",
-      "amountPath": "data.object.refund.amount_money.amount"
+      "amountPath": "data.object.refund.amount_money.amount",
+      "amountMeaning": "refund",
+      "refundIdPath": "data.object.refund.id"
      }
     },
     "idPath": "event_id"

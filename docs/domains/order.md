@@ -70,6 +70,13 @@ When an item is unavailable at picking: the shopper's own choice per line — re
 | `trace_id` | TEXT |
 | `charges` | TEXT NOT NULL DEFAULT '[]' |
 | `deleted_at` | TEXT |
+| `sub_minor` | INTEGER |
+| `ship_fee_minor` | INTEGER |
+| `gift_used_minor` | INTEGER |
+| `tax_minor` | INTEGER |
+| `total_minor` | INTEGER |
+| `money_scale` | INTEGER |
+| `money_state` | TEXT |
 | `uid` | TEXT |
 
 ### `order_items`
@@ -82,6 +89,10 @@ When an item is unavailable at picking: the shopper's own choice per line — re
 | `price` | REAL NOT NULL |
 | `sku_id` | INTEGER |
 | `terms` | TEXT DEFAULT '{}' |
+| `currency` | TEXT |
+| `price_minor` | INTEGER |
+| `money_scale` | INTEGER |
+| `money_state` | TEXT |
 | `uid` | TEXT |
 
 ### `order_substitutions`

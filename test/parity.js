@@ -158,10 +158,12 @@ console.log("\n▸ QUICK-COMMERCE — serviceability, promise, stock, PoD");
   ok(qc.listRuns(T, "delivered").some(r => r.id === run.id), "runs are listable by status");
   /* delivery consumes the pinned store stock: two real orders whose lines the
      engine decrements on close */
-  db.run("INSERT INTO orders(tenant_id,owner,num,status,store_id,total,created_at) VALUES(?, 'u:qc','QC-1','pending',?,22,datetime('now'))", T, st.id);
-  db.run("INSERT INTO orders(tenant_id,owner,num,status,store_id,total,created_at) VALUES(?, 'u:qc','QC-2','pending',?,22,datetime('now'))", T, st.id);
+  /* the fixture's amounts are exact money in the store's currency (lib/money-store.js) */
+  const MS = require(path.join(__dirname, "..", "lib", "money-store.js")), CUR = require(path.join(__dirname, "..", "lib", "defaults.js")).currency(T);
+  MS.insert("orders", { tenant_id: T, owner: "u:qc", num: "QC-1", status: "pending", store_id: st.id, created_at: db.stamp() }, CUR, { total: "22" });
+  MS.insert("orders", { tenant_id: T, owner: "u:qc", num: "QC-2", status: "pending", store_id: st.id, created_at: db.stamp() }, CUR, { total: "22" });
   const o1 = one("SELECT id FROM orders WHERE tenant_id=? AND owner='u:qc' ORDER BY id DESC LIMIT 1", T).id;
-  db.run("INSERT INTO order_items(order_id,product_id,qty,price) VALUES(?,?,1,11)", o1, PROD);
+  MS.insert("order_items", { order_id: o1, product_id: PROD, qty: 1 }, CUR, { price: "11" });
   const siBefore = one("SELECT qty,reserved FROM store_inventory WHERE tenant_id=? AND store_id=? AND product_id=?", T, st.id, PROD) || {};
   const run2 = qc.createRun(T, { store_id: st.id, slot_id: slot.id, rider_id: rider.id, order_ids: [o1], notes: "stock run" });
   qc.transitionRun(T, run2.id, "delivered");
@@ -408,7 +410,7 @@ console.log("\n▸ MARKETPLACE — onboarding, buy-box, health, claims");
   ok(call("POST", "/api/marketplace/buybox/" + PROD, {}, ADMIN).offers.length === 2, "the buy-box recomputes via the API");
   /* a claim is opened by the order's buyer, for at most the order total — not by anyone on any id */
   const BUYER = { tenant: { id: 1 }, sid: "parity-buyer" };
-  db.run("INSERT INTO orders(tenant_id,owner,num,total,status) VALUES(1,'t1:s:parity-buyer','PAR-CLAIM-1',40,'delivered')");
+  require(path.join(__dirname, "..", "lib", "money-store.js")).insert("orders", { tenant_id: 1, owner: "t1:s:parity-buyer", num: "PAR-CLAIM-1", status: "delivered" }, require(path.join(__dirname, "..", "lib", "defaults.js")).currency(1), { total: "40" });
   const claimOrder = one("SELECT id FROM orders WHERE num='PAR-CLAIM-1'").id;
   ok(call("POST", "/api/marketplace/claims", { order_id: claimOrder, seller_id: LINKED, amount: 5 }, { tenant: { id: 1 }, sid: "someone-else" }).error, "a stranger cannot open a claim on another buyer's order");
   ok(call("POST", "/api/marketplace/claims", { order_id: claimOrder, seller_id: LINKED, amount: 500 }, BUYER).error, "a claim cannot exceed the order total");

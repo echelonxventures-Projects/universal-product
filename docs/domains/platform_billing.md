@@ -46,6 +46,9 @@ What the platform charges its stores: plans, subscriptions to plans, usage meter
 | `paid_at` | TEXT |
 | `note` | TEXT DEFAULT '' |
 | `trace_id` | TEXT |
+| `amount_minor` | INTEGER |
+| `money_scale` | INTEGER |
+| `money_state` | TEXT |
 | `uid` | TEXT |
 
 ### `invoice_lines`
@@ -64,6 +67,12 @@ What the platform charges its stores: plans, subscriptions to plans, usage meter
 | `tax_class` | TEXT DEFAULT 'standard' |
 | `ref` | TEXT DEFAULT '' |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+| `currency` | TEXT |
+| `unit_amount_minor` | INTEGER |
+| `amount_minor` | INTEGER |
+| `tax_minor` | INTEGER |
+| `money_scale` | INTEGER |
+| `money_state` | TEXT |
 | `uid` | TEXT |
 
 ### `usage_records`
@@ -98,6 +107,9 @@ What the platform charges its stores: plans, subscriptions to plans, usage meter
 | `status` | TEXT NOT NULL DEFAULT 'issued' |
 | `to_wallet` | INTEGER DEFAULT 0 |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+| `amount_minor` | INTEGER |
+| `money_scale` | INTEGER |
+| `money_state` | TEXT |
 | `uid` | TEXT |
 
 ### `billing_events`

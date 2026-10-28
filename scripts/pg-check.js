@@ -116,6 +116,53 @@ const node = (code, env) => spawnSync(process.execPath, ["-e", code], { cwd: ROO
     try { checks = JSON.parse(boot.stdout.trim().split("\n").pop()); } catch (e) { checks = [{ ok: false, n: "boot produced no result", x: (boot.stderr || "").slice(0, 600) }]; }
     for (const c of checks) step(c.ok, "Postgres: " + c.n, c.x === undefined ? null : JSON.stringify(c.x));
 
+    /* 3a · money at rest (PR-016): on a copy, the same script on Postgres and on SQLite. Postgres
+       must refuse what SQLite's guard refuses (its CHECK constraints come from the same
+       expression), hold the same exact minor units, and refund the same way; the two engines'
+       answers must be identical */
+    const MONEY = NAME + "_money";
+    const mc = await admin.simple(`CREATE DATABASE "${MONEY}" TEMPLATE "${NAME}"`);
+    step(!mc.error, "a copy of the platform database for the money checks", mc.error);
+    const moneyScript = `
+      const s = console.log; console.log = () => {}; const out = [];
+      const ok = (c, n, x) => out.push({ ok: !!c, n, x: c ? undefined : x });
+      const refuses = (fn, re, n) => { try { fn(); ok(false, n, "accepted"); } catch (e) { ok(re.test(e.message), n, e.message); } };
+      (async () => {
+        try {
+          const db = require("./lib/db.js"); console.log = s;
+          const MS = require("./lib/money-store.js"), M = require("./lib/money.js"), R = require("./lib/refunds.js");
+          ok(MS.migrated(), "the money migration is recorded on this database");
+          const tid = db.get("SELECT id FROM tenants ORDER BY id LIMIT 1").id;
+          const oid = Number(MS.insert("orders", { tenant_id: tid, owner: "pg:money", num: "PGM-" + Date.now(), status: "delivered" }, "KWD", { sub: "12.345", ship_fee: "0", gift_used: "0", tax: "0.617", total: "12.962" }).lastInsertRowid);
+          const o = db.get("SELECT total, total_minor, money_scale, currency FROM orders WHERE id=?", oid);
+          const back = { total: o.total, minor: o.total_minor, scale: o.money_scale, currency: o.currency };
+          ok(o.total_minor === 12962 && o.total === 12.962 && o.money_scale === 3 && o.currency === "KWD", "a three-decimal amount is stored and read back exactly", back);
+          refuses(() => db.run("UPDATE orders SET total = 12.963 WHERE id=?", oid), /money|check|constraint/i, "a projection that disagrees with its minor units is refused by the database");
+          refuses(() => db.run("INSERT INTO payments(tenant_id,kind,gateway,amount,currency,status) VALUES(?,?,?,?,?,?)", tid, "order", "x", 1.5, "USD", "captured"), /money|check|constraint/i, "a payment written without its minor units is refused by the database");
+          const big = Number.MAX_SAFE_INTEGER;
+          const bid = Number(MS.insert("payments", { tenant_id: tid, kind: "order", gateway: "x", method: "card", status: "captured", txn_ref: "pg-big", live: 0 }, "JPY", { amount: M.ofMinor(big, "JPY"), fee: "0" }).lastInsertRowid);
+          ok(db.get("SELECT amount_minor FROM payments WHERE id=?", bid).amount_minor === big, "the largest safe amount (2^53 − 1 minor units) round-trips exactly", db.get("SELECT amount_minor FROM payments WHERE id=?", bid));
+          const pid = Number(MS.insert("payments", { tenant_id: tid, kind: "order", gateway: "x", method: "card", status: "captured", txn_ref: "pg-ref", live: 0 }, "USD", { amount: "100.00", fee: "0" }).lastInsertRowid);
+          const P = () => db.get("SELECT * FROM payments WHERE id=?", pid);
+          const r1 = await R.refund(P(), { amount: "30.00", idem: "pg-1" });
+          const r1b = await R.refund(P(), { amount: "30.00", idem: "pg-1" });
+          let over = null; try { await R.refund(P(), { amount: "70.01", idem: "pg-2" }); } catch (e) { over = e.code; }
+          const r2 = await R.refund(P(), { idem: "pg-3" });
+          ok(r1.refundable.minor === "7000" && r1b.replay && over === "exceeds_refundable" && r2.full && P().status === "refunded" && Number(P().refunded_minor) === 10000, "a partial refund, its replay, an over-refund and the rest", { r1: r1.refundable, over, full: r2.full, status: P().status });
+          const v = MS.verify();
+          ok(v.ok && v.refundLedgerDrift === 0, "verify(): every money row is consistent", v.ok ? "" : v);
+          out.push({ result: { back, refunded: Number(P().refunded_minor), status: P().status, refunds: db.all("SELECT amount_minor, status FROM refunds WHERE payment_id=? ORDER BY id", pid) } });
+        } catch (e) { console.log = s; out.push({ ok: false, n: "threw", x: e.stack }); }
+        console.log(JSON.stringify(out)); process.exit(0);
+      })();`;
+    const runMoney = env => { const r = node(moneyScript, env); try { return JSON.parse(r.stdout.trim().split("\n").pop()); } catch (e) { return [{ ok: false, n: "the money checks produced no result", x: (r.stderr || r.stdout || "").slice(-600) }]; } };
+    const onPg = runMoney({ LX_DB_DRIVER: "postgres", LX_PG_URL: urlOf(MONEY) });
+    const liteFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "lx-money-")), "money.db");
+    const onLite = runMoney({ LX_DB_DRIVER: "", LX_PG_URL: "", LX_DB: liteFile, LX_TEST: "1" });
+    for (const c of onPg.filter(c => c.n)) step(c.ok, "Postgres: " + c.n, c.x === undefined ? null : JSON.stringify(c.x));
+    const res = xs => JSON.stringify((xs.find(c => c.result) || {}).result || null);
+    step(onLite.every(c => c.ok !== false) && res(onPg) !== "null" && res(onPg) === res(onLite), "Postgres and SQLite give the same money results", { pg: res(onPg), sqlite: res(onLite), sqliteFailures: onLite.filter(c => c.ok === false) });
+
     /* 3b · a store's first storefront data (PR-043). The first /api/taxonomy after a boot syncs the
        store's tree and attribute definitions from the master. Read node by node that was about
        48,000 statements, each a round trip over the one serialized connection, and the first page
@@ -228,7 +275,7 @@ const node = (code, env) => spawnSync(process.execPath, ["-e", code], { cwd: ROO
   } finally {
     /* a fresh connection: the first one sat idle through the browser run */
     admin.close();
-    for (const db of [NAME, NAME + "_fail", NAME + "_kill", NAME + "_sync"]) {
+    for (const db of [NAME, NAME + "_fail", NAME + "_kill", NAME + "_sync", NAME + "_money"]) {
       try { const a2 = await pg.connect(ADMIN); const dr = await a2.simple(`DROP DATABASE IF EXISTS "${db}" WITH (FORCE)`); if (dr.error) console.log("  (could not drop " + db + ": " + dr.error + ")"); a2.close(); }
       catch (e) { console.log("  (could not drop " + db + ": " + e.message + ")"); }
     }

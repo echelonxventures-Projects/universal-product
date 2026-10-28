@@ -145,7 +145,10 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
     const rf = await A("/api/admin/payments/" + pid + "/refund?store=luxora", "POST", {});
     const rc = calls.slice(before).find(c => c.url.endsWith("/refunds"));
     ok(rf.status === 200 && row().status === "refunded", "an accepted refund marks the payment refunded", rf.body);
-    ok(rc && rc.form.payment_intent === "pi_test_1" && rc.headers["Idempotency-Key"] === "refund-" + pid, "the refund names the payment intent, idempotently", rc && rc.form);
+    /* each refund of a payment has its own provider key (a payment can be refunded in parts): it
+       names the payment and the refund record, so a retry of that refund is deduplicated */
+    const rrow = db.get("SELECT * FROM refunds WHERE payment_id=? AND status='succeeded'", pid) || {};
+    ok(rc && rc.form.payment_intent === "pi_test_1" && rc.headers["Idempotency-Key"] === "refund-" + pid + "-" + rrow.id, "the refund names the payment intent, idempotently", rc && { form: rc.form, key: rc.headers["Idempotency-Key"] });
     const twice = await A("/api/admin/payments/" + pid + "/refund?store=luxora", "POST", {});
     ok(twice.status >= 400 && calls.slice(before).filter(c => c.url.endsWith("/refunds")).length === 1, "a payment is refunded once", twice.status);
 
@@ -168,7 +171,9 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
       ok(a.rowOf().status === "captured" && /^pi_/.test(a.pi || ""), "a fresh payment is captured with its payment intent", a.rowOf());
       const partial = evt("evt_part_1", "charge.refunded", { id: "ch_a", object: "charge", payment_intent: a.pi, amount: a.c, amount_refunded: a.c - 100 });
       const p1 = await hook(partial);
-      ok(p1.status === 200 && p1.body.applied && p1.body.applied.partial === true && a.rowOf().status === "captured", "a partial refund at the provider is recorded and changes nothing", p1.body);
+      /* the provider's cumulative refunded amount is applied exactly: that much is refunded, the
+         rest stays refundable and the payment stays captured (PR-029) */
+      ok(p1.status === 200 && p1.body.applied && p1.body.applied.partial === true && a.rowOf().status === "captured" && Number(a.rowOf().refunded_minor) === a.c - 100, "a partial refund at the provider is applied as a partial refund; the payment stays captured", [p1.body, a.rowOf().refunded_minor]);
       const p1again = await hook(partial);
       ok(p1again.body.applied && p1again.body.applied.duplicate === true && audits(a.rowOf().id, "payment.partial_refund") === 1, "the same event delivered again is acknowledged and applied once", [p1again.body, audits(a.rowOf().id, "payment.partial_refund")]);
       const full = evt("evt_full_1", "charge.refunded", { id: "ch_a", object: "charge", payment_intent: a.pi, amount: a.c, amount_refunded: a.c });
@@ -291,7 +296,21 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
       await Pf("/api/platform/config", "PUT", { provisioning: Object.assign({}, pol.provisioning, { currencyOverridesAllowed: true }) });
       const base = String(((await A("/api/cart?store=luxora")).body.currency || {}).base || "");
       const other = ["EUR", "GBP", "JPY", "USD"].find(c => c !== base);
-      const set = await A("/api/admin/settings?store=luxora", "PUT", { commerce: { currency: other } });
+      /* a shipping fee and a tax beside the goods, and an exchange rate at which converting each
+         shown part and converting the total once round differently: the charge must be the sum
+         of the parts the shopper saw */
+      const was = ((await A("/api/admin/settings?store=luxora")).body.settings || (await A("/api/admin/settings?store=luxora")).body || {}).commerce || {};
+      const set = await A("/api/admin/settings?store=luxora", "PUT", { commerce: { currency: other, shipFee: 7.77, freeShipThreshold: 999999, taxRate: 0.0825 } });
+      const Mx = require("../lib/money.js"), C0 = mk(); await C0("/api/session?store=luxora"); await C0("/api/cart?store=luxora", "POST", { id: product.id, qty: 1 });
+      const origUsd = db.get("SELECT usd FROM currencies WHERE code=?", other).usd;
+      let differs = null;
+      for (const k of [1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]) {
+        await Pf("/api/platform/fx/rates", "POST", { rates: { [other]: +(origUsd * (1 + k / 997)).toFixed(6) } });
+        const cm = (await C0("/api/cart?store=luxora")).body.money;
+        const once = Mx.convertTo(Mx.fromJSON(cm.base.total), cm.fx, other);
+        if (!Mx.eq(once, Mx.fromJSON(cm.total))) { differs = { fx: cm.fx, once: Mx.toString(once), parts: cm.total.amount }; break; }
+      }
+      ok(!!differs, "an exchange rate is found at which part-by-part and once-for-the-total conversion differ by a minor unit", differs);
       const before = calls.length;
       const fx = await buy();
       const o2 = fx.co.body.order || {};
@@ -300,10 +319,57 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
       ok(set.status === 200 && o2.currency === other && o2.currency !== base && sess
         && sess.form["line_items[0][price_data][unit_amount]"] === String(minor) && sess.form["line_items[0][price_data][currency]"] === other.toLowerCase(),
         "with a display currency other than the base, the gateway is asked for exactly the shown total in the shown currency", { base, shown: [o2.total, o2.currency], sent: sess && [sess.form["line_items[0][price_data][unit_amount]"], sess.form["line_items[0][price_data][currency]"]] });
-      const prow = db.get("SELECT p.amount, p.currency FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?", o2.num);
+      const prow = db.get("SELECT p.amount, p.amount_minor, p.currency, p.money_scale FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?", o2.num);
       ok(prow && prow.currency === other && Math.abs(prow.amount - o2.total) < 1e-9, "…and the payment row records the same amount and currency", prow);
-      await A("/api/admin/settings?store=luxora", "PUT", { commerce: { currency: base } });
+      /* one amount everywhere (PR-016): what the response serializes, the order row's and the
+         payment row's exact minor units, and what the gateway was sent */
+      const orow = db.get("SELECT total, total_minor, sub_minor, ship_fee_minor, gift_used_minor, tax_minor, currency, money_scale FROM orders WHERE num=?", o2.num);
+      const mm = o2.money || {};
+      ok(mm.v === 1 && mm.total && mm.total.currency === other && String(orow.total_minor) === mm.total.minor && String(prow.amount_minor) === mm.total.minor && sess && sess.form["line_items[0][price_data][unit_amount]"] === mm.total.minor,
+        "the shown total, the order's and the payment's minor units and the gateway's amount are one exact figure", { response: mm.total, order: orow.total_minor, payment: prow.amount_minor, gateway: sess && sess.form["line_items[0][price_data][unit_amount]"] });
+      const bm = k => BigInt(mm[k].minor);
+      ok(bm("net") + bm("ship") + bm("surcharge") + BigInt(JSON.parse(db.get("SELECT charges FROM orders WHERE num=?", o2.num).charges || "[]").reduce((n, c) => n + Number(c.money ? c.money.minor : 0), 0)) + bm("tax") - bm("gift") === bm("total") && BigInt(orow.sub_minor) === bm("net") && BigInt(orow.tax_minor) === bm("tax"),
+        "the shown components add up exactly to the shown total, and the order row holds those components", mm);
+      ok(mm.base && mm.base.total.currency === base && mm.fx === String(o2.fx), "the base-currency figures and the rate they were converted at are recorded beside them", mm.base && mm.base.total);
+      await A("/api/admin/settings?store=luxora", "PUT", { commerce: { currency: base, shipFee: was.shipFee, freeShipThreshold: was.freeShipThreshold, taxRate: was.taxRate == null ? null : was.taxRate } });
+      await Pf("/api/platform/fx/rates", "POST", { rates: { [other]: origUsd } });
       await Pf("/api/platform/config", "PUT", { provisioning: Object.assign({}, pol.provisioning) });
+    }
+
+    console.log("▸ PART OF A PAYMENT GOES BACK, EXACTLY AND ONCE");
+    {
+      const third = (await buy()).co.body.order || {};
+      const row3 = () => db.get("SELECT p.* FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?", third.num);
+      const c3 = Number(row3().amount_minor);
+      await hook(sessionEvent("checkout.session.completed", row3().txn_ref, { amount_total: c3, payment_intent: "pi_part_3" }));
+      ok(row3().status === "captured" && row3().provider_payment_id === "pi_part_3", "a third order is captured", row3());
+      refundReply = { status: 200, json: { id: "re_part_1", status: "succeeded" } };
+      const R = (body, key) => A("/api/admin/payments/" + row3().id + "/refund?store=luxora", "POST", body, key ? { "Idempotency-Key": key } : {});
+      const before = calls.length;
+      const noKey = await R({ amount: "1.00" });
+      ok(noKey.status === 400 && /idempotency key/i.test(noKey.body.error || ""), "part of a payment needs an Idempotency-Key", noKey.body);
+      const part = await R({ amount: "1.00" }, "part-1");
+      const sent = calls.slice(before).filter(c => c.url.endsWith("/refunds"));
+      ok(part.status === 200 && Number(row3().refunded_minor) === 100 && row3().status === "captured" && part.body.refundable && part.body.refundable.minor === String(c3 - 100), "a refund of 1.00 is applied: the payment stays captured with the rest refundable", part.body);
+      ok(sent.length === 1 && sent[0].form.amount === "100" && sent[0].form.payment_intent === "pi_part_3", "the provider is asked for exactly 100 minor units of that payment intent", sent[0] && sent[0].form);
+      const again = await R({ amount: "1.00" }, "part-1");
+      ok(again.status === 200 && calls.slice(before).filter(c => c.url.endsWith("/refunds")).length === 1 && Number(row3().refunded_minor) === 100, "the same request again is not sent or applied twice", again.body);
+      const over = await R({ amount: (c3 / 100).toFixed(2) }, "part-2");
+      ok(over.status === 409 && Number(row3().refunded_minor) === 100, "more than what is left is refused", over.body);
+      /* a provider answering a second refund with the first one's id made no new refund: it is
+         kept as unknown (reserved, for review), never counted as money returned */
+      const dup = await R({ amount: "1.00" }, "part-dup");
+      ok(dup.status === 202 && dup.body.unknown && dup.body.refund.status === "unknown" && row3().status === "captured", "a provider answer naming an already-recorded refund is not taken as a new refund", dup.body);
+      const listed = await A("/api/admin/payments/" + row3().id + "/refunds?store=luxora");
+      ok(listed.status === 200 && listed.body.refunds.length === 2 && listed.body.refunds.some(r => r.status === "unknown"), "the payment's refunds are listed with their states", listed.body);
+      const settled = await A("/api/admin/refunds/" + dup.body.refund.id + "/resolve?store=luxora", "POST", { outcome: "failed", note: "the provider's dashboard shows one refund" });
+      ok(settled.status === 200 && settled.body.refund.status === "failed" && Number(row3().refunded_minor) === 100, "staff resolve it as failed from the provider's record, and its reservation is given back", settled.body);
+      const twiceResolved = await A("/api/admin/refunds/" + dup.body.refund.id + "/resolve?store=luxora", "POST", { outcome: "succeeded" });
+      ok(twiceResolved.status === 409, "a resolved refund cannot be resolved again", twiceResolved.body);
+      refundReply = { status: 200, json: { id: "re_part_2", status: "succeeded" } };
+      const rest = await R({}, "part-3");
+      ok(rest.status === 200 && rest.body.full && row3().status === "refunded" && Number(row3().refunded_minor) === c3, "refunding the rest reverses the payment", rest.body);
+      ok(require("../lib/money-store.js").verify().ok, "verify(): every money row and every payment's refunded total is consistent");
     }
 
     console.log("▸ CARRIER RATES, LABELS AND TRACKING");

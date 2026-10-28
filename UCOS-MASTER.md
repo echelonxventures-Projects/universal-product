@@ -1269,7 +1269,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 196 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 204 files.
 
 ### C02 · Meaning
 
@@ -1315,7 +1315,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/global.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | global settings |
 | `lib/kernel-shape.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | kernel part K05: coordinate systems and shapes |
 | `lib/wallet.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | the Universal Wallet: versioned definitions, many named wallets per owner, the balanced immutable ledger, idempotency and holds |
-| `lib/money.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | money, exactly: amounts in a currency's minor units (decimals from Value's master), one named rounding rule, exact conversion and allocation |
+| `lib/money.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | money, exactly: the Money contract (exact minor units of one currency, scale from Value's master), one named rounding rule, exact conversion, allocation and versioned serialization |
+| `lib/money-store.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | money at rest: exact minor units beside every payment-spine amount, migration money-0001 with quarantine, the database guard and reconciliation |
 | `lib/platform-master.js` | [Measure](volumes/V04-universal-dimensions.md#d-mea) | dimensions, units and conversion |
 | `lib/kernel-context.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | scope and resolution (K11, K12) |
 | `lib/expression.js` | [Expression](volumes/V04-universal-dimensions.md#d-exr) | languages, the message catalogue, and the language a request is answered in (P12) |
@@ -1324,6 +1325,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/defaults.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | resolver answers (K12) |
 | `lib/settings.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | resolver answers (K12) |
 | `lib/subdivisions.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) |  |
+| `lib/routes/currency.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | currency domain routes: money at rest — reconciliation and the money quarantine |
 | `lib/seed/defaults.json` | [Context](volumes/V04-universal-dimensions.md#d-ctx) |  |
 | `lib/seed/expression.json` | [Expression](volumes/V04-universal-dimensions.md#d-exr) | the language registry and the storefront copy catalogues |
 | `lib/seed/time.json` | [Time](volumes/V04-universal-dimensions.md#d-tim) | calendars, chronologies, temporal units, conversions and each seeded country's primary zone |
@@ -1430,6 +1432,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/registry.js` | [Integration](volumes/V09.2-automation.md#d-int) | provider definitions, availability and exemptions |
 | `lib/global.js` | [Integration](volumes/V09.2-automation.md#d-int) | providers and their availability, a store's providers |
 | `lib/kernel.js` | [Runtime](volumes/V09.1-automation.md#d-run) | the hash-chained event log (K08) |
+| `lib/refunds.js` | [Integration](volumes/V09.2-automation.md#d-int) | refunds, full and partial: an exact amount per refund, an atomic reservation against the captured amount, idempotent, provider-backed |
 | `lib/events.js` | [Runtime](volumes/V09.1-automation.md#d-run) | the event log; its outbound webhooks are Integration's |
 | `lib/providers.js` | [Integration](volumes/V09.2-automation.md#d-int) | provider connectors; providers as parties are Party's |
 | `lib/states.js` | [Runtime](volumes/V09.1-automation.md#d-run) |  |
@@ -1439,6 +1442,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/spec.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/connect.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/idempotency.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
+| `lib/routes/payments.js` | [Integration](volumes/V09.2-automation.md#d-int) | payments domain routes: a payment's refunds and an operator's settlement of an unknown refund |
 | `lib/seed/providers.json` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/seed/ai.json` | [Agent](volumes/V09.1-automation.md#d-agt) |  |
 | `lib/seed/states.json` | [Runtime](volumes/V09.1-automation.md#d-run) |  |
@@ -1481,6 +1485,10 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `scripts/white-label.js` | [Quality](volumes/V11.2-platform.md#d-qlt) | the white-label guard: no other platform's name anywhere |
 | `scripts/audit-baseline.json` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
 | `scripts/browser-check.js` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
+| `scripts/money.js` | [Operations](volumes/V11.1-platform.md#d-ops) | money at rest for an operator: verify, list the quarantine, resolve an amount with a recorded decision |
+| `scripts/money-perf.js` | [Quality](volumes/V11.2-platform.md#d-qlt) | how long migration money-0001 takes on a synthetic legacy database of a given size, with peak memory |
+| `scripts/money-audit.js` | [Quality](volumes/V11.2-platform.md#d-qlt) | the money inventory: every REAL column by meaning, every rounding site in code; --check fails on an unclassified column or spine rounding outside lib/money.js |
+| `scripts/money-inventory.json` | [Quality](volumes/V11.2-platform.md#d-qlt) | the reviewed classification of every REAL column (money, unit price, exchange rate, quantity, ratio, measurement) |
 | `scripts/pg-check.js` | [Quality](volumes/V11.2-platform.md#d-qlt) | the platform on Postgres end to end: migrate, boot, kernel checks and the browser check |
 | `scripts/backup.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `scripts/restore.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |

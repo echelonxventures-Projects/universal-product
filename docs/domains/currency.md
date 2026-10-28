@@ -12,7 +12,9 @@ Every unit of value and how they convert: currencies, points and credits, and ex
 
 | Module | What it is |
 |---|---|
-| `lib/money.js` | money, exactly (PR-016). One representation: an amount is a whole number of MINOR units of one currency, and a currency's minor unit is data (its `decimals` in Value's master, lib/registry.js). Nothing here does binary floating-point arithmetic on money: a JS number coming in is read through its shortest decimal spelling (String(n): 1.005 is "1.005", not 1.00499999999999989…), held as a BigInt scaled by a power of ten, and rounded once, by a NAMED rule. |
+| `lib/money-store.js` | money at rest (PR-016). |
+| `lib/money.js` | money, exactly (PR-016). One representation: an amount is a whole number of MINOR units of one currency, and a currency's minor unit is data (its `decimals` in Value's master, lib/registry.js). Nothing here does binary floating-point arithmetic on money: a JS number coming in is read through its decimal spelling (see `parse`), held as a BigInt scaled by a power of ten, and rounded once, by a NAMED rule. |
+| `lib/routes/currency.js` | currency domain routes (_registry/business-domains.json `currency`). Money at rest (lib/money-store.js): the platform's reconciliation of every payment-spine amount, and the amounts the money migration could not convert — each resolved by an operator with a recorded decision, never guessed. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -43,6 +45,39 @@ Every unit of value and how they convert: currencies, points and credits, and ex
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 | `uid` | TEXT |
 
+### `money_migrations`
+
+| Column | Type |
+|---|---|
+| `version` | TEXT PRIMARY KEY |
+| `status` | TEXT NOT NULL |
+| `started_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+| `finished_at` | TEXT |
+| `report` | TEXT NOT NULL DEFAULT '{}' |
+
+### `money_quarantine`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `version` | TEXT NOT NULL |
+| `table_name` | TEXT NOT NULL |
+| `row_key` | TEXT NOT NULL |
+| `column_name` | TEXT NOT NULL |
+| `tenant_id` | INTEGER |
+| `source_value` | TEXT |
+| `source_currency` | TEXT |
+| `reason` | TEXT NOT NULL |
+| `candidates` | TEXT NOT NULL DEFAULT '{}' |
+| `status` | TEXT NOT NULL |
+| `resolved_minor` | INTEGER |
+| `resolved_currency` | TEXT |
+| `resolved_scale` | INTEGER |
+| `resolved_by` | TEXT |
+| `resolved_at` | TEXT |
+| `note` | TEXT DEFAULT '' |
+| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+
 ## API reference
 
 Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the session; mutating calls accept an `Idempotency-Key` header where noted.
@@ -54,15 +89,17 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `POST /api/platform/fx/rates` | `apiPlatformFxRates` | — |
 | `PUT /api/platform/fx/provider` | `apiPlatformFxProvider` | — |
 | `POST /api/platform/fx/sync` | `apiPlatformFxSync` | — |
+| `GET /api/platform/money` | `apiPlatformMoney` | — |
+| `POST /api/platform/money/quarantine/:id/resolve` | `apiPlatformMoneyResolve` | — |
 
 ## Data flow
 
 ```mermaid
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[platform console]
-  UI --> API[5 API routes]
-  API --> ENG[money.js]
-  ENG --> DB[(currencies, fx_rates)]
+  UI --> API[7 API routes]
+  API --> ENG[money-store.js, money.js, currency.js]
+  ENG --> DB[(currencies, fx_rates, money_migrations, money_quarantine)]
 
 ```
 

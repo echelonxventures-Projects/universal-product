@@ -218,6 +218,47 @@
    }
   },
   {
+   "key": "refund",
+   "name": "Refund",
+   "column": "status",
+   "initial": "pending",
+   "free": true,
+   "states": [
+    "pending",
+    "succeeded",
+    "failed",
+    "unknown"
+   ],
+   "meta": {
+    "pending": {
+     "tags": [
+      "reserved",
+      "open"
+     ]
+    },
+    "unknown": {
+     "tags": [
+      "reserved",
+      "open",
+      "unresolved"
+     ]
+    },
+    "succeeded": {
+     "tags": [
+      "reserved",
+      "success",
+      "terminal"
+     ]
+    },
+    "failed": {
+     "tags": [
+      "failure",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
    "key": "invoice",
    "name": "Invoice",
    "column": "status",
