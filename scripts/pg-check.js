@@ -184,6 +184,17 @@ const node = (code, env) => spawnSync(process.execPath, ["-e", code], { cwd: ROO
         let n0 = sent; const t0 = Date.now(); ST.sync(t); SA.sync(t);
         const cold = { statements: sent - n0, ms: Date.now() - t0, rows };
         ok(rows > 0 && cold.statements < rows, "a store's first sync in a process reads the master as sets " + JSON.stringify(cold), cold);
+        /* the storefront's first page also waits for /api/meta: its vocabularies are read in one
+           kernel snapshot, not node by node (15,800 statements before; CI run 40702965627) */
+        {
+          const api = require("./lib/api.js"), tenant = db.get("SELECT * FROM tenants WHERE id=?", t);
+          let status = 0, body = "";
+          const res = { headersSent: false, statusCode: 0, setHeader() {}, getHeader() {}, writeHead(c) { status = c; return this; }, write(b) { body += b || ""; }, end(b) { body += b || ""; this.headersSent = true; }, on() {}, once() {} };
+          const m0 = sent, tm = Date.now();
+          api.handle({ method: "GET", headers: {}, socket: {} }, res, new URL("http://pg-check/api/meta?store=" + tenant.slug), { tenant, sid: "pg-check", trace: "pg-check" }, {});
+          const meta = { status, statements: sent - m0, ms: Date.now() - tm, bytes: body.length };
+          ok(status === 200 && body.length > 1000 && meta.statements < 2000, "a store's first /api/meta in a process reads its vocabularies in one snapshot " + JSON.stringify(meta), meta);
+        }
         const w0 = db.writes(); n0 = sent; ST.sync(t); SA.sync(t);
         ok(db.writes() === w0, "a sync with nothing to change writes nothing (" + (sent - n0) + " statements)", db.writes() - w0);
         const drift = db.all("SELECT id, name FROM taxonomy WHERE tenant_id=? AND active=1 AND node_uid IS NOT NULL ORDER BY id LIMIT 5", t);
@@ -244,7 +255,7 @@ const node = (code, env) => spawnSync(process.execPath, ["-e", code], { cwd: ROO
       step(up, "Postgres: a server on the copy answers /healthz", srvErr.slice(-600));
       if (up) {
         const ask = p => { const t0 = Date.now(); return fetch(base + p).then(async r => ({ p, status: r.status, ms: Date.now() - t0, body: await r.text() })).catch(e => ({ p, status: 0, ms: Date.now() - t0, body: e.message })); };
-        const got = await Promise.all(["/api/taxonomy?store=luxora", "/api/products?limit=200&store=luxora", "/api/taxonomy?store=luxora", "/api/taxonomy?store=pg-second", "/api/taxonomy?store=luxora", "/api/taxonomy?store=pg-second"].map(ask));
+        const got = await Promise.all(["/api/taxonomy?store=luxora", "/api/meta?store=luxora", "/api/products?limit=200&store=luxora", "/api/taxonomy?store=luxora", "/api/taxonomy?store=pg-second", "/api/taxonomy?store=luxora", "/api/taxonomy?store=pg-second"].map(ask));
         const tax = slug => got.filter(g => g.p === "/api/taxonomy?store=" + slug);
         const flat = g => { try { return JSON.parse(g.body).flat || []; } catch (e) { return []; } };
         const times = got.map(g => g.p.replace("/api/", "") + " " + g.status + " " + g.ms + " ms");
@@ -255,6 +266,10 @@ const node = (code, env) => spawnSync(process.execPath, ["-e", code], { cwd: ROO
         /* the home page waits for this answer and is checked for 6 s after it loads: the first one
            must leave the page most of that window, on a shared CI runner (PR-043) */
         step(tax("luxora")[0].ms < 2000, "Postgres: a store's first /api/taxonomy after a boot answers in " + tax("luxora")[0].ms + " ms (bound 2000 ms)");
+        /* the storefront's first page waits for /api/meta too; read node by node it was 15,800
+           statements and about 6.7 s on a CI runner, and the page timed out (CI run 40702965627) */
+        const metaFirst = got.find(g => g.p === "/api/meta?store=luxora");
+        step(metaFirst.status === 200 && metaFirst.ms < 2000, "Postgres: the first /api/meta after a boot answers in " + metaFirst.ms + " ms (bound 2000 ms)", metaFirst.body.slice(0, 200));
       }
     } finally {
       try { srv.kill("SIGTERM"); } catch (e) { }
