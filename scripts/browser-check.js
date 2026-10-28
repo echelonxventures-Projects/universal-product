@@ -107,6 +107,22 @@ if (require.main === module) (async () => {
   const report = [];
   let checked = 0;
 
+  /* for a page that did not render: its API requests still unanswered, and those that took over a
+     second, from the page's own network events — so a slow answer is told from a broken page */
+  function requestsOf(events) {
+    const req = new Map();
+    for (const e of events || []) {
+      const p = e.params || {};
+      if (e.method === "Network.requestWillBeSent" && /\/api\//.test((p.request || {}).url || "")) req.set(p.requestId, { url: p.request.url.replace(BASE, ""), t0: p.timestamp });
+      else if ((e.method === "Network.loadingFinished" || e.method === "Network.loadingFailed") && req.has(p.requestId)) Object.assign(req.get(p.requestId), { t1: p.timestamp, failed: e.method === "Network.loadingFailed" });
+      else if (e.method === "Network.responseReceived" && req.has(p.requestId)) req.get(p.requestId).status = (p.response || {}).status;
+    }
+    const xs = [...req.values()];
+    const open = xs.filter(x => x.t1 == null).map(x => x.url);
+    const slow = xs.filter(x => x.t1 != null && x.t1 - x.t0 > 1).map(x => x.url + " " + (x.status || (x.failed ? "failed" : "?")) + " " + (x.t1 - x.t0).toFixed(1) + " s");
+    return (open.length ? "; unanswered: " + open.join(", ") : "") + (slow.length ? "; slow: " + slow.join(", ") : "") + (!open.length && !slow.length ? "; every API request answered within 1 s (" + xs.length + ")" : "");
+  }
+
   /* one browser context per identity, so cookies never leak between runs */
   async function visit(pages, who, signIn) {
     const ctx = await fetch(`http://127.0.0.1:${port}/json/version`).then(r => r.json());
@@ -134,7 +150,7 @@ if (require.main === module) (async () => {
       /* how long it waited and what the page showed, so a slow page is told from a broken one */
       if (!ok) {
         const shown = await tab.eval("(() => { const m = document.querySelector('#page') || document.body; return m ? m.innerText.trim().slice(0, 120) : '' })()").catch(() => "");
-        issues.unshift("page did not render (load event " + (loaded ? "after " + ((tLoad - tNav) / 1000).toFixed(1) + " s" : "not fired in 15 s") + ", waited " + ((Date.now() - tNav) / 1000).toFixed(1) + " s; it shows " + JSON.stringify(shown) + ")");
+        issues.unshift("page did not render (load event " + (loaded ? "after " + ((tLoad - tNav) / 1000).toFixed(1) + " s" : "not fired in 15 s") + ", waited " + ((Date.now() - tNav) / 1000).toFixed(1) + " s; it shows " + JSON.stringify(shown) + ")" + requestsOf(tab.events));
       }
       checked++;
       report.push({ page: p, who, issues });
