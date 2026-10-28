@@ -59,7 +59,7 @@
 | [TASK-CTX-0004](task-packs/TASK-CTX-0004.md) | Process the unprocessed source segments and audit segment accounting | done | Owner restores GitHub Actions for the repository so CI runs on PR #4, then reviews DEC-CTX-* (TASK-CTX-0002). |
 | [TASK-CTX-0005](task-packs/TASK-CTX-0005.md) | Repair git-history archive integrity | done | Owner restores GitHub Actions so CI runs on PR #4; then reviews DEC-CTX-* (TASK-CTX-0002). |
 | [TASK-REG-0001](task-packs/TASK-REG-0001.md) | Correct the seal's misnamed zero-hardcoding input | planned | Confirm the intended file with the owner, then change lib/canonical.js:104 and re-run the registry checks. |
-| [TASK-REL-0001](task-packs/TASK-REL-0001.md) | Integrate PR #3, PR #4, PR #5 and the preserved Offers work into one verified release candidate | in-progress | Read the CI result for the head after a9b6436 on PR #6; fix PR-043 (sync in one transaction or set-based, or at boot) and re-run check:postgres; then continue PR-016's minor-unit migration design. |
+| [TASK-REL-0001](task-packs/TASK-REL-0001.md) | Integrate PR #3, PR #4, PR #5 and the preserved Offers work into one verified release candidate | in-progress | Read the CI result for the head after fa7b3d4 on PR #6 (gate 1 needs every job green on the final head, twice in a row); then continue PR-016's minor-unit migration design. |
 | [TASK-SEC-0001](task-packs/TASK-SEC-0001.md) | Reconcile REVIEW.md findings with their fixes | planned | Map each REVIEW.md finding to the commits of PR #1/#2 and the tests in test/security.js. |
 
 ## Counts

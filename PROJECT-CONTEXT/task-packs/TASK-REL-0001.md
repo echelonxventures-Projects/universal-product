@@ -10,8 +10,8 @@ One local branch, integration/luxora-production-go-2026-10-27, that keeps every 
 ## State
 
 - **in-progress** · authority: repository owner (go-live programme, phase 2, 2026-10-27)
-- Next action: **Read the CI result for the head after a9b6436 on PR #6; fix PR-043 (sync in one transaction or set-based, or at boot) and re-run check:postgres; then continue PR-016's minor-unit migration design.**
-- Latest handoff: `PROJECT-CONTEXT/handoffs/HO-REL-0001-002.json` (2026-10-27T17:19:58.289Z, by claude-opus-5-5)
+- Next action: **Read the CI result for the head after fa7b3d4 on PR #6 (gate 1 needs every job green on the final head, twice in a row); then continue PR-016's minor-unit migration design.**
+- Latest handoff: `PROJECT-CONTEXT/handoffs/HO-REL-0001-003.json` (2026-10-28T04:04:27.163Z, by claude-opus-5-5)
 
 ## Scope
 
