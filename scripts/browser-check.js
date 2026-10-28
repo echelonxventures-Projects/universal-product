@@ -166,9 +166,48 @@ if (require.main === module) (async () => {
     browser.close();
   }
 
+  /* the home page when its data fails to load: it says so and offers a retry — it is never left
+     "Composing…" — and the retry renders the page with its categories (PR-043). The browser fails
+     /api/taxonomy once, then lets it through. Run after the sweep, whose first page meets the cold
+     server. */
+  async function failedLoad() {
+    const ctx = await fetch(`http://127.0.0.1:${port}/json/version`).then(r => r.json());
+    const browser = await Tab.open(ctx.webSocketDebuggerUrl);
+    const { browserContextId } = await browser.send("Target.createBrowserContext");
+    const { targetId } = await browser.send("Target.createTarget", { url: "about:blank", browserContextId });
+    const list = await fetch(`http://127.0.0.1:${port}/json/list`).then(r => r.json());
+    const tab = await Tab.open(list.find(t => t.id === targetId).webSocketDebuggerUrl);
+    for (const d of ["Runtime", "Page"]) await tab.send(d + ".enable");
+    let failing = true;
+    tab.listeners.push(d => {
+      if (d.method !== "Fetch.requestPaused") return;
+      const requestId = d.params.requestId;
+      (failing ? tab.send("Fetch.fulfillRequest", { requestId, responseCode: 500, responseHeaders: [{ name: "Content-Type", value: "application/json" }], body: Buffer.from(JSON.stringify({ error: "the category tree could not be loaded" })).toString("base64") })
+        : tab.send("Fetch.continueRequest", { requestId })).catch(() => { });
+    });
+    await tab.send("Fetch.enable", { patterns: [{ urlPattern: "*/api/taxonomy*" }] });
+    const page = "/index.html?store=luxora", issues = [];
+    const until = async (expr, n) => { for (let i = 0; i < n; i++) { if (await tab.eval(expr).catch(() => false)) return true; await sleep(150); } return false; };
+    const shown = () => tab.eval("(() => { const m = document.querySelector('#page'); return m ? m.innerText.trim().slice(0, 120) : '' })()").catch(() => "");
+    await tab.send("Page.navigate", { url: BASE + page }); await tab.once("Page.loadEventFired", 15000);
+    if (!await until("!!document.querySelector('#page .r-empty button[data-act=reload]') && /Something went wrong/.test(document.querySelector('#page').innerText)", 40))
+      issues.push("with its data failing, the page did not show an error with a retry; it shows " + JSON.stringify(await shown()));
+    failing = false;
+    await tab.eval("(() => { const b = document.querySelector('#page button[data-act=reload]'); if (b) b.click(); return !!b; })()").catch(() => false);
+    await tab.once("Page.loadEventFired", 15000);
+    if (!await until("(" + STORE + ")() && !!document.querySelector('#page .cat-rail a')", 40))
+      issues.push("after the retry, the page did not render its categories; it shows " + JSON.stringify(await shown()));
+    checked++;
+    report.push({ page: page + " (its data fails, then the retry)", who: "signed out", issues });
+    tab.close();
+    await browser.send("Target.disposeBrowserContext", { browserContextId }).catch(() => { });
+    browser.close();
+  }
+
   try {
     await visit(PAGES, "signed out");
     for (const si of SIGNED_IN) await visit(si.pages.map(p => [p, "() => document.body.innerText.trim().length > 20"]), si.name, si);
+    await failedLoad();
   } catch (e) { report.push({ page: "(harness)", who: "-", issues: [e.message] }); }
 
   const bad = report.filter(r => r.issues.length);

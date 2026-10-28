@@ -316,6 +316,38 @@ C.declareSetting({ name: "aisle.count", namespace: "tenant:7", scope: scopeSite,
 ok(C.settingOf("aisle.count", "tenant:7", scopeSite) && !C.settingOf("aisle.count", "tenant:7"), "so is a setting declared at a scope");
 ok(K.nodes("item", "platform", { withSubkinds: true }).includes(pill) && !K.nodes("item", "platform").includes(pill), "node lists can include every sub-kind");
 
+console.log("kernel — read snapshots: one instant, each statement once, sets instead of node by node (PR-043)");
+K.defineHierarchy({ hierarchy: "snaptree", owner: "Relationship" }, "test");
+const sRoot = K.createNode("body", { attributes: { name: "Snap root" }, identifiers: { iso2: "SN" } }, "test");
+K.place("snaptree", sRoot, null, {}, "test");
+const sKids = [1, 2, 3, 4, 5].map(i => { const u = K.createNode("body", { attributes: { name: "Snap " + i } }, "test"); K.place("snaptree", u, sRoot, {}, "test"); return u; });
+const look = () => ({ kids: K.children("snaptree", sRoot), names: sKids.map(u => K.attributes(u).name), ids: K.identifiers(sRoot), code: K.resolveIdentifier("iso2", "SN"), up: K.parents("snaptree", sKids[0]), kind: K.internal.nodeRow(sRoot).kind, listed: K.nodes("body").length });
+ok(JSON.stringify(K.snapshot(look)) === JSON.stringify(look()), "inside a snapshot every read answers as it does outside one");
+/* statements reach SQLite through the handle's prepare: counted on the instance, then removed */
+let stmts = 0;
+db.db.prepare = function (s) { stmts++; return Object.getPrototypeOf(this).prepare.call(this, s); };
+stmts = 0; look(); const nodeByNode = stmts;
+stmts = 0; K.snapshot(look); const asSets = stmts;
+stmts = 0; K.snapshot(() => { for (let i = 0; i < 20; i++) look(); }); const twenty = stmts;
+delete db.db.prepare;
+ok(twenty === asSets, "a read asked again inside a snapshot goes to the database no more", { once: asSets, twenty });
+ok(asSets < nodeByNode, "a hierarchy's nodes are read as sets, not node by node", { asSets, nodeByNode });
+const seen = K.snapshot(() => {
+  const before = K.attributes(sKids[0]).name, kidsBefore = K.children("snaptree", sRoot).length;
+  K.record(sKids[0], { name: "Renamed inside" }, null, "test");
+  const added = K.createNode("body", { attributes: { name: "Snap 6" } }, "test");
+  K.place("snaptree", added, sRoot, {}, "test");
+  return { before, after: K.attributes(sKids[0]).name, kidsBefore, kidsAfter: K.children("snaptree", sRoot).length, added: !!K.internal.nodeRow(added) };
+});
+ok(seen.before === "Snap 1" && seen.after === "Renamed inside" && seen.kidsBefore === 5 && seen.kidsAfter === 6 && seen.added, "a write inside a snapshot is seen by every read after it", seen);
+const rolled = K.snapshot(() => {
+  K.attributes(sKids[1]);
+  try { K.internal.tx(() => { K.record(sKids[1], { name: "Never" }, null, "test"); throw new Error("undo"); }); } catch (e) { }
+  return K.attributes(sKids[1]).name;
+});
+ok(rolled === "Snap 2", "a write rolled back inside a snapshot is not seen after it", rolled);
+ok(K.snapshot(() => K.snapshot(() => K.attributes(sKids[2]).name)) === "Snap 3", "a snapshot inside one joins it");
+
 for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(TMP + s, { force: true }); } catch (e) { } }
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);

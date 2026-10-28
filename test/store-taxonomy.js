@@ -51,6 +51,37 @@ ST.save(t, catRow.id, { name: "Local name" }, "store-admin");
 ok(rows(t).find(r => r.id === catRow.id).name === "Local name" && C.list({ holder: MP.storeHolder(t), awaiting: true }).length === 1, "reviewed after: the local name shows for this store at once, and awaits review");
 ok(rows(2).find(r => r.node_uid === cat.uid) === undefined || rows(2).find(r => r.node_uid === cat.uid).name !== "Local name", "no other store sees it");
 
+console.log("store taxonomy — a store's tree is synced as sets, in one transaction (PR-043)");
+{
+  const K = require("../lib/kernel.js");
+  ok(JSON.stringify(K.snapshot(() => ST.desired(t))) === JSON.stringify(ST.desired(t)), "read in one kernel snapshot, the tree is the one read node by node");
+  /* statements reach SQLite through the handle's prepare: counted on the instance, then removed */
+  let stmts = 0;
+  db.db.prepare = function (q) { stmts++; return Object.getPrototypeOf(this).prepare.call(this, q); };
+  const nRows = db.get("SELECT COUNT(*) AS c FROM taxonomy WHERE tenant_id=?", t).c;
+  const w0 = db.writes(); stmts = 0; ST.sync(t);
+  const syncStmts = stmts, syncWrites = db.writes() - w0;
+  delete db.db.prepare;
+  /* before, every node cost dozens of statements (38,796 for this tree): one round trip each on Postgres */
+  ok(syncStmts * 4 < nRows, "a sync reads the master as sets: far fewer statements than the tree has rows", { statements: syncStmts, rows: nRows });
+  ok(syncWrites === 0, "a sync with nothing to change writes nothing", syncWrites);
+  /* a sync that fails part-way: five rows drifted, the third repair fails */
+  const drift = db.all("SELECT id, name FROM taxonomy WHERE tenant_id=? AND active=1 AND node_uid IS NOT NULL ORDER BY id LIMIT 5", t);
+  for (const r of drift) db.run("UPDATE taxonomy SET name=? WHERE id=?", r.name + " (drifted)", r.id);
+  const names = () => drift.map(r => db.get("SELECT name FROM taxonomy WHERE id=?", r.id).name);
+  const realRun = db.run; let n = 0, threw = null;
+  db.run = (q, ...a) => { if (/^UPDATE taxonomy SET parent_id/.test(q) && ++n === 3) throw new Error("injected failure"); return realRun(q, ...a); };
+  try { ST.sync(t); } catch (e) { threw = e.message; } finally { db.run = realRun; }
+  ok(threw === "injected failure" && names().every(x => / \(drifted\)$/.test(x)), "a sync that fails part-way leaves the tree as it was", { threw, names: names() });
+  ok(ST.sync(t) === drift.length && names().join() === drift.map(r => r.name).join(), "the next sync completes it");
+  ok(ST.sync(t) === 0, "and a sync after that changes nothing");
+  /* each store's tree holds the master's nodes and its own, never another store's */
+  ST.sync(2);
+  const nsOf = uid => K.internal.nodeRow(uid).namespace;
+  ok([t, 2].every(x => db.all("SELECT node_uid FROM taxonomy WHERE tenant_id=? AND node_uid IS NOT NULL", x).every(r => [M.NAMESPACE, MP.storeHolder(x)].includes(nsOf(r.node_uid)))), "no store's tree holds another store's categories");
+  ok(db.get("SELECT COUNT(*) AS c FROM (SELECT tenant_id, node_uid FROM taxonomy WHERE node_uid IS NOT NULL GROUP BY tenant_id, node_uid HAVING COUNT(*) > 1) d").c === 0, "a node has one row per store");
+}
+
 console.log("store taxonomy — an older store's rows are linked once");
 const t9 = Number(db.run("INSERT INTO tenants(slug,name,domain,status,mode,industries,profile) VALUES('legacy-tax','Legacy','legacy-tax.localhost','active','marketplace','[]','{}')").lastInsertRowid);
 const a = Number(db.run("INSERT INTO taxonomy(tenant_id,level,key,name,position) VALUES(?,?,?,?,0)", t9, "industry", ind, "Old industry name").lastInsertRowid);

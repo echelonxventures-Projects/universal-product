@@ -7,7 +7,9 @@
         and shows that a migration interrupted part-way (a failing statement, a killed process)
         leaves its target empty,
      3. boots the platform on Postgres and checks the kernel's transactions, places, stores, time,
-        expression and Value on it — a write the row refuses must leave the kernel untouched,
+        expression and Value on it — a write the row refuses must leave the kernel untouched — and,
+        on a copy, a store's first taxonomy sync: its statements, a failure part-way, two servers
+        syncing one store at once, and a store's first requests arriving together (PR-043),
      4. runs the real-browser check (every page and console section) with the server on Postgres,
      5. drops the database.
    It exits non-zero on any failure. Usage: PG_CHECK_URL=postgres://… node scripts/pg-check.js [--no-browser] */
@@ -15,7 +17,7 @@
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
-const { spawnSync } = require("child_process");
+const { spawnSync, spawn } = require("child_process");
 const ROOT = path.join(__dirname, "..");
 const ADMIN = process.env.PG_CHECK_URL;
 if (!ADMIN) { console.error("PG_CHECK_URL is required (an admin connection to a Postgres server)"); process.exit(2); }
@@ -114,6 +116,105 @@ const node = (code, env) => spawnSync(process.execPath, ["-e", code], { cwd: ROO
     try { checks = JSON.parse(boot.stdout.trim().split("\n").pop()); } catch (e) { checks = [{ ok: false, n: "boot produced no result", x: (boot.stderr || "").slice(0, 600) }]; }
     for (const c of checks) step(c.ok, "Postgres: " + c.n, c.x === undefined ? null : JSON.stringify(c.x));
 
+    /* 3b · a store's first storefront data (PR-043). The first /api/taxonomy after a boot syncs the
+       store's tree and attribute definitions from the master. Read node by node that was about
+       48,000 statements, each a round trip over the one serialized connection, and the first page
+       still showed "Composing…" when the browser check gave up (CI run 40565081756). These run on a
+       copy of the database, so the browser check below still meets a fresh install. */
+    const SYNC = NAME + "_sync", syncUrl = urlOf(SYNC), PGENV = { LX_DB_DRIVER: "postgres", LX_PG_URL: syncUrl };
+    const cl = await admin.simple(`CREATE DATABASE "${SYNC}" TEMPLATE "${NAME}"`);
+    step(!cl.error, "a copy of the platform database for the sync checks", cl.error);
+    const syncRun = node(`
+      /* every statement the bridge sends is one message to its worker */
+      const { Worker } = require("node:worker_threads"); let sent = 0; const pm = Worker.prototype.postMessage;
+      Worker.prototype.postMessage = function (m) { if (m && typeof m.sql === "string") sent++; return pm.apply(this, arguments); };
+      const s = console.log; console.log = () => {}; const db = require("./lib/db.js"); console.log = s;
+      const out = []; const ok = (c, n, x) => out.push({ ok: !!c, n, x });
+      try {
+        const ST = require("./lib/store-taxonomy.js"), SA = require("./lib/store-attributes.js");
+        const t = db.get("SELECT id FROM tenants ORDER BY id LIMIT 1").id;
+        const rows = db.get("SELECT COUNT(*) AS c FROM taxonomy WHERE tenant_id=?", t).c;
+        let n0 = sent; const t0 = Date.now(); ST.sync(t); SA.sync(t);
+        const cold = { statements: sent - n0, ms: Date.now() - t0, rows };
+        ok(rows > 0 && cold.statements < rows, "a store's first sync in a process reads the master as sets " + JSON.stringify(cold), cold);
+        const w0 = db.writes(); n0 = sent; ST.sync(t); SA.sync(t);
+        ok(db.writes() === w0, "a sync with nothing to change writes nothing (" + (sent - n0) + " statements)", db.writes() - w0);
+        const drift = db.all("SELECT id, name FROM taxonomy WHERE tenant_id=? AND active=1 AND node_uid IS NOT NULL ORDER BY id LIMIT 5", t);
+        for (const r of drift) db.run("UPDATE taxonomy SET name=? WHERE id=?", r.name + " (drifted)", r.id);
+        const names = () => drift.map(r => db.get("SELECT name FROM taxonomy WHERE id=?", r.id).name);
+        const realRun = db.run; let k = 0, threw = null;
+        db.run = (q, ...a) => { if (/^UPDATE taxonomy SET parent_id/.test(q) && ++k === 3) throw new Error("injected failure"); return realRun(q, ...a); };
+        try { ST.sync(t); } catch (e) { threw = e.message; } finally { db.run = realRun; }
+        ok(threw === "injected failure" && names().every(x => / \\(drifted\\)$/.test(x)), "a sync that fails part-way leaves the tree as it was (one transaction)", { threw, names: names() });
+        ok(ST.sync(t) === drift.length && names().join() === drift.map(r => r.name).join(), "the connection serves the next sync, which completes the tree");
+      } catch (e) { out.push({ ok: false, n: "threw", x: e.stack }); }
+      console.log(JSON.stringify(out)); process.exit(0);`, PGENV);
+    let syncChecks = [];
+    try { syncChecks = JSON.parse(syncRun.stdout.trim().split("\n").pop()); } catch (e) { syncChecks = [{ ok: false, n: "the sync checks produced no result", x: (syncRun.stderr || "").slice(0, 600) }]; }
+    for (const c of syncChecks) step(c.ok, "Postgres: " + c.n, c.x === undefined ? null : JSON.stringify(c.x));
+
+    /* two servers on one database sync a store neither has seen, at the same moment: each boots,
+       says it is ready, and syncs when the store exists and the go file appears */
+    const sc = await pg.connect(syncUrl);
+    const race = fs.mkdtempSync(path.join(os.tmpdir(), "lx-race-"));
+    const racer = i => new Promise(resolve => {
+      const ch = spawn(process.execPath, ["-e", `
+        const fs = require("fs"), path = require("path"); const s = console.log; console.log = () => {}; require("./lib/db.js"); console.log = s;
+        const ST = require("./lib/store-taxonomy.js"), nap = new Int32Array(new SharedArrayBuffer(4)), go = path.join(${JSON.stringify(race)}, "go");
+        fs.writeFileSync(path.join(${JSON.stringify(race)}, "ready-${i}"), "");
+        while (!fs.existsSync(go)) Atomics.wait(nap, 0, 0, 10);
+        let r; try { r = { changed: ST.sync(Number(fs.readFileSync(go, "utf8"))) }; } catch (e) { r = { error: e.message }; }
+        console.log(JSON.stringify(r)); process.exit(0);`], { cwd: ROOT, env: { ...process.env, ...PGENV }, stdio: ["ignore", "pipe", "pipe"] });
+      let out = "", err = ""; ch.stdout.on("data", d => { out += d; }); ch.stderr.on("data", d => { err += d; });
+      const timer = setTimeout(() => ch.kill("SIGKILL"), 600000);
+      ch.on("exit", () => { clearTimeout(timer); try { resolve(JSON.parse(out.trim().split("\n").pop())); } catch (e) { resolve({ error: "no result: " + (out + err).slice(-300) }); } });
+    });
+    const racers = [racer(1), racer(2)];
+    const readyAll = () => [1, 2].every(i => fs.existsSync(path.join(race, "ready-" + i)));
+    for (let i = 0; i < 6000 && !readyAll(); i++) await new Promise(r => setTimeout(r, 50));
+    const made = await sc.query("INSERT INTO tenants(slug,name,domain,status,mode,industries,profile) VALUES('pg-race','Race','pg-race.localhost','active','marketplace','[]','{}') RETURNING id");
+    const raceId = made.error ? 0 : Number(made.rows[0][0]);
+    fs.writeFileSync(path.join(race, "go"), String(raceId));
+    const [r1, r2] = await Promise.all(racers);
+    const dups = await sc.query(`SELECT COUNT(*) FROM (SELECT node_uid FROM taxonomy WHERE tenant_id=${raceId} AND node_uid IS NOT NULL GROUP BY node_uid HAVING COUNT(*) > 1) d`);
+    const built = await sc.query(`SELECT COUNT(*) FROM taxonomy WHERE tenant_id=${raceId}`);
+    const raced = { r1, r2, rows: built.error || Number(built.rows[0][0]), duplicated: dups.error || Number(dups.rows[0][0]) };
+    step(raceId && !r1.error && !r2.error && raced.rows > 0 && raced.duplicated === 0 && r1.changed + r2.changed === raced.rows,
+      "Postgres: two servers syncing one new store at once build its tree once " + JSON.stringify(raced), made.error);
+    try { fs.rmSync(race, { recursive: true, force: true }); } catch (e) { }
+
+    /* the server itself: a store's first requests arrive together, for two stores, after a boot */
+    const second = await sc.query("INSERT INTO tenants(slug,name,domain,status,mode,industries,profile) VALUES('pg-second','Second','pg-second.localhost','active','marketplace','[\"fashion\"]','{}') RETURNING id");
+    const secondId = second.error ? 0 : Number(second.rows[0][0]);
+    const firstId = await sc.query("SELECT id FROM tenants WHERE slug='luxora'").then(r => Number(r.rows[0][0]));
+    sc.close();
+    const port = Number(process.env.CHECK_PORT || 8869) + 1, base = "http://127.0.0.1:" + port;
+    const srv = spawn(process.execPath, [path.join(ROOT, "server.js")], { cwd: ROOT, env: { ...process.env, ...PGENV, PORT: String(port), LX_LOG: "", NODE_ENV: "" }, stdio: ["ignore", "ignore", "pipe"] });
+    let srvErr = ""; srv.stderr.on("data", d => { srvErr = (srvErr + d).slice(-4000); });
+    try {
+      let up = false;
+      for (let i = 0; i < 360 && !up; i++) { try { up = (await fetch(base + "/healthz")).ok; } catch (e) { } if (!up) await new Promise(r => setTimeout(r, 500)); }
+      step(up, "Postgres: a server on the copy answers /healthz", srvErr.slice(-600));
+      if (up) {
+        const ask = p => { const t0 = Date.now(); return fetch(base + p).then(async r => ({ p, status: r.status, ms: Date.now() - t0, body: await r.text() })).catch(e => ({ p, status: 0, ms: Date.now() - t0, body: e.message })); };
+        const got = await Promise.all(["/api/taxonomy?store=luxora", "/api/products?limit=200&store=luxora", "/api/taxonomy?store=luxora", "/api/taxonomy?store=pg-second", "/api/taxonomy?store=luxora", "/api/taxonomy?store=pg-second"].map(ask));
+        const tax = slug => got.filter(g => g.p === "/api/taxonomy?store=" + slug);
+        const flat = g => { try { return JSON.parse(g.body).flat || []; } catch (e) { return []; } };
+        const times = got.map(g => g.p.replace("/api/", "") + " " + g.status + " " + g.ms + " ms");
+        step(got.every(g => g.status === 200), "Postgres: a store's first requests, arriving together, all answer " + JSON.stringify(times), got.filter(g => g.status !== 200).map(g => g.p + " " + g.status + " " + g.body.slice(0, 200)));
+        step(new Set(tax("luxora").map(g => g.body)).size === 1 && new Set(tax("pg-second").map(g => g.body)).size === 1, "Postgres: every request for one store sees the same tree (no half-built one)");
+        step(flat(tax("luxora")[0]).length > 0 && flat(tax("luxora")[0]).every(r => r.tenant_id === firstId) && flat(tax("pg-second")[0]).length > 0 && flat(tax("pg-second")[0]).every(r => r.tenant_id === secondId),
+          "Postgres: each store's tree holds only its own rows", { luxora: flat(tax("luxora")[0]).length, second: flat(tax("pg-second")[0]).length });
+        /* the home page waits for this answer and is checked for 6 s after it loads: the first one
+           must leave the page most of that window, on a shared CI runner (PR-043) */
+        step(tax("luxora")[0].ms < 2000, "Postgres: a store's first /api/taxonomy after a boot answers in " + tax("luxora")[0].ms + " ms (bound 2000 ms)");
+      }
+    } finally {
+      try { srv.kill("SIGTERM"); } catch (e) { }
+      const gone = await new Promise(r => { if (srv.exitCode !== null) return r(true); const t = setTimeout(() => r(false), 5000); srv.on("exit", () => { clearTimeout(t); r(true); }); });
+      if (!gone) { try { srv.kill("SIGKILL"); } catch (e) { } }
+    }
+
     /* 4 · every page and console section, with the server on Postgres */
     if (!process.argv.includes("--no-browser")) {
       const br = spawnSync(process.execPath, [path.join(ROOT, "scripts", "browser-check.js")], { cwd: ROOT, env: { ...process.env, LX_DB_DRIVER: "postgres", LX_PG_URL: target, CHECK_PORT: process.env.CHECK_PORT || "8869" }, encoding: "utf8", timeout: 1800000 });
@@ -127,7 +228,7 @@ const node = (code, env) => spawnSync(process.execPath, ["-e", code], { cwd: ROO
   } finally {
     /* a fresh connection: the first one sat idle through the browser run */
     admin.close();
-    for (const db of [NAME, NAME + "_fail", NAME + "_kill"]) {
+    for (const db of [NAME, NAME + "_fail", NAME + "_kill", NAME + "_sync"]) {
       try { const a2 = await pg.connect(ADMIN); const dr = await a2.simple(`DROP DATABASE IF EXISTS "${db}" WITH (FORCE)`); if (dr.error) console.log("  (could not drop " + db + ": " + dr.error + ")"); a2.close(); }
       catch (e) { console.log("  (could not drop " + db + ": " + e.message + ")"); }
     }

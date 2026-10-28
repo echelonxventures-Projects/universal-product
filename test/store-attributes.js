@@ -27,6 +27,11 @@ const choice = applies.find(d => d.constraints && d.constraints.oneOf);
 const cr = rows(t).find(r => r.key === choice.name);
 ok(JSON.parse(cr.options).join() === choice.constraints.oneOf.join() && M.vocabulary(M.ROLES.attributeTypes).find(x => x.name === cr.type).choice, "a one-of rule shows as a choice with its options");
 
+{
+  const w0 = db.writes(); SA.sync(t);
+  ok(db.writes() === w0, "a sync with nothing to change writes nothing (PR-043)", db.writes() - w0);
+}
+
 console.log("store attributes — the store's own");
 SA.save(t, { key: "shelf_life_note", label: "Shelf note", type: "text" }, "store-admin");
 const mine = rows(t).find(r => r.key === "shelf_life_note");
