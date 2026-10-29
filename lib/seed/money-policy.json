@@ -1,0 +1,21 @@
+{
+ "$comment": "The governed money policy (lib/money-policy.js, PR-049). The policy is a kernel node of `kind` in the platform namespace, named by `scheme`/`key`; its rules are the node's attributes, so every version is a row of the kernel's bitemporal k_versions (valid time: when a rule applies; recorded time: when it was believed). It changes only through the kernel's change lifecycle (lib/kernel-lifecycle.js): drafted, validated, previewed, approved by someone other than its author, published, rolled back. The first version is seeded from lib/seed/money.json (`rounding`, `currencies`), so a fresh install applies exactly the rule it always did. The rounding rules a policy may name are lib/money.js MODES; nothing here is code. `section` is the platform console section whose write grant may draft, approve, publish and roll back a policy change. `ref` prefixes the version reference every money row records (money_policy). `samples` are the amounts a preview rounds under the current and the proposed policy.",
+ "namespace": "platform",
+ "kind": "value.money.policy",
+ "owner": "Value",
+ "label": "Money policy",
+ "scheme": "value.money.policy.key",
+ "key": "platform",
+ "actor": "money.seed",
+ "section": "gfinance",
+ "ref": "money-policy",
+ "seedRef": "seed",
+ "attributes": [
+  { "key": "rounding", "type": "text", "required": true, "label": "Platform rounding rule" },
+  { "key": "currencies", "type": "record", "label": "Per-currency rules: { <code>: { rounding } }" },
+  { "key": "note", "type": "text", "label": "Why this version", "constraints": { "maxLength": 500 } }
+ ],
+ "currencyKeys": ["rounding"],
+ "titleMax": 200,
+ "samples": ["1.005", "2.5", "-2.5", "0.125", "10.0049", "7.77777"]
+}

@@ -117,6 +117,7 @@ const NAV = [
     { g: "Currency", l: [
       ["currencies", "💰 Currencies", { e: "currency" }],
       ["fx", "📈 Exchange Rates", { v: "geo" }],
+      ["money-policy", "⚖️ Money Policy", { v: "money-policy" }],
       ["currency-universe", "🪙 Currency Universe", { u: "currency_universe" }],
     ] },
     { g: "Localization", l: [
@@ -1434,6 +1435,66 @@ async function gpModal(p, draft = {}) {
    The placements, actions, objects and review modes are the master's vocabularies, read from the API. */
 const titleOf = t => (t && t.title && (t.title.en || Object.values(t.title)[0])) || (t && t.name) || "";
 let mrHolder = "";
+/* the governed money policy (lib/money-policy.js): the rules in force, every version, and the
+   changes that move it — drafted, validated, previewed, approved by a second operator, published
+   and rolled back. Nothing here changes money until a change is approved and published */
+async function vMoneyPolicy() {
+  const d = await api("/platform/money/policy");
+  const p = d.policy || {}, L = d.states || {};
+  const rules = (cur) => Object.entries(cur || {}).map(([c, r]) => `${esc(c)}: ${esc(r.rounding)}`).join(", ") || "—";
+  const steps = c => ({ [L.initial]: ["validate", "preview", "discard"], [L.validated]: ["preview", "approve", "discard"], [L.approved]: ["preview", "publish", "discard"], [L.published]: ["rollback"] }[c.state] || []);
+  const row = c => `<tr><td>#${esc(c.id)}</td><td>${esc(c.title)}<div style="color:var(--p-muted);font-size:12px">${esc(c.author || "")}${c.approver ? " · approved by " + esc(c.approver) : ""}</div></td>
+    <td><span class="badge">${esc(c.state)}</span></td><td><code>${esc(c.proposed.rounding)}</code><div style="font-size:12px">${rules(c.proposed.currencies)}</div></td><td>${esc(c.validFrom || "on publish")}</td>
+    <td style="white-space:nowrap">${steps(c).map(a => `<button class="p-btn sm${a === "discard" || a === "rollback" ? " danger" : a === "publish" || a === "approve" ? " primary" : ""}" data-mp-step="${esc(a)}" data-mp-id="${esc(c.id)}">${esc(a)}</button>`).join(" ")}</td></tr>`;
+  return `<div class="p-panel"><h2 style="margin:0 0 6px">Money Policy</h2>
+    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">How every amount is rounded, by currency. A change is drafted, validated, previewed against sample amounts, approved by someone other than its author, then published; a published change can be rolled back. Every order, payment, invoice and refund records the version it was computed under.</p>
+    <div class="p-scroll-x"><table class="p-table"><tbody>
+      <tr><th>In force</th><td><code>${esc(p.ref || "")}</code> (${esc(p.source || "")})</td></tr>
+      <tr><th>Platform rule</th><td><code>${esc(p.rounding || "")}</code></td></tr>
+      <tr><th>Currency rules</th><td>${rules(p.currencies)}</td></tr>
+      <tr><th>Since</th><td>${esc(p.validFrom || "—")}</td></tr>
+      <tr><th>Note</th><td>${esc(p.note || "—")}</td></tr></tbody></table></div>
+    <h3 style="margin:18px 0 8px">Draft a change</h3>
+    <div style="display:grid;gap:10px;max-width:640px">
+      <label>Title <input id="mpTitle" placeholder="What this change is for"></label>
+      <label>Platform rule <select id="mpRounding">${(d.modes || []).map(m => `<option value="${esc(m)}" ${m === p.rounding ? "selected" : ""}>${esc(m)}</option>`).join("")}</select></label>
+      <label>Currency rules (JSON: { "CODE": { "rounding": "…" } }) <textarea id="mpCurrencies" rows="3" style="font-family:monospace">${esc(JSON.stringify(p.currencies || {}))}</textarea></label>
+      <label>Takes effect (empty: when published) <input id="mpFrom" type="datetime-local"></label>
+      <label>Note <input id="mpNote" maxlength="500"></label>
+      <div><button class="p-btn primary" id="mpDraft">Draft</button></div>
+    </div>
+    <div id="mpPreview" style="margin-top:14px"></div>
+    <h3 style="margin:18px 0 8px">Changes</h3>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>#</th><th>Change</th><th>State</th><th>Proposed</th><th>Takes effect</th><th></th></tr></thead>
+    <tbody>${(d.changes || []).map(row).join("") || '<tr><td colspan="6" class="p-empty">No changes yet</td></tr>'}</tbody></table></div>
+    <h3 style="margin:18px 0 8px">Versions</h3>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Version</th><th>Rule</th><th>Currency rules</th><th>Valid</th><th>Recorded</th><th>Believed</th></tr></thead>
+    <tbody>${(d.history || []).map(v => `<tr><td><code>${esc(v.ref)}</code></td><td>${esc(v.rounding)}</td><td>${rules(v.currencies)}</td><td>${esc(v.validFrom)} → ${esc(v.validTo || "…")}</td><td>${esc(v.recordedAt || "")} ${esc(v.recordedBy || "")}</td><td>${v.current ? "yes" : "superseded"}</td></tr>`).join("") || '<tr><td colspan="6" class="p-empty">No versions</td></tr>'}</tbody></table></div></div>`;
+}
+function wireMoneyPolicy() {
+  const draft = $("#mpDraft");
+  if (draft) draft.onclick = async () => {
+    try {
+      const currencies = JSON.parse($("#mpCurrencies").value || "{}");
+      const from = $("#mpFrom").value;
+      await api("/platform/money/policy/changes", "POST", { title: $("#mpTitle").value, validFrom: from ? new Date(from).toISOString() : undefined, policy: { rounding: $("#mpRounding").value, currencies, note: $("#mpNote").value || undefined } });
+      toast("Drafted"); render();
+    } catch (e) { toast(e.message); }
+  };
+  $$("[data-mp-step]").forEach(b => b.onclick = async () => {
+    const step = b.dataset.mpStep, id = b.dataset.mpId;
+    try {
+      const r = await api("/platform/money/policy/changes/" + encodeURIComponent(id) + "/" + step, "POST", {});
+      if (step === "preview") {
+        $("#mpPreview").innerHTML = `<h3 style="margin:0 0 8px">Preview of #${esc(id)} — ${esc(r.changed)} of ${esc(r.rows.length)} results change; nothing was written</h3>
+          <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Currency</th><th>Amount</th><th>Now</th><th>Proposed</th></tr></thead>
+          <tbody>${r.rows.map(x => `<tr><td>${esc(x.currency)}</td><td>${esc(x.amount)}</td><td>${esc(x.current.result)} <small>${esc(x.current.rule)}</small></td><td>${x.changed ? "<b>" : ""}${esc(x.proposed.result)}${x.changed ? "</b>" : ""} <small>${esc(x.proposed.rule)}</small></td></tr>`).join("")}</tbody></table></div>`;
+        return;
+      }
+      toast(step + ": done"); render();
+    } catch (e) { toast(e.message); }
+  });
+}
 async function vMasterReview() {
   const [{ contributions, placements }, all] = await Promise.all([api("/platform/master/contributions?awaiting=1"), api("/platform/master/contributions")]);
   const pending = contributions || [];
@@ -3773,6 +3834,7 @@ const VIEWFNS = {
   billing: () => vBillingOps(),
   gproducts: () => vGproducts(),
   "master-review": () => vMasterReview(),
+  "money-policy": () => vMoneyPolicy(),
   "platform-setup": () => vPlatformSetup(),
   "master-permissions": () => vMasterPermissions(),
   modules: () => vModules(),
@@ -3830,6 +3892,7 @@ const WIREFNS = {
   billing: () => wireBillingOps(),
   gproducts: () => wireGproducts(),
   "master-review": () => wireMasterReview(),
+  "money-policy": () => wireMoneyPolicy(),
   "platform-setup": () => wirePlatformSetup(),
   "master-permissions": () => wireMasterPermissions(),
   modules: () => wireModules(),

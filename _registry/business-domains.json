@@ -557,7 +557,8 @@
    "owns": {
     "files": [
      "lib/money.js",
-     "lib/money-store.js"
+     "lib/money-store.js",
+     "lib/money-policy.js"
     ],
     "tables": [
      "currencies",

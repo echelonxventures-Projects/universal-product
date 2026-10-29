@@ -1269,7 +1269,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 204 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 206 files.
 
 ### C02 · Meaning
 
@@ -1317,6 +1317,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/wallet.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | the Universal Wallet: versioned definitions, many named wallets per owner, the balanced immutable ledger, idempotency and holds |
 | `lib/money.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | money, exactly: the Money contract (exact minor units of one currency, scale from Value's master), one named rounding rule, exact conversion, allocation and versioned serialization |
 | `lib/money-store.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | money at rest: exact minor units beside every payment-spine amount, migration money-0001 with quarantine, the database guard and reconciliation |
+| `lib/money-policy.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | the governed money policy: rounding rules as a kernel node versioned in k_versions, changed through the kernel lifecycle (draft, validate, preview, distinct approval, publish, rollback); the version every money row records |
 | `lib/platform-master.js` | [Measure](volumes/V04-universal-dimensions.md#d-mea) | dimensions, units and conversion |
 | `lib/kernel-context.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | scope and resolution (K11, K12) |
 | `lib/expression.js` | [Expression](volumes/V04-universal-dimensions.md#d-exr) | languages, the message catalogue, and the language a request is answered in (P12) |
@@ -1330,7 +1331,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/seed/expression.json` | [Expression](volumes/V04-universal-dimensions.md#d-exr) | the language registry and the storefront copy catalogues |
 | `lib/seed/time.json` | [Time](volumes/V04-universal-dimensions.md#d-tim) | calendars, chronologies, temporal units, conversions and each seeded country's primary zone |
 | `lib/seed/wallet.json` | [Value](volumes/V04-universal-dimensions.md#d-val) | the wallet's system accounts, operations, machines and the definitions it ships |
-| `lib/seed/money.json` | [Value](volumes/V04-universal-dimensions.md#d-val) | the rounding rule: a platform default and per-currency overrides |
+| `lib/seed/money.json` | [Value](volumes/V04-universal-dimensions.md#d-val) | the seed of the money policy (its first version): a platform rounding rule and per-currency overrides; the money-at-rest spec |
+| `lib/seed/money-policy.json` | [Value](volumes/V04-universal-dimensions.md#d-val) | the governed money policy's declaration: its kernel kind, identifier, approving section, version reference and preview samples |
 | `lib/seed/value.json` | [Value](volumes/V04-universal-dimensions.md#d-val) | the classes of units of value and the units shipped beyond the currency seed |
 | `lib/seed/places.json` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | the place kind, the place tree and their identifier schemes |
 | `lib/seed/settings.json` | [Context](volumes/V04-universal-dimensions.md#d-ctx) |  |

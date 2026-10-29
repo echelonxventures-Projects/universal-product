@@ -46,6 +46,7 @@ Sending something back: return requests, their inspection and refund, and paymen
 | `amount_minor` | INTEGER |
 | `money_scale` | INTEGER |
 | `money_state` | TEXT |
+| `money_policy` | TEXT |
 
 ## API reference
 

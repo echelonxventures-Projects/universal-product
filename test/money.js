@@ -153,16 +153,23 @@ ok(M.toString(M.rounded(1.0049999999999999, "USD")) === "1.01", "a sum that land
 
 console.log("\nmoney — against an independent reference (Python decimal, test/fixtures/money-vectors.json)");
 const V = require("./fixtures/money-vectors.json");
-/* a currency of each scale in the master, its rule set per vector through the policy (data) */
+/* a currency of each scale in the master, its rule set through the governed money policy
+   (lib/money-policy.js): one approved, published change per rule, the vectors of each rule run
+   under it */
 const curOf = { 0: "JPY", 2: "USD", 3: "KWD" };
-const POL = require("../lib/seed/money.json"); POL.currencies = POL.currencies || {};
-const withMode = (code, mode, fn) => { const was = POL.currencies[code]; POL.currencies[code] = { rounding: mode }; try { return fn(); } finally { if (was) POL.currencies[code] = was; else delete POL.currencies[code]; } };
-const check = (name, list, fn) => { let bad = null, n = 0; for (const v of list) { n++; let got; try { got = fn(v); } catch (e) { got = "threw " + e.message; } if (got !== v.want) { bad = { v, got }; break; } } ok(!bad, name + " (" + n + " vectors)", bad); };
+const MP = require("../lib/money-policy.js"), POL = require("../lib/seed/money.json");
+const APPROVE = [require("../lib/kernel.js").SEED.lifecycle.approvePermission];
+const governed = currencies => { const c = MP.propose({ title: "money vectors", policy: { rounding: POL.rounding, currencies } }, "test.author"); MP.approve(c.id, "test.approver", APPROVE); return MP.publish(c.id, "test.approver").policy; };
+let inForce = null;
+const withMode = (code, mode, fn) => { if (inForce !== mode) { governed(Object.fromEntries(Object.values(curOf).map(k => [k, { rounding: mode }]))); inForce = mode; } return fn(); };
+const byMode = list => [...list].sort((a, b) => (a.mode < b.mode ? -1 : a.mode > b.mode ? 1 : 0));
+const check = (name, list, fn) => { let bad = null, n = 0; for (const v of byMode(list)) { n++; let got; try { got = fn(v); } catch (e) { got = "threw " + e.message; } if (got !== v.want) { bad = { v, got }; break; } } ok(!bad, name + " (" + n + " vectors)", bad); };
 check("conversion amount × rate at the target's scale, every rule", V.convert, v => withMode(curOf[v.toScale], v.mode, () => M.convertTo(M.ofMinor(v.minor, curOf[v.scale], v.scale), v.rate, curOf[v.toScale]).minor.toString()));
 check("percentages, every rule", V.pct, v => withMode(curOf[v.scale], v.mode, () => M.pct(M.ofMinor(v.minor, curOf[v.scale], v.scale), v.pct).minor.toString()));
 check("fractional quantities, every rule", V.qty, v => withMode(curOf[v.scale], v.mode, () => M.mulQty(M.ofMinor(v.minor, curOf[v.scale], v.scale), v.qty).minor.toString()));
 check("division by a factor, every rule", V.div, v => withMode(curOf[v.scale], v.mode, () => M.divRate(M.ofMinor(v.minor, curOf[v.scale], v.scale), v.div).minor.toString()));
 check("rounding a decimal to a scale, every rule", V.round, v => withMode(curOf[v.scale], v.mode, () => M.rounded(v.amount, curOf[v.scale]).minor.toString()));
+governed(POL.currencies || {});
 ok(M.modeFor("USD") === POL.rounding, "the policy is back to its configured rule after the vectors");
 
 console.log("\nmoney — properties of the Money operations (seeded)");

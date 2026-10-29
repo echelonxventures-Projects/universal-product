@@ -50,6 +50,7 @@ Queue a payout to a bank account or VPA and process it through the configured ga
 | `net_minor` | INTEGER |
 | `money_scale` | INTEGER |
 | `money_state` | TEXT |
+| `money_policy` | TEXT |
 
 ### `payouts`
 
@@ -74,6 +75,7 @@ Queue a payout to a bank account or VPA and process it through the configured ga
 | `net_minor` | INTEGER |
 | `money_scale` | INTEGER |
 | `money_state` | TEXT |
+| `money_policy` | TEXT |
 
 ### `payout_items`
 
@@ -91,6 +93,7 @@ Queue a payout to a bank account or VPA and process it through the configured ga
 | `amount_minor` | INTEGER |
 | `money_scale` | INTEGER |
 | `money_state` | TEXT |
+| `money_policy` | TEXT |
 
 ### `recon_batches`
 

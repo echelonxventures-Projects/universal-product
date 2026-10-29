@@ -22,7 +22,7 @@ CREATE TABLE invoices (
   period_start TEXT, period_end TEXT, amount REAL NOT NULL, currency TEXT DEFAULT 'USD',
   status TEXT NOT NULL DEFAULT 'draft', issued_at TEXT NOT NULL DEFAULT (datetime('now')),
   paid_at TEXT, note TEXT DEFAULT ''
-, trace_id TEXT, amount_minor INTEGER, money_scale INTEGER, money_state TEXT, uid TEXT);
+, trace_id TEXT, amount_minor INTEGER, money_scale INTEGER, money_state TEXT, money_policy TEXT, uid TEXT);
 CREATE TABLE audit_log (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   tenant_id INTEGER, actor_type TEXT NOT NULL DEFAULT 'system',
@@ -89,11 +89,11 @@ CREATE TABLE orders (
   sub REAL, ship_fee REAL, gift_used REAL, tax REAL, total REAL,
   eta_days INTEGER DEFAULT 5, status TEXT DEFAULT 'processing',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, store_id INTEGER, slot_id INTEGER, promise_minutes INTEGER, delivery_kind TEXT DEFAULT 'standard', cancel_reason TEXT, seller_id INTEGER, escrow_ref TEXT, invoice_ref TEXT, gift_wrap INTEGER DEFAULT 0, gift_message TEXT, contexts TEXT DEFAULT '{}', currency TEXT DEFAULT '', fx REAL DEFAULT 1, trace_id TEXT, charges TEXT NOT NULL DEFAULT '[]', deleted_at TEXT, sub_minor INTEGER, ship_fee_minor INTEGER, gift_used_minor INTEGER, tax_minor INTEGER, total_minor INTEGER, money_scale INTEGER, money_state TEXT, uid TEXT);
+, store_id INTEGER, slot_id INTEGER, promise_minutes INTEGER, delivery_kind TEXT DEFAULT 'standard', cancel_reason TEXT, seller_id INTEGER, escrow_ref TEXT, invoice_ref TEXT, gift_wrap INTEGER DEFAULT 0, gift_message TEXT, contexts TEXT DEFAULT '{}', currency TEXT DEFAULT '', fx REAL DEFAULT 1, trace_id TEXT, charges TEXT NOT NULL DEFAULT '[]', deleted_at TEXT, sub_minor INTEGER, ship_fee_minor INTEGER, gift_used_minor INTEGER, tax_minor INTEGER, total_minor INTEGER, money_scale INTEGER, money_state TEXT, money_policy TEXT, uid TEXT);
 CREATE TABLE order_items (
   order_id INTEGER NOT NULL, product_id TEXT NOT NULL, qty INTEGER NOT NULL, price REAL NOT NULL, sku_id INTEGER,
   terms TEXT DEFAULT '{}'
-, currency TEXT, price_minor INTEGER, money_scale INTEGER, money_state TEXT, uid TEXT);
+, currency TEXT, price_minor INTEGER, money_scale INTEGER, money_state TEXT, money_policy TEXT, uid TEXT);
 CREATE TABLE reviews (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 1,
   product_id TEXT NOT NULL, user_id INTEGER, name TEXT NOT NULL,
@@ -140,7 +140,7 @@ CREATE TABLE payments (
   gateway TEXT NOT NULL, method TEXT, amount REAL NOT NULL, currency TEXT,
   fee REAL DEFAULT 0, status TEXT NOT NULL DEFAULT 'initiated',
   txn_ref TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, provider_payment_id TEXT, live INTEGER DEFAULT 0, amount_minor INTEGER, fee_minor INTEGER, money_scale INTEGER, money_state TEXT, refunded_minor INTEGER NOT NULL DEFAULT 0, uid TEXT);
+, provider_payment_id TEXT, live INTEGER DEFAULT 0, amount_minor INTEGER, fee_minor INTEGER, money_scale INTEGER, money_state TEXT, money_policy TEXT, refunded_minor INTEGER NOT NULL DEFAULT 0, uid TEXT);
 CREATE TABLE custom_providers (
   id INTEGER PRIMARY KEY AUTOINCREMENT, scope TEXT NOT NULL DEFAULT 'platform',
   tenant_id INTEGER, kind TEXT NOT NULL, manifest TEXT NOT NULL,
@@ -207,7 +207,7 @@ CREATE TABLE settlements (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL UNIQUE,
   seller_id INTEGER, order_id INTEGER, gross REAL, commission REAL, net REAL,
   status TEXT DEFAULT 'pending', period TEXT
-, currency TEXT, gross_minor INTEGER, commission_minor INTEGER, net_minor INTEGER, money_scale INTEGER, money_state TEXT);
+, currency TEXT, gross_minor INTEGER, commission_minor INTEGER, net_minor INTEGER, money_scale INTEGER, money_state TEXT, money_policy TEXT);
 CREATE TABLE meta_lists (
   name TEXT PRIMARY KEY, label TEXT, items TEXT NOT NULL, seeded_from TEXT
 , edited INTEGER DEFAULT 0, uid TEXT);
@@ -494,7 +494,7 @@ CREATE TABLE invoice_lines (
   kind TEXT NOT NULL DEFAULT 'plan', description TEXT NOT NULL, qty REAL DEFAULT 1,
   unit_amount REAL DEFAULT 0, amount REAL DEFAULT 0, tax REAL DEFAULT 0, tax_class TEXT DEFAULT 'standard',
   ref TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, currency TEXT, unit_amount_minor INTEGER, amount_minor INTEGER, tax_minor INTEGER, money_scale INTEGER, money_state TEXT, uid TEXT);
+, currency TEXT, unit_amount_minor INTEGER, amount_minor INTEGER, tax_minor INTEGER, money_scale INTEGER, money_state TEXT, money_policy TEXT, uid TEXT);
 CREATE TABLE usage_records (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, kind TEXT NOT NULL,
   ref TEXT DEFAULT '', description TEXT NOT NULL DEFAULT '', qty REAL DEFAULT 1, unit_amount REAL DEFAULT 0,
@@ -512,7 +512,7 @@ CREATE TABLE disputes (
   ref TEXT NOT NULL UNIQUE, reason TEXT, amount REAL, currency TEXT,
   state TEXT NOT NULL DEFAULT 'opened', resolution TEXT, closed_at TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, amount_minor INTEGER, money_scale INTEGER, money_state TEXT);
+, amount_minor INTEGER, money_scale INTEGER, money_state TEXT, money_policy TEXT);
 CREATE INDEX ix_disputes_state ON disputes(state, tenant_id);
 CREATE TABLE payouts (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
@@ -520,11 +520,11 @@ CREATE TABLE payouts (
   gross REAL NOT NULL DEFAULT 0, fee REAL NOT NULL DEFAULT 0, net REAL NOT NULL DEFAULT 0,
   currency TEXT DEFAULT 'USD', status TEXT NOT NULL DEFAULT 'open',
   disbursed_at TEXT, note TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, gross_minor INTEGER, fee_minor INTEGER, net_minor INTEGER, money_scale INTEGER, money_state TEXT);
+, gross_minor INTEGER, fee_minor INTEGER, net_minor INTEGER, money_scale INTEGER, money_state TEXT, money_policy TEXT);
 CREATE TABLE payout_items (
   id INTEGER PRIMARY KEY AUTOINCREMENT, payout_id INTEGER NOT NULL, tenant_id INTEGER NOT NULL,
   ref TEXT NOT NULL, kind TEXT, description TEXT, amount REAL, currency TEXT, settled INTEGER DEFAULT 0
-, amount_minor INTEGER, money_scale INTEGER, money_state TEXT);
+, amount_minor INTEGER, money_scale INTEGER, money_state TEXT, money_policy TEXT);
 CREATE TABLE recon_batches (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, period TEXT, gateway TEXT,
   source TEXT, lines INTEGER DEFAULT 0, matched INTEGER DEFAULT 0, unmatched INTEGER DEFAULT 0,
@@ -688,7 +688,7 @@ CREATE TABLE credit_notes (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, number TEXT NOT NULL UNIQUE,
   invoice_id INTEGER, amount REAL NOT NULL, currency TEXT DEFAULT 'USD', reason TEXT DEFAULT '',
   status TEXT NOT NULL DEFAULT 'issued', to_wallet INTEGER DEFAULT 0, created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, amount_minor INTEGER, money_scale INTEGER, money_state TEXT, uid TEXT);
+, amount_minor INTEGER, money_scale INTEGER, money_state TEXT, money_policy TEXT, uid TEXT);
 CREATE TABLE billing_events (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, invoice_id INTEGER,
   kind TEXT NOT NULL, detail TEXT DEFAULT '{}', created_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -1984,7 +1984,7 @@ CREATE TABLE refunds (
   amount_minor INTEGER NOT NULL CHECK (amount_minor > 0), currency TEXT NOT NULL, money_scale INTEGER NOT NULL,
   status TEXT NOT NULL, source TEXT NOT NULL DEFAULT 'console', reason TEXT DEFAULT '',
   idem_key TEXT NOT NULL, provider_refund_id TEXT, error TEXT, actor TEXT DEFAULT '', attempts INTEGER NOT NULL DEFAULT 1,
-  created_at TEXT NOT NULL DEFAULT (datetime('now')), settled_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), settled_at TEXT, money_policy TEXT,
   UNIQUE (tenant_id, idem_key)
 );
 CREATE INDEX ix_refunds_payment ON refunds(payment_id);

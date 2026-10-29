@@ -638,6 +638,16 @@ pending."** Walk this path top to bottom; afterwards you can launch stores.
    **currencies & FX rates** (with history; optionally synced from a JSON feed), and the
    **tax modes** (GST / VAT / sales tax / zero-rate). Jurisdictions, states and cities are
    editable datasets in the same group.
+   **⚖️ Money Policy** (*01 Foundation → Currency*) is how every amount is rounded: a
+   platform rule and, where needed, a rule per currency (half-up, half-even, half-down, up,
+   down, ceiling, floor). It ships with the seeded rule and changes only by an approved
+   change: **Draft** the whole policy (a title, the rules, optionally a later time it takes
+   effect and a note) → **validate** → **preview** (sample amounts rounded under today's and
+   the proposed rules; nothing is written) → **approve**, by a *different* operator holding
+   Finance write access → **publish**. A published change can be **rolled back**. A change
+   drafted before another one landed is refused as out of date and drafted again. The
+   *Versions* table lists every version, superseded ones included; every order, payment,
+   invoice and refund records the version it was computed under.
 3. **💼 Plans** (*04 Commerce → Billing & Payment*) — create the subscription tiers: name,
    price/month, currency, max products, max orders/month.
 4. **🔌 Provider Registry** (*09 Platform → Extension*) — for each payment / shipping /

@@ -77,6 +77,7 @@ When an item is unavailable at picking: the shopper's own choice per line — re
 | `total_minor` | INTEGER |
 | `money_scale` | INTEGER |
 | `money_state` | TEXT |
+| `money_policy` | TEXT |
 | `uid` | TEXT |
 
 ### `order_items`
@@ -93,6 +94,7 @@ When an item is unavailable at picking: the shopper's own choice per line — re
 | `price_minor` | INTEGER |
 | `money_scale` | INTEGER |
 | `money_state` | TEXT |
+| `money_policy` | TEXT |
 | `uid` | TEXT |
 
 ### `order_substitutions`

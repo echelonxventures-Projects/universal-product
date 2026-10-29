@@ -113,6 +113,7 @@ Divide a payment across parties at order time. The parts must sum to the total, 
 | `fee_minor` | INTEGER |
 | `money_scale` | INTEGER |
 | `money_state` | TEXT |
+| `money_policy` | TEXT |
 | `refunded_minor` | INTEGER NOT NULL DEFAULT 0 |
 | `uid` | TEXT |
 
@@ -282,6 +283,7 @@ Divide a payment across parties at order time. The parts must sum to the total, 
 | `attempts` | INTEGER NOT NULL DEFAULT 1 |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 | `settled_at` | TEXT |
+| `money_policy` | TEXT |
 
 ## API reference
 

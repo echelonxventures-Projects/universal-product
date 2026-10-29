@@ -12,9 +12,10 @@ Every unit of value and how they convert: currencies, points and credits, and ex
 
 | Module | What it is |
 |---|---|
+| `lib/money-policy.js` | the governed money policy (PR-049). How money is rounded is a policy, not code: a platform rule and per-currency rules, kept as a kernel node whose attributes are versioned in the kernel's bitemporal k_versions, and changed only through the kernel's change lifecycle. lib/money.js asks this module which rule applies. |
 | `lib/money-store.js` | money at rest (PR-016). |
 | `lib/money.js` | money, exactly (PR-016). One representation: an amount is a whole number of MINOR units of one currency, and a currency's minor unit is data (its `decimals` in Value's master, lib/registry.js). Nothing here does binary floating-point arithmetic on money: a JS number coming in is read through its decimal spelling (see `parse`), held as a BigInt scaled by a power of ten, and rounded once, by a NAMED rule. |
-| `lib/routes/currency.js` | currency domain routes (_registry/business-domains.json `currency`). Money at rest (lib/money-store.js): the platform's reconciliation of every payment-spine amount, and the amounts the money migration could not convert — each resolved by an operator with a recorded decision, never guessed. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
+| `lib/routes/currency.js` | currency domain routes (_registry/business-domains.json `currency`). Money at rest (lib/money-store.js): the platform's reconciliation of every payment-spine amount, and the amounts the money migration could not convert — each resolved by an operator with a recorded decision, never guessed. The governed money policy (lib/money-policy.js): drafted, validated, previewed, approved by a second operator, published and rolled back, each step by a holder of the policy section's write grant and each audited. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -89,6 +90,15 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `POST /api/platform/fx/rates` | `apiPlatformFxRates` | — |
 | `PUT /api/platform/fx/provider` | `apiPlatformFxProvider` | — |
 | `POST /api/platform/fx/sync` | `apiPlatformFxSync` | — |
+| `GET /api/platform/money/policy` | `apiMoneyPolicy` | — |
+| `GET /api/platform/money/policy/versions/:id` | `apiMoneyPolicyVersion` | — |
+| `POST /api/platform/money/policy/changes` | `apiMoneyPolicyDraft` | — |
+| `POST /api/platform/money/policy/changes/:id/validate` | `apiMoneyPolicyStep` | — |
+| `POST /api/platform/money/policy/changes/:id/preview` | `apiMoneyPolicyStep` | — |
+| `POST /api/platform/money/policy/changes/:id/approve` | `apiMoneyPolicyStep` | — |
+| `POST /api/platform/money/policy/changes/:id/publish` | `apiMoneyPolicyStep` | — |
+| `POST /api/platform/money/policy/changes/:id/rollback` | `apiMoneyPolicyStep` | — |
+| `POST /api/platform/money/policy/changes/:id/discard` | `apiMoneyPolicyStep` | — |
 | `GET /api/platform/money` | `apiPlatformMoney` | — |
 | `POST /api/platform/money/quarantine/:id/resolve` | `apiPlatformMoneyResolve` | — |
 
@@ -97,15 +107,15 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 ```mermaid
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[platform console]
-  UI --> API[7 API routes]
-  API --> ENG[money-store.js, money.js, currency.js]
+  UI --> API[16 API routes]
+  API --> ENG[money-policy.js, money-store.js, money.js, currency.js]
   ENG --> DB[(currencies, fx_rates, money_migrations, money_quarantine)]
 
 ```
 
 ## User interface
 
-**Platform console:** 💰 Currencies · 📈 Exchange Rates · 🪙 Currency Universe
+**Platform console:** 💰 Currencies · 📈 Exchange Rates · ⚖️ Money Policy · 🪙 Currency Universe
 
 ## User flows
 

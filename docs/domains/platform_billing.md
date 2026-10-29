@@ -49,6 +49,7 @@ What the platform charges its stores: plans, subscriptions to plans, usage meter
 | `amount_minor` | INTEGER |
 | `money_scale` | INTEGER |
 | `money_state` | TEXT |
+| `money_policy` | TEXT |
 | `uid` | TEXT |
 
 ### `invoice_lines`
@@ -73,6 +74,7 @@ What the platform charges its stores: plans, subscriptions to plans, usage meter
 | `tax_minor` | INTEGER |
 | `money_scale` | INTEGER |
 | `money_state` | TEXT |
+| `money_policy` | TEXT |
 | `uid` | TEXT |
 
 ### `usage_records`
@@ -110,6 +112,7 @@ What the platform charges its stores: plans, subscriptions to plans, usage meter
 | `amount_minor` | INTEGER |
 | `money_scale` | INTEGER |
 | `money_state` | TEXT |
+| `money_policy` | TEXT |
 | `uid` | TEXT |
 
 ### `billing_events`
