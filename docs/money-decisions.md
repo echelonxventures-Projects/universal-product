@@ -13,6 +13,8 @@ Consequences, risks and recommendations for each record, prepared for the owner,
 **Status:** OPEN. **Technical default:** `half-up` for every currency (`lib/seed/money.json`
 `rounding`), tax rounded once per document (`checkout.tax_per_line` gate off).
 
+**Owner direction (2026-10-29, DEC-OWN-MONEY-POLICY):** the rule is governed configuration — seeded, validated, simulated, approved and activated by authorized administrators per currency and jurisdiction, never by a code change. This settles *how* the rule is set (option C's mechanism); **which rule applies to each launch currency and jurisdiction is still OPEN**.
+
 | Option | Behaviour | Consequence |
 |---|---|---|
 | A. `half-up` everywhere | 0.005 → 0.01, −0.005 → −0.01 | What most receipts and shoppers expect; a slight upward bias summed over many roundings; may differ from a tax authority that prescribes another rule |
@@ -32,6 +34,8 @@ implemented; would be a new rule at the payment boundary only).
 **Status:** OPEN. **Technical position:** the payment spine is exact (docs/money.md §1); every
 other domain's money is still `REAL` (PR-045, `docs/money-inventory.generated.md`).
 
+**Owner direction (2026-10-29, DEC-OWN-UNIVERSAL-PLATFORM):** one universal platform, the general multi-vendor marketplace first; no domain is presented as ready because it is registered. **Which PR-045 domains are enabled at launch is still OPEN.**
+
 | Option | Consequence |
 |---|---|
 | A. Launch with the payment spine only; every domain listed in PR-045 stays disabled (its capability off) until migrated | Smallest risk; those features are unavailable at launch |
@@ -49,6 +53,8 @@ charges or pays.
 apportions no tax and reverses no offer redemption. A full refund reverses offer redemptions
 and emits `order.refunded` (as before).
 
+**Owner direction (2026-10-29, DEC-OWN-MONEY-POLICY, DEC-OWN-FIN-EXCEPTIONS):** refund allocation, tax reversal and offer reversal are configurable policy, within the invariants (never more than captured, exact, idempotent, unknown outcomes kept unknown). **Which allocation is active at launch is still OPEN.**
+
 | Option | Behaviour | Consequence |
 |---|---|---|
 | A. Amount only (current) | The refund is a gross amount | Tax reports overstate tax collected by the refunded share until adjusted by hand |
@@ -64,6 +70,8 @@ each changes what a shopper keeps of a discount after a partial return.
 copy, PR-026). On a real migration rehearsal, `node scripts/money.js quarantine` lists every
 amount that could not be converted, with its source value and candidates.
 
+**Owner direction (2026-10-29, DEC-OWN-FIN-EXCEPTIONS):** source values are always preserved, conversion is automatic only when deterministic and validated, and ambiguous records are quarantined for explicit, authorized resolution with a recorded rationale — options A and B are both permitted within that; **the rule per quarantine reason and its approver are still OPEN**, and C (left quarantined) stays in effect until they are set.
+
 | Option | Consequence |
 |---|---|
 | A. Resolve each entry by hand from source records (provider dashboard, invoice PDF) | Exact; effort grows with the count |
@@ -78,3 +86,5 @@ infers one.
 **Status:** OPEN. Proposed: within two releases of launch, once every reader listed by
 `node scripts/money-audit.js` reads minor units, a migration `money-0002` drops them
 (docs/money.md §4). The owner sets the date.
+
+**Owner direction (2026-10-29, DEC-OWN-MONEY-POLICY):** a compatibility projection may exist only while the exact value is authoritative and the projection is controlled and reconciled (the database guard does this). **The removal date is still OPEN.**

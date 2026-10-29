@@ -13,7 +13,7 @@
 | conflicts-with | 0 | <from> and <to> cannot both hold as stated. Symmetric; recorded once. |
 | constrains | 46 | <from> limits what <to> may do. |
 | depends-on | 33 | <from> cannot be correct or complete without <to>. |
-| derived-from | 67 | <from> was derived from evidence or knowledge in <to>. |
+| derived-from | 72 | <from> was derived from evidence or knowledge in <to>. |
 | implements | 49 | <from> realises <to>. |
 | included-in | 109 | <from> is part of the curated content of context pack <to>. |
 | recovers | 1 | <from> holds bytes that hash to the checksum recorded by <to>, whose own storage does not preserve them. <to> stays unverified; <from> is verified on its own storage. |

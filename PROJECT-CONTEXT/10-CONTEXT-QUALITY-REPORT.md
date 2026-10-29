@@ -7,14 +7,14 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 
 | Metric | Value | Num / Den | Formula |
 |---|---|---|---|
-| source-inventory-preserved | 88.46% | 23 / 26 | in-scope sources with preservation=preserved ÷ (in-scope sources − sources excluded by policy) |
+| source-inventory-preserved | 85.19% | 23 / 27 | in-scope sources with preservation=preserved ÷ (in-scope sources − sources excluded by policy) |
 | source-checksum-verification | 100% | 23 / 23 | preserved sources whose archived bytes re-hash to the manifest sha256 ÷ preserved sources |
 | segment-accounting | 100% | 6085 / 6085 | segments in {represented, preserved, irrelevant, excluded} ÷ all segments of preserved in-scope sources |
 | segment-representation | 0.44% | 27 / 6085 | segments cited by at least one knowledge record ÷ all segments of preserved in-scope sources |
 | segment-individual-review | 0.71% | 43 / 6085 | segments cited by a record or classified individually with a rationale ÷ all segments of preserved in-scope sources |
 | segment-rule-classified | 99.29% | 6042 / 6085 | segments accounted for only by a source-wide classification rule (not individually read) ÷ all segments of preserved in-scope sources |
 | requirement-source-traceability | 100% | 14 / 14 | active requirements with ≥1 resolvable source reference ÷ active requirements |
-| decision-source-traceability | 100% | 9 / 9 | active decisions with ≥1 resolvable source or provenance=newly-proposed ÷ active decisions |
+| decision-source-traceability | 100% | 14 / 14 | active decisions with ≥1 resolvable source or provenance=newly-proposed ÷ active decisions |
 | requirement-implementation-traceability | 100% | 14 / 14 | active requirements with an incoming 'implements' edge ÷ active requirements |
 | requirement-test-traceability | 100% | 14 / 14 | active requirements with an incoming 'verifies' edge ÷ active requirements |
 | context-dependency-completeness | 100% | 6 / 6 | active context specs whose prerequisites all exist and are active ÷ active context specs |
@@ -29,7 +29,7 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 | unresolvedConflicts | 0 |
 | conflictsWithEdges | 0 |
 | unaccountedSegments | 0 |
-| sourcesWithoutBytes | SRC-CONV-2026-10-22-MASTER-PROMPT:not-retained, SRC-CONV-PRIOR-SESSIONS:inaccessible, SRC-GIT-HISTORY:not-retained |
+| sourcesWithoutBytes | SRC-CONV-2026-10-22-MASTER-PROMPT:not-retained, SRC-CONV-2026-10-29-OWNER-MANDATE:not-retained, SRC-CONV-PRIOR-SESSIONS:inaccessible, SRC-GIT-HISTORY:not-retained |
 | danglingSegmentCitations | 0 |
 
 - Broken knowledge references (graph): 0
@@ -47,6 +47,7 @@ Every percentage is numerator ÷ denominator with the formula stated. `—` mean
 | SRC-ARCH-5 | preserved | 74 | 0 | 74 | 0 | 0 | 0 | 0 |
 | SRC-ARCH-6 | preserved | 31 | 0 | 31 | 0 | 0 | 0 | 0 |
 | SRC-CONV-2026-10-22-MASTER-PROMPT | not-retained | 0 | — | — | — | — | — | — |
+| SRC-CONV-2026-10-29-OWNER-MANDATE | not-retained | 0 | — | — | — | — | — | — |
 | SRC-CONV-PRIOR-SESSIONS | inaccessible | 0 | — | — | — | — | — | — |
 | SRC-GIT-HISTORY | not-retained | 0 | — | — | — | — | — | — |
 | SRC-GIT-HISTORY-441D772-V1 | preserved | 79 | 0 | 79 | 0 | 0 | 0 | 0 |

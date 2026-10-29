@@ -375,6 +375,138 @@
         "governance"
       ],
       "lifecycle": "canonical-active"
+    },
+    {
+      "id": "DEC-OWN-MONEY-POLICY",
+      "statement": "Every existing monetary rule and supported calculation option is inventoried from the implementation and seeded into the canonical configuration, where authorized administrators discover, validate, simulate, approve and activate it without a code change.",
+      "context": "Money policy (rounding, currency precision, tax, discounts, fees, refunds, settlement, conversion, reconciliation, legacy resolution) lived partly in seed files and partly in code; the specific values (MD-1–MD-5) were open.",
+      "selected": "Seeded rule definitions are kept separate from draft/default values; seeding is idempotent, versioned and never overwrites or activates an approved live configuration; a rule counts as configurable only when the running platform loads, validates and applies it; new computations enter through a registered extension.",
+      "rationale": "One governed source for financial policy, auditable against the policy version used, with no silent rounding or conversion.",
+      "rejected": [],
+      "authority": "Bipin Kumar, accountable business and release owner (mandate of 2026-10-29, Part I §2)",
+      "decidedAt": "2026-10-29",
+      "status": "approved",
+      "provenance": "evidenced",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-29-OWNER-MANDATE",
+          "locator": "Part I §2 Decision 1"
+        }
+      ],
+      "consequences": [
+        "The direction does not choose the values: the rounding rule per currency/jurisdiction, launch scope and partial-refund effects (docs/money-decisions.md MD-1–MD-3) remain open owner choices.",
+        "A placeholder record is not an implemented rule; options present in code but not exposed are reported as gaps."
+      ],
+      "tags": [
+        "owner-direction",
+        "release"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "DEC-OWN-UNIVERSAL-PLATFORM",
+      "statement": "LUXORA is one universal multi-business platform; a general multi-vendor marketplace is the first production configuration, not the architectural boundary.",
+      "context": "The platform already declares deploy modes, presets and capabilities for many business types; readiness had been assessed for the marketplace only.",
+      "selected": "Shared mechanisms configure business-model profiles, discover and compose capabilities and resolve dependencies; each profile reports ten separate states, from architecturally supported to production-authorized; no marketplace assumption is placed in common primitives.",
+      "rationale": "Avoids a rewrite for later business models and prevents a profile record from being mistaken for a working industry solution.",
+      "rejected": [],
+      "authority": "Bipin Kumar, accountable business and release owner (mandate of 2026-10-29, Part I §2)",
+      "decidedAt": "2026-10-29",
+      "status": "approved",
+      "provenance": "evidenced",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-29-OWNER-MANDATE",
+          "locator": "Part I §2 Decision 2"
+        }
+      ],
+      "consequences": [
+        "Business types are an open, extensible list, never a hard-coded maximum.",
+        "Brand names of other platforms are not written into the repository (the white-label guard); types are described instead."
+      ],
+      "tags": [
+        "owner-direction",
+        "release"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "DEC-OWN-RULES-CONFIG",
+      "statement": "Every existing supported business rule, monetary or not, is inventoried and managed through the canonical rule, policy or configuration mechanism suited to it.",
+      "context": "Rules exist in lib/rules.js (subjects, dimensions, bindings), settings, gates, state machines and code.",
+      "selected": "Typed definitions with validation, scope, precedence and conflict detection, versioning and effective dates, simulation and explanation, approval, activation and rollback, and audit history, where applicable; new rules on an existing engine need no code deployment; no arbitrary code execution as a rules engine; no rule defined twice.",
+      "rationale": "Configurable behavior without competing sources of truth.",
+      "rejected": [],
+      "authority": "Bipin Kumar, accountable business and release owner (mandate of 2026-10-29, Part I §2)",
+      "decidedAt": "2026-10-29",
+      "status": "approved",
+      "provenance": "evidenced",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-29-OWNER-MANDATE",
+          "locator": "Part I §2 Decision 3"
+        }
+      ],
+      "consequences": [
+        "Executable algorithms, security enforcement and financial invariants stay in code and cannot be bypassed by configuration."
+      ],
+      "tags": [
+        "owner-direction",
+        "release"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "DEC-OWN-FIN-EXCEPTIONS",
+      "statement": "Financial exception policies (ambiguous legacy amounts, missing currency, invalid precision, overflow, residual rounding, conflicting policies, partial-refund allocation, reconciliation discrepancies) are configurable within non-negotiable correctness and audit invariants.",
+      "context": "money-0001 already quarantines ambiguous amounts and records operator resolutions (docs/money.md §5); MD-4 asked how they are resolved.",
+      "selected": "Source values and evidence are always preserved; conversion is automatic only when deterministic and validated; ambiguous records are quarantined for explicit, authorized, rationale-recorded resolution; configuration can never authorize an amount to be invented or approved history overwritten.",
+      "rationale": "Exceptions are resolved by policy and by named people, never by guessing.",
+      "rejected": [],
+      "authority": "Bipin Kumar, accountable business and release owner (mandate of 2026-10-29, Part I §2)",
+      "decidedAt": "2026-10-29",
+      "status": "approved",
+      "provenance": "evidenced",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-29-OWNER-MANDATE",
+          "locator": "Part I §2 Decision 4"
+        }
+      ],
+      "consequences": [
+        "Which bulk rule (if any) applies to each quarantine reason is still the owner's choice per MD-4."
+      ],
+      "tags": [
+        "owner-direction",
+        "release"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "DEC-OWN-PAYMENT-PROVIDERS",
+      "statement": "Payments use a provider-neutral contract, a discoverable connector registry, an explicit capability model and governed provider configuration; Razorpay, PhonePe, UPI and the platform wallets are the initial requirements, with more providers added through the same mechanism.",
+      "context": "15 payment providers were registered, 5 with executable specs; Razorpay had capture and webhooks but no refund or dispute rules; PhonePe did not exist; UPI had no adapter.",
+      "selected": "Each required provider gets its own adapter and conformance tests; secrets stay in the protected credential store, never in configuration APIs, source, logs or documents; a provider is labelled production-ready only with sandbox or live evidence of its flows, webhooks and reconciliation.",
+      "rationale": "No hard-coded provider list and no readiness claim from a mock.",
+      "rejected": [],
+      "authority": "Bipin Kumar, accountable business and release owner (mandate of 2026-10-29, Part I §2)",
+      "decidedAt": "2026-10-29",
+      "status": "approved",
+      "provenance": "evidenced",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-29-OWNER-MANDATE",
+          "locator": "Part I §2 Decision 5"
+        }
+      ],
+      "consequences": [
+        "Provider readiness is reported in twelve separate states, from adapter implemented to production authorized."
+      ],
+      "tags": [
+        "owner-direction",
+        "release"
+      ],
+      "lifecycle": "canonical-active"
     }
   ]
 }

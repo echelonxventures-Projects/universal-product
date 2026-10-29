@@ -64,8 +64,8 @@
 
 ## Counts
 
-- Sources 26 · requirements 14 · decisions 9 · constraints 16 · artifacts 32 (+111 imported from `_registry/manifest.json`) · issues 14 (9 open) · tasks 8 · packs 6
-- Graph edges 410 (derived from record fields via `schemas/relations.json`)
+- Sources 27 · requirements 14 · decisions 14 · constraints 16 · artifacts 32 (+111 imported from `_registry/manifest.json`) · issues 14 (9 open) · tasks 8 · packs 6
+- Graph edges 415 (derived from record fields via `schemas/relations.json`)
 
 ## Commands
 

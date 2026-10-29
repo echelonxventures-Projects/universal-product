@@ -745,6 +745,29 @@
       "capturedBy": [
         "ART-GIT-OBJECT-STORE"
       ]
+    },
+    {
+      "id": "SRC-CONV-2026-10-29-OWNER-MANDATE",
+      "title": "Owner's master mandate: universal platform, configuration, financial integrity and production readiness (session 2026-10-29)",
+      "category": "conversation",
+      "origin": "Claude Code session of 2026-10-29 (instruction from the accountable business and release owner, Bipin Kumar)",
+      "locator": "Claude Code session transcript (not exported)",
+      "storage": {
+        "kind": "external"
+      },
+      "createdAt": "2026-10-29",
+      "capturedAt": null,
+      "importedAt": null,
+      "segmentation": {
+        "rule": "none"
+      },
+      "sensitivity": "private",
+      "preservation": "not-retained",
+      "omissions": [
+        "The mandate's text is not committed (CST-NO-PRIVATE-ARCHIVES-IN-GIT); it contains owner contact details. The decisions DEC-OWN-* paraphrase its Part I §2 decisions 1–5. To preserve the original, export it and run `npm run context:import -- <file> --id SRC-CONV-2026-10-29-EXPORT --sensitivity private` against an access-controlled CONTEXT_ARCHIVE_DIR."
+      ],
+      "lifecycle": "historical-evidence",
+      "owner": "PROJECT-CONTEXT/knowledge/sources.json"
     }
   ]
 }
