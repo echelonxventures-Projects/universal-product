@@ -288,8 +288,14 @@ Left rail navigation, grouped:
   set **sandbox vs live** mode, and **test** a gateway before going live. Shipping and
   notification providers appear here too. For a live gateway, **Configure** also takes its
   webhook credential — Stripe/Razorpay *webhook secret*, Square *signature key* plus the
-  *notification URL* exactly as registered, PayPal *webhook ID* — and the provider's webhook
-  points at `/api/webhooks/inbound/<gateway>`. Only a correctly signed event moves money.
+  *notification URL* exactly as registered, PayPal *webhook ID*, PhonePe (OAuth API) the
+  webhook *username:password* set on its dashboard, PhonePe (salt-key API) the *salt key* —
+  and the provider's webhook points at `/api/webhooks/inbound/<gateway>`. Only a correctly
+  signed event moves money. PhonePe's API base URLs are fields of their own (live or
+  sandbox). PhonePe's fee estimate is seeded as 0 (no rate is known yet), so fee reports
+  leave out PhonePe's charges until a rate from the merchant agreement is configured.
+  Razorpay and PhonePe refunds go back through the provider for their exact amount,
+  in parts if needed.
 - **Payments ledger** (same screen) — every payment with what it is waiting on. A live
   payment still **pending** has **Check with gateway**: the gateway is asked where it stands
   (an approved PayPal order is captured) — the platform also does this on its own every few

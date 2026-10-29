@@ -250,6 +250,42 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
       ok(ppOk.status === 200 && calls.slice(vBefore).some(c => c.url.endsWith("/PP-ORDER-1/capture")), "PayPal: an approved order is captured", ppOk.body);
       ok(pp.row().status === "captured" && pp.row().provider_payment_id === "CAP-1", "PayPal: the capture settles the payment, keeping the capture id for refunds", pp.row());
 
+      /* Razorpay: a partial refund and a chargeback made at Razorpay, against the payment captured above */
+      const rzPost = (raw, id) => post("razorpay", raw, { "X-Razorpay-Signature": crypto.createHmac("sha256", "rzp_whsec").update(raw).digest("hex"), "X-Razorpay-Event-Id": id });
+      const rzRefund = JSON.stringify({ event: "refund.processed", payload: { refund: { entity: { id: "rfnd_rzp_1", amount: 100, payment_id: "pay_rzp_1", status: "processed" } } } });
+      const rzr = await rzPost(rzRefund, "evt_rzp_rf_1");
+      ok(rzr.status === 200 && rzr.body.applied && rzr.body.applied.partial === true && Number(rz.row().refunded_minor) === 100 && rz.row().status === "captured", "Razorpay: a partial refund made at Razorpay is applied for its exact amount", [rzr.body, rz.row().refunded_minor]);
+      ok(((await rzPost(rzRefund, "evt_rzp_rf_1")).body.applied || {}).duplicate === true && Number(rz.row().refunded_minor) === 100, "Razorpay: the same refund delivered again is applied once");
+      const rzDsp = JSON.stringify({ event: "payment.dispute.created", payload: { payment: { entity: { id: "pay_rzp_1" } }, dispute: { entity: { id: "disp_rzp_1", amount: rzAmt, reason_code: "chargeback", status: "open" } } } });
+      const rzd = await rzPost(rzDsp, "evt_rzp_d_1");
+      const rzDrow = db.get("SELECT * FROM disputes WHERE ref='razorpay:disp_rzp_1'");
+      ok(rzd.status === 200 && rzDrow && rzDrow.state === "opened" && rzDrow.payment_id === rz.row().id, "Razorpay: a chargeback opens a dispute against the payment", [rzd.body, rzDrow]);
+
+      /* PhonePe, current API: sha256 of the merchant's webhook credentials; the merchant's own order id is the reference */
+      gwCfg("phonepe", { clientId: "pp_c", clientSecret: "pp_s", clientVersion: "1", authBase: "https://pp.example/id", apiBase: "https://pp.example/pg", webhookSecret: "pp_user:pp_pass" }, ["clientSecret", "webhookSecret"]);
+      const ph = await pendingOn("phonepe", "LX-PP-1");
+      const phAmt = Math.round(ph.o.total * 100);
+      const phPost = (raw, creds) => post("phonepe", raw, { Authorization: crypto.createHash("sha256").update(creds).digest("hex") });
+      const phDone = JSON.stringify({ event: "checkout.order.completed", payload: { orderId: "OMO1", merchantOrderId: "LX-PP-1", state: "COMPLETED", amount: phAmt } });
+      ok((await phPost(phDone, "pp_user:wrong")).status === 401 && ph.row().status === "pending", "PhonePe: a webhook with other credentials changes nothing");
+      ok((await phPost(JSON.stringify({ event: "checkout.order.completed", payload: { merchantOrderId: "LX-PP-1", state: "COMPLETED", amount: phAmt - 1 } }), "pp_user:pp_pass")).status === 200 && ph.row().status === "pending", "PhonePe: a completed order for a different amount does not capture");
+      const phOk = await phPost(phDone, "pp_user:pp_pass");
+      ok(phOk.status === 200 && ph.row().status === "captured" && ph.row().provider_payment_id === "LX-PP-1", "PhonePe: a verified completed order captures the payment, keeping the order id for refunds", [phOk.body, ph.row().status]);
+      const phRefund = JSON.stringify({ event: "pg.refund.completed", payload: { originalMerchantOrderId: "LX-PP-1", merchantRefundId: "R-1", refundId: "OMR1", state: "COMPLETED", amount: 100 } });
+      const phr = await phPost(phRefund, "pp_user:pp_pass");
+      ok(phr.body.applied && phr.body.applied.partial === true && Number(ph.row().refunded_minor) === 100, "PhonePe: a partial refund completed at PhonePe is applied", phr.body);
+      ok(((await phPost(phRefund, "pp_user:pp_pass")).body.applied || {}).duplicate === true && Number(ph.row().refunded_minor) === 100, "PhonePe: with no event id, the same delivery is still applied once");
+
+      /* PhonePe, salt-key API: the callback is base64 in `response`, verified by X-VERIFY */
+      gwCfg("phonepe-legacy", { merchantId: "M_T", saltKey: "salt-1", saltIndex: "1", apiBase: "https://pp.example/hermes", callbackUrl: BASE + "/api/webhooks/inbound/phonepe-legacy", webhookSecret: "salt-1" }, ["saltKey", "webhookSecret"]);
+      const pl = await pendingOn("phonepe-legacy", "LX-PL-1");
+      const plResp = Buffer.from(JSON.stringify({ success: true, code: "PAYMENT_SUCCESS", data: { merchantId: "M_T", merchantTransactionId: "LX-PL-1", transactionId: "T-1", amount: Math.round(pl.o.total * 100), state: "COMPLETED" } })).toString("base64");
+      const plRaw = JSON.stringify({ response: plResp });
+      const plSig = salt => crypto.createHash("sha256").update(plResp + salt).digest("hex") + "###1";
+      ok((await post("phonepe-legacy", plRaw, { "X-VERIFY": plSig("other") })).status === 401 && pl.row().status === "pending", "PhonePe (salt key): a callback signed with another salt changes nothing");
+      const plOk = await post("phonepe-legacy", plRaw, { "X-VERIFY": plSig("salt-1") });
+      ok(plOk.status === 200 && pl.row().status === "captured" && pl.row().provider_payment_id === "LX-PL-1", "PhonePe (salt key): the decoded, verified callback captures the payment", [plOk.body, pl.row().status]);
+
       console.log("▸ A WEBHOOK THAT NEVER ARRIVES IS COVERED BY A LOOKUP");
       const lk = await buy();
       const lrow = () => db.get("SELECT p.*, o.status ostatus FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?", lk.co.body.order.num);

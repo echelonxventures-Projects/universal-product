@@ -189,6 +189,46 @@
       "refPath": "payload.payment.entity.order_id",
       "paymentIdPath": "payload.payment.entity.id",
       "amountPath": "payload.payment.entity.amount"
+     },
+     "refund.processed": {
+      "status": "refunded",
+      "refPath": null,
+      "paymentIdPath": "payload.refund.entity.payment_id",
+      "amountPath": "payload.refund.entity.amount",
+      "amountMeaning": "refund",
+      "refundIdPath": "payload.refund.entity.id"
+     },
+     "payment.dispute.created": {
+      "dispute": "opened",
+      "refPath": null,
+      "paymentIdPath": "payload.payment.entity.id",
+      "disputeIdPath": "payload.dispute.entity.id",
+      "amountPath": "payload.dispute.entity.amount",
+      "reasonPath": "payload.dispute.entity.reason_code"
+     },
+     "payment.dispute.won": {
+      "dispute": "won",
+      "refPath": null,
+      "paymentIdPath": "payload.payment.entity.id",
+      "disputeIdPath": "payload.dispute.entity.id",
+      "amountPath": "payload.dispute.entity.amount",
+      "reasonPath": "payload.dispute.entity.reason_code"
+     },
+     "payment.dispute.lost": {
+      "dispute": "lost",
+      "refPath": null,
+      "paymentIdPath": "payload.payment.entity.id",
+      "disputeIdPath": "payload.dispute.entity.id",
+      "amountPath": "payload.dispute.entity.amount",
+      "reasonPath": "payload.dispute.entity.reason_code"
+     },
+     "payment.dispute.closed": {
+      "dispute": "closed",
+      "refPath": null,
+      "paymentIdPath": "payload.payment.entity.id",
+      "disputeIdPath": "payload.dispute.entity.id",
+      "amountPath": "payload.dispute.entity.amount",
+      "reasonPath": "payload.dispute.entity.reason_code"
      }
     },
     "idHeader": "x-razorpay-event-id"
@@ -209,6 +249,304 @@
     },
     "amountPath": "amount_paid",
     "errorPath": "error.description"
+   },
+   "refund": {
+    "method": "POST",
+    "url": "https://api.razorpay.com/v1/payments/{{paymentId}}/refund",
+    "auth": {
+     "type": "basic",
+     "user": "{{cfg.keyId}}",
+     "pass": "{{cfg.keySecret}}"
+    },
+    "body": {
+     "amount": "{{amountCents}}",
+     "speed": "normal",
+     "receipt": "{{idempotency}}"
+    },
+    "idPath": "id",
+    "statusPath": "status",
+    "statusMap": {
+     "processed": "refunded",
+     "pending": "refund_pending",
+     "failed": "failed"
+    },
+    "errorPath": "error.description"
+   }
+  },
+  "payment:phonepe": {
+   "method": "POST",
+   "url": "{{cfg.apiBase}}/checkout/v2/pay",
+   "token": {
+    "url": "{{cfg.authBase}}/v1/oauth/token",
+    "form": true,
+    "body": {
+     "client_id": "{{cfg.clientId}}",
+     "client_version": "{{cfg.clientVersion}}",
+     "client_secret": "{{cfg.clientSecret}}",
+     "grant_type": "client_credentials"
+    },
+    "path": "access_token",
+    "errorPath": "message"
+   },
+   "auth": {
+    "type": "apikey",
+    "header": "Authorization",
+    "value": "O-Bearer {{token}}"
+   },
+   "body": {
+    "merchantOrderId": "{{idempotency}}",
+    "amount": "{{amountCents}}",
+    "paymentFlow": {
+     "type": "PG_CHECKOUT",
+     "merchantUrls": {
+      "redirectUrl": "{{returnUrl}}"
+     }
+    }
+   },
+   "idTemplate": "{{idempotency}}",
+   "statusPath": "state",
+   "statusMap": {
+    "PENDING": "pending",
+    "COMPLETED": "captured",
+    "FAILED": "failed"
+   },
+   "redirectPath": "redirectUrl",
+   "errorPath": "message",
+   "lookup": {
+    "method": "GET",
+    "url": "{{cfg.apiBase}}/checkout/v2/order/{{ref}}/status",
+    "token": {
+     "url": "{{cfg.authBase}}/v1/oauth/token",
+     "form": true,
+     "body": {
+      "client_id": "{{cfg.clientId}}",
+      "client_version": "{{cfg.clientVersion}}",
+      "client_secret": "{{cfg.clientSecret}}",
+      "grant_type": "client_credentials"
+     },
+     "path": "access_token",
+     "errorPath": "message"
+    },
+    "auth": {
+     "type": "apikey",
+     "header": "Authorization",
+     "value": "O-Bearer {{token}}"
+    },
+    "statusPath": "state",
+    "statusMap": {
+     "COMPLETED": "captured",
+     "FAILED": "failed",
+     "PENDING": "pending"
+    },
+    "amountPath": "amount",
+    "paymentIdTemplate": "{{ref}}",
+    "errorPath": "message"
+   },
+   "refund": {
+    "method": "POST",
+    "url": "{{cfg.apiBase}}/payments/v2/refund",
+    "token": {
+     "url": "{{cfg.authBase}}/v1/oauth/token",
+     "form": true,
+     "body": {
+      "client_id": "{{cfg.clientId}}",
+      "client_version": "{{cfg.clientVersion}}",
+      "client_secret": "{{cfg.clientSecret}}",
+      "grant_type": "client_credentials"
+     },
+     "path": "access_token",
+     "errorPath": "message"
+    },
+    "auth": {
+     "type": "apikey",
+     "header": "Authorization",
+     "value": "O-Bearer {{token}}"
+    },
+    "body": {
+     "merchantRefundId": "{{idempotency}}",
+     "originalMerchantOrderId": "{{paymentId}}",
+     "amount": "{{amountCents}}"
+    },
+    "idPath": "refundId",
+    "statusPath": "state",
+    "statusMap": {
+     "PENDING": "refund_pending",
+     "CONFIRMED": "refund_pending",
+     "COMPLETED": "refunded",
+     "FAILED": "failed"
+    },
+    "errorPath": "message"
+   },
+   "webhook": {
+    "signature": {
+     "header": "authorization",
+     "scheme": "credential-sha256"
+    },
+    "typePath": "event",
+    "idPath": [
+     "event",
+     "payload.merchantOrderId",
+     "payload.merchantRefundId",
+     "payload.state"
+    ],
+    "events": {
+     "checkout.order.completed": {
+      "status": "captured",
+      "refPath": "payload.merchantOrderId",
+      "paymentIdPath": "payload.merchantOrderId",
+      "amountPath": "payload.amount"
+     },
+     "checkout.order.failed": {
+      "status": "failed",
+      "refPath": "payload.merchantOrderId",
+      "paymentIdPath": "payload.merchantOrderId",
+      "amountPath": "payload.amount"
+     },
+     "pg.refund.completed": {
+      "status": "refunded",
+      "refPath": null,
+      "paymentIdPath": "payload.originalMerchantOrderId",
+      "amountPath": "payload.amount",
+      "amountMeaning": "refund",
+      "refundIdPath": "payload.refundId"
+     }
+    }
+   }
+  },
+  "payment:phonepe-legacy": {
+   "method": "POST",
+   "url": "{{cfg.apiBase}}/pg/v1/pay",
+   "envelope": {
+    "field": "request",
+    "encoding": "base64"
+   },
+   "sign": {
+    "scheme": "salted-sha256",
+    "header": "X-VERIFY",
+    "over": "envelope",
+    "path": "/pg/v1/pay",
+    "secret": "{{cfg.saltKey}}",
+    "suffix": "###{{cfg.saltIndex}}"
+   },
+   "body": {
+    "merchantId": "{{cfg.merchantId}}",
+    "merchantTransactionId": "{{idempotency}}",
+    "merchantUserId": "{{idempotency}}",
+    "amount": "{{amountCents}}",
+    "redirectUrl": "{{returnUrl}}",
+    "redirectMode": "REDIRECT",
+    "callbackUrl": "{{cfg.callbackUrl}}",
+    "paymentInstrument": {
+     "type": "PAY_PAGE"
+    }
+   },
+   "idTemplate": "{{idempotency}}",
+   "statusPath": "code",
+   "statusMap": {
+    "PAYMENT_INITIATED": "pending",
+    "PAYMENT_PENDING": "pending",
+    "PAYMENT_ERROR": "failed",
+    "BAD_REQUEST": "failed",
+    "AUTHORIZATION_FAILED": "failed"
+   },
+   "redirectPath": "data.instrumentResponse.redirectInfo.url",
+   "errorPath": "message",
+   "lookup": {
+    "method": "GET",
+    "url": "{{cfg.apiBase}}/pg/v1/status/{{cfg.merchantId}}/{{ref}}",
+    "headers": {
+     "X-MERCHANT-ID": "{{cfg.merchantId}}"
+    },
+    "sign": {
+     "scheme": "salted-sha256",
+     "header": "X-VERIFY",
+     "over": "path",
+     "path": "/pg/v1/status/{{cfg.merchantId}}/{{ref}}",
+     "secret": "{{cfg.saltKey}}",
+     "suffix": "###{{cfg.saltIndex}}"
+    },
+    "statusPath": "code",
+    "statusMap": {
+     "PAYMENT_SUCCESS": "captured",
+     "PAYMENT_PENDING": "pending",
+     "PAYMENT_ERROR": "failed",
+     "PAYMENT_DECLINED": "failed",
+     "TIMED_OUT": "failed",
+     "AUTHORIZATION_FAILED": "failed"
+    },
+    "amountPath": "data.amount",
+    "paymentIdTemplate": "{{ref}}",
+    "errorPath": "message"
+   },
+   "refund": {
+    "method": "POST",
+    "url": "{{cfg.apiBase}}/pg/v1/refund",
+    "envelope": {
+     "field": "request",
+     "encoding": "base64"
+    },
+    "sign": {
+     "scheme": "salted-sha256",
+     "header": "X-VERIFY",
+     "over": "envelope",
+     "path": "/pg/v1/refund",
+     "secret": "{{cfg.saltKey}}",
+     "suffix": "###{{cfg.saltIndex}}"
+    },
+    "body": {
+     "merchantId": "{{cfg.merchantId}}",
+     "merchantUserId": "{{paymentId}}",
+     "originalTransactionId": "{{paymentId}}",
+     "merchantTransactionId": "{{idempotency}}",
+     "amount": "{{amountCents}}",
+     "callbackUrl": "{{cfg.callbackUrl}}"
+    },
+    "idPath": "data.transactionId",
+    "statusPath": "code",
+    "statusMap": {
+     "PAYMENT_SUCCESS": "refunded",
+     "PAYMENT_PENDING": "refund_pending",
+     "PAYMENT_ERROR": "failed",
+     "BAD_REQUEST": "failed"
+    },
+    "errorPath": "message"
+   },
+   "webhook": {
+    "envelope": {
+     "field": "response",
+     "encoding": "base64"
+    },
+    "signature": {
+     "header": "x-verify",
+     "scheme": "salted-sha256",
+     "field": "response"
+    },
+    "typePath": "code",
+    "idPath": [
+     "code",
+     "data.merchantTransactionId",
+     "data.transactionId"
+    ],
+    "events": {
+     "PAYMENT_SUCCESS": {
+      "status": "captured",
+      "refPath": "data.merchantTransactionId",
+      "paymentIdPath": "data.merchantTransactionId",
+      "amountPath": "data.amount"
+     },
+     "PAYMENT_ERROR": {
+      "status": "failed",
+      "refPath": "data.merchantTransactionId",
+      "paymentIdPath": "data.merchantTransactionId",
+      "amountPath": "data.amount"
+     },
+     "PAYMENT_DECLINED": {
+      "status": "failed",
+      "refPath": "data.merchantTransactionId",
+      "paymentIdPath": "data.merchantTransactionId",
+      "amountPath": "data.amount"
+     }
+    }
    }
   },
   "payment:paypal": {
@@ -1556,6 +1894,94 @@
    "feeFixed": 0,
    "fields": [],
    "desc": "Unified Payments Interface — zero MDR"
+  },
+  {
+   "id": "phonepe",
+   "name": "PhonePe",
+   "emoji": "🟣",
+   "countries": [
+    "IN"
+   ],
+   "methods": [
+    "upi",
+    "card",
+    "netbanking"
+   ],
+   "feePct": 0,
+   "feeFixed": 0,
+   "fields": [
+    {
+     "key": "clientId",
+     "label": "Client ID"
+    },
+    {
+     "key": "clientSecret",
+     "label": "Client secret",
+     "secret": true
+    },
+    {
+     "key": "clientVersion",
+     "label": "Client version"
+    },
+    {
+     "key": "authBase",
+     "label": "Authorization base URL (live: https://api.phonepe.com/apis/identity-manager; sandbox: https://api-preprod.phonepe.com/apis/pg-sandbox)"
+    },
+    {
+     "key": "apiBase",
+     "label": "API base URL (live: https://api.phonepe.com/apis/pg; sandbox: https://api-preprod.phonepe.com/apis/pg-sandbox)"
+    },
+    {
+     "key": "webhookSecret",
+     "label": "Webhook credentials, as username:password (set on the PhonePe dashboard)",
+     "secret": true
+    }
+   ],
+   "desc": "PhonePe checkout (OAuth API) — UPI, cards, netbanking"
+  },
+  {
+   "id": "phonepe-legacy",
+   "name": "PhonePe (salt-key API)",
+   "emoji": "🟣",
+   "countries": [
+    "IN"
+   ],
+   "methods": [
+    "upi",
+    "card",
+    "netbanking"
+   ],
+   "feePct": 0,
+   "feeFixed": 0,
+   "fields": [
+    {
+     "key": "merchantId",
+     "label": "Merchant ID"
+    },
+    {
+     "key": "saltKey",
+     "label": "Salt key",
+     "secret": true
+    },
+    {
+     "key": "saltIndex",
+     "label": "Salt index"
+    },
+    {
+     "key": "apiBase",
+     "label": "API base URL (live: https://api.phonepe.com/apis/hermes; sandbox: https://api-preprod.phonepe.com/apis/pg-sandbox)"
+    },
+    {
+     "key": "callbackUrl",
+     "label": "Callback URL (this store's /api/webhooks/inbound/phonepe-legacy)"
+    },
+    {
+     "key": "webhookSecret",
+     "label": "Salt key again, to verify callbacks",
+     "secret": true
+    }
+   ],
+   "desc": "PhonePe PG, older salt-key integration — UPI, cards, netbanking"
   },
   {
    "id": "pix",
