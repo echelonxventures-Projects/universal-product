@@ -26,6 +26,9 @@ Running the platform: environments, configuration, the database and its migratio
 | `lib/pgworker.js` |  |
 | `lib/queue.js` | Job queue (inline by default, Bull/Redis when configured) |
 | `lib/sql.js` | SQLite→PostgreSQL SQL dialect translator (B-full foundation). The app emits a bounded, known set of SQLite idioms. This converts them to PostgreSQL so the same SQL runs on either engine; `?` placeholders become `$n`. It is pure + unit-tested — the one part of the async migration that can be validated without a live server. PRAGMA / randomblob-uuid triggers are SQLite-only and not translated (Postgres uses gen_random_uuid(); see migrate.js). |
+| `lib/technology-adapters.js` | technology discovery adapters (PR-053). A discovery adapter reads what one kind of source publishes and turns it into entries the registry ingests (lib/technology.js ingest). It is keyed by protocol, and a source in lib/seed/technology.json names the protocol it speaks; a new kind of feed is a new adapter registered here (or by any module through register), not a change to the governance core. |
+| `lib/technology-scan.js` | the repository's technology assumptions, found and gated (PR-053). No database, no runtime beyond the floor: this reads files. The detectors, the classes and the inventory are data (lib/seed/technology.json → scan, classes, inventory). |
+| `lib/technology.js` | technology governance (PR-053). Any technology the platform uses or may use is governed here, on the kernel: a category, an item and each of its releases are kernel nodes whose facts are versioned in k_versions, and every production-affecting move is a kernel change (lib/kernel-lifecycle.js) — drafted, validated, approved by someone other than its author, published, rolled back. Nothing in this file names a category, a technology or a version: lib/seed/technology.json declares them. |
 
 ## Data model
 
@@ -68,7 +71,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Platform administrator / Developer]) --> UI[store console, platform console]
   UI --> API[19 API routes]
-  API --> ENG[api.js, config.js, db.js, dbpool.js, enterprise.js, env.js, logger.js, metrics.js, migrate.js, pg.js, pgbridge.js, pgworker.js, queue.js, sql.js]
+  API --> ENG[api.js, config.js, db.js, dbpool.js, enterprise.js, env.js, logger.js, metrics.js, migrate.js, pg.js, pgbridge.js, pgworker.js, queue.js, sql.js, technology-adapters.js, technology-scan.js, technology.js]
   ENG --> DB[(sqlite_sequence)]
 
 ```

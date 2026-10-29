@@ -2865,7 +2865,10 @@
      "lib/logger.js",
      "lib/metrics.js",
      "lib/queue.js",
-     "lib/api.js"
+     "lib/api.js",
+     "lib/technology.js",
+     "lib/technology-adapters.js",
+     "lib/technology-scan.js"
     ],
     "tables": [
      "sqlite_sequence"

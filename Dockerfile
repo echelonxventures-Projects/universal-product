@@ -1,7 +1,8 @@
-# node:sqlite (lib/db.js) is built in, unflagged, since Node 22.13 — anything older dies
-# at boot (server.js says so), and package.json pins >=22.13.
-# Pinned by digest so a rebuild of the same commit gets the same runtime; bump the tag and
-# digest together (docker pull node:22-alpine, then docker image inspect … RepoDigests).
+# The base is the deploy.container resolution in technology.lock.json (tag and digest): a
+# plain docker build cannot read the lock, so the line is written here and
+# node scripts/technology.js check fails when it differs. The runtime it carries is the primary
+# CI lane. To change it, update the registry (lib/seed/technology.json and its discovery
+# snapshot), regenerate the lock, and make this line match.
 FROM node:22.23.4-alpine@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914
 
 WORKDIR /app

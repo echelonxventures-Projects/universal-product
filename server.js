@@ -1,13 +1,14 @@
 /* LUXORA Platform - multi-tenant HTTP(S) server with 10-layer security stack */
 "use strict";
 
-/* P0: node:sqlite (lib/db.js) ships unflagged only since Node 22.13 (22.5–22.12 hide it
-   behind --experimental-sqlite). This guard must run BEFORE lib/db.js is required —
-   otherwise the process dies at require time with a bare "Cannot find module", which
-   says nothing about the fix. */
-const NV = process.versions.node.split(".").map(Number);
-if (NV[0] < 22 || (NV[0] === 22 && NV[1] < 13)) {
-  console.error(`\nFATAL  Node ${process.versions.node} is too old — the platform needs the built-in node:sqlite module (Node >= 22.13). Rebuild on node:22-alpine or upgrade the host runtime.\n`);
+/* P0: the platform needs the runtime's built-in node:sqlite module (lib/db.js). The guard asks
+   the runtime for the module itself rather than comparing version numbers: the release that
+   first provides it is a capability of the runtime in lib/seed/technology.json, and the floor
+   it implies is package.json's engine range (both checked by node scripts/technology.js check).
+   It must run BEFORE lib/db.js is required — otherwise the process dies at require time with a
+   bare "Cannot find module", which says nothing about the fix. */
+try { require("node:sqlite"); } catch (e) {
+  console.error(`\nFATAL  This runtime (Node ${process.versions.node}) has no built-in node:sqlite module, which the platform needs — package.json engines: ${require("./package.json").engines.node}. Run a release technology.lock.json resolves.\n`);
   process.exit(1);
 }
 

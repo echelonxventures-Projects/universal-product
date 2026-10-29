@@ -1269,7 +1269,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 206 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 212 files.
 
 ### C02 · Meaning
 
@@ -1434,6 +1434,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/registry.js` | [Integration](volumes/V09.2-automation.md#d-int) | provider definitions, availability and exemptions |
 | `lib/global.js` | [Integration](volumes/V09.2-automation.md#d-int) | providers and their availability, a store's providers |
 | `lib/kernel.js` | [Runtime](volumes/V09.1-automation.md#d-run) | the hash-chained event log (K08) |
+| `lib/technology.js` | [Runtime](volumes/V09.1-automation.md#d-run) | technology governance: categories, items and releases as kernel nodes versioned in k_versions; discovery, computed evaluation, governed approval/activation/deprecation and resolutions through the kernel lifecycle; the repository's resolution (technology.lock.json) |
+| `lib/technology-adapters.js` | [Integration](volumes/V09.2-automation.md#d-int) | technology discovery adapters, one per protocol behind one contract (release index, checksum list, image index, git tag, npm lockfile, declaration); bounded https fetch |
 | `lib/refunds.js` | [Integration](volumes/V09.2-automation.md#d-int) | refunds, full and partial: an exact amount per refund, an atomic reservation against the captured amount, idempotent, provider-backed |
 | `lib/events.js` | [Runtime](volumes/V09.1-automation.md#d-run) | the event log; its outbound webhooks are Integration's |
 | `lib/providers.js` | [Integration](volumes/V09.2-automation.md#d-int) | provider connectors; providers as parties are Party's |
@@ -1445,9 +1447,12 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/connect.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/idempotency.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/routes/payments.js` | [Integration](volumes/V09.2-automation.md#d-int) | payments domain routes: a payment's refunds and an operator's settlement of an unknown refund |
+| `lib/seed/technology.json` | [Runtime](volumes/V09.1-automation.md#d-run) | technology governance's declaration: kinds, states and transitions, trust levels, policy, categories, sources, items, requirements, uses, bootstrap, baseline with CI evidence, detectors and the classified inventory |
+| `lib/seed/technology-discovered.json` | [Runtime](volumes/V09.1-automation.md#d-run) | what each discovery source returned (release index, checksums, image digests, action tags), with fetch time and payload digest — evidence of discovery only |
 | `lib/seed/providers.json` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/seed/ai.json` | [Agent](volumes/V09.1-automation.md#d-agt) |  |
 | `lib/seed/states.json` | [Runtime](volumes/V09.1-automation.md#d-run) |  |
+| `scripts/technology.js` | [Runtime](volumes/V09.1-automation.md#d-run) | technology governance CLI: lock, inventory, check (the gate), status, proposals, discover, verify-runtime |
 
 ### C10 · Intelligence
 
@@ -1469,6 +1474,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/pgbridge.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | storage adapter: PostgreSQL bridge |
 | `lib/pgworker.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | storage adapter: PostgreSQL worker |
 | `lib/migrate.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | storage adapter: SQLite to PostgreSQL migration |
+| `lib/technology-scan.js` | [Quality](volumes/V11.2-platform.md#d-qlt) | the repository's technology assumptions: data-declared detectors, the inventory gate, and the consumers (CI workflow, Dockerfile, package.json) validated against the lock |
 | `lib/ucos-monitor.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `lib/queue.js` | [Operations](volumes/V11.1-platform.md#d-ops) | queue runtime adapter |
 | `lib/billing.js` | [Offering](volumes/V11.2-platform.md#d-ofg) | platform subscriptions, metering, platform invoices |
@@ -1563,7 +1569,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 
 ### Documents
 
-Every document at the repository root and in `_superseded/` (47), with its one status and owner. Superseded documents are kept for provenance; the last column says what replaced each.
+Every document at the repository root and in `_superseded/` (48), with its one status and owner. Superseded documents are kept for provenance; the last column says what replaced each.
 
 | Document | Status | Owner | Generated by, or replaced by |
 |---|---|---|---|
@@ -1580,6 +1586,7 @@ Every document at the repository root and in `_superseded/` (47), with its one s
 | `UCOS-Constitutional-Master-Architecture.md` | corpus-source | [Constitutional Authority](volumes/V01-constitution.md#d-con) | compiled into the sealed registry (lib/seed/ucos.json → DOCS) |
 | `UCOS-MASTER.md` | projection | [Guidance](volumes/V02-meaning.md#d-gdn) | _registry/project.js |
 | `HARDCODING_AUDIT.generated.md` | projection | [Quality](volumes/V11.2-platform.md#d-qlt) | scripts/audit-hardcoding.js |
+| `TECHNOLOGY_INVENTORY.generated.md` | projection | [Quality](volumes/V11.2-platform.md#d-qlt) | scripts/technology.js |
 | `HARDCODING_AUDIT.md` | living-record | [Quality](volumes/V11.2-platform.md#d-qlt) | the hard-coding audit: findings, batches and reviewed word collisions |
 | `PRODUCTION_READINESS.md` | living-record | [Quality](volumes/V11.2-platform.md#d-qlt) | the single release-readiness register: findings, evidence, gates and the go/no-go decision |
 | `GLOBAL_MASTER.md` | guidance | [Package](volumes/V13-composition.md#d-pkg) | the platform master, permissions, overlays, contributions, configuration by blueprint and discovery: the adopted design and its phases |
