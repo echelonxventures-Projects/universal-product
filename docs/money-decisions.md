@@ -5,6 +5,8 @@ defaults named in each record so that it can be built and tested; a default is n
 When the owner decides, the decision, its date and its approver are written into the record and
 into `PRODUCTION_READINESS.md` (gate 4), and the configuration named under "Where it is applied"
 is changed to match. The model itself is described in [docs/money.md](money.md).
+Consequences, risks and recommendations for each record, prepared for the owner, are in
+[docs/money-decision-packet.md](money-decision-packet.md) (2026-10-29; recommendations only, nothing approved).
 
 ## MD-1 — The rounding rule, per currency and jurisdiction
 
