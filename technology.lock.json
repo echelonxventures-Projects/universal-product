@@ -3,7 +3,7 @@
  "generatedFrom": {
   "declaration": "e9fd9c85aa35003dd5e2999f40891d4769d28c8dd8031ffca4ff257298bdf6ff",
   "snapshots": "971304f64f72358d5a4f59614452cca33bdbfb004f97c519f0665166aa6b222f",
-  "lockfile": "5622c0d26909fdedb9b1f8a151f379a3bb5898adaad44cde936ef5266d25b3aa"
+  "lockfile": "83e8d334175a76f6358202bcf8a9e2bbef4b5ef5e0b4f55b3f824beff33378d4"
  },
  "bootstrap": {
   "$comment": "The resolver cannot run before something runs it. In CI the resolve job reads technology.lock.json with the runner image's jq before any runtime is set up; every later job installs the runtime the lock names and checks it is that release. Locally and in the test lanes the lock is generated and checked by node scripts/technology.js, which needs a runtime that meets platform.runtime (it boots the kernel on a scratch database).",
@@ -248,48 +248,12 @@
  },
  "libraries": {
   "source": "package-lock.json",
-  "sha256": "5622c0d26909fdedb9b1f8a151f379a3bb5898adaad44cde936ef5266d25b3aa",
+  "sha256": "83e8d334175a76f6358202bcf8a9e2bbef4b5ef5e0b4f55b3f824beff33378d4",
   "packages": 66,
   "runtime": 30,
   "development": 36,
   "runtimeUnfit": [],
-  "developmentUnfit": [
-   "npm:@asamuzakjp/css-color@7.1.3",
-   "npm:@asamuzakjp/dom-selector@9.2.4",
-   "npm:@bramus/specificity@2.4.2",
-   "npm:@csstools/color-helpers@6.1.2",
-   "npm:@csstools/css-calc@3.4.3",
-   "npm:@csstools/css-color-parser@4.2.6",
-   "npm:@csstools/css-parser-algorithms@4.0.2",
-   "npm:@csstools/css-syntax-patches-for-csstree@1.1.15",
-   "npm:@csstools/css-tokenizer@4.0.2",
-   "npm:@exodus/bytes@1.16.0",
-   "npm:bidi-js@1.1.0",
-   "npm:css-tree@3.2.1",
-   "npm:data-urls@8.0.0",
-   "npm:decimal.js@10.6.0",
-   "npm:entities@8.1.0",
-   "npm:html-encoding-sniffer@7.0.0",
-   "npm:is-potential-custom-element-name@1.0.1",
-   "npm:jsdom@30.1.2",
-   "npm:lru-cache@11.5.3",
-   "npm:mdn-data@2.27.1",
-   "npm:parse5@8.0.1",
-   "npm:punycode@2.3.1",
-   "npm:require-from-string@2.0.2",
-   "npm:saxes@6.0.0",
-   "npm:tldts-core@7.4.12",
-   "npm:tldts@7.4.12",
-   "npm:tough-cookie@6.0.2",
-   "npm:tr46@7.0.0",
-   "npm:undici@8.11.2",
-   "npm:w3c-xmlserializer@6.0.0",
-   "npm:webidl-conversions@8.0.1",
-   "npm:whatwg-mimetype@5.0.0",
-   "npm:whatwg-url@17.2.0",
-   "npm:xml-name-validator@5.0.0",
-   "npm:xmlchars@2.2.0"
-  ]
+  "developmentUnfit": []
  },
  "evaluation": [
   {

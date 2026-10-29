@@ -173,9 +173,32 @@ Unverified assumptions pass but are reported as gaps.
 | `node scripts/technology.js discover node-release-index --fetch` | what the source publishes now, and what that proposes (`--write` keeps it as the new snapshot) |
 | `node scripts/technology.js proposals` | evaluation lanes, upgrades, security, replacement, end of life |
 
+## Library integrity
+
+`package-lock.json` is npm's generated resolution; the `npm-lockfile` adapter ingests every
+locked package as a library release, and evaluation fails one without an integrity hash or with
+a licence outside `policy.licences`. Until 2026-10-30 the 35 packages of jsdom's development tree
+had neither `resolved` nor `integrity`. The owner authorized a controlled re-resolution of that
+subtree only:
+
+- only those 35 entries were removed, and npm re-resolved them;
+- npm 11.20.0 and npm 10.9.4 gave the same bytes;
+- every value was checked against the registry;
+- the production tree and `package.json` are unchanged.
+
+Ten development-only versions moved, among them jsdom 30.1.2 → 30.1.3, which itself requires
+@asamuzakjp/dom-selector `^10.0.3`. The full list and the evidence are in PR-053 in
+`PRODUCTION_READINESS.md`. The lock's `developmentUnfit` is empty.
+
+Still open: the 22.13.1 test lane runs the development tooling outside the engine ranges it
+declares. `prom-client` 15.1.3, a production dependency, is deprecated upstream.
+
 ## Not automatic
 
 - **New executable behaviour.** A new protocol needs an adapter. A new kind of consumer file
   needs a validator. A new capability needs code that uses it.
+- **Another CI provider.** The consumer validators and the lock's `ci` section are written for
+  this repository's workflow and Dockerfile. Another CI provider or build format needs its own
+  validator.
 - **Approval.** Approval and production resolutions are always a person's decision.
   `autoPropose` drafts the ready upgrades; it never approves or publishes them.
