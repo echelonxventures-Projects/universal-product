@@ -3,7 +3,7 @@
  "generatedFrom": {
   "declaration": "e9fd9c85aa35003dd5e2999f40891d4769d28c8dd8031ffca4ff257298bdf6ff",
   "snapshots": "971304f64f72358d5a4f59614452cca33bdbfb004f97c519f0665166aa6b222f",
-  "lockfile": "83e8d334175a76f6358202bcf8a9e2bbef4b5ef5e0b4f55b3f824beff33378d4"
+  "lockfile": "2bd04d429617cfa8a8834687ff00cfed0cebffefe97efe0ea78750189d4c4be8"
  },
  "bootstrap": {
   "$comment": "The resolver cannot run before something runs it. In CI the resolve job reads technology.lock.json with the runner image's jq before any runtime is set up; every later job installs the runtime the lock names and checks it is that release. Locally and in the test lanes the lock is generated and checked by node scripts/technology.js, which needs a runtime that meets platform.runtime (it boots the kernel on a scratch database).",
@@ -248,7 +248,7 @@
  },
  "libraries": {
   "source": "package-lock.json",
-  "sha256": "83e8d334175a76f6358202bcf8a9e2bbef4b5ef5e0b4f55b3f824beff33378d4",
+  "sha256": "2bd04d429617cfa8a8834687ff00cfed0cebffefe97efe0ea78750189d4c4be8",
   "packages": 66,
   "runtime": 30,
   "development": 36,

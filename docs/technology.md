@@ -175,23 +175,33 @@ Unverified assumptions pass but are reported as gaps.
 
 ## Library integrity
 
-`package-lock.json` is npm's generated resolution; the `npm-lockfile` adapter ingests every
-locked package as a library release, and evaluation fails one without an integrity hash or with
-a licence outside `policy.licences`. Until 2026-10-30 the 35 packages of jsdom's development tree
-had neither `resolved` nor `integrity`. The owner authorized a controlled re-resolution of that
-subtree only:
+`package-lock.json` is npm's generated resolution. The `npm-lockfile` adapter ingests every
+locked package as a library release. Evaluation fails a release that has no integrity hash, or a
+licence outside `policy.licences`.
 
-- only those 35 entries were removed, and npm re-resolved them;
-- npm 11.20.0 and npm 10.9.4 gave the same bytes;
-- every value was checked against the registry;
-- the production tree and `package.json` are unchanged.
+Until 2026-10-30, the 35 packages of jsdom's development tree had neither `resolved` nor
+`integrity`. The owner authorized a controlled re-resolution of that subtree only.
 
-Ten development-only versions moved, among them jsdom 30.1.2 → 30.1.3, which itself requires
-@asamuzakjp/dom-selector `^10.0.3`. The full list and the evidence are in PR-053 in
-`PRODUCTION_READINESS.md`. The lock's `developmentUnfit` is empty.
+The first attempt let npm pick the newest versions the ranges allow. It moved ten development
+versions, including undici 8.12.3, which does not load on Node 22.13.1, and CI's 22.13.1 lane
+failed. It was replaced by an integrity-only re-resolution:
 
-Still open: the 22.13.1 test lane runs the development tooling outside the engine ranges it
-declares. `prom-client` 15.1.3, a production dependency, is deprecated upstream.
+- npm re-resolved the 35 entries, each held to the version it already had;
+- the entries gained exactly `resolved` and `integrity`, every value checked against the
+  registry;
+- no version, no other entry and no `package.json` changed;
+- npm 10 and npm 11 leave the result byte-identical.
+
+The lock's `developmentUnfit` is empty.
+
+What this leaves open:
+
+- The kept undici 8.11.2 carries a high-severity advisory. It is development-only and was already
+  present before the fix.
+- Its fixed releases need Node ≥ 22.19. The owner chooses between keeping the 22.13.1 full-suite
+  lane and taking the tooling's fixes.
+- The registry does not yet ingest `npm audit` advisories.
+- `prom-client` 15.1.3, a production dependency, is deprecated upstream.
 
 ## Not automatic
 
