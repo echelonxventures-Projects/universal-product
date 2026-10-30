@@ -1,13 +1,14 @@
 /* LUXORA Platform - multi-tenant HTTP(S) server with 10-layer security stack */
 "use strict";
 
-/* P0: node:sqlite (lib/db.js) ships unflagged only since Node 22.13 (22.5–22.12 hide it
-   behind --experimental-sqlite). This guard must run BEFORE lib/db.js is required —
-   otherwise the process dies at require time with a bare "Cannot find module", which
-   says nothing about the fix. */
-const NV = process.versions.node.split(".").map(Number);
-if (NV[0] < 22 || (NV[0] === 22 && NV[1] < 13)) {
-  console.error(`\nFATAL  Node ${process.versions.node} is too old — the platform needs the built-in node:sqlite module (Node >= 22.13). Rebuild on node:22-alpine or upgrade the host runtime.\n`);
+/* P0: the platform needs the runtime's built-in node:sqlite module (lib/db.js). The guard asks
+   the runtime for the module itself rather than comparing version numbers: the release that
+   first provides it is a capability of the runtime in lib/seed/technology.json, and the floor
+   it implies is package.json's engine range (both checked by node scripts/technology.js check).
+   It must run BEFORE lib/db.js is required — otherwise the process dies at require time with a
+   bare "Cannot find module", which says nothing about the fix. */
+try { require("node:sqlite"); } catch (e) {
+  console.error(`\nFATAL  This runtime (Node ${process.versions.node}) has no built-in node:sqlite module, which the platform needs — package.json engines: ${require("./package.json").engines.node}. Run a release technology.lock.json resolves.\n`);
   process.exit(1);
 }
 
@@ -218,7 +219,8 @@ const handler = async (req, res) => {
       if (sec.policy().csrfEnabled && ["POST", "PUT", "DELETE"].includes(req.method) && cookies.azs && !sec.csrfOk({ headers: { "x-csrf": req.headers["x-csrf"] || req.headers["x-csrf-token"] } }, session)) {
         res.writeHead(403, { "Content-Type": "application/json" }); return res.end(JSON.stringify({ error: "Missing or invalid CSRF token" }));
       }
-      if (session.tenant.status === "suspended" && !session.platform_admin) return api.bad(res, "This store is suspended", 403);
+      /* a platform whose state means "blocked" (the tenant machine, lib/states.js) is closed */
+      if (!session.platform_admin && require("./lib/states.js").has("tenant", session.tenant.status) && require("./lib/states.js").is("tenant", session.tenant.status, "blocked")) return api.bad(res, "This store is suspended", 403);
       let body = {};
       if (["POST", "PUT", "DELETE"].includes(req.method)) {
         const rb = await readBody(req);
@@ -243,6 +245,21 @@ const handler = async (req, res) => {
       return;
     }
     if (req.method !== "GET" && req.method !== "HEAD") { res.writeHead(405); return res.end("Method Not Allowed"); }
+    /* readiness, for the load balancer / orchestrator: 503 while draining for shutdown or
+       when the database does not answer, so traffic moves before requests fail. /healthz
+       stays the liveness probe — a slow database must not get a live process restarted. */
+    if (url.pathname === "/readyz") {
+      let dbOk = false;
+      try { dbOk = !!get("SELECT 1 AS ok"); } catch (e) { }
+      const ready = dbOk && !draining;
+      /* free space where the database lives, for alerting: a full disk fails every API call
+         (each one touches the session table) while SELECT 1 still answers. Reported, not
+         gated on — taking the only instance out of rotation would not free a byte. */
+      let diskFreeMb = null;
+      try { const st = fs.statfsSync(path.dirname(path.resolve(process.env.LX_DB || path.join(__dirname, "data", "luxora.db")))); diskFreeMb = Math.floor(st.bavail * st.bsize / 1048576); } catch (e) { }
+      res.writeHead(ready ? 200 : 503, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+      return res.end(JSON.stringify({ ready, db: dbOk, draining, diskFreeMb }));
+    }
     if (url.pathname === "/healthz") {
       const t = resolveTenant(req, url, cookies);
       res.writeHead(200, { "Content-Type": "application/json" });
@@ -268,10 +285,24 @@ const handler = async (req, res) => {
     }
     /* the unified console's bundles, wrapped server-side (lib/bundle.js) so the browser
        never has to eval fetched source */
+    const pm = /^\/js\/plain\/(store|platform)\.js$/.exec(url.pathname);
+    if (pm) {
+      res.writeHead(200, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" });
+      return res.end(require("./lib/bundle.js").plain(pm[1], PUB));
+    }
     const bm = /^\/js\/bundle\/(store|platform)\.js$/.exec(url.pathname);
     if (bm) {
       res.writeHead(200, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" });
       return res.end(require("./lib/bundle.js").wrap(bm[1], PUB));
+    }
+    /* one console: the old store and platform pages open /console.html in their scope,
+       keeping whatever the link carried (?store=, a hand-off ?token=, ?view=) */
+    const legacy = { "/admin.html": "store", "/platform.html": "platform" }[url.pathname];
+    if (legacy && (req.method === "GET" || req.method === "HEAD")) {
+      const q = new URLSearchParams(url.search);
+      if (!q.has("scope")) q.set("scope", legacy);
+      res.writeHead(302, { Location: "/console.html?" + q.toString(), "Cache-Control": "no-store" });
+      return res.end();
     }
     if (url.searchParams.get("store") && SLUG_RE.test(url.searchParams.get("store"))) res.appendHeader("Set-Cookie", `store=${url.searchParams.get("store")}; Path=/; Max-Age=${365 * DAY}; SameSite=Lax${IS_TLS ? "; Secure" : ""}`);
     serveStatic(req, res, url.pathname);
@@ -284,6 +315,11 @@ const handler = async (req, res) => {
 
 const server = http.createServer(handler);
 const listenServer = IS_TLS ? https.createServer(TLS, handler) : server;
+/* an idle keep-alive connection outlives a load balancer's idle timeout (commonly 60 s), so the
+   balancer, never this server, closes it: a server that closes first races the client's next
+   request on the same socket (ECONNRESET, or a 502 at the balancer). LX_KEEPALIVE_MS overrides. */
+const KEEPALIVE_MS = Number(process.env.LX_KEEPALIVE_MS) || 65000;
+for (const sv of new Set([server, listenServer])) { sv.keepAliveTimeout = KEEPALIVE_MS; sv.headersTimeout = KEEPALIVE_MS + 1000; }
 
 /* P0: the seed ships documented default passwords (admin123 / platform123) so a first
    boot is observable. In production they are an open door — refuse to serve until the
@@ -291,9 +327,16 @@ const listenServer = IS_TLS ? https.createServer(TLS, handler) : server;
    NODE_ENV=test or leave it unset, so the guard never fires there. */
 function prodCredentialGuard() {
   if (process.env.NODE_ENV !== "production") return;
+  /* setting the variable TO the documented default is the same open door */
+  const DEFAULTS = ["platform123", "admin123", "demo123", "password"];
   const weak = [];
-  if (!process.env.PLATFORM_PASSWORD) weak.push(["PLATFORM_PASSWORD", "platform@luxora.shop", "platform123"]);
-  if (!process.env.ADMIN_PASSWORD) weak.push(["ADMIN_PASSWORD", "admin@luxora.shop", "admin123"]);
+  if (!process.env.PLATFORM_PASSWORD || DEFAULTS.includes(process.env.PLATFORM_PASSWORD)) weak.push(["PLATFORM_PASSWORD", "platform@luxora.shop", "platform123"]);
+  if (!process.env.ADMIN_PASSWORD || DEFAULTS.includes(process.env.ADMIN_PASSWORD)) weak.push(["ADMIN_PASSWORD", "admin@luxora.shop", "admin123"]);
+  /* opt-ins that are legitimate for a staging rehearsal but never silent in production */
+  if (process.env.LX_ALLOW_SIMULATED_PAYMENTS === "1")
+    console.error("WARNING  LX_ALLOW_SIMULATED_PAYMENTS=1 — orders and invoices can be marked paid with no money taken. Staging only.");
+  if (!process.env.LUXORA_PEPPER)
+    console.error("WARNING  LUXORA_PEPPER is unset — password hashes carry no server-side pepper. Set it before the first boot (changing it later invalidates existing passwords).");
   if (!weak.length) return;
   console.error("\n" + "=".repeat(78));
   console.error("REFUSING TO START IN PRODUCTION WITH SEED-DEFAULT CREDENTIALS");
@@ -302,18 +345,55 @@ function prodCredentialGuard() {
     console.error(`  ${email} still boots with the documented default "${pw}".`);
   console.error("  Set the environment variables and restart:");
   for (const [env] of weak) console.error(`    ${env}=<a strong password>`);
-  console.error("  (a password already seeded into an existing DB is unaffected — this gate\n"
-    + "   only blocks a first boot that would create the accounts with a default.)");
+  console.error("  (the variables only create accounts that do not exist yet — an existing\n"
+    + "   account's password is unaffected — but they are checked on every production boot.)");
   console.error("=".repeat(78) + "\n");
   process.exit(1);
 }
 prodCredentialGuard();
+/* sign-in codes, magic links and password resets reach a signed-out person only by email/SMS:
+   with no platform transport, any store that hasn't set its own can't recover an account */
+if (process.env.NODE_ENV === "production" && !require("./lib/mailer.js").transportFor(0, "email"))
+  console.warn("  ⚠️  No platform email transport (LX_MAIL_PROVIDER / LX_SMTP_URL / LX_MAIL_FROM) — password resets and sign-in codes are only delivered for stores with their own live email gateway.");
 
-function shutdown(sig) { console.log(`\n${sig} — closing`); sec.persistState(); server.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000); }
+/* graceful stop: /readyz turns 503, the listener stops accepting, idle keep-alive sockets
+   close, in-flight requests finish. It closes listenServer — under TLS the plain `server`
+   never listened, so closing it returned at once and in-flight requests were cut off.
+   LX_SHUTDOWN_MS bounds the drain (default 8s, inside docker's 10s stop grace). */
+let draining = false;
+function shutdown(sig) {
+  if (draining) return;
+  draining = true;
+  console.log(`\n${sig} — draining`);
+  try { sec.persistState(); } catch (e) { console.error("persist state:", e.message); }
+  listenServer.close(() => process.exit(0));
+  listenServer.closeIdleConnections();
+  setTimeout(() => { console.error("shutdown: drain timed out, exiting"); process.exit(0); }, Number(process.env.LX_SHUTDOWN_MS || 8000)).unref();
+}
 /* a stray rejected promise in an async handler must not take the process down (Node
    >= 15 exits on unhandled rejections); log it with enough context to fix the source */
 /* expired idempotency keys are swept hourly (they were only ever deleted lazily on lookup) */
 setInterval(() => { try { idem.purge(); } catch (e) { } }, 3600 * 1000).unref();
+/* live payments whose webhook never came are looked up with their gateway on a cadence */
+require("./lib/api.js").startPaymentSweep();
+/* shoppers' alerts are re-checked (prices also move by imports and rules, not only edits) and
+   pickup parcels past their holding time expire, on the platform policy's cadence */
+(function shopperSweep() {
+  const mins = Number(sec.policy().shopperSweepMinutes);
+  const t = setTimeout(() => {
+    /* each engine with a clock: alerts re-checked, pickup parcels and booking holds expired,
+       offers expired, auctions opened and closed, group buys settled, sellers' proceeds released */
+    if (mins > 0) for (const m of ["alerts", "pickup", "bookings", "negotiation", "auctions", "groupbuy", "listings", "trials", "options", "wallet", "giftcards"]) { try { require("./lib/" + m + ".js").sweepAll(); } catch (e) { } }
+    shopperSweep();
+  }, Math.max(1, mins > 0 ? mins : 15) * 60000);
+  if (t.unref) t.unref();
+})();
+/* platform setup answers given for a later minute are applied when that minute comes */
+(function setupSweep() {
+  const SU = require("./lib/platform-setup.js");
+  const t = setTimeout(() => { try { SU.sweepAll(); } catch (e) { console.error("setup sweep:", e.message); } setupSweep(); }, SU.resolutionMs());
+  if (t.unref) t.unref();
+})();
 process.on("unhandledRejection", (e) => { console.error("unhandledRejection:", e && e.stack || e); });
 process.on("SIGINT", () => shutdown("SIGINT"));
 process.on("SIGTERM", () => shutdown("SIGTERM"));
@@ -332,9 +412,7 @@ listenServer.listen(PORT, () => {
    P L A T F O R M  ·  the master global platform, configured into any platform  ·  🛡 10-layer security${IS_TLS ? " (TLS ON)" : " (HTTP — set LUX_TLS=1 for HTTPS)"}
 
    🏬 Master:      http${IS_TLS ? "s" : ""}://${(master || { slug: "luxora" }).slug}.localhost:${PORT} (the master's own deployment${fixtures.length ? `, +${fixtures.length} fixture${fixtures.length > 1 ? "s" : ""}` : ""})
-   🧾 Store admin: http${IS_TLS ? "s" : ""}://localhost:${PORT}/admin.html      (admin@luxora.shop / admin123)
-   🛰  Platform:   http${IS_TLS ? "s" : ""}://localhost:${PORT}/platform.html   (platform@luxora.shop / platform123)
-   🌐 One console: http${IS_TLS ? "s" : ""}://localhost:${PORT}/console.html    (both scopes, one sign-in)
+   🌐 Console:    http${IS_TLS ? "s" : ""}://localhost:${PORT}/console.html    (platform@luxora.shop / platform123 · store admin admin@luxora.shop / admin123)
    🔐 Scorecard:   GET /api/platform/security
 `);
   /* optional multi-node Redis queue worker (config-driven; off unless queue=redis and LX_WORKER≠0) */

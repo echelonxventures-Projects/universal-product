@@ -50,7 +50,7 @@ async function boot(port, db, extra = {}) {
     try { const h = await fetch(`http://localhost:${port}/healthz`); if (h.ok) { up = true; break; } } catch (e) { }
     await sleep(500);
   }
-  if (!up) { console.log("server failed to boot on port " + port); process.exit(1); }
+  if (!up) { srv.kill("SIGKILL"); console.log("server failed to boot on port " + port); process.exit(1); }
   return srv;
 }
 process.on("unhandledRejection", e => { console.log("  (ignoring unhandled rejection: " + String(e && e.message || e) + ")"); });
@@ -118,4 +118,4 @@ process.on("unhandledRejection", e => { console.log("  (ignoring unhandled rejec
   try { srvA.kill("SIGKILL"); } catch (e) { }
   try { srvB.kill("SIGKILL"); } catch (e) { }
   process.exit(failed ? 1 : 0);
-})();
+})().catch(e => { console.log("ABORT", e && e.stack || e); process.exit(1); });

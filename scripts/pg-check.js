@@ -1,0 +1,300 @@
+/* LUXORA Platform — the platform on Postgres, end to end.
+
+   Given a Postgres server (PG_CHECK_URL, an admin connection such as
+   postgres://postgres@127.0.0.1:5432/postgres), this:
+     1. creates a throwaway database on it,
+     2. boots a fresh install on SQLite and migrates it there (lib/migrate.js, one transaction),
+        and shows that a migration interrupted part-way (a failing statement, a killed process)
+        leaves its target empty,
+     3. boots the platform on Postgres and checks the kernel's transactions, places, stores, time,
+        expression and Value on it — a write the row refuses must leave the kernel untouched — and,
+        on a copy, a store's first taxonomy sync: its statements, a failure part-way, two servers
+        syncing one store at once, and a store's first requests arriving together (PR-043),
+     4. runs the real-browser check (every page and console section) with the server on Postgres,
+     5. drops the database.
+   It exits non-zero on any failure. Usage: PG_CHECK_URL=postgres://… node scripts/pg-check.js [--no-browser] */
+"use strict";
+const path = require("path");
+const os = require("os");
+const fs = require("fs");
+const { spawnSync, spawn } = require("child_process");
+const ROOT = path.join(__dirname, "..");
+const ADMIN = process.env.PG_CHECK_URL;
+if (!ADMIN) { console.error("PG_CHECK_URL is required (an admin connection to a Postgres server)"); process.exit(2); }
+const pg = require(path.join(ROOT, "lib", "pg.js"));
+const NAME = "lx_check_" + process.pid;
+const target = (() => { const u = new URL(ADMIN); u.pathname = "/" + NAME; return u.toString(); })();
+const node = (code, env) => spawnSync(process.execPath, ["-e", code], { cwd: ROOT, env: { ...process.env, ...env }, encoding: "utf8", timeout: 900000 });
+
+(async () => {
+  let failed = 0;
+  const admin = await pg.connect(ADMIN);
+  const step = (ok, name, detail) => { console.log((ok ? "  ✓ " : "  ✗ ") + name + (ok || detail == null ? "" : " → " + String(detail).slice(0, 400))); if (!ok) failed++; };
+  try {
+    const mk = await admin.simple(`CREATE DATABASE "${NAME}"`);
+    step(!mk.error, "a throwaway database " + NAME, mk.error);
+
+    /* 2 · a fresh install, migrated in one transaction */
+    const sqlite = path.join(os.tmpdir(), NAME + ".db");
+    const mig = node(`
+      process.env.LX_DB = ${JSON.stringify(sqlite)};
+      const s = console.log; console.log = () => {}; require("./lib/db.js"); console.log = s;
+      const M = require("./lib/migrate.js"); const st = M.plan();
+      M.apply(st, { connectionString: ${JSON.stringify(target)} }).then(o => { console.log(JSON.stringify({ ok: o.ok, failed: o.failed.slice(0, 3), tables: M.summary(st).tables })); process.exit(o.failed.length ? 1 : 0); });`, {});
+    const mo = (mig.stdout.trim().split("\n").pop() || "");
+    step(mig.status === 0, "a fresh install migrates to Postgres in one transaction " + mo, mig.stderr.split("\n").filter(l => !/Experimental|trace-warn/.test(l)).join(" ").slice(0, 400) || mo);
+
+    /* 2b · an interrupted migration leaves its target empty, so a retry starts clean: one
+       whose statement fails part-way, and one whose process is killed part-way (the server
+       rolls back a transaction whose connection is gone) */
+    const tablesIn = async db => {
+      const u = new URL(ADMIN); u.pathname = "/" + db;
+      const c = await pg.connect(u.toString()); const r = await c.query("SELECT COUNT(*) AS n FROM information_schema.tables WHERE table_schema='public'"); c.close();
+      return r.error ? r.error : Number(r.rows[0][0]); /* rows are arrays in column order (lib/pg.js) */
+    };
+    const urlOf = db => { const u = new URL(ADMIN); u.pathname = "/" + db; return u.toString(); };
+    for (const db of [NAME + "_fail", NAME + "_kill"]) { const r = await admin.simple(`CREATE DATABASE "${db}"`); if (r.error) step(false, "a throwaway database " + db, r.error); }
+    const failRun = node(`
+      process.env.LX_DB = ${JSON.stringify(sqlite)};
+      const s = console.log; console.log = () => {}; require("./lib/db.js"); console.log = s;
+      const M = require("./lib/migrate.js"); const st = M.plan(); const at = Math.floor(st.length / 2);
+      st.splice(at, 0, { table: "interrupt", kind: "data", sql: "INSERT INTO no_such_table VALUES (1)" });
+      M.apply(st, { connectionString: ${JSON.stringify(urlOf(NAME + "_fail"))} }).then(o => { console.log(JSON.stringify({ ok: o.ok, failed: o.failed.length, at, of: st.length })); process.exit(0); });`);
+    const fo = (() => { try { return JSON.parse(failRun.stdout.trim().split("\n").pop()); } catch (e) { return null; } })();
+    const failLeft = await tablesIn(NAME + "_fail");
+    step(fo && fo.failed > 0 && fo.ok === 0 && failLeft === 0, "a migration whose statement fails part-way leaves no table behind " + JSON.stringify({ result: fo, tables: failLeft }), (failRun.stderr || "").slice(0, 400));
+    const killed = await new Promise(resolve => {
+      const { spawn } = require("child_process");
+      const ch = spawn(process.execPath, ["-e", `
+        process.env.LX_DB = ${JSON.stringify(sqlite)};
+        const s = console.log; console.log = () => {}; require("./lib/db.js"); console.log = s;
+        const M = require("./lib/migrate.js"); const st = M.plan();
+        M.apply(st, { connectionString: ${JSON.stringify(urlOf(NAME + "_kill"))} }, (i, n) => console.log("progress " + i + " " + n)).then(() => console.log("finished"));`], { cwd: ROOT, env: process.env, stdio: ["ignore", "pipe", "pipe"] });
+      let out = "", at = null;
+      const timer = setTimeout(() => { ch.kill("SIGKILL"); }, 900000);
+      ch.stdout.on("data", d => { out += d; const m = /progress (\d+) (\d+)/.exec(String(d)); if (m && at === null && Number(m[1]) >= Number(m[2]) / 2) { at = m[1] + "/" + m[2]; ch.kill("SIGKILL"); } });
+      ch.on("exit", () => { clearTimeout(timer); resolve({ at, finished: /finished/.test(out) }); });
+    });
+    /* the server notices the dead connection and rolls back; give it a moment */
+    let killLeft = null;
+    for (let i = 0; i < 20; i++) { killLeft = await tablesIn(NAME + "_kill"); if (killLeft === 0) break; await new Promise(r => setTimeout(r, 500)); }
+    step(killed.at && !killed.finished && killLeft === 0, "a migration killed part-way leaves no table behind " + JSON.stringify({ killedAt: killed.at, tables: killLeft }));
+    for (const x of ["", "-wal", "-shm"]) { try { fs.rmSync(sqlite + x, { force: true }); } catch (e) { } }
+
+    /* 3 · the platform booted on Postgres */
+    const boot = node(`
+      const errs = []; const s = console.log; console.log = () => {}; const ce = console.error; console.error = (...a) => errs.push(a.join(" "));
+      const out = []; const ok = (c, n, x) => out.push({ ok: !!c, n, x });
+      try {
+        const db = require("./lib/db.js"); console.log = s;
+        ok(errs.length === 0, "the boot logs no error", errs.slice(0, 3));
+        const K = require("./lib/kernel.js"), P = require("./lib/places.js"), St = require("./lib/stores.js"), E = require("./lib/entity.js"), R = require("./lib/registry.js"), T = require("./lib/time.js"), X = require("./lib/expression.js");
+        ok(K.verifyEvents().ok, "the kernel's event chain verifies");
+        const c = db.get("SELECT code FROM countries WHERE active=1 ORDER BY position LIMIT 1").code;
+        ok(P.country(c) && P.pathOf(P.country(c)), "a country is a place with a path", c);
+        ok(R.country(c).currency, "its currency is the kernel's setting", R.country(c));
+        const tid = db.get("SELECT id FROM tenants ORDER BY id LIMIT 1").id;
+        ok(St.country(tid), "a store's country is its jurisdiction", St.country(tid));
+        ok(T.zoneAt(P.country(c)), "a country has a time zone");
+        ok(X.available().length > 1, "the storefront speaks several languages");
+        ok(R.units().length > R.currencies().length, "Value's master holds units beyond the active currencies");
+        const cur = db.get("SELECT code FROM currencies WHERE active=1 LIMIT 1").code;
+        const made = E.createEntity(0, "country", { code: "QZ", name: "Testland", currency: cur, locale: "en-IE" });
+        ok(!made.error && P.country("QZ"), "a country is created through the write path", made.error);
+        const ev = db.get("SELECT COUNT(*) AS n FROM k_events").n;
+        const dup = E.createEntity(0, "country", { code: "QZ", name: "Again", currency: cur, locale: "en-IE" });
+        ok(dup.error && K.attributes(P.country("QZ")).name === "Testland" && db.get("SELECT COUNT(*) AS n FROM k_events").n === ev, "a write the row refuses leaves the kernel untouched (a real transaction)", dup);
+        const orphan = E.createEntity(0, "subdivision", { code: "QQ-01", country_code: "QQ", name: "Nowhere", level: "region" });
+        ok(orphan.error && !db.get("SELECT 1 AS x FROM subdivisions WHERE code='QQ-01'"), "a write the kernel refuses never reaches the row", orphan);
+        const sd = E.createEntity(0, "subdivision", { code: "QZ-01", country_code: "QZ", name: "North", level: "region" });
+        const nested = E.createEntity(0, "subdivision", { code: "QZ-01A", country_code: "QZ", name: "North A", level: "district", parent_id: db.get("SELECT rowid AS id FROM subdivisions WHERE code='QZ-01'").id });
+        ok(!sd.error && !nested.error && K.parents(P.HIERARCHY, P.subdivision("QZ-01A")).join() === P.subdivision("QZ-01"), "a nested subdivision finds its parent by the row id Postgres keeps", nested.error);
+        ok(K.verifyEvents().ok, "the event chain still verifies");
+      } catch (e) { console.log = s; out.push({ ok: false, n: "threw", x: e.stack }); }
+      console.log(JSON.stringify(out)); process.exit(0);`, { LX_DB_DRIVER: "postgres", LX_PG_URL: target });
+    let checks = [];
+    try { checks = JSON.parse(boot.stdout.trim().split("\n").pop()); } catch (e) { checks = [{ ok: false, n: "boot produced no result", x: (boot.stderr || "").slice(0, 600) }]; }
+    for (const c of checks) step(c.ok, "Postgres: " + c.n, c.x === undefined ? null : JSON.stringify(c.x));
+
+    /* 3a · money at rest (PR-016): on a copy, the same script on Postgres and on SQLite. Postgres
+       must refuse what SQLite's guard refuses (its CHECK constraints come from the same
+       expression), hold the same exact minor units, and refund the same way; the two engines'
+       answers must be identical */
+    const MONEY = NAME + "_money";
+    const mc = await admin.simple(`CREATE DATABASE "${MONEY}" TEMPLATE "${NAME}"`);
+    step(!mc.error, "a copy of the platform database for the money checks", mc.error);
+    const moneyScript = `
+      const s = console.log; console.log = () => {}; const out = [];
+      const ok = (c, n, x) => out.push({ ok: !!c, n, x: c ? undefined : x });
+      const refuses = (fn, re, n) => { try { fn(); ok(false, n, "accepted"); } catch (e) { ok(re.test(e.message), n, e.message); } };
+      (async () => {
+        try {
+          const db = require("./lib/db.js"); console.log = s;
+          const MS = require("./lib/money-store.js"), M = require("./lib/money.js"), R = require("./lib/refunds.js");
+          ok(MS.migrated(), "the money migration is recorded on this database");
+          const tid = db.get("SELECT id FROM tenants ORDER BY id LIMIT 1").id;
+          const oid = Number(MS.insert("orders", { tenant_id: tid, owner: "pg:money", num: "PGM-" + Date.now(), status: "delivered" }, "KWD", { sub: "12.345", ship_fee: "0", gift_used: "0", tax: "0.617", total: "12.962" }).lastInsertRowid);
+          const o = db.get("SELECT total, total_minor, money_scale, currency FROM orders WHERE id=?", oid);
+          const back = { total: o.total, minor: o.total_minor, scale: o.money_scale, currency: o.currency };
+          ok(o.total_minor === 12962 && o.total === 12.962 && o.money_scale === 3 && o.currency === "KWD", "a three-decimal amount is stored and read back exactly", back);
+          refuses(() => db.run("UPDATE orders SET total = 12.963 WHERE id=?", oid), /money|check|constraint/i, "a projection that disagrees with its minor units is refused by the database");
+          refuses(() => db.run("INSERT INTO payments(tenant_id,kind,gateway,amount,currency,status) VALUES(?,?,?,?,?,?)", tid, "order", "x", 1.5, "USD", "captured"), /money|check|constraint/i, "a payment written without its minor units is refused by the database");
+          const big = Number.MAX_SAFE_INTEGER;
+          const bid = Number(MS.insert("payments", { tenant_id: tid, kind: "order", gateway: "x", method: "card", status: "captured", txn_ref: "pg-big", live: 0 }, "JPY", { amount: M.ofMinor(big, "JPY"), fee: "0" }).lastInsertRowid);
+          ok(db.get("SELECT amount_minor FROM payments WHERE id=?", bid).amount_minor === big, "the largest safe amount (2^53 − 1 minor units) round-trips exactly", db.get("SELECT amount_minor FROM payments WHERE id=?", bid));
+          const pid = Number(MS.insert("payments", { tenant_id: tid, kind: "order", gateway: "x", method: "card", status: "captured", txn_ref: "pg-ref", live: 0 }, "USD", { amount: "100.00", fee: "0" }).lastInsertRowid);
+          const P = () => db.get("SELECT * FROM payments WHERE id=?", pid);
+          const r1 = await R.refund(P(), { amount: "30.00", idem: "pg-1" });
+          const r1b = await R.refund(P(), { amount: "30.00", idem: "pg-1" });
+          let over = null; try { await R.refund(P(), { amount: "70.01", idem: "pg-2" }); } catch (e) { over = e.code; }
+          const r2 = await R.refund(P(), { idem: "pg-3" });
+          ok(r1.refundable.minor === "7000" && r1b.replay && over === "exceeds_refundable" && r2.full && P().status === "refunded" && Number(P().refunded_minor) === 10000, "a partial refund, its replay, an over-refund and the rest", { r1: r1.refundable, over, full: r2.full, status: P().status });
+          const v = MS.verify();
+          ok(v.ok && v.refundLedgerDrift === 0, "verify(): every money row is consistent", v.ok ? "" : v);
+          out.push({ result: { back, refunded: Number(P().refunded_minor), status: P().status, refunds: db.all("SELECT amount_minor, status FROM refunds WHERE payment_id=? ORDER BY id", pid) } });
+        } catch (e) { console.log = s; out.push({ ok: false, n: "threw", x: e.stack }); }
+        console.log(JSON.stringify(out)); process.exit(0);
+      })();`;
+    const runMoney = env => { const r = node(moneyScript, env); try { return JSON.parse(r.stdout.trim().split("\n").pop()); } catch (e) { return [{ ok: false, n: "the money checks produced no result", x: (r.stderr || r.stdout || "").slice(-600) }]; } };
+    const onPg = runMoney({ LX_DB_DRIVER: "postgres", LX_PG_URL: urlOf(MONEY) });
+    const liteFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "lx-money-")), "money.db");
+    const onLite = runMoney({ LX_DB_DRIVER: "", LX_PG_URL: "", LX_DB: liteFile, LX_TEST: "1" });
+    for (const c of onPg.filter(c => c.n)) step(c.ok, "Postgres: " + c.n, c.x === undefined ? null : JSON.stringify(c.x));
+    const res = xs => JSON.stringify((xs.find(c => c.result) || {}).result || null);
+    step(onLite.every(c => c.ok !== false) && res(onPg) !== "null" && res(onPg) === res(onLite), "Postgres and SQLite give the same money results", { pg: res(onPg), sqlite: res(onLite), sqliteFailures: onLite.filter(c => c.ok === false) });
+
+    /* 3b · a store's first storefront data (PR-043). The first /api/taxonomy after a boot syncs the
+       store's tree and attribute definitions from the master. Read node by node that was about
+       48,000 statements, each a round trip over the one serialized connection, and the first page
+       still showed "Composing…" when the browser check gave up (CI run 40565081756). These run on a
+       copy of the database, so the browser check below still meets a fresh install. */
+    const SYNC = NAME + "_sync", syncUrl = urlOf(SYNC), PGENV = { LX_DB_DRIVER: "postgres", LX_PG_URL: syncUrl };
+    const cl = await admin.simple(`CREATE DATABASE "${SYNC}" TEMPLATE "${NAME}"`);
+    step(!cl.error, "a copy of the platform database for the sync checks", cl.error);
+    const syncRun = node(`
+      /* every statement the bridge sends is one message to its worker */
+      const { Worker } = require("node:worker_threads"); let sent = 0; const pm = Worker.prototype.postMessage;
+      Worker.prototype.postMessage = function (m) { if (m && typeof m.sql === "string") sent++; return pm.apply(this, arguments); };
+      const s = console.log; console.log = () => {}; const db = require("./lib/db.js"); console.log = s;
+      const out = []; const ok = (c, n, x) => out.push({ ok: !!c, n, x });
+      try {
+        const ST = require("./lib/store-taxonomy.js"), SA = require("./lib/store-attributes.js");
+        const t = db.get("SELECT id FROM tenants ORDER BY id LIMIT 1").id;
+        const rows = db.get("SELECT COUNT(*) AS c FROM taxonomy WHERE tenant_id=?", t).c;
+        let n0 = sent; const t0 = Date.now(); ST.sync(t); SA.sync(t);
+        const cold = { statements: sent - n0, ms: Date.now() - t0, rows };
+        ok(rows > 0 && cold.statements < rows, "a store's first sync in a process reads the master as sets " + JSON.stringify(cold), cold);
+        /* the storefront's first page also waits for /api/meta: its vocabularies are read in one
+           kernel snapshot, not node by node (15,800 statements before; CI run 40702965627) */
+        {
+          const api = require("./lib/api.js"), tenant = db.get("SELECT * FROM tenants WHERE id=?", t);
+          let status = 0, body = "";
+          const res = { headersSent: false, statusCode: 0, setHeader() {}, getHeader() {}, writeHead(c) { status = c; return this; }, write(b) { body += b || ""; }, end(b) { body += b || ""; this.headersSent = true; }, on() {}, once() {} };
+          const m0 = sent, tm = Date.now();
+          api.handle({ method: "GET", headers: {}, socket: {} }, res, new URL("http://pg-check/api/meta?store=" + tenant.slug), { tenant, sid: "pg-check", trace: "pg-check" }, {});
+          const meta = { status, statements: sent - m0, ms: Date.now() - tm, bytes: body.length };
+          ok(status === 200 && body.length > 1000 && meta.statements < 2000, "a store's first /api/meta in a process reads its vocabularies in one snapshot " + JSON.stringify(meta), meta);
+        }
+        const w0 = db.writes(); n0 = sent; ST.sync(t); SA.sync(t);
+        ok(db.writes() === w0, "a sync with nothing to change writes nothing (" + (sent - n0) + " statements)", db.writes() - w0);
+        const drift = db.all("SELECT id, name FROM taxonomy WHERE tenant_id=? AND active=1 AND node_uid IS NOT NULL ORDER BY id LIMIT 5", t);
+        for (const r of drift) db.run("UPDATE taxonomy SET name=? WHERE id=?", r.name + " (drifted)", r.id);
+        const names = () => drift.map(r => db.get("SELECT name FROM taxonomy WHERE id=?", r.id).name);
+        const realRun = db.run; let k = 0, threw = null;
+        db.run = (q, ...a) => { if (/^UPDATE taxonomy SET parent_id/.test(q) && ++k === 3) throw new Error("injected failure"); return realRun(q, ...a); };
+        try { ST.sync(t); } catch (e) { threw = e.message; } finally { db.run = realRun; }
+        ok(threw === "injected failure" && names().every(x => / \\(drifted\\)$/.test(x)), "a sync that fails part-way leaves the tree as it was (one transaction)", { threw, names: names() });
+        ok(ST.sync(t) === drift.length && names().join() === drift.map(r => r.name).join(), "the connection serves the next sync, which completes the tree");
+      } catch (e) { out.push({ ok: false, n: "threw", x: e.stack }); }
+      console.log(JSON.stringify(out)); process.exit(0);`, PGENV);
+    let syncChecks = [];
+    try { syncChecks = JSON.parse(syncRun.stdout.trim().split("\n").pop()); } catch (e) { syncChecks = [{ ok: false, n: "the sync checks produced no result", x: (syncRun.stderr || "").slice(0, 600) }]; }
+    for (const c of syncChecks) step(c.ok, "Postgres: " + c.n, c.x === undefined ? null : JSON.stringify(c.x));
+
+    /* two servers on one database sync a store neither has seen, at the same moment: each boots,
+       says it is ready, and syncs when the store exists and the go file appears */
+    const sc = await pg.connect(syncUrl);
+    const race = fs.mkdtempSync(path.join(os.tmpdir(), "lx-race-"));
+    const racer = i => new Promise(resolve => {
+      const ch = spawn(process.execPath, ["-e", `
+        const fs = require("fs"), path = require("path"); const s = console.log; console.log = () => {}; require("./lib/db.js"); console.log = s;
+        const ST = require("./lib/store-taxonomy.js"), nap = new Int32Array(new SharedArrayBuffer(4)), go = path.join(${JSON.stringify(race)}, "go");
+        fs.writeFileSync(path.join(${JSON.stringify(race)}, "ready-${i}"), "");
+        while (!fs.existsSync(go)) Atomics.wait(nap, 0, 0, 10);
+        let r; try { r = { changed: ST.sync(Number(fs.readFileSync(go, "utf8"))) }; } catch (e) { r = { error: e.message }; }
+        console.log(JSON.stringify(r)); process.exit(0);`], { cwd: ROOT, env: { ...process.env, ...PGENV }, stdio: ["ignore", "pipe", "pipe"] });
+      let out = "", err = ""; ch.stdout.on("data", d => { out += d; }); ch.stderr.on("data", d => { err += d; });
+      const timer = setTimeout(() => ch.kill("SIGKILL"), 600000);
+      ch.on("exit", () => { clearTimeout(timer); try { resolve(JSON.parse(out.trim().split("\n").pop())); } catch (e) { resolve({ error: "no result: " + (out + err).slice(-300) }); } });
+    });
+    const racers = [racer(1), racer(2)];
+    const readyAll = () => [1, 2].every(i => fs.existsSync(path.join(race, "ready-" + i)));
+    for (let i = 0; i < 6000 && !readyAll(); i++) await new Promise(r => setTimeout(r, 50));
+    const made = await sc.query("INSERT INTO tenants(slug,name,domain,status,mode,industries,profile) VALUES('pg-race','Race','pg-race.localhost','active','marketplace','[]','{}') RETURNING id");
+    const raceId = made.error ? 0 : Number(made.rows[0][0]);
+    fs.writeFileSync(path.join(race, "go"), String(raceId));
+    const [r1, r2] = await Promise.all(racers);
+    const dups = await sc.query(`SELECT COUNT(*) FROM (SELECT node_uid FROM taxonomy WHERE tenant_id=${raceId} AND node_uid IS NOT NULL GROUP BY node_uid HAVING COUNT(*) > 1) d`);
+    const built = await sc.query(`SELECT COUNT(*) FROM taxonomy WHERE tenant_id=${raceId}`);
+    const raced = { r1, r2, rows: built.error || Number(built.rows[0][0]), duplicated: dups.error || Number(dups.rows[0][0]) };
+    step(raceId && !r1.error && !r2.error && raced.rows > 0 && raced.duplicated === 0 && r1.changed + r2.changed === raced.rows,
+      "Postgres: two servers syncing one new store at once build its tree once " + JSON.stringify(raced), made.error);
+    try { fs.rmSync(race, { recursive: true, force: true }); } catch (e) { }
+
+    /* the server itself: a store's first requests arrive together, for two stores, after a boot */
+    const second = await sc.query("INSERT INTO tenants(slug,name,domain,status,mode,industries,profile) VALUES('pg-second','Second','pg-second.localhost','active','marketplace','[\"fashion\"]','{}') RETURNING id");
+    const secondId = second.error ? 0 : Number(second.rows[0][0]);
+    const firstId = await sc.query("SELECT id FROM tenants WHERE slug='luxora'").then(r => Number(r.rows[0][0]));
+    sc.close();
+    const port = Number(process.env.CHECK_PORT || 8869) + 1, base = "http://127.0.0.1:" + port;
+    const srv = spawn(process.execPath, [path.join(ROOT, "server.js")], { cwd: ROOT, env: { ...process.env, ...PGENV, PORT: String(port), LX_LOG: "", NODE_ENV: "" }, stdio: ["ignore", "ignore", "pipe"] });
+    let srvErr = ""; srv.stderr.on("data", d => { srvErr = (srvErr + d).slice(-4000); });
+    try {
+      let up = false;
+      for (let i = 0; i < 360 && !up; i++) { try { up = (await fetch(base + "/healthz")).ok; } catch (e) { } if (!up) await new Promise(r => setTimeout(r, 500)); }
+      step(up, "Postgres: a server on the copy answers /healthz", srvErr.slice(-600));
+      if (up) {
+        const ask = p => { const t0 = Date.now(); return fetch(base + p).then(async r => ({ p, status: r.status, ms: Date.now() - t0, body: await r.text() })).catch(e => ({ p, status: 0, ms: Date.now() - t0, body: e.message })); };
+        const got = await Promise.all(["/api/taxonomy?store=luxora", "/api/meta?store=luxora", "/api/products?limit=200&store=luxora", "/api/taxonomy?store=luxora", "/api/taxonomy?store=pg-second", "/api/taxonomy?store=luxora", "/api/taxonomy?store=pg-second"].map(ask));
+        const tax = slug => got.filter(g => g.p === "/api/taxonomy?store=" + slug);
+        const flat = g => { try { return JSON.parse(g.body).flat || []; } catch (e) { return []; } };
+        const times = got.map(g => g.p.replace("/api/", "") + " " + g.status + " " + g.ms + " ms");
+        step(got.every(g => g.status === 200), "Postgres: a store's first requests, arriving together, all answer " + JSON.stringify(times), got.filter(g => g.status !== 200).map(g => g.p + " " + g.status + " " + g.body.slice(0, 200)));
+        step(new Set(tax("luxora").map(g => g.body)).size === 1 && new Set(tax("pg-second").map(g => g.body)).size === 1, "Postgres: every request for one store sees the same tree (no half-built one)");
+        step(flat(tax("luxora")[0]).length > 0 && flat(tax("luxora")[0]).every(r => r.tenant_id === firstId) && flat(tax("pg-second")[0]).length > 0 && flat(tax("pg-second")[0]).every(r => r.tenant_id === secondId),
+          "Postgres: each store's tree holds only its own rows", { luxora: flat(tax("luxora")[0]).length, second: flat(tax("pg-second")[0]).length });
+        /* the home page waits for this answer and is checked for 6 s after it loads: the first one
+           must leave the page most of that window, on a shared CI runner (PR-043) */
+        step(tax("luxora")[0].ms < 2000, "Postgres: a store's first /api/taxonomy after a boot answers in " + tax("luxora")[0].ms + " ms (bound 2000 ms)");
+        /* the storefront's first page waits for /api/meta too; read node by node it was 15,800
+           statements and about 6.7 s on a CI runner, and the page timed out (CI run 40702965627) */
+        const metaFirst = got.find(g => g.p === "/api/meta?store=luxora");
+        step(metaFirst.status === 200 && metaFirst.ms < 2000, "Postgres: the first /api/meta after a boot answers in " + metaFirst.ms + " ms (bound 2000 ms)", metaFirst.body.slice(0, 200));
+      }
+    } finally {
+      try { srv.kill("SIGTERM"); } catch (e) { }
+      const gone = await new Promise(r => { if (srv.exitCode !== null) return r(true); const t = setTimeout(() => r(false), 5000); srv.on("exit", () => { clearTimeout(t); r(true); }); });
+      if (!gone) { try { srv.kill("SIGKILL"); } catch (e) { } }
+    }
+
+    /* 4 · every page and console section, with the server on Postgres */
+    if (!process.argv.includes("--no-browser")) {
+      const br = spawnSync(process.execPath, [path.join(ROOT, "scripts", "browser-check.js")], { cwd: ROOT, env: { ...process.env, LX_DB_DRIVER: "postgres", LX_PG_URL: target, CHECK_PORT: process.env.CHECK_PORT || "8869" }, encoding: "utf8", timeout: 1800000 });
+      const lines = (br.stdout || "").split("\n");
+      /* each failing page with what went wrong on it */
+      lines.forEach((l, i) => { if (/✗/.test(l)) console.log("    " + l.trim() + (lines[i + 1] && !/✓|✗/.test(lines[i + 1]) ? "\n      " + lines[i + 1].trim() : "")); else if (/page loads|server up in/.test(l)) console.log("    " + l.trim()); });
+      for (const l of (br.stdout || "").split("\n").filter(l => /^\[[0-9a-f-]{36}\]/.test(l)).slice(0, 5)) console.log("      server: " + l.slice(0, 300));
+      const why = lines.filter(l => /✗/.test(l)).slice(0, 5).join(" | ") || ("exit " + br.status + (br.signal ? " " + br.signal : "") + (br.error ? " " + br.error.message : "") + ": " + String(br.stderr || "").split("\n").filter(l => l && !/Experimental|trace-warn/.test(l)).slice(-6).join(" / "));
+      step(br.status === 0, "Postgres: every page and console section loads clean", why);
+    }
+  } finally {
+    /* a fresh connection: the first one sat idle through the browser run */
+    admin.close();
+    for (const db of [NAME, NAME + "_fail", NAME + "_kill", NAME + "_sync", NAME + "_money"]) {
+      try { const a2 = await pg.connect(ADMIN); const dr = await a2.simple(`DROP DATABASE IF EXISTS "${db}" WITH (FORCE)`); if (dr.error) console.log("  (could not drop " + db + ": " + dr.error + ")"); a2.close(); }
+      catch (e) { console.log("  (could not drop " + db + ": " + e.message + ")"); }
+    }
+  }
+  console.log(failed ? `\n✗ ${failed} failed` : "\n✓ the platform runs on Postgres");
+  process.exit(failed ? 1 : 0);
+})();

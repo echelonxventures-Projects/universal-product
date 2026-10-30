@@ -1,0 +1,384 @@
+{
+  "$comment": "Artifacts the continuity system knows by id. An artifact's owner is its own file unless stated; its content hash feeds the fingerprint of every pack that includes it. The 93 UCOS artifacts are NOT listed here — they are imported from _registry/manifest.json.",
+  "registryId": "CTX-REG-ARTIFACTS",
+  "kind": "artifact",
+  "version": 1,
+  "records": [
+    {
+      "id": "ART-AGENTS-MD",
+      "title": "Agent entry point",
+      "path": "AGENTS.md",
+      "type": "entry-point",
+      "owner": "AGENTS.md",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-ARCHIVE-STORE",
+      "title": "Write-once private evidence store",
+      "locator": "$CONTEXT_ARCHIVE_DIR (default .context-archive/, gitignored)",
+      "type": "archive-store",
+      "owner": "PROJECT-CONTEXT/schemas/config.json",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "private",
+      "notes": "Content-addressed objects/<aa>/<sha256>, mode 0400, never overwritten.",
+      "dependsOn": [
+        "ART-GITIGNORE"
+      ]
+    },
+    {
+      "id": "ART-CANONICAL",
+      "title": "Canonical registry compiler and seal",
+      "path": "lib/canonical.js",
+      "type": "code",
+      "owner": "lib/canonical.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-CI-WORKFLOW",
+      "title": "CI workflow",
+      "path": ".github/workflows/ci.yml",
+      "type": "ci",
+      "owner": ".github/workflows/ci.yml",
+      "authority": "operational",
+      "lifecycle": "operational-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-CLAUDE-MD",
+      "title": "Claude Code entry point (points to AGENTS.md)",
+      "path": "CLAUDE.md",
+      "type": "entry-point",
+      "owner": "CLAUDE.md",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-AGENTS-MD"
+      ]
+    },
+    {
+      "id": "ART-CTX-ARCHIVE",
+      "title": "Evidence archive: verify, segments, import, capture, restore-check",
+      "path": "lib/context/archive.js",
+      "type": "code",
+      "owner": "lib/context/archive.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-CTX-STORE"
+      ]
+    },
+    {
+      "id": "ART-CTX-CLI",
+      "title": "Continuity command line (npm run context:*)",
+      "path": "scripts/context.js",
+      "type": "code",
+      "owner": "scripts/context.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-CTX-INDEX"
+      ]
+    },
+    {
+      "id": "ART-CTX-CONFIG",
+      "title": "Continuity configuration (budgets, scope, hygiene)",
+      "path": "PROJECT-CONTEXT/schemas/config.json",
+      "type": "config",
+      "owner": "PROJECT-CONTEXT/schemas/config.json",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-CTX-COVERAGE",
+      "title": "Coverage and traceability metrics",
+      "path": "lib/context/coverage.js",
+      "type": "code",
+      "owner": "lib/context/coverage.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-CTX-ARCHIVE",
+        "ART-CTX-GRAPH"
+      ]
+    },
+    {
+      "id": "ART-CTX-GRAPH",
+      "title": "Typed traceability graph and queries",
+      "path": "lib/context/graph.js",
+      "type": "code",
+      "owner": "lib/context/graph.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-CTX-STORE"
+      ]
+    },
+    {
+      "id": "ART-CTX-HYGIENE",
+      "title": "Hygiene scan, lifecycle transitions, consolidation",
+      "path": "lib/context/hygiene.js",
+      "type": "code",
+      "owner": "lib/context/hygiene.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-CTX-GRAPH"
+      ]
+    },
+    {
+      "id": "ART-CTX-INDEX",
+      "title": "Build and verify (drift, freshness, invariants)",
+      "path": "lib/context/index.js",
+      "type": "code",
+      "owner": "lib/context/index.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-CTX-VIEWS",
+        "ART-CTX-PROTOCOL",
+        "ART-CTX-HYGIENE"
+      ]
+    },
+    {
+      "id": "ART-CTX-PACKS",
+      "title": "Context pack generator, budgets, freshness, task packs",
+      "path": "lib/context/packs.js",
+      "type": "code",
+      "owner": "lib/context/packs.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-CTX-GRAPH"
+      ]
+    },
+    {
+      "id": "ART-CTX-PROTOCOL",
+      "title": "Assimilation gate, receipts, handoffs",
+      "path": "lib/context/protocol.js",
+      "type": "code",
+      "owner": "lib/context/protocol.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-CTX-PACKS"
+      ]
+    },
+    {
+      "id": "ART-CTX-REG-LIFECYCLE",
+      "title": "Lifecycle state and transition registry",
+      "path": "PROJECT-CONTEXT/schemas/lifecycle.json",
+      "type": "registry",
+      "owner": "PROJECT-CONTEXT/schemas/lifecycle.json",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-CTX-REG-RELATIONS",
+      "title": "Typed relation registry",
+      "path": "PROJECT-CONTEXT/schemas/relations.json",
+      "type": "registry",
+      "owner": "PROJECT-CONTEXT/schemas/relations.json",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-CTX-SCHEMA-HANDOFF",
+      "title": "Handoff schema",
+      "path": "PROJECT-CONTEXT/schemas/handoff.schema.json",
+      "type": "schema",
+      "owner": "PROJECT-CONTEXT/schemas/handoff.schema.json",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-CTX-SCHEMA-KNOWLEDGE",
+      "title": "Knowledge record schema",
+      "path": "PROJECT-CONTEXT/schemas/knowledge.schema.json",
+      "type": "schema",
+      "owner": "PROJECT-CONTEXT/schemas/knowledge.schema.json",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-CTX-SCHEMA-RECEIPT",
+      "title": "Assimilation receipt schema",
+      "path": "PROJECT-CONTEXT/schemas/receipt.schema.json",
+      "type": "schema",
+      "owner": "PROJECT-CONTEXT/schemas/receipt.schema.json",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-CTX-SCHEMA-VALIDATOR",
+      "title": "JSON Schema subset validator",
+      "path": "lib/context/schema.js",
+      "type": "code",
+      "owner": "lib/context/schema.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-CTX-STORE",
+      "title": "Knowledge store loader and UCOS manifest adapter",
+      "path": "lib/context/store.js",
+      "type": "code",
+      "owner": "lib/context/store.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-CTX-UTIL",
+        "ART-CTX-SCHEMA-VALIDATOR"
+      ]
+    },
+    {
+      "id": "ART-CTX-UTIL",
+      "title": "Continuity primitives: canonical JSON, hashing, safe paths, git, secret scan",
+      "path": "lib/context/util.js",
+      "type": "code",
+      "owner": "lib/context/util.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-CTX-VIEWS",
+      "title": "Projected views 00–10",
+      "path": "lib/context/views.js",
+      "type": "code",
+      "owner": "lib/context/views.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-CTX-PACKS",
+        "ART-CTX-COVERAGE"
+      ]
+    },
+    {
+      "id": "ART-GIT-OBJECT-STORE",
+      "title": "Git object store (archive for repository evidence)",
+      "locator": "git object database of this repository",
+      "type": "archive-store",
+      "owner": "PROJECT-CONTEXT/knowledge/artifacts.json",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "notes": "Append-only, content-addressed; verify with `git cat-file -e <blob>`."
+    },
+    {
+      "id": "ART-GITIGNORE",
+      "title": "Ignore rules (secrets, derived seal, private archive store)",
+      "path": ".gitignore",
+      "type": "config",
+      "owner": ".gitignore",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-MEMORY-LEDGER",
+      "title": "Legacy agent memory ledger (historical)",
+      "path": ".workbuddy-ai/memory/MEMORY.md",
+      "type": "ledger",
+      "owner": ".workbuddy-ai/memory/MEMORY.md",
+      "authority": "historical",
+      "lifecycle": "historical-evidence",
+      "access": "public",
+      "sources": [
+        {
+          "ref": "SRC-MEMORY-LEDGER"
+        }
+      ],
+      "notes": "Archived as SRC-MEMORY-LEDGER; not current authority (DEC-CTX-MEMORY-LEDGER-HISTORICAL)."
+    },
+    {
+      "id": "ART-PACKAGE-JSON",
+      "title": "npm scripts and engines",
+      "path": "package.json",
+      "type": "config",
+      "owner": "package.json",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-REGISTRY-AUDIT",
+      "title": "Constitutional audit",
+      "path": "_registry/audit.js",
+      "type": "code",
+      "owner": "_registry/audit.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-REGISTRY-COMPILE",
+      "title": "Canonical registry compile / gate / verify",
+      "path": "_registry/compile.js",
+      "type": "code",
+      "owner": "_registry/compile.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-CANONICAL",
+        "ART-REGISTRY-GATE"
+      ]
+    },
+    {
+      "id": "ART-REGISTRY-GATE",
+      "title": "Integrity gate (five criteria)",
+      "path": "_registry/gate.js",
+      "type": "code",
+      "owner": "_registry/gate.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-REGISTRY-PROJECT",
+      "title": "Constitutional document projector",
+      "path": "_registry/project.js",
+      "type": "code",
+      "owner": "_registry/project.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public"
+    },
+    {
+      "id": "ART-TEST-CONTEXT",
+      "title": "Continuity test suite incl. fresh-agent recovery scenario",
+      "path": "test/context.js",
+      "type": "test",
+      "owner": "test/context.js",
+      "authority": "canonical",
+      "lifecycle": "canonical-active",
+      "access": "public",
+      "dependsOn": [
+        "ART-CTX-CLI"
+      ]
+    }
+  ]
+}

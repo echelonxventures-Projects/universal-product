@@ -45,7 +45,7 @@ async function render(p, wait = 1800) {
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: db }, stdio: ["ignore", "ignore", "inherit"] });
   let up = false;
   for (let i = 0; i < 120; i++) { try { const h = await fetch(BASE + "/healthz"); if (h.ok) { up = true; break; } } catch (e) { } await sleep(1000); }
-  if (!up) { console.log("server failed to boot"); process.exit(1); }
+  if (!up) { srv.kill("SIGKILL"); console.log("server failed to boot"); process.exit(1); }
   try {
     console.log("▸ CANONICAL NAVIGATION MODEL");
     const login = await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
@@ -66,7 +66,7 @@ async function render(p, wait = 1800) {
     const navBtn = [...doc.querySelectorAll("[data-v]")].find(b => b.dataset.v === "tenants-admin");
     ok(!!navBtn, "Tenants lives under 11 · Administration");
     click(win, navBtn); await sleep(1200);
-    ok(/Tenants \(/.test(doc.body.textContent), "the surface is the tenant registry");
+    ok(/Platforms \(/.test(doc.body.textContent), "the surface is the platform registry");
     const newBtn = doc.getElementById("newTenant");
     ok(!!newBtn && /Register platform/.test(newBtn.textContent), "the entry point is Register platform");
     click(win, newBtn); await sleep(1000);

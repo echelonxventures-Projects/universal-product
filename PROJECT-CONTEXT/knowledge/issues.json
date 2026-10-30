@@ -1,0 +1,494 @@
+{
+  "$comment": "Open questions, gaps, conflicts, assumptions, risks, approvals and known defects. Every open item names the evidence that would resolve it. An open 'conflict' blocks any task it lists in 'blocks'; it may never be treated as settled.",
+  "registryId": "CTX-REG-ISSUES",
+  "kind": "issue",
+  "version": 1,
+  "records": [
+    {
+      "id": "ISS-BASE-ECONNRESET-FLAKE",
+      "kind": "defect",
+      "title": "master (441d772) fails CI on an intermittent ECONNRESET in test/identity-modes.js",
+      "statement": "The last CI run that executed on master (run 38665829638, 2026-10-15, head 441d772 — the base of PR #4) failed in `npm test` on Node 22: test/identity-modes.js:33 `fetch failed … read ECONNRESET`; the other jobs were cancelled by fail-fast. The same class of flake is REVIEW.md finding T1, and a commit on the unmerged branch feat/production-readiness says it fixes the server keep-alive timeout that causes it (AMD-0022). Pre-existing; locally the full suite passed on 441d772 and on every commit of PR #4 except the two regressions recorded in HO-CTX-0001-001/002.",
+      "status": "open",
+      "severity": "medium",
+      "evidence": [
+        "GitHub job 116197455598 log tail (observed 2026-10-22)",
+        "commit message on feat/production-readiness (run 32 head 4598780) describing the keep-alive fix"
+      ],
+      "evidenceNeeded": "Land the keep-alive fix on master (or confirm it fixes this), then observe a green CI run on master.",
+      "sources": [
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0005"
+        }
+      ],
+      "tags": [
+        "ci",
+        "platform"
+      ],
+      "affects": [
+        "ART-CI-WORKFLOW"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-CANONICAL-INPUT-MISNAMED",
+      "kind": "defect",
+      "title": "Seal manifest hashes a file that does not exist",
+      "statement": "lib/canonical.js:104 lists 'UCOS-Zero-Hardcoding-Constitution.md' in INPUT_FILES, but the repository file is 'UCRS-Zero-Hardcoding-Constitution.md' (which lib/ucos.js:72 parses). The seal manifest records the listed file as missing, so an edit to the real UCRS constitution does not drift the seal. Pre-existing; tracked separately from the continuity work.",
+      "status": "open",
+      "severity": "medium",
+      "evidence": [
+        "grep: lib/canonical.js:104 vs lib/ucos.js:72 and _registry/audit.js:30 (observed 2026-10-22)",
+        "`npm run registry` reports 'sources 28 files' including the missing entry (observed 2026-10-22)"
+      ],
+      "evidenceNeeded": "Confirm UCRS-Zero-Hardcoding-Constitution.md is the intended input, correct INPUT_FILES, re-run `npm run registry` and `node test/registry-gate.js`.",
+      "affects": [
+        "ART-CANONICAL",
+        "CST-ZERO-HARDCODING"
+      ],
+      "tags": [
+        "governance",
+        "defect"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-CI-RUNNERS-UNAVAILABLE",
+      "kind": "blocker",
+      "title": "GitHub Actions jobs never start: CI cannot produce evidence",
+      "statement": "Every CI run in the repository since 2026-10-19 fails in about 4 seconds with no runner assigned (runner_id 0, no steps executed, log download HTTP 404). That covers the eight runs on PR #3 (feat/production-readiness) and run 39740943856 on PR #4 (e1a3613, all three Node jobs). The last run that executed was on 2026-10-15. This happens before any repository code runs, so it is an account- or Actions-level condition, not a failure of the code under test. Not caused by the context continuity work.",
+      "status": "open",
+      "severity": "high",
+      "evidence": [
+        "GitHub API list_workflow_runs / get_workflow_job for run 39740943856, jobs 119697727787, 119697728280, 119697728347 (observed 2026-10-22)",
+        "runs 31–37 on PR #3 show the same ~4 s failure"
+      ],
+      "evidenceNeeded": "The repository owner checks the Actions settings and billing/spending limits for echelonxventures-Projects, then re-runs CI on PR #4.",
+      "tags": [
+        "ci",
+        "process"
+      ],
+      "affects": [
+        "ART-CI-WORKFLOW",
+        "REQ-CTX-CI"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-CONTENT-MAP-SHARED-KEYS",
+      "kind": "question",
+      "title": "Eleven projected artifacts share another artifact's content block",
+      "statement": "_registry/content-map.json maps each constitution UCOS-CON-000001…010 to the same content key as a core-domain artifact (e.g. CON-000001 Constitutional Foundation and IDN-000001 Identity Architecture both → core/IDN; CON-000007 Privacy Constitution → core/AUT, the Authority Architecture block), and UCOS-CLS-000001 shares ext/SEM with UCOS-SEM-000001. The projections are 83–91% identical by word-shingle Jaccard, and some titles do not match the content they project. Pre-existing; found by context:hygiene on 2026-10-22.",
+      "status": "open",
+      "severity": "medium",
+      "evidence": [
+        "_registry/content-map.json lines 11–41 (observed 2026-10-22)",
+        "PROJECT-CONTEXT/verification/hygiene.json nearDuplicates (Jaccard 0.83–0.91)"
+      ],
+      "evidenceNeeded": "Owner decides whether each constitution needs its own content block in _registry/content-*.json (then re-project and audit) or whether the sharing is intended (then record that as a decision).",
+      "affects": [
+        "UCOS-CON-000001",
+        "UCOS-CON-000007",
+        "UCOS-CLS-000001",
+        "CST-KNOWLEDGE-ONCE"
+      ],
+      "tags": [
+        "governance",
+        "hygiene"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-CTX-DECISIONS-UNAPPROVED",
+      "kind": "approval",
+      "title": "Continuity design decisions approved",
+      "statement": "RESOLVED. All seven DEC-CTX-* decisions have explicit owner approval recorded in canonical decisions.json, with status approved, repository owner authority, and decision date 2026-10-22. The original master-prompt source remains unavailable; the recorded approval evidence is the explicit owner approval in ChatGPT.",
+      "status": "resolved",
+      "severity": "high",
+      "evidenceNeeded": "",
+      "affects": [
+        "DEC-CTX-BYTE-BUDGETS",
+        "DEC-CTX-DERIVED-EDGES",
+        "DEC-CTX-DETERMINISTIC-TIME",
+        "DEC-CTX-GIT-AS-ARCHIVE",
+        "DEC-CTX-LOCATION",
+        "DEC-CTX-MEMORY-LEDGER-HISTORICAL",
+        "DEC-CTX-ZERO-DEPENDENCIES"
+      ],
+      "tags": [
+        "continuity"
+      ],
+      "lifecycle": "canonical-active",
+      "evidence": [
+        "Verified all seven canonical decisions: approved status, repository owner authority, decidedAt 2026-10-22.",
+        "Owner explicitly approved all seven DEC-CTX-* decisions in ChatGPT on 2026-10-22; each canonical decision records status approved, authority repository owner, and decidedAt 2026-10-22. Original master-prompt source remains unavailable and is not claimed as recovered."
+      ],
+      "resolvedBy": [
+        "TASK-CTX-0002"
+      ],
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "resolved",
+          "from": "open",
+          "to": "resolved",
+          "by": "repository owner",
+          "evidence": "Owner explicitly approved all seven DEC-CTX-* decisions in ChatGPT on 2026-10-22; each canonical decision records status approved, authority repository owner, and decidedAt 2026-10-22. Original master-prompt source remains unavailable and is not claimed as recovered."
+        }
+      ]
+    },
+    {
+      "id": "ISS-GIT-HISTORY-SHALLOW-CAPTURE",
+      "kind": "defect",
+      "title": "SRC-GIT-HISTORY was captured from a shallow clone with a clone-dependent serializer",
+      "statement": "RESOLVED. The original git-history capture (commit 4d4e7fe) ran `git rev-list --reverse --format=\"%H %ad %s\" 441d772` in a shallow clone whose only boundary was 3577ace, so it recorded a truncated 61-commit history (7974 B, sha256 87deb12d…). In any full clone the same command walks all 79 ancestors and the checksum can never match, which failed context:verify, restore-check, the generated quality report and 10 context tests. The verifier also downgraded a git-history mismatch to a warning whenever the clone was shallow, hiding the problem. Fixed: the historical record keeps its identity but is marked not-retained (its bytes were never stored); its exact bytes were recovered (sha256 match) as SRC-GIT-HISTORY-LEGACY-RECOVERED; future captures use the canonical, fail-closed ctx-git-history/1 serializer (SRC-GIT-HISTORY-441D772-V1); verify enforces append-only source identity.",
+      "status": "resolved",
+      "severity": "high",
+      "evidence": [
+        "legacy serializer in the shallow clone (boundary 3577ace): 61 lines, 7974 B, sha256 87deb12d… = recorded (observed 2026-10-22)",
+        "after `git fetch --unshallow`: rev-list --count 441d772 = 79, first-parent 68; legacy sha256 cabc4535… (mismatch) — matches the failure reported by the owner",
+        "test/context.js 167/177 before the fix in a full clone"
+      ],
+      "sources": [
+        {
+          "ref": "SRC-GIT-HISTORY"
+        },
+        {
+          "ref": "SRC-GIT-HISTORY-LEGACY-RECOVERED"
+        }
+      ],
+      "affects": [
+        "SRC-GIT-HISTORY",
+        "ART-CTX-ARCHIVE"
+      ],
+      "resolvedBy": [
+        "TASK-CTX-0005"
+      ],
+      "tags": [
+        "archive",
+        "defect"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-IMPLEMENTATION-MAP-STALE",
+      "kind": "gap",
+      "title": "IMPLEMENTATION_MAP.md is stale and internally inconsistent",
+      "statement": "IMPLEMENTATION_MAP.md says it is generated from live state (S0001) but describes only three corpora — 24,139 concepts, 1,877 universes (S0002) — while the current compile reports 12 documents, 32,220 concept rows and 2,919 universes (state fact F-002). It also contradicts itself: S0003 gives activation as '0% by default — opt-in per tenant', while S0008 says the flagship ships with 1,877/1,877 universes activated on boot.",
+      "status": "open",
+      "severity": "low",
+      "evidence": [
+        "IMPLEMENTATION_MAP.md lines 3–5, 9–14, 31–32, 98–105 (read 2026-10-22, TASK-CTX-0004)",
+        "npm run registry output 2026-10-22 (F-002)"
+      ],
+      "evidenceNeeded": "Regenerate the map from GET /api/ucos/matrix, or mark the document historical and point to the live endpoint.",
+      "sources": [
+        {
+          "ref": "SRC-IMPLEMENTATION-MAP",
+          "segment": "S0001"
+        },
+        {
+          "ref": "SRC-IMPLEMENTATION-MAP",
+          "segment": "S0002"
+        },
+        {
+          "ref": "SRC-IMPLEMENTATION-MAP",
+          "segment": "S0003"
+        },
+        {
+          "ref": "SRC-IMPLEMENTATION-MAP",
+          "segment": "S0008"
+        }
+      ],
+      "affects": [
+        "SRC-IMPLEMENTATION-MAP"
+      ],
+      "tags": [
+        "platform",
+        "docs"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-MASTER-PROMPT-NOT-ARCHIVED",
+      "kind": "gap",
+      "title": "Provenance gap: the owner's 2026-10-22 instructions are not archived",
+      "statement": "UNRESOLVED PROVENANCE GAP. Neither the owner's master prompt nor the follow-up instructions given in the same 2026-10-22 session (the acceptance-audit and PR-review requests) exist in the repository or in the private store. REQ-CTX-*, TASK-CTX-0001 and TASK-CTX-0004 paraphrase them and cite them by section; those paraphrases are NOT original evidence and cannot be re-checked against the source. No reconstruction has been made, and none may be recorded as the original.",
+      "status": "open",
+      "severity": "medium",
+      "evidenceNeeded": "An export of the 2026-10-22 session transcript imported with `npm run context:import -- <file> --id SRC-CONV-2026-10-22-EXPORT --sensitivity private` into an access-controlled CONTEXT_ARCHIVE_DIR.",
+      "sources": [
+        {
+          "ref": "SRC-CONV-2026-10-22-MASTER-PROMPT"
+        }
+      ],
+      "affects": [
+        "REQ-CTX-ARCHIVE",
+        "REQ-CTX-ASSIMILATION",
+        "REQ-CTX-CI",
+        "REQ-CTX-COVERAGE",
+        "REQ-CTX-ENTRY-POINTS",
+        "REQ-CTX-GRAPH",
+        "REQ-CTX-HANDOFF",
+        "REQ-CTX-HYGIENE",
+        "REQ-CTX-INVALIDATION",
+        "REQ-CTX-KNOWLEDGE-MODEL",
+        "REQ-CTX-NO-COMPETING-SOT",
+        "REQ-CTX-PACKS",
+        "REQ-CTX-SECURITY",
+        "REQ-CTX-VERIFICATION",
+        "SRC-CONV-2026-10-22-MASTER-PROMPT"
+      ],
+      "tags": [
+        "archive",
+        "continuity",
+        "provenance"
+      ],
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "scope widened to all owner instructions in the session; marked as a provenance gap",
+          "by": "claude-code-session-2026-10-22 (TASK-CTX-0004)"
+        }
+      ]
+    },
+    {
+      "id": "ISS-NPM-TEST-DURATION",
+      "kind": "risk",
+      "title": "The full test suite takes ~18 minutes",
+      "statement": "MEMORY.md reports the full `npm test` chain takes about 18 minutes and must run with a long timeout on a free port; agents that budget a short timeout will misreport results.",
+      "status": "open",
+      "severity": "low",
+      "evidenceNeeded": "Measured duration of `npm test` in this environment (see state fact F-003).",
+      "sources": [
+        {
+          "ref": "SRC-MEMORY-LEDGER",
+          "segment": "S0036"
+        }
+      ],
+      "affects": [
+        "CST-EVIDENCE-BEFORE-CLAIMS"
+      ],
+      "tags": [
+        "process",
+        "platform"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-PG-CUTOVER-STATUS",
+      "kind": "validation",
+      "title": "Status of the Postgres-cutover blockers is unknown",
+      "statement": "RESOLVED by code inspection. The 2026-09-17 review's three Postgres blockers are handled in the translator: INSERT OR REPLACE → ON CONFLICT … DO UPDATE (lib/sql.js:64–71), INSERT OR IGNORE → ON CONFLICT DO NOTHING (lib/sql.js:58–60, 109), scalar MAX(a,b) → GREATEST (lib/sql.js:57); REVIEW.md (2026-10-12) S0001 records all of H1–H8 and M1–M6 as closed. Residual, not a defect of this record: no live Postgres was exercised in this session, and README S0003 still describes the request-path cutover as a runbook step that needs a live Postgres.",
+      "status": "resolved",
+      "severity": "medium",
+      "evidenceNeeded": "A run against a real Postgres, or code inspection of lib/sql.js translation for the three constructs.",
+      "sources": [
+        {
+          "ref": "SRC-REVIEW-2026-09-17"
+        },
+        {
+          "ref": "SRC-MEMORY-2026-09-17",
+          "segment": "S0002"
+        },
+        {
+          "ref": "SRC-README",
+          "segment": "S0003"
+        },
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0001"
+        }
+      ],
+      "affects": [
+        "SRC-REVIEW-2026-09-17"
+      ],
+      "tags": [
+        "platform",
+        "data"
+      ],
+      "lifecycle": "canonical-active",
+      "evidence": [
+        "lib/sql.js:38,57,58–71,79,109; lib/migrate.js:56–61; lib/enterprise.js:43–47 — inspected 2026-10-22 (TASK-CTX-0004)",
+        "REVIEW.md lines 9–15 (SRC-REVIEW-2026-10-12#S0001)"
+      ],
+      "resolvedBy": [
+        "TASK-CTX-0004"
+      ],
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "resolved by code inspection",
+          "from": "open",
+          "to": "resolved",
+          "by": "claude-code-session-2026-10-22 (TASK-CTX-0004)",
+          "evidence": "lib/sql.js; SRC-REVIEW-2026-10-12#S0001"
+        }
+      ]
+    },
+    {
+      "id": "ISS-PRIOR-CONVERSATIONS-INACCESSIBLE",
+      "kind": "recovery-limit",
+      "title": "Conversations behind sessions 2026-09-17 → 2026-10-07 are inaccessible",
+      "statement": "Only the agents' own summaries (MEMORY.md) survive; owner directives quoted there (e.g. the 'packs' directive in session 21) cannot be checked against the original wording.",
+      "status": "open",
+      "severity": "medium",
+      "evidenceNeeded": "Exports of those conversations, if they still exist in the originating tool, imported as private sources.",
+      "sources": [
+        {
+          "ref": "SRC-CONV-PRIOR-SESSIONS"
+        },
+        {
+          "ref": "SRC-MEMORY-LEDGER",
+          "segment": "S0036"
+        }
+      ],
+      "affects": [
+        "SRC-CONV-PRIOR-SESSIONS",
+        "SRC-MEMORY-LEDGER"
+      ],
+      "tags": [
+        "archive"
+      ],
+      "lifecycle": "canonical-active"
+    },
+    {
+      "id": "ISS-REVIEW-FINDINGS-UNRECONCILED",
+      "kind": "validation",
+      "title": "REVIEW.md findings: fix locations recorded, independent verification not yet done",
+      "statement": "CORRECTED after reading the segments. REVIEW.md (2026-10-12) S0001 does map every finding S1–S11 and T1 to its fixing code location, records P1/S5/S6 as superseded, and states closure was verified by a full npm test run; S0003–S0006 hold the finding details and S0008 the order of work. What remains open is independent verification by this record: a per-finding link from finding → commit → test, checked rather than taken from the review's own claim. (The earlier statement that 'no record maps each finding to a fix' was wrong — written before S0001 was read.)",
+      "status": "open",
+      "severity": "medium",
+      "evidenceNeeded": "For each finding id: confirm the cited code location fixes it and name the test that fails without the fix.",
+      "sources": [
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0001"
+        },
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0002"
+        },
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0003"
+        },
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0004"
+        },
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0005"
+        },
+        {
+          "ref": "SRC-REVIEW-2026-10-12",
+          "segment": "S0006"
+        },
+        {
+          "ref": "SRC-GIT-HISTORY-LEGACY-RECOVERED",
+          "segment": "S0049"
+        },
+        {
+          "ref": "SRC-GIT-HISTORY-LEGACY-RECOVERED",
+          "segment": "S0051"
+        }
+      ],
+      "affects": [
+        "SRC-REVIEW-2026-10-12"
+      ],
+      "blocks": [
+        "TASK-SEC-0001"
+      ],
+      "tags": [
+        "security",
+        "platform"
+      ],
+      "lifecycle": "canonical-active",
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "statement corrected and severity high → medium after reading S0001",
+          "by": "claude-code-session-2026-10-22 (TASK-CTX-0004)",
+          "evidence": "SRC-REVIEW-2026-10-12#S0001"
+        }
+      ]
+    },
+    {
+      "id": "ISS-RUNTIME-DEPENDENCY-CLAIM",
+      "kind": "conflict",
+      "title": "'Zero runtime dependencies' vs declared npm dependencies — resolved: no real conflict",
+      "statement": "RESOLVED. README S0001 states the default boot is dependency-free and that bull/ioredis (the optional Redis queue, LX_QUEUE=redis) and prom-client are the only npm runtime packages, loaded only when configured. The code matches: lib/queue.js:51 requires bull and lib/metrics.js:121 requires prom-client, each lazily. The issue as originally opened rested on an incorrect observation by this agent (the grep output that would have shown those requires was truncated by `| head`, and 'no matches' was recorded). The only stale statement is MEMORY.md S0002's 'zero runtime dependencies', which is historical evidence, not authority.",
+      "status": "resolved",
+      "severity": "low",
+      "evidence": [
+        "README.md lines 3 (SRC-README#S0001)",
+        "lib/queue.js:51 require(\"bull\"), lib/metrics.js:121 require(\"prom-client\") — grep observed 2026-10-22 (TASK-CTX-0004)",
+        "correction of the earlier observation recorded in state fact F-005"
+      ],
+      "evidenceNeeded": "Owner decides whether the three packages are vestigial (remove) or intended (correct the documentation).",
+      "sources": [
+        {
+          "ref": "SRC-README",
+          "segment": "S0001"
+        },
+        {
+          "ref": "SRC-MEMORY-LEDGER",
+          "segment": "S0002"
+        },
+        {
+          "ref": "SRC-README",
+          "segment": "S0003"
+        }
+      ],
+      "affects": [
+        "CST-DEPENDENCY-MINIMAL"
+      ],
+      "tags": [
+        "runtime"
+      ],
+      "lifecycle": "canonical-active",
+      "resolvedBy": [
+        "TASK-CTX-0004"
+      ],
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "resolved; original premise corrected (agent observation error)",
+          "from": "open",
+          "to": "resolved",
+          "by": "claude-code-session-2026-10-22 (TASK-CTX-0004)",
+          "evidence": "SRC-README#S0001; lib/queue.js:51; lib/metrics.js:121"
+        }
+      ]
+    },
+    {
+      "id": "ISS-SEGMENTS-UNPROCESSED",
+      "kind": "gap",
+      "title": "Some in-scope source segments are unprocessed",
+      "statement": "RESOLVED for every source whose bytes are available: the 23 previously unprocessed segments (SRC-IMPLEMENTATION-MAP ×9, SRC-README ×7, SRC-REVIEW-2026-10-12 ×7) were read on 2026-10-22; each is now cited by a record or classified individually with a segment-specific rationale. Still true and NOT resolved by this: 99% of segments are accounted for only by source-wide rules (metric segment-rule-classified), and the two conversation sources have no bytes to segment.",
+      "status": "resolved",
+      "severity": "low",
+      "evidenceNeeded": "Classify each listed segment (`npm run context:query -- unaccounted-segments`) in knowledge/coverage.json or cite it from a record.",
+      "tags": [
+        "archive",
+        "coverage"
+      ],
+      "lifecycle": "canonical-active",
+      "resolvedBy": [
+        "TASK-CTX-0004"
+      ],
+      "history": [
+        {
+          "at": "2026-10-22",
+          "change": "resolved (available sources fully accounted)",
+          "from": "open",
+          "to": "resolved",
+          "by": "claude-code-session-2026-10-22 (TASK-CTX-0004)"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "$comment": "Party's and Relationship's declarations for stores on the kernel (lib/stores.js). A store is a node of the store kind (owner Party), known by its store id. The places it serves are a relationship of their own (owner Relationship): in the `serves` hierarchy the store sits under every place it serves — a country, a subdivision, a city, a planet, any mix — each with its own time window, so a store serves a set of places rather than embedding one country and region. Its jurisdiction (where it is registered, which answers its tax and its default currency and locale) is a Party setting at the store's node naming one of the places it serves. A store is never invented a place: a new store's jurisdiction is the one it is created with, else the platform's provisioning policy.",
+  "namespace": "platform",
+  "kind": {
+    "kind": "store",
+    "owner": "Party",
+    "label": "Store",
+    "root": true,
+    "parents": [
+      "place"
+    ],
+    "schemes": [
+      "store"
+    ],
+    "attributes": [
+      {
+        "key": "name",
+        "type": "text",
+        "required": true,
+        "label": "Name"
+      }
+    ]
+  },
+  "hierarchy": {
+    "hierarchy": "serves",
+    "owner": "Relationship",
+    "label": "The places each store serves"
+  },
+  "jurisdiction": {
+    "name": "party.jurisdiction",
+    "owner": "Party",
+    "type": "text",
+    "label": "Jurisdiction"
+  },
+  "master": {
+    "table": "tenants",
+    "scheme": "store",
+    "actor": "party",
+    "importActor": "party.import",
+    "legacyColumns": [
+      "country"
+    ],
+    "legacySetting": {
+      "key": "commerce",
+      "field": "country"
+    }
+  }
+}

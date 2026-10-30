@@ -48,7 +48,7 @@ async function render(p, wait = 2000) {
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: db }, stdio: ["ignore", "ignore", "inherit"] });
   let up = false;
   for (let i = 0; i < 120; i++) { try { const h = await fetch(BASE + "/healthz"); if (h.ok) { up = true; break; } } catch (e) { } await sleep(1000); }
-  if (!up) { console.log("server failed to boot"); process.exit(1); }
+  if (!up) { srv.kill("SIGKILL"); console.log("server failed to boot"); process.exit(1); }
   try {
     await f("/api/session");
     await f("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" });
@@ -102,8 +102,9 @@ async function render(p, wait = 2000) {
     const ents = await f("/api/meta/entities");
     const served = Object.keys(ents.entities || {}).includes("cp_insurance");
     ok(served, "the composed entity is served by the entity engine", JSON.stringify(Object.keys(ents.entities || {}).filter(k => k.startsWith("cp_"))));
-    ok(rbac.sectionForEntity("cp_insurance") === "compose", "a composed entity authorizes against the composition section", rbac.sectionForEntity("cp_insurance"));
-    ok(rbac.SECTIONS.includes("compose"), "composition is a first-class grantable section");
+    const proles = await f("/api/platform/roles");
+    ok((proles.sections || []).includes("app_cp_insurance") && (proles.apps || []).some(a => a.key === "cp_insurance"), "a composed entity is its own grantable section", (proles.sections || []).filter(k => /^app_/.test(k)));
+    ok((proles.sections || []).includes("compose"), "composition is a first-class grantable section");
     const rec = await f("/api/meta/entity/cp_insurance", "POST", { name: "Motor Policy", code: "MOT-1", status: "drafted" });
     ok(!rec.error && rec.id, "a record is created through the composed API", rec.error || rec.id);
     await f("/api/meta/entity/cp_insurance", "POST", { name: "Home Policy", code: "HOM-1", status: "canonical" });

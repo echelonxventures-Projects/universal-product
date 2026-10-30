@@ -45,7 +45,9 @@ const raw = (text) => new Promise((resolve) => {
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB, LX_LOG: "" }, stdio: ["ignore", "ignore", "pipe"] });
   let stderr = ""; srv.stderr.on("data", d => { stderr += d; });
   for (let i = 0; i < 120 && !(await alive()); i++) await sleep(500);
-  if (!(await alive())) { console.error("server failed to boot\n" + stderr); process.exit(1); }
+  /* a server still booting when the wait gives up must not outlive the test: an orphan keeps the
+     port and the database, and every later run talks to it instead of its own server */
+  if (!(await alive())) { srv.kill("SIGKILL"); console.error("server failed to boot\n" + stderr); process.exit(1); }
 
   try {
     console.log("▸ ONE REQUEST CANNOT CRASH THE PROCESS");
@@ -314,7 +316,7 @@ const raw = (text) => new Promise((resolve) => {
       ok((await SU("/api/platform/queue/drain", "POST", {})).status === 403, "support cannot drain the job queue");
       ok((await SU("/api/platform/entity-types", "POST", { entity: "product", type_key: "x", label: "x" })).status === 403, "support cannot edit the global schema");
       ok((await AU("/api/offers", "POST", { name: "global giveaway", scope: "global" })).status === 403, "an auditor cannot create offers");
-      ok((await AU("/api/fintech/vouchers", "POST", { amount: 1000 })).status === 403, "an auditor cannot mint vouchers");
+      ok((await AU("/api/admin/gift-cards", "POST", { amount: 1000 })).status === 403, "an auditor cannot issue gift cards");
       ok((await AU("/api/platform/data/tenant")).status === 200 || (await AU("/api/platform/data/tenant")).status === 404, "an auditor can still read (gdata:read)");
       const fo = await AU("/api/platform/fanout?path=/api/admin/webhooks");
       ok(fo.status === 200, "an auditor may fan out reads (gops:read)", fo.status);
@@ -394,9 +396,9 @@ const raw = (text) => new Promise((resolve) => {
       const fin = require(path.join(__dirname, "..", "lib", "fin.js"));
       const rec = require(path.join(__dirname, "..", "lib", "recurring.js"));
       const throwsLike = (fn, re) => { try { fn(); return false; } catch (e) { return re.test(e.message); } };
-      ok(throwsLike(() => rec.subscribeMembership(1, "t1:u:8888", "prime"), /Insufficient/), "a paid membership needs wallet funds");
+      ok(throwsLike(() => rec.subscribeMembership(1, "t1:u:8888", "premier"), /Insufficient/), "a paid membership needs wallet funds");
       /* a payout disburses once */
-      const pid = D.run("INSERT INTO payouts(tenant_id,ref,seller_id,kind,period,gross,fee,net,currency,status) VALUES(1,'PO-SEC',1,'seller','2026-10',10,0,10,'USD','open')").lastInsertRowid;
+      const pid = require(path.join(__dirname, "..", "lib", "money-store.js")).insert("payouts", { tenant_id: 1, ref: "PO-SEC", seller_id: 1, kind: "seller", period: "2026-10", status: "open" }, "USD", { gross: "10", fee: "0", net: "10" }).lastInsertRowid;
       fin.disbursePayout(1, Number(pid));
       ok(throwsLike(() => fin.disbursePayout(1, Number(pid)), /already/), "a payout cannot be disbursed twice");
       /* store-side module purchase bills an open invoice, never a fabricated paid one */
@@ -527,7 +529,9 @@ const raw = (text) => new Promise((resolve) => {
       ok(fin.simulatedAllowed() === true, "outside production the sandbox rails still work");
     }
   } catch (e) {
-    failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e));
+    failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e) + (e && e.cause ? "\n    cause: " + (e.cause.stack || e.cause) : ""));
+    /* what the server said before it went away */
+    console.log(stderr.split("\n").filter(l => l && !/ExperimentalWarning|trace-warnings/.test(l)).slice(-25).join("\n"));
   } finally {
     srv.kill();
     await sleep(300);

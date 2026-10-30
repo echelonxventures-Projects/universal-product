@@ -6,28 +6,137 @@ on:
   pull_request:
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        # 22.13 is the floor: node:sqlite is behind --experimental-sqlite before it
-        node: [22.13, 22, 24]
+  # the bootstrap: before any runtime is installed, the runner image's jq reads the generated
+  # resolution (technology.lock.json, from lib/seed/technology.json through lib/technology.js).
+  # Every other job takes its runtime, its lanes and its service image from here; nothing below
+  # names a version. node scripts/technology.js check (in npm test) fails if this file drifts
+  resolve:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      test: ${{ steps.lock.outputs.test }}
+      node: ${{ steps.lock.outputs.node }}
+      postgres: ${{ steps.lock.outputs.postgres }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5, resolved in technology.lock.json
+      - id: lock
+        run: |
+          echo "test=$(jq -c .ci.test technology.lock.json)" >> "$GITHUB_OUTPUT"
+          echo "node=$(jq -r .ci.node technology.lock.json)" >> "$GITHUB_OUTPUT"
+          echo "postgres=$(jq -r .ci.postgres technology.lock.json)" >> "$GITHUB_OUTPUT"
+          jq -r '.ci.test[] | "lane \(.lane): \(.release)\(if .primary then " (primary)" else "" end)"' technology.lock.json
+
+  test:
+    needs: resolve
+    name: test (${{ matrix.lane }})
+    runs-on: ubuntu-24.04
+    # a hung suite fails the job instead of holding the runner for GitHub's 6-hour default
+    # (run 40476015559: test (22.13) and test (24) sat in the E2E step for over 5 hours)
+    timeout-minutes: 120
+    strategy:
+      # every runtime reports: with fail-fast, one red job cancelled the other two mid-suite and
+      # the commit had no result at all on 22.13 and 22
+      fail-fast: false
+      # the lanes the lock resolves for ci.test: the verified releases (the lowest is the runtime
+      # floor platform.runtime derives; the primary is the runtime the production image carries)
+      # and the evaluation lanes, newer eligible releases earning their evidence
+      matrix:
+        include: ${{ fromJSON(needs.resolve.outputs.test) }}
+    # an evaluation lane reports; it does not hold the commit back
+    continue-on-error: ${{ matrix.evaluation }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5, resolved in technology.lock.json
         with:
-          node-version: ${{ matrix.node }}
+          # full history: the context archive pins evidence by git blob id (including
+          # superseded file versions) and hashes the commit list — a shallow clone can
+          # only warn about those, never verify them
+          fetch-depth: 0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5, resolved in technology.lock.json
+        with:
+          node-version: ${{ matrix.version }}
+      - name: The runtime is the resolved release
+        run: node scripts/technology.js verify-runtime ${{ matrix.release }}
       # the browser-level suites (test/console, smoke, roles, navfit, …) drive the pages
       # through jsdom, a devDependency — without the install `npm test` dies on require
       - name: Install
         run: npm ci
+      # fast, dependency-free, fails first: schema, ids, owners, graph, archive checksums,
+      # pack freshness, generated-output drift, secrets, handoffs — then an isolated restore
+      - name: Context continuity (verify + restore-check)
+        run: |
+          npm run context:verify
+          npm run context:restore-check
+      # what ships in the image (--omit=dev); a high or critical advisory there fails the build
+      - name: Runtime dependency audit
+        if: matrix.primary
+        run: npm audit --omit=dev --audit-level=high
       - name: Syntax + E2E suite (own DB/port)
         run: npm test
-      - name: Boot smoke (fresh DB, healthz)
+      - name: Boot smoke (fresh DB, healthz + readyz)
         run: |
           LX_DB=/tmp/ci.db PORT=3055 nohup node server.js >/tmp/ci.log 2>&1 &
-          for i in $(seq 1 30); do sleep 1; curl -sf http://localhost:3055/healthz && break; done
-          curl -sf http://localhost:3055/healthz >/dev/null && echo OK
+          for i in $(seq 1 60); do sleep 1; curl -sf http://localhost:3055/readyz && break; done
+          curl -sf http://localhost:3055/healthz >/dev/null && curl -sf http://localhost:3055/readyz >/dev/null && echo OK
+      - name: Backup + restore drill (the boot-smoke database)
+        run: |
+          node scripts/backup.js --db /tmp/ci.db --out /tmp/ci-backups
+          node scripts/restore.js "$(ls -d /tmp/ci-backups/luxora-* | tail -1)" --to /tmp/ci-restored.db
       - name: Docker image builds
-        if: matrix.node == 22
+        if: matrix.primary
         run: docker build -t luxora-ci .
+      # the image as it ships: refuses seed credentials, then boots non-root in production
+      - name: Docker production smoke
+        if: matrix.primary
+        run: |
+          if docker run --rm luxora-ci; then echo "booted with seed-default credentials"; exit 1; fi
+          docker run -d --name lx -p 3056:3000 -e PLATFORM_PASSWORD="ci-$(openssl rand -hex 12)" -e ADMIN_PASSWORD="ci-$(openssl rand -hex 12)" -e LUXORA_MASTER_KEY="$(openssl rand -hex 32)" luxora-ci
+          for i in $(seq 1 120); do sleep 1; curl -sf http://localhost:3056/readyz && break; done
+          curl -sf http://localhost:3056/readyz >/dev/null
+          test "$(docker exec lx id -u)" != "0"
+          docker stop lx && test "$(docker inspect lx --format '{{.State.ExitCode}}')" = "0"
+
+  browser:
+    needs: resolve
+    # every page and console section in real Chrome under the production CSP:
+    # fails on a CSP violation, an uncaught exception, a console error or a failed load
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5, resolved in technology.lock.json
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5, resolved in technology.lock.json
+        with:
+          node-version: ${{ needs.resolve.outputs.node }}
+      - name: Install
+        run: npm ci
+      # the runner image provides the browser unpinned: its version is recorded here as evidence
+      - name: Browser identity
+        run: $(command -v google-chrome || command -v chromium) --version
+      - name: Real-browser check (headless Chrome)
+        run: CHROME_PATH=$(command -v google-chrome || command -v chromium) npm run check:browser
+
+  postgres:
+    needs: resolve
+    # the whole platform on Postgres: a fresh install migrated in one transaction, the kernel's
+    # transactions, places, stores, time, expression and Value on it, then every page and console
+    # section with the server on Postgres (scripts/pg-check.js). The service authenticates with
+    # SCRAM-SHA-256, Postgres's default, as managed Postgres does.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    services:
+      postgres:
+        image: ${{ needs.resolve.outputs.postgres }}
+        env:
+          POSTGRES_PASSWORD: ci-scram-password
+          POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5, resolved in technology.lock.json
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5, resolved in technology.lock.json
+        with:
+          node-version: ${{ needs.resolve.outputs.node }}
+      - name: Install
+        run: npm ci
+      - name: The platform on Postgres
+        run: CHROME_PATH=$(command -v google-chrome || command -v chromium) PG_CHECK_URL=postgres://postgres:ci-scram-password@127.0.0.1:5432/postgres npm run check:postgres

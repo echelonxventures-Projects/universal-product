@@ -62,12 +62,13 @@ for (const [registry, want] of Object.entries(SPEC)) {
   ok(reg(registry).length >= want.length, registry + ": count ≥ specification (" + reg(registry).length + " ≥ " + want.length + ")");
 }
 /* the temporal / spatial / economic examples the specification names by hand */
-for (const c of ["gregorian", "islamic", "hebrew", "fiscal", "academic", "mars_darian", "lunar", "federation", "custom_planetary"]) ok(has("goipCalendars", c), "calendar registry carries " + c);
-for (const r of ["Temporal Authority=goipCalendars", "Chronology Registry=goipChronologies", "Temporal Measurement=goipTemporalUnits", "Temporal Conversion=goipTemporalConversions"]) { const [label, key] = r.split("="); ok(reg(key).length > 0 || Object.keys(require(path.join(__dirname, "..", "lib", "registry.js")).list(key) || {}).length > 0, "temporal domain: " + label + " is registry-driven"); }
-for (const p of ["earth", "earth.in", "earth.in.bihar", "earth.in.bihar.patna", "mars", "mars.olympus", "mars.olympus.sector-7", "moon", "moon.alpha", "galaxy-7", "galaxy-7.zone-22"]) ok(has("goipSpatialNodes", p), "spatial hierarchy carries " + p);
-for (const sY of ["earth_admin", "mars_admin", "lunar_admin", "galactic", "network", "declared"]) ok(has("goipSpatialSystems", sY), "spatial system " + sY);
-for (const u of ["USD", "EUR", "INR", "MARS_CREDIT", "LUNAR_TOKEN", "FED_CREDIT", "CARBON", "ENERGY", "RESOURCE", "POINT", "COIN", "TOKEN"]) ok(has("goipEconomicUnits", u), "economic unit " + u);
-ok(!reg("goipEconomicUnits").some(u => u.class === "fiat" && !u.settleable), "fiat units are settleable");
+for (const c of ["gregorian", "islamic", "hebrew", "fiscal", "academic", "mars_darian", "lunar", "federation", "custom_planetary"]) ok(has("timeCalendars", c), "calendar registry carries " + c);
+for (const r of ["Temporal Authority=timeCalendars", "Chronology Registry=timeChronologies", "Temporal Measurement=timeUnits", "Temporal Conversion=timeConversions"]) { const [label, key] = r.split("="); ok(reg(key).length > 0 || Object.keys(require(path.join(__dirname, "..", "lib", "registry.js")).list(key) || {}).length > 0, "temporal domain: " + label + " is registry-driven"); }
+for (const p of ["earth", "earth.in", "earth.in.bihar", "earth.in.bihar.patna", "mars", "mars.olympus", "mars.olympus.sector-7", "moon", "moon.alpha", "galaxy-7", "galaxy-7.zone-22"]) ok(!!require(path.join(__dirname, "..", "lib", "places.js")).byPath(p), "Geo's place tree carries " + p);
+for (const sY of ["earth_admin", "mars_admin", "lunar_admin", "galactic", "network", "declared"]) ok(require(path.join(__dirname, "..", "lib", "places.js")).systems().some(x => x.key === sY), "place system " + sY);
+for (const u of ["USD", "EUR", "INR", "MARS_CREDIT", "LUNAR_TOKEN", "FED_CREDIT", "CARBON", "ENERGY", "RESOURCE", "POINT", "COIN", "TOKEN"]) ok(!!require(path.join(__dirname, "..", "lib", "registry.js")).unit(u), "Value's master carries the unit " + u);
+{ const R = require(path.join(__dirname, "..", "lib", "registry.js")); const money = new Set(R.valueClasses().filter(c => c.money).map(c => c.key));
+  ok(R.units().filter(u => money.has(u.class)).every(u => u.settleable), "every money unit is settleable"); }
 
 /* ── 2 · ZERO PARTIAL: everything declared is actually wired to running code ── */
 group("zero partial — every declaration is bound to running code");
@@ -75,7 +76,7 @@ const cov = goip.coverage();
 ok(cov.capabilities.declared === 22 && cov.capabilities.bound === 22, "22/22 capabilities bound to an implementation", JSON.stringify(cov.capabilities.gap));
 ok(cov.benefits.declared === 25 && cov.benefits.handled === 25, "25/25 benefits bound to a math handler", JSON.stringify(cov.benefits.gap));
 ok(cov.intelligence.declared === 15 && cov.intelligence.implemented === 15, "15/15 intelligence readings implemented");
-for (const b of SPEC.goipBenefits) { const ben = reg("goipBenefits").find(x => x.key === b); ok(ben && typeof offers.HANDLERS[ben.type] === "function", "benefit " + b + " resolves through offers.HANDLERS." + (ben && ben.type)); }
+for (const b of SPEC.goipBenefits) { const ben = reg("goipBenefits").find(x => x.key === b); ok(ben && typeof offers.handlerFor(ben.type) === "function", "benefit " + b + " resolves through offers.handlerFor(" + (ben && ben.type) + ")"); }
 for (const c of SPEC.goipCapabilities) { const r = goip.invoke(c, 1, { id: 1, amount: 10, owner: "t1:u:1", months: 1, sample: 1, action: "attest", model: "linear" }, { platform: true }); ok(!(r && r.code === 501), "capability " + c + " is not a stub", r && r.error); }
 for (const e of SPEC.goipEngines) { const def = reg("goipEngines").find(x => x.key === e); ok(def && def.impl, "engine " + e + " names its implementation"); }
 ok(typeof goip.feed === "function" && typeof goip.widget === "function", "distribution feeds + embeddable component are real surfaces");
@@ -111,7 +112,9 @@ const api = src("api.js");
 ok((api.match(/INSERT INTO offers\(/g) || []).length === 0, "api.js never writes `offers` directly — it goes through goip.createExchange");
 ok((api.match(/INSERT INTO coupons\(/g) || []).length === 0, "api.js never writes `coupons` directly — it goes through goip.issue");
 ok((src("goip.js").match(/INSERT INTO offers\(/g) || []).length === 1, "exactly one INSERT INTO offers in the whole platform");
-ok((src("goip.js").match(/INSERT INTO coupons\(/g) || []).length === 1, "exactly one INSERT INTO coupons in the GOIP kernel");
+/* the Coupon domain owns codes: one writer in the platform, lib/coupons.js; the kernel asks it */
+const couponWriters = fs.readdirSync(path.join(__dirname, "..", "lib")).filter(f => f.endsWith(".js")).filter(f => /INSERT INTO coupons\(/.test(src(f)));
+ok(couponWriters.length === 1 && couponWriters[0] === "coupons.js" && (src("coupons.js").match(/INSERT INTO coupons\(/g) || []).length === 1, "exactly one INSERT INTO coupons in the platform, in the Coupon domain", couponWriters);
 ok(!/function evaluate|HANDLERS *=/.test(src("goip.js").replace(/GOIP_HANDLERS/g, "")), "GOIP does not fork the decision/math engine");
 ok(typeof offers.onRedeem === "function" && typeof offers.ledgerEntry === "function", "offers.js exposes the hook + unit ledger GOIP extends it through");
 for (const t of ["goip_touchpoints", "goip_budgets", "goip_settlements", "goip_entitlements"]) {
@@ -133,8 +136,12 @@ ok(typeof require(path.join(__dirname, "..", "lib", "billing.js")).meter === "fu
 /* ── 7 · NO REDESIGN: the registries are data, and the engines read the data ── */
 group("no redesign — a new civilization is a row, not a release");
 const D = require(path.join(__dirname, "..", "lib", "db.js"));
-D.run("UPDATE meta_lists SET items=? WHERE name='goipSpatialNodes'", JSON.stringify(reg("goipSpatialNodes").concat([{ key: "titan", system: "declared", parent: null, name: "Titan", level: "moon" }, { key: "titan.rhea-basin", system: "declared", parent: "titan", name: "Rhea Basin", level: "settlement" }])));
-D.run("UPDATE meta_lists SET items=? WHERE name='goipEconomicUnits'", JSON.stringify(reg("goipEconomicUnits").concat([{ key: "TITAN_CRED", name: "Titan Credits", class: "colonial", decimals: 2, base_rate: 0, settleable: false, source: "registry" }])));
+/* a new world is a place declared on Geo's tree — data, through its write path, no code */
+const Pl = require(path.join(__dirname, "..", "lib", "places.js"));
+Pl.putPlace({ path: "titan", name: "Titan", level: "moon" });
+Pl.putPlace({ path: "titan.rhea-basin", name: "Rhea Basin", level: "settlement" });
+/* a new unit of value is a row of Value's master — data, no code */
+require(path.join(__dirname, "..", "lib", "global.js")).createCurrency({ code: "TITAN_CRED", name: "Titan Credits", symbol: "TC", decimals: 2, usd: 0, class: "colonial", settleable: false });
 const made = goip.createExchange(1, { name: "Titan settlement welcome", benefit: "percentage_discount", value: 15, code: "TITAN15", domain: "offer", economic_unit: "TITAN_CRED", spatial: { system: "declared", include: ["titan.rhea-basin"] }, governance: { state: "published" } }, {});
 ok(made.ok, "a value exchange binds to a world invented seconds ago, with no code change", made.error);
 const onTitan = goip.decide({ tenantId: 1, amount: 200, coupon: "TITAN15", spatial: { node: "titan.rhea-basin" }, currency: "TITAN_CRED" });

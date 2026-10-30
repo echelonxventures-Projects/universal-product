@@ -1,0 +1,586 @@
+{
+  "counts": {
+    "brokenLinks": 0,
+    "conflictsWithEdges": 0,
+    "consolidationCandidates": 14,
+    "danglingSegmentCitations": 0,
+    "duplicateGroups": 0,
+    "orphanedActiveArtifactIds": [],
+    "orphanedActiveArtifacts": 0,
+    "recoveryTest": "passed",
+    "sourcesWithoutBytes": "SRC-CONV-2026-10-22-MASTER-PROMPT:not-retained, SRC-CONV-PRIOR-SESSIONS:inaccessible, SRC-GIT-HISTORY:not-retained",
+    "unaccountedSegments": 0,
+    "unresolvedConflictIds": [],
+    "unresolvedConflicts": 0
+  },
+  "dangling": [],
+  "metrics": [
+    {
+      "denominator": 26,
+      "formula": "in-scope sources with preservation=preserved ÷ (in-scope sources − sources excluded by policy)",
+      "name": "source-inventory-preserved",
+      "numerator": 23,
+      "percent": 88.46,
+      "states": {
+        "inaccessible": 1,
+        "not-retained": 2,
+        "preserved": 23
+      }
+    },
+    {
+      "denominator": 23,
+      "formula": "preserved sources whose archived bytes re-hash to the manifest sha256 ÷ preserved sources",
+      "name": "source-checksum-verification",
+      "notVerified": [],
+      "numerator": 23,
+      "percent": 100
+    },
+    {
+      "denominator": 6085,
+      "formula": "segments in {represented, preserved, irrelevant, excluded} ÷ all segments of preserved in-scope sources",
+      "name": "segment-accounting",
+      "numerator": 6085,
+      "percent": 100,
+      "totals": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 1,
+        "preserved": 6057,
+        "represented": 27,
+        "unprocessed": 0
+      }
+    },
+    {
+      "denominator": 6085,
+      "formula": "segments cited by at least one knowledge record ÷ all segments of preserved in-scope sources",
+      "name": "segment-representation",
+      "numerator": 27,
+      "percent": 0.44
+    },
+    {
+      "basis": {
+        "cited": 27,
+        "listed": 16,
+        "none": 0,
+        "rule": 6042
+      },
+      "denominator": 6085,
+      "formula": "segments cited by a record or classified individually with a rationale ÷ all segments of preserved in-scope sources",
+      "name": "segment-individual-review",
+      "numerator": 43,
+      "percent": 0.71
+    },
+    {
+      "denominator": 6085,
+      "formula": "segments accounted for only by a source-wide classification rule (not individually read) ÷ all segments of preserved in-scope sources",
+      "name": "segment-rule-classified",
+      "numerator": 6042,
+      "percent": 99.29
+    },
+    {
+      "denominator": 14,
+      "formula": "active requirements with ≥1 resolvable source reference ÷ active requirements",
+      "name": "requirement-source-traceability",
+      "numerator": 14,
+      "percent": 100
+    },
+    {
+      "denominator": 9,
+      "formula": "active decisions with ≥1 resolvable source or provenance=newly-proposed ÷ active decisions",
+      "name": "decision-source-traceability",
+      "numerator": 9,
+      "percent": 100
+    },
+    {
+      "denominator": 14,
+      "formula": "active requirements with an incoming 'implements' edge ÷ active requirements",
+      "name": "requirement-implementation-traceability",
+      "numerator": 14,
+      "percent": 100
+    },
+    {
+      "denominator": 14,
+      "formula": "active requirements with an incoming 'verifies' edge ÷ active requirements",
+      "name": "requirement-test-traceability",
+      "numerator": 14,
+      "percent": 100
+    },
+    {
+      "denominator": 6,
+      "formula": "active context specs whose prerequisites all exist and are active ÷ active context specs",
+      "name": "context-dependency-completeness",
+      "numerator": 6,
+      "percent": 100
+    },
+    {
+      "denominator": 6,
+      "formula": "generated packs whose on-disk dependency fingerprint equals the recomputed one and whose parts match their sha256 ÷ active packs",
+      "name": "context-freshness",
+      "numerator": 6,
+      "percent": 100
+    },
+    {
+      "denominator": 5,
+      "formula": "handoffs that validate against handoff.schema.json ÷ handoffs on disk",
+      "name": "handoff-completeness",
+      "numerator": 5,
+      "percent": 100
+    }
+  ],
+  "perSource": [
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 4763
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 4763,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-ARCH-1",
+      "preservation": "preserved",
+      "segments": 4763
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 453
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 453,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-ARCH-2",
+      "preservation": "preserved",
+      "segments": 453
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 147
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 147,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-ARCH-3",
+      "preservation": "preserved",
+      "segments": 147
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 60
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 60,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-ARCH-4",
+      "preservation": "preserved",
+      "segments": 60
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 74
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 74,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-ARCH-5",
+      "preservation": "preserved",
+      "segments": 74
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 31
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 31,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-ARCH-6",
+      "preservation": "preserved",
+      "segments": 31
+    },
+    {
+      "id": "SRC-CONV-2026-10-22-MASTER-PROMPT",
+      "preservation": "not-retained",
+      "segments": 0
+    },
+    {
+      "id": "SRC-CONV-PRIOR-SESSIONS",
+      "preservation": "inaccessible",
+      "segments": 0
+    },
+    {
+      "id": "SRC-GIT-HISTORY",
+      "preservation": "not-retained",
+      "segments": 0
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 79
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 79,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-GIT-HISTORY-441D772-V1",
+      "preservation": "preserved",
+      "segments": 79
+    },
+    {
+      "basis": {
+        "cited": 3,
+        "listed": 0,
+        "none": 0,
+        "rule": 58
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 58,
+        "represented": 3,
+        "unprocessed": 0
+      },
+      "id": "SRC-GIT-HISTORY-LEGACY-RECOVERED",
+      "preservation": "preserved",
+      "segments": 61
+    },
+    {
+      "basis": {
+        "cited": 4,
+        "listed": 5,
+        "none": 0,
+        "rule": 0
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 5,
+        "represented": 4,
+        "unprocessed": 0
+      },
+      "id": "SRC-IMPLEMENTATION-MAP",
+      "preservation": "preserved",
+      "segments": 9
+    },
+    {
+      "basis": {
+        "cited": 1,
+        "listed": 1,
+        "none": 0,
+        "rule": 0
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 1,
+        "preserved": 0,
+        "represented": 1,
+        "unprocessed": 0
+      },
+      "id": "SRC-MEMORY-2026-09-17",
+      "preservation": "preserved",
+      "segments": 2
+    },
+    {
+      "basis": {
+        "cited": 5,
+        "listed": 0,
+        "none": 0,
+        "rule": 31
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 31,
+        "represented": 5,
+        "unprocessed": 0
+      },
+      "id": "SRC-MEMORY-LEDGER",
+      "preservation": "preserved",
+      "segments": 36
+    },
+    {
+      "basis": {
+        "cited": 4,
+        "listed": 5,
+        "none": 0,
+        "rule": 0
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 5,
+        "represented": 4,
+        "unprocessed": 0
+      },
+      "id": "SRC-README",
+      "preservation": "preserved",
+      "segments": 9
+    },
+    {
+      "basis": {
+        "cited": 4,
+        "listed": 3,
+        "none": 0,
+        "rule": 0
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 3,
+        "represented": 4,
+        "unprocessed": 0
+      },
+      "id": "SRC-REPOSITORY-INDEX",
+      "preservation": "preserved",
+      "segments": 7
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 9
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 9,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-REVIEW-2026-09-17",
+      "preservation": "preserved",
+      "segments": 9
+    },
+    {
+      "basis": {
+        "cited": 6,
+        "listed": 2,
+        "none": 0,
+        "rule": 0
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 2,
+        "represented": 6,
+        "unprocessed": 0
+      },
+      "id": "SRC-REVIEW-2026-10-12",
+      "preservation": "preserved",
+      "segments": 8
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 60
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 60,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-SUPERSEDED-ADDENDUM",
+      "preservation": "preserved",
+      "segments": 60
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 59
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 59,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-SUPERSEDED-MASTER-ARCH",
+      "preservation": "preserved",
+      "segments": 59
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 40
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 40,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-SUPERSEDED-ZERO-HARDCODING",
+      "preservation": "preserved",
+      "segments": 40
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 61
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 61,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-UCOS-ADDENDUM",
+      "preservation": "preserved",
+      "segments": 61
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 6
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 6,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-UCOS-CAPABILITY-OS",
+      "preservation": "preserved",
+      "segments": 6
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 60
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 60,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-UCOS-MASTER-ARCH",
+      "preservation": "preserved",
+      "segments": 60
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 10
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 10,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-UCOS-OMEGA",
+      "preservation": "preserved",
+      "segments": 10
+    },
+    {
+      "basis": {
+        "cited": 0,
+        "listed": 0,
+        "none": 0,
+        "rule": 41
+      },
+      "counts": {
+        "ambiguous": 0,
+        "excluded": 0,
+        "irrelevant": 0,
+        "preserved": 41,
+        "represented": 0,
+        "unprocessed": 0
+      },
+      "id": "SRC-UCRS-ZERO-HARDCODING",
+      "preservation": "preserved",
+      "segments": 41
+    }
+  ],
+  "schema": "ctx-coverage/1",
+  "unaccountedSample": []
+}

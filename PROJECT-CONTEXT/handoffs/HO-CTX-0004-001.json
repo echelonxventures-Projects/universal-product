@@ -1,0 +1,141 @@
+{
+  "agent": "claude-code-session-2026-10-22",
+  "blockers": [
+    "ISS-CI-RUNNERS-UNAVAILABLE — GitHub Actions jobs never start (owner action needed)"
+  ],
+  "commands": [
+    {
+      "command": "npm run context:verify",
+      "exitCode": 0,
+      "observed": "0 errors",
+      "result": "passed"
+    },
+    {
+      "command": "npm test (e1a3613, previous commit)",
+      "exitCode": 0,
+      "observed": "06:47:37-07:13:04 UTC, all suites green",
+      "result": "passed"
+    }
+  ],
+  "completed": [
+    {
+      "claim": "All 23 unprocessed segments read; 11 cited by records, 12 individually classified with segment-specific rationales; 0 unprocessed among sources with bytes",
+      "evidence": "npm run context:coverage: segment-accounting 6006/6006, segment-individual-review 43/6006, unaccounted-segments query → 0"
+    },
+    {
+      "claim": "Coverage distinguishes cited / individually classified / source-rule-classified segments, and a segment-specific entry now wins over a source-wide rule in any order (previously order-dependent)",
+      "evidence": "lib/context/coverage.js; test/context.js §H2; the precedence test turns red when the old order is re-injected (171/177)"
+    },
+    {
+      "claim": "Two records corrected after reading their sources: ISS-RUNTIME-DEPENDENCY-CLAIM resolved (bull/prom-client are required lazily — the original observation was an agent grep error), ISS-REVIEW-FINDINGS-UNRECONCILED corrected (fix locations are recorded in REVIEW.md S0001)",
+      "evidence": "lib/queue.js:51, lib/metrics.js:121; SRC-REVIEW-2026-10-12#S0001; corrected fact F-005"
+    },
+    {
+      "claim": "ISS-PG-CUTOVER-STATUS resolved by code inspection",
+      "evidence": "lib/sql.js:57, 58–71, 109 handle the three original blockers; no live Postgres exercised"
+    },
+    {
+      "claim": "Provenance gap for the unarchived owner instructions widened to the whole 2026-10-22 session; nothing reconstructed",
+      "evidence": "ISS-MASTER-PROMPT-NOT-ARCHIVED (open)"
+    },
+    {
+      "claim": "Remote CI evidence gathered: PR #4 run 39740943856 failed before any step (no runner); the base 441d772 failed CI on an ECONNRESET flake",
+      "evidence": "GitHub API; ISS-CI-RUNNERS-UNAVAILABLE, ISS-BASE-ECONNRESET-FLAKE"
+    }
+  ],
+  "contextPacks": [
+    {
+      "fingerprint": "edc0cb2c9e8f7a3afe58dae2e46a5ee4eb7cc0bbcd37a43ae451c25458a828e6",
+      "id": "CTX-EVIDENCE-ARCHIVE"
+    }
+  ],
+  "createdAt": "2026-10-22T07:37:36.979Z",
+  "filesChanged": [
+    "lib/context/coverage.js",
+    "test/context.js",
+    "PROJECT-CONTEXT/knowledge/{coverage,issues,constraints,contexts,state,tasks}.json",
+    "PROJECT-CONTEXT/verification/implementation-report-2026-10-22.md",
+    "PROJECT-CONTEXT (regenerated)"
+  ],
+  "filesInspected": [],
+  "id": "HO-CTX-0004-001",
+  "mustNotChange": [
+    "No reconstruction of any missing conversation or prompt",
+    "No change to product runtime, _registry/ or the constitutional projections",
+    "The seal defect (ISS-CANONICAL-INPUT-MISNAMED) stays separate",
+    "No merge or deployment"
+  ],
+  "nextAction": "Owner restores GitHub Actions for the repository so CI runs on PR #4, then reviews DEC-CTX-* (TASK-CTX-0002).",
+  "notCompleted": [],
+  "objective": "Account for every in-scope segment with provenance: read each unprocessed segment whose source is available, cite it from knowledge or classify it with a segment-specific rationale, keep unavailable sources as explicit gaps, and report accounting with explicit denominators that separate rule-classified from individually reviewed segments.",
+  "prerequisites": [
+    "TASK-CTX-0001"
+  ],
+  "previous": null,
+  "regressions": [],
+  "repository": {
+    "branch": "claude/modest-babbage-kyejdn",
+    "dirty": true,
+    "head": "e1a36137b9232b9eafc4026070e7b74c435c088e",
+    "status": [
+      "M PROJECT-CONTEXT/00-MASTER-INDEX.md",
+      " M PROJECT-CONTEXT/02-CURRENT-STATE.md",
+      " M PROJECT-CONTEXT/06-DEPENDENCY-AND-TRACEABILITY.md",
+      " M PROJECT-CONTEXT/07-OPEN-ISSUES-AND-NEXT-ACTIONS.md",
+      " M PROJECT-CONTEXT/10-CONTEXT-QUALITY-REPORT.md",
+      " M PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.json",
+      " M PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.json",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.md",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.json",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.md",
+      " M PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.json",
+      " M PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md",
+      " M PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.json",
+      " M PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md",
+      " M PROJECT-CONTEXT/contexts/CTX-PLATFORM-QUALITY.json",
+      " M PROJECT-CONTEXT/contexts/CTX-PLATFORM-QUALITY.md",
+      " M PROJECT-CONTEXT/contexts/index.json",
+      " M PROJECT-CONTEXT/knowledge/constraints.json",
+      " M PROJECT-CONTEXT/knowledge/contexts.json",
+      " M PROJECT-CONTEXT/knowledge/coverage.json",
+      " M PROJECT-CONTEXT/knowledge/issues.json",
+      " M PROJECT-CONTEXT/knowledge/state.json",
+      " M PROJECT-CONTEXT/knowledge/tasks.json",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0001.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0002.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0003.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-REG-0001.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-SEC-0001.md",
+      " M PROJECT-CONTEXT/verification/implementation-report-2026-10-22.md",
+      " M lib/context/coverage.js",
+      " M test/context.js",
+      "?? PROJECT-CONTEXT/receipts/RCPT-CTX-0004-001.json",
+      "?? PROJECT-CONTEXT/task-packs/TASK-CTX-0004.md"
+    ],
+    "upstream": "origin/claude/modest-babbage-kyejdn"
+  },
+  "schema": "ctx-handoff/1",
+  "state": "done",
+  "task": "TASK-CTX-0004",
+  "tests": [
+    {
+      "command": "node test/context.js",
+      "exitCode": 0,
+      "observed": "177/177",
+      "result": "passed"
+    }
+  ],
+  "unverified": [
+    "No CI job has executed for PR #4; all evidence for this work is local",
+    "5963 of 6006 segments are accounted for only by source-wide rules — preserved, not individually read",
+    "REVIEW.md's per-finding closure claims are the review's own; not independently verified (TASK-SEC-0001)",
+    "The full npm test for the commit that contains this handoff runs after it is committed; its result is reported on PR #4, not inside this record"
+  ],
+  "verification": [
+    "npm run context:verify",
+    "node test/context.js",
+    "npm run context:coverage",
+    "npm test"
+  ]
+}

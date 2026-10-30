@@ -208,7 +208,7 @@ const click = async (doc, sel, attr) => { const b = doc.querySelector(sel); if (
     const delBad = await f("/api/platform/data/country/IM", "DELETE", {});
     ok(!!delBad.ok, "an import-created country can be deleted", JSON.stringify(delBad));
     const delGuard = await f("/api/platform/data/country/US", "DELETE", {});
-    ok(!!delGuard.error && /(provider|headquartered in this country)/i.test(delGuard.error), "a country in use is refused with an actionable reason", JSON.stringify(delGuard));
+    ok(!!delGuard.error && /(provider|store serves this country)/i.test(delGuard.error), "a country in use is refused with an actionable reason", JSON.stringify(delGuard));
     const left = await f("/api/platform/data/country?q=Zephyria");
     ok((left.rows || []).length === 1, "Zephyria remains for the cleanup");
 

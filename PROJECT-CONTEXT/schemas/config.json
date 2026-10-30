@@ -1,0 +1,30 @@
+{
+  "$comment": "Continuity system configuration. Budgets are in BYTES (enforced); token figures are estimates at 3 bytes/token (see lib/context/util.js). Change policy here, never in code.",
+  "registryId": "CTX-REG-CONFIG",
+  "version": 1,
+  "budgets": {
+    "defaultPackBytes": 24000,
+    "minimumAgentBytes": 6000,
+    "bootstrapBytes": 12000
+  },
+  "sourceScope": {
+    "statement": "In-scope evidence for segment accounting: the specification corpora, the constitutional source documents and their superseded originals, the agent memory ledgers, review evidence, the implementation map, the repository index, git history, and the conversations that are known to have produced the above. Other tracked docs are artifacts (scanned by hygiene), not segment-accounted evidence.",
+    "categories": ["specification-corpus", "constitution", "agent-memory", "review-evidence", "project-doc", "vcs-history", "conversation", "conversation-export", "attachment", "tool-output", "test-evidence"]
+  },
+  "archive": {
+    "storeEnv": "CONTEXT_ARCHIVE_DIR",
+    "defaultStore": ".context-archive",
+    "$comment_store": "The default local store is gitignored: private exports are never committed. Point CONTEXT_ARCHIVE_DIR at access-controlled storage for real archives."
+  },
+  "hygiene": {
+    "scan": { "extensions": [".md", ".txt"], "exclude": ["node_modules", ".git", ".context-archive", "PROJECT-CONTEXT/contexts", "PROJECT-CONTEXT/task-packs", "PROJECT-CONTEXT/verification"] },
+    "oversizedActiveBytes": 60000,
+    "nearDuplicateJaccard": 0.6,
+    "nearDuplicateMinBytes": 1500,
+    "shingle": 8
+  },
+  "generated": {
+    "$comment": "Every file the build writes. 'verify' rebuilds in memory and fails on any byte difference (generated-output drift).",
+    "views": ["00-MASTER-INDEX.md", "01-PROJECT-CONSTITUTION.md", "02-CURRENT-STATE.md", "03-DECISION-REGISTER.md", "04-REQUIREMENTS-AND-CONSTRAINTS.md", "05-ARTIFACT-REGISTRY.md", "06-DEPENDENCY-AND-TRACEABILITY.md", "07-OPEN-ISSUES-AND-NEXT-ACTIONS.md", "08-SESSION-LEDGER.md", "09-ARCHIVE-MANIFEST.md", "10-CONTEXT-QUALITY-REPORT.md"]
+  }
+}

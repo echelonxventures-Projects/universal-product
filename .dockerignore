@@ -15,6 +15,11 @@ node_modules/
 .env.*
 test/
 _superseded/
+# compiled registry artifacts are machine-local (sealed with that machine's data/registry.json
+# key); an image must compile and seal its own, or every boot fails verification
+_registry/canonical.lxr
+_registry/canonical.json
+backups/
 .workbuddy-ai/
 .vscode/
 .idea/

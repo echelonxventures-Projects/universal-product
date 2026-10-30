@@ -44,17 +44,21 @@ const cnt = (sql, ...p) => (db.get(sql, ...p) || {}).c || 0;
 const dups = (t, cols) => db.all("SELECT " + cols + " FROM " + t + " GROUP BY " + cols + " HAVING COUNT(*) > 1").length;
 
 console.log("\n▸ REGISTRY AS SOURCE OF TRUTH (config-over-code actually holds)");
-const indBefore = JSON.parse((db.get("SELECT items i FROM meta_lists WHERE name='industries'") || {}).i || "[]");
-ok(indBefore.length > 0, "the industry registry is seeded", "n=" + indBefore.length);
+/* industries are the platform master's: the registry answers them from it */
+const REG = require(path.join(__dirname, "..", "lib", "registry.js"));
+const indBefore = REG.list("industries");
+ok(indBefore.length > 0, "the industry registry is answered by the platform master", "n=" + indBefore.length);
 ok(cnt("SELECT COUNT(*) c FROM meta_lists WHERE seeded_from IS NOT NULL") > 20, "seeded lists carry provenance", "n=" + cnt("SELECT COUNT(*) c FROM meta_lists WHERE seeded_from IS NOT NULL"));
 /* an operator extends the registry from the console — this must SURVIVE a re-seed */
-const extended = indBefore.concat([{ key: "space", name: "Space & Satellite", icon: "🛰️" }]);
-db.run("UPDATE meta_lists SET items=? WHERE name='industries'", JSON.stringify(extended));
+const domainOf = indBefore[0].domain;
+ok(REG.saveItem("industries", { key: "space", name: "Space & Satellite", icon: "🛰️", domain: domainOf }).ok, "an operator adds an industry from the console (a master write)");
+ok(!REG.saveItem("industries", { key: "nowhere", name: "No domain" }).ok, "a new industry must say which domain it sits under");
 /* the boot-time re-assert must not clobber a configured value */
-require(path.join(__dirname, "..", "lib", "registry.js")).seedRegistries();
-const indAfter = JSON.parse((db.get("SELECT items i FROM meta_lists WHERE name='industries'") || {}).i || "[]");
+REG.seedRegistries();
+const indAfter = REG.list("industries");
 ok(indAfter.some(i => i.key === "space"), "an operator's console-added industry survives a re-seed (zero loss)", "n=" + indAfter.length);
-ok(indAfter.length === extended.length, "no registry rows were lost or duplicated by the re-seed", indAfter.length + " vs " + extended.length);
+ok(indAfter.length === indBefore.length + 1, "no registry rows were lost or duplicated by the re-seed", indAfter.length + " vs " + (indBefore.length + 1));
+ok(!db.get("SELECT 1 x FROM meta_lists WHERE name='industries'"), "and no copy of the list is kept beside the master");
 
 console.log("\n▸ WARM BOOT: a database older than a vocabulary still receives it");
 /* the productUniverses list used to be refreshed only when the corpus digest moved,
@@ -71,7 +75,7 @@ ok(puAfter.some(u => u.key === "insurance_products"), "the restored vocabulary i
 require(path.join(__dirname, "..", "lib", "gcatalog.js").replace(/gcatalog\.js$/, "gcatalog.js"));
 const gcat = require(path.join(__dirname, "..", "lib", "gcatalog.js"));
 try { gcat.seed(); } catch (e) { }
-ok(cnt("SELECT COUNT(*) c FROM global_products") >= 26, "the global catalogue populates once the vocabulary exists", "n=" + cnt("SELECT COUNT(*) c FROM global_products"));
+ok(puAfter.every(u => require(path.join(__dirname, "..", "lib", "platform-master.js")).universeNode(u.key)), "every universe in the vocabulary is a classification of the platform master", "n=" + puAfter.length);
 
 console.log("\n▸ PUBLISH: a universe record becomes a catalog row");
 /* the flagship now ships with the corpus ACTIVATED (the honest default), so a universe
@@ -145,6 +149,28 @@ ok(String(p.id).startsWith("UV-"), "the projection id is namespaced so it can ne
 const bad = cat.publish(999, "uv_nonexistent", "Ghost", { name: null, price: "not a number" });
 ok(bad.ok === true, "publishing a malformed record still yields a valid catalog row", JSON.stringify(bad));
 run("DELETE FROM products WHERE tenant_id=999");
+
+/* the universe's type is resolved once per publish, not once per record: resolving reads the
+   whole item-kinds vocabulary, and per record it made a fresh boot take over a minute on CI */
+{
+  const gc = require("../lib/gcatalog.js"), real = gc.typeOfUniverse; let calls = 0;
+  gc.typeOfUniverse = k => (calls++, real(k));
+  const ek = univ.list().find(u => u.name === "Insurance").entity_key;
+  for (let i = 0; i < 3; i++) entity.createEntity(0, ek, { name: "Type probe " + i, code: "TP-" + i, status: "canonical" });
+  let many;
+  try { many = cat.publishUniverse(999, ek); } finally { gc.typeOfUniverse = real; }
+  ok(many.published >= 3 && calls === 1, "a universe's type is resolved once for all its records", JSON.stringify({ published: many.published, calls }));
+  ok(db.all("SELECT DISTINCT type FROM products WHERE tenant_id=999").length === 1, "every record of the universe carries that one type");
+  cat.withdrawUniverse(999, ek);
+  run("DELETE FROM entity_data WHERE entity=? AND data LIKE '%Type probe%'", ek);
+  /* and an activation of many universes reads the item-kinds vocabulary once, handing it to each */
+  const seen = [];
+  gc.typeOfUniverse = (k, kinds) => (seen.push(Array.isArray(kinds)), real(k, kinds));
+  let act;
+  try { act = cat.activateAll(999, { limit: 5 }); } finally { gc.typeOfUniverse = real; }
+  ok(act.activated >= 2 && seen.length >= 2 && seen.every(Boolean), "an activation types every universe from one read of the kinds vocabulary", JSON.stringify({ activated: act.activated, typed: seen.length, givenKinds: seen.filter(Boolean).length }));
+  for (const r of db.all("SELECT DISTINCT source_universe k FROM products WHERE tenant_id=999")) cat.withdrawUniverse(999, r.k);
+}
 
 console.log("\n▸ CATALOG STATS (the measurable deployment picture)");
 const st = cat.catalogStats();

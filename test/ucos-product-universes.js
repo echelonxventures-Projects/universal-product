@@ -81,14 +81,15 @@ const call = (method, urlStr, body) => {
 };
 const made = call("POST", "http://x/api/platform/global-products",
   { sku: "QBIT-1", name: "Qubit", universe: "quantum_products", price: 99, tax_class: "standard" });
-ok(made.ok === true && made.id > 0, "a global product is created", JSON.stringify(made));
-const row = db.get("SELECT universe, sku FROM global_products WHERE id=?", made.id);
+ok(made.ok === true && !!made.id, "a global product is created", JSON.stringify(made));
+const gcatm = require(path.join(__dirname, "..", "lib", "gcatalog.js"));
+const row = gcatm.find(made.id);
 ok(row.universe === "quantum_products", "the declared universe is persisted on the row", JSON.stringify(row));
 /* an undeclared universe must not become a free string — it falls back to physical */
 const bogus = call("POST", "http://x/api/platform/global-products",
   { sku: "NOPE-1", name: "Nope", universe: "this_universe_is_not_declared" });
 ok(bogus.ok === true, "the product is still created");
-ok(db.get("SELECT universe u FROM global_products WHERE sku='NOPE-1'").u === "physical_products",
+ok(gcatm.find("NOPE-1").universe === "physical_products",
   "an undeclared universe falls back to the default, never a free string");
 /* the list response carries the vocabulary so the console's picker is registry-driven.
    The registry now holds the operator's orbital_logistics too (the merge above), so the
@@ -109,7 +110,7 @@ ok(call("GET", "http://x/api/platform/global-products?universe=cloud_services").
 const upd = call("PUT", "http://x/api/platform/global-products/" + made.id,
   { sku: "QBIT-2", name: "Qubit", universe: "digital_products", price: 99, tax_class: "standard", status: "draft" });
 ok(upd.ok === true, "the product updates");
-ok(db.get("SELECT universe u FROM global_products WHERE id=?", made.id).u === "digital_products", "the universe change is persisted");
+ok(gcatm.find(made.id).universe === "digital_products" && gcatm.find(made.id).sku === "QBIT-2", "the universe change is persisted");
 /* a session without platform authority is refused — the vocabulary is platform-owned */
 const denied = (() => {
   let out = {};

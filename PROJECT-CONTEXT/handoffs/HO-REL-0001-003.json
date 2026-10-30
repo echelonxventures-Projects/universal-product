@@ -1,0 +1,127 @@
+{
+  "agent": "claude-opus-5-5",
+  "blockers": [],
+  "commands": [
+    {
+      "command": "npm run check:postgres (local PostgreSQL 16.13, SCRAM)",
+      "exitCode": 0,
+      "observed": "all checks incl. step 3b; 382 page loads clean",
+      "result": "passed"
+    },
+    {
+      "command": "new pg-check step 3b against 6c13fe6",
+      "exitCode": 1,
+      "observed": "4 failed: 48,350 statements; db.writes missing; 996 duplicated rows; first answer 4,161 ms",
+      "result": "failed"
+    },
+    {
+      "command": "npm run registry",
+      "exitCode": 0,
+      "observed": "seal verified, no drift",
+      "result": "passed"
+    },
+    {
+      "command": "npm run context:verify",
+      "exitCode": 0,
+      "observed": "0 errors, 11 warnings",
+      "result": "passed"
+    }
+  ],
+  "completed": [
+    {
+      "claim": "Root cause measured on PostgreSQL 16.13: the first /api/taxonomy sent 48,363 statements (47,267 reads, 1,096 writes), each a round trip over the serialized bridge, 3.73 s; the store syncs walked the master node by node and rewrote every row",
+      "evidence": "PRODUCTION_READINESS.md PR-043 row; scratch counting preload over Worker.postMessage, statement histogram on SQLite (38,796 taxonomy + 9,549 attributes statements)"
+    },
+    {
+      "claim": "Fixed in f04cf90: kernel read snapshots (set reads, each statement once, invalidated by any write via lib/db.js writes()); syncs write only differing rows, in one transaction, with a per-store advisory lock on Postgres; addenda listed once; freshTaxonomy marks a store current as of the sequence read before the sync",
+      "evidence": "commit f04cf90; cold /api/taxonomy 3,729 ms / 48,363 statements -> 193 ms / 351 locally"
+    },
+    {
+      "claim": "A second defect found and fixed: two servers syncing one new store at once inserted its tree twice (996 duplicated rows)",
+      "evidence": "scripts/pg-check.js step 3b against 6c13fe6: rows 1,992, duplicated 996; on f04cf90: 996 rows, 0 duplicated (local and CI)"
+    },
+    {
+      "claim": "CI run 40625206939 on f04cf90: every job success (test 22, 22.13, 24 with 3,263 passing / 0 failing each; browser; postgres with first /api/taxonomy 293 ms and 382 page loads clean)",
+      "evidence": "https://github.com/echelonxventures-Projects/universal-product/actions/runs/40625206939 ; PR #6 comment 6460352721"
+    }
+  ],
+  "contextPacks": [
+    {
+      "fingerprint": "11222e6802a0556d5390a7b66175c854d73f964e58f3da5715ea51118329f632",
+      "id": "CTX-PLATFORM-QUALITY"
+    }
+  ],
+  "createdAt": "2026-10-28T04:04:27.163Z",
+  "filesChanged": [
+    "see git log 6c13fe6..HEAD"
+  ],
+  "filesInspected": [
+    "lib/pgbridge.js",
+    "lib/pgworker.js",
+    "public/js/app.js"
+  ],
+  "id": "HO-REL-0001-003",
+  "mustNotChange": [
+    "master, and PRs #3, #4, #5 and their branches",
+    "No merge, no deployment, no real-money transaction, no production secret change",
+    "PR #6 stays a draft"
+  ],
+  "nextAction": "Read the CI result for the head after fa7b3d4 on PR #6 (gate 1 needs every job green on the final head, twice in a row); then continue PR-016's minor-unit migration design.",
+  "notCompleted": [
+    "Gate 1 needs every job green on the final head, twice in a row (the gops.js stall on Node 24, PR-041, is not explained)",
+    "PR-016 storage migration and owner rounding policy; PR-029 partial refunds; external prerequisites (payment provider, staging, DNS/TLS, secrets)",
+    "Postgres remains not a supported production database (PR-007): multi-server operation and production-size migration are unmeasured"
+  ],
+  "objective": "Root-cause and fix PR-043 (on Postgres a store's first storefront page stayed 'Composing…') so the postgres CI job passes on PostgreSQL 16, without lengthening any wait, and record the evidence.",
+  "prerequisites": [],
+  "previous": "HO-REL-0001-002",
+  "regressions": [],
+  "repository": {
+    "branch": "integration/luxora-production-go-2026-10-27",
+    "dirty": false,
+    "head": "fa7b3d4fb446db977278a51cd62d1446562dba89",
+    "status": [],
+    "upstream": "origin/integration/luxora-production-go-2026-10-27"
+  },
+  "schema": "ctx-handoff/1",
+  "state": "in-progress",
+  "task": "TASK-REL-0001",
+  "tests": [
+    {
+      "command": "npm test (Node 22.21.1, local)",
+      "exitCode": 0,
+      "observed": "3,259 passing, 0 failing",
+      "result": "passed"
+    },
+    {
+      "command": "node test/kernel.js; test/store-taxonomy.js; test/store-attributes.js",
+      "exitCode": 0,
+      "observed": "138/0, 23/0, 11/0; six mutations each caught",
+      "result": "passed"
+    },
+    {
+      "command": "node scripts/browser-check.js (SQLite)",
+      "exitCode": 0,
+      "observed": "382 page loads clean incl. failed-data -> Retry check",
+      "result": "passed"
+    },
+    {
+      "command": "CI run 40625206939 on f04cf90",
+      "exitCode": 0,
+      "observed": "all five jobs success",
+      "result": "passed"
+    }
+  ],
+  "unverified": [
+    "Docker build and production smoke were not run locally (no Docker daemon); verified only by CI run 40625206939 test (22)",
+    "Node 22.13 and 24 were run only in CI, not locally",
+    "Fresh-boot wall time on this host is noisy; the PR-044 non-regression claim rests on statement counts and CPU time (10.12 s vs 10.11 s, 4 runs each)"
+  ],
+  "verification": [
+    "npm test",
+    "npm run registry",
+    "npm run context:verify",
+    "npm run check:postgres",
+    "npm run check:browser"
+  ]
+}

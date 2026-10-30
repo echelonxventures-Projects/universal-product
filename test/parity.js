@@ -158,10 +158,12 @@ console.log("\n▸ QUICK-COMMERCE — serviceability, promise, stock, PoD");
   ok(qc.listRuns(T, "delivered").some(r => r.id === run.id), "runs are listable by status");
   /* delivery consumes the pinned store stock: two real orders whose lines the
      engine decrements on close */
-  db.run("INSERT INTO orders(tenant_id,owner,num,status,store_id,total,created_at) VALUES(?, 'u:qc','QC-1','pending',?,22,datetime('now'))", T, st.id);
-  db.run("INSERT INTO orders(tenant_id,owner,num,status,store_id,total,created_at) VALUES(?, 'u:qc','QC-2','pending',?,22,datetime('now'))", T, st.id);
+  /* the fixture's amounts are exact money in the store's currency (lib/money-store.js) */
+  const MS = require(path.join(__dirname, "..", "lib", "money-store.js")), CUR = require(path.join(__dirname, "..", "lib", "defaults.js")).currency(T);
+  MS.insert("orders", { tenant_id: T, owner: "u:qc", num: "QC-1", status: "pending", store_id: st.id, created_at: db.stamp() }, CUR, { total: "22" });
+  MS.insert("orders", { tenant_id: T, owner: "u:qc", num: "QC-2", status: "pending", store_id: st.id, created_at: db.stamp() }, CUR, { total: "22" });
   const o1 = one("SELECT id FROM orders WHERE tenant_id=? AND owner='u:qc' ORDER BY id DESC LIMIT 1", T).id;
-  db.run("INSERT INTO order_items(order_id,product_id,qty,price) VALUES(?,?,1,11)", o1, PROD);
+  MS.insert("order_items", { order_id: o1, product_id: PROD, qty: 1 }, CUR, { price: "11" });
   const siBefore = one("SELECT qty,reserved FROM store_inventory WHERE tenant_id=? AND store_id=? AND product_id=?", T, st.id, PROD) || {};
   const run2 = qc.createRun(T, { store_id: st.id, slot_id: slot.id, rider_id: rider.id, order_ids: [o1], notes: "stock run" });
   qc.transitionRun(T, run2.id, "delivered");
@@ -220,11 +222,13 @@ console.log("\n▸ FINTECH — one ledger, escrow, KYC-gated credit");
   /* mandates */
   const m = fin.registerMandate(T, { owner: "u:1", max_amount: 100, frequency: "monthly", purpose: "subscription" });
   ok(m.status === "registered" && m.frequency === "monthly", "a mandate registers with a registry frequency");
-  const charged = fin.chargeMandate(T, m.id, 40);
-  ok(charged.charged_amount === 40 && charged.charges_done === 1, "a mandate charge accumulates");
+  const charged = fin.chargeMandate(T, m.id, 30);
+  ok(charged.charged_amount === 30 && charged.charges_done === 1, "a mandate charge accumulates");
   let overCap = false; try { fin.chargeMandate(T, m.id, 100); } catch (e) { overCap = /cap/.test(e.message); }
   ok(overCap, "a charge past the mandate cap is refused");
-  ok(one("SELECT balance FROM wallets WHERE tenant_id=? AND owner=?", T, "u:1").balance === 0, "the mandate debited the same ledger");
+  let short = false; try { fin.chargeMandate(T, m.id, 10); } catch (e) { short = /Not enough/.test(e.message); }
+  ok(short && one("SELECT charges_done FROM mandates WHERE id=?", m.id).charges_done === 1, "a charge beyond what the wallet holds is refused and not counted");
+  ok(one("SELECT balance FROM wallets WHERE tenant_id=? AND owner=?", T, "u:1").balance === 5, "the mandate debited the same ledger");
   /* escrow */
   const e = fin.hold(T, 555, "u:buyer", "u:seller", 200, "USD", { source: "test" });
   ok(e.status === "held" && e.held === 1, "escrow holds the funds");
@@ -305,13 +309,14 @@ console.log("\n▸ FINTECH — one ledger, escrow, KYC-gated credit");
   const act = fin.activateInsurance(T, pol.id);
   ok(act.status === "active" && balOf('u:2') === beforeAct - 12, "activating the policy debits the premium from the one ledger",
     JSON.stringify({ before: beforeAct, after: balOf('u:2') }));
-  const v = fin.issueVoucher(T, { amount: 25, buyer: "u:2", recipient: "u:3" });
-  ok(v.status === "issued" && v.code.length === 12, "a gift voucher is issued with a code");
-  const rd = fin.redeemVoucher(T, v.code, "u:3");
-  ok(rd.status === "redeemed" && rd.redeemed_by === "u:3", "the voucher redeems");
-  let again = false; try { fin.redeemVoucher(T, v.code, "u:3"); } catch (e) { again = /already redeemed/.test(e.message); }
-  ok(again, "a redeemed voucher cannot redeem again");
-  ok(balOf('u:3') === 125, "the redemption credits the same ledger");
+  const GC = require("../lib/giftcards.js"), Wl = require("../lib/wallet.js");
+  const v = GC.issue(T, { amount: 25, source: "issued", buyer: "u:2", recipient: "u:3" }, "test");
+  ok(v.redeemable && v.code.length === 16, "a gift card is issued with a code");
+  const rd = GC.redeem(T, v.code, "u:3");
+  ok(!rd.card.redeemable, "the card redeems");
+  let again = false; try { GC.redeem(T, v.code, "u:3"); } catch (e) { again = /has been/.test(e.message); }
+  ok(again, "a redeemed card cannot redeem again");
+  ok(Wl.balances(T, "u:3", Wl.walletOf(T, "u:3", null, require("../lib/capabilities.js").cap(T, "gift_cards").wallet_definition).id).posted === 25, "the redemption credits the same ledger, in the gift balance");
   /* API surface */
   ok(call("GET", "/api/fintech/upi", {}, { user_id: 2, tenant: { id: 1 } }).handles.length === 0,
     "GET /api/fintech/upi is scoped to the session's own owner (no other customer's handles)");
@@ -322,9 +327,9 @@ console.log("\n▸ FINTECH — one ledger, escrow, KYC-gated credit");
   ok(call("POST", "/api/fintech/escrow", { amount: 10, seller: "u:s" }, GUEST).error, "the escrow-hold endpoint is admin-gated");
   ok(call("GET", "/api/fintech/billers", {}, GUEST).billers.length === 1, "GET /api/fintech/billers is public");
   ok(call("GET", "/api/fintech/plans", {}, GUEST).plans.length >= 1, "GET /api/fintech/plans is public");
-  ok(call("POST", "/api/fintech/vouchers", { amount: 5 }, GUEST).error,
-    "issuing a voucher mints spendable credit, so it is refused for an anonymous shopper");
-  ok(call("POST", "/api/fintech/vouchers", { amount: 5 }, ADMIN).voucher.status === "issued", "an operator can issue a voucher through the API");
+  ok(call("POST", "/api/admin/gift-cards", { amount: 5 }, GUEST).error,
+    "issuing a gift card mints spendable value, so it is refused for an anonymous shopper");
+  ok(call("POST", "/api/admin/gift-cards", { amount: 5 }, ADMIN).card.redeemable, "an operator can issue a gift card through the API");
   ok(call("POST", "/api/fintech/bnpl", { credit_limit: 10 }, { user_id: 99, tenant: { id: 1 } }).error, "BNPL via the API still requires KYC");
 }
 
@@ -405,7 +410,7 @@ console.log("\n▸ MARKETPLACE — onboarding, buy-box, health, claims");
   ok(call("POST", "/api/marketplace/buybox/" + PROD, {}, ADMIN).offers.length === 2, "the buy-box recomputes via the API");
   /* a claim is opened by the order's buyer, for at most the order total — not by anyone on any id */
   const BUYER = { tenant: { id: 1 }, sid: "parity-buyer" };
-  db.run("INSERT INTO orders(tenant_id,owner,num,total,status) VALUES(1,'t1:s:parity-buyer','PAR-CLAIM-1',40,'delivered')");
+  require(path.join(__dirname, "..", "lib", "money-store.js")).insert("orders", { tenant_id: 1, owner: "t1:s:parity-buyer", num: "PAR-CLAIM-1", status: "delivered" }, require(path.join(__dirname, "..", "lib", "defaults.js")).currency(1), { total: "40" });
   const claimOrder = one("SELECT id FROM orders WHERE num='PAR-CLAIM-1'").id;
   ok(call("POST", "/api/marketplace/claims", { order_id: claimOrder, seller_id: LINKED, amount: 5 }, { tenant: { id: 1 }, sid: "someone-else" }).error, "a stranger cannot open a claim on another buyer's order");
   ok(call("POST", "/api/marketplace/claims", { order_id: claimOrder, seller_id: LINKED, amount: 500 }, BUYER).error, "a claim cannot exceed the order total");
@@ -542,7 +547,7 @@ console.log("\n▸ THE ENTITY LAYER EXPOSES THE PARITY TABLES GENERICALLY");
   const all = entity.allEntities(1);
   const parityKeys = ["dark_store", "delivery_slot", "service_area", "store_inventory", "rider", "dispatch_run",
     "upi_handle", "upi_collect", "qr_code", "payment_link", "mandate", "escrow_hold", "split_payment", "kyc_profile",
-    "bank_payout", "bill_payment", "recharge", "bnpl_account", "bnpl_emi", "loan", "insurance_policy", "gift_voucher",
+    "bank_payout", "bill_payment", "recharge", "bnpl_account", "bnpl_emi", "loan", "insurance_policy",
     "seller_onboarding", "seller_offer", "fba_inbound", "seller_performance", "buyer_claim", "smart_fulfilment",
     "trade_assurance", "gold_supplier", "company_verification", "export_document", "letter_of_credit",
     "rfq_quote", "tender_bid", "price_list", "price_list_item"];
@@ -584,7 +589,7 @@ console.log("\n▸ THE CONFIGURATION LAYER — any platform is composed, never t
   const view = call("GET", "/api/capabilities", {}, ADMIN);
   ok(view.catalog.length >= 30, "the catalog lists every capability as rows (" + view.catalog.length + ")");
   ok(view.presets.length >= 5 && view.composition.capabilities, "the read returns archetypes and the store's live composition");
-  ok(view.catalog.every(c => !/(amazon|flipkart|zepto|blinkit|paytm|alibaba)/i.test(c.label + " " + c.description)),
+  ok(view.catalog.every(c => require("../scripts/white-label.js").clean(c.label + " " + c.description)),
     "no capability definition carries a vendor or brand name — the catalog describes what, never whose");
   ok(view.catalog.some(c => c.params && Object.keys(c.params).length), "capabilities expose typed tunables (standards, not constants)");
   /* a store admin may compose only its own store; cross-store configuration is platform-only */

@@ -1,0 +1,459 @@
+{
+ "MARKET": [
+  {
+   "id": "identity-basic",
+   "name": "Identity — Email & Password",
+   "category": "Identity",
+   "price": 0,
+   "capabilities": [
+    "identity"
+   ],
+   "summary": "Account login, sessions, CSRF-bound identity."
+  },
+  {
+   "id": "identity-pro",
+   "name": "Identity Pro",
+   "category": "Identity",
+   "price": 49,
+   "capabilities": [
+    "identityPro",
+    "sso",
+    "oauth",
+    "otp",
+    "magic_link",
+    "biometric"
+   ],
+   "summary": "Full identity platform: SSO (Okta/Azure/Google), OAuth/Social, OTP, Magic Links, Biometrics, MFA, configurable auth flows.",
+   "fields": [
+    {
+     "key": "ssoProviders",
+     "label": "SSO Providers",
+     "type": "text",
+     "placeholder": "okta, azure, google, saml-generic"
+    },
+    {
+     "key": "socialProviders",
+     "label": "Social Login Providers",
+     "type": "text",
+     "placeholder": "google, facebook, apple"
+    },
+    {
+     "key": "otpMethod",
+     "label": "OTP Delivery",
+     "type": "select",
+     "options": [
+      "email",
+      "sms",
+      "both"
+     ]
+    },
+    {
+     "key": "magicLinkEnabled",
+     "label": "Enable Magic Links",
+     "type": "bool"
+    },
+    {
+     "key": "biometricEnabled",
+     "label": "Enable Biometric (WebAuthn)",
+     "type": "bool"
+    },
+    {
+     "key": "mfaRequired",
+     "label": "Require MFA for Admins",
+     "type": "bool"
+    },
+    {
+     "key": "requireLoginCheckout",
+     "label": "Require login at checkout",
+     "type": "bool"
+    },
+    {
+     "key": "passwordMinLength",
+     "label": "Minimum Password Length",
+     "type": "number"
+    },
+    {
+     "key": "sessionTimeoutMinutes",
+     "label": "Session Timeout (minutes)",
+     "type": "number"
+    }
+   ]
+  },
+  {
+   "id": "gid-basic",
+   "name": "Global IDs",
+   "category": "Identity",
+   "price": 0,
+   "capabilities": [
+    "gid"
+   ],
+   "summary": "Universal UUIDv4 on every entity, trigger-enforced."
+  },
+  {
+   "id": "geo-basic",
+   "name": "Geo & Currency",
+   "category": "Geo",
+   "price": 0,
+   "capabilities": [
+    "geo"
+   ],
+   "summary": "Country, currency, locale, decimals, FX registry."
+  },
+  {
+   "id": "cart-basic",
+   "name": "Cart",
+   "category": "Commerce",
+   "price": 0,
+   "capabilities": [
+    "cart"
+   ],
+   "summary": "Cart, coupons slot, save-for-later."
+  },
+  {
+   "id": "listing-basic",
+   "name": "Listing & Search",
+   "category": "Commerce",
+   "price": 0,
+   "capabilities": [
+    "listing"
+   ],
+   "summary": "Faceted listing, sorting, pagination."
+  },
+  {
+   "id": "checkout-basic",
+   "name": "Checkout",
+   "category": "Commerce",
+   "price": 0,
+   "capabilities": [
+    "checkout"
+   ],
+   "summary": "Address, carrier selection, tax, order snapshot."
+  },
+  {
+   "id": "seo-basic",
+   "name": "SEO Basics",
+   "category": "Growth",
+   "price": 0,
+   "capabilities": [
+    "seo"
+   ],
+   "summary": "Titles, meta descriptions, per-product SEO data."
+  },
+  {
+   "id": "reco-basic",
+   "name": "Related Items",
+   "category": "Growth",
+   "price": 0,
+   "capabilities": [
+    "reco"
+   ],
+   "summary": "Same-department related products."
+  },
+  {
+   "id": "billing-basic",
+   "name": "Store Billing",
+   "category": "Billing",
+   "price": 0,
+   "capabilities": [
+    "billing"
+   ],
+   "summary": "Invoices ledger, plan & usage visibility."
+  },
+  {
+   "id": "wallet",
+   "name": "Customer Wallets",
+   "category": "Wallets",
+   "price": 19,
+   "capabilities": [
+    "wallet"
+   ],
+   "summary": "Account-bound gift balance, auto-applied at checkout, merges on login."
+  },
+  {
+   "id": "offers-pro",
+   "name": "Offers Engine Pro",
+   "category": "Offers",
+   "price": 29,
+   "capabilities": [
+    "offersPro"
+   ],
+   "summary": "BOGO and bundle-price promotions in the checkout engine."
+  },
+  {
+   "id": "tax-perline",
+   "name": "Per-Line Tax Engine",
+   "category": "Tax",
+   "price": 39,
+   "capabilities": [
+    "taxPerLine"
+   ],
+   "summary": "Each product's tax_rule overrides the store rate, line by line."
+  },
+  {
+   "id": "logistics-guard",
+   "name": "Logistics Guard",
+   "category": "Logistics",
+   "price": 24,
+   "capabilities": [
+    "logisticsGuard"
+   ],
+   "summary": "Cold-chain & hazmat surcharges enforced at checkout.",
+   "fields": [
+    {
+     "key": "coldFee",
+     "label": "Cold-chain fee (base)"
+    },
+    {
+     "key": "hazmatFee",
+     "label": "Hazmat fee (base)"
+    }
+   ]
+  },
+  {
+   "id": "seo-pro",
+   "name": "SEO Pro",
+   "category": "Growth",
+   "price": 15,
+   "capabilities": [
+    "seoPro"
+   ],
+   "summary": "XML sitemap + robots endpoints per store."
+  },
+  {
+   "id": "reco-pro",
+   "name": "Recommendation Engine",
+   "category": "Growth",
+   "price": 34,
+   "capabilities": [
+    "recoPro"
+   ],
+   "summary": "Co-purchase recommendations from real order data (customers-also-bought)."
+  },
+  {
+   "id": "listing-pro",
+   "name": "Listing Pro",
+   "category": "Commerce",
+   "price": 19,
+   "capabilities": [
+    "listingPro"
+   ],
+   "summary": "Live facet aggregation API (counts by brand/category/price)."
+  },
+  {
+   "id": "geo-pro",
+   "name": "Multi-Currency Shopper",
+   "category": "Geo",
+   "price": 22,
+   "capabilities": [
+    "geoPro"
+   ],
+   "summary": " shoppers browse prices in their own currency at live FX (settlement stays in store currency)."
+  },
+  {
+   "id": "billing-pro",
+   "name": "Billing Pro",
+   "category": "Billing",
+   "price": 9,
+   "capabilities": [
+    "billingPro"
+   ],
+   "summary": "Self-service invoice payment through the store's own gateways."
+  },
+  {
+   "id": "ai-pro",
+   "name": "AI Premium",
+   "category": "Intelligence",
+   "price": 29,
+   "capabilities": [
+    "aiPro"
+   ],
+   "summary": "Unlocks premium AI models (OpenAI/Anthropic/Stability/Google Vision) with higher limits — bring your own keys. Free built-in engine stays on for every store.",
+   "fields": [
+    {
+     "key": "defaultProvider",
+     "label": "Default premium provider id"
+    }
+   ]
+  },
+  {
+   "id": "pack-payments-us",
+   "name": "US Payments Pack",
+   "category": "Payments",
+   "price": 15,
+   "capabilities": [
+    "gatewayPack"
+   ],
+   "gateways": [
+    "stripe",
+    "paypal",
+    "bank"
+   ]
+  },
+  {
+   "id": "pack-payments-in",
+   "name": "India Payments Pack",
+   "category": "Payments",
+   "price": 15,
+   "capabilities": [
+    "gatewayPack"
+   ],
+   "gateways": [
+    "razorpay",
+    "upi"
+   ]
+  },
+  {
+   "id": "pack-payments-ae",
+   "name": "MENA Payments Pack",
+   "category": "Payments",
+   "price": 15,
+   "capabilities": [
+    "gatewayPack"
+   ],
+   "gateways": [
+    "tabby",
+    "stripe"
+   ]
+  },
+  {
+   "id": "catalog-grocery",
+   "name": "Grocery Catalog Pack",
+   "category": "Catalogs",
+   "price": 49,
+   "capabilities": [
+    "catalogPack"
+   ],
+   "catalog": [
+    "grocery"
+   ]
+  },
+  {
+   "id": "catalog-furniture",
+   "name": "Furniture Catalog Pack",
+   "category": "Catalogs",
+   "price": 49,
+   "capabilities": [
+    "catalogPack"
+   ],
+   "catalog": [
+    "furniture"
+   ]
+  },
+  {
+   "id": "catalog-jewellery",
+   "name": "Jewellery Catalog Pack",
+   "category": "Catalogs",
+   "price": 59,
+   "capabilities": [
+    "catalogPack"
+   ],
+   "catalog": [
+    "jewellery",
+    "luxury"
+   ]
+  },
+  {
+   "id": "catalog-pharma",
+   "name": "Pharma Catalog Pack",
+   "category": "Catalogs",
+   "price": 69,
+   "capabilities": [
+    "catalogPack"
+   ],
+   "catalog": [
+    "pharma",
+    "healthcare"
+   ]
+  },
+  {
+   "id": "catalog-fashion",
+   "name": "Fashion Catalog Pack",
+   "category": "Catalogs",
+   "price": 49,
+   "capabilities": [
+    "catalogPack"
+   ],
+   "catalog": [
+    "fashion",
+    "retail"
+   ]
+  },
+  {
+   "id": "goip",
+   "name": "GOIP Ω∞ — Global Offer Infrastructure Platform",
+   "category": "Value Exchange",
+   "price": 199,
+   "capabilities": [
+    "goip"
+   ],
+   "summary": "Universal incentive/offer/reward/value-exchange operating system: 22 capabilities, 67 domains, 25 benefits, context·temporal·spatial·economic registries, attribution, funding, settlement, payout, intelligence and governance — metered and billable. Composes with (never replaces) Offers Engine Pro and Customer Wallets.",
+   "fields": [
+    {
+     "key": "deployment",
+     "label": "Deployment model (saas | headless_api | white_label | embedded_sdk …)"
+    },
+    {
+     "key": "billing_model",
+     "label": "Billing model (per_redemption | per_settlement | revenue_share | hybrid …)"
+    },
+    {
+     "key": "objective",
+     "label": "Default decision objective (max_benefit | min_cost | max_margin | max_conversion | balanced)"
+    },
+    {
+     "key": "calendar",
+     "label": "Temporal authority (gregorian | fiscal | islamic | mars_darian …)"
+    }
+   ]
+  },
+  {
+   "id": "goip-agent",
+   "name": "GOIP Ω∞ Agent Service",
+   "category": "Value Exchange",
+   "price": 79,
+   "capabilities": [
+    "goipAgent"
+   ],
+   "summary": "Agent/MCP access to the capability router: autonomous discovery, simulation, optimization and campaign generation against the same constitution.",
+   "fields": [
+    {
+     "key": "autonomy",
+     "label": "Autonomy (propose | apply_with_approval)"
+    }
+   ]
+  },
+  {
+   "id": "pack-b2b",
+   "name": "B2B & Marketplace Archetype",
+   "category": "Commerce",
+   "price": 79,
+   "capabilities": [
+    "blend_marketplace",
+    "blend_b2b_trade"
+   ],
+   "summary": "Compose a marketplace: multi-seller competition with buyer protection, plus B2B trade — RFQs, tenders, contracts, trade assurance, LCs. The marketplace and B2B trade blends land together; the console sections they light (Sellers, RFQs, Tenders, Contracts, Marketplace Ops, Trade Ops) follow the atoms, not this row."
+  },
+  {
+   "id": "pack-qcommerce",
+   "name": "Quick-Commerce Archetype",
+   "category": "Commerce",
+   "price": 39,
+   "capabilities": [
+    "blend_quick_commerce"
+   ],
+   "summary": "Compose rapid commerce: dark stores, per-store inventory pinning, minutes-level promises and dispatch batching with proof-of-delivery OTP. Lights Quick-commerce Ops the same way — through its atoms."
+  },
+  {
+   "id": "theme-glass",
+   "name": "Glass Theme Kit",
+   "category": "Experience",
+   "price": 9,
+   "capabilities": [
+    "theme"
+   ],
+   "features": {
+    "glassTheme": true
+   }
+  }
+ ]
+}

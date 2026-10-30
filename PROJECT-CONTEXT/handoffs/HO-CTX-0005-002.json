@@ -1,0 +1,145 @@
+{
+  "agent": "claude-code-session-2026-10-22",
+  "blockers": [],
+  "commands": [
+    {
+      "command": "node test/context.js (full clone, before the repair)",
+      "exitCode": 1,
+      "observed": "167/177 — HISTORICAL, superseded by 209/209 after the repair",
+      "preExisting": true,
+      "result": "failed"
+    }
+  ],
+  "completed": [
+    {
+      "claim": "Acceptance ledger passed on the repaired tree (before this handoff): test/context.js 209/209; context:verify 0 errors; _registry/audit.js; project.js --check; npm run registry (15 gate checks, seal verified); restore-check 23 restored / 3 skipped / 0 failed; npm test exit 0 with 0 failed assertions",
+      "evidence": "commands run 2026-10-22 10:14:48–10:41:41 UTC on HEAD 388855c + working tree (status hash ef3c193af3c9f79f unchanged before/after)"
+    },
+    {
+      "claim": "SRC-GIT-HISTORY keeps its original identity (commit 441d772, sha256 87deb12d…, 7974 B, 61 commits) and is reported as recovered-copy — never verified",
+      "evidence": "storage identical to its first commit 4d4e7fe; context:verify warning archive-recovered-copy; test/context.js §J"
+    },
+    {
+      "claim": "Original legacy bytes recovered (sha256 match) as SRC-GIT-HISTORY-LEGACY-RECOVERED; complete history captured as SRC-GIT-HISTORY-441D772-V1 (ctx-git-history/1, 79 commits, 13831 B)",
+      "evidence": "HO-CTX-0005-001; F-016"
+    }
+  ],
+  "contextPacks": [
+    {
+      "fingerprint": "8da28c1a09307361b71462b979aec4253bf78761043033b5c03af0a481b4ba4e",
+      "id": "CTX-EVIDENCE-ARCHIVE"
+    }
+  ],
+  "createdAt": "2026-10-22T11:29:06.548Z",
+  "filesChanged": [
+    "PROJECT-CONTEXT/handoffs/HO-CTX-0005-002.json",
+    "PROJECT-CONTEXT/knowledge/tasks.json",
+    "PROJECT-CONTEXT (regenerated)"
+  ],
+  "filesInspected": [],
+  "id": "HO-CTX-0005-002",
+  "mustNotChange": [
+    "No change to SRC-GIT-HISTORY's recorded identity (commit, sha256, bytes, commits)",
+    "No reconstruction of unavailable conversation sources",
+    "No push without owner authorisation",
+    "The seal defect (ISS-CANONICAL-INPUT-MISNAMED) stays separate"
+  ],
+  "nextAction": "Owner restores GitHub Actions so CI runs on PR #4; then reviews DEC-CTX-* (TASK-CTX-0002).",
+  "notCompleted": [],
+  "objective": "Make the git-history archive verifiable in any full clone without rewriting historical evidence: represent the legacy capture honestly, recover its bytes if possible, introduce a canonical fail-closed serializer used by capture/verify/restore, and cover the failure modes with regression tests.",
+  "prerequisites": [
+    "TASK-CTX-0001",
+    "TASK-CTX-0004"
+  ],
+  "previous": "HO-CTX-0005-001",
+  "regressions": [],
+  "repository": {
+    "branch": "claude/modest-babbage-kyejdn",
+    "dirty": true,
+    "head": "388855c374b2624099423f3ee89f841d90f053db",
+    "status": [
+      "M PROJECT-CONTEXT/00-MASTER-INDEX.md",
+      " M PROJECT-CONTEXT/02-CURRENT-STATE.md",
+      " M PROJECT-CONTEXT/03-DECISION-REGISTER.md",
+      " M PROJECT-CONTEXT/06-DEPENDENCY-AND-TRACEABILITY.md",
+      " M PROJECT-CONTEXT/07-OPEN-ISSUES-AND-NEXT-ACTIONS.md",
+      " M PROJECT-CONTEXT/08-SESSION-LEDGER.md",
+      " M PROJECT-CONTEXT/09-ARCHIVE-MANIFEST.md",
+      " M PROJECT-CONTEXT/10-CONTEXT-QUALITY-REPORT.md",
+      " M PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.json",
+      " M PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.json",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-DESIGN.md",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.json",
+      " M PROJECT-CONTEXT/contexts/CTX-CONTINUITY-SYSTEM.md",
+      " M PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.json",
+      " M PROJECT-CONTEXT/contexts/CTX-EVIDENCE-ARCHIVE.md",
+      " M PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.json",
+      " M PROJECT-CONTEXT/contexts/CTX-GOVERNANCE.md",
+      " M PROJECT-CONTEXT/contexts/CTX-PLATFORM-QUALITY.json",
+      " M PROJECT-CONTEXT/contexts/CTX-PLATFORM-QUALITY.md",
+      " M PROJECT-CONTEXT/contexts/index.json",
+      " M PROJECT-CONTEXT/knowledge/constraints.json",
+      " M PROJECT-CONTEXT/knowledge/contexts.json",
+      " M PROJECT-CONTEXT/knowledge/coverage.json",
+      " M PROJECT-CONTEXT/knowledge/decisions.json",
+      " M PROJECT-CONTEXT/knowledge/issues.json",
+      " M PROJECT-CONTEXT/knowledge/sources.json",
+      " M PROJECT-CONTEXT/knowledge/state.json",
+      " M PROJECT-CONTEXT/knowledge/tasks.json",
+      " M PROJECT-CONTEXT/schemas/knowledge.schema.json",
+      " M PROJECT-CONTEXT/schemas/relations.json",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0001.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0002.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0003.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-CTX-0004.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-REG-0001.md",
+      " M PROJECT-CONTEXT/task-packs/TASK-SEC-0001.md",
+      " M PROJECT-CONTEXT/verification/coverage.json",
+      " M PROJECT-CONTEXT/verification/implementation-report-2026-10-22.md",
+      " M PROJECT-CONTEXT/verification/restore-check.json",
+      " M lib/context/archive.js",
+      " M lib/context/index.js",
+      " M lib/context/views.js",
+      " M package.json",
+      " M scripts/context.js",
+      " M test/context.js",
+      "?? PROJECT-CONTEXT/archives/",
+      "?? PROJECT-CONTEXT/handoffs/HO-CTX-0005-001.json",
+      "?? PROJECT-CONTEXT/task-packs/TASK-CTX-0005.md"
+    ],
+    "upstream": "origin/claude/modest-babbage-kyejdn"
+  },
+  "schema": "ctx-handoff/1",
+  "state": "done",
+  "task": "TASK-CTX-0005",
+  "tests": [
+    {
+      "command": "node test/context.js",
+      "exitCode": 0,
+      "observed": "209/209 (10:14 UTC)",
+      "result": "passed"
+    },
+    {
+      "command": "npm test",
+      "exitCode": 0,
+      "observed": "10:16:07–10:41:41 UTC, 0 failed assertions",
+      "result": "passed"
+    }
+  ],
+  "unverified": [
+    "SRC-GIT-HISTORY itself is intentionally unverified: its own storage never retained bytes; only its recovered copy verifies",
+    "SRC-CONV-2026-10-22-MASTER-PROMPT and SRC-CONV-PRIOR-SESSIONS remain unavailable",
+    "No GitHub CI job has run for this branch (ISS-CI-RUNNERS-UNAVAILABLE)",
+    "The acceptance ledger re-run on the tree that contains this handoff is reported in the commit and on PR #4, not inside this record"
+  ],
+  "verification": [
+    "node test/context.js",
+    "npm run context:verify",
+    "npm run context:restore-check",
+    "node _registry/audit.js",
+    "node _registry/project.js --check",
+    "npm run registry",
+    "npm test"
+  ]
+}
