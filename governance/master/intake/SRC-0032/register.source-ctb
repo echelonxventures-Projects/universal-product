@@ -1,0 +1,12 @@
+id: CTB-REGISTER-SRC-0032
+kind: source
+source: SRC-0032
+action: register
+title: Owner: everything agnostic, zero hard-coding (2026-10-31; session 47abdf14 transcript line 6047)
+location: session transcript 47abdf14-1288-4d9e-b7b7-eec6f8d3053e.jsonl line 6047; provisional working extract `sources/SRC-0032.extract.md`
+sha: `{SHA:sources/SRC-0032.extract.md}` (extract, not owner-confirmed)
+role: Owner directive
+authority: owner
+text-status: provisional-extract
+files-from: intake/SRC-0032/files
+basis: captured by capture.py (secret scan passed, sensitivity internal)

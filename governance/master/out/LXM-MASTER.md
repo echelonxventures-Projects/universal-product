@@ -79,11 +79,12 @@
 | SRC-0029 | Owner: push only the final after all verification, nothing unnecessary; plan for unlimited environment options in configuration (2026-10-31; session 47abdf14 transcript lines 5170 and 5229) | file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp4/owner-words.txt; provisional working extract `sources/SRC-0029.extract.md` | `c69e3f46bafb451174b4268676f61fe1572067ee5e2ca15e561f66ba7abf006c` (extract, not owner-confirmed) | Owner directive |
 | SRC-0030 | Owner: everything automated, zero manual steps; make the repository private before pushing (2026-10-31; session 47abdf14 transcript lines 5562 and 5611) | file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp5/owner-words.txt; provisional working extract `sources/SRC-0030.extract.md` | `b839474637c5b80c9b458a12c9da7b8a5258a82ec90bfb0c9b455cb6319a4ed1` (extract, not owner-confirmed) | Owner directive |
 | SRC-0031 | Owner: no coding agent or tool is hard-coded; everything agnostic (2026-10-31; session 47abdf14 transcript line 5789) | session transcript 47abdf14-1288-4d9e-b7b7-eec6f8d3053e.jsonl line 5789; provisional working extract `sources/SRC-0031.extract.md` | `c7f7f13f0da6f84786e20c62ce33fae59b3c3724db18c03908c260c074e963d5` (extract, not owner-confirmed) | Owner directive |
+| SRC-0032 | Owner: everything agnostic, zero hard-coding (2026-10-31; session 47abdf14 transcript line 6047) | session transcript 47abdf14-1288-4d9e-b7b7-eec6f8d3053e.jsonl line 6047; provisional working extract `sources/SRC-0032.extract.md` | `59fe79bd3d505dcef6e334dd517a5b3f2f89b9cba80aaa1e7df6427ad8ac2934` (extract, not owner-confirmed) | Owner directive |
 
 **Source text status** (separate from authority; generated from the register):
 
 - *owner-file* — owner-supplied files pinned by SHA-256: SRC-0001, SRC-0002, SRC-0003. Cited by 194 records.
-- *provisional-extract* — agent-captured and hashed, **not owner-confirmed**: SRC-0008, SRC-0009, SRC-0010, SRC-0011, SRC-0012, SRC-0013, SRC-0014, SRC-0015, SRC-0016, SRC-0017, SRC-0018, SRC-0019, SRC-0020, SRC-0021, SRC-0022, SRC-0023, SRC-0024, SRC-0025, SRC-0026, SRC-0027, SRC-0028, SRC-0029, SRC-0030, SRC-0031. Cited by 102 records.
+- *provisional-extract* — agent-captured and hashed, **not owner-confirmed**: SRC-0008, SRC-0009, SRC-0010, SRC-0011, SRC-0012, SRC-0013, SRC-0014, SRC-0015, SRC-0016, SRC-0017, SRC-0018, SRC-0019, SRC-0020, SRC-0021, SRC-0022, SRC-0023, SRC-0024, SRC-0025, SRC-0026, SRC-0027, SRC-0028, SRC-0029, SRC-0030, SRC-0031, SRC-0032. Cited by 103 records.
 - *conversation-only* — no captured text: SRC-0004, SRC-0005, SRC-0006, SRC-0007. Cited by 39 records.
 
 Records resting on provisional-extract or conversation-only sources stay candidate content until the owner confirms or supplies the source text (Part G.4, item 10). Only the owner can mark a source owner-confirmed.
@@ -684,6 +685,14 @@ Lineage: SRC-0031 §0.1
 Coverage: SRC-0031 §0.1 covers
 
 No coding agent, assistant, tool, session or hosting provider is named in code or in the logic of configuration: each is registered data, in an actor or host registry, and is referenced by its role, so that any agent, tool, person or provider takes a role by registration alone. A check fails the build when a registered name appears outside its registry.
+
+#### LXM-REQ-000240 — Everything agnostic, zero hard-coding, the governance tooling included
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0032 §0.1  
+Coverage: SRC-0032 §0.1 covers
+
+Everything is agnostic and nothing is hard-coded, the Master and its governance tooling included: every fact that can differ, such as a name, path, file, threshold, identifier format, provider, format, environment or actor, is registered configuration, and code holds only mechanism. Each remaining literal is either declared with a reason or reported as a finding that blocks.
 
 ### CAT-STG-00 — Repository truth and exclusive ownership
 
@@ -2010,7 +2019,7 @@ The objective is complete, evidence-backed conformance to the entire mandate, no
 **Objective:** Know exactly what exists before changing anything, and confirm this session is the sole writer.  
 **Entry:** Session is `amazon-62` in the canonical integration workspace outside iCloud. [LXM-REQ-000002, LXM-REQ-000216]
 
-- `STG-00.A-1` Apply the execution directive, rules and escalation conditions to this and every later stage; follow the final execution rule. — LXM-REQ-000001, LXM-REQ-000003, LXM-REQ-000004, LXM-REQ-000005, LXM-REQ-000006, LXM-REQ-000007, LXM-REQ-000008, LXM-REQ-000009, LXM-REQ-000010, LXM-REQ-000011, LXM-REQ-000013, LXM-REQ-000015, LXM-REQ-000016, LXM-REQ-000017, LXM-REQ-000185, LXM-REQ-000186, LXM-REQ-000187, LXM-REQ-000188, LXM-REQ-000189, LXM-REQ-000195, LXM-REQ-000227, LXM-REQ-000228, LXM-REQ-000229, LXM-REQ-000230, LXM-REQ-000231, LXM-REQ-000232, LXM-REQ-000233, LXM-REQ-000234, LXM-REQ-000235, LXM-REQ-000237, LXM-REQ-000238, LXM-REQ-000239
+- `STG-00.A-1` Apply the execution directive, rules and escalation conditions to this and every later stage; follow the final execution rule. — LXM-REQ-000001, LXM-REQ-000003, LXM-REQ-000004, LXM-REQ-000005, LXM-REQ-000006, LXM-REQ-000007, LXM-REQ-000008, LXM-REQ-000009, LXM-REQ-000010, LXM-REQ-000011, LXM-REQ-000013, LXM-REQ-000015, LXM-REQ-000016, LXM-REQ-000017, LXM-REQ-000185, LXM-REQ-000186, LXM-REQ-000187, LXM-REQ-000188, LXM-REQ-000189, LXM-REQ-000195, LXM-REQ-000227, LXM-REQ-000228, LXM-REQ-000229, LXM-REQ-000230, LXM-REQ-000231, LXM-REQ-000232, LXM-REQ-000233, LXM-REQ-000234, LXM-REQ-000235, LXM-REQ-000237, LXM-REQ-000238, LXM-REQ-000239, LXM-REQ-000240
 - `STG-00.A-2` Confirm the session identity and that no other writable session or checkout is active on this work. — LXM-REQ-000014, LXM-REQ-000028, LXM-REQ-000216
 - `STG-00.A-3` Run `pwd -P`; record branch, `git rev-parse HEAD`, `git remote -v` and `git ls-remote` for the branch. — LXM-REQ-000019, LXM-REQ-000020
 - `STG-00.A-4` Record `git status --porcelain=v2`, `git diff --cached --stat`, `git diff --stat`, `git diff --check` and the untracked list, each separately. — LXM-REQ-000021
@@ -2323,7 +2332,7 @@ The final report has sections A–K, defined by LXM-REQ-000174 to LXM-REQ-000184
 
 | Stage | Title | Actions | Requirements cited |
 |---|---|---|---|
-| STG-00 | Repository truth and exclusive ownership | 11 | 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, 011, 012, 013, 014, 015, 016, 017, 018, 019, 020, 021, 022, 023, 024, 025, 026, 027, 028, 029, 030, 031, 032, 033, 034, 035, 036, 037, 038, 039, 040, 185, 186, 187, 188, 189, 193, 194, 195, 216, 217, 219, 227, 228, 229, 230, 231, 232, 233, 234, 235, 237, 238, 239 |
+| STG-00 | Repository truth and exclusive ownership | 11 | 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, 011, 012, 013, 014, 015, 016, 017, 018, 019, 020, 021, 022, 023, 024, 025, 026, 027, 028, 029, 030, 031, 032, 033, 034, 035, 036, 037, 038, 039, 040, 185, 186, 187, 188, 189, 193, 194, 195, 216, 217, 219, 227, 228, 229, 230, 231, 232, 233, 234, 235, 237, 238, 239, 240 |
 | STG-01 | Universal technology governance (PR-053) | 8 | 016, 041, 042, 043, 044, 045, 046, 047, 048, 049, 050, 051, 052, 053, 054, 055, 153, 196, 197, 213, 218, 219 |
 | STG-02 | Mandate assimilation and traceability | 6 | 056, 057, 058, 059, 060, 061, 062, 063, 064, 191, 192, 204, 214, 220, 221, 226 |
 | STG-03 | Source-grounded gap inventory | 3 | 009, 065, 066, 067, 068, 069, 070, 071, 072 |
@@ -2586,6 +2595,7 @@ Requirement IDs are abbreviated to their last three digits (LXM-REQ-000xxx).
 | LXM-REQ-000237 | — | — | — | SRC-0027 §0.1; SRC-0028 §0.1,§0.2 | STG-00 | New-owner-addition |
 | LXM-REQ-000238 | — | — | — | SRC-0029 §0.2 | STG-00 | New-owner-addition |
 | LXM-REQ-000239 | — | — | — | SRC-0031 §0.1 | STG-00 | New-owner-addition |
+| LXM-REQ-000240 | — | — | — | SRC-0032 §0.1 | STG-00 | New-owner-addition |
 
 ### H.4 Requirement → implementation traceability
 
@@ -3049,6 +3059,12 @@ Generated from each source's clause ledger (`sources/<SRC>.clauses`), the record
 | Clause | Source lines | Covered by | Supported by | Open hold |
 |---|---|---|---|---|
 | §0.1 | 1-1 | LXM-REQ-000239 | — | — |
+
+**SRC-0032** — ledger status *complete*, 1 clauses.
+
+| Clause | Source lines | Covered by | Supported by | Open hold |
+|---|---|---|---|---|
+| §0.1 | 1-1 | LXM-REQ-000240 | — | — |
 
 ---
 

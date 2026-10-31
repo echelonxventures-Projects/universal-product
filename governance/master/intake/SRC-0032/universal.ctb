@@ -1,0 +1,9 @@
+id: CTB-SRC0032-universal
+source: SRC-0032
+section: §0.1
+kind: requirement
+scope: ARC
+title: Everything agnostic, zero hard-coding, the governance tooling included
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000198, LXM-REQ-000199, LXM-REQ-000238, LXM-REQ-000239
+text: Everything is agnostic and nothing is hard-coded, the Master and its governance tooling included: every fact that can differ, such as a name, path, file, threshold, identifier format, provider, format, environment or actor, is registered configuration, and code holds only mechanism. Each remaining literal is either declared with a reason or reported as a finding that blocks.

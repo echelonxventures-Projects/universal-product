@@ -29,6 +29,7 @@ results = []
 def config():
     c = json.load(open(os.path.join(HERE, 'readiness.json'), encoding='utf-8'))
     c['register'].update(file='REG.md', expected_gates=2)
+    c['adapters'].pop('tooling', None)  # the synthetic Master has no tooling of its own; tooling_literals.py has its ratchet in CI
     return c
 
 

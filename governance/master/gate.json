@@ -16,5 +16,16 @@
   "src2",
   "src3",
   "prev_matrix"
- ]
+ ],
+ "matching": {
+  "_comment": "LXM-REQ-000240: the gate's matching rules, versioned with the gate. A change is replayed against every contribution first (gate_impact.py) and measured (gate_accuracy.py).",
+  "cover": 0.8,
+  "related": 0.45,
+  "conflict": 0.6,
+  "conflict_min_shared_terms": 3,
+  "conflict_min_share_of_negated": 0.6,
+  "composition_candidates": 6,
+  "composition_min_distinct_terms": 2,
+  "related_candidates_reported": 3
+ }
 }

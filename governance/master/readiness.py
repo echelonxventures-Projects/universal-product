@@ -110,7 +110,7 @@ def compute(root, candidate, ci_path, cfg, master=HERE, tests_path=None, runtime
         if runtime_trace and a.get('runtime_declaration'):
             acfg['_runtime'] = {'file': runtime_trace, 'declaration': a['runtime_declaration']}
             inputs[os.path.basename(runtime_trace)] = digest(runtime_trace)
-        rep = mod.analyse(root, acfg)
+        rep = mod.analyse(master if a.get('scans') == 'master' else root, acfg)  # an adapter scans the code, or the Master's own tooling
         for key, n in rep['counts'].items():
             kind = key.split(' · ')[0]
             rule = a['findings'].get(kind)

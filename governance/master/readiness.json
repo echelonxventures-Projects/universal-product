@@ -184,6 +184,19 @@
      "resolves": "{role:repository-writer}"
     }
    }
+  },
+  "tooling": {
+   "module": "tooling_literals.py",
+   "config": "tooling-literals.json",
+   "scans": "master",
+   "findings": {
+    "tooling-literal": {
+     "severity": "block",
+     "rule": "a literal in the Master's own tool code that looks like configuration (a file, path, identifier format, hash, date or number); it belongs in a registry",
+     "requirement": "LXM-REQ-000240",
+     "resolves": "{role:master-tooling}"
+    }
+   }
   }
  },
  "tests": {

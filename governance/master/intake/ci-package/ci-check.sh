@@ -16,8 +16,10 @@ echo "== 2. Master invariants"
 python3 -I validate.py out/LXM-MASTER.md out/LXM-RECONCILIATION.md "$src2" "$src3" "$prev_matrix" "$src2_sha" "$src3_sha" | tail -1
 echo "== 2b. no agent, tool, person or host named outside its registry (LXM-REQ-000239)"
 python3 -I -B agnostic.py "$M"
+echo "== 2c. hard-coding in the Master's own tooling (ratchet: only goes down; LXM-REQ-000240)"
+python3 -I -B tooling_literals.py "$M" --baseline tooling_baseline.json
 echo "== 3. tool fixtures"
-for t in test_assimilate test_config_adapter test_code_adapter test_readiness test_knowledge test_agnostic; do
+for t in test_assimilate test_config_adapter test_code_adapter test_readiness test_knowledge test_agnostic test_tooling_literals; do
   python3 -I -B "$t.py" "$M" | tail -1
 done
 echo "== 3b. gate accuracy (ratchet: errors only go down)"

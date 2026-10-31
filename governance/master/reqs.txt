@@ -1386,3 +1386,9 @@ t: Agent-, tool- and provider-agnostic tooling
 s: SRC-0031 §0.1
 c: SRC-0031 §0.1 covers
 x: No coding agent, assistant, tool, session or hosting provider is named in code or in the logic of configuration: each is registered data, in an actor or host registry, and is referenced by its role, so that any agent, tool, person or provider takes a role by registration alone. A check fails the build when a registered name appears outside its registry.
+
+@LXM-REQ-000240 | ARC | NEW | New-owner-addition
+t: Everything agnostic, zero hard-coding, the governance tooling included
+s: SRC-0032 §0.1
+c: SRC-0032 §0.1 covers
+x: Everything is agnostic and nothing is hard-coded, the Master and its governance tooling included: every fact that can differ, such as a name, path, file, threshold, identifier format, provider, format, environment or actor, is registered configuration, and code holds only mechanism. Each remaining literal is either declared with a reason or reported as a finding that blocks.

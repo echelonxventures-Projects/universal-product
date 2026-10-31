@@ -1,0 +1,11 @@
+{
+ "_comment": "LXM-REQ-000240: literals in the Master's own tool code that look like configuration. tooling_literals.py counts them per file and kind; CI fails when a count rises (the ratchet), so hard-coding only goes down. Moving a literal into a registry lowers the count; record it with --write-baseline.",
+ "files": {"roots": [".", "intake/ci-package"], "extension": ".py", "exclude_prefixes": ["test_"]},
+ "small_numbers": [0, 1, 2, 3, -1, 12, 16, 60, 64],
+ "kinds": {
+  "identifier format": {"pattern": "LXM-(REQ|DEC|EVD|EXC)|SRC-|STG-|§", "max_length": 200},
+  "file or path": {"fullmatch": ["[\\w./-]+\\.(txt|json|jsonl|md|py|sh|yml|clauses|ctb)", "(intake|sources|out)(/[\\w.-]+)*/?"]},
+  "hash": {"fullmatch": ["[0-9a-f]{12,64}"]},
+  "date": {"pattern": "20\\d\\d-\\d\\d-\\d\\d", "max_length": 40}
+ }
+}

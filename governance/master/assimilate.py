@@ -10,10 +10,11 @@ import hashlib, importlib.util, json, os, re, shutil, subprocess, sys, tempfile,
 
 sys.dont_write_bytecode = True  # a check never changes the Master directory (no __pycache__)
 
-CANON = ['reqs.txt', 'stages.txt', 'scopes.txt', 'sources.txt', 'coverage.txt', 'decisions.txt', 'evidence.txt', 'trace.txt', 'frame.md']
-DERIVED = ['out/LXM-MASTER.md', 'out/LXM-RECONCILIATION.md']
-TOOLS = ['build.py', 'validate.py', 'lexicon.txt', 'gate.json', 'config_adapter.json', 'revalidate.py', 'assimilate.py']  # everything build, validate and the staged checks read
-T_COVER, T_RELATED, T_CONFLICT = 0.8, 0.45, 0.6  # a contradiction needs the same shared meaning for negations and for numbers
+_HERE = os.path.dirname(os.path.abspath(__file__))
+LAYOUT = json.load(open(os.path.join(_HERE, 'layout.json'), encoding='utf-8'))  # where the Master keeps what (LXM-REQ-000240)
+CANON, DERIVED, TOOLS = LAYOUT['canon'], LAYOUT['derived'], LAYOUT['tools']  # TOOLS: everything build, validate and the staged checks read
+MATCH = json.load(open(os.path.join(_HERE, 'gate.json'), encoding='utf-8'))['matching']  # the gate's matching rules, versioned with the gate
+T_COVER, T_RELATED, T_CONFLICT = MATCH['cover'], MATCH['related'], MATCH['conflict']  # a contradiction needs the same shared meaning for negations and for numbers
 FIELDS = {'id', 'source', 'section', 'kind', 'scope', 'title', 'text', 'extends', 'supersedes', 'reason', 'depends',
           'applied-in', 'relates', 'distinct-from', 'recognized-as', 'decision'}
 REQ = re.compile(r'LXM-REQ-\d{6}')
@@ -176,7 +177,7 @@ def classify(clause, recs, lex, distinct):
                 continue
             for neg, pos in ((s['negated'], c['asserted']), (c['negated'], s['asserted'])):
                 hit = neg & pos
-                if share >= T_CONFLICT and len(hit) >= 3 and len(hit) >= 0.6 * len(neg):
+                if share >= T_CONFLICT and len(hit) >= MATCH['conflict_min_shared_terms'] and len(hit) >= MATCH['conflict_min_share_of_negated'] * len(neg):
                     conflicts.append((share, rid))
             if share >= T_CONFLICT and c['num'] and s['num'] and c['num'] != s['num']:
                 conflicts.append((share, rid))
@@ -187,15 +188,15 @@ def classify(clause, recs, lex, distinct):
     best, rid = scored[0]
     if best >= T_COVER:
         return {'kind': 'COVERED', 'rids': [rid], 'score': round(best, 2)}
-    top = [r for _, r in scored[:6]]
+    top = [r for _, r in scored[:MATCH['composition_candidates']]]
     pairs = [(containment(c['set'], recs[a]['_profile']['set'] | recs[b]['_profile']['set']), a, b) for i, a in enumerate(top) for b in top[i + 1:]]
     if pairs:
         pb, a, b = max(pairs)
         pa, pq = c['set'] & recs[a]['_profile']['set'], c['set'] & recs[b]['_profile']['set']
-        if pb >= T_COVER and len(pa - pq) >= 2 and len(pq - pa) >= 2:
+        if pb >= T_COVER and len(pa - pq) >= MATCH['composition_min_distinct_terms'] and len(pq - pa) >= MATCH['composition_min_distinct_terms']:
             return {'kind': 'COVERED', 'rids': sorted([a, b]), 'score': round(pb, 2)}
     kind = 'RELATED' if best >= T_RELATED else 'NOVEL'
-    return {'kind': kind, 'rids': [r for s, r in scored[:3] if s >= T_RELATED], 'score': round(best, 2)}
+    return {'kind': kind, 'rids': [r for s, r in scored[:MATCH['related_candidates_reported']] if s >= T_RELATED], 'score': round(best, 2)}
 
 
 def index(recs, lex):
@@ -874,7 +875,7 @@ def close_on_noop(root, ctb_id, note):
     return False
 
 
-LEDGER = 'intake/ledger.jsonl'
+LEDGER = LAYOUT['ledger']
 LEDGER_SCHEMA = 2  # 2: hash chain (prev) and the exact mutation an accepted run made (mutation)
 
 

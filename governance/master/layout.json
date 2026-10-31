@@ -1,0 +1,33 @@
+{
+ "_comment": "LXM-REQ-000240: where the Master keeps what. Every tool reads its file layout from here; no tool names these files itself.",
+ "canon": [
+  "reqs.txt",
+  "stages.txt",
+  "scopes.txt",
+  "sources.txt",
+  "coverage.txt",
+  "decisions.txt",
+  "evidence.txt",
+  "trace.txt",
+  "frame.md"
+ ],
+ "derived": [
+  "out/LXM-MASTER.md",
+  "out/LXM-RECONCILIATION.md"
+ ],
+ "tools": [
+  "build.py",
+  "validate.py",
+  "lexicon.txt",
+  "gate.json",
+  "layout.json",
+  "config_adapter.json",
+  "revalidate.py",
+  "assimilate.py"
+ ],
+ "ledger": "intake/ledger.jsonl",
+ "exceptions": "intake/exceptions.txt",
+ "sources_dir": "sources",
+ "intake_dir": "intake",
+ "out_dir": "out"
+}
