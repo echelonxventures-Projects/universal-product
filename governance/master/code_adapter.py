@@ -179,10 +179,21 @@ def analyse(root, cfg):
     for rule in cfg.get('named_values', []):
         files = [f for base in rule['roots'] for f in walk(root, base, rule['extensions'])
                  if not any(f.startswith(x) for x in rule.get('exclude', []))]
+        pats = list(rule.get('patterns', []))
+        for nf in rule.get('names_from', []):  # names taken from registries, never listed in the rule (LXM-REQ-000239)
+            reg = json.load(open(os.path.join(root if nf['in'] == 'code' else os.path.dirname(os.path.abspath(__file__)), nf['file']), encoding='utf-8'))
+            for path in nf['paths']:
+                nodes = [reg]
+                for part in path.split('.'):
+                    nodes = [v for n in nodes for v in ((n.values() if isinstance(n, dict) else n) if part == '*' else [n.get(part)] if isinstance(n, dict) else [])]
+                for v in nodes:
+                    for name in (v if isinstance(v, list) else [v]):
+                        if isinstance(name, str) and name.strip():
+                            pats.append('(?i)(?<![\\w])%s(?![\\w])' % re.escape(name))
         hits = []
         for f in files:
             src = strip_comments(read(root, f))
-            for pat in rule['patterns']:
+            for pat in pats:
                 for m in re.finditer(pat, src):
                     hits.append('%s:%d %s' % (f, src.count('\n', 0, m.start()) + 1, re.sub(r'\s+', ' ', m.group(0))[:60]))
         hits = sorted(set(hits))

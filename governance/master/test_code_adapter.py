@@ -142,13 +142,26 @@ def s_named_values():
     files = dict(BASE)
     files['src/env.js'] = ('if (process.env.NODE_ENV === "production") a();\nif ("live" !== process.env.APP_ENVIRONMENT) b();\n'
                            'if (process.env.LX_OFFLINE === "1") c();\nconst mode = "staging";\n// "production" in a comment\n')
-    cfg = json.loads(json.dumps(CFG)); cfg['named_values'] = json.load(open(os.path.join(HERE, 'code_adapter.json')))['named_values']
+    cfg = json.loads(json.dumps(CFG)); cfg['named_values'] = [r for r in json.load(open(os.path.join(HERE, 'code_adapter.json')))['named_values'] if r['finding'].startswith('environment-')]
     for r in cfg['named_values']:
         r['roots'], r['exclude'] = ['src'], []
     nv = run(files, cfg)['summary']['named_values']
     br, nm = nv['environment-branch']['list'], nv['environment-name']['list']
     ok = len(br) == 2 and all(h.startswith('src/env.js:') for h in br) and sorted(h.split(' ')[0] for h in nm) == ['src/env.js:1', 'src/env.js:4']
     return ok, 'environment-branch %s; environment-name %s' % (br, nm)
+
+
+def s_names_from_registries():
+    # agent and vendor names come from registries, not from the rule: a registered name in code is found, in any case and as a
+    # whole word only; the registry itself (excluded data) and longer identifiers are not findings
+    files = dict(BASE)
+    files['src/data/providers.json'] = json.dumps({'P': [{'name': 'VendorX'}, {'name': 'Acme Vision'}]})
+    files['src/ai.js'] = 'const a = "vendorx";\nconst b = "Acme Vision model";\nconst c = "VendorXtra";\n'
+    cfg = json.loads(json.dumps(CFG))
+    cfg['named_values'] = [{'finding': 'agent-or-vendor-name', 'roots': ['src'], 'extensions': ['.js', '.json'], 'exclude': ['src/data/'],
+                            'names_from': [{'in': 'code', 'file': 'src/data/providers.json', 'paths': ['P.*.name']}]}]
+    hits = run(files, cfg)['summary']['named_values']['agent-or-vendor-name']['list']
+    return sorted(h.split(' ')[0] for h in hits) == ['src/ai.js:1', 'src/ai.js:2'], 'findings %s' % hits
 
 
 for args in [('Executed: CI command graph, exemptions, unwired tests', s_executed),
@@ -160,6 +173,7 @@ for args in [('Executed: CI command graph, exemptions, unwired tests', s_execute
              ('Traceability: missing paths, gaps, untraced modules, per domain', s_trace),
              ('Kernel derivation: tables outside the kernel, exemptions', s_kernel_derivation),
              ('Named values: environment selectors and names, from configuration', s_named_values),
+             ('Names from registries: agents and vendors in code', s_names_from_registries),
              ('Configuration-driven; no repository knowledge in the adapter', s_no_repository_knowledge)]:
     scenario(*args)
 fails = 0

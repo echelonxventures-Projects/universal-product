@@ -1,0 +1,13 @@
+{
+ "_comment": "LXM-REQ-000239: source-control and CI hosts, registered as data. A remote is matched to a host by url_pattern (group 1 is the repository); visibility is answered by the host's own command. Adding a host of any vendor is a change to this file only. Names listed under aliases may appear nowhere else in the tooling (agnostic.py).",
+ "hosts": {
+  "github": {
+   "aliases": ["github", "GitHub", "gh"],
+   "url_pattern": "github\\.com[:/]([^/]+/[^/.]+?)(?:\\.git)?$",
+   "visibility_command": ["gh", "repo", "view", "{repo}", "--json", "isPrivate", "-q", ".isPrivate"],
+   "private_answer": "true",
+   "ci_job_adapter": "intake/ci-package/hosts/github/lxm-job.yml",
+   "ci_workflow": ".github/workflows/ci.yml"
+  }
+ }
+}

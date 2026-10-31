@@ -1,0 +1,14 @@
+{
+ "_comment": "LXM-REQ-000239: conversation transcript formats capture.py can read, registered as data. A format says how one line becomes text and how pasted blocks are found; a transcript of any other agent or tool is supported by adding a format here.",
+ "default": "jsonl-message-content",
+ "formats": {
+  "jsonl-message-content": {
+   "line_is_json": true,
+   "content_path": ["message", "content"],
+   "part_type_field": "type",
+   "part_text_type": "text",
+   "part_text_field": "text",
+   "block_pattern": "<pasted_content id=\"[^\"]+\">\\n(.*?)\\n</pasted_content"
+  }
+ }
+}

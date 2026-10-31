@@ -1,0 +1,45 @@
+{
+ "_comment": "LXM-REQ-000239: the tooling names no agent, tool, person or host; those live in the registries. agnostic.py takes every label and alias the registries list and fails when one appears in the tooling's code or configuration outside them. An exemption needs a reason.",
+ "registries": {
+  "actors.json": [
+   "actors.*.label",
+   "actors.*.aliases"
+  ],
+  "hosts.json": [
+   "hosts.*",
+   "hosts.*.aliases"
+  ]
+ },
+ "scan": {
+  "roots": [
+   ".",
+   "intake/ci-package",
+   "intake/patches"
+  ],
+  "extensions": [
+   ".py",
+   ".json",
+   ".sh",
+   ".yml",
+   ".yaml"
+  ],
+  "recursive_roots": [
+   "intake/ci-package",
+   "intake/patches"
+  ]
+ },
+ "registry_files": [
+  "actors.json",
+  "hosts.json",
+  "transcript-formats.json",
+  "secret-formats.json"
+ ],
+ "adapter_dirs": [
+  "intake/ci-package/hosts/"
+ ],
+ "exempt": {
+  "code_adapter.json": "names the repository's own CI workflow file (commands.ci_workflows), a path the repository chose; the host registry records the same path as that host's ci_workflow",
+  "code_baseline.json": "generated record of the code findings at the candidate; it quotes, word for word, the names the findings report",
+  "config_baseline.json": "generated record of the configuration findings at the candidate; it quotes the values the findings report"
+ }
+}

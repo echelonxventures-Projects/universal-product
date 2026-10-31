@@ -1380,3 +1380,9 @@ t: Open-ended environments by configuration
 s: SRC-0029 §0.2
 c: SRC-0029 §0.2 covers
 x: Environments are open-ended registered configuration: any number of environments, each registered with its identity, purpose, configuration overlay, secret references, data isolation, providers, release gates and promotion path, and a new environment is added by registration alone. No code names an environment or branches on an environment name; behaviour that differs between environments is a declared setting that each environment sets.
+
+@LXM-REQ-000239 | ARC | NEW | New-owner-addition
+t: Agent-, tool- and provider-agnostic tooling
+s: SRC-0031 §0.1
+c: SRC-0031 §0.1 covers
+x: No coding agent, assistant, tool, session or hosting provider is named in code or in the logic of configuration: each is registered data, in an actor or host registry, and is referenced by its role, so that any agent, tool, person or provider takes a role by registration alone. A check fails the build when a registered name appears outside its registry.

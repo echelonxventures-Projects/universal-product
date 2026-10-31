@@ -1,6 +1,6 @@
 {
  "_comment": "What blocks release, why (the requirement), and who resolves it. readiness.py holds no repository knowledge.",
- "input_owner": "amazon-44 (the Master tooling)",
+ "input_owner": "{role:master-tooling}",
  "register": {
   "file": "PRODUCTION_READINESS.md",
   "section": "## Release gates",
@@ -30,12 +30,12 @@
   "ci": {
    "rule": "K2: two distinct successful CI run IDs on the exact candidate SHA",
    "distinct_successful_runs": 2,
-   "resolves": "amazon-62 (sole repository writer), by the method of LXM-DEC-000009",
+   "resolves": "{role:repository-writer}, by the method of LXM-DEC-000009",
    "requirement": "LXM-REQ-000153"
   },
   "trace_gaps": {
    "rule": "every product requirement has an implementation",
-   "resolves": "amazon-62 (sole repository writer)"
+   "resolves": "{role:repository-writer}"
   }
  },
  "adapters": {
@@ -47,49 +47,49 @@
      "severity": "block",
      "rule": "logic decides on a configured value written in code",
      "requirement": "LXM-REQ-000199",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "copy-fallback": {
      "severity": "block",
      "rule": "a configured value hard-coded as a fallback",
      "requirement": "LXM-REQ-000199",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "copy-literal": {
      "severity": "block",
      "rule": "a configured value hard-coded as a literal",
      "requirement": "LXM-REQ-000199",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "copy-embedded": {
      "severity": "block",
      "rule": "a configured value (such as the brand) embedded in code text or names; white-label",
      "requirement": "LXM-REQ-000199",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "undeclared": {
      "severity": "block",
      "rule": "configuration read by code but declared nowhere",
      "requirement": "LXM-REQ-000074",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "unread": {
      "severity": "warn",
      "rule": "a declared setting nothing accesses (static evidence only)",
      "requirement": "LXM-REQ-000198",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "unaccounted": {
      "severity": "block",
      "rule": "a configuration source neither declared nor classified",
      "requirement": "LXM-REQ-000198",
-     "resolves": "amazon-44 (the Master tooling)"
+     "resolves": "{role:master-tooling}"
     },
     "runtime-unread": {
      "severity": "warn",
      "rule": "a traced setting no running code read during the test run (it may be read only in the browser, or not tested)",
      "requirement": "LXM-REQ-000198",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     }
    },
    "runtime_declaration": "settings"
@@ -103,79 +103,85 @@
      "severity": "block",
      "rule": "a gate CI never executes",
      "requirement": "LXM-REQ-000136",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "unwired-test": {
      "severity": "block",
      "rule": "a test no CI command runs",
      "requirement": "LXM-REQ-000136",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "untested-module": {
      "severity": "block",
      "rule": "a module no test CI runs reaches",
      "requirement": "LXM-REQ-000081",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "unowned": {
      "severity": "block",
      "rule": "a module with no owning domain",
      "requirement": "LXM-REQ-000203",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "owned-twice": {
      "severity": "block",
      "rule": "a module owned twice",
      "requirement": "LXM-REQ-000203",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "owner-lists-missing-file": {
      "severity": "block",
      "rule": "the ownership registry names a missing file",
      "requirement": "LXM-REQ-000215",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "duplicate": {
      "severity": "block",
      "rule": "the same function body in two places (Knowledge Once)",
      "requirement": "LXM-REQ-000203",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "trace-missing-path": {
      "severity": "block",
      "rule": "a traced implementation or test path does not exist",
      "requirement": "LXM-REQ-000204",
-     "resolves": "amazon-44 (the Master tooling)"
+     "resolves": "{role:master-tooling}"
     },
     "untraced-module": {
      "severity": "warn",
      "rule": "a module no Master requirement traces (its requirements may live in the repository specifications)",
      "requirement": "LXM-REQ-000204",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "dirty": {
      "severity": "block",
      "rule": "uncommitted or untracked changes",
      "requirement": "LXM-REQ-000213",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "outside-kernel": {
      "severity": "block",
      "rule": "an entity type stored outside the kernel (not derived through registry, entity, context, temporal and relationship)",
      "requirement": "LXM-REQ-000232",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "environment-branch": {
      "severity": "block",
      "rule": "behaviour branches on which environment it runs in (an environment variable compared with a literal); read a declared setting the environment sets",
      "requirement": "LXM-REQ-000238",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
     },
     "environment-name": {
      "severity": "block",
      "rule": "an environment named in code; environments are open-ended registered configuration",
      "requirement": "LXM-REQ-000238",
-     "resolves": "amazon-62 (sole repository writer)"
+     "resolves": "{role:repository-writer}"
+    },
+    "agent-or-vendor-name": {
+     "severity": "block",
+     "rule": "an agent, assistant or vendor named in platform code; it belongs in a registry and is referenced by role or id",
+     "requirement": "LXM-REQ-000239",
+     "resolves": "{role:repository-writer}"
     }
    }
   }
@@ -183,7 +189,7 @@
  "tests": {
   "rule": "the full test chain passes on the exact candidate SHA, on a supported runtime, leaving the tree unchanged",
   "requirement": "LXM-REQ-000140",
-  "resolves": "amazon-62 (sole repository writer)",
+  "resolves": "{role:repository-writer}",
   "pass_marker": "✓",
   "fail_marker": "✗",
   "crash_markers": [

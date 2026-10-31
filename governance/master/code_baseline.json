@@ -1,4 +1,10 @@
 {
+ "agent-or-vendor-name · lib/context/hygiene.js:103 CLAUDE": 1,
+ "agent-or-vendor-name · lib/context/index.js:152 CLAUDE": 1,
+ "agent-or-vendor-name · lib/context/util.js:115 anthropic": 1,
+ "agent-or-vendor-name · public/js/admin.js:1910 Anthropic": 1,
+ "agent-or-vendor-name · public/js/admin.js:1910 Google Vision": 1,
+ "agent-or-vendor-name · public/js/admin.js:1910 OpenAI": 1,
  "duplicate · 1cb07407018f · lib/fin.js": 1,
  "duplicate · 1cb07407018f · lib/marketplace.js": 1,
  "duplicate · 457acb9833b5 · lib/helpdesk.js": 1,

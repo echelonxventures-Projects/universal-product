@@ -114,7 +114,7 @@ class Lexicon:
     def norm(self, text):
         text = re.sub(r'\b\d{4}-\d{2}-\d{2}(?:t[\d:.]+z?)?\b', ' ', text.lower())  # a calendar date is a time reference, not a quantity
         text = re.sub(r'[\w.-]*/[\w./-]+|\b[\w-]+\.(?:md|json|txt|js|py|yml|yaml)\b', lambda m: re.sub(r'\d', '', m.group(0)), text)  # a path is an identifier
-        t = ' ' + re.sub(r'(?<![a-z0-9])([a-z]+)-(\d+)(?![a-z0-9])', r'\1\2', text) + ' '  # amazon-62, PR-053: identifiers, not quantities
+        t = ' ' + re.sub(r'(?<![a-z0-9])([a-z]+)-(\d+)(?![a-z0-9])', r'\1\2', text) + ' '  # writer-62, PR-053: identifiers, not quantities
         for f in self.frames:  # a list lead-in scopes the item; the item carries the meaning
             t = re.sub(r'(?<![a-z0-9])' + re.escape(f) + r'(?![a-z0-9])', ' ', t)
         for p, c in self.phrases:

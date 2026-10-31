@@ -1,0 +1,15 @@
+{
+ "_comment": "LXM-REQ-000239: every agent, assistant, tool, session and person the tooling refers to is registered here and referenced by role ({role:<id>}). Changing who holds a role, or adding a new agent or tool of any vendor, is a change to this file only. Names and aliases listed here may appear nowhere else in the tooling (agnostic.py).",
+ "actors": {
+  "master-session": {"kind": "agent session", "label": "amazon-44", "aliases": ["amazon-44", "amazon-4f", "Claude", "Anthropic", "claude.ai"], "attribution": ["Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"]},
+  "writer-session": {"kind": "agent session", "label": "amazon-62", "aliases": ["amazon-62"], "attribution": []},
+  "owner": {"kind": "person", "label": "Bipin Kumar", "aliases": [], "attribution": []}
+ },
+ "roles": {
+  "master-tooling": {"actor": "master-session", "describes": "the Master tooling"},
+  "repository-writer": {"actor": "writer-session", "describes": "sole repository writer"},
+  "release-approver": {"actor": "owner", "describes": "release approver"}
+ },
+ "actor_env": "LXM_ACTOR_ROLE",
+ "default_role": "master-tooling"
+}

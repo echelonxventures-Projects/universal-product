@@ -26,6 +26,9 @@ def main(argv):
         print(__doc__); return 2
     ws, msg, dry = os.path.abspath(argv[1]), opt('--message'), '--dry-run' in argv
     cfg = json.load(open(opt('--config') or os.path.join(os.path.dirname(os.path.abspath(__file__)), 'step-commit.json')))
+    cfg_path = os.path.abspath(opt('--config') or os.path.join(os.path.dirname(os.path.abspath(__file__)), 'step-commit.json'))
+    sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(cfg_path), cfg['registry_root'])))
+    import actors as R  # who acts and which host receives come from the registries (LXM-REQ-000239), never from this file
     gitdir = git(ws, 'rev-parse', '--absolute-git-dir')
     if os.path.exists(os.path.join(gitdir, 'index.lock')):
         refuse('%s/index.lock exists; it is never deleted. Resolve the other git process first.' % gitdir)
@@ -42,27 +45,26 @@ def main(argv):
         if p in cfg['secret_allow_files'] or not os.path.isfile(f) or os.path.getsize(f) > cfg['secret_scan_max_bytes']:
             continue
         t = open(f, 'rb').read().decode('utf-8', 'replace')
-        hits += ['%s (pattern %d)' % (p, i) for i, pat in enumerate(cfg['secret_patterns']) if re.search(pat, t)]
+        hits += ['%s (pattern %d)' % (p, i) for i, pat in enumerate(R.registry(cfg['secret_formats'])['patterns']) if re.search(pat, t)]
     if hits:
         refuse('possible secret in %s; secrets never enter the repository. Remove it or move it to the secret store.' % ', '.join(hits))
     remote_head = (git(ws, 'ls-remote', cfg['remote'], 'refs/heads/' + branch).split() or [''])[0]
     local = git(ws, 'rev-parse', 'HEAD')
     if remote_head and remote_head != local and subprocess.run(['git', '-C', ws, 'merge-base', '--is-ancestor', remote_head, local], capture_output=True).returncode:
         refuse('the remote %s has commits this branch lacks; never force-push. Integrate them first.' % branch)  # checked before committing: a refusal changes nothing
-    vc = cfg.get('visibility_check')  # the receiving repository must be private (LXM-REQ-000149); command and expected answer are configuration
-    if vc:
-        url = git(ws, 'remote', 'get-url', cfg['remote'])
-        m = re.search(vc['repo_pattern'], url)
-        if not m:
-            refuse('cannot tell which repository %s is (%s); its visibility must be checked before a push' % (cfg['remote'], url))
-        r = subprocess.run([a.replace('{repo}', m.group(1)) for a in vc['command']], capture_output=True, text=True)
-        if r.returncode or r.stdout.strip() != vc['expect']:
-            refuse('%s is not confirmed private (%s); a push would publish. Make it private first.' % (m.group(1), (r.stdout or r.stderr).strip()[:80] or 'no answer'))
+    url = git(ws, 'remote', 'get-url', cfg['remote'])  # the receiving repository must be private (LXM-REQ-000149), as its registered host answers
+    hid, host, repo = R.host_for(url)
+    if not host:
+        refuse('%s (%s) matches no registered host; its visibility must be checked before a push. Register the host first.' % (cfg['remote'], url))
+    r = subprocess.run([a.replace('{repo}', repo) for a in host['visibility_command']], capture_output=True, text=True)
+    if r.returncode or r.stdout.strip() != host['private_answer']:
+        refuse('%s is not confirmed private by its host %s (%s); a push would publish. Make it private first.' % (repo, hid, (r.stdout or r.stderr).strip()[:80] or 'no answer'))
     if dry:
         print('dry run: would commit %d path(s) on %s and push to %s' % (len(paths), branch, cfg['remote'])); return 0
     if paths or status:
         git(ws, 'add', '-A')
-        body = msg + ('\n\n' + '\n'.join(cfg['trailers']) if cfg['trailers'] else '')
+        trailers = R.actor()['attribution']  # the acting role's registered attribution, whoever holds it
+        body = msg + ('\n\n' + '\n'.join(trailers) if trailers else '')
         git(ws, 'commit', '-q', '-m', body)
     head = git(ws, 'rev-parse', 'HEAD')
     if remote_head != head:

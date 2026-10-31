@@ -16,6 +16,8 @@ sys.dont_write_bytecode = True  # a check never changes the Master directory (no
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+from actors import resolve as resolve_roles
+sys.path.insert(0, HERE)
 
 
 def load(name, path):
@@ -29,6 +31,7 @@ def digest(path):
 
 
 def compute(root, candidate, ci_path, cfg, master=HERE, tests_path=None, runtime_trace=None):
+    cfg = resolve_roles(cfg, HERE)  # who resolves a blocker is a role, held by whichever actor the registry names (LXM-REQ-000239)
     blockers, warnings, inputs = [], [], {}
     block = lambda kind, what, rule, who, ref: blockers.append({'kind': kind, 'what': what, 'rule': rule, 'resolves': who, 'requirement': ref})
     build = load('lxm_build', os.path.join(master, 'build.py'))

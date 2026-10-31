@@ -21,7 +21,7 @@ Readiness (`readiness.py`) is computed as a report. It does not fail pull reques
    - the earlier 128-row reconciliation matrix.
 
    They are owner material, so adding them to the repository is part of adopting the Master (LXM-DEC-000010).
-3. Add the job in `lxm-job.yml` to `.github/workflows/ci.yml`. Pin `actions/checkout` the way the technology lock requires.
+3. Add the job from the receiving host's adapter (`hosts.json` → `ci_job_adapter`, today `hosts/github/lxm-job.yml`) to the workflow file the host registry names (`ci_workflow`). Pin `actions/checkout` the way the technology lock requires.
 4. Register the new job with the technology governance (`scripts/technology.js check` validates CI against the lock). CI needs `python3`, which the runner image provides; declare it in the lock as a runner bootstrap tool.
 5. Run `ci-check.sh` locally, then commit and push. Count CI only on the exact SHA.
 

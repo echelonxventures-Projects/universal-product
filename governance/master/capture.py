@@ -1,7 +1,7 @@
 """Level 1 capture: the one way any source enters the Master Context (design §1, gap 14 of the Level 1 checklist).
 Usage:
   python3 -I capture.py <root> --file <path> --id SRC-NNNN --title T --role R --authority owner|owner-decision|historical [--sensitivity S] [--by NAME]
-  python3 -I capture.py <root> --transcript <session.jsonl> --line N [--block K] --id ... (same options)
+  python3 -I capture.py <root> --transcript <file> --line N [--block K] [--format F] --id ... (same options; formats in transcript-formats.json)
 
 It reads the bytes exactly; refuses anything that looks like a secret (secrets never enter the Master); writes the extract,
 provenance (with sensitivity), a clause ledger in progress and one contribution per clause (intake/<id>/); then registers the
@@ -11,9 +11,9 @@ import hashlib, json, os, re, subprocess, sys
 sys.dont_write_bytecode = True
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
+import actors as ACTORS
 
-SECRETS = [r'-----BEGIN [A-Z ]*PRIVATE KEY-----', r'\bAKIA[0-9A-Z]{16}\b', r'\bgh[pousr]_[A-Za-z0-9]{30,}\b', r'\bsk-[A-Za-z0-9]{20,}\b',
-           r'\bxox[abposr]-[A-Za-z0-9-]{10,}\b', r'(?i)\b(?:password|passwd|secret|api[_-]?key|token)\s*[:=]\s*["\']?[^\s"\'<>]{8,}']
+SECRETS = json.load(open(os.path.join(HERE, 'secret-formats.json'), encoding='utf-8'))['patterns']  # one registry, shared with step_commit.py
 SENSITIVITY = ('public', 'internal', 'confidential')
 
 
@@ -48,7 +48,8 @@ def clean(t):
     return re.sub(r'^\s*(?:[-*]|\d+\.)\s+', '', re.sub(r'\*\*|`', '', t)).strip()
 
 
-def capture(root, raw, origin, sid, title, role, authority, sensitivity='internal', by='amazon-44', today=None):
+def capture(root, raw, origin, sid, title, role, authority, sensitivity='internal', by=None, today=None):
+    by = by or ACTORS.actor()['label']  # whoever holds the acting role (actors.json), never a name written here
     if sensitivity not in SENSITIVITY:
         return {'outcome': 'REJECTED', 'reason': 'sensitivity must be one of %s' % ', '.join(SENSITIVITY)}
     hits = [p for p in SECRETS if re.search(p, raw)]
@@ -96,11 +97,16 @@ def capture(root, raw, origin, sid, title, role, authority, sensitivity='interna
     return {'outcome': r['outcome'], 'reason': r.get('reason'), 'clauses': len(spec), 'ledger_seq': r.get('ledger_seq')}
 
 
-def from_transcript(path, line, block=None):
-    e = json.loads(open(path, encoding='utf-8').read().split('\n')[line - 1])
-    c = e.get('message', {}).get('content')
-    t = c if isinstance(c, str) else ''.join(x.get('text', '') for x in (c or []) if isinstance(x, dict) and x.get('type') == 'text')
-    blocks = re.findall(r'<pasted_content id="[^"]+">\n(.*?)\n</pasted_content', t, re.S)
+def from_transcript(path, line, block=None, fmt=None):
+    """Text of one transcript line, or one pasted block of it, read by a registered format (transcript-formats.json)."""
+    reg = json.load(open(os.path.join(HERE, 'transcript-formats.json'), encoding='utf-8'))
+    f = reg['formats'][fmt or reg['default']]
+    raw = open(path, encoding='utf-8').read().split('\n')[line - 1]
+    c = json.loads(raw) if f['line_is_json'] else raw
+    for k in f.get('content_path', []):
+        c = c.get(k, {}) if isinstance(c, dict) else {}
+    t = c if isinstance(c, str) else ''.join(x.get(f['part_text_field'], '') for x in (c or []) if isinstance(x, dict) and x.get(f['part_type_field']) == f['part_text_type'])
+    blocks = re.findall(f['block_pattern'], t, re.S)
     return (blocks[block] if block is not None else t.strip()), 'session transcript %s line %d%s' % (os.path.basename(path), line, '' if block is None else ' paste block %d' % block)
 
 
@@ -110,7 +116,7 @@ if __name__ == '__main__':
     if opt('--file'):
         raw, origin = open(opt('--file'), encoding='utf-8').read(), 'file %s' % opt('--file')
     else:
-        raw, origin = from_transcript(opt('--transcript'), int(opt('--line')), int(opt('--block')) if opt('--block') else None)
-    r = capture(root, raw, origin, opt('--id'), opt('--title'), opt('--role'), opt('--authority'), opt('--sensitivity') or 'internal', opt('--by') or 'amazon-44', opt('--today'))
+        raw, origin = from_transcript(opt('--transcript'), int(opt('--line')), int(opt('--block')) if opt('--block') else None, opt('--format'))
+    r = capture(root, raw, origin, opt('--id'), opt('--title'), opt('--role'), opt('--authority'), opt('--sensitivity') or 'internal', opt('--by'), opt('--today'))
     print(json.dumps(r))
     sys.exit(0 if r['outcome'] in ('NEW', 'NOOP') else 2)

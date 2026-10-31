@@ -611,10 +611,10 @@ def s_matching_rules(d, b):
     lex = A.Lexicon(d + '/lexicon.txt')
     recs = A.blocks(open(d + '/reqs.txt', encoding='utf-8').read()); A.index(recs, lex)
     dn = lex.profile('No contribution becomes canonical without validation.')
-    ident = lex.profile('amazon-62 is the sole writer of PR-053.')
+    ident = lex.profile('writer-62 is the sole writer of PR-053.')
     frame = A.classify('All capabilities must conform to the Knowledge Once Principle.', recs, lex, set())
     ok = not dn['negated'] and not ident['num'] and frame['kind'] in ('RELATED', 'COVERED') and 'LXM-REQ-000203' in frame['rids']
-    return ok, 'double negation negates nothing: %s; quantities in "amazon-62 ... PR-053": %s; framed list item -> %s %s' % (
+    return ok, 'double negation negates nothing: %s; quantities in "writer-62 ... PR-053": %s; framed list item -> %s %s' % (
         not dn['negated'], sorted(ident['num']) or 'none', frame['kind'], ','.join(frame['rids']))
 
 

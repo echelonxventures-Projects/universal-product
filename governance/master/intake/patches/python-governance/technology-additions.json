@@ -1,5 +1,5 @@
 {
- "_comment": "Proposed additions to lib/seed/technology.json (prepared by amazon-44; not applied). The Master tooling's Python is declared by what it needs, never by a version; the governance resolves the release and generates technology.lock.json.",
+ "_comment": "Proposed additions to lib/seed/technology.json (prepared by the Master tooling; not applied). The Master tooling's Python is declared by what it needs, never by a version; the governance resolves the release and generates technology.lock.json.",
  "items": [
   {"key": "python", "category": "runtime", "label": "Python", "supplier": "Python Software Foundation", "origin": "https://www.python.org", "licence": "PSF-2.0",
    "sources": ["python-release-declaration"],

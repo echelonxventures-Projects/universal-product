@@ -14,8 +14,10 @@ echo "== 1b. canonical state equals the last gate outcome (no direct edits), log
 python3 -I -B -c "import sys;sys.dont_write_bytecode=True;sys.path.insert(0,'.');import assimilate as A;s=A.state_matches_log('.');c=A.verify_chain('.');print(s[1]);print(c[1]);sys.exit(0 if s[0] and c[0] else 1)"
 echo "== 2. Master invariants"
 python3 -I validate.py out/LXM-MASTER.md out/LXM-RECONCILIATION.md "$src2" "$src3" "$prev_matrix" "$src2_sha" "$src3_sha" | tail -1
+echo "== 2b. no agent, tool, person or host named outside its registry (LXM-REQ-000239)"
+python3 -I -B agnostic.py "$M"
 echo "== 3. tool fixtures"
-for t in test_assimilate test_config_adapter test_code_adapter test_readiness test_knowledge; do
+for t in test_assimilate test_config_adapter test_code_adapter test_readiness test_knowledge test_agnostic; do
   python3 -I -B "$t.py" "$M" | tail -1
 done
 echo "== 3b. gate accuracy (ratchet: errors only go down)"

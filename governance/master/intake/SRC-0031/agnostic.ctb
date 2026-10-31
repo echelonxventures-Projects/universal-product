@@ -1,0 +1,9 @@
+id: CTB-SRC0031-agnostic
+source: SRC-0031
+section: §0.1
+kind: requirement
+scope: ARC
+title: Agent-, tool- and provider-agnostic tooling
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000043, LXM-REQ-000196, LXM-REQ-000216, LXM-REQ-000238
+text: No coding agent, assistant, tool, session or hosting provider is named in code or in the logic of configuration: each is registered data, in an actor or host registry, and is referenced by its role, so that any agent, tool, person or provider takes a role by registration alone. A check fails the build when a registered name appears outside its registry.

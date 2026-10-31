@@ -130,6 +130,38 @@
    "patterns": [
     "['\"`](?:production|prod|staging|stage|development|dev|preprod|pre-production|uat|qa|sandbox)['\"`]"
    ]
+  },
+  {
+   "_comment": "LXM-REQ-000239: platform code names no agent, assistant or vendor; names come from the Master actor registry and the platform provider registry, so a newly registered one is covered at once.",
+   "finding": "agent-or-vendor-name",
+   "roots": [
+    "lib",
+    "server.js",
+    "scripts",
+    "public/js"
+   ],
+   "extensions": [
+    ".js"
+   ],
+   "exclude": [
+    "lib/seed/"
+   ],
+   "names_from": [
+    {
+     "in": "master",
+     "file": "actors.json",
+     "paths": [
+      "actors.*.aliases"
+     ]
+    },
+    {
+     "in": "code",
+     "file": "lib/seed/ai.json",
+     "paths": [
+      "AI_PROVIDERS.*.name"
+     ]
+    }
+   ]
   }
  ]
 }
