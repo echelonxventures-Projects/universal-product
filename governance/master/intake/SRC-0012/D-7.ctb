@@ -1,0 +1,6 @@
+id: CTB-SRC0012-D-7
+source: SRC-0012
+section: §D.7
+kind: requirement
+extends: LXM-REQ-000079
+text: The platform must report missing, invalid, conflicting, outdated and unapplied seed definitions.

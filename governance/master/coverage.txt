@@ -1,0 +1,38 @@
+# Mandated reporting elements -> final-report sections (A–K). Format: element | source | element text | sections
+RE-01 | SRC-0002/0003 §A | Repository and workspace truth | A
+RE-02 | SRC-0002/0003 §B | Master mandate conformance matrix | B
+RE-03 | SRC-0002/0003 §C | Five owner decisions | C
+RE-04 | SRC-0002/0003 §D | Monetary and business-rule configuration | D
+RE-05 | SRC-0002/0003 §E | Universal business-platform capability | E
+RE-06 | SRC-0002/0003 §F | Payments, wallets and providers | F
+RE-07 | SRC-0002/0003 §G | Feature and test traceability | G
+RE-08 | SRC-0002/0003 §H | Security, data and operations | H
+RE-09 | SRC-0002/0003 §I | Verification and CI | I
+RE-10 | SRC-0002/0003 §J | Remaining blockers and owner actions | J
+RE-11 | SRC-0002/0003 §K | Final verdict, GO/NO-GO separate | K
+RE-12 | SRC-0001 §29.A | Repository baseline, working-tree changes preserved, limitations | A
+RE-13 | SRC-0001 §29.B | Decision identifier, recorded status, implemented changes, remaining choices, evidence | C
+RE-14 | SRC-0001 §29.C | Universal platform readiness: implemented and configurable vs architecture or templates | E
+RE-15 | SRC-0001 §29.D | Inventory totals, seeded and option coverage, hardcoding, configuration test results, exclusions | D
+RE-16 | SRC-0001 §29.E | Each provider and method: adapter, tests, sandbox, live, unresolved dependencies | F
+RE-17 | SRC-0001 §29.F | Journeys, APIs, UI/UX, access control, errors, migrations, security, concurrency, operational cases, untested scenarios | G
+RE-18 | SRC-0001 §29.G | Commands, environments, results, failures, logs, exact SHA, current remote CI status; incomplete ≠ passing | I
+RE-19 | SRC-0001 §29.H | Launch-blocking decisions, external dependencies, security and financial risks, operational gaps, closing evidence | J,H
+RE-20 | SRC-0001 §29.I | GO/NO-GO with specific evidence; no deploy, merge or claimed approval | K
+RE-21 | SRC-0001 §28.1 | PRODUCTION_READINESS.md: owner, gates, evidence, decisions, blockers | A,I,J
+RE-22 | SRC-0001 §28.2 | Reconciled owner decision records | C
+RE-23 | SRC-0001 §28.3 | Monetary rule inventory and options | D
+RE-24 | SRC-0001 §28.4 | Monetary seed and configuration traceability | D
+RE-25 | SRC-0001 §28.5 | Business-rule and configuration gap inventory | D
+RE-26 | SRC-0001 §28.6 | Business-model and capability matrix | E
+RE-27 | SRC-0001 §28.7 | Provider and wallet integration matrix | F
+RE-28 | SRC-0001 §28.8 | Feature-to-test traceability matrix | G
+RE-29 | SRC-0001 §28.9 | Test, migration, performance, security and operational evidence | H,I
+RE-30 | SRC-0001 §28.10 | Updated runbooks and documentation | H
+RE-31 | SRC-0001 §28.11 | Integration branch and PR updated with verified changes | A
+RE-32 | SRC-0001 §28.12 | Exact tested SHA, CI run links, results, blockers, owner actions | I,J
+RE-33 | SRC-0001 §27 | Overall production acceptance conditions | K,B
+RE-34 | SRC-0004 §3 | Attempts versus distinct run IDs recorded accurately | I
+RE-35 | SRC-0004 §5 | Implemented / configurable / integrated / tested / certified / externally verified / production ready / authorized distinguished | B,K
+RE-36 | SRC-0004 §7 | Decisions, requirement coverage, evidence, exact SHAs, CI executions, unresolved blockers traceable | B,C,I,J
+RE-37 | SRC-0004 §3 | PR-053 open items (a)–(j) reconciled | J,H

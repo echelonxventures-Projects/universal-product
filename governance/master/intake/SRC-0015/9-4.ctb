@@ -1,0 +1,6 @@
+id: CTB-SRC0015-9-4
+source: SRC-0015
+section: §9.4
+kind: requirement
+extends: LXM-REQ-000195
+text: Final principle: LUXORA governs technology through open-ended capability discovery, extensible registration, verified resolution and controlled evolution—not hardcoded technology lists.

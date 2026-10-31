@@ -1,0 +1,6 @@
+id: CTB-SRC0013-2-2-10
+source: SRC-0013
+section: §2.2.10
+kind: requirement
+extends: LXM-REQ-000103
+text: The common platform provides a governed mechanism for registering new capabilities and making them discoverable.

@@ -1,0 +1,6 @@
+id: CTB-SRC0016-2-4
+source: SRC-0016
+section: §2.4
+kind: requirement
+recognized-as: LXM-REQ-000212
+text: A single manually maintained catalogue of technology versions does not satisfy this decision.

@@ -1,0 +1,6 @@
+id: CTB-SRC0015-7-3
+source: SRC-0015
+section: §7.3
+kind: requirement
+extends: LXM-REQ-000044
+text: Do not merely move hardcoded version numbers into one central file and declare the problem solved. Implement automatic discovery, validation, generation and drift detection.

@@ -1,0 +1,6 @@
+id: CTB-SRC0016-10-5
+source: SRC-0016
+section: §10.5
+kind: requirement
+extends: LXM-REQ-000041
+text: Commit and push only intended changes to the authorized integration branch if the workspace is safe.

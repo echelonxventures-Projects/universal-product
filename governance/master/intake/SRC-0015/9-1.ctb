@@ -1,0 +1,6 @@
+id: CTB-SRC0015-9-1
+source: SRC-0015
+section: §9.1
+kind: requirement
+extends: LXM-REQ-000041
+text: First complete the currently outstanding CI requirement on the exact existing PR #6 head. Do not alter CI, Docker or toolchain configuration in a way that invalidates the active release evidence before that requirement is closed, except when necessary to remediate a verified critical issue.

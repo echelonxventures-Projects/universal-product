@@ -1,0 +1,6 @@
+id: CTB-SRC0015-2-3
+source: SRC-0015
+section: §2.3
+kind: requirement
+extends: LXM-REQ-000196
+text: These are extensible metadata contracts, not a finite list of technology types. Categories and their schemas must themselves be registerable and governed.

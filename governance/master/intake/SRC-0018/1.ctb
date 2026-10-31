@@ -1,0 +1,8 @@
+id: CTB-SRC0018-1
+source: SRC-0018
+section: §1
+kind: requirement
+scope: ARC
+title: Master Registry after all validation
+applied-in: STG-00.A-1
+text: There must be a second level, the Master Registry, after the Master Context, reached only after all validation of duplication, overlap, partial coverage and every other validation.

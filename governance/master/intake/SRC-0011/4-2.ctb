@@ -1,0 +1,6 @@
+id: CTB-SRC0011-4-2
+source: SRC-0011
+section: §4.2
+kind: requirement
+extends: LXM-REQ-000195
+text: Governed development technologies include packages, libraries, SDKs, build systems, dependency managers, test frameworks and developer tools.

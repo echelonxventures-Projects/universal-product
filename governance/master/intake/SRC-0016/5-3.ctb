@@ -1,0 +1,6 @@
+id: CTB-SRC0016-5-3
+source: SRC-0016
+section: §5.3
+kind: requirement
+extends: LXM-REQ-000208
+text: Discover releases and metadata from appropriate authoritative sources through extensible discovery adapters. Validate their provenance and metadata. Evaluate compatibility, security, dependencies and required tests before approving use.

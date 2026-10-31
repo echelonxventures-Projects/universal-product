@@ -1,0 +1,6 @@
+id: CTB-SRC0016-9-2
+source: SRC-0016
+section: §9.2
+kind: requirement
+extends: LXM-REQ-000049
+text: Include regression tests for the existing kernel, money policy and wallet governance. Do not change unresolved owner monetary decisions as part of PR-053.

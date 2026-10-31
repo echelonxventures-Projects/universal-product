@@ -1,0 +1,6 @@
+id: CTB-SRC0025-0-1
+source: SRC-0025
+section: §0.1
+kind: requirement
+extends: LXM-REQ-000002
+text: The accountable owner approves owner decisions as Bipin Kumar, with the contacts bipin.kumar@aol.com and bipin1@gmail.com named in SRC-0001.

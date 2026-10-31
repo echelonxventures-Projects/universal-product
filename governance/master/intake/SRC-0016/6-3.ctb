@@ -1,0 +1,6 @@
+id: CTB-SRC0016-6-3
+source: SRC-0016
+section: §6.3
+kind: requirement
+extends: LXM-REQ-000044
+text: Do not merely move all version numbers into one central file.

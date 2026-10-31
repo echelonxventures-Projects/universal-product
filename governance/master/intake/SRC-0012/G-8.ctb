@@ -1,0 +1,6 @@
+id: CTB-SRC0012-G-8
+source: SRC-0012
+section: §G.8
+kind: requirement
+extends: LXM-REQ-000076
+text: Engineering must publish a traceability matrix linking every inventoried rule to its seed definition, implementation, configuration interface, tests and evidence.

@@ -1,0 +1,6 @@
+id: CTB-SRC0013-3-1
+source: SRC-0013
+section: §3.1
+kind: requirement
+recognized-as: LXM-REQ-000103
+text: A new business deployment should be created by selecting and composing the required supported capabilities, business-model definition, configuration profile, rules, integrations, permissions, workflows and presentation.

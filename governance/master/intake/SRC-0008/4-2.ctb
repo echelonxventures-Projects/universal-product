@@ -1,0 +1,6 @@
+id: CTB-SRC0008-4-2
+source: SRC-0008
+section: §4.2
+kind: requirement
+text: Validation shall cover identity, semantic consistency, completeness, authority, uniqueness, scope, dependencies, relationships, governance, compatibility, security, lifecycle and evidence.
+relates: LXM-REQ-000215 supports

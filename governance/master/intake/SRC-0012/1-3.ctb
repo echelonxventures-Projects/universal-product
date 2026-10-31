@@ -1,0 +1,6 @@
+id: CTB-SRC0012-1-3
+source: SRC-0012
+section: §1.3
+kind: requirement
+extends: LXM-REQ-000095
+text: Seeded, configurable monetary policy covers pricing: base prices, price components, price adjustments, price overrides, price lists, price validity periods and applicable pricing policies.

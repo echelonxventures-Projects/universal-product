@@ -1,0 +1,5 @@
+id: CTB-SRC0011-6-6
+source: SRC-0011
+section: §6.6
+kind: requirement
+text: Future extensibility: register new technology categories without redesigning the governance core. A genuinely new discovery protocol may require a new adapter, but not a new competing governance system.

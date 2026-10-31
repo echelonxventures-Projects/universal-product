@@ -1,0 +1,8 @@
+id: CTB-SRC0009-E-1
+source: SRC-0009
+section: §6.1,§6.2,§6.3,§6.4,§6.5,§6.6
+kind: requirement
+scope: ARC
+title: Dependency-sequenced permanent increments
+applied-in: STG-00 #1
+text: Implementation may be sequenced according to architectural dependencies, but every increment must conform to the final architecture; every accepted increment must be permanent and production-quality; no temporary substitute may become an accidental architectural authority; no implementation may create debt that contradicts established constitutional principles; dependencies and interfaces must be defined before dependent implementation; and all previously implemented capabilities must remain conformant as the architecture evolves.

@@ -1,0 +1,6 @@
+id: CTB-SRC0013-3-3
+source: SRC-0013
+section: §3.3
+kind: requirement
+extends: LXM-REQ-000101
+text: For example: An Amazon-like marketplace configuration composes product discovery, seller management, offers, carts, checkout, payments, orders, fulfilment, returns and settlements. An Uber-like mobility configuration composes service discovery, driver and vehicle management, availability, matching, dispatch, trip lifecycle, location integration, pricing, payments and safety-related workflows. A fintech configuration composes the relevant customer and account models, payment or ledger capabilities, financial controls, reconciliation, risk policies and regulatory integrations. An ERP configuration composes the appropriate finance, inventory, procurement, sales, fulfilment and operational workflows. A CRM configuration composes customer and relationship records, interaction history, pipeline workflows, permissions, tasks, reporting and relevant integrations.

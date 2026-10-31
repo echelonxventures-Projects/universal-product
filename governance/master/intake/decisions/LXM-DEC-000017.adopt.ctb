@@ -1,0 +1,12 @@
+id: CTB-LXM-DEC-000017-adopt
+kind: decision
+decision: LXM-DEC-000017
+action: adopt
+outcome: Option (a), this push only: the Master session writes to the repository once, as new branches pushed from a fresh clone outside iCloud, never the integration branch, never a force-push; amazon-62 stays the sole writer for everything else
+effect: LXM-REQ-000216 records the one-time exception
+authorizes: SRC-0028 §0.3, LXM-REQ-000216
+adopted: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+provenance: Owner approval in session 47abdf14, transcript lines 5002 (message) and 5017 (answers); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31c.txt (SHA-256 76141dee7ce3bfe0bdabd4e88f225dd31f5d4e5a3a7dc1fed5d5af27e4da97a3); the questions as asked in OWNER-APPROVAL-2026-10-31c.context.txt; source SRC-0028
+rationale: amazon-62 was not running; a single bounded write keeps the candidate, PR #6 and the protected checkouts untouched
+approval: intake/decisions/OWNER-APPROVAL-2026-10-31c.txt
+approval-sha256: 76141dee7ce3bfe0bdabd4e88f225dd31f5d4e5a3a7dc1fed5d5af27e4da97a3

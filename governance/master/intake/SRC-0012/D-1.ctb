@@ -1,0 +1,6 @@
+id: CTB-SRC0012-D-1
+source: SRC-0012
+section: §D.1
+kind: requirement
+recognized-as: LXM-REQ-000079
+text: The seed process must be idempotent, versioned, auditable and safe to rerun.

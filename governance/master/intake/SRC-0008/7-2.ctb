@@ -1,0 +1,6 @@
+id: CTB-SRC0008-7-2
+source: SRC-0008
+section: §7.2
+kind: requirement
+text: Routine classification, matching, propagation, indexing, consistency checking and traceability maintenance shall be automated to the maximum extent supported by reliable evidence.
+relates: LXM-REQ-000016 supports

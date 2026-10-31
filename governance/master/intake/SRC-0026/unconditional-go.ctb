@@ -1,0 +1,8 @@
+id: CTB-SRC0026-unconditional-go
+source: SRC-0026
+section: §0.1
+kind: requirement
+scope: STG-16
+title: Resolve every blocker to an unconditional GO
+applied-in: STG-16.A-1
+text: Resolve all the blockers until the product reaches an unconditional GO.

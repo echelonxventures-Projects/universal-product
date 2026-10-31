@@ -1,0 +1,5 @@
+# SRC-0020 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Extract: sources/SRC-0020.extract.md (provisional extract from session 47abdf14 transcript line 3699; owner confirmation pending).
+# The contribution restates the owner's sentence as one clean sentence (spelling normalised; a trailing question "What you suggest?" is not a clause). The extract keeps the owner's text.
+status: complete
+extract: sources/SRC-0020.extract.md sha256 542805669d13058974dd97cd6a702f92a82b87987f6c490d3e2fada01d814225
+§1 | 1-1 | 5ac9069b0abe64f8

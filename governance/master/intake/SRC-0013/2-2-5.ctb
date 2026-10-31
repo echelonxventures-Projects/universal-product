@@ -1,0 +1,6 @@
+id: CTB-SRC0013-2-2-5
+source: SRC-0013
+section: §2.2.5
+kind: requirement
+extends: LXM-REQ-000103
+text: The common platform provides configurable entities, relationships, attributes, schemas, lifecycle states, workflows, business policies, permissions and user experiences.

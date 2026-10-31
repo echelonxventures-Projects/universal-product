@@ -1,0 +1,6 @@
+id: CTB-SRC0012-G-1
+source: SRC-0012
+section: §G.1
+kind: requirement
+recognized-as: LXM-REQ-000091
+text: Engineering must inventory existing monetary rules and options from the actual repository and map each to its canonical configuration record.

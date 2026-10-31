@@ -1,0 +1,6 @@
+id: CTB-SRC0015-1-1
+source: SRC-0015
+section: §1.1
+kind: requirement
+extends: LXM-REQ-000195
+text: LUXORA shall not be architecturally restricted to any predefined list of programming languages, runtimes, interpreters, compilers, tools, libraries, SDKs, package managers, databases, operating systems, hardware platforms, infrastructure providers, protocols or technology categories.

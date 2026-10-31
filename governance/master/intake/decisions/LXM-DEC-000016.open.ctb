@@ -1,0 +1,8 @@
+id: CTB-LXM-DEC-000016-open
+kind: decision
+decision: LXM-DEC-000016
+action: open
+question: Authorize correcting an agent error: amazon-44 added the owner-identity sentence of SRC-0025 §0.1 to the wrong record, LXM-REQ-000002, at ledger seq 584; that gave the record owner-decision lineage, so the correction is owner-reserved
+facts: The sentence is true but belongs to LXM-REQ-000001 (the accountable owner). The gate refused the correction (LXM-EXC-000011) and now holds SRC-0025 §0.1 (LXM-EXC-000012). Nothing normative is contradicted
+options: (a) authorize the correction: supersede LXM-REQ-000002 back to its earlier text (history kept) and add the sentence to LXM-REQ-000001, scope SRC-0025 §0.1, LXM-REQ-000001, LXM-REQ-000002; (b) leave it as it is
+recommendation: (a)

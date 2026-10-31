@@ -1,0 +1,7 @@
+id: CTB-SRC0025-dec009
+source: SRC-0025
+section: §0.2
+kind: requirement
+extends: LXM-REQ-000153
+decision: LXM-DEC-000009
+text: By owner decision LXM-DEC-000009, the second distinct CI run ID on the final SHA is obtained by closing and reopening PR #6, only after the candidate is frozen; no commit is made only to trigger CI.

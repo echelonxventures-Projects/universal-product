@@ -1,0 +1,37 @@
+# SRC-0013 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Extract: sources/SRC-0013.extract.md (provisional extract from session 47abdf14 transcript line 3222; owner confirmation pending).
+# Contribution texts strip markdown and, for list items, add the list's lead-in or label so that each clause is a complete sentence (intake/SRC-0013/).
+status: complete
+extract: sources/SRC-0013.extract.md sha256 adac8bcc60ae9cf73be171cb0c8adf4243f96e7c22137596378ad9ca14f25221
+§1.1 | 5-5 | a32adede6a76b52e
+§1.2 | 7-7 | 0bbc02c2b70cd334
+§1.3 | 9-23 | 84c134e6b76e5086
+§2.1 | 27-27 | 71257373b4588c07
+§2.2.1 | 31-31 | 955b61e3143f2b97
+§2.2.2 | 32-32 | 2d449a8eb3a9770e
+§2.2.3 | 33-33 | f970ac4e32b478c7
+§2.2.4 | 34-34 | 36ab0476d3878be8
+§2.2.5 | 35-35 | 960f454d6ec630e1
+§2.2.6 | 36-36 | d7e88e701c3648f1
+§2.2.7 | 37-37 | cdc7ee9849b20841
+§2.2.8 | 38-38 | b2b7a314685e5450
+§2.2.9 | 39-39 | c66f34e80f76cdae
+§2.2.10 | 40-40 | 79bd70c41e6d2b92
+§2.3 | 42-42 | 1d4d186795bdc2a6
+§3.1 | 46-46 | d654184094415563
+§3.2 | 48-48 | 0e50f67efe15b863
+§3.3 | 50-56 | f4111166f3ce1488
+§3.4 | 58-58 | c6e3d19d40e609f9
+§3.5 | 60-60 | 3ff2546068f15a30
+§4.1 | 64-64 | 5b186caeec805ee6
+§4.2 | 66-66 | f66735162cbea121
+§4.3 | 68-68 | 182880a2bb168559
+§4.4 | 70-70 | 6fedfe991bf6a054
+§5.1 | 74-74 | c71a40b0b320a759
+§5.2 | 76-76 | 0595d7de28775cfe
+§5.3 | 78-78 | dfbde63637cf7d6c
+§6.1 | 82-91 | 9e460c635dd49c0f
+§6.2 | 93-93 | bbcab6352f09f21d
+§6.3 | 95-95 | d01ad3f55d6a0217
+§7.1 | 99-109 | 8bd5143c0afe828e
+§7.2 | 111-111 | f1bfaf307a1bb095
+§7.3 | 113-113 | f669b5e34766b1a0

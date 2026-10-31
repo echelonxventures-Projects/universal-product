@@ -1,0 +1,6 @@
+id: CTB-SRC0013-1-1
+source: SRC-0013
+section: §1.1
+kind: requirement
+extends: LXM-REQ-000108
+text: LUXORA shall be built as a universal, configuration-driven business platform capable of configuring, operating and extending multiple types of businesses, platforms, operating models, industries and domains through a common platform foundation.

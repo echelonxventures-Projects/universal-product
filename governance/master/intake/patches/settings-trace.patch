@@ -1,0 +1,49 @@
+diff --git a/lib/settings.js b/lib/settings.js
+index 91b45b7..e21caef 100644
+--- a/lib/settings.js
++++ b/lib/settings.js
+@@ -50,6 +50,32 @@ function envOverrides() {
+   if (process.env.TAX_RATE) o.commerce = { ...(o.commerce || {}), taxRate: Number(process.env.TAX_RATE) };
+   return o;
+ }
++/* Runtime read trace (LX_SETTINGS_TRACE=<file>): records each settings path the running code reads, so that "configurable"
++   is proven by use, not inferred from code (LXM-REQ-000198). Off unless the variable is set. A path read while the settings
++   are serialized (JSON.stringify, e.g. sent to a browser) is recorded as "serialized", not "read". */
++const TRACE_FILE = process.env.LX_SETTINGS_TRACE || "";
++const traceSeen = new Set(), traceCache = new WeakMap();
++function traced(obj, path) {
++  if (!TRACE_FILE || !obj || typeof obj !== "object") return obj;
++  let byPath = traceCache.get(obj);
++  if (!byPath) { byPath = new Map(); traceCache.set(obj, byPath); }
++  if (byPath.has(path)) return byPath.get(path);
++  const p = new Proxy(obj, {
++    get(t, k, r) {
++      const v = Reflect.get(t, k, r);
++      if (typeof k !== "string" || !Object.prototype.hasOwnProperty.call(t, k)) return v;
++      const at = path ? path + "." + k : k;
++      const how = /\bat JSON\.stringify\b/.test(new Error().stack || "") ? "serialized" : "read";
++      if (!traceSeen.has(how + " " + at)) {
++        traceSeen.add(how + " " + at);
++        try { require("fs").appendFileSync(TRACE_FILE, JSON.stringify({ path: at, how }) + "\n"); } catch (e) { }
++      }
++      return traced(v, at);
++    }
++  });
++  byPath.set(path, p);
++  return p;
++}
+ function load(tenantId) {
+   const key = tenantId || 1; const C = cacheAd();
+   if (C.has(key)) return C.get(key);
+@@ -65,8 +91,9 @@ function load(tenantId) {
+      A copy: with nothing saved, merged.commerce IS the shared DEFAULTS object */
+   merged.commerce = { ...merged.commerce, country: storeCountry(key) };
+   merged.features = featuresOf(key, merged.features);
+-  C.set(key, merged);
+-  return merged;
++  const out = traced(merged, "");
++  C.set(key, out);
++  return out;
+ }
+ /* the store's country, once the db module is ready (settings can be read while it boots) */
+ function storeCountry(key) {

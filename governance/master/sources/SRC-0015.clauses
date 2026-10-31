@@ -1,0 +1,36 @@
+# SRC-0015 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Extract: sources/SRC-0015.extract.md (provisional extract from session 47abdf14 transcript line 3332; owner confirmation pending).
+# A list is one clause together with its lead-in; every other sentence paragraph is a clause. Contribution texts strip markdown (intake/SRC-0015/).
+status: complete
+extract: sources/SRC-0015.extract.md sha256 a62e88d0bfb3803ee319019d0cfc352ea4e8cc7f6c6318f9213195196b598fd9
+§1.1 | 5-5 | c52ef337ec0ccb54
+§1.2 | 7-7 | 6b0bd8dad3598b1d
+§1.3 | 9-9 | 28ce954d68efa3b1
+§1.4 | 11-11 | 344f76ccb4bbc08b
+§2.1 | 15-15 | 6b2b65cb4f61314b
+§2.2 | 17-28 | a509812c88167d75
+§2.3 | 30-30 | d823888aaa33fdbc
+§2.4 | 32-32 | cc91a907c5047a03
+§3.1 | 36-36 | 5f19ed97708a6d81
+§3.2 | 38-38 | 6db9203c785b4ec5
+§3.3 | 40-48 | 20b37010b740d37a
+§3.4 | 50-50 | b44b11ce3253dd7a
+§4.1 | 54-54 | ef2ea36514460260
+§4.2 | 56-56 | 7ad66b54e1d8fd4f
+§4.3 | 58-58 | 7b10c43943179f58
+§5.1 | 62-62 | 45038dc391d47e6a
+§5.2 | 64-64 | 961e55d7834fe00f
+§5.3 | 66-66 | f0cfbb0059c16cad
+§5.4 | 68-68 | 1c95abef816bb0f0
+§6.1 | 72-72 | 3d4513dc173c5227
+§6.2 | 74-74 | bb157701b428fd27
+§6.3 | 76-76 | 92fa9c9a70415204
+§6.4 | 78-78 | 9c1ef1b79302493b
+§7.1 | 82-82 | b72edb261e0c6ea1
+§7.2 | 84-91 | 7ac49a881fe0ad33
+§7.3 | 93-93 | 232341c662036d03
+§7.4 | 95-95 | 348ea149f05ae1d7
+§8.1 | 99-109 | 17d799c10b78c844
+§9.1 | 113-113 | 8a74360f85b18d79
+§9.2 | 115-115 | fb8315274b81a3cd
+§9.3 | 117-117 | ccb9480f42d7db15
+§9.4 | 119-119 | e73099177fbd9e70

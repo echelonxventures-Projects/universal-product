@@ -1,0 +1,6 @@
+id: CTB-SRC0009-2-4
+source: SRC-0009
+section: §2.4
+kind: requirement
+recognized-as: LXM-REQ-000203
+text: All capabilities must conform to Universal canonical identity and relationship management.

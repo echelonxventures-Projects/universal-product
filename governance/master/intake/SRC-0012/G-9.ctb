@@ -1,0 +1,6 @@
+id: CTB-SRC0012-G-9
+source: SRC-0012
+section: §G.9
+kind: requirement
+extends: LXM-REQ-000091
+text: Engineering must keep production readiness blocked for any in-scope monetary rule that is missing, incorrectly seeded, not actually configurable as claimed or insufficiently tested.

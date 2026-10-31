@@ -1,0 +1,6 @@
+id: CTB-SRC0015-9-3
+source: SRC-0015
+section: §9.3
+kind: requirement
+extends: LXM-REQ-000051
+text: Report the actual implementation, remaining gaps, test evidence and exact commit SHA. Do not claim universal support merely because a technology registry or discovery interface exists.

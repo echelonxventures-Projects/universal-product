@@ -1,0 +1,9 @@
+id: CTB-SRC0017-1
+source: SRC-0017
+section: §1
+kind: requirement
+scope: ARC
+title: Everything derived through the kernel primitives
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000103
+text: Everything must be derived through registry, entity, context, temporal, relationship, reusable and configurable mechanisms.

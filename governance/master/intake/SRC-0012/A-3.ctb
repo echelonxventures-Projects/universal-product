@@ -1,0 +1,6 @@
+id: CTB-SRC0012-A-3
+source: SRC-0012
+section: §A.3
+kind: requirement
+extends: LXM-REQ-000082
+text: Every discovered rule must be classified as one of: Seeded and configurable. Seeded but awaiting approval or activation. Intentionally fixed by a documented financial or security invariant. Unsupported or requiring implementation before it can be offered as a configuration option. Deprecated, with its replacement and migration path recorded.

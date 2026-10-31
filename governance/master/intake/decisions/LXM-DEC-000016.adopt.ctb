@@ -1,0 +1,12 @@
+id: CTB-LXM-DEC-000016-adopt
+kind: decision
+decision: LXM-DEC-000016
+action: adopt
+outcome: Option (a): correct the agent error; supersede LXM-REQ-000002 back to its earlier text (history kept) and add the owner-identity sentence of SRC-0025 §0.1 to LXM-REQ-000001
+effect: LXM-REQ-000002 regains its earlier text; LXM-REQ-000001 carries the sentence
+authorizes: SRC-0026 §0.2, SRC-0025 §0.1, LXM-REQ-000001, LXM-REQ-000002
+adopted: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+provenance: Owner approval in session 47abdf14, transcript lines 4394 (message) and 4464 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31b.txt (SHA-256 4fd6b1e0bdd3c21510beb711d18a1954d7dbf99ed517061c25d7dc1751029447); the questions as asked in OWNER-APPROVAL-2026-10-31b.context.txt; source SRC-0026
+rationale: The sentence is true but belongs to the record of the accountable owner
+approval: intake/decisions/OWNER-APPROVAL-2026-10-31b.txt
+approval-sha256: 4fd6b1e0bdd3c21510beb711d18a1954d7dbf99ed517061c25d7dc1751029447

@@ -1,0 +1,6 @@
+id: CTB-SRC0026-handover
+source: SRC-0026
+section: §0.5
+kind: requirement
+extends: LXM-REQ-000216
+text: By the owner's direction of 2026-10-31, the Master session hands the repository work to amazon-62 as one ordered work package, and amazon-62 carries it out as the sole repository writer.

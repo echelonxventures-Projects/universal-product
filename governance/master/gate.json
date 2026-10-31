@@ -1,0 +1,20 @@
+{
+ "src2": "external/SRC-0002.txt",
+ "src3": "external/SRC-0003.md",
+ "prev_matrix": "external/LXM-reconciliation-stages-0-10.md",
+ "src2_sha": "0cc5363179627ba96444d2ab41a08c8f107e18343a395060afe7e3d970097dd0",
+ "src3_sha": "581d1f255f069cf92302563a16a142f5f3e21bfcf434a21607c608ce56ad7e4b",
+ "decision_groups": {
+  "open": "C.2",
+  "adopted": "C.3"
+ },
+ "owner_sections": [
+  "### G.4",
+  "## Part C"
+ ],
+ "root_relative": [
+  "src2",
+  "src3",
+  "prev_matrix"
+ ]
+}

@@ -1,0 +1,6 @@
+id: CTB-SRC0016-10-2
+source: SRC-0016
+section: §10.2
+kind: requirement
+extends: LXM-REQ-000049
+text: Run targeted tests, generated-artifact checks, registry and hardcoding gates, the full supported test chain, browser checks, PostgreSQL checks and applicable build/container tests.

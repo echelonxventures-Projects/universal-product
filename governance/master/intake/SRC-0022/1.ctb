@@ -1,0 +1,6 @@
+id: CTB-SRC0022-1
+source: SRC-0022
+section: §1
+kind: requirement
+extends: LXM-REQ-000230
+text: Implement everything one by one, in sequence.

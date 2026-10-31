@@ -1,0 +1,5 @@
+id: CTB-SRC0008-1-3
+source: SRC-0008
+section: §1.3
+kind: requirement
+text: Every new contribution, modification, extension, decision, requirement, capability, specification, configuration, implementation artifact or evidence item must pass through the Master Assimilation Engine before becoming an accepted canonical contribution.

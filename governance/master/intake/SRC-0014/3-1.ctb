@@ -1,0 +1,6 @@
+id: CTB-SRC0014-3-1
+source: SRC-0014
+section: §3.1
+kind: requirement
+extends: LXM-REQ-000095
+text: Existing and future business rules must be managed through a universal, extensible rule and policy mechanism. This includes taxes, promotions, coupons, refunds, eligibility, pricing, fees, commissions, settlement and other applicable rules.

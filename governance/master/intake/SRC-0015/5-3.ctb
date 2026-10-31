@@ -1,0 +1,6 @@
+id: CTB-SRC0015-5-3
+source: SRC-0015
+section: §5.3
+kind: requirement
+extends: LXM-REQ-000210
+text: Production artifacts must record their actual resolved dependencies and immutable artifact identities, including image digests where applicable.

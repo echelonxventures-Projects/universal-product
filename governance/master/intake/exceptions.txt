@@ -1,0 +1,118 @@
+# Intake exceptions (LXM-REQ-000222). Not canonical; each entry blocks one contribution until resolved.
+
+@LXM-EXC-000001 | RESOLVED | CTB-SRC0008-7-1 | fec16db480d9b906cc6e0d2a862c1ce9f0b49ceae9e8b4e07b0ef003eefb4ea7
+source: SRC-0008 §7.1
+reason: LXM-REQ-000016 carries content fixed by an owner decision; changing it is owner-reserved
+impact: Changing it without the owner would override a recorded owner decision.
+resolution: The owner decides; record the decision in Part C and resubmit with decision: LXM-DEC-NNNNNN.
+resolved: 2026-10-30; NEW by CTB-SRC0008-7-1 (sha 1da88c72b969); records LXM-REQ-000231; decision LXM-DEC-000014
+
+@LXM-EXC-000002 | RESOLVED | CTB-SRC0009-7-2 | d4f9ab3bf3533834b1fab6014e65c7f8b0dc4395ba2c274905745e114e7aecdf
+source: SRC-0009 §7.2
+reason: LXM-REQ-000016 carries content fixed by an owner decision; changing it is owner-reserved
+impact: Changing it without the owner would override a recorded owner decision.
+resolution: The owner decides; record the decision in Part C and resubmit with decision: LXM-DEC-NNNNNN.
+resolved: 2026-10-30; RECOGNIZE-SEMANTIC by CTB-SRC0009-7-2 (sha c82a68999916); records LXM-REQ-000231; decision LXM-DEC-000014
+
+@LXM-EXC-000003 | RESOLVED | CTB-SRC0011-5 | c47d1ea2c4a28a01eab1ede90d93c16072787f72534de142fd878b3322aa93c3
+source: SRC-0011 §5
+reason: recognized-as LXM-REQ-000043 is not supported: no clause shares enough meaning with it
+impact: The contribution is not accepted; canonical state is unchanged.
+resolution: Recognize only records that express the clause; otherwise extend, create or withdraw.
+resolved: 2026-10-31; EXTEND by CTB-SRC0011-5 (sha 604a25948114); records LXM-REQ-000043
+
+@LXM-EXC-000004 | RESOLVED | CTB-SRC0011-6-6 | 6ae95bcbccd7322bbf36bd08cffe136d098e15eb8ecc9106a7007d828d8e2b74
+source: SRC-0011 §6.6
+reason: Validation failed: FAIL  clause 1 is still not expressed by any record after the mutation
+impact: Accepting would break a Master invariant.
+resolution: Correct the contribution so that every listed check passes.
+resolved: 2026-10-31; RECOGNIZE-SEMANTIC by CTB-SRC0011-6-6 (sha 274b9dc99fd0); records LXM-REQ-000211
+
+@LXM-EXC-000005 | QUARANTINED | CTB-SRC0015-9-3 | 81ce7b034d0e7b2b7733321b9e39c316b88e837b40547b608a9e788137000520
+source: SRC-0015 §9.3
+reason: Contradiction: clause 2 contradicts LXM-REQ-000196 (shared meaning 0.62)
+impact: Accepting would create two competing authorities for the same obligation.
+resolution: An owner-authority source either supersedes the record (supersedes: + reason:) or the contribution is withdrawn; unresolvable conflicts go to the owner (LXM-REQ-000016 E4).
+
+@LXM-EXC-000006 | QUARANTINED | CTB-SRC0016-9-1 | 277c5211a46b38bf3a4e11c0b0a60fd39cd8378f6c91b94c07a5fddf50aaa639
+source: SRC-0016 §9.1
+reason: Contradiction: clause 3 contradicts LXM-REQ-000043 (shared meaning 0.67)
+impact: Accepting would create two competing authorities for the same obligation.
+resolution: An owner-authority source either supersedes the record (supersedes: + reason:) or the contribution is withdrawn; unresolvable conflicts go to the owner (LXM-REQ-000016 E4).
+
+@LXM-EXC-000007 | RESOLVED | CTB-SRC0016-10-2 | 84f85503569191a6a3e457b607ce26e16306bf4b7e9788d7dbff0051cbad292f
+source: SRC-0016 §10.2
+reason: recognized-as LXM-REQ-000049 is not supported: no clause shares enough meaning with it
+impact: The contribution is not accepted; canonical state is unchanged.
+resolution: Recognize only records that express the clause; otherwise extend, create or withdraw.
+resolved: 2026-10-31; COMPOSE by CTB-SRC0016-10-2 (sha 16f78a7a0a29); records LXM-REQ-000043, LXM-REQ-000136
+
+@LXM-EXC-000008 | RESOLVED | CTB-LXM-DEC-000009-adopt | b56142f05395669e2da58612e44ba6273ac4e4f0125d426852fee19962bd75f6
+source: ? ?
+reason: The approval intake/decisions/OWNER-APPROVAL-2026-10-31.txt is not a file under intake/decisions/
+impact: The contribution is not accepted; canonical state is unchanged.
+resolution: Store the owner's approval verbatim under intake/decisions/ and cite it.
+resolved: 2026-10-31; ADOPT by CTB-LXM-DEC-000009-adopt (sha b56142f05395); records LXM-DEC-000009; decision LXM-DEC-000009
+
+@LXM-EXC-000009 | RESOLVED | CTB-LXM-DEC-000010-adopt | 32db9b74a3b0cd273520d4ac4323462b905b44a77eb6bc53ed953224e5ab0d59
+source: ? ?
+reason: The approval intake/decisions/OWNER-APPROVAL-2026-10-31.txt is not a file under intake/decisions/
+impact: The contribution is not accepted; canonical state is unchanged.
+resolution: Store the owner's approval verbatim under intake/decisions/ and cite it.
+resolved: 2026-10-31; ADOPT by CTB-LXM-DEC-000010-adopt (sha 32db9b74a3b0); records LXM-DEC-000010; decision LXM-DEC-000010
+
+@LXM-EXC-000010 | RESOLVED | CTB-LXM-DEC-000011-adopt | 5953871b45bec0a2ecc11a5f5ef48cf40baa19a7d50fcd52ec57bd5c54a2a570
+source: ? ?
+reason: The approval intake/decisions/OWNER-APPROVAL-2026-10-31.txt is not a file under intake/decisions/
+impact: The contribution is not accepted; canonical state is unchanged.
+resolution: Store the owner's approval verbatim under intake/decisions/ and cite it.
+resolved: 2026-10-31; ADOPT by CTB-LXM-DEC-000011-adopt (sha 5953871b45be); records LXM-DEC-000011; decision LXM-DEC-000011
+
+@LXM-EXC-000011 | RESOLVED | CTB-LXM-DEC-000015-adopt | c7c0f7d9bc6ffc84e11ba3456c435fb09b59316ce2defd4332211b78a87c8e43
+source: ? ?
+reason: The approval intake/decisions/OWNER-APPROVAL-2026-10-31.txt is not a file under intake/decisions/
+impact: The contribution is not accepted; canonical state is unchanged.
+resolution: Store the owner's approval verbatim under intake/decisions/ and cite it.
+resolved: 2026-10-31; ADOPT by CTB-LXM-DEC-000015-adopt (sha c7c0f7d9bc6f); records LXM-DEC-000015; decision LXM-DEC-000015
+
+@LXM-EXC-000012 | RESOLVED | CTB-SRC0025-0-1-correct-002 | 9c588d9f67257676c54f5a379c72ca09b4bdba03c02400e62112dcb02669fcfa
+source: SRC-0025 §0.1
+reason: LXM-REQ-000002 carries content fixed by an owner decision; changing it is owner-reserved
+impact: Changing it without the owner would override a recorded owner decision.
+resolution: The owner decides; record the decision in decisions.txt (rendered as Part C) and resubmit with decision: LXM-DEC-NNNNNN.
+resolved: 2026-10-31; already assimilated (NOOP)
+
+@LXM-EXC-000013 | RESOLVED | CTB-SRC0025-0-1b | 4b6c5235e5efa0b231b2cdd895437e496ffc597b12c700337df56fb04fd7e8b4
+source: SRC-0025 §0.1
+reason: SRC-0025 §0.1 is held for an owner decision (LXM-EXC-000012); owner-reserved
+impact: Assimilating it in any form would implement an option the owner has not chosen.
+resolution: The owner decides; record the decision in decisions.txt (rendered as Part C) and resubmit with decision: LXM-DEC-NNNNNN.
+resolved: 2026-10-31; already assimilated (RECOGNIZE-EXACT)
+
+@LXM-EXC-000014 | RESOLVED | CTB-SRC0025-0-1-correct-002-dec016 | 8ea95b61bc5e87512393020d3d836d844cce5db4db5fca5df99a30f8bc004393
+source: SRC-0025 §0.1
+reason: Validation failed: FAIL  the change leaves 1 source clause sentence(s) unexpressed: SRC-0025 §0.1 sentence 1 no longer expressed by LXM-REQ-000002 (best 0.15, together 0.15)
+impact: Accepting would break a Master invariant.
+resolution: Correct the contribution so that every listed check passes.
+resolved: 2026-10-31; already assimilated (NOOP)
+
+@LXM-EXC-000015 | RESOLVED | CTB-SRC0026-complete | 41a19c7fee603ba32fb2180b21122fc70ad3b74ba9271217e86d42a6a8270802
+source: SRC-0026 ?
+reason: Validation failed: FAIL  SRC-0026 ledger: every clause is covered by a record or held by an open intake exception  — 5 clauses; held: none; uncovered: §0.2, §0.5 | FAIL  H.3 clause coverage index lists every ledger clause; in a complete ledger each is covered or held  — 276 rows; uncovered and unheld: SRC-0026 §0.2, SRC-0026 §0.5
+impact: Accepting would break a Master invariant.
+resolution: Correct the contribution so that every listed check passes.
+resolved: 2026-10-31; EXTEND by CTB-SRC0026-complete (sha 41a19c7fee60); records SRC-0026
+
+@LXM-EXC-000016 | RESOLVED | CTB-SRC0027-clean-step | a9e6fb9075a9ae88563edbcc6368b64dca6f03168bbc55f8dbf3d214c64e0d01
+source: SRC-0027 §0.1
+reason: Ambiguous: clause 1 is partly expressed by LXM-REQ-000217 (0.47) but not covered
+impact: Creating a record could duplicate existing meaning; extending could attach it to the wrong record.
+resolution: Declare extends: <record> to add it there, recognized-as: <record> if that record already expresses it, or distinct-from: <records> to confirm the meaning is new.
+resolved: 2026-10-31; NEW by CTB-SRC0027-clean-step (sha 09f018f48ecb); records LXM-REQ-000237
+
+@LXM-EXC-000017 | RESOLVED | CTB-REGISTER-SRC-0028 | 559d54fd36475c5d33185cb2974d0b8053a86aacab96b96201234faca8eb65a0
+source: SRC-0028 ?
+reason: Validation failed: FAIL  Every LXM-DEC reference resolves  — LXM-DEC-000017
+impact: Accepting would break a Master invariant.
+resolution: Correct the contribution so that every listed check passes.
+resolved: 2026-10-31; NEW by CTB-REGISTER-SRC-0028 (sha 559d54fd3647); records SRC-0028

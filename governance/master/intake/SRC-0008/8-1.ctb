@@ -1,0 +1,5 @@
+id: CTB-SRC0008-8-1
+source: SRC-0008
+section: §8.1
+kind: requirement
+text: A new contribution is not considered complete merely because it has been received, documented, implemented or tested.

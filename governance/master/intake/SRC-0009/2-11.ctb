@@ -1,0 +1,7 @@
+id: CTB-SRC0009-2-11
+source: SRC-0009
+section: §2.11
+kind: requirement
+recognized-as: LXM-REQ-000204
+relates: LXM-REQ-000221 supports
+text: All capabilities must conform to Complete provenance and traceability.

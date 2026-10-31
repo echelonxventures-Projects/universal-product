@@ -1,0 +1,9 @@
+id: CTB-SRC0027-clean-step
+source: SRC-0027
+section: §0.1
+kind: requirement
+scope: EXE
+title: Clean working tree after each step
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000030, LXM-REQ-000134, LXM-REQ-000217
+text: Each step ends with git status clean in the canonical writer's workspace: the step's changes are committed, and no modified, staged or untracked file remains. A clean tree is reached only by committing the work, never by reverting, stashing or discarding it; the preserved Phase 1 checkout keeps its uncommitted changes (LXM-REQ-000217).

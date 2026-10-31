@@ -1,0 +1,6 @@
+id: CTB-SRC0013-3-5
+source: SRC-0013
+section: §3.5
+kind: requirement
+extends: LXM-REQ-000101
+text: A business profile must be able to select supported capabilities without modifying unrelated platform code. Where a genuinely new computation, protocol or domain behavior is required, implement it through the governed extension mechanism and register it for reuse.

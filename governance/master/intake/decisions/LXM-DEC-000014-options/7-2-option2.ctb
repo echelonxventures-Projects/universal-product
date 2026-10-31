@@ -1,0 +1,7 @@
+id: CTB-SRC0009-7-2
+source: SRC-0009
+section: §7.2
+kind: requirement
+recognized-as: LXM-REQ-000231
+decision: LXM-DEC-000014
+text: Human decisions must be required only for genuine authority, policy, risk and ambiguity that cannot safely be resolved automatically.

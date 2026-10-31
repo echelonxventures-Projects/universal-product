@@ -1,0 +1,7 @@
+id: CTB-SRC0025-dec010
+source: SRC-0025
+section: §0.2
+kind: requirement
+extends: LXM-REQ-000191
+decision: LXM-DEC-000010
+text: By owner decision LXM-DEC-000010, this Master is adopted as version 1.0.0 in the repository at governance/master/, with PROJECT-CONTEXT and the assimilation gate as the single knowledge system; the sole writer installs it, including the owner's source files SRC-0002 and SRC-0003.

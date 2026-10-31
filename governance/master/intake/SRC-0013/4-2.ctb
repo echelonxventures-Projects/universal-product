@@ -1,0 +1,6 @@
+id: CTB-SRC0013-4-2
+source: SRC-0013
+section: §4.2
+kind: requirement
+extends: LXM-REQ-000200
+text: Business models, industry classifications, domain definitions and capability compositions must be discoverable and extensible through governed registries and schemas. New combinations of existing capabilities should be configurable without modifying the platform core.

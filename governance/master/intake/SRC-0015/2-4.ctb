@@ -1,0 +1,6 @@
+id: CTB-SRC0015-2-4
+source: SRC-0015
+section: §2.4
+kind: requirement
+extends: LXM-REQ-000073
+text: Use the existing canonical registry and kernel lifecycle wherever suitable. Do not introduce a parallel registry or a separate configuration framework for individual tool families.

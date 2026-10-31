@@ -1,0 +1,6 @@
+id: CTB-SRC0013-2-3
+source: SRC-0013
+section: §2.3
+kind: requirement
+extends: LXM-REQ-000102
+text: These mechanisms must be implemented using the existing canonical platform architecture wherever possible. Do not create parallel engines, duplicate registries or competing sources of truth.

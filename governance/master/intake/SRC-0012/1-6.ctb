@@ -1,0 +1,6 @@
+id: CTB-SRC0012-1-6
+source: SRC-0012
+section: §1.6
+kind: requirement
+extends: LXM-REQ-000088
+text: Seeded, configurable monetary policy covers fees and commissions: platform fees, seller commissions, transaction charges, service fees, provider fees, fee allocation and applicable minimums, maximums or tiers.

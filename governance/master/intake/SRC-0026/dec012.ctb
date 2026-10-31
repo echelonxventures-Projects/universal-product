@@ -1,0 +1,7 @@
+id: CTB-SRC0026-dec012
+source: SRC-0026
+section: §0.3
+kind: requirement
+extends: LXM-REQ-000093
+decision: LXM-DEC-000012
+text: By owner decision LXM-DEC-000012, MD-1 to MD-5 are decided as the money decision packet recommends: a rounding rule per market with the platform default half-up (MD-1 C); the exact money model for the payment spine only (MD-2 A); pro-rata tax on a partial refund, with offers reversed only on a full refund (MD-3 B); every money-moving domain outside the spine disabled until migrated (MD-5); a mandatory migration rehearsal with signed per-reason quarantine rules (MD-4). Financially affected activation stays blocked until each launch market's rule and tax basis are named, MD-3 B is built and tested and the rehearsal is evidenced.

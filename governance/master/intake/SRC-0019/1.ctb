@@ -1,0 +1,8 @@
+id: CTB-SRC0019-1
+source: SRC-0019
+section: §1
+kind: requirement
+scope: ARC
+title: Feedback layer that refines everything
+applied-in: STG-00.A-1
+text: After the Master Registry there must be one more layer where feedback such as completing, partial, done, temporal and user details refines everything most.

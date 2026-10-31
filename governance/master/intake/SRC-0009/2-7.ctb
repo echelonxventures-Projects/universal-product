@@ -1,0 +1,6 @@
+id: CTB-SRC0009-2-7
+source: SRC-0009
+section: §2.7
+kind: requirement
+recognized-as: LXM-REQ-000202
+text: All capabilities must conform to Complete lifecycle and version evolution.

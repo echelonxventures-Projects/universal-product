@@ -1,0 +1,6 @@
+id: CTB-SRC0008-2-1
+source: SRC-0008
+section: §2.1
+kind: requirement
+text: The system shall discover and evaluate the contribution against the entire relevant canonical knowledge environment.
+relates: LXM-REQ-000201 supports

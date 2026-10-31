@@ -1,0 +1,6 @@
+id: CTB-SRC0015-3-2
+source: SRC-0015
+section: §3.2
+kind: requirement
+extends: LXM-REQ-000206
+text: The resolver must evaluate compatibility, security, dependency constraints, platform features, operational requirements and verified test results.

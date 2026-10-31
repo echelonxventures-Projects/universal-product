@@ -1,0 +1,636 @@
+# LUXORA Ω∞ — MASTER IMPLEMENTATION AND CONFORMANCE EXECUTION PROMPT
+## Universal Platform · Configuration · Financial Integrity · Technology Governance · Production Readiness
+
+**Accountable owner:** Bipin Kumar  
+**Repository:** `https://github.com/echelonxventures-Projects/universal-product`  
+**Integration branch:** `integration/luxora-production-go-2026-10-27`  
+**Canonical release register:** `PRODUCTION_READINESS.md`  
+**Primary execution environment:** The existing approved LUXORA integration workspace outside iCloud  
+**Release authorization:** Explicit owner approval required  
+**Initial release status:** NO-GO until the mandatory release requirements and explicit authorization are satisfied.
+
+---
+
+# EXECUTION DIRECTIVE
+
+Implement the complete applicable scope of the owner's attached document:
+
+**LUXORA Ω∞ — UNIVERSAL PLATFORM, CONFIGURATION, FINANCIAL INTEGRITY AND PRODUCTION READINESS MASTER MANDATE.**
+
+This is an execution mandate, not a request for another proposal, architecture document, gap report alone, or list of future recommendations.
+
+Inspect the actual repository, preserve existing valid work, reconcile prior implementations and evidence, implement every authorized requirement that remains incomplete, run the required checks, update canonical records, and continue through the implementation sequence without routine interruptions.
+
+The expected result is a working, tested, traceable platform whose implemented capabilities and remaining blockers are honestly represented.
+
+## Non-interruption rules
+
+1. Execute the stages below sequentially in the same authorized owner session.
+2. Do not ask me to confirm routine technical choices, file edits, test commands, ordinary fixes, or progress between stages.
+3. Do not stop after producing the gap analysis, architecture plan, documentation, or one successful test suite.
+4. Do not wait for an external dependency before completing independent work that does not require it.
+5. When one requirement is blocked by a missing owner decision, credential, external service, or operational prerequisite, document the exact blocker, implement the safe preparatory work, keep the blocked operation disabled, and continue with all independent work.
+6. Keep a durable checkpoint after every material stage so execution can resume safely if a tool, session, process, or CI job terminates.
+7. Do not falsely claim completion when a required check was not executed or failed.
+8. Do not start competing Claude Code sessions, create a second writable checkout for the same work, or run concurrent edits against this repository.
+9. Do not send repetitive progress messages. Continue through the sequence and provide the consolidated evidence-based report at the end.
+10. Ask for owner input only when progress genuinely cannot safely continue without a consequential business decision, secret or credential, external authorization, or other decision reserved to the owner. Do not block unrelated work while awaiting that input.
+
+**“Without interruption” means complete every safely executable stage in sequence, not invent financial decisions, expose credentials, perform destructive actions, or deploy without authorization.**
+
+---
+
+# STAGE 0 — ESTABLISH EXCLUSIVE OWNERSHIP AND REPOSITORY TRUTH
+
+Before making any changes, establish the real current state.
+
+Inspect:
+
+- Absolute working directory.
+- Git branch and exact HEAD SHA.
+- Remote URL and current remote branch head.
+- Staged and unstaged changes.
+- Untracked files and existing preservation artifacts.
+- Active Git, test, build and background processes.
+- Open pull requests and current CI runs.
+- Canonical `PRODUCTION_READINESS.md`.
+- Existing decision records, generated context artifacts, feature registries and test procedures.
+
+The last reported remote state was:
+
+- PR #6: open and in draft.
+- Reported head: `ed634ad84ba0c25225f682ad3c7980706c9753bd`.
+- CI run: `40922556022`.
+- Owner session: `amazon-62`.
+
+These are historical observations, not assumptions. Reverify the actual current state before proceeding.
+
+The owner session has been instructed to incorporate an authorized development-only dependency re-resolution. The reported resolution includes 35 development dependencies, ten version changes, and the `jsdom`/`dom-selector` 9-to-10 transition. Verify the actual resulting files and commit. Do not infer that the re-resolution is committed or pushed merely because another session reported doing it.
+
+### Safety invariants
+
+- Never use `git reset --hard`, `git clean`, force-push, unapproved history rewriting, or destructive cleanup.
+- Never overwrite or discard unrelated or uncommitted work.
+- Never delete an original or preservation workspace.
+- Never modify a production database or protected data during testing.
+- Never hand-edit generated files when a documented generator exists.
+- Never commit secrets, credentials, keyrings, or environment-specific private artifacts.
+- Never merge PR #6 or deploy without explicit authorization.
+
+If the repository state is unsafe or differs materially from the expected integration state, preserve it and reconcile the discrepancy without destroying work.
+
+Record the verified initial state in the existing canonical release record or an appropriately governed execution checkpoint.
+
+# STAGE 1 — FINISH PR-053 AND UNIVERSAL TECHNOLOGY GOVERNANCE
+
+Finish the active **Universal Technology Governance** workstream before expanding into the wider master-mandate implementation.
+
+Review the canonical `docs/technology.md`, technology declaration, discovery snapshots, registry lifecycle, adapters, scanner, generated lock, inventory and tests.
+
+Verify that the implementation provides:
+
+- Extensible technology categories without closed hardcoded category enumerations.
+- Governed source and protocol registration.
+- Safe discovery with provenance and bounded retrieval.
+- Explicit separation of discovery, compatibility, evidence, approval, activation and production resolution.
+- A canonical lifecycle reusing the existing kernel governance mechanisms.
+- Deterministic locks and reproducible resolution.
+- Exact pinned production artifacts rather than floating versions.
+- Detection of undeclared technology assumptions and unjustified hardcoding.
+- CI, runtime, dependency and container consistency checks.
+- Independently approved, auditable production-affecting changes.
+- Controlled exceptions and rollback.
+- Tests showing that previously unknown categories can be registered without redesigning the governance core.
+
+### Dependency re-resolution
+
+Complete the previously authorized development-only dependency resolution if it has not already been completed.
+
+Confirm that the resulting `package-lock.json` has correct resolved metadata and integrity values, respects the dependency constraints, installs reproducibly, and does not unintentionally modify production dependencies or `package.json`.
+
+Verify the reported `jsdom` and `@asamuzakjp/dom-selector` changes against actual dependency constraints. Do not force incompatible versions or suppress integrity findings.
+
+Run a clean `npm ci`, affected dependency/browser tests, the complete applicable test suite, technology lock and inventory generation checks, the governance gate, and the required browser, PostgreSQL and Docker checks.
+
+Review all remaining technology-assumption findings individually. Distinguish fixed findings, verified constraints, explicitly approved exceptions and unresolved gaps.
+
+### PR-053 acceptance
+
+Update the canonical register and technology documentation with actual evidence.
+
+Commit and push the reviewed changes only after required local checks pass and the final diff is inspected. Establish the required two independent, fully green CI runs on the exact post-change SHA, examining required jobs rather than relying only on the overall PR status.
+
+Do not count CI from an earlier commit as evidence for the final changed tree.
+
+Do not begin unrelated concurrent work to accelerate the run. Preserve the exclusive owner-session rule.
+
+Once PR-053 has its required evidence, continue to Stage 2. A green technology gate does not establish compliance with the entire master mandate.
+
+# STAGE 2 — ASSIMILATE THE MASTER MANDATE
+
+Use the attached master mandate as the parent acceptance contract.
+
+Locate and read the canonical repository copy where one exists. Verify its identity, version, status and governance relationships. Preserve its terminology and actual requirements. Do not silently rewrite or weaken them.
+
+If a canonical artifact cannot be located, record that limitation and use the owner-supplied attached mandate as the requirement source until the canonical location is resolved.
+
+Inspect all referenced implementation, configuration, schemas, migrations, registries, UI interfaces, provider adapters, tests, CI workflows, operational documentation and readiness records.
+
+Build a traceable conformance matrix using existing canonical traceability conventions, with one entry per applicable requirement.
+
+Each entry must identify:
+
+- Exact mandate section or requirement.
+- Canonical implementation artifact.
+- Runtime or lifecycle enforcement.
+- Configuration, schema and data dependencies.
+- Required test or independently verifiable check.
+- Actual evidence and tested commit.
+- Status: satisfied, partial, unsatisfied, blocked or awaiting owner decision.
+- Remaining work, consequence and closure condition.
+
+Reuse existing canonical records. Do not create duplicate registers that compete with `PRODUCTION_READINESS.md`.
+
+Do not count architectural descriptions, seed placeholders, registry records or passing unrelated tests as proof of implemented functionality.
+
+# STAGE 3 — COMPLETE THE SOURCE-GROUNDED GAP INVENTORY
+
+Inspect the real codebase and reconcile every part of the mandate, including:
+
+1. Universal monetary policy.
+2. Universal multi-business architecture.
+3. Universal business rules and configuration.
+4. Financial exceptions and legacy data resolution.
+5. Payments, wallets and provider integrations.
+6. Canonical configuration registry and seed lifecycle.
+7. Business-model and capability composition.
+8. Financial arithmetic, persistence and lifecycle integrity.
+9. Feature-to-test traceability.
+10. User journeys, permissions and UI/UX.
+11. Security, tenant isolation and auditability.
+12. Database migration and recovery.
+13. Deployment infrastructure and operations.
+14. Monitoring, backups, disaster recovery and capacity.
+15. Privacy, compliance and explicit release authorization.
+
+Inventory existing behavior from source code and canonical registries. Do not manufacture inventory items or coverage totals.
+
+Identify duplicated policies, hidden business rules, configuration gaps, missing seed options, stale generated artifacts, conflicting authorities, unimplemented capabilities, tests that do not cover claimed behavior and stale evidence.
+
+Classify each finding by impact, dependencies, priority and the work required to close it.
+
+**Do not stop after the inventory.** Proceed immediately with implementation in the following stages. A blocker affecting one item must not block unrelated implementation.
+
+# STAGE 4 — BUILD OR COMPLETE THE CANONICAL CONFIGURATION FOUNDATION
+
+Inspect the existing kernel, registry and configuration mechanisms. Reuse them whenever they satisfy the requirements. Extend existing implementations where incomplete; do not introduce parallel engines without justification.
+
+Ensure appropriate governed definitions support:
+
+- Stable identity, schema and ownership.
+- Typed options and validation.
+- Explicit default configuration distinct from rule definitions.
+- Scope and inheritance.
+- Deterministic precedence and conflict detection.
+- Dependencies and compatibility.
+- Lifecycle, effective dates and versions.
+- Approval and activation.
+- Simulation and impact assessment.
+- Audit history and rollback.
+- Authorization and tenant isolation.
+- Links to implementations, consuming features and tests.
+
+Provide authorized APIs and the appropriate administration interfaces for discovering, inspecting, configuring, validating, previewing, simulating, approving, activating, comparing and rolling back supported definitions.
+
+A registry is not enough if authorized administrators cannot use the required functionality in the running platform.
+
+Seed existing supported rules and options from the implementation. Preserve approved live configuration when seeds are re-applied. Make seed execution idempotent, deterministic, version-aware and auditable.
+
+Ensure invalid configurations cannot bypass monetary, security, authorization, ledger, payment, tenant or data-integrity invariants.
+
+Test actual runtime behavior, not just the existence of seed records.
+
+# STAGE 5 — COMPLETE MONETARY POLICY AND FINANCIAL INTEGRITY
+
+Inspect the existing money model, monetary migration history, canonical money inventory, policy records and documented decisions.
+
+Do not create a second money library or a competing monetary source of truth.
+
+Implement or complete:
+
+- Exact monetary representation.
+- Explicit currency identity and currency-specific precision.
+- Governed rounding modes and boundaries.
+- Deterministic conversion, rate source, timestamps and fees.
+- Exact calculations and validation.
+- Versioned policy resolution and historical traceability.
+- Safe legacy conversion and migration.
+- Quarantine of ambiguous values.
+- Authorized exception resolution with rationale and audit history.
+- Refund, tax, fee, discount and settlement allocation.
+- Reconciliation and discrepancy workflows.
+- Preservation of original financial source evidence.
+
+Audit every in-scope monetary read/write path and persistence field. A corrected payment spine does not establish that all other monetary domains are exact.
+
+Inventory all existing monetary rules and options from actual source code and schemas. Seed and expose each supported rule through the canonical configuration mechanism. A rule counts as configurable only when the running platform loads, validates and applies its selected configuration.
+
+Preserve approved historical financial configurations and ensure new transactions record the governing policy version.
+
+### Owner decisions MD-1 through MD-5
+
+Inspect the current canonical money-decision records and establish their exact meanings and statuses.
+
+Do not invent or silently approve financial business policy. Where the decision is unresolved:
+
+- Implement the policy mechanism and supported options.
+- Complete safe tests and preparatory work.
+- Keep financially affected activation blocked where required.
+- Prepare an exact decision packet with options, consequences and a recommendation for owner review.
+- Continue all unrelated stages.
+
+Do not wait for these decisions before implementing independent requirements.
+
+# STAGE 6 — COMPLETE UNIVERSAL BUSINESS RULES
+
+Inventory all existing supported business rules and their options, including applicable rules for:
+
+- Catalog and product behavior.
+- Pricing and offers.
+- Eligibility and promotion stacking.
+- Orders and fulfilment.
+- Inventory and availability.
+- Payments, refunds and disputes.
+- Approvals and access control.
+- Notifications and workflows.
+- Risk controls and exception handling.
+- Business-specific and future domain behavior.
+
+Use the canonical rule, policy or configuration engine appropriate to each function.
+
+Make supported rules discoverable, configurable and testable through authorized interfaces. Ensure composition, precedence, effective scope, dependency validation, versioning, simulation, approval, activation, rollback and auditability work where applicable.
+
+New rules expressible in existing engines must be addable through governed configuration without unnecessary source-code changes.
+
+Genuinely new executable behavior must be implemented and registered through a reviewed extension mechanism before it is offered as a functional configuration choice.
+
+Do not use arbitrary code execution as a substitute for a rules engine.
+
+# STAGE 7 — COMPLETE UNIVERSAL MULTI-BUSINESS COMPOSITION
+
+Implement or complete the reusable platform mechanism for defining, discovering, composing, validating, configuring and testing business profiles.
+
+Reuse existing capability, domain, composition, navigation, identity, authorization and registry foundations.
+
+Establish canonical handling for:
+
+- Business-model and industry definitions.
+- Reusable capabilities and shared primitives.
+- Capability dependencies and compatibility.
+- Profile composition and lifecycle.
+- Configuration inheritance and scope resolution.
+- Workflow and rule selection.
+- Permissions, APIs, events and UI exposure.
+- Data ownership, schemas and migrations.
+- Integration connectors.
+- Observability, certification and deployment profiles.
+
+Do not hardcode a closed list of business models or make marketplace assumptions part of every shared primitive.
+
+Demonstrate functioning profiles through the real platform mechanisms for:
+
+1. Amazon-like marketplace.
+2. Uber-like mobility and on-demand services.
+3. Fintech/payment-oriented business.
+4. Consultancy or service marketplace.
+5. ERP-style enterprise operations.
+6. CRM-style customer relationship operations.
+
+Use actual implemented capabilities. Build missing shared composition mechanisms when necessary. Implement missing domain-specific behavior when it is required for the declared acceptance scope and can be completed safely.
+
+For each profile, distinguish architecturally supported, defined, implemented, registered, configurable, integrated, tested, certified and operational states.
+
+A profile entry or configuration template alone is not proof of a functioning industry solution. Clearly report missing implementations and dependencies without falsely advertising them as supported.
+
+Prioritize the full first marketplace release while making the universal foundation reusable.
+
+# STAGE 8 — COMPLETE PAYMENTS, WALLETS AND PROVIDERS
+
+Inspect existing integration contracts and adapters. Preserve sound provider implementations and remove unnecessary provider-specific coupling from common orchestration.
+
+Complete the provider-neutral integration mechanism and actual adapters for the providers required by the mandate, including Razorpay, PhonePe, applicable UPI routes, platform wallets and additional registered providers.
+
+Cover applicable:
+
+- Payment initiation, authorization and capture.
+- Payment-method capability discovery.
+- Secure credential references.
+- Supported currency and operation constraints.
+- Idempotency and duplicate-request prevention.
+- Verified webhook signatures.
+- Duplicate and out-of-order event handling.
+- Retries, timeouts and unknown outcomes.
+- Full and partial refunds.
+- Disputes and chargebacks.
+- Settlement and reconciliation.
+- Provider routing, health and operational controls.
+- Ledger and wallet integrity.
+- Audit history and conformance tests.
+
+A connector interface alone does not make a provider functional.
+
+Implement and test the actual provider adapters and their supported operations. Where accounts, credentials or test environments are unavailable, complete all safe implementation and automated verification possible, clearly identify the missing external evidence, and keep production readiness blocked.
+
+Never request or expose secret values, invent sandbox results or describe mocks as real-provider verification.
+
+# STAGE 9 — COMPLETE FEATURE-TO-TEST AND UI/UX COVERAGE
+
+Use the canonical traceability system to map every mandatory first-marketplace feature and workflow to its acceptance criteria, APIs, data, UI screens, roles, permissions, configuration dependencies, external integrations and actual tests.
+
+Cover real user journeys for buyers, sellers, administrators, operators and other relevant roles.
+
+Include:
+
+- Registration, authentication and session lifecycle.
+- Tenant isolation and permissions.
+- Catalog and discovery.
+- Pricing, offers and checkout.
+- Payment outcomes and recovery.
+- Orders, fulfilment, returns and refunds.
+- Wallet workflows where enabled.
+- Business and policy configuration.
+- Validation, approval, activation and rollback.
+- Administrative financial exceptions.
+- Notifications and operational failure paths.
+
+Test success, validation errors, permissions, empty/loading states, network failures, timeouts, concurrency, duplicate events, recovery and truthful user-facing status.
+
+Verify responsive UI behavior, accessibility and supported browser operation where relevant.
+
+Page-load counts and route coverage alone do not establish feature correctness.
+
+Record the exact tested commit SHA and actual result for each relevant test. Keep untested journeys visible rather than implying complete coverage.
+
+# STAGE 10 — COMPLETE SECURITY, DATA AND MIGRATION VERIFICATION
+
+Inspect and verify security, persistence, migrations, data integrity and recovery against the actual supported deployment profiles.
+
+Test relevant:
+
+- Authentication and authorization.
+- Tenant isolation and least privilege.
+- API validation and abuse resistance.
+- Secure secret handling and rotation procedures.
+- Webhook verification, replay protection and idempotency.
+- Audit integrity and configuration authorization.
+- Sensitive-data protection and safe logging.
+- Rate limits and resource exhaustion.
+- Dependency and container vulnerability checks.
+- Database migration, failed-migration safety and upgrade compatibility.
+- Monetary conversion and source preservation.
+- Backup encryption and secret exclusion.
+- Restore integrity and recovery behavior.
+
+Use isolated databases and test environments for migrations, restore drills and destructive tests. Never run potentially destructive operations against production data.
+
+Test each supported database profile independently. Do not infer PostgreSQL readiness from SQLite success or infer production-scale capacity from a small functional test.
+
+Run repository-standard security and migration suites. Record findings, severity, reproducibility, remediation and evidence.
+
+# STAGE 11 — COMPLETE PRODUCTION OPERATIONS AND EXTERNAL READINESS
+
+Inspect the actual evidence for:
+
+- Staging and production deployment configuration.
+- Deployment target and region.
+- DNS, TLS and security headers.
+- Secrets management.
+- Logging, metrics, tracing and actionable alerts.
+- Health and readiness checks.
+- Backup scheduling and off-host destinations.
+- Restore rehearsals and disaster recovery.
+- Payment monitoring and reconciliation.
+- Capacity targets, performance and concurrency.
+- On-call ownership and incident runbooks.
+- Data retention, privacy and regulatory requirements.
+- Release and rollback procedures.
+
+Implement the required code, configuration, documentation and tests that can be completed within the available repository and environment.
+
+For external prerequisites that do not exist, identify the resource, owner, exact action needed and evidence needed for closure. Do not fabricate an external environment or claim it was tested.
+
+A documented runbook is not proof of a working staging environment. A backup script is not proof of recoverability. A health endpoint is not proof of end-to-end readiness.
+
+Continue all independent work even when external staging, credentials, monitoring destinations or business decisions are missing.
+
+# STAGE 12 — AUTOMATED VERIFICATION AND REGRESSION
+
+Execute relevant tests after each material implementation stage, then perform the full applicable verification chain against the final combined working tree.
+
+Use the repository's documented commands and canonical generators. Do not invent substitutes for required checks.
+
+At minimum, run all applicable:
+
+- Unit and integration tests.
+- Full `npm test` chain.
+- Technology governance and hardcoding gates.
+- Registry and context verification.
+- Generated lock and inventory freshness checks.
+- Clean dependency installation and integrity verification.
+- Browser/UI automation.
+- PostgreSQL verification.
+- Docker image build and production smoke tests.
+- Migration and backup/restore drills.
+- Payment-provider conformance tests.
+- Security and dependency audits.
+- Configuration seed, runtime behavior and regression tests.
+- Relevant performance and recovery checks.
+
+Run checks sequentially where shared resources or the repository harness require it.
+
+If a check fails, investigate and correct in-scope defects, then rerun the affected checks and all required dependent verification. Never suppress failures, weaken tests, enlarge timeouts merely to hide defects, or treat incomplete runs as passes.
+
+Keep old evidence for history, but mark it stale wherever source code, generated artifacts, dependencies or execution conditions changed.
+
+Every final result must identify the actual commit SHA tested.
+
+# STAGE 13 — RECONCILE CANONICAL DOCUMENTATION AND RELEASE EVIDENCE
+
+Update existing canonical artifacts using repository conventions and generators.
+
+Keep `PRODUCTION_READINESS.md` as the authoritative release-readiness register.
+
+Update or reconcile, as applicable:
+
+- Owner decision records.
+- Monetary-rule and business-rule inventories.
+- Configuration and seed traceability.
+- Business-profile and capability certification matrices.
+- Provider and wallet integration status.
+- Feature-to-test traceability.
+- Technology-governance inventory and evidence.
+- Migration, security, performance and operational findings.
+- Runbooks and deployment instructions.
+- CI evidence and exact tested commit references.
+
+Do not create parallel competing source-of-truth documents.
+
+Every requirement must remain traceable. An unresolved requirement must not disappear merely because a nearby capability was implemented.
+
+Separate these statuses explicitly:
+
+- Implemented.
+- Configurable.
+- Integrated.
+- Tested.
+- Certified.
+- Externally verified.
+- Production ready.
+- Explicitly authorized for release.
+
+Reconcile stale claims and documentation to the tested code, not the other way around.
+
+# STAGE 14 — FINAL REVIEW, COMMITS AND CI
+
+Review the complete final diff, including generated artifacts, lockfiles and documentation.
+
+Ensure:
+
+- Only intended files are included.
+- Unrelated work and preserved files remain safe.
+- No secrets or local environment artifacts were introduced.
+- Generated outputs are current.
+- No unjustified hardcoding or duplicate canonical definitions were added.
+- Tests match the final source tree.
+- All unresolved requirements and risks remain visible.
+- `git diff --check` and the required repository gates pass.
+
+Preserve the established branch and pull-request workflow. Commit and push the reviewed, in-scope changes with clear, narrowly scoped commit messages.
+
+Do not force-push, discard work, merge PR #6 or deploy.
+
+Verify the remote PR head after pushing. Inspect all required jobs for the exact final SHA.
+
+Require two independent, fully green CI runs on the exact final commit for final acceptance. If the source tree changes afterward, treat the old results as historical evidence and rerun the required checks against the resulting final candidate.
+
+The current PR-053 run and historical green runs must not be misrepresented as evidence for a later modified commit.
+
+If CI fails, diagnose the actual failure, repair it within scope and repeat the acceptance sequence. If remote permissions or environmental access prevent a required action, identify the precise blocker without claiming that action occurred.
+
+# STAGE 15 — CONSOLIDATE THE WORKSPACE SAFELY
+
+After the active implementation and required verification have reached a stable checkpoint, complete the agreed LUXORA workspace-consolidation task.
+
+The objective is one canonical project location and one authoritative writable Git checkout.
+
+The previously designated integration workspace is:
+
+`/Users/bipin/Workspaces/LUXORA-production-integration-2026-10-27`
+
+Verify that it remains the appropriate canonical location before changing anything.
+
+Inventory the original iCloud workspace, the context-review workspace, scratchpads, preservation copies, scripts, local configuration, context artifacts, generated files and other project directories.
+
+Classify every location as:
+
+- Canonical active source.
+- Canonical governance or context asset.
+- Evidence or handover record.
+- Historical archive or protected preservation copy.
+- Redundant or obsolete copy requiring later retirement.
+
+Do not assume all files are duplicates. Reconcile content and dependencies first.
+
+Consolidate only when the destination and source states are understood. Preserve Git history, uncommitted work, receipts, local configurations and all user data. Do not delete protected workspaces or preservation copies during this consolidation.
+
+Keep governance assets in their canonical repository location when they belong there. Avoid duplicating the same canonical artifact into a separate governance directory.
+
+Update verified references in scripts, documentation, IDE/Claude Code configuration and operational procedures. Ensure the project no longer silently depends on old absolute workspace paths where those paths are not intentionally required.
+
+Validate the consolidated location with Git status, context integrity, generated-artifact checks, relevant tests and documented recovery procedures.
+
+Only retire a redundant working copy after proving that its useful content is preserved and that the consolidated workspace operates correctly. If safe retirement cannot be established, preserve it and record the remaining cleanup action.
+
+One canonical folder must not become a shared writable workspace for competing agents. Keep one designated owner session and explicit handoffs.
+
+# STAGE 16 — FINAL ACCEPTANCE AND HONEST READINESS VERDICT
+
+Evaluate the full master mandate requirement by requirement against the final implementation.
+
+Do not report complete acceptance unless:
+
+1. All applicable mandate requirements have a traceable status and evidence.
+2. The required implementation is present and behaves correctly.
+3. Required existing business rules and supported options are inventoried and exposed through appropriate configuration.
+4. Financial integrity and policy controls are verified.
+5. The core multi-business composition mechanism and representative profiles are demonstrated through actual platform behavior.
+6. Required payment and wallet flows have truthful, provider-specific verification statuses.
+7. The first marketplace's mandatory feature-to-test coverage has no unresolved required gaps.
+8. Required security, migration, database, browser, container, recovery and operational checks have passed or have explicit, policy-compliant dispositions.
+9. External prerequisites and all owner decisions are accurately recorded.
+10. The final release register reflects the actual source tree and exact tested SHA.
+11. Two independent, fully green CI runs correspond to the exact final acceptance commit.
+12. Production remains NO-GO until mandatory release gates are satisfied and Bipin Kumar explicitly authorizes the release.
+
+If some requirements remain blocked by missing business decisions or external resources, finish everything independent of those blockers. Record an accurate partial result and specify precisely what evidence, decision or action is still needed.
+
+Do not manufacture approval or redefine the mandate to make it appear complete.
+
+---
+
+# REQUIRED FINAL REPORT
+
+At completion, return one consolidated report with these sections.
+
+## A. Repository and workspace truth
+Actual canonical path, branch, initial and final SHAs, remotes, commit/push status, workspace-consolidation outcome and any preserved outstanding copies.
+
+## B. Master mandate conformance
+A complete requirement matrix, linked to canonical artifacts, showing satisfied, partial, unsatisfied, blocked and owner-decision statuses.
+
+## C. Five owner decisions
+The canonical record and implementation/evidence status for each decision, clearly identifying any unresolved business choice.
+
+## D. Monetary and business-rule configuration
+Actual source-grounded inventory totals, seeded coverage, supported-option coverage, runtime configuration evidence, hardcoding findings and financial invariants.
+
+## E. Universal business-platform capability
+Demonstrated marketplace and representative non-marketplace profile behavior. Distinguish actual operational capabilities from templates or planned extensions.
+
+## F. Payments, wallets and providers
+Per-provider implementation, configuration, test, sandbox, webhook, refund, reconciliation, live verification and production status.
+
+## G. Feature and test traceability
+Critical features, journeys, permission cases, failure paths, UI/API coverage, data paths, dependencies, test results and remaining gaps.
+
+## H. Security, data and operations
+Security findings, dependency and container checks, migrations, restore evidence, staging, infrastructure, monitoring, backups, capacity, privacy and compliance.
+
+## I. Verification and CI
+Exact commands, environments, exit codes, actual results, failures and logs; final commit SHA; both CI run IDs and links; every required job's outcome.
+
+## J. Remaining blockers and owner actions
+Only genuine unresolved work: exact decision or resource required, its impact, responsible party and evidence required to close it.
+
+## K. Final verdict
+State one of:
+
+- **ACCEPTED:** every applicable mandatory requirement has sufficient evidence.
+- **PARTIAL:** implementation has advanced, but one or more requirements remain incomplete or awaiting external evidence.
+- **BLOCKED:** a critical prerequisite prevents safe completion of the relevant required work.
+
+State production GO/NO-GO separately. Never infer production authorization from implementation completion or green CI.
+
+---
+
+# FINAL EXECUTION RULE
+
+Begin now by establishing repository truth and confirming exclusive ownership. Then execute every stage in order, carrying work forward until all safely executable requirements are implemented and verified.
+
+Do not return merely with a plan or a list of missing features. Implement the actual remaining work, continuously reconcile evidence, correct defects, and preserve all valid work.
+
+Do not ask for routine confirmation or stop at a stage boundary.
+
+When a consequential owner decision or external prerequisite is genuinely required, isolate the affected operation, record the blocker and continue all independent implementation.
+
+**The objective is complete, evidence-backed conformance to the entire LUXORA Ω∞ Master Mandate—not just PR-053, not just passing tests, and not a declaration of readiness without proof. Nothing is merged or deployed without explicit owner authorization.**

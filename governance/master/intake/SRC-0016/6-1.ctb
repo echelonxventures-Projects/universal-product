@@ -1,0 +1,6 @@
+id: CTB-SRC0016-6-1
+source: SRC-0016
+section: §6.1
+kind: requirement
+extends: LXM-REQ-000044
+text: Perform a repository-wide, source-grounded inventory of technology assumptions and version declarations.

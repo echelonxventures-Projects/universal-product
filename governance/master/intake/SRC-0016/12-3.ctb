@@ -1,0 +1,6 @@
+id: CTB-SRC0016-12-3
+source: SRC-0016
+section: §12.3
+kind: requirement
+extends: LXM-REQ-000041
+text: After PR-053, stop. Do not begin Slice 3 or Slice 4.

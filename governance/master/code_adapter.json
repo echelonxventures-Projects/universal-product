@@ -1,0 +1,135 @@
+{
+ "_comment": "Configuration of code_adapter.py for one repository. Everything repository-specific lives here, never in the adapter.",
+ "commands": {
+  "package": "package.json",
+  "ci_workflows": [
+   ".github/workflows/ci.yml"
+  ],
+  "script_call": "npm (?:run\\s+([\\w:.-]+)|test\\b)",
+  "file_call": "node\\s+(?:--[\\w=-]+\\s+)*([\\w./-]+\\.js)",
+  "not_gates": {
+   "start": "a tool an operator or developer runs by hand; not a check",
+   "dev": "a tool an operator or developer runs by hand; not a check",
+   "serve": "a tool an operator or developer runs by hand; not a check",
+   "stop": "a tool an operator or developer runs by hand; not a check",
+   "backup": "a tool an operator or developer runs by hand; not a check",
+   "restore": "a tool an operator or developer runs by hand; not a check",
+   "schema": "a tool an operator or developer runs by hand; not a check",
+   "context:build": "a tool an operator or developer runs by hand; not a check",
+   "context:index": "a tool an operator or developer runs by hand; not a check",
+   "context:assimilate": "a tool an operator or developer runs by hand; not a check",
+   "context:task": "a tool an operator or developer runs by hand; not a check",
+   "context:handoff": "a tool an operator or developer runs by hand; not a check",
+   "context:query": "a tool an operator or developer runs by hand; not a check",
+   "context:hygiene": "a tool an operator or developer runs by hand; not a check",
+   "context:coverage": "a tool an operator or developer runs by hand; not a check",
+   "context:capture": "a tool an operator or developer runs by hand; not a check",
+   "context:capture-history": "a tool an operator or developer runs by hand; not a check",
+   "context:import": "a tool an operator or developer runs by hand; not a check",
+   "context:transition": "a tool an operator or developer runs by hand; not a check",
+   "context:consolidate": "a tool an operator or developer runs by hand; not a check",
+   "money:verify": "operational check on a real database (the MD-4 migration rehearsal); no database exists in CI",
+   "money:inventory": "regenerates a committed artifact; CI checks freshness through the gate that reads it",
+   "audit:hardcoding": "regenerates a committed artifact; CI checks freshness through the gate that reads it",
+   "audit:baseline": "records a lower baseline after an improvement; never a check",
+   "technology:lock": "regenerates a committed artifact; CI checks freshness through the gate that reads it",
+   "technology:inventory": "regenerates a committed artifact; CI checks freshness through the gate that reads it",
+   "technology:status": "a tool an operator or developer runs by hand; not a check",
+   "technology:check": "also run inside npm test as node scripts/technology.js check"
+  }
+ },
+ "tests": {
+  "roots": [
+   "test"
+  ],
+  "extensions": [
+   ".js"
+  ],
+  "helpers": []
+ },
+ "modules": {
+  "roots": [
+   "lib",
+   "server.js"
+  ],
+  "extensions": [
+   ".js"
+  ],
+  "exclude": [
+   "lib/seed/"
+  ],
+  "loaders": [
+   "require\\(",
+   "new\\s+Worker\\("
+  ],
+  "_comment": "loaders: the calls that load a module file. dynamic_dirs: directories loaded wholesale by a prefix plus a variable (lib/api.js reads lib/routes/ with readdirSync); a prefix load into any other directory is reported as unresolved.",
+  "dynamic_dirs": [
+   "lib/routes/"
+  ]
+ },
+ "ownership": {
+  "registry": "_registry/codebase.json",
+  "list": "modules",
+  "path_field": "path"
+ },
+ "duplicates": {
+  "min_lines": 6,
+  "min_chars": 200
+ },
+ "domains": {
+  "registry": "_registry/business-domains.json",
+  "list": "domains",
+  "key": "key",
+  "files": "owns.files",
+  "_comment": "The business domain catalogue: which domain owns which files. Used only to show traceability per domain."
+ },
+ "kernel": {
+  "_comment": "LXM-REQ-000232: entity types are stored through the kernel (its k_ tables: nodes, kinds, versions, hierarchies, events). A table outside it is a finding unless exempted here with a reason.",
+  "schema_files": [
+   "schema.sql"
+  ],
+  "table_pattern": "CREATE TABLE (?:IF NOT EXISTS )?\"?(\\w+)",
+  "kernel_prefix": "k_",
+  "exempt": {}
+ },
+ "named_values": [
+  {
+   "_comment": "LXM-REQ-000238: behaviour never branches on which environment it runs in; it reads a declared setting the environment sets. Matches a comparison of an environment-selector variable (any name ending in ENV, ENVIRONMENT or STAGE, e.g. NODE_ENV) with a literal, so no list of environment names is needed. Ordinary switches (a flag compared with \"1\") are settings, covered by the configuration adapter.",
+   "finding": "environment-branch",
+   "roots": [
+    "lib",
+    "server.js",
+    "scripts"
+   ],
+   "extensions": [
+    ".js"
+   ],
+   "exclude": [
+    "lib/seed/"
+   ],
+   "patterns": [
+    "process\\.env\\.(?:\\w*_)?(?:ENV|ENVIRONMENT|STAGE)\\b\\s*[!=]==?\\s*['\"`][^'\"`]*['\"`]",
+    "['\"`][^'\"`]*['\"`]\\s*[!=]==?\\s*process\\.env\\.(?:\\w*_)?(?:ENV|ENVIRONMENT|STAGE)\\b",
+    "process\\.env\\.(?:\\w*_)?(?:ENV|ENVIRONMENT|STAGE)\\b\\s*\\)?\\s*\\.\\s*(?:startsWith|includes)\\("
+   ]
+  },
+  {
+   "_comment": "LXM-REQ-000238: no code names an environment. The names below are only what to look for; environments themselves are registered configuration, open-ended.",
+   "finding": "environment-name",
+   "roots": [
+    "lib",
+    "server.js",
+    "scripts"
+   ],
+   "extensions": [
+    ".js"
+   ],
+   "exclude": [
+    "lib/seed/"
+   ],
+   "patterns": [
+    "['\"`](?:production|prod|staging|stage|development|dev|preprod|pre-production|uat|qa|sandbox)['\"`]"
+   ]
+  }
+ ]
+}

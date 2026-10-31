@@ -1,0 +1,7 @@
+id: CTB-SRC0008-R1
+source: SRC-0008
+section: §1.1,§1.3,§2.1,§2.2
+kind: requirement
+supersedes: LXM-REQ-000220
+reason: Semantic review found v1 omitted SRC-0008 meaning: continuous validation-driven operation (§1.1), modifications and extensions as gated contributions (§1.3), discovery against the entire canonical environment (§2.1) and resolution, not only detection (§2.2).
+text: The platform operates through continuous, validation-driven assimilation into its canonical Master. Every new contribution, modification or extension, whether a requirement, decision, capability, specification, configuration, implementation artifact or evidence item, passes through the Master assimilation engine before it becomes an accepted canonical contribution. The engine discovers and evaluates it against the entire relevant canonical knowledge environment, and detects and resolves exact and semantic duplication, full and partial overlap, complementary and composable knowledge, missing relationships and dependencies, contradictions and competing authorities, superseded or obsolete knowledge, incomplete, ambiguous or unsupported assertions, existing objects to extend rather than duplicate, and genuinely new concepts needing canonical identity.

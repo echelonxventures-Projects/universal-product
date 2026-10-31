@@ -1,0 +1,23 @@
+The owner has explicitly approved Option 2.
+
+Owner identity:
+- Bipin Kumar
+- bipin.kumar@aol.com
+- bipin1@gmail.com
+
+Decision: Adopt material ambiguity and consequential non-financial risk as supplementary human-escalation criteria in a separate canonical record. Do not modify the closed E1–E5 classification in LXM-REQ-000016.
+
+Proceed with the following:
+
+1. Record LXM-DEC-000014 as ADOPTED, preserving the actual approval provenance from this conversation, owner identity, decision date (2026-10-30), rationale and scope.
+2. Apply the prepared Option 2 contribution through the real assimilation gate.
+3. Create one canonical supplementary escalation-policy record. Do not duplicate the criteria in multiple authorities.
+4. Resolve LXM-EXC-000001 (SRC-0008 §7.1) and LXM-EXC-000002 (SRC-0009 §7.2) against that same canonical record.
+5. Keep LXM-REQ-000016 and E1–E5 unchanged.
+6. Verify that open or undecided decisions cannot authorize mutations, while this adopted decision authorizes only the approved supplementary criteria.
+7. Run positive and negative authorization fixtures, replay SRC-0008 and SRC-0009, verify no duplicate records or relationships, and regenerate deterministically.
+8. Update the decision register, intake ledger, exception register, source-clause coverage and generated Master consistently.
+9. Preserve source authority status: SRC-0008 and SRC-0009 must remain provisional unless separately owner-confirmed as source files.
+10. Return the adopted decision record, new canonical record ID, both exception resolutions and complete validation evidence.
+
+Preserve CP1, CP2 and CP3. Do not modify the repository, contact amazon-62, commit, push, merge, deploy or change production readiness. Keep amazon-44 read-only against the repository.

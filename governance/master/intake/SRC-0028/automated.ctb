@@ -1,0 +1,6 @@
+id: CTB-SRC0028-automated
+source: SRC-0028
+section: §0.1,§0.2
+kind: requirement
+extends: LXM-REQ-000237
+text: Committing and pushing are automated at the end of each step: the step's work is committed and pushed to its own branch, and the step ends only when the tree is clean and the pushed head equals the local head. The automation refuses a protected or frozen branch, a force-push, a suspected secret and a present index lock.

@@ -1,0 +1,6 @@
+id: CTB-SRC0016-4-3
+source: SRC-0016
+section: §4.3
+kind: requirement
+extends: LXM-REQ-000196
+text: For each applicable registered item, support metadata such as: Identity, category, supplier, origin and provenance. Declared capabilities and requirements. Dependencies and compatibility constraints. Available releases, artifacts and release channels. Security advisories, integrity and provenance evidence. Licensing and operational constraints. Supported environments and execution characteristics. Verification results and test evidence. Lifecycle state, authorization and permitted usage. Replacement, deprecation, rollback and migration relationships.

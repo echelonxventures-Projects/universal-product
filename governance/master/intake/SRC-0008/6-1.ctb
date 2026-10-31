@@ -1,0 +1,5 @@
+id: CTB-SRC0008-6-1
+source: SRC-0008
+section: §6.1
+kind: requirement
+text: Every canonical mutation shall preserve the applicable Master invariants.

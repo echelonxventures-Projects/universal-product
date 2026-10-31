@@ -1,0 +1,5 @@
+id: CTB-SRC0009-2-5
+source: SRC-0009
+section: §2.5
+kind: requirement
+text: All capabilities must conform to Configurable capabilities without unjustified hardcoding.

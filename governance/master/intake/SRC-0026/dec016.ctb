@@ -1,0 +1,7 @@
+id: CTB-SRC0026-dec016
+source: SRC-0026
+section: §0.2
+kind: requirement
+extends: LXM-REQ-000001
+decision: LXM-DEC-000016
+text: By owner decision LXM-DEC-000016, the owner-identity sentence has its home in this record and not in LXM-REQ-000002.

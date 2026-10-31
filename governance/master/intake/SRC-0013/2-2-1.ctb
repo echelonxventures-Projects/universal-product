@@ -1,0 +1,6 @@
+id: CTB-SRC0013-2-2-1
+source: SRC-0013
+section: §2.2.1
+kind: requirement
+extends: LXM-REQ-000103
+text: The common platform provides discoverable business-model, industry, domain, capability, service and component registries.

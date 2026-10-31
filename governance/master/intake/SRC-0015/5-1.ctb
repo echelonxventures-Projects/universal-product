@@ -1,0 +1,6 @@
+id: CTB-SRC0015-5-1
+source: SRC-0015
+section: §5.1
+kind: requirement
+extends: LXM-REQ-000043
+text: Build, CI, package-manager, dependency, runtime, container and deployment declarations must be generated from or automatically validated against canonical resolved configurations wherever technically feasible.

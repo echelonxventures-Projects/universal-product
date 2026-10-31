@@ -1,0 +1,6 @@
+id: CTB-SRC0012-F-2
+source: SRC-0012
+section: §F.2
+kind: requirement
+extends: LXM-REQ-000092
+text: Financial policies must be versioned and traceable to the transactions that used them. Replaying or auditing a historical calculation must use the applicable historical policy version and the necessary recorded inputs, rather than silently applying today's configuration.

@@ -1,0 +1,6 @@
+id: CTB-SRC0013-3-4
+source: SRC-0013
+section: §3.4
+kind: requirement
+extends: LXM-REQ-000107
+text: These examples define the intended composition model. Each capability must be implemented and registered before it can be claimed as available.

@@ -1,0 +1,6 @@
+id: CTB-SRC0013-5-1
+source: SRC-0013
+section: §5.1
+kind: requirement
+extends: LXM-REQ-000108
+text: The first production deployment shall be the Amazon-like marketplace.

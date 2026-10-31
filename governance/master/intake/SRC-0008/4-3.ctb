@@ -1,0 +1,5 @@
+id: CTB-SRC0008-4-3
+source: SRC-0008
+section: §4.3
+kind: requirement
+text: A failed validation shall prevent acceptance and create a traceable exception with a reason, impact and required resolution.

@@ -1,0 +1,6 @@
+id: CTB-SRC0012-1-12
+source: SRC-0012
+section: §1.12
+kind: requirement
+extends: LXM-REQ-000098
+text: Seeded, configurable monetary policy covers future monetary capabilities: newly introduced rules, calculation methods, currencies, payment methods, financial products and other monetary policies must be registerable and configurable without unnecessary changes to the shared platform core.

@@ -1,0 +1,5 @@
+# SRC-0017 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Extract: sources/SRC-0017.extract.md (provisional extract from session 47abdf14 transcript line 3556; owner confirmation pending).
+# The contribution normalises the extract's "relationalship" to "relationship" so that matching sees the word; the extract keeps the owner's text.
+status: complete
+extract: sources/SRC-0017.extract.md sha256 89a85204f9ab268554abc995c9f87d432553ba622f3e17b3f6a2abf4d860e408
+§1 | 1-1 | 084acbc2e82c53f9

@@ -1,0 +1,12 @@
+id: CTB-EVD-000007
+kind: evidence
+evidence: LXM-EVD-000007
+action: supersede
+supersedes: LXM-EVD-000002
+fact: At 2026-10-30T17:42:44Z exactly one run ID exists for `39ed4d64acc49513af05c647faa2d03dabd5f38e`: run 40990327443 ("CI", `pull_request`), attempt 2, success
+source: GitHub Actions API (`actions/runs?head_sha=`); raw response `intake/evidence/ci-runs-39ed4d6-20261030T174244Z.json` (SHA-256 `c8b693e6a1360617c14ab76f172c6ba883514fe344c44bcddaec75620f45a2b6`)
+method: read-only gh api query
+observed: 2026-10-30T17:42:44Z
+observer: amazon-44
+verifies: LXM-REQ-000153, LXM-REQ-000219
+subject: 39ed4d64acc49513af05c647faa2d03dabd5f38e

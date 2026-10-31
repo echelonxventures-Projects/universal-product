@@ -1,0 +1,6 @@
+id: CTB-SRC0016-2-5
+source: SRC-0016
+section: §2.5
+kind: requirement
+extends: LXM-REQ-000041
+text: Update the canonical PR-053 scope and its acceptance criteria to require an operational, extensible, technology-agnostic governance capability. Preserve the existing PR identifier and history. Do not create a competing register or duplicate source of truth.

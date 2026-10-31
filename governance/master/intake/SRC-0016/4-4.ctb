@@ -1,0 +1,6 @@
+id: CTB-SRC0016-4-4
+source: SRC-0016
+section: §4.4
+kind: requirement
+extends: LXM-REQ-000196
+text: These are extensible metadata contracts, not a finite list of technology classes. New categories must be registrable without modifying the governance core merely to add another category name.

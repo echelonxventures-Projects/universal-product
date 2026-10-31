@@ -1,0 +1,5 @@
+id: CTB-SRC0013-2-2-4
+source: SRC-0013
+section: §2.2.4
+kind: requirement
+text: The common platform provides composition and dependency management for domain capabilities.

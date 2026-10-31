@@ -1,0 +1,6 @@
+id: CTB-SRC0012-B-2
+source: SRC-0012
+section: §B.2
+kind: requirement
+extends: LXM-REQ-000077
+text: Administrators must be able to inspect available options before activating a rule. Unsupported combinations must be rejected with an actionable explanation.

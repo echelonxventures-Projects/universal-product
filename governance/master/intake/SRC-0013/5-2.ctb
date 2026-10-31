@@ -1,0 +1,6 @@
+id: CTB-SRC0013-5-2
+source: SRC-0013
+section: §5.2
+kind: requirement
+extends: LXM-REQ-000108
+text: However, marketplace-first must not cause the underlying platform to become a marketplace-only implementation. Foundational abstractions and reusable capabilities required by the wider platform must be developed correctly at the outset, rather than replaced with marketplace-specific assumptions.

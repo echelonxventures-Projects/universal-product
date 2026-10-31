@@ -1,0 +1,6 @@
+id: CTB-SRC0014-4-1
+source: SRC-0014
+section: §4.1
+kind: requirement
+extends: LXM-REQ-000087
+text: Legacy monetary records, ambiguous conversions, rounding exceptions and refund-allocation cases must be handled through explicit, configurable policies—not undocumented assumptions.

@@ -1,0 +1,1382 @@
+# LXM canonical requirement records. One record per requirement; prose is authored only here.
+# Header: @ID | scope | analysis-class | disposition
+# t: title   s: lineage   k: decision refs   n: reconciliation note (how the row was resolved)   x: normative text
+# Lineage prefixes: S = SRC-0002 line, L = SRC-0003 procedure line, A = SRC-0003 Appendix A (SRC-0001) line.
+# Classes: FP, FP/ST, ST, MO, PP, OM, FP+CF, PP+CF (the 128 reconciled rows); ID = identical in SRC-0002 and SRC-0003; NEW = owner addition.
+
+@LXM-REQ-000001 | EXE | FP | Retained
+t: Document identity and release posture
+s: S4-7,S9-10; L5-9; A376-382; SRC-0015 §2.2; SRC-0016 §5.2; SRC-0025 §0.1; SRC-0026 §0.2
+k: LXM-DEC-000016
+c: SRC-0015 §2.2 covers; SRC-0016 §5.2 covers; SRC-0025 §0.1 extends; SRC-0026 §0.2 extends
+x: The accountable owner is Bipin Kumar. The repository is `https://github.com/echelonxventures-Projects/universal-product`, the integration branch `integration/luxora-production-go-2026-10-27`, the canonical release register `PRODUCTION_READINESS.md`. Release requires the owner's explicit authorization; the initial and default release status is NO-GO until every mandatory release gate is evidenced and that authorization is recorded. The accountable owner approves owner decisions as Bipin Kumar, with the contacts bipin.kumar@aol.com and bipin1@gmail.com named in SRC-0001. By owner decision LXM-DEC-000016, the owner-identity sentence has its home in this record and not in LXM-REQ-000002.
+
+@LXM-REQ-000002 | EXE | PP | Repaired
+t: Primary execution environment outside iCloud
+s: S8; L35,L261; A601; SRC-0025 §0.1
+k: LXM-DEC-000016
+n: The workspace path survived; the explicit "outside iCloud" constraint is restored.
+v: 2
+c: SRC-0025 §0.1 extends
+x: Execute only in the existing approved LUXORA integration workspace, which lies outside any iCloud- or cloud-synced folder (historically `/Users/bipin/Workspaces/LUXORA-production-integration-2026-10-27`; reverify per LXM-REQ-000018). Never execute writable work in an iCloud-synced checkout.
+h: v1 (by SRC-0025 §0.1: correction of an agent error at ledger seq 584 (the owner sentence was added to the wrong record; its home is LXM-REQ-000001); this restores the earlier text exactly): Execute only in the existing approved LUXORA integration workspace, which lies outside any iCloud- or cloud-synced folder (historically `/Users/bipin/Workspaces/LUXORA-production-integration-2026-10-27`; reverify per LXM-REQ-000018). Never execute writable work in an iCloud-synced checkout. The accountable owner approves owner decisions as Bipin Kumar, with the contacts bipin.kumar@aol.com and bipin1@gmail.com named in SRC-0001.
+
+@LXM-REQ-000003 | EXE | FP | Retained
+t: Scope is the whole owner mandate
+s: S16-18; L13
+x: Implement the complete applicable scope of the owner mandate (Appendix A, SRC-0001) against the actual repository.
+
+@LXM-REQ-000004 | EXE | FP | Retained
+t: Execution, not proposal
+s: S20; L13; A392; SRC-0016 §5.2
+c: SRC-0016 §5.2 covers
+x: This is an execution and verification mandate, not a request for another proposal, architecture document, gap report alone, backlog or list of future recommendations.
+
+@LXM-REQ-000005 | EXE | FP | Retained
+t: Continuous implementation loop
+s: S22; L13; A390,A396
+x: Inspect the actual repository, preserve existing valid work, reuse canonical implementations, reconcile prior implementations and evidence, implement every authorized incomplete requirement, run the required checks, update canonical records and continue through the stages without routine interruption.
+
+@LXM-REQ-000006 | EXE | FP | Retained
+t: Expected result
+s: S24; L22,L365; A406
+x: The expected result is a working, tested, traceable platform whose implemented capabilities and remaining blockers are honestly represented.
+
+@LXM-REQ-000007 | EXE | FP | Retained
+t: Sequential execution in the owner session
+s: S28; L17,L357
+x: Execute the stages sequentially in the single authorized owner session.
+
+@LXM-REQ-000008 | EXE | FP | Retained
+t: No routine confirmations
+s: S29; L18,L361
+x: Do not ask the owner to confirm routine technical choices, file edits, test commands, ordinary fixes or progress, within or between stages. Escalate only under LXM-REQ-000016.
+
+@LXM-REQ-000009 | EXE | PP | Repaired
+t: No premature stopping points
+s: S30; L79,L359; SRC-0004 §4
+n: "One successful test suite" restored as a named non-stopping point.
+x: Do not stop after producing an inventory, gap analysis, architecture plan, documentation, one successful test suite or any other intermediate successful result.
+
+@LXM-REQ-000010 | EXE | FP | Retained
+t: Independent work is never held by an external dependency
+s: S31; L18,L20
+x: Do not wait for an external dependency before completing independent work that does not require it.
+
+@LXM-REQ-000011 | EXE | FP | Retained
+t: Blocked-item protocol
+s: S32; L20,L363; A921; SRC-0016 §5.2
+c: SRC-0016 §5.2 covers
+x: When a requirement is blocked by a missing owner decision, credential, external service or operational prerequisite: record the exact blocker (LXM-DEP index), implement the safe preparatory work, keep the blocked operation disabled or unactivated, and continue all independent work.
+
+@LXM-REQ-000012 | EXE | FP | Retained
+t: Durable checkpoints
+s: S33; L21
+x: Keep a durable, truthful checkpoint after every material stage so that execution can resume safely if a tool, session, process or CI job terminates.
+
+@LXM-REQ-000013 | EXE | FP | Retained
+t: No false completion
+s: S34; L184,L251; A406
+x: Never claim completion of anything whose required check was not executed, did not finish, or failed.
+
+@LXM-REQ-000014 | EXE | FP | Retained
+t: Single writer
+s: S35; L17,L287; SRC-0005
+x: Do not start competing sessions, create a second writable checkout of the same work, or run concurrent edits against the repository. `amazon-62` is the only authorized writer (LXM-REQ-000216).
+
+@LXM-REQ-000015 | EXE | OM | Restored
+t: No repetitive progress messages
+s: S36; L314
+k: OMR-1
+n: Restored from SRC-0002; the closing consolidated report was retained in the combined text, the prohibition was not.
+x: Do not send repetitive progress messages. Record progress in the durable checkpoints (LXM-REQ-000012) and deliver one consolidated, evidence-based report at completion (LXM-REQ-000173). Escalations under LXM-REQ-000016 are not progress messages.
+
+@LXM-REQ-000016 | ESC | OM | Restored
+t: Owner-escalation conditions
+s: S37,S39; L20,L363; A1082; SRC-0007 §2; SRC-0008 §7
+k: OMR-2
+n: Restored and made precise per SRC-0007 §2: a closed set of escalation triggers, one consolidated packet, no routine approvals.
+c: SRC-0008 §7.2 supports
+x: Ask the owner for input only when at least one of these conditions holds and no safe independent work on the affected item remains: (E1) a consequential business or financial policy choice not resolved by the mandate or a recorded owner decision (for example MD-1–MD-5, release policy for critical or high findings); (E2) a secret, credential, account, merchant setup or other access the session does not hold; (E3) an owner-reserved action listed in LXM-REQ-000017 or LXM-REQ-000216; (E4) a contradiction between authoritative sources that the precedence model (master §1) cannot settle; (E5) an external authorization or resource (infrastructure, provider, legal or compliance assessment). Each escalation is one consolidated decision packet stating the exact decision, the supported options and consequences, a recommendation that is not treated as approval, the affected requirement IDs and the independent work that continues meanwhile. Never escalate for routine technical choices, file edits, tests, ordinary fixes, progress or stage transitions.
+
+@LXM-REQ-000017 | EXE | FP | Retained
+t: Meaning of "without interruption"
+s: S39; L19,L23,L37,L119; A404-408
+x: "Without interruption" means completing every safely executable stage in sequence. It never authorizes inventing owner approvals or financial decisions, exposing credentials, performing destructive actions, mutating production data, changing PR #6's draft or open state, merging, or deploying.
+
+@LXM-REQ-000018 | STG-00 | FP | Retained
+t: Establish repository truth before any change
+s: S45; L27; A580
+x: Before making any change, establish and record the real current state of the canonical workspace.
+
+@LXM-REQ-000019 | STG-00 | ST | Strengthened
+t: Physical working directory
+s: S49; L29; A582
+x: Record the physical absolute working directory (`pwd -P`).
+
+@LXM-REQ-000020 | STG-00 | FP | Retained
+t: Branch, HEAD and remote heads
+s: S50-51; L29; A583
+x: Record the branch, exact HEAD SHA, remote URLs and the current remote branch head.
+
+@LXM-REQ-000021 | STG-00 | ST | Strengthened
+t: Working-tree state
+s: S52; L30; A583
+x: Record staged, unstaged and untracked changes separately, with `git diff --check`, `git diff --stat` and the changed paths.
+
+@LXM-REQ-000022 | STG-00 | PP | Repaired
+t: Inspect preservation artifacts
+s: S53; L30,L37; A407
+n: Inspection (not only preservation) of preservation artifacts restored to Stage 0.
+x: Inspect and record the existing preservation artifacts and copies (location, the state they preserve, integrity) before any change; they are read-only inputs.
+
+@LXM-REQ-000023 | STG-00 | FP | Retained
+t: Active processes
+s: S54; L31
+x: Record active Git, test, server, build and background processes.
+
+@LXM-REQ-000024 | STG-00 | PP | Repaired
+t: All open pull requests and CI runs
+s: S55; L32; A584
+n: Scope widened back from PR #6 alone to every open pull request.
+x: Record every open pull request (state, draft flag, head SHA, base) and the CI runs, run IDs and attempt numbers for every relevant SHA, including PR #6.
+
+@LXM-REQ-000025 | STG-00 | FP | Retained
+t: Release register
+s: S56; L33; A585
+x: Inspect the canonical `PRODUCTION_READINESS.md`.
+
+@LXM-REQ-000026 | STG-00 | MO | Expanded-from-mandate
+t: Decision records, registries and test procedures
+s: S57; L33; A586,A587,A590,A592,A594
+n: Decision records (with MD-1–MD-5 meanings), feature and capability registries and test procedures restored from Appendix A §3.
+x: Inspect the existing decision records, including the present meaning and status of MD-1–MD-5; generated context artifacts; feature and capability registries; test procedures, CI workflows and operational runbooks; and handover notes.
+
+@LXM-REQ-000027 | STG-00 | FP+CF | Historical
+t: Historical remote state
+s: S61-63,S66; L35; A611
+n: Retained as historical evidence only; superseded by the PR-053 candidate `39ed4d6` and run 40990327443 (LXM-CHG register).
+x: Historical, not authoritative: PR #6 open and draft at `ed634ad84ba0c25225f682ad3c7980706c9753bd`; CI run `40922556022`. Reverify the current state before relying on any historical value.
+
+@LXM-REQ-000028 | STG-00 | FP | Retained
+t: Owner session identity
+s: S64; L3; SRC-0005
+x: The owner session is `amazon-62` (see LXM-REQ-000216).
+
+@LXM-REQ-000029 | STG-00 | PP+CF | Repaired
+t: Never infer a reported change is committed
+s: S68; L57; A597
+n: The instruction is retained; the reported fact "ten version changes, jsdom/dom-selector 9→10" is superseded by commit `39ed4d6` (integrity-only, 0 version changes) and moved to the LXM-CHG register.
+x: Do not assume that a change reported by another session, or a previously reported local change, has been committed, pushed or included in the current PR. Verify the actual files and commit.
+
+@LXM-REQ-000030 | STG-00 | FP | Retained
+t: Forbidden Git operations
+s: S72; L37; A619-628
+x: Never use `git reset --hard`, `git clean` or equivalent destructive cleaning, force-push, unapproved branch replacement, unapproved history rewriting, or revert uncommitted work to obtain a clean tree.
+
+@LXM-REQ-000031 | STG-00 | FP | Retained
+t: Preserve unrelated and uncommitted work
+s: S73; L37; A617,A627-628
+x: Never overwrite or discard unrelated, uncommitted or another session's work.
+
+@LXM-REQ-000032 | STG-00 | FP | Retained
+t: Preserve original and preservation workspaces
+s: S74; L37,L277; A407,A626; SRC-0007 K6
+x: Never delete, move or retire an original workspace or a preservation copy, including the original iCloud workspace, the preserved Phase 1 work and `~/LUXORA-preservation/`, unless the owner separately authorizes it (LXM-DEC-000006).
+
+@LXM-REQ-000033 | STG-00 | FP | Retained
+t: No production or protected data modification
+s: S75; L23,L37,L131; A632,A638
+x: Never modify a production database or protected data, including during testing.
+
+@LXM-REQ-000034 | STG-00 | FP | Retained
+t: Generated artifacts
+s: S76; L37; A636; SRC-0016 §10.3
+c: SRC-0016 §10.3 covers
+x: Never hand-edit a generated artifact when a documented generator exists; regenerate it.
+
+@LXM-REQ-000035 | STG-00 | FP | Retained
+t: No secrets committed
+s: S77; L119,L234; A566,A923
+x: Never commit secrets, credentials, keyrings or environment-specific private artifacts.
+
+@LXM-REQ-000036 | STG-00 | FP | Retained
+t: No merge or deploy
+s: S78; L23,L243; A638
+x: Never merge PR #6 or any pull request, and never deploy, without the owner's explicit authorization.
+
+@LXM-REQ-000037 | STG-00 | ST | Strengthened
+t: Unsafe or unexpected state
+s: S80; L39; A613
+x: If the repository state is unsafe or differs materially from the expected integration state, preserve it, investigate and reconcile without destroying work; never silently switch branches or overwrite another session's work.
+
+@LXM-REQ-000038 | STG-00 | PP | Repaired
+t: Record the baseline before modifying
+s: S82; L27; A1070; SRC-0007 K5
+k: LXM-DEC-000005
+n: The record destination is restored; per K5 the baseline is recorded before modification without waiting for confirmation.
+x: Record the verified baseline in `PRODUCTION_READINESS.md` or a governed execution checkpoint before any modification. Recording the baseline is not a request for confirmation; continue without waiting.
+
+@LXM-REQ-000039 | STG-00 | ST | Strengthened
+t: Index-lock protection
+s: L37; A630
+x: Never remove or recreate `.git/index.lock` until it is proven that no Git process owns it and its cause is understood; removal in a workspace other than the canonical one is owner-reserved.
+
+@LXM-REQ-000040 | STG-00 | ST | Strengthened
+t: Expected workspace as historical fact
+s: L35; A601
+x: Record the expected integration workspace path as a historical fact to be reverified.
+
+@LXM-REQ-000041 | STG-01 | FP | Retained
+t: Finish technology governance first
+s: S86; L43; SRC-0015 §9.1,§9.2; SRC-0016 §1.1,§1.2,§2.1,§2.2,§2.5,§10.4,§10.5,§11.3,§12.1,§12.3
+c: SRC-0015 §9.1 extends; SRC-0015 §9.2 extends; SRC-0016 §1.1 extends; SRC-0016 §1.2 extends; SRC-0016 §2.1 extends; SRC-0016 §2.2 extends; SRC-0016 §2.5 extends; SRC-0016 §10.4 covers; SRC-0016 §10.5 extends; SRC-0016 §11.3 covers; SRC-0016 §12.1 covers; SRC-0016 §12.3 covers; SRC-0016 §12.3 extends
+x: Finish the active Universal Technology Governance workstream (PR-053) before widening into the rest of the mandate. First complete the currently outstanding CI requirement on the exact existing PR #6 head. Do not alter CI, Docker or toolchain configuration in a way that invalidates the active release evidence before that requirement is closed, except when necessary to remediate a verified critical issue. Then implement this as a separately traceable architectural improvement. Preserve existing work, use canonical artifacts and generated-file workflows, avoid unnecessary rewrites, and do not merge or deploy without explicit owner authorization. Inspect the actual local and remote branch, worktree, existing uncommitted changes, pre-existing untracked receipt and PR #6. Verify the two green CI attempts on the exact Slice 2 SHA before making changes. Preserve the working tree and all existing work. If the baseline differs unexpectedly, stop and report the discrepancy. The current PR-053 description in PRODUCTION_READINESS.md requires an inventory of technology assumptions and a register of supported technology versions, with findings classified rather than necessarily fixed. That scope is insufficient. Update the canonical PR-053 scope and its acceptance criteria to require an operational, extensible, technology-agnostic governance capability. Commit and push only intended changes to the authorized integration branch if the workspace is safe. Do not begin Slice 3 or Slice 4.
+
+@LXM-REQ-000042 | STG-01 | ST | Strengthened
+t: Technology governance review scope
+s: S88; L43; SRC-0016 §3.1,§3.2,§7.1
+c: SRC-0016 §3.1 extends; SRC-0016 §3.2 covers; SRC-0016 §3.2 extends; SRC-0016 §7.1 covers; SRC-0016 §7.1 extends
+x: Review the canonical `docs/technology.md`, the technology declaration, discovery snapshots, registry lifecycle, adapters, scanner, CLI, generated lock and inventory, tests, CI workflow, Dockerfile and dependency manifest. Before implementation, inspect: The kernel and its bitemporal k_versions model. The current hardcoding audit and registry verification gates. .github/workflows/ci.yml. package.json and lockfiles. Dockerfiles, build scripts, deployment manifests and environment declarations. Do not create a separate technology-governance framework if existing primitives can be extended safely. The pinned Node image in Dockerfile. The browser and PostgreSQL test environments.
+
+@LXM-REQ-000043 | STG-01 | FP | Retained
+t: Technology governance capabilities
+s: S92-98,S100,S102-103; L47-53; SRC-0011 §6.4,§5; SRC-0015 §1.4,§3.3,§5.1,§5.4,§7.2,§8.1; SRC-0016 §4.2,§5.2,§5.3,§5.5,§6.2,§6.4,§6.6,§7.4,§12.2,§10.2
+c: SRC-0011 §6.4 extends; SRC-0015 §1.4 covers; SRC-0015 §3.3 extends; SRC-0015 §5.1 extends; SRC-0015 §5.4 extends; SRC-0015 §7.2 covers; SRC-0015 §8.1 covers; SRC-0015 §8.1 extends; SRC-0016 §4.2 covers; SRC-0016 §5.2 covers; SRC-0016 §5.2 extends; SRC-0016 §5.3 covers; SRC-0016 §5.5 extends; SRC-0016 §6.2 covers; SRC-0016 §6.4 covers; SRC-0016 §6.6 extends; SRC-0016 §7.4 covers; SRC-0016 §12.2 covers; SRC-0011 §5 extends; SRC-0016 §10.2 covers
+x: Verify the implementation provides: open-ended categories and items without closed enumerations; governed source and protocol registration; safe discovery with provenance and bounded retrieval; explicit separation of discovery, compatibility, evidence, approval, activation and production resolution; reuse of the existing kernel lifecycle; deterministic locks and reproducible resolution; exact pinned production artifacts, never floating versions; CI, runtime, dependency and container consistency checks; controlled exceptions and rollback; tests proving a previously unknown category registers without redesigning the core. Generated configuration: derive build, test, dependency and deployment configurations from the resolved, governed technology selections. It must distinguish: Discovered technology. Active deployment resolution. Deprecated or prohibited resolution. Build, CI, package-manager, dependency, runtime, container and deployment declarations must be generated from or automatically validated against canonical resolved configurations wherever technically feasible. Reproducibility must not depend on blindly selecting a floating latest version. Discovery may be dynamic; approved production resolutions must be explicit, verifiable and reproducible. Demonstrate that: The governance core has no closed list of technology categories. Technology definitions and supported categories can be registered through extensible contracts. New releases can be discovered without manually editing multiple version lists. Drift, unsupported versions, deprecation and security issues are detected. Truly new protocols or behaviors have a documented, controlled adapter-extension path. Resolved for a specific use. Do not implement a blind latest selector for production. The toolchain governance mechanism must itself have a safe bootstrap model. Do not assume the resolver can execute without any underlying environment. Any bootstrap dependency must be explicit, reproducible, governed and auditable rather than silently hardcoded. The same extensible governance lifecycle of governed discovery, evaluation, verification, approval and deployment applies to every supported technology.
+
+@LXM-REQ-000044 | STG-01 | PP | Repaired
+t: Technology-assumption and hardcoding detection
+s: S99; L52; A704-729; SRC-0015 §7.1,§7.3; SRC-0016 §6.1,§6.3,§6.5,§10.3,§12.1
+n: Unjustified-hardcoding detection restored as a technology-governance check (it had moved to the business-policy audit only).
+c: SRC-0015 §7.1 extends; SRC-0015 §7.3 extends; SRC-0016 §6.1 extends; SRC-0016 §6.3 covers; SRC-0016 §6.5 covers; SRC-0016 §6.5 extends; SRC-0016 §10.3 covers; SRC-0016 §12.1 covers
+x: Detect undeclared technology assumptions and unjustified technology hardcoding as part of technology governance, in addition to the business-policy audit (LXM-REQ-000082). Inventory the actual repository for manually duplicated tool versions, technology-category enumerations, provider assumptions, fixed runtime selections, tool-specific branching and stale compatibility declarations. Do not merely move hardcoded version numbers into one central file and declare the problem solved. Implement automatic discovery, validation, generation and drift detection. Perform a repository-wide, source-grounded inventory of technology assumptions and version declarations. The gate must distinguish actual policy violations from legitimate fixed constraints, generated artifacts and approved exceptions.
+
+@LXM-REQ-000045 | STG-01 | PP | Repaired
+t: Independent approval of production-affecting changes
+s: S101; L50; SRC-0015 §6.3; SRC-0016 §8.2
+n: The weakening qualifier "where required" is removed; the unconditional source requirement is restored.
+c: SRC-0015 §6.3 extends; SRC-0016 §8.2 covers; SRC-0016 §8.2 extends
+x: Every production-affecting technology change requires independent approval by a person distinct from its author and leaves an auditable version. Support automatic discovery and proposal generation, with approval controls for changes that materially affect production behavior, security, data integrity or availability. Where safe automation is possible, automate discovery, validation, candidate evaluation and proposal creation.
+
+@LXM-REQ-000046 | STG-01 | FP | Historical
+t: Authorized re-resolution
+s: S107; L55-57
+n: Completed in commit `39ed4d6` (integrity-only re-resolution); verify, do not redo.
+x: The owner-authorized development-only re-resolution of the 35 jsdom-tree entries is complete in `39ed4d6`; verify the actual final tree rather than any report.
+
+@LXM-REQ-000047 | STG-01 | ST | Strengthened
+t: Lockfile integrity verification
+s: S109; L57
+x: Confirm `package-lock.json` has correct `resolved` and `integrity` values equal to the registry's published data, respects the declared constraints, installs reproducibly from clean, and leaves production dependencies and `package.json` unchanged unless a separately justified defect is recorded as a documented scope decision. Review the exact lockfile diff. Never fabricate hashes or run broad uncontrolled upgrades.
+
+@LXM-REQ-000048 | STG-01 | PP | Repaired
+t: No forced incompatible versions
+s: S111; L57; SRC-0016 §5.2,§7.4; SRC-0025 §0.2
+k: LXM-DEC-000011
+n: "Do not force incompatible versions" restored.
+c: SRC-0016 §5.2 covers; SRC-0016 §7.4 extends; SRC-0025 §0.2 extends
+x: Verify the jsdom and `@asamuzakjp/dom-selector` state against the actual dependency constraints. Never force an incompatible version and never suppress an integrity or audit finding. Do not replace all current versions indiscriminately or make an untested runtime the production default. By owner decision LXM-DEC-000011, the full test-suite floor is raised to Node 22.22.2 or later and the development tooling is re-resolved to its fixed versions; the production floor stays 22.13.0 with a runtime-only lane, and host installs get a security floor declared in the technology lock.
+
+@LXM-REQ-000049 | STG-01 | ST | Strengthened
+t: PR-053 verification chain
+s: S113; L59; SRC-0016 §9.2,§11.2
+c: SRC-0016 §9.2 extends; SRC-0016 §11.2 covers
+x: Run a clean `npm ci`, the affected tests, the complete applicable suite, technology lock and inventory generation with freshness checks, the technology governance gate, browser, PostgreSQL, and Docker build and smoke checks. Include regression tests for the existing kernel, money policy and wallet governance. Do not change unresolved owner monetary decisions as part of PR-053.
+
+@LXM-REQ-000050 | STG-01 | OM | Restored
+t: Per-finding classification of technology assumptions
+s: S115; L59; A717-725; SRC-0015 §7.2; SRC-0016 §6.2,§12.1
+k: OMR-3
+n: Restored from SRC-0002; Appendix A's seven-way classification covers business policy only.
+c: SRC-0015 §7.2 extends; SRC-0016 §6.2 covers; SRC-0016 §6.2 extends; SRC-0016 §12.1 covers
+x: Review every remaining technology-assumption finding individually and classify each as exactly one of: fixed; verified constraint; explicitly approved exception (with approver and review condition, LXM-EXC); unresolved gap (with closure condition). Record the classification in the canonical inventory. Immutable technical or security invariant. Required integration adapter. Documented exception. Defect requiring remediation. A genuine technical minimum or immutable security constraint. An unsupported or unverified assumption.
+
+@LXM-REQ-000051 | STG-01 | FP | Retained
+t: Record PR-053 evidence
+s: S119; L61; SRC-0016 §12.1
+c: SRC-0016 §12.1 extends
+x: Update the canonical register and `docs/technology.md` with the actual evidence. Registry, discovery, evaluation, governance and resolution mechanisms actually implemented. All hardcoded declarations changed and the justification for retained constraints. New tests and actual results. Both green CI runs against the exact final SHA. Worktree state, including the preserved receipt. Outstanding production blockers.
+
+@LXM-REQ-000052 | STG-01 | PP | Repaired
+t: Commit gate
+s: S121; L61,L239; A1128; SRC-0016 §10.3
+k: LXM-DEC-000002
+n: "Commit only after required local checks pass" restored to Stage 1; CI acceptance follows K2.
+c: SRC-0016 §10.3 covers
+x: Commit and push only after the required local checks pass on the exact tree and the full diff has been inspected. Acceptance then requires LXM-REQ-000153.
+
+@LXM-REQ-000053 | STG-01 | FP | Retained
+t: No earlier-commit CI evidence
+s: S123; L59,L249; A1226; SRC-0016 §11.1
+c: SRC-0016 §11.1 extends
+x: Never count CI from an earlier commit as evidence for a changed tree. Any changes to CI, toolchain configuration, generated artifacts or runtime policy create a new candidate revision.
+
+@LXM-REQ-000054 | STG-01 | OM | Restored
+t: Candidate freeze during CI
+s: S125; L17; SRC-0016 §5.2
+k: OMR-4; LXM-DEC-000004
+n: Restored and reconciled with LXM-REQ-000010 by K4: the candidate is frozen; only non-mutating, pre-scoped analysis may proceed.
+c: SRC-0016 §5.2 covers
+x: While a candidate's acceptance CI is running, freeze the candidate: make no change to the working tree, index, branch or remote, and begin no work that could alter the candidate. Only non-mutating analysis scoped before the run starts may proceed. Never start concurrent work to accelerate a run.
+
+@LXM-REQ-000055 | STG-01 | FP | Retained
+t: PR-053 is not mandate compliance
+s: S127; L63
+x: When PR-053 has its required evidence, continue to Stage 2; a green technology gate does not establish compliance with the mandate.
+
+@LXM-REQ-000056 | STG-02 | FP | Retained
+t: Mandate as parent contract
+s: S131,S135; L65-67; A370
+x: Use the owner mandate (Appendix A) as the parent acceptance contract; if no canonical repository copy exists, record that limitation and use Appendix A until one is established.
+
+@LXM-REQ-000057 | STG-02 | PP | Repaired
+t: Verify the mandate's identity and governance
+s: S133; L67
+n: "Status and governance relationships" restored.
+x: Locate the canonical repository copy of the mandate and verify its identity, version, status, authority and governance relationships. Preserve its terminology; never rewrite or weaken it.
+
+@LXM-REQ-000058 | STG-02 | FP | Retained
+t: Inspect what the mandate references
+s: S137; L33,L75; A580-595
+x: Inspect all referenced implementation, configuration, schemas, migrations, registries, UI, provider adapters, tests, CI workflows, operations documentation and readiness records.
+
+@LXM-REQ-000059 | STG-02 | FP | Retained
+t: Conformance matrix
+s: S139,S143-145,S147-149; L71; A941-962
+x: Build a conformance matrix with existing canonical traceability conventions, one entry per applicable requirement, recording: the exact mandate reference; canonical implementation artifact; runtime or lifecycle enforcement; required test or independently verifiable check; actual evidence and tested commit; and conformance status (status model, dimension D1).
+
+@LXM-REQ-000060 | STG-02 | OM | Restored
+t: Matrix field: dependencies
+s: S146; A955
+k: OMR-5
+n: Restored from SRC-0002 to the conformance matrix (Appendix A has it for the feature matrix only).
+x: Each conformance-matrix entry also records its configuration, schema and data dependencies.
+
+@LXM-REQ-000061 | STG-02 | PP | Repaired
+t: Matrix field: remaining work and consequence
+s: S150; L71; A962
+n: "Remaining work" and "consequence" restored beside the closure condition.
+x: Each conformance-matrix entry records the remaining work, the consequence of leaving it open, and the closure condition.
+
+@LXM-REQ-000062 | STG-02 | FP | Retained
+t: No competing registers
+s: S152; L71; A642-648; SRC-0016 §2.5
+c: SRC-0016 §2.5 covers
+x: Reuse existing canonical records; never create a register that competes with `PRODUCTION_READINESS.md`.
+
+@LXM-REQ-000063 | STG-02 | FP | Retained
+t: What is not proof
+s: S154; L22; A406,A444
+c: SRC-0009 §5.1 supports; SRC-0009 §5.2 supports; SRC-0009 §8.1 supports; SRC-0009 §8.2 supports
+x: Architecture descriptions, designs, seed placeholders, registry records, passing unrelated tests and green CI runs are not proof of implemented functionality.
+
+@LXM-REQ-000064 | STG-02 | ST | Strengthened
+t: Reconcile owner decisions
+s: L69; A646,A1076-1080; SRC-0016 §2.5
+c: SRC-0016 §2.5 covers
+x: Reconcile the mandate's five owner decisions with the existing decision records; preserve decision history and identifiers; verify an identifier's meaning before reusing it; never treat an illustrative list as a closed taxonomy.
+
+@LXM-REQ-000065 | STG-03 | FP | Retained
+t: Gap-inventory scope (core)
+s: S160-162,S164-169,S171; L75,L93; A1088
+x: The gap inventory covers: monetary policy; multi-business architecture; business rules and configuration; payments, wallets and providers; the configuration registry and seed lifecycle; business-model and capability composition; financial arithmetic, persistence and lifecycle integrity; feature-to-test traceability; user journeys, permissions and UI/UX; database migration.
+
+@LXM-REQ-000066 | STG-03 | MO | Expanded-from-mandate
+t: Gap-inventory scope: financial exceptions
+s: S163; A523-535,A1088
+x: The gap inventory also covers financial exceptions and legacy-data resolution.
+
+@LXM-REQ-000067 | STG-03 | PP | Repaired
+t: Gap-inventory scope: security, operations and compliance
+s: S170,S171,S172-174; L75; A1088
+n: Areas only verified later are restored to the inventory scope.
+x: The gap inventory also covers security, tenant isolation and auditability; recovery; deployment infrastructure and operations; monitoring, backups, disaster recovery and capacity; privacy, compliance and explicit release authorization.
+
+@LXM-REQ-000068 | STG-03 | FP | Retained
+t: Inventory from source
+s: S176; L75; A683
+x: Inventory existing behavior from source code and canonical registries; never manufacture items or coverage totals.
+
+@LXM-REQ-000069 | STG-03 | MO | Expanded-from-mandate
+t: What the inventory identifies
+s: S178; L77; A1092; SRC-0012 §D.2; SRC-0013 §2.2.9
+c: SRC-0012 §D.2 covers; SRC-0013 §2.2.9 covers
+x: Identify duplicated policies and canonical definitions, business behavior hidden in code, configuration gaps and missing seed options, unjustified hardcoding, stale generated artifacts, conflicting authorities and sources of truth, unimplemented capabilities, tests that do not cover the behavior they claim, and evidence tied to old commits.
+
+@LXM-REQ-000070 | STG-03 | OM | Restored
+t: Classify every finding
+s: S180; A838,A1013
+k: OMR-6
+n: Restored from SRC-0002; Appendix A classifies only monetary and security findings.
+x: Classify every gap finding by impact, dependencies, priority and the work required to close it, and link it to its requirement IDs.
+
+@LXM-REQ-000071 | STG-03 | FP | Retained
+t: Do not stop at the inventory
+s: S182; L79; A1084
+x: Do not stop after the inventory; continue to implementation. A blocker on one item never blocks unrelated items.
+
+@LXM-REQ-000072 | STG-03 | ST | Strengthened
+t: Observation states
+s: L77; A1090
+x: Give every inventoried item an observation state from status dimension D3.
+
+@LXM-REQ-000073 | STG-04 | ST | Strengthened
+t: Reuse the configuration foundation
+s: S186; L83; A403,A658; SRC-0015 §2.4
+c: SRC-0015 §2.4 extends
+x: Inspect and reuse the existing kernel, registry and configuration mechanisms; implement only missing mechanisms; never introduce a parallel engine, registry or schema source. Use the existing canonical registry and kernel lifecycle wherever suitable. Do not introduce a parallel registry or a separate configuration framework for individual tool families.
+
+@LXM-REQ-000074 | STG-04 | FP/ST | Strengthened
+t: Configuration definition properties
+s: S190-194,S196-200; L85,L87; A660-679; SRC-0012 §B.1; SRC-0012 §C.2; SRC-0012 §G.6
+c: SRC-0012 §B.1 covers; SRC-0012 §C.2 extends; SRC-0012 §G.6 covers
+x: Governed definitions support, as applicable: stable identity, schema and ownership; typed options and validation; explicit defaults distinct from the rule definition; scope and inheritance; deterministic precedence and conflict detection; lifecycle, effective dates and versions; approval and activation; simulation and impact analysis; audit history and rollback; authorization, tenant isolation, least privilege and secret protection. A default is a starting configuration, not an invisible code fallback. Sensitive financial settings must not become active merely because a seed file exists; activation and approval requirements must be enforced.
+
+@LXM-REQ-000075 | STG-04 | MO | Expanded-from-mandate
+t: Dependency compatibility
+s: S195; L85; A667; SRC-0016 §4.3
+c: SRC-0016 §4.3 covers
+x: Governed definitions declare their dependencies and compatibility constraints, and incompatible combinations are rejected.
+
+@LXM-REQ-000076 | STG-04 | MO | Expanded-from-mandate
+t: Definition links
+s: S201; A671,A685-694; SRC-0012 §G.8
+c: SRC-0012 §G.8 extends
+x: Every governed definition links to its implementation, consuming features and services, tests and documentation. Engineering must publish a traceability matrix linking every inventoried rule to its seed definition, implementation, configuration interface, tests and evidence.
+
+@LXM-REQ-000077 | STG-04 | FP | Retained
+t: Administration APIs and UI
+s: S203; L85; A677; SRC-0012 §B.1; SRC-0012 §B.2
+c: SRC-0012 §B.1 covers; SRC-0012 §B.2 extends
+x: Provide authorized APIs and appropriate administration interfaces to discover, inspect, edit, validate, preview, simulate, approve, activate, compare versions of and roll back supported definitions. Unsupported combinations must be rejected with an actionable explanation.
+
+@LXM-REQ-000078 | STG-04 | MO | Expanded-from-mandate
+t: Usable in the running platform
+s: S205; A422,A476
+x: A registry is not enough: authorized administrators must be able to use each required capability in the running platform without code changes.
+
+@LXM-REQ-000079 | STG-04 | FP | Retained
+t: Seed lifecycle
+s: S207; L87; A446,A698; SRC-0012 §D.1; SRC-0012 §D.3; SRC-0012 §D.4; SRC-0012 §D.5; SRC-0012 §D.6; SRC-0012 §D.7; SRC-0012 §G.3; SRC-0012 §G.5; SRC-0012 §G.6
+c: SRC-0012 §D.1 covers; SRC-0012 §D.3 covers; SRC-0012 §D.4 extends; SRC-0012 §D.5 extends; SRC-0012 §D.6 extends; SRC-0012 §D.7 extends; SRC-0012 §G.3 extends; SRC-0012 §G.5 extends; SRC-0012 §G.6 covers
+x: Seed existing supported rules and options from the implementation. Seed application is idempotent, deterministic, versioned, auditable and safe to repeat, and never overwrites approved live configuration. Seed updates must be explicit, diffable and governed by a documented merge or migration policy. Removed or deprecated seed definitions must not silently delete historical financial evidence or active configuration. Failed seeding or migration must be handled safely, with transaction boundaries and recovery behavior appropriate to the data store. The platform must report missing, invalid, conflicting, outdated and unapplied seed definitions. Engineering must implement and test the seed registry, seed migrations, administrative discovery, schemas, validation, activation and audit history. Engineering must prove that repeated seeding creates no duplicates and does not overwrite approved live configurations.
+
+@LXM-REQ-000080 | STG-04 | MO | Expanded-from-mandate
+t: Configuration cannot bypass invariants
+s: S209; A405,A535,A1110,A1148,A1188; SRC-0012 §F.1; SRC-0014 §4.2
+c: SRC-0012 §F.1 extends; SRC-0014 §4.2 covers
+x: No configuration, valid or invalid, may bypass monetary, security, authorization, ledger, payment, tenant or data-integrity invariants; test that each attempt is rejected. Configurability must never permit silent rounding, invalid monetary scales, mixed-currency arithmetic without an explicit conversion, overflow, unauthorized changes to posted transactions or bypassing of required accounting controls.
+
+@LXM-REQ-000081 | STG-04 | FP | Retained
+t: Test runtime behavior
+s: S211; L87; A444
+x: Test actual runtime behavior, not the existence of seed records.
+
+@LXM-REQ-000082 | STG-04 | ST | Strengthened
+t: Configuration states and policy hardcoding audit
+s: L87,L89; A673,A704-729; SRC-0012 §A.3; SRC-0012 §C.1; SRC-0012 §E.1; SRC-0012 §G.2; SRC-0012 §G.4; SRC-0015 §7.2; SRC-0016 §6.2
+c: SRC-0012 §A.3 extends; SRC-0012 §C.1 extends; SRC-0012 §E.1 covers; SRC-0012 §G.2 extends; SRC-0012 §G.4 covers; SRC-0015 §7.2 covers; SRC-0016 §6.2 covers
+x: Distinguish rule definition, seed template, approved effective configuration, activated version and historical version. Audit embedded policy and classify each finding as governed configuration, canonical registry/schema, executable algorithm or security/financial invariant, explicit constant, deliberate launch limitation, defect, or owner decision; remove unjustified policy hardcoding without weakening invariants or turning every literal into configuration. Seeded but awaiting approval or activation. Intentionally fixed by a documented financial or security invariant. Unsupported or requiring implementation before it can be offered as a configuration option. Deprecated, with its replacement and migration path recorded. Maintain a canonical source for rule definitions and versioned seed templates. Store tenant-, business-, jurisdiction-, currency- and provider-specific settings at their appropriate configuration scope. Engineering must identify all hardcoded business assumptions and classify whether each should become configuration, remains a fixed invariant, or requires new implementation.
+
+@LXM-REQ-000083 | STG-05 | MO | Expanded-from-mandate
+t: Monetary inspection scope
+s: S215; L93,L99; A588,A836
+x: Inspect the existing money model, its monetary migration history, the canonical money inventory, policy records and documented decisions.
+
+@LXM-REQ-000084 | STG-05 | FP | Retained
+t: One money model
+s: S217; L93; A792
+x: Never create a second money library or a competing monetary source of truth.
+
+@LXM-REQ-000085 | STG-05 | FP/ST | Strengthened
+t: Exact monetary model
+s: S221-223,S225-228,S232; L95,L97; A794-811; SRC-0012 §1.1,§1.2; SRC-0013 §2.2.3; SRC-0014 §1.2,§4.2
+c: SRC-0012 §1.1 extends; SRC-0012 §1.2 extends; SRC-0013 §2.2.3 covers; SRC-0014 §1.2 covers; SRC-0014 §4.2 covers
+x: Provide exact monetary representation; explicit currency identity and currency-specific precision; governed rounding modes and boundaries; exact calculation, validation and overflow checks; versioned policy resolution and historical traceability; safe legacy conversion and migration; quarantine of ambiguous values; preservation of original financial source evidence. Binary floating point is never the authority; any compatibility projection is controlled, validated and reconciled to the authoritative value. Seeded, configurable monetary policy covers currencies and monetary precision: supported currencies, minor-unit precision, permitted scales, currency-specific constraints and rounding policies. Seeded, configurable monetary policy covers rounding: supported rounding modes, intermediate versus final rounding, rounding boundaries, precision constraints and treatment of residual differences.
+
+@LXM-REQ-000086 | STG-05 | MO | Expanded-from-mandate
+t: Conversion provenance
+s: S224; L95; A435; SRC-0012 §1.9
+c: SRC-0012 §1.9 covers
+x: Currency conversion is deterministic and records its rate source, rate timestamp, spread, conversion fees and precision.
+
+@LXM-REQ-000087 | STG-05 | MO | Expanded-from-mandate
+t: Exception resolution with rationale
+s: S229; L95; A533; SRC-0012 §1.11; SRC-0014 §4.1
+c: SRC-0012 §1.11 extends; SRC-0014 §4.1 extends
+x: Authorized financial exception resolution records the rationale, approvals and complete audit trail. Seeded, configurable monetary policy covers financial exceptions: ambiguous legacy records, invalid precision, overflow, missing currencies, conflicting policies, residual amounts and operator-resolution workflows. Legacy monetary records, ambiguous conversions, rounding exceptions and refund-allocation cases must be handled through explicit, configurable policies—not undocumented assumptions.
+
+@LXM-REQ-000088 | STG-05 | MO | Expanded-from-mandate
+t: Financial allocation
+s: S230; L93; A429-432,A847-848; SRC-0012 §1.4,§1.6,§1.7,§1.8; SRC-0014 §3.1
+c: SRC-0012 §1.4 extends; SRC-0012 §1.6 extends; SRC-0012 §1.7 extends; SRC-0012 §1.8 extends; SRC-0014 §3.1 covers
+x: Implement and test refund, tax, fee, discount and settlement allocation, including item- and order-level refund allocation and discount and coupon allocation and reversal. Seeded, configurable monetary policy covers taxation: configurable tax rules, rates, inclusive or exclusive tax treatment, calculation bases, line-level and order-level calculations, exemptions and jurisdiction-specific policy parameters. Seeded, configurable monetary policy covers fees and commissions: platform fees, seller commissions, transaction charges, service fees, provider fees, fee allocation and applicable minimums, maximums or tiers. Seeded, configurable monetary policy covers refunds and reversals: full and partial refunds, eligibility, limits, proportional allocation, tax reversals, discount reversals, voucher and wallet effects, idempotency and reconciliation policies. Seeded, configurable monetary policy covers settlements and payouts: settlement schedules, seller balances, fees, deductions, reserves, payout eligibility, rounding adjustments, reconciliation and exception handling.
+
+@LXM-REQ-000089 | STG-05 | MO | Expanded-from-mandate
+t: Reconciliation and discrepancy workflows
+s: S231; L93; A436,A527,A533,A858; SRC-0012 §1.10
+c: SRC-0012 §1.10 extends
+x: Provide reconciliation and discrepancy workflows with transaction matching, tolerances, exception handling and operator resolution. Seeded, configurable monetary policy covers financial reconciliation: matching rules, tolerances, discrepancy classification, exception workflows, unresolved transaction handling and audit requirements.
+
+@LXM-REQ-000090 | STG-05 | FP | Retained
+t: Every monetary path
+s: S234; L93,L97; A834
+x: Audit every in-scope monetary read/write path and persistence field; a corrected payment spine does not establish that any other monetary domain is exact.
+
+@LXM-REQ-000091 | STG-05 | MO | Expanded-from-mandate
+t: Configurable means applied
+s: S236; L75,L87; A420,A442,A444; SRC-0012 §1,,§H,§G.9,§G.4,§G.1,§E.1,§C.2,§B.2,§B.1,§A.4,§A.3,§A.2§A.1; SRC-0013 §3.5,§4.2,§6.1,§6.2,§7.3; SRC-0014 §1.1; SRC-0015 §7.2,§9.4; SRC-0016 §3.1,§4.1,§10.1,§12.2
+c: SRC-0012 §1 extends; SRC-0012 §A.1 extends; SRC-0012 §A.2 extends; SRC-0012 §A.3 covers; SRC-0012 §A.4 extends; SRC-0012 §B.1 covers; SRC-0012 §B.2 covers; SRC-0012 §C.2 covers; SRC-0012 §E.1 covers; SRC-0012 §G.1 covers; SRC-0012 §G.4 covers; SRC-0012 §G.9 extends; SRC-0012 §H extends; SRC-0013 §3.5 covers; SRC-0013 §4.2 covers; SRC-0013 §6.1 covers; SRC-0013 §6.2 covers; SRC-0013 §7.3 covers; SRC-0014 §1.1 extends; SRC-0015 §7.2 covers; SRC-0015 §9.4 covers; SRC-0016 §3.1 covers; SRC-0016 §4.1 covers; SRC-0016 §10.1 covers; SRC-0016 §12.2 covers
+x: Inventory every existing monetary rule and option from source code and schemas, seed and expose each through the canonical configuration mechanism. A rule counts as configurable only when the running platform loads, validates and applies its selected configuration. All monetary policies, rules, calculation methods and supported options that already exist in LUXORA must be seeded into the governed configuration system. At initial setup, an authorized administrator must be able to discover, inspect, select, configure, validate, simulate, approve and activate any applicable seeded rule without modifying application code. Before release, inventory the existing source code, configuration files, database defaults, provider integrations, tests and documented monetary behavior. Identify every supported monetary rule and option currently implemented. Convert that inventory into canonical, structured configuration records. The inventory must cover actual existing behavior, not merely examples or a proposed list of future features. A rule must not be marked configurable merely because a placeholder record exists. The implementation must actually consume and enforce the selected configuration. Engineering must keep production readiness blocked for any in-scope monetary rule that is missing, incorrectly seeded, not actually configurable as claimed or insufficiently tested. Acceptance principle: All currently implemented and supported monetary rules are seeded, discoverable and configurable within their intended scope, subject to authorized approval and invariant-preserving constraints. No hardcoded business default may silently override the effective approved configuration. Monetary precision, rounding modes, tax calculations, discount allocation, currency support, fees and settlement policies must be defined through governed, versioned configuration rather than hardcoded business assumptions.
+
+@LXM-REQ-000092 | STG-05 | FP | Retained
+t: Policy-version traceability
+s: S238; L97; A446,A804; SRC-0012 §F.2; SRC-0014 §4.2
+c: SRC-0012 §F.2 extends; SRC-0014 §4.2 covers
+x: Preserve approved historical financial configurations; every new transaction records the governing policy version. Financial policies must be versioned and traceable to the transactions that used them. Replaying or auditing a historical calculation must use the applicable historical policy version and the necessary recorded inputs, rather than silently applying today's configuration.
+
+@LXM-REQ-000093 | STG-05 | FP | Retained
+t: MD-1–MD-5 handling
+s: S242,S246-248,S250,S252; L99; A586,A866; SRC-0026 §0.3
+k: LXM-DEC-000012
+c: SRC-0026 §0.3 extends
+x: Establish the exact meaning and status of MD-1–MD-5 from the canonical records. Never invent or silently approve financial policy. For an unresolved decision implement the mechanism, supported options, simulations and safe tests; keep financially affected activation blocked; continue all unrelated work without waiting. By owner decision LXM-DEC-000012, MD-1 to MD-5 are decided as the money decision packet recommends: a rounding rule per market with the platform default half-up (MD-1 C); the exact money model for the payment spine only (MD-2 A); pro-rata tax on a partial refund, with offers reversed only on a full refund (MD-3 B); every money-moving domain outside the spine disabled until migrated (MD-5); a mandatory migration rehearsal with signed per-reason quarantine rules (MD-4). Financially affected activation stays blocked until each launch market's rule and tax basis are named, MD-3 B is built and tested and the rehearsal is evidenced.
+
+@LXM-REQ-000094 | STG-05 | MO | Expanded-from-mandate
+t: Decision packets
+s: S249; L99; A1082
+x: For each unresolved decision prepare a packet stating the precise choice, the supported options, their consequences and a recommended default for owner review. A recommendation is never treated as approval.
+
+@LXM-REQ-000095 | STG-06 | FP | Retained
+t: Business-rule domains
+s: S258-266; L103; A499; SRC-0012 §1.3,§1.9; SRC-0013 §2.2.2
+c: SRC-0012 §1.3 extends; SRC-0012 §1.9 covers; SRC-0013 §2.2.2 covers
+x: Inventory the supported rules and options for catalog and product behavior, pricing, offers, eligibility, promotions, orders, fulfilment, inventory and availability, payments, refunds, disputes, approvals, access control, notifications, workflows and risk controls. Seeded, configurable monetary policy covers pricing: base prices, price components, price adjustments, price overrides, price lists, price validity periods and applicable pricing policies.
+
+@LXM-REQ-000096 | STG-06 | MO | Expanded-from-mandate
+t: Promotion stacking
+s: S260; L103; A430; SRC-0012 §1.5
+c: SRC-0012 §1.5 extends
+x: Include promotion and coupon stacking and discount precedence rules. Seeded, configurable monetary policy covers discounts and promotions: discount types, fixed and percentage discounts, stacking, precedence, caps, eligibility, allocation, expiration and reversal rules.
+
+@LXM-REQ-000097 | STG-06 | PP | Repaired
+t: Exception-handling rules
+s: S266; L103; A436
+n: Non-financial exception-handling rules restored.
+x: Include exception-handling rules for every rule domain, financial and non-financial.
+
+@LXM-REQ-000098 | STG-06 | MO | Expanded-from-mandate
+t: Business-specific and future rules
+s: S267; L103; A438,A515; SRC-0012 §1.12
+c: SRC-0012 §1.12 extends
+x: Include business-specific and future domain rules through registration, discovery and controlled extension. Seeded, configurable monetary policy covers future monetary capabilities: newly introduced rules, calculation methods, currencies, payment methods, financial products and other monetary policies must be registerable and configurable without unnecessary changes to the shared platform core.
+
+@LXM-REQ-000099 | STG-06 | FP | Retained
+t: Rule engines and extension
+s: S269,S273,S275,S277; L103,L105; A450,A519,A521; SRC-0012 §D.2; SRC-0012 §E.1; SRC-0012 §E.1; SRC-0012 §E.2; SRC-0012 §G.7; SRC-0012 §H; SRC-0013 §2.1,§2.2.10,§3.4,§3.5,§4.3; SRC-0016 §8.3
+c: SRC-0012 §D.2 covers; SRC-0012 §E.1 covers; SRC-0012 §E.2 extends; SRC-0012 §G.7 covers; SRC-0012 §H covers; SRC-0013 §2.1 covers; SRC-0013 §2.2.10 covers; SRC-0013 §3.4 covers; SRC-0013 §3.5 covers; SRC-0013 §4.3 covers; SRC-0016 §8.3 covers
+x: Use the canonical rule, policy or configuration engine appropriate to each function. A new rule an existing engine can express is added through governed configuration without source changes. New executable behavior is implemented, reviewed and registered through an extension mechanism before it is offered as a working option. Arbitrary code execution is never a rules engine. When a new rule requires previously unsupported computational behavior, protocol support or an extension to the rule engine, implementation may be necessary. The new capability must then be registered, validated, tested, documented and made available through the same configuration mechanism. Do not claim a new capability exists until its executable behavior is implemented.
+
+@LXM-REQ-000100 | STG-06 | MO | Expanded-from-mandate
+t: Rule governance behavior
+s: S271; L105; A508; SRC-0013 §2.2.7; SRC-0014 §3.2
+c: SRC-0013 §2.2.7 covers; SRC-0014 §3.2 covers
+x: Supported rules are discoverable, configurable and testable through authorized interfaces, with validation, composition, precedence, conflict detection, effective scope, dependency validation, versioning, simulation, approval, activation, rollback and audit.
+
+@LXM-REQ-000101 | STG-07 | FP | Retained
+t: Profile mechanism
+s: S281; L109,L113; A474; SRC-0013 §3.3,§3.4,§7.1,§7.2; SRC-0015 §3.1; SRC-0016 §3.1
+c: SRC-0013 §3.3 extends; SRC-0013 §3.4 covers; SRC-0013 §7.1 extends; SRC-0013 §7.2 extends; SRC-0015 §3.1 covers; SRC-0016 §3.1 covers
+x: Implement or complete the reusable platform mechanism to define, discover, compose, validate, configure and test business profiles. For example: An Amazon-like marketplace configuration composes product discovery, seller management, offers, carts, checkout, payments, orders, fulfilment, returns and settlements. An Uber-like mobility configuration composes service discovery, driver and vehicle management, availability, matching, dispatch, trip lifecycle, location integration, pricing, payments and safety-related workflows. A fintech configuration composes the relevant customer and account models, payment or ledger capabilities, financial controls, reconciliation, risk policies and regulatory integrations. An ERP configuration composes the appropriate finance, inventory, procurement, sales, fulfilment and operational workflows. A CRM configuration composes customer and relationship records, interaction history, pipeline workflows, permissions, tasks, reporting and relevant integrations. Engineering must inspect the actual repository and produce a capability matrix identifying: Business models and industry domains already implemented. Capabilities that exist but require additional integration or testing. Capabilities that remain unimplemented. Hardcoded domain assumptions and unnecessary coupling. The next business configurations that can be assembled using existing capabilities without new core changes. Test that changing one tenant's or business profile's configuration does not unintentionally alter another profile.
+
+@LXM-REQ-000102 | STG-07 | MO | Expanded-from-mandate
+t: Reuse platform foundations
+s: S283; L109; A741,A749,A751,A757; SRC-0013 §2.3; SRC-0016 §3.2
+c: SRC-0013 §2.3 extends; SRC-0016 §3.2 covers
+x: Reuse the existing capability, domain, composition, navigation, identity, authorization and registry foundations. These mechanisms must be implemented using the existing canonical platform architecture wherever possible.
+
+@LXM-REQ-000103 | STG-07 | FP | Retained
+t: Composition concerns (core)
+s: S287-289,S291-295; L109; A742-753; SRC-0013 §2.2.1,§2.2.4,§2.2.5,§2.2.6,§2.2.9,§2.2.10,§3.1,§4.2,§6.1,§7.1
+c: SRC-0013 §2.2.1 extends; SRC-0013 §2.2.4 covers; SRC-0013 §2.2.5 extends; SRC-0013 §2.2.6 extends; SRC-0013 §2.2.9 covers; SRC-0013 §2.2.10 covers; SRC-0013 §3.1 covers; SRC-0013 §4.2 covers; SRC-0013 §6.1 covers; SRC-0013 §7.1 covers
+x: Handle canonically: business-model definitions; reusable capabilities and shared primitives; capability dependencies and compatibility; configuration inheritance; workflow and rule selection; permissions, APIs, events and UI exposure; schemas and migrations; integration connectors. The common platform provides discoverable business-model, industry, domain, capability, service and component registries. The common platform provides configurable entities, relationships, attributes, schemas, lifecycle states, workflows, business policies, permissions and user experiences. The common platform provides standard interfaces and extension contracts for industry-specific capabilities and external integrations.
+
+@LXM-REQ-000104 | STG-07 | MO | Expanded-from-mandate
+t: Composition concerns (restored)
+s: S287,S290,S291,S294,S296; L109; A742,A745,A746,A752,A754-755; SRC-0013 §2.2.8
+c: SRC-0013 §2.2.8 extends
+x: Also handle industry definitions, profile lifecycle, scope resolution, data ownership, observability, certification and deployment profiles. The common platform provides isolation and governance between tenants, businesses, industries and configurations.
+
+@LXM-REQ-000105 | STG-07 | MO | Expanded-from-mandate
+t: No closed list of business models
+s: S298; L69,L109; A472,A493,A759
+k: LXM-DEC-000007
+x: Never hardcode a closed list or maximum enumeration of business models, industries or domains, and never build marketplace assumptions into shared primitives.
+
+@LXM-REQ-000106 | STG-07 | FP | Retained
+t: Representative profiles
+s: S302-309,S311; L111,L113; A765-778; SRC-0013 §1.3,§2.1,§3.5,§7.2
+k: LXM-DEC-000007
+c: SRC-0013 §1.3 covers; SRC-0013 §2.1 covers; SRC-0013 §3.5 covers; SRC-0013 §7.2 covers
+x: Demonstrate, through the real platform mechanism, the representative profiles registered as data for: a multi-vendor marketplace (the first launch scope), mobility and on-demand services, a fintech or payment-oriented business, a consultancy or service marketplace, ERP-style operations and CRM-style operations. Reuse implemented capabilities; build missing shared composition mechanisms and required, safely completable domain behavior; report each profile's maturity per status dimension D2.
+
+@LXM-REQ-000107 | STG-07 | FP | Retained
+t: Templates are not solutions
+s: S313; L113; A478,A780; SRC-0014 §2.2
+c: SRC-0014 §2.2 extends
+x: A profile entry or template is not proof of a functioning solution; report each profile's missing implementations and their dependencies, and never advertise them as supported. Important distinction: the architecture must be extensible across these domains, but each business capability must still be implemented, configured, tested and certified before being represented as production-ready.
+
+@LXM-REQ-000108 | STG-07 | ST | Strengthened
+t: Marketplace first, foundation universal
+s: S315; L113; A493,A784; SRC-0013 §1.1,§1.2,§1.3,§2.1,§2.2.3,§3.2,§4.2,§5.1,§5.2,§5.3,§7.1,§7.2,§7.3; SRC-0014 §2.1; SRC-0016 §2.3
+c: SRC-0013 §1.1 extends; SRC-0013 §1.2 extends; SRC-0013 §1.3 extends; SRC-0013 §2.1 covers; SRC-0013 §2.2.3 covers; SRC-0013 §3.2 extends; SRC-0013 §4.2 covers; SRC-0013 §5.1 covers; SRC-0013 §5.2 extends; SRC-0013 §5.3 covers; SRC-0013 §7.1 covers; SRC-0013 §7.2 covers; SRC-0013 §7.3 covers; SRC-0014 §2.1 covers; SRC-0016 §2.3 covers
+x: Prioritize the complete first marketplace release while keeping the foundation reusable and without architecturally constraining later business models. LUXORA shall be built as a universal, configuration-driven business platform capable of configuring, operating and extending multiple types of businesses, platforms, operating models, industries and domains through a common platform foundation. Amazon-like e-commerce is the first production deployment configuration. It is not the platform's architectural boundary, exclusive business model or long-term capability limit. The platform must be built to support a broad and extensible ecosystem of business models, including but not limited to: E-commerce marketplaces and multi-vendor commerce. Mobility, ride-hailing, delivery and on-demand services. Consultancy, professional services and service marketplaces. Enterprise Resource Planning (ERP). Customer Relationship Management (CRM). Retail, wholesale, distribution and B2B commerce. Subscription, membership, booking and appointment businesses. Logistics, transportation, fulfilment and supply-chain operations. Education, healthcare, travel, hospitality and other industry-specific models. Future business models, industries and domain combinations that do not yet exist. This list is illustrative, not exhaustive or a hardcoded limit. The design must avoid requiring a separate copy or fork of the LUXORA core for every business type. However, marketplace-first must not cause the underlying platform to become a marketplace-only implementation. Foundational abstractions and reusable capabilities required by the wider platform must be developed correctly at the outset, rather than replaced with marketplace-specific assumptions.
+
+@LXM-REQ-000109 | STG-08 | MO | Expanded-from-mandate
+t: Provider-neutral orchestration
+s: S319; A572,A874; SRC-0014 §5.1,§5.2
+c: SRC-0014 §5.1 extends; SRC-0014 §5.2 extends
+x: Inspect existing payment and wallet integrations; preserve sound provider implementations; remove provider-specific coupling from common orchestration so new providers register without changing it. The platform must support configurable payment integrations, with initial Indian-market requirements including Razorpay, PhonePe, UPI and platform wallets. The architecture must accommodate additional payment gateways, processors, banks, payment methods, currencies and future payment technologies. Required safeguards: a provider-neutral integration contract, capability discovery, credential and secret isolation, transaction idempotency, signed webhook verification, reconciliation, failover policies and provider-specific certification.
+
+@LXM-REQ-000110 | STG-08 | FP | Retained
+t: Provider adapters and operations
+s: S321,S325,S327-335,S337,S340,S342,S344; L117,L119; A539-572,A878-923; SRC-0016 §11.2
+k: LXM-DEC-000007
+c: SRC-0016 §11.2 covers
+x: Complete the provider-neutral mechanism and the actual adapters for the providers registered as the launch scope (currently Razorpay, PhonePe, applicable UPI routes and platform wallets) and further registered providers, covering as applicable: initiation, authorization and capture; secure credential references; currency and operation constraints; idempotency and duplicate-request prevention; signature-verified webhooks; duplicate and out-of-order events; retries, timeouts and unknown outcomes; full and partial refunds; disputes and chargebacks; settlement and reconciliation; ledger and wallet integrity. A connector interface alone is not a functional provider. Where accounts or environments are unavailable, complete the safe implementation and automated tests, record the external blocker and keep the provider out of production claims. Never request, expose or commit secrets, invent sandbox results or present mocks as provider verification.
+
+@LXM-REQ-000111 | STG-08 | MO | Expanded-from-mandate
+t: Payment-method capability discovery
+s: S326; L117; A549,A559
+x: Discover payment-method capabilities and eligibility per provider and negotiate feature availability.
+
+@LXM-REQ-000112 | STG-08 | MO | Expanded-from-mandate
+t: Provider routing and operational controls
+s: S336; L117; A561,A562
+x: Provide controlled provider routing, fallback and failover where supported, provider health monitoring and operational controls.
+
+@LXM-REQ-000113 | STG-08 | MO | Expanded-from-mandate
+t: Provider audit and conformance
+s: S338; L117; A562,A933
+x: Keep audit history for provider operations and run per-provider conformance tests.
+
+@LXM-REQ-000114 | STG-09 | ST | Strengthened
+t: Feature-to-test mapping
+s: S348; L123; A947-962
+x: Map every mandatory first-marketplace feature and workflow to acceptance criteria, APIs and events, data and migrations, screens and journeys, roles and permissions, configuration, external integrations, tests, expected failure paths, actual result, exact tested SHA and evidence location.
+
+@LXM-REQ-000115 | STG-09 | FP | Retained
+t: Role journeys
+s: S350,S355-363; L125; A970-984; SRC-0013 §1.3
+c: SRC-0013 §1.3 covers
+x: Test real journeys for buyers, sellers, administrators, operators and every other in-scope role: tenant isolation and permissions; catalog and search; pricing, offers, cart and checkout; payment outcomes and recovery; orders, fulfilment, returns and refunds; wallet workflows where enabled; configuration preview, approval, activation and rollback; administrative financial exception handling.
+
+@LXM-REQ-000116 | STG-09 | MO | Expanded-from-mandate
+t: Registration and session lifecycle
+s: S354; L125; A974
+x: Test registration, authentication and the session lifecycle.
+
+@LXM-REQ-000117 | STG-09 | PP | Repaired
+t: Notification journeys
+s: S364; L125
+n: Notification journeys restored beside operational failure paths.
+x: Test notification journeys and operational failure paths.
+
+@LXM-REQ-000118 | STG-09 | MO | Expanded-from-mandate
+t: Test states and truthful status
+s: S366; L125; A986,A988
+x: Cover success, validation error, permission denied, loading and empty, network failure, timeout, concurrency, duplicate event, recovery and audit states, and verify the UI never shows a misleading success state.
+
+@LXM-REQ-000119 | STG-09 | MO | Expanded-from-mandate
+t: Responsive, accessible, supported browsers
+s: S368; L125; A988,A990
+x: Verify supported viewports, responsive behavior, keyboard operation, accessibility, and operation in each supported browser, using browser automation.
+
+@LXM-REQ-000120 | STG-09 | FP | Retained
+t: Coverage honesty
+s: S370,S372; L123,L125; A966,A990
+x: Page-load counts and route coverage do not establish correctness. Record the exact tested SHA and actual result for each test; keep untested journeys visible.
+
+@LXM-REQ-000121 | STG-10 | FP | Retained
+t: Security and data verification
+s: S376,S380-382,S388,S390-392; L127,L129; A996-1011
+x: Verify, per supported deployment profile: authentication and authorization; tenant isolation and least privilege; API validation and abuse resistance; dependency and container vulnerability checks; monetary source preservation; backup encryption and secret exclusion; restore integrity and recovery.
+
+@LXM-REQ-000122 | STG-10 | MO | Expanded-from-mandate
+t: Secret rotation
+s: S383; L129; A1001
+x: Verify secure secret handling and credential-rotation procedures.
+
+@LXM-REQ-000123 | STG-10 | MO | Expanded-from-mandate
+t: Webhook idempotency
+s: S384; L129; A1002-1003
+x: Verify webhook signature verification, replay protection and idempotency.
+
+@LXM-REQ-000124 | STG-10 | MO | Expanded-from-mandate
+t: Configuration authorization
+s: S385; L129; A1007
+x: Verify audit integrity and protection against unauthorized configuration changes.
+
+@LXM-REQ-000125 | STG-10 | MO | Expanded-from-mandate
+t: Sensitive data
+s: S386; L129; A1006,A1008
+x: Verify sensitive-data protection, session security and safe errors and logs.
+
+@LXM-REQ-000126 | STG-10 | MO | Expanded-from-mandate
+t: Resource exhaustion
+s: S387; L129; A1005
+x: Verify rate limits and resource-exhaustion protection.
+
+@LXM-REQ-000127 | STG-10 | MO | Expanded-from-mandate
+t: Migration upgrade compatibility
+s: S389; L129; A1027
+x: Verify fresh installation, upgrade from the supported previous schema, failed-migration safety, restart and applicable rollback.
+
+@LXM-REQ-000128 | STG-10 | ST | Strengthened
+t: Isolated and per-profile testing
+s: S394,S396,S398; L131; A1013,A1025,A1031; SRC-0013 §6.3; SRC-0015 §8.1
+c: SRC-0013 §6.3 covers; SRC-0015 §8.1 covers
+x: Run migrations, restore drills and potentially destructive tests only on isolated databases and environments, never on production data or preservation copies. Test each supported database profile independently; SQLite success does not prove PostgreSQL correctness or production capacity. Run the repository-standard security and migration suites; record findings with severity, affected component, reproducibility, remediation and evidence.
+
+# ---- Stages 11-16, final report and final rule: identical in SRC-0002 and SRC-0003 ----
+
+@LXM-REQ-000129 | STG-11 | ID | Retained
+t: Operational evidence inventory
+s: S402-416; L135-149; A1037-1052
+x: Inspect the actual evidence for staging and production deployment configuration; deployment target and region; DNS, TLS and security headers; secrets management; logging, metrics, tracing and actionable alerts; health and readiness checks; backup scheduling and off-host destinations; restore rehearsals and disaster recovery; payment monitoring and reconciliation; capacity, performance and concurrency; on-call ownership and incident runbooks; data retention, privacy and regulatory requirements; release and rollback procedures.
+
+@LXM-REQ-000130 | STG-11 | ID | Retained
+t: Implement what can be completed
+s: S418; L151
+x: Implement the required code, configuration, documentation and tests that can be completed within the available repository and environment.
+
+@LXM-REQ-000131 | STG-11 | ID | Retained
+t: External prerequisites
+s: S420; L153; A1058
+x: For each missing external prerequisite record the resource, its owner, the exact action needed and the evidence that closes it; never fabricate an external environment or claim it was tested.
+
+@LXM-REQ-000132 | STG-11 | ID | Retained
+t: Documentation is not operation
+s: S422; L155; A1056
+x: A runbook does not prove a working staging environment, a backup script does not prove recoverability, and a health endpoint does not prove end-to-end readiness.
+
+@LXM-REQ-000133 | STG-11 | ID | Retained
+t: Continue despite missing externals
+s: S424; L157; SRC-0026 §0.4
+c: SRC-0026 §0.4 extends
+x: Continue all independent work when external staging, credentials, monitoring destinations or business decisions are missing. By the owner's direction of 2026-10-31, Bipin Kumar owns the 16 release gates that had no named owner (gates 2 to 9, 11 to 14 and 16 to 19), and the release register names him as their owner.
+
+@LXM-REQ-000134 | STG-12 | ID | Retained
+t: Test cadence
+s: S428; L161
+x: Run the relevant tests after each material implementation stage, then the full applicable verification chain on the final combined working tree.
+
+@LXM-REQ-000135 | STG-12 | ID | Retained
+t: Documented commands only
+s: S430; L163
+x: Use the repository's documented commands and canonical generators; never substitute an invented check for a required one.
+
+@LXM-REQ-000136 | STG-12 | ID | Retained
+t: Minimum verification set
+s: S432-447; L165-180; SRC-0013 §6.1; SRC-0015 §2.2; SRC-0016 §10.2
+c: SRC-0013 §6.1 covers; SRC-0015 §2.2 covers; SRC-0016 §10.2 covers
+x: Run at least, where applicable: unit and integration tests; the full `npm test` chain; technology governance and hardcoding gates; registry and context verification; generated lock and inventory freshness; clean dependency installation and integrity; browser and UI automation; PostgreSQL verification; Docker build and production smoke; migration and backup/restore drills; payment-provider conformance; security and dependency audits; configuration seed, runtime-behavior and regression tests; relevant performance and recovery checks.
+
+@LXM-REQ-000137 | STG-12 | ID | Retained
+t: Sequential where required
+s: S449; L182
+x: Run checks sequentially where shared resources or the repository harness require it.
+
+@LXM-REQ-000138 | STG-12 | ID | Retained
+t: Failure handling
+s: S451; L184; SRC-0016 §10.3
+c: SRC-0016 §10.3 covers
+x: When a check fails, investigate and correct in-scope defects, then rerun the affected checks and all dependent verification. Never suppress failures, weaken tests, enlarge timeouts to hide defects, or treat incomplete runs as passes.
+
+@LXM-REQ-000139 | STG-12 | ID | Retained
+t: Stale evidence
+s: S453; L186; SRC-0004 §5
+x: Keep old and failed evidence for audit, marked stale or historical (status dimension D4) wherever code, generated artifacts, dependencies or execution conditions changed; never present it as current acceptance evidence.
+
+@LXM-REQ-000140 | STG-12 | ID | Retained
+t: Tested SHA on every result
+s: S455; L188
+x: Every result identifies the exact commit SHA tested.
+
+@LXM-REQ-000141 | STG-13 | ID | Retained
+t: Update canonical artifacts
+s: S459; L192
+x: Update existing canonical artifacts using repository conventions and generators.
+
+@LXM-REQ-000142 | STG-13 | ID | Retained
+t: Release register authority
+s: S461; L194; A642
+x: `PRODUCTION_READINESS.md` is the only authoritative release-readiness register; this master is authoritative for requirements and does not duplicate the register.
+
+@LXM-REQ-000143 | STG-13 | ID | Retained
+t: Records to reconcile
+s: S463-474; L196-207; A1212-1229
+x: Update or reconcile: owner decision records; monetary- and business-rule inventories; configuration and seed traceability; business-profile and capability certification matrices; provider and wallet integration status; feature-to-test traceability; technology-governance inventory and evidence; migration, security, performance and operational findings; runbooks and deployment instructions; CI evidence with exact tested commits.
+
+@LXM-REQ-000144 | STG-13 | ID | Retained
+t: No parallel sources of truth
+s: S476; L209; A648
+c: SRC-0009 §2.2 supports
+x: Never create a parallel, competing source-of-truth document.
+
+@LXM-REQ-000145 | STG-13 | ID | Retained
+t: Requirements never disappear
+s: S478; L211
+x: Every requirement remains traceable; an unresolved requirement never disappears because a nearby capability was implemented.
+
+@LXM-REQ-000146 | STG-13 | ID | Retained
+t: Separate readiness statuses
+s: S480-489; L213-222; SRC-0004 §5
+k: LXM-DEC-000003
+x: Report implemented, configurable, integrated, tested, certified, externally verified, production ready and authorized for release as separate facts, using status dimensions D2 and D5.
+
+@LXM-REQ-000147 | STG-13 | ID | Retained
+t: Documentation follows code
+s: S491; L224
+x: Reconcile stale claims and documentation to the tested code, never the reverse.
+
+@LXM-REQ-000148 | STG-14 | ID | Retained
+t: Review the full diff
+s: S495; L228
+x: Review the complete final diff, including generated artifacts, lockfiles and documentation.
+
+@LXM-REQ-000149 | STG-14 | ID | Retained
+t: Pre-commit assurances
+s: S497-506; L230-239; SRC-0029 §0.1
+c: SRC-0029 §0.1 extends
+x: Ensure only intended files are included; unrelated work and preserved files are safe; no secrets or local environment artifacts were introduced; generated outputs are current; no unjustified hardcoding or duplicate canonical definitions were added; tests match the final tree; all unresolved requirements and risks remain visible; `git diff --check` and the required repository gates pass. A push carries only the final state after every verification has passed, and only the files that state needs to verify itself; nothing unnecessary or unwanted is pushed.
+
+@LXM-REQ-000150 | STG-14 | ID | Retained
+t: Branch and commit discipline
+s: S508; L241; A1122-1134
+x: Preserve the established branch and pull-request workflow; commit and push only reviewed, in-scope changes with narrowly scoped commit messages.
+
+@LXM-REQ-000151 | STG-14 | ID | Retained
+t: Forbidden release actions
+s: S510; L243
+x: Never force-push, discard work, merge PR #6 or deploy.
+
+@LXM-REQ-000152 | STG-14 | ID | Retained
+t: Verify remote head and jobs
+s: S512; L245
+x: After pushing, verify the remote PR head and inspect every required job for the exact final SHA.
+
+@LXM-REQ-000153 | STG-14 | ID | Strengthened
+t: Two distinct CI run IDs
+s: S514; L247; S121; L61; L305; SRC-0004 §3; SRC-0007 K2; SRC-0016 §11.2,§11.3; SRC-0025 §0.2
+k: LXM-DEC-000002, LXM-DEC-000009
+n: Strengthened by owner decision K2: attempts of one run do not count as two runs.
+c: SRC-0016 §11.2 covers; SRC-0016 §11.3 covers; SRC-0025 §0.2 extends
+x: Final acceptance requires two distinct workflow run IDs, each fully successful on every required job (including evaluation lanes, per the register's gate-1 rule), on the exact final SHA. Re-run attempts of one run ID count as one run. Obtain the second run without an unnecessary commit, by an owner-approved method (LXM-DEC-000009). If the tree changes, earlier runs become historical and both runs are repeated on the new candidate. By owner decision LXM-DEC-000009, the second distinct CI run ID on the final SHA is obtained by closing and reopening PR #6, only after the candidate is frozen; no commit is made only to trigger CI.
+
+@LXM-REQ-000154 | STG-14 | ID | Retained
+t: Historical runs are not evidence
+s: S516; L249; SRC-0016 §11.3
+c: SRC-0016 §11.3 covers
+x: The PR-053 runs and other historical green runs are never evidence for a later modified commit.
+
+@LXM-REQ-000155 | STG-14 | ID | Retained
+t: CI failure and access blockers
+s: S518; L251
+x: If CI fails, diagnose the actual failure, repair it within scope and repeat the acceptance sequence. If permissions or access prevent a required action, record the precise blocker without claiming the action happened.
+
+@LXM-REQ-000156 | STG-14 | NEW | Owner-decision
+t: Freeze applies to final CI
+s: SRC-0007 K4
+k: LXM-DEC-000004
+x: LXM-REQ-000054 applies to every acceptance CI run, including the final one.
+
+@LXM-REQ-000157 | STG-15 | ID | Retained
+t: Consolidate at a stable checkpoint
+s: S522; L255
+x: After implementation and required verification reach a stable checkpoint, complete the agreed workspace consolidation.
+
+@LXM-REQ-000158 | STG-15 | ID | Retained
+t: One canonical location
+s: S524; L257
+x: The objective is one canonical project location and one authoritative writable Git checkout.
+
+@LXM-REQ-000159 | STG-15 | ID | Retained
+t: Designated workspace
+s: S526-530; L259-263
+x: The previously designated integration workspace is `/Users/bipin/Workspaces/LUXORA-production-integration-2026-10-27`; verify it is still the appropriate canonical location before changing anything.
+
+@LXM-REQ-000160 | STG-15 | ID | Retained
+t: Location inventory
+s: S532; L265
+x: Inventory the original iCloud workspace, the context-review workspace, scratchpads, preservation copies, scripts, local configuration, context artifacts, generated files and other project directories.
+
+@LXM-REQ-000161 | STG-15 | ID | Retained
+t: Location classes
+s: S534-540; L267-273
+x: Classify every location as canonical active source, canonical governance or context asset, evidence or handover record, historical archive or protected preservation copy, or redundant or obsolete copy awaiting later retirement.
+
+@LXM-REQ-000162 | STG-15 | ID | Retained
+t: Reconcile before assuming duplication
+s: S542; L275
+x: Never assume files are duplicates; reconcile content and dependencies first.
+
+@LXM-REQ-000163 | STG-15 | ID | Retained
+t: Consolidate only when understood
+s: S544; L277; SRC-0016 §6.2
+c: SRC-0016 §6.2 covers
+x: Consolidate only when the destination and source states are understood; preserve Git history, uncommitted work, receipts, local configuration and all user data; never delete protected workspaces or preservation copies.
+
+@LXM-REQ-000164 | STG-15 | ID | Retained
+t: Governance assets in place
+s: S546; L279
+x: Keep governance assets in their canonical repository location; never duplicate a canonical artifact into a separate governance directory.
+
+@LXM-REQ-000165 | STG-15 | ID | Retained
+t: Update path references
+s: S548; L281
+x: Update verified references in scripts, documentation, IDE and Claude Code configuration and procedures so nothing silently depends on old absolute paths not intentionally required.
+
+@LXM-REQ-000166 | STG-15 | ID | Retained
+t: Validate the consolidated location
+s: S550; L283
+x: Validate the consolidated location with Git status, context integrity, generated-artifact checks, relevant tests and the documented recovery procedures.
+
+@LXM-REQ-000167 | STG-15 | ID | Strengthened
+t: Retirement boundary
+s: S552; L285; SRC-0005 §3-4; SRC-0007 K6
+k: LXM-DEC-000006
+n: Strengthened by owner decision K6.
+x: Retire a redundant working copy only after proving its useful content is preserved and the consolidated workspace operates correctly. The original iCloud workspace, the Phase 1 work and every preservation copy are never retired, moved or cleaned without the owner's separate authorization; otherwise preserve and record the remaining action.
+
+@LXM-REQ-000168 | STG-15 | ID | Retained
+t: No shared writable folder
+s: S554; L287
+x: The canonical folder must not become a shared writable workspace; keep one designated owner session and explicit handoffs.
+
+@LXM-REQ-000169 | STG-16 | ID | Retained
+t: Requirement-by-requirement evaluation
+s: S558; L291
+x: Evaluate the full mandate requirement by requirement against the final implementation.
+
+@LXM-REQ-000170 | STG-16 | ID | Retained
+t: Acceptance conditions
+s: S560-573; L293-306; A1191-1208; SRC-0012 §C.2; SRC-0013 §6.1,§7.1; SRC-0014 §3.1; SRC-0015 §2.2,§3.2,§8.1; SRC-0016 §12.1
+k: LXM-DEC-000002
+c: SRC-0012 §C.2 covers; SRC-0013 §6.1 covers; SRC-0013 §7.1 covers; SRC-0014 §3.1 covers; SRC-0015 §2.2 covers; SRC-0015 §3.2 covers; SRC-0015 §8.1 covers; SRC-0016 §12.1 covers
+x: Report complete acceptance only when: (1) every applicable requirement has a traceable status and evidence; (2) the required implementation is present and behaves correctly; (3) required existing business rules and options are inventoried and exposed through configuration; (4) financial integrity and policy controls are verified; (5) the composition mechanism and representative profiles are demonstrated through platform behavior; (6) payment and wallet flows have truthful provider-specific statuses; (7) the first marketplace's mandatory feature-to-test coverage has no unresolved gap; (8) security, migration, database, browser, container, recovery and operational checks passed or have explicit policy-compliant dispositions; (9) external prerequisites and owner decisions are accurately recorded; (10) the release register reflects the actual tree and exact tested SHA; (11) LXM-REQ-000153 is met for the final acceptance commit; (12) production remains NO-GO until the mandatory gates are satisfied and Bipin Kumar explicitly authorizes release.
+
+@LXM-REQ-000171 | STG-16 | ID | Retained
+t: Honest partial results
+s: S575; L308
+x: If requirements remain blocked, finish everything independent of the blockers, record an accurate partial result, and state precisely the evidence, decision or action still needed.
+
+@LXM-REQ-000172 | STG-16 | ID | Retained
+t: No manufactured approval
+s: S577; L310
+x: Never manufacture approval or redefine the mandate to make it appear complete.
+
+@LXM-REQ-000173 | RPT | ID | Retained
+t: One consolidated final report, sections A–K
+s: S583; L314; SRC-0007 K1
+k: LXM-DEC-000001
+x: At completion return one consolidated report with sections A–K (LXM-REQ-000174 to LXM-REQ-000184), covering every element mapped in master §8.
+
+@LXM-REQ-000174 | RPT | ID | Strengthened
+t: A. Repository and workspace truth
+s: S585-586; L316-317; A1235-1236; SRC-0001 A§29.A
+k: LXM-DEC-000001
+n: Merged with the mandate's §29 element (K1: A–K is the structure; no mandated element dropped).
+x: Actual canonical path, branch, initial and final SHAs, remotes, commit and push status, working-tree changes preserved, workspace-consolidation outcome, preserved outstanding copies and any limitations.
+
+@LXM-REQ-000175 | RPT | ID | Retained
+t: B. Master mandate conformance
+s: S588-589; L319-320
+x: The complete requirement matrix, linked to canonical artifacts, with conformance statuses (D1).
+
+@LXM-REQ-000176 | RPT | ID | Strengthened
+t: C. Five owner decisions
+s: S591-592; L322-323; A1238-1239; SRC-0001 A§29.B
+k: LXM-DEC-000001
+n: Merged with the mandate's §29 element (K1: A–K is the structure; no mandated element dropped).
+x: For each decision: its canonical identifier, recorded status, implemented changes, implementation and evidence status, and every remaining or unresolved business choice.
+
+@LXM-REQ-000177 | RPT | ID | Strengthened
+t: D. Monetary and business-rule configuration
+s: S594-595; L325-326; A1244-1245; SRC-0001 A§29.D
+k: LXM-DEC-000001
+n: Merged with the mandate's §29 element (K1: A–K is the structure; no mandated element dropped).
+x: Source-grounded inventory totals, seeded and supported-option coverage, runtime configuration evidence and configuration test results, hardcoding findings, exclusions and financial invariants.
+
+@LXM-REQ-000178 | RPT | ID | Strengthened
+t: E. Universal business-platform capability
+s: S597-598; L328-329; A1241-1242; SRC-0001 A§29.C; SRC-0013 §3.5,§7.1
+k: LXM-DEC-000001
+n: Merged with the mandate's §29 element (K1: A–K is the structure; no mandated element dropped).
+c: SRC-0013 §3.5 covers; SRC-0013 §7.1 covers
+x: What is implemented and configurable today for the marketplace and representative non-marketplace profiles, distinguishing operational capability from architecture, templates and planned extensions.
+
+@LXM-REQ-000179 | RPT | ID | Strengthened
+t: F. Payments, wallets and providers
+s: S600-601; L331-332; A1247-1248; SRC-0001 A§29.E
+k: LXM-DEC-000001
+n: Merged with the mandate's §29 element (K1: A–K is the structure; no mandated element dropped).
+x: Per required provider and method, separately: implementation and adapter status, configuration, tests, sandbox, webhooks, refunds, reconciliation, live verification, production status and unresolved dependencies.
+
+@LXM-REQ-000180 | RPT | ID | Strengthened
+t: G. Feature and test traceability
+s: S603-604; L334-335; A1250-1251; SRC-0001 A§29.F
+k: LXM-DEC-000001
+n: Merged with the mandate's §29 element (K1: A–K is the structure; no mandated element dropped).
+x: Critical features and journeys, APIs, UI/UX, access control and permission cases, error handling and failure paths, data paths and migrations, security, concurrency and operational cases, dependencies, results, and every untested scenario and remaining gap.
+
+@LXM-REQ-000181 | RPT | ID | Retained
+t: H. Security, data and operations
+s: S606-607; L337-338
+x: Security findings, dependency and container checks, migrations, restore evidence, staging, infrastructure, monitoring, backups, capacity, privacy and compliance.
+
+@LXM-REQ-000182 | RPT | ID | Strengthened
+t: I. Verification and CI
+s: S609-610; L340-341; A1253-1254; SRC-0001 A§29.G; SRC-0016 §11.2
+k: LXM-DEC-000001
+n: Merged with the mandate's §29 element (K1: A–K is the structure; no mandated element dropped).
+c: SRC-0016 §11.2 covers
+x: Exact commands, environments, exit codes, results, failures and relevant logs or reports; the final commit SHA and current remote CI status; both CI run IDs, their attempt numbers and links; every required job's outcome. A test that did not complete is never reported as passing.
+
+@LXM-REQ-000183 | RPT | ID | Strengthened
+t: J. Remaining blockers and owner actions
+s: S612-613; L343-344; A1256-1257; SRC-0001 A§29.H
+k: LXM-DEC-000001
+n: Merged with the mandate's §29 element (K1: A–K is the structure; no mandated element dropped).
+x: Only genuine unresolved work: launch-blocking decisions, missing external dependencies, security and financial risks and operational gaps, each with the exact decision or resource, impact, responsible party and the evidence that closes it.
+
+@LXM-REQ-000184 | RPT | ID | Strengthened
+t: K. Final verdict
+s: S615-622; L346-353; A1259-1260; SRC-0001 A§29.I
+k: LXM-DEC-000001
+n: Merged with the mandate's §29 element (K1: A–K is the structure; no mandated element dropped).
+x: State ACCEPTED (every applicable mandatory requirement has sufficient evidence), PARTIAL (one or more requirements incomplete or awaiting external evidence) or BLOCKED (a critical prerequisite prevents safe completion). State production GO/NO-GO separately with the specific supporting evidence; never infer authorization from implementation or green CI, and never deploy, merge or claim approval without explicit authorization.
+
+@LXM-REQ-000185 | FIN | ID | Retained
+t: Begin with repository truth
+s: S628; L357
+x: Begin by establishing repository truth and exclusive ownership, then execute every stage in order until all safely executable requirements are implemented and verified.
+
+@LXM-REQ-000186 | FIN | ID | Retained
+t: Implement, not plan
+s: S630; L359
+x: Never return merely with a plan or list of missing features; implement the remaining work, reconcile evidence continuously, correct defects and preserve valid work.
+
+@LXM-REQ-000187 | FIN | ID | Retained
+t: No stage-boundary stops
+s: S632; L361
+x: Never ask for routine confirmation or stop at a stage boundary.
+
+@LXM-REQ-000188 | FIN | ID | Retained
+t: Isolate consequential blockers
+s: S634; L363
+x: When a consequential owner decision or external prerequisite is genuinely required (LXM-REQ-000016), isolate the affected operation, record the blocker and continue all independent implementation.
+
+@LXM-REQ-000189 | FIN | ID | Retained
+t: Objective
+s: S636; L365
+x: The objective is complete, evidence-backed conformance to the entire mandate, not just PR-053, passing tests or an unproven declaration of readiness. Nothing is merged or deployed without explicit owner authorization.
+
+@LXM-REQ-000190 | EXE | ID | Retained
+t: Document subtitle (non-normative)
+s: S1-2; L1
+x: Non-normative: the execution prompt's title and subtitle (Universal Platform · Configuration · Financial Integrity · Technology Governance · Production Readiness) are retained in the source register.
+
+@LXM-REQ-000191 | EXE | ST | Owner-decision
+t: Single unsplit master with immutable provenance
+s: L3; SRC-0006 §7,§19; SRC-0007 K8; SRC-0025 §0.2
+k: LXM-DEC-000008, LXM-DEC-000010
+c: SRC-0025 §0.2 extends
+x: The execution mandate is delivered as this one complete, unsplit master. Source documents remain unchanged, identified by SHA-256, and are historical inputs; the mandate (SRC-0001) is reproduced verbatim in Appendix A of this master. By owner decision LXM-DEC-000010, this Master is adopted as version 1.0.0 in the repository at governance/master/, with PROJECT-CONTEXT and the assimilation gate as the single knowledge system; the sole writer installs it, including the owner's source files SRC-0002 and SRC-0003.
+
+@LXM-REQ-000192 | EXE | ST | Retained
+t: Never invent
+s: L19; SRC-0015 §3.4
+c: SRC-0015 §3.4 covers
+x: Never invent owner approvals, financial policies, test evidence, external access, capability support or production readiness.
+
+@LXM-REQ-000193 | EXE | ST | Retained
+t: Owner-reserved actions
+s: L23; SRC-0004 §6; SRC-0005
+x: Owner-reserved actions: merging any pull request; changing PR #6's draft or open/closed state; deploying; mutating production data; recording release authorization; retiring, moving or cleaning workspaces or preservation copies; history rewriting.
+
+@LXM-REQ-000194 | STG-00 | ST | Retained
+t: Mandate appendix provenance
+s: L368-372
+x: Appendix A reproduces the owner mandate verbatim; the execution procedure operationalizes it and never replaces or weakens it.
+
+# ---- Architectural constitution (owner additions after the original prompt) ----
+
+@LXM-REQ-000195 | ARC | NEW | New-owner-addition
+t: Universal technology agnosticism
+s: SRC-0004 §1; SRC-0005; SRC-0006 §10; SRC-0009 §2.1; SRC-0011 §3,§4.1,§4.2,§4.3,§4.4,§6; SRC-0015 §1.1,§1.2; SRC-0016 §2.3,§3.1,§4.2,§5.4,§12.2
+c: SRC-0009 §2.1 covers; SRC-0011 §3 covers; SRC-0011 §4.1 extends; SRC-0011 §4.2 extends; SRC-0011 §4.3 extends; SRC-0011 §4.4 extends; SRC-0011 §6 extends; SRC-0011 §6.1 covers; SRC-0015 §1.1 covers; SRC-0015 §1.2 extends; SRC-0016 §2.3 covers; SRC-0016 §3.1 covers; SRC-0016 §4.2 covers; SRC-0016 §5.4 covers; SRC-0016 §12.2 extends
+x: LXM must not fundamentally depend on a finite list of languages, runtimes, frameworks, databases, providers, protocols, browsers, clouds, infrastructure or vendors. Technology facts are governed data; technology-specific executable integrations are reusable adapters behind universal contracts; technologies unknown at implementation time are accommodated without changing the core. Governed execution technologies include languages, runtimes, interpreters, compilers, virtual machines, operating systems, hardware and accelerators. Governed development technologies include packages, libraries, SDKs, build systems, dependency managers, test frameworks and developer tools. Governed infrastructure technologies include databases, storage, queues, networks, containers, orchestration and deployment systems. Governed future technologies include new tools, protocols, platforms and technology categories not yet known or invented. Instead, it must support: Node.js, Python and Java are examples, not architectural boundaries. The system must not depend on developers maintaining scattered version lists, and it must never equate discovery with verified compatibility.
+
+@LXM-REQ-000196 | ARC | NEW | New-owner-addition
+t: Technology governance capability set
+s: SRC-0006 §10; SRC-0011 §1,§3,§6.1,§6.2; SRC-0014 §3.1; SRC-0015 §2.1,§2.2,§2.3,§3.2,§3.3,§3.4,§4.1,§8.1,§9.4; SRC-0016 §3.1,§4.1,§4.3,§4.4,§5.3,§5.4,§5.5,§8.1,§10.4
+c: SRC-0011 §1 extends; SRC-0011 §3 covers; SRC-0011 §6.1 covers; SRC-0011 §6.2 extends; SRC-0014 §3.1 covers; SRC-0015 §2.1 extends; SRC-0015 §2.2 covers; SRC-0015 §2.2 extends; SRC-0015 §2.3 covers; SRC-0015 §2.3 extends; SRC-0015 §3.2 covers; SRC-0015 §3.3 covers; SRC-0015 §3.4 covers; SRC-0015 §4.1 covers; SRC-0015 §8.1 covers; SRC-0015 §9.4 covers; SRC-0016 §3.1 covers; SRC-0016 §4.1 covers; SRC-0016 §4.3 covers; SRC-0016 §4.3 extends; SRC-0016 §4.4 extends; SRC-0016 §5.3 covers; SRC-0016 §5.4 covers; SRC-0016 §5.5 covers; SRC-0016 §8.1 covers; SRC-0016 §10.4 covers
+x: Technology governance provides open-ended category and item registration, automatic discovery, extensible metadata contracts, provenance and integrity verification, compatibility evaluation, requirement and capability resolution, security-advisory integration, version lifecycle management, approved production resolutions, reproducible artifact identity, complete technology indexing, dependency graph and impact analysis, controlled migration and replacement, audit and rollback, and evidence-based certification. Provide a universal technology, toolchain, dependency and execution environment governance system that can discover, evaluate, configure and govern any existing or future technology through extensible mechanisms. Capability-based selection: select technologies according to required capabilities, compatibility, security, performance, licensing and operational constraints—not a manually maintained list of version numbers. Inspect the existing repository and extend its canonical registries, configuration mechanisms and governance lifecycle to support a universal technology and toolchain registry. Its available versions, release channels and lifecycle status. Its security posture, vulnerability information and maintenance status. Its configuration, resolution and dependency relationships. Categories and their schemas must themselves be registerable and governed. For each applicable registered item, support metadata such as: Identity, category, supplier, origin and provenance. Declared capabilities and requirements. Supported environments and execution characteristics. Verification results and test evidence. Lifecycle state, authorization and permitted usage. These are extensible metadata contracts, not a finite list of technology classes. New categories must be registrable without modifying the governance core merely to add another category name.
+
+@LXM-REQ-000197 | ARC | NEW | New-owner-addition
+t: Technology lifecycle states are distinct
+s: SRC-0004 §2; SRC-0006 §10; SRC-0015 §3.3; SRC-0016 §5.2
+k: LXM-DEC-000003
+c: SRC-0015 §3.3 covers; SRC-0016 §5.2 covers
+x: Discovered, candidate, under evaluation, compatible, verified, approved, resolved, active, deprecated, rejected and prohibited are distinct technology states (status dimension D6); registration never implies implementation, compatibility, certification or operation.
+
+@LXM-REQ-000198 | ARC | NEW | New-owner-addition
+t: Configuration-driven within governed capabilities
+s: SRC-0004 §1; SRC-0005; SRC-0006 §11; SRC-0009 §2.5
+c: SRC-0009 §2.5 covers
+x: Every implemented and supported capability is 100% configurable through governed configuration; a configuration record never proves that a running engine applies it.
+
+@LXM-REQ-000199 | ARC | NEW | New-owner-addition
+t: Zero unjustified hardcoding
+s: SRC-0004 §1; SRC-0005; A400; SRC-0009 §2.5; SRC-0011 §6,§7; SRC-0015 §7.4
+c: SRC-0009 §2.5 covers; SRC-0011 §6 covers; SRC-0011 §7 extends; SRC-0015 §7.4 extends
+x: No unjustified hardcoding of business policy, technology, provider, market or business-model facts. There is one crucial distinction: zero hardcoding does not mean zero executable code or automatically trusting every new technology. A new tool must be discoverable and evaluable, and its compatibility must be verified before use. Production must use a specific, verified resolution for reproducibility and security, while that resolution should be generated and maintained by the governance system rather than duplicated manually. Do not indiscriminately turn every constant into configuration. Immutable invariants and real technical constraints must remain enforced.
+
+@LXM-REQ-000200 | ARC | NEW | New-owner-addition
+t: Open-ended extensibility
+s: SRC-0004 §1; SRC-0013 §4.1,§4.4; SRC-0014 §2.1; SRC-0015 §2.3
+c: SRC-0009 §2.6 supports; SRC-0013 §4.1 extends; SRC-0013 §4.4 extends; SRC-0014 §2.1 covers; SRC-0015 §2.3 covers
+x: No finite architectural enumerations; every category, registry and index is extensible without redesign. LUXORA must not impose a fixed enumeration of business types, industry types, domain types or capability combinations. Avoid promises of literal infinite implementation. The requirement is an extensible architecture and configuration system without artificial business-model limits, unnecessary core changes or hardcoded enumerations that prevent legitimate expansion.
+
+@LXM-REQ-000201 | ARC | NEW | New-owner-addition
+t: Automatic discovery and canonical indexing
+s: SRC-0004 §1; SRC-0005; SRC-0006 §12; SRC-0008 §2; SRC-0009 §2.6; SRC-0012 §B.1
+c: SRC-0008 §2.1 supports; SRC-0009 §2.6 covers; SRC-0012 §B.1 covers
+x: New registered knowledge categories are discovered and indexed automatically; canonical indexes cover requirements, artifacts, capabilities, business rules, policies, technology, versions, configuration, dependencies, tests, evidence, decisions and lifecycle history.
+
+@LXM-REQ-000202 | ARC | NEW | New-owner-addition
+t: Governed version evolution
+s: SRC-0004 §1; SRC-0005; SRC-0009 §2.7; SRC-0015 §6.4
+c: SRC-0009 §2.7 covers; SRC-0015 §6.4 extends
+x: Every governed artifact evolves through a versioned, approved, auditable and reversible lifecycle. Emergency security remediation must have a governed expedited path and complete audit trail.
+
+@LXM-REQ-000203 | ARC | NEW | New-owner-addition
+t: Knowledge Once
+s: SRC-0004 §1; SRC-0005; SRC-0006 §12; SRC-0007 §5; SRC-0008 §3,§5; SRC-0009 §2.3,§2.4
+c: SRC-0008 §3.4 supports; SRC-0008 §5.1 supports; SRC-0009 §2.3 covers; SRC-0009 §2.4 covers
+x: Author each fact once with a canonical identity; index its relationships; reference it from consumers; regenerate derived artifacts deterministically; validate consistency at repository and runtime boundaries. No duplicated copies, conflicting authorities, orphan artifacts or unnecessary parallel engines.
+
+@LXM-REQ-000204 | ARC | NEW | New-owner-addition
+t: Complete traceability
+s: SRC-0004 §1,§5; SRC-0009 §2.11
+c: SRC-0009 §2.11 covers; SRC-0009 §5.1 supports; SRC-0009 §5.2 supports; SRC-0009 §8.1 supports; SRC-0009 §8.2 supports
+x: Every requirement links to its canonical implementation, configuration, runtime enforcement, applicable test, exact evidence and status, through to certification.
+
+@LXM-REQ-000205 | ARC | NEW | New-owner-addition
+t: Conformance A: canonical functional conformance
+s: SRC-0004 §2A; SRC-0006 §13A
+x: Run the complete functional and business conformance suite against the canonical production deployment profile.
+
+@LXM-REQ-000206 | ARC | NEW | New-owner-addition
+t: Conformance B: capability-based compatibility
+s: SRC-0004 §2B; SRC-0006 §13B; SRC-0016 §7.2
+c: SRC-0016 §7.2 extends
+x: For each declared supported boundary, run minimal capability-based runtime compatibility checks that evaluate the required capabilities, not version strings alone. Determine the legitimate compatibility constraints—for example, dependencies on specific platform APIs—and model those requirements explicitly.
+
+@LXM-REQ-000207 | ARC | NEW | New-owner-addition
+t: Conformance C: reusable technology-category contracts
+s: SRC-0004 §2C; SRC-0006 §13C
+x: Provide reusable conformance contracts per registered technology category (for example runtimes, databases and storage, browsers, payment providers and wallets, queues and events, identity providers, messaging, logistics and external integrations, cloud and infrastructure services); new categories add contracts as data and adapters.
+
+@LXM-REQ-000208 | ARC | NEW | New-owner-addition
+t: Conformance D: automatic discovery of new releases
+s: SRC-0004 §2D; SRC-0006 §13E; SRC-0011 §6.3,§6.5; SRC-0015 §2.2,§3.3,§4.2,§6.1,§6.2,§8.1; SRC-0016 §5.3,§7.3,§8.1,§8.3
+c: SRC-0011 §6.3 extends; SRC-0011 §6.5 extends; SRC-0015 §2.2 covers; SRC-0015 §3.3 covers; SRC-0015 §4.2 extends; SRC-0015 §6.1 extends; SRC-0015 §6.2 extends; SRC-0015 §8.1 covers; SRC-0016 §5.3 covers; SRC-0016 §7.3 extends; SRC-0016 §8.1 covers; SRC-0016 §8.3 covers
+x: Discover and evaluate new technology releases automatically, never promoting them to production without evidence and approval. Automatic verification: evaluate discovered candidates against real application requirements and integration tests before considering them usable. Controlled evolution: detect new releases, deprecations and security advisories, then initiate evaluation and upgrade workflows automatically. When new releases or technology categories become available, the system should discover them, validate their metadata, assess eligibility, run applicable checks and generate an auditable proposal or pull request. No newly discovered technology may be trusted or deployed solely because it exists. Require appropriate provenance checks, compatibility validation, dependency and security analysis, test evidence, authorization and controlled promotion. Evaluate the currently relevant runtime candidates, including Node 26 where applicable, through actual test evidence.
+
+@LXM-REQ-000209 | ARC | NEW | New-owner-addition
+t: Conformance E: generated conformance plans
+s: SRC-0004 §2E; SRC-0006 §13D
+x: Generate the required conformance plan from actual dependencies, declared support, capabilities, constraints and approved deployment profiles.
+
+@LXM-REQ-000210 | ARC | NEW | New-owner-addition
+t: Conformance F: exact evidence
+s: SRC-0004 §2F; SRC-0006 §13F; SRC-0015 §3.3,§5.3; SRC-0016 §5.1
+c: SRC-0015 §3.3 covers; SRC-0015 §5.3 extends; SRC-0016 §5.1 covers
+x: Tie conformance evidence to exact technology releases, immutable artifact identities, the test environment, the approved configuration resolution, results and approval references. Production artifacts must record their actual resolved dependencies and immutable artifact identities, including image digests where applicable.
+
+@LXM-REQ-000211 | ARC | NEW | New-owner-addition
+t: Conformance G: unknown technologies
+s: SRC-0004 §2G; SRC-0015 §1.3,§4.3,§8.1; SRC-0016 §4.5,§8.4; SRC-0011 §6.6
+c: SRC-0015 §1.3 extends; SRC-0015 §4.3 extends; SRC-0015 §8.1 covers; SRC-0016 §4.5 covers; SRC-0016 §8.4 extends; SRC-0011 §6.6 covers
+x: The conformance mechanism accommodates previously unknown technologies without redesigning the core. The system must support technologies that exist today, technologies introduced in the future, and entirely new categories of technology that do not yet exist. New categories must be registrable through extensible contracts. A genuinely new protocol or computational behavior may require a new adapter or implementation, but it must integrate with the same governance core rather than create a competing system. Do not claim fully automatic support for every future technology. The architecture must allow new categories and discovery adapters to be registered without a core redesign, while genuinely new executable behavior still requires implementation.
+
+@LXM-REQ-000212 | ARC | NEW | New-owner-addition
+t: No combinatorial or manual version matrix
+s: SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3
+c: SRC-0015 §2.2 covers; SRC-0015 §3.1 covers; SRC-0015 §5.2 extends; SRC-0016 §2.4 covers; SRC-0016 §7.3 covers
+x: Do not run the full functional suite against every version of every technology unless a documented, evidence-based requirement justifies it; do not use a manually maintained version matrix as the core governance mechanism; never drop compatibility verification needed to support a declared compatibility claim. Do not manually duplicate version lists or tool requirements across independent files.
+
+@LXM-REQ-000213 | ARC | NEW | New-owner-addition
+t: Test the final tree
+s: SRC-0004 §5
+x: Test the actual final tree, never a stale commit.
+
+@LXM-REQ-000214 | ARC | NEW | New-owner-addition
+t: Acceptance model per requirement
+s: SRC-0006 §18
+x: Every normative requirement has a measurable outcome, a verification method, a test or independently verifiable evidence source, a responsible artifact and a closure condition; documentation alone never accepts a requirement.
+
+@LXM-REQ-000215 | ARC | NEW | New-owner-addition
+t: Index integrity validation
+s: SRC-0006 §8-9,§22; SRC-0008 §4,§6
+c: SRC-0008 §4.2 supports; SRC-0008 §6.2 supports
+x: The requirement, artifact, configuration, test, evidence, decision, dependency, risk, exception and change indexes are unique, deterministic, cross-linked and validated for duplicates, missing or broken references, missing lineage or acceptance criteria, stale evidence, invalid status transitions, orphans and conflicting authorities, using the existing canonical registry mechanisms, never a second registry.
+
+# ---- Ownership and current-state records ----
+
+@LXM-REQ-000216 | OWN | NEW | New-owner-addition
+t: Writer ownership
+s: SRC-0004 §6; SRC-0005 §1-2; SRC-0006 §2; SRC-0026 §0.5; SRC-0028 §0.3
+k: LXM-DEC-000017
+c: SRC-0026 §0.5 extends; SRC-0028 §0.3 extends
+x: `amazon-62` is the sole repository writer and establishes repository truth from its own canonical integration workspace. `amazon-44` and every other session are read-only unless the owner changes the assignment. Never write to, switch to or merge from the alternate iCloud checkout reported by `amazon-44`. By the owner's direction of 2026-10-31, the Master session hands the repository work to amazon-62 as one ordered work package, and amazon-62 carries it out as the sole repository writer. By owner decision LXM-DEC-000017, the Master session may write once, on 2026-10-31, as new branches pushed from a fresh clone outside iCloud; it never writes the integration branch and never force-pushes.
+
+@LXM-REQ-000217 | OWN | NEW | New-owner-addition
+t: Workspace protection
+s: SRC-0005 §3-4
+x: Preserve all uncommitted Phase 1 changes and `~/LUXORA-preservation/`; do not delete `.git/index.lock`, move workspaces, clean files or change branches in any workspace other than as the canonical writer's governed work requires.
+
+@LXM-REQ-000218 | OWN | NEW | New-owner-addition
+t: PR-053 open items
+s: SRC-0004 §3; PRODUCTION_READINESS.md (remote, PR-053 row)
+x: Reconcile PR-053 open items (a)–(j) as recorded in `PRODUCTION_READINESS.md`, preserving each genuine security, dependency, runtime, scanner, validator and governance gap; CI success never closes them.
+
+@LXM-REQ-000219 | OWN | NEW | New-owner-addition
+t: Record CI attempts accurately
+s: SRC-0004 §3; SRC-0006 §25-26
+x: Record attempts and distinct run IDs separately; never present two attempts of one run ID as two runs (current fact: LXM-EVD-000001).
+
+# ---- Assimilation-first constitutional principle LXM-ACP-001 (SRC-0008) ----
+
+@LXM-REQ-000220 | ARC | NEW | New-owner-addition
+t: Assimilation gate (LXM-ACP-001)
+s: SRC-0008 §1,§2,§4.1; SRC-0009 §4.1,§4.3; SRC-0011 §6; SRC-0013 §2.3,§4.3,§5.3,§7.1; SRC-0016 §5.1,§6.5; SRC-0021 §1; SRC-0024 §1
+v: 2
+c: SRC-0008 §1.1 covers; SRC-0008 §1.3 covers; SRC-0008 §2.1 covers; SRC-0008 §2.2 covers; SRC-0008 §4.1 covers; SRC-0009 §4.1 extends; SRC-0009 §4.3 extends; SRC-0011 §6 covers; SRC-0013 §2.3 covers; SRC-0013 §4.3 covers; SRC-0013 §5.3 covers; SRC-0013 §7.1 covers; SRC-0016 §5.1 covers; SRC-0016 §6.5 covers; SRC-0021 §1 extends; SRC-0024 §1 extends
+x: The platform operates through continuous, validation-driven assimilation into its canonical Master. Every new contribution, modification or extension, whether a requirement, decision, capability, specification, configuration, implementation artifact or evidence item, passes through the Master assimilation engine before it becomes an accepted canonical contribution. The engine discovers and evaluates it against the entire relevant canonical knowledge environment, and detects and resolves exact and semantic duplication, full and partial overlap, complementary and composable knowledge, missing relationships and dependencies, contradictions and competing authorities, superseded or obsolete knowledge, incomplete, ambiguous or unsupported assertions, existing objects to extend rather than duplicate, and genuinely new concepts needing canonical identity. Every canonical object type must use the governed assimilation architecture appropriate to its semantics. Decisions, evidence, requirements, sources, specifications, configurations, stage actions, implementation artifacts and additional future object types must not depend on separate manual reconciliation processes. Whatever is added, discussed or planned must be assimilated only after all validation of duplication, overlap, partial coverage and every other check, with zero hardcoding and 100% configurability. Everything must be added through the assimilation constitution and governance, and then implemented in sequence.
+h: v1 (by SRC-0008 §1.1,§1.3,§2.1,§2.2: Semantic review found v1 omitted SRC-0008 meaning: continuous validation-driven operation (§1.1), modifications and extensions as gated contributions (§1.3), discovery against the entire canonical environment (§2.1) and resolution, not only detection (§2.2).): Every new contribution, whether a requirement, decision, capability, specification, configuration, implementation artifact or evidence item, passes through the Master assimilation mechanism before it becomes canonical. The mechanism evaluates it against the relevant canonical knowledge and detects exact and semantic duplication, full and partial overlap, complementary and composable knowledge, missing relationships and dependencies, contradictions and competing authorities, superseded or obsolete knowledge, incomplete, ambiguous or unsupported assertions, existing objects to extend, and genuinely new concepts needing canonical identity.
+
+@LXM-REQ-000221 | ARC | NEW | New-owner-addition
+t: Minimum correct canonical mutation
+s: SRC-0008 §3; SRC-0009 §2.2; SRC-0013 §2.3; SRC-0016 §2.5
+c: SRC-0008 §3.1 covers; SRC-0008 §3.2 covers; SRC-0008 §3.3 covers; SRC-0008 §3.4 covers; SRC-0009 §2.2 covers; SRC-0009 §2.11 supports; SRC-0013 §2.3 covers; SRC-0016 §2.5 covers
+x: Each accepted contribution produces the minimum correct canonical mutation: recognition, extension, composition, refinement, governed replacement, supersession, or creation of a new canonical object. Source provenance, authority, meaning, version history, dependencies and traceability are preserved, and no parallel authority or duplicate source of truth is created.
+
+@LXM-REQ-000222 | ARC | NEW | New-owner-addition
+t: Validation before acceptance
+s: SRC-0008 §4
+c: SRC-0008 §4.2 covers; SRC-0008 §4.3 covers; SRC-0008 §4.4 covers; SRC-0009 §4.4 supports
+x: Before canonical publication, validate identity, semantic consistency, completeness, authority, uniqueness, scope, dependencies, relationships, governance, compatibility, security, lifecycle and evidence. A failed validation blocks acceptance and creates a traceable exception (LXM-EXC) stating the reason, impact and required resolution; nothing invalid is silently accepted.
+
+@LXM-REQ-000223 | ARC | NEW | New-owner-addition
+t: Automatic propagation
+s: SRC-0008 §5
+c: SRC-0008 §5.1 covers; SRC-0008 §5.2 covers
+x: After successful assimilation, regenerate or update the dependent indexes, registries, relationships, specifications, documentation, conformance views, test obligations and implementation traceability from canonical knowledge; derived representations never become authorities.
+
+@LXM-REQ-000224 | ARC | NEW | New-owner-addition
+t: Integrity at change time
+s: SRC-0008 §6,§1.2,§8.3,§8.4; SRC-0009 §4.4
+v: 2
+c: SRC-0008 §1.2 covers; SRC-0008 §6.2 covers; SRC-0008 §8.3 covers; SRC-0008 §8.4 covers; SRC-0008 §6.1 covers; SRC-0008 §6.3 covers; SRC-0009 §4.4 covers
+x: Every canonical mutation preserves the applicable Master invariants, enforced at ingestion and change time through automated validation, transaction controls, invariant checks and continuous verification. The Master does not depend on periodic manual audits, repeated document reconciliation, duplicate-removal exercises or deferred completeness reviews to maintain its integrity, and a later audit is never the primary way to find preventable omissions, duplication, overlap, inconsistency or broken traceability. This is a preventive architectural invariant, not a periodic cleanup objective: the Master becomes more complete, coherent and internally consistent as new knowledge enters it.
+h: v1 (by SRC-0008 §1.2,§6.2,§8.3,§8.4: Semantic review found v1 omitted SRC-0008 meaning: no dependence on periodic audits, repeated reconciliation, duplicate-removal exercises or deferred completeness reviews (§1.2), enforcement at ingestion as well as change time (§6.2), and the preventive, monotonic intent (§8.3, §8.4).): Every canonical mutation preserves the Master invariants, enforced when a change is made through automated validation, transaction controls, invariant checks and continuous verification. A later audit is never the primary way to find preventable omissions, duplication, overlap, inconsistency or broken traceability.
+
+@LXM-REQ-000225 | ARC | NEW | New-owner-addition
+t: Automate routine governance
+s: SRC-0008 §7; SRC-0009 §4.2
+c: SRC-0008 §7.2 covers; SRC-0009 §4.2 extends
+x: Automate routine classification, matching, propagation, indexing, consistency checking and traceability maintenance as far as reliable evidence supports; human decisions are reserved for the conditions in LXM-REQ-000016. The platform must discover, classify, validate, extend, compose, supersede, relate, version and propagate changes automatically wherever safe and deterministic.
+
+@LXM-REQ-000226 | ARC | NEW | New-owner-addition
+t: Completeness means assimilated
+s: SRC-0008 §8,§4.1
+c: SRC-0008 §4.1 covers; SRC-0008 §8.1 covers; SRC-0008 §8.2 covers; SRC-0009 §5.1 supports; SRC-0009 §5.2 supports; SRC-0009 §8.1 supports; SRC-0009 §8.2 supports
+x: A contribution is complete only when it has been correctly assimilated into the Master, all applicable invariants pass, its dependencies and derived representations are consistent, and its lineage and conformance evidence are recorded. Receipt, documentation, implementation or testing alone is not completion.
+
+@LXM-REQ-000227 | ARC | NEW | New-owner-addition
+t: Complete intended architecture before sequencing
+s: SRC-0009 §1.1,§1.2,§1.3,§3.1,§3.2,§8.3; SRC-0011 §2; SRC-0013 §2.1,§2.2.2,§3.4; SRC-0014 §3.1; SRC-0023 §1
+c: SRC-0009 §1.1 covers; SRC-0009 §1.2 covers; SRC-0009 §1.3 covers; SRC-0009 §3.1 covers; SRC-0009 §3.2 covers; SRC-0009 §8.3 covers; SRC-0011 §2 covers; SRC-0013 §2.1 covers; SRC-0013 §2.2.2 covers; SRC-0013 §3.4 covers; SRC-0014 §3.1 covers; SRC-0023 §1 extends
+x: Design, implement and evolve LUXORA Ω∞ as a complete, universal, technology-agnostic, self-maintaining and continuously evolving platform. Do not optimize for a minimum viable architecture, temporary implementation, isolated subsystem or short-term demonstration. The complete intended architecture must be established before implementation sequencing is determined. The architecture must comprehensively cover constitutional foundations, knowledge and assimilation, identity, organizations, tenancy, business composition, configuration, rules, users, experience journeys, catalog, discovery, pricing, promotions, commerce, checkout, payments, wallets, billing, finance, accounting, orders, inventory, logistics, fulfilment, returns, communication, integrations, intelligence, analytics, security, operations, deployment, disaster recovery and platform governance. The architecture must remain open to future domains and capabilities without requiring redesign of its foundations. The objective is not to repeatedly repair and audit a collection of partial systems. The objective is to engineer one coherent, universal platform whose architecture continuously maintains and evolves its own completeness and consistency. Before implementation starts, the best design must be finalised.
+
+@LXM-REQ-000228 | ARC | NEW | New-owner-addition
+t: Architectural invariants of every capability
+s: SRC-0009 §2.8,§2.9,§2.10,§2.12,§2.13,§7.1
+c: SRC-0009 §2.8 covers; SRC-0009 §2.9 covers; SRC-0009 §2.10 covers; SRC-0009 §2.12 covers; SRC-0009 §2.13 covers; SRC-0009 §7.1 covers
+x: All capabilities must conform to automated conformance and invariant enforcement; dependency and impact analysis; deterministic and recoverable changes; zero unjustified duplication, overlap, ambiguity, orphan artifacts and conflicting authorities; and security, privacy, resilience and scalability by architectural design. The architecture must continuously maintain its own integrity through machine-verifiable contracts, controlled mutation, automatic dependency propagation, version management, migration governance, regression testing and conformance evidence.
+
+@LXM-REQ-000229 | ARC | NEW | New-owner-addition
+t: Complete capability lifecycle and platform completion
+s: SRC-0009 §5.1,§5.2,§8.1,§8.2; SRC-0013 §2.2.7,§6.1,§6.2,§6.3; SRC-0016 §4.5
+c: SRC-0009 §5.1 covers; SRC-0009 §5.2 covers; SRC-0009 §8.1 covers; SRC-0009 §8.2 covers; SRC-0013 §2.2.7 covers; SRC-0013 §6.1 extends; SRC-0013 §6.2 covers; SRC-0013 §6.3 covers; SRC-0016 §4.5 covers
+x: Every capability must have its complete lifecycle designed and implemented: Constitution → Specification → Canonical model → Implementation → Configuration → Runtime enforcement → Testing → Observability → Evolution. No capability may be represented as complete merely because one of these layers exists. The platform is complete only when its intended architectural scope has been implemented, integrated, enforced and validated with traceable evidence. A passing test suite for one subsystem, a complete document, a generated registry or a successful prototype does not certify the platform. Maintain a canonical capability registry and traceability matrix distinguishing at least: Defined: the capability and its contract are specified. Implemented: executable functionality exists. Registered: the platform can discover the capability. Integrated: its declared dependencies and interfaces work together. Certified for a business profile: the composed configuration has passed its defined acceptance criteria. Production-enabled: the exact profile is approved and ready for its target environment.
+
+@LXM-REQ-000230 | ARC | NEW | New-owner-addition
+t: Dependency-sequenced permanent increments
+s: SRC-0009 §6.1,§6.2,§6.3,§6.4,§6.5,§6.6; SRC-0022 §1
+c: SRC-0009 §6.1 covers; SRC-0009 §6.2 covers; SRC-0009 §6.3 covers; SRC-0009 §6.4 covers; SRC-0009 §6.5 covers; SRC-0009 §6.6 covers; SRC-0022 §1 extends
+x: Implementation may be sequenced according to architectural dependencies, but every increment must conform to the final architecture; every accepted increment must be permanent and production-quality; no temporary substitute may become an accidental architectural authority; no implementation may create debt that contradicts established constitutional principles; dependencies and interfaces must be defined before dependent implementation; and all previously implemented capabilities must remain conformant as the architecture evolves. Implement everything one by one, in sequence.
+
+@LXM-REQ-000231 | ESC | NEW | New-owner-addition
+t: Supplementary human-decision criteria
+s: SRC-0008 §7.1; SRC-0009 §7.2
+k: LXM-DEC-000014
+c: SRC-0008 §7.1 covers; SRC-0009 §7.2 covers
+d: LXM-REQ-000016
+x: In addition to the conditions in LXM-REQ-000016, ask the owner when (S1) a material ambiguity remains that the authoritative sources and recorded evidence cannot resolve without choosing between meanings, or (S2) a consequential security, legal, data or operational risk cannot be accepted on existing authority. Each such request uses the same single consolidated decision packet and is never made for routine technical choices.
+
+@LXM-REQ-000232 | ARC | NEW | New-owner-addition
+t: Everything derived through the kernel primitives
+s: SRC-0017 §1
+c: SRC-0017 §1 covers
+x: Everything must be derived through registry, entity, context, temporal, relationship, reusable and configurable mechanisms.
+
+@LXM-REQ-000233 | ARC | NEW | New-owner-addition
+t: Master Registry after all validation
+s: SRC-0018 §1
+c: SRC-0018 §1 covers
+x: There must be a second level, the Master Registry, after the Master Context, reached only after all validation of duplication, overlap, partial coverage and every other validation.
+
+@LXM-REQ-000234 | ARC | NEW | New-owner-addition
+t: Feedback layer that refines everything
+s: SRC-0019 §1
+c: SRC-0019 §1 covers
+x: After the Master Registry there must be one more layer where feedback such as completing, partial, done, temporal and user details refines everything most.
+
+@LXM-REQ-000235 | ARC | NEW | New-owner-addition
+t: Close every knowledge-architecture gap in sequence
+s: SRC-0020 §1
+c: SRC-0020 §1 covers
+x: Add all the gaps identified in intake/decisions/KNOWLEDGE-ARCHITECTURE-GAPS-2026-10-31.md (SHA-256 7d613b399dd3751a) and implement all of them in sequence.
+
+@LXM-REQ-000236 | STG-16 | NEW | New-owner-addition
+t: Resolve every blocker to an unconditional GO
+s: SRC-0026 §0.1
+c: SRC-0026 §0.1 covers
+x: Resolve all the blockers until the product reaches an unconditional GO.
+
+@LXM-REQ-000237 | EXE | NEW | New-owner-addition
+t: Clean working tree after each step
+s: SRC-0027 §0.1; SRC-0028 §0.1,§0.2
+c: SRC-0027 §0.1 covers; SRC-0028 §0.1 extends; SRC-0028 §0.2 extends
+x: Each step ends with git status clean in the canonical writer's workspace: the step's changes are committed, and no modified, staged or untracked file remains. A clean tree is reached only by committing the work, never by reverting, stashing or discarding it; the preserved Phase 1 checkout keeps its uncommitted changes (LXM-REQ-000217). Committing and pushing are automated at the end of each step: the step's work is committed and pushed to its own branch, and the step ends only when the tree is clean and the pushed head equals the local head. The automation refuses a protected or frozen branch, a force-push, a suspected secret and a present index lock.
+
+@LXM-REQ-000238 | ARC | NEW | New-owner-addition
+t: Open-ended environments by configuration
+s: SRC-0029 §0.2
+c: SRC-0029 §0.2 covers
+x: Environments are open-ended registered configuration: any number of environments, each registered with its identity, purpose, configuration overlay, secret references, data isolation, providers, release gates and promotion path, and a new environment is added by registration alone. No code names an environment or branches on an environment name; behaviour that differs between environments is a declared setting that each environment sets.

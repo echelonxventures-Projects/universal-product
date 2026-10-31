@@ -1,0 +1,12 @@
+id: CTB-LXM-DEC-000015-adopt
+kind: decision
+decision: LXM-DEC-000015
+action: adopt
+outcome: Adopt the architecture constitution final text as written (intake/decisions/ARCHITECTURE-PROPOSAL-2026-10-31.md, SHA-256 22fbf8937ef0cf1765234b30a4044eea5227b7f3b7b07470f575475aeacd3973): invariants I1 to I6, rules R1 to R7, the lifecycle states, the layers and the order of work
+effect: The final text becomes binding; its clauses enter the Master through the gate from SRC-0010 and the final text
+authorizes: SRC-0025 §0.2, SRC-0010 §1, §2, §3, §4, §5, §6, §7, §8, §9, §10, §11, §12, §13, §14, §15, §16, §17, §18, §19, §20, §21, §22, §23
+adopted: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+provenance: Owner approval in session 47abdf14, transcript lines 4257 (message) and 4268 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31.txt (SHA-256 95549f76cc1670f66106a21415e7e73bede1fa3e713aafd2444e5489a8c92575); the question as asked in OWNER-APPROVAL-2026-10-31.context.txt; source SRC-0025
+rationale: The owner's choices A to F of 2026-10-31 applied to the owner's architecture text; each rule made checkable
+approval: intake/decisions/OWNER-APPROVAL-2026-10-31.txt
+approval-sha256: 95549f76cc1670f66106a21415e7e73bede1fa3e713aafd2444e5489a8c92575

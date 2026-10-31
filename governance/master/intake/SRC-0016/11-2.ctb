@@ -1,0 +1,5 @@
+id: CTB-SRC0016-11-2
+source: SRC-0016
+section: §11.2
+kind: requirement
+text: Obtain two independent, fully completed green CI runs on the exact final PR-053 SHA, including all required Node test lanes, browser and PostgreSQL jobs. Record the actual run IDs, URLs and job outcomes.

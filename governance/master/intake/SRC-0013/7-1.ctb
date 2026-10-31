@@ -1,0 +1,6 @@
+id: CTB-SRC0013-7-1
+source: SRC-0013
+section: §7.1
+kind: requirement
+extends: LXM-REQ-000101
+text: Engineering must inspect the actual repository and produce a capability matrix identifying: Business models and industry domains already implemented. Reusable capabilities shared across those business models. Capabilities that are genuinely configurable today. Capabilities that exist but require additional integration or testing. Capabilities that remain unimplemented. Hardcoded domain assumptions and unnecessary coupling. Dependencies, migration needs, security constraints and missing test coverage. The minimum complete Amazon-like marketplace production configuration. The next business configurations that can be assembled using existing capabilities without new core changes.

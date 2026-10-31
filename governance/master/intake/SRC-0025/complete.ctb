@@ -1,0 +1,5 @@
+id: CTB-SRC0025-complete
+kind: source
+source: SRC-0025
+action: complete-ledger
+basis: both clauses are covered (§0.2 by LXM-REQ-000153, 000191 and 000048 under their decisions; §0.1 by LXM-REQ-000002, pending the correction LXM-DEC-000016)

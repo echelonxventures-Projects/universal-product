@@ -1,0 +1,6 @@
+id: CTB-SRC0016-3-1
+source: SRC-0016
+section: §3.1
+kind: requirement
+extends: LXM-REQ-000042
+text: Before implementation, inspect: The kernel and its bitemporal k_versions model. The governed change lifecycle and approval mechanisms. Existing registries, capability declarations, schemas and discovery mechanisms. The current hardcoding audit and registry verification gates. .github/workflows/ci.yml. package.json and lockfiles. Dockerfiles, build scripts, deployment manifests and environment declarations. Language, runtime, compiler, package-manager, dependency, database, browser, operating-system, container, infrastructure and tool assumptions throughout the repository. Existing security, provenance, dependency and artifact verification mechanisms.

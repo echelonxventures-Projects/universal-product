@@ -1,0 +1,5 @@
+id: CTB-SRC0008-2-2
+source: SRC-0008
+section: §2.2
+kind: requirement
+text: It shall detect and resolve: Exact and semantic duplication; Full and partial overlap; Complementary and composable knowledge; Missing relationships and dependencies; Contradictions and competing authorities; Superseded and obsolete knowledge; Incomplete, ambiguous and unsupported assertions; Existing canonical objects that should be extended rather than duplicated; Genuinely new concepts that require canonical identity.

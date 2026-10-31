@@ -1,0 +1,6 @@
+id: CTB-SRC0012-C-2
+source: SRC-0012
+section: §C.2
+kind: requirement
+extends: LXM-REQ-000074
+text: A default is a starting configuration, not an invisible code fallback. Any operational default must be explicit, documented and inspectable. Sensitive financial settings must not become active merely because a seed file exists; activation and approval requirements must be enforced.

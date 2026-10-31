@@ -1,0 +1,6 @@
+id: CTB-SRC0014-5-2
+source: SRC-0014
+section: §5.2
+kind: requirement
+extends: LXM-REQ-000109
+text: Required safeguards: a provider-neutral integration contract, capability discovery, credential and secret isolation, transaction idempotency, signed webhook verification, reconciliation, failover policies and provider-specific certification.

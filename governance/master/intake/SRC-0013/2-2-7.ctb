@@ -1,0 +1,5 @@
+id: CTB-SRC0013-2-2-7
+source: SRC-0013
+section: §2.2.7
+kind: requirement
+text: The common platform provides configuration validation, simulation, dependency checks, approval, versioning, activation, observability and rollback.

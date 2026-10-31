@@ -1,0 +1,6 @@
+id: CTB-SRC0012-1-1
+source: SRC-0012
+section: §1.1
+kind: requirement
+extends: LXM-REQ-000085
+text: Seeded, configurable monetary policy covers currencies and monetary precision: supported currencies, minor-unit precision, permitted scales, currency-specific constraints and rounding policies.

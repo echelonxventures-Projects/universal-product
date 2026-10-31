@@ -1,0 +1,8 @@
+id: CTB-SRC0025-0-1-correct-002
+source: SRC-0025
+section: §0.1
+kind: requirement
+supersedes: LXM-REQ-000002
+reason: correction of an agent error at ledger seq 584 (the owner sentence was added to the wrong record; its home is LXM-REQ-000001); this restores the earlier text exactly
+text: Execute only in the existing approved LUXORA integration workspace, which lies outside any iCloud- or cloud-synced folder (historically `/Users/bipin/Workspaces/LUXORA-production-integration-2026-10-27`; reverify per LXM-REQ-000018). Never execute writable work in an iCloud-synced checkout.
+decision: LXM-DEC-000016

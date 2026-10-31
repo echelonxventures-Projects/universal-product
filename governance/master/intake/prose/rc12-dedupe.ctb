@@ -1,0 +1,7 @@
+id: CTB-PROSE-RC12-DEDUPE
+kind: prose
+action: edit-line
+line: | 1.0.0-rc.12 | 2026-10-31 | Every canonical kind goes through the gate (trace, scope, source, stage action and prose join requirement, decision and evidence), and CI requires the canonical state to equal the last gate outcome; enforcement starts from one recorded baseline. Changes are re-validated against every recorded source clause; capture is the one way in; Level 3 outcomes feed back as proposals and evidence (LXM-EVD-000011); the registers split into small files and rebuild identically. No requirement changed. |
+occurrence: 2
+text: 
+basis: removes the duplicate revision row a non-idempotent replay of CTB-PROSE-RC12 inserted (ledger seq 568); the insert action is now idempotent

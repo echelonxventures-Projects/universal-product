@@ -1,0 +1,28 @@
+# SRC-0010 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Extract: sources/SRC-0010.extract.md (provisional extract from session 47abdf14 transcript line 3112; owner confirmation pending).
+# Contribution texts strip markdown and, for list items, add the list's lead-in or label so that each clause is a complete sentence (intake/SRC-0010/).
+# Held: the owner decides this text as LXM-DEC-000015 before any clause is assimilated.
+status: in-progress
+extract: sources/SRC-0010.extract.md sha256 68ec6d94b9f811b427392633c58d378dc487d7c78906e76ca29a26e9ea22b0ab
+§1 | 1-1 | 726075a1bebb458c
+§2 | 4-4 | b4c6b8d6f815ec0f
+§3 | 7-7 | 2d8a4c261d4b21fa
+§4 | 9-9 | 2ab4437a2d506e8e
+§5 | 14-14 | a55ab6d2c06a3f4d
+§6 | 19-19 | 28f66fdf7c266abd
+§7 | 24-24 | d6f196b59e4841a2
+§8 | 29-29 | 449b4fceed4bbb4a
+§9 | 34-34 | d4cd015fa8118bd3
+§10 | 39-39 | 5492bea847b78bad
+§11 | 44-44 | 39192ae5bc9142fa
+§12 | 49-49 | 0a37d142ce56c54c
+§13 | 51-51 | d4628c2fd4f52de7
+§14 | 55-55 | e36cab38bc45c915
+§15 | 58-58 | 582fbbddb46940b7
+§16 | 59-59 | b938bc3045d7a46a
+§17 | 60-60 | 066096132ef88a48
+§18 | 62-62 | 40695a4b0c79a6f9
+§19 | 64-64 | 97b2a535472b1be3
+§20 | 66-66 | 60b29a687f96f49b
+§21 | 68-68 | 98a981887934c7b9
+§22 | 70-70 | 2fa1bf5f0ba82f2d
+§23 | 72-72 | b5e11789a7ed71c5

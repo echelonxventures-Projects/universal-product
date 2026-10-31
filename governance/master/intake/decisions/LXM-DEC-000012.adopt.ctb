@@ -1,0 +1,12 @@
+id: CTB-LXM-DEC-000012-adopt
+kind: decision
+decision: LXM-DEC-000012
+action: adopt
+outcome: All five as the money decision packet recommends (docs/money-decision-packet.md at 39ed4d6): MD-1 option C, a rounding rule per market with the platform default kept at half-up, tax per document unless a launch market requires per line, no cash rounding at launch unless a launch market requires it; MD-2 option A, the exact money model for the payment spine only; MD-3 option B, pro-rata tax on a partial refund, offers reversed only on a full refund; MD-2/MD-5, every domain that charges, pays out, lends or reaches a provider disabled until migrated, reporting-only domains only under a written named risk acceptance, money-0002 no later than two releases after launch; MD-4, migration rehearsal mandatory, excess_precision by a signed rule per reason with a second reviewer, currency_missing, currency_unknown and not_a_number by hand from source records, launch only with no open quarantine entry on a row a refund or settlement can touch
+effect: The policies are decided; gate 4 still needs each launch market's rounding rule and tax basis named, MD-3 option B built and tested, and the rehearsal evidence
+authorizes: SRC-0026 §0.3, LXM-REQ-000093
+adopted: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+provenance: Owner approval in session 47abdf14, transcript lines 4394 (message) and 4464 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31b.txt (SHA-256 4fd6b1e0bdd3c21510beb711d18a1954d7dbf99ed517061c25d7dc1751029447); the questions as asked in OWNER-APPROVAL-2026-10-31b.context.txt; source SRC-0026
+rationale: The packet's engineering recommendation, adopted by the owner; financially affected activation stays blocked until its evidence exists
+approval: intake/decisions/OWNER-APPROVAL-2026-10-31b.txt
+approval-sha256: 4fd6b1e0bdd3c21510beb711d18a1954d7dbf99ed517061c25d7dc1751029447

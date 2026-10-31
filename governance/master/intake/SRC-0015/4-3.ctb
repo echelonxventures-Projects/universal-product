@@ -1,0 +1,6 @@
+id: CTB-SRC0015-4-3
+source: SRC-0015
+section: §4.3
+kind: requirement
+extends: LXM-REQ-000211
+text: New categories must be registrable through extensible contracts. A genuinely new protocol or computational behavior may require a new adapter or implementation, but it must integrate with the same governance core rather than create a competing system.

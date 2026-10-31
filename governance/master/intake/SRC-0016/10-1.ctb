@@ -1,0 +1,5 @@
+id: CTB-SRC0016-10-1
+source: SRC-0016
+section: §10.1
+kind: requirement
+text: Implement the actual required mechanisms, not only the inventory, schemas or documentation.

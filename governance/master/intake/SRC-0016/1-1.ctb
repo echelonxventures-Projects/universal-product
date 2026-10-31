@@ -1,0 +1,6 @@
+id: CTB-SRC0016-1-1
+source: SRC-0016
+section: §1.1
+kind: requirement
+extends: LXM-REQ-000041
+text: Inspect the actual local and remote branch, worktree, existing uncommitted changes, pre-existing untracked receipt and PR #6.

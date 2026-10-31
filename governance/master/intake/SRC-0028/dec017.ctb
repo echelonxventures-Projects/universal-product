@@ -1,0 +1,7 @@
+id: CTB-SRC0028-dec017
+source: SRC-0028
+section: §0.3
+kind: requirement
+extends: LXM-REQ-000216
+decision: LXM-DEC-000017
+text: By owner decision LXM-DEC-000017, the Master session may write once, on 2026-10-31, as new branches pushed from a fresh clone outside iCloud; it never writes the integration branch and never force-pushes.

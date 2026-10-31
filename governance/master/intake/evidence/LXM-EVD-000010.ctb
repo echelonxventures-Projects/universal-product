@@ -1,0 +1,10 @@
+id: CTB-EVD-000010
+kind: evidence
+evidence: LXM-EVD-000010
+action: add
+fact: The master mandate pasted by the owner on 2026-10-30 at transcript lines 3181, 3222 and 3332 is, line for line, the text of SRC-0001 (607 normalised lines, 0 differences), and the "Decision 3 to Decision 5" text pasted at line 3332 is SRC-0001's own Decisions 3 to 5 (52 lines, 0 differences once heading markers are removed); neither adds a source
+source: session 47abdf14 transcript lines 3181, 3222 and 3332, compared with SRC-0003 lines 374 to the end (Appendix A)
+method: whitespace-normalised line comparison by script
+observed: 2026-10-31
+observer: amazon-44
+verifies: LXM-REQ-000191

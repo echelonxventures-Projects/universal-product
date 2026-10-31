@@ -1,0 +1,6 @@
+id: CTB-SRC0016-6-6
+source: SRC-0016
+section: §6.6
+kind: requirement
+extends: LXM-REQ-000043
+text: The toolchain governance mechanism must itself have a safe bootstrap model. Do not assume the resolver can execute without any underlying environment. Any bootstrap dependency must be explicit, reproducible, governed and auditable rather than silently hardcoded.

@@ -1,0 +1,12 @@
+id: CTB-LXM-DEC-000009-adopt
+kind: decision
+decision: LXM-DEC-000009
+action: adopt
+outcome: Option (a): obtain the second distinct CI run ID on the final SHA by closing and reopening PR #6, only after the candidate is frozen; no commit is made only to trigger CI
+effect: LXM-REQ-000153
+authorizes: SRC-0025 §0.2, LXM-REQ-000153
+adopted: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+provenance: Owner approval in session 47abdf14, transcript lines 4257 (message) and 4268 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31.txt (SHA-256 95549f76cc1670f66106a21415e7e73bede1fa3e713aafd2444e5489a8c92575); the question as asked in OWNER-APPROVAL-2026-10-31.context.txt; source SRC-0025
+rationale: No commit is needed, the SHA stays the same, and SRC-0004 forbids a commit made only to trigger CI
+approval: intake/decisions/OWNER-APPROVAL-2026-10-31.txt
+approval-sha256: 95549f76cc1670f66106a21415e7e73bede1fa3e713aafd2444e5489a8c92575

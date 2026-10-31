@@ -1,0 +1,5 @@
+id: CTB-SRC0016-11-3
+source: SRC-0016
+section: §11.3
+kind: requirement
+text: Do not count results from earlier commits as evidence for a later commit. Do not merge PR #6, deploy or authorize production.

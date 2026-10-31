@@ -1,0 +1,6 @@
+id: CTB-SRC0012-1-8
+source: SRC-0012
+section: §1.8
+kind: requirement
+extends: LXM-REQ-000088
+text: Seeded, configurable monetary policy covers settlements and payouts: settlement schedules, seller balances, fees, deductions, reserves, payout eligibility, rounding adjustments, reconciliation and exception handling.

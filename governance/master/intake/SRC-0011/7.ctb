@@ -1,0 +1,6 @@
+id: CTB-SRC0011-7
+source: SRC-0011
+section: §7
+kind: requirement
+extends: LXM-REQ-000199
+text: There is one crucial distinction: zero hardcoding does not mean zero executable code or automatically trusting every new technology. A new tool must be discoverable and evaluable, and its compatibility must be verified before use. Production must use a specific, verified resolution for reproducibility and security, while that resolution should be generated and maintained by the governance system rather than duplicated manually.

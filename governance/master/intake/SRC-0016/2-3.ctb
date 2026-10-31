@@ -1,0 +1,6 @@
+id: CTB-SRC0016-2-3
+source: SRC-0016
+section: §2.3
+kind: requirement
+extends: LXM-REQ-000195
+text: The owner's governing decision is that LUXORA must not be architecturally limited to any predefined technology, language, vendor, tool or runtime category, including technologies not yet invented.

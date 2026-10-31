@@ -1,0 +1,6 @@
+id: CTB-SRC0016-12-2
+source: SRC-0016
+section: §12.2
+kind: requirement
+extends: LXM-REQ-000195
+text: Acceptance principle: LUXORA governs any technology it uses or may use through an open-ended, extensible and auditable lifecycle. The system must not depend on developers maintaining scattered version lists, and it must never equate discovery with verified compatibility.

@@ -1,0 +1,6 @@
+id: CTB-SRC0016-7-4
+source: SRC-0016
+section: §7.4
+kind: requirement
+extends: LXM-REQ-000048
+text: Do not replace all current versions indiscriminately or make an untested runtime the production default. Generate or validate the test matrix and deployment resolution from the new governance mechanism.

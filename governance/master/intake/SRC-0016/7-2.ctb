@@ -1,0 +1,6 @@
+id: CTB-SRC0016-7-2
+source: SRC-0016
+section: §7.2
+kind: requirement
+extends: LXM-REQ-000206
+text: Determine the legitimate compatibility constraints—for example, dependencies on specific platform APIs—and model those requirements explicitly.

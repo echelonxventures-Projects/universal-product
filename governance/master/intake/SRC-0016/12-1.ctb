@@ -1,0 +1,6 @@
+id: CTB-SRC0016-12-1
+source: SRC-0016
+section: §12.1
+kind: requirement
+extends: LXM-REQ-000051
+text: Report: Verified starting and final SHAs. The source-grounded technology-assumption inventory. Registry, discovery, evaluation, governance and resolution mechanisms actually implemented. All hardcoded declarations changed and the justification for retained constraints. New tests and actual results. Both green CI runs against the exact final SHA. Remaining technology gaps and required adapters. Updated PR-053 and readiness-register evidence. Worktree state, including the preserved receipt. Outstanding production blockers.

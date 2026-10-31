@@ -1,0 +1,6 @@
+id: CTB-SRC0012-1-9
+source: SRC-0012
+section: §1.9
+kind: requirement
+extends: LXM-REQ-000086
+text: Seeded, configurable monetary policy covers currency conversion: supported currency pairs, conversion methods, rate sources, rate timestamps, rate validity, spreads, conversion fees and rounding policies.

@@ -1,0 +1,6 @@
+id: CTB-SRC0012-G-3
+source: SRC-0012
+section: §G.3
+kind: requirement
+extends: LXM-REQ-000079
+text: Engineering must implement and test the seed registry, seed migrations, administrative discovery, schemas, validation, activation and audit history.

@@ -1,0 +1,5 @@
+id: CTB-SRC0008-6-3
+source: SRC-0008
+section: §6.3
+kind: requirement
+text: A later audit shall not be the primary mechanism for discovering preventable omissions, duplication, overlap, inconsistency or broken traceability.

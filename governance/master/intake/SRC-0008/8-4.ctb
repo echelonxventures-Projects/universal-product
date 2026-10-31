@@ -1,0 +1,5 @@
+id: CTB-SRC0008-8-4
+source: SRC-0008
+section: §8.4
+kind: requirement
+text: This is a preventive architectural invariant, not a periodic cleanup objective.

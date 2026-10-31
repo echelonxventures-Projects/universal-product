@@ -1,0 +1,214 @@
+# LXM implementation traceability (LXM-REQ-000204). One block per product requirement: where the requirement is implemented.
+# build.py renders Part F.2 from it; code_adapter.py --trace checks every path against the code and reports modules no
+# requirement traces. Procedural requirements are traced by the stage actions that apply them (stages.txt); they are not repeated here.
+# Head line: @LXM-REQ-NNNNNN. Fields:
+#   impl    code files that implement it (repository paths). The owning business domain is read from the repository's own registry.
+#   spec    specification documents (repository paths), when a document more specific than the owning domain's exists.
+#   config  configuration declarations that govern it (ids in config_adapter.json).
+#   test    test files (or checks CI runs) that exercise it.
+#   basis   why the link is believed; defaults to the line below.
+# A link says where a requirement is implemented, never that it is met: status comes from the test and evidence results (Part G).
+# A requirement with no block is untraced; a block with no impl records a known gap.
+# basis-default: agent review (amazon-44, 2026-10-30) of the requirement text against the repository's module registry and a code search at 39ed4d6; not owner-confirmed
+
+@LXM-REQ-000043
+spec: docs/technology.md
+impl: lib/technology.js, lib/technology-adapters.js, lib/technology-scan.js, scripts/technology.js
+test: test/technology.js
+basis: the register's PR-053 row names these files as the implementation
+
+@LXM-REQ-000044
+spec: docs/technology.md
+impl: lib/technology-scan.js, scripts/audit-hardcoding.js
+test: test/technology.js, test/audit-gate.js
+
+@LXM-REQ-000045
+spec: docs/technology.md
+impl: lib/technology.js
+test: test/technology.js
+basis: the register's PR-053 row: every governed move is a k_changes change with distinct approval and rollback
+
+@LXM-REQ-000047
+spec: docs/technology.md
+impl: scripts/technology.js
+test: test/technology.js
+
+@LXM-REQ-000050
+spec: docs/technology.md
+impl: lib/technology-scan.js
+test: test/technology.js
+
+@LXM-REQ-000073
+impl: lib/kernel.js, lib/registry.js, lib/config.js, lib/settings.js
+test: test/kernel.js, test/registries.js
+
+@LXM-REQ-000074
+impl: lib/kernel.js, lib/kernel-shape.js, lib/registry.js
+config: settings, defaults, kernel
+test: test/kernel.js, test/registries.js
+
+@LXM-REQ-000077
+impl: lib/api.js, public/js/admin.js, public/js/platform.js
+test: test/console.js, test/console-meta.js
+
+@LXM-REQ-000080
+impl: lib/money-policy.js, lib/authz.js, lib/tenancy.js
+test: test/money-policy.js, test/authz.js, test/tenancy.js
+
+@LXM-REQ-000082
+impl: lib/kernel-lifecycle.js
+test: test/kernel.js
+
+@LXM-REQ-000084
+spec: docs/money.md
+impl: lib/money.js, lib/money-store.js
+config: money
+test: test/money.js, test/money-store.js
+
+@LXM-REQ-000085
+spec: docs/money.md
+impl: lib/money.js, lib/money-store.js, lib/money-policy.js
+config: money, money-policy
+test: test/money.js, test/money-store.js, test/money-policy.js
+
+@LXM-REQ-000086
+basis: code search at 39ed4d6 found no rate source, rate timestamp or spread recorded by the money modules: a known gap
+
+@LXM-REQ-000088
+spec: docs/money.md
+impl: lib/money.js, lib/refunds.js, lib/tax.js, lib/fees.js
+test: test/money.js, test/tax-ssot.js
+
+@LXM-REQ-000090
+impl: scripts/money-audit.js
+test: scripts/money-audit.js
+basis: the money inventory check (node scripts/money-audit.js --check) runs inside npm test
+
+@LXM-REQ-000091
+spec: docs/money.md
+impl: lib/money-policy.js
+config: money-policy
+test: test/money-policy.js
+
+@LXM-REQ-000092
+spec: docs/money.md
+impl: lib/money-policy.js
+test: test/money-policy.js
+
+@LXM-REQ-000095
+impl: lib/rules.js, lib/policies.js, lib/states.js
+test: test/rules.js, test/states.js
+
+@LXM-REQ-000096
+impl: lib/offers.js, lib/coupons.js
+test: test/offer.js
+
+@LXM-REQ-000099
+impl: lib/rules.js, lib/policies.js, lib/expression.js
+test: test/rules.js, test/expression.js
+
+@LXM-REQ-000100
+impl: lib/rules.js, lib/states.js
+test: test/rules.js, test/states.js
+
+@LXM-REQ-000101
+impl: lib/compose.js, lib/capabilities.js, lib/modules.js
+test: test/compose.js, test/platform-types.js
+
+@LXM-REQ-000103
+impl: lib/compose.js, lib/capabilities.js, lib/modules.js, lib/gates.js
+test: test/compose.js, test/gates.js
+
+@LXM-REQ-000109
+impl: lib/providers.js, lib/adapters.js, lib/connect.js, lib/routes/payments.js
+test: test/payment-conformance.js, test/integrations.js
+
+@LXM-REQ-000110
+impl: lib/providers.js, lib/adapters.js, lib/connect.js
+test: test/payment-conformance.js, test/integrations.js
+
+@LXM-REQ-000111
+impl: lib/providers.js
+test: test/payment-conformance.js
+
+@LXM-REQ-000113
+impl: lib/providers.js
+test: test/payment-conformance.js
+
+@LXM-REQ-000116
+impl: lib/identity.js, lib/webauthn.js
+test: test/identity.js, test/identity-modes.js, test/webauthn.js
+
+@LXM-REQ-000119
+impl: scripts/browser-check.js
+test: test/shipping-ui.js, test/apps-ui.js, test/shopper-ui.js
+
+@LXM-REQ-000121
+impl: lib/security.js, lib/authz.js, lib/tenancy.js
+test: test/security.js, test/authz.js, test/tenancy.js
+
+@LXM-REQ-000123
+impl: lib/idempotency.js, lib/events.js
+test: test/payment-conformance.js, test/integrations.js
+
+@LXM-REQ-000126
+impl: lib/security.js, lib/adapters.js
+test: test/identity-modes.js, test/smoke.js
+
+@LXM-REQ-000127
+impl: lib/migrate.js, lib/db.js
+test: test/money-store.js
+
+@LXM-REQ-000128
+impl: scripts/backup.js, scripts/restore.js
+test: test/backup.js
+
+@LXM-REQ-000195
+spec: docs/technology.md
+impl: lib/technology.js, lib/technology-adapters.js
+test: test/technology.js
+
+@LXM-REQ-000196
+spec: docs/technology.md
+impl: lib/technology.js, lib/technology-adapters.js, lib/technology-scan.js
+test: test/technology.js
+basis: the register's PR-053 row names these files as the implementation
+
+@LXM-REQ-000197
+spec: docs/technology.md
+impl: lib/technology.js
+test: test/technology.js
+
+@LXM-REQ-000198
+impl: lib/settings.js, lib/kernel.js, lib/registry.js
+config: settings, defaults, money, money-policy, time, expression, value, stores, places, wallet, giftcards, kernel, master, gates, env
+test: test/kernel.js, test/registries.js
+
+@LXM-REQ-000199
+impl: scripts/audit-hardcoding.js, lib/technology-scan.js, scripts/white-label.js
+test: test/audit-gate.js, test/white-label.js, test/technology.js
+
+@LXM-REQ-000200
+impl: lib/registry.js, lib/kernel.js
+test: test/registries.js, test/kernel.js
+
+@LXM-REQ-000202
+impl: lib/kernel-lifecycle.js
+test: test/kernel.js
+
+@LXM-REQ-000203
+impl: lib/canonical.js, scripts/domain-map.js
+test: test/domain-map.js, test/registry-gate.js
+
+@LXM-REQ-000215
+impl: _registry/gate.js, scripts/domain-map.js
+test: test/registry-gate.js, test/domain-map.js
+
+@LXM-REQ-000232
+impl: lib/kernel.js, lib/kernel-context.js, lib/kernel-lifecycle.js, lib/kernel-shape.js, lib/registry.js, lib/entity.js
+test: test/kernel.js, test/registries.js
+basis: agent review (amazon-44, 2026-10-31): these modules hold the kernel's registry, entity, context, bitemporal versions (k_versions) and relationship primitives at 39ed4d6; how far every other module derives through them is not yet measured
+
+@LXM-REQ-000238
+impl: lib/env.js
+basis: agent review (amazon-44, 2026-10-31) at 39ed4d6: lib/env.js registers unlimited environments as data (drivers, parameters with sealed secrets, feature flags, tenant routing; import and export); no test names it directly, and 12 code sites in 8 files still branch on NODE_ENV instead of a declared setting (code adapter finding environment-branch)

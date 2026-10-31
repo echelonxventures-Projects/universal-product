@@ -1,0 +1,6 @@
+id: CTB-SRC0014-3-2
+source: SRC-0014
+section: §3.2
+kind: requirement
+recognized-as: LXM-REQ-000100
+text: Rules need definitions, schemas, validation, effective dates, precedence, versioning, simulation, approval, auditability and controlled activation.

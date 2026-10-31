@@ -1,0 +1,5 @@
+id: CTB-SRC0008-3-1
+source: SRC-0008
+section: §3.1
+kind: requirement
+text: Each accepted contribution shall result in the minimum correct canonical mutation.

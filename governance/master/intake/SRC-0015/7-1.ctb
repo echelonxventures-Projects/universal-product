@@ -1,0 +1,6 @@
+id: CTB-SRC0015-7-1
+source: SRC-0015
+section: §7.1
+kind: requirement
+extends: LXM-REQ-000044
+text: Inventory the actual repository for manually duplicated tool versions, technology-category enumerations, provider assumptions, fixed runtime selections, tool-specific branching and stale compatibility declarations.

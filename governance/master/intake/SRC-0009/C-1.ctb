@@ -1,0 +1,9 @@
+id: CTB-SRC0009-C-1
+source: SRC-0009
+section: §2.8,§2.9,§2.10,§2.12,§2.13,§7.1
+kind: requirement
+scope: ARC
+title: Architectural invariants of every capability
+applied-in: STG-00 #1
+distinct-from: LXM-REQ-000196
+text: All capabilities must conform to automated conformance and invariant enforcement; dependency and impact analysis; deterministic and recoverable changes; zero unjustified duplication, overlap, ambiguity, orphan artifacts and conflicting authorities; and security, privacy, resilience and scalability by architectural design. The architecture must continuously maintain its own integrity through machine-verifiable contracts, controlled mutation, automatic dependency propagation, version management, migration governance, regression testing and conformance evidence.

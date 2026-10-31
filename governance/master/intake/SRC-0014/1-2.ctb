@@ -1,0 +1,6 @@
+id: CTB-SRC0014-1-2
+source: SRC-0014
+section: §1.2
+kind: requirement
+recognized-as: LXM-REQ-000085
+text: Required safeguards: exact monetary representation, explicit currency, deterministic calculations, validation, audit history and reproducible results.

@@ -1,0 +1,5 @@
+id: CTB-SRC0015-3-4
+source: SRC-0015
+section: §3.4
+kind: requirement
+text: Discovery must never be confused with compatibility, approval or production readiness.

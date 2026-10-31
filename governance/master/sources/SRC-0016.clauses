@@ -1,0 +1,51 @@
+# SRC-0016 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Extract: sources/SRC-0016.extract.md (provisional extract from session 47abdf14 transcript line 3332; owner confirmation pending).
+# Lines 4-9 (repository, PR, expected HEAD, register, owner, status) are a metadata header, not a clause; the Master holds those facts.
+# A list is one clause together with its lead-in; every other sentence paragraph is a clause. Contribution texts strip markdown (intake/SRC-0016/).
+status: complete
+extract: sources/SRC-0016.extract.md sha256 e6ce7b8dfa59ca4a9cc46157313d613af9d750912cff3800101729f98fbc196b
+§1.1 | 13-13 | 02e4ee00c6dc8f9f
+§1.2 | 15-15 | 2a32493948b58d06
+§2.1 | 19-19 | ea13f0b4a697a561
+§2.2 | 21-21 | bc86e7a0975d3b8b
+§2.3 | 23-23 | 4a156a18ccd2b174
+§2.4 | 25-25 | ba4a1b240c5011e2
+§2.5 | 27-27 | 4913d4c64e19c9eb
+§3.1 | 31-41 | 28cf68749dbdcbc2
+§3.2 | 43-43 | 1c20e2456de627e8
+§4.1 | 47-47 | 3519332934247334
+§4.2 | 49-49 | a56f13f71f7d16b6
+§4.3 | 51-62 | aac2861cf030bad8
+§4.4 | 64-64 | afed6d5f69bb23bb
+§4.5 | 66-66 | 1d2bdcf397035372
+§5.1 | 70-70 | 617da842e84b070f
+§5.2 | 72-83 | 39b9039320326cdc
+§5.3 | 85-85 | f02353c613b4f3d6
+§5.4 | 87-87 | 4596dcfb20d072f6
+§5.5 | 89-89 | b29fe58d8524ab97
+§6.1 | 93-93 | 9a4f637cfde3db8a
+§6.2 | 95-103 | 252d2009c8fc3e41
+§6.3 | 105-105 | b355755a4e2bbf7b
+§6.4 | 107-107 | 6acfddd7cc9520a5
+§6.5 | 109-109 | 14adc7e0f32fe181
+§6.6 | 111-111 | 6aeef12d96afa7bf
+§7.1 | 115-120 | 214966f441c43048
+§7.2 | 122-122 | 96f84ed3bdb708b9
+§7.3 | 124-124 | 1a393850b41d8bfa
+§7.4 | 126-126 | adcabeb1249281e3
+§8.1 | 130-130 | 65aee5e43c5d00c8
+§8.2 | 132-132 | 780d1d71d6e966ff
+§8.3 | 134-134 | 7d12dc0840a10767
+§8.4 | 136-136 | 1736ff769ca06dcd
+§9.1 | 140-153 | e134ef170bc47c1f
+§9.2 | 155-155 | 4721bafa8e9494a4
+§10.1 | 159-159 | f23f9dfc8d2771a9
+§10.2 | 161-161 | fcfd5eb13a315b77
+§10.3 | 163-163 | 00d9ce2e6a4d4da4
+§10.4 | 165-165 | 6817b1eafff2c42e
+§10.5 | 167-167 | 12c9a04a93f09f77
+§11.1 | 171-171 | 636aafe7ab39fa37
+§11.2 | 173-173 | 9e991fd36607a088
+§11.3 | 175-175 | 74f3faadf69ff5c5
+§12.1 | 179-190 | fda45502a8e32db8
+§12.2 | 192-192 | 2e4af8e6d9a26f1f
+§12.3 | 194-194 | 323386fa2fc37113

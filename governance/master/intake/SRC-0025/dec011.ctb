@@ -1,0 +1,7 @@
+id: CTB-SRC0025-dec011
+source: SRC-0025
+section: §0.2
+kind: requirement
+extends: LXM-REQ-000048
+decision: LXM-DEC-000011
+text: By owner decision LXM-DEC-000011, the full test-suite floor is raised to Node 22.22.2 or later and the development tooling is re-resolved to its fixed versions; the production floor stays 22.13.0 with a runtime-only lane, and host installs get a security floor declared in the technology lock.

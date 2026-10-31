@@ -1,0 +1,6 @@
+id: CTB-SRC0012-A-2
+source: SRC-0012
+section: §A.2
+kind: requirement
+extends: LXM-REQ-000091
+text: Convert that inventory into canonical, structured configuration records. The inventory must cover actual existing behavior, not merely examples or a proposed list of future features.

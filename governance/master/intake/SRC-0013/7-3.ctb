@@ -1,0 +1,6 @@
+id: CTB-SRC0013-7-3
+source: SRC-0013
+section: §7.3
+kind: requirement
+extends: LXM-REQ-000108
+text: Final acceptance principle: LUXORA is a universal multi-business platform whose supported business models can be configured from shared, implemented and discoverable capabilities. The first production deployment is an Amazon-like marketplace, while the platform is built from the outset to configure and extend additional business models and industries through the same governed mechanisms.

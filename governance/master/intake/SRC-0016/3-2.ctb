@@ -1,0 +1,6 @@
+id: CTB-SRC0016-3-2
+source: SRC-0016
+section: §3.2
+kind: requirement
+extends: LXM-REQ-000042
+text: Reuse the canonical kernel lifecycle and governance mechanisms wherever appropriate. Do not create a separate technology-governance framework if existing primitives can be extended safely.

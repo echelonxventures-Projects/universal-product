@@ -1,0 +1,6 @@
+id: CTB-SRC0009-2-3
+source: SRC-0009
+section: §2.3
+kind: requirement
+recognized-as: LXM-REQ-000203
+text: All capabilities must conform to Knowledge Once Principle.

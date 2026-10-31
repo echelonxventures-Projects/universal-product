@@ -1,0 +1,6 @@
+id: CTB-SRC0015-3-3
+source: SRC-0015
+section: §3.3
+kind: requirement
+extends: LXM-REQ-000043
+text: It must distinguish: Discovered technology. Available release. Candidate for evaluation. Compatible candidate. Tested candidate. Approved resolution. Active deployment resolution. Deprecated or prohibited resolution.

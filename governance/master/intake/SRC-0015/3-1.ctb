@@ -1,0 +1,6 @@
+id: CTB-SRC0015-3-1
+source: SRC-0015
+section: §3.1
+kind: requirement
+extends: LXM-REQ-000206
+text: Resolve technologies according to declared requirements and actual capabilities rather than hardcoded version assumptions.

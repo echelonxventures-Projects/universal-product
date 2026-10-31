@@ -1,0 +1,5 @@
+id: CTB-SRC0011-2
+source: SRC-0011
+section: §2
+kind: requirement
+text: The architecture must be technology-agnostic.

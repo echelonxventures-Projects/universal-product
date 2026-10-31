@@ -1,0 +1,6 @@
+id: CTB-SRC0012-1-11
+source: SRC-0012
+section: §1.11
+kind: requirement
+extends: LXM-REQ-000087
+text: Seeded, configurable monetary policy covers financial exceptions: ambiguous legacy records, invalid precision, overflow, missing currencies, conflicting policies, residual amounts and operator-resolution workflows.

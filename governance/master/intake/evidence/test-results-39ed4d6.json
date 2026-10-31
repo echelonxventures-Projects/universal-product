@@ -1,0 +1,15 @@
+{
+ "sha": "39ed4d64acc49513af05c647faa2d03dabd5f38e",
+ "runtime": "node 22.23.4 (darwin-arm64, digest verified against the candidate snapshot)",
+ "command": "npm test",
+ "started": "2026-10-30T18:08:41Z",
+ "finished": "2026-10-30T18:33:12Z",
+ "exit": 0,
+ "passed": 3588,
+ "failed": 0,
+ "failures": [],
+ "crashes": [],
+ "tree_clean_after": true,
+ "changed_after": [],
+ "log_sha256": "f941df980a24aebd83c110a5620007cc4facc022f3416e468d24cf947cb67280"
+}

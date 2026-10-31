@@ -1,0 +1,6 @@
+id: CTB-SRC0023-1
+source: SRC-0023
+section: §1
+kind: requirement
+extends: LXM-REQ-000227
+text: Before implementation starts, the best design must be finalised.

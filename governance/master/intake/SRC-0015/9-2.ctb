@@ -1,0 +1,6 @@
+id: CTB-SRC0015-9-2
+source: SRC-0015
+section: §9.2
+kind: requirement
+extends: LXM-REQ-000041
+text: Then implement this as a separately traceable architectural improvement. Preserve existing work, use canonical artifacts and generated-file workflows, avoid unnecessary rewrites, and do not merge or deploy without explicit owner authorization.

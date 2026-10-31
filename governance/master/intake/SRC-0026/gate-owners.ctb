@@ -1,0 +1,6 @@
+id: CTB-SRC0026-gate-owners
+source: SRC-0026
+section: §0.4
+kind: requirement
+extends: LXM-REQ-000133
+text: By the owner's direction of 2026-10-31, Bipin Kumar owns the 16 release gates that had no named owner (gates 2 to 9, 11 to 14 and 16 to 19), and the release register names him as their owner.

@@ -1,0 +1,6 @@
+id: CTB-SRC0012-D-5
+source: SRC-0012
+section: §D.5
+kind: requirement
+extends: LXM-REQ-000079
+text: Removed or deprecated seed definitions must not silently delete historical financial evidence or active configuration.

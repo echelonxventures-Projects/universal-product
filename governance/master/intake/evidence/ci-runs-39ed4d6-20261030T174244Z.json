@@ -1,0 +1,1 @@
+{"fetched_at":"2026-10-30T17:42:44Z","head_sha":"39ed4d64acc49513af05c647faa2d03dabd5f38e","runs":[{"conclusion":"success","created_at":"2026-10-30T02:12:27Z","event":"pull_request","id":40990327443,"name":"CI","run_attempt":2,"status":"completed"}],"source":"GitHub Actions API, actions/runs?head_sha="}

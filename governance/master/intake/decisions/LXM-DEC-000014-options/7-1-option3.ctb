@@ -1,0 +1,8 @@
+id: CTB-SRC0008-7-1
+source: SRC-0008
+section: §7.1
+kind: requirement
+supersedes: LXM-REQ-000016
+reason: Owner decision LXM-DEC-000014 amends the closed escalation set with E6 and E7 (SRC-0008 §7.1).
+decision: LXM-DEC-000014
+text: Ask the owner for input only when at least one of these conditions holds and no safe independent work on the affected item remains: (E1) a consequential business or financial policy choice not resolved by the mandate or a recorded owner decision (for example MD-1–MD-5, release policy for critical or high findings); (E2) a secret, credential, account, merchant setup or other access the session does not hold; (E3) an owner-reserved action listed in LXM-REQ-000017 or LXM-REQ-000216; (E4) a contradiction between authoritative sources that the precedence model (master §1) cannot settle; (E5) an external authorization or resource (infrastructure, provider, legal or compliance assessment); (E6) a material ambiguity that the authoritative sources and recorded evidence cannot resolve without choosing between meanings; (E7) a consequential security, legal, data or operational risk that cannot be accepted on existing authority. Each escalation is one consolidated decision packet stating the exact decision, the supported options and consequences, a recommendation that is not treated as approval, the affected requirement IDs and the independent work that continues meanwhile. Never escalate for routine technical choices, file edits, tests, ordinary fixes, progress or stage transitions.

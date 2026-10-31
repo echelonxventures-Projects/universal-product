@@ -1,0 +1,8 @@
+id: CTB-LXM-DEC-000017-open
+kind: decision
+decision: LXM-DEC-000017
+action: open
+question: Writer assignment for the owner's "commit and push" of 2026-10-31: may the Master session write to the repository, overriding LXM-REQ-000216 (amazon-62 the sole writer), and how far
+facts: amazon-62 was not running; the iCloud checkout holds a .git/index.lock that is never deleted, so no commit is possible there; pushing to the integration branch would move PR #6 off the candidate 39ed4d6
+options: (a) this push only: the Master session writes new branches once, from a fresh clone outside iCloud, never the integration branch; amazon-62 stays the sole writer for everything else; (b) a standing second writer; (c) no change
+recommendation: (a)

@@ -1,0 +1,6 @@
+id: CTB-SRC0015-4-2
+source: SRC-0015
+section: §4.2
+kind: requirement
+extends: LXM-REQ-000208
+text: When new releases or technology categories become available, the system should discover them, validate their metadata, assess eligibility, run applicable checks and generate an auditable proposal or pull request.

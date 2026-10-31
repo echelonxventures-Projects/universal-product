@@ -1,0 +1,6 @@
+# SRC-0025 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Captured by capture.py from file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp/approval-words.txt.
+# A list is one clause together with its lead-in; every other sentence paragraph is a clause; headings and metadata are none.
+status: complete
+extract: sources/SRC-0025.extract.md sha256 f4e8c1715606741171c848c0a8edd4c3df6d39377884821b5a4d21dc807cf7f8
+§0.1 | 1-1 | 639e2335ddebfb9a
+§0.2 | 3-3 | d9f874dc11ac5338

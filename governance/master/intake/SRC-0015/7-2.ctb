@@ -1,0 +1,6 @@
+id: CTB-SRC0015-7-2
+source: SRC-0015
+section: §7.2
+kind: requirement
+extends: LXM-REQ-000050
+text: Classify each finding as: Unjustified hardcoding to eliminate. Canonical policy constraint. Generated resolution artifact. Immutable technical or security invariant. Required integration adapter. Documented exception. Defect requiring remediation.

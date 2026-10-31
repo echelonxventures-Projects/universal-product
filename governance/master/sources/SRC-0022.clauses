@@ -1,0 +1,5 @@
+# SRC-0022 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Extract: sources/SRC-0022.extract.md (provisional extract from session 47abdf14 transcript line 2681; owner confirmation pending).
+# The contribution restates the owner's first sentence as one clean sentence (spelling normalised). A following question ("So why we need all the audits, validation etc?") is not a clause.
+status: complete
+extract: sources/SRC-0022.extract.md sha256 eae85c36d774376a85e99a5971bd81e5686125e3c30117132dfda57e7190fdaf
+§1 | 1-1 | efb5bb8ad6675fbf

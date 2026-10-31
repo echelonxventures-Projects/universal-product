@@ -1,0 +1,8 @@
+id: CTB-DEC-000015-open
+kind: decision
+decision: LXM-DEC-000015
+action: open
+question: Adopt the architecture constitution final text (`intake/decisions/ARCHITECTURE-PROPOSAL-2026-10-31.md`, SHA-256 `22fbf8937ef0cf1765234b30a4044eea5227b7f3b7b07470f575475aeacd3973`) as binding: invariants I1–I6, rules R1–R7, the lifecycle states, the layers and the order of work
+facts: The owner's architecture text (`intake/decisions/ARCHITECTURE-SOURCE-2026-10-30.verbatim.txt`) and the owner's choices A–F of 2026-10-31 (`intake/decisions/LXM-DEC-000015.answers.txt`) are applied in the final text
+options: Confirm the final text as written; confirm with changes; or keep it as a proposal
+recommendation: Confirm as written

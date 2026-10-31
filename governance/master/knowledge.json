@@ -1,0 +1,54 @@
+{
+ "_comment": "Configuration of the knowledge-system tools (gate_impact.py, gate_accuracy.py, states.py, knowledge_status.py). Policy lives here, never in the tools.",
+ "held_queue": {
+  "_comment": "Who resolves a held intake item, by the reason the gate gave, and how many days it may wait.",
+  "resolvers": [
+   {
+    "when": "owner-reserved",
+    "resolver": "the owner",
+    "due_days": 7
+   },
+   {
+    "when": "Contradiction",
+    "resolver": "the owner (the gate's rule: contradictions go to the owner)",
+    "due_days": 7
+   },
+   {
+    "when": "Ambiguous",
+    "resolver": "the contributor (declare extends, recognized-as or distinct-from)",
+    "due_days": 3
+   },
+   {
+    "when": "",
+    "resolver": "the contributor",
+    "due_days": 3
+   }
+  ]
+ },
+ "review_cycles": {
+  "_comment": "Days after capture or adoption when a source or an adopted decision must be re-confirmed.",
+  "provisional-extract": 30,
+  "owner-file": 365,
+  "conversation-only": 30,
+  "adopted-decision": 180
+ },
+ "states": {
+  "_comment": "The lifecycle states (architecture text §4, SRC-0010, pending LXM-DEC-000015), in order. A state is reached only with its evidence. Designed is evidenced by a specification document: one named in trace.txt (spec:), or the specification of every implementing module's owning domain (domain_specs, read through the repository's domain registry). Configured and Enforced at runtime apply only to requirements that govern configuration; for others they are not applicable, which is not a gap. runtime_traced_declarations: the declarations a runtime read trace covers.",
+  "order": [
+   "Specified",
+   "Designed",
+   "Implemented",
+   "Configured",
+   "Enforced at runtime",
+   "Verified",
+   "Certified"
+  ],
+  "domain_specs": "docs/domains/{domain}.md",
+  "runtime_traced_declarations": [
+   "settings"
+  ]
+ },
+ "accuracy": {
+  "reference": "gate_reference.txt"
+ }
+}

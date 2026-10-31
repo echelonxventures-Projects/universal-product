@@ -1,0 +1,5 @@
+id: CTB-SRC0008-8-2
+source: SRC-0008
+section: §8.2
+kind: requirement
+text: It is complete only when it has been correctly assimilated into the canonical Master, all applicable invariants pass, dependencies and derived representations are consistent, and its lineage and conformance evidence are recorded.

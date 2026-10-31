@@ -1,0 +1,20 @@
+# SRC-0011 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Extract: sources/SRC-0011.extract.md (provisional extract from session 47abdf14 transcript line 3181; owner confirmation pending).
+# Contribution texts strip markdown and, for list items, add the list's lead-in or label so that each clause is a complete sentence (intake/SRC-0011/).
+status: complete
+extract: sources/SRC-0011.extract.md sha256 a5f66273c319e55dde6babb4678c3f9a4c354443ab7a131870608be65f32cf43
+§1 | 1-1 | 46658006b3d5108d
+§2 | 2-2 | 28fc523fd5db72e8
+§3 | 3-5 | 9e1e05402f23c22a
+§4.1 | 8-10 | dbfc7fdf61a21c7d
+§4.2 | 13-15 | 20b3d20641db8045
+§4.3 | 18-20 | 51eb49ce1b2f5705
+§4.4 | 23-25 | 75ac9a34c52453fb
+§5 | 30-32 | a81fb3b18aaaeb27
+§6 | 36-36 | e812277f85848bd7
+§6.1 | 37-37 | 14ffcf69ae253a14
+§6.2 | 38-38 | 63abac4cefe20b8f
+§6.3 | 39-39 | 3bdffa3f556d59e7
+§6.4 | 40-40 | d2ee5b0ec591bf1c
+§6.5 | 41-41 | 847ae28f55138f1a
+§6.6 | 42-42 | 322c547e1bde3f82
+§7 | 43-43 | b037b79db809e609

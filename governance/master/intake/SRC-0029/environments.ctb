@@ -1,0 +1,9 @@
+id: CTB-SRC0029-environments
+source: SRC-0029
+section: §0.2
+kind: requirement
+scope: ARC
+title: Open-ended environments by configuration
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000043, LXM-REQ-000196, LXM-REQ-000198
+text: Environments are open-ended registered configuration: any number of environments, each registered with its identity, purpose, configuration overlay, secret references, data isolation, providers, release gates and promotion path, and a new environment is added by registration alone. No code names an environment or branches on an environment name; behaviour that differs between environments is a declared setting that each environment sets.

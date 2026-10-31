@@ -1,0 +1,5 @@
+id: CTB-SRC0015-4-1
+source: SRC-0015
+section: §4.1
+kind: requirement
+text: Implement extensible discovery adapters and governed provider integrations for authoritative technology metadata, release information, security advisories and lifecycle information.

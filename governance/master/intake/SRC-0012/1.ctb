@@ -1,0 +1,6 @@
+id: CTB-SRC0012-1
+source: SRC-0012
+section: §1
+kind: requirement
+extends: LXM-REQ-000091
+text: All monetary policies, rules, calculation methods and supported options that already exist in LUXORA must be seeded into the governed configuration system. At initial setup, an authorized administrator must be able to discover, inspect, select, configure, validate, simulate, approve and activate any applicable seeded rule without modifying application code.

@@ -1,0 +1,6 @@
+id: CTB-SRC0009-2-1
+source: SRC-0009
+section: §2.1
+kind: requirement
+recognized-as: LXM-REQ-000195
+text: All capabilities must conform to Universal technology, runtime, framework, infrastructure and vendor agnosticism.

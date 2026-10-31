@@ -1,0 +1,12 @@
+# Job to add under `jobs:` in .github/workflows/ci.yml (prepared for the sole writer; not installed).
+# MASTER is the location the owner names in LXM-DEC-000010; governance/master is the recommendation, not a decision.
+  master:
+    runs-on: ubuntu-24.04
+    env:
+      MASTER: governance/master
+    steps:
+      - uses: actions/checkout@v4   # pin to the commit CI already uses, as the lock requires (scripts/technology.js check)
+        with:
+          fetch-depth: 0
+      - name: Master checks
+        run: bash "$MASTER/intake/ci-package/ci-check.sh" "$MASTER" .

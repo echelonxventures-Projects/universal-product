@@ -1,0 +1,6 @@
+id: CTB-SRC0016-10-3
+source: SRC-0016
+section: §10.3
+kind: requirement
+extends: LXM-REQ-000138
+text: Inspect every diff. Do not hand-edit generated artifacts. Fix underlying failures instead of weakening gates.

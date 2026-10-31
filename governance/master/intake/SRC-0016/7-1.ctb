@@ -1,0 +1,6 @@
+id: CTB-SRC0016-7-1
+source: SRC-0016
+section: §7.1
+kind: requirement
+extends: LXM-REQ-000042
+text: Inspect these existing declarations: Node 22.13, 22 and 24 in .github/workflows/ci.yml. node >=22.13.0 in package.json. The pinned Node image in Dockerfile. The browser and PostgreSQL test environments.

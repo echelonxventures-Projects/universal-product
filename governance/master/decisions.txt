@@ -1,0 +1,146 @@
+# LXM canonical decision register. build.py renders Part C of the Master from it; assimilate.py and validate.py read it.
+# Head line: @LXM-DEC-NNNNNN | status | group. Status: adopted (binding where its outcome applies) or open (decides nothing).
+# Group: the Part C table that shows it. Fields, one per line as "key: value":
+#   label short name; q question or conflict; o outcome; w adopted when and by whom; p approval provenance; r rationale;
+#   f facts; opt options and consequences; rec recommendation (not approval);
+#   e normative effect in this master; a mutation-authorization scope: source clauses (SRC-NNNN §n) and records, or None (empty).
+# Status, effect and scope are separate: an empty scope authorizes no change and does not make a decision inactive.
+# Only the owner adopts a decision. An adopted decision is never edited, only superseded by a later one.
+# Table layouts: "%group | Header=key | ...". The ID column shows the ID, then " (label)" if there is one.
+
+%C.1 | ID=id | Conflict=q | Owner decision=o | Effect in this master=e | Authorizes=a
+%C.3 | ID=id | Decision=o | Adopted=w | Approval provenance=p | Rationale=r | Effect in this master=e | Authorizes=a
+%C.2 | ID=id | Decision=q | Facts=f | Options and consequences=opt | Recommendation (not approval)=rec
+
+@LXM-DEC-000001 | adopted | C.1
+label: K1
+q: Two final-report formats: A–K (SRC-0002/0003) and the mandate's §29 A–I
+o: A–K is the canonical final-report structure
+e: Every §29 and §28 element is merged into A–K and mapped in Part F (LXM-REQ-000173 to LXM-REQ-000184)
+a: None
+
+@LXM-DEC-000002 | adopted | C.1
+label: K2
+q: Two independent CI runs (procedure only) and the attempt-versus-run question
+o: Two distinct successful CI workflow run IDs on the exact final SHA
+e: LXM-REQ-000153; attempts of one run count once; the method for a second run on an unchanged SHA is LXM-DEC-000009
+a: None
+
+@LXM-DEC-000003 | adopted | C.1
+label: K3
+q: Seven different status vocabularies
+o: One extensible canonical status model with separate semantic dimensions
+e: Part B
+a: None
+
+@LXM-DEC-000004 | adopted | C.1
+label: K4
+q: No concurrent work while CI runs, versus continuing independent work while blocked
+o: Freeze the candidate during final CI; allow only non-mutating, pre-scoped independent analysis
+e: LXM-REQ-000054, LXM-REQ-000156
+a: None
+
+@LXM-DEC-000005 | adopted | C.1
+label: K5
+q: "Report the baseline before modifying" (mandate Stage A) versus no routine confirmations
+o: Record the baseline before modifications; do not wait for routine confirmation
+e: LXM-REQ-000038
+a: None
+
+@LXM-DEC-000006 | adopted | C.1
+label: K6
+q: Stage 15 retirement versus preserving the original iCloud workspace and Phase 1
+o: Preserve the original iCloud workspace and Phase 1 work unless separately authorized
+e: LXM-REQ-000032, LXM-REQ-000167
+a: None
+
+@LXM-DEC-000007 | adopted | C.1
+label: K7
+q: Named providers, markets and businesses versus white-label and no-country principles
+o: Named providers, markets and business examples are registered data and concrete launch scope, not architectural boundaries
+e: LXM-REQ-000105, LXM-REQ-000106, LXM-REQ-000110; Appendix A keeps its wording verbatim
+a: None
+
+@LXM-DEC-000008 | adopted | C.1
+label: K8
+q: The combined file says "supply unsplit", versus consolidating into a new master
+o: One complete, unsplit canonical master with immutable source provenance
+e: LXM-REQ-000191; this document
+a: None
+
+@LXM-DEC-000009 | adopted | C.3
+q: How to obtain a second distinct CI run ID on an unchanged SHA
+o: Option (a): obtain the second distinct CI run ID on the final SHA by closing and reopening PR #6, only after the candidate is frozen; no commit is made only to trigger CI
+w: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+p: Owner approval in session 47abdf14, transcript lines 4257 (message) and 4268 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31.txt (SHA-256 95549f76cc1670f66106a21415e7e73bede1fa3e713aafd2444e5489a8c92575); the question as asked in OWNER-APPROVAL-2026-10-31.context.txt; source SRC-0025
+r: No commit is needed, the SHA stays the same, and SRC-0004 forbids a commit made only to trigger CI
+e: LXM-REQ-000153
+a: SRC-0025 §0.2, LXM-REQ-000153
+
+@LXM-DEC-000010 | adopted | C.3
+q: Adoption of this master: repository location, version and authority
+o: Option (a): adopt this Master as version 1.0.0 in the repository at governance/master/, with PROJECT-CONTEXT and the assimilation gate as the single knowledge system; amazon-62 installs it, including the owner's source files SRC-0002 and SRC-0003 and the earlier 128-row matrix
+w: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+p: Owner approval in session 47abdf14, transcript lines 4257 (message) and 4268 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31.txt (SHA-256 95549f76cc1670f66106a21415e7e73bede1fa3e713aafd2444e5489a8c92575); the question as asked in OWNER-APPROVAL-2026-10-31.context.txt; source SRC-0025
+r: The governance tooling can only run where the code is; one knowledge system keeps Knowledge Once
+e: LXM-REQ-000191
+a: SRC-0025 §0.2, LXM-REQ-000191
+
+@LXM-DEC-000011 | adopted | C.3
+q: PR-053 (a): the 22.13.1 full-suite lane versus the development tooling's security fixes
+o: Option B: raise the full test-suite floor to Node 22.22.2 or later and re-resolve the development tooling to its fixed versions; the production floor stays 22.13.0 with a runtime-only lane; host installs get a security floor declared in the technology lock
+w: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+p: Owner approval in session 47abdf14, transcript lines 4257 (message) and 4268 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31.txt (SHA-256 95549f76cc1670f66106a21415e7e73bede1fa3e713aafd2444e5489a8c92575); the question as asked in OWNER-APPROVAL-2026-10-31.context.txt; source SRC-0025
+r: The tooling stops running outside its declared engine ranges, and its security fixes apply
+e: LXM-REQ-000048
+a: SRC-0025 §0.2, LXM-REQ-000048
+
+@LXM-DEC-000012 | adopted | C.3
+q: MD-1–MD-5 financial policies
+o: All five as the money decision packet recommends (docs/money-decision-packet.md at 39ed4d6): MD-1 option C, a rounding rule per market with the platform default kept at half-up, tax per document unless a launch market requires per line, no cash rounding at launch unless a launch market requires it; MD-2 option A, the exact money model for the payment spine only; MD-3 option B, pro-rata tax on a partial refund, offers reversed only on a full refund; MD-2/MD-5, every domain that charges, pays out, lends or reaches a provider disabled until migrated, reporting-only domains only under a written named risk acceptance, money-0002 no later than two releases after launch; MD-4, migration rehearsal mandatory, excess_precision by a signed rule per reason with a second reviewer, currency_missing, currency_unknown and not_a_number by hand from source records, launch only with no open quarantine entry on a row a refund or settlement can touch
+w: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+p: Owner approval in session 47abdf14, transcript lines 4394 (message) and 4464 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31b.txt (SHA-256 4fd6b1e0bdd3c21510beb711d18a1954d7dbf99ed517061c25d7dc1751029447); the questions as asked in OWNER-APPROVAL-2026-10-31b.context.txt; source SRC-0026
+r: The packet's engineering recommendation, adopted by the owner; financially affected activation stays blocked until its evidence exists
+e: The policies are decided; gate 4 still needs each launch market's rounding rule and tax basis named, MD-3 option B built and tested, and the rehearsal evidence
+a: SRC-0026 §0.3, LXM-REQ-000093
+
+@LXM-DEC-000013 | open | C.2
+q: Production release authorization
+f: Gate 20 BLOCKED; approver named
+opt: GO only after gates 1–19
+rec: None: owner only
+
+@LXM-DEC-000014 | adopted | C.3
+o: Option 2 of the SRC-0008 §7.1 / SRC-0009 §7.2 question: adopt material ambiguity (S1) and consequential non-financial risk (S2) as supplementary human-escalation criteria in one separate canonical record. The closed E1–E5 set and its record stay unchanged.
+w: 2026-10-30, by the owner, Bipin Kumar
+p: Owner approval in session `47abdf14`, transcript line 1220, entry `a2034daf-1c5a-4a56-accc-6bb49e6a45e1`, 2026-10-30T08:57:55.035Z; verbatim text `intake/decisions/LXM-DEC-000014.approval.txt` (SHA-256 `17efc90d67ac78a6f0c0785092dfebe5c66d23e56b7d8c02308545abbce54d96`)
+r: Closes the two triggers SRC-0008 and SRC-0009 name that E1–E5 lack, without reopening the owner's K-decision; additive and reversible
+e: LXM-REQ-000231
+a: SRC-0008 §7.1, SRC-0009 §7.2
+
+@LXM-DEC-000015 | adopted | C.3
+q: Adopt the architecture constitution final text (`intake/decisions/ARCHITECTURE-PROPOSAL-2026-10-31.md`, SHA-256 `22fbf8937ef0cf1765234b30a4044eea5227b7f3b7b07470f575475aeacd3973`) as binding: invariants I1–I6, rules R1–R7, the lifecycle states, the layers and the order of work
+o: Adopt the architecture constitution final text as written (intake/decisions/ARCHITECTURE-PROPOSAL-2026-10-31.md, SHA-256 22fbf8937ef0cf1765234b30a4044eea5227b7f3b7b07470f575475aeacd3973): invariants I1 to I6, rules R1 to R7, the lifecycle states, the layers and the order of work
+w: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+p: Owner approval in session 47abdf14, transcript lines 4257 (message) and 4268 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31.txt (SHA-256 95549f76cc1670f66106a21415e7e73bede1fa3e713aafd2444e5489a8c92575); the question as asked in OWNER-APPROVAL-2026-10-31.context.txt; source SRC-0025
+r: The owner's choices A to F of 2026-10-31 applied to the owner's architecture text; each rule made checkable
+e: The final text becomes binding; its clauses enter the Master through the gate from SRC-0010 and the final text
+a: SRC-0025 §0.2, SRC-0010 §1, §2, §3, §4, §5, §6, §7, §8, §9, §10, §11, §12, §13, §14, §15, §16, §17, §18, §19, §20, §21, §22, §23
+
+@LXM-DEC-000016 | adopted | C.3
+q: Authorize correcting an agent error: amazon-44 added the owner-identity sentence of SRC-0025 §0.1 to the wrong record, LXM-REQ-000002, at ledger seq 584; that gave the record owner-decision lineage, so the correction is owner-reserved
+o: Option (a): correct the agent error; supersede LXM-REQ-000002 back to its earlier text (history kept) and add the owner-identity sentence of SRC-0025 §0.1 to LXM-REQ-000001
+w: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+p: Owner approval in session 47abdf14, transcript lines 4394 (message) and 4464 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31b.txt (SHA-256 4fd6b1e0bdd3c21510beb711d18a1954d7dbf99ed517061c25d7dc1751029447); the questions as asked in OWNER-APPROVAL-2026-10-31b.context.txt; source SRC-0026
+r: The sentence is true but belongs to the record of the accountable owner
+e: LXM-REQ-000002 regains its earlier text; LXM-REQ-000001 carries the sentence
+a: SRC-0026 §0.2, SRC-0025 §0.1, LXM-REQ-000001, LXM-REQ-000002
+
+@LXM-DEC-000017 | adopted | C.3
+q: Writer assignment for the owner's "commit and push" of 2026-10-31: may the Master session write to the repository, overriding LXM-REQ-000216 (amazon-62 the sole writer), and how far
+o: Option (a), this push only: the Master session writes to the repository once, as new branches pushed from a fresh clone outside iCloud, never the integration branch, never a force-push; amazon-62 stays the sole writer for everything else
+w: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+p: Owner approval in session 47abdf14, transcript lines 5002 (message) and 5017 (answers); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31c.txt (SHA-256 76141dee7ce3bfe0bdabd4e88f225dd31f5d4e5a3a7dc1fed5d5af27e4da97a3); the questions as asked in OWNER-APPROVAL-2026-10-31c.context.txt; source SRC-0028
+r: amazon-62 was not running; a single bounded write keeps the candidate, PR #6 and the protected checkouts untouched
+e: LXM-REQ-000216 records the one-time exception
+a: SRC-0028 §0.3, LXM-REQ-000216

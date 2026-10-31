@@ -1,0 +1,5 @@
+id: CTB-SRC0012-G-6
+source: SRC-0012
+section: §G.6
+kind: requirement
+text: Engineering must test invalid options, conflicting rules, precedence, effective dates, rollback, tenant isolation and financial invariants.

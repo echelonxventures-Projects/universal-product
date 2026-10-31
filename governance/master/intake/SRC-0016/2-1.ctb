@@ -1,0 +1,6 @@
+id: CTB-SRC0016-2-1
+source: SRC-0016
+section: §2.1
+kind: requirement
+extends: LXM-REQ-000041
+text: The current PR-053 description in PRODUCTION_READINESS.md requires an inventory of technology assumptions and a register of supported technology versions, with findings classified rather than necessarily fixed.

@@ -1,0 +1,6 @@
+id: CTB-SRC0015-1-2
+source: SRC-0015
+section: §1.2
+kind: requirement
+extends: LXM-REQ-000195
+text: Node.js, Python and Java are examples, not architectural boundaries.

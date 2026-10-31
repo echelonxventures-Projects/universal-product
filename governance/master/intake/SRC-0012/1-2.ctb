@@ -1,0 +1,6 @@
+id: CTB-SRC0012-1-2
+source: SRC-0012
+section: §1.2
+kind: requirement
+extends: LXM-REQ-000085
+text: Seeded, configurable monetary policy covers rounding: supported rounding modes, intermediate versus final rounding, rounding boundaries, precision constraints and treatment of residual differences.

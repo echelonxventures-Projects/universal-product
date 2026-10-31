@@ -1,0 +1,6 @@
+id: CTB-SRC0013-4-3
+source: SRC-0013
+section: §4.3
+kind: requirement
+extends: LXM-REQ-000200
+text: Future capabilities requiring new executable behavior must be implementable as modular extensions, then registered, validated, tested and made available through the same platform mechanisms.

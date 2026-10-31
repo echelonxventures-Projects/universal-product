@@ -1,0 +1,6 @@
+id: CTB-SRC0011-6-4
+source: SRC-0011
+section: §6.4
+kind: requirement
+extends: LXM-REQ-000043
+text: Generated configuration: derive build, test, dependency and deployment configurations from the resolved, governed technology selections.

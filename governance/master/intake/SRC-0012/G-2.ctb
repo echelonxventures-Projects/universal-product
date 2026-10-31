@@ -1,0 +1,6 @@
+id: CTB-SRC0012-G-2
+source: SRC-0012
+section: §G.2
+kind: requirement
+extends: LXM-REQ-000082
+text: Engineering must identify all hardcoded business assumptions and classify whether each should become configuration, remains a fixed invariant, or requires new implementation.

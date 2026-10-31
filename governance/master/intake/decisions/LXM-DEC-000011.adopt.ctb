@@ -1,0 +1,12 @@
+id: CTB-LXM-DEC-000011-adopt
+kind: decision
+decision: LXM-DEC-000011
+action: adopt
+outcome: Option B: raise the full test-suite floor to Node 22.22.2 or later and re-resolve the development tooling to its fixed versions; the production floor stays 22.13.0 with a runtime-only lane; host installs get a security floor declared in the technology lock
+effect: LXM-REQ-000048
+authorizes: SRC-0025 §0.2, LXM-REQ-000048
+adopted: 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+provenance: Owner approval in session 47abdf14, transcript lines 4257 (message) and 4268 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31.txt (SHA-256 95549f76cc1670f66106a21415e7e73bede1fa3e713aafd2444e5489a8c92575); the question as asked in OWNER-APPROVAL-2026-10-31.context.txt; source SRC-0025
+rationale: The tooling stops running outside its declared engine ranges, and its security fixes apply
+approval: intake/decisions/OWNER-APPROVAL-2026-10-31.txt
+approval-sha256: 95549f76cc1670f66106a21415e7e73bede1fa3e713aafd2444e5489a8c92575

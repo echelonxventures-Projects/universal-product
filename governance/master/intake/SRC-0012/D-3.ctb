@@ -1,0 +1,6 @@
+id: CTB-SRC0012-D-3
+source: SRC-0012
+section: §D.3
+kind: requirement
+recognized-as: LXM-REQ-000079
+text: Existing operator-approved configurations must not be silently overwritten.

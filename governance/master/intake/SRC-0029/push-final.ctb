@@ -1,0 +1,6 @@
+id: CTB-SRC0029-push-final
+source: SRC-0029
+section: §0.1
+kind: requirement
+extends: LXM-REQ-000149
+text: A push carries only the final state after every verification has passed, and only the files that state needs to verify itself; nothing unnecessary or unwanted is pushed.

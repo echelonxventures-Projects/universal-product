@@ -1,0 +1,5 @@
+id: CTB-SRC0027-complete
+kind: source
+source: SRC-0027
+action: complete-ledger
+basis: §0.1 by the new clean-tree record

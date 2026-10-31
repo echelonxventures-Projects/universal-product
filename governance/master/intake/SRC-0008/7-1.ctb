@@ -1,0 +1,11 @@
+id: CTB-SRC0008-7-1
+source: SRC-0008
+section: §7.1
+kind: requirement
+scope: ESC
+title: Supplementary human-decision criteria
+depends: LXM-REQ-000016
+applied-in: STG-00 #1
+distinct-from: LXM-REQ-000016
+decision: LXM-DEC-000014
+text: In addition to the conditions in LXM-REQ-000016, ask the owner when (S1) a material ambiguity remains that the authoritative sources and recorded evidence cannot resolve without choosing between meanings, or (S2) a consequential security, legal, data or operational risk cannot be accepted on existing authority. Each such request uses the same single consolidated decision packet and is never made for routine technical choices.

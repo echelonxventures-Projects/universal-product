@@ -1,0 +1,6 @@
+id: CTB-SRC0013-2-2-8
+source: SRC-0013
+section: §2.2.8
+kind: requirement
+extends: LXM-REQ-000104
+text: The common platform provides isolation and governance between tenants, businesses, industries and configurations.

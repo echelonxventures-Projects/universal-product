@@ -1,0 +1,6 @@
+id: CTB-SRC0014-2-1
+source: SRC-0014
+section: §2.1
+kind: requirement
+extends: LXM-REQ-000108
+text: The first production release will serve an Amazon-like e-commerce marketplace. The underlying architecture must be designed to support other business models and industries, including Uber-like mobility, fintech, consultancy, ERP, CRM and future business categories.

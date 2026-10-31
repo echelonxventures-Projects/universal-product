@@ -1,0 +1,6 @@
+id: CTB-SRC0016-5-2
+source: SRC-0016
+section: §5.2
+kind: requirement
+extends: LXM-REQ-000043
+text: Implement a governed lifecycle capable of distinguishing: Discovered. Candidate. Under evaluation. Compatible. Verified. Approved. Resolved for a specific use. Active. Deprecated. Rejected or prohibited.

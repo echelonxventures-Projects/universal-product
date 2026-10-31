@@ -1,0 +1,6 @@
+id: CTB-SRC0009-4-3
+source: SRC-0009
+section: §4.3
+kind: requirement
+extends: LXM-REQ-000220
+text: Decisions, evidence, requirements, sources, specifications, configurations, stage actions, implementation artifacts and additional future object types must not depend on separate manual reconciliation processes.

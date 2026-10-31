@@ -1,0 +1,6 @@
+id: CTB-SRC0015-5-2
+source: SRC-0015
+section: §5.2
+kind: requirement
+extends: LXM-REQ-000212
+text: Do not manually duplicate version lists or tool requirements across independent files.

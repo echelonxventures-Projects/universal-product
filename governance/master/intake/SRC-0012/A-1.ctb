@@ -1,0 +1,6 @@
+id: CTB-SRC0012-A-1
+source: SRC-0012
+section: §A.1
+kind: requirement
+extends: LXM-REQ-000091
+text: Before release, inventory the existing source code, configuration files, database defaults, provider integrations, tests and documented monetary behavior. Identify every supported monetary rule and option currently implemented.

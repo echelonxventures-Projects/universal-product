@@ -1,0 +1,6 @@
+id: CTB-SRC0016-1-2
+source: SRC-0016
+section: §1.2
+kind: requirement
+extends: LXM-REQ-000041
+text: Verify the two green CI attempts on the exact Slice 2 SHA before making changes. Preserve the working tree and all existing work. If the baseline differs unexpectedly, stop and report the discrepancy.

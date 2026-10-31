@@ -1,0 +1,10 @@
+# LXM requirement scopes (registered data, never a fixed list in code). One line per non-stage scope: id | name.
+# "@stages" stands for every stage of stages.txt, in that file's order: adding a stage adds its scope.
+# The order of lines is the order of the Part D catalogue.
+EXE | Execution directive and rules
+ESC | Owner escalation
+OWN | Ownership and current state
+ARC | Architectural constitution
+@stages
+RPT | Final report
+FIN | Final execution rule

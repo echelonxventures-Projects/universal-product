@@ -1,0 +1,6 @@
+id: CTB-SRC0016-7-3
+source: SRC-0016
+section: §7.3
+kind: requirement
+extends: LXM-REQ-000208
+text: Evaluate the currently relevant runtime candidates, including Node 26 where applicable, through actual test evidence. Do not claim compatibility with a new version without evidence.

@@ -1,0 +1,6 @@
+id: CTB-SRC0012-C-1
+source: SRC-0012
+section: §C.1
+kind: requirement
+extends: LXM-REQ-000082
+text: Maintain a canonical source for rule definitions and versioned seed templates. Store tenant-, business-, jurisdiction-, currency- and provider-specific settings at their appropriate configuration scope.

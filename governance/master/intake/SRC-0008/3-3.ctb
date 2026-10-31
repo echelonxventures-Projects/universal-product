@@ -1,0 +1,5 @@
+id: CTB-SRC0008-3-3
+source: SRC-0008
+section: §3.3
+kind: requirement
+text: The system shall preserve source provenance, authority, semantic meaning, version history, dependencies and traceability.

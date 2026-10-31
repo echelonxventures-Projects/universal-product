@@ -1,0 +1,6 @@
+id: CTB-SRC0012-H
+source: SRC-0012
+section: §H
+kind: requirement
+extends: LXM-REQ-000091
+text: Acceptance principle: All currently implemented and supported monetary rules are seeded, discoverable and configurable within their intended scope, subject to authorized approval and invariant-preserving constraints. Future supported rules can be added through the same governed extension mechanism. No hardcoded business default may silently override the effective approved configuration.

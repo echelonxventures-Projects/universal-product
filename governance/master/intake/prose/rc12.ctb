@@ -1,0 +1,6 @@
+id: CTB-PROSE-RC12
+kind: prose
+action: insert
+anchor: | 1.0.0-rc.11 | 2026-10-31 | Owner instructions SRC-0021 to SRC-0024 assimilated (extending LXM-REQ-000220, 000227 and 000230). Requirement scopes become registered data (`scopes.txt`). A governed gate rule: dates and file paths are identifiers, not quantities. Specifications link requirements to their designs, and computed states now reach Verified. A kernel-derivation check measures LXM-REQ-000232. |
+text: | 1.0.0-rc.12 | 2026-10-31 | Every canonical kind goes through the gate (trace, scope, source, stage action and prose join requirement, decision and evidence), and CI requires the canonical state to equal the last gate outcome; enforcement starts from one recorded baseline. Changes are re-validated against every recorded source clause; capture is the one way in; Level 3 outcomes feed back as proposals and evidence (LXM-EVD-000011); the registers split into small files and rebuild identically. No requirement changed. |
+basis: the revision history records each change of the Master; this row is the first submitted through the prose adapter

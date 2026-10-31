@@ -1,0 +1,5 @@
+id: CTB-SRC0016-5-1
+source: SRC-0016
+section: §5.1
+kind: requirement
+text: Separate discovery from approval and actual use.

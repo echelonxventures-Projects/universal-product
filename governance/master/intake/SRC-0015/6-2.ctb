@@ -1,0 +1,6 @@
+id: CTB-SRC0015-6-2
+source: SRC-0015
+section: §6.2
+kind: requirement
+extends: LXM-REQ-000208
+text: Require appropriate provenance checks, compatibility validation, dependency and security analysis, test evidence, authorization and controlled promotion.

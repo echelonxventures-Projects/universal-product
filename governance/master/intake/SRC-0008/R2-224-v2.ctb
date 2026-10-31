@@ -1,0 +1,7 @@
+id: CTB-SRC0008-R2
+source: SRC-0008
+section: §1.2,§6.2,§8.3,§8.4
+kind: requirement
+supersedes: LXM-REQ-000224
+reason: Semantic review found v1 omitted SRC-0008 meaning: no dependence on periodic audits, repeated reconciliation, duplicate-removal exercises or deferred completeness reviews (§1.2), enforcement at ingestion as well as change time (§6.2), and the preventive, monotonic intent (§8.3, §8.4).
+text: Every canonical mutation preserves the applicable Master invariants, enforced at ingestion and change time through automated validation, transaction controls, invariant checks and continuous verification. The Master does not depend on periodic manual audits, repeated document reconciliation, duplicate-removal exercises or deferred completeness reviews to maintain its integrity, and a later audit is never the primary way to find preventable omissions, duplication, overlap, inconsistency or broken traceability. This is a preventive architectural invariant, not a periodic cleanup objective: the Master becomes more complete, coherent and internally consistent as new knowledge enters it.

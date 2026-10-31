@@ -1,0 +1,6 @@
+id: CTB-SRC0012-A-4
+source: SRC-0012
+section: §A.4
+kind: requirement
+extends: LXM-REQ-000091
+text: A rule must not be marked configurable merely because a placeholder record exists. The implementation must actually consume and enforce the selected configuration.

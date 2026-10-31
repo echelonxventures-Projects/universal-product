@@ -1,0 +1,10 @@
+id: CTB-SRC0009-D-1
+source: SRC-0009
+section: §5.1,§5.2,§8.1,§8.2
+kind: requirement
+scope: ARC
+title: Complete capability lifecycle and platform completion
+applied-in: STG-00 #1
+distinct-from: LXM-REQ-000059, LXM-REQ-000170, LXM-REQ-000204
+relates: LXM-REQ-000063 supports, LXM-REQ-000204 supports, LXM-REQ-000226 supports
+text: Every capability must have its complete lifecycle designed and implemented: Constitution → Specification → Canonical model → Implementation → Configuration → Runtime enforcement → Testing → Observability → Evolution. No capability may be represented as complete merely because one of these layers exists. The platform is complete only when its intended architectural scope has been implemented, integrated, enforced and validated with traceable evidence. A passing test suite for one subsystem, a complete document, a generated registry or a successful prototype does not certify the platform.

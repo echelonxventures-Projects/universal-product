@@ -1,0 +1,6 @@
+id: CTB-SRC0013-7-2
+source: SRC-0013
+section: §7.2
+kind: requirement
+extends: LXM-REQ-000101
+text: Demonstrate configuration of the first marketplace and representative non-marketplace profiles using the shared platform foundation. Test that changing one tenant's or business profile's configuration does not unintentionally alter another profile.

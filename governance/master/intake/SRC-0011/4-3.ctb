@@ -1,0 +1,6 @@
+id: CTB-SRC0011-4-3
+source: SRC-0011
+section: §4.3
+kind: requirement
+extends: LXM-REQ-000195
+text: Governed infrastructure technologies include databases, storage, queues, networks, containers, orchestration and deployment systems.

@@ -1,0 +1,6 @@
+id: CTB-SRC0012-D-4
+source: SRC-0012
+section: §D.4
+kind: requirement
+extends: LXM-REQ-000079
+text: Seed updates must be explicit, diffable and governed by a documented merge or migration policy.

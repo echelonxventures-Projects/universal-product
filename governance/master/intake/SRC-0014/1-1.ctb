@@ -1,0 +1,6 @@
+id: CTB-SRC0014-1-1
+source: SRC-0014
+section: §1.1
+kind: requirement
+extends: LXM-REQ-000091
+text: Monetary precision, rounding modes, tax calculations, discount allocation, currency support, fees and settlement policies must be defined through governed, versioned configuration rather than hardcoded business assumptions.

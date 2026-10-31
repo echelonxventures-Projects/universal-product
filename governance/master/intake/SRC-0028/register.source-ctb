@@ -1,0 +1,12 @@
+id: CTB-REGISTER-SRC-0028
+kind: source
+source: SRC-0028
+action: register
+title: Owner: commit and push, automated after each step; one-time writer right for this push (LXM-DEC-000017) (2026-10-31; session 47abdf14 transcript lines 5002 and 5017)
+location: file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp3/approval-words.txt; provisional working extract `sources/SRC-0028.extract.md`
+sha: `{SHA:sources/SRC-0028.extract.md}` (extract, not owner-confirmed)
+role: Owner decision (approval)
+authority: owner-decision
+text-status: provisional-extract
+files-from: intake/SRC-0028/files
+basis: captured by capture.py (secret scan passed, sensitivity internal)

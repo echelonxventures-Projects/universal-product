@@ -1,0 +1,6 @@
+id: CTB-SRC0008-3-4
+source: SRC-0008
+section: §3.4
+kind: requirement
+text: No accepted contribution may create an unnecessary parallel authority or duplicate source of truth.
+relates: LXM-REQ-000203 supports

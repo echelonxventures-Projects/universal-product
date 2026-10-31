@@ -1,0 +1,238 @@
+{
+ "_comment": "Configuration of config_adapter.py for one repository. Everything repository-specific lives here, never in the adapter.",
+ "declarations": [
+  {
+   "id": "settings",
+   "file": "lib/seed/settings.json",
+   "pointer": "/DEFAULTS",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "defaults",
+   "file": "lib/seed/defaults.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "money",
+   "file": "lib/seed/money.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "money-policy",
+   "file": "lib/seed/money-policy.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "time",
+   "file": "lib/seed/time.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "expression",
+   "file": "lib/seed/expression.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "value",
+   "file": "lib/seed/value.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "stores",
+   "file": "lib/seed/stores.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "places",
+   "file": "lib/seed/places.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "wallet",
+   "file": "lib/seed/wallet.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "giftcards",
+   "file": "lib/seed/giftcards.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "kernel",
+   "file": "lib/seed/kernel.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "master",
+   "file": "lib/seed/master.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ]
+  },
+  {
+   "id": "gates",
+   "file": "lib/seed/gates.json",
+   "pointer": "",
+   "skip_keys": [
+    "$comment",
+    "note",
+    "_comment",
+    "comment"
+   ],
+   "index_lists_by": "key"
+  },
+  {
+   "id": "env",
+   "kind": "names",
+   "files": [
+    "DEPLOYMENT_RUNBOOK.md",
+    "OPERATIONS_RUNBOOK.md",
+    "README.md"
+   ],
+   "pattern": "^\\|\\s*`([A-Z][A-Z0-9_]*)(?:=[^`]*)?`",
+   "discover": "process\\.env\\.([A-Z][A-Z0-9_]*)"
+  }
+ ],
+ "code": {
+  "roots": [
+   "lib",
+   "public/js",
+   "server.js",
+   "scripts"
+  ],
+  "exclude": [
+   "lib/seed/"
+  ],
+  "extensions": [
+   ".js",
+   ".mjs",
+   ".cjs"
+  ]
+ },
+ "distinct": {
+  "_comment": "A value counts as copied only if it is specific: long enough, not a plain number or measure, not a single plain word (kernel vocabulary and labels). Paths in match_as_word bypass the word rules.",
+  "min_length": 5,
+  "skip_single_lowercase_word": true,
+  "skip_patterns": [
+   "\\d+(\\.\\d+)?(px|%|ms|s)?",
+   "[A-Za-z]+"
+  ]
+ },
+ "match_as_word": [
+  "brand\\.name",
+  "brand\\.wordmark"
+ ],
+ "generic_consumers": [
+  "Object\\.(?:entries|keys|values)\\(\\s*[\\w$.]*\\b{name}\\s*\\)",
+  "\\bfor\\s*\\(\\s*(?:const|let|var)\\s+\\S+\\s+(?:in|of)\\s+[\\w$.]*\\b{name}\\b",
+  "\\b{name}\\s*\\[\\s*[A-Za-z_$][\\w$.]*\\s*\\]"
+ ],
+ "runtime_trace": "Implemented: run the test suite with the settings engine's LX_SETTINGS_TRACE patch (intake/patches/settings-trace.patch) and pass the file with --runtime-trace. Covers the declaration read through settings.load (settings).",
+ "sources": {
+  "_comment": "Every file here is declared above or listed with the reason it is not; any other is reported as unaccounted.",
+  "account_for": [
+   "lib/seed"
+  ],
+  "extensions": [
+   ".json"
+  ],
+  "not_declared": {
+   "lib/seed/ai.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/authz.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/compliance.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/coupons.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/vouchers.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/offers.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/tax.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/goip.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/meta.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/modules.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/subdivisions.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/themes.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/ucos.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/entity.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/parity-registries.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/providers.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/rules.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/states.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/capabilities.json": "catalogue: lists of records (a registry), not key-value settings; its vocabulary is covered by scripts/audit-hardcoding.js",
+   "lib/seed/technology.json": "technology declaration: governed by its own gate (scripts/technology.js check, technology.lock.json; PR-053)",
+   "lib/seed/technology-discovered.json": "discovery snapshots (observed data with fetch time and digest), not configuration"
+  }
+ }
+}

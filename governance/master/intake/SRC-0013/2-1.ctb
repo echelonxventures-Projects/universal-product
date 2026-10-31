@@ -1,0 +1,6 @@
+id: CTB-SRC0013-2-1
+source: SRC-0013
+section: §2.1
+kind: requirement
+extends: LXM-REQ-000101
+text: LUXORA must implement the reusable mechanisms and domain capabilities required to configure supported business models. It must not merely document that future engineering could add them.

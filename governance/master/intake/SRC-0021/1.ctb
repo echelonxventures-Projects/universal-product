@@ -1,0 +1,6 @@
+id: CTB-SRC0021-1
+source: SRC-0021
+section: §1
+kind: requirement
+extends: LXM-REQ-000220
+text: Whatever is added, discussed or planned must be assimilated only after all validation of duplication, overlap, partial coverage and every other check, with zero hardcoding and 100% configurability.

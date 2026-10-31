@@ -1,0 +1,6 @@
+id: CTB-SRC0012-1-10
+source: SRC-0012
+section: §1.10
+kind: requirement
+extends: LXM-REQ-000089
+text: Seeded, configurable monetary policy covers financial reconciliation: matching rules, tolerances, discrepancy classification, exception workflows, unresolved transaction handling and audit requirements.

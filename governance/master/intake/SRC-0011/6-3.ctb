@@ -1,0 +1,6 @@
+id: CTB-SRC0011-6-3
+source: SRC-0011
+section: §6.3
+kind: requirement
+extends: LXM-REQ-000208
+text: Automatic verification: evaluate discovered candidates against real application requirements and integration tests before considering them usable.

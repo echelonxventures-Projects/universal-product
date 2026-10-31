@@ -1,0 +1,6 @@
+id: CTB-TRACE-000238
+kind: trace
+requirement: LXM-REQ-000238
+action: add
+impl: lib/env.js
+basis: agent review (amazon-44, 2026-10-31) at 39ed4d6: lib/env.js registers unlimited environments as data (drivers, parameters with sealed secrets, feature flags, tenant routing; import and export); no test names it directly, and 12 code sites in 8 files still branch on NODE_ENV instead of a declared setting (code adapter finding environment-branch)

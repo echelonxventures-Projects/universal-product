@@ -1,0 +1,6 @@
+id: CTB-SRC0016-8-2
+source: SRC-0016
+section: §8.2
+kind: requirement
+extends: LXM-REQ-000045
+text: Where safe automation is possible, automate discovery, validation, candidate evaluation and proposal creation. Require appropriate approval for production-affecting changes.

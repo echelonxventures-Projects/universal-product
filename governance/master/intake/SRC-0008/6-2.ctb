@@ -1,0 +1,6 @@
+id: CTB-SRC0008-6-2
+source: SRC-0008
+section: §6.2
+kind: requirement
+text: Integrity shall be enforced at ingestion and change time through automated validation, transaction controls, invariant checks and continuous verification.
+relates: LXM-REQ-000215 supports

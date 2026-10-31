@@ -1,0 +1,6 @@
+id: CTB-SRC0009-4-1
+source: SRC-0009
+section: §4.1
+kind: requirement
+extends: LXM-REQ-000220
+text: Every canonical object type must use the governed assimilation architecture appropriate to its semantics.

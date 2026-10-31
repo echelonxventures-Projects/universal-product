@@ -1,0 +1,6 @@
+id: CTB-SRC0015-7-4
+source: SRC-0015
+section: §7.4
+kind: requirement
+extends: LXM-REQ-000199
+text: Do not indiscriminately turn every constant into configuration. Immutable invariants and real technical constraints must remain enforced.

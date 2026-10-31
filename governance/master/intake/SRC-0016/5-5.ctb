@@ -1,0 +1,6 @@
+id: CTB-SRC0016-5-5
+source: SRC-0016
+section: §5.5
+kind: requirement
+extends: LXM-REQ-000043
+text: Do not implement a blind latest selector for production. Select a verified, reproducible resolution and record its artifact identity, dependency information, provenance and test evidence.

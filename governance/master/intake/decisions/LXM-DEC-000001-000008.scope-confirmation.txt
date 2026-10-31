@@ -1,0 +1,17 @@
+Owner confirmation — K1–K8 decision authorization scope:
+
+Confirmed. K1–K8 shall authorize no further gated mutations.
+
+Apply the following interpretation:
+
+1. Preserve all eight decisions as adopted, with their original outcomes, rationale, provenance and historical lineage.
+2. Preserve their normative effects in the canonical Master. They remain binding wherever their adopted outcomes apply.
+3. Their mutation-authorization scope must remain empty. Their existence or adopted status must not authorize future changes to canonical records.
+4. Do not interpret empty authorization scope as inactive, rejected, expired or superseded.
+5. Any future amendment to a rule established by K1–K8 must go through normal assimilation and obtain whatever additional owner authorization its governance classification requires.
+6. Keep decision applicability, normative effect and mutation-authorization scope as distinct concepts in the canonical decision model.
+7. Do not retrospectively broaden K1–K8 authorization.
+8. Validate that K1–K8 cannot authorize unrelated changes, while their adopted requirements continue to be enforced.
+9. Preserve CP1–CP4 and all existing evidence.
+
+This confirmation resolves the outstanding K1–K8 authorization-scope question. Do not modify unrelated policy or make additional owner-reserved decisions.

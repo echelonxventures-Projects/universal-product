@@ -1,0 +1,5 @@
+id: CTB-SRC0028-complete
+kind: source
+source: SRC-0028
+action: complete-ledger
+basis: §0.1 and §0.2 by LXM-REQ-000237; §0.3 by LXM-REQ-000216 under LXM-DEC-000017

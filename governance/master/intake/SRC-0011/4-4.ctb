@@ -1,0 +1,6 @@
+id: CTB-SRC0011-4-4
+source: SRC-0011
+section: §4.4
+kind: requirement
+extends: LXM-REQ-000195
+text: Governed future technologies include new tools, protocols, platforms and technology categories not yet known or invented.

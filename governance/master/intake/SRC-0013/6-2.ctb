@@ -1,0 +1,6 @@
+id: CTB-SRC0013-6-2
+source: SRC-0013
+section: §6.2
+kind: requirement
+extends: LXM-REQ-000107
+text: A capability must not be represented as configurable merely because a schema, placeholder, roadmap item or registry record exists. The platform must actually consume and enforce the configuration.

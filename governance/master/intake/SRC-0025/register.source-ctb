@@ -1,0 +1,12 @@
+id: CTB-REGISTER-SRC-0025
+kind: source
+source: SRC-0025
+action: register
+title: Owner: approval of LXM-DEC-000009, 000010, 000011 and 000015 (2026-10-31; session 47abdf14 transcript lines 4257 and 4268)
+location: file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp/approval-words.txt; provisional working extract `sources/SRC-0025.extract.md`
+sha: `{SHA:sources/SRC-0025.extract.md}` (extract, not owner-confirmed)
+role: Owner decision (approval)
+authority: owner-decision
+text-status: provisional-extract
+files-from: intake/SRC-0025/files
+basis: captured by capture.py (secret scan passed, sensitivity internal)

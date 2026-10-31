@@ -1,0 +1,6 @@
+id: CTB-SRC0013-6-1
+source: SRC-0013
+section: §6.1
+kind: requirement
+extends: LXM-REQ-000229
+text: Maintain a canonical capability registry and traceability matrix distinguishing at least: Defined: the capability and its contract are specified. Implemented: executable functionality exists. Registered: the platform can discover the capability. Configurable: authorized users can configure it through supported interfaces. Integrated: its declared dependencies and interfaces work together. Tested: applicable functional, integration, security and regression evidence exists. Certified for a business profile: the composed configuration has passed its defined acceptance criteria. Production-enabled: the exact profile is approved and ready for its target environment.

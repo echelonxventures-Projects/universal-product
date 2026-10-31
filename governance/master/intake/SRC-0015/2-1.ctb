@@ -1,0 +1,6 @@
+id: CTB-SRC0015-2-1
+source: SRC-0015
+section: §2.1
+kind: requirement
+extends: LXM-REQ-000196
+text: Inspect the existing repository and extend its canonical registries, configuration mechanisms and governance lifecycle to support a universal technology and toolchain registry.

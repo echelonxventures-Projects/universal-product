@@ -1,0 +1,8 @@
+id: CTB-SRC0020-1
+source: SRC-0020
+section: §1
+kind: requirement
+scope: ARC
+title: Close every knowledge-architecture gap in sequence
+applied-in: STG-00.A-1
+text: Add all the gaps identified in intake/decisions/KNOWLEDGE-ARCHITECTURE-GAPS-2026-10-31.md (SHA-256 7d613b399dd3751a) and implement all of them in sequence.

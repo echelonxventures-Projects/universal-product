@@ -1,0 +1,6 @@
+id: CTB-SRC0015-1-4
+source: SRC-0015
+section: §1.4
+kind: requirement
+recognized-as: LXM-REQ-000043
+text: There must be no closed, hardcoded enumeration of supported technology categories in the universal governance architecture.

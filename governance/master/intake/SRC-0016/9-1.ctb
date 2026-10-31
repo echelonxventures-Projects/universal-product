@@ -1,0 +1,5 @@
+id: CTB-SRC0016-9-1
+source: SRC-0016
+section: §9.1
+kind: requirement
+text: Add tests proving that: A new technology category can be registered without adding its name to a closed core enumeration. New technology metadata can be ingested through the extension/discovery mechanism. Discovery does not automatically confer compatibility or production approval. Invalid or untrusted metadata is rejected safely. Compatibility and security checks produce auditable results. Approval and activation follow the governed lifecycle. Generated declarations and canonical resolutions cannot silently drift. New, undeclared technology assumptions trigger the repository gate. Legitimate technical constraints and approved exceptions do not generate false positives. Resolved build and deployment artifacts are reproducible and verifiable. Deprecation and version replacement preserve audit history and rollback capability. New technology categories can use the same governance core without a parallel registry.

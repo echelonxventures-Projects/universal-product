@@ -1,0 +1,27 @@
+# SRC-0008 clause ledger: clause | extract lines | text digest. Extract: sources/SRC-0008.extract.md (working extract from the session transcript; owner capture pending, Part G.4 item 10).
+status: complete
+extract: sources/SRC-0008.extract.md sha256 dec090a83e9982fac57cb6436ed58710bc8e22cf94ca71be8a80d1974f192623
+§1.1 | 9-9 | 4fd01f20454c7dab
+§1.2 | 11-11 | 91bee09d1c3420c9
+§1.3 | 13-13 | 3eab5b04a9d7c348
+§2.1 | 17-17 | c55ea20bcb1560a9
+§2.2 | 19-30 | d180928f4b79ed5a
+§3.1 | 33-33 | de7b9fc0e90b4c39
+§3.2 | 35-35 | b2d88aa83970dee2
+§3.3 | 37-37 | 29ae69352dec8383
+§3.4 | 39-39 | 3ee17c8abb505bf8
+§4.1 | 43-43 | eddba359e4a29bc6
+§4.2 | 45-45 | 9fc5f69a01dda18f
+§4.3 | 47-47 | 9a717fcf6fcc2a50
+§4.4 | 49-49 | 5a652efc76528db4
+§5.1 | 53-53 | 8008bcd3daf693b0
+§5.2 | 55-55 | 6780b66b229aa11d
+§6.1 | 59-59 | e37f42a446f9d848
+§6.2 | 61-61 | 9bd4fdcba289416c
+§6.3 | 63-63 | f0b17577f58bc13d
+§7.1 | 67-67 | 05a6f70e447a49dd
+§7.2 | 69-69 | 03a5a9a7223c3e12
+§8.1 | 73-73 | f9905d2f4cf68a42
+§8.2 | 75-75 | 730a22f74cc53f78
+§8.3 | 77-77 | fcddf3c0c561c83e
+§8.4 | 79-79 | bbc188ea156337e8

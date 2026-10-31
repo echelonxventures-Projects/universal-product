@@ -1,0 +1,9 @@
+# SRC-0026 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Captured by capture.py from file ../../../47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp2/approval-words.txt.
+# A list is one clause together with its lead-in; every other sentence paragraph is a clause; headings and metadata are none.
+status: complete
+extract: sources/SRC-0026.extract.md sha256 8275bddbcfc094a091c730fe71e1244a074de7dc7265e7024aa50cdaf98c8ab0
+§0.1 | 1-1 | ff10e78243ff8d9a
+§0.2 | 3-3 | 30ba492929f2903d
+§0.3 | 5-5 | 935ab97c43e9f41c
+§0.4 | 7-7 | c3650af2d7019049
+§0.5 | 9-9 | a5948786b5b3c3e4

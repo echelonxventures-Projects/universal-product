@@ -1,0 +1,12 @@
+id: CTB-REGISTER-SRC-0026
+kind: source
+source: SRC-0026
+action: register
+title: Owner: approval of LXM-DEC-000016 (a), LXM-DEC-000012 (all five as recommended), owner of the 16 unassigned release gates, hand-over to amazon-62 (2026-10-31; session 47abdf14 transcript lines 4394 and 4464)
+location: file ../../../47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp2/approval-words.txt; provisional working extract `sources/SRC-0026.extract.md`
+sha: `{SHA:sources/SRC-0026.extract.md}` (extract, not owner-confirmed)
+role: Owner decision (approval)
+authority: owner-decision
+text-status: provisional-extract
+files-from: intake/SRC-0026/files
+basis: captured by capture.py (secret scan passed, sensitivity internal)

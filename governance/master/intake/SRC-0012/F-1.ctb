@@ -1,0 +1,6 @@
+id: CTB-SRC0012-F-1
+source: SRC-0012
+section: §F.1
+kind: requirement
+extends: LXM-REQ-000080
+text: Configurability must never permit silent rounding, invalid monetary scales, mixed-currency arithmetic without an explicit conversion, overflow, unauthorized changes to posted transactions or bypassing of required accounting controls.

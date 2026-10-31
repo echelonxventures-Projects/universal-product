@@ -1,0 +1,6 @@
+id: CTB-SRC0012-G-7
+source: SRC-0012
+section: §G.7
+kind: requirement
+recognized-as: LXM-REQ-000099
+text: Engineering must demonstrate that adding a rule supported by the existing engine requires configuration rather than a core-code change, and document cases requiring new executable implementation.

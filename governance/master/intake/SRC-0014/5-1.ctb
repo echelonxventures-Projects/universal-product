@@ -1,0 +1,6 @@
+id: CTB-SRC0014-5-1
+source: SRC-0014
+section: §5.1
+kind: requirement
+extends: LXM-REQ-000109
+text: The platform must support configurable payment integrations, with initial Indian-market requirements including Razorpay, PhonePe, UPI and platform wallets. The architecture must accommodate additional payment gateways, processors, banks, payment methods, currencies and future payment technologies.

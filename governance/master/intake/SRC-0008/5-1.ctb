@@ -1,0 +1,6 @@
+id: CTB-SRC0008-5-1
+source: SRC-0008
+section: §5.1
+kind: requirement
+text: Following successful assimilation, dependent indexes, registries, relationships, specifications, documentation, conformance views, test obligations and implementation traceability shall be updated or regenerated from canonical knowledge.
+relates: LXM-REQ-000203 supports

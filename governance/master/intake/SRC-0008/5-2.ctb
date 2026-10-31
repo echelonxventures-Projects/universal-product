@@ -1,0 +1,5 @@
+id: CTB-SRC0008-5-2
+source: SRC-0008
+section: §5.2
+kind: requirement
+text: Derived representations shall never become competing authorities.

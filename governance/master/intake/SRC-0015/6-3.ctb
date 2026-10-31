@@ -1,0 +1,6 @@
+id: CTB-SRC0015-6-3
+source: SRC-0015
+section: §6.3
+kind: requirement
+extends: LXM-REQ-000045
+text: Support automatic discovery and proposal generation, with approval controls for changes that materially affect production behavior, security, data integrity or availability.

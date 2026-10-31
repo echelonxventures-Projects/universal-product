@@ -1,0 +1,6 @@
+id: CTB-SRC0009-4-2
+source: SRC-0009
+section: §4.2
+kind: requirement
+extends: LXM-REQ-000225
+text: The platform must discover, classify, validate, extend, compose, supersede, relate, version and propagate changes automatically wherever safe and deterministic.

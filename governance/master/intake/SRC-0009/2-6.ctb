@@ -1,0 +1,7 @@
+id: CTB-SRC0009-2-6
+source: SRC-0009
+section: §2.6
+kind: requirement
+recognized-as: LXM-REQ-000201
+relates: LXM-REQ-000200 supports
+text: All capabilities must conform to Automatic discovery and governed extensibility.

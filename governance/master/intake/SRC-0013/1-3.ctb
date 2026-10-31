@@ -1,0 +1,6 @@
+id: CTB-SRC0013-1-3
+source: SRC-0013
+section: §1.3
+kind: requirement
+extends: LXM-REQ-000108
+text: The platform must be built to support a broad and extensible ecosystem of business models, including but not limited to: E-commerce marketplaces and multi-vendor commerce. Mobility, ride-hailing, delivery and on-demand services. Fintech, payments, wallets and financial-service workflows. Consultancy, professional services and service marketplaces. Enterprise Resource Planning (ERP). Customer Relationship Management (CRM). Retail, wholesale, distribution and B2B commerce. Subscription, membership, booking and appointment businesses. Logistics, transportation, fulfilment and supply-chain operations. Education, healthcare, travel, hospitality and other industry-specific models. Future business models, industries and domain combinations that do not yet exist. This list is illustrative, not exhaustive or a hardcoded limit.

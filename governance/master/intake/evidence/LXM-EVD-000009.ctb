@@ -1,0 +1,12 @@
+id: CTB-EVD-000009
+kind: evidence
+evidence: LXM-EVD-000009
+action: add
+fact: With the settings read trace patch applied to `39ed4d6`, the test chain read 72 of the 119 storefront settings in server code; 47 were only serialized (sent to clients), among them offers.enabled, offers.stackMax, offers.allowGlobal and offers.walletEnabled. The patched run stopped at its first failure after 3,078 checks, because the patch makes TECHNOLOGY_INVENTORY.generated.md stale, so later tests did not run
+source: local run on a scratch clone with `intake/patches/settings-trace.patch`; trace `intake/evidence/settings-trace-39ed4d6-partial.jsonl` (SHA-256 `65395693e58653d9dbf92ea041d2fadbad295e0545f59d7edb5b6d714bdec49d`), log `intake/evidence/npm-test-39ed4d6-traced.log` (SHA-256 `f31da95f1142954e98bb8f6fd4b2b8e5ddbbc2db0a29bae3dcaf780c7f7f4548`)
+method: npm test with LX_SETTINGS_TRACE under Node 22.23.4; config_adapter.py --runtime-trace
+observed: 2026-10-30T18:56:58Z
+observer: amazon-44
+verifies: LXM-REQ-000198, LXM-REQ-000091
+basis: a partial run; settings read only in the browser are not traced, so "only serialized" is not proof that a setting is unapplied
+subject: 39ed4d64acc49513af05c647faa2d03dabd5f38e

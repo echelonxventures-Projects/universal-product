@@ -1,0 +1,6 @@
+id: CTB-SRC0013-6-3
+source: SRC-0013
+section: §6.3
+kind: requirement
+extends: LXM-REQ-000107
+text: Likewise, a business profile must not be described as production-ready merely because its component capabilities exist independently.

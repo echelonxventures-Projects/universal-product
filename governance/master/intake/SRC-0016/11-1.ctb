@@ -1,0 +1,6 @@
+id: CTB-SRC0016-11-1
+source: SRC-0016
+section: §11.1
+kind: requirement
+extends: LXM-REQ-000053
+text: Any changes to CI, toolchain configuration, generated artifacts or runtime policy create a new candidate revision.

@@ -1,0 +1,6 @@
+id: CTB-SRC0016-6-2
+source: SRC-0016
+section: §6.2
+kind: requirement
+extends: LXM-REQ-000050
+text: For each finding, classify whether it is: Unjustified hardcoding to remove. Duplicated configuration to consolidate. A generated resolution artifact. A genuine technical minimum or immutable security constraint. A required adapter or integration. A documented exception. An unsupported or unverified assumption.

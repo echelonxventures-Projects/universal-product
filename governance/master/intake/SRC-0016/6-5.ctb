@@ -1,0 +1,6 @@
+id: CTB-SRC0016-6-5
+source: SRC-0016
+section: §6.5
+kind: requirement
+extends: LXM-REQ-000044
+text: Implement automated drift detection and an appropriate repository gate to detect new, undeclared technology assumptions. The gate must distinguish actual policy violations from legitimate fixed constraints, generated artifacts and approved exceptions.

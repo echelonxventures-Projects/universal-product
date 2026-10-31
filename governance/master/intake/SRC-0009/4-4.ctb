@@ -1,0 +1,6 @@
+id: CTB-SRC0009-4-4
+source: SRC-0009
+section: §4.4
+kind: requirement
+relates: LXM-REQ-000222 supports
+text: No contribution becomes canonical without applicable validation.

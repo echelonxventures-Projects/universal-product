@@ -1,0 +1,6 @@
+id: CTB-SRC0012-1-5
+source: SRC-0012
+section: §1.5
+kind: requirement
+extends: LXM-REQ-000096
+text: Seeded, configurable monetary policy covers discounts and promotions: discount types, fixed and percentage discounts, stacking, precedence, caps, eligibility, allocation, expiration and reversal rules.

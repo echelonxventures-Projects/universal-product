@@ -1,0 +1,6 @@
+id: CTB-SRC0013-1-2
+source: SRC-0013
+section: §1.2
+kind: requirement
+extends: LXM-REQ-000108
+text: Amazon-like e-commerce is the first production deployment configuration. It is not the platform's architectural boundary, exclusive business model or long-term capability limit.

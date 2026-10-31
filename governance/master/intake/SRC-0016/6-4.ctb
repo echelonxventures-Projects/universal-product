@@ -1,0 +1,6 @@
+id: CTB-SRC0016-6-4
+source: SRC-0016
+section: §6.4
+kind: requirement
+extends: LXM-REQ-000043
+text: Make CI, build and deployment definitions consume generated, resolved configuration or automatically validate their consistency with canonical policy wherever technically feasible.

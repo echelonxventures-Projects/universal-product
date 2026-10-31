@@ -1,0 +1,15 @@
+# Gate accuracy reference set (gap 6). expected | record (or *) | text
+# expected: duplicate (EXACT or COVERED by the record), new (NOVEL), conflict (CONFLICT with the record),
+#           agree (the text agrees with the Master: must not be CONFLICT). Each case states a known truth about the current Master.
+duplicate | LXM-REQ-000192 | Never invent owner approvals, financial policies, test evidence, external access, capability support or production readiness.
+duplicate | LXM-REQ-000079 | Seed application is idempotent, deterministic, versioned, auditable and safe to repeat, and never overwrites approved live configuration.
+duplicate | LXM-REQ-000192 | Never invent owner approvals, financial policies or production readiness.
+new | * | Synthetic operators rotate their signing keys every quarter of the calendar year.
+new | * | Each warehouse dock schedules forklift charging between delivery waves.
+conflict | LXM-REQ-000192 | Agents may invent owner approvals and financial policies when the owner is unavailable.
+agree | LXM-REQ-000079 | Repeated execution must not create duplicate rule definitions or configurations.
+agree | LXM-REQ-000079 | Engineering must prove that repeated seeding creates no duplicates and does not overwrite approved live configurations.
+agree | LXM-REQ-000080 | Configuration must never bypass financial invariants.
+agree | LXM-REQ-000196 | Do not claim universal support merely because a technology registry or discovery interface exists.
+agree | LXM-REQ-000043 | Discovery does not automatically confer compatibility or production approval.
+agree | LXM-REQ-000235 | Implement everything one by one, in sequence.

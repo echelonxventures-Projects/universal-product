@@ -1,0 +1,6 @@
+id: CTB-SRC0016-8-3
+source: SRC-0016
+section: §8.3
+kind: requirement
+extends: LXM-REQ-000202
+text: Support deprecation and security-driven upgrades through the same governed mechanism.

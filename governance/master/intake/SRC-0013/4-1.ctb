@@ -1,0 +1,6 @@
+id: CTB-SRC0013-4-1
+source: SRC-0013
+section: §4.1
+kind: requirement
+extends: LXM-REQ-000200
+text: LUXORA must not impose a fixed enumeration of business types, industry types, domain types or capability combinations.

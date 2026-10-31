@@ -1,0 +1,6 @@
+id: CTB-SRC0013-2-2-3
+source: SRC-0013
+section: §2.2.3
+kind: requirement
+extends: LXM-REQ-000104
+text: The common platform provides configurable business-model definitions and versioned deployment profiles.

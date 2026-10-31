@@ -1,0 +1,10 @@
+id: CTB-EVD-000012
+kind: evidence
+evidence: LXM-EVD-000012
+action: add
+fact: The work package the owner approved for amazon-62 (SRC-0026 §0.5) is written to intake/handover/AMAZON-62-WORK-PACKAGE-2026-10-31.md (SHA-256 8db517608a7c62f0f08775400edf794b7f9a8bfbf24c8a9e45b134a12dc74263), with the code findings (d48db1b1e60c0717) and configuration findings (7f923d4e4154dffa) at 39ed4d6; it could not be delivered on 2026-10-31 because no amazon-62 session was running (peer list empty), so it is delivered when amazon-62 next runs
+source: intake/handover/; the session's peer list at 2026-10-31T07:3xZ
+method: file digests; peer listing
+observed: 2026-10-31
+observer: amazon-44
+verifies: LXM-REQ-000191

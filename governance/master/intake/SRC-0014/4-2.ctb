@@ -1,0 +1,6 @@
+id: CTB-SRC0014-4-2
+source: SRC-0014
+section: §4.2
+kind: requirement
+extends: LXM-REQ-000087
+text: Configuration must never bypass financial invariants. Ambiguous financial records must be preserved and quarantined for resolution rather than silently altered.

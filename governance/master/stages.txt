@@ -1,0 +1,160 @@
+# Stage procedures. "#" opens a stage; o: objective; e: entry; "- A-k" action with its stable ID, citing [IDs]; x: exit criterion citing [IDs].
+# An action's full ID is STG-NN.A-k. IDs are permanent: never renumbered or reused, whatever the order of the actions; a new action takes the
+# next unused k of its stage. The legacy spelling "STG-NN #k" means STG-NN.A-k (the IDs were assigned from the positions on 2026-10-30).
+# Actions say what to do; the requirement text lives only in reqs.txt.
+
+#STG-00 | Repository truth and exclusive ownership
+o: Know exactly what exists before changing anything, and confirm this session is the sole writer.
+e: Session is `amazon-62` in the canonical integration workspace outside iCloud. [LXM-REQ-000002, LXM-REQ-000216]
+- A-1 Apply the execution directive, rules and escalation conditions to this and every later stage; follow the final execution rule. [LXM-REQ-000001, LXM-REQ-000003, LXM-REQ-000004, LXM-REQ-000005, LXM-REQ-000006, LXM-REQ-000007, LXM-REQ-000008, LXM-REQ-000009, LXM-REQ-000010, LXM-REQ-000011, LXM-REQ-000013, LXM-REQ-000015, LXM-REQ-000016, LXM-REQ-000017, LXM-REQ-000185, LXM-REQ-000186, LXM-REQ-000187, LXM-REQ-000188, LXM-REQ-000189, LXM-REQ-000195, LXM-REQ-000227, LXM-REQ-000228, LXM-REQ-000229, LXM-REQ-000230, LXM-REQ-000231, LXM-REQ-000232, LXM-REQ-000233, LXM-REQ-000234, LXM-REQ-000235, LXM-REQ-000237, LXM-REQ-000238]
+- A-2 Confirm the session identity and that no other writable session or checkout is active on this work. [LXM-REQ-000014, LXM-REQ-000028, LXM-REQ-000216]
+- A-3 Run `pwd -P`; record branch, `git rev-parse HEAD`, `git remote -v` and `git ls-remote` for the branch. [LXM-REQ-000019, LXM-REQ-000020]
+- A-4 Record `git status --porcelain=v2`, `git diff --cached --stat`, `git diff --stat`, `git diff --check` and the untracked list, each separately. [LXM-REQ-000021]
+- A-5 Record active git, node, test, server and build processes; check `.git/index.lock` and its owner without touching it. [LXM-REQ-000023, LXM-REQ-000039]
+- A-6 List every open PR with state, draft flag, head and base, and every CI run ID and attempt for the relevant SHAs. [LXM-REQ-000024, LXM-REQ-000219]
+- A-7 Read `PRODUCTION_READINESS.md`, the decision records (MD-1–MD-5), feature and capability registries, test procedures, CI workflows, runbooks, handover notes and generated context. [LXM-REQ-000025, LXM-REQ-000026]
+- A-8 Inspect the preservation artifacts and copies read-only and record what each preserves. [LXM-REQ-000022, LXM-REQ-000032, LXM-REQ-000217]
+- A-9 Treat recorded historical values as facts to reverify; verify any change another session reported against the actual commit. [LXM-REQ-000027, LXM-REQ-000029, LXM-REQ-000040, LXM-REQ-000037]
+- A-10 Record the baseline in the register or a governed checkpoint, then continue without waiting. [LXM-REQ-000038, LXM-REQ-000012]
+- A-11 Apply the safety invariants throughout every stage. [LXM-REQ-000030, LXM-REQ-000031, LXM-REQ-000032, LXM-REQ-000033, LXM-REQ-000034, LXM-REQ-000035, LXM-REQ-000036, LXM-REQ-000193, LXM-REQ-000194]
+x: Baseline recorded with exact SHAs, tree state, PRs, runs and preserved locations; no change made before it. [LXM-REQ-000018, LXM-REQ-000038]
+
+#STG-01 | Universal technology governance (PR-053)
+o: Close PR-053 with its real evidence, without claiming the open items closed.
+e: STG-00 exit.
+- A-1 Finish PR-053 before widening; review the technology governance artifacts and confirm each capability with a test. [LXM-REQ-000041, LXM-REQ-000042, LXM-REQ-000043, LXM-REQ-000196, LXM-REQ-000197]
+- A-2 Run the assumption and hardcoding scan and classify every remaining finding individually. [LXM-REQ-000044, LXM-REQ-000050]
+- A-3 Confirm that production-affecting technology changes are approved by a distinct person in the kernel. [LXM-REQ-000045]
+- A-4 Verify the integrity-only re-resolution on the actual tree: lockfile diff, registry integrity, constraints, clean install. [LXM-REQ-000046, LXM-REQ-000047, LXM-REQ-000048]
+- A-5 Run the PR-053 verification chain. [LXM-REQ-000049, LXM-REQ-000213]
+- A-6 Reconcile open items (a)–(j); route (a) and other owner choices to the escalation packet. [LXM-REQ-000218, LXM-REQ-000016]
+- A-7 Update the register and `docs/technology.md`; commit only after the local checks pass. [LXM-REQ-000051, LXM-REQ-000052]
+- A-8 Freeze the candidate; obtain two distinct successful run IDs on its SHA. [LXM-REQ-000054, LXM-REQ-000153, LXM-REQ-000053, LXM-REQ-000219]
+x: Two distinct green run IDs recorded on the exact SHA, or the blocker recorded; then continue. [LXM-REQ-000055]
+
+#STG-02 | Mandate assimilation and traceability
+o: One conformance matrix tracing every applicable mandate requirement.
+e: STG-01 exit or recorded blocker.
+- A-1 Locate the canonical mandate copy and verify its identity, version, status, authority and relationships; otherwise use Appendix A. [LXM-REQ-000056, LXM-REQ-000057, LXM-REQ-000191]
+- A-2 Inspect everything the mandate references. [LXM-REQ-000058]
+- A-3 Reconcile the five owner decisions with existing records and IDs. [LXM-REQ-000064]
+- A-4 Build the conformance matrix with every required field, inside the existing canonical conventions. [LXM-REQ-000059, LXM-REQ-000060, LXM-REQ-000061, LXM-REQ-000062, LXM-REQ-000204, LXM-REQ-000214]
+- A-5 Apply the proof rules to every status. [LXM-REQ-000063, LXM-REQ-000192]
+- A-6 Assimilate each newly found requirement or decision through the assimilation gate, never as a parallel record. [LXM-REQ-000220, LXM-REQ-000221, LXM-REQ-000226]
+x: Every applicable mandate requirement has a matrix entry with a D1 status and closure condition. [LXM-REQ-000059]
+
+#STG-03 | Source-grounded gap inventory
+o: Know every gap from source, classified, before implementation.
+e: STG-02 exit.
+- A-1 Inventory all scope areas from source and canonical registries. [LXM-REQ-000065, LXM-REQ-000066, LXM-REQ-000067, LXM-REQ-000068]
+- A-2 Identify each finding type and give each item a D3 observation state. [LXM-REQ-000069, LXM-REQ-000072]
+- A-3 Classify every finding by impact, dependencies, priority and closing work. [LXM-REQ-000070]
+x: Classified inventory recorded; continue immediately. [LXM-REQ-000071, LXM-REQ-000009]
+
+#STG-04 | Canonical configuration foundation
+o: Governed, usable, invariant-safe configuration in the running platform.
+e: STG-03 exit.
+- A-1 Reuse the kernel, registry and configuration; implement only missing mechanisms. [LXM-REQ-000073]
+- A-2 Complete definition properties, dependency compatibility and links. [LXM-REQ-000074, LXM-REQ-000075, LXM-REQ-000076]
+- A-3 Complete the administration APIs and UI, usable by authorized administrators. [LXM-REQ-000077, LXM-REQ-000078]
+- A-4 Complete the seed lifecycle and the configuration-state distinctions; run the policy hardcoding audit. [LXM-REQ-000079, LXM-REQ-000082, LXM-REQ-000198, LXM-REQ-000199]
+- A-5 Test invariant-bypass attempts and runtime application. [LXM-REQ-000080, LXM-REQ-000081]
+x: Each supported definition is demonstrably applied at runtime and bypass attempts are rejected. [LXM-REQ-000081, LXM-REQ-000080]
+
+#STG-05 | Monetary integrity and owner decisions
+o: Exact, traceable money everywhere in scope, with owner policy never invented.
+e: STG-04 exit.
+- A-1 Inspect the money model, migration history, inventory, policies and decisions. [LXM-REQ-000083, LXM-REQ-000084]
+- A-2 Complete the exact model, conversion provenance, allocation and reconciliation. [LXM-REQ-000085, LXM-REQ-000086, LXM-REQ-000088, LXM-REQ-000089]
+- A-3 Complete exception resolution with rationale; audit every monetary path. [LXM-REQ-000087, LXM-REQ-000090]
+- A-4 Inventory, seed and expose every monetary rule; prove runtime application. [LXM-REQ-000091, LXM-REQ-000092]
+- A-5 Handle MD-1–MD-5 and prepare decision packets. [LXM-REQ-000093, LXM-REQ-000094, LXM-REQ-000016]
+x: Every in-scope monetary path is exact or recorded with remediation; unresolved decisions are blocked and packeted. [LXM-REQ-000090, LXM-REQ-000093]
+
+#STG-06 | Universal business rules
+o: Every supported rule governed, discoverable and testable.
+e: STG-05 exit (independent work may proceed earlier).
+- A-1 Inventory every rule domain, including stacking, exception handling and future rules. [LXM-REQ-000095, LXM-REQ-000096, LXM-REQ-000097, LXM-REQ-000098]
+- A-2 Govern the rules through the canonical engines and extension mechanism. [LXM-REQ-000099, LXM-REQ-000100]
+x: Each inventoried rule is configurable at runtime or recorded as a gap. [LXM-REQ-000100]
+
+#STG-07 | Universal multi-business composition
+o: A real, reusable profile mechanism, demonstrated honestly.
+e: STG-06 exit.
+- A-1 Build or complete the profile mechanism on the existing foundations. [LXM-REQ-000101, LXM-REQ-000102, LXM-REQ-000103, LXM-REQ-000104, LXM-REQ-000200]
+- A-2 Keep business models open-ended and marketplace-neutral in primitives. [LXM-REQ-000105]
+- A-3 Demonstrate the representative profiles and report D2 maturity, with gaps and dependencies. [LXM-REQ-000106, LXM-REQ-000107, LXM-REQ-000108]
+x: Profiles demonstrated through platform behavior with honest maturity per profile. [LXM-REQ-000106]
+
+#STG-08 | Payments, wallets and providers
+o: Provider-neutral orchestration with real, individually verified adapters.
+e: STG-07 exit (independent work may proceed earlier).
+- A-1 Decouple common orchestration from providers. [LXM-REQ-000109]
+- A-2 Complete the adapters and their operations, capability discovery, routing and controls, audit and conformance tests. [LXM-REQ-000110, LXM-REQ-000111, LXM-REQ-000112, LXM-REQ-000113, LXM-REQ-000207]
+- A-3 Record external blockers per provider. [LXM-REQ-000011, LXM-REQ-000131]
+x: Each provider has a truthful per-check status (status dimension D2 provider checklist). [LXM-REQ-000110]
+
+#STG-09 | Feature, test and UI/UX traceability
+o: Every mandatory first-release feature traced to real tests.
+e: STG-08 exit.
+- A-1 Build the feature-to-test map. [LXM-REQ-000114]
+- A-2 Test the role journeys, registration and sessions, notifications, every state and truthful status. [LXM-REQ-000115, LXM-REQ-000116, LXM-REQ-000117, LXM-REQ-000118]
+- A-3 Verify responsive, accessible and supported-browser operation. [LXM-REQ-000119]
+x: The map has results with SHAs; untested journeys are listed. [LXM-REQ-000120]
+
+#STG-10 | Security, data and migrations
+o: Security and data integrity verified per deployment profile.
+e: STG-09 exit.
+- A-1 Run the security and data verification set. [LXM-REQ-000121, LXM-REQ-000122, LXM-REQ-000123, LXM-REQ-000124, LXM-REQ-000125, LXM-REQ-000126]
+- A-2 Verify migrations and upgrades on isolated databases, per database profile. [LXM-REQ-000127, LXM-REQ-000128]
+x: Findings recorded with severity, reproducibility, remediation and evidence. [LXM-REQ-000128]
+
+#STG-11 | Production operations and external readiness
+o: Operational evidence, or exact external blockers.
+e: STG-10 exit.
+- A-1 Inspect operational evidence; implement what the repository can. [LXM-REQ-000129, LXM-REQ-000130]
+- A-2 Record each external prerequisite precisely; never equate documentation with operation. [LXM-REQ-000131, LXM-REQ-000132]
+x: Every operational item is evidenced or blocked with owner and closure evidence; independent work continued. [LXM-REQ-000133]
+
+#STG-12 | Automated verification and regression
+o: The final combined tree fully verified.
+e: STG-11 exit.
+- A-1 Test after each stage and run the minimum set on the final tree, sequentially where required. [LXM-REQ-000134, LXM-REQ-000135, LXM-REQ-000136, LXM-REQ-000137, LXM-REQ-000213]
+- A-2 Run the conformance model on the canonical profile and declared boundaries, from a generated plan. [LXM-REQ-000205, LXM-REQ-000206, LXM-REQ-000209, LXM-REQ-000212, LXM-REQ-000208, LXM-REQ-000211]
+- A-3 Fix failures properly; mark stale evidence. [LXM-REQ-000138, LXM-REQ-000139, LXM-REQ-000013]
+x: Every result names its tested SHA and evidence. [LXM-REQ-000140, LXM-REQ-000210]
+
+#STG-13 | Canonical documentation and release evidence
+o: Canonical records reconciled to tested code.
+e: STG-12 exit.
+- A-1 Update the canonical artifacts and records with their generators. [LXM-REQ-000141, LXM-REQ-000143, LXM-REQ-000034]
+- A-2 Keep the register the single readiness authority and every requirement traceable. [LXM-REQ-000142, LXM-REQ-000144, LXM-REQ-000145, LXM-REQ-000201, LXM-REQ-000203, LXM-REQ-000215]
+- A-3 Implement the assimilation gate on the existing canonical registry and generators: validate each contribution before acceptance, record failures as exceptions, regenerate derived views, enforce invariants at change time. [LXM-REQ-000220, LXM-REQ-000221, LXM-REQ-000222, LXM-REQ-000223, LXM-REQ-000224, LXM-REQ-000225]
+- A-4 Report the readiness statuses separately; reconcile documentation to the code. [LXM-REQ-000146, LXM-REQ-000147, LXM-REQ-000202]
+x: No stale claim remains; the indexes validate; every contribution in this stage is assimilated. [LXM-REQ-000215, LXM-REQ-000226]
+
+#STG-14 | Final review, commits and CI
+o: An accepted, frozen final candidate with two distinct green runs.
+e: STG-13 exit.
+- A-1 Review the full diff against the pre-commit assurances. [LXM-REQ-000148, LXM-REQ-000149]
+- A-2 Commit and push within the established workflow; never force-push, merge or deploy. [LXM-REQ-000150, LXM-REQ-000151, LXM-REQ-000052]
+- A-3 Verify the remote head and required jobs; freeze; obtain two distinct run IDs. [LXM-REQ-000152, LXM-REQ-000156, LXM-REQ-000153, LXM-REQ-000154]
+- A-4 On failure or a blocked action, repair or record. [LXM-REQ-000155]
+x: Two distinct successful run IDs on the exact final SHA, or a recorded blocker. [LXM-REQ-000153]
+
+#STG-15 | Safe workspace consolidation
+o: One canonical location and writable checkout, with nothing lost.
+e: STG-14 exit (a stable checkpoint).
+- A-1 Verify the designated workspace; inventory and classify every location. [LXM-REQ-000157, LXM-REQ-000158, LXM-REQ-000159, LXM-REQ-000160, LXM-REQ-000161]
+- A-2 Reconcile content before acting; consolidate only when understood; keep governance assets in place. [LXM-REQ-000162, LXM-REQ-000163, LXM-REQ-000164]
+- A-3 Update path references; validate the location. [LXM-REQ-000165, LXM-REQ-000166]
+- A-4 Retire only within the retirement boundary; keep one owner session. [LXM-REQ-000167, LXM-REQ-000168, LXM-REQ-000032, LXM-REQ-000217]
+x: Consolidated location validated; protected copies untouched; remaining actions recorded. [LXM-REQ-000166, LXM-REQ-000167]
+
+#STG-16 | Final acceptance and readiness verdict
+o: An evidence-based verdict, with production authorization kept separate.
+e: STG-15 exit.
+- A-1 Evaluate requirement by requirement against the acceptance conditions. [LXM-REQ-000169, LXM-REQ-000170, LXM-REQ-000236]
+- A-2 Record honest partial results; never manufacture approval. [LXM-REQ-000171, LXM-REQ-000172]
+- A-3 Deliver the final report, sections A–K. [LXM-REQ-000173, LXM-REQ-000174, LXM-REQ-000175, LXM-REQ-000176, LXM-REQ-000177, LXM-REQ-000178, LXM-REQ-000179, LXM-REQ-000180, LXM-REQ-000181, LXM-REQ-000182, LXM-REQ-000183, LXM-REQ-000184]
+x: Verdict ACCEPTED, PARTIAL or BLOCKED with production GO/NO-GO stated separately. [LXM-REQ-000184]

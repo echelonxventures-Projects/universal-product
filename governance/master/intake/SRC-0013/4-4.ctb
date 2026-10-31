@@ -1,0 +1,6 @@
+id: CTB-SRC0013-4-4
+source: SRC-0013
+section: §4.4
+kind: requirement
+extends: LXM-REQ-000200
+text: Avoid promises of literal infinite implementation. The requirement is an extensible architecture and configuration system without artificial business-model limits, unnecessary core changes or hardcoded enumerations that prevent legitimate expansion.

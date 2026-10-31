@@ -1,0 +1,35 @@
+# Governed matching vocabulary for assimilate.py. Matching is lexical-semantic: text is lower-cased, these phrases and
+# words are mapped to one canonical term, words are stemmed, and stop words are dropped. Extending recognition of new
+# terminology is a change to this file, never to the code.
+# canonical: synonym, synonym phrase, ...
+invent: fabricate, make up, fake, forge
+approval: sign-off, sign off, signoff, authorisation, authorization, consent
+financial: monetary, money, fiscal
+test: testing, tested
+external: outside, third-party, third party
+production: live, launch
+readiness: ready
+policy: policies, rule set
+contribution: submission, input item, incoming item
+canonical: authoritative
+master: master record
+duplicate: duplication, copy, redundant copy, repeat
+validate: verify, check
+record: entry
+receive: receipt
+document: documentation
+implement: implementation
+complete: completion
+change time: when a change is made, at change time
+owner: product owner, business owner
+escalate: escalation, ask the owner, refer to the owner
+never: nothing, rather than, instead of, must not, shall not, may not, do not, does not, cannot, is prohibited, are prohibited, forbidden
+1: one, single
+2: two, both
+3: three
+4: four
+5: five
+@stop: if, unless, system, merely, because, include, entire, genuinely, considered, a, an, the, and, or, of, to, in, on, for, by, with, as, at, is, are, be, been, being, it, its, this, that, these, those, each, every, any, all, from, into, than, then, so, such, shall, must, should, will, would, can, may, also, which, whether, only, before, after, when, where, until, has, have, had, do, does, there, their, them, they
+# @frame: list lead-ins shared by several source clauses; removed before matching because the list item, not the lead-in, carries the clause meaning.
+@frame: all capabilities must conform to
+@neg: nothing, never, not, no, without, nor, prohibit, forbid

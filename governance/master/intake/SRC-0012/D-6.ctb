@@ -1,0 +1,6 @@
+id: CTB-SRC0012-D-6
+source: SRC-0012
+section: §D.6
+kind: requirement
+extends: LXM-REQ-000079
+text: Failed seeding or migration must be handled safely, with transaction boundaries and recovery behavior appropriate to the data store.

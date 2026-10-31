@@ -1,0 +1,10 @@
+id: CTB-EVD-000013
+kind: evidence
+evidence: LXM-EVD-000013
+action: add
+fact: On 2026-10-31 the iCloud checkout (branch feat/production-readiness, HEAD 4ab4800, committed 2026-10-21) is not clean: 43 modified tracked files and 16 untracked files (offers, coupons, gift cards, vouchers, grants, group buy), last written 2026-10-22, plus a .git/index.lock of 2026-10-21. They are the preserved Phase 1 changes (LXM-REQ-000217) and are not on the candidate 39ed4d6. A byte-exact archive (tracked-changes patch SHA-256 7b0e7ce794084b43, untracked tar 3f4c2e21ed31ac3a) is in ~/LUXORA-preservation/2026-10-31-lxm-master-candidate/phase1-uncommitted/, and applying it to HEAD reproduced all 59 paths exactly; the checkout was only read
+source: git --no-optional-locks status, diff --binary HEAD, ls-files --others in the checkout; reapplication to a git archive of HEAD in the session scratchpad
+method: read-only git commands; byte comparison of all 59 paths
+observed: 2026-10-31
+observer: amazon-44
+verifies: LXM-REQ-000217

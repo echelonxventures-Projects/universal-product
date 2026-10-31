@@ -1,0 +1,6 @@
+id: CTB-SRC0016-8-1
+source: SRC-0016
+section: §8.1
+kind: requirement
+extends: LXM-REQ-000208
+text: The governance lifecycle must support detecting newly available technologies and releases, evaluating eligible candidates, generating auditable upgrade proposals and testing potential updates.

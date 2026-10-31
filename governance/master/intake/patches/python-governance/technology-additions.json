@@ -1,0 +1,21 @@
+{
+ "_comment": "Proposed additions to lib/seed/technology.json (prepared by amazon-44; not applied). The Master tooling's Python is declared by what it needs, never by a version; the governance resolves the release and generates technology.lock.json.",
+ "items": [
+  {"key": "python", "category": "runtime", "label": "Python", "supplier": "Python Software Foundation", "origin": "https://www.python.org", "licence": "PSF-2.0",
+   "sources": ["python-release-declaration"],
+   "capabilities": [
+    {"key": "stdlib:shutil.copytree.dirs_exist_ok", "since": "3.8.0", "note": "project.py and the fixtures copy checkpoints into existing directories"},
+    {"key": "stdlib:datetime.date.fromisoformat", "since": "3.7.0", "note": "knowledge_status.py reads ISO dates"}]}
+ ],
+ "sources": [
+  {"key": "python-release-declaration", "protocol": "declaration", "trust": "authoritative", "item": "python",
+   "note": "Until a discovery adapter for python.org's release data exists (a new protocol: new executable code, SRC-0011 §6.6), Python releases are declared with their provenance"}
+ ],
+ "requirements": [
+  {"key": "master.tooling", "label": "What the Master tooling needs from its runtime", "item": "python",
+   "capabilities": ["stdlib:shutil.copytree.dirs_exist_ok", "stdlib:datetime.date.fromisoformat"], "blocking": true}
+ ],
+ "uses": [
+  {"key": "ci.master", "label": "The runtime of the Master checks job", "production": false, "item": "python", "requires": ["master.tooling"], "evidence": ["ci-master"], "count": 1}
+ ]
+}

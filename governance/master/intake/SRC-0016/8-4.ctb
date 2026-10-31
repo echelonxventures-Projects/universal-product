@@ -1,0 +1,6 @@
+id: CTB-SRC0016-8-4
+source: SRC-0016
+section: §8.4
+kind: requirement
+extends: LXM-REQ-000211
+text: Do not claim fully automatic support for every future technology. The architecture must allow new categories and discovery adapters to be registered without a core redesign, while genuinely new executable behavior still requires implementation.

@@ -1,0 +1,5 @@
+id: CTB-SRC0026-complete
+kind: source
+source: SRC-0026
+action: complete-ledger
+basis: §0.1 by LXM-REQ-000236; §0.2 by LXM-DEC-000016 and its effect on LXM-REQ-000001 and 000002; §0.3 by LXM-REQ-000093 under LXM-DEC-000012; §0.4 by LXM-REQ-000133; §0.5 carried out once (LXM-EVD-000012)

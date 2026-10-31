@@ -1,0 +1,6 @@
+id: CTB-SRC0012-E-2
+source: SRC-0012
+section: §E.2
+kind: requirement
+extends: LXM-REQ-000099
+text: When a new rule requires previously unsupported computational behavior, protocol support or an extension to the rule engine, implementation may be necessary. The new capability must then be registered, validated, tested, documented and made available through the same configuration mechanism. Do not claim a new capability exists until its executable behavior is implemented.

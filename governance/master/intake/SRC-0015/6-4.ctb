@@ -1,0 +1,6 @@
+id: CTB-SRC0015-6-4
+source: SRC-0015
+section: §6.4
+kind: requirement
+extends: LXM-REQ-000202
+text: Emergency security remediation must have a governed expedited path and complete audit trail.
