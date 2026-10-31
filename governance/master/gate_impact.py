@@ -3,6 +3,7 @@ proposed one, on the same canonical state, and report every clause whose classif
 Usage: python3 -I gate_impact.py <root> <proposed assimilate.py> [<proposed lexicon.txt>]   Exit 0 no change, 1 changes reported."""
 import glob, importlib.util, os, sys
 sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
 
 
 def load(path, name):
@@ -12,7 +13,7 @@ def load(path, name):
 def classify_all(gate, root, lexicon):
     lex = gate.Lexicon(lexicon); recs = gate.blocks(gate.read(os.path.join(root, 'reqs.txt'))); gate.index(recs, lex)
     out = {}
-    for p in sorted(glob.glob(os.path.join(root, 'intake', 'SRC-*', '*.ctb'))):
+    for p in sorted(glob.glob(os.path.join(root, 'intake', X('{src-}*'), '*.ctb'))):
         c = gate.receive(p)
         if c.get('kind', 'requirement') != 'requirement' or not c.get('text'):
             continue

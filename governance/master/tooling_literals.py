@@ -9,6 +9,11 @@ sys.dont_write_bytecode = True
 def scan(root):
     cfg = json.load(open(os.path.join(root, 'tooling-literals.json'), encoding='utf-8'))
     f_cfg, counts, examples = cfg['files'], {}, {}
+    for rule in cfg['kinds'].values():  # a kind may take its pattern from the identifier registry instead of repeating it
+        if rule.get('from_ids'):
+            reg = json.load(open(os.path.join(root, rule['from_ids']), encoding='utf-8'))
+            marks = [ns['prefix'] for ns in reg['namespaces'].values()] + [ns['label'] for ns in reg['namespaces'].values()] + [reg['clause']['marker']]
+            rule['pattern'] = '|'.join(re.escape(m) for m in sorted(set(marks), key=len, reverse=True))
     files = sorted(os.path.join(b, f) for b in f_cfg['roots'] if os.path.isdir(os.path.join(root, b)) for f in os.listdir(os.path.join(root, b))
                    if f.endswith(f_cfg['extension']) and not f.startswith(tuple(f_cfg['exclude_prefixes'])))
     for rel in files:
@@ -30,6 +35,11 @@ def scan(root):
                 key = '%s · %s' % (os.path.normpath(rel), kind)
                 counts[key] = counts.get(key, 0) + 1
                 examples.setdefault(key, []).append('%d: %r' % (n.lineno, v if not isinstance(v, str) else v[:60]))
+    for key, d in cfg.get('declared', {}).items():  # a literal declared with its reason is not a finding
+        if key in counts:
+            counts[key] -= min(d['count'], counts[key])
+            if not counts[key]:
+                del counts[key]
     return counts, examples
 
 

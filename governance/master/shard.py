@@ -4,9 +4,10 @@ Usage: python3 -I shard.py split <root> <out dir>      python3 -I shard.py join 
        python3 -I shard.py prove <root>                (split, join, rebuild and compare, in a scratch directory)"""
 import hashlib, json, os, re, shutil, subprocess, sys, tempfile
 sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from assimilate import gate_config  # the external sources resolve against the Master folder
-REGISTERS = {'reqs.txt': r'@LXM-REQ-\d{6}', 'decisions.txt': r'@LXM-DEC-\d{6}', 'evidence.txt': r'@LXM-EVD-\d{6}', 'trace.txt': r'@LXM-REQ-\d{6}'}
+REGISTERS = {'reqs.txt': X(r'@{req}'), 'decisions.txt': X(r'@{dec}'), 'evidence.txt': X(r'@{evd}'), 'trace.txt': X(r'@{req}')}
 sha = lambda b: hashlib.sha256(b).hexdigest()
 
 

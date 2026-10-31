@@ -22,6 +22,7 @@ Exit 0 pass, 1 ratchet failure, 2 usage error."""
 import hashlib, json, os, re, subprocess, sys
 
 sys.dont_write_bytecode = True  # a check never changes the Master directory (no __pycache__)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -262,7 +263,7 @@ def markdown(rep, label):
         out.append('- Working tree: %s' % ('clean' if not s['dirty'] else '%d uncommitted or untracked paths' % len(s['dirty'])))
     k = s.get('kernel')
     if k:
-        out.append('- Kernel derivation (LXM-REQ-000232): %d tables; %d are the kernel, %d exempted with a reason, **%d hold entity types outside the kernel**.' % (
+        out.append(X('- Kernel derivation ({req=000232}): %d tables; %d are the kernel, %d exempted with a reason, **%d hold entity types outside the kernel**.') % (
             k['tables'], len(k['kernel']), len(k['exempt']), len(k['outside'])))
     t = s.get('trace')
     if t:

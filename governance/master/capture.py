@@ -9,6 +9,7 @@ source through the gate (kind: source). Clause resolutions are reviewed before s
 Exit 0 captured or already captured, 2 refused."""
 import hashlib, json, os, re, subprocess, sys
 sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
 import actors as ACTORS
@@ -39,7 +40,7 @@ def segment(lines):
             while not lines[i].strip():
                 i -= 1
         k += 1
-        spec.append(('§%s.%d' % (sec, k) if sec != '0' or k > 0 else '§%d' % k, a + 1, i + 1))
+        spec.append((X('{cl-}%s.%d') % (sec, k) if sec != '0' or k > 0 else X('{cl-}%d') % k, a + 1, i + 1))
         i += 1
     return spec
 

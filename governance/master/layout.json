@@ -23,7 +23,9 @@
   "layout.json",
   "config_adapter.json",
   "revalidate.py",
-  "assimilate.py"
+  "assimilate.py",
+  "ids.py",
+  "ids.json"
  ],
  "ledger": "intake/ledger.jsonl",
  "exceptions": "intake/exceptions.txt",

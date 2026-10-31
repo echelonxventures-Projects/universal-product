@@ -9,7 +9,8 @@ results = []
 
 def folder(files):
     d = tempfile.mkdtemp(prefix='tlfx-')
-    shutil.copyfile(os.path.join(HERE, 'tooling-literals.json'), os.path.join(d, 'tooling-literals.json'))
+    for f in ('tooling-literals.json', 'ids.json'):
+        shutil.copyfile(os.path.join(HERE, f), os.path.join(d, f))
     for p, c in files.items():
         open(os.path.join(d, p), 'w').write(c)
     return d

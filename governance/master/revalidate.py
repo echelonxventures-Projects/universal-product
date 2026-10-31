@@ -5,6 +5,7 @@ word for word in one of them, or share at least the gate's related threshold wit
 Usage: python3 -I revalidate.py <root> [--max-regressions N]   Exit 0 when regressions <= N (default 0)."""
 import json, os, re, sys
 sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
 
@@ -25,7 +26,7 @@ def revalidate(root):
             texts[(c['source'], sec)] = c['text']
     homes = {}
     for rid, r in recs.items():
-        for src, sec, rel in re.findall(r'(SRC-\d{4}) (§[0-9A-Za-z.]+) (covers|extends)', A.field(r, 'c')):
+        for src, sec, rel in re.findall(X(r'({src}) ({cl}) (covers|extends)'), A.field(r, 'c')):
             homes.setdefault((src, sec), []).append(rid)
     checked, regressions = 0, []
     for (src, sec), rids in sorted(homes.items()):

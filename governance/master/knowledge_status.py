@@ -4,6 +4,7 @@ comes from knowledge.json.
 Usage: python3 -I knowledge_status.py <root> --today YYYY-MM-DD [--states <states.json>] [--md <out>]"""
 import datetime, glob, json, os, re, sys
 sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
 import gate_accuracy as GA
@@ -16,10 +17,10 @@ def status(root, today, states_path=None):
     # backlog: ledgers still in progress, and their clauses no record covers
     backlog = []
     reqs = A.read(os.path.join(root, 'reqs.txt'))
-    for p in sorted(glob.glob(os.path.join(root, 'sources', 'SRC-*.clauses'))):
+    for p in sorted(glob.glob(os.path.join(root, 'sources', X('{src-}*.clauses')))):
         t = A.read(p); src = os.path.basename(p)[:8]
         if re.search(r'^status: in-progress', t, re.M):
-            cl = re.findall(r'^(§\S+) \|', t, re.M)
+            cl = re.findall(X(r'^({cl-}\S+) \|'), t, re.M)
             backlog.append((src, len(cl), sum(1 for c in cl if '%s %s ' % (src, c) not in reqs)))
     # held queue
     held = []
@@ -29,7 +30,7 @@ def status(root, today, states_path=None):
         e = json.loads(l)
         if e.get('exception'):
             raised.setdefault(e['exception'], e['at'])
-    for m in re.finditer(r'^@(LXM-EXC-\d{6}) \| (QUARANTINED|REJECTED) \| (\S+) \|[^\n]*\n((?:[a-z]+: [^\n]*\n?)*)', exc, re.M):
+    for m in re.finditer(X(r'^@({exc}) \| (QUARANTINED|REJECTED) \| (\S+) \|[^\n]*\n((?:[a-z]+: [^\n]*\n?)*)'), exc, re.M):
         reason = (re.search(r'^reason: (.*)$', m.group(4), re.M) or [None, ''])[1]
         rule = next(r for r in cfg['held_queue']['resolvers'] if r['when'] in reason)
         at = raised.get(m.group(1), today)
@@ -39,7 +40,7 @@ def status(root, today, states_path=None):
     # review lapses
     rc = cfg['review_cycles']; lapsed = []
     for line in A.read(os.path.join(root, 'sources.txt')).split('\n'):
-        if not line.startswith('SRC-'):
+        if not line.startswith(X('{src-}')):
             continue
         c = [x.strip() for x in line.split(' | ')]
         prov = os.path.join(root, 'sources', c[0] + '.provenance.md')

@@ -1,0 +1,47 @@
+{
+ "_comment": "LXM-REQ-000240: every identifier namespace of the Master, registered once. Tools never write an identifier format: they write a placeholder ({req}, {req%}, {req-}, {req~} (its label), {req#}, {req=000222}, {cl}, {cl-}) that ids.X expands from here. A new namespace, or a wider number, is a change to this file only.",
+ "namespaces": {
+  "req": {
+   "prefix": "LXM-REQ-",
+   "digits": 6,
+   "means": "requirement record",
+   "label": "LXM-REQ"
+  },
+  "dec": {
+   "prefix": "LXM-DEC-",
+   "digits": 6,
+   "means": "decision",
+   "label": "LXM-DEC"
+  },
+  "evd": {
+   "prefix": "LXM-EVD-",
+   "digits": 6,
+   "means": "evidence record",
+   "label": "LXM-EVD"
+  },
+  "exc": {
+   "prefix": "LXM-EXC-",
+   "digits": 6,
+   "means": "intake exception",
+   "label": "LXM-EXC"
+  },
+  "src": {
+   "prefix": "SRC-",
+   "digits": 4,
+   "means": "source",
+   "label": "SRC"
+  },
+  "stg": {
+   "prefix": "STG-",
+   "digits": 2,
+   "means": "stage",
+   "label": "STG"
+  }
+ },
+ "clause": {
+  "name": "cl",
+  "marker": "§",
+  "pattern": "[0-9A-Za-z.]+",
+  "means": "source clause"
+ }
+}

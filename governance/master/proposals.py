@@ -6,6 +6,7 @@ Reads the computed states (states.py), the readiness report (readiness.py) and t
 Usage: python3 -I proposals.py <root> --states <states.json> --readiness <readiness.json> --today YYYY-MM-DD --observer NAME"""
 import hashlib, json, os, sys
 sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
 
@@ -55,8 +56,8 @@ def write(root, states, readiness, today, observer):
     fact = 'Computed states of the %d requirements: %s' % (len(states), ', '.join('%s %d' % kv for kv in sorted(counts.items(), key=lambda kv: -kv[1])))
     if not any(e.get('fact') == fact for e in evs) and verified:
         open(os.path.join(d, 'EVD-states.ctb'), 'w', encoding='utf-8').write(
-            'id: CTB-EVD-STATES-%s\nkind: evidence\nevidence: LXM-EVD-%06d\naction: add\nfact: %s\nsource: states.py over traceability, code, configuration, runtime trace and test results\n'
-            'method: computed, deterministic\nobserved: %s\nobserver: %s\nverifies: %s\n' % (today, len(evs) + 1, fact, today, observer, ', '.join(verified)))
+            X('id: CTB-EVD-STATES-%s\nkind: evidence\nevidence: {evd%}\naction: add\nfact: %s\nsource: states.py over traceability, code, configuration, runtime trace and test results\n'
+            'method: computed, deterministic\nobserved: %s\nobserver: %s\nverifies: %s\n') % (today, len(evs) + 1, fact, today, observer, ', '.join(verified)))
     return new, sum(1 for e in idx.values() if e['status'] == 'open'), sum(1 for e in idx.values() if e['status'] == 'resolved')
 
 

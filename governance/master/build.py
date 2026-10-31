@@ -1,6 +1,8 @@
 """Generate LXM-MASTER.md and LXM-RECONCILIATION.md from reqs.txt, stages.txt, coverage.txt, sources.txt, decisions.txt and frame.md.
 Usage: python3 -I build.py <SRC-0002 path> <SRC-0003 path> <out dir>"""
 import hashlib, os, re, sys
+sys.dont_write_bytecode = True  # a check never changes the Master directory (no __pycache__)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 APPENDIX_FIRST_LINE = 374  # SRC-0003 line where the mandate's own title begins
@@ -33,7 +35,7 @@ def parse_stages(text):
     for line in text.split('\n'):
         if line.startswith('# ') or not line.strip():
             continue
-        if line.startswith('#STG'):
+        if line.startswith(X('#{stg~}')):
             sid, title = [x.strip() for x in line[1:].split('|')]
             cur = {'id': sid, 'title': title, 'o': '', 'e': '', 'aids': [], 'acts': [], 'x': ''}
             stages.append(cur)
@@ -47,14 +49,14 @@ def parse_stages(text):
 
 
 def parse_sources(text):
-    return [[c.strip() for c in l.split(' | ')] for l in text.split('\n') if l.startswith('SRC-')]
+    return [[c.strip() for c in l.split(' | ')] for l in text.split('\n') if l.startswith(X('{src-}'))]
 
 
-LINE_CODES = {'S': 'SRC-0002', 'L': 'SRC-0003', 'A': 'SRC-0001'}  # lineage line prefixes (see reqs.txt header)
+LINE_CODES = {'S': X('{src=0002}'), 'L': X('{src=0003}'), 'A': X('{src=0001}')}  # lineage line prefixes (see reqs.txt header)
 
 
 def cited_sources(s):
-    return set(re.findall(r'SRC-\d{4}', s)) | {LINE_CODES[p] for p in re.findall(r'(?<![A-Za-z0-9-])([SLA])\d', s)}
+    return set(re.findall(X(r'{src}'), s)) | {LINE_CODES[p] for p in re.findall(r'(?<![A-Za-z0-9-])([SLA])\d', s)}
 
 
 def parse_scopes(text, stage_ids):
@@ -132,7 +134,7 @@ def decision_table(layouts, decs, group):
     return '\n'.join(rows)
 
 
-def refs(s): return re.findall(r'LXM-REQ-\d{6}', s)
+def refs(s): return re.findall(X(r'{req}'), s)
 def strip_refs(s): return re.sub(r'\s*\[[^\]]*\]\s*$', '', s)
 
 
@@ -208,7 +210,7 @@ def main(src2, src3, outdir):
             stg.append('- `%s.%s` %s — %s' % (st['id'], aid, strip_refs(a), ', '.join(refs(a))))
         stg.append('\n**Exit:** %s\n' % st['x'])
 
-    secid = dict(zip('ABCDEFGHIJK', ['LXM-REQ-%06d' % n for n in range(174, 185)]))
+    secid = dict(zip('ABCDEFGHIJK', [X('{req%}') % n for n in range(174, 185)]))
     covt = ['| Element | Source | Required content | Report sections |', '|---|---|---|---|']
     for eid, src, el, secs in cov:
         covt.append('| %s | %s | %s | %s |' % (eid, src, el, ', '.join('%s (%s)' % (s, secid[s]) for s in secs)))
@@ -217,18 +219,18 @@ def main(src2, src3, outdir):
     for r in recs:
         m = re.search(r'OMR-(\d)', r['k'])
         if m:
-            om.append('| OMR-%s | %s | SRC-0002 %s | %s | %s |' % (m.group(1), r['id'], lineage(r['s'], 'S'), r['t'],
+            om.append(X('| OMR-%s | %s | {src=0002} %s | %s | %s |') % (m.group(1), r['id'], lineage(r['s'], 'S'), r['t'],
                                                                  ', '.join(sorted(set(cited.get(r['id'], [])))) or r['scope']))
 
     si = ['| Stage | Title | Actions | Requirements cited |', '|---|---|---|---|']
     for st in stages:
         ids = sorted({x for a in st['acts'] + [st['e'], st['x']] for x in refs(a)})
         si.append('| %s | %s | %d | %s |' % (st['id'], st['title'], len(st['acts']), ', '.join(i[-3:] for i in ids)))
-    si.append('\nRequirement IDs are abbreviated to their last three digits (LXM-REQ-000xxx).')
+    si.append(X('\nRequirement IDs are abbreviated to their last three digits ({req-}000xxx).'))
 
-    tr = ['| Requirement | SRC-0002 | SRC-0003 procedure | SRC-0001 (Appendix A) | Other sources | Cited by stages | Disposition |', '|---|---|---|---|---|---|---|']
+    tr = [X('| Requirement | {src=0002} | {src=0003} procedure | {src=0001} (Appendix A) | Other sources | Cited by stages | Disposition |'), '|---|---|---|---|---|---|---|']
     for r in recs:
-        other = '; '.join(x.strip() for x in r['s'].split(';') if re.match(r'\s*(SRC-|PRODUCTION)', x))
+        other = '; '.join(x.strip() for x in r['s'].split(';') if re.match(X(r'\s*({src-}|PRODUCTION)'), x))
         tr.append('| %s | %s | %s | %s | %s | %s | %s |' % (r['id'], lineage(r['s'], 'S') or '—', lineage(r['s'], 'L') or '—',
                                                           lineage(r['s'], 'A') or '—', other or '—',
                                                           ', '.join(sorted(set(cited.get(r['id'], [])))) or '(%s section)' % r['scope'], r['disp']))
@@ -237,15 +239,15 @@ def main(src2, src3, outdir):
     exc_p = os.path.join(HERE, 'intake', 'exceptions.txt')
     holds = {}
     if os.path.exists(exc_p):
-        for m in re.finditer(r'^@(LXM-EXC-\d{6}) \| (QUARANTINED|REJECTED) \| [^\n]*\nsource: (SRC-\d{4}) ([^\n]+)$', read(exc_p), re.M):
+        for m in re.finditer(X(r'^@({exc}) \| (QUARANTINED|REJECTED) \| [^\n]*\nsource: ({src}) ([^\n]+)$'), read(exc_p), re.M):
             for s in m.group(4).split(','):
                 holds[(m.group(3), s)] = m.group(1)
     for led in sorted(f for f in os.listdir(os.path.join(HERE, 'sources')) if f.endswith('.clauses')) if os.path.isdir(os.path.join(HERE, 'sources')) else []:
         src, text = led[:8], read(os.path.join(HERE, 'sources', led))
         status = (re.search(r'^status: (\S+)', text, re.M) or [None, '?'])[1]
-        clauses += ['**%s** — ledger status *%s*, %d clauses.' % (src, status, len(re.findall(r'^§', text, re.M))), '',
+        clauses += ['**%s** — ledger status *%s*, %d clauses.' % (src, status, len(re.findall(X(r'^{cl-}'), text, re.M))), '',
                     '| Clause | Source lines | Covered by | Supported by | Open hold |', '|---|---|---|---|---|']
-        for cid, lines in re.findall(r'^(§[0-9A-Za-z.]+) \| ([\d-]+) \|', text, re.M):
+        for cid, lines in re.findall(X(r'^({cl}) \| ([\d-]+) \|'), text, re.M):
             rel = lambda *kinds: ', '.join(r['id'] + ('' if k == kinds[0] else ' (%s)' % k) for r in recs for k in kinds
                                            if '%s %s %s' % (src, cid, k) in [t.strip() for t in r.get('c', '').split(';')]) or '—'
             clauses.append('| %s | %s | %s | %s | %s |' % (cid, lines, rel('covers', 'extends'), rel('supports'), holds.get((src, cid), '—')))
@@ -253,8 +255,8 @@ def main(src2, src3, outdir):
     if not clauses:
         clauses = ['No source has a clause ledger yet.']
 
-    note = ('The following is SRC-0003 bytes from line %d to the end, copied mechanically and unaltered (SHA-256 `%s`). '
-            'Its internal headings belong to the mandate and are not part of this master\'s numbering.') % (APPENDIX_FIRST_LINE, sha(appx))
+    note = (X('The following is {src=0003} bytes from line %d to the end, copied mechanically and unaltered (SHA-256 `%s`). '
+            'Its internal headings belong to the mandate and are not part of this master\'s numbering.')) % (APPENDIX_FIRST_LINE, sha(appx))
     default_basis, trace = parse_trace(read(os.path.join(HERE, 'trace.txt')))
     it = ['Product requirements traced to an implementation: %d. Known gaps (no implementation found): %d. '
           'A link says where a requirement is implemented, never that it is met. Basis, unless the row says otherwise: %s.' % (
@@ -277,7 +279,7 @@ def main(src2, src3, outdir):
 
     mx = ['# LXM reconciliation evidence: the 128 reconciled rows (Stages 0–10, header and directive)', '',
           'Generated from `reqs.txt`; requirement text is in LXM-MASTER Part D and is not repeated here. Classes: FP fully preserved, ST strengthened, MO mandate-only, PP partially preserved, OM omitted, CF conflicting or superseded.', '',
-          '| Requirement | Title | SRC-0002 | SRC-0003 | Appendix A | Class | Disposition | Decision | Resolution | Stages |', '|---|---|---|---|---|---|---|---|---|---|']
+          X('| Requirement | Title | {src=0002} | {src=0003} | Appendix A | Class | Disposition | Decision | Resolution | Stages |'), '|---|---|---|---|---|---|---|---|---|---|']
     for r in recs[:128]:
         mx.append('| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |' % (r['id'], r['t'], lineage(r['s'], 'S') or '—', lineage(r['s'], 'L') or '—',
                                                                       lineage(r['s'], 'A') or '—', r['cls'], r['disp'], r['k'] or '—', r['n'] or '—',

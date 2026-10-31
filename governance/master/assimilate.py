@@ -9,6 +9,7 @@ it is recorded as an LXM-EXC entry in <root>/intake/exceptions.txt with its reas
 import hashlib, importlib.util, json, os, re, shutil, subprocess, sys, tempfile, time
 
 sys.dont_write_bytecode = True  # a check never changes the Master directory (no __pycache__)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 LAYOUT = json.load(open(os.path.join(_HERE, 'layout.json'), encoding='utf-8'))  # where the Master keeps what (LXM-REQ-000240)
@@ -17,7 +18,7 @@ MATCH = json.load(open(os.path.join(_HERE, 'gate.json'), encoding='utf-8'))['mat
 T_COVER, T_RELATED, T_CONFLICT = MATCH['cover'], MATCH['related'], MATCH['conflict']  # a contradiction needs the same shared meaning for negations and for numbers
 FIELDS = {'id', 'source', 'section', 'kind', 'scope', 'title', 'text', 'extends', 'supersedes', 'reason', 'depends',
           'applied-in', 'relates', 'distinct-from', 'recognized-as', 'decision'}
-REQ = re.compile(r'LXM-REQ-\d{6}')
+REQ = re.compile(X(r'{req}'))
 
 
 # ---------- canonical model ----------
@@ -29,7 +30,7 @@ def sha(b): return hashlib.sha256(b if isinstance(b, bytes) else b.encode('utf-8
 def blocks(reqs_text):
     """Record blocks with their span, so an edit rewrites only the records it touches."""
     out = {}
-    for m in re.finditer(r'^@(LXM-REQ-\d{6}) \|[^\n]*\n(?:[a-z]: [^\n]*\n?)*', reqs_text, re.M):
+    for m in re.finditer(X(r'^@({req}) \|[^\n]*\n(?:[a-z]: [^\n]*\n?)*'), reqs_text, re.M):
         rid = m.group(1)
         head = m.group(0).split('\n', 1)[0]
         _, scope, cls, disp = [x.strip() for x in head[1:].split('|')]
@@ -62,17 +63,17 @@ def render(rec):
 
 def sources(root):
     return {c[0]: {'authority': c[5], 'text_status': c[6] if len(c) > 6 else 'unknown'} for c in
-            ([x.strip() for x in l.split(' | ')] for l in read(os.path.join(root, 'sources.txt')).split('\n') if l.startswith('SRC-'))}
+            ([x.strip() for x in l.split(' | ')] for l in read(os.path.join(root, 'sources.txt')).split('\n') if l.startswith(X('{src-}')))}
 
 
-ACTION = re.compile(r'^(STG-\d{2})(?:\.A-| #)(\d+)$')  # STG-NN.A-k; the legacy "STG-NN #k" names the same stable ID, never a position
+ACTION = re.compile(X(r'^({stg})(?:\.A-| #)(\d+)$'))  # STG-NN.A-k; the legacy "STG-NN #k" names the same stable ID, never a position
 
 
 def stage_actions(stages_text):
     """Stage actions by stable ID: {stage: {k: line index}} for each "- A-k" line."""
     out, cur = {}, None
     for i, line in enumerate(stages_text.split('\n')):
-        if line.startswith('#STG'):
+        if line.startswith(X('#{stg~}')):
             cur = line[1:7]
             out[cur] = {}
         elif cur and line.startswith('- '):
@@ -255,20 +256,20 @@ def check_contribution(ctb, recs, srcs, actions):
             if rid not in recs:
                 reject('Broken relationship: %s refers to %s, which does not exist' % (k, rid), 'Correct the reference or assimilate %s first.' % rid)
         if ctb.get(k) and not REQ.findall(ctb[k]):
-            reject('Field "%s" holds no requirement ID' % k, 'Give LXM-REQ-NNNNNN identifiers.')
+            reject('Field "%s" holds no requirement ID' % k, X('Give {req#} identifiers.'))
     if ctb.get('supersedes') and not ctb.get('reason'):
         reject('Supersession without a recorded reason', 'State why the earlier version is replaced (reason:).')
     if ctb.get('applied-in'):
         m = ACTION.match(ctb['applied-in'])
         if not m or int(m.group(2)) not in actions.get(m.group(1), {}):
-            reject('Broken relationship: applied-in "%s" names no existing stage action' % ctb['applied-in'], 'Use "STG-NN.A-k", the stable ID of an existing action of stage STG-NN.')
-    if ctb.get('relates') and not re.fullmatch(r'(LXM-REQ-\d{6} (supports|depends-on)(, )?)+', ctb['relates']):
-        reject('Malformed relates "%s"' % ctb['relates'], 'Use "LXM-REQ-NNNNNN supports" or "LXM-REQ-NNNNNN depends-on", comma separated.')
+            reject('Broken relationship: applied-in "%s" names no existing stage action' % ctb['applied-in'], X('Use "{stg#}.A-k", the stable ID of an existing action of stage {stg#}.'))
+    if ctb.get('relates') and not re.fullmatch(X(r'({req} (supports|depends-on)(, )?)+'), ctb['relates']):
+        reject('Malformed relates "%s"' % ctb['relates'], X('Use "{req#} supports" or "{req#} depends-on", comma separated.'))
 
 
 def lineage_has(s, source, section):
     top = section.split('.')[0]
-    for m in re.finditer(re.escape(source) + r' ((?:§[\d.\-]+,?)+)', s):
+    for m in re.finditer(re.escape(source) + X(r' ((?:{cl-}[\d.\-]+,?)+)'), s):
         secs = m.group(1).split(',')
         if section in secs or top in secs:
             return True
@@ -280,7 +281,7 @@ def add_lineage(rec, source, sections):
     for section in sections.split(','):
         if lineage_has(s, source, section):
             continue
-        m = re.search(re.escape(source) + r' ((?:§[\d.\-]+,?)+)', s)
+        m = re.search(re.escape(source) + X(r' ((?:{cl-}[\d.\-]+,?)+)'), s)
         s = (s[:m.end()] + ',' + section + s[m.end():]) if m else (s + '; %s %s' % (source, section))
         added = True
     if added:
@@ -301,7 +302,7 @@ def add_coverage(rec, source, clause, rel):
 def owner_decided(rec, srcs):
     """Content fixed by a recorded owner decision: a decision reference, or lineage to an owner-decision source."""
     s = field(rec, 's') + ' ' + field(rec, 'k')
-    return bool(re.search(r'LXM-DEC-\d{6}', s)) or rec['disp'] == 'Owner-decision' or \
+    return bool(re.search(X(r'{dec}'), s)) or rec['disp'] == 'Owner-decision' or \
         any(src in s for src, v in srcs.items() if v['authority'] == 'owner-decision')
 
 
@@ -309,7 +310,7 @@ def guard_owner_decided(rid, recs, srcs, ctb, decisions):
     if owner_decided(recs[rid], srcs) and not authorized(ctb, decisions, rid, recs):
         raise Refusal('QUARANTINED', '%s carries content fixed by an owner decision; changing it is owner-reserved%s' % (rid, not_authorized(ctb, decisions)),
                       'Changing it without the owner would override a recorded owner decision.',
-                      'The owner decides; record the decision in decisions.txt (rendered as Part C) and resubmit with decision: LXM-DEC-NNNNNN.')
+                      X('The owner decides; record the decision in decisions.txt (rendered as Part C) and resubmit with decision: {dec#}.'))
 
 
 def resolve(ctb, recs, srcs, lex, decisions={}):
@@ -352,7 +353,7 @@ def resolve(ctb, recs, srcs, lex, decisions={}):
     if conflicts:
         raise Refusal('QUARANTINED', 'Contradiction: ' + '; '.join('clause %d contradicts %s (shared meaning %.2f)' % (cl['n'], cl['rids'][0], cl['score']) for cl in conflicts),
                       'Accepting would create two competing authorities for the same obligation.',
-                      'An owner-authority source either supersedes the record (supersedes: + reason:) or the contribution is withdrawn; unresolvable conflicts go to the owner (LXM-REQ-000016 E4).', clauses)
+                      X('An owner-authority source either supersedes the record (supersedes: + reason:) or the contribution is withdrawn; unresolvable conflicts go to the owner ({req=000016} E4).'), clauses)
 
     covered = [cl for cl in clauses if cl['kind'] in ('EXACT', 'COVERED')]
     rest = [cl for cl in clauses if cl not in covered]
@@ -380,7 +381,7 @@ def resolve(ctb, recs, srcs, lex, decisions={}):
                           'Declare extends: <record> to add it there, recognized-as: <record> if that record already expresses it, or distinct-from: <records> to confirm the meaning is new.', clauses)
         missing = [k for k in ('scope', 'title', 'applied-in') if not ctb.get(k)]
         if missing:
-            reject('A new canonical identity needs %s' % ', '.join(missing), 'Supply scope, title and the stage action that applies it (applied-in: STG-NN #k).')
+            reject('A new canonical identity needs %s' % ', '.join(missing), X('Supply scope, title and the stage action that applies it (applied-in: {stg#} #k).'))
         plan += [('new', ctb['scope'], ctb['title'], ' '.join(cl['text'] for cl in rest), '%s %s' % (src, sec), ctb.get('depends', ''), ctb['applied-in'], ctb.get('decision', ''))]
         outcome = 'PARTIAL→NEW' if covered else 'NEW'
     else:
@@ -431,7 +432,7 @@ def apply(plan, reqs_text, stages_text):
             changed.add(rid)
         elif op == 'new':
             _, scope, title, text, origin, deps, applied, dec = step
-            nid = 'LXM-REQ-%06d' % (max(int(r[-6:]) for r in recs) + 1)
+            nid = X('{req%}') % (max(int(r[-6:]) for r in recs) + 1)
             src, sec = origin.split(' ', 1)
             fields = [['t', title], ['s', origin]] + ([['k', dec]] if dec else []) + [['c', '; '.join('%s %s covers' % (src, c) for c in sec.split(','))]]
             if deps:
@@ -478,12 +479,12 @@ def commit(root, staging, files):
 def record_exception(root, ctb, refusal):
     d = os.path.join(root, 'intake'); os.makedirs(d, exist_ok=True)
     p = os.path.join(d, 'exceptions.txt')
-    text = read(p) if os.path.exists(p) else '# Intake exceptions (LXM-REQ-000222). Not canonical; each entry blocks one contribution until resolved.\n'
-    m = re.search(r'^@(LXM-EXC-\d{6}) \| [A-Z]+ \| %s \| %s$' % (re.escape(ctb.get('id', '?')), ctb['_sha']), text, re.M)
+    text = read(p) if os.path.exists(p) else X('# Intake exceptions ({req=000222}). Not canonical; each entry blocks one contribution until resolved.\n')
+    m = re.search(X(r'^@({exc}) \| [A-Z]+ \| %s \| %s$') % (re.escape(ctb.get('id', '?')), ctb['_sha']), text, re.M)
     if m:
         return m.group(1)
-    n = len(re.findall(r'^@LXM-EXC-', text, re.M)) + 1
-    eid = 'LXM-EXC-%06d' % n
+    n = len(re.findall(X(r'^@{exc-}'), text, re.M)) + 1
+    eid = X('{exc%}') % n
     text += '\n@%s | %s | %s | %s\nsource: %s %s\nreason: %s\nimpact: %s\nresolution: %s\n' % (eid, refusal.outcome, ctb.get('id', '?'), ctb['_sha'], ctb.get('source', '?'), ctb.get('section', '?'), refusal.reason, refusal.impact, refusal.resolution)
     open(p, 'w', encoding='utf-8').write(text)
     return eid
@@ -500,7 +501,7 @@ DECISION_FIELDS = {'id', 'kind', 'decision', 'action', 'question', 'facts', 'opt
                    'adopted', 'provenance', 'rationale', 'approval', 'approval-sha256', 'label', 'source', 'section'}
 DECISION_KEYS = {'question': 'q', 'facts': 'f', 'options': 'opt', 'recommendation': 'rec', 'outcome': 'o', 'effect': 'e', 'authorizes': 'a',
                  'adopted': 'w', 'provenance': 'p', 'rationale': 'r', 'label': 'label'}
-SCOPE_CELL = re.compile(r'(?:(?:SRC-\d{4} (?:§[0-9A-Za-z.]+(?:, )?)+|LXM-REQ-\d{6})(?:, )?)+')
+SCOPE_CELL = re.compile(X(r'(?:(?:{src} (?:{cl}(?:, )?)+|{req})(?:, )?)+'))
 
 
 def resolve_decision(root, ctb):
@@ -516,15 +517,15 @@ def resolve_decision(root, ctb):
     layouts, decs = build.parse_decisions(text)
     by = {d['id']: d for d in decs}
     did, action = ctb.get('decision', ''), ctb.get('action', '')
-    if not re.fullmatch(r'LXM-DEC-\d{6}', did) or action not in ('open', 'adopt'):
-        reject('A decision contribution needs decision: LXM-DEC-NNNNNN and action: open or adopt', 'Supersession is not implemented yet; it stays a direct, owner-approved edit.')
+    if not re.fullmatch(X(r'{dec}'), did) or action not in ('open', 'adopt'):
+        reject(X('A decision contribution needs decision: {dec#} and action: open or adopt'), 'Supersession is not implemented yet; it stays a direct, owner-approved edit.')
     fields = {DECISION_KEYS[k]: ctb[k] for k in DECISION_KEYS if ctb.get(k)}
     if action == 'open':
         if did in by:
             if by[did].get('q') == fields.get('q'):
                 return text, 'NOOP', []  # this question was opened; replaying the open changes nothing, adopted since or not
             reject('%s already exists' % did, 'Open a new question with the next free ID, or adopt the existing one.')
-        nxt = 'LXM-DEC-%06d' % (len(decs) + 1)
+        nxt = X('{dec%}') % (len(decs) + 1)
         if did != nxt:
             reject('%s is not the next free decision ID (%s)' % (did, nxt), 'Decision IDs are contiguous; use %s.' % nxt)
         if not fields.get('q'):
@@ -549,14 +550,14 @@ def resolve_decision(root, ctb):
         reject('The approval %s is not a file under intake/decisions/' % ctb['approval'], 'Store the owner\'s approval verbatim under intake/decisions/ and cite it.')
     if sha(open(ap, 'rb').read()) != ctb['approval-sha256']:
         reject('The approval file does not match approval-sha256', 'Cite the SHA-256 of the approval exactly as stored.')
-    if not re.search(r'(?<![\w-])(?:LXM-DEC-)?%s(?!\d)' % did[-6:], read(ap)):  # named in full, or by its number ("000009")
+    if not re.search(X(r'(?<![\w-])(?:{dec-})?%s(?!\d)') % did[-6:], read(ap)):  # named in full, or by its number ("000009")
         reject('The approval does not name %s' % did, 'An approval applies only to the decision it names.')
     if not (fields['a'] == 'None' or SCOPE_CELL.fullmatch(fields['a'])):
-        reject('authorizes must be None or source clauses and records, not "%s"' % fields['a'], 'Give "None" or e.g. "SRC-0009 §7.2, LXM-REQ-000231".')
+        reject('authorizes must be None or source clauses and records, not "%s"' % fields['a'], X('Give "None" or e.g. "{src=0009} {cl-}7.2, {req=000231}".'))
     new = {'q': cur.get('q', '')}
     new.update(fields)
     block = '@%s | adopted | %s\n%s' % (did, groups['adopted'], ''.join('%s: %s\n' % (k, new[k]) for k in ['label', 'q'] + [k for _, k in layouts[groups['adopted']][1:]] if new.get(k)))
-    blocks_ = re.split(r'\n(?=@LXM-DEC-)', text)
+    blocks_ = re.split(X(r'\n(?=@{dec-})'), text)
     out = [block.rstrip('\n') + '\n' if b.startswith('@' + did + ' ') else b for b in blocks_]
     return '\n'.join(x.rstrip('\n') + '\n' for x in out).replace('\n\n\n', '\n\n'), 'ADOPT', [did]
 
@@ -576,21 +577,21 @@ def resolve_evidence(root, ctb):
     _, evs = build.parse_evidence(text)
     by = {e['id']: e for e in evs}
     eid, action = ctb.get('evidence', ''), ctb.get('action', '')
-    if not re.fullmatch(r'LXM-EVD-\d{6}', eid) or action not in ('add', 'supersede'):
-        reject('An evidence contribution needs evidence: LXM-EVD-NNNNNN and action: add or supersede', 'Evidence is never edited; supersede it with a newer observation.')
+    if not re.fullmatch(X(r'{evd}'), eid) or action not in ('add', 'supersede'):
+        reject(X('An evidence contribution needs evidence: {evd#} and action: add or supersede'), 'Evidence is never edited; supersede it with a newer observation.')
     keys = [k for k in build.EVIDENCE_FIELDS if k not in ('status',)]
     fields = {k: ctb[k] for k in keys if ctb.get(k)}
     if eid in by:
         if all(by[eid].get(k) == v for k, v in fields.items()):
             return text, 'NOOP', []
         reject('%s exists; evidence is never edited' % eid, 'Record the newer observation under the next ID with action: supersede.')
-    nxt = 'LXM-EVD-%06d' % (len(evs) + 1)
+    nxt = X('{evd%}') % (len(evs) + 1)
     if eid != nxt:
         reject('%s is not the next free evidence ID (%s)' % (eid, nxt), 'Evidence IDs are contiguous; use %s.' % nxt)
     missing = [k for k in ('fact', 'source', 'method', 'observed', 'observer', 'verifies') if not ctb.get(k)]
     if missing:
         reject('Evidence lacks %s' % ', '.join(missing), 'Evidence states the observed fact, where and how it was observed, when, by whom, and what it is evidence for.')
-    known = set(re.findall(r'^@(LXM-REQ-\d{6})', read(os.path.join(root, 'reqs.txt')), re.M)) | \
+    known = set(re.findall(X(r'^@({req})'), read(os.path.join(root, 'reqs.txt')), re.M)) | \
         {d['id'] for d in build.parse_decisions(read(os.path.join(root, 'decisions.txt')))[1]} | set(by)
     refs = re.findall(r'LXM-(?:REQ|DEC|EVD)-\d{6}', fields['verifies'])
     if not refs or set(refs) - known:
@@ -653,8 +654,8 @@ def resolve_scope(root, ctb):
     ids = [l.split('|')[0].strip() for l in lines if l.strip() and not l.startswith('#')]
     if ctb.get('action') != 'add' or not re.fullmatch(r'[A-Z][A-Z0-9-]{1,15}', sid) or not name:
         reject('A scope change needs action: add, scope: an upper-case id and name:', 'For example scope: OPS, name: Operations knowledge.')
-    if sid.startswith('STG-'):
-        reject('STG- scopes come from stages.txt', 'Add a stage instead.')
+    if sid.startswith(X('{stg-}')):
+        reject(X('{stg-} scopes come from stages.txt'), 'Add a stage instead.')
     if sid in ids:
         if '%s | %s' % (sid, name) in text:
             return text, 'NOOP', []
@@ -670,7 +671,7 @@ def resolve_source(root, ctb):
     _fields(ctb, 'source')
     sid, status, auth = ctb.get('source', ''), ctb.get('text-status', ''), ctb.get('authority', '')
     text = read(os.path.join(root, 'sources.txt'))
-    rows = [l for l in text.split('\n') if l.startswith('SRC-')]
+    rows = [l for l in text.split('\n') if l.startswith(X('{src-}'))]
     ids = [r.split(' | ')[0] for r in rows]
     row = ' | '.join([sid] + [ctb.get(k, '') for k in ('title', 'location', 'sha', 'role', 'authority', 'text-status')])
     if ctb.get('action') == 'complete-ledger':  # a clause ledger declares itself complete: validate.py then requires every clause covered or held
@@ -685,7 +686,7 @@ def resolve_source(root, ctb):
         return text, 'NOOP', []
     if ctb.get('action') != 'register' or sid in ids:
         reject('A source change needs action: register and the next free source id', 'Sources are registered once; a new text version is a new capture.')
-    nxt = 'SRC-%04d' % (max(int(i[4:]) for i in ids) + 1)
+    nxt = X('{src%}') % (max(int(i[4:]) for i in ids) + 1)
     if sid != nxt:
         reject('%s is not the next free source id (%s)' % (sid, nxt), 'Source ids are contiguous; use %s.' % nxt)
     if auth not in ('owner', 'owner-decision', 'historical') or status not in ('owner-file', 'owner-confirmed', 'provisional-extract', 'conversation-only'):
@@ -786,7 +787,7 @@ def adopted_decisions(root):
             continue
         cell = d.get('a')
         out[d['id']] = None if cell is None else {
-            'clauses': {(a, b) for a, bs in re.findall(r'(SRC-\d{4}) ((?:§[0-9A-Za-z.]+(?:, )?)+)', cell) for b in re.findall(r'§[0-9A-Za-z.]+', bs)},
+            'clauses': {(a, b) for a, bs in re.findall(X(r'({src}) ((?:{cl}(?:, )?)+)'), cell) for b in re.findall(X(r'{cl}'), bs)},
             'records': set(REQ.findall(cell))}
     return out
 
@@ -827,7 +828,7 @@ def owner_holds(root):
     if not os.path.exists(p):
         return {}
     held = {}
-    for m in re.finditer(r'^@(LXM-EXC-\d{6}) \| QUARANTINED \| [^\n]*\nsource: (SRC-\d{4}) ([^\n]+)\nreason: ([^\n]*owner-reserved[^\n]*)$', read(p), re.M):
+    for m in re.finditer(X(r'^@({exc}) \| QUARANTINED \| [^\n]*\nsource: ({src}) ([^\n]+)\nreason: ([^\n]*owner-reserved[^\n]*)$'), read(p), re.M):
         for s in m.group(3).split(','):
             held[(m.group(2), s)] = m.group(1)
     return held
@@ -838,7 +839,7 @@ def guard_owner_holds(root, ctb, decisions):
     if hits and not authorized(ctb, decisions):
         raise Refusal('QUARANTINED', '%s %s is held for an owner decision (%s); owner-reserved%s' % (ctb['source'], ctb['section'], ', '.join(hits), not_authorized(ctb, decisions)),
                       'Assimilating it in any form would implement an option the owner has not chosen.',
-                      'The owner decides; record the decision in decisions.txt (rendered as Part C) and resubmit with decision: LXM-DEC-NNNNNN.')
+                      X('The owner decides; record the decision in decisions.txt (rendered as Part C) and resubmit with decision: {dec#}.'))
 
 
 def resolve_exceptions(root, ctb_id, note=''):
@@ -847,7 +848,7 @@ def resolve_exceptions(root, ctb_id, note=''):
     if not os.path.exists(p):
         return False
     t = read(p)
-    pat = r'^(@LXM-EXC-\d{6}) \| (?:QUARANTINED|REJECTED) \| (%s) \|([^\n]*)\n((?:[a-z]+: [^\n]*\n)*)' % re.escape(ctb_id)
+    pat = X(r'^(@{exc}) \| (?:QUARANTINED|REJECTED) \| (%s) \|([^\n]*)\n((?:[a-z]+: [^\n]*\n)*)') % re.escape(ctb_id)
     n = re.sub(pat, lambda m: '%s | RESOLVED | %s |%s\n%s%s' % (m.group(1), m.group(2), m.group(3), m.group(4), ('resolved: %s\n' % note) if note else ''), t, flags=re.M)
     if n != t:
         open(p, 'w', encoding='utf-8').write(n)
