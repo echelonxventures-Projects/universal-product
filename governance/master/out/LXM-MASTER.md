@@ -77,11 +77,12 @@
 | SRC-0027 | Owner: git status clean after each step (2026-10-31; session 47abdf14 transcript line 4907) | session transcript 47abdf14-1288-4d9e-b7b7-eec6f8d3053e.jsonl line 4907; provisional working extract `sources/SRC-0027.extract.md` | `d5e2057b48f7a529d4eacc60e6c56584fe5fdb26661ac60770bf873c92524131` (extract, not owner-confirmed) | Owner directive |
 | SRC-0028 | Owner: commit and push, automated after each step; one-time writer right for this push (LXM-DEC-000017) (2026-10-31; session 47abdf14 transcript lines 5002 and 5017) | file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp3/approval-words.txt; provisional working extract `sources/SRC-0028.extract.md` | `3e7991fb38ae88ce825229d4c90c27741f35afdccdc5a4685cc607528047d3a3` (extract, not owner-confirmed) | Owner decision (approval) |
 | SRC-0029 | Owner: push only the final after all verification, nothing unnecessary; plan for unlimited environment options in configuration (2026-10-31; session 47abdf14 transcript lines 5170 and 5229) | file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp4/owner-words.txt; provisional working extract `sources/SRC-0029.extract.md` | `c69e3f46bafb451174b4268676f61fe1572067ee5e2ca15e561f66ba7abf006c` (extract, not owner-confirmed) | Owner directive |
+| SRC-0030 | Owner: everything automated, zero manual steps; make the repository private before pushing (2026-10-31; session 47abdf14 transcript lines 5562 and 5611) | file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp5/owner-words.txt; provisional working extract `sources/SRC-0030.extract.md` | `b839474637c5b80c9b458a12c9da7b8a5258a82ec90bfb0c9b455cb6319a4ed1` (extract, not owner-confirmed) | Owner directive |
 
 **Source text status** (separate from authority; generated from the register):
 
 - *owner-file* — owner-supplied files pinned by SHA-256: SRC-0001, SRC-0002, SRC-0003. Cited by 194 records.
-- *provisional-extract* — agent-captured and hashed, **not owner-confirmed**: SRC-0008, SRC-0009, SRC-0010, SRC-0011, SRC-0012, SRC-0013, SRC-0014, SRC-0015, SRC-0016, SRC-0017, SRC-0018, SRC-0019, SRC-0020, SRC-0021, SRC-0022, SRC-0023, SRC-0024, SRC-0025, SRC-0026, SRC-0027, SRC-0028, SRC-0029. Cited by 101 records.
+- *provisional-extract* — agent-captured and hashed, **not owner-confirmed**: SRC-0008, SRC-0009, SRC-0010, SRC-0011, SRC-0012, SRC-0013, SRC-0014, SRC-0015, SRC-0016, SRC-0017, SRC-0018, SRC-0019, SRC-0020, SRC-0021, SRC-0022, SRC-0023, SRC-0024, SRC-0025, SRC-0026, SRC-0027, SRC-0028, SRC-0029, SRC-0030. Cited by 101 records.
 - *conversation-only* — no captured text: SRC-0004, SRC-0005, SRC-0006, SRC-0007. Cited by 39 records.
 
 Records resting on provisional-extract or conversation-only sources stay candidate content until the owner confirms or supplies the source text (Part G.4, item 10). Only the owner can mark a source owner-confirmed.
@@ -1685,10 +1686,10 @@ Review the complete final diff, including generated artifacts, lockfiles and doc
 #### LXM-REQ-000149 — Pre-commit assurances
 
 `STG-14` · class ID · disposition **Retained**  
-Lineage: S497-506; L230-239; SRC-0029 §0.1  
-Coverage: SRC-0029 §0.1 extends
+Lineage: S497-506; L230-239; SRC-0029 §0.1; SRC-0030 §0.1,§0.2  
+Coverage: SRC-0029 §0.1 extends; SRC-0030 §0.1 extends; SRC-0030 §0.2 extends
 
-Ensure only intended files are included; unrelated work and preserved files are safe; no secrets or local environment artifacts were introduced; generated outputs are current; no unjustified hardcoding or duplicate canonical definitions were added; tests match the final tree; all unresolved requirements and risks remain visible; `git diff --check` and the required repository gates pass. A push carries only the final state after every verification has passed, and only the files that state needs to verify itself; nothing unnecessary or unwanted is pushed.
+Ensure only intended files are included; unrelated work and preserved files are safe; no secrets or local environment artifacts were introduced; generated outputs are current; no unjustified hardcoding or duplicate canonical definitions were added; tests match the final tree; all unresolved requirements and risks remain visible; `git diff --check` and the required repository gates pass. A push carries only the final state after every verification has passed, and only the files that state needs to verify itself; nothing unnecessary or unwanted is pushed. Every routine step, including commit, push and verification, is automated end to end; no manual step remains between a verified state and the repository, and a step that still needs a person is reported as a defect of the automation. A push never publishes the owner's sources, personal data or approval records: the repository that receives them is private, and its visibility is checked before every push.
 
 #### LXM-REQ-000150 — Branch and commit discipline
 
@@ -2291,6 +2292,7 @@ The final report has sections A–K, defined by LXM-REQ-000174 to LXM-REQ-000184
 | LXM-EVD-000011 | Computed states of the 235 requirements: Specified 200, Verified 32, Configured 3 | states.py over traceability, code, configuration, runtime trace and test results | current |
 | LXM-EVD-000012 | The work package the owner approved for amazon-62 (SRC-0026 §0.5) is written to intake/handover/AMAZON-62-WORK-PACKAGE-2026-10-31.md (SHA-256 8db517608a7c62f0f08775400edf794b7f9a8bfbf24c8a9e45b134a12dc74263), with the code findings (d48db1b1e60c0717) and configuration findings (7f923d4e4154dffa) at 39ed4d6; it could not be delivered on 2026-10-31 because no amazon-62 session was running (peer list empty), so it is delivered when amazon-62 next runs | intake/handover/; the session's peer list at 2026-10-31T07:3xZ | current |
 | LXM-EVD-000013 | On 2026-10-31 the iCloud checkout (branch feat/production-readiness, HEAD 4ab4800, committed 2026-10-21) is not clean: 43 modified tracked files and 16 untracked files (offers, coupons, gift cards, vouchers, grants, group buy), last written 2026-10-22, plus a .git/index.lock of 2026-10-21. They are the preserved Phase 1 changes (LXM-REQ-000217) and are not on the candidate 39ed4d6. A byte-exact archive (tracked-changes patch SHA-256 7b0e7ce794084b43, untracked tar 3f4c2e21ed31ac3a) is in ~/LUXORA-preservation/2026-10-31-lxm-master-candidate/phase1-uncommitted/, and applying it to HEAD reproduced all 59 paths exactly; the checkout was only read | git --no-optional-locks status, diff --binary HEAD, ls-files --others in the checkout; reapplication to a git archive of HEAD in the session scratchpad | current |
+| LXM-EVD-000014 | On 2026-10-31, by the owner's choice (SRC-0030 §0.2), the repository echelonxventures-Projects/universal-product was changed from public to private (it had no forks, no stars and no Pages site); the verified Master was then pushed by step_commit.py as branch governance/lxm-master-2026-10-31 at 278afb817e732cf53c503230ce833c6d5175ae61, one commit on 39ed4d6 touching only governance/master/ (426 files, 98 omitted with their SHA-256 in OMITTED.sha256); before the push it passed the CI check, the clean-tree check and the step-commit fixtures in a fresh clone, a full replay and a secret scan; afterwards the remote head equalled the local head, and the integration branch and PR #6 (open, draft) remained at 39ed4d6 | gh repo view and gh repo edit; step_commit.py output; git ls-remote; gh pr view 6; gh api compare | current |
 
 ### G.4 Remaining genuinely owner-reserved decisions
 
@@ -2484,7 +2486,7 @@ Requirement IDs are abbreviated to their last three digits (LXM-REQ-000xxx).
 | LXM-REQ-000146 | S480-489 | L213-222 | — | SRC-0004 §5 | STG-13 | Retained |
 | LXM-REQ-000147 | S491 | L224 | — | — | STG-13 | Retained |
 | LXM-REQ-000148 | S495 | L228 | — | — | STG-14 | Retained |
-| LXM-REQ-000149 | S497-506 | L230-239 | — | SRC-0029 §0.1 | STG-14 | Retained |
+| LXM-REQ-000149 | S497-506 | L230-239 | — | SRC-0029 §0.1; SRC-0030 §0.1,§0.2 | STG-14 | Retained |
 | LXM-REQ-000150 | S508 | L241 | A1122-1134 | — | STG-14 | Retained |
 | LXM-REQ-000151 | S510 | L243 | — | — | STG-14 | Retained |
 | LXM-REQ-000152 | S512 | L245 | — | — | STG-14 | Retained |
@@ -3024,6 +3026,13 @@ Generated from each source's clause ledger (`sources/<SRC>.clauses`), the record
 |---|---|---|---|---|
 | §0.1 | 1-1 | LXM-REQ-000149 (extends) | — | — |
 | §0.2 | 3-3 | LXM-REQ-000238 | — | — |
+
+**SRC-0030** — ledger status *complete*, 2 clauses.
+
+| Clause | Source lines | Covered by | Supported by | Open hold |
+|---|---|---|---|---|
+| §0.1 | 1-1 | LXM-REQ-000149 (extends) | — | — |
+| §0.2 | 3-3 | LXM-REQ-000149 (extends) | — | — |
 
 ---
 

@@ -848,9 +848,9 @@ x: Review the complete final diff, including generated artifacts, lockfiles and 
 
 @LXM-REQ-000149 | STG-14 | ID | Retained
 t: Pre-commit assurances
-s: S497-506; L230-239; SRC-0029 §0.1
-c: SRC-0029 §0.1 extends
-x: Ensure only intended files are included; unrelated work and preserved files are safe; no secrets or local environment artifacts were introduced; generated outputs are current; no unjustified hardcoding or duplicate canonical definitions were added; tests match the final tree; all unresolved requirements and risks remain visible; `git diff --check` and the required repository gates pass. A push carries only the final state after every verification has passed, and only the files that state needs to verify itself; nothing unnecessary or unwanted is pushed.
+s: S497-506; L230-239; SRC-0029 §0.1; SRC-0030 §0.1,§0.2
+c: SRC-0029 §0.1 extends; SRC-0030 §0.1 extends; SRC-0030 §0.2 extends
+x: Ensure only intended files are included; unrelated work and preserved files are safe; no secrets or local environment artifacts were introduced; generated outputs are current; no unjustified hardcoding or duplicate canonical definitions were added; tests match the final tree; all unresolved requirements and risks remain visible; `git diff --check` and the required repository gates pass. A push carries only the final state after every verification has passed, and only the files that state needs to verify itself; nothing unnecessary or unwanted is pushed. Every routine step, including commit, push and verification, is automated end to end; no manual step remains between a verified state and the repository, and a step that still needs a person is reported as a defect of the automation. A push never publishes the owner's sources, personal data or approval records: the repository that receives them is private, and its visibility is checked before every push.
 
 @LXM-REQ-000150 | STG-14 | ID | Retained
 t: Branch and commit discipline

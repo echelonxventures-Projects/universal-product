@@ -1,0 +1,6 @@
+id: CTB-SRC0030-zero-manual
+source: SRC-0030
+section: §0.1
+kind: requirement
+extends: LXM-REQ-000149
+text: Every routine step, including commit, push and verification, is automated end to end; no manual step remains between a verified state and the repository, and a step that still needs a person is reported as a defect of the automation.

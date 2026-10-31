@@ -2,7 +2,7 @@
 branch, and finish only when the tree is clean and the remote head equals the local head.
 Usage: python3 -I step_commit.py <workspace> --message <text> [--config step-commit.json] [--dry-run]
 
-Refuses, changing nothing: a present .git/index.lock (never deleted), a detached HEAD, a protected or frozen branch, a
+Refuses, changing nothing: a receiving repository not confirmed private, a present .git/index.lock (never deleted), a detached HEAD, a protected or frozen branch, a
 push that is not a fast-forward (never force-pushes), and any changed file that looks like it holds a secret. It never
 reverts, stashes or discards work (LXM-REQ-000030). Exit 0 clean and pushed (or nothing to do), 1 refused, 2 usage error."""
 import json, os, re, subprocess, sys
@@ -49,6 +49,15 @@ def main(argv):
     local = git(ws, 'rev-parse', 'HEAD')
     if remote_head and remote_head != local and subprocess.run(['git', '-C', ws, 'merge-base', '--is-ancestor', remote_head, local], capture_output=True).returncode:
         refuse('the remote %s has commits this branch lacks; never force-push. Integrate them first.' % branch)  # checked before committing: a refusal changes nothing
+    vc = cfg.get('visibility_check')  # the receiving repository must be private (LXM-REQ-000149); command and expected answer are configuration
+    if vc:
+        url = git(ws, 'remote', 'get-url', cfg['remote'])
+        m = re.search(vc['repo_pattern'], url)
+        if not m:
+            refuse('cannot tell which repository %s is (%s); its visibility must be checked before a push' % (cfg['remote'], url))
+        r = subprocess.run([a.replace('{repo}', m.group(1)) for a in vc['command']], capture_output=True, text=True)
+        if r.returncode or r.stdout.strip() != vc['expect']:
+            refuse('%s is not confirmed private (%s); a push would publish. Make it private first.' % (m.group(1), (r.stdout or r.stderr).strip()[:80] or 'no answer'))
     if dry:
         print('dry run: would commit %d path(s) on %s and push to %s' % (len(paths), branch, cfg['remote'])); return 0
     if paths or status:

@@ -1,0 +1,6 @@
+id: CTB-SRC0030-private
+source: SRC-0030
+section: §0.2
+kind: requirement
+extends: LXM-REQ-000149
+text: A push never publishes the owner's sources, personal data or approval records: the repository that receives them is private, and its visibility is checked before every push.

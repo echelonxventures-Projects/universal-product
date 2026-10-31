@@ -1,0 +1,5 @@
+id: CTB-SRC0030-complete
+kind: source
+source: SRC-0030
+action: complete-ledger
+basis: §0.1 and §0.2 by LXM-REQ-000149

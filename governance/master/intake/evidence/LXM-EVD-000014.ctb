@@ -1,0 +1,10 @@
+id: CTB-EVD-000014
+kind: evidence
+evidence: LXM-EVD-000014
+action: add
+fact: On 2026-10-31, by the owner's choice (SRC-0030 §0.2), the repository echelonxventures-Projects/universal-product was changed from public to private (it had no forks, no stars and no Pages site); the verified Master was then pushed by step_commit.py as branch governance/lxm-master-2026-10-31 at 278afb817e732cf53c503230ce833c6d5175ae61, one commit on 39ed4d6 touching only governance/master/ (426 files, 98 omitted with their SHA-256 in OMITTED.sha256); before the push it passed the CI check, the clean-tree check and the step-commit fixtures in a fresh clone, a full replay and a secret scan; afterwards the remote head equalled the local head, and the integration branch and PR #6 (open, draft) remained at 39ed4d6
+source: gh repo view and gh repo edit; step_commit.py output; git ls-remote; gh pr view 6; gh api compare
+method: read-back of the remote after the change and the push
+observed: 2026-10-31
+observer: amazon-44
+verifies: LXM-REQ-000149

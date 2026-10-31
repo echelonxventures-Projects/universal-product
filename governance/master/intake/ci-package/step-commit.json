@@ -1,8 +1,14 @@
 {
  "_comment": "End-of-step commit and push (LXM-REQ-000237). Everything the automation decides comes from here; step_commit.py names no branch, remote or pattern itself.",
  "remote": "origin",
- "protected_branches": ["master", "main", "integration/luxora-production-go-2026-10-27"],
- "protected_patterns": ["^release/"],
+ "protected_branches": [
+  "master",
+  "main",
+  "integration/luxora-production-go-2026-10-27"
+ ],
+ "protected_patterns": [
+  "^release/"
+ ],
  "frozen_note": "A branch whose candidate is under acceptance CI is frozen (LXM-REQ-000054); list it in protected_branches while the run lasts.",
  "secret_patterns": [
   "-----BEGIN [A-Z ]*PRIVATE KEY-----",
@@ -14,5 +20,22 @@
  ],
  "secret_scan_max_bytes": 2000000,
  "secret_allow_files": [],
- "trailers": ["Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"]
+ "trailers": [
+  "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+ ],
+ "visibility_check": {
+  "_comment": "LXM-REQ-000149: a push never publishes; the receiving repository must answer as private. {repo} is the first group of repo_pattern applied to the remote URL.",
+  "repo_pattern": "github\\.com[:/]([^/]+/[^/.]+?)(?:\\.git)?$",
+  "command": [
+   "gh",
+   "repo",
+   "view",
+   "{repo}",
+   "--json",
+   "isPrivate",
+   "-q",
+   ".isPrivate"
+  ],
+  "expect": "true"
+ }
 }
