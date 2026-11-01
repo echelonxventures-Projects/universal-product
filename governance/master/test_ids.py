@@ -8,7 +8,8 @@ results = []
 
 def load(reg):
     d = tempfile.mkdtemp(prefix='idfx-')
-    shutil.copyfile(os.path.join(HERE, 'ids.py'), os.path.join(d, 'ids.py'))
+    for f in ('ids.py', 'layout.json'):
+        shutil.copyfile(os.path.join(HERE, f), os.path.join(d, f))
     json.dump(reg, open(os.path.join(d, 'ids.json'), 'w'))
     spec = importlib.util.spec_from_file_location('ids_fx', os.path.join(d, 'ids.py')); m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
     shutil.rmtree(d, ignore_errors=True)

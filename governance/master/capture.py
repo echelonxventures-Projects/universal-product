@@ -14,7 +14,7 @@ HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
 import actors as ACTORS
 
-SECRETS = json.load(open(os.path.join(HERE, 'secret-formats.json'), encoding='utf-8'))['patterns']  # one registry, shared with step_commit.py
+SECRETS = json.load(open(os.path.join(HERE, X('{@secret_formats_json}')), encoding='utf-8'))['patterns']  # one registry, shared with step_commit.py
 SENSITIVITY = ('public', 'internal', 'confidential')
 
 
@@ -58,19 +58,19 @@ def capture(root, raw, origin, sid, title, role, authority, sensitivity='interna
         return {'outcome': 'REJECTED', 'reason': 'the text looks like it contains a secret (%d pattern(s)); secrets never enter the Master. Redact it, or store it in the write-once archive outside git.' % len(hits)}
     text = raw.rstrip('\n') + '\n'
     xsha = hashlib.sha256(text.encode()).hexdigest()
-    ext = os.path.join(root, 'sources', sid + '.extract.md')
+    ext = os.path.join(root, X('{@sources_dir}'), sid + X('{@suffix_extract_md}'))
     if os.path.exists(ext) and A.read(ext) != text:
         return {'outcome': 'REJECTED', 'reason': '%s exists with different text; a changed text is a new capture under a new id' % sid}
     lines = text.split('\n')
-    fdir = os.path.join(root, 'intake', sid, 'files')  # Level 1: the files reach sources/ only through the gate
+    fdir = os.path.join(root, X('{@intake_dir}'), sid, 'files')  # Level 1: the files reach sources/ only through the gate
     os.makedirs(fdir, exist_ok=True)
     def new_file(path, content):
         open(path, 'w', encoding='utf-8').write(content)
     spec = segment(lines)
     if not spec:
         return {'outcome': 'REJECTED', 'reason': 'no clause found (only headings or metadata)'}
-    os.makedirs(os.path.join(root, 'intake', sid), exist_ok=True)
-    new_file(os.path.join(fdir, sid + '.extract.md'), text)
+    os.makedirs(os.path.join(root, X('{@intake_dir}'), sid), exist_ok=True)
+    new_file(os.path.join(fdir, sid + X('{@suffix_extract_md}')), text)
     led = ['# %s clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Captured by capture.py from %s.' % (sid, origin),
            '# A list is one clause together with its lead-in; every other sentence paragraph is a clause; headings and metadata are none.',
            'status: in-progress', 'extract: sources/%s.extract.md sha256 %s' % (sid, xsha)]
@@ -79,18 +79,18 @@ def capture(root, raw, origin, sid, title, role, authority, sensitivity='interna
         parts = [clean(y) for y in lines[a - 1:b] if y.strip()]
         t = ' '.join(p if p.endswith(('.', ':', '?')) else p + ';' for p in parts).rstrip(';')
         t = t if t.endswith(('.', ':', '?')) else t + '.'
-        p = os.path.join(root, 'intake', sid, sec[1:].replace('.', '-') + '.ctb')
+        p = os.path.join(root, X('{@intake_dir}'), sid, sec[1:].replace('.', '-') + '.ctb')
         if not os.path.exists(p):
             new_file(p, 'id: CTB-%s-%s\nsource: %s\nsection: %s\nkind: requirement\ntext: %s\n' % (sid.replace('-', ''), sec[1:].replace('.', '-'), sid, sec, t))
     new_file(os.path.join(fdir, sid + '.clauses'), '\n'.join(led) + '\n')
-    pp = os.path.join(fdir, sid + '.provenance.md')
+    pp = os.path.join(fdir, sid + X('{@suffix_provenance_md}'))
     if True:
         new_file(pp, '# %s provenance — provisional working extract\n\n| Field | Value |\n|---|---|\n| Source | %s, %s |\n| Authority | %s (as registered in `sources.txt`) |\n'
                                               '| Text status | **provisional-extract**: not owner-confirmed |\n| Sensitivity | %s |\n| Extract | `sources/%s.extract.md`, SHA-256 `%s` |\n'
                                               '| Captured from | %s |\n| Method | capture.py: the bytes, unchanged, one trailing newline; secret scan passed |\n| Captured by | `%s`, %s |\n'
                                               '| Clause ledger | `sources/%s.clauses` (%d clauses) |\n\nOnly the owner can confirm this text (Part G.4, item 10).\n' % (
                                                   sid, sid, title, authority, sensitivity, sid, xsha, origin, by, today or 'today', sid, len(spec)))
-    reg = os.path.join(root, 'intake', sid, 'register.source-ctb')
+    reg = os.path.join(root, X('{@intake_dir}'), sid, 'register.source-ctb')
     open(reg, 'w', encoding='utf-8').write('id: CTB-REGISTER-%s\nkind: source\nsource: %s\naction: register\ntitle: %s\nlocation: %s; provisional working extract `sources/%s.extract.md`\n'
                                            'sha: `{SHA:sources/%s.extract.md}` (extract, not owner-confirmed)\nrole: %s\nauthority: %s\ntext-status: provisional-extract\nfiles-from: intake/%s/files\nbasis: captured by capture.py (secret scan passed, sensitivity %s)\n' % (
                                                sid, sid, title, origin, sid, sid, role, authority, sid, sensitivity))
@@ -100,7 +100,7 @@ def capture(root, raw, origin, sid, title, role, authority, sensitivity='interna
 
 def from_transcript(path, line, block=None, fmt=None):
     """Text of one transcript line, or one pasted block of it, read by a registered format (transcript-formats.json)."""
-    reg = json.load(open(os.path.join(HERE, 'transcript-formats.json'), encoding='utf-8'))
+    reg = json.load(open(os.path.join(HERE, X('{@transcript_formats_json}')), encoding='utf-8'))
     f = reg['formats'][fmt or reg['default']]
     raw = open(path, encoding='utf-8').read().split('\n')[line - 1]
     c = json.loads(raw) if f['line_is_json'] else raw

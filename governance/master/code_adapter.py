@@ -204,7 +204,7 @@ def analyse(root, cfg):
     tr = None
     if cfg.get('_trace'):
         import importlib.util
-        spec = importlib.util.spec_from_file_location('lxm_build', os.path.join(os.path.dirname(os.path.abspath(cfg['_trace'])), 'build.py'))
+        spec = importlib.util.spec_from_file_location('lxm_build', os.path.join(os.path.dirname(os.path.abspath(cfg['_trace'])), X('{@build_py}')))
         build = importlib.util.module_from_spec(spec); spec.loader.exec_module(build)  # the Master's own parser for trace.txt
         _, trace = build.parse_trace(open(cfg['_trace'], encoding='utf-8').read())
         by_mod, missing_paths = {}, []
@@ -290,7 +290,7 @@ def main(argv):
         print(__doc__); return 2
     opt = lambda k: argv[argv.index(k) + 1] if k in argv else None
     root = argv[1]
-    cfg = json.load(open(opt('--config') or os.path.join(HERE, 'code_adapter.json'), encoding='utf-8'))
+    cfg = json.load(open(opt('--config') or os.path.join(HERE, X('{@code_adapter_json}')), encoding='utf-8'))
     cfg['_git_clean'] = '--git-clean' in argv
     cfg['_trace'] = opt('--trace')
     rep = analyse(root, cfg)

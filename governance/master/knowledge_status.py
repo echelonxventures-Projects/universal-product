@@ -11,20 +11,20 @@ import gate_accuracy as GA
 
 
 def status(root, today, states_path=None):
-    cfg = json.load(open(os.path.join(root, 'knowledge.json'), encoding='utf-8'))
+    cfg = json.load(open(os.path.join(root, X('{@knowledge_json}')), encoding='utf-8'))
     day = datetime.date.fromisoformat(today)
     d = lambda s: datetime.date.fromisoformat(s[:10])
     # backlog: ledgers still in progress, and their clauses no record covers
     backlog = []
-    reqs = A.read(os.path.join(root, 'reqs.txt'))
-    for p in sorted(glob.glob(os.path.join(root, 'sources', X('{src-}*.clauses')))):
+    reqs = A.read(os.path.join(root, X('{@reqs_txt}')))
+    for p in sorted(glob.glob(os.path.join(root, X('{@sources_dir}'), X('{src-}*.clauses')))):
         t = A.read(p); src = os.path.basename(p)[:8]
         if re.search(r'^status: in-progress', t, re.M):
             cl = re.findall(X(r'^({cl-}\S+) \|'), t, re.M)
             backlog.append((src, len(cl), sum(1 for c in cl if '%s %s ' % (src, c) not in reqs)))
     # held queue
     held = []
-    exc = A.read(os.path.join(root, 'intake', 'exceptions.txt')) if os.path.exists(os.path.join(root, 'intake', 'exceptions.txt')) else ''
+    exc = A.read(os.path.join(root, X('{@intake_dir}'), X('{@exceptions_txt}'))) if os.path.exists(os.path.join(root, X('{@intake_dir}'), X('{@exceptions_txt}'))) else ''
     raised = {}
     for l in open(os.path.join(root, A.LEDGER), encoding='utf-8'):
         e = json.loads(l)
@@ -39,11 +39,11 @@ def status(root, today, states_path=None):
                      'overdue': age > rule['due_days'], 'reason': reason[:120]})
     # review lapses
     rc = cfg['review_cycles']; lapsed = []
-    for line in A.read(os.path.join(root, 'sources.txt')).split('\n'):
+    for line in A.read(os.path.join(root, X('{@sources_txt}'))).split('\n'):
         if not line.startswith(X('{src-}')):
             continue
         c = [x.strip() for x in line.split(' | ')]
-        prov = os.path.join(root, 'sources', c[0] + '.provenance.md')
+        prov = os.path.join(root, X('{@sources_dir}'), c[0] + X('{@suffix_provenance_md}'))
         cap = re.search(r'Captured by \| [^,]*, (\d{4}-\d{2}-\d{2})', A.read(prov)) if os.path.exists(prov) else None
         when = cap.group(1) if cap else (re.search(r'\((\d{4}-\d{2}-\d{2})', c[1]) or [None, None])[1]
         if when and c[6] in rc and (day - d(when)).days > rc[c[6]]:
@@ -55,7 +55,7 @@ def status(root, today, states_path=None):
     st = json.load(open(states_path, encoding='utf-8')) if states_path and os.path.isfile(states_path) else {}
     import revalidate as RV
     rv = RV.revalidate(root)
-    pi = os.path.join(root, 'intake', 'proposals', 'index.json')
+    pi = os.path.join(root, X('{@intake_dir}'), 'proposals', X('{@proposals_index_json}'))
     props = json.load(open(pi, encoding='utf-8')) if os.path.exists(pi) else {}
     return {'revalidated': (rv[0], len(rv[1])), 'proposals': (sum(v['status'] == 'open' for v in props.values()), sum(v['status'] == 'resolved' for v in props.values())), 'matches': matches, 'baselines': baselines, 'backlog': backlog, 'held': held, 'review_lapsed': lapsed, 'chain': chain,
             'accuracy': (sum(r['ok'] for r in acc), len(acc)), 'states': {s: sum(1 for r in st.values() if r['state'] == s) for s in cfg['states']['order']} if st else None}

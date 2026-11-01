@@ -155,10 +155,10 @@ def lineage(s, prefix):
 
 
 def main(src2, src3, outdir):
-    recs = parse_reqs(read(os.path.join(HERE, 'reqs.txt')))
-    stages = parse_stages(read(os.path.join(HERE, 'stages.txt')))
-    cov = parse_cov(read(os.path.join(HERE, 'coverage.txt')))
-    frame = read(os.path.join(HERE, 'frame.md'))
+    recs = parse_reqs(read(os.path.join(HERE, X('{@reqs_txt}'))))
+    stages = parse_stages(read(os.path.join(HERE, X('{@stages_txt}'))))
+    cov = parse_cov(read(os.path.join(HERE, X('{@coverage_txt}'))))
+    frame = read(os.path.join(HERE, X('{@frame_md}')))
     by = {r['id']: r for r in recs}
     cited = {}
     for st in stages:
@@ -174,7 +174,7 @@ def main(src2, src3, outdir):
     def fill(c):
         c = re.sub(r'\{SHA:([^}]+)\}', lambda m: sha(open(os.path.join(HERE, m.group(1)), 'rb').read()), c)
         return re.sub(r'\{(\w+)\}', lambda m: str(tok[m.group(1)]), c)
-    reg = parse_sources(read(os.path.join(HERE, 'sources.txt')))
+    reg = parse_sources(read(os.path.join(HERE, X('{@sources_txt}'))))
     rows = ['| %s |' % ' | '.join(fill(c) for c in row[:5]) for row in reg]
     STATUS = [('owner-file', 'owner-supplied files pinned by SHA-256'), ('owner-confirmed', 'extracts the owner has confirmed'),
               ('provisional-extract', 'agent-captured and hashed, **not owner-confirmed**'), ('conversation-only', 'no captured text')]
@@ -188,7 +188,7 @@ def main(src2, src3, outdir):
     sources = '\n'.join(['| ID | Source | Location | SHA-256 | Role |', '|---|---|---|---|---|'] + rows + status)
 
     cat = []
-    scope_order, scope_name = parse_scopes(read(os.path.join(HERE, 'scopes.txt')), [st['id'] for st in stages])
+    scope_order, scope_name = parse_scopes(read(os.path.join(HERE, X('{@scopes_txt}'))), [st['id'] for st in stages])
     for sc in scope_order:
         rs = [r for r in recs if r['scope'] == sc]
         if not rs:
@@ -236,14 +236,14 @@ def main(src2, src3, outdir):
                                                           ', '.join(sorted(set(cited.get(r['id'], [])))) or '(%s section)' % r['scope'], r['disp']))
 
     clauses = []
-    exc_p = os.path.join(HERE, 'intake', 'exceptions.txt')
+    exc_p = os.path.join(HERE, X('{@intake_dir}'), X('{@exceptions_txt}'))
     holds = {}
     if os.path.exists(exc_p):
         for m in re.finditer(X(r'^@({exc}) \| (QUARANTINED|REJECTED) \| [^\n]*\nsource: ({src}) ([^\n]+)$'), read(exc_p), re.M):
             for s in m.group(4).split(','):
                 holds[(m.group(3), s)] = m.group(1)
-    for led in sorted(f for f in os.listdir(os.path.join(HERE, 'sources')) if f.endswith('.clauses')) if os.path.isdir(os.path.join(HERE, 'sources')) else []:
-        src, text = led[:8], read(os.path.join(HERE, 'sources', led))
+    for led in sorted(f for f in os.listdir(os.path.join(HERE, X('{@sources_dir}'))) if f.endswith('.clauses')) if os.path.isdir(os.path.join(HERE, X('{@sources_dir}'))) else []:
+        src, text = led[:8], read(os.path.join(HERE, X('{@sources_dir}'), led))
         status = (re.search(r'^status: (\S+)', text, re.M) or [None, '?'])[1]
         clauses += ['**%s** — ledger status *%s*, %d clauses.' % (src, status, len(re.findall(X(r'^{cl-}'), text, re.M))), '',
                     '| Clause | Source lines | Covered by | Supported by | Open hold |', '|---|---|---|---|---|']
@@ -257,7 +257,7 @@ def main(src2, src3, outdir):
 
     note = (X('The following is {src=0003} bytes from line %d to the end, copied mechanically and unaltered (SHA-256 `%s`). '
             'Its internal headings belong to the mandate and are not part of this master\'s numbering.')) % (APPENDIX_FIRST_LINE, sha(appx))
-    default_basis, trace = parse_trace(read(os.path.join(HERE, 'trace.txt')))
+    default_basis, trace = parse_trace(read(os.path.join(HERE, X('{@trace_txt}'))))
     it = ['Product requirements traced to an implementation: %d. Known gaps (no implementation found): %d. '
           'A link says where a requirement is implemented, never that it is met. Basis, unless the row says otherwise: %s.' % (
               sum(1 for t in trace.values() if t.get('impl')), sum(1 for t in trace.values() if not t.get('impl')), default_basis), '',
@@ -266,15 +266,15 @@ def main(src2, src3, outdir):
         it.append('| %s | %s | %s | %s | %s | %s |' % (rid, by[rid]['t'] if rid in by else '?', ', '.join('`%s`' % x for x in t.get('impl', '').split(', ') if x) or '**gap**',
                                                      t.get('config') or '—', ', '.join('`%s`' % x for x in t.get('test', '').split(', ') if x) or '—', t.get('basis') or 'default'))
     out = frame.replace('{{IMPL_TRACE}}', '\n'.join(it))
-    layouts, decs = parse_decisions(read(os.path.join(HERE, 'decisions.txt')))
+    layouts, decs = parse_decisions(read(os.path.join(HERE, X('{@decisions_txt}'))))
     out = re.sub(r'\{\{DECISIONS:([^}]+)\}\}', lambda m: decision_table(layouts, decs, m.group(1)), out)
-    ev_layouts, evs = parse_evidence(read(os.path.join(HERE, 'evidence.txt')))
+    ev_layouts, evs = parse_evidence(read(os.path.join(HERE, X('{@evidence_txt}'))))
     out = re.sub(r'\{\{EVIDENCE:([^}]+)\}\}', lambda m: decision_table(ev_layouts, evs, m.group(1)), out)
     for k, v in {'SOURCES': sources, 'CATALOGUE': '\n'.join(cat), 'STAGES': '\n'.join(stg), 'COVERAGE': '\n'.join(covt),
                  'OMISSIONS': '\n'.join(om), 'STAGE_INDEX': '\n'.join(si), 'TRACE': '\n'.join(tr), 'CLAUSES': '\n'.join(clauses).rstrip(), 'APPENDIX_NOTE': note}.items():
         out = out.replace('{{%s}}' % k, v)
     head, tail = out.split('{{APPENDIX}}')
-    with open(os.path.join(outdir, 'LXM-MASTER.md'), 'wb') as f:
+    with open(os.path.join(outdir, X('{@master_md}')), 'wb') as f:
         f.write(head.encode('utf-8') + appx + tail.encode('utf-8'))
 
     mx = ['# LXM reconciliation evidence: the 128 reconciled rows (Stages 0–10, header and directive)', '',
@@ -284,7 +284,7 @@ def main(src2, src3, outdir):
         mx.append('| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |' % (r['id'], r['t'], lineage(r['s'], 'S') or '—', lineage(r['s'], 'L') or '—',
                                                                       lineage(r['s'], 'A') or '—', r['cls'], r['disp'], r['k'] or '—', r['n'] or '—',
                                                                       ', '.join(sorted(set(cited.get(r['id'], [])))) or r['scope']))
-    with open(os.path.join(outdir, 'LXM-RECONCILIATION.md'), 'w', encoding='utf-8') as f:
+    with open(os.path.join(outdir, X('{@reconciliation_md}')), 'w', encoding='utf-8') as f:
         f.write('\n'.join(mx) + '\n')
 
 

@@ -220,9 +220,9 @@ for b in blocks:
 RELS = {'covers', 'extends', 'supports', 'depends-on'}
 bad_tok = sorted({'%s %s' % k for k, v in cov_rel.items() if k[0] not in srcreg or any(rel not in RELS for _, rel in v)})
 check('Every coverage relation names a registered source and a known relation', not bad_tok, ', '.join(bad_tok))
-exc_p = os.path.join(root, 'intake', 'exceptions.txt')
+exc_p = os.path.join(root, X('{@intake_dir}'), X('{@exceptions_txt}'))
 held = set(re.findall(X(r'^@{exc} \| (?:QUARANTINED|REJECTED) \| [^\n]*\nsource: ({src} {cl})$'), open(exc_p, encoding='utf-8').read(), re.M)) if os.path.exists(exc_p) else set()
-for led in sorted(glob.glob(os.path.join(root, 'sources', X('{src-}*.clauses')))):
+for led in sorted(glob.glob(os.path.join(root, X('{@sources_dir}'), X('{src-}*.clauses')))):
     src = os.path.basename(led)[:8]
     L_ = open(led, encoding='utf-8').read()
     clauses = re.findall(X(r'^({cl}) \|'), L_, re.M)
@@ -242,7 +242,7 @@ for led in sorted(glob.glob(os.path.join(root, 'sources', X('{src-}*.clauses')))
     unsub = [r for r in citing if not any(r == rr for v in [x for (s, _), x in cov_rel.items() if s == src] for rr, _ in v)]
     check('%s ledger: every record citing the source has a clause-level relation to it' % src, not unsub, ', '.join(unsub))
 # 12. source authority versus source text status (no invented confirmation)
-reg = [[c.strip() for c in l.split(' | ')] for l in open(os.path.join(root, 'sources.txt'), encoding='utf-8').read().split('\n') if l.startswith(X('{src-}'))]
+reg = [[c.strip() for c in l.split(' | ')] for l in open(os.path.join(root, X('{@sources_txt}')), encoding='utf-8').read().split('\n') if l.startswith(X('{src-}'))]
 TEXT_STATUS = {'owner-file', 'owner-confirmed', 'provisional-extract', 'conversation-only'}
 check('Every source has an authority and a known text status', all(len(r) == 7 and r[5] in ('owner', 'owner-decision', 'historical') and r[6] in TEXT_STATUS for r in reg),
       ', '.join(r[0] for r in reg if len(r) != 7 or r[6] not in TEXT_STATUS))
@@ -251,8 +251,8 @@ unpinned = [r[0] for r in reg if r[6] in ('owner-file', 'owner-confirmed', 'prov
 check('Every owner-file, owner-confirmed or provisional source shows a SHA-256 in the register', not unpinned, ', '.join(unpinned))
 confirmed = [r[0] for r in reg if r[6] == 'owner-confirmed' and not re.search(X(r'{dec}'), r[2])]
 check('No source is owner-confirmed without a recorded owner decision in its location', not confirmed, ', '.join(confirmed))
-prov_ok = all(os.path.exists(os.path.join(root, 'sources', r[0] + '.extract.md')) and
-              hashlib.sha256(open(os.path.join(root, 'sources', r[0] + '.extract.md'), 'rb').read()).hexdigest() in row_md.get(r[0], '')
+prov_ok = all(os.path.exists(os.path.join(root, X('{@sources_dir}'), r[0] + X('{@suffix_extract_md}'))) and
+              hashlib.sha256(open(os.path.join(root, X('{@sources_dir}'), r[0] + X('{@suffix_extract_md}')), 'rb').read()).hexdigest() in row_md.get(r[0], '')
               for r in reg if r[6] == 'provisional-extract')
 check('Every provisional extract exists and the register shows its exact SHA-256', prov_ok)
 cited_src = {s for l in lin.values() for s in re.findall(X(r'{src}'), l)}
@@ -266,10 +266,10 @@ for part in re.split(X(r'^(?=\*\*{src}\*\* — ledger status)'), h3, flags=re.M)
     if '*complete*' in part.split('\n')[0]:
         h3_bad += [part[2:10] + ' ' + c for c, cov, sup, hold in rows_ if cov.strip() == '—' and hold.strip() == '—']
 check('H.3 clause coverage index lists every ledger clause; in a complete ledger each is covered or held', len(h3_rows) == sum(
-    len(re.findall(X(r'^{cl-}'), open(p, encoding='utf-8').read(), re.M)) for p in glob.glob(os.path.join(root, 'sources', X('{src-}*.clauses')))) and not h3_bad,
+    len(re.findall(X(r'^{cl-}'), open(p, encoding='utf-8').read(), re.M)) for p in glob.glob(os.path.join(root, X('{@sources_dir}'), X('{src-}*.clauses')))) and not h3_bad,
     '%d rows; uncovered and unheld: %s' % (len(h3_rows), ', '.join(h3_bad)))
 # 12b. every stage action carries a permanent ID, unique in its stage, shown in Part E
-st_txt = open(os.path.join(root, 'stages.txt'), encoding='utf-8').read()
+st_txt = open(os.path.join(root, X('{@stages_txt}')), encoding='utf-8').read()
 bad_a, seen_a = [], set()
 for st in re.split(X(r'^#(?={stg} \|)'), st_txt, flags=re.M)[1:]:
     ids_a = []
@@ -285,9 +285,9 @@ check(X('Every stage action has a stable ID ({stg#}.A-k), unique in its stage, a
       ', '.join(bad_a) or '%d actions' % len(seen_a))
 # 13. decisions, decided records and exception resolutions agree (the register is decisions.txt; Part C is rendered from it)
 import importlib.util
-_spec = importlib.util.spec_from_file_location('lxm_build', os.path.join(root, 'build.py'))
+_spec = importlib.util.spec_from_file_location('lxm_build', os.path.join(root, X('{@build_py}')))
 _build = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(_build)
-layouts, decs = _build.parse_decisions(open(os.path.join(root, 'decisions.txt'), encoding='utf-8').read())
+layouts, decs = _build.parse_decisions(open(os.path.join(root, X('{@decisions_txt}')), encoding='utf-8').read())
 dids = [d['id'] for d in decs]
 check(X('Decision register: IDs unique and contiguous from {dec=000001}, each with status adopted or open and a known table'),
       dids == [X('{dec%}') % i for i in range(1, len(dids) + 1)] and all(d['status'] in ('adopted', 'open') and d['group'] in layouts for d in decs),
@@ -304,7 +304,7 @@ adopted = {d['id'] for d in decs if d['status'] == 'adopted'}
 miss = ['%s %s' % (d['id'], k) for d in decs for k in (('o', 'e') if d['status'] == 'adopted' else ('q',)) if not d.get(k)]
 check('Every adopted decision records its outcome and effect; every open decision its question', not miss, ', '.join(miss))
 kd = {}
-reqs_txt = open(os.path.join(root, 'reqs.txt'), encoding='utf-8').read()
+reqs_txt = open(os.path.join(root, X('{@reqs_txt}')), encoding='utf-8').read()
 for blk in re.split(X(r'\n(?=@{req-})'), reqs_txt):
     m = re.match(X(r'@({req})'), blk)
     k = re.search(r'^k: (.*)$', blk, re.M)
@@ -334,7 +334,7 @@ check('K1-K8 have an empty mutation-authorization scope, as the owner confirmed'
 check('Every adopted decision keeps its normative effect: an effect naming existing records; one with an empty scope is carried by a record', not effect_bad, ', '.join(effect_bad))
 check('Adopted decisions whose scoped effect no gated change has applied yet (reported, not a failure)', True, ', '.join(pending) or 'none')
 # 13b. evidence register (evidence.txt, rendered as G.3)
-ev_layouts, evs = _build.parse_evidence(open(os.path.join(root, 'evidence.txt'), encoding='utf-8').read())
+ev_layouts, evs = _build.parse_evidence(open(os.path.join(root, X('{@evidence_txt}')), encoding='utf-8').read())
 eids = [e['id'] for e in evs]
 check(X('Evidence register: IDs unique and contiguous from {evd=000001}'), eids == [X('{evd%}') % i for i in range(1, len(eids) + 1)], '%d entries' % len(eids))
 known_refs = ids_all | set(dids) | set(eids)
@@ -369,14 +369,14 @@ def _chain(path):
             return False, 'legacy line %d after the chain started' % (i + 1)
     return True, '%d lines, %d chained' % (len(ls_), sum(1 for x in ls_ if _json.loads(x).get('schema', 1) >= 2))
 import json as _json
-_ok, _det = _chain(os.path.join(root, 'intake', 'ledger.jsonl'))
+_ok, _det = _chain(os.path.join(root, X('{@intake_dir}'), X('{@ledger_jsonl}')))
 check('The gate log is an unbroken hash chain from its first chained line (tamper-evident)', _ok, _det)
 # 13c. implementation traceability (trace.txt, rendered as H.4)
 import json as _json
-default_basis, trace = _build.parse_trace(open(os.path.join(root, 'trace.txt'), encoding='utf-8').read())
+default_basis, trace = _build.parse_trace(open(os.path.join(root, X('{@trace_txt}')), encoding='utf-8').read())
 bad_t = sorted(r for r, t in trace.items() if r not in ids_all or t['_dup'] or set(t) - {'_dup'} - set(_build.TRACE_FIELDS))
 check('Implementation traceability: each block names an existing requirement once, with known fields only', not bad_t and bool(default_basis), ', '.join(bad_t) or '%d blocks' % len(trace))
-decl_ids = {d['id'] for d in _json.load(open(os.path.join(root, 'config_adapter.json'), encoding='utf-8'))['declarations']}
+decl_ids = {d['id'] for d in _json.load(open(os.path.join(root, X('{@config_adapter_json}')), encoding='utf-8'))['declarations']}
 bad_c = sorted('%s:%s' % (r, c) for r, t in trace.items() for c in t.get('config', '').split(', ') if c and c not in decl_ids)
 check('Every configuration a requirement traces to is a declaration of the configuration adapter', not bad_c, ', '.join(bad_c))
 gap_nb = sorted(r for r, t in trace.items() if not t.get('impl') and not t.get('basis'))

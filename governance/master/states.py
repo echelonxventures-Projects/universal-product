@@ -4,25 +4,28 @@ A state is never declared: it is derived from traceability, code, configuration,
 Usage: python3 -I states.py <code root> --sha <tested sha> --tests <test-results.json> [--runtime-trace <file>] [--md <out>] [--json <out>]"""
 import json, os, re, sys
 sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats and file names come from the registries (LXM-REQ-000240)
+HERE_STATES = os.path.dirname(os.path.abspath(__file__))
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
 
 
 def compute(root, sha, tests_path, runtime_trace=None, master=HERE):
-    cfg = json.load(open(os.path.join(master, 'knowledge.json'), encoding='utf-8'))
+    cfg = json.load(open(os.path.join(master, X('{@knowledge_json}')), encoding='utf-8'))
     order = cfg['states']['order']
     build = A.load_build(master)
-    recs = A.blocks(A.read(os.path.join(master, 'reqs.txt')))
-    _, trace = build.parse_trace(A.read(os.path.join(master, 'trace.txt')))
-    decl = {d['id'] for d in json.load(open(os.path.join(master, 'config_adapter.json'), encoding='utf-8'))['declarations']}
+    recs = A.blocks(A.read(os.path.join(master, X('{@reqs_txt}'))))
+    _, trace = build.parse_trace(A.read(os.path.join(master, X('{@trace_txt}'))))
+    decl = {d['id'] for d in json.load(open(os.path.join(master, X('{@config_adapter_json}')), encoding='utf-8'))['declarations']}
     t = json.load(open(tests_path, encoding='utf-8')) if tests_path and os.path.isfile(tests_path) else {}
     passed_on_sha = t.get('sha') == sha and t.get('exit') == 0 and not t.get('failed') and t.get('tree_clean_after')
-    pkg = json.load(open(os.path.join(root, 'package.json'), encoding='utf-8')).get('scripts', {}).get('test', '')
+    pkg_file = json.load(open(os.path.join(HERE_STATES, X('{@code_adapter_json}')), encoding='utf-8'))['commands']['package']  # the repository's manifest, as its configuration names it
+    pkg = json.load(open(os.path.join(root, pkg_file), encoding='utf-8')).get('scripts', {}).get('test', '')
     runtime_decls = set(cfg['states'].get('runtime_traced_declarations', []))
     read_paths = set()
     if runtime_trace and os.path.isfile(runtime_trace):
         read_paths = {json.loads(l)['path'] for l in open(runtime_trace, encoding='utf-8') if l.strip() and json.loads(l)['how'] == 'read'}
-    acfg = json.load(open(os.path.join(master, 'code_adapter.json'), encoding='utf-8')).get('domains')
+    acfg = json.load(open(os.path.join(master, X('{@code_adapter_json}')), encoding='utf-8')).get('domains')
     owner_of = {}
     if acfg and os.path.isfile(os.path.join(root, acfg['registry'])):
         for dom in json.load(open(os.path.join(root, acfg['registry']), encoding='utf-8'))[acfg['list']]:

@@ -30,8 +30,8 @@ def findings(states, readiness):
 
 
 def write(root, states, readiness, today, observer):
-    d = os.path.join(root, 'intake', 'proposals'); os.makedirs(d, exist_ok=True)
-    idx_p = os.path.join(d, 'index.json')
+    d = os.path.join(root, X('{@intake_dir}'), 'proposals'); os.makedirs(d, exist_ok=True)
+    idx_p = os.path.join(d, X('{@proposals_index_json}'))
     idx = json.load(open(idx_p, encoding='utf-8')) if os.path.exists(idx_p) else {}
     seen = set(); new = 0
     for subject, title, about, action in findings(states, readiness):
@@ -52,10 +52,10 @@ def write(root, states, readiness, today, observer):
     counts = {}
     for v in states.values():
         counts[v['state']] = counts.get(v['state'], 0) + 1
-    evs = A.load_build(root).parse_evidence(A.read(os.path.join(root, 'evidence.txt')))[1]
+    evs = A.load_build(root).parse_evidence(A.read(os.path.join(root, X('{@evidence_txt}'))))[1]
     fact = 'Computed states of the %d requirements: %s' % (len(states), ', '.join('%s %d' % kv for kv in sorted(counts.items(), key=lambda kv: -kv[1])))
     if not any(e.get('fact') == fact for e in evs) and verified:
-        open(os.path.join(d, 'EVD-states.ctb'), 'w', encoding='utf-8').write(
+        open(os.path.join(d, X('{@states_evidence_ctb}')), 'w', encoding='utf-8').write(
             X('id: CTB-EVD-STATES-%s\nkind: evidence\nevidence: {evd%}\naction: add\nfact: %s\nsource: states.py over traceability, code, configuration, runtime trace and test results\n'
             'method: computed, deterministic\nobserved: %s\nobserver: %s\nverifies: %s\n') % (today, len(evs) + 1, fact, today, observer, ', '.join(verified)))
     return new, sum(1 for e in idx.values() if e['status'] == 'open'), sum(1 for e in idx.values() if e['status'] == 'resolved')
@@ -65,4 +65,4 @@ if __name__ == '__main__':
     opt = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
     states = json.load(open(opt('--states'), encoding='utf-8')); readiness = json.load(open(opt('--readiness'), encoding='utf-8'))
     n, o, r = write(sys.argv[1], states, readiness, opt('--today'), opt('--observer'))
-    print('%d new proposals; %d open, %d resolved; evidence contribution %s' % (n, o, r, 'written' if os.path.exists(os.path.join(sys.argv[1], 'intake', 'proposals', 'EVD-states.ctb')) else 'not needed'))
+    print('%d new proposals; %d open, %d resolved; evidence contribution %s' % (n, o, r, 'written' if os.path.exists(os.path.join(sys.argv[1], X('{@intake_dir}'), 'proposals', X('{@states_evidence_ctb}'))) else 'not needed'))

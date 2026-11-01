@@ -45,8 +45,8 @@
  },
  "declared": {
   "ids.py · file or path": {
-   "count": 1,
-   "reason": "the identifier registry loader names its own registry file: the one starting point every registry needs"
+   "count": 2,
+   "reason": "the registry expander names the two registries it starts from (ids.json and layout.json): the one starting point every registry needs"
   }
  }
 }

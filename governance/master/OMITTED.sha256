@@ -90,7 +90,7 @@ c97ffac241ab7c3b8316e782941ecc520c475d93a9beb647cdad19cdb686731d  intake/decisio
 a0d618f60813b30e4c9464e30eef4fa3ae5b34afa4bd6fcd55e74b41f2663e7c  intake/decisions/OWNER-APPROVAL-2026-10-31b.context.txt
 9b662b9e30fd674f82a8e4d81c140d1f37e3a7d4ae74c4e302da2dab94a7a6f2  intake/decisions/OWNER-APPROVAL-2026-10-31c.context.txt
 c7229a169eac6c74971dc970e8e52f344c5ed1a0b9b022a22281733a626752ef  intake/decisions/OWNER-DECISION-PACKET-2026-10-30.md
-5d5fa64812fae702c6e2f792e905f94ab0c5c8e8a4478fcd33a0697737637bb7  intake/decisions/TOOLING-ZERO-HARDCODING-PLAN-2026-10-31.md
+4701a45611feb27b4b6f2d1f405138570eded21b53945196e01bf449485102da  intake/decisions/TOOLING-ZERO-HARDCODING-PLAN-2026-10-31.md
 f941df980a24aebd83c110a5620007cc4facc022f3416e468d24cf947cb67280  intake/evidence/npm-test-39ed4d6-node22.23.4.log
 f31da95f1142954e98bb8f6fd4b2b8e5ddbbc2db0a29bae3dcaf780c7f7f4548  intake/evidence/npm-test-39ed4d6-traced.log
 51f588e4f1f623584b96e01e2816dbd07a967df0527cb0bd5b0881ef9aa09934  intake/handover/code-findings-39ed4d6.md

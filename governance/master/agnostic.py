@@ -3,6 +3,7 @@ outside its registry. The names come from the registries themselves, so a newly 
 Usage: python3 -I agnostic.py <master root>   Exit 0 clean, 1 a registered name appears outside its registry."""
 import json, os, re, sys
 sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats and file names come from the registries (LXM-REQ-000240)
 
 
 def names(root, cfg):
@@ -42,7 +43,7 @@ def files(root, cfg):
 
 
 def check(root):
-    cfg = json.load(open(os.path.join(root, 'agnostic.json'), encoding='utf-8'))
+    cfg = json.load(open(os.path.join(root, X('{@agnostic_json}')), encoding='utf-8'))
     ns = names(root, cfg)
     pat = re.compile(r'(?<![\w-])(%s)(?![\w-])' % '|'.join(re.escape(n) for n in sorted(ns, key=len, reverse=True)), re.I)
     hits = []

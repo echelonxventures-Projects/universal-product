@@ -13,6 +13,7 @@ Exit 0 GO, 1 NO-GO, 2 usage error."""
 import hashlib, importlib.util, json, os, re, sys
 
 sys.dont_write_bytecode = True  # a check never changes the Master directory (no __pycache__)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats and file names come from the registries (LXM-REQ-000240)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -34,9 +35,9 @@ def compute(root, candidate, ci_path, cfg, master=HERE, tests_path=None, runtime
     cfg = resolve_roles(cfg, HERE)  # who resolves a blocker is a role, held by whichever actor the registry names (LXM-REQ-000239)
     blockers, warnings, inputs = [], [], {}
     block = lambda kind, what, rule, who, ref: blockers.append({'kind': kind, 'what': what, 'rule': rule, 'resolves': who, 'requirement': ref})
-    build = load('lxm_build', os.path.join(master, 'build.py'))
+    build = load('lxm_build', os.path.join(master, X('{@build_py}')))
     # 1. owner decisions
-    p = os.path.join(master, 'decisions.txt'); inputs['decisions.txt'] = digest(p)
+    p = os.path.join(master, X('{@decisions_txt}')); inputs['decisions.txt'] = digest(p)
     r = cfg['rules']['decisions']
     try:
         for d in build.parse_decisions(open(p, encoding='utf-8').read())[1]:
@@ -122,7 +123,7 @@ def compute(root, candidate, ci_path, cfg, master=HERE, tests_path=None, runtime
         item = {'kind': name, 'what': '%s: %d × %s%s' % (name, n, kind, '' if sites in (None, n) else ' (%d distinct code sites; settings sharing a value count each)' % sites), 'rule': rule['rule'], 'resolves': rule['resolves'], 'requirement': rule['requirement']}
         (blockers if rule['severity'] == 'block' else warnings).append(item)
     # 5. known traceability gaps
-    p = os.path.join(master, 'trace.txt'); inputs['trace.txt'] = digest(p)
+    p = os.path.join(master, X('{@trace_txt}')); inputs['trace.txt'] = digest(p)
     rt = cfg['rules']['trace_gaps']
     for rid, t in build.parse_trace(open(p, encoding='utf-8').read())[1].items():
         if not t.get('impl'):
@@ -160,7 +161,7 @@ def main(argv):
     opt = lambda k: argv[argv.index(k) + 1] if k in argv else None
     if len(argv) < 2 or not opt('--candidate') or not opt('--ci'):
         print(__doc__); return 2
-    cfg = json.load(open(opt('--config') or os.path.join(HERE, 'readiness.json'), encoding='utf-8'))
+    cfg = json.load(open(opt('--config') or os.path.join(HERE, X('{@readiness_json}')), encoding='utf-8'))
     r = compute(argv[1], opt('--candidate'), opt('--ci'), cfg, tests_path=opt('--tests'), runtime_trace=opt('--runtime-trace'))
     if opt('--json'):
         json.dump(r, open(opt('--json'), 'w', encoding='utf-8'), indent=1, ensure_ascii=False)

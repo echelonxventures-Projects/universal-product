@@ -4,10 +4,11 @@ Usage: python3 -I tooling_literals.py <master root> [--baseline <file>] [--write
 Exit 0 pass, 1 a count rose above the baseline. Kinds and their patterns come from tooling-literals.json."""
 import ast, json, os, re, sys
 sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats and file names come from the registries (LXM-REQ-000240)
 
 
 def scan(root):
-    cfg = json.load(open(os.path.join(root, 'tooling-literals.json'), encoding='utf-8'))
+    cfg = json.load(open(os.path.join(root, X('{@tooling_literals_json}')), encoding='utf-8'))
     f_cfg, counts, examples = cfg['files'], {}, {}
     for rule in cfg['kinds'].values():  # a kind may take its pattern from the identifier registry instead of repeating it
         if rule.get('from_ids'):

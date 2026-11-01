@@ -11,7 +11,7 @@ import assimilate as A
 
 
 def revalidate(root):
-    lex = A.Lexicon(os.path.join(root, 'lexicon.txt')); recs = A.blocks(A.read(os.path.join(root, 'reqs.txt'))); A.index(recs, lex)
+    lex = A.Lexicon(os.path.join(root, X('{@lexicon_txt}'))); recs = A.blocks(A.read(os.path.join(root, X('{@reqs_txt}')))); A.index(recs, lex)
     texts = {}  # only contributions the gate accepted, exactly as accepted (same SHA-256), later ones winning; refused or stray files never count
     led = os.path.join(root, A.LEDGER)
     for e in [json.loads(l) for l in open(led, encoding='utf-8') if l.strip()] if os.path.exists(led) else []:

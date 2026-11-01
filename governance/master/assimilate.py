@@ -12,9 +12,10 @@ sys.dont_write_bytecode = True  # a check never changes the Master directory (no
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-LAYOUT = json.load(open(os.path.join(_HERE, 'layout.json'), encoding='utf-8'))  # where the Master keeps what (LXM-REQ-000240)
-CANON, DERIVED, TOOLS = LAYOUT['canon'], LAYOUT['derived'], LAYOUT['tools']  # TOOLS: everything build, validate and the staged checks read
-MATCH = json.load(open(os.path.join(_HERE, 'gate.json'), encoding='utf-8'))['matching']  # the gate's matching rules, versioned with the gate
+LAYOUT = json.load(open(os.path.join(_HERE, X('{@layout_json}')), encoding='utf-8'))  # where the Master keeps what (LXM-REQ-000240)
+_N = LAYOUT['names']
+CANON, DERIVED, TOOLS = [_N[k] for k in LAYOUT['canon']], [_N[k] for k in LAYOUT['derived']], [_N[k] for k in LAYOUT['tools']]  # TOOLS: everything build, validate and the staged checks read
+MATCH = json.load(open(os.path.join(_HERE, X('{@gate_json}')), encoding='utf-8'))['matching']  # the gate's matching rules, versioned with the gate
 T_COVER, T_RELATED, T_CONFLICT = MATCH['cover'], MATCH['related'], MATCH['conflict']  # a contradiction needs the same shared meaning for negations and for numbers
 FIELDS = {'id', 'source', 'section', 'kind', 'scope', 'title', 'text', 'extends', 'supersedes', 'reason', 'depends',
           'applied-in', 'relates', 'distinct-from', 'recognized-as', 'decision'}
@@ -63,7 +64,7 @@ def render(rec):
 
 def sources(root):
     return {c[0]: {'authority': c[5], 'text_status': c[6] if len(c) > 6 else 'unknown'} for c in
-            ([x.strip() for x in l.split(' | ')] for l in read(os.path.join(root, 'sources.txt')).split('\n') if l.startswith(X('{src-}')))}
+            ([x.strip() for x in l.split(' | ')] for l in read(os.path.join(root, X('{@sources_txt}'))).split('\n') if l.startswith(X('{src-}')))}
 
 
 ACTION = re.compile(X(r'^({stg})(?:\.A-| #)(\d+)$'))  # STG-NN.A-k; the legacy "STG-NN #k" names the same stable ID, never a position
@@ -453,7 +454,7 @@ def apply(plan, reqs_text, stages_text):
 
 
 def state_digest(root):
-    ledgers = sorted('sources/' + f for f in os.listdir(os.path.join(root, 'sources'))) if os.path.isdir(os.path.join(root, 'sources')) else []
+    ledgers = sorted(X('{@sources_prefix}') + f for f in os.listdir(os.path.join(root, X('{@sources_dir}')))) if os.path.isdir(os.path.join(root, X('{@sources_dir}'))) else []
     return sha(''.join(sha(open(os.path.join(root, f), 'rb').read()) for f in CANON + DERIVED + ledgers))
 
 
@@ -477,8 +478,8 @@ def commit(root, staging, files):
 
 
 def record_exception(root, ctb, refusal):
-    d = os.path.join(root, 'intake'); os.makedirs(d, exist_ok=True)
-    p = os.path.join(d, 'exceptions.txt')
+    d = os.path.join(root, X('{@intake_dir}')); os.makedirs(d, exist_ok=True)
+    p = os.path.join(d, X('{@exceptions_txt}'))
     text = read(p) if os.path.exists(p) else X('# Intake exceptions ({req=000222}). Not canonical; each entry blocks one contribution until resolved.\n')
     m = re.search(X(r'^@({exc}) \| [A-Z]+ \| %s \| %s$') % (re.escape(ctb.get('id', '?')), ctb['_sha']), text, re.M)
     if m:
@@ -492,7 +493,7 @@ def record_exception(root, ctb, refusal):
 
 def load_build(root):
     """build.py of this root: the one parser for the register and the trace, shared with the generator and the validator."""
-    spec = importlib.util.spec_from_file_location('lxm_build', os.path.join(root, 'build.py'))
+    spec = importlib.util.spec_from_file_location('lxm_build', os.path.join(root, X('{@build_py}')))
     build = importlib.util.module_from_spec(spec); spec.loader.exec_module(build)
     return build
 
@@ -513,7 +514,7 @@ def resolve_decision(root, ctb):
         reject('Unknown fields for a decision: %s' % ', '.join(unknown), 'Use only the decision fields documented in assimilate.py.')
     groups = gate_config(root)['decision_groups']
     build = load_build(root)
-    text = read(os.path.join(root, 'decisions.txt'))
+    text = read(os.path.join(root, X('{@decisions_txt}')))
     layouts, decs = build.parse_decisions(text)
     by = {d['id']: d for d in decs}
     did, action = ctb.get('decision', ''), ctb.get('action', '')
@@ -546,7 +547,7 @@ def resolve_decision(root, ctb):
     if missing:
         reject('Adoption of %s lacks %s' % (did, ', '.join(missing)), 'An adoption records the outcome, effect, scope, who adopted it, provenance, rationale and the approval on file.')
     ap = os.path.abspath(os.path.join(root, ctb['approval']))  # absolute on both sides, whether the root is given as '.' or a full path
-    if not ap.startswith(os.path.abspath(os.path.join(root, 'intake', 'decisions')) + os.sep) or not os.path.isfile(ap):
+    if not ap.startswith(os.path.abspath(os.path.join(root, X('{@intake_dir}'), 'decisions')) + os.sep) or not os.path.isfile(ap):
         reject('The approval %s is not a file under intake/decisions/' % ctb['approval'], 'Store the owner\'s approval verbatim under intake/decisions/ and cite it.')
     if sha(open(ap, 'rb').read()) != ctb['approval-sha256']:
         reject('The approval file does not match approval-sha256', 'Cite the SHA-256 of the approval exactly as stored.')
@@ -573,7 +574,7 @@ def resolve_evidence(root, ctb):
     if unknown:
         reject('Unknown fields for evidence: %s' % ', '.join(unknown), 'Use only the evidence fields documented in assimilate.py.')
     build = load_build(root)
-    text = read(os.path.join(root, 'evidence.txt'))
+    text = read(os.path.join(root, X('{@evidence_txt}')))
     _, evs = build.parse_evidence(text)
     by = {e['id']: e for e in evs}
     eid, action = ctb.get('evidence', ''), ctb.get('action', '')
@@ -591,8 +592,8 @@ def resolve_evidence(root, ctb):
     missing = [k for k in ('fact', 'source', 'method', 'observed', 'observer', 'verifies') if not ctb.get(k)]
     if missing:
         reject('Evidence lacks %s' % ', '.join(missing), 'Evidence states the observed fact, where and how it was observed, when, by whom, and what it is evidence for.')
-    known = set(re.findall(X(r'^@({req})'), read(os.path.join(root, 'reqs.txt')), re.M)) | \
-        {d['id'] for d in build.parse_decisions(read(os.path.join(root, 'decisions.txt')))[1]} | set(by)
+    known = set(re.findall(X(r'^@({req})'), read(os.path.join(root, X('{@reqs_txt}'))), re.M)) | \
+        {d['id'] for d in build.parse_decisions(read(os.path.join(root, X('{@decisions_txt}'))))[1]} | set(by)
     refs = re.findall(r'LXM-(?:REQ|DEC|EVD)-\d{6}', fields['verifies'])
     if not refs or set(refs) - known:
         reject('verifies must name existing requirements, decisions or evidence: %s' % (', '.join(sorted(set(refs) - known)) or 'none named'),
@@ -629,9 +630,9 @@ def resolve_trace(root, ctb):
     """kind: trace. action add or replace: a requirement's implementation links (impl, spec, config, test) with their basis."""
     _fields(ctb, 'trace')
     rid, action = ctb.get('requirement', ''), ctb.get('action', '')
-    if not REQ.fullmatch(rid) or rid not in blocks(read(os.path.join(root, 'reqs.txt'))) or action not in ('add', 'replace'):
+    if not REQ.fullmatch(rid) or rid not in blocks(read(os.path.join(root, X('{@reqs_txt}')))) or action not in ('add', 'replace'):
         reject('A trace change needs an existing requirement: and action: add or replace', 'Name the requirement whose links change.')
-    text = read(os.path.join(root, 'trace.txt'))
+    text = read(os.path.join(root, X('{@trace_txt}')))
     block = '@%s\n%s' % (rid, ''.join('%s: %s\n' % (k, ctb[k]) for k in ('impl', 'spec', 'config', 'test', 'basis') if ctb.get(k)))
     m = re.search(r'^@%s\n(?:[a-z]+: [^\n]*\n)*' % rid, text, re.M)
     if m:
@@ -649,7 +650,7 @@ def resolve_scope(root, ctb):
     """kind: scope. action add: a new requirement scope, placed after an existing scope line (or @stages)."""
     _fields(ctb, 'scope')
     sid, name, after = ctb.get('scope', ''), ctb.get('name', ''), ctb.get('after', '')
-    text = read(os.path.join(root, 'scopes.txt'))
+    text = read(os.path.join(root, X('{@scopes_txt}')))
     lines = text.split('\n')
     ids = [l.split('|')[0].strip() for l in lines if l.strip() and not l.startswith('#')]
     if ctb.get('action') != 'add' or not re.fullmatch(r'[A-Z][A-Z0-9-]{1,15}', sid) or not name:
@@ -670,12 +671,12 @@ def resolve_source(root, ctb):
     """kind: source. action register: the next source, with its extract, provenance and clause ledger already in sources/."""
     _fields(ctb, 'source')
     sid, status, auth = ctb.get('source', ''), ctb.get('text-status', ''), ctb.get('authority', '')
-    text = read(os.path.join(root, 'sources.txt'))
+    text = read(os.path.join(root, X('{@sources_txt}')))
     rows = [l for l in text.split('\n') if l.startswith(X('{src-}'))]
     ids = [r.split(' | ')[0] for r in rows]
     row = ' | '.join([sid] + [ctb.get(k, '') for k in ('title', 'location', 'sha', 'role', 'authority', 'text-status')])
     if ctb.get('action') == 'complete-ledger':  # a clause ledger declares itself complete: validate.py then requires every clause covered or held
-        lp = os.path.join(root, 'sources', sid + '.clauses')
+        lp = os.path.join(root, X('{@sources_dir}'), sid + '.clauses')
         if sid not in ids or not os.path.isfile(lp):
             reject('%s has no clause ledger' % sid, 'Register and capture the source first.')
         lt = read(lp)
@@ -696,15 +697,15 @@ def resolve_source(root, ctb):
     more = {}
     if ctb.get('files-from'):  # the source files enter sources/ only through the gate, from the Level 1 intake area
         fd = os.path.abspath(os.path.join(root, ctb['files-from']))
-        if not fd.startswith(os.path.abspath(os.path.join(root, 'intake')) + os.sep) or not os.path.isdir(fd):
+        if not fd.startswith(os.path.abspath(os.path.join(root, X('{@intake_dir}'))) + os.sep) or not os.path.isdir(fd):
             reject('files-from must be a folder under intake/', 'Capture writes the source files under intake/<id>/files/.')
         for f in sorted(os.listdir(fd)):
-            if not re.fullmatch(re.escape(sid) + r'\.(extract\.md|provenance\.md|clauses)', f) or os.path.exists(os.path.join(root, 'sources', f)):
+            if not re.fullmatch(re.escape(sid) + r'\.(extract\.md|provenance\.md|clauses)', f) or os.path.exists(os.path.join(root, X('{@sources_dir}'), f)):
                 reject('files-from holds %s, which is not a new file of %s' % (f, sid), 'Only the extract, provenance and clause ledger of the new source.')
-            more['sources/' + f] = read(os.path.join(fd, f))
+            more[X('{@sources_prefix}') + f] = read(os.path.join(fd, f))
     if status == 'provisional-extract':
-        need = ['%s.%s' % (sid, x) for x in ('extract.md', 'provenance.md', 'clauses')]
-        missing = [p for p in need if 'sources/' + p not in more and not os.path.isfile(os.path.join(root, 'sources', p))]
+        need = ['%s.%s' % (sid, x) for x in (X('{@extract_md}'), X('{@provenance_md}'), 'clauses')]
+        missing = [p for p in need if X('{@sources_prefix}') + p not in more and not os.path.isfile(os.path.join(root, X('{@sources_dir}'), p))]
         if missing:
             reject('A provisional extract needs %s' % ', '.join(missing), 'Capture the source first (capture.py).')
     if any(not ctb.get(k) for k in ('title', 'location', 'sha', 'role')):
@@ -716,9 +717,9 @@ def resolve_stage_action(root, ctb):
     """kind: stage-action. action add: a new action of a stage, with the next permanent id, citing existing requirements."""
     _fields(ctb, 'stage-action')
     stg, txt, refs = ctb.get('stage', ''), ctb.get('text', ''), REQ.findall(ctb.get('refs', ''))
-    text = read(os.path.join(root, 'stages.txt'))
+    text = read(os.path.join(root, X('{@stages_txt}')))
     acts = stage_actions(text)
-    recs = blocks(read(os.path.join(root, 'reqs.txt')))
+    recs = blocks(read(os.path.join(root, X('{@reqs_txt}'))))
     if ctb.get('action') != 'add' or stg not in acts or len(txt) < 20 or not refs or set(refs) - set(recs):
         reject('A stage action needs action: add, an existing stage, text of a sentence and refs: existing requirements', 'Every action cites at least one requirement.')
     line = '- A-%d %s [%s]' % (max(acts[stg] or {0: 0}) + 1, txt, ', '.join(sorted(set(refs))))
@@ -733,7 +734,7 @@ def resolve_prose(root, ctb):
     """kind: prose. action replace (a section's body under its exact heading) or insert (a block after a unique anchor line).
     Sections the configuration marks owner-reserved need an adopted decision."""
     _fields(ctb, 'prose')
-    text = read(os.path.join(root, 'frame.md'))
+    text = read(os.path.join(root, X('{@frame_md}')))
     owner_sections = gate_config(root).get('owner_sections', [])
     action, body = ctb.get('action', ''), ctb.get('text', '').replace('\\n', '\n')
     if action == 'replace':
@@ -769,9 +770,9 @@ def resolve_prose(root, ctb):
     return (text, 'NOOP', []) if new == text else (new, 'EXTEND' if action == 'insert' else 'SUPERSEDE', [(ctb.get('heading') or ctb.get('anchor') or ctb.get('line') or '')[:40]])
 
 
-ADAPTERS = {'decision': ('decisions.txt', 'resolve_decision'), 'evidence': ('evidence.txt', 'resolve_evidence'), 'trace': ('trace.txt', 'resolve_trace'),
-            'scope': ('scopes.txt', 'resolve_scope'), 'source': ('sources.txt', 'resolve_source'), 'stage-action': ('stages.txt', 'resolve_stage_action'),
-            'prose': ('frame.md', 'resolve_prose')}  # every kind other than requirement: its canonical file and its adapter
+ADAPTERS = {'decision': (X('{@decisions_txt}'), 'resolve_decision'), 'evidence': (X('{@evidence_txt}'), 'resolve_evidence'), 'trace': (X('{@trace_txt}'), 'resolve_trace'),
+            'scope': (X('{@scopes_txt}'), 'resolve_scope'), 'source': (X('{@sources_txt}'), 'resolve_source'), 'stage-action': (X('{@stages_txt}'), 'resolve_stage_action'),
+            'prose': (X('{@frame_md}'), 'resolve_prose')}  # every kind other than requirement: its canonical file and its adapter
 
 
 def adopted_decisions(root):
@@ -782,7 +783,7 @@ def adopted_decisions(root):
     Open decisions never authorize."""
     build = load_build(root)
     out = {}
-    for d in build.parse_decisions(read(os.path.join(root, 'decisions.txt')))[1]:
+    for d in build.parse_decisions(read(os.path.join(root, X('{@decisions_txt}'))))[1]:
         if d['status'] != 'adopted':
             continue
         cell = d.get('a')
@@ -824,7 +825,7 @@ def guard_decision_cited(ctb, decisions, target, recs):
 
 def owner_holds(root):
     """Open owner-reserved holds by source clause. A hold binds the clause itself, however a later contribution is phrased."""
-    p = os.path.join(root, 'intake', 'exceptions.txt')
+    p = os.path.join(root, X('{@intake_dir}'), X('{@exceptions_txt}'))
     if not os.path.exists(p):
         return {}
     held = {}
@@ -844,7 +845,7 @@ def guard_owner_holds(root, ctb, decisions):
 
 def resolve_exceptions(root, ctb_id, note=''):
     """An accepted (or already-assimilated) resubmission closes the exceptions it was blocked by, recording what resolved them."""
-    p = os.path.join(root, 'intake', 'exceptions.txt')
+    p = os.path.join(root, X('{@intake_dir}'), X('{@exceptions_txt}'))
     if not os.path.exists(p):
         return False
     t = read(p)
@@ -858,7 +859,7 @@ def resolve_exceptions(root, ctb_id, note=''):
 def gate_config(root):
     """gate.json, with the paths it lists under "root_relative" resolved against the Master folder, so the Master verifies
     itself wherever it is installed."""
-    g = json.load(open(os.path.join(root, 'gate.json')))
+    g = json.load(open(os.path.join(root, X('{@gate_json}'))))
     for k in g.get('root_relative', []):
         if not os.path.isabs(g[k]):
             g[k] = os.path.join(os.path.abspath(root), g[k])
@@ -869,14 +870,14 @@ def close_on_noop(root, ctb_id, note):
     """A NOOP resubmission that closes held items regenerates the Master, which shows open holds; nothing canonical changes."""
     if resolve_exceptions(root, ctb_id, note):
         gate = gate_config(root)
-        b = subprocess.run([sys.executable, '-I', os.path.join(root, 'build.py'), gate['src2'], gate['src3'], os.path.join(root, 'out')], capture_output=True, text=True)
+        b = subprocess.run([sys.executable, '-I', os.path.join(root, X('{@build_py}')), gate['src2'], gate['src3'], os.path.join(root, X('{@out_dir}'))], capture_output=True, text=True)
         if b.returncode:
             raise RuntimeError('regenerating the Master after closing a hold failed: ' + (b.stderr or b.stdout)[-300:])
         return True
     return False
 
 
-LEDGER = LAYOUT['ledger']
+LEDGER = _N[LAYOUT['ledger']]
 LEDGER_SCHEMA = 2  # 2: hash chain (prev) and the exact mutation an accepted run made (mutation)
 
 
@@ -899,8 +900,8 @@ def baseline(root, reason):
     if len(reason) < 20:
         return {'outcome': 'REJECTED', 'reason': 'a baseline states why the state changed outside the gate'}
     gate = gate_config(root)
-    b = subprocess.run([sys.executable, '-I', os.path.join(root, 'build.py'), gate['src2'], gate['src3'], os.path.join(root, 'out')], capture_output=True, text=True)
-    v = subprocess.run([sys.executable, '-I', os.path.join(root, 'validate.py'), os.path.join(root, DERIVED[0]), os.path.join(root, DERIVED[1]),
+    b = subprocess.run([sys.executable, '-I', os.path.join(root, X('{@build_py}')), gate['src2'], gate['src3'], os.path.join(root, X('{@out_dir}'))], capture_output=True, text=True)
+    v = subprocess.run([sys.executable, '-I', os.path.join(root, X('{@validate_py}')), os.path.join(root, DERIVED[0]), os.path.join(root, DERIVED[1]),
                         gate['src2'], gate['src3'], gate['prev_matrix'], gate['src2_sha'], gate['src3_sha']], capture_output=True, text=True)
     summary = v.stdout.strip().split('\n')[-1]
     if b.returncode or v.returncode:
@@ -930,7 +931,7 @@ def verify_chain(root):
 
 
 def gate_version(root):
-    return sha(''.join(sha(open(os.path.join(root, f), 'rb').read()) for f in ('assimilate.py', 'lexicon.txt', 'build.py', 'validate.py')))[:16]
+    return sha(''.join(sha(open(os.path.join(root, f), 'rb').read()) for f in (X('{@assimilate_py}'), X('{@lexicon_txt}'), X('{@build_py}'), X('{@validate_py}'))))[:16]
 
 
 ACCEPTED = {'RECOGNIZE-EXACT', 'RECOGNIZE-SEMANTIC', 'COMPOSE', 'EXTEND', 'PARTIAL→EXTEND', 'NEW', 'PARTIAL→NEW', 'SUPERSEDE'}
@@ -990,11 +991,11 @@ def assimilate(root, ctb_path, dry_run=False):
 
 
 def _run(root, ctb_path, dry_run, report, before, ctx):
-    lex = Lexicon(os.path.join(root, 'lexicon.txt'))
+    lex = Lexicon(os.path.join(root, X('{@lexicon_txt}')))
     gate = gate_config(root)
     ctb = ctx['ctb'] = receive(ctb_path)                                                       # receive
     report['stages']['receive'] = '%s from %s %s, sha %s' % (ctb.get('id'), ctb.get('source'), ctb.get('section'), ctb['_sha'][:12])
-    reqs_text, stages_text = read(os.path.join(root, 'reqs.txt')), read(os.path.join(root, 'stages.txt'))
+    reqs_text, stages_text = read(os.path.join(root, X('{@reqs_txt}'))), read(os.path.join(root, X('{@stages_txt}')))
     recs, srcs = blocks(reqs_text), sources(root)
     ctx['srcs'] = srcs
     try:
@@ -1015,13 +1016,13 @@ def _run(root, ctb_path, dry_run, report, before, ctx):
                 extra.update(res[3])  # further canonical files the change brings (a new source's extract, provenance, ledger)
             new_reqs, new_stages, clauses = reqs_text, stages_text, []
             if changed:
-                if target == 'stages.txt':
+                if target == X('{@stages_txt}'):
                     new_stages = new_text
                 else:
                     extra[target] = new_text
         else:                                                                                  # requirement adapter
             acts = stage_actions(stages_text)
-            acts['_scopes'] = set(load_build(root).parse_scopes(read(os.path.join(root, 'scopes.txt')), [k for k in acts if not k.startswith('_')])[0])
+            acts['_scopes'] = set(load_build(root).parse_scopes(read(os.path.join(root, X('{@scopes_txt}'))), [k for k in acts if not k.startswith('_')])[0])
             check_contribution(ctb, recs, srcs, acts)
             index(recs, lex)                                                                   # discover
             report['stages']['discover'] = '%d canonical records indexed' % len(recs)
@@ -1043,21 +1044,21 @@ def _run(root, ctb_path, dry_run, report, before, ctx):
         try:
             for f in CANON + TOOLS:
                 shutil.copyfile(os.path.join(root, f), os.path.join(staging, f))
-            for d in ('sources', 'intake'):
+            for d in (X('{@sources_dir}'), X('{@intake_dir}')):
                 if os.path.isdir(os.path.join(root, d)):
                     shutil.copytree(os.path.join(root, d), os.path.join(staging, d))
-            os.makedirs(os.path.join(staging, 'out'))
-            open(os.path.join(staging, 'reqs.txt'), 'w', encoding='utf-8').write(new_reqs)
-            open(os.path.join(staging, 'stages.txt'), 'w', encoding='utf-8').write(new_stages)
+            os.makedirs(os.path.join(staging, X('{@out_dir}')))
+            open(os.path.join(staging, X('{@reqs_txt}')), 'w', encoding='utf-8').write(new_reqs)
+            open(os.path.join(staging, X('{@stages_txt}')), 'w', encoding='utf-8').write(new_stages)
             for f, t in extra.items():
                 open(os.path.join(staging, f), 'w', encoding='utf-8').write(t)
             closes = resolve_exceptions(staging, ctb.get('id', ''), '%s; %s by %s (sha %s); records %s%s' % (
                 time.strftime('%Y-%m-%d'), outcome, ctb.get('id'), ctb['_sha'][:12], ', '.join(changed),
                 '; decision %s' % ctb['decision'] if ctb.get('decision') else ''))  # closed in staging: the Master is generated with it closed
-            b = subprocess.run([sys.executable, '-I', os.path.join(staging, 'build.py'), gate['src2'], gate['src3'], os.path.join(staging, 'out')], capture_output=True, text=True)
+            b = subprocess.run([sys.executable, '-I', os.path.join(staging, X('{@build_py}')), gate['src2'], gate['src3'], os.path.join(staging, X('{@out_dir}'))], capture_output=True, text=True)
             if b.returncode:
                 raise RuntimeError('staged build failed: ' + (b.stderr.strip().split('\n') or ['?'])[-1])
-            v = subprocess.run([sys.executable, '-I', os.path.join(staging, 'validate.py'), os.path.join(staging, DERIVED[0]), os.path.join(staging, DERIVED[1]),
+            v = subprocess.run([sys.executable, '-I', os.path.join(staging, X('{@validate_py}')), os.path.join(staging, DERIVED[0]), os.path.join(staging, DERIVED[1]),
                                 gate['src2'], gate['src3'], gate['prev_matrix'], gate['src2_sha'], gate['src3_sha']], capture_output=True, text=True)
             fails = [l for l in v.stdout.split('\n') if l.startswith('FAIL')]
             post = blocks(new_reqs); index(post, lex)
@@ -1066,7 +1067,7 @@ def _run(root, ctb_path, dry_run, report, before, ctx):
                 if not declared and classify(cl['text'], post, lex, set())['kind'] not in ('EXACT', 'COVERED', 'CONFLICT') and outcome != 'SUPERSEDE':
                     fails.append('FAIL  clause %d is still not expressed by any record after the mutation' % cl['n'])
             try:                                                                               # re-validation of every dependent clause
-                spec = importlib.util.spec_from_file_location('lxm_revalidate', os.path.join(staging, 'revalidate.py'))
+                spec = importlib.util.spec_from_file_location('lxm_revalidate', os.path.join(staging, X('{@revalidate_py}')))
                 RV = importlib.util.module_from_spec(spec); spec.loader.exec_module(RV)
                 before_reg, after_reg = len(RV.revalidate(root)[1]), RV.revalidate(staging)[1]
                 if len(after_reg) > before_reg:
@@ -1086,10 +1087,10 @@ def _run(root, ctb_path, dry_run, report, before, ctx):
                 report.update(outcome=outcome, dry_run=True)
                 return report
             report['_mutation'] = {'ops': [list(x) for x in plan] if ctb.get('kind', 'requirement') == 'requirement' else None,
-                                   'files': {f: sha(t.encode()) for f, t in [('reqs.txt', new_reqs), ('stages.txt', new_stages)] + sorted(extra.items())},
+                                   'files': {f: sha(t.encode()) for f, t in [(X('{@reqs_txt}'), new_reqs), (X('{@stages_txt}'), new_stages)] + sorted(extra.items())},
                                    'contents': dict(extra, **({'stages.txt': new_stages} if ctb.get('kind') == 'stage-action' else {})) or None}  # small registers replay exactly
-            commit(root, staging, ['reqs.txt', 'stages.txt'] + sorted(extra) + DERIVED + (['intake/exceptions.txt'] if closes else []))  # assimilate + propagate
-            report['stages']['assimilate'] = 'committed: ' + ', '.join(['reqs.txt', 'stages.txt'] + sorted(extra)) + (', intake/exceptions.txt (exception closed)' if closes else '')
+            commit(root, staging, [X('{@reqs_txt}'), X('{@stages_txt}')] + sorted(extra) + DERIVED + ([X('{@intake_exceptions_txt}')] if closes else []))  # assimilate + propagate
+            report['stages']['assimilate'] = 'committed: ' + ', '.join([X('{@reqs_txt}'), X('{@stages_txt}')] + sorted(extra)) + (', intake/exceptions.txt (exception closed)' if closes else '')
             report['stages']['propagate'] = 'regenerated: %s' % ', '.join(DERIVED)
             report.update(outcome=outcome, changed=changed)
             return report

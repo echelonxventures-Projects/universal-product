@@ -35,7 +35,7 @@ def config():
 
 def world(code=None, decisions=DECISIONS, trace=TRACE, runs=(1, 2), sha=SHA, tests=None):
     m, d = tempfile.mkdtemp(prefix='rdfx-master-'), tempfile.mkdtemp(prefix='rdfx-code-')
-    for f in ('build.py', 'config_adapter.py', 'code_adapter.py', 'ids.py', 'ids.json'):
+    for f in ('build.py', 'config_adapter.py', 'code_adapter.py', 'ids.py', 'ids.json', 'layout.json'):
         shutil.copyfile(os.path.join(HERE, f), os.path.join(m, f))
     open(os.path.join(m, 'decisions.txt'), 'w').write(decisions); open(os.path.join(m, 'trace.txt'), 'w').write(trace)
     json.dump(CFG_CONF, open(os.path.join(m, 'config_adapter.json'), 'w')); json.dump(CFG_CODE, open(os.path.join(m, 'code_adapter.json'), 'w'))

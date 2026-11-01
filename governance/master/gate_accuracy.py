@@ -3,12 +3,13 @@ wrong, by kind of case. Run it on every gate change; the error count may only go
 Usage: python3 -I gate_accuracy.py <root> [--reference gate_reference.txt] [--max-errors N]   Exit 0 when errors <= N (default 0)."""
 import os, sys
 sys.dont_write_bytecode = True
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats and file names come from the registries (LXM-REQ-000240)
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
 
 
 def run(root, ref):
-    lex = A.Lexicon(os.path.join(root, 'lexicon.txt')); recs = A.blocks(A.read(os.path.join(root, 'reqs.txt'))); A.index(recs, lex)
+    lex = A.Lexicon(os.path.join(root, X('{@lexicon_txt}'))); recs = A.blocks(A.read(os.path.join(root, X('{@reqs_txt}')))); A.index(recs, lex)
     out = []
     for line in open(ref, encoding='utf-8'):
         if not line.strip() or line.startswith('#'):
@@ -24,7 +25,7 @@ def run(root, ref):
 
 if __name__ == '__main__':
     root = sys.argv[1]
-    ref = sys.argv[sys.argv.index('--reference') + 1] if '--reference' in sys.argv else os.path.join(root, 'gate_reference.txt')
+    ref = sys.argv[sys.argv.index('--reference') + 1] if '--reference' in sys.argv else os.path.join(root, X('{@gate_reference_txt}'))
     res = run(root, ref)
     by = {}
     for r in res:

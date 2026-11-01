@@ -21,12 +21,12 @@ def split(root, out):
             rid = re.match(head, p).group(0)[1:]
             open(os.path.join(d, rid + '.txt'), 'w', encoding='utf-8').write(p)
             index['records'].append({'id': rid, 'file': rid + '.txt', 'bytes': len(p.encode()), 'sha256': sha(p.encode())})
-        json.dump(index, open(os.path.join(d, 'INDEX.json'), 'w', encoding='utf-8'), indent=1)
+        json.dump(index, open(os.path.join(d, X('{@shard_index_json}')), 'w', encoding='utf-8'), indent=1)
 
 
 def join(shards, out):
     for reg in REGISTERS:
-        d = os.path.join(shards, reg[:-4]); index = json.load(open(os.path.join(d, 'INDEX.json'), encoding='utf-8'))
+        d = os.path.join(shards, reg[:-4]); index = json.load(open(os.path.join(d, X('{@shard_index_json}')), encoding='utf-8'))
         body = []
         for r in index['records']:
             p = open(os.path.join(d, r['file']), encoding='utf-8').read()
@@ -38,16 +38,16 @@ def join(shards, out):
 
 def prove(root):
     t = tempfile.mkdtemp(prefix='lxm-shard-'); sh, rb = os.path.join(t, 'registry'), os.path.join(t, 'rebuilt')
-    shutil.copytree(root, rb, ignore=shutil.ignore_patterns('__pycache__', 'out'))
+    shutil.copytree(root, rb, ignore=shutil.ignore_patterns('__pycache__', X('{@out_dir}')))
     for reg in REGISTERS:
         os.remove(os.path.join(rb, reg))
     split(root, sh); join(sh, rb)
     same = {reg: open(os.path.join(root, reg), 'rb').read() == open(os.path.join(rb, reg), 'rb').read() for reg in REGISTERS}
     g = gate_config(root)
-    os.makedirs(os.path.join(rb, 'out'))
-    subprocess.run([sys.executable, '-I', os.path.join(rb, 'build.py'), g['src2'], g['src3'], os.path.join(rb, 'out')], check=True, capture_output=True)
-    master = open(os.path.join(root, 'out', 'LXM-MASTER.md'), 'rb').read() == open(os.path.join(rb, 'out', 'LXM-MASTER.md'), 'rb').read()
-    sizes = [r['bytes'] for reg in REGISTERS for r in json.load(open(os.path.join(sh, reg[:-4], 'INDEX.json')))['records']]
+    os.makedirs(os.path.join(rb, X('{@out_dir}')))
+    subprocess.run([sys.executable, '-I', os.path.join(rb, X('{@build_py}')), g['src2'], g['src3'], os.path.join(rb, X('{@out_dir}'))], check=True, capture_output=True)
+    master = open(os.path.join(root, X('{@out_dir}'), X('{@master_md}')), 'rb').read() == open(os.path.join(rb, X('{@out_dir}'), X('{@master_md}')), 'rb').read()
+    sizes = [r['bytes'] for reg in REGISTERS for r in json.load(open(os.path.join(sh, reg[:-4], X('{@shard_index_json}'))))['records']]
     files = len(sizes)
     shutil.rmtree(t, ignore_errors=True)
     return same, master, files, max(sizes), sum(sizes) // files

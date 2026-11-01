@@ -11,9 +11,9 @@ def load(path, name):
 
 
 def classify_all(gate, root, lexicon):
-    lex = gate.Lexicon(lexicon); recs = gate.blocks(gate.read(os.path.join(root, 'reqs.txt'))); gate.index(recs, lex)
+    lex = gate.Lexicon(lexicon); recs = gate.blocks(gate.read(os.path.join(root, X('{@reqs_txt}')))); gate.index(recs, lex)
     out = {}
-    for p in sorted(glob.glob(os.path.join(root, 'intake', X('{src-}*'), '*.ctb'))):
+    for p in sorted(glob.glob(os.path.join(root, X('{@intake_dir}'), X('{src-}*'), '*.ctb'))):
         c = gate.receive(p)
         if c.get('kind', 'requirement') != 'requirement' or not c.get('text'):
             continue
@@ -24,10 +24,10 @@ def classify_all(gate, root, lexicon):
 
 
 def impact(root, proposed, lexicon=None):
-    cur = load(os.path.join(root, 'assimilate.py'), 'gate_current')
+    cur = load(os.path.join(root, X('{@assimilate_py}')), 'gate_current')
     new = load(proposed, 'gate_proposed')
-    a = classify_all(cur, root, os.path.join(root, 'lexicon.txt'))
-    b = classify_all(new, root, lexicon or os.path.join(root, 'lexicon.txt'))
+    a = classify_all(cur, root, os.path.join(root, X('{@lexicon_txt}')))
+    b = classify_all(new, root, lexicon or os.path.join(root, X('{@lexicon_txt}')))
     return a, {k: (a[k], b.get(k)) for k in a if a[k] != b.get(k)}
 
 

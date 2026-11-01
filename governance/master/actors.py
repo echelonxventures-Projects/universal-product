@@ -2,6 +2,7 @@
 remote to its host in the host registry (hosts.json). No agent, tool, person or host is named in this file."""
 import json, os, re, sys
 sys.dont_write_bytecode = True  # a check never changes the Master directory (no __pycache__)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats and file names come from the registries (LXM-REQ-000240)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -11,14 +12,14 @@ def registry(name, root=HERE):
 
 
 def role(rid, root=HERE):
-    a = registry('actors.json', root)
+    a = registry(X('{@actors_json}'), root)
     r = a['roles'][rid]
     return '%s (%s)' % (a['actors'][r['actor']]['label'], r['describes'])
 
 
 def actor(rid=None, root=HERE):
     """The actor holding a role: the one named, else the role in the configured environment variable, else the default role."""
-    a = registry('actors.json', root)
+    a = registry(X('{@actors_json}'), root)
     rid = rid or os.environ.get(a['actor_env']) or a['default_role']
     return a['actors'][a['roles'][rid]['actor']]
 
@@ -36,7 +37,7 @@ def resolve(obj, root=HERE):
 
 def host_for(url, root=HERE):
     """(host id, host entry, repository) for a remote URL, or (None, None, None) when no registered host matches."""
-    for hid, h in registry('hosts.json', root)['hosts'].items():
+    for hid, h in registry(X('{@hosts_json}'), root)['hosts'].items():
         m = re.search(h['url_pattern'], url)
         if m:
             return hid, h, m.group(1)

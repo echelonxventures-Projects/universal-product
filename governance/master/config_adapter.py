@@ -26,6 +26,7 @@ serialized (only sent out, e.g. to a browser); a traced setting never read at ru
 import json, os, re, sys
 
 sys.dont_write_bytecode = True  # a check never changes the Master directory (no __pycache__)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats and file names come from the registries (LXM-REQ-000240)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -287,7 +288,7 @@ def main(argv):
         print(__doc__); return 2
     opt = lambda k: argv[argv.index(k) + 1] if k in argv else None
     root = argv[1]
-    cfg = json.load(open(opt('--config') or os.path.join(HERE, 'config_adapter.json'), encoding='utf-8'))
+    cfg = json.load(open(opt('--config') or os.path.join(HERE, X('{@config_adapter_json}')), encoding='utf-8'))
     if opt('--runtime-trace'):
         cfg['_runtime'] = {'file': opt('--runtime-trace'), 'declaration': opt('--runtime-declaration') or cfg['declarations'][0]['id']}
     rep = analyse(root, cfg)
