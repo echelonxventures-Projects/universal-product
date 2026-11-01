@@ -1,11 +1,13 @@
 """Generate LXM-MASTER.md and LXM-RECONCILIATION.md from reqs.txt, stages.txt, coverage.txt, sources.txt, decisions.txt and frame.md.
 Usage: python3 -I build.py <SRC-0002 path> <SRC-0003 path> <out dir>"""
-import hashlib, os, re, sys
+import hashlib, json, os, re, sys
 sys.dont_write_bytecode = True  # a check never changes the Master directory (no __pycache__)
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X, ID_LEN, registry  # identifier formats come from ids.json (LXM-REQ-000240)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-APPENDIX_FIRST_LINE = 374  # SRC-0003 line where the mandate's own title begins
+APPENDIX_FIRST_LINE = registry('gate_json')['src3_appendix_first_line']  # the source line where the mandate's own title begins
+LAY = json.load(open(os.path.join(HERE, X('{@layout_json}')), encoding='utf-8')); COL = {c: i for i, c in enumerate(LAY['sources_columns'])}
+VAL = registry('validate_json')
 
 
 def read(p): return open(p, encoding='utf-8').read()
@@ -175,12 +177,12 @@ def main(src2, src3, outdir):
         c = re.sub(r'\{SHA:([^}]+)\}', lambda m: sha(open(os.path.join(HERE, m.group(1)), 'rb').read()), c)
         return re.sub(r'\{(\w+)\}', lambda m: str(tok[m.group(1)]), c)
     reg = parse_sources(read(os.path.join(HERE, X('{@sources_txt}'))))
-    rows = ['| %s |' % ' | '.join(fill(c) for c in row[:5]) for row in reg]
+    rows = ['| %s |' % ' | '.join(fill(row[COL[k]]) for k in LAY['sources_shown']) for row in reg]
     STATUS = [('owner-file', 'owner-supplied files pinned by SHA-256'), ('owner-confirmed', 'extracts the owner has confirmed'),
               ('provisional-extract', 'agent-captured and hashed, **not owner-confirmed**'), ('conversation-only', 'no captured text')]
     status = ['', '**Source text status** (separate from authority; generated from the register):', '']
     for st, desc in STATUS:
-        ids = [r[0] for r in reg if r[6] == st]
+        ids = [r[COL['id']] for r in reg if r[COL['text_status']] == st]
         if ids:
             dep = [x['id'] for x in recs if cited_sources(x['s']) & set(ids)]
             status.append('- *%s* — %s: %s. Cited by %d record%s.' % (st, desc, ', '.join(ids), len(dep), '' if len(dep) == 1 else 's'))
@@ -210,7 +212,7 @@ def main(src2, src3, outdir):
             stg.append('- `%s.%s` %s — %s' % (st['id'], aid, strip_refs(a), ', '.join(refs(a))))
         stg.append('\n**Exit:** %s\n' % st['x'])
 
-    secid = dict(zip('ABCDEFGHIJK', [X('{req%}') % n for n in range(174, 185)]))
+    secid = dict(zip(VAL['report_sections']['letters'], [X('{req%}') % (VAL['report_sections']['first_record'] + i) for i in range(len(VAL['report_sections']['letters']))]))
     covt = ['| Element | Source | Required content | Report sections |', '|---|---|---|---|']
     for eid, src, el, secs in cov:
         covt.append('| %s | %s | %s | %s |' % (eid, src, el, ', '.join('%s (%s)' % (s, secid[s]) for s in secs)))
@@ -243,7 +245,7 @@ def main(src2, src3, outdir):
             for s in m.group(4).split(','):
                 holds[(m.group(3), s)] = m.group(1)
     for led in sorted(f for f in os.listdir(os.path.join(HERE, X('{@sources_dir}'))) if f.endswith('.clauses')) if os.path.isdir(os.path.join(HERE, X('{@sources_dir}'))) else []:
-        src, text = led[:8], read(os.path.join(HERE, X('{@sources_dir}'), led))
+        src, text = led[:ID_LEN['src']], read(os.path.join(HERE, X('{@sources_dir}'), led))
         status = (re.search(r'^status: (\S+)', text, re.M) or [None, '?'])[1]
         clauses += ['**%s** — ledger status *%s*, %d clauses.' % (src, status, len(re.findall(X(r'^{cl-}'), text, re.M))), '',
                     '| Clause | Source lines | Covered by | Supported by | Open hold |', '|---|---|---|---|---|']
@@ -280,7 +282,7 @@ def main(src2, src3, outdir):
     mx = ['# LXM reconciliation evidence: the 128 reconciled rows (Stages 0–10, header and directive)', '',
           'Generated from `reqs.txt`; requirement text is in LXM-MASTER Part D and is not repeated here. Classes: FP fully preserved, ST strengthened, MO mandate-only, PP partially preserved, OM omitted, CF conflicting or superseded.', '',
           X('| Requirement | Title | {src=0002} | {src=0003} | Appendix A | Class | Disposition | Decision | Resolution | Stages |'), '|---|---|---|---|---|---|---|---|---|---|']
-    for r in recs[:128]:
+    for r in recs[:VAL['matrix_rows']]:
         mx.append('| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |' % (r['id'], r['t'], lineage(r['s'], 'S') or '—', lineage(r['s'], 'L') or '—',
                                                                       lineage(r['s'], 'A') or '—', r['cls'], r['disp'], r['k'] or '—', r['n'] or '—',
                                                                       ', '.join(sorted(set(cited.get(r['id'], [])))) or r['scope']))

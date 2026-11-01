@@ -47,6 +47,30 @@
   "ids.py · file or path": {
    "count": 2,
    "reason": "the registry expander names the two registries it starts from (ids.json and layout.json): the one starting point every registry needs"
+  },
+  "assimilate.py · number": {
+   "count": 2,
+   "reason": "mechanism, not configuration: a regex group number and a position in a plan step the gate builds itself"
+  },
+  "build.py · number": {
+   "count": 2,
+   "reason": "mechanism, not configuration: the count of command-line arguments and a regex group number"
+  },
+  "knowledge_status.py · number": {
+   "count": 1,
+   "reason": "mechanism, not configuration: a regex group number"
+  },
+  "states.py · number": {
+   "count": 2,
+   "reason": "mechanism, not configuration: the header lines of its own report, skipped when it prints the summary"
+  },
+  "validate.py · number": {
+   "count": 1,
+   "reason": "mechanism, not configuration: the count of command-line arguments"
+  },
+  "intake/ci-package/step_commit.py · file or path": {
+   "count": 2,
+   "reason": "the step tool names its own configuration beside it: the one file it must find before any registry is reachable"
   }
  }
 }

@@ -5,7 +5,8 @@ word for word in one of them, or share at least the gate's related threshold wit
 Usage: python3 -I revalidate.py <root> [--max-regressions N]   Exit 0 when regressions <= N (default 0)."""
 import json, os, re, sys
 sys.dont_write_bytecode = True
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X, registry  # identifier formats come from ids.json (LXM-REQ-000240)
+REPORT = registry('reporting_json')  # how much the reports show
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
 
@@ -53,6 +54,6 @@ if __name__ == '__main__':
     n, reg = revalidate(sys.argv[1])
     limit = int(sys.argv[sys.argv.index('--max-regressions') + 1]) if '--max-regressions' in sys.argv else 0
     print('%d coverage relations re-checked against the current Master; %d regressions (allowed %d): %s' % (n, len(reg), limit, 'pass' if len(reg) <= limit else 'FAIL'))
-    for x in reg[:40]:
+    for x in reg[:REPORT['max_listed']]:
         print('  ' + x)
     sys.exit(0 if len(reg) <= limit else 1)

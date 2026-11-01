@@ -42,6 +42,18 @@ run('Kinds are found: file, identifier format, number, hash, date', {'tool.py': 
 run('Small numbers and plain messages are not findings', {'tool.py': 'n = 0\nm = 1\nprint("nothing configured here")\n'}, lambda d, c, b: (c == {}, str(c)))
 run('A new literal fails the ratchet', {'tool.py': 'A = "intake/x.json"\n'}, grow)
 run('Moving a literal out passes the ratchet', {'tool.py': 'A = "intake/x.json"\n'}, shrink)
+run('A literal used as a data key is not a finding', {'tool.py': 'r = {"intake": 1}\nx = cfg["reqs.txt"]\ny = cfg.get("out")\nz = "intake/x.json"\n'},
+    lambda d, c, b: (list(c.values()) == [1], str(c)))
+
+
+def declared(d, counts, b):
+    c = json.load(open(os.path.join(d, 'tooling-literals.json'))); c['declared'] = {'tool.py · number': {'count': 1, 'reason': 'fixture'}}
+    json.dump(c, open(os.path.join(d, 'tooling-literals.json'), 'w'))
+    after, _ = T.scan(d)
+    return counts.get('tool.py · number') == 1 and 'tool.py · number' not in after, 'before %s, after declaring it %s' % (counts, after)
+
+
+run('A literal declared with its reason is not a finding', {'tool.py': 'n = 0.75\n'}, declared)
 fails = 0
 for name, ok, detail in results:
     fails += not ok

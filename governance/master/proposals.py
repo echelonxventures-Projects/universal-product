@@ -6,7 +6,8 @@ Reads the computed states (states.py), the readiness report (readiness.py) and t
 Usage: python3 -I proposals.py <root> --states <states.json> --readiness <readiness.json> --today YYYY-MM-DD --observer NAME"""
 import hashlib, json, os, sys
 sys.dont_write_bytecode = True
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X, registry  # identifier formats come from ids.json (LXM-REQ-000240)
+REPORT = registry('reporting_json')  # how much the reports show
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
 
@@ -35,7 +36,7 @@ def write(root, states, readiness, today, observer):
     idx = json.load(open(idx_p, encoding='utf-8')) if os.path.exists(idx_p) else {}
     seen = set(); new = 0
     for subject, title, about, action in findings(states, readiness):
-        pid = 'PROP-' + hashlib.sha256(subject.encode()).hexdigest()[:10]
+        pid = 'PROP-' + hashlib.sha256(subject.encode()).hexdigest()[:REPORT['hash_id_chars']]
         seen.add(pid)
         p = os.path.join(d, pid + '.md')
         if not os.path.exists(p):  # write-once

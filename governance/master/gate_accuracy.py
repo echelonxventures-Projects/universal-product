@@ -3,7 +3,8 @@ wrong, by kind of case. Run it on every gate change; the error count may only go
 Usage: python3 -I gate_accuracy.py <root> [--reference gate_reference.txt] [--max-errors N]   Exit 0 when errors <= N (default 0)."""
 import os, sys
 sys.dont_write_bytecode = True
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats and file names come from the registries (LXM-REQ-000240)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X, registry  # identifier formats and file names come from the registries (LXM-REQ-000240)
+REPORT = registry('reporting_json')  # how much the reports show
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
 
@@ -33,7 +34,7 @@ if __name__ == '__main__':
     print('gate accuracy: %d of %d cases correct; %s' % (sum(r['ok'] for r in res), len(res), ', '.join('%s %d/%d' % (k, v[0], v[1]) for k, v in sorted(by.items()))))
     for r in res:
         if not r['ok']:
-            print('  WRONG  expected %s %s, got %s %s: %s' % (r['expected'], r['record'], r['got'], ','.join(x[-3:] for x in r['rids']), r['text'][:90]))
+            print('  WRONG  expected %s %s, got %s %s: %s' % (r['expected'], r['record'], r['got'], ','.join(x[-3:] for x in r['rids']), r['text'][:REPORT['excerpt']['wrong_case']]))
     errors = sum(not r['ok'] for r in res)
     limit = int(sys.argv[sys.argv.index('--max-errors') + 1]) if '--max-errors' in sys.argv else 0  # the ratchet: errors only go down
     print('errors %d, allowed %d: %s' % (errors, limit, 'pass' if errors <= limit else 'FAIL'))

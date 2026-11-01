@@ -1,0 +1,29 @@
+{
+ "_comment": "LXM-REQ-000240: the facts the validator checks about the owner's sources and the reconciliation, stated once. A changed source or reconciliation changes this file, not the validator.",
+ "matrix_rows": 128,
+ "mandate_only_rows": 33,
+ "partial_rows": 15,
+ "omitted_rows": 6,
+ "omitted_prefix": "OMR-",
+ "stages": 17,
+ "src2_last_content_line": 636,
+ "k_decisions": {
+  "label_prefix": "K",
+  "count": 8
+ },
+ "src8_first_records": [
+  220,
+  226
+ ],
+ "src8_clauses": 8,
+ "min_record_text_chars": 20,
+ "duplicate_probe": {
+  "chars": 80,
+  "min_chars": 60
+ },
+ "stage_group_prefix": "CAT-",
+ "report_sections": {
+  "letters": "ABCDEFGHIJK",
+  "first_record": 174
+ }
+}

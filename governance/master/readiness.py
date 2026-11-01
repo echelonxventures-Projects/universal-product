@@ -13,7 +13,8 @@ Exit 0 GO, 1 NO-GO, 2 usage error."""
 import hashlib, importlib.util, json, os, re, sys
 
 sys.dont_write_bytecode = True  # a check never changes the Master directory (no __pycache__)
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats and file names come from the registries (LXM-REQ-000240)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X, registry  # identifier formats and file names come from the registries (LXM-REQ-000240)
+REPORT = registry('reporting_json')  # how much the reports show
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -37,7 +38,7 @@ def compute(root, candidate, ci_path, cfg, master=HERE, tests_path=None, runtime
     block = lambda kind, what, rule, who, ref: blockers.append({'kind': kind, 'what': what, 'rule': rule, 'resolves': who, 'requirement': ref})
     build = load('lxm_build', os.path.join(master, X('{@build_py}')))
     # 1. owner decisions
-    p = os.path.join(master, X('{@decisions_txt}')); inputs['decisions.txt'] = digest(p)
+    p = os.path.join(master, X('{@decisions_txt}')); inputs[X('{@decisions_txt}')] = digest(p)
     r = cfg['rules']['decisions']
     try:
         for d in build.parse_decisions(open(p, encoding='utf-8').read())[1]:
@@ -123,7 +124,7 @@ def compute(root, candidate, ci_path, cfg, master=HERE, tests_path=None, runtime
         item = {'kind': name, 'what': '%s: %d × %s%s' % (name, n, kind, '' if sites in (None, n) else ' (%d distinct code sites; settings sharing a value count each)' % sites), 'rule': rule['rule'], 'resolves': rule['resolves'], 'requirement': rule['requirement']}
         (blockers if rule['severity'] == 'block' else warnings).append(item)
     # 5. known traceability gaps
-    p = os.path.join(master, X('{@trace_txt}')); inputs['trace.txt'] = digest(p)
+    p = os.path.join(master, X('{@trace_txt}')); inputs[X('{@trace_txt}')] = digest(p)
     rt = cfg['rules']['trace_gaps']
     for rid, t in build.parse_trace(open(p, encoding='utf-8').read())[1].items():
         if not t.get('impl'):
@@ -150,7 +151,7 @@ def markdown(r):
            'The release register declares %s.' % (r['candidate'], len(r['blockers']), len(r['warnings']), r['register_declares'] or 'no verdict'), '', '## Who resolves what', '', '| Resolves | Blockers |', '|---|---|']
     out += ['| %s | %d |' % kv for kv in r['by_resolver'].items()]
     out += ['', '## Blockers', '', '| Kind | What | Rule | Requirement | Resolves |', '|---|---|---|---|---|']
-    out += ['| %s | %s | %s | %s | %s |' % (b['kind'], b['what'].replace('|', '\\|')[:220], b['rule'], b['requirement'] or '—', b['resolves']) for b in r['blockers']]
+    out += ['| %s | %s | %s | %s | %s |' % (b['kind'], b['what'].replace('|', '\\|')[:REPORT['excerpt']['blocker']], b['rule'], b['requirement'] or '—', b['resolves']) for b in r['blockers']]
     out += ['', '## Warnings (do not block)', '', '| What | Rule | Requirement |', '|---|---|---|']
     out += ['| %s | %s | %s |' % (w['what'], w['rule'], w['requirement'] or '—') for w in r['warnings']] or ['None.']
     out += ['', '## Inputs (SHA-256)', ''] + ['- `%s` %s' % (k, v or '**missing**') for k, v in r['inputs'].items()]

@@ -110,7 +110,8 @@ def s_trace():
     files = dict(BASE); files['doms.json'] = json.dumps({'domains': [{'key': 'core', 'owns': {'files': ['src/x.js', 'src/y.js']}}, {'key': 'extra', 'owns': {'files': ['src/z.js']}}]})
     d = repo(files); m = tempfile.mkdtemp(prefix='codefx-master-')
     try:
-        shutil.copyfile(os.path.join(HERE, 'build.py'), os.path.join(m, 'build.py'))  # the Master's own parser sits beside trace.txt
+        for f in ('build.py', 'ids.py', 'ids.json', 'layout.json', 'gate.json', 'validate.json'):  # the Master's own parser, and the registries it reads, sit beside trace.txt
+            shutil.copyfile(os.path.join(HERE, f), os.path.join(m, f))
         open(os.path.join(m, 'trace.txt'), 'w').write('# basis-default: fixture\n@LXM-REQ-000001\nimpl: src/x.js, src/gone.js\ntest: t/a.js\n\n@LXM-REQ-000002\nbasis: nothing implements it\n')
         cfg = json.loads(json.dumps(CFG)); cfg['_trace'] = os.path.join(m, 'trace.txt'); cfg['domains'] = {'registry': 'doms.json', 'list': 'domains', 'key': 'key', 'files': 'owns.files'}
         t = K.analyse(d, cfg)['summary']['trace']

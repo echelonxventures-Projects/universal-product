@@ -9,10 +9,13 @@ import json, os, re, subprocess, sys
 sys.dont_write_bytecode = True
 
 
+EXCERPT = {'git_stderr_tail': None}  # set from step-commit.json before any git call
+
+
 def git(ws, *a, check=True):
     r = subprocess.run(['git', '-C', ws, '--no-optional-locks'] + list(a), capture_output=True, text=True)
     if check and r.returncode:
-        raise RuntimeError('git %s: %s' % (' '.join(a), (r.stderr or r.stdout).strip()[-400:]))
+        raise RuntimeError('git %s: %s' % (' '.join(a), (r.stderr or r.stdout).strip()[-EXCERPT['git_stderr_tail']:]))
     return r.stdout.strip()
 
 
@@ -28,6 +31,8 @@ def main(argv):
     cfg = json.load(open(opt('--config') or os.path.join(os.path.dirname(os.path.abspath(__file__)), 'step-commit.json')))
     cfg_path = os.path.abspath(opt('--config') or os.path.join(os.path.dirname(os.path.abspath(__file__)), 'step-commit.json'))
     sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(cfg_path), cfg['registry_root'])))
+    global EXCERPT
+    EXCERPT = cfg['excerpt']  # how much of a tool's answer a refusal quotes
     import actors as R  # who acts and which host receives come from the registries (LXM-REQ-000239), never from this file
     gitdir = git(ws, 'rev-parse', '--absolute-git-dir')
     if os.path.exists(os.path.join(gitdir, 'index.lock')):
@@ -58,7 +63,7 @@ def main(argv):
         refuse('%s (%s) matches no registered host; its visibility must be checked before a push. Register the host first.' % (cfg['remote'], url))
     r = subprocess.run([a.replace('{repo}', repo) for a in host['visibility_command']], capture_output=True, text=True)
     if r.returncode or r.stdout.strip() != host['private_answer']:
-        refuse('%s is not confirmed private by its host %s (%s); a push would publish. Make it private first.' % (repo, hid, (r.stdout or r.stderr).strip()[:80] or 'no answer'))
+        refuse('%s is not confirmed private by its host %s (%s); a push would publish. Make it private first.' % (repo, hid, (r.stdout or r.stderr).strip()[:EXCERPT['host_answer']] or 'no answer'))
     if dry:
         print('dry run: would commit %d path(s) on %s and push to %s' % (len(paths), branch, cfg['remote'])); return 0
     if paths or status:

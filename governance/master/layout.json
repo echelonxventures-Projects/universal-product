@@ -19,6 +19,7 @@
   "gate_reference_txt": "gate_reference.txt",
   "hosts_json": "hosts.json",
   "ids_json": "ids.json",
+  "ids_py": "ids.py",
   "intake_dir": "intake",
   "intake_exceptions_txt": "intake/exceptions.txt",
   "knowledge_json": "knowledge.json",
@@ -32,6 +33,7 @@
   "provenance_md": "provenance.md",
   "readiness_json": "readiness.json",
   "reconciliation_md": "LXM-RECONCILIATION.md",
+  "reporting_json": "reporting.json",
   "reqs_txt": "reqs.txt",
   "revalidate_py": "revalidate.py",
   "scopes_txt": "scopes.txt",
@@ -48,8 +50,8 @@
   "tooling_literals_json": "tooling-literals.json",
   "trace_txt": "trace.txt",
   "transcript_formats_json": "transcript-formats.json",
-  "validate_py": "validate.py",
-  "ids_py": "ids.py"
+  "validate_json": "validate.json",
+  "validate_py": "validate.py"
  },
  "canon": [
   "reqs_txt",
@@ -76,11 +78,29 @@
   "revalidate_py",
   "assimilate_py",
   "ids_json",
-  "ids_py"
+  "ids_py",
+  "reporting_json",
+  "validate_json"
  ],
  "ledger": "ledger_path",
  "exceptions": "intake_exceptions_txt",
  "sources_dir": "sources_dir",
  "intake_dir": "intake_dir",
- "out_dir": "out_dir"
+ "out_dir": "out_dir",
+ "sources_columns": [
+  "id",
+  "title",
+  "location",
+  "sha",
+  "role",
+  "authority",
+  "text_status"
+ ],
+ "sources_shown": [
+  "id",
+  "title",
+  "location",
+  "sha",
+  "role"
+ ]
 }

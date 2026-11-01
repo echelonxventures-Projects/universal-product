@@ -26,6 +26,47 @@
   "conflict_min_share_of_negated": 0.6,
   "composition_candidates": 6,
   "composition_min_distinct_terms": 2,
-  "related_candidates_reported": 3
- }
+  "related_candidates_reported": 3,
+  "min_contribution_text": 20,
+  "min_stage_action_text": 20,
+  "min_baseline_reason": 20,
+  "stemming": {
+   "_comment": "how words are reduced to a stem before matching: the first rule of first_of that applies, then every rule of then",
+   "first_of": [
+    {
+     "suffix": "ies",
+     "longer_than": 4,
+     "replace": "y"
+    },
+    {
+     "suffix": "ing",
+     "longer_than": 5,
+     "replace": ""
+    },
+    {
+     "suffix": "ed",
+     "longer_than": 4,
+     "replace": ""
+    },
+    {
+     "suffix": "s",
+     "longer_than": 3,
+     "replace": "",
+     "unless_suffix": "ss"
+    }
+   ],
+   "then": [
+    {
+     "suffix": "e",
+     "longer_than": 4,
+     "replace": ""
+    }
+   ],
+   "undouble": {
+    "longer_than": 4,
+    "keep": "aeiouls"
+   }
+  }
+ },
+ "src3_appendix_first_line": 374
 }

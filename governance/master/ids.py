@@ -24,3 +24,13 @@ def _one(m):
 def X(s):
     """The string with every identifier and file placeholder expanded; an unknown file key fails loudly."""
     return _F.sub(lambda m: NAMES[m.group(1)], _P.sub(_one, s))
+
+
+PREFIX_LEN = {k: len(v['prefix']) for k, v in NS.items()}  # lengths derived from the registry, never written as numbers
+DIGITS = {k: v['digits'] for k, v in NS.items()}
+ID_LEN = {k: PREFIX_LEN[k] + DIGITS[k] for k in NS}
+
+
+def registry(key):
+    """The JSON registry layout.json names for key."""
+    return json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), NAMES[key]), encoding='utf-8'))

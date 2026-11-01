@@ -3,7 +3,10 @@ Usage: python3 -I validate.py <master> <reconciliation> <SRC-0002> <SRC-0003> <e
 import hashlib, os, re, sys
 
 sys.dont_write_bytecode = True  # a check never changes the Master directory (no __pycache__)
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X, ID_LEN, registry  # identifier formats come from ids.json (LXM-REQ-000240)
+V = registry('validate_json')  # the facts checked about the owner's sources and the reconciliation, stated once
+COLS = registry('layout_json')['sources_columns']; COL = {c: i for i, c in enumerate(COLS)}
+APPX = registry('gate_json')['src3_appendix_first_line']
 
 master_p, recon_p, s2_p, s3_p, prev_p, exp2, exp3 = sys.argv[1:8]
 M = open(master_p, encoding='utf-8').read()
@@ -17,7 +20,7 @@ check(X('{src=0002} unchanged (SHA-256)'), hashlib.sha256(b2).hexdigest() == exp
 check(X('{src=0003} unchanged (SHA-256)'), hashlib.sha256(b3).hexdigest() == exp3)
 
 # 2. Appendix A verbatim
-appx = b'\n'.join(b3.split(b'\n')[373:])
+appx = b'\n'.join(b3.split(b'\n')[APPX - 1:])
 mb = open(master_p, 'rb').read()
 check(X('Appendix A: {src=0003} lines 374-end appear byte-identical in the master'), appx in mb,
       'block %d bytes, sha %s' % (len(appx), hashlib.sha256(appx).hexdigest()[:16]))
@@ -43,25 +46,25 @@ for b in blocks:
     text[rid] = b.split('\n\n', 2)[2].strip() if b.count('\n\n') >= 2 else ''
 bad = [r for r, d in disp.items() if len(d) != 1 or d[0] not in ALLOWED]
 check('Every record has exactly one disposition from the allowed set', not bad, ', '.join(bad))
-empty = [r for r, t in text.items() if len(t) < 20]
+empty = [r for r, t in text.items() if len(t) < V['min_record_text_chars']]
 check('Every record has normative text', not empty, ', '.join(empty))
 
 # 4. the 128 reconciled rows match the earlier hand matrix (IDs and classes)
 prev = {r: re.sub(r'\([^)]*\)', '', c.replace('*', '')).replace(' ', '') for r, c in re.findall(X(r'^\| ({req}) \|.*\| ([^|]+) \|$'), open(prev_p, encoding='utf-8').read(), re.M)}
 mism = [r for r, c in prev.items() if r not in cls or cls[r].replace(' ', '') != c]
-check('128 reconciled rows: same IDs and classes as the earlier matrix', len(prev) == 128 and not mism,
+check('%d reconciled rows: same IDs and classes as the earlier matrix' % V['matrix_rows'], len(prev) == V['matrix_rows'] and not mism,
       '%d rows in earlier matrix; mismatches: %s' % (len(prev), ', '.join(mism)))
-first128 = [X('{req%}') % n for n in range(1, 129)]
+first128 = [X('{req%}') % n for n in range(1, V['matrix_rows'] + 1)]
 cnt = {}
 for r in first128:
     cnt[cls[r]] = cnt.get(cls[r], 0) + 1
 mo = [r for r in first128 if cls[r] == 'MO']
 pp = [r for r in first128 if cls[r].startswith('PP')]
 om = [r for r in first128 if cls[r] == 'OM']
-check('33 mandate-only rows, each disposed Expanded-from-mandate with an Appendix A line', len(mo) == 33 and all(disp[r] == ['Expanded-from-mandate'] and re.search(r'(?<![A-Za-z-])A\d', lin[r]) for r in mo), str(len(mo)))
-check('15 partial rows, each disposed Repaired', len(pp) == 15 and all(disp[r] == ['Repaired'] for r in pp), str(len(pp)))
-check('6 omitted rows, each disposed Restored and registered OMR-1..6', len(om) == 6 and all(disp[r] == ['Restored'] for r in om)
-      and sorted(re.findall(r'\| (OMR-\d) \|', M)) == ['OMR-%d' % i for i in range(1, 7)], str(len(om)))
+check('%d mandate-only rows, each disposed Expanded-from-mandate with an Appendix A line' % V['mandate_only_rows'], len(mo) == V['mandate_only_rows'] and all(disp[r] == ['Expanded-from-mandate'] and re.search(r'(?<![A-Za-z-])A\d', lin[r]) for r in mo), str(len(mo)))
+check('%d partial rows, each disposed Repaired' % V['partial_rows'], len(pp) == V['partial_rows'] and all(disp[r] == ['Repaired'] for r in pp), str(len(pp)))
+check('%d omitted rows, each disposed Restored and registered %s1..%d' % (V['omitted_rows'], V['omitted_prefix'], V['omitted_rows']), len(om) == V['omitted_rows'] and all(disp[r] == ['Restored'] for r in om)
+      and sorted(re.findall(r'\| (%s\d) \|' % re.escape(V['omitted_prefix']), M)) == [V['omitted_prefix'] + '%d' % i for i in range(1, V['omitted_rows'] + 1)], str(len(om)))
 check('Class distribution of the 128 rows', True, ', '.join('%s %d' % kv for kv in sorted(cnt.items())))
 
 # 5. references resolve
@@ -85,7 +88,7 @@ orph = [r for r in stage_scoped if r not in cited]
 check('Every stage-scoped requirement is cited by a stage procedure', not orph, ', '.join(orph))
 notcited = sorted(set(ids) - cited)
 check('Requirements not cited by any stage (cross-cutting sections only)', all(re.search(r'`(EXE|ESC|OWN|ARC|RPT|FIN)`', next(b for b in blocks if b.startswith(r))) for r in notcited), ', '.join(n[-3:] for n in notcited))
-dup = [r for r, t in text.items() for chunk in [t[:80]] if len(chunk) >= 60 and chunk in stg_part]
+dup = [r for r, t in text.items() for chunk in [t[:V['duplicate_probe']['chars']]] if len(chunk) >= V['duplicate_probe']['min_chars'] and chunk in stg_part]
 check('No requirement text duplicated in the stage procedures', not dup, ', '.join(dup))
 
 # 6b. heading namespaces: catalogue groups are CAT-<scope>, procedures are bare STG-NN, and no heading is reused
@@ -96,12 +99,12 @@ check('Every heading outside Appendix A is unique', not reused, '; '.join(reused
 groups = re.findall(r'^### (\S+) — (.+)$', cat_part, re.M)
 scope_of = {b.split(' — ')[0]: re.search(r'^`([A-Z]{3}(?:-\d{2})?)` · class', b, re.M).group(1) for b in blocks}
 check('Every Part D group heading is CAT-<scope>, one per scope in use', [g for g, _ in groups if not g.startswith('CAT-')] == []
-      and [g[4:] for g, _ in groups] == sorted(set(scope_of.values()), key=[g[4:] for g, _ in groups].index)
+      and [g[len(V['stage_group_prefix']):] for g, _ in groups] == sorted(set(scope_of.values()), key=[g[len(V['stage_group_prefix']):] for g, _ in groups].index)
       and len(groups) == len(set(scope_of.values())), ', '.join(g for g, _ in groups))
 check(X('No bare {stg#} heading in Part D and no CAT- heading in Part E'),
       not re.search(X(r'^#{1,4} {stg}\b'), cat_part, re.M) and not re.search(r'^#{1,4} CAT-', stg_part, re.M))
 stage_title = dict(re.findall(X(r'^### ({stg}) — (.+)$'), stg_part, re.M))
-badgrp = [g for g, t in groups if g.startswith(X('CAT-{stg-}')) and stage_title.get(g[4:]) != t]
+badgrp = [g for g, t in groups if g.startswith(X(V['stage_group_prefix'] + '{stg-}')) and stage_title.get(g[len(V['stage_group_prefix']):]) != t]
 check(X('Each CAT-{stg#} group names an existing procedure {stg#} with the same title'), not badgrp, ', '.join(badgrp))
 misplaced = []
 for chunk in re.split(r'^### ', cat_part, flags=re.M)[1:]:
@@ -112,7 +115,7 @@ check('Every record sits under the group of its own scope', not misplaced, ', '.
 # 6c. citations resolve to the right record, and the generated indexes agree with Part E
 cites_by_stage = {}
 for chunk in re.split(X(r'^### (?={stg} — )'), stg_part, flags=re.M)[1:]:
-    cites_by_stage[chunk[:6]] = set(re.findall(X(r'{req}'), chunk))
+    cites_by_stage[chunk[:ID_LEN['stg']]] = set(re.findall(X(r'{req}'), chunk))
 cited_by = {}
 for st, rs in cites_by_stage.items():
     for r in rs:
@@ -124,7 +127,7 @@ check('Only non-normative records are left uncited by every stage (execution rul
       set(ids) - set(cited_by) == nonnorm, 'uncited: %s; non-normative: %s' % (sorted(set(ids) - set(cited_by)), sorted(nonnorm)))
 h1 = re.findall(X(r'^\| ({stg}) \| [^|]+ \| (\d+) \| ([^|]*) \|$'), M.split('### H.1')[1].split('### H.2')[0], re.M)
 bad_h1 = [st for st, n, rs in h1 if {X('{req-}000') + x.strip() for x in rs.split(',') if x.strip()} != cites_by_stage.get(st)]
-check('H.1 stage index matches the citations in Part E', len(h1) == 17 and not bad_h1, ', '.join(bad_h1))
+check('H.1 stage index matches the citations in Part E', len(h1) == V['stages'] and not bad_h1, ', '.join(bad_h1))
 h2 = re.findall(X(r'^\| ({req}) \| (?:[^|]+ \| ){4}([^|]+) \| [^|]+ \|$'), M.split('### H.2')[1].split('# Appendix A')[0], re.M)
 bad_h2 = [r for r, c in h2 if (set(re.findall(X(r'{stg}'), c)) or set()) != cited_by.get(r, set())]
 check('H.2 traceability rows match Part E for every record', sorted(r for r, _ in h2) == sorted(ids) and not bad_h2, '%d rows; bad: %s' % (len(h2), ', '.join(bad_h2)))
@@ -146,11 +149,11 @@ def content_lines(data, lo, hi):
         out.append((i, t))
     return out
 c2 = covered('S'); c3 = covered('L')
-u2 = [(i, t) for i, t in content_lines(b2, 1, 636) if i not in c2]
+u2 = [(i, t) for i, t in content_lines(b2, 1, V['src2_last_content_line']) if i not in c2]
 lead2 = [x for x in u2 if x[1].endswith(':')]
 check(X('{src=0002}: every content line covered by a record (lead-in lines ending ":" are structural)'), len(u2) == len(lead2),
       'uncovered non-lead-in: %s; structural lead-ins: %d (%s)' % ([i for i, t in u2 if not t.endswith(':')], len(lead2), ', '.join(str(i) for i, _ in lead2)))
-u3 = [(i, t) for i, t in content_lines(b3, 1, 373) if i not in c3]
+u3 = [(i, t) for i, t in content_lines(b3, 1, APPX - 1) if i not in c3]
 lead3 = [x for x in u3 if x[1].endswith(':')]
 check(X('{src=0003} procedure (lines 1-373): every content line covered (lead-ins structural)'), len(u3) == len(lead3),
       'uncovered non-lead-in: %s; structural lead-ins: %d' % ([i for i, t in u3 if not t.endswith(':')], len(lead3)))
@@ -178,12 +181,12 @@ for eid, src, el, secs in cov:
 check('Every mandated reporting element maps to a defined A–K section', cov and not badcov, '%d elements; bad: %s' % (len(cov), badcov))
 check('Every section A–K carries at least one mandated element', secs_used == set('ABCDEFGHIJK'), ''.join(sorted(secs_used)))
 rpt_titles = [t for h in heads for t in [h[2]] if re.match(r'^[A-K]\. ', t)]
-check('Final report records A–K exist in order', [t[0] for t in rpt_titles] == list('ABCDEFGHIJK'))
+check('Final report records A–K exist in order', [t[0] for t in rpt_titles] == list(V['report_sections']['letters']))
 
 # 9. owner decisions and reconciliation file
-for k in range(1, 9):
+for k in range(1, V['k_decisions']['count'] + 1):
     dk = X('{dec%}') % k
-    check('K%d (%s) applied by at least one record' % (k, dk), any(dk in b for b in blocks))
+    check(V['k_decisions']['label_prefix'] + '%d (%s) applied by at least one record' % (k, dk), any(dk in b for b in blocks))
 
 # 10. SRC-0008 assimilation (LXM-ACP-001): extended records keep their identity; new records trace only to SRC-0008
 check(X('{src=0008} is in the source register'), bool(re.search(X(r'^\| {src=0008} \|'), M, re.M)))
@@ -201,9 +204,9 @@ bad_ext = [r for r, (sc, c, d, old, add) in EXTENDED.items()
 check(X('Four extended records keep scope, class, disposition and prior lineage, and still cite their {src=0008} sections'), not bad_ext, ', '.join(bad_ext))
 only_8 = sorted(r for r, l in lin.items() if l.split(';')[0].startswith(X('{src=0008}')))  # originated by SRC-0008; later sources may recognize them
 sec8 = sorted({s.split('.')[0] for r in only_8 for s in sec_list(lin[r], X('{src=0008}'))}, key=lambda s: int(s[1:]))
-base_8 = [X('{req%}') % n for n in range(220, 227)]  # the first SRC-0008 assimilation; later decided additions may join
+base_8 = [X('{req%}') % n for n in range(V['src8_first_records'][0], V['src8_first_records'][1] + 1)]  # the first SRC-0008 assimilation; later decided additions may join
 check(X('New {src=0008} records 220–226: ARC, class NEW, New-owner-addition, cited by a stage, covering {cl-}1–{cl-}8'),
-      set(base_8) <= set(only_8) and sec8 == [X('{cl-}%d') % i for i in range(1, 9)]
+      set(base_8) <= set(only_8) and sec8 == [X('{cl-}%d') % i for i in range(1, V['src8_clauses'] + 1)]
       and all(scope_of[r] == 'ARC' and cls[r] == 'NEW' and disp[r] == ['New-owner-addition'] and r in cited_by for r in base_8),
       '%s; sections %s' % (', '.join(x[-3:] for x in only_8), ','.join(sec8)))
 
@@ -223,7 +226,7 @@ check('Every coverage relation names a registered source and a known relation', 
 exc_p = os.path.join(root, X('{@intake_dir}'), X('{@exceptions_txt}'))
 held = set(re.findall(X(r'^@{exc} \| (?:QUARANTINED|REJECTED) \| [^\n]*\nsource: ({src} {cl})$'), open(exc_p, encoding='utf-8').read(), re.M)) if os.path.exists(exc_p) else set()
 for led in sorted(glob.glob(os.path.join(root, X('{@sources_dir}'), X('{src-}*.clauses')))):
-    src = os.path.basename(led)[:8]
+    src = os.path.basename(led)[:ID_LEN['src']]
     L_ = open(led, encoding='utf-8').read()
     clauses = re.findall(X(r'^({cl}) \|'), L_, re.M)
     status = (re.search(r'^status: (\S+)', L_, re.M) or [None, 'in-progress'])[1]
@@ -244,27 +247,27 @@ for led in sorted(glob.glob(os.path.join(root, X('{@sources_dir}'), X('{src-}*.c
 # 12. source authority versus source text status (no invented confirmation)
 reg = [[c.strip() for c in l.split(' | ')] for l in open(os.path.join(root, X('{@sources_txt}')), encoding='utf-8').read().split('\n') if l.startswith(X('{src-}'))]
 TEXT_STATUS = {'owner-file', 'owner-confirmed', 'provisional-extract', 'conversation-only'}
-check('Every source has an authority and a known text status', all(len(r) == 7 and r[5] in ('owner', 'owner-decision', 'historical') and r[6] in TEXT_STATUS for r in reg),
-      ', '.join(r[0] for r in reg if len(r) != 7 or r[6] not in TEXT_STATUS))
+check('Every source has an authority and a known text status', all(len(r) == len(COLS) and r[COL['authority']] in ('owner', 'owner-decision', 'historical') and r[COL['text_status']] in TEXT_STATUS for r in reg),
+      ', '.join(r[COL['id']] for r in reg if len(r) != len(COLS) or r[COL['text_status']] not in TEXT_STATUS))
 row_md = dict(re.findall(X(r'^\| ({src}) \| (.*)$'), M, re.M))
-unpinned = [r[0] for r in reg if r[6] in ('owner-file', 'owner-confirmed', 'provisional-extract') and not re.search(r'`[0-9a-f]{64}`', row_md.get(r[0], ''))]
+unpinned = [r[COL['id']] for r in reg if r[COL['text_status']] in ('owner-file', 'owner-confirmed', 'provisional-extract') and not re.search(r'`[0-9a-f]{64}`', row_md.get(r[COL['id']], ''))]
 check('Every owner-file, owner-confirmed or provisional source shows a SHA-256 in the register', not unpinned, ', '.join(unpinned))
-confirmed = [r[0] for r in reg if r[6] == 'owner-confirmed' and not re.search(X(r'{dec}'), r[2])]
+confirmed = [r[COL['id']] for r in reg if r[COL['text_status']] == 'owner-confirmed' and not re.search(X(r'{dec}'), r[COL['location']])]
 check('No source is owner-confirmed without a recorded owner decision in its location', not confirmed, ', '.join(confirmed))
-prov_ok = all(os.path.exists(os.path.join(root, X('{@sources_dir}'), r[0] + X('{@suffix_extract_md}'))) and
-              hashlib.sha256(open(os.path.join(root, X('{@sources_dir}'), r[0] + X('{@suffix_extract_md}')), 'rb').read()).hexdigest() in row_md.get(r[0], '')
-              for r in reg if r[6] == 'provisional-extract')
+prov_ok = all(os.path.exists(os.path.join(root, X('{@sources_dir}'), r[COL['id']] + X('{@suffix_extract_md}'))) and
+              hashlib.sha256(open(os.path.join(root, X('{@sources_dir}'), r[COL['id']] + X('{@suffix_extract_md}')), 'rb').read()).hexdigest() in row_md.get(r[COL['id']], '')
+              for r in reg if r[COL['text_status']] == 'provisional-extract')
 check('Every provisional extract exists and the register shows its exact SHA-256', prov_ok)
 cited_src = {s for l in lin.values() for s in re.findall(X(r'{src}'), l)}
-check('Every source cited in a lineage is registered', cited_src <= {r[0] for r in reg}, ', '.join(sorted(cited_src - {r[0] for r in reg})))
-check('The Master states the text status of every source', all(r[0] in M.split('**Source text status**')[1].split('Records resting')[0] for r in reg) if '**Source text status**' in M else False)
+check('Every source cited in a lineage is registered', cited_src <= {r[COL['id']] for r in reg}, ', '.join(sorted(cited_src - {r[COL['id']] for r in reg})))
+check('The Master states the text status of every source', all(r[COL['id']] in M.split('**Source text status**')[1].split('Records resting')[0] for r in reg) if '**Source text status**' in M else False)
 h3 = M.split('### H.3')[1].split('# Appendix A')[0] if '### H.3' in M else ''
 h3_rows, h3_bad = [], []
 for part in re.split(X(r'^(?=\*\*{src}\*\* — ledger status)'), h3, flags=re.M)[1:]:  # completeness is asserted only for complete ledgers
     rows_ = re.findall(X(r'^\| ({cl}) \| [\d-]+ \| ([^|]+) \| ([^|]+) \| ([^|]+) \|$'), part, re.M)
     h3_rows += rows_
     if '*complete*' in part.split('\n')[0]:
-        h3_bad += [part[2:10] + ' ' + c for c, cov, sup, hold in rows_ if cov.strip() == '—' and hold.strip() == '—']
+        h3_bad += [part[2:2 + ID_LEN['src']] + ' ' + c for c, cov, sup, hold in rows_ if cov.strip() == '—' and hold.strip() == '—']
 check('H.3 clause coverage index lists every ledger clause; in a complete ledger each is covered or held', len(h3_rows) == sum(
     len(re.findall(X(r'^{cl-}'), open(p, encoding='utf-8').read(), re.M)) for p in glob.glob(os.path.join(root, X('{@sources_dir}'), X('{src-}*.clauses')))) and not h3_bad,
     '%d rows; uncovered and unheld: %s' % (len(h3_rows), ', '.join(h3_bad)))
@@ -278,8 +281,8 @@ for st in re.split(X(r'^#(?={stg} \|)'), st_txt, flags=re.M)[1:]:
             m = re.match(r'- A-(\d+) \S', l)
             ids_a.append(int(m.group(1)) if m else None)
     if None in ids_a or len(ids_a) != len(set(ids_a)):
-        bad_a.append(st[:6])
-    seen_a |= {'%s.A-%d' % (st[:6], k) for k in ids_a if k}
+        bad_a.append(st[:ID_LEN['stg']])
+    seen_a |= {'%s.A-%d' % (st[:ID_LEN['stg']], k) for k in ids_a if k}
 shown_a = set(re.findall(X(r'^- `({stg}\.A-\d+)` '), stg_part, re.M))
 check(X('Every stage action has a stable ID ({stg#}.A-k), unique in its stage, and Part E shows each one'), not bad_a and seen_a == shown_a,
       ', '.join(bad_a) or '%d actions' % len(seen_a))
@@ -320,7 +323,7 @@ for d in decs:
     cell = d.get('a')
     if cell is None or not (cell == 'None' or re.fullmatch(X(r'(?:(?:{src} (?:{cl}(?:, )?)+|{req})(?:, )?)+'), cell)):
         scope_bad.append('%s (%s)' % (d['id'], 'no a: field' if cell is None else cell))
-    if d.get('label', '') in ['K%d' % i for i in range(1, 9)]:
+    if d.get('label', '') in [V['k_decisions']['label_prefix'] + '%d' % i for i in range(1, V['k_decisions']['count'] + 1)]:
         k18[d['id']] = cell
     eff = d.get('e', '')
     carried = any(d['id'] in ds for ds in kd.values())
@@ -329,7 +332,7 @@ for d in decs:
     elif not carried:
         pending.append(d['id'])     # a scoped decision is applied by gated changes inside its scope; until the first, it is pending
 check('Every adopted decision records its mutation-authorization scope explicitly: None, or source clauses and records only', not scope_bad, ', '.join(scope_bad))
-check('K1-K8 have an empty mutation-authorization scope, as the owner confirmed', len(k18) == 8 and all(v == 'None' for v in k18.values()),
+check('K1-K8 have an empty mutation-authorization scope, as the owner confirmed', len(k18) == V['k_decisions']['count'] and all(v == 'None' for v in k18.values()),
       ', '.join('%s=%s' % kv for kv in sorted(k18.items()) if kv[1] != 'None') or '%d decisions' % len(k18))
 check('Every adopted decision keeps its normative effect: an effect naming existing records; one with an empty scope is carried by a record', not effect_bad, ', '.join(effect_bad))
 check('Adopted decisions whose scoped effect no gated change has applied yet (reported, not a failure)', True, ', '.join(pending) or 'none')
@@ -395,7 +398,7 @@ for m in re.finditer(X(r'^@({exc}) \| RESOLVED \|[^\n]*\n((?:[a-z]+: [^\n]*\n?)*
 check('Every resolved exception names existing records and adopted decisions, and its clause is covered', not bad_res, ', '.join(bad_res))
 R = open(recon_p, encoding='utf-8').read()
 rows = re.findall(X(r'^\| ({req}) \|'), R, re.M)
-check('Reconciliation file has exactly the 128 rows', rows == first128, str(len(rows)))
+check('Reconciliation file has exactly the %d rows' % V['matrix_rows'], rows == first128, str(len(rows)))
 
 w = max(len(n) for n, _, _ in results)
 fails = 0

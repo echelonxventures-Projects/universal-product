@@ -26,7 +26,8 @@ serialized (only sent out, e.g. to a browser); a traced setting never read at ru
 import json, os, re, sys
 
 sys.dont_write_bytecode = True  # a check never changes the Master directory (no __pycache__)
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats and file names come from the registries (LXM-REQ-000240)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X, registry  # identifier formats and file names come from the registries (LXM-REQ-000240)
+REPORT = registry('reporting_json')  # how much the reports show
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -151,7 +152,7 @@ def tree_reader(path, idx):
     explicit = idx.pairs.get((parent, key), set()) if parent else set()
     plausible = set(idx.access.get(key, ())) | {f for anc in path[:-1] for f in idx.iterated.get(anc, ())} | \
         {q[0] for anc in path[:-1] for q in idx.quoted.get(anc, ())}  # a group fetched by its name, e.g. listOf("group")
-    return ('explicit' if explicit else 'plausible' if plausible else 'none'), sorted(explicit or plausible)[:5]
+    return ('explicit' if explicit else 'plausible' if plausible else 'none'), sorted(explicit or plausible)[:REPORT['listed_readers']]
 
 
 def copies_of(value, as_word, idx):
@@ -190,7 +191,7 @@ def analyse(root, cfg):
                 by_name = sorted({q[0] for q in idx.quoted.get(n, ())} | idx.access.get(n, set()))  # e[cfg.urlEnv], or an alias: e.NAME
                 st = ('explicit' if n in read else 'plausible' if by_name else 'none') if n in declared else 'undeclared'
                 read.setdefault(n, set()).update(by_name if n in declared and n not in read else ())
-                settings.append({'declaration': decl['id'], 'setting': n, 'reader': st, 'readers': sorted(read.get(n, ()))[:5], 'copies': []})
+                settings.append({'declaration': decl['id'], 'setting': n, 'reader': st, 'readers': sorted(read.get(n, ()))[:REPORT['listed_readers']], 'copies': []})
                 if st == 'none':
                     findings.append(('unread', decl['id'] + ':' + n, ''))
                 elif st == 'undeclared':
@@ -246,7 +247,7 @@ def analyse(root, cfg):
 def markdown(rep, root, label):
     """The findings as a work list: what to fix first, then what to declare, then what is unproven."""
     s, esc = rep['summary'], lambda t: t.replace('|', '\\|')
-    line = lambda f, n: esc(open(os.path.join(root, f), encoding='utf-8', errors='replace').read().split('\n')[n - 1].strip()[:140])
+    line = lambda f, n: esc(open(os.path.join(root, f), encoding='utf-8', errors='replace').read().split('\n')[n - 1].strip()[:REPORT['excerpt']['code_line']])
     out = ['# Configuration findings: %s' % label, '',
            '- %d settings from %d declarations, %d code files. Sources: %d declared, %d classified as not configuration, %d unaccounted.' % (
                s['settings'], s['declarations'], s['files'], s['sources']['declared'], s['sources']['not_declared'], len(s['sources']['unaccounted'])),

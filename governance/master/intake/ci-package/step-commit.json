@@ -13,5 +13,9 @@
  "secret_scan_max_bytes": 2000000,
  "secret_allow_files": [],
  "registry_root": "../..",
- "secret_formats": "secret-formats.json"
+ "secret_formats": "secret-formats.json",
+ "excerpt": {
+  "git_stderr_tail": 400,
+  "host_answer": 80
+ }
 }

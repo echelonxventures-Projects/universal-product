@@ -22,7 +22,8 @@ Exit 0 pass, 1 ratchet failure, 2 usage error."""
 import hashlib, json, os, re, subprocess, sys
 
 sys.dont_write_bytecode = True  # a check never changes the Master directory (no __pycache__)
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X, registry  # identifier formats come from ids.json (LXM-REQ-000240)
+REPORT = registry('reporting_json')  # how much the reports show
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -233,7 +234,7 @@ def analyse(root, cfg):
     dirty = None
     if cfg.get('_git_clean'):
         r = subprocess.run(['git', '--no-optional-locks', 'status', '--porcelain=v1', '--untracked-files=all'], cwd=root, capture_output=True, text=True)
-        dirty = [l for l in r.stdout.split('\n') if l.strip()] if r.returncode == 0 else ['(not a git checkout: %s)' % r.stderr.strip()[:80]]
+        dirty = [l for l in r.stdout.split('\n') if l.strip()] if r.returncode == 0 else ['(not a git checkout: %s)' % r.stderr.strip()[:REPORT['excerpt']['git_error']]]
         findings += [('dirty', l) for l in dirty]
     out = {}
     for k in findings:

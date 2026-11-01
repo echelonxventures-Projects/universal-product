@@ -4,21 +4,24 @@ comes from knowledge.json.
 Usage: python3 -I knowledge_status.py <root> --today YYYY-MM-DD [--states <states.json>] [--md <out>]"""
 import datetime, glob, json, os, re, sys
 sys.dont_write_bytecode = True
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X, ID_LEN, registry  # identifier formats come from ids.json (LXM-REQ-000240)
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
 import gate_accuracy as GA
 
 
+REPORT = registry('reporting_json')
+
+
 def status(root, today, states_path=None):
     cfg = json.load(open(os.path.join(root, X('{@knowledge_json}')), encoding='utf-8'))
     day = datetime.date.fromisoformat(today)
-    d = lambda s: datetime.date.fromisoformat(s[:10])
+    d = lambda s: datetime.date.fromisoformat(s[:REPORT['iso_date_chars']])
     # backlog: ledgers still in progress, and their clauses no record covers
     backlog = []
     reqs = A.read(os.path.join(root, X('{@reqs_txt}')))
     for p in sorted(glob.glob(os.path.join(root, X('{@sources_dir}'), X('{src-}*.clauses')))):
-        t = A.read(p); src = os.path.basename(p)[:8]
+        t = A.read(p); src = os.path.basename(p)[:ID_LEN['src']]
         if re.search(r'^status: in-progress', t, re.M):
             cl = re.findall(X(r'^({cl-}\S+) \|'), t, re.M)
             backlog.append((src, len(cl), sum(1 for c in cl if '%s %s ' % (src, c) not in reqs)))
@@ -36,7 +39,7 @@ def status(root, today, states_path=None):
         at = raised.get(m.group(1), today)
         age = (day - d(at)).days
         held.append({'id': m.group(1), 'status': m.group(2), 'contribution': m.group(3), 'resolver': rule['resolver'], 'age_days': age,
-                     'overdue': age > rule['due_days'], 'reason': reason[:120]})
+                     'overdue': age > rule['due_days'], 'reason': reason[:REPORT['excerpt']['reason']]})
     # review lapses
     rc = cfg['review_cycles']; lapsed = []
     for line in A.read(os.path.join(root, X('{@sources_txt}'))).split('\n'):
@@ -46,11 +49,11 @@ def status(root, today, states_path=None):
         prov = os.path.join(root, X('{@sources_dir}'), c[0] + X('{@suffix_provenance_md}'))
         cap = re.search(r'Captured by \| [^,]*, (\d{4}-\d{2}-\d{2})', A.read(prov)) if os.path.exists(prov) else None
         when = cap.group(1) if cap else (re.search(r'\((\d{4}-\d{2}-\d{2})', c[1]) or [None, None])[1]
-        if when and c[6] in rc and (day - d(when)).days > rc[c[6]]:
-            lapsed.append('%s (%s since %s)' % (c[0], c[6], when))
+        if when and c[A.COL['text_status']] in rc and (day - d(when)).days > rc[c[A.COL['text_status']]]:
+            lapsed.append('%s (%s since %s)' % (c[A.COL['id']], c[A.COL['text_status']], when))
     chain = A.verify_chain(root)
     matches = A.state_matches_log(root)
-    baselines = [json.loads(l)['at'][:10] for l in open(os.path.join(root, A.LEDGER), encoding='utf-8') if '"outcome": "BASELINE"' in l]
+    baselines = [json.loads(l)['at'][:REPORT['iso_date_chars']] for l in open(os.path.join(root, A.LEDGER), encoding='utf-8') if '"outcome": "BASELINE"' in l]
     acc = GA.run(root, os.path.join(root, cfg['accuracy']['reference']))
     st = json.load(open(states_path, encoding='utf-8')) if states_path and os.path.isfile(states_path) else {}
     import revalidate as RV

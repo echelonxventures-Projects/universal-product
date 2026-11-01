@@ -21,8 +21,16 @@ def scan(root):
         tree = ast.parse(open(os.path.join(root, rel), encoding='utf-8').read())
         docs = {id(n.body[0].value) for n in ast.walk(tree) if isinstance(n, (ast.Module, ast.FunctionDef, ast.ClassDef))
                 and n.body and isinstance(n.body[0], ast.Expr) and isinstance(getattr(n.body[0], 'value', None), ast.Constant)}
+        keys = set()  # a literal used as a key (dict key, subscript, .get/.setdefault/.pop argument) names data, not configuration
+        for x in ast.walk(tree):
+            if isinstance(x, ast.Subscript):
+                keys.add(id(x.slice))
+            elif isinstance(x, ast.Dict):
+                keys.update(id(k) for k in x.keys if k is not None)
+            elif isinstance(x, ast.Call) and isinstance(x.func, ast.Attribute) and x.func.attr in ('get', 'setdefault', 'pop') and x.args:
+                keys.add(id(x.args[0]))
         for n in ast.walk(tree):
-            if not isinstance(n, ast.Constant) or id(n) in docs:
+            if not isinstance(n, ast.Constant) or id(n) in docs or (id(n) in keys and isinstance(n.value, str)):
                 continue
             v, kind = n.value, None
             if isinstance(v, (int, float)) and not isinstance(v, bool) and v not in cfg['small_numbers']:

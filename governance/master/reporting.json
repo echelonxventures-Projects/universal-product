@@ -1,0 +1,17 @@
+{
+ "_comment": "LXM-REQ-000240: how much the reports show. Presentation only; no check depends on it.",
+ "max_listed": 40,
+ "listed_readers": 5,
+ "hash_id_chars": 10,
+ "iso_date_chars": 10,
+ "excerpt": {
+  "heading": 40,
+  "git_error": 80,
+  "wrong_case": 90,
+  "reason": 120,
+  "code_line": 140,
+  "blocker": 220,
+  "build_error": 300,
+  "git_stderr": 400
+ }
+}

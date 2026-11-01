@@ -7,7 +7,7 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from assimilate import gate_config  # the external sources resolve against the Master folder
-REGISTERS = {'reqs.txt': X(r'@{req}'), 'decisions.txt': X(r'@{dec}'), 'evidence.txt': X(r'@{evd}'), 'trace.txt': X(r'@{req}')}
+REGISTERS = {X('{@reqs_txt}'): X(r'@{req}'), X('{@decisions_txt}'): X(r'@{dec}'), X('{@evidence_txt}'): X(r'@{evd}'), X('{@trace_txt}'): X(r'@{req}')}
 sha = lambda b: hashlib.sha256(b).hexdigest()
 
 
@@ -15,7 +15,7 @@ def split(root, out):
     for reg, head in REGISTERS.items():
         text = open(os.path.join(root, reg), encoding='utf-8').read()
         parts = re.split(r'(?m)^(?=%s\b)' % head, text)
-        d = os.path.join(out, reg[:-4]); os.makedirs(d, exist_ok=True)
+        d = os.path.join(out, os.path.splitext(reg)[0]); os.makedirs(d, exist_ok=True)
         index = {'register': reg, 'preamble': parts[0], 'records': []}
         for p in parts[1:]:
             rid = re.match(head, p).group(0)[1:]
@@ -26,7 +26,7 @@ def split(root, out):
 
 def join(shards, out):
     for reg in REGISTERS:
-        d = os.path.join(shards, reg[:-4]); index = json.load(open(os.path.join(d, X('{@shard_index_json}')), encoding='utf-8'))
+        d = os.path.join(shards, os.path.splitext(reg)[0]); index = json.load(open(os.path.join(d, X('{@shard_index_json}')), encoding='utf-8'))
         body = []
         for r in index['records']:
             p = open(os.path.join(d, r['file']), encoding='utf-8').read()
@@ -47,7 +47,7 @@ def prove(root):
     os.makedirs(os.path.join(rb, X('{@out_dir}')))
     subprocess.run([sys.executable, '-I', os.path.join(rb, X('{@build_py}')), g['src2'], g['src3'], os.path.join(rb, X('{@out_dir}'))], check=True, capture_output=True)
     master = open(os.path.join(root, X('{@out_dir}'), X('{@master_md}')), 'rb').read() == open(os.path.join(rb, X('{@out_dir}'), X('{@master_md}')), 'rb').read()
-    sizes = [r['bytes'] for reg in REGISTERS for r in json.load(open(os.path.join(sh, reg[:-4], X('{@shard_index_json}'))))['records']]
+    sizes = [r['bytes'] for reg in REGISTERS for r in json.load(open(os.path.join(sh, os.path.splitext(reg)[0], X('{@shard_index_json}'))))['records']]
     files = len(sizes)
     shutil.rmtree(t, ignore_errors=True)
     return same, master, files, max(sizes), sum(sizes) // files
