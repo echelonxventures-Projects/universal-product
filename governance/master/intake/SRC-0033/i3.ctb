@@ -1,0 +1,9 @@
+id: CTB-SRC0033-i3
+source: SRC-0033
+section: §2.3
+kind: requirement
+scope: ARC
+title: Constitutional invariant I3: security and authorization
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000043, LXM-REQ-000048, LXM-REQ-000229, LXM-REQ-000242, LXM-REQ-000243
+text: Security and authorization is constitutional invariant I3 and is never traded off: least privilege, audited actions, and secrets never in code or images. The security suite and a secret scan check it, and CI and the runtime enforce it.

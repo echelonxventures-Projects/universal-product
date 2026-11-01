@@ -1,0 +1,5 @@
+id: CTB-SRC0010-execution
+source: SRC-0010
+section: §12,§13
+kind: requirement
+text: Execution and lifecycle covers deployment, observability, resilience, recovery and automatic conformance.

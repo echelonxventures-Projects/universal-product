@@ -1,0 +1,5 @@
+id: CTB-SRC0010-r3
+source: SRC-0010
+section: §19
+kind: requirement
+text: By rule R3, nothing is synchronised by hand: committed generated files must equal a fresh generation, and CI checks it. After successful assimilation, regenerate or update the dependent indexes, registries, relationships, specifications, documentation, conformance views, test obligations and implementation traceability from canonical knowledge; derived representations never become authorities.

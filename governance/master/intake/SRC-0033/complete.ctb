@@ -1,0 +1,5 @@
+id: CTB-SRC0033-complete
+kind: source
+source: SRC-0033
+action: complete-ledger
+basis: every clause is covered by its record (LXM-REQ-000241 to 000252 new; 199, 223, 224, 225 and 230 extended), except §2.4 (I4), held for LXM-DEC-000018

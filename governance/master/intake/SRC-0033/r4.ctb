@@ -1,0 +1,9 @@
+id: CTB-SRC0033-r4
+source: SRC-0033
+section: §3.4
+kind: requirement
+scope: ARC
+title: Rule R4: governed extensibility on registered need
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000043, LXM-REQ-000065, LXM-REQ-000103, LXM-REQ-000199, LXM-REQ-000229
+text: Rule R4, governed extensibility: new providers, markets, business models, capabilities and object types enter through registered extension points (a contract, an adapter and conformance tests), and generality is built when a registered need arrives, not ahead of it, while the complete architecture is still designed first. The core names no provider, market or business model, and each extension passes its contract tests in CI.

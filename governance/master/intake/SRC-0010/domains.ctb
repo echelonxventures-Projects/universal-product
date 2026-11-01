@@ -1,0 +1,5 @@
+id: CTB-SRC0010-domains
+source: SRC-0010
+section: §6,§7,§8,§9
+kind: requirement
+text: The domains (commerce, finance, operations and experience) each own their data and contracts, and invariants I1 to I3 apply inside every one.

@@ -1,0 +1,5 @@
+id: CTB-SRC0010-loop
+source: SRC-0010
+section: §14
+kind: requirement
+text: The operating loop is discover, assimilate, validate, execute, observe and propose.

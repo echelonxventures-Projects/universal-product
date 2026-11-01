@@ -1,0 +1,5 @@
+id: CTB-SRC0010-business
+source: SRC-0010
+section: §10
+kind: requirement
+text: Composition assembles capabilities into business profiles through configuration, and a profile or template is never proof of a working solution.

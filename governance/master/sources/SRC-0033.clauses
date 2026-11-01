@@ -1,0 +1,39 @@
+# SRC-0033 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Captured by capture.py from file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp6/architecture-final-sections-1-6.md.
+# A list is one clause together with its lead-in; every other sentence paragraph is a clause; headings and metadata are none.
+status: complete
+extract: sources/SRC-0033.extract.md sha256 e8c173d842538fa7c6dc291ae1bfed5731b071f0da68f1e9acc91347b3e90741
+§1.1 | 3-3 | b20d733976407760
+§2.1 | 9-9 | fc193373e2a6270c
+§2.2 | 10-10 | 1454cef54046c734
+§2.3 | 11-11 | 6ec30d15de7faabd
+§2.4 | 12-12 | d5cc96211d12a51a
+§2.5 | 13-13 | 67e58cf5f5f17951
+§2.6 | 14-14 | 838f2767da7e9536
+§2.7 | 16-16 | 9cb77c8ee57731aa
+§3.1 | 22-22 | 5adbf3ad5ceb06f9
+§3.2 | 23-23 | e616c2d94f6ccd87
+§3.3 | 24-24 | 3562159c80079bda
+§3.4 | 25-25 | cf692f8bd387373e
+§3.5 | 26-26 | 7ea952c28373f6fe
+§3.6 | 27-27 | 9bcda54150bf1ac7
+§3.7 | 28-28 | 4a2e536f49c72fb0
+§4.1 | 32-32 | d6974737fbb79ab8
+§4.2 | 34-34 | 8cf1955042ac6082
+§4.3 | 38-38 | adc2685ee020af18
+§4.4 | 39-39 | 323151a0b056355c
+§4.5 | 40-40 | 27a83154f5e9e05f
+§4.6 | 41-41 | d88a2773369da038
+§4.7 | 42-42 | 35bd9262257ef07a
+§4.8 | 43-43 | 3b131bdbbf56c8be
+§4.9 | 44-44 | 87bac3cb316ddc62
+§5.1 | 48-48 | 153eaeb59f52616a
+§5.2 | 49-49 | 935508c041323f5c
+§5.3 | 50-50 | f18c7bbd0b02ca5a
+§5.4 | 51-51 | 94d3355e7bc97e06
+§5.5 | 52-52 | 0cf730f0c134240b
+§5.6 | 53-53 | 9ee01581ca17e00d
+§6.0 | 57-57 | 2a6524f470670537
+§6.1 | 58-58 | 53619c4e30d793d1
+§6.2 | 59-59 | 316beb33d7db7003
+§6.3 | 60-60 | 311f1259f1142d8c
+§6.4 | 62-66 | 168924cd859ed960

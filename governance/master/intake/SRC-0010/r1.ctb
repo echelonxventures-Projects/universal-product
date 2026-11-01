@@ -1,0 +1,5 @@
+id: CTB-SRC0010-r1
+source: SRC-0010
+section: §17
+kind: requirement
+text: Rule R1, connected architecture: every domain declares what it provides and what it consumes, cross-domain interaction goes only through declared contracts, and an undeclared cross-domain dependency fails CI.

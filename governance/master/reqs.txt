@@ -1140,9 +1140,9 @@ x: Every implemented and supported capability is 100% configurable through gover
 
 @LXM-REQ-000199 | ARC | NEW | New-owner-addition
 t: Zero unjustified hardcoding
-s: SRC-0004 §1; SRC-0005; A400; SRC-0009 §2.5; SRC-0011 §6,§7; SRC-0015 §7.4
-c: SRC-0009 §2.5 covers; SRC-0011 §6 covers; SRC-0011 §7 extends; SRC-0015 §7.4 extends
-x: No unjustified hardcoding of business policy, technology, provider, market or business-model facts. There is one crucial distinction: zero hardcoding does not mean zero executable code or automatically trusting every new technology. A new tool must be discoverable and evaluable, and its compatibility must be verified before use. Production must use a specific, verified resolution for reproducibility and security, while that resolution should be generated and maintained by the governance system rather than duplicated manually. Do not indiscriminately turn every constant into configuration. Immutable invariants and real technical constraints must remain enforced.
+s: SRC-0004 §1; SRC-0005; A400; SRC-0009 §2.5; SRC-0011 §6,§7; SRC-0015 §7.4; SRC-0033 §2.5; SRC-0010 §2
+c: SRC-0009 §2.5 covers; SRC-0011 §6 covers; SRC-0011 §7 extends; SRC-0015 §7.4 extends; SRC-0033 §2.5 extends; SRC-0010 §2 covers
+x: No unjustified hardcoding of business policy, technology, provider, market or business-model facts. There is one crucial distinction: zero hardcoding does not mean zero executable code or automatically trusting every new technology. A new tool must be discoverable and evaluable, and its compatibility must be verified before use. Production must use a specific, verified resolution for reproducibility and security, while that resolution should be generated and maintained by the governance system rather than duplicated manually. Do not indiscriminately turn every constant into configuration. Immutable invariants and real technical constraints must remain enforced. Zero unjustified hard-coding is constitutional invariant I5: business, market, provider, brand and technology facts are governed configuration, each exception is declared with a reason, and the configuration and code adapters ratchet the findings to zero in CI.
 
 @LXM-REQ-000200 | ARC | NEW | New-owner-addition
 t: Open-ended extensibility
@@ -1164,8 +1164,8 @@ x: Every governed artifact evolves through a versioned, approved, auditable and 
 
 @LXM-REQ-000203 | ARC | NEW | New-owner-addition
 t: Knowledge Once
-s: SRC-0004 §1; SRC-0005; SRC-0006 §12; SRC-0007 §5; SRC-0008 §3,§5; SRC-0009 §2.3,§2.4
-c: SRC-0008 §3.4 supports; SRC-0008 §5.1 supports; SRC-0009 §2.3 covers; SRC-0009 §2.4 covers
+s: SRC-0004 §1; SRC-0005; SRC-0006 §12; SRC-0007 §5; SRC-0008 §3,§5; SRC-0009 §2.3,§2.4; SRC-0010 §2
+c: SRC-0008 §3.4 supports; SRC-0008 §5.1 supports; SRC-0009 §2.3 covers; SRC-0009 §2.4 covers; SRC-0010 §2 covers
 x: Author each fact once with a canonical identity; index its relationships; reference it from consumers; regenerate derived artifacts deterministically; validate consistency at repository and runtime boundaries. No duplicated copies, conflicting authorities, orphan artifacts or unnecessary parallel engines.
 
 @LXM-REQ-000204 | ARC | NEW | New-owner-addition
@@ -1215,8 +1215,8 @@ x: The conformance mechanism accommodates previously unknown technologies withou
 
 @LXM-REQ-000212 | ARC | NEW | New-owner-addition
 t: No combinatorial or manual version matrix
-s: SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3
-c: SRC-0015 §2.2 covers; SRC-0015 §3.1 covers; SRC-0015 §5.2 extends; SRC-0016 §2.4 covers; SRC-0016 §7.3 covers
+s: SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3; SRC-0033 §2.6
+c: SRC-0015 §2.2 covers; SRC-0015 §3.1 covers; SRC-0015 §5.2 extends; SRC-0016 §2.4 covers; SRC-0016 §7.3 covers; SRC-0033 §2.6 covers
 x: Do not run the full functional suite against every version of every technology unless a documented, evidence-based requirement justifies it; do not use a manually maintained version matrix as the core governance mechanism; never drop compatibility verification needed to support a declared compatibility claim. Do not manually duplicate version lists or tool requirements across independent files.
 
 @LXM-REQ-000213 | ARC | NEW | New-owner-addition
@@ -1283,23 +1283,23 @@ x: Before canonical publication, validate identity, semantic consistency, comple
 
 @LXM-REQ-000223 | ARC | NEW | New-owner-addition
 t: Automatic propagation
-s: SRC-0008 §5
-c: SRC-0008 §5.1 covers; SRC-0008 §5.2 covers
-x: After successful assimilation, regenerate or update the dependent indexes, registries, relationships, specifications, documentation, conformance views, test obligations and implementation traceability from canonical knowledge; derived representations never become authorities.
+s: SRC-0008 §5; SRC-0033 §3.3; SRC-0010 §19
+c: SRC-0008 §5.1 covers; SRC-0008 §5.2 covers; SRC-0033 §3.3 extends; SRC-0010 §19 covers
+x: After successful assimilation, regenerate or update the dependent indexes, registries, relationships, specifications, documentation, conformance views, test obligations and implementation traceability from canonical knowledge; derived representations never become authorities. By rule R3, nothing is synchronised by hand: committed generated files must equal a fresh generation, and CI checks it.
 
 @LXM-REQ-000224 | ARC | NEW | New-owner-addition
 t: Integrity at change time
-s: SRC-0008 §6,§1.2,§8.3,§8.4; SRC-0009 §4.4
+s: SRC-0008 §6,§1.2,§8.3,§8.4; SRC-0009 §4.4; SRC-0033 §3.7; SRC-0010 §23
 v: 2
-c: SRC-0008 §1.2 covers; SRC-0008 §6.2 covers; SRC-0008 §8.3 covers; SRC-0008 §8.4 covers; SRC-0008 §6.1 covers; SRC-0008 §6.3 covers; SRC-0009 §4.4 covers
-x: Every canonical mutation preserves the applicable Master invariants, enforced at ingestion and change time through automated validation, transaction controls, invariant checks and continuous verification. The Master does not depend on periodic manual audits, repeated document reconciliation, duplicate-removal exercises or deferred completeness reviews to maintain its integrity, and a later audit is never the primary way to find preventable omissions, duplication, overlap, inconsistency or broken traceability. This is a preventive architectural invariant, not a periodic cleanup objective: the Master becomes more complete, coherent and internally consistent as new knowledge enters it.
+c: SRC-0008 §1.2 covers; SRC-0008 §6.2 covers; SRC-0008 §8.3 covers; SRC-0008 §8.4 covers; SRC-0008 §6.1 covers; SRC-0008 §6.3 covers; SRC-0009 §4.4 covers; SRC-0033 §3.7 extends; SRC-0010 §23 covers
+x: Every canonical mutation preserves the applicable Master invariants, enforced at ingestion and change time through automated validation, transaction controls, invariant checks and continuous verification. The Master does not depend on periodic manual audits, repeated document reconciliation, duplicate-removal exercises or deferred completeness reviews to maintain its integrity, and a later audit is never the primary way to find preventable omissions, duplication, overlap, inconsistency or broken traceability. This is a preventive architectural invariant, not a periodic cleanup objective: the Master becomes more complete, coherent and internally consistent as new knowledge enters it. By rule R7, every change to knowledge, configuration or code passes the gate and CI before it lands, required checks protect the main branch, and independent assurance is periodic and never the maintenance mechanism.
 h: v1 (by SRC-0008 §1.2,§6.2,§8.3,§8.4: Semantic review found v1 omitted SRC-0008 meaning: no dependence on periodic audits, repeated reconciliation, duplicate-removal exercises or deferred completeness reviews (§1.2), enforcement at ingestion as well as change time (§6.2), and the preventive, monotonic intent (§8.3, §8.4).): Every canonical mutation preserves the Master invariants, enforced when a change is made through automated validation, transaction controls, invariant checks and continuous verification. A later audit is never the primary way to find preventable omissions, duplication, overlap, inconsistency or broken traceability.
 
 @LXM-REQ-000225 | ARC | NEW | New-owner-addition
 t: Automate routine governance
-s: SRC-0008 §7; SRC-0009 §4.2
-c: SRC-0008 §7.2 covers; SRC-0009 §4.2 extends
-x: Automate routine classification, matching, propagation, indexing, consistency checking and traceability maintenance as far as reliable evidence supports; human decisions are reserved for the conditions in LXM-REQ-000016. The platform must discover, classify, validate, extend, compose, supersede, relate, version and propagate changes automatically wherever safe and deterministic.
+s: SRC-0008 §7; SRC-0009 §4.2; SRC-0033 §3.6; SRC-0010 §22
+c: SRC-0008 §7.2 covers; SRC-0009 §4.2 extends; SRC-0033 §3.6 extends; SRC-0010 §22 covers
+x: Automate routine classification, matching, propagation, indexing, consistency checking and traceability maintenance as far as reliable evidence supports; human decisions are reserved for the conditions in LXM-REQ-000016. The platform must discover, classify, validate, extend, compose, supersede, relate, version and propagate changes automatically wherever safe and deterministic. By rule R6, owner-reserved decisions (financial policy, release, scope, irreversible data actions, security exceptions and architecture changes) are governed and never guessed: an owner-reserved change needs a recorded decision with its approval, and the gate enforces it.
 
 @LXM-REQ-000226 | ARC | NEW | New-owner-addition
 t: Completeness means assimilated
@@ -1309,8 +1309,8 @@ x: A contribution is complete only when it has been correctly assimilated into t
 
 @LXM-REQ-000227 | ARC | NEW | New-owner-addition
 t: Complete intended architecture before sequencing
-s: SRC-0009 §1.1,§1.2,§1.3,§3.1,§3.2,§8.3; SRC-0011 §2; SRC-0013 §2.1,§2.2.2,§3.4; SRC-0014 §3.1; SRC-0023 §1
-c: SRC-0009 §1.1 covers; SRC-0009 §1.2 covers; SRC-0009 §1.3 covers; SRC-0009 §3.1 covers; SRC-0009 §3.2 covers; SRC-0009 §8.3 covers; SRC-0011 §2 covers; SRC-0013 §2.1 covers; SRC-0013 §2.2.2 covers; SRC-0013 §3.4 covers; SRC-0014 §3.1 covers; SRC-0023 §1 extends
+s: SRC-0009 §1.1,§1.2,§1.3,§3.1,§3.2,§8.3; SRC-0011 §2; SRC-0013 §2.1,§2.2.2,§3.4; SRC-0014 §3.1; SRC-0023 §1; SRC-0010 §1
+c: SRC-0009 §1.1 covers; SRC-0009 §1.2 covers; SRC-0009 §1.3 covers; SRC-0009 §3.1 covers; SRC-0009 §3.2 covers; SRC-0009 §8.3 covers; SRC-0011 §2 covers; SRC-0013 §2.1 covers; SRC-0013 §2.2.2 covers; SRC-0013 §3.4 covers; SRC-0014 §3.1 covers; SRC-0023 §1 extends; SRC-0010 §1 covers
 x: Design, implement and evolve LUXORA Ω∞ as a complete, universal, technology-agnostic, self-maintaining and continuously evolving platform. Do not optimize for a minimum viable architecture, temporary implementation, isolated subsystem or short-term demonstration. The complete intended architecture must be established before implementation sequencing is determined. The architecture must comprehensively cover constitutional foundations, knowledge and assimilation, identity, organizations, tenancy, business composition, configuration, rules, users, experience journeys, catalog, discovery, pricing, promotions, commerce, checkout, payments, wallets, billing, finance, accounting, orders, inventory, logistics, fulfilment, returns, communication, integrations, intelligence, analytics, security, operations, deployment, disaster recovery and platform governance. The architecture must remain open to future domains and capabilities without requiring redesign of its foundations. The objective is not to repeatedly repair and audit a collection of partial systems. The objective is to engineer one coherent, universal platform whose architecture continuously maintains and evolves its own completeness and consistency. Before implementation starts, the best design must be finalised.
 
 @LXM-REQ-000228 | ARC | NEW | New-owner-addition
@@ -1327,9 +1327,9 @@ x: Every capability must have its complete lifecycle designed and implemented: C
 
 @LXM-REQ-000230 | ARC | NEW | New-owner-addition
 t: Dependency-sequenced permanent increments
-s: SRC-0009 §6.1,§6.2,§6.3,§6.4,§6.5,§6.6; SRC-0022 §1
-c: SRC-0009 §6.1 covers; SRC-0009 §6.2 covers; SRC-0009 §6.3 covers; SRC-0009 §6.4 covers; SRC-0009 §6.5 covers; SRC-0009 §6.6 covers; SRC-0022 §1 extends
-x: Implementation may be sequenced according to architectural dependencies, but every increment must conform to the final architecture; every accepted increment must be permanent and production-quality; no temporary substitute may become an accidental architectural authority; no implementation may create debt that contradicts established constitutional principles; dependencies and interfaces must be defined before dependent implementation; and all previously implemented capabilities must remain conformant as the architecture evolves. Implement everything one by one, in sequence.
+s: SRC-0009 §6.1,§6.2,§6.3,§6.4,§6.5,§6.6; SRC-0022 §1; SRC-0033 §6.4
+c: SRC-0009 §6.1 covers; SRC-0009 §6.2 covers; SRC-0009 §6.3 covers; SRC-0009 §6.4 covers; SRC-0009 §6.5 covers; SRC-0009 §6.6 covers; SRC-0022 §1 extends; SRC-0033 §6.4 extends
+x: Implementation may be sequenced according to architectural dependencies, but every increment must conform to the final architecture; every accepted increment must be permanent and production-quality; no temporary substitute may become an accidental architectural authority; no implementation may create debt that contradicts established constitutional principles; dependencies and interfaces must be defined before dependent implementation; and all previously implemented capabilities must remain conformant as the architecture evolves. Implement everything one by one, in sequence. The order of work, each step permanent, is: first, invariants I1 to I3 enforced for the launch scope; second, the first-marketplace journeys reach Verified end to end; third, governance in CI, with the Master in the repository and rule R7 active; fourth, generalisation through registered extension points as needs are registered.
 
 @LXM-REQ-000231 | ESC | NEW | New-owner-addition
 t: Supplementary human-decision criteria
@@ -1392,3 +1392,75 @@ t: Everything agnostic, zero hard-coding, the governance tooling included
 s: SRC-0032 §0.1
 c: SRC-0032 §0.1 covers
 x: Everything is agnostic and nothing is hard-coded, the Master and its governance tooling included: every fact that can differ, such as a name, path, file, threshold, identifier format, provider, format, environment or actor, is registered configuration, and code holds only mechanism. Each remaining literal is either declared with a reason or reported as a finding that blocks.
+
+@LXM-REQ-000241 | ARC | NEW | New-owner-addition
+t: Every constitutional rule carries a check and an enforcement point
+s: SRC-0033 §1.1; SRC-0010 §2,§15,§16
+c: SRC-0033 §1.1 covers; SRC-0010 §2 covers; SRC-0010 §15 covers; SRC-0010 §16 covers
+x: The architecture constitution is a destination plus enforceable rules: every rule has an invariant (what must be true), a check (how a machine knows) and an enforcement point (where a violation is stopped). A rule without a check is a principle, not yet a rule.
+
+@LXM-REQ-000242 | ARC | NEW | New-owner-addition
+t: Constitutional invariant I1: money integrity
+s: SRC-0033 §2.1
+c: SRC-0033 §2.1 covers
+x: Money integrity is constitutional invariant I1 and is never traded off: one exact money model with integer minor units and an explicit currency and scale, and every movement goes through a ledger, is reconciled and is never inferred. The money audit checks it (no float money in scope; ledgers balance), and CI and runtime guards enforce it.
+
+@LXM-REQ-000243 | ARC | NEW | New-owner-addition
+t: Constitutional invariant I2: tenant isolation
+s: SRC-0033 §2.2
+c: SRC-0033 §2.2 covers
+x: Tenant isolation is constitutional invariant I2 and is never traded off: no data, configuration or action crosses a tenant boundary unless a contract allows it. Isolation tests per surface check it, and CI and runtime authorization enforce it.
+
+@LXM-REQ-000244 | ARC | NEW | New-owner-addition
+t: Privacy and compliance stay governed requirements and a release gate
+s: SRC-0033 §2.7
+c: SRC-0033 §2.7 covers
+x: Privacy and compliance is not a constitutional invariant, by the owner's choice of 2026-10-31; it remains governed requirements (consent, retention, data ownership and jurisdiction, all by configuration) and release gate 19, so it still blocks release until it is evidenced.
+
+@LXM-REQ-000245 | ARC | NEW | New-owner-addition
+t: Rule R1: connected architecture
+s: SRC-0033 §3.1; SRC-0010 §17
+c: SRC-0033 §3.1 covers; SRC-0010 §17 covers
+x: Rule R1, connected architecture: every domain declares what it provides and what it consumes, cross-domain interaction goes only through declared contracts, and an undeclared cross-domain dependency fails CI.
+
+@LXM-REQ-000246 | ARC | NEW | New-owner-addition
+t: Rule R2: one source of truth, transitional structures only if declared
+s: SRC-0033 §3.2; SRC-0010 §18
+c: SRC-0033 §3.2 covers; SRC-0010 §18 covers
+x: Rule R2, one source of truth: there is no parallel source of truth. A transitional structure is allowed only if it is declared with an owner, a reason, an exit condition and a date, is never authoritative, and is removed by its exit condition; a transitional register fails CI and readiness on an undeclared or expired entry.
+
+@LXM-REQ-000247 | ARC | NEW | New-owner-addition
+t: Rule R5: computed lifecycle states, never declared
+s: SRC-0033 §3.5,§4.1,§4.2,§4.3,§4.4,§4.5,§4.6,§4.7,§4.8,§4.9; SRC-0010 §21
+c: SRC-0033 §3.5 covers; SRC-0033 §4.1 covers; SRC-0033 §4.2 covers; SRC-0033 §4.3 covers; SRC-0033 §4.4 covers; SRC-0033 §4.5 covers; SRC-0033 §4.6 covers; SRC-0033 §4.7 covers; SRC-0033 §4.8 covers; SRC-0033 §4.9 covers; SRC-0010 §21 covers
+x: Rule R5, no false completion: each requirement and capability carries a computed state, never one declared by hand, and readiness computes the states from evidence and gates release on them. The states are Specified, Designed, Implemented, Configured, Enforced at runtime, Verified and Certified; each needs its own evidence and is never inferred from the one before it. Specified needs a canonical requirement, Designed a specification section, Implemented code traced to the requirement, Configured a declared and governed configuration, Enforced at runtime a runtime trace or an invariant check, Verified tests passing on the exact SHA, and Certified release evidence and owner approval.
+
+@LXM-REQ-000248 | ARC | NEW | New-owner-addition
+t: The operating loop: discover, assimilate, validate, execute, observe, propose
+s: SRC-0033 §6.0,§6.1,§6.2,§6.3; SRC-0010 §14
+c: SRC-0033 §6.0 covers; SRC-0033 §6.1 covers; SRC-0033 §6.2 covers; SRC-0033 §6.3 covers; SRC-0010 §14 covers
+x: The operating loop is discover, assimilate, validate, execute, observe and propose. Learning means that measured outcomes produce proposals; proposals enter through the gate like any other contribution; and nothing modifies itself in production.
+
+@LXM-REQ-000249 | ARC | NEW | New-owner-addition
+t: Constitutional invariant I3: security and authorization
+s: SRC-0033 §2.3,§2.6
+c: SRC-0033 §2.3 covers; SRC-0033 §2.6 covers
+x: Security and authorization is constitutional invariant I3 and is never traded off: least privilege, audited actions, and secrets never in code or images. The security suite and a secret scan check it, and CI and the runtime enforce it.
+
+@LXM-REQ-000250 | ARC | NEW | New-owner-addition
+t: Constitutional invariant I6: technology agnosticism
+s: SRC-0033 §2.6; SRC-0010 §2
+c: SRC-0033 §2.6 covers; SRC-0010 §2 covers
+x: Technology agnosticism is constitutional invariant I6: technologies and providers sit behind contracts and adapters, and the core names none.
+
+@LXM-REQ-000251 | ARC | NEW | New-owner-addition
+t: Rule R4: governed extensibility on registered need
+s: SRC-0033 §3.4; SRC-0010 §20
+c: SRC-0033 §3.4 covers; SRC-0010 §20 covers
+x: Rule R4, governed extensibility: new providers, markets, business models, capabilities and object types enter through registered extension points (a contract, an adapter and conformance tests), and generality is built when a registered need arrives, not ahead of it, while the complete architecture is still designed first. The core names no provider, market or business model, and each extension passes its contract tests in CI.
+
+@LXM-REQ-000252 | ARC | NEW | New-owner-addition
+t: The six architecture layers
+s: SRC-0033 §5.1,§5.2,§5.3,§5.4,§5.5,§5.6; SRC-0010 §3,§4,§5,§6,§7,§8,§9,§10,§11,§12,§13
+c: SRC-0033 §5.1 covers; SRC-0033 §5.2 covers; SRC-0033 §5.3 covers; SRC-0033 §5.4 covers; SRC-0033 §5.5 covers; SRC-0033 §5.6 covers; SRC-0010 §3 covers; SRC-0010 §4 covers; SRC-0010 §5 covers; SRC-0010 §6 covers; SRC-0010 §7 covers; SRC-0010 §8 covers; SRC-0010 §9 covers; SRC-0010 §10 covers; SRC-0010 §11 covers; SRC-0010 §12 covers; SRC-0010 §13 covers
+x: The architecture has six layers. The foundation, the kernel, holds identity, registry, configuration, rules, events, workflow, data, integration adapters and security, and names no business. The domains (commerce, finance, operations and experience) each own their data and contracts, and invariants I1 to I3 apply inside every one. Composition assembles capabilities into business profiles through configuration, and a profile or template is never proof of a working solution. Intelligence is bounded: decision support and automation on governed data propose and never act past an invariant or an owner decision, and a change to production comes only through the gate. Execution and lifecycle covers deployment, observability, resilience, recovery and automatic conformance. Knowledge and assimilation, the Master and its gate, governs every layer above.

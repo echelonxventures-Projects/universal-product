@@ -145,3 +145,12 @@ observed: 2026-10-31
 observer: amazon-44
 verifies: LXM-REQ-000149
 status: current
+
+@LXM-EVD-000015 | G.3
+fact: On 2026-11-02 the gate matched a short sentence wrongly. Assimilating SRC-0033 §2.6 (invariant I6), it judged "The technology governance gate and a scan of the core check it in CI." covered by LXM-REQ-000212 and LXM-REQ-000249 together (composition, 0.86), so LXM-REQ-000250 lacks that sentence and 212 and 249 carry false SRC-0033 §2.6 relations. Correcting it is owner-reserved (the records carry owner-decided content) and is put to the owner as LXM-DEC-000018; the gate can now retract a false relation (kind relation, action retract)
+source: ledger entry for CTB-SRC0033-i6 (outcome PARTIAL→NEW, clause 2 COVERED by LXM-REQ-000212 and LXM-REQ-000249)
+method: review of the recorded mutation against the sentence's meaning
+observed: 2026-11-02
+observer: amazon-44
+verifies: LXM-REQ-000222
+status: current

@@ -1,0 +1,9 @@
+id: CTB-SRC0033-rules
+source: SRC-0033
+section: §1.1
+kind: requirement
+scope: ARC
+title: Every constitutional rule carries a check and an enforcement point
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000091, LXM-REQ-000099, LXM-REQ-000170
+text: The architecture constitution is a destination plus enforceable rules: every rule has an invariant (what must be true), a check (how a machine knows) and an enforcement point (where a violation is stopped). A rule without a check is a principle, not yet a rule.

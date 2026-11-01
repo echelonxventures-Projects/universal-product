@@ -1,0 +1,6 @@
+id: CTB-SRC0033-order
+source: SRC-0033
+section: §6.4
+kind: requirement
+extends: LXM-REQ-000230
+text: The order of work, each step permanent, is: first, invariants I1 to I3 enforced for the launch scope; second, the first-marketplace journeys reach Verified end to end; third, governance in CI, with the Master in the repository and rule R7 active; fourth, generalisation through registered extension points as needs are registered.

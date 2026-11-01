@@ -1,0 +1,6 @@
+id: CTB-SRC0033-r6
+source: SRC-0033
+section: §3.6
+kind: requirement
+extends: LXM-REQ-000225
+text: By rule R6, owner-reserved decisions (financial policy, release, scope, irreversible data actions, security exceptions and architecture changes) are governed and never guessed: an owner-reserved change needs a recorded decision with its approval, and the gate enforces it.

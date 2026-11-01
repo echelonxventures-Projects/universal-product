@@ -1,0 +1,5 @@
+id: CTB-SRC0010-platform
+source: SRC-0010
+section: §5
+kind: requirement
+text: The foundation, the kernel, holds identity, registry, configuration, rules, events, workflow, data, integration adapters and security, and names no business.

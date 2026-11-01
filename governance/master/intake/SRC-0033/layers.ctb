@@ -1,0 +1,9 @@
+id: CTB-SRC0033-layers
+source: SRC-0033
+section: §5.1,§5.2,§5.3,§5.4,§5.5,§5.6
+kind: requirement
+scope: ARC
+title: The six architecture layers
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000101, LXM-REQ-000103, LXM-REQ-000106, LXM-REQ-000107, LXM-REQ-000170, LXM-REQ-000191, LXM-REQ-000220, LXM-REQ-000227, LXM-REQ-000229
+text: The architecture has six layers. The foundation, the kernel, holds identity, registry, configuration, rules, events, workflow, data, integration adapters and security, and names no business. The domains (commerce, finance, operations and experience) each own their data and contracts, and invariants I1 to I3 apply inside every one. Composition assembles capabilities into business profiles through configuration, and a profile or template is never proof of a working solution. Intelligence is bounded: decision support and automation on governed data propose and never act past an invariant or an owner decision, and a change to production comes only through the gate. Execution and lifecycle covers deployment, observability, resilience, recovery and automatic conformance. Knowledge and assimilation, the Master and its gate, governs every layer above.

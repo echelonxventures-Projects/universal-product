@@ -71,20 +71,34 @@ A.assimilate = counted
 
 
 def ledger_ok(d, calls):
-    """Every gate run leaves exactly one ledger line; refusals and errors never change the canonical digest."""
+    """Every gate run leaves exactly one ledger line; refusals and errors never change canonical knowledge (the generated view may show a new hold)."""
     p = os.path.join(d, A.LEDGER)
     rows = [A.json.loads(l) for l in open(p, encoding='utf-8')] if os.path.exists(p) else []
     good = len(rows) == calls and [r['seq'] for r in rows] == list(range(1, calls + 1)) and all(
-        r['outcome'] and (r['digest_before'] == r['digest_after'] if r['outcome'] in ('REJECTED', 'QUARANTINED', 'ERROR', 'NOOP') else r['digest_before'] != r['digest_after'])
+        r['outcome'] and ((r.get('knowledge_before', r['digest_before']) == r.get('knowledge_after', r['digest_after'])) if r['outcome'] in ('REJECTED', 'QUARANTINED', 'ERROR')
+                          else r['digest_before'] == r['digest_after'] if r['outcome'] == 'NOOP' else r['digest_before'] != r['digest_after'])
         for r in rows)
     return good, '%d run(s), %d ledger line(s)' % (calls, len(rows))
+
+
+_KNOW = {}
+
+
+def snap(d):
+    """The state digest now, remembering the canonical knowledge it stood for."""
+    s = A.state_digest(d); _KNOW[s] = A.knowledge_digest(d); return s
+
+
+def unchanged(d, ref):
+    """A refusal leaves canonical knowledge as it was at ref (the generated view may show a new hold)."""
+    return _KNOW.get(ref) == A.knowledge_digest(d)
 
 
 def scenario(name, prevents, fn):
     d = fixture()
     CALLS.clear()
     try:
-        before = A.state_digest(d)
+        before = snap(d)
         ok, detail = fn(d, before)
         lok, ldet = ledger_ok(d, len(CALLS))
         ok, detail = ok and lok, detail + ' | ledger: ' + ldet + ('' if lok else ' MISMATCH')
@@ -103,8 +117,8 @@ def accepted(d, r, outcome):
 
 def refused(d, r, before, outcome, words):
     exc = open(os.path.join(d, 'intake', 'exceptions.txt'), encoding='utf-8').read() if os.path.exists(os.path.join(d, 'intake', 'exceptions.txt')) else ''
-    ok = r['outcome'] == outcome and A.state_digest(d) == before and r.get('exception') and r['exception'] in exc and re.search(words, r['reason'], re.I)
-    return bool(ok), '%s %s: %s | resolution: %s | canonical state unchanged: %s' % (r['outcome'], r.get('exception'), r['reason'][:110], r['resolution'][:80], A.state_digest(d) == before)
+    ok = r['outcome'] == outcome and unchanged(d, before) and r.get('exception') and r['exception'] in exc and re.search(words, r['reason'], re.I)
+    return bool(ok), '%s %s: %s | resolution: %s | canonical state unchanged: %s' % (r['outcome'], r.get('exception'), r['reason'][:110], r['resolution'][:80], unchanged(d, before))
 
 
 def s_exact(d, b):
@@ -193,8 +207,8 @@ def s_declared_recognition(d, b):
     r = A.assimilate(d, ctb(d, 'recog', text=t, recognized_as='LXM-REQ-000192'))
     ok1, det1 = accepted(d, r, 'RECOGNIZE-SEMANTIC')
     r2 = A.assimilate(d, ctb(d, 'recog-bad', text='Every synthetic fixture source is purged from the register once its fixture run finishes.', recognized_as='LXM-REQ-000192'))
-    b2 = A.state_digest(d)
-    ok2 = r2['outcome'] == 'REJECTED' and 'not supported' in r2['reason'] and A.state_digest(d) == b2
+    b2 = snap(d)
+    ok2 = r2['outcome'] == 'REJECTED' and 'not supported' in r2['reason'] and unchanged(d, b2)
     return ok1 and ok2, det1 + ' || unsupported claim: %s %s' % (r2['outcome'], r2['reason'][:70])
 
 
@@ -218,12 +232,12 @@ def s_later_recognition_of_new_record(d, b):
 
 def s_infrastructure_error(d, b):
     g = A.json.load(open(d + '/gate.json')); g['src2'] = '/nonexistent/source'; A.json.dump(g, open(d + '/gate.json', 'w'))
-    b = A.state_digest(d)
+    b = snap(d)
     exc_p = d + '/intake/exceptions.txt'
     exc_before = open(exc_p).read() if os.path.exists(exc_p) else None
     r = A.assimilate(d, ctb(d, 'error', text='Every synthetic fixture source is purged from the register once its fixture run finishes.', scope='ARC', title='t', applied_in='STG-12 #1'))
     no_exc = (open(exc_p).read() if os.path.exists(exc_p) else None) == exc_before
-    return r['outcome'] == 'ERROR' and A.state_digest(d) == b and no_exc, '%s: %s; canonical state unchanged: %s; no LXM-EXC raised: %s' % (r['outcome'], r['reason'][:70], A.state_digest(d) == b, no_exc)
+    return r['outcome'] == 'ERROR' and unchanged(d, b) and no_exc, '%s: %s; canonical state unchanged: %s; no LXM-EXC raised: %s' % (r['outcome'], r['reason'][:70], unchanged(d, b), no_exc)
 
 
 def s_invalid(d, b):
@@ -262,7 +276,7 @@ def s_owner_hold_sticks(d, b):
     # an owner-reserved refusal holds its source clause; rephrasing it as a new record, or citing an unrecorded decision, must not bypass the hold
     first = A.assimilate(d, ctb(d, 'hold', section='§5', text='Escalate every synthetic fixture failure to the owner.', extends='LXM-REQ-000016'))
     held = first['outcome'] == 'QUARANTINED' and 'owner-reserved' in first['reason']
-    b = A.state_digest(d)
+    b = snap(d)
     t = 'Synthetic fixture failures are always escalated to the owner in a separate packet.'
     r = A.assimilate(d, ctb(d, 'hold-bypass', section='§5', text=t, scope='ESC', title='Fixture escalation', applied_in='STG-00 #1', distinct_from='LXM-REQ-000016'))
     ok, det = refused(d, r, b, 'QUARANTINED', 'held for an owner decision')
@@ -285,11 +299,11 @@ def s_decision_authority(d, b):
     out, ok = [], True
     for i, (label, kv) in enumerate(neg):
         r = A.assimilate(d, ctb(d, 'auth-neg-%d' % i, text=t, **kv))
-        good = r['outcome'] == 'QUARANTINED' and A.state_digest(d) == b
+        good = r['outcome'] == 'QUARANTINED' and unchanged(d, b)
         ok &= good; out.append('%s -> %s' % (label, r['outcome']))
     for f in ('7-1-option3.ctb', '7-2-option3.ctb'):  # the option the owner did not choose, citing the adopted decision
         r = A.assimilate(d, os.path.join(po, f))
-        good = r['outcome'] == 'QUARANTINED' and 'scope does not cover' in r['reason'] and A.state_digest(d) == b
+        good = r['outcome'] == 'QUARANTINED' and 'scope does not cover' in r['reason'] and unchanged(d, b)
         ok &= good; out.append('%s with DEC-14 -> %s' % (f, r['outcome']))
     # positive: the adopted decision authorizes a change to the supplementary criteria, inside its scope
     r = A.assimilate(d, ctb(d, 'auth-pos', source='SRC-0009', section='§7.2', text=t, extends='LXM-REQ-000231', decision='LXM-DEC-000014'))
@@ -317,7 +331,7 @@ def s_k_decisions(d, b):
         res = []
         for i, (label, want, kv) in enumerate(tries):
             r = A.assimilate(d, ctb(d, 'k%d-%d' % (n, i), section='§%d.%d' % (n, i), **kv))  # own clause: a quarantine would hold it
-            good = r['outcome'] == want and A.state_digest(d) == b and ('decision' not in kv or 'scope is empty' in r['reason'])
+            good = r['outcome'] == want and unchanged(d, b) and ('decision' not in kv or 'scope is empty' in r['reason'])
             ok &= good; res.append('%s %s' % (label, r['outcome'] + ('' if good else '!')))
         out.append('K%d: %s' % (n, ', '.join(res)))
     r = A.assimilate(d, ctb(d, 'k-control', section='§9.9', text=novel, scope='ARC', title='Fixture source hygiene', applied_in='STG-12 #1'))
@@ -353,7 +367,7 @@ def s_stable_action_ids(d, b):
     blk = st.split('#STG-12 |')[1].split('\n#STG-')[0]
     acts = [l for l in blk.split('\n') if l.startswith('- ')]
     open(d + '/stages.txt', 'w', encoding='utf-8').write(st.replace(blk, blk.replace('\n'.join(acts), '\n'.join(reversed(acts)))))
-    rebuild(d, d + '/out'); b2 = A.state_digest(d)
+    rebuild(d, d + '/out'); b2 = snap(d)
     t = 'Each synthetic fixture batch stores the governing ruling identifier alongside its archive.'
     r1 = A.assimilate(d, ctb(d, 'aid-legacy', text=t, scope='ARC', title='Fixture governance', applied_in='STG-12 #1'))
     a1 = [l for l in open(d + '/stages.txt', encoding='utf-8').read().split('\n') if l.startswith('- A-1 ') and NEXT in l]
@@ -373,9 +387,9 @@ def s_decision_adapter(d, b):
     out, ok = [], True
     def expect(label, r, want, before=None):
         nonlocal ok
-        good = r['outcome'] == want and (before is None or A.state_digest(d) == before)
+        good = r['outcome'] == want and (before is None or unchanged(d, before))
         ok &= good; out.append('%s -> %s%s' % (label, r['outcome'], '' if good else '!'))
-    b0 = A.state_digest(d)
+    b0 = snap(d)
     expect('open a skipped ID', A.assimilate(d, dec('d-skip', decision='LXM-DEC-%06d' % (int(nid[-6:]) + 1), action='open', question='Synthetic question?')), 'REJECTED', b0)
     r = A.assimilate(d, dec('d-open', decision=nid, action='open', question='Synthetic fixture question: which archive format?'))
     o_ok, _ = accepted(d, r, 'NEW'); ok &= o_ok; out.append('open %s -> %s' % (nid[-3:], r['outcome']))
@@ -387,7 +401,7 @@ def s_decision_adapter(d, b):
     h = lambda f: A.sha(open(f, 'rb').read())
     base = dict(decision=nid, action='adopt', outcome='Use zstd for fixture archives', effect='LXM-REQ-000192', authorizes='SRC-9001 §8, LXM-REQ-000192',
                 adopted='fixture owner', provenance='fixture', rationale='fixture', approval='intake/decisions/fx.approval.txt', approval_sha256=h(ap_dir + '/fx.approval.txt'))
-    b1 = A.state_digest(d)
+    b1 = snap(d)
     for label, change in [('adopt without an approval', dict(approval=None, approval_sha256=None)),
                           ('approval not naming the decision', dict(approval='intake/decisions/other.approval.txt', approval_sha256=h(ap_dir + '/other.approval.txt'))),
                           ('approval hash mismatch', dict(approval_sha256='0' * 64)),
@@ -406,7 +420,7 @@ def s_decision_adapter(d, b):
     expect('replay the adoption', A.assimilate(d, dec('d-adopt', **base)), 'NOOP')
     expect('replay the open after adoption', A.assimilate(d, dec('d-open', decision=nid, action='open', question='Synthetic fixture question: which archive format?')), 'NOOP')
     kv = dict(base); kv['outcome'] = 'Use gzip instead'
-    b2 = A.state_digest(d)
+    b2 = snap(d)
     expect('edit the adopted decision', A.assimilate(d, dec('d-edit', **kv)), 'QUARANTINED', b2)
     r = A.assimilate(d, ctb(d, 'd-use', section='§8', text='Synthetic fixture archives are compressed with zstd before upload.', extends='LXM-REQ-000192', decision=nid))
     u_ok, _ = accepted(d, r, 'EXTEND'); ok &= u_ok; out.append('requirement change inside its scope -> %s' % r['outcome'])
@@ -422,9 +436,9 @@ def s_evidence_adapter(d, b):
     out, ok = [], True
     def expect(label, r, want, before=None):
         nonlocal ok
-        good = r['outcome'] == want and (before is None or A.state_digest(d) == before)
+        good = r['outcome'] == want and (before is None or unchanged(d, before))
         ok &= good; out.append('%s -> %s%s' % (label, r['outcome'], '' if good else '!'))
-    b0 = A.state_digest(d)
+    b0 = snap(d)
     expect('skipped ID', A.assimilate(d, ev('e1', evidence='LXM-EVD-%06d' % (len(evs) + 2), action='add', **obs)), 'REJECTED', b0)
     kv = dict(obs); del kv['observer']
     expect('no observer', A.assimilate(d, ev('e2', evidence=nxt, action='add', **kv)), 'REJECTED', b0)
@@ -438,7 +452,7 @@ def s_evidence_adapter(d, b):
     ok &= after[cur] == 'superseded by ' + nxt and after[nxt] == 'current'; out.append('%s now "%s"' % (cur[-3:], after[cur]))
     expect('replay', A.assimilate(d, ev('e5', evidence=nxt, action='supersede', supersedes=cur, **obs)), 'NOOP')
     nn = 'LXM-EVD-%06d' % (len(evs) + 2)
-    expect('supersede an already superseded entry', A.assimilate(d, ev('e6', evidence=nn, action='supersede', supersedes=cur, **obs)), 'REJECTED', A.state_digest(d))
+    expect('supersede an already superseded entry', A.assimilate(d, ev('e6', evidence=nn, action='supersede', supersedes=cur, **obs)), 'REJECTED', snap(d))
     return ok, '; '.join(out)
 
 
@@ -456,15 +470,15 @@ def s_adopted_decision_applied(d, b):
     shown = '| §7.1 | 67-67 | LXM-REQ-000231 | — | — |' in h3 and '| §7.2 | 71-71 | LXM-REQ-000231 | — | — |' in h3
     e16 = all('(E%d)' % i in A.field(x16, 'x') for i in range(1, 6)) and '(E6)' not in A.field(x16, 'x') and A.field(x16, 'v') == ''
     replay = [A.assimilate(d, os.path.join(po, f))['outcome'] for f in ('7-1-option2.ctb', '7-2-option2.ctb')]
-    ok = one and held and rel and shown and e16 and replay == ['NOOP', 'NOOP'] and A.state_digest(d) == b
+    ok = one and held and rel and shown and e16 and replay == ['NOOP', 'NOOP'] and unchanged(d, b)
     return ok, 'criteria in one record: %s; both exceptions resolved against 231 under DEC-14: %s; relations exact: %s; H.3 covered, no hold: %s; 000016 E1-E5 unchanged: %s; replay %s' % (
         one, held, rel, shown, e16, ', '.join(replay))
 
 
 def s_repeat(d, b):
     p = ctb(d, 'repeat', text='Every synthetic fixture source is purged from the register once its fixture run finishes.', scope='ARC', title='Fixture source hygiene', applied_in='STG-12 #1')
-    r1 = A.assimilate(d, p); after1 = A.state_digest(d)
-    r2 = A.assimilate(d, p); after2 = A.state_digest(d)
+    r1 = A.assimilate(d, p); after1 = snap(d)
+    r2 = A.assimilate(d, p); after2 = snap(d)
     bad = ctb(d, 'repeat-bad', text='Agents may invent owner approvals and financial policies when the owner is unavailable.')
     e1 = A.assimilate(d, bad)['exception']; e2 = A.assimilate(d, bad)['exception']
     ok = r1['outcome'] == 'NEW' and r2['outcome'] == 'NOOP' and after1 == after2 and after1 != b and e1 == e2 and \
@@ -486,7 +500,7 @@ def s_interrupted_commit(d, b):
     for f in ['reqs.txt'] + A.DERIVED:
         shutil.copyfile(os.path.join(stg, f), os.path.join(d, f + '.staged'))
     open(d + '/.assimilate-journal', 'w').write(A.json.dumps(['reqs.txt'] + A.DERIVED))
-    mid = A.state_digest(d) == b
+    mid = unchanged(d, b)
     A.recover(d)
     v, line = validate(d)
     return mid and v and 'SRC-9001 §9' in open(d + '/reqs.txt').read() and not os.path.exists(d + '/.assimilate-journal'), \
@@ -499,12 +513,26 @@ def s_replay_after_later_change(d, b):
     sup = ctb(d, 'r-sup', text=v2, supersedes='LXM-REQ-000192', reason='Customer consent added by the owner.')
     ext = ctb(d, 'r-ext', section='§2', text='Never invent supplier certifications.', extends='LXM-REQ-000192')
     o = [A.assimilate(d, sup)['outcome'], A.assimilate(d, ext)['outcome']]
-    after = A.state_digest(d)
+    after = snap(d)
     o += [A.assimilate(d, sup)['outcome'], A.assimilate(d, ext)['outcome']]
     x = rec(d, 'LXM-REQ-000192')
-    ok = o == ['SUPERSEDE', 'EXTEND', 'NOOP', 'NOOP'] and A.state_digest(d) == after and A.field(x, 'x') == v2 + ' Never invent supplier certifications.' \
+    ok = o == ['SUPERSEDE', 'EXTEND', 'NOOP', 'NOOP'] and unchanged(d, after) and A.field(x, 'x') == v2 + ' Never invent supplier certifications.' \
         and A.field(x, 'v') == '2' and len([1 for k, _ in x['fields'] if k == 'h']) == 1
     return ok, 'outcomes %s; extension kept, still v2 with one history entry: %s' % (', '.join(o), ok)
+
+
+def s_replay_after_owner_decision(d, b):
+    # a supersession applied before its record became owner-decided is a NOOP on replay: an applied change is never re-judged
+    v2 = 'Never invent owner approvals, financial policies, test evidence, external access, capability support, production readiness or customer consent.'
+    sup = ctb(d, 'od-sup', text=v2, supersedes='LXM-REQ-000192', reason='Customer consent added by the owner.')
+    o = [A.assimilate(d, sup)['outcome']]
+    with open(os.path.join(d, 'sources.txt'), 'a', encoding='utf-8') as fh:
+        fh.write('SRC-9003 | Synthetic owner-decision fixture source | test only | — | Fixture | owner-decision | conversation-only\n')
+    rebuild(d, d + '/out')
+    o.append(A.assimilate(d, ctb(d, 'od-ext', source='SRC-9003', text='Never invent supplier certifications.', extends='LXM-REQ-000192'))['outcome'])
+    decided = A.owner_decided(rec(d, 'LXM-REQ-000192'), A.sources(d))
+    o.append(A.assimilate(d, sup)['outcome'])
+    return o == ['SUPERSEDE', 'EXTEND', 'NOOP'] and decided, 'outcomes %s; record owner-decided before the replay: %s' % (', '.join(o), decided)
 
 
 def s_replay_by_identity(d, b):
@@ -514,7 +542,7 @@ def s_replay_by_identity(d, b):
     r1 = A.assimilate(d, p)
     for i in range(3):  # grow other records so that matching shifts
         A.assimilate(d, ctb(d, 'grow%d' % i, section='§5.%d' % i, extends='LXM-REQ-000193', text='Synthetic fixture growth sentence number %d about invented owner approvals and financial policies.' % i))
-    st = A.state_digest(d); r2 = A.assimilate(d, p); same = A.state_digest(d) == st
+    st = snap(d); r2 = A.assimilate(d, p); same = unchanged(d, st)
     reqs = open(d + '/reqs.txt', encoding='utf-8').read()
     open(d + '/reqs.txt', 'w', encoding='utf-8').write(reqs.replace('; SRC-9001 §4 covers', '').replace('c: SRC-9001 §4 covers; ', 'c: '))
     r3 = A.assimilate(d, p)
@@ -658,13 +686,53 @@ def s_noop_closes_hold(d, b):
     open(d + '/sources/SRC-9001.clauses', 'w').write('status: in-progress\nextract: sources/SRC-9001.extract.md sha256 %s\n§1 | 1-1 | x\n' % sha)
     A.assimilate(d, ctb(d, 'rec', text=R192))
     r1 = A.assimilate(d, ctb(d, 'held', text='Every synthetic fixture shopper receives a printed receipt in a sealed envelope.'))
+    shown_now = 'LXM-EXC-' in row91(d) and reproducible(d)  # the hold shows at once, not at the next accepted change
     open(d + '/tr.ctb', 'w').write('id: CTB-tr\nkind: trace\nrequirement: LXM-REQ-000192\naction: add\nimpl: lib/x.js\nbasis: fixture\n')
     r0 = A.assimilate(d, d + '/tr.ctb')  # an accepted change regenerates the Master while the item is held
     shown = 'LXM-EXC-' in row91(d)
     r2 = A.assimilate(d, ctb(d, 'held', text=R192))
     held = 'LXM-EXC-' in row91(d)
-    return shown and r0['outcome'] == 'NEW' and r1['outcome'] == 'REJECTED' and r2['outcome'] == 'CLOSE' and reproducible(d) and not held and A.state_matches_log(d)[0], \
-        'refused: %s; later change %s, shown held after it: %s; resubmitted: %s; Master equals a fresh generation: %s; still shown held: %s' % (r1['outcome'], r0['outcome'] + ' ' + str(r0.get('reason'))[:120], shown, r2['outcome'], reproducible(d), held)
+    return shown_now and shown and r0['outcome'] == 'NEW' and r1['outcome'] == 'REJECTED' and r2['outcome'] == 'CLOSE' and reproducible(d) and not held and A.state_matches_log(d)[0], \
+        'refused: %s (shown held at once: %s); later change %s, shown held after it: %s; resubmitted: %s; Master equals a fresh generation: %s; still shown held: %s' % (r1['outcome'], shown_now, r0['outcome'] + ' ' + str(r0.get('reason'))[:120], shown, r2['outcome'], reproducible(d), held)
+
+
+def s_add_clause(d, b):
+    # an in-progress ledger gains a clause capture missed; overlaps, closed ledgers and replays are handled
+    open(d + '/sources/SRC-9001.extract.md', 'w').write('first line\nsecond line\n')
+    sha = A.hashlib.sha256(open(d + '/sources/SRC-9001.extract.md', 'rb').read()).hexdigest()
+    open(d + '/sources/SRC-9001.clauses', 'w').write('status: in-progress\nextract: sources/SRC-9001.extract.md sha256 %s\n%s1 | 1-1 | x\n' % (sha, A.X('{cl-}')))
+    def add(name, sec, lines):
+        p = d + '/' + name + '.ctb'
+        open(p, 'w').write('id: CTB-%s\nkind: source\nsource: SRC-9001\naction: add-clause\nsection: %s\nlines: %s\nbasis: fixture\n' % (name, sec, lines))
+        return A.assimilate(d, p)['outcome']
+    r1 = add('ac1', A.X('{cl-}2'), '2-2'); r2 = add('ac1', A.X('{cl-}2'), '2-2'); r3 = add('ac2', A.X('{cl-}3'), '1-2')
+    led = open(d + '/sources/SRC-9001.clauses').read()
+    open(d + '/sources/SRC-9001.clauses', 'w').write(led.replace('status: in-progress', 'status: complete'))
+    r4 = add('ac3', A.X('{cl-}4'), '2-2')
+    r5 = add('ac1', A.X('{cl-}2'), '2-2')  # replaying the earlier addition after the ledger closed
+    open(d + '/sources/SRC-9001.clauses', 'w').write(led)
+    ok = (r1, r2, r3, r4, r5) == ('EXTEND', 'NOOP', 'REJECTED', 'REJECTED', 'NOOP') and A.X('{cl-}2 | 2-2 |') in led
+    return ok, 'new clause %s; replay %s; overlapping lines %s; closed ledger %s; replay after closing %s' % (r1, r2, r3, r4, r5)
+
+
+def s_retract_relation(d, b):
+    # a coverage relation recorded by a false match is retracted through the gate; the record's text is untouched; a replay
+    # is a NOOP; a malformed retraction is refused
+    rec = 'LXM-REQ-000192'
+    r1 = A.assimilate(d, ctb(d, 'rel-add', text=R192))  # a real recognition gives SRC-9001 §1 a relation to the record
+    before = A.field(A.blocks(open(d + '/reqs.txt').read())[rec], 'x')
+    def retract(name, **kv):
+        p = d + '/' + name + '.ctb'
+        fields = dict(kind='relation', action='retract', record=rec, source='SRC-9001', section=A.X('{cl-}1'), relation='covers', basis='fixture: a false match')
+        fields.update(kv)
+        open(p, 'w').write('id: CTB-%s\n' % name + ''.join('%s: %s\n' % (k, v) for k, v in fields.items()))
+        return A.assimilate(d, p)['outcome']
+    r2 = retract('rt1'); r3 = retract('rt1'); r4 = retract('rt2', relation='resembles')
+    after = A.blocks(open(d + '/reqs.txt').read())[rec]
+    gone = 'SRC-9001' not in A.field(after, 'c') and 'SRC-9001' not in A.field(after, 's')
+    v, line = validate(d)
+    ok = r1['outcome'] in ('RECOGNIZE-EXACT', 'RECOGNIZE-SEMANTIC') and (r2, r3, r4) == ('RETRACT', 'NOOP', 'REJECTED') and gone and A.field(after, 'x') == before and v
+    return ok, 'recognized %s; retract %s; replay %s; malformed %s; relation and lineage gone %s; text unchanged %s; validator %s' % (r1['outcome'], r2, r3, r4, gone, A.field(after, 'x') == before, line)
 
 
 for args in [
@@ -698,6 +766,7 @@ for args in [
     ('Adopted decision LXM-DEC-000014 applied', 'duplicate criteria, open holds or a changed E1-E5 record', s_adopted_decision_applied),
     ('Repeated assimilation', 'non-idempotent replay', s_repeat),
     ('Replay after a later change', 'an old supersession reverting later versions', s_replay_after_later_change),
+    ('Replay after the record became owner-decided', 'an applied change re-judged and refused on replay', s_replay_after_owner_decision),
     ('Replay by identity after the Master grows', 'replays re-judged once records change', s_replay_by_identity),
     ('Tamper-evident log; Level 2 rebuilt from recorded mutations', 'an altered log, or a registry that cannot be rebuilt', s_chain_and_projection),
     ('Scopes are registered data, not a fixed list', 'a closed list of scopes in code', s_open_scopes),
@@ -707,6 +776,8 @@ for args in [
     ('Clause ledger in progress, then complete', 'incremental assimilation blocked, or completeness unchecked', s_ledger_in_progress),
     ('Resolved exception without a clause', 'a clause-less contribution failing a coverage check', s_resolved_without_clause),
     ('NOOP resubmission closes a hold', 'a generated Master showing a closed item as held', s_noop_closes_hold),
+    ('A missed clause joins an in-progress ledger', 'a source sentence silently left out of its ledger', s_add_clause),
+    ('A relation recorded by a false match is retracted', 'a wrong coverage link that can never be corrected', s_retract_relation),
     ('Interrupted commit', 'a half-applied mutation', s_interrupted_commit)]:
     scenario(*args)
 

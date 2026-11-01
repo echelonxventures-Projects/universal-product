@@ -1,0 +1,19 @@
+{
+ "_comment": "How capture.py segments a text into clauses. A paragraph starting with one of these bold labels is metadata about the document, not a clause; any other bold label (such as Loop: or Order of work) is content.",
+ "metadata_labels": [
+  "Status",
+  "Prepared by",
+  "Prepared and built by",
+  "Decides",
+  "Basis",
+  "Source",
+  "Sources",
+  "Requirements",
+  "Built by",
+  "Usage",
+  "Date",
+  "Owner",
+  "Author",
+  "Captured by"
+ ]
+}

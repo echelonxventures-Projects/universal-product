@@ -9,7 +9,7 @@ source through the gate (kind: source). Clause resolutions are reviewed before s
 Exit 0 captured or already captured, 2 refused."""
 import hashlib, json, os, re, subprocess, sys
 sys.dont_write_bytecode = True
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X  # identifier formats come from ids.json (LXM-REQ-000240)
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); from ids import X, registry  # identifier formats come from ids.json (LXM-REQ-000240)
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 import assimilate as A
 import actors as ACTORS
@@ -21,11 +21,23 @@ SENSITIVITY = ('public', 'internal', 'confidential')
 def segment(lines):
     """Clauses: a list with its lead-in is one clause; every other sentence paragraph is one; headings and metadata are none."""
     heading = lambda x: x.startswith('#') or re.match(r'^(Decision|DECISION) \d+ —', x)
+    labels = registry('capture_json')['metadata_labels']  # a bold label is metadata only when capture.json says so
+    metadata = lambda x: any(re.match(r'^\*\*%s:?\*\*:?' % re.escape(l), x) for l in labels)
     item = lambda x: re.match(r'^\s*(?:[-*]|\d+\.)\s+', x)
+    row = lambda x: x.strip().startswith('|') and x.strip().endswith('|')
+    rule = lambda x: row(x) and re.fullmatch(r'\|[\s:|-]+\|', x.strip())
     spec, sec, k, i, n = [], '0', 0, 0, len(lines)
     while i < n:
         x = lines[i]
-        if not x.strip() or heading(x) or (x.startswith('**') and ':**' in x and not item(x)):
+        if row(x) and i + 1 < n and rule(lines[i + 1]):  # a table: its header and separator are structure; each data row is one clause
+            header = [c.strip() for c in x.strip().strip('|').split('|')]
+            i += 2
+            while i < n and row(lines[i]):
+                k += 1
+                spec.append((X('{cl-}%s.%d') % (sec, k), i + 1, i + 1, header))
+                i += 1
+            continue
+        if not x.strip() or heading(x) or (metadata(x) and not item(x)):
             m = re.match(r'^#+\s*(\d+)\.', x) or re.match(r'^(?:Decision|DECISION) (\d+)', x)
             if m:
                 sec, k = m.group(1), 0
@@ -40,7 +52,7 @@ def segment(lines):
             while not lines[i].strip():
                 i -= 1
         k += 1
-        spec.append((X('{cl-}%s.%d') % (sec, k) if sec != '0' or k > 0 else X('{cl-}%d') % k, a + 1, i + 1))
+        spec.append((X('{cl-}%s.%d') % (sec, k) if sec != '0' or k > 0 else X('{cl-}%d') % k, a + 1, i + 1, None))
         i += 1
     return spec
 
@@ -74,9 +86,13 @@ def capture(root, raw, origin, sid, title, role, authority, sensitivity='interna
     led = ['# %s clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Captured by capture.py from %s.' % (sid, origin),
            '# A list is one clause together with its lead-in; every other sentence paragraph is a clause; headings and metadata are none.',
            'status: in-progress', 'extract: sources/%s.extract.md sha256 %s' % (sid, xsha)]
-    for sec, a, b in spec:
+    for sec, a, b, header in spec:
         led.append('%s | %d-%d | %s' % (sec, a, b, hashlib.sha256('\n'.join(lines[a - 1:b]).encode()).hexdigest()[:16]))
-        parts = [clean(y) for y in lines[a - 1:b] if y.strip()]
+        if header:  # a table row reads as a sentence: each cell with its column name
+            cells = [clean(c) for c in lines[a - 1].strip().strip('|').split('|')]
+            parts = ['%s: %s' % (h, c) if h else c for h, c in zip(header, cells) if c]
+        else:
+            parts = [clean(y) for y in lines[a - 1:b] if y.strip()]
         t = ' '.join(p if p.endswith(('.', ':', '?')) else p + ';' for p in parts).rstrip(';')
         t = t if t.endswith(('.', ':', '?')) else t + '.'
         p = os.path.join(root, X('{@intake_dir}'), sid, sec[1:].replace('.', '-') + '.ctb')

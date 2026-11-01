@@ -1,0 +1,9 @@
+id: CTB-SRC0033-states
+source: SRC-0033
+section: §3.5,§4.1,§4.2,§4.3,§4.4,§4.5,§4.6,§4.7,§4.8,§4.9
+kind: requirement
+scope: ARC
+title: Rule R5: computed lifecycle states, never declared
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000196, LXM-REQ-000229
+text: Rule R5, no false completion: each requirement and capability carries a computed state, never one declared by hand, and readiness computes the states from evidence and gates release on them. The states are Specified, Designed, Implemented, Configured, Enforced at runtime, Verified and Certified; each needs its own evidence and is never inferred from the one before it. Specified needs a canonical requirement, Designed a specification section, Implemented code traced to the requirement, Configured a declared and governed configuration, Enforced at runtime a runtime trace or an invariant check, Verified tests passing on the exact SHA, and Certified release evidence and owner approval.

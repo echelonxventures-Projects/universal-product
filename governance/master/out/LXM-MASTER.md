@@ -80,11 +80,12 @@
 | SRC-0030 | Owner: everything automated, zero manual steps; make the repository private before pushing (2026-10-31; session 47abdf14 transcript lines 5562 and 5611) | file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp5/owner-words.txt; provisional working extract `sources/SRC-0030.extract.md` | `b839474637c5b80c9b458a12c9da7b8a5258a82ec90bfb0c9b455cb6319a4ed1` (extract, not owner-confirmed) | Owner directive |
 | SRC-0031 | Owner: no coding agent or tool is hard-coded; everything agnostic (2026-10-31; session 47abdf14 transcript line 5789) | session transcript 47abdf14-1288-4d9e-b7b7-eec6f8d3053e.jsonl line 5789; provisional working extract `sources/SRC-0031.extract.md` | `c7f7f13f0da6f84786e20c62ce33fae59b3c3724db18c03908c260c074e963d5` (extract, not owner-confirmed) | Owner directive |
 | SRC-0032 | Owner: everything agnostic, zero hard-coding (2026-10-31; session 47abdf14 transcript line 6047) | session transcript 47abdf14-1288-4d9e-b7b7-eec6f8d3053e.jsonl line 6047; provisional working extract `sources/SRC-0032.extract.md` | `59fe79bd3d505dcef6e334dd517a5b3f2f89b9cba80aaa1e7df6427ad8ac2934` (extract, not owner-confirmed) | Owner directive |
+| SRC-0033 | Owner (adopted): the architecture constitution, final text, sections 1 to 6, as adopted by LXM-DEC-000015 (intake/decisions/ARCHITECTURE-PROPOSAL-2026-10-31.md, SHA-256 22fbf8937ef0cf1765234b30a4044eea5227b7f3b7b07470f575475aeacd3973, lines 12 to 77) | file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp6/architecture-final-sections-1-6.md; provisional working extract `sources/SRC-0033.extract.md` | `e8c173d842538fa7c6dc291ae1bfed5731b071f0da68f1e9acc91347b3e90741` (extract, not owner-confirmed) | Owner decision (adopted text) |
 
 **Source text status** (separate from authority; generated from the register):
 
 - *owner-file* — owner-supplied files pinned by SHA-256: SRC-0001, SRC-0002, SRC-0003. Cited by 194 records.
-- *provisional-extract* — agent-captured and hashed, **not owner-confirmed**: SRC-0008, SRC-0009, SRC-0010, SRC-0011, SRC-0012, SRC-0013, SRC-0014, SRC-0015, SRC-0016, SRC-0017, SRC-0018, SRC-0019, SRC-0020, SRC-0021, SRC-0022, SRC-0023, SRC-0024, SRC-0025, SRC-0026, SRC-0027, SRC-0028, SRC-0029, SRC-0030, SRC-0031, SRC-0032. Cited by 103 records.
+- *provisional-extract* — agent-captured and hashed, **not owner-confirmed**: SRC-0008, SRC-0009, SRC-0010, SRC-0011, SRC-0012, SRC-0013, SRC-0014, SRC-0015, SRC-0016, SRC-0017, SRC-0018, SRC-0019, SRC-0020, SRC-0021, SRC-0022, SRC-0023, SRC-0024, SRC-0025, SRC-0026, SRC-0027, SRC-0028, SRC-0029, SRC-0030, SRC-0031, SRC-0032, SRC-0033. Cited by 115 records.
 - *conversation-only* — no captured text: SRC-0004, SRC-0005, SRC-0006, SRC-0007. Cited by 39 records.
 
 Records resting on provisional-extract or conversation-only sources stay candidate content until the owner confirms or supplies the source text (Part G.4, item 10). Only the owner can mark a source owner-confirmed.
@@ -167,6 +168,7 @@ Each row records what the decision authorizes. The gate accepts a change citing 
 | ID | Decision | Facts | Options and consequences | Recommendation (not approval) |
 |---|---|---|---|---|
 | LXM-DEC-000013 | Production release authorization | Gate 20 BLOCKED; approver named | GO only after gates 1–19 | None: owner only |
+| LXM-DEC-000018 | Authorize two corrections in the adopted architecture constitution (SRC-0033, adopted by LXM-DEC-000015), both owner-reserved because the records carry owner-decided content | (1) I4 Knowledge Once is held (LXM-EXC-000019): its first submission extended LXM-REQ-000203, which is owner-decided, so the clause is held; it is ready as its own record that refers to 203. (2) I6 technology agnosticism: the gate matched its check sentence ("The technology governance gate and a scan of the core check it in CI.") to LXM-REQ-000212 and LXM-REQ-000249 by a false composition, so LXM-REQ-000250 lacks that sentence and 212 and 249 carry false relations to SRC-0033 §2.6 | (a) authorize both: record I4 as a new record referring to LXM-REQ-000203; add the check sentence to LXM-REQ-000250; retract the SRC-0033 §2.6 relations from LXM-REQ-000212 and LXM-REQ-000249; scope SRC-0033 §2.4, §2.6, LXM-REQ-000212, LXM-REQ-000249, LXM-REQ-000250; (b) leave both as they are | (a) |
 
 ## Part D — Requirement catalogue
 
@@ -416,10 +418,10 @@ Every implemented and supported capability is 100% configurable through governed
 #### LXM-REQ-000199 — Zero unjustified hardcoding
 
 `ARC` · class NEW · disposition **New-owner-addition**  
-Lineage: SRC-0004 §1; SRC-0005; A400; SRC-0009 §2.5; SRC-0011 §6,§7; SRC-0015 §7.4  
-Coverage: SRC-0009 §2.5 covers; SRC-0011 §6 covers; SRC-0011 §7 extends; SRC-0015 §7.4 extends
+Lineage: SRC-0004 §1; SRC-0005; A400; SRC-0009 §2.5; SRC-0011 §6,§7; SRC-0015 §7.4; SRC-0033 §2.5; SRC-0010 §2  
+Coverage: SRC-0009 §2.5 covers; SRC-0011 §6 covers; SRC-0011 §7 extends; SRC-0015 §7.4 extends; SRC-0033 §2.5 extends; SRC-0010 §2 covers
 
-No unjustified hardcoding of business policy, technology, provider, market or business-model facts. There is one crucial distinction: zero hardcoding does not mean zero executable code or automatically trusting every new technology. A new tool must be discoverable and evaluable, and its compatibility must be verified before use. Production must use a specific, verified resolution for reproducibility and security, while that resolution should be generated and maintained by the governance system rather than duplicated manually. Do not indiscriminately turn every constant into configuration. Immutable invariants and real technical constraints must remain enforced.
+No unjustified hardcoding of business policy, technology, provider, market or business-model facts. There is one crucial distinction: zero hardcoding does not mean zero executable code or automatically trusting every new technology. A new tool must be discoverable and evaluable, and its compatibility must be verified before use. Production must use a specific, verified resolution for reproducibility and security, while that resolution should be generated and maintained by the governance system rather than duplicated manually. Do not indiscriminately turn every constant into configuration. Immutable invariants and real technical constraints must remain enforced. Zero unjustified hard-coding is constitutional invariant I5: business, market, provider, brand and technology facts are governed configuration, each exception is declared with a reason, and the configuration and code adapters ratchet the findings to zero in CI.
 
 #### LXM-REQ-000200 — Open-ended extensibility
 
@@ -448,8 +450,8 @@ Every governed artifact evolves through a versioned, approved, auditable and rev
 #### LXM-REQ-000203 — Knowledge Once
 
 `ARC` · class NEW · disposition **New-owner-addition**  
-Lineage: SRC-0004 §1; SRC-0005; SRC-0006 §12; SRC-0007 §5; SRC-0008 §3,§5; SRC-0009 §2.3,§2.4  
-Coverage: SRC-0008 §3.4 supports; SRC-0008 §5.1 supports; SRC-0009 §2.3 covers; SRC-0009 §2.4 covers
+Lineage: SRC-0004 §1; SRC-0005; SRC-0006 §12; SRC-0007 §5; SRC-0008 §3,§5; SRC-0009 §2.3,§2.4; SRC-0010 §2  
+Coverage: SRC-0008 §3.4 supports; SRC-0008 §5.1 supports; SRC-0009 §2.3 covers; SRC-0009 §2.4 covers; SRC-0010 §2 covers
 
 Author each fact once with a canonical identity; index its relationships; reference it from consumers; regenerate derived artifacts deterministically; validate consistency at repository and runtime boundaries. No duplicated copies, conflicting authorities, orphan artifacts or unnecessary parallel engines.
 
@@ -517,8 +519,8 @@ The conformance mechanism accommodates previously unknown technologies without r
 #### LXM-REQ-000212 — No combinatorial or manual version matrix
 
 `ARC` · class NEW · disposition **New-owner-addition**  
-Lineage: SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3  
-Coverage: SRC-0015 §2.2 covers; SRC-0015 §3.1 covers; SRC-0015 §5.2 extends; SRC-0016 §2.4 covers; SRC-0016 §7.3 covers
+Lineage: SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3; SRC-0033 §2.6  
+Coverage: SRC-0015 §2.2 covers; SRC-0015 §3.1 covers; SRC-0015 §5.2 extends; SRC-0016 §2.4 covers; SRC-0016 §7.3 covers; SRC-0033 §2.6 covers
 
 Do not run the full functional suite against every version of every technology unless a documented, evidence-based requirement justifies it; do not use a manually maintained version matrix as the core governance mechanism; never drop compatibility verification needed to support a declared compatibility claim. Do not manually duplicate version lists or tool requirements across independent files.
 
@@ -574,29 +576,29 @@ Before canonical publication, validate identity, semantic consistency, completen
 #### LXM-REQ-000223 — Automatic propagation
 
 `ARC` · class NEW · disposition **New-owner-addition**  
-Lineage: SRC-0008 §5  
-Coverage: SRC-0008 §5.1 covers; SRC-0008 §5.2 covers
+Lineage: SRC-0008 §5; SRC-0033 §3.3; SRC-0010 §19  
+Coverage: SRC-0008 §5.1 covers; SRC-0008 §5.2 covers; SRC-0033 §3.3 extends; SRC-0010 §19 covers
 
-After successful assimilation, regenerate or update the dependent indexes, registries, relationships, specifications, documentation, conformance views, test obligations and implementation traceability from canonical knowledge; derived representations never become authorities.
+After successful assimilation, regenerate or update the dependent indexes, registries, relationships, specifications, documentation, conformance views, test obligations and implementation traceability from canonical knowledge; derived representations never become authorities. By rule R3, nothing is synchronised by hand: committed generated files must equal a fresh generation, and CI checks it.
 
 #### LXM-REQ-000224 — Integrity at change time
 
 `ARC` · class NEW · disposition **New-owner-addition**  
-Lineage: SRC-0008 §6,§1.2,§8.3,§8.4; SRC-0009 §4.4  
-Coverage: SRC-0008 §1.2 covers; SRC-0008 §6.2 covers; SRC-0008 §8.3 covers; SRC-0008 §8.4 covers; SRC-0008 §6.1 covers; SRC-0008 §6.3 covers; SRC-0009 §4.4 covers  
+Lineage: SRC-0008 §6,§1.2,§8.3,§8.4; SRC-0009 §4.4; SRC-0033 §3.7; SRC-0010 §23  
+Coverage: SRC-0008 §1.2 covers; SRC-0008 §6.2 covers; SRC-0008 §8.3 covers; SRC-0008 §8.4 covers; SRC-0008 §6.1 covers; SRC-0008 §6.3 covers; SRC-0009 §4.4 covers; SRC-0033 §3.7 extends; SRC-0010 §23 covers  
 Version: 2
 
-Every canonical mutation preserves the applicable Master invariants, enforced at ingestion and change time through automated validation, transaction controls, invariant checks and continuous verification. The Master does not depend on periodic manual audits, repeated document reconciliation, duplicate-removal exercises or deferred completeness reviews to maintain its integrity, and a later audit is never the primary way to find preventable omissions, duplication, overlap, inconsistency or broken traceability. This is a preventive architectural invariant, not a periodic cleanup objective: the Master becomes more complete, coherent and internally consistent as new knowledge enters it.
+Every canonical mutation preserves the applicable Master invariants, enforced at ingestion and change time through automated validation, transaction controls, invariant checks and continuous verification. The Master does not depend on periodic manual audits, repeated document reconciliation, duplicate-removal exercises or deferred completeness reviews to maintain its integrity, and a later audit is never the primary way to find preventable omissions, duplication, overlap, inconsistency or broken traceability. This is a preventive architectural invariant, not a periodic cleanup objective: the Master becomes more complete, coherent and internally consistent as new knowledge enters it. By rule R7, every change to knowledge, configuration or code passes the gate and CI before it lands, required checks protect the main branch, and independent assurance is periodic and never the maintenance mechanism.
 
 > Superseded v1 (by SRC-0008 §1.2,§6.2,§8.3,§8.4: Semantic review found v1 omitted SRC-0008 meaning: no dependence on periodic audits, repeated reconciliation, duplicate-removal exercises or deferred completeness reviews (§1.2), enforcement at ingestion as well as change time (§6.2), and the preventive, monotonic intent (§8.3, §8.4).): Every canonical mutation preserves the Master invariants, enforced when a change is made through automated validation, transaction controls, invariant checks and continuous verification. A later audit is never the primary way to find preventable omissions, duplication, overlap, inconsistency or broken traceability.
 
 #### LXM-REQ-000225 — Automate routine governance
 
 `ARC` · class NEW · disposition **New-owner-addition**  
-Lineage: SRC-0008 §7; SRC-0009 §4.2  
-Coverage: SRC-0008 §7.2 covers; SRC-0009 §4.2 extends
+Lineage: SRC-0008 §7; SRC-0009 §4.2; SRC-0033 §3.6; SRC-0010 §22  
+Coverage: SRC-0008 §7.2 covers; SRC-0009 §4.2 extends; SRC-0033 §3.6 extends; SRC-0010 §22 covers
 
-Automate routine classification, matching, propagation, indexing, consistency checking and traceability maintenance as far as reliable evidence supports; human decisions are reserved for the conditions in LXM-REQ-000016. The platform must discover, classify, validate, extend, compose, supersede, relate, version and propagate changes automatically wherever safe and deterministic.
+Automate routine classification, matching, propagation, indexing, consistency checking and traceability maintenance as far as reliable evidence supports; human decisions are reserved for the conditions in LXM-REQ-000016. The platform must discover, classify, validate, extend, compose, supersede, relate, version and propagate changes automatically wherever safe and deterministic. By rule R6, owner-reserved decisions (financial policy, release, scope, irreversible data actions, security exceptions and architecture changes) are governed and never guessed: an owner-reserved change needs a recorded decision with its approval, and the gate enforces it.
 
 #### LXM-REQ-000226 — Completeness means assimilated
 
@@ -609,8 +611,8 @@ A contribution is complete only when it has been correctly assimilated into the 
 #### LXM-REQ-000227 — Complete intended architecture before sequencing
 
 `ARC` · class NEW · disposition **New-owner-addition**  
-Lineage: SRC-0009 §1.1,§1.2,§1.3,§3.1,§3.2,§8.3; SRC-0011 §2; SRC-0013 §2.1,§2.2.2,§3.4; SRC-0014 §3.1; SRC-0023 §1  
-Coverage: SRC-0009 §1.1 covers; SRC-0009 §1.2 covers; SRC-0009 §1.3 covers; SRC-0009 §3.1 covers; SRC-0009 §3.2 covers; SRC-0009 §8.3 covers; SRC-0011 §2 covers; SRC-0013 §2.1 covers; SRC-0013 §2.2.2 covers; SRC-0013 §3.4 covers; SRC-0014 §3.1 covers; SRC-0023 §1 extends
+Lineage: SRC-0009 §1.1,§1.2,§1.3,§3.1,§3.2,§8.3; SRC-0011 §2; SRC-0013 §2.1,§2.2.2,§3.4; SRC-0014 §3.1; SRC-0023 §1; SRC-0010 §1  
+Coverage: SRC-0009 §1.1 covers; SRC-0009 §1.2 covers; SRC-0009 §1.3 covers; SRC-0009 §3.1 covers; SRC-0009 §3.2 covers; SRC-0009 §8.3 covers; SRC-0011 §2 covers; SRC-0013 §2.1 covers; SRC-0013 §2.2.2 covers; SRC-0013 §3.4 covers; SRC-0014 §3.1 covers; SRC-0023 §1 extends; SRC-0010 §1 covers
 
 Design, implement and evolve LUXORA Ω∞ as a complete, universal, technology-agnostic, self-maintaining and continuously evolving platform. Do not optimize for a minimum viable architecture, temporary implementation, isolated subsystem or short-term demonstration. The complete intended architecture must be established before implementation sequencing is determined. The architecture must comprehensively cover constitutional foundations, knowledge and assimilation, identity, organizations, tenancy, business composition, configuration, rules, users, experience journeys, catalog, discovery, pricing, promotions, commerce, checkout, payments, wallets, billing, finance, accounting, orders, inventory, logistics, fulfilment, returns, communication, integrations, intelligence, analytics, security, operations, deployment, disaster recovery and platform governance. The architecture must remain open to future domains and capabilities without requiring redesign of its foundations. The objective is not to repeatedly repair and audit a collection of partial systems. The objective is to engineer one coherent, universal platform whose architecture continuously maintains and evolves its own completeness and consistency. Before implementation starts, the best design must be finalised.
 
@@ -633,10 +635,10 @@ Every capability must have its complete lifecycle designed and implemented: Cons
 #### LXM-REQ-000230 — Dependency-sequenced permanent increments
 
 `ARC` · class NEW · disposition **New-owner-addition**  
-Lineage: SRC-0009 §6.1,§6.2,§6.3,§6.4,§6.5,§6.6; SRC-0022 §1  
-Coverage: SRC-0009 §6.1 covers; SRC-0009 §6.2 covers; SRC-0009 §6.3 covers; SRC-0009 §6.4 covers; SRC-0009 §6.5 covers; SRC-0009 §6.6 covers; SRC-0022 §1 extends
+Lineage: SRC-0009 §6.1,§6.2,§6.3,§6.4,§6.5,§6.6; SRC-0022 §1; SRC-0033 §6.4  
+Coverage: SRC-0009 §6.1 covers; SRC-0009 §6.2 covers; SRC-0009 §6.3 covers; SRC-0009 §6.4 covers; SRC-0009 §6.5 covers; SRC-0009 §6.6 covers; SRC-0022 §1 extends; SRC-0033 §6.4 extends
 
-Implementation may be sequenced according to architectural dependencies, but every increment must conform to the final architecture; every accepted increment must be permanent and production-quality; no temporary substitute may become an accidental architectural authority; no implementation may create debt that contradicts established constitutional principles; dependencies and interfaces must be defined before dependent implementation; and all previously implemented capabilities must remain conformant as the architecture evolves. Implement everything one by one, in sequence.
+Implementation may be sequenced according to architectural dependencies, but every increment must conform to the final architecture; every accepted increment must be permanent and production-quality; no temporary substitute may become an accidental architectural authority; no implementation may create debt that contradicts established constitutional principles; dependencies and interfaces must be defined before dependent implementation; and all previously implemented capabilities must remain conformant as the architecture evolves. Implement everything one by one, in sequence. The order of work, each step permanent, is: first, invariants I1 to I3 enforced for the launch scope; second, the first-marketplace journeys reach Verified end to end; third, governance in CI, with the Master in the repository and rule R7 active; fourth, generalisation through registered extension points as needs are registered.
 
 #### LXM-REQ-000232 — Everything derived through the kernel primitives
 
@@ -693,6 +695,102 @@ Lineage: SRC-0032 §0.1
 Coverage: SRC-0032 §0.1 covers
 
 Everything is agnostic and nothing is hard-coded, the Master and its governance tooling included: every fact that can differ, such as a name, path, file, threshold, identifier format, provider, format, environment or actor, is registered configuration, and code holds only mechanism. Each remaining literal is either declared with a reason or reported as a finding that blocks.
+
+#### LXM-REQ-000241 — Every constitutional rule carries a check and an enforcement point
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0033 §1.1; SRC-0010 §2,§15,§16  
+Coverage: SRC-0033 §1.1 covers; SRC-0010 §2 covers; SRC-0010 §15 covers; SRC-0010 §16 covers
+
+The architecture constitution is a destination plus enforceable rules: every rule has an invariant (what must be true), a check (how a machine knows) and an enforcement point (where a violation is stopped). A rule without a check is a principle, not yet a rule.
+
+#### LXM-REQ-000242 — Constitutional invariant I1: money integrity
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0033 §2.1  
+Coverage: SRC-0033 §2.1 covers
+
+Money integrity is constitutional invariant I1 and is never traded off: one exact money model with integer minor units and an explicit currency and scale, and every movement goes through a ledger, is reconciled and is never inferred. The money audit checks it (no float money in scope; ledgers balance), and CI and runtime guards enforce it.
+
+#### LXM-REQ-000243 — Constitutional invariant I2: tenant isolation
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0033 §2.2  
+Coverage: SRC-0033 §2.2 covers
+
+Tenant isolation is constitutional invariant I2 and is never traded off: no data, configuration or action crosses a tenant boundary unless a contract allows it. Isolation tests per surface check it, and CI and runtime authorization enforce it.
+
+#### LXM-REQ-000244 — Privacy and compliance stay governed requirements and a release gate
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0033 §2.7  
+Coverage: SRC-0033 §2.7 covers
+
+Privacy and compliance is not a constitutional invariant, by the owner's choice of 2026-10-31; it remains governed requirements (consent, retention, data ownership and jurisdiction, all by configuration) and release gate 19, so it still blocks release until it is evidenced.
+
+#### LXM-REQ-000245 — Rule R1: connected architecture
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0033 §3.1; SRC-0010 §17  
+Coverage: SRC-0033 §3.1 covers; SRC-0010 §17 covers
+
+Rule R1, connected architecture: every domain declares what it provides and what it consumes, cross-domain interaction goes only through declared contracts, and an undeclared cross-domain dependency fails CI.
+
+#### LXM-REQ-000246 — Rule R2: one source of truth, transitional structures only if declared
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0033 §3.2; SRC-0010 §18  
+Coverage: SRC-0033 §3.2 covers; SRC-0010 §18 covers
+
+Rule R2, one source of truth: there is no parallel source of truth. A transitional structure is allowed only if it is declared with an owner, a reason, an exit condition and a date, is never authoritative, and is removed by its exit condition; a transitional register fails CI and readiness on an undeclared or expired entry.
+
+#### LXM-REQ-000247 — Rule R5: computed lifecycle states, never declared
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0033 §3.5,§4.1,§4.2,§4.3,§4.4,§4.5,§4.6,§4.7,§4.8,§4.9; SRC-0010 §21  
+Coverage: SRC-0033 §3.5 covers; SRC-0033 §4.1 covers; SRC-0033 §4.2 covers; SRC-0033 §4.3 covers; SRC-0033 §4.4 covers; SRC-0033 §4.5 covers; SRC-0033 §4.6 covers; SRC-0033 §4.7 covers; SRC-0033 §4.8 covers; SRC-0033 §4.9 covers; SRC-0010 §21 covers
+
+Rule R5, no false completion: each requirement and capability carries a computed state, never one declared by hand, and readiness computes the states from evidence and gates release on them. The states are Specified, Designed, Implemented, Configured, Enforced at runtime, Verified and Certified; each needs its own evidence and is never inferred from the one before it. Specified needs a canonical requirement, Designed a specification section, Implemented code traced to the requirement, Configured a declared and governed configuration, Enforced at runtime a runtime trace or an invariant check, Verified tests passing on the exact SHA, and Certified release evidence and owner approval.
+
+#### LXM-REQ-000248 — The operating loop: discover, assimilate, validate, execute, observe, propose
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0033 §6.0,§6.1,§6.2,§6.3; SRC-0010 §14  
+Coverage: SRC-0033 §6.0 covers; SRC-0033 §6.1 covers; SRC-0033 §6.2 covers; SRC-0033 §6.3 covers; SRC-0010 §14 covers
+
+The operating loop is discover, assimilate, validate, execute, observe and propose. Learning means that measured outcomes produce proposals; proposals enter through the gate like any other contribution; and nothing modifies itself in production.
+
+#### LXM-REQ-000249 — Constitutional invariant I3: security and authorization
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0033 §2.3,§2.6  
+Coverage: SRC-0033 §2.3 covers; SRC-0033 §2.6 covers
+
+Security and authorization is constitutional invariant I3 and is never traded off: least privilege, audited actions, and secrets never in code or images. The security suite and a secret scan check it, and CI and the runtime enforce it.
+
+#### LXM-REQ-000250 — Constitutional invariant I6: technology agnosticism
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0033 §2.6; SRC-0010 §2  
+Coverage: SRC-0033 §2.6 covers; SRC-0010 §2 covers
+
+Technology agnosticism is constitutional invariant I6: technologies and providers sit behind contracts and adapters, and the core names none.
+
+#### LXM-REQ-000251 — Rule R4: governed extensibility on registered need
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0033 §3.4; SRC-0010 §20  
+Coverage: SRC-0033 §3.4 covers; SRC-0010 §20 covers
+
+Rule R4, governed extensibility: new providers, markets, business models, capabilities and object types enter through registered extension points (a contract, an adapter and conformance tests), and generality is built when a registered need arrives, not ahead of it, while the complete architecture is still designed first. The core names no provider, market or business model, and each extension passes its contract tests in CI.
+
+#### LXM-REQ-000252 — The six architecture layers
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0033 §5.1,§5.2,§5.3,§5.4,§5.5,§5.6; SRC-0010 §3,§4,§5,§6,§7,§8,§9,§10,§11,§12,§13  
+Coverage: SRC-0033 §5.1 covers; SRC-0033 §5.2 covers; SRC-0033 §5.3 covers; SRC-0033 §5.4 covers; SRC-0033 §5.5 covers; SRC-0033 §5.6 covers; SRC-0010 §3 covers; SRC-0010 §4 covers; SRC-0010 §5 covers; SRC-0010 §6 covers; SRC-0010 §7 covers; SRC-0010 §8 covers; SRC-0010 §9 covers; SRC-0010 §10 covers; SRC-0010 §11 covers; SRC-0010 §12 covers; SRC-0010 §13 covers
+
+The architecture has six layers. The foundation, the kernel, holds identity, registry, configuration, rules, events, workflow, data, integration adapters and security, and names no business. The domains (commerce, finance, operations and experience) each own their data and contracts, and invariants I1 to I3 apply inside every one. Composition assembles capabilities into business profiles through configuration, and a profile or template is never proof of a working solution. Intelligence is bounded: decision support and automation on governed data propose and never act past an invariant or an owner decision, and a change to production comes only through the gate. Execution and lifecycle covers deployment, observability, resilience, recovery and automatic conformance. Knowledge and assimilation, the Master and its gate, governs every layer above.
 
 ### CAT-STG-00 — Repository truth and exclusive ownership
 
@@ -2019,7 +2117,7 @@ The objective is complete, evidence-backed conformance to the entire mandate, no
 **Objective:** Know exactly what exists before changing anything, and confirm this session is the sole writer.  
 **Entry:** Session is `amazon-62` in the canonical integration workspace outside iCloud. [LXM-REQ-000002, LXM-REQ-000216]
 
-- `STG-00.A-1` Apply the execution directive, rules and escalation conditions to this and every later stage; follow the final execution rule. — LXM-REQ-000001, LXM-REQ-000003, LXM-REQ-000004, LXM-REQ-000005, LXM-REQ-000006, LXM-REQ-000007, LXM-REQ-000008, LXM-REQ-000009, LXM-REQ-000010, LXM-REQ-000011, LXM-REQ-000013, LXM-REQ-000015, LXM-REQ-000016, LXM-REQ-000017, LXM-REQ-000185, LXM-REQ-000186, LXM-REQ-000187, LXM-REQ-000188, LXM-REQ-000189, LXM-REQ-000195, LXM-REQ-000227, LXM-REQ-000228, LXM-REQ-000229, LXM-REQ-000230, LXM-REQ-000231, LXM-REQ-000232, LXM-REQ-000233, LXM-REQ-000234, LXM-REQ-000235, LXM-REQ-000237, LXM-REQ-000238, LXM-REQ-000239, LXM-REQ-000240
+- `STG-00.A-1` Apply the execution directive, rules and escalation conditions to this and every later stage; follow the final execution rule. — LXM-REQ-000001, LXM-REQ-000003, LXM-REQ-000004, LXM-REQ-000005, LXM-REQ-000006, LXM-REQ-000007, LXM-REQ-000008, LXM-REQ-000009, LXM-REQ-000010, LXM-REQ-000011, LXM-REQ-000013, LXM-REQ-000015, LXM-REQ-000016, LXM-REQ-000017, LXM-REQ-000185, LXM-REQ-000186, LXM-REQ-000187, LXM-REQ-000188, LXM-REQ-000189, LXM-REQ-000195, LXM-REQ-000227, LXM-REQ-000228, LXM-REQ-000229, LXM-REQ-000230, LXM-REQ-000231, LXM-REQ-000232, LXM-REQ-000233, LXM-REQ-000234, LXM-REQ-000235, LXM-REQ-000237, LXM-REQ-000238, LXM-REQ-000239, LXM-REQ-000240, LXM-REQ-000241, LXM-REQ-000242, LXM-REQ-000243, LXM-REQ-000244, LXM-REQ-000245, LXM-REQ-000246, LXM-REQ-000247, LXM-REQ-000248, LXM-REQ-000249, LXM-REQ-000250, LXM-REQ-000251, LXM-REQ-000252
 - `STG-00.A-2` Confirm the session identity and that no other writable session or checkout is active on this work. — LXM-REQ-000014, LXM-REQ-000028, LXM-REQ-000216
 - `STG-00.A-3` Run `pwd -P`; record branch, `git rev-parse HEAD`, `git remote -v` and `git ls-remote` for the branch. — LXM-REQ-000019, LXM-REQ-000020
 - `STG-00.A-4` Record `git status --porcelain=v2`, `git diff --cached --stat`, `git diff --stat`, `git diff --check` and the untracked list, each separately. — LXM-REQ-000021
@@ -2311,6 +2409,7 @@ The final report has sections A–K, defined by LXM-REQ-000174 to LXM-REQ-000184
 | LXM-EVD-000012 | The work package the owner approved for amazon-62 (SRC-0026 §0.5) is written to intake/handover/AMAZON-62-WORK-PACKAGE-2026-10-31.md (SHA-256 8db517608a7c62f0f08775400edf794b7f9a8bfbf24c8a9e45b134a12dc74263), with the code findings (d48db1b1e60c0717) and configuration findings (7f923d4e4154dffa) at 39ed4d6; it could not be delivered on 2026-10-31 because no amazon-62 session was running (peer list empty), so it is delivered when amazon-62 next runs | intake/handover/; the session's peer list at 2026-10-31T07:3xZ | current |
 | LXM-EVD-000013 | On 2026-10-31 the iCloud checkout (branch feat/production-readiness, HEAD 4ab4800, committed 2026-10-21) is not clean: 43 modified tracked files and 16 untracked files (offers, coupons, gift cards, vouchers, grants, group buy), last written 2026-10-22, plus a .git/index.lock of 2026-10-21. They are the preserved Phase 1 changes (LXM-REQ-000217) and are not on the candidate 39ed4d6. A byte-exact archive (tracked-changes patch SHA-256 7b0e7ce794084b43, untracked tar 3f4c2e21ed31ac3a) is in ~/LUXORA-preservation/2026-10-31-lxm-master-candidate/phase1-uncommitted/, and applying it to HEAD reproduced all 59 paths exactly; the checkout was only read | git --no-optional-locks status, diff --binary HEAD, ls-files --others in the checkout; reapplication to a git archive of HEAD in the session scratchpad | current |
 | LXM-EVD-000014 | On 2026-10-31, by the owner's choice (SRC-0030 §0.2), the repository echelonxventures-Projects/universal-product was changed from public to private (it had no forks, no stars and no Pages site); the verified Master was then pushed by step_commit.py as branch governance/lxm-master-2026-10-31 at 278afb817e732cf53c503230ce833c6d5175ae61, one commit on 39ed4d6 touching only governance/master/ (426 files, 98 omitted with their SHA-256 in OMITTED.sha256); before the push it passed the CI check, the clean-tree check and the step-commit fixtures in a fresh clone, a full replay and a secret scan; afterwards the remote head equalled the local head, and the integration branch and PR #6 (open, draft) remained at 39ed4d6 | gh repo view and gh repo edit; step_commit.py output; git ls-remote; gh pr view 6; gh api compare | current |
+| LXM-EVD-000015 | On 2026-11-02 the gate matched a short sentence wrongly. Assimilating SRC-0033 §2.6 (invariant I6), it judged "The technology governance gate and a scan of the core check it in CI." covered by LXM-REQ-000212 and LXM-REQ-000249 together (composition, 0.86), so LXM-REQ-000250 lacks that sentence and 212 and 249 carry false SRC-0033 §2.6 relations. Correcting it is owner-reserved (the records carry owner-decided content) and is put to the owner as LXM-DEC-000018; the gate can now retract a false relation (kind relation, action retract) | ledger entry for CTB-SRC0033-i6 (outcome PARTIAL→NEW, clause 2 COVERED by LXM-REQ-000212 and LXM-REQ-000249) | current |
 
 ### G.4 Remaining genuinely owner-reserved decisions
 
@@ -2332,7 +2431,7 @@ The final report has sections A–K, defined by LXM-REQ-000174 to LXM-REQ-000184
 
 | Stage | Title | Actions | Requirements cited |
 |---|---|---|---|
-| STG-00 | Repository truth and exclusive ownership | 11 | 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, 011, 012, 013, 014, 015, 016, 017, 018, 019, 020, 021, 022, 023, 024, 025, 026, 027, 028, 029, 030, 031, 032, 033, 034, 035, 036, 037, 038, 039, 040, 185, 186, 187, 188, 189, 193, 194, 195, 216, 217, 219, 227, 228, 229, 230, 231, 232, 233, 234, 235, 237, 238, 239, 240 |
+| STG-00 | Repository truth and exclusive ownership | 11 | 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, 011, 012, 013, 014, 015, 016, 017, 018, 019, 020, 021, 022, 023, 024, 025, 026, 027, 028, 029, 030, 031, 032, 033, 034, 035, 036, 037, 038, 039, 040, 185, 186, 187, 188, 189, 193, 194, 195, 216, 217, 219, 227, 228, 229, 230, 231, 232, 233, 234, 235, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252 |
 | STG-01 | Universal technology governance (PR-053) | 8 | 016, 041, 042, 043, 044, 045, 046, 047, 048, 049, 050, 051, 052, 053, 054, 055, 153, 196, 197, 213, 218, 219 |
 | STG-02 | Mandate assimilation and traceability | 6 | 056, 057, 058, 059, 060, 061, 062, 063, 064, 191, 192, 204, 214, 220, 221, 226 |
 | STG-03 | Source-grounded gap inventory | 3 | 009, 065, 066, 067, 068, 069, 070, 071, 072 |
@@ -2554,11 +2653,11 @@ Requirement IDs are abbreviated to their last three digits (LXM-REQ-000xxx).
 | LXM-REQ-000196 | — | — | — | SRC-0006 §10; SRC-0011 §1,§3,§6.1,§6.2; SRC-0014 §3.1; SRC-0015 §2.1,§2.2,§2.3,§3.2,§3.3,§3.4,§4.1,§8.1,§9.4; SRC-0016 §3.1,§4.1,§4.3,§4.4,§5.3,§5.4,§5.5,§8.1,§10.4 | STG-01 | New-owner-addition |
 | LXM-REQ-000197 | — | — | — | SRC-0004 §2; SRC-0006 §10; SRC-0015 §3.3; SRC-0016 §5.2 | STG-01 | New-owner-addition |
 | LXM-REQ-000198 | — | — | — | SRC-0004 §1; SRC-0005; SRC-0006 §11; SRC-0009 §2.5 | STG-04 | New-owner-addition |
-| LXM-REQ-000199 | — | — | A400 | SRC-0004 §1; SRC-0005; SRC-0009 §2.5; SRC-0011 §6,§7; SRC-0015 §7.4 | STG-04 | New-owner-addition |
+| LXM-REQ-000199 | — | — | A400 | SRC-0004 §1; SRC-0005; SRC-0009 §2.5; SRC-0011 §6,§7; SRC-0015 §7.4; SRC-0033 §2.5; SRC-0010 §2 | STG-04 | New-owner-addition |
 | LXM-REQ-000200 | — | — | — | SRC-0004 §1; SRC-0013 §4.1,§4.4; SRC-0014 §2.1; SRC-0015 §2.3 | STG-07 | New-owner-addition |
 | LXM-REQ-000201 | — | — | — | SRC-0004 §1; SRC-0005; SRC-0006 §12; SRC-0008 §2; SRC-0009 §2.6; SRC-0012 §B.1 | STG-13 | New-owner-addition |
 | LXM-REQ-000202 | — | — | — | SRC-0004 §1; SRC-0005; SRC-0009 §2.7; SRC-0015 §6.4 | STG-13 | New-owner-addition |
-| LXM-REQ-000203 | — | — | — | SRC-0004 §1; SRC-0005; SRC-0006 §12; SRC-0007 §5; SRC-0008 §3,§5; SRC-0009 §2.3,§2.4 | STG-13 | New-owner-addition |
+| LXM-REQ-000203 | — | — | — | SRC-0004 §1; SRC-0005; SRC-0006 §12; SRC-0007 §5; SRC-0008 §3,§5; SRC-0009 §2.3,§2.4; SRC-0010 §2 | STG-13 | New-owner-addition |
 | LXM-REQ-000204 | — | — | — | SRC-0004 §1,§5; SRC-0009 §2.11 | STG-02 | New-owner-addition |
 | LXM-REQ-000205 | — | — | — | SRC-0004 §2A; SRC-0006 §13A | STG-12 | New-owner-addition |
 | LXM-REQ-000206 | — | — | — | SRC-0004 §2B; SRC-0006 §13B; SRC-0016 §7.2 | STG-12 | New-owner-addition |
@@ -2567,7 +2666,7 @@ Requirement IDs are abbreviated to their last three digits (LXM-REQ-000xxx).
 | LXM-REQ-000209 | — | — | — | SRC-0004 §2E; SRC-0006 §13D | STG-12 | New-owner-addition |
 | LXM-REQ-000210 | — | — | — | SRC-0004 §2F; SRC-0006 §13F; SRC-0015 §3.3,§5.3; SRC-0016 §5.1 | STG-12 | New-owner-addition |
 | LXM-REQ-000211 | — | — | — | SRC-0004 §2G; SRC-0015 §1.3,§4.3,§8.1; SRC-0016 §4.5,§8.4; SRC-0011 §6.6 | STG-12 | New-owner-addition |
-| LXM-REQ-000212 | — | — | — | SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3 | STG-12 | New-owner-addition |
+| LXM-REQ-000212 | — | — | — | SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3; SRC-0033 §2.6 | STG-12 | New-owner-addition |
 | LXM-REQ-000213 | — | — | — | SRC-0004 §5 | STG-01, STG-12 | New-owner-addition |
 | LXM-REQ-000214 | — | — | — | SRC-0006 §18 | STG-02 | New-owner-addition |
 | LXM-REQ-000215 | — | — | — | SRC-0006 §8-9,§22; SRC-0008 §4,§6 | STG-13 | New-owner-addition |
@@ -2578,14 +2677,14 @@ Requirement IDs are abbreviated to their last three digits (LXM-REQ-000xxx).
 | LXM-REQ-000220 | — | — | — | SRC-0008 §1,§2,§4.1; SRC-0009 §4.1,§4.3; SRC-0011 §6; SRC-0013 §2.3,§4.3,§5.3,§7.1; SRC-0016 §5.1,§6.5; SRC-0021 §1; SRC-0024 §1 | STG-02, STG-13 | New-owner-addition |
 | LXM-REQ-000221 | — | — | — | SRC-0008 §3; SRC-0009 §2.2; SRC-0013 §2.3; SRC-0016 §2.5 | STG-02, STG-13 | New-owner-addition |
 | LXM-REQ-000222 | — | — | — | SRC-0008 §4 | STG-13 | New-owner-addition |
-| LXM-REQ-000223 | — | — | — | SRC-0008 §5 | STG-13 | New-owner-addition |
-| LXM-REQ-000224 | — | — | — | SRC-0008 §6,§1.2,§8.3,§8.4; SRC-0009 §4.4 | STG-13 | New-owner-addition |
-| LXM-REQ-000225 | — | — | — | SRC-0008 §7; SRC-0009 §4.2 | STG-13 | New-owner-addition |
+| LXM-REQ-000223 | — | — | — | SRC-0008 §5; SRC-0033 §3.3; SRC-0010 §19 | STG-13 | New-owner-addition |
+| LXM-REQ-000224 | — | — | — | SRC-0008 §6,§1.2,§8.3,§8.4; SRC-0009 §4.4; SRC-0033 §3.7; SRC-0010 §23 | STG-13 | New-owner-addition |
+| LXM-REQ-000225 | — | — | — | SRC-0008 §7; SRC-0009 §4.2; SRC-0033 §3.6; SRC-0010 §22 | STG-13 | New-owner-addition |
 | LXM-REQ-000226 | — | — | — | SRC-0008 §8,§4.1 | STG-02, STG-13 | New-owner-addition |
-| LXM-REQ-000227 | — | — | — | SRC-0009 §1.1,§1.2,§1.3,§3.1,§3.2,§8.3; SRC-0011 §2; SRC-0013 §2.1,§2.2.2,§3.4; SRC-0014 §3.1; SRC-0023 §1 | STG-00 | New-owner-addition |
+| LXM-REQ-000227 | — | — | — | SRC-0009 §1.1,§1.2,§1.3,§3.1,§3.2,§8.3; SRC-0011 §2; SRC-0013 §2.1,§2.2.2,§3.4; SRC-0014 §3.1; SRC-0023 §1; SRC-0010 §1 | STG-00 | New-owner-addition |
 | LXM-REQ-000228 | — | — | — | SRC-0009 §2.8,§2.9,§2.10,§2.12,§2.13,§7.1 | STG-00 | New-owner-addition |
 | LXM-REQ-000229 | — | — | — | SRC-0009 §5.1,§5.2,§8.1,§8.2; SRC-0013 §2.2.7,§6.1,§6.2,§6.3; SRC-0016 §4.5 | STG-00 | New-owner-addition |
-| LXM-REQ-000230 | — | — | — | SRC-0009 §6.1,§6.2,§6.3,§6.4,§6.5,§6.6; SRC-0022 §1 | STG-00 | New-owner-addition |
+| LXM-REQ-000230 | — | — | — | SRC-0009 §6.1,§6.2,§6.3,§6.4,§6.5,§6.6; SRC-0022 §1; SRC-0033 §6.4 | STG-00 | New-owner-addition |
 | LXM-REQ-000231 | — | — | — | SRC-0008 §7.1; SRC-0009 §7.2 | STG-00 | New-owner-addition |
 | LXM-REQ-000232 | — | — | — | SRC-0017 §1 | STG-00 | New-owner-addition |
 | LXM-REQ-000233 | — | — | — | SRC-0018 §1 | STG-00 | New-owner-addition |
@@ -2596,6 +2695,18 @@ Requirement IDs are abbreviated to their last three digits (LXM-REQ-000xxx).
 | LXM-REQ-000238 | — | — | — | SRC-0029 §0.2 | STG-00 | New-owner-addition |
 | LXM-REQ-000239 | — | — | — | SRC-0031 §0.1 | STG-00 | New-owner-addition |
 | LXM-REQ-000240 | — | — | — | SRC-0032 §0.1 | STG-00 | New-owner-addition |
+| LXM-REQ-000241 | — | — | — | SRC-0033 §1.1; SRC-0010 §2,§15,§16 | STG-00 | New-owner-addition |
+| LXM-REQ-000242 | — | — | — | SRC-0033 §2.1 | STG-00 | New-owner-addition |
+| LXM-REQ-000243 | — | — | — | SRC-0033 §2.2 | STG-00 | New-owner-addition |
+| LXM-REQ-000244 | — | — | — | SRC-0033 §2.7 | STG-00 | New-owner-addition |
+| LXM-REQ-000245 | — | — | — | SRC-0033 §3.1; SRC-0010 §17 | STG-00 | New-owner-addition |
+| LXM-REQ-000246 | — | — | — | SRC-0033 §3.2; SRC-0010 §18 | STG-00 | New-owner-addition |
+| LXM-REQ-000247 | — | — | — | SRC-0033 §3.5,§4.1,§4.2,§4.3,§4.4,§4.5,§4.6,§4.7,§4.8,§4.9; SRC-0010 §21 | STG-00 | New-owner-addition |
+| LXM-REQ-000248 | — | — | — | SRC-0033 §6.0,§6.1,§6.2,§6.3; SRC-0010 §14 | STG-00 | New-owner-addition |
+| LXM-REQ-000249 | — | — | — | SRC-0033 §2.3,§2.6 | STG-00 | New-owner-addition |
+| LXM-REQ-000250 | — | — | — | SRC-0033 §2.6; SRC-0010 §2 | STG-00 | New-owner-addition |
+| LXM-REQ-000251 | — | — | — | SRC-0033 §3.4; SRC-0010 §20 | STG-00 | New-owner-addition |
+| LXM-REQ-000252 | — | — | — | SRC-0033 §5.1,§5.2,§5.3,§5.4,§5.5,§5.6; SRC-0010 §3,§4,§5,§6,§7,§8,§9,§10,§11,§12,§13 | STG-00 | New-owner-addition |
 
 ### H.4 Requirement → implementation traceability
 
@@ -2724,33 +2835,33 @@ Generated from each source's clause ledger (`sources/<SRC>.clauses`), the record
 | §8.2 | 77-77 | LXM-REQ-000229 | LXM-REQ-000063, LXM-REQ-000204, LXM-REQ-000226 | — |
 | §8.3 | 79-79 | LXM-REQ-000227 | — | — |
 
-**SRC-0010** — ledger status *in-progress*, 23 clauses.
+**SRC-0010** — ledger status *complete*, 23 clauses.
 
 | Clause | Source lines | Covered by | Supported by | Open hold |
 |---|---|---|---|---|
-| §1 | 1-1 | — | — | — |
-| §2 | 4-4 | — | — | — |
-| §3 | 7-7 | — | — | — |
-| §4 | 9-9 | — | — | — |
-| §5 | 14-14 | — | — | — |
-| §6 | 19-19 | — | — | — |
-| §7 | 24-24 | — | — | — |
-| §8 | 29-29 | — | — | — |
-| §9 | 34-34 | — | — | — |
-| §10 | 39-39 | — | — | — |
-| §11 | 44-44 | — | — | — |
-| §12 | 49-49 | — | — | — |
-| §13 | 51-51 | — | — | — |
-| §14 | 55-55 | — | — | — |
-| §15 | 58-58 | — | — | — |
-| §16 | 59-59 | — | — | — |
-| §17 | 60-60 | — | — | — |
-| §18 | 62-62 | — | — | — |
-| §19 | 64-64 | — | — | — |
-| §20 | 66-66 | — | — | — |
-| §21 | 68-68 | — | — | — |
-| §22 | 70-70 | — | — | — |
-| §23 | 72-72 | — | — | — |
+| §1 | 1-1 | LXM-REQ-000227 | — | — |
+| §2 | 4-4 | LXM-REQ-000199, LXM-REQ-000203, LXM-REQ-000241, LXM-REQ-000250 | — | — |
+| §3 | 7-7 | LXM-REQ-000252 | — | — |
+| §4 | 9-9 | LXM-REQ-000252 | — | — |
+| §5 | 14-14 | LXM-REQ-000252 | — | — |
+| §6 | 19-19 | LXM-REQ-000252 | — | — |
+| §7 | 24-24 | LXM-REQ-000252 | — | — |
+| §8 | 29-29 | LXM-REQ-000252 | — | — |
+| §9 | 34-34 | LXM-REQ-000252 | — | — |
+| §10 | 39-39 | LXM-REQ-000252 | — | — |
+| §11 | 44-44 | LXM-REQ-000252 | — | — |
+| §12 | 49-49 | LXM-REQ-000252 | — | — |
+| §13 | 51-51 | LXM-REQ-000252 | — | — |
+| §14 | 55-55 | LXM-REQ-000248 | — | — |
+| §15 | 58-58 | LXM-REQ-000241 | — | — |
+| §16 | 59-59 | LXM-REQ-000241 | — | — |
+| §17 | 60-60 | LXM-REQ-000245 | — | — |
+| §18 | 62-62 | LXM-REQ-000246 | — | — |
+| §19 | 64-64 | LXM-REQ-000223 | — | — |
+| §20 | 66-66 | LXM-REQ-000251 | — | — |
+| §21 | 68-68 | LXM-REQ-000247 | — | — |
+| §22 | 70-70 | LXM-REQ-000225 | — | — |
+| §23 | 72-72 | LXM-REQ-000224 | — | — |
 
 **SRC-0011** — ledger status *complete*, 16 clauses.
 
@@ -3065,6 +3176,46 @@ Generated from each source's clause ledger (`sources/<SRC>.clauses`), the record
 | Clause | Source lines | Covered by | Supported by | Open hold |
 |---|---|---|---|---|
 | §0.1 | 1-1 | LXM-REQ-000240 | — | — |
+
+**SRC-0033** — ledger status *complete*, 35 clauses.
+
+| Clause | Source lines | Covered by | Supported by | Open hold |
+|---|---|---|---|---|
+| §1.1 | 3-3 | LXM-REQ-000241 | — | — |
+| §2.1 | 9-9 | LXM-REQ-000242 | — | — |
+| §2.2 | 10-10 | LXM-REQ-000243 | — | — |
+| §2.3 | 11-11 | LXM-REQ-000249 | — | — |
+| §2.4 | 12-12 | — | — | LXM-EXC-000023 |
+| §2.5 | 13-13 | LXM-REQ-000199 (extends) | — | — |
+| §2.6 | 14-14 | LXM-REQ-000212, LXM-REQ-000249, LXM-REQ-000250 | — | — |
+| §2.7 | 16-16 | LXM-REQ-000244 | — | — |
+| §3.1 | 22-22 | LXM-REQ-000245 | — | — |
+| §3.2 | 23-23 | LXM-REQ-000246 | — | — |
+| §3.3 | 24-24 | LXM-REQ-000223 (extends) | — | — |
+| §3.4 | 25-25 | LXM-REQ-000251 | — | — |
+| §3.5 | 26-26 | LXM-REQ-000247 | — | — |
+| §3.6 | 27-27 | LXM-REQ-000225 (extends) | — | — |
+| §3.7 | 28-28 | LXM-REQ-000224 (extends) | — | — |
+| §4.1 | 32-32 | LXM-REQ-000247 | — | — |
+| §4.2 | 34-34 | LXM-REQ-000247 | — | — |
+| §4.3 | 38-38 | LXM-REQ-000247 | — | — |
+| §4.4 | 39-39 | LXM-REQ-000247 | — | — |
+| §4.5 | 40-40 | LXM-REQ-000247 | — | — |
+| §4.6 | 41-41 | LXM-REQ-000247 | — | — |
+| §4.7 | 42-42 | LXM-REQ-000247 | — | — |
+| §4.8 | 43-43 | LXM-REQ-000247 | — | — |
+| §4.9 | 44-44 | LXM-REQ-000247 | — | — |
+| §5.1 | 48-48 | LXM-REQ-000252 | — | — |
+| §5.2 | 49-49 | LXM-REQ-000252 | — | — |
+| §5.3 | 50-50 | LXM-REQ-000252 | — | — |
+| §5.4 | 51-51 | LXM-REQ-000252 | — | — |
+| §5.5 | 52-52 | LXM-REQ-000252 | — | — |
+| §5.6 | 53-53 | LXM-REQ-000252 | — | — |
+| §6.0 | 57-57 | LXM-REQ-000248 | — | — |
+| §6.1 | 58-58 | LXM-REQ-000248 | — | — |
+| §6.2 | 59-59 | LXM-REQ-000248 | — | — |
+| §6.3 | 60-60 | LXM-REQ-000248 | — | — |
+| §6.4 | 62-66 | LXM-REQ-000230 (extends) | — | — |
 
 ---
 

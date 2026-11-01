@@ -1,0 +1,12 @@
+id: CTB-REGISTER-SRC-0033
+kind: source
+source: SRC-0033
+action: register
+title: Owner (adopted): the architecture constitution, final text, sections 1 to 6, as adopted by LXM-DEC-000015 (intake/decisions/ARCHITECTURE-PROPOSAL-2026-10-31.md, SHA-256 22fbf8937ef0cf1765234b30a4044eea5227b7f3b7b07470f575475aeacd3973, lines 12 to 77)
+location: file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp6/architecture-final-sections-1-6.md; provisional working extract `sources/SRC-0033.extract.md`
+sha: `{SHA:sources/SRC-0033.extract.md}` (extract, not owner-confirmed)
+role: Owner decision (adopted text)
+authority: owner-decision
+text-status: provisional-extract
+files-from: intake/SRC-0033/files
+basis: captured by capture.py (secret scan passed, sensitivity internal)

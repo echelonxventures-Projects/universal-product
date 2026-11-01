@@ -1,0 +1,5 @@
+id: CTB-SRC0010-destination
+source: SRC-0010
+section: §15,§16
+kind: requirement
+text: The architecture constitution is a destination plus enforceable rules: every rule has an invariant (what must be true), a check (how a machine knows) and an enforcement point (where a violation is stopped).

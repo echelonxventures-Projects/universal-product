@@ -5,6 +5,7 @@
   "agnostic_json": "agnostic.json",
   "assimilate_py": "assimilate.py",
   "build_py": "build.py",
+  "capture_json": "capture.json",
   "code_adapter_json": "code_adapter.json",
   "config_adapter_json": "config_adapter.json",
   "coverage_txt": "coverage.txt",

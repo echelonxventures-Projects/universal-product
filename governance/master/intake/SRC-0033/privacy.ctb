@@ -1,0 +1,8 @@
+id: CTB-SRC0033-privacy
+source: SRC-0033
+section: §2.7
+kind: requirement
+scope: ARC
+title: Privacy and compliance stay governed requirements and a release gate
+applied-in: STG-00.A-1
+text: Privacy and compliance is not a constitutional invariant, by the owner's choice of 2026-10-31; it remains governed requirements (consent, retention, data ownership and jurisdiction, all by configuration) and release gate 19, so it still blocks release until it is evidenced.

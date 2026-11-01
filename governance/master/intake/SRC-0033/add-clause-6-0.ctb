@@ -1,0 +1,7 @@
+id: CTB-SRC0033-add-clause-6-0
+kind: source
+source: SRC-0033
+action: add-clause
+section: §6.0
+lines: 57-57
+basis: the operating loop line ("**Loop:** Discover → ... → Propose.") was dropped at capture, because capture then read every bold label as metadata; capture.json now lists the metadata labels, and the loop is a clause

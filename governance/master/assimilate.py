@@ -16,9 +16,9 @@ LAYOUT = json.load(open(os.path.join(_HERE, X('{@layout_json}')), encoding='utf-
 _N = LAYOUT['names']
 CANON, DERIVED, TOOLS = [_N[k] for k in LAYOUT['canon']], [_N[k] for k in LAYOUT['derived']], [_N[k] for k in LAYOUT['tools']]  # TOOLS: everything build, validate and the staged checks read
 MATCH = json.load(open(os.path.join(_HERE, X('{@gate_json}')), encoding='utf-8'))['matching']  # the gate's matching rules, versioned with the gate
-T_COVER, T_RELATED, T_CONFLICT = MATCH['cover'], MATCH['related'], MATCH['conflict']
+T_COVER, T_RELATED, T_CONFLICT = MATCH['cover'], MATCH['related'], MATCH['conflict']  # a contradiction needs the same shared meaning for negations and for numbers
 COL = {c: i for i, c in enumerate(LAYOUT['sources_columns'])}  # the columns of the sources register, by name
-REPORT = json.load(open(os.path.join(_HERE, _N['reporting_json']), encoding='utf-8'))  # a contradiction needs the same shared meaning for negations and for numbers
+REPORT = json.load(open(os.path.join(_HERE, _N['reporting_json']), encoding='utf-8'))  # how much the reports show
 FIELDS = {'id', 'source', 'section', 'kind', 'scope', 'title', 'text', 'extends', 'supersedes', 'reason', 'depends',
           'applied-in', 'relates', 'distinct-from', 'recognized-as', 'decision'}
 REQ = re.compile(X(r'{req}'))
@@ -348,10 +348,10 @@ def resolve(ctb, recs, srcs, lex, decisions={}):
             raise Refusal('QUARANTINED', 'Contradiction with records other than the one superseded: %s' % ', '.join(cl['rids'][0] for cl in foreign),
                           'Accepting would leave the Master internally contradictory.', 'Supersede or reconcile those records too, or narrow the contribution.', clauses)
         target = recs[sup]
+        if field(target, 'x') == ctb['text'] or any(k == 'h' and ' (by %s %s: %s): ' % (src, sec, ctb['reason']) in v for k, v in target['fields']):
+            return 'NOOP', [], clauses  # already applied: checked before any guard, so a replay never re-judges (or reverts) an applied change
         guard_owner_decided(sup, recs, srcs, ctb, decisions)
         guard_decision_cited(ctb, decisions, sup, recs)
-        if field(target, 'x') == ctb['text'] or any(k == 'h' and ' (by %s %s: %s): ' % (src, sec, ctb['reason']) in v for k, v in target['fields']):
-            return 'NOOP', [], clauses  # already applied; replaying it must never revert later versions
         plan.append(('supersede', sup, ctb['text'], '%s %s' % (src, sec), ctb['reason']))
         if ctb.get('decision'):
             plan.append(('decision', sup, ctb['decision']))
@@ -459,6 +459,12 @@ def apply(plan, reqs_text, stages_text):
     for nid in new_ids:
         out = out.rstrip('\n') + '\n\n' + render(recs[nid])
     return out, '\n'.join(stage_lines), sorted(changed)
+
+
+def knowledge_digest(root):
+    """Canonical knowledge only: the canonical files and the clause ledgers, without the generated Master (a view of them)."""
+    ledgers = sorted(X('{@sources_prefix}') + f for f in os.listdir(os.path.join(root, X('{@sources_dir}'))) if f.endswith('.clauses')) if os.path.isdir(os.path.join(root, X('{@sources_dir}'))) else []
+    return sha(''.join(sha(open(os.path.join(root, f), 'rb').read()) for f in CANON + ledgers))
 
 
 def state_digest(root):
@@ -621,9 +627,10 @@ def resolve_evidence(root, ctb):
 KIND_FIELDS = {
     'trace': {'requirement', 'action', 'impl', 'spec', 'config', 'test', 'basis'},
     'scope': {'scope', 'action', 'name', 'after', 'basis'},
-    'source': {'source', 'action', 'title', 'location', 'sha', 'role', 'authority', 'text-status', 'decision', 'basis', 'files-from'},
+    'source': {'source', 'action', 'title', 'location', 'sha', 'role', 'authority', 'text-status', 'decision', 'basis', 'files-from', 'section', 'lines'},
     'stage-action': {'stage', 'action', 'text', 'refs', 'basis'},
-    'prose': {'heading', 'anchor', 'line', 'occurrence', 'action', 'text', 'decision', 'basis'}}
+    'prose': {'heading', 'anchor', 'line', 'occurrence', 'action', 'text', 'decision', 'basis'},
+    'relation': {'record', 'source', 'section', 'relation', 'action', 'decision', 'basis'}}
 
 
 def _fields(ctb, kind):
@@ -683,6 +690,36 @@ def resolve_source(root, ctb):
     rows = [l for l in text.split('\n') if l.startswith(X('{src-}'))]
     ids = [r.split(' | ')[0] for r in rows]
     row = ' | '.join([sid] + [ctb.get(k, '') for k in ('title', 'location', 'sha', 'role', 'authority', 'text-status')])
+    if ctb.get('action') == 'add-clause':  # an in-progress ledger gains a clause capture missed: lines in the extract, in no other clause
+        lp = os.path.join(root, X('{@sources_dir}'), sid + '.clauses')
+        if sid not in ids or not os.path.isfile(lp):
+            reject('%s has no clause ledger' % sid, 'Register and capture the source first.')
+        lt = read(lp)
+        sec, m = ctb.get('section', ''), re.fullmatch(r'(\d+)-(\d+)', ctb.get('lines', ''))
+        if m and re.search(X(r'^%s \| %s-%s \|') % (re.escape(sec), m.group(1), m.group(2)), lt, re.M):
+            return text, 'NOOP', []  # already added: checked first, so a replay after the ledger closed changes nothing
+        if not re.search(r'^status: in-progress$', lt, re.M):
+            reject('%s: only a ledger in progress gains clauses' % sid, 'A complete ledger is closed; a changed text is a new capture.')
+        if not re.fullmatch(X('{cl}'), sec) or not m:
+            reject('add-clause needs section: %sN.N and lines: A-B' % X('{cl-}'), 'Give the clause and its extract lines.')
+        a, b = int(m.group(1)), int(m.group(2))
+        have = [(c, int(x), int(y)) for c, x, y in re.findall(X(r'^({cl}) \| (\d+)-(\d+) \|'), lt, re.M)]
+        for c, x, y in have:
+            if c == sec:
+                if (x, y) == (a, b):
+                    return text, 'NOOP', []
+                reject('%s %s already exists with lines %d-%d' % (sid, sec, x, y), 'Use a new clause number.')
+            if a <= y and x <= b:
+                reject('lines %d-%d overlap %s (lines %d-%d)' % (a, b, c, x, y), 'A source line belongs to one clause.')
+        ex = re.search(r'^extract: (\S+) sha256 (\w+)$', lt, re.M)
+        ext_lines = read(os.path.join(root, ex.group(1))).split('\n')
+        if not (1 <= a <= b <= len(ext_lines)) or not any(l.strip() for l in ext_lines[a - 1:b]):
+            reject('lines %d-%d are not text lines of the extract' % (a, b), 'Cite lines that hold the clause.')
+        entry = '%s | %d-%d | %s' % (sec, a, b, sha('\n'.join(ext_lines[a - 1:b]).encode())[:16])
+        rows_ = lt.rstrip('\n').split('\n')
+        pos = max([k for k, l in enumerate(rows_) if re.match(X(r'^{cl} \| (\d+)-'), l) and int(re.match(X(r'^{cl} \| (\d+)-'), l).group(1)) < a], default=len(rows_) - 1)
+        rows_.insert(pos + 1, entry)
+        return text, 'EXTEND', [sid], {'sources/%s.clauses' % sid: '\n'.join(rows_) + '\n'}
     if ctb.get('action') == 'complete-ledger':  # a clause ledger declares itself complete: validate.py then requires every clause covered or held
         lp = os.path.join(root, X('{@sources_dir}'), sid + '.clauses')
         if sid not in ids or not os.path.isfile(lp):
@@ -778,9 +815,42 @@ def resolve_prose(root, ctb):
     return (text, 'NOOP', []) if new == text else (new, 'EXTEND' if action == 'insert' else 'SUPERSEDE', [(ctb.get('heading') or ctb.get('anchor') or ctb.get('line') or '')[:REPORT['excerpt']['heading']]])
 
 
+def resolve_relation(root, ctb):
+    """kind: relation. action retract: remove one coverage relation the gate recorded in error (a false match), and the lineage
+    entry when no other relation of that source clause remains. A record fixed by an owner decision needs an authorizing decision."""
+    _fields(ctb, 'relation')
+    rid, src, sec, rel = ctb.get('record', ''), ctb.get('source', ''), ctb.get('section', ''), ctb.get('relation', '')
+    text = read(os.path.join(root, X('{@reqs_txt}')))
+    recs = blocks(text)
+    if ctb.get('action') != 'retract' or rid not in recs or not re.fullmatch(X('{src}'), src) or not re.fullmatch(X('{cl}'), sec) or rel not in ('covers', 'extends', 'supports', 'depends-on'):
+        reject('A relation change needs action: retract, an existing record:, a source:, a section: and a relation:', 'Name exactly the relation to remove.')
+    guard_owner_decided(rid, recs, sources(root), ctb, adopted_decisions(root))
+    rec = recs[rid]
+    tok = '%s %s %s' % (src, sec, rel)
+    have = [x.strip() for x in field(rec, 'c').split(';') if x.strip()]
+    if tok not in have:
+        return text, 'NOOP', []
+    left = [x for x in have if x != tok]
+    set_field(rec, 'c', '; '.join(left))
+    if not left:
+        rec['fields'] = [f for f in rec['fields'] if f[0] != 'c']
+    if not any(x.startswith('%s %s ' % (src, sec)) for x in left):  # the clause no longer relates to this record: drop it from the lineage
+        parts = []
+        for part in [x.strip() for x in field(rec, 's').split(';')]:
+            if part.startswith(src + ' '):
+                secs = [s for s in part[len(src) + 1:].split(',') if s != sec]
+                if secs:
+                    parts.append('%s %s' % (src, ','.join(secs)))
+            else:
+                parts.append(part)
+        set_field(rec, 's', '; '.join(p for p in parts if p))
+    a, b = rec['span']
+    return text[:a] + render(rec) + text[b:], 'RETRACT', [rid]
+
+
 ADAPTERS = {'decision': (X('{@decisions_txt}'), 'resolve_decision'), 'evidence': (X('{@evidence_txt}'), 'resolve_evidence'), 'trace': (X('{@trace_txt}'), 'resolve_trace'),
             'scope': (X('{@scopes_txt}'), 'resolve_scope'), 'source': (X('{@sources_txt}'), 'resolve_source'), 'stage-action': (X('{@stages_txt}'), 'resolve_stage_action'),
-            'prose': (X('{@frame_md}'), 'resolve_prose')}  # every kind other than requirement: its canonical file and its adapter
+            'prose': (X('{@frame_md}'), 'resolve_prose'), 'relation': (X('{@reqs_txt}'), 'resolve_relation')}  # every kind other than requirement: its canonical file and its adapter
 
 
 def adopted_decisions(root):
@@ -874,6 +944,14 @@ def gate_config(root):
     return g
 
 
+def regenerate_view(root):
+    """Regenerate the generated Master from canonical knowledge and the hold log; nothing canonical changes."""
+    gate = gate_config(root)
+    b = subprocess.run([sys.executable, '-I', os.path.join(root, X('{@build_py}')), gate['src2'], gate['src3'], os.path.join(root, X('{@out_dir}'))], capture_output=True, text=True)
+    if b.returncode:
+        raise RuntimeError('regenerating the Master failed: ' + (b.stderr or b.stdout)[-REPORT['excerpt']['build_error']:])
+
+
 def close_on_noop(root, ctb_id, note):
     """A NOOP resubmission that closes held items regenerates the Master, which shows open holds; nothing canonical changes."""
     if resolve_exceptions(root, ctb_id, note):
@@ -942,7 +1020,7 @@ def gate_version(root):
     return sha(''.join(sha(open(os.path.join(root, f), 'rb').read()) for f in (X('{@assimilate_py}'), X('{@lexicon_txt}'), X('{@build_py}'), X('{@validate_py}'))))[:16]
 
 
-ACCEPTED = {'RECOGNIZE-EXACT', 'RECOGNIZE-SEMANTIC', 'COMPOSE', 'EXTEND', 'PARTIAL→EXTEND', 'NEW', 'PARTIAL→NEW', 'SUPERSEDE'}
+ACCEPTED = {'RECOGNIZE-EXACT', 'RECOGNIZE-SEMANTIC', 'COMPOSE', 'EXTEND', 'PARTIAL→EXTEND', 'NEW', 'PARTIAL→NEW', 'SUPERSEDE', 'RETRACT'}
 
 
 def already_assimilated(root, ctb, reqs_text):
@@ -976,6 +1054,7 @@ def log_outcome(root, report, ctb, before, srcs):
              'outcome': report.get('outcome'), 'classified_as': report.get('recognized_as'), 'clauses': report.get('clauses', []),
              'changed': report.get('changed', []), 'exception': report.get('exception'), 'reason': report.get('reason'),
              'validation': report['stages'].get('validate'), 'digest_before': before, 'digest_after': state_digest(root),
+             'knowledge_before': (report.get('_knowledge') or (None, None))[0], 'knowledge_after': (report.get('_knowledge') or (None, None))[1],
              'schema': LEDGER_SCHEMA, 'prev': prev, 'mutation': report.get('_mutation')}
     with open(p, 'a', encoding='utf-8') as fh:
         fh.write(json.dumps(entry, ensure_ascii=False, sort_keys=True) + '\n'); fh.flush(); os.fsync(fh.fileno())
@@ -986,13 +1065,19 @@ def assimilate(root, ctb_path, dry_run=False):
     """Run the gate once. Never raises for a bad contribution or a gate failure: the outcome is reported and logged."""
     recover(root)
     report, before, ctx = {'contribution': ctb_path, 'stages': {}}, state_digest(root), {}
+    k_before, ep = knowledge_digest(root), os.path.join(root, X('{@intake_exceptions_txt}'))
+    holds_before = read(ep) if os.path.exists(ep) else ''
     try:
         _run(root, ctb_path, dry_run, report, before, ctx)
     except Exception as e:  # infrastructure failure (unreadable input, build crash...): nothing is committed
         report.update(outcome='ERROR', reason='%s: %s' % (type(e).__name__, e), resolution='Fix the gate environment and resubmit; the contribution was not judged.')
+    refused = report['outcome'] in ('REJECTED', 'QUARANTINED', 'ERROR')
+    if refused and knowledge_digest(root) != k_before:
+        raise SystemExit('INVARIANT BROKEN: a refused contribution changed canonical knowledge')
+    if refused and not dry_run and (read(ep) if os.path.exists(ep) else '') != holds_before:
+        regenerate_view(root)  # the refusal opened or changed a hold: the generated Master shows it now, not at the next accepted change
     report['digest_unchanged'] = state_digest(root) == before
-    if report['outcome'] in ('REJECTED', 'QUARANTINED', 'ERROR') and not report['digest_unchanged']:
-        raise SystemExit('INVARIANT BROKEN: a refused contribution changed canonical state')
+    report['_knowledge'] = (k_before, knowledge_digest(root))
     if not dry_run:
         log_outcome(root, report, ctx.get('ctb'), before, ctx.get('srcs'))
     return report
@@ -1026,6 +1111,8 @@ def _run(root, ctb_path, dry_run, report, before, ctx):
             if changed:
                 if target == X('{@stages_txt}'):
                     new_stages = new_text
+                elif target == X('{@reqs_txt}'):
+                    new_reqs = new_text
                 else:
                     extra[target] = new_text
         else:                                                                                  # requirement adapter

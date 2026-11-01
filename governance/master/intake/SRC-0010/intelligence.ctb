@@ -1,0 +1,5 @@
+id: CTB-SRC0010-intelligence
+source: SRC-0010
+section: §11
+kind: requirement
+text: Intelligence is bounded: decision support and automation on governed data propose and never act past an invariant or an owner decision, and a change to production comes only through the gate.

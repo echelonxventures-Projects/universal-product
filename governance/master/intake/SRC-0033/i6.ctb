@@ -1,0 +1,9 @@
+id: CTB-SRC0033-i6
+source: SRC-0033
+section: §2.6
+kind: requirement
+scope: ARC
+title: Constitutional invariant I6: technology agnosticism
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000041, LXM-REQ-000042, LXM-REQ-000043, LXM-REQ-000049, LXM-REQ-000136, LXM-REQ-000195, LXM-REQ-000242, LXM-REQ-000243
+text: Technology agnosticism is constitutional invariant I6: technologies and providers sit behind contracts and adapters, and the core names none. The technology governance gate and a scan of the core check it in CI.

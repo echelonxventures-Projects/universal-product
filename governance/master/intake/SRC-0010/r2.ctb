@@ -1,0 +1,5 @@
+id: CTB-SRC0010-r2
+source: SRC-0010
+section: §18
+kind: requirement
+text: Rule R2, one source of truth: there is no parallel source of truth. A transitional structure is allowed only if it is declared with an owner, a reason, an exit condition and a date, is never authoritative, and is removed by its exit condition; a transitional register fails CI and readiness on an undeclared or expired entry.

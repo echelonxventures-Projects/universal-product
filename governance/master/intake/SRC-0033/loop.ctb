@@ -1,0 +1,9 @@
+id: CTB-SRC0033-loop
+source: SRC-0033
+section: §6.0,§6.1,§6.2,§6.3
+kind: requirement
+scope: ARC
+title: The operating loop: discover, assimilate, validate, execute, observe, propose
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000220
+text: The operating loop is discover, assimilate, validate, execute, observe and propose. Learning means that measured outcomes produce proposals; proposals enter through the gate like any other contribution; and nothing modifies itself in production.

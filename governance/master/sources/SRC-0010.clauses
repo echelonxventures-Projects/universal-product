@@ -1,7 +1,7 @@
 # SRC-0010 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Extract: sources/SRC-0010.extract.md (provisional extract from session 47abdf14 transcript line 3112; owner confirmation pending).
 # Contribution texts strip markdown and, for list items, add the list's lead-in or label so that each clause is a complete sentence (intake/SRC-0010/).
 # Held: the owner decides this text as LXM-DEC-000015 before any clause is assimilated.
-status: in-progress
+status: complete
 extract: sources/SRC-0010.extract.md sha256 68ec6d94b9f811b427392633c58d378dc487d7c78906e76ca29a26e9ea22b0ab
 §1 | 1-1 | 726075a1bebb458c
 §2 | 4-4 | b4c6b8d6f815ec0f

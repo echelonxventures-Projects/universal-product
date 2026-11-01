@@ -1,0 +1,6 @@
+id: CTB-SRC0033-r7
+source: SRC-0033
+section: §3.7
+kind: requirement
+extends: LXM-REQ-000224
+text: By rule R7, every change to knowledge, configuration or code passes the gate and CI before it lands, required checks protect the main branch, and independent assurance is periodic and never the maintenance mechanism.

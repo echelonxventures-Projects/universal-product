@@ -1,0 +1,8 @@
+id: CTB-SRC0033-i1
+source: SRC-0033
+section: §2.1
+kind: requirement
+scope: ARC
+title: Constitutional invariant I1: money integrity
+applied-in: STG-00.A-1
+text: Money integrity is constitutional invariant I1 and is never traded off: one exact money model with integer minor units and an explicit currency and scale, and every movement goes through a ledger, is reconciled and is never inferred. The money audit checks it (no float money in scope; ledgers balance), and CI and runtime guards enforce it.

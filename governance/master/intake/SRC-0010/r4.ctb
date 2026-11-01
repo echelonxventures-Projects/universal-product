@@ -1,0 +1,5 @@
+id: CTB-SRC0010-r4
+source: SRC-0010
+section: §20
+kind: requirement
+text: Rule R4, governed extensibility: new providers, markets, business models, capabilities and object types enter through registered extension points (a contract, an adapter and conformance tests), and generality is built when a registered need arrives, not ahead of it, while the complete architecture is still designed first.

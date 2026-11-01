@@ -1,0 +1,5 @@
+id: CTB-SRC0010-complete
+kind: source
+source: SRC-0010
+action: complete-ledger
+basis: all 23 clauses recognized, each by an exact sentence of the record of the adopted final text (LXM-DEC-000015) that expresses it

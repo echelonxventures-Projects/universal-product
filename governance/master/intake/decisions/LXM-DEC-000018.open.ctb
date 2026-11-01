@@ -1,0 +1,8 @@
+id: CTB-LXM-DEC-000018-open
+kind: decision
+decision: LXM-DEC-000018
+action: open
+question: Authorize two corrections in the adopted architecture constitution (SRC-0033, adopted by LXM-DEC-000015), both owner-reserved because the records carry owner-decided content
+facts: (1) I4 Knowledge Once is held (LXM-EXC-000019): its first submission extended LXM-REQ-000203, which is owner-decided, so the clause is held; it is ready as its own record that refers to 203. (2) I6 technology agnosticism: the gate matched its check sentence ("The technology governance gate and a scan of the core check it in CI.") to LXM-REQ-000212 and LXM-REQ-000249 by a false composition, so LXM-REQ-000250 lacks that sentence and 212 and 249 carry false relations to SRC-0033 §2.6
+options: (a) authorize both: record I4 as a new record referring to LXM-REQ-000203; add the check sentence to LXM-REQ-000250; retract the SRC-0033 §2.6 relations from LXM-REQ-000212 and LXM-REQ-000249; scope SRC-0033 §2.4, §2.6, LXM-REQ-000212, LXM-REQ-000249, LXM-REQ-000250; (b) leave both as they are
+recommendation: (a)

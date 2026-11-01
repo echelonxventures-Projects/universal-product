@@ -1,0 +1,9 @@
+id: CTB-SRC0033-i2
+source: SRC-0033
+section: §2.2
+kind: requirement
+scope: ARC
+title: Constitutional invariant I2: tenant isolation
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000043
+text: Tenant isolation is constitutional invariant I2 and is never traded off: no data, configuration or action crosses a tenant boundary unless a contract allows it. Isolation tests per surface check it, and CI and runtime authorization enforce it.

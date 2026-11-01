@@ -117,8 +117,17 @@ def s_shard():
     return all(same.values()) and master, '%d record files, largest %d bytes; registers rejoined identical %s; Master identical %s' % (files, mx, all(same.values()), master)
 
 
+def s_capture_tables():
+    # a markdown table is structure plus rows: the header and separator are not clauses; each row is one, read with its column names
+    lines = ['## 2. Rules', '', '| # | Rule | Check |', '|---|---|---|', '| R1 | One home | Diff |', '| R2 | No copy | Scan |', '', 'A closing sentence.']
+    spec = CP.segment(lines)
+    rows = [s for s in spec if s[3]]
+    ok = [s[1] for s in rows] == [5, 6] and rows[0][3] == ['#', 'Rule', 'Check'] and len(spec) == 3
+    return ok, 'clauses %s' % [(s[0], s[1], bool(s[3])) for s in spec]
+
+
 for a in [('Gate impact: a rule change is previewed before adoption', s_impact), ('Gate accuracy: wrong classifications are measured', s_accuracy),
-          ('Computed states: evidence, gaps, exact SHA', s_states), ('Status: held queue ageing, review lapses, log integrity', s_status), ('Re-validation: a record change that loses clauses is caught', s_revalidate), ('Capture: one way in; secrets refused; nothing left behind', s_capture), ('Small files: shards rejoin and rebuild byte-identical', s_shard)]:
+          ('Computed states: evidence, gaps, exact SHA', s_states), ('Status: held queue ageing, review lapses, log integrity', s_status), ('Re-validation: a record change that loses clauses is caught', s_revalidate), ('Capture: one way in; secrets refused; nothing left behind', s_capture), ('Capture: tables are rows, not lines', s_capture_tables), ('Small files: shards rejoin and rebuild byte-identical', s_shard)]:
     scenario(*a)
 fails = 0
 for n, ok, det in results:

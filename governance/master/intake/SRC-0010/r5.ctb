@@ -1,0 +1,5 @@
+id: CTB-SRC0010-r5
+source: SRC-0010
+section: §21
+kind: requirement
+text: Rule R5, no false completion: each requirement and capability carries a computed state, never one declared by hand, and readiness computes the states from evidence and gates release on them. The states are Specified, Designed, Implemented, Configured, Enforced at runtime, Verified and Certified; each needs its own evidence and is never inferred from the one before it.

@@ -116,3 +116,43 @@ reason: Validation failed: FAIL  Every LXM-DEC reference resolves  — LXM-DEC-0
 impact: Accepting would break a Master invariant.
 resolution: Correct the contribution so that every listed check passes.
 resolved: 2026-10-31; NEW by CTB-REGISTER-SRC-0028 (sha 559d54fd3647); records SRC-0028
+
+@LXM-EXC-000018 | RESOLVED | CTB-SRC0033-i3 | a2a48a4573195a970a9f52894e7497f3b1293d7103ad58c9e1a400f90c12e154
+source: SRC-0033 §2.3
+reason: Ambiguous: clause 2 is partly expressed by LXM-REQ-000243, LXM-REQ-000242 (0.50) but not covered
+impact: Creating a record could duplicate existing meaning; extending could attach it to the wrong record.
+resolution: Declare extends: <record> to add it there, recognized-as: <record> if that record already expresses it, or distinct-from: <records> to confirm the meaning is new.
+resolved: 2026-11-02; NEW by CTB-SRC0033-i3 (sha f3a19546c182); records LXM-REQ-000249
+
+@LXM-EXC-000019 | QUARANTINED | CTB-SRC0033-i4 | 35a2f9d1c1d456c26e7b373d90750e24d7f590d2f2030fb6415f6304429f4dde
+source: SRC-0033 §2.4
+reason: LXM-REQ-000203 carries content fixed by an owner decision; changing it is owner-reserved
+impact: Changing it without the owner would override a recorded owner decision.
+resolution: The owner decides; record the decision in decisions.txt (rendered as Part C) and resubmit with decision: LXM-DEC-NNNNNN.
+
+@LXM-EXC-000020 | RESOLVED | CTB-SRC0033-i6 | d664527dfb3d8fee79c732b14b613a10eb90a3a12c3422381f78ee7c127f66b5
+source: SRC-0033 §2.6
+reason: Ambiguous: clause 2 is partly expressed by LXM-REQ-000042, LXM-REQ-000041 (0.57) but not covered
+impact: Creating a record could duplicate existing meaning; extending could attach it to the wrong record.
+resolution: Declare extends: <record> to add it there, recognized-as: <record> if that record already expresses it, or distinct-from: <records> to confirm the meaning is new.
+resolved: 2026-11-02; PARTIAL→NEW by CTB-SRC0033-i6 (sha 01c05d041077); records LXM-REQ-000212, LXM-REQ-000249, LXM-REQ-000250
+
+@LXM-EXC-000021 | RESOLVED | CTB-SRC0033-r4 | 6f37f41c029b3fa9a6ef552db1d6c450c4f74c347493ee1fd890536f7c168cae
+source: SRC-0033 §3.4
+reason: Ambiguous: clause 2 is partly expressed by LXM-REQ-000229, LXM-REQ-000103, LXM-REQ-000065 (0.45) but not covered
+impact: Creating a record could duplicate existing meaning; extending could attach it to the wrong record.
+resolution: Declare extends: <record> to add it there, recognized-as: <record> if that record already expresses it, or distinct-from: <records> to confirm the meaning is new.
+resolved: 2026-11-02; NEW by CTB-SRC0033-r4 (sha 35eadf20d74a); records LXM-REQ-000251
+
+@LXM-EXC-000022 | RESOLVED | CTB-SRC0033-layers | 56e9c502e581398558014a8dcfaeacd453ed4a1d71aa4f7330734c932519aced
+source: SRC-0033 §5.1,§5.2,§5.3,§5.4,§5.5,§5.6
+reason: Ambiguous: clause 4 is partly expressed by LXM-REQ-000229, LXM-REQ-000106, LXM-REQ-000101 (0.45) but not covered
+impact: Creating a record could duplicate existing meaning; extending could attach it to the wrong record.
+resolution: Declare extends: <record> to add it there, recognized-as: <record> if that record already expresses it, or distinct-from: <records> to confirm the meaning is new.
+resolved: 2026-11-02; NEW by CTB-SRC0033-layers (sha 3df1eb44be71); records LXM-REQ-000252
+
+@LXM-EXC-000023 | QUARANTINED | CTB-SRC0033-i4 | 4c83a932ab2e8e93188b833e7a76bcabfbccb54d3413be7eb897b4c085ecce6e
+source: SRC-0033 §2.4
+reason: SRC-0033 §2.4 is held for an owner decision (LXM-EXC-000019); owner-reserved
+impact: Assimilating it in any form would implement an option the owner has not chosen.
+resolution: The owner decides; record the decision in decisions.txt (rendered as Part C) and resubmit with decision: LXM-DEC-NNNNNN.
