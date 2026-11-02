@@ -12,6 +12,7 @@
   "code_line": 140,
   "blocker": 220,
   "build_error": 300,
-  "git_stderr": 400
+  "git_stderr": 400,
+  "outside_items": 5
  }
 }

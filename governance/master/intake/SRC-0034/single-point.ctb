@@ -1,0 +1,9 @@
+id: CTB-SRC0034-single-point
+source: SRC-0034
+section: §0.1
+kind: requirement
+scope: ARC
+title: One entry point for all knowledge, a technology-agnostic contract, every version kept
+applied-in: STG-00.A-1
+distinct-from: LXM-REQ-000043, LXM-REQ-000195, LXM-REQ-000212
+text: All knowledge enters the Master through one entry point, the assimilation gate: canonical records, source texts, clause ledgers and every registry that holds a fact, such as identifier formats, actors, hosts, formats, vocabulary or thresholds. Nothing else writes knowledge, and a check fails on any knowledge that differs from what the gate last accepted. The entry contract is technology-agnostic: the kinds of contribution, their fields and the formats a contribution may be written in are registered data, so any tool or agent can submit in any registered format and any conforming implementation can judge. Every knowledge item is versioned: each accepted change gives it a new version, logged with its contribution, its time and the versions of the technologies that ran the gate; a change to a registry names the version it replaces and is refused if that version is no longer current; every earlier version stays reconstructable from the log. Every technology the tooling depends on is registered with the versions it supports, and the gate refuses to run on a version outside them.

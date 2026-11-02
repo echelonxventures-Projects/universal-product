@@ -19,8 +19,12 @@ MATCH = json.load(open(os.path.join(_HERE, X('{@gate_json}')), encoding='utf-8')
 T_COVER, T_RELATED, T_CONFLICT = MATCH['cover'], MATCH['related'], MATCH['conflict']  # a contradiction needs the same shared meaning for negations and for numbers
 COL = {c: i for i, c in enumerate(LAYOUT['sources_columns'])}  # the columns of the sources register, by name
 REPORT = json.load(open(os.path.join(_HERE, _N['reporting_json']), encoding='utf-8'))  # how much the reports show
-FIELDS = {'id', 'source', 'section', 'kind', 'scope', 'title', 'text', 'extends', 'supersedes', 'reason', 'depends',
-          'applied-in', 'relates', 'distinct-from', 'recognized-as', 'decision'}
+KINDS = json.load(open(os.path.join(_HERE, X('{@kinds_json}')), encoding='utf-8'))  # the entry contract: kinds, their targets and fields (LXM-REQ-000253)
+KIND_FIELDS = {k: set(v['fields']) | set(KINDS['common']) for k, v in KINDS['kinds'].items()}
+FIELDS = KIND_FIELDS['requirement']
+FORMATS = json.load(open(os.path.join(_HERE, X('{@contribution_formats_json}')), encoding='utf-8'))['formats']  # how a contribution may be written
+REGISTRIES = [_N[k] for k in LAYOUT['registries']]  # registries are knowledge: they change only through the gate (kind: registry)
+ITEMS = {_N[k]: dict(v, start=re.compile(X(v['start']), re.M)) for k, v in LAYOUT['items'].items()}  # how a canonical file splits into versioned items
 REQ = re.compile(X(r'{req}'))
 
 
@@ -220,17 +224,39 @@ def index(recs, lex):
 # ---------- the gate ----------
 
 def receive(path):
+    """The contribution's fields, read by the first registered format (contribution-formats.json) that detects it. _format is
+    None when no registered format reads it; the gate then refuses it. The SHA-256 of the exact bytes is its identity."""
+    raw = open(path, 'rb').read(); body = raw.decode('utf-8')
+    first = next((l for l in body.split('\n') if l.strip()), '')
+    fmt = next((f for f in FORMATS if re.search(f['detect'], first)), None)
+    ctb = PARSERS[fmt['parser']](body, fmt) if fmt else {}
+    ctb.update(_sha=sha(raw), _path=os.path.abspath(path), _format=fmt['name'] if fmt else None)
+    return ctb
+
+
+def _parse_fields(body, fmt):
     ctb, key = {}, None
-    raw = open(path, 'rb').read()
-    for line in raw.decode('utf-8').split('\n'):
-        m = re.match(r'^([a-z][a-z0-9-]*): ?(.*)$', line)
+    for line in body.split('\n'):
+        m = re.match(fmt['key'], line)
         if m:
             key = m.group(1)
             ctb[key] = m.group(2).strip()
-        elif line.strip() and key == 'text':
-            ctb['text'] += ' ' + line.strip()
-    ctb['_sha'] = sha(raw)
+        elif line.strip() and key == fmt['continue_field']:
+            ctb[key] += ' ' + line.strip()
     return ctb
+
+
+def _parse_json(body, fmt):
+    try:
+        obj = json.loads(body)
+    except ValueError:
+        return {}
+    if not isinstance(obj, dict) or not all(isinstance(v, str) for v in obj.values()):
+        return {}
+    return {k: ' '.join(v.split()) for k, v in obj.items()}  # whitespace as the line format reads it: one contribution, one judgement
+
+
+PARSERS = {'fields': _parse_fields, 'json': _parse_json}  # reading mechanisms; which formats use them is registered data
 
 
 class Refusal(Exception):
@@ -246,12 +272,12 @@ def reject(reason, resolution, impact='The contribution is not accepted; canonic
 def check_contribution(ctb, recs, srcs, actions):
     unknown = sorted(set(k for k in ctb if not k.startswith('_')) - FIELDS)
     if unknown:
-        reject('Unknown fields: %s' % ', '.join(unknown), 'Use only the contribution fields documented in assimilate.py.')
+        reject('Unknown fields: %s' % ', '.join(unknown), 'Use only the requirement fields registered in %s.' % X('{@kinds_json}'))
     for k in ('id', 'kind', 'text'):
         if not ctb.get(k):
             reject('Missing required field "%s"' % k, 'Supply "%s".' % k)
     if ctb['kind'] != 'requirement':
-        reject('Unsupported kind "%s"' % ctb['kind'], 'Registered kinds: requirement, %s.' % ', '.join(sorted(ADAPTERS)))
+        reject('Unsupported kind "%s"' % ctb['kind'], 'Registered kinds (%s): %s.' % (X('{@kinds_json}'), ', '.join(sorted(KINDS['kinds']))))
     if len(ctb['text']) < MATCH['min_contribution_text'] or not re.search(r'[a-z]{3}', ctb['text']):
         reject('Text is too short to carry a requirement', 'State the obligation as at least one complete sentence.')
     if not ctb.get('source') or not ctb.get('section'):
@@ -461,15 +487,71 @@ def apply(plan, reqs_text, stages_text):
     return out, '\n'.join(stage_lines), sorted(changed)
 
 
+def registries(root):
+    """The registries present under root (a fixture may carry only some)."""
+    return [f for f in REGISTRIES if os.path.exists(os.path.join(root, f))]
+
+
 def knowledge_digest(root):
-    """Canonical knowledge only: the canonical files and the clause ledgers, without the generated Master (a view of them)."""
+    """Canonical knowledge only: the canonical files, the registries and the clause ledgers, without the generated Master (a view of them)."""
     ledgers = sorted(X('{@sources_prefix}') + f for f in os.listdir(os.path.join(root, X('{@sources_dir}'))) if f.endswith('.clauses')) if os.path.isdir(os.path.join(root, X('{@sources_dir}'))) else []
-    return sha(''.join(sha(open(os.path.join(root, f), 'rb').read()) for f in CANON + ledgers))
+    return sha(''.join(sha(open(os.path.join(root, f), 'rb').read()) for f in CANON + registries(root) + ledgers))
 
 
 def state_digest(root):
     ledgers = sorted(X('{@sources_prefix}') + f for f in os.listdir(os.path.join(root, X('{@sources_dir}')))) if os.path.isdir(os.path.join(root, X('{@sources_dir}'))) else []
-    return sha(''.join(sha(open(os.path.join(root, f), 'rb').read()) for f in CANON + DERIVED + ledgers))
+    return sha(''.join(sha(open(os.path.join(root, f), 'rb').read()) for f in CANON + registries(root) + DERIVED + ledgers))
+
+
+# ---------- versions (LXM-REQ-000253) ----------
+
+def items(root):
+    """{item: SHA-256 of its text} for every knowledge item: each record, decision, evidence entry, source row, stage and trace
+    entry (layout.json items), the rest of each canonical file, every registry and every file under sources/."""
+    src = sorted(X('{@sources_prefix}') + f for f in os.listdir(os.path.join(root, X('{@sources_dir}')))) if os.path.isdir(os.path.join(root, X('{@sources_dir}'))) else []
+    out = {}
+    for f in CANON + registries(root) + src:
+        data = open(os.path.join(root, f), 'rb').read()
+        rule = ITEMS.get(f)
+        if not rule:
+            out[f] = sha(data); continue
+        text = data.decode('utf-8'); starts = list(rule['start'].finditer(text))
+        out[f] = sha(text[:starts[0].start()] if starts else text)
+        for i, m in enumerate(starts):
+            name = f + '#' + m.group(1) if rule.get('qualify') else m.group(1)
+            out[name] = sha(out.get(name, '') + text[m.start():starts[i + 1].start() if i + 1 < len(starts) else len(text)].rstrip('\n'))
+    return out
+
+
+def version_map(root):
+    """{item: (version, SHA-256)} as the log records it (SHA-256 None: removed), or None before the log records versions."""
+    p, vm, seen = os.path.join(root, LEDGER), {}, False
+    for line in (open(p, encoding='utf-8') if os.path.exists(p) else []):
+        v = json.loads(line).get('versions') if line.strip() else None
+        if v is not None:
+            seen = True; vm.update({k: tuple(x) for k, x in v.items()})
+    return vm if seen else None
+
+
+def version_changes(root, vm):
+    """{item: [next version, SHA-256 or None]} for every item whose text differs from the version the log records."""
+    now, vm = items(root), vm or {}
+    ch = {k: [vm.get(k, (0, None))[0] + 1, s] for k, s in now.items() if vm.get(k, (0, None))[1] != s}
+    ch.update({k: [n + 1, None] for k, (n, s) in vm.items() if s is not None and k not in now})
+    return ch
+
+
+def outside_gate(root):
+    """The items whose current text is no version the gate recorded: knowledge that entered some other way."""
+    vm = version_map(root)
+    return [] if vm is None else sorted(version_changes(root, vm))
+
+
+def runtime(root):
+    """{runtime: (version, supported)} for the runtimes the gate checks before it runs (runtimes.json)."""
+    spec = importlib.util.spec_from_file_location('lxm_runtimes', os.path.join(_HERE, X('{@runtimes_py}')))
+    RT = importlib.util.module_from_spec(spec); spec.loader.exec_module(RT)
+    return RT.check(root, 'gate')
 
 
 def recover(root):
@@ -512,8 +594,7 @@ def load_build(root):
     return build
 
 
-DECISION_FIELDS = {'id', 'kind', 'decision', 'action', 'question', 'facts', 'options', 'recommendation', 'outcome', 'effect', 'authorizes',
-                   'adopted', 'provenance', 'rationale', 'approval', 'approval-sha256', 'label', 'source', 'section'}
+DECISION_FIELDS = KIND_FIELDS['decision']
 DECISION_KEYS = {'question': 'q', 'facts': 'f', 'options': 'opt', 'recommendation': 'rec', 'outcome': 'o', 'effect': 'e', 'authorizes': 'a',
                  'adopted': 'w', 'provenance': 'p', 'rationale': 'r', 'label': 'label'}
 SCOPE_CELL = re.compile(X(r'(?:(?:{src} (?:{cl}(?:, )?)+|{req})(?:, )?)+'))
@@ -525,7 +606,7 @@ def resolve_decision(root, ctb):
     decision). An adopted decision is never edited. Returns (new decisions.txt text, outcome, changed IDs)."""
     unknown = sorted(set(k for k in ctb if not k.startswith('_')) - DECISION_FIELDS)
     if unknown:
-        reject('Unknown fields for a decision: %s' % ', '.join(unknown), 'Use only the decision fields documented in assimilate.py.')
+        reject('Unknown fields for a decision: %s' % ', '.join(unknown), 'Use only the decision fields registered in %s.' % X('{@kinds_json}'))
     groups = gate_config(root)['decision_groups']
     build = load_build(root)
     text = read(os.path.join(root, X('{@decisions_txt}')))
@@ -577,7 +658,7 @@ def resolve_decision(root, ctb):
     return '\n'.join(x.rstrip('\n') + '\n' for x in out).replace('\n\n\n', '\n\n'), 'ADOPT', [did]
 
 
-EVIDENCE_CTB = {'id', 'kind', 'evidence', 'action', 'supersedes', 'fact', 'source', 'method', 'observed', 'observer', 'verifies', 'basis', 'subject', 'section'}
+EVIDENCE_CTB = KIND_FIELDS['evidence']
 
 
 def resolve_evidence(root, ctb):
@@ -586,7 +667,7 @@ def resolve_evidence(root, ctb):
     Returns (new evidence.txt text, outcome, changed IDs)."""
     unknown = sorted(set(k for k in ctb if not k.startswith('_')) - EVIDENCE_CTB)
     if unknown:
-        reject('Unknown fields for evidence: %s' % ', '.join(unknown), 'Use only the evidence fields documented in assimilate.py.')
+        reject('Unknown fields for evidence: %s' % ', '.join(unknown), 'Use only the evidence fields registered in %s.' % X('{@kinds_json}'))
     build = load_build(root)
     text = read(os.path.join(root, X('{@evidence_txt}')))
     _, evs = build.parse_evidence(text)
@@ -624,19 +705,10 @@ def resolve_evidence(root, ctb):
     return text.rstrip('\n') + '\n\n' + block, 'SUPERSEDE' if action == 'supersede' else 'NEW', changed
 
 
-KIND_FIELDS = {
-    'trace': {'requirement', 'action', 'impl', 'spec', 'config', 'test', 'basis'},
-    'scope': {'scope', 'action', 'name', 'after', 'basis'},
-    'source': {'source', 'action', 'title', 'location', 'sha', 'role', 'authority', 'text-status', 'decision', 'basis', 'files-from', 'section', 'lines'},
-    'stage-action': {'stage', 'action', 'text', 'refs', 'basis'},
-    'prose': {'heading', 'anchor', 'line', 'occurrence', 'action', 'text', 'decision', 'basis'},
-    'relation': {'record', 'source', 'section', 'relation', 'action', 'decision', 'basis'}}
-
-
 def _fields(ctb, kind):
-    unknown = sorted(set(k for k in ctb if not k.startswith('_')) - KIND_FIELDS[kind] - {'id', 'kind'})
+    unknown = sorted(set(k for k in ctb if not k.startswith('_')) - KIND_FIELDS[kind])
     if unknown:
-        reject('Unknown fields for %s: %s' % (kind, ', '.join(unknown)), 'Use only the %s fields documented in assimilate.py.' % kind)
+        reject('Unknown fields for %s: %s' % (kind, ', '.join(unknown)), 'Use only the %s fields registered in %s.' % (kind, X('{@kinds_json}')))
     if not ctb.get('basis'):
         reject('A %s change states its basis (why it is right)' % kind, 'Add basis: with the evidence or review behind the change.')
 
@@ -848,9 +920,42 @@ def resolve_relation(root, ctb):
     return text[:a] + render(rec) + text[b:], 'RETRACT', [rid]
 
 
-ADAPTERS = {'decision': (X('{@decisions_txt}'), 'resolve_decision'), 'evidence': (X('{@evidence_txt}'), 'resolve_evidence'), 'trace': (X('{@trace_txt}'), 'resolve_trace'),
-            'scope': (X('{@scopes_txt}'), 'resolve_scope'), 'source': (X('{@sources_txt}'), 'resolve_source'), 'stage-action': (X('{@stages_txt}'), 'resolve_stage_action'),
-            'prose': (X('{@frame_md}'), 'resolve_prose'), 'relation': (X('{@reqs_txt}'), 'resolve_relation')}  # every kind other than requirement: its canonical file and its adapter
+def resolve_registry(root, ctb):
+    """kind: registry. A registry is knowledge and changes only here, one whole new version at a time. registry: its layout.json key;
+    content: the new file, beside the contribution; content-sha256: its SHA-256 (part of the contribution's identity);
+    base-version: the version it replaces (0 for a new registry). The same content again is a NOOP; a base that is no longer
+    current is refused (no lost update); content that does not parse is refused. Returns (text, outcome, changed, files)."""
+    _fields(ctb, 'registry')
+    key = ctb.get('registry', '')
+    if key not in LAYOUT['registries']:
+        reject('"%s" is not a registered registry' % key, 'Name a registry key from %s (registries); a new registry is first added there.' % X('{@layout_json}'))
+    f, rule = _N[key], KINDS['kinds']['registry']
+    p = os.path.join(os.path.dirname(ctb['_path']), ctb.get('content', ''))
+    if not ctb.get('content') or not os.path.isfile(p):
+        reject('The new content is missing (content: %s)' % ctb.get('content'), 'Put the new registry file beside the contribution and name it in content:.')
+    data = open(p, 'rb').read()
+    if sha(data) != ctb.get('content-sha256'):
+        reject('content-sha256 does not match the content', 'State the SHA-256 of exactly the content submitted.')
+    cur = os.path.join(root, f)
+    if os.path.exists(cur) and open(cur, 'rb').read() == data:
+        return data.decode('utf-8'), 'NOOP', [], {}  # already this version (a replay)
+    current = (version_map(root) or {}).get(f, (0, None))[0] if os.path.exists(cur) else 0
+    if ctb.get('base-version') != str(current):
+        reject('base-version %s is not the current version of %s (%d)' % (ctb.get('base-version'), f, current), 'Rebase the change on version %d and resubmit.' % current)
+    parse = rule['parse'].get(os.path.splitext(f)[1])
+    try:
+        text = data.decode('utf-8')
+        if parse:
+            PARSE_CHECKS[parse](text)
+    except ValueError as e:
+        reject('The new %s does not parse: %s' % (f, e), 'Submit content that parses as %s.' % (parse or 'text'))
+    return text, 'NEW' if current == 0 else 'SUPERSEDE', [f], {f: text}
+
+
+PARSE_CHECKS = {'json': json.loads}  # parse mechanisms; which registries use them is registered data (kinds.json)
+
+
+ADAPTERS = {k: (_N[v['target']] if v['target'] else None, 'resolve_' + k.replace('-', '_')) for k, v in KINDS['kinds'].items() if k != 'requirement'}  # every kind other than requirement: its canonical file (a registry contribution names its own) and its resolver
 
 
 def adopted_decisions(root):
@@ -964,7 +1069,7 @@ def close_on_noop(root, ctb_id, note):
 
 
 LEDGER = _N[LAYOUT['ledger']]
-LEDGER_SCHEMA = 2  # 2: hash chain (prev) and the exact mutation an accepted run made (mutation)
+LEDGER_SCHEMA = 3  # 2: hash chain (prev) and the exact mutation an accepted run made (mutation); 3: item versions (versions) and runtime versions (runtime)
 
 
 def state_matches_log(root):
@@ -1055,7 +1160,13 @@ def log_outcome(root, report, ctb, before, srcs):
              'changed': report.get('changed', []), 'exception': report.get('exception'), 'reason': report.get('reason'),
              'validation': report['stages'].get('validate'), 'digest_before': before, 'digest_after': state_digest(root),
              'knowledge_before': (report.get('_knowledge') or (None, None))[0], 'knowledge_after': (report.get('_knowledge') or (None, None))[1],
-             'schema': LEDGER_SCHEMA, 'prev': prev, 'mutation': report.get('_mutation')}
+             'schema': LEDGER_SCHEMA, 'prev': prev, 'mutation': report.get('_mutation'),
+             'runtime': {n: v for n, (v, ok) in (report.get('_runtime') or runtime(root)).items()}}
+    vm = version_map(root)
+    if vm is None or report.get('outcome') not in ('REJECTED', 'QUARANTINED', 'ERROR'):  # a refusal changes no knowledge; the first line records every item
+        ch = version_changes(root, vm)
+        if ch or vm is None:
+            entry['versions'] = ch
     with open(p, 'a', encoding='utf-8') as fh:
         fh.write(json.dumps(entry, ensure_ascii=False, sort_keys=True) + '\n'); fh.flush(); os.fsync(fh.fileno())
     report['ledger_seq'] = seq
@@ -1068,7 +1179,16 @@ def assimilate(root, ctb_path, dry_run=False):
     k_before, ep = knowledge_digest(root), os.path.join(root, X('{@intake_exceptions_txt}'))
     holds_before = read(ep) if os.path.exists(ep) else ''
     try:
-        _run(root, ctb_path, dry_run, report, before, ctx)
+        rt = report['_runtime'] = runtime(root)
+        outside = outside_gate(root)
+        if any(not ok for v, ok in rt.values()):
+            report.update(outcome='ERROR', reason='runtime outside its supported versions: %s' % ', '.join('%s %s' % (n, v) for n, (v, ok) in rt.items() if not ok),
+                          resolution='Run the gate on a version %s registers, or widen it there through the gate with the evidence of a passing run.' % X('{@runtimes_json}'))
+        elif outside:
+            report.update(outcome='ERROR', reason='knowledge changed outside the gate: %s' % ', '.join(outside[:REPORT['excerpt']['outside_items']]) + (' and %d more' % (len(outside) - REPORT['excerpt']['outside_items']) if len(outside) > REPORT['excerpt']['outside_items'] else ''),
+                          resolution='Restore those items, then submit the change as a contribution; the gate is the one entry point for knowledge.')
+        else:
+            _run(root, ctb_path, dry_run, report, before, ctx)
     except Exception as e:  # infrastructure failure (unreadable input, build crash...): nothing is committed
         report.update(outcome='ERROR', reason='%s: %s' % (type(e).__name__, e), resolution='Fix the gate environment and resubmit; the contribution was not judged.')
     refused = report['outcome'] in ('REJECTED', 'QUARANTINED', 'ERROR')
@@ -1092,6 +1212,8 @@ def _run(root, ctb_path, dry_run, report, before, ctx):
     recs, srcs = blocks(reqs_text), sources(root)
     ctx['srcs'] = srcs
     try:
+        if not ctb['_format']:
+            reject('No registered contribution format reads this contribution', 'Write it in a format registered in %s, or register its format there.' % X('{@contribution_formats_json}'))
         extra, plan = {}, []
         seq = already_assimilated(root, ctb, reqs_text)
         if seq:
@@ -1113,7 +1235,7 @@ def _run(root, ctb_path, dry_run, report, before, ctx):
                     new_stages = new_text
                 elif target == X('{@reqs_txt}'):
                     new_reqs = new_text
-                else:
+                elif target:
                     extra[target] = new_text
         else:                                                                                  # requirement adapter
             acts = stage_actions(stages_text)
@@ -1137,11 +1259,12 @@ def _run(root, ctb_path, dry_run, report, before, ctx):
             return report
         staging = tempfile.mkdtemp(prefix='lxm-stage-')                                        # validate
         try:
-            for f in CANON + TOOLS:
+            for f in dict.fromkeys(CANON + TOOLS + registries(root)):
+                os.makedirs(os.path.dirname(os.path.join(staging, f)), exist_ok=True)
                 shutil.copyfile(os.path.join(root, f), os.path.join(staging, f))
             for d in (X('{@sources_dir}'), X('{@intake_dir}')):
                 if os.path.isdir(os.path.join(root, d)):
-                    shutil.copytree(os.path.join(root, d), os.path.join(staging, d))
+                    shutil.copytree(os.path.join(root, d), os.path.join(staging, d), dirs_exist_ok=True)
             os.makedirs(os.path.join(staging, X('{@out_dir}')))
             open(os.path.join(staging, X('{@reqs_txt}')), 'w', encoding='utf-8').write(new_reqs)
             open(os.path.join(staging, X('{@stages_txt}')), 'w', encoding='utf-8').write(new_stages)

@@ -1,0 +1,5 @@
+# SRC-0034 clause ledger: clause | extract lines | text digest (first 16 hex of SHA-256 of the lines joined by newlines). Captured by capture.py from session transcript 47abdf14-1288-4d9e-b7b7-eec6f8d3053e.jsonl line 7067.
+# A list is one clause together with its lead-in; every other sentence paragraph is a clause; headings and metadata are none.
+status: complete
+extract: sources/SRC-0034.extract.md sha256 f6e0959ba45ebf03174a37c0033d2e63610cb2062241129e4d5b7d8dcd08c691
+§0.1 | 1-1 | e3fcd941488bd4bc

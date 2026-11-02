@@ -1,5 +1,5 @@
 {
- "_comment": "LXM-REQ-000240: literals in the Master's own tool code that look like configuration. tooling_literals.py counts them per file and kind; CI fails when a count rises (the ratchet), so hard-coding only goes down. Moving a literal into a registry lowers the count; record it with --write-baseline.",
+ "_comment": "LXM-REQ-000240: literals in the Master's own tool code that look like configuration. tooling_literals.py counts them per file and kind; CI fails when a count rises (the ratchet), so hard-coding only goes down. Moving a literal into a registry lowers the count; write the new baseline with --write-baseline to a new file and submit it through the gate (kind: registry), like every registry (LXM-REQ-000253).",
  "files": {
   "roots": [
    ".",

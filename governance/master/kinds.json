@@ -1,0 +1,161 @@
+{
+ "_comment": "LXM-REQ-000253: the entry contract, as data. Every kind of knowledge a contribution may carry, the canonical file it changes (a layout.json key; a registry contribution names its own registry) and the fields it may use besides the common ones. The gate judges kind K with its resolver for K; a kind not listed here is refused. Any tool or agent that writes these fields in a registered contribution format can submit.",
+ "common": [
+  "id",
+  "kind"
+ ],
+ "kinds": {
+  "requirement": {
+   "target": "reqs_txt",
+   "fields": [
+    "applied-in",
+    "decision",
+    "depends",
+    "distinct-from",
+    "extends",
+    "id",
+    "kind",
+    "reason",
+    "recognized-as",
+    "relates",
+    "scope",
+    "section",
+    "source",
+    "supersedes",
+    "text",
+    "title"
+   ]
+  },
+  "decision": {
+   "target": "decisions_txt",
+   "fields": [
+    "action",
+    "adopted",
+    "approval",
+    "approval-sha256",
+    "authorizes",
+    "decision",
+    "effect",
+    "facts",
+    "id",
+    "kind",
+    "label",
+    "options",
+    "outcome",
+    "provenance",
+    "question",
+    "rationale",
+    "recommendation",
+    "section",
+    "source"
+   ]
+  },
+  "evidence": {
+   "target": "evidence_txt",
+   "fields": [
+    "action",
+    "basis",
+    "evidence",
+    "fact",
+    "id",
+    "kind",
+    "method",
+    "observed",
+    "observer",
+    "section",
+    "source",
+    "subject",
+    "supersedes",
+    "verifies"
+   ]
+  },
+  "trace": {
+   "target": "trace_txt",
+   "fields": [
+    "action",
+    "basis",
+    "config",
+    "impl",
+    "requirement",
+    "spec",
+    "test"
+   ]
+  },
+  "scope": {
+   "target": "scopes_txt",
+   "fields": [
+    "action",
+    "after",
+    "basis",
+    "name",
+    "scope"
+   ]
+  },
+  "source": {
+   "target": "sources_txt",
+   "fields": [
+    "action",
+    "authority",
+    "basis",
+    "decision",
+    "files-from",
+    "lines",
+    "location",
+    "role",
+    "section",
+    "sha",
+    "source",
+    "text-status",
+    "title"
+   ]
+  },
+  "stage-action": {
+   "target": "stages_txt",
+   "fields": [
+    "action",
+    "basis",
+    "refs",
+    "stage",
+    "text"
+   ]
+  },
+  "prose": {
+   "target": "frame_md",
+   "fields": [
+    "action",
+    "anchor",
+    "basis",
+    "decision",
+    "heading",
+    "line",
+    "occurrence",
+    "text"
+   ]
+  },
+  "relation": {
+   "target": "reqs_txt",
+   "fields": [
+    "action",
+    "basis",
+    "decision",
+    "record",
+    "relation",
+    "section",
+    "source"
+   ]
+  },
+  "registry": {
+   "target": null,
+   "fields": [
+    "base-version",
+    "basis",
+    "content",
+    "content-sha256",
+    "registry"
+   ],
+   "parse": {
+    ".json": "json"
+   }
+  }
+ }
+}

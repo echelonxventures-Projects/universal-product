@@ -1,0 +1,7 @@
+{
+ "_comment": "LXM-REQ-000253: the formats a contribution may be written in. The gate tries them in order; the first whose detect pattern matches the contribution's first non-blank line reads it. parser names a reading mechanism of the gate: 'fields' reads 'key: value' lines (continuation lines extend the field named in continue_field); 'json' reads one object of string values. A contribution in another format is supported by registering it here, with a parser for it.",
+ "formats": [
+  {"name": "json-object", "detect": "^\\s*\\{", "parser": "json"},
+  {"name": "key-value-lines", "detect": "^[a-z][a-z0-9-]*:", "parser": "fields", "key": "^([a-z][a-z0-9-]*): ?(.*)$", "continue_field": "text"}
+ ]
+}

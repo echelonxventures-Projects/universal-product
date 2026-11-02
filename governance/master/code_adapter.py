@@ -313,7 +313,7 @@ def main(argv):
     if opt('--baseline'):
         worse, better = ratchet(rep['counts'], json.load(open(opt('--baseline'), encoding='utf-8')))
         for k, (a, b) in sorted(better.items()):
-            print('  better  %s: %d -> %d (record it with --write-baseline)' % (k, a, b))
+            print('  better  %s: %d -> %d (write the new baseline with --write-baseline to a new file and submit it as a registry contribution)' % (k, a, b))
         for k, (a, b) in sorted(worse.items()):
             print('  WORSE   %s: %d -> %d' % (k, a, b))
         print('ratchet: %s' % ('FAIL, %d finding(s) rose' % len(worse) if worse else 'pass'))

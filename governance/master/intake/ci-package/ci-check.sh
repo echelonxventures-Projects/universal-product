@@ -12,6 +12,10 @@ tmp="$(mktemp -d)"; python3 -I build.py "$src2" "$src3" "$tmp" >/dev/null
 cmp "$tmp/LXM-MASTER.md" out/LXM-MASTER.md && cmp "$tmp/LXM-RECONCILIATION.md" out/LXM-RECONCILIATION.md
 echo "== 1b. canonical state equals the last gate outcome (no direct edits), log chain intact"
 python3 -I -B -c "import sys;sys.dont_write_bytecode=True;sys.path.insert(0,'.');import assimilate as A;s=A.state_matches_log('.');c=A.verify_chain('.');print(s[1]);print(c[1]);sys.exit(0 if s[0] and c[0] else 1)"
+echo "== 1c. one entry point: every file classified, every knowledge item a version the gate recorded (LXM-REQ-000253)"
+python3 -I -B versions.py "$M"
+echo "== 1d. the technologies the tooling runs on, on registered versions (LXM-REQ-000253)"
+python3 -I -B runtimes.py "$M" --at ci | tail -1
 echo "== 2. Master invariants"
 python3 -I validate.py out/LXM-MASTER.md out/LXM-RECONCILIATION.md "$src2" "$src3" "$prev_matrix" "$src2_sha" "$src3_sha" | tail -1
 echo "== 2b. no agent, tool, person or host named outside its registry (LXM-REQ-000239)"

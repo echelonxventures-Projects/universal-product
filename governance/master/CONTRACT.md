@@ -1,6 +1,6 @@
 # Common assimilation contract — design (not implemented beyond requirements)
 
-Status: **design only.** The only implemented type adapter is `requirement` (GATE.md). Each other type below counts as implemented only once its adapter exists and its fixtures pass.
+Status: **design, partly implemented.** The implemented kinds are the ones `kinds.json` registers, each with its adapter and fixtures (GATE.md); the envelope is read in any format `contribution-formats.json` registers (LXM-REQ-000253). Every other type below counts as implemented only once its adapter exists and its fixtures pass.
 
 This is the complete intended design of the assimilation contract for every object type SRC-0009 §4.3 names, set down before any further sequencing (SRC-0009 §1.3, LXM-REQ-000227). The order of work in §5 follows from its dependencies (LXM-REQ-000230).
 

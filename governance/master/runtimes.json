@@ -1,0 +1,7 @@
+{
+ "_comment": "LXM-REQ-000253: every technology the Master's tooling runs on, with the versions it supports. supported lists the versions the checks have actually run on, as version prefixes (exact evidence, LXM-REQ-000210); widening it is a gated registry change backed by a passing run on that version. probe says how the version is read: 'self' is the interpreter running the tool; a list is a command, and the first match of pattern in its output is the version. checked_at: 'gate' runtimes are checked before every gate run (the gate refuses to run outside them) and recorded in its ledger line; every runtime is checked in CI.",
+ "runtimes": {
+  "interpreter": {"probe": "self", "supported": ["3.15"], "checked_at": ["gate", "ci"]},
+  "version-control": {"probe": ["git", "--version"], "pattern": "(\\d+\\.\\d+(?:\\.\\d+)?)", "supported": ["2.54"], "checked_at": ["ci"]}
+ }
+}

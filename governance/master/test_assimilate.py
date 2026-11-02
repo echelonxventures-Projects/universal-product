@@ -18,12 +18,12 @@ NEXT = 'LXM-REQ-%06d' % (max(int(r[-6:]) for r in A.blocks(open(os.path.join(ROO
 
 def fixture():
     d = tempfile.mkdtemp(prefix='lxm-fixture-')
-    for f in A.CANON + A.TOOLS + A.DERIVED + ['assimilate.py']:
+    for f in dict.fromkeys(A.CANON + A.TOOLS + A.registries(ROOT) + A.DERIVED + ['assimilate.py']):
         os.makedirs(os.path.dirname(os.path.join(d, f)), exist_ok=True)
         shutil.copyfile(os.path.join(ROOT, f), os.path.join(d, f))
     shutil.copytree(os.path.join(ROOT, 'sources'), os.path.join(d, 'sources'))
     if os.path.exists(os.path.join(ROOT, 'intake', 'exceptions.txt')):  # open holds are part of what the validator sees
-        os.makedirs(os.path.join(d, 'intake')); shutil.copyfile(os.path.join(ROOT, 'intake', 'exceptions.txt'), os.path.join(d, 'intake', 'exceptions.txt'))
+        os.makedirs(os.path.join(d, 'intake'), exist_ok=True); shutil.copyfile(os.path.join(ROOT, 'intake', 'exceptions.txt'), os.path.join(d, 'intake', 'exceptions.txt'))
     with open(os.path.join(d, 'sources.txt'), 'a', encoding='utf-8') as fh:
         fh.write(SYN)
     A.json.dump(A.gate_config(ROOT), open(os.path.join(d, 'gate.json'), 'w'), indent=1)  # the external sources stay in the Master, not the fixture copy
@@ -68,6 +68,14 @@ def counted(*a, **k):
     CALLS.append(1)
     return _assimilate(*a, **k)
 A.assimilate = counted
+
+
+def setup_edit(d, why):
+    """A scenario's direct setup edit, recorded as a baseline line so the gate's single-entry check accepts the state that follows.
+    The Master's own baseline runs only after a full validation; a fixture skips it because some scenarios set up an invalid state."""
+    CALLS.append(1)
+    A.log_outcome(d, {'contribution': 'FIXTURE-SETUP', 'stages': {}, 'outcome': 'BASELINE', 'reason': 'fixture setup: ' + why},
+                  {'id': 'FIXTURE-SETUP', '_sha': A.state_digest(d)}, A.json.loads(open(os.path.join(d, A.LEDGER)).read().strip().split('\n')[-1])['digest_after'] if os.path.exists(os.path.join(d, A.LEDGER)) else None, {})
 
 
 def ledger_ok(d, calls):
@@ -352,7 +360,7 @@ def s_register_is_data(d, b):
     sid = 'LXM-DEC-%06d' % (len(A.load_build(d).parse_decisions(open(d + '/decisions.txt').read())[1]) + 1)  # the next free ID
     with open(d + '/decisions.txt', 'a', encoding='utf-8') as fh:  # synthetic, in this throwaway copy only
         fh.write('\n@' + sid + ' | adopted | C.3\no: Synthetic fixture decision\nw: fixture\np: fixture\nr: fixture\ne: %s\na: SRC-9001 §9\n' % NEXT)
-    rebuild(d, d + '/out')
+    rebuild(d, d + '/out'); setup_edit(d, 'a synthetic adopted decision')
     r2 = A.assimilate(d, ctb(d, 'reg-out', section='§8', text=t, scope='ARC', title='Fixture governance', applied_in='STG-12 #1', decision=sid))
     r3 = A.assimilate(d, ctb(d, 'reg-in', section='§9', text=t, scope='ARC', title='Fixture governance', applied_in='STG-12 #1', decision=sid))
     pos, det = accepted(d, r3, 'NEW')
@@ -491,11 +499,12 @@ def s_interrupted_commit(d, b):
     reqs = open(d + '/reqs.txt').read()
     new_reqs, new_stages, _ = A.apply([('lineage', 'LXM-REQ-000192', 'SRC-9001', '§9')], reqs, open(d + '/stages.txt').read())
     stg = tempfile.mkdtemp()
-    for f in A.CANON + A.TOOLS:
+    for f in dict.fromkeys(A.CANON + A.TOOLS + A.registries(d)):
+        os.makedirs(os.path.dirname(os.path.join(stg, f)), exist_ok=True)
         shutil.copyfile(os.path.join(d, f), os.path.join(stg, f))
     shutil.copytree(d + '/sources', stg + '/sources')
     if os.path.isdir(d + '/intake'):
-        shutil.copytree(d + '/intake', stg + '/intake')  # stage exactly as the gate does
+        shutil.copytree(d + '/intake', stg + '/intake', dirs_exist_ok=True)  # stage exactly as the gate does
     open(stg + '/reqs.txt', 'w').write(new_reqs); rebuild(stg, stg + '/out')
     for f in ['reqs.txt'] + A.DERIVED:
         shutil.copyfile(os.path.join(stg, f), os.path.join(d, f + '.staged'))
@@ -528,7 +537,7 @@ def s_replay_after_owner_decision(d, b):
     o = [A.assimilate(d, sup)['outcome']]
     with open(os.path.join(d, 'sources.txt'), 'a', encoding='utf-8') as fh:
         fh.write('SRC-9003 | Synthetic owner-decision fixture source | test only | — | Fixture | owner-decision | conversation-only\n')
-    rebuild(d, d + '/out')
+    rebuild(d, d + '/out'); setup_edit(d, 'a synthetic owner-decision source')
     o.append(A.assimilate(d, ctb(d, 'od-ext', source='SRC-9003', text='Never invent supplier certifications.', extends='LXM-REQ-000192'))['outcome'])
     decided = A.owner_decided(rec(d, 'LXM-REQ-000192'), A.sources(d))
     o.append(A.assimilate(d, sup)['outcome'])
@@ -555,7 +564,7 @@ def s_chain_and_projection(d, b):
     import project as PJ
     cp = tempfile.mkdtemp(prefix='lxm-cp-'); shutil.copytree(d, cp, dirs_exist_ok=True)
     r1 = A.assimilate(d, ctb(d, 'pj-new', section='§6.1', text='Synthetic fixture operators rotate their signing keys quarterly.', scope='ARC', title='Fixture keys', applied_in='STG-12 #1'))
-    r2 = A.assimilate(d, ctb(d, 'pj-ext', section='§6.2', text='Synthetic fixture runs log their finishing time.', extends='LXM-REQ-000192'))
+    r2 = A.assimilate(d, ctb(d, 'pj-ext', section='§6.2', text='Synthetic fixture operators label their badge colours.', extends='LXM-REQ-000192'))
     nxt = 'LXM-EVD-%06d' % (len(A.load_build(d).parse_evidence(open(d + '/evidence.txt').read())[1]) + 1)
     r3 = A.assimilate(d, ctb(d, 'pj-evd', kind='evidence', section=None, evidence=nxt, action='add', fact='Synthetic fixture observation', source='fixture API',
                              method='fixture', observed='2026-10-31T00:00Z', observer='fixture', verifies='LXM-REQ-000192'))
@@ -580,7 +589,7 @@ def s_open_scopes(d, b):
     kv = dict(section='§7.1', text='Synthetic tenant operators archive their fixture dashboards every month.', scope='OPS', title='Fixture archive', applied_in='STG-12 #1')
     r1 = A.assimilate(d, ctb(d, 'scope-unknown', **kv))
     sc = open(d + '/scopes.txt').read().replace('RPT | Final report', 'OPS | Operations knowledge\nRPT | Final report')
-    open(d + '/scopes.txt', 'w').write(sc)
+    open(d + '/scopes.txt', 'w').write(sc); setup_edit(d, 'a scope registered')
     kv['section'] = '§7.2'
     r2 = A.assimilate(d, ctb(d, 'scope-known', **kv))
     ok2, det = accepted(d, r2, 'NEW')
@@ -654,7 +663,7 @@ def s_ledger_in_progress(d, b):
     led('in-progress')
     r = A.assimilate(d, ctb(d, 'led', text=R192))
     ok1, det = accepted(d, r, 'RECOGNIZE-EXACT')
-    led('complete'); rebuild(d, d + '/out'); v_bad, l_bad = validate(d)
+    led('complete'); rebuild(d, d + '/out'); v_bad, l_bad = validate(d); setup_edit(d, 'the clause ledger declared complete')
     r2 = A.assimilate(d, ctb(d, 'led2', section='§2', text='Never invent owner approvals, financial policies or production readiness.'))
     v_ok, l_ok = validate(d)
     return ok1 and not v_bad and r2['outcome'] in ('RECOGNIZE-SEMANTIC', 'RECOGNIZE-EXACT') and v_ok, \
@@ -707,7 +716,7 @@ def s_add_clause(d, b):
         return A.assimilate(d, p)['outcome']
     r1 = add('ac1', A.X('{cl-}2'), '2-2'); r2 = add('ac1', A.X('{cl-}2'), '2-2'); r3 = add('ac2', A.X('{cl-}3'), '1-2')
     led = open(d + '/sources/SRC-9001.clauses').read()
-    open(d + '/sources/SRC-9001.clauses', 'w').write(led.replace('status: in-progress', 'status: complete'))
+    open(d + '/sources/SRC-9001.clauses', 'w').write(led.replace('status: in-progress', 'status: complete')); setup_edit(d, 'the clause ledger closed')
     r4 = add('ac3', A.X('{cl-}4'), '2-2')
     r5 = add('ac1', A.X('{cl-}2'), '2-2')  # replaying the earlier addition after the ledger closed
     open(d + '/sources/SRC-9001.clauses', 'w').write(led)
@@ -733,6 +742,78 @@ def s_retract_relation(d, b):
     v, line = validate(d)
     ok = r1['outcome'] in ('RECOGNIZE-EXACT', 'RECOGNIZE-SEMANTIC') and (r2, r3, r4) == ('RETRACT', 'NOOP', 'REJECTED') and gone and A.field(after, 'x') == before and v
     return ok, 'recognized %s; retract %s; replay %s; malformed %s; relation and lineage gone %s; text unchanged %s; validator %s' % (r1['outcome'], r2, r3, r4, gone, A.field(after, 'x') == before, line)
+
+
+def s_registry_through_gate(d, b):
+    # a registry is knowledge: it changes only through the gate, one whole version at a time, against the version it replaces
+    setup_edit(d, 'the starting state; every item at version 1')
+    f = A.X('{@reporting_json}'); orig = open(os.path.join(d, f), 'rb').read()
+    def reg(name, content, base, key='reporting_json', digest=None):
+        open(os.path.join(d, name + '.json'), 'wb').write(content)
+        p = os.path.join(d, name + '.ctb')
+        open(p, 'w').write('id: CTB-%s\nkind: registry\nregistry: %s\ncontent: %s.json\ncontent-sha256: %s\nbase-version: %s\nbasis: fixture\n' % (
+            name, key, name, digest or A.sha(content), base))
+        return A.assimilate(d, p)['outcome']
+    v2 = orig.replace(b'"excerpt": {', b'"excerpt": {\n  "fixture": 1,', 1)
+    r1 = reg('rg1', v2, 1); after = open(os.path.join(d, f), 'rb').read()
+    r2 = reg('rg1', v2, 1)                                   # the same contribution again
+    r3 = reg('rg2', v2.replace(b'"fixture": 1', b'"fixture": 2'), 1)  # based on a version no longer current
+    r4 = reg('rg3', v2, 2, digest='0' * 64)                  # content and digest disagree
+    r5 = reg('rg4', v2, 2, key='no_such_registry')
+    r6 = reg('rg5', b'{ not json', 2)
+    vm = A.version_map(d); last = next(e for e in map(A.json.loads, open(os.path.join(d, A.LEDGER)).read().strip().split('\n')) if e['contribution'] == 'CTB-rg1' and e['outcome'] == 'SUPERSEDE')
+    recorded = (last.get('mutation') or {}).get('contents', {}).get(f) == v2.decode()
+    open(os.path.join(d, f), 'wb').write(orig)              # a direct edit of a registry
+    r7 = A.assimilate(d, ctb(d, 'rg-after', text=R192))['outcome']
+    reason = A.json.loads(open(os.path.join(d, A.LEDGER)).read().strip().split('\n')[-1])['reason']
+    unchanged = open(os.path.join(d, f), 'rb').read() == orig
+    open(os.path.join(d, f), 'wb').write(after)             # restored: the harness checks the ledger afterwards
+    ok = (r1, r2, r3, r4, r5, r6, r7) == ('SUPERSEDE', 'NOOP', 'REJECTED', 'REJECTED', 'REJECTED', 'REJECTED', 'ERROR') and after == v2 and vm[f][0] == 2 \
+        and recorded and 'outside the gate' in reason and f in reason and unchanged
+    return ok, 'change %s (now v%d, content in the log: %s); replay %s; stale base %s; wrong digest %s; unknown registry %s; unparsable %s; after a direct edit %s (%s)' % (
+        r1, vm[f][0], recorded, r2, r3, r4, r5, r6, r7, reason[:80])
+
+
+def s_contribution_formats(d, b):
+    # the entry contract is format-agnostic: the same contribution as a JSON object is judged exactly as the line format; an
+    # unregistered format is refused
+    p = os.path.join(d, 'fmt.json')
+    open(p, 'w').write(A.json.dumps({'id': 'CTB-fmt-json', 'kind': 'requirement', 'source': 'SRC-9001', 'section': '§1', 'text': R192}))
+    r1 = A.assimilate(d, p)
+    r2 = A.assimilate(d, ctb(d, 'fmt-lines', section='§2', text=R192))
+    q = os.path.join(d, 'fmt.xml'); open(q, 'w').write('<contribution id="x"/>\n')
+    r3 = A.assimilate(d, q)
+    ok = r1['outcome'] == r2['outcome'] == 'RECOGNIZE-EXACT' and r3['outcome'] == 'REJECTED' and 'format' in r3['reason']
+    return ok, 'JSON object %s; key-value lines %s; unregistered format %s (%s)' % (r1['outcome'], r2['outcome'], r3['outcome'], r3.get('reason'))
+
+
+def s_versions(d, b):
+    # every item is versioned from the log: version 1 for each at the start, a new version for exactly the items a change touched
+    setup_edit(d, 'the starting state; every item at version 1')
+    v0 = A.version_map(d)
+    r = A.assimilate(d, ctb(d, 'ver-ext', section='§3', text='Synthetic fixture operators label their badge colours.', extends='LXM-REQ-000192'))
+    v1 = A.version_map(d)
+    moved = sorted(k for k in v1 if v1[k] != v0.get(k))
+    import versions as VS
+    hist = VS.history(d, 'LXM-REQ-000192')
+    ok = r['outcome'] == 'EXTEND' and all(n == 1 for n, s in v0.values()) and v1['LXM-REQ-000192'][0] == 2 and [h[0] for h in hist] == [1, 2] \
+        and 'LXM-REQ-000191' not in moved and not A.outside_gate(d)
+    return ok, '%d items at v1; %s changed: %s; history of 192: %s' % (len(v0), r['outcome'], ', '.join(moved), ', '.join('v%d@%s' % (h[0], h[1]) for h in hist))
+
+
+def s_runtime_versions(d, b):
+    # the gate runs only on the technology versions runtimes.json registers, and logs the versions it ran on
+    r1 = A.assimilate(d, ctb(d, 'rt-ok', text=R192))
+    logged = A.json.loads(open(os.path.join(d, A.LEDGER)).read().strip().split('\n')[-1]).get('runtime')
+    f = os.path.join(d, A.X('{@runtimes_json}')); orig = open(f).read()
+    reg = A.json.loads(orig)
+    for spec in reg['runtimes'].values():
+        spec['supported'] = ['0.0']
+    open(f, 'w').write(A.json.dumps(reg)); setup_edit(d, 'a runtime registry that supports no version in use')
+    k = A.knowledge_digest(d)
+    r2 = A.assimilate(d, ctb(d, 'rt-bad', section='§2', text=R192))
+    ok = r1['outcome'] == 'RECOGNIZE-EXACT' and logged and all(logged.values()) and r2['outcome'] == 'ERROR' and 'runtime' in r2['reason'] and A.knowledge_digest(d) == k
+    return ok, 'supported: %s, logged %s; unsupported: %s (%s), knowledge unchanged %s' % (r1['outcome'], logged, r2['outcome'], r2.get('reason'), A.knowledge_digest(d) == k)
 
 
 for args in [
@@ -778,6 +859,10 @@ for args in [
     ('NOOP resubmission closes a hold', 'a generated Master showing a closed item as held', s_noop_closes_hold),
     ('A missed clause joins an in-progress ledger', 'a source sentence silently left out of its ledger', s_add_clause),
     ('A relation recorded by a false match is retracted', 'a wrong coverage link that can never be corrected', s_retract_relation),
+    ('A registry changes only through the gate', 'facts edited directly, or a lost update', s_registry_through_gate),
+    ('Contribution formats are registered data', 'an entry point tied to one format or tool', s_contribution_formats),
+    ('Every knowledge item is versioned', 'changes with no version history', s_versions),
+    ('The gate runs on registered runtime versions', 'unrecorded or unsupported technology versions', s_runtime_versions),
     ('Interrupted commit', 'a half-applied mutation', s_interrupted_commit)]:
     scenario(*args)
 

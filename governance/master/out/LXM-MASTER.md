@@ -81,11 +81,12 @@
 | SRC-0031 | Owner: no coding agent or tool is hard-coded; everything agnostic (2026-10-31; session 47abdf14 transcript line 5789) | session transcript 47abdf14-1288-4d9e-b7b7-eec6f8d3053e.jsonl line 5789; provisional working extract `sources/SRC-0031.extract.md` | `c7f7f13f0da6f84786e20c62ce33fae59b3c3724db18c03908c260c074e963d5` (extract, not owner-confirmed) | Owner directive |
 | SRC-0032 | Owner: everything agnostic, zero hard-coding (2026-10-31; session 47abdf14 transcript line 6047) | session transcript 47abdf14-1288-4d9e-b7b7-eec6f8d3053e.jsonl line 6047; provisional working extract `sources/SRC-0032.extract.md` | `59fe79bd3d505dcef6e334dd517a5b3f2f89b9cba80aaa1e7df6427ad8ac2934` (extract, not owner-confirmed) | Owner directive |
 | SRC-0033 | Owner (adopted): the architecture constitution, final text, sections 1 to 6, as adopted by LXM-DEC-000015 (intake/decisions/ARCHITECTURE-PROPOSAL-2026-10-31.md, SHA-256 22fbf8937ef0cf1765234b30a4044eea5227b7f3b7b07470f575475aeacd3973, lines 12 to 77) | file /private/tmp/claude-502/-Users-bipin-Desktop-Folders-Container-Desktop-10-Sept-26-Amazon/47abdf14-1288-4d9e-b7b7-eec6f8d3053e/scratchpad/cmp6/architecture-final-sections-1-6.md; provisional working extract `sources/SRC-0033.extract.md` | `e8c173d842538fa7c6dc291ae1bfed5731b071f0da68f1e9acc91347b3e90741` (extract, not owner-confirmed) | Owner decision (adopted text) |
+| SRC-0034 | Owner: knowledge enters through a single point, technology-agnostic, versions taken care of (2026-11-02; session 47abdf14 transcript line 7067) | session transcript 47abdf14-1288-4d9e-b7b7-eec6f8d3053e.jsonl line 7067; provisional working extract `sources/SRC-0034.extract.md` | `f6e0959ba45ebf03174a37c0033d2e63610cb2062241129e4d5b7d8dcd08c691` (extract, not owner-confirmed) | Owner directive |
 
 **Source text status** (separate from authority; generated from the register):
 
 - *owner-file* — owner-supplied files pinned by SHA-256: SRC-0001, SRC-0002, SRC-0003. Cited by 194 records.
-- *provisional-extract* — agent-captured and hashed, **not owner-confirmed**: SRC-0008, SRC-0009, SRC-0010, SRC-0011, SRC-0012, SRC-0013, SRC-0014, SRC-0015, SRC-0016, SRC-0017, SRC-0018, SRC-0019, SRC-0020, SRC-0021, SRC-0022, SRC-0023, SRC-0024, SRC-0025, SRC-0026, SRC-0027, SRC-0028, SRC-0029, SRC-0030, SRC-0031, SRC-0032, SRC-0033. Cited by 115 records.
+- *provisional-extract* — agent-captured and hashed, **not owner-confirmed**: SRC-0008, SRC-0009, SRC-0010, SRC-0011, SRC-0012, SRC-0013, SRC-0014, SRC-0015, SRC-0016, SRC-0017, SRC-0018, SRC-0019, SRC-0020, SRC-0021, SRC-0022, SRC-0023, SRC-0024, SRC-0025, SRC-0026, SRC-0027, SRC-0028, SRC-0029, SRC-0030, SRC-0031, SRC-0032, SRC-0033, SRC-0034. Cited by 116 records.
 - *conversation-only* — no captured text: SRC-0004, SRC-0005, SRC-0006, SRC-0007. Cited by 39 records.
 
 Records resting on provisional-extract or conversation-only sources stay candidate content until the owner confirms or supplies the source text (Part G.4, item 10). Only the owner can mark a source owner-confirmed.
@@ -791,6 +792,14 @@ Lineage: SRC-0033 §5.1,§5.2,§5.3,§5.4,§5.5,§5.6; SRC-0010 §3,§4,§5,§6,
 Coverage: SRC-0033 §5.1 covers; SRC-0033 §5.2 covers; SRC-0033 §5.3 covers; SRC-0033 §5.4 covers; SRC-0033 §5.5 covers; SRC-0033 §5.6 covers; SRC-0010 §3 covers; SRC-0010 §4 covers; SRC-0010 §5 covers; SRC-0010 §6 covers; SRC-0010 §7 covers; SRC-0010 §8 covers; SRC-0010 §9 covers; SRC-0010 §10 covers; SRC-0010 §11 covers; SRC-0010 §12 covers; SRC-0010 §13 covers
 
 The architecture has six layers. The foundation, the kernel, holds identity, registry, configuration, rules, events, workflow, data, integration adapters and security, and names no business. The domains (commerce, finance, operations and experience) each own their data and contracts, and invariants I1 to I3 apply inside every one. Composition assembles capabilities into business profiles through configuration, and a profile or template is never proof of a working solution. Intelligence is bounded: decision support and automation on governed data propose and never act past an invariant or an owner decision, and a change to production comes only through the gate. Execution and lifecycle covers deployment, observability, resilience, recovery and automatic conformance. Knowledge and assimilation, the Master and its gate, governs every layer above.
+
+#### LXM-REQ-000253 — One entry point for all knowledge, a technology-agnostic contract, every version kept
+
+`ARC` · class NEW · disposition **New-owner-addition**  
+Lineage: SRC-0034 §0.1  
+Coverage: SRC-0034 §0.1 covers
+
+All knowledge enters the Master through one entry point, the assimilation gate: canonical records, source texts, clause ledgers and every registry that holds a fact, such as identifier formats, actors, hosts, formats, vocabulary or thresholds. Nothing else writes knowledge, and a check fails on any knowledge that differs from what the gate last accepted. The entry contract is technology-agnostic: the kinds of contribution, their fields and the formats a contribution may be written in are registered data, so any tool or agent can submit in any registered format and any conforming implementation can judge. Every knowledge item is versioned: each accepted change gives it a new version, logged with its contribution, its time and the versions of the technologies that ran the gate; a change to a registry names the version it replaces and is refused if that version is no longer current; every earlier version stays reconstructable from the log. Every technology the tooling depends on is registered with the versions it supports, and the gate refuses to run on a version outside them.
 
 ### CAT-STG-00 — Repository truth and exclusive ownership
 
@@ -2117,7 +2126,7 @@ The objective is complete, evidence-backed conformance to the entire mandate, no
 **Objective:** Know exactly what exists before changing anything, and confirm this session is the sole writer.  
 **Entry:** Session is `amazon-62` in the canonical integration workspace outside iCloud. [LXM-REQ-000002, LXM-REQ-000216]
 
-- `STG-00.A-1` Apply the execution directive, rules and escalation conditions to this and every later stage; follow the final execution rule. — LXM-REQ-000001, LXM-REQ-000003, LXM-REQ-000004, LXM-REQ-000005, LXM-REQ-000006, LXM-REQ-000007, LXM-REQ-000008, LXM-REQ-000009, LXM-REQ-000010, LXM-REQ-000011, LXM-REQ-000013, LXM-REQ-000015, LXM-REQ-000016, LXM-REQ-000017, LXM-REQ-000185, LXM-REQ-000186, LXM-REQ-000187, LXM-REQ-000188, LXM-REQ-000189, LXM-REQ-000195, LXM-REQ-000227, LXM-REQ-000228, LXM-REQ-000229, LXM-REQ-000230, LXM-REQ-000231, LXM-REQ-000232, LXM-REQ-000233, LXM-REQ-000234, LXM-REQ-000235, LXM-REQ-000237, LXM-REQ-000238, LXM-REQ-000239, LXM-REQ-000240, LXM-REQ-000241, LXM-REQ-000242, LXM-REQ-000243, LXM-REQ-000244, LXM-REQ-000245, LXM-REQ-000246, LXM-REQ-000247, LXM-REQ-000248, LXM-REQ-000249, LXM-REQ-000250, LXM-REQ-000251, LXM-REQ-000252
+- `STG-00.A-1` Apply the execution directive, rules and escalation conditions to this and every later stage; follow the final execution rule. — LXM-REQ-000001, LXM-REQ-000003, LXM-REQ-000004, LXM-REQ-000005, LXM-REQ-000006, LXM-REQ-000007, LXM-REQ-000008, LXM-REQ-000009, LXM-REQ-000010, LXM-REQ-000011, LXM-REQ-000013, LXM-REQ-000015, LXM-REQ-000016, LXM-REQ-000017, LXM-REQ-000185, LXM-REQ-000186, LXM-REQ-000187, LXM-REQ-000188, LXM-REQ-000189, LXM-REQ-000195, LXM-REQ-000227, LXM-REQ-000228, LXM-REQ-000229, LXM-REQ-000230, LXM-REQ-000231, LXM-REQ-000232, LXM-REQ-000233, LXM-REQ-000234, LXM-REQ-000235, LXM-REQ-000237, LXM-REQ-000238, LXM-REQ-000239, LXM-REQ-000240, LXM-REQ-000241, LXM-REQ-000242, LXM-REQ-000243, LXM-REQ-000244, LXM-REQ-000245, LXM-REQ-000246, LXM-REQ-000247, LXM-REQ-000248, LXM-REQ-000249, LXM-REQ-000250, LXM-REQ-000251, LXM-REQ-000252, LXM-REQ-000253
 - `STG-00.A-2` Confirm the session identity and that no other writable session or checkout is active on this work. — LXM-REQ-000014, LXM-REQ-000028, LXM-REQ-000216
 - `STG-00.A-3` Run `pwd -P`; record branch, `git rev-parse HEAD`, `git remote -v` and `git ls-remote` for the branch. — LXM-REQ-000019, LXM-REQ-000020
 - `STG-00.A-4` Record `git status --porcelain=v2`, `git diff --cached --stat`, `git diff --stat`, `git diff --check` and the untracked list, each separately. — LXM-REQ-000021
@@ -2431,7 +2440,7 @@ The final report has sections A–K, defined by LXM-REQ-000174 to LXM-REQ-000184
 
 | Stage | Title | Actions | Requirements cited |
 |---|---|---|---|
-| STG-00 | Repository truth and exclusive ownership | 11 | 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, 011, 012, 013, 014, 015, 016, 017, 018, 019, 020, 021, 022, 023, 024, 025, 026, 027, 028, 029, 030, 031, 032, 033, 034, 035, 036, 037, 038, 039, 040, 185, 186, 187, 188, 189, 193, 194, 195, 216, 217, 219, 227, 228, 229, 230, 231, 232, 233, 234, 235, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252 |
+| STG-00 | Repository truth and exclusive ownership | 11 | 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, 011, 012, 013, 014, 015, 016, 017, 018, 019, 020, 021, 022, 023, 024, 025, 026, 027, 028, 029, 030, 031, 032, 033, 034, 035, 036, 037, 038, 039, 040, 185, 186, 187, 188, 189, 193, 194, 195, 216, 217, 219, 227, 228, 229, 230, 231, 232, 233, 234, 235, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253 |
 | STG-01 | Universal technology governance (PR-053) | 8 | 016, 041, 042, 043, 044, 045, 046, 047, 048, 049, 050, 051, 052, 053, 054, 055, 153, 196, 197, 213, 218, 219 |
 | STG-02 | Mandate assimilation and traceability | 6 | 056, 057, 058, 059, 060, 061, 062, 063, 064, 191, 192, 204, 214, 220, 221, 226 |
 | STG-03 | Source-grounded gap inventory | 3 | 009, 065, 066, 067, 068, 069, 070, 071, 072 |
@@ -2707,6 +2716,7 @@ Requirement IDs are abbreviated to their last three digits (LXM-REQ-000xxx).
 | LXM-REQ-000250 | — | — | — | SRC-0033 §2.6; SRC-0010 §2 | STG-00 | New-owner-addition |
 | LXM-REQ-000251 | — | — | — | SRC-0033 §3.4; SRC-0010 §20 | STG-00 | New-owner-addition |
 | LXM-REQ-000252 | — | — | — | SRC-0033 §5.1,§5.2,§5.3,§5.4,§5.5,§5.6; SRC-0010 §3,§4,§5,§6,§7,§8,§9,§10,§11,§12,§13 | STG-00 | New-owner-addition |
+| LXM-REQ-000253 | — | — | — | SRC-0034 §0.1 | STG-00 | New-owner-addition |
 
 ### H.4 Requirement → implementation traceability
 
@@ -3216,6 +3226,12 @@ Generated from each source's clause ledger (`sources/<SRC>.clauses`), the record
 | §6.2 | 59-59 | LXM-REQ-000248 | — | — |
 | §6.3 | 60-60 | LXM-REQ-000248 | — | — |
 | §6.4 | 62-66 | LXM-REQ-000230 (extends) | — | — |
+
+**SRC-0034** — ledger status *complete*, 1 clauses.
+
+| Clause | Source lines | Covered by | Supported by | Open hold |
+|---|---|---|---|---|
+| §0.1 | 1-1 | LXM-REQ-000253 | — | — |
 
 ---
 

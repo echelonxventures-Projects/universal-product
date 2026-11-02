@@ -6,23 +6,31 @@
   "assimilate_py": "assimilate.py",
   "build_py": "build.py",
   "capture_json": "capture.json",
+  "ci_step_commit_json": "intake/ci-package/step-commit.json",
   "code_adapter_json": "code_adapter.json",
+  "code_baseline_json": "code_baseline.json",
   "config_adapter_json": "config_adapter.json",
+  "config_baseline_json": "config_baseline.json",
+  "contract_md": "CONTRACT.md",
+  "contribution_formats_json": "contribution-formats.json",
   "coverage_txt": "coverage.txt",
   "decisions_txt": "decisions.txt",
   "derived_master": "out/LXM-MASTER.md",
   "derived_reconciliation": "out/LXM-RECONCILIATION.md",
   "evidence_txt": "evidence.txt",
   "exceptions_txt": "exceptions.txt",
+  "external_dir": "external",
   "extract_md": "extract.md",
   "frame_md": "frame.md",
   "gate_json": "gate.json",
+  "gate_md": "GATE.md",
   "gate_reference_txt": "gate_reference.txt",
   "hosts_json": "hosts.json",
   "ids_json": "ids.json",
   "ids_py": "ids.py",
   "intake_dir": "intake",
   "intake_exceptions_txt": "intake/exceptions.txt",
+  "kinds_json": "kinds.json",
   "knowledge_json": "knowledge.json",
   "layout_json": "layout.json",
   "ledger_jsonl": "ledger.jsonl",
@@ -37,6 +45,8 @@
   "reporting_json": "reporting.json",
   "reqs_txt": "reqs.txt",
   "revalidate_py": "revalidate.py",
+  "runtimes_json": "runtimes.json",
+  "runtimes_py": "runtimes.py",
   "scopes_txt": "scopes.txt",
   "secret_formats_json": "secret-formats.json",
   "shard_index_json": "INDEX.json",
@@ -48,11 +58,13 @@
   "step_commit_json": "step-commit.json",
   "suffix_extract_md": ".extract.md",
   "suffix_provenance_md": ".provenance.md",
+  "tooling_baseline_json": "tooling_baseline.json",
   "tooling_literals_json": "tooling-literals.json",
   "trace_txt": "trace.txt",
   "transcript_formats_json": "transcript-formats.json",
   "validate_json": "validate.json",
-  "validate_py": "validate.py"
+  "validate_py": "validate.py",
+  "versions_py": "versions.py"
  },
  "canon": [
   "reqs_txt",
@@ -103,5 +115,76 @@
   "location",
   "sha",
   "role"
- ]
+ ],
+ "_comment_registries": "LXM-REQ-000253: registries hold facts (formats, actors, hosts, vocabulary, thresholds, ratchet baselines) and are knowledge: they change only through the gate (kind: registry) and are part of the knowledge and state digests. items: how a canonical file splits into separately versioned items (an item starts at a line matching its pattern; the text before the first item, and every other file, is one item named by its path). classify: every file in the Master is canonical, derived, a registry, code, a document or inside an area; anything else fails the single-entry check.",
+ "registries": [
+  "actors_json",
+  "agnostic_json",
+  "capture_json",
+  "code_adapter_json",
+  "code_baseline_json",
+  "config_adapter_json",
+  "config_baseline_json",
+  "contribution_formats_json",
+  "gate_json",
+  "gate_reference_txt",
+  "hosts_json",
+  "ids_json",
+  "kinds_json",
+  "knowledge_json",
+  "layout_json",
+  "lexicon_txt",
+  "readiness_json",
+  "reporting_json",
+  "runtimes_json",
+  "secret_formats_json",
+  "tooling_baseline_json",
+  "tooling_literals_json",
+  "transcript_formats_json",
+  "validate_json",
+  "ci_step_commit_json"
+ ],
+ "items": {
+  "reqs_txt": {
+   "start": "^@({req}) \\|"
+  },
+  "decisions_txt": {
+   "start": "^@({dec}) \\|"
+  },
+  "evidence_txt": {
+   "start": "^@({evd}) \\|"
+  },
+  "sources_txt": {
+   "start": "^({src}) \\|"
+  },
+  "stages_txt": {
+   "start": "^#({stg}) \\|"
+  },
+  "trace_txt": {
+   "start": "^@({req})$",
+   "qualify": true
+  }
+ },
+ "classify": {
+  "code_suffixes": [
+   ".py",
+   ".sh"
+  ],
+  "documents": [
+   "contract_md",
+   "gate_md"
+  ],
+  "areas": [
+   "intake_dir",
+   "sources_dir",
+   "out_dir",
+   "external_dir"
+  ],
+  "ignored": [
+   ".gitignore",
+   "IMPORT.md",
+   ".DS_Store",
+   "OMITTED.sha256"
+  ]
+ }
 }
