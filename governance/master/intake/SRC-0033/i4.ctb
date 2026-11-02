@@ -6,4 +6,5 @@ scope: ARC
 title: Constitutional invariant I4: Knowledge Once
 applied-in: STG-00.A-1
 distinct-from: LXM-REQ-000203
+decision: LXM-DEC-000018
 text: Knowledge Once (LXM-REQ-000203) is constitutional invariant I4 and is never traded off: regenerate-and-diff and duplicate detection check it, and the gate and CI enforce it.

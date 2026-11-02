@@ -86,7 +86,7 @@
 **Source text status** (separate from authority; generated from the register):
 
 - *owner-file* — owner-supplied files pinned by SHA-256: SRC-0001, SRC-0002, SRC-0003. Cited by 194 records.
-- *provisional-extract* — agent-captured and hashed, **not owner-confirmed**: SRC-0008, SRC-0009, SRC-0010, SRC-0011, SRC-0012, SRC-0013, SRC-0014, SRC-0015, SRC-0016, SRC-0017, SRC-0018, SRC-0019, SRC-0020, SRC-0021, SRC-0022, SRC-0023, SRC-0024, SRC-0025, SRC-0026, SRC-0027, SRC-0028, SRC-0029, SRC-0030, SRC-0031, SRC-0032, SRC-0033, SRC-0034. Cited by 116 records.
+- *provisional-extract* — agent-captured and hashed, **not owner-confirmed**: SRC-0008, SRC-0009, SRC-0010, SRC-0011, SRC-0012, SRC-0013, SRC-0014, SRC-0015, SRC-0016, SRC-0017, SRC-0018, SRC-0019, SRC-0020, SRC-0021, SRC-0022, SRC-0023, SRC-0024, SRC-0025, SRC-0026, SRC-0027, SRC-0028, SRC-0029, SRC-0030, SRC-0031, SRC-0032, SRC-0033, SRC-0034. Cited by 117 records.
 - *conversation-only* — no captured text: SRC-0004, SRC-0005, SRC-0006, SRC-0007. Cited by 39 records.
 
 Records resting on provisional-extract or conversation-only sources stay candidate content until the owner confirms or supplies the source text (Part G.4, item 10). Only the owner can mark a source owner-confirmed.
@@ -163,13 +163,13 @@ Each row records what the decision authorizes. The gate accepts a change citing 
 | LXM-DEC-000015 | Adopt the architecture constitution final text as written (intake/decisions/ARCHITECTURE-PROPOSAL-2026-10-31.md, SHA-256 22fbf8937ef0cf1765234b30a4044eea5227b7f3b7b07470f575475aeacd3973): invariants I1 to I6, rules R1 to R7, the lifecycle states, the layers and the order of work | 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate) | Owner approval in session 47abdf14, transcript lines 4257 (message) and 4268 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31.txt (SHA-256 95549f76cc1670f66106a21415e7e73bede1fa3e713aafd2444e5489a8c92575); the question as asked in OWNER-APPROVAL-2026-10-31.context.txt; source SRC-0025 | The owner's choices A to F of 2026-10-31 applied to the owner's architecture text; each rule made checkable | The final text becomes binding; its clauses enter the Master through the gate from SRC-0010 and the final text | SRC-0025 §0.2, SRC-0010 §1, §2, §3, §4, §5, §6, §7, §8, §9, §10, §11, §12, §13, §14, §15, §16, §17, §18, §19, §20, §21, §22, §23 |
 | LXM-DEC-000016 | Option (a): correct the agent error; supersede LXM-REQ-000002 back to its earlier text (history kept) and add the owner-identity sentence of SRC-0025 §0.1 to LXM-REQ-000001 | 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate) | Owner approval in session 47abdf14, transcript lines 4394 (message) and 4464 (selected options); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31b.txt (SHA-256 4fd6b1e0bdd3c21510beb711d18a1954d7dbf99ed517061c25d7dc1751029447); the questions as asked in OWNER-APPROVAL-2026-10-31b.context.txt; source SRC-0026 | The sentence is true but belongs to the record of the accountable owner | LXM-REQ-000002 regains its earlier text; LXM-REQ-000001 carries the sentence | SRC-0026 §0.2, SRC-0025 §0.1, LXM-REQ-000001, LXM-REQ-000002 |
 | LXM-DEC-000017 | Option (a), this push only: the Master session writes to the repository once, as new branches pushed from a fresh clone outside iCloud, never the integration branch, never a force-push; amazon-62 stays the sole writer for everything else | 2026-10-31, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate) | Owner approval in session 47abdf14, transcript lines 5002 (message) and 5017 (answers); owner's words in intake/decisions/OWNER-APPROVAL-2026-10-31c.txt (SHA-256 76141dee7ce3bfe0bdabd4e88f225dd31f5d4e5a3a7dc1fed5d5af27e4da97a3); the questions as asked in OWNER-APPROVAL-2026-10-31c.context.txt; source SRC-0028 | amazon-62 was not running; a single bounded write keeps the candidate, PR #6 and the protected checkouts untouched | LXM-REQ-000216 records the one-time exception | SRC-0028 §0.3, LXM-REQ-000216 |
+| LXM-DEC-000018 | Option (a), both corrections: record I4 Knowledge Once as its own record referring to LXM-REQ-000203; add the check sentence of SRC-0033 §2.6 to LXM-REQ-000250; retract the SRC-0033 §2.6 relations the gate recorded by a false composition from LXM-REQ-000212 and LXM-REQ-000249 | 2026-11-02, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate) | Owner approval in session 47abdf14, transcript line 7606 (message), answering the request at line 7576; owner's words in intake/decisions/OWNER-APPROVAL-2026-11-02.txt (SHA-256 322cf09e59aa9cd08b8b4f343802442bd634ecbfe6b7cf72f3b30e6988bab01a); the request as written in OWNER-APPROVAL-2026-11-02.context.txt; source SRC-0033 | Both are gate errors against owner-decided content: one held clause and one false composition; the corrections keep LXM-REQ-000203 as decided and make each record cite only what it expresses | SRC-0033 §2.4 is expressed by a new record and LXM-REQ-000203 is unchanged; LXM-REQ-000250 carries the I6 check; LXM-REQ-000212 and LXM-REQ-000249 no longer cite SRC-0033 §2.6 | SRC-0033 §2.4, SRC-0033 §2.6, LXM-REQ-000212, LXM-REQ-000249, LXM-REQ-000250 |
 
 ### C.2 Open owner-reserved decisions
 
 | ID | Decision | Facts | Options and consequences | Recommendation (not approval) |
 |---|---|---|---|---|
 | LXM-DEC-000013 | Production release authorization | Gate 20 BLOCKED; approver named | GO only after gates 1–19 | None: owner only |
-| LXM-DEC-000018 | Authorize two corrections in the adopted architecture constitution (SRC-0033, adopted by LXM-DEC-000015), both owner-reserved because the records carry owner-decided content | (1) I4 Knowledge Once is held (LXM-EXC-000019): its first submission extended LXM-REQ-000203, which is owner-decided, so the clause is held; it is ready as its own record that refers to 203. (2) I6 technology agnosticism: the gate matched its check sentence ("The technology governance gate and a scan of the core check it in CI.") to LXM-REQ-000212 and LXM-REQ-000249 by a false composition, so LXM-REQ-000250 lacks that sentence and 212 and 249 carry false relations to SRC-0033 §2.6 | (a) authorize both: record I4 as a new record referring to LXM-REQ-000203; add the check sentence to LXM-REQ-000250; retract the SRC-0033 §2.6 relations from LXM-REQ-000212 and LXM-REQ-000249; scope SRC-0033 §2.4, §2.6, LXM-REQ-000212, LXM-REQ-000249, LXM-REQ-000250; (b) leave both as they are | (a) |
 
 ## Part D — Requirement catalogue
 
@@ -520,8 +520,8 @@ The conformance mechanism accommodates previously unknown technologies without r
 #### LXM-REQ-000212 — No combinatorial or manual version matrix
 
 `ARC` · class NEW · disposition **New-owner-addition**  
-Lineage: SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3; SRC-0033 §2.6  
-Coverage: SRC-0015 §2.2 covers; SRC-0015 §3.1 covers; SRC-0015 §5.2 extends; SRC-0016 §2.4 covers; SRC-0016 §7.3 covers; SRC-0033 §2.6 covers
+Lineage: SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3  
+Coverage: SRC-0015 §2.2 covers; SRC-0015 §3.1 covers; SRC-0015 §5.2 extends; SRC-0016 §2.4 covers; SRC-0016 §7.3 covers
 
 Do not run the full functional suite against every version of every technology unless a documented, evidence-based requirement justifies it; do not use a manually maintained version matrix as the core governance mechanism; never drop compatibility verification needed to support a declared compatibility claim. Do not manually duplicate version lists or tool requirements across independent files.
 
@@ -764,18 +764,18 @@ The operating loop is discover, assimilate, validate, execute, observe and propo
 #### LXM-REQ-000249 — Constitutional invariant I3: security and authorization
 
 `ARC` · class NEW · disposition **New-owner-addition**  
-Lineage: SRC-0033 §2.3,§2.6  
-Coverage: SRC-0033 §2.3 covers; SRC-0033 §2.6 covers
+Lineage: SRC-0033 §2.3  
+Coverage: SRC-0033 §2.3 covers
 
 Security and authorization is constitutional invariant I3 and is never traded off: least privilege, audited actions, and secrets never in code or images. The security suite and a secret scan check it, and CI and the runtime enforce it.
 
 #### LXM-REQ-000250 — Constitutional invariant I6: technology agnosticism
 
-`ARC` · class NEW · disposition **New-owner-addition**  
+`ARC` · class NEW · disposition **New-owner-addition** · LXM-DEC-000018  
 Lineage: SRC-0033 §2.6; SRC-0010 §2  
-Coverage: SRC-0033 §2.6 covers; SRC-0010 §2 covers
+Coverage: SRC-0033 §2.6 covers; SRC-0010 §2 covers; SRC-0033 §2.6 extends
 
-Technology agnosticism is constitutional invariant I6: technologies and providers sit behind contracts and adapters, and the core names none.
+Technology agnosticism is constitutional invariant I6: technologies and providers sit behind contracts and adapters, and the core names none. The technology governance gate and a scan of the core check it in CI.
 
 #### LXM-REQ-000251 — Rule R4: governed extensibility on registered need
 
@@ -800,6 +800,14 @@ Lineage: SRC-0034 §0.1
 Coverage: SRC-0034 §0.1 covers
 
 All knowledge enters the Master through one entry point, the assimilation gate: canonical records, source texts, clause ledgers and every registry that holds a fact, such as identifier formats, actors, hosts, formats, vocabulary or thresholds. Nothing else writes knowledge, and a check fails on any knowledge that differs from what the gate last accepted. The entry contract is technology-agnostic: the kinds of contribution, their fields and the formats a contribution may be written in are registered data, so any tool or agent can submit in any registered format and any conforming implementation can judge. Every knowledge item is versioned: each accepted change gives it a new version, logged with its contribution, its time and the versions of the technologies that ran the gate; a change to a registry names the version it replaces and is refused if that version is no longer current; every earlier version stays reconstructable from the log. Every technology the tooling depends on is registered with the versions it supports, and the gate refuses to run on a version outside them.
+
+#### LXM-REQ-000254 — Constitutional invariant I4: Knowledge Once
+
+`ARC` · class NEW · disposition **New-owner-addition** · LXM-DEC-000018  
+Lineage: SRC-0033 §2.4  
+Coverage: SRC-0033 §2.4 covers
+
+Knowledge Once (LXM-REQ-000203) is constitutional invariant I4 and is never traded off: regenerate-and-diff and duplicate detection check it, and the gate and CI enforce it.
 
 ### CAT-STG-00 — Repository truth and exclusive ownership
 
@@ -2126,7 +2134,7 @@ The objective is complete, evidence-backed conformance to the entire mandate, no
 **Objective:** Know exactly what exists before changing anything, and confirm this session is the sole writer.  
 **Entry:** Session is `amazon-62` in the canonical integration workspace outside iCloud. [LXM-REQ-000002, LXM-REQ-000216]
 
-- `STG-00.A-1` Apply the execution directive, rules and escalation conditions to this and every later stage; follow the final execution rule. — LXM-REQ-000001, LXM-REQ-000003, LXM-REQ-000004, LXM-REQ-000005, LXM-REQ-000006, LXM-REQ-000007, LXM-REQ-000008, LXM-REQ-000009, LXM-REQ-000010, LXM-REQ-000011, LXM-REQ-000013, LXM-REQ-000015, LXM-REQ-000016, LXM-REQ-000017, LXM-REQ-000185, LXM-REQ-000186, LXM-REQ-000187, LXM-REQ-000188, LXM-REQ-000189, LXM-REQ-000195, LXM-REQ-000227, LXM-REQ-000228, LXM-REQ-000229, LXM-REQ-000230, LXM-REQ-000231, LXM-REQ-000232, LXM-REQ-000233, LXM-REQ-000234, LXM-REQ-000235, LXM-REQ-000237, LXM-REQ-000238, LXM-REQ-000239, LXM-REQ-000240, LXM-REQ-000241, LXM-REQ-000242, LXM-REQ-000243, LXM-REQ-000244, LXM-REQ-000245, LXM-REQ-000246, LXM-REQ-000247, LXM-REQ-000248, LXM-REQ-000249, LXM-REQ-000250, LXM-REQ-000251, LXM-REQ-000252, LXM-REQ-000253
+- `STG-00.A-1` Apply the execution directive, rules and escalation conditions to this and every later stage; follow the final execution rule. — LXM-REQ-000001, LXM-REQ-000003, LXM-REQ-000004, LXM-REQ-000005, LXM-REQ-000006, LXM-REQ-000007, LXM-REQ-000008, LXM-REQ-000009, LXM-REQ-000010, LXM-REQ-000011, LXM-REQ-000013, LXM-REQ-000015, LXM-REQ-000016, LXM-REQ-000017, LXM-REQ-000185, LXM-REQ-000186, LXM-REQ-000187, LXM-REQ-000188, LXM-REQ-000189, LXM-REQ-000195, LXM-REQ-000227, LXM-REQ-000228, LXM-REQ-000229, LXM-REQ-000230, LXM-REQ-000231, LXM-REQ-000232, LXM-REQ-000233, LXM-REQ-000234, LXM-REQ-000235, LXM-REQ-000237, LXM-REQ-000238, LXM-REQ-000239, LXM-REQ-000240, LXM-REQ-000241, LXM-REQ-000242, LXM-REQ-000243, LXM-REQ-000244, LXM-REQ-000245, LXM-REQ-000246, LXM-REQ-000247, LXM-REQ-000248, LXM-REQ-000249, LXM-REQ-000250, LXM-REQ-000251, LXM-REQ-000252, LXM-REQ-000253, LXM-REQ-000254
 - `STG-00.A-2` Confirm the session identity and that no other writable session or checkout is active on this work. — LXM-REQ-000014, LXM-REQ-000028, LXM-REQ-000216
 - `STG-00.A-3` Run `pwd -P`; record branch, `git rev-parse HEAD`, `git remote -v` and `git ls-remote` for the branch. — LXM-REQ-000019, LXM-REQ-000020
 - `STG-00.A-4` Record `git status --porcelain=v2`, `git diff --cached --stat`, `git diff --stat`, `git diff --check` and the untracked list, each separately. — LXM-REQ-000021
@@ -2440,7 +2448,7 @@ The final report has sections A–K, defined by LXM-REQ-000174 to LXM-REQ-000184
 
 | Stage | Title | Actions | Requirements cited |
 |---|---|---|---|
-| STG-00 | Repository truth and exclusive ownership | 11 | 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, 011, 012, 013, 014, 015, 016, 017, 018, 019, 020, 021, 022, 023, 024, 025, 026, 027, 028, 029, 030, 031, 032, 033, 034, 035, 036, 037, 038, 039, 040, 185, 186, 187, 188, 189, 193, 194, 195, 216, 217, 219, 227, 228, 229, 230, 231, 232, 233, 234, 235, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253 |
+| STG-00 | Repository truth and exclusive ownership | 11 | 001, 002, 003, 004, 005, 006, 007, 008, 009, 010, 011, 012, 013, 014, 015, 016, 017, 018, 019, 020, 021, 022, 023, 024, 025, 026, 027, 028, 029, 030, 031, 032, 033, 034, 035, 036, 037, 038, 039, 040, 185, 186, 187, 188, 189, 193, 194, 195, 216, 217, 219, 227, 228, 229, 230, 231, 232, 233, 234, 235, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254 |
 | STG-01 | Universal technology governance (PR-053) | 8 | 016, 041, 042, 043, 044, 045, 046, 047, 048, 049, 050, 051, 052, 053, 054, 055, 153, 196, 197, 213, 218, 219 |
 | STG-02 | Mandate assimilation and traceability | 6 | 056, 057, 058, 059, 060, 061, 062, 063, 064, 191, 192, 204, 214, 220, 221, 226 |
 | STG-03 | Source-grounded gap inventory | 3 | 009, 065, 066, 067, 068, 069, 070, 071, 072 |
@@ -2675,7 +2683,7 @@ Requirement IDs are abbreviated to their last three digits (LXM-REQ-000xxx).
 | LXM-REQ-000209 | — | — | — | SRC-0004 §2E; SRC-0006 §13D | STG-12 | New-owner-addition |
 | LXM-REQ-000210 | — | — | — | SRC-0004 §2F; SRC-0006 §13F; SRC-0015 §3.3,§5.3; SRC-0016 §5.1 | STG-12 | New-owner-addition |
 | LXM-REQ-000211 | — | — | — | SRC-0004 §2G; SRC-0015 §1.3,§4.3,§8.1; SRC-0016 §4.5,§8.4; SRC-0011 §6.6 | STG-12 | New-owner-addition |
-| LXM-REQ-000212 | — | — | — | SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3; SRC-0033 §2.6 | STG-12 | New-owner-addition |
+| LXM-REQ-000212 | — | — | — | SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3 | STG-12 | New-owner-addition |
 | LXM-REQ-000213 | — | — | — | SRC-0004 §5 | STG-01, STG-12 | New-owner-addition |
 | LXM-REQ-000214 | — | — | — | SRC-0006 §18 | STG-02 | New-owner-addition |
 | LXM-REQ-000215 | — | — | — | SRC-0006 §8-9,§22; SRC-0008 §4,§6 | STG-13 | New-owner-addition |
@@ -2712,11 +2720,12 @@ Requirement IDs are abbreviated to their last three digits (LXM-REQ-000xxx).
 | LXM-REQ-000246 | — | — | — | SRC-0033 §3.2; SRC-0010 §18 | STG-00 | New-owner-addition |
 | LXM-REQ-000247 | — | — | — | SRC-0033 §3.5,§4.1,§4.2,§4.3,§4.4,§4.5,§4.6,§4.7,§4.8,§4.9; SRC-0010 §21 | STG-00 | New-owner-addition |
 | LXM-REQ-000248 | — | — | — | SRC-0033 §6.0,§6.1,§6.2,§6.3; SRC-0010 §14 | STG-00 | New-owner-addition |
-| LXM-REQ-000249 | — | — | — | SRC-0033 §2.3,§2.6 | STG-00 | New-owner-addition |
+| LXM-REQ-000249 | — | — | — | SRC-0033 §2.3 | STG-00 | New-owner-addition |
 | LXM-REQ-000250 | — | — | — | SRC-0033 §2.6; SRC-0010 §2 | STG-00 | New-owner-addition |
 | LXM-REQ-000251 | — | — | — | SRC-0033 §3.4; SRC-0010 §20 | STG-00 | New-owner-addition |
 | LXM-REQ-000252 | — | — | — | SRC-0033 §5.1,§5.2,§5.3,§5.4,§5.5,§5.6; SRC-0010 §3,§4,§5,§6,§7,§8,§9,§10,§11,§12,§13 | STG-00 | New-owner-addition |
 | LXM-REQ-000253 | — | — | — | SRC-0034 §0.1 | STG-00 | New-owner-addition |
+| LXM-REQ-000254 | — | — | — | SRC-0033 §2.4 | STG-00 | New-owner-addition |
 
 ### H.4 Requirement → implementation traceability
 
@@ -3195,9 +3204,9 @@ Generated from each source's clause ledger (`sources/<SRC>.clauses`), the record
 | §2.1 | 9-9 | LXM-REQ-000242 | — | — |
 | §2.2 | 10-10 | LXM-REQ-000243 | — | — |
 | §2.3 | 11-11 | LXM-REQ-000249 | — | — |
-| §2.4 | 12-12 | — | — | LXM-EXC-000023 |
+| §2.4 | 12-12 | LXM-REQ-000254 | — | — |
 | §2.5 | 13-13 | LXM-REQ-000199 (extends) | — | — |
-| §2.6 | 14-14 | LXM-REQ-000212, LXM-REQ-000249, LXM-REQ-000250 | — | — |
+| §2.6 | 14-14 | LXM-REQ-000250, LXM-REQ-000250 (extends) | — | — |
 | §2.7 | 16-16 | LXM-REQ-000244 | — | — |
 | §3.1 | 22-22 | LXM-REQ-000245 | — | — |
 | §3.2 | 23-23 | LXM-REQ-000246 | — | — |

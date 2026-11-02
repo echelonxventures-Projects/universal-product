@@ -1,0 +1,12 @@
+id: CTB-LXM-DEC-000018-adopt
+kind: decision
+decision: LXM-DEC-000018
+action: adopt
+outcome: Option (a), both corrections: record I4 Knowledge Once as its own record referring to LXM-REQ-000203; add the check sentence of SRC-0033 §2.6 to LXM-REQ-000250; retract the SRC-0033 §2.6 relations the gate recorded by a false composition from LXM-REQ-000212 and LXM-REQ-000249
+effect: SRC-0033 §2.4 is expressed by a new record and LXM-REQ-000203 is unchanged; LXM-REQ-000250 carries the I6 check; LXM-REQ-000212 and LXM-REQ-000249 no longer cite SRC-0033 §2.6
+authorizes: SRC-0033 §2.4, SRC-0033 §2.6, LXM-REQ-000212, LXM-REQ-000249, LXM-REQ-000250
+adopted: 2026-11-02, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+provenance: Owner approval in session 47abdf14, transcript line 7606 (message), answering the request at line 7576; owner's words in intake/decisions/OWNER-APPROVAL-2026-11-02.txt (SHA-256 322cf09e59aa9cd08b8b4f343802442bd634ecbfe6b7cf72f3b30e6988bab01a); the request as written in OWNER-APPROVAL-2026-11-02.context.txt; source SRC-0033
+rationale: Both are gate errors against owner-decided content: one held clause and one false composition; the corrections keep LXM-REQ-000203 as decided and make each record cite only what it expresses
+approval: intake/decisions/OWNER-APPROVAL-2026-11-02.txt
+approval-sha256: 322cf09e59aa9cd08b8b4f343802442bd634ecbfe6b7cf72f3b30e6988bab01a

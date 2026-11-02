@@ -1215,8 +1215,8 @@ x: The conformance mechanism accommodates previously unknown technologies withou
 
 @LXM-REQ-000212 | ARC | NEW | New-owner-addition
 t: No combinatorial or manual version matrix
-s: SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3; SRC-0033 §2.6
-c: SRC-0015 §2.2 covers; SRC-0015 §3.1 covers; SRC-0015 §5.2 extends; SRC-0016 §2.4 covers; SRC-0016 §7.3 covers; SRC-0033 §2.6 covers
+s: SRC-0004 §2; SRC-0006 §13; SRC-0015 §2.2,§3.1,§5.2; SRC-0016 §2.4,§7.3
+c: SRC-0015 §2.2 covers; SRC-0015 §3.1 covers; SRC-0015 §5.2 extends; SRC-0016 §2.4 covers; SRC-0016 §7.3 covers
 x: Do not run the full functional suite against every version of every technology unless a documented, evidence-based requirement justifies it; do not use a manually maintained version matrix as the core governance mechanism; never drop compatibility verification needed to support a declared compatibility claim. Do not manually duplicate version lists or tool requirements across independent files.
 
 @LXM-REQ-000213 | ARC | NEW | New-owner-addition
@@ -1443,15 +1443,16 @@ x: The operating loop is discover, assimilate, validate, execute, observe and pr
 
 @LXM-REQ-000249 | ARC | NEW | New-owner-addition
 t: Constitutional invariant I3: security and authorization
-s: SRC-0033 §2.3,§2.6
-c: SRC-0033 §2.3 covers; SRC-0033 §2.6 covers
+s: SRC-0033 §2.3
+c: SRC-0033 §2.3 covers
 x: Security and authorization is constitutional invariant I3 and is never traded off: least privilege, audited actions, and secrets never in code or images. The security suite and a secret scan check it, and CI and the runtime enforce it.
 
 @LXM-REQ-000250 | ARC | NEW | New-owner-addition
 t: Constitutional invariant I6: technology agnosticism
 s: SRC-0033 §2.6; SRC-0010 §2
-c: SRC-0033 §2.6 covers; SRC-0010 §2 covers
-x: Technology agnosticism is constitutional invariant I6: technologies and providers sit behind contracts and adapters, and the core names none.
+k: LXM-DEC-000018
+c: SRC-0033 §2.6 covers; SRC-0010 §2 covers; SRC-0033 §2.6 extends
+x: Technology agnosticism is constitutional invariant I6: technologies and providers sit behind contracts and adapters, and the core names none. The technology governance gate and a scan of the core check it in CI.
 
 @LXM-REQ-000251 | ARC | NEW | New-owner-addition
 t: Rule R4: governed extensibility on registered need
@@ -1470,3 +1471,10 @@ t: One entry point for all knowledge, a technology-agnostic contract, every vers
 s: SRC-0034 §0.1
 c: SRC-0034 §0.1 covers
 x: All knowledge enters the Master through one entry point, the assimilation gate: canonical records, source texts, clause ledgers and every registry that holds a fact, such as identifier formats, actors, hosts, formats, vocabulary or thresholds. Nothing else writes knowledge, and a check fails on any knowledge that differs from what the gate last accepted. The entry contract is technology-agnostic: the kinds of contribution, their fields and the formats a contribution may be written in are registered data, so any tool or agent can submit in any registered format and any conforming implementation can judge. Every knowledge item is versioned: each accepted change gives it a new version, logged with its contribution, its time and the versions of the technologies that ran the gate; a change to a registry names the version it replaces and is refused if that version is no longer current; every earlier version stays reconstructable from the log. Every technology the tooling depends on is registered with the versions it supports, and the gate refuses to run on a version outside them.
+
+@LXM-REQ-000254 | ARC | NEW | New-owner-addition
+t: Constitutional invariant I4: Knowledge Once
+s: SRC-0033 §2.4
+k: LXM-DEC-000018
+c: SRC-0033 §2.4 covers
+x: Knowledge Once (LXM-REQ-000203) is constitutional invariant I4 and is never traded off: regenerate-and-diff and duplicate detection check it, and the gate and CI enforce it.

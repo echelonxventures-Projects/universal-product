@@ -1,0 +1,7 @@
+id: CTB-SRC0033-dec018-i6
+source: SRC-0033
+section: §2.6
+kind: requirement
+extends: LXM-REQ-000250
+decision: LXM-DEC-000018
+text: The technology governance gate and a scan of the core check it in CI.

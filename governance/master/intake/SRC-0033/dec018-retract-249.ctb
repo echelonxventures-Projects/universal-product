@@ -1,0 +1,9 @@
+id: CTB-SRC0033-dec018-retract-249
+kind: relation
+action: retract
+record: LXM-REQ-000249
+source: SRC-0033
+section: §2.6
+relation: covers
+decision: LXM-DEC-000018
+basis: By owner decision LXM-DEC-000018: the gate matched the I6 check sentence to this record by a false composition

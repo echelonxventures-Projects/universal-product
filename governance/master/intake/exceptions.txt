@@ -124,11 +124,12 @@ impact: Creating a record could duplicate existing meaning; extending could atta
 resolution: Declare extends: <record> to add it there, recognized-as: <record> if that record already expresses it, or distinct-from: <records> to confirm the meaning is new.
 resolved: 2026-11-02; NEW by CTB-SRC0033-i3 (sha f3a19546c182); records LXM-REQ-000249
 
-@LXM-EXC-000019 | QUARANTINED | CTB-SRC0033-i4 | 35a2f9d1c1d456c26e7b373d90750e24d7f590d2f2030fb6415f6304429f4dde
+@LXM-EXC-000019 | RESOLVED | CTB-SRC0033-i4 | 35a2f9d1c1d456c26e7b373d90750e24d7f590d2f2030fb6415f6304429f4dde
 source: SRC-0033 §2.4
 reason: LXM-REQ-000203 carries content fixed by an owner decision; changing it is owner-reserved
 impact: Changing it without the owner would override a recorded owner decision.
 resolution: The owner decides; record the decision in decisions.txt (rendered as Part C) and resubmit with decision: LXM-DEC-NNNNNN.
+resolved: 2026-11-02; NEW by CTB-SRC0033-i4 (sha 435c873fa562); records LXM-REQ-000254; decision LXM-DEC-000018
 
 @LXM-EXC-000020 | RESOLVED | CTB-SRC0033-i6 | d664527dfb3d8fee79c732b14b613a10eb90a3a12c3422381f78ee7c127f66b5
 source: SRC-0033 §2.6
@@ -151,8 +152,9 @@ impact: Creating a record could duplicate existing meaning; extending could atta
 resolution: Declare extends: <record> to add it there, recognized-as: <record> if that record already expresses it, or distinct-from: <records> to confirm the meaning is new.
 resolved: 2026-11-02; NEW by CTB-SRC0033-layers (sha 3df1eb44be71); records LXM-REQ-000252
 
-@LXM-EXC-000023 | QUARANTINED | CTB-SRC0033-i4 | 4c83a932ab2e8e93188b833e7a76bcabfbccb54d3413be7eb897b4c085ecce6e
+@LXM-EXC-000023 | RESOLVED | CTB-SRC0033-i4 | 4c83a932ab2e8e93188b833e7a76bcabfbccb54d3413be7eb897b4c085ecce6e
 source: SRC-0033 §2.4
 reason: SRC-0033 §2.4 is held for an owner decision (LXM-EXC-000019); owner-reserved
 impact: Assimilating it in any form would implement an option the owner has not chosen.
 resolution: The owner decides; record the decision in decisions.txt (rendered as Part C) and resubmit with decision: LXM-DEC-NNNNNN.
+resolved: 2026-11-02; NEW by CTB-SRC0033-i4 (sha 435c873fa562); records LXM-REQ-000254; decision LXM-DEC-000018

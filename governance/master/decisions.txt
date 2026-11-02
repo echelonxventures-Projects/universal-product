@@ -145,8 +145,11 @@ r: amazon-62 was not running; a single bounded write keeps the candidate, PR #6 
 e: LXM-REQ-000216 records the one-time exception
 a: SRC-0028 §0.3, LXM-REQ-000216
 
-@LXM-DEC-000018 | open | C.2
+@LXM-DEC-000018 | adopted | C.3
 q: Authorize two corrections in the adopted architecture constitution (SRC-0033, adopted by LXM-DEC-000015), both owner-reserved because the records carry owner-decided content
-f: (1) I4 Knowledge Once is held (LXM-EXC-000019): its first submission extended LXM-REQ-000203, which is owner-decided, so the clause is held; it is ready as its own record that refers to 203. (2) I6 technology agnosticism: the gate matched its check sentence ("The technology governance gate and a scan of the core check it in CI.") to LXM-REQ-000212 and LXM-REQ-000249 by a false composition, so LXM-REQ-000250 lacks that sentence and 212 and 249 carry false relations to SRC-0033 §2.6
-opt: (a) authorize both: record I4 as a new record referring to LXM-REQ-000203; add the check sentence to LXM-REQ-000250; retract the SRC-0033 §2.6 relations from LXM-REQ-000212 and LXM-REQ-000249; scope SRC-0033 §2.4, §2.6, LXM-REQ-000212, LXM-REQ-000249, LXM-REQ-000250; (b) leave both as they are
-rec: (a)
+o: Option (a), both corrections: record I4 Knowledge Once as its own record referring to LXM-REQ-000203; add the check sentence of SRC-0033 §2.6 to LXM-REQ-000250; retract the SRC-0033 §2.6 relations the gate recorded by a false composition from LXM-REQ-000212 and LXM-REQ-000249
+w: 2026-11-02, by the owner, Bipin Kumar (identity as stated: bipin.kumar@aol.com, bipin1@gmail.com; not verified by the gate)
+p: Owner approval in session 47abdf14, transcript line 7606 (message), answering the request at line 7576; owner's words in intake/decisions/OWNER-APPROVAL-2026-11-02.txt (SHA-256 322cf09e59aa9cd08b8b4f343802442bd634ecbfe6b7cf72f3b30e6988bab01a); the request as written in OWNER-APPROVAL-2026-11-02.context.txt; source SRC-0033
+r: Both are gate errors against owner-decided content: one held clause and one false composition; the corrections keep LXM-REQ-000203 as decided and make each record cite only what it expresses
+e: SRC-0033 §2.4 is expressed by a new record and LXM-REQ-000203 is unchanged; LXM-REQ-000250 carries the I6 check; LXM-REQ-000212 and LXM-REQ-000249 no longer cite SRC-0033 §2.6
+a: SRC-0033 §2.4, SRC-0033 §2.6, LXM-REQ-000212, LXM-REQ-000249, LXM-REQ-000250
