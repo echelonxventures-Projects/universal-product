@@ -1101,12 +1101,17 @@
      "label": "Fixed Fee",
      "type": "number"
     },
-    {
-     "key": "fields",
-     "label": "Credential Fields",
-     "type": "json"
-    },
-    {
+     {
+      "key": "fields",
+      "label": "Credential Fields",
+      "type": "json"
+     },
+     {
+      "key": "spec",
+      "label": "Integration Spec",
+      "type": "json"
+     },
+     {
      "key": "base_fee",
      "label": "Base Fee (ship)",
      "type": "number"

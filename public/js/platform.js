@@ -974,10 +974,12 @@ async function vProviders() {
       <div class="row"><label><span>Countries</span><input id="cpCountries" placeholder="* for all, or comma-separated codes (e.g. US,IN,CN)"></label>
       <label><span>Fee %</span><input id="cpFeePct" type="number" step="0.1" value="0"></label>
       <label><span>Fee (fixed)</span><input id="cpFeeFixed" type="number" step="0.01" value="0"></label></div>
-      <div class="row"><label><span>Methods</span><input id="cpMethods" placeholder="Comma-separated (e.g. card,upi,netbanking)"></label>
-      <button class="p-btn sm" id="cpAddField">+ Add credential field</button></div>
-      <div id="cpFieldsContainer"></div>
-      <button class="p-btn primary" id="cpSave">Register provider</button>
+       <div class="row"><label><span>Methods</span><input id="cpMethods" placeholder="Comma-separated (e.g. card,upi,netbanking)"></label>
+       <button class="p-btn sm" id="cpAddField">+ Add credential field</button></div>
+       <div id="cpFieldsContainer"></div>
+       <label><span>Integration spec (JSON)</span><textarea id="cpSpec" rows="12" spellcheck="false">${esc(JSON.stringify({ url: "https://api.example.com/v1/payments", method: "POST", auth: { type: "bearer", token: "{{cfg.apiKey}}" }, body: { amount: "{{amountCents}}", currency: "{{currencyLower}}", reference: "{{idempotency}}" }, idPath: "id", statusPath: "status", statusMap: { succeeded: "captured", pending: "pending", failed: "failed" }, webhook: { typePath: "type", refPath: "data.id", events: { "payment.succeeded": { status: "captured" } } } }, null, 2))}</textarea></label>
+       <p class="p-tag">The spec is the provider's protocol: endpoint, authentication, request mapping, response mapping, and webhook events. Credentials stay in each store's encrypted gateway configuration.</p>
+       <button class="p-btn primary" id="cpSave">Register provider</button>
       <div id="cpError" class="p-tag" style="display:none;background:var(--p-red);color:#fff"></div>
     </div></div>`;
 }
@@ -1799,7 +1801,9 @@ document.addEventListener("click", async e => {
       const countries = $("#cpCountries").value.trim() || "*";
       const feePct = parseFloat($("#cpFeePct").value) || 0;
       const feeFixed = parseFloat($("#cpFeeFixed").value) || 0;
-      const methods = $("#cpMethods").value.split(",").map(s => s.trim()).filter(Boolean);
+       const methods = $("#cpMethods").value.split(",").map(s => s.trim()).filter(Boolean);
+       let spec;
+       try { spec = JSON.parse($("#cpSpec").value); } catch (x) { error.textContent = "Integration spec must be valid JSON"; error.style.display = "block"; return; }
       const error = $("#cpError");
       // Validate
       const idVal = validateUUID(id);
@@ -1815,7 +1819,8 @@ document.addEventListener("click", async e => {
         id, name, emoji, desc,
         countries: countries.split(",").map(s => s.trim()).filter(Boolean),
         methods,
-        fields: cpFields.filter(f => f.key).map(f => ({key:f.key,label:f.label,secret:f.secret})),
+         fields: cpFields.filter(f => f.key).map(f => ({key:f.key,label:f.label,secret:f.secret})),
+         spec,
         feePct, feeFixed
       };
       await api("/platform/custom-providers", "POST", { kind, manifest });
@@ -1825,14 +1830,17 @@ document.addEventListener("click", async e => {
     if (pe) {
       const { rows } = await api("/meta/entity/provider_def");
       const r = rows.find(x => x.id === pe.dataset.pedit);
-      const m = modal(`<div class="p-modal-head"><h3>${esc(r.name)}</h3><button data-mclose>✕</button></div>
-        <div class="p-form"><div class="row3"><label><span>Name</span><input id="pvName" value="${esc(r.name)}"></label><label><span>Emoji</span><input id="pvEmoji" value="${esc(r.emoji || "")}"></label><label><span>Fee %</span><input id="pvFee" type="number" step="any" value="${r.fee_pct}"></label></div>
-        <label><span>Methods (JSON)</span><input id="pvM" value="${esc(r.methods)}"></label>
-        <label><span>Credential fields (JSON)</span><textarea id="pvF" rows="3">${esc(r.fields)}</textarea></label>
-        <button class="p-btn primary" id="pvSave">Save</button></div>`);
-      m.querySelector("#pvSave").onclick = async () => {
-        await api("/meta/entity/provider_def/" + encodeURIComponent(r.id + "|" + r.kind), "PUT", { name: m.querySelector("#pvName").value, emoji: m.querySelector("#pvEmoji").value, fee_pct: Number(m.querySelector("#pvFee").value), methods: JSON.parse(m.querySelector("#pvM").value || "[]"), fields: JSON.parse(m.querySelector("#pvF").value || "[]") });
-        m.innerHTML = ""; toast("Provider updated — live everywhere"); render();
+         const m = modal(`<div class="p-modal-head"><h3>${esc(r.name)}</h3><button data-mclose>✕</button></div>
+         <div class="p-form"><div class="row3"><label><span>Name</span><input id="pvName" value="${esc(r.name)}"></label><label><span>Emoji</span><input id="pvEmoji" value="${esc(r.emoji || "")}"></label><label><span>Fee %</span><input id="pvFee" type="number" step="any" value="${r.fee_pct}"></label></div>
+         <label><span>Methods (JSON)</span><input id="pvM" value="${esc(r.methods)}"></label>
+         <label><span>Credential fields (JSON)</span><textarea id="pvF" rows="3">${esc(r.fields)}</textarea></label>
+         <label><span>Integration spec (JSON)</span><textarea id="pvSpec" rows="10" spellcheck="false">${esc(r.spec || "{}")}</textarea></label>
+         <button class="p-btn primary" id="pvSave">Save</button></div>`);
+       m.querySelector("#pvSave").onclick = async () => {
+         let spec; try { spec = JSON.parse(m.querySelector("#pvSpec").value || "{}"); } catch (x) { toast("Integration spec must be valid JSON", "error"); return; }
+         const saved = await api("/meta/entity/provider_def/" + encodeURIComponent(r.id + "|" + r.kind), "PUT", { name: m.querySelector("#pvName").value, emoji: m.querySelector("#pvEmoji").value, fee_pct: Number(m.querySelector("#pvFee").value), methods: JSON.parse(m.querySelector("#pvM").value || "[]"), fields: JSON.parse(m.querySelector("#pvF").value || "[]"), spec });
+         if (saved.error) return toast(saved.error, "error");
+         m.innerHTML = ""; toast("Provider updated — live everywhere"); render();
       };
     }
     if (pa) {

@@ -51,7 +51,8 @@ function fakeStripe(url, o) {
   else if (url === "https://api-m.paypal.com/v1/oauth2/token") json = { access_token: "pp_token" };
   else if (url === "https://api-m.paypal.com/v1/notifications/verify-webhook-signature") { const b = JSON.parse(o.body); calls[calls.length - 1].json = b; json = { verification_status: b.transmission_sig === "good-sig" && b.webhook_id === "WH-1" ? "SUCCESS" : "FAILURE" }; }
   else if (url === "https://api-m.paypal.com/v2/checkout/orders/PP-ORDER-1") json = { id: "PP-ORDER-1", status: "APPROVED", purchase_units: [{ amount: { value: String(ppAmount) } }] };
-  else if (url === "https://api-m.paypal.com/v2/checkout/orders/PP-ORDER-1/capture") json = { id: "PP-ORDER-1", status: "COMPLETED", purchase_units: [{ payments: { captures: [{ id: "CAP-1", amount: { value: String(ppAmount) } }] } }] };
+   else if (url === "https://api-m.paypal.com/v2/checkout/orders/PP-ORDER-1/capture") json = { id: "PP-ORDER-1", status: "COMPLETED", purchase_units: [{ payments: { captures: [{ id: "CAP-1", amount: { value: String(ppAmount) } }] } }] };
+  else if (url === "https://api.portalpay.test/v1/payments") json = { id: "portal_payment_1", status: "succeeded" };
   else if (url === "https://api.easypost.com/v2/shipments") {
     const b = JSON.parse(o.body); calls[calls.length - 1].json = b;
     json = { id: "shp_1", object: "Shipment", rates: [
@@ -85,22 +86,37 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
   try {
     const A = mk(); await A("/api/session?store=luxora");
     ok((await A("/api/auth/login?store=luxora", "POST", { email: "admin@luxora.shop", password: "admin123" })).status === 200, "store admin signs in");
-    const gwList = [{ id: "stripe", enabled: true, primary: true, mode: "live", config: { publishableKey: "pk_test_1", secretKey: "sk_test_live_key", webhookSecret: WHSEC } }, { id: "cod", enabled: true, mode: "sandbox", config: {} }];
+    const P = mk(); await P("/api/session");
+    ok((await P("/api/platform/login", "POST", { email: "platform@luxora.shop", password: "platform123" })).status === 200, "platform admin signs in to register a provider");
+    const PORTAL_ID = "11111111-1111-4111-8111-111111111111";
+    const portalManifest = { id: PORTAL_ID, name: "PortalPay", emoji: "💳", desc: "A provider registered from the super-admin portal", countries: ["US"], methods: ["card"], fields: [{ key: "apiKey", label: "API key", secret: true }], spec: { url: "https://api.portalpay.test/v1/payments", method: "POST", auth: { type: "bearer", token: "{{cfg.apiKey}}" }, body: { amount: "{{amountCents}}", currency: "{{currencyLower}}", reference: "{{idempotency}}" }, idPath: "id", statusPath: "status", statusMap: { succeeded: "captured", failed: "failed" } } };
+    const added = await P("/api/platform/custom-providers", "POST", { kind: "payment", manifest: portalManifest });
+    ok(added.status === 200 && added.body.ok, "a payment provider can be registered from the super-admin portal", added.body);
+    const customRows = (await P("/api/platform/custom-providers")).body.custom || [];
+    const customRow = customRows.find(x => x.kind === "payment" && JSON.parse(x.manifest).id === PORTAL_ID);
+    ok(!!customRow && db.get("SELECT spec FROM provider_defs WHERE id=? AND kind='payment'", PORTAL_ID).spec.includes("portalpay.test"), "the portal stores the declarative integration spec in the live provider registry");
+    const gwList = [{ id: "stripe", enabled: true, primary: true, mode: "live", config: { publishableKey: "pk_test_1", secretKey: "sk_test_live_key", webhookSecret: WHSEC } }, { id: "cod", enabled: true, mode: "sandbox", config: {} }, { id: PORTAL_ID, enabled: true, mode: "live", config: { apiKey: "portal_test_key" } }];
     ok((await A("/api/admin/gateways?store=luxora", "PUT", { gateways: gwList })).status === 200, "Stripe is enabled live with a secret key and webhook signing secret");
+    ok((await A("/api/admin/gateways?store=luxora")).body.gateways.some(g => g.id === PORTAL_ID), "the new platform provider is immediately available in the store configuration portal");
     /* saving the list again as the console would — secrets come back masked — keeps them */
     const shown = (await A("/api/admin/gateways?store=luxora")).body;
     const stripeShown = (shown.enabled || shown.gateways || []).find(g => (g.id || g.provider_id) === "stripe") || {};
     const masked = Object.fromEntries(Object.keys(stripeShown.config || { secretKey: 1, webhookSecret: 1 }).map(k => [k, "••••" + k]));
-    await A("/api/admin/gateways?store=luxora", "PUT", { gateways: [Object.assign({}, gwList[0], { config: Object.assign({ publishableKey: "pk_test_1" }, masked) }), gwList[1]] });
+    await A("/api/admin/gateways?store=luxora", "PUT", { gateways: [Object.assign({}, gwList[0], { config: Object.assign({ publishableKey: "pk_test_1" }, masked) }), gwList[1], gwList[2]] });
 
     const product = db.get("SELECT id FROM products WHERE tenant_id=1 AND lifecycle='published' AND deleted_at IS NULL AND stock > 5 ORDER BY id LIMIT 1");
-    const buy = async () => {
+    const buy = async (gateway = "stripe") => {
       const C = mk(); await C("/api/session?store=luxora");
       await C("/api/auth/register?store=luxora", "POST", { name: "Pat Payer", email: "pat" + crypto.randomBytes(3).toString("hex") + "@example.com", password: "Pay-Me-Now-123" });
       await C("/api/cart?store=luxora", "POST", { id: product.id, qty: 1 });
-      const co = await C("/api/checkout?store=luxora", "POST", { name: "Pat Payer", address: "1 Main St", city: "Seattle", state: "WA", zip: "98109", gateway: "stripe", carrier: "house-std" });
+      const co = await C("/api/checkout?store=luxora", "POST", { name: "Pat Payer", address: "1 Main St", city: "Seattle", state: "WA", zip: "98109", gateway, carrier: "house-std" });
       return { C, co };
     };
+
+    const portalOrder = (await buy(PORTAL_ID)).co.body.order || {};
+    const portalCall = calls.find(c => c.url === "https://api.portalpay.test/v1/payments");
+    ok(portalOrder.payment_status === "captured" && portalCall && portalCall.headers.Authorization === "Bearer portal_test_key", "a provider added in the portal executes its stored spec with the store's encrypted credentials", { order: portalOrder, call: portalCall });
+    ok((await P("/api/platform/custom-providers/" + customRow.id, "DELETE", {})).status === 200 && !(await A("/api/admin/gateways?store=luxora")).body.gateways.some(g => g.id === PORTAL_ID), "removing a provider from the portal removes it from every store's configuration surface");
 
     console.log("▸ CHECKOUT HANDS THE SHOPPER TO STRIPE AND WAITS");
     const { co } = await buy();
