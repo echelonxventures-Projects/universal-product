@@ -68,11 +68,43 @@ More: [Currencies and exchange](../domains/currency.md)
 
 ## Offers
 
-Every reason a buyer pays less or gets more: offers and discounts of every type, coupons, cashback, rewards, gift cards and vouchers, deals and countdowns, group buying, price matching and trade-ins, the funding and settlement of each, and their governance.
+The offers themselves: every price a buyer pays less or gets more, and every rule about how they apply — the offer record, its types, its scopes, its channels, its funders, its stacking policy and its governance. A coupon, a voucher, a gift card, a cashback, a reward and a group buy are their own domains; this one decides which of them applies.
 
 _Not yet written._
 
 More: [Offers](../domains/offer.md)
+
+## Group buying
+
+A lower price when enough shoppers join before a deadline: staff open a campaign on a product with a group price, how many members it needs and how many it may take; a shopper joins by buying at the group price. A campaign that reaches its members succeeds and its orders go ahead; one that falls short fails and every member's order is cancelled and refunded.
+
+Govern the `group_buying` capability and its parameters: member quantity, close-when-full behavior and refund kind. Review the state machine and tenant activity through platform monitoring.
+
+More: [Group buying](../domains/groupbuy.md)
+
+## Coupons
+
+The codes a shopper types at the cart: a code that carries a value, issued by staff or in bulk, validated against its kind and its limits, redeemed into the redemption ledger, and voided when the order is refunded. The kinds — a single-use code, a bulk lot, a referral code — are rows.
+
+Manage coupon kinds, statuses and redemption states in Data Studio. Platform policy can disable promo codes globally. Review cross-store redemption totals and funder attribution from the platform offer surfaces.
+
+More: [Coupons](../domains/coupon.md)
+
+## Vouchers
+
+An instrument of value that is not the shop's own discount and not a gift card: a bank voucher, a benefits note, an organisation's credit. Who stands behind it, whether it may be spent in part and how long it lives are its kind's rows; the code it travels on belongs to the Coupon domain.
+
+Maintain voucher kinds and issuer permissions in the registry. Configure jurisdiction, unit, validity and settlement rules before granting a partner access to issue or fund vouchers.
+
+More: [Vouchers](../domains/voucher.md)
+
+## Gift cards
+
+A card bought as an item or issued by staff: a code with a value, sent to its recipient with a message, redeemable into the recipient's gift balance, checked for its balance, voided with a reason and expired after its validity. A card is a node on the kernel; its code is sealed and found by a blind index.
+
+Govern gift-card limits, validity, denominations, occasions and sources. Ensure wallet capability and notification transport are enabled before activating gift cards for a tenant.
+
+More: [Gift cards](../domains/giftcard.md)
 
 ## Payment gateways
 

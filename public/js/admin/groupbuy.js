@@ -128,7 +128,7 @@ async function vOffers() {
     <td>${esc(o.funder)}${o.funder_ref ? ` ${esc(o.funder_ref)}` : ""}</td><td class="num">${esc(o.value)}${esc(unitOf(o))}</td>
     <td class="num">${o.usage_limit ? o.used + "/" + o.usage_limit : o.used}</td><td>${statusBadge(o.status)}</td>
     <td style="text-align:right;white-space:nowrap"><button class="p-btn sm" data-oedit="${o.id}">Edit</button><button class="p-btn sm danger" data-oret="${o.id}">Retire</button></td></tr>`;
-  return `<div class="p-panel"><h2>💸 Offers</h2>
+   return `<div class="p-panel"><h2>💸 Offers &amp; Coupons</h2>
     <p style="color:var(--p-muted);font-size:13px;margin:0 0 10px">One central engine used by cart, checkout, <b>platform billing</b> and <b>AI</b>. Types / scopes / funders / channels are configurable registries — the form options come from data, not code.</p>
     <div class="p-panel"><h3>New / edit offer</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;align-items:end">

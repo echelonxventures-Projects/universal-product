@@ -90,3 +90,7 @@ $RECYCLE.BIN/
 
 # ───────────────────────── scratch ─────────────────────────
 /tmp
+
+# owner-supplied execution directive; retained locally but excluded from the
+# white-label source corpus because it contains external comparison examples
+LUXORA-Complete-Master-Execution-Prompt.md

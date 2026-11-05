@@ -112,7 +112,8 @@ const api = src("api.js");
 ok((api.match(/INSERT INTO offers\(/g) || []).length === 0, "api.js never writes `offers` directly — it goes through goip.createExchange");
 ok((api.match(/INSERT INTO coupons\(/g) || []).length === 0, "api.js never writes `coupons` directly — it goes through goip.issue");
 ok((src("goip.js").match(/INSERT INTO offers\(/g) || []).length === 1, "exactly one INSERT INTO offers in the whole platform");
-ok((src("goip.js").match(/INSERT INTO coupons\(/g) || []).length === 1, "exactly one INSERT INTO coupons in the GOIP kernel");
+ ok((src("goip.js").match(/INSERT INTO coupons\(/g) || []).length === 0, "GOIP never writes coupons directly — the Coupon domain owns its writer");
+ ok((src("coupons.js").match(/INSERT INTO coupons\(/g) || []).length === 1, "exactly one INSERT INTO coupons in the Coupon domain");
 ok(!/function evaluate|HANDLERS *=/.test(src("goip.js").replace(/GOIP_HANDLERS/g, "")), "GOIP does not fork the decision/math engine");
 ok(typeof offers.onRedeem === "function" && typeof offers.ledgerEntry === "function", "offers.js exposes the hook + unit ledger GOIP extends it through");
 for (const t of ["goip_touchpoints", "goip_budgets", "goip_settlements", "goip_entitlements"]) {

@@ -2757,12 +2757,9 @@
   "customisation_proofs": [
    "proofs"
   ],
-  "sample_orders": [
-   "samples"
-  ],
-  "gift_cards": [
-   "giftcards"
-  ]
+   "sample_orders": [
+    "samples"
+   ]
  },
  "ROUTES": {
   "admin/charges": "fees",

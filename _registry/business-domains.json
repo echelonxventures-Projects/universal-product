@@ -627,10 +627,8 @@
      "stackingPolicies",
      "offerStatuses"
     ],
-    "screens": [
-     "promotions",
-     "goip",
-     "pricematch",
+     "screens": [
+      "pricematch",
      "tradeins"
     ],
     "platformScreens": [
@@ -675,8 +673,10 @@
     "registries": [
      "groupCampaignStatuses"
     ],
-    "screens": [
-     "groupbuy"
+     "screens": [
+      "promotions",
+      "goip",
+      "groupbuy"
     ],
     "platformScreens": [],
     "platformGroups": [],

@@ -4,7 +4,7 @@
 
 ## Overview
 
-Every reason a buyer pays less or gets more: offers and discounts of every type, coupons, cashback, rewards, gift cards and vouchers, deals and countdowns, group buying, price matching and trade-ins, the funding and settlement of each, and their governance.
+The offers themselves: every price a buyer pays less or gets more, and every rule about how they apply — the offer record, its types, its scopes, its channels, its funders, its stacking policy and its governance. A coupon, a voucher, a gift card, a cashback, a reward and a group buy are their own domains; this one decides which of them applies.
 
 **Foundation domain:** Commerce · **Used by:** Shopper, Seller, Store administrator, Platform administrator, Partner or affiliate
 
@@ -12,39 +12,13 @@ Every reason a buyer pays less or gets more: offers and discounts of every type,
 
 Each is switched on per store under ⚙️ Capabilities; its parameters are that store's settings.
 
-### Gift vouchers (`gift_vouchers`)
-
-Issue a code with a balance; redemption credits the holder's wallet. Expired codes are retired on use.
-
-| Setting | Meaning | Default |
-|---|---|---|
-| `code_length` | Length of the generated voucher code | `12` |
-
 ### Deals page & strip (`deals`)
 
 The /deals page, the header deal link and the storefront offers strip.
 
-### Promo codes (`coupons`)
-
-Shopper-redeemable coupon codes at cart and checkout. Platform policy may refuse this independently.
-
-### Gift cards & balance (`gift_cards`)
-
-The gift-cards page, the gift-balance line in checkout and the wallet top-up path.
-
 ### Deal countdown (`countdown`)
 
 A live countdown badge on time-limited offers.
-
-### Group buying (`group_buying`)
-
-A lower price that applies when enough shoppers join before a deadline; if the group falls short, every member's order is cancelled and refunded.
-
-| Setting | Meaning | Default |
-|---|---|---|
-| `max_qty_per_member` | Most one member may buy | `5` |
-| `close_when_full` | A campaign closes as soon as it is full | `true` |
-| `refund_kind` | Wallet ledger kind used to refund a failed group | `"refund"` |
 
 ### Price match (`price_match`)
 
@@ -59,11 +33,11 @@ A shopper describes what they trade in; staff value it, and the value comes off 
 | Module | What it is |
 |---|---|
 | `lib/goip.js` | GOIP Ω∞ — GLOBAL OFFER INFRASTRUCTURE PLATFORM Universal Incentive · Offer · Reward · Value-Exchange operating system for LUXORA. |
-| `lib/groupbuy.js` | Group buying: a lower price when enough shoppers join. Staff open a campaign on a product: a group price, how many members it needs by a deadline, and how many it may take. A shopper joins by buying at the group price — the campaign rides on the bag line as its `group` term (lib/lineterms.js) — and becomes a member with that order. When the deadline passes, a campaign with enough members has succeeded and its orders go ahead; one that fell short has failed, and every member's order is cancelled and what they paid is refunded to their wallet. A full campaign may close early. The campaign's life is the `group_campaign` state machine, asked by tag (joinable, refunds_members…). Capability: group_buying. |
+| `lib/grants.js` | the grant registry: where a thing granted is issued. |
 | `lib/offers.js` | Central Offers / Coupons / Discounts / Wallet engine. ONE reusable service (like registry.js / ai.js / modules.js) that any surface — storefront cart, checkout, platform subscription billing, AI metering, or a client API — calls to compute discounts, credits, free-shipping and coupon redemptions. Everything (types, scopes, channels, directions, funders, coupon kinds, limits) is DATA in meta_lists; new offer types/scope rules are added without code. Every offer is a row of `offers` — the per-store promotions it once read beside them were moved into it (portPromotions), so there is one record and one evaluation for every offer. |
 | `lib/routes/offer.js` | offer domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the offer domain; what it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
-**Registry lists** (editable in Data Studio): `finVoucherStatuses`, `groupCampaignStatuses`
+**Registry lists** (editable in Data Studio): `offerTypes`, `offerDirections`, `offerChannels`, `offerScopes`, `offerFunders`, `stackingPolicies`, `offerStatuses`
 
 ## Data model
 
@@ -131,60 +105,6 @@ A shopper describes what they trade in; staff value it, and the value comes off 
 | `campaign` | TEXT DEFAULT '' |
 | `version` | INTEGER DEFAULT 1 |
 | `parent_id` | INTEGER |
-| `uid` | TEXT |
-
-### `coupons`
-
-| Column | Type |
-|---|---|
-| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
-| `tenant_id` | INTEGER NOT NULL DEFAULT 0 |
-| `code` | TEXT NOT NULL |
-| `offer_id` | INTEGER |
-| `funder` | TEXT DEFAULT 'self' |
-| `funder_ref` | TEXT DEFAULT '' |
-| `brand_ref` | TEXT DEFAULT '' |
-| `kind` | TEXT NOT NULL DEFAULT 'single_use' |
-| `value` | REAL DEFAULT 0 |
-| `currency` | TEXT DEFAULT 'USD' |
-| `max_uses` | INTEGER DEFAULT 1 |
-| `per_owner_limit` | INTEGER DEFAULT 1 |
-| `used` | INTEGER DEFAULT 0 |
-| `issued_to` | TEXT DEFAULT '' |
-| `batch` | TEXT DEFAULT '' |
-| `starts` | TEXT |
-| `ends` | TEXT |
-| `status` | TEXT DEFAULT 'active' |
-| `note` | TEXT DEFAULT '' |
-| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
-| `deleted_at` | TEXT |
-| `uid` | TEXT |
-
-### `coupon_redemptions`
-
-| Column | Type |
-|---|---|
-| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
-| `tenant_id` | INTEGER NOT NULL |
-| `coupon_id` | INTEGER |
-| `offer_id` | INTEGER |
-| `code` | TEXT |
-| `order_id` | INTEGER |
-| `invoice_id` | INTEGER |
-| `owner` | TEXT |
-| `channel` | TEXT DEFAULT 'commerce' |
-| `amount` | REAL DEFAULT 0 |
-| `qty` | INTEGER DEFAULT 1 |
-| `funder` | TEXT DEFAULT 'self' |
-| `funder_ref` | TEXT DEFAULT '' |
-| `brand_ref` | TEXT DEFAULT '' |
-| `meta` | TEXT DEFAULT '{}' |
-| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
-| `credits` | REAL DEFAULT 0 |
-| `offer_type` | TEXT DEFAULT '' |
-| `status` | TEXT DEFAULT 'redeemed' |
-| `settlement_id` | INTEGER |
-| `unit` | TEXT DEFAULT '' |
 | `uid` | TEXT |
 
 ### `goip_touchpoints`
@@ -274,80 +194,17 @@ A shopper describes what they trade in; staff value it, and the value comes off 
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 | `uid` | TEXT |
 
-### `gift_vouchers`
-
-| Column | Type |
-|---|---|
-| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
-| `tenant_id` | INTEGER NOT NULL |
-| `code` | TEXT NOT NULL |
-| `amount` | REAL NOT NULL |
-| `currency` | TEXT |
-| `buyer` | TEXT |
-| `recipient` | TEXT |
-| `recipient_email` | TEXT |
-| `message` | TEXT |
-| `expires_at` | TEXT |
-| `redeemed_at` | TEXT |
-| `redeemed_by` | TEXT |
-| `status` | TEXT NOT NULL DEFAULT 'issued' |
-| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
-
-### `group_campaigns`
-
-| Column | Type |
-|---|---|
-| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
-| `tenant_id` | INTEGER NOT NULL |
-| `product_id` | TEXT NOT NULL |
-| `title` | TEXT DEFAULT '' |
-| `group_price` | REAL NOT NULL |
-| `min_members` | INTEGER NOT NULL |
-| `max_members` | INTEGER |
-| `ends_at` | TEXT NOT NULL |
-| `status` | TEXT NOT NULL DEFAULT 'open' |
-| `closed_at` | TEXT |
-| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
-
-### `group_members`
-
-| Column | Type |
-|---|---|
-| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
-| `tenant_id` | INTEGER NOT NULL |
-| `campaign_id` | INTEGER NOT NULL |
-| `owner` | TEXT NOT NULL |
-| `order_id` | INTEGER NOT NULL |
-| `qty` | INTEGER NOT NULL DEFAULT 1 |
-| `paid` | REAL NOT NULL DEFAULT 0 |
-| `refunded` | INTEGER NOT NULL DEFAULT 0 |
-| `joined_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
-
 ## API reference
 
 Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the session; mutating calls accept an `Idempotency-Key` header where noted.
 
 | Method and path | Handler | What it does |
 |---|---|---|
-| `POST /api/fintech/vouchers` | `apiFinVoucherIssue` | S2: issuing a voucher mints spendable wallet credit (redeemVoucher credits a real balance), so it is an operator action — never an anonymous one. Redeem stays owner-scoped: a shopper redeems a code they hold, validated against the issued row. The console's own gift_voucher entity is admin/platform-write with no module requirement (lib/entity.js), so this route matches it — the module gate belongs on the balance path (apiGiftAdd), not on the code-issuing one. |
-| `POST /api/fintech/vouchers/redeem` | `apiFinVoucherRedeem` | — |
-| `GET /api/group-buys` | `apiGroupBuysMine` | group buying |
-| `GET /api/admin/group-buys` | `apiAdminGroupBuys` | — |
-| `POST /api/admin/group-buys` | `apiAdminGroupBuyCreate` | — |
-| `POST /api/admin/group-buys/tick` | `apiAdminGroupBuyTick` | — |
-| `POST /api/admin/group-buys/:id/cancel` | `apiAdminGroupBuyCancel` | — |
-| `POST /api/coupon` | `apiCoupon` | — |
-| `POST /api/giftcard` | `apiGiftAdd` | S4: this used to credit body.amount without ever looking at a code — a customer could top up their own wallet indefinitely. Redeem goes through the same validation the fintech voucher path uses: the code must resolve to an issued row for this tenant, and marking it redeemed is what authorises the credit. |
 | `GET /api/offers` | `apiOffersList` | — |
 | `POST /api/offers` | `apiOfferSave` | — |
 | `PUT /api/offers/:id` | `apiOfferSave` | — |
 | `DELETE /api/offers/:id` | `apiOfferDelete` | — |
 | `POST /api/offers/preview` | `apiOffersPreview` | — |
-| `GET /api/offers/analytics` | `apiOffersAnalytics` | — |
-| `GET /api/offers/coupons` | `apiCouponsList` | — |
-| `POST /api/offers/coupons` | `apiCouponCreate` | — |
-| `POST /api/offers/coupons/generate` | `apiCouponGenerate` | — |
-| `DELETE /api/offers/coupons/:id` | `apiCouponVoid` | — |
 | `GET /api/platform/offers` | `apiPlatformOffers` | — |
 | `GET /api/goip` | `apiGoipManifest` | — |
 | `GET /api/goip/exchanges` | `apiGoipExchanges` | — |
@@ -366,17 +223,6 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 ## Process flows
 
 Each record's life is a declared state machine (`lib/seed/states.json`): the moves it may make, and the actions that make them.
-
-### Gift voucher (`gift_voucher`)
-
-```mermaid
-stateDiagram-v2
-  [*] --> issued
-  redeemed --> [*]
-  expired --> [*]
-```
-
-Actions: 
 
 ### Offer settlement (`goip_settlement`)
 
@@ -408,16 +254,6 @@ stateDiagram-v2
 
 Actions: 
 
-### Coupon redemption (`redemption`)
-
-```mermaid
-stateDiagram-v2
-  [*] --> redeemed
-  voided --> [*]
-```
-
-Actions: 
-
 ### Offer (`offer`)
 
 ```mermaid
@@ -436,37 +272,22 @@ stateDiagram-v2
 
 Actions: `submit` → submitted · `approve` → approved · `reject` → rejected · `certify` → certified · `publish` → published · `suspend` → suspended · `retire` → retired · `reopen` → draft
 
-### Group-buy campaign (`group_campaign`)
-
-```mermaid
-stateDiagram-v2
-  [*] --> open
-  open --> succeeded
-  open --> failed
-  open --> cancelled
-  succeeded --> [*]
-  failed --> [*]
-  cancelled --> [*]
-```
-
-Actions: `succeed` → succeeded · `fail` → failed · `cancel` → cancelled
-
 ## Data flow
 
 ```mermaid
 flowchart LR
-  U([Shopper / Seller / Store administrator / Platform administrator / Partner or affiliate]) --> UI[deals.html, gift-cards.html, store console, platform console]
-  UI --> API[33 API routes]
-  API --> ENG[goip.js, groupbuy.js, offers.js, offer.js]
-  ENG --> DB[(attribution, offers, coupons, coupon_redemptions, goip_touchpoints, goip_budgets, …)]
-  ENG --> SM{{8 state machines}}
+  U([Shopper / Seller / Store administrator / Platform administrator / Partner or affiliate]) --> UI[deals.html, store console, platform console]
+  UI --> API[19 API routes]
+  API --> ENG[goip.js, grants.js, offers.js, offer.js]
+  ENG --> DB[(attribution, offers, goip_touchpoints, goip_budgets, goip_settlements, goip_entitlements)]
+  ENG --> SM{{5 state machines}}
 ```
 
 ## User interface
 
-**Pages:** `deals.html`, `gift-cards.html`
+**Pages:** `deals.html`
 
-**Store console:** 🎟️ Offers & Coupons · Ω∞ GOIP · 👥 Group Buying · 🏷️ Price Match · ♻️ Trade-ins
+**Store console:** 🏷️ Price Match · ♻️ Trade-ins
 
 **Platform console:** 🏷️ Offers · Affiliates · ⭐ Loyalty · 🎁 Rewards · 🔗 Referrals · 🏷️ Offers · Affiliates · Ω∞ GOIP · Value Exchange
 

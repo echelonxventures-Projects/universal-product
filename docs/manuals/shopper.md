@@ -36,11 +36,43 @@ More: [Product options](../domains/product_options.md)
 
 ## Offers
 
-Every reason a buyer pays less or gets more: offers and discounts of every type, coupons, cashback, rewards, gift cards and vouchers, deals and countdowns, group buying, price matching and trade-ins, the funding and settlement of each, and their governance.
+The offers themselves: every price a buyer pays less or gets more, and every rule about how they apply — the offer record, its types, its scopes, its channels, its funders, its stacking policy and its governance. A coupon, a voucher, a gift card, a cashback, a reward and a group buy are their own domains; this one decides which of them applies.
 
 _Not yet written._
 
 More: [Offers](../domains/offer.md)
+
+## Group buying
+
+A lower price when enough shoppers join before a deadline: staff open a campaign on a product with a group price, how many members it needs and how many it may take; a shopper joins by buying at the group price. A campaign that reaches its members succeeds and its orders go ahead; one that falls short fails and every member's order is cancelled and refunded.
+
+Open a product with a group offer, review the required member count and deadline, then join through checkout. Track joined groups under your activity. A successful group proceeds normally; a failed or cancelled group returns the paid amount to your wallet.
+
+More: [Group buying](../domains/groupbuy.md)
+
+## Coupons
+
+The codes a shopper types at the cart: a code that carries a value, issued by staff or in bulk, validated against its kind and its limits, redeemed into the redemption ledger, and voided when the order is refunded. The kinds — a single-use code, a bulk lot, a referral code — are rows.
+
+Enter a code in the cart and choose **Apply**. The cart shows the discount or credit before checkout. An invalid code leaves the cart unchanged and explains the reason. A code is counted only when the order is successfully recorded.
+
+More: [Coupons](../domains/coupon.md)
+
+## Vouchers
+
+An instrument of value that is not the shop's own discount and not a gift card: a bank voucher, a benefits note, an organisation's credit. Who stands behind it, whether it may be spent in part and how long it lives are its kind's rows; the code it travels on belongs to the Coupon domain.
+
+Enter an issuer-provided voucher code in the cart. Confirm the issuer, value and resulting discount before placing the order. Contact the issuer if the code is expired or outside its permitted store or audience.
+
+More: [Vouchers](../domains/voucher.md)
+
+## Gift cards
+
+A card bought as an item or issued by staff: a code with a value, sent to its recipient with a message, redeemable into the recipient's gift balance, checked for its balance, voided with a reason and expired after its validity. A card is a node on the kernel; its code is sealed and found by a blind index.
+
+Open **Gift Cards** to buy or check a card. Sign in before redeeming. Enter the code once; after successful redemption the amount appears in your gift balance and is automatically considered at checkout where the store permits wallet payment.
+
+More: [Gift cards](../domains/giftcard.md)
 
 ## Cart and checkout
 

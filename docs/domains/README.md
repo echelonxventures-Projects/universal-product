@@ -17,6 +17,10 @@ Every artifact the platform is built from — a code file, a table, an API route
 | [Pricing](pricing.md) | Value | Store administrator, Seller | 3 sections to write |
 | [Currencies and exchange](currency.md) | Value | Store administrator, Platform administrator | 3 sections to write |
 | [Offers](offer.md) | Commerce | Shopper, Seller, Store administrator, Platform administrator, Partner or affiliate | 6 sections to write |
+| [Group buying](groupbuy.md) | Commerce | Shopper, Store administrator, Platform administrator | complete |
+| [Coupons](coupon.md) | Commerce | Shopper, Store administrator, Platform administrator | complete |
+| [Vouchers](voucher.md) | Commerce | Shopper, Store administrator, Platform administrator, Partner or affiliate | complete |
+| [Gift cards](giftcard.md) | Commerce | Shopper, Store administrator, Platform administrator | complete |
 | [Affiliates and creators](affiliate.md) | Commerce | Partner or affiliate, Store administrator | 3 sections to write |
 | [Advertising](advertising.md) | Commerce | Seller, Store administrator | 3 sections to write |
 | [Cart and checkout](cart.md) | Commerce | Guest, Shopper | 3 sections to write |

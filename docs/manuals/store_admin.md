@@ -100,11 +100,43 @@ More: [Currencies and exchange](../domains/currency.md)
 
 ## Offers
 
-Every reason a buyer pays less or gets more: offers and discounts of every type, coupons, cashback, rewards, gift cards and vouchers, deals and countdowns, group buying, price matching and trade-ins, the funding and settlement of each, and their governance.
+The offers themselves: every price a buyer pays less or gets more, and every rule about how they apply — the offer record, its types, its scopes, its channels, its funders, its stacking policy and its governance. A coupon, a voucher, a gift card, a cashback, a reward and a group buy are their own domains; this one decides which of them applies.
 
 _Not yet written._
 
 More: [Offers](../domains/offer.md)
+
+## Group buying
+
+A lower price when enough shoppers join before a deadline: staff open a campaign on a product with a group price, how many members it needs and how many it may take; a shopper joins by buying at the group price. A campaign that reaches its members succeeds and its orders go ahead; one that falls short fails and every member's order is cancelled and refunded.
+
+Open **Offers → Group Buying**, create the campaign and monitor members. Use **Settle ended groups** after deadlines, or cancel an open campaign when necessary. Verify wallet refunds and order states after a failed campaign.
+
+More: [Group buying](../domains/groupbuy.md)
+
+## Coupons
+
+The codes a shopper types at the cart: a code that carries a value, issued by staff or in bulk, validated against its kind and its limits, redeemed into the redemption ledger, and voided when the order is refunded. The kinds — a single-use code, a bulk lot, a referral code — are rows.
+
+Open **Offers → Coupons**. Issue a single code or batch, set its kind, value, funder and limits, and give the code to its intended audience. Use the redemption table and analytics to reconcile usage. Void an unused or compromised code; refunds automatically claw back redemptions.
+
+More: [Coupons](../domains/coupon.md)
+
+## Vouchers
+
+An instrument of value that is not the shop's own discount and not a gift card: a bank voucher, a benefits note, an organisation's credit. Who stands behind it, whether it may be spent in part and how long it lives are its kind's rows; the code it travels on belongs to the Coupon domain.
+
+Accept only voucher kinds and issuers enabled by platform policy. Reconcile voucher redemptions by issuer and funder, and investigate mismatches through the audit trail rather than editing ledger rows.
+
+More: [Vouchers](../domains/voucher.md)
+
+## Gift cards
+
+A card bought as an item or issued by staff: a code with a value, sent to its recipient with a message, redeemable into the recipient's gift balance, checked for its balance, voided with a reason and expired after its validity. A card is a node on the kernel; its code is sealed and found by a blind index.
+
+Open **Gift Cards** to configure the capability, issue a card, provide the recipient details and record the one-time code securely. Use the card list to check state and void compromised or incorrectly issued cards with a reason.
+
+More: [Gift cards](../domains/giftcard.md)
 
 ## Affiliates and creators
 
