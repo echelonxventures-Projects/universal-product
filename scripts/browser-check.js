@@ -19,6 +19,10 @@ const PORT = Number(process.env.CHECK_PORT || 8877);
 const BASE = `http://localhost:${PORT}`;
 const DB = path.join(os.tmpdir(), "luxora-browser-" + process.pid + ".db");
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+/* A fresh Postgres install hydrates the compiled master registry over the
+   wire before the storefront can paint. Keep the same render/error checks,
+   while giving that first request its real startup budget. */
+const READY_ATTEMPTS = process.env.LX_DB_DRIVER === "postgres" ? 120 : 40;
 
 function findChrome() {
   const c = [process.env.CHROME_PATH, "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "/Applications/Chromium.app/Contents/MacOS/Chromium",
@@ -117,7 +121,7 @@ if (require.main === module) (async () => {
       await tab.send("Page.navigate", { url });
       await tab.once("Page.loadEventFired", 15000);
       let ok = false;
-      for (let i = 0; i < 40 && !ok; i++) { ok = !!(await tab.eval("(" + ready + ")()").catch(() => false)); if (!ok) await sleep(150); }
+      for (let i = 0; i < READY_ATTEMPTS && !ok; i++) { ok = !!(await tab.eval("(" + ready + ")()").catch(() => false)); if (!ok) await sleep(150); }
       await sleep(700); /* let late async boot work surface its errors */
       const issues = problems(tab.events);
       if (!ok) issues.unshift("page did not render");

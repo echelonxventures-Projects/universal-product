@@ -2054,11 +2054,11 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
         const memOwner = "t" + du.tenant_id + ":u:" + du.id;
         /* the wallet is emptied and funded through the ledger (staff adjustments, each with a reason) */
         await C("/api/wallets"); /* opens the default wallet if the member has none */
-        const ws = (await A("/api/admin/wallets?owner=" + encodeURIComponent(memOwner))).body.wallets || [];
-        const mw = ws.find(w => w.definition && w.definition.key) || {};
+         const ws = (await A("/api/admin/wallets?owner=" + encodeURIComponent(memOwner))).body.wallets || [];
+         const mw = ws.find(w => w.definition && w.definition.key === "main") || {};
         if (mw.posted > 0) await A("/api/admin/wallets/" + encodeURIComponent(mw.id) + "/adjust", "POST", { amount: -mw.posted, reason: "test: empty the wallet", idempotency_key: "smoke-empty" });
-        const broke = await C("/api/membership/subscribe", "POST", { tier: "premier" });
-        ok(broke.status === 400 && /Insufficient/i.test(broke.body.error || ""), "a paid membership is refused from an empty wallet", broke.body);
+         const broke = await C("/api/membership/subscribe", "POST", { tier: "premier" });
+         ok(broke.status === 400 && /Insufficient/i.test(broke.body.error || ""), "a paid membership is refused from an empty wallet", broke.body);
         const fund = await A("/api/admin/wallets/" + encodeURIComponent(mw.id) + "/adjust", "POST", { amount: 500, reason: "test: fund the wallet", idempotency_key: "smoke-fund" });
         ok(fund.status === 200, "staff fund the wallet through the ledger", fund.body); }
       const mem1 = await C("/api/membership/subscribe", "POST", { tier: "premier" });
