@@ -312,8 +312,20 @@ for (const sv of new Set([server, listenServer])) { sv.keepAliveTimeout = KEEPAL
 function prodCredentialGuard() {
   if (process.env.NODE_ENV !== "production") return;
   const weak = [];
-  if (!process.env.PLATFORM_PASSWORD) weak.push(["PLATFORM_PASSWORD", "platform@luxora.shop", "platform123"]);
-  if (!process.env.ADMIN_PASSWORD) weak.push(["ADMIN_PASSWORD", "admin@luxora.shop", "admin123"]);
+  const seededDefault = (row, password, context) => {
+    if (!row || !row.salt || !row.hash) return true;
+    try {
+      const ver = row.kdf_version || "v1";
+      return sec.kdfVerify(password, row.salt, row.hash, ver, ver === "v1" ? "" : context);
+    } catch (e) { return true; }
+  };
+  const platformEmail = String(process.env.PLATFORM_EMAIL || "platform@luxora.shop").toLowerCase();
+  const adminEmail = String(process.env.ADMIN_EMAIL || "admin@luxora.shop").toLowerCase();
+  const platform = get("SELECT * FROM platform_admins WHERE email=?", platformEmail);
+  const master = masterTenant();
+  const admin = master && get("SELECT * FROM users WHERE tenant_id=? AND email=?", master.id, adminEmail);
+  if (seededDefault(platform, "platform123", "pa:" + platformEmail)) weak.push(["PLATFORM_PASSWORD", platformEmail, "platform123"]);
+  if (seededDefault(admin, "admin123", adminEmail)) weak.push(["ADMIN_PASSWORD", adminEmail, "admin123"]);
   if (!weak.length) return;
   console.error("\n" + "=".repeat(78));
   console.error("REFUSING TO START IN PRODUCTION WITH SEED-DEFAULT CREDENTIALS");
@@ -322,8 +334,8 @@ function prodCredentialGuard() {
     console.error(`  ${email} still boots with the documented default "${pw}".`);
   console.error("  Set the environment variables and restart:");
   for (const [env] of weak) console.error(`    ${env}=<a strong password>`);
-  console.error("  (a password already seeded into an existing DB is unaffected — this gate\n"
-    + "   only blocks a first boot that would create the accounts with a default.)");
+  console.error("  (rotate the stored passwords in Platform → Administration and Store → Team;\n"
+    + "   setting an environment variable alone does not change an existing account.)");
   console.error("=".repeat(78) + "\n");
   process.exit(1);
 }
@@ -376,7 +388,7 @@ listenServer.listen(PORT, () => {
    P L A T F O R M  ·  the master global platform, configured into any platform  ·  🛡 10-layer security${IS_TLS ? " (TLS ON)" : " (HTTP — set LUX_TLS=1 for HTTPS)"}
 
    🏬 Master:      http${IS_TLS ? "s" : ""}://${(master || { slug: "luxora" }).slug}.localhost:${PORT} (the master's own deployment${fixtures.length ? `, +${fixtures.length} fixture${fixtures.length > 1 ? "s" : ""}` : ""})
-   🌐 Console:    http${IS_TLS ? "s" : ""}://localhost:${PORT}/console.html    (platform@luxora.shop / platform123 · store admin admin@luxora.shop / admin123)
+   🌐 Console:    http${IS_TLS ? "s" : ""}://localhost:${PORT}/console.html    (${process.env.NODE_ENV === "production" ? "credentials configured by the deployment" : "platform@luxora.shop / platform123 · store admin admin@luxora.shop / admin123"})
    🔐 Scorecard:   GET /api/platform/security
 `);
   /* optional multi-node Redis queue worker (config-driven; off unless queue=redis and LX_WORKER≠0) */

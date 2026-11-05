@@ -2,20 +2,34 @@
 # database(s), the keyring (data/master.json) and the registry seal — baking those into
 # an image ships one machine's secrets to every container started from it.
 data/
+*.db
+*.db-*
+*.sqlite*
+*.pem
+*.key
+
+# Local tooling and repository metadata.
 node_modules/
 .git/
 .github/
-*.db
-*.db-wal
-*.db-shm
-*.sqlite*
-*.log
-*.pid
-.env
-.env.*
-test/
+.opencode/
 _superseded/
 .workbuddy-ai/
 .vscode/
 .idea/
 .DS_Store
+coverage/
+dist/
+build/
+out/
+*.log
+*.pid
+.luxora*.pid
+.env
+.env.*
+!.env.example
+
+# Tests and generated scratch artifacts are not needed at runtime.
+test/
+_registry/canonical.json
+_registry/canonical.lxr

@@ -56,7 +56,7 @@ docker compose up --build     # http://localhost:3000 (data/ and redis persisted
 
 Four things are required of a production boot, and two are enforced at startup:
 
-- **`PLATFORM_PASSWORD` and `ADMIN_PASSWORD` must be set.** The seed defaults (`platform123` / `admin123`) exist so a first local boot is observable; with `NODE_ENV=production` the platform **refuses to start** until both are set, printing the two accounts that would otherwise boot with a documented default. (An already-seeded DB is unaffected — the gate only blocks the first boot that would create the accounts.)
+- **`PLATFORM_PASSWORD` and `ADMIN_PASSWORD` must be changed.** The seed defaults (`platform123` / `admin123`) exist so a first local boot is observable; with `NODE_ENV=production` the platform **refuses to start** while either seeded account still has its default password. This protects both fresh and previously seeded databases; changing the environment variable alone is not a substitute for rotating the stored password.
 - **Persist `data/`.** The encryption keyring (`master.json`) and the registry seal (`registry.json`) live there. A redeploy without the volume loses the ability to decrypt sealed gateway credentials and to verify the registry seal.
 - **Set `LX_METRICS_TOKEN` (≥ 16 chars)** if a scraper reads `/metrics` — otherwise the endpoint answers only to a live platform-admin session and returns 401 to everything else.
 - **Rotate the seeded passwords** even when set via env (`Platform → Administration`, `Store → Team`).

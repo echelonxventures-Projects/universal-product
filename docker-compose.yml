@@ -1,9 +1,6 @@
-version: '3.8'
 services:
   redis:
     image: redis:alpine
-    ports:
-      - "6379:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -14,6 +11,15 @@ services:
 
   luxora:
     build: .
+    init: true
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 30s
     ports:
       - "3000:3000"
     environment:
