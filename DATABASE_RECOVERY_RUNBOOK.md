@@ -13,6 +13,18 @@ Keep the keys and the pepper in a secret store that is backed up separately from
 backups. A backup that carries the key to its own secrets protects nothing, so `scripts/backup.js`
 deliberately does not include them.
 
+### The server refuses to boot: `data/master.json …`
+
+The keyring exists but cannot be used, so the server stopped rather than write a new key over it.
+The file has not been changed.
+
+1. Restore `master.json` from its escrow copy and start again.
+2. If `LUXORA_MASTER_KEY` is set, the file only names the key version: restore it the same way, and
+   do not change the key.
+3. Only if no copy exists: move the damaged file aside (never delete it) and start. The server creates
+   a new keyring, and every sealed gateway and connector credential must be re-entered in the consoles.
+   This is a deliberate, permanent loss of those secrets, so record who decided it and when.
+
 ## Database engine
 
 Production runs on **SQLite** (`node:sqlite`, WAL mode, `busy_timeout` 3 s), one process, one

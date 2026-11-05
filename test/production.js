@@ -93,6 +93,46 @@ const ADDR = { name: "Prod Test", address: "1 Test St", city: "Seattle", state: 
       fs.rmSync(iso, { recursive: true, force: true });
     }
 
+    console.log("▸ A DAMAGED KEYRING STOPS THE BOOT AND IS NEVER REPLACED");
+    {
+      /* a keyring that could not be used was treated as no keyring: a new key was written over
+         it, the server came up, and every credential sealed under the old key was lost. */
+      const iso = fs.mkdtempSync(path.join(os.tmpdir(), "lx-keyring-"));
+      fs.mkdirSync(path.join(iso, "lib", "seed"), { recursive: true }); fs.mkdirSync(path.join(iso, "data"));
+      fs.copyFileSync(path.join(ROOT, "lib", "security.js"), path.join(iso, "lib", "security.js"));
+      fs.copyFileSync(path.join(ROOT, "lib", "seed", "defaults.json"), path.join(iso, "lib", "seed", "defaults.json"));
+      const file = path.join(iso, "data", "master.json"), mod = JSON.stringify(path.join(iso, "lib", "security.js"));
+      const e2 = Object.assign({}, process.env); delete e2.LUXORA_MASTER_KEY;
+      const load = (body, env) => require("child_process").spawnSync(process.execPath, ["-e", `const s = require(${mod}); ${body || ""}`], { env: env || e2 });
+      const hex = require("crypto").randomBytes(32).toString("hex");
+      for (const [name, text] of [
+        ["corrupt JSON", "{corrupt"],
+        ["an empty file", ""],
+        ["no current key", "{}"],
+        ["a current key that is missing", JSON.stringify({ current: "k2", keys: { k1: hex } })],
+        ["keys that are not an object", JSON.stringify({ current: "k1", keys: null })],
+        ["a key that is not 32 bytes of hex", JSON.stringify({ current: "k1", keys: { k1: "abc" } })],
+      ]) {
+        fs.writeFileSync(file, text);
+        const r = load();
+        ok(r.status !== 0 && /master\.json/.test(String(r.stderr)) && fs.readFileSync(file, "utf8") === text, `${name}: the boot stops and the file is left as it was`, { status: r.status, after: fs.readFileSync(file, "utf8") });
+      }
+      fs.writeFileSync(file, "{corrupt");
+      const withEnv = load("", Object.assign({}, e2, { LUXORA_MASTER_KEY: hex }));
+      ok(withEnv.status !== 0 && fs.readFileSync(file, "utf8") === "{corrupt", "a damaged keyring stops the boot even with LUXORA_MASTER_KEY set", { status: withEnv.status });
+
+      fs.rmSync(file);
+      const first = load(`console.log(s.encryptSecret("sk_test_value", "1|stripe|secretKey"));`);
+      ok(first.status === 0 && fs.existsSync(file), "a fresh install with no keyring still creates one", { status: first.status });
+      const sealed = String(first.stdout).trim().split("\n").pop(), written = fs.readFileSync(file, "utf8");
+      const again = load(`console.log(s.decryptSecret(${JSON.stringify(sealed)}, "1|stripe|secretKey")); s.rotateKey();`);
+      ok(String(again.stdout).trim().split("\n").pop() === "sk_test_value", "a sound keyring loads and opens what it sealed, across a restart", { status: again.status });
+      ok(written !== fs.readFileSync(file, "utf8") && JSON.parse(fs.readFileSync(file, "utf8")).current === "k2", "rotation still writes the keyring", fs.readFileSync(file, "utf8").length);
+      ok(fs.readdirSync(path.join(iso, "data")).join() === "master.json", "writing the keyring leaves no temporary file behind", fs.readdirSync(path.join(iso, "data")));
+      ok((fs.statSync(file).mode & 0o777) === 0o600, "the keyring stays readable by its owner only", (fs.statSync(file).mode & 0o777).toString(8));
+      fs.rmSync(iso, { recursive: true, force: true });
+    }
+
     console.log("▸ A PRODUCTION SERVER PAYS ONLY WITH REAL MONEY");
     srv = await boot();
     {
