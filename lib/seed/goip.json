@@ -756,10 +756,10 @@
   {
    "key": "gift_card",
    "name": "Gift Cards",
-   "type": "gift_card_credit",
+   "type": "gift_card_issue",
    "direction": "gift",
    "unit": "amount",
-   "grants": "coupon:gift_card"
+   "grants": "gift_card"
   },
   {
    "key": "voucher",

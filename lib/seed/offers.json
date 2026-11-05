@@ -106,8 +106,8 @@
     "unit": "amount"
    },
    {
-    "key": "gift_card_credit",
-    "name": "Gift-card credit",
+    "key": "gift_card_issue",
+    "name": "Gift card",
     "direction": "credit",
     "unit": "amount"
    }
@@ -124,7 +124,6 @@
    {
     "key": "commerce",
     "name": "commerce",
-    "includes_promotions": true,
     "gates_pro": true
    },
    {
@@ -215,41 +214,6 @@
    "partner",
    "platform"
   ],
-  "couponKinds": [
-   {
-    "key": "code",
-    "name": "code"
-   },
-   {
-    "key": "single_use",
-    "name": "single_use"
-   },
-   {
-    "key": "multi_use",
-    "name": "multi_use"
-   },
-   {
-    "key": "first_order",
-    "name": "first_order",
-    "new_customers_only": true
-   },
-   {
-    "key": "bulk_issued",
-    "name": "bulk_issued"
-   },
-   {
-    "key": "gift_card",
-    "name": "gift_card"
-   },
-   {
-    "key": "bank_voucher",
-    "name": "bank_voucher"
-   },
-   {
-    "key": "referral",
-    "name": "referral"
-   }
-  ],
   "stackingPolicies": [
    {
     "key": "stack_with_others",
@@ -276,17 +240,6 @@
    "active",
    "expired",
    "inactive"
-  ],
-  "couponStatuses": [
-   "active",
-   "exhausted",
-   "revoked",
-   "expired"
-  ],
-  "redemptionStatuses": [
-   "redeemed",
-   "voided",
-   "reserved"
   ]
  }
 }

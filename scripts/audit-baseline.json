@@ -1,7 +1,7 @@
 {
  "summary": {
-  "branch": 53,
-  "fallback": 88,
+  "branch": 51,
+  "fallback": 87,
   "seedConstants": {
    "count": 7,
    "lines": 223
@@ -32,7 +32,6 @@
    "lib/mailer.js · offline": 1,
    "lib/marketplace.js · impression": 1,
    "lib/offers.js · offer": 2,
-   "lib/offers.js · promotion": 1,
    "lib/offers.js · taxonomy": 1,
    "lib/operations.js · workforce": 1,
    "lib/recurring.js · early_access": 1,
@@ -50,7 +49,6 @@
    "lib/ucos-foundations.js · governance": 2,
    "lib/ugc.js · review": 1,
    "lib/webauthn.js · packed": 1,
-   "public/js/admin.js · taxonomy": 1,
    "public/js/app.js · coupon": 1,
    "public/js/app.js · gift": 1,
    "public/js/app.js · rent": 2,
@@ -74,7 +72,6 @@
    "lib/api.js · search": 1,
    "lib/api.js · standard": 1,
    "lib/api.js · support": 1,
-   "lib/api.js · widget": 1,
    "lib/capabilities.js · custom": 1,
    "lib/config.js · offline": 1,
    "lib/connect.js · payment": 1,

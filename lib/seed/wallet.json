@@ -175,6 +175,12 @@
    "type": "text",
    "owner": "Value",
    "label": "The definition an owner's money lands in when nothing else is named"
+  },
+  {
+   "name": "value.wallet.checkout_priority",
+   "type": "integer",
+   "owner": "Value",
+   "label": "Order in which checkout spends this wallet (0: checkout does not spend it)"
   }
  ],
  "settingKeys": {
@@ -185,7 +191,8 @@
   "max_balance": "value.wallet.max_balance",
   "max_per_owner": "value.wallet.max_per_owner",
   "hold_minutes": "value.wallet.hold_minutes",
-  "default_definition": "value.wallet.default_definition"
+  "default_definition": "value.wallet.default_definition",
+  "checkout_priority": "value.wallet.checkout_priority"
  },
  "namespaceSettings": {
   "value.wallet.default_definition": "main"
@@ -203,7 +210,8 @@
     "overdraft": 0,
     "max_balance": 0,
     "max_per_owner": 0,
-    "hold_minutes": 30
+    "hold_minutes": 30,
+    "checkout_priority": 0
    }
   },
   {
@@ -234,7 +242,8 @@
      "opening",
      "hold"
     ],
-    "max_per_owner": 1
+    "max_per_owner": 1,
+    "checkout_priority": 2
    }
   },
   {
@@ -262,7 +271,8 @@
      "opening",
      "hold"
     ],
-    "max_per_owner": 1
+    "max_per_owner": 1,
+    "checkout_priority": 1
    }
   },
   {

@@ -1,0 +1,47 @@
+{
+ "$comment": "Coupons (lib/coupons.js), the Coupon domain: a code a shopper types at the cart. The kinds are rows: what a code is called and the rules it carries (a new-customers-only kind, a bulk kind, a single-use kind). The code prefix is the store's setting, not here. The redemption ledger's life is the `redemption` state machine (lib/seed/states.json).",
+ "REGISTRIES": {
+  "couponKinds": [
+   {
+    "key": "code",
+    "name": "code"
+   },
+   {
+    "key": "single_use",
+    "name": "single_use"
+   },
+   {
+    "key": "multi_use",
+    "name": "multi_use"
+   },
+   {
+    "key": "first_order",
+    "name": "first_order",
+    "new_customers_only": true
+   },
+   {
+    "key": "bulk_issued",
+    "name": "bulk_issued"
+   },
+   {
+    "key": "bank_voucher",
+    "name": "bank_voucher"
+   },
+   {
+    "key": "referral",
+    "name": "referral"
+   }
+  ],
+  "couponStatuses": [
+   "active",
+   "expired",
+   "exhausted",
+   "revoked"
+  ],
+  "redemptionStatuses": [
+   "redeemed",
+   "voided",
+   "reserved"
+  ]
+ }
+}

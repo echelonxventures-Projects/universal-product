@@ -60,29 +60,12 @@ A shopper describes what they trade in; staff value it, and the value comes off 
 |---|---|
 | `lib/goip.js` | GOIP Ω∞ — GLOBAL OFFER INFRASTRUCTURE PLATFORM Universal Incentive · Offer · Reward · Value-Exchange operating system for LUXORA. |
 | `lib/groupbuy.js` | Group buying: a lower price when enough shoppers join. Staff open a campaign on a product: a group price, how many members it needs by a deadline, and how many it may take. A shopper joins by buying at the group price — the campaign rides on the bag line as its `group` term (lib/lineterms.js) — and becomes a member with that order. When the deadline passes, a campaign with enough members has succeeded and its orders go ahead; one that fell short has failed, and every member's order is cancelled and what they paid is refunded to their wallet. A full campaign may close early. The campaign's life is the `group_campaign` state machine, asked by tag (joinable, refunds_members…). Capability: group_buying. |
-| `lib/offers.js` | Central Offers / Coupons / Discounts / Wallet engine. ONE reusable service (like registry.js / ai.js / modules.js) that any surface — storefront cart, checkout, platform subscription billing, AI metering, or a client API — calls to compute discounts, credits, free-shipping and coupon redemptions. Everything (types, scopes, channels, directions, funders, coupon kinds, limits) is DATA in meta_lists; new offer types/scope rules are added without code. Legacy per-store `promotions` are read too, so nothing that already works regresses. |
+| `lib/offers.js` | Central Offers / Coupons / Discounts / Wallet engine. ONE reusable service (like registry.js / ai.js / modules.js) that any surface — storefront cart, checkout, platform subscription billing, AI metering, or a client API — calls to compute discounts, credits, free-shipping and coupon redemptions. Everything (types, scopes, channels, directions, funders, coupon kinds, limits) is DATA in meta_lists; new offer types/scope rules are added without code. Every offer is a row of `offers` — the per-store promotions it once read beside them were moved into it (portPromotions), so there is one record and one evaluation for every offer. |
 | `lib/routes/offer.js` | offer domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the offer domain; what it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `finVoucherStatuses`, `groupCampaignStatuses`
 
 ## Data model
-
-### `promotions`
-
-| Column | Type |
-|---|---|
-| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
-| `tenant_id` | INTEGER NOT NULL |
-| `name` | TEXT NOT NULL |
-| `type` | TEXT NOT NULL |
-| `value` | REAL DEFAULT 0 |
-| `rules` | TEXT DEFAULT '{}' |
-| `scope` | TEXT DEFAULT '{}' |
-| `starts` | TEXT |
-| `ends` | TEXT |
-| `status` | TEXT DEFAULT 'active' |
-| `code` | TEXT DEFAULT '' |
-| `deleted_at` | TEXT |
 
 ### `attribution`
 
@@ -353,13 +336,8 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `POST /api/admin/group-buys` | `apiAdminGroupBuyCreate` | — |
 | `POST /api/admin/group-buys/tick` | `apiAdminGroupBuyTick` | — |
 | `POST /api/admin/group-buys/:id/cancel` | `apiAdminGroupBuyCancel` | — |
-| `GET /api/promos` | `apiPromos` | — |
 | `POST /api/coupon` | `apiCoupon` | — |
 | `POST /api/giftcard` | `apiGiftAdd` | S4: this used to credit body.amount without ever looking at a code — a customer could top up their own wallet indefinitely. Redeem goes through the same validation the fintech voucher path uses: the code must resolve to an issued row for this tenant, and marking it redeemed is what authorises the credit. |
-| `GET /api/admin/promotions` | `apiAdminPromotions` | — |
-| `POST /api/admin/promotions` | `apiAdminPromoSave` | — |
-| `PUT /api/admin/promotions/:id` | `apiAdminPromoSave` | — |
-| `DELETE /api/admin/promotions/:id` | `apiAdminPromoDelete` | — |
 | `GET /api/offers` | `apiOffersList` | — |
 | `POST /api/offers` | `apiOfferSave` | — |
 | `PUT /api/offers/:id` | `apiOfferSave` | — |
@@ -458,15 +436,6 @@ stateDiagram-v2
 
 Actions: `submit` → submitted · `approve` → approved · `reject` → rejected · `certify` → certified · `publish` → published · `suspend` → suspended · `retire` → retired · `reopen` → draft
 
-### Promotion (`promotion`)
-
-```mermaid
-stateDiagram-v2
-  [*] --> active
-```
-
-Actions: 
-
 ### Group-buy campaign (`group_campaign`)
 
 ```mermaid
@@ -487,10 +456,10 @@ Actions: `succeed` → succeeded · `fail` → failed · `cancel` → cancelled
 ```mermaid
 flowchart LR
   U([Shopper / Seller / Store administrator / Platform administrator / Partner or affiliate]) --> UI[deals.html, gift-cards.html, store console, platform console]
-  UI --> API[38 API routes]
+  UI --> API[33 API routes]
   API --> ENG[goip.js, groupbuy.js, offers.js, offer.js]
-  ENG --> DB[(promotions, attribution, offers, coupons, coupon_redemptions, goip_touchpoints, …)]
-  ENG --> SM{{9 state machines}}
+  ENG --> DB[(attribution, offers, coupons, coupon_redemptions, goip_touchpoints, goip_budgets, …)]
+  ENG --> SM{{8 state machines}}
 ```
 
 ## User interface

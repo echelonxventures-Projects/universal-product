@@ -175,11 +175,6 @@ CREATE TABLE relationships (
   from_id TEXT NOT NULL, to_id TEXT NOT NULL, type TEXT NOT NULL
 );
 CREATE UNIQUE INDEX ux_relationships_edge ON relationships(tenant_id, from_id, to_id, type);
-CREATE TABLE promotions (
-  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, name TEXT NOT NULL,
-  type TEXT NOT NULL, value REAL DEFAULT 0, rules TEXT DEFAULT '{}', scope TEXT DEFAULT '{}',
-  starts TEXT, ends TEXT, status TEXT DEFAULT 'active', code TEXT DEFAULT ''
-, deleted_at TEXT);
 CREATE TABLE sellers (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, name TEXT NOT NULL,
   role TEXT DEFAULT 'retailer', email TEXT, status TEXT DEFAULT 'active', commission_pct REAL DEFAULT 5
@@ -782,6 +777,13 @@ CREATE TABLE coupon_redemptions (
   funder TEXT DEFAULT 'self', funder_ref TEXT DEFAULT '', brand_ref TEXT DEFAULT '',
   meta TEXT DEFAULT '{}', created_at TEXT NOT NULL DEFAULT (datetime('now'))
 , credits REAL DEFAULT 0, offer_type TEXT DEFAULT '', status TEXT DEFAULT 'redeemed', settlement_id INTEGER, unit TEXT DEFAULT '', uid TEXT);
+CREATE TABLE vouchers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 0,
+  code TEXT NOT NULL, kind TEXT NOT NULL DEFAULT 'bank_voucher', issued_by TEXT DEFAULT '', offer_id INTEGER,
+  value REAL DEFAULT 0, currency TEXT DEFAULT 'USD', issued_to TEXT DEFAULT '', batch TEXT DEFAULT '',
+  starts TEXT, ends TEXT, status TEXT DEFAULT 'active', note TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE (tenant_id, code)
+);
 CREATE TABLE wallet_entries (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 0,
   owner TEXT NOT NULL, currency TEXT DEFAULT 'USD', kind TEXT NOT NULL,
@@ -1341,14 +1343,6 @@ CREATE TABLE insurance_policies (
   status TEXT NOT NULL DEFAULT 'quoted', created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_insurance_tenant ON insurance_policies(tenant_id, owner, status);
-CREATE TABLE gift_vouchers (
-  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
-  code TEXT NOT NULL, amount REAL NOT NULL, currency TEXT,
-  buyer TEXT, recipient TEXT, recipient_email TEXT, message TEXT,
-  expires_at TEXT, redeemed_at TEXT, redeemed_by TEXT,
-  status TEXT NOT NULL DEFAULT 'issued', created_at TEXT NOT NULL DEFAULT (datetime('now'))
-);
-CREATE INDEX ix_voucher_tenant ON gift_vouchers(tenant_id, code, status);
 CREATE TABLE seller_onboarding (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
   seller_id INTEGER, ref TEXT, business_name TEXT NOT NULL,

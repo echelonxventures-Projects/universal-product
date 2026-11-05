@@ -11,6 +11,18 @@ const ROOT = path.join(__dirname, "..");
 const read = f => fs.readFileSync(path.join(ROOT, f), "utf8");
 const J = f => JSON.parse(read(f));
 
+/* the registry lists a domain owns: every seeded list is a list, wherever its seed lives —
+   the parity seed file, or a domain's own seed (lib/seed/<domain>.json) */
+function registryLists() {
+  const out = new Set(Object.keys(J("lib/seed/parity-registries.json").REG));
+  const dir = path.join(ROOT, "lib/seed");
+  for (const f of fs.readdirSync(dir).filter(x => x.endsWith(".json"))) {
+    let d; try { d = J("lib/seed/" + f); } catch (e) { continue; }
+    for (const k of Object.keys(d.REGISTRIES || {})) out.add(k);
+  }
+  return [...out];
+}
+
 /* ---------- the artifacts, read from the code ---------- */
 /* the screens a domain's own console file registers (public/js/admin/<domain>.js: screen("key", …)) */
 function domainScreens() {
@@ -38,7 +50,7 @@ function artifacts() {
     routes,
     machines: J("lib/seed/states.json").stateMachines.map(m => m.key),
     capabilities: J("lib/seed/capabilities.json").CATALOG.map(c => c.key),
-    registries: Object.keys(J("lib/seed/parity-registries.json").REG),
+    registries: registryLists(),
     screens: [...admin.matchAll(/\["([a-z_]+)", "/g)].map(m => m[1]).concat(domainScreens().map(x => x.key)),
     platformScreens,
     pages: fs.readdirSync(path.join(ROOT, "public")).filter(f => f.endsWith(".html")).map(f => f.replace(/\.html$/, ""))
@@ -63,8 +75,10 @@ function map() {
     out.kinds[kind] = { total: list.length, owned, unowned, double, stale };
   };
   const re = s => { const r = new RegExp(s); const f = x => r.test(x.replace(/^[A-Z]+ /, "")); f.src = s; return f; };
-  /* a domain's own route file is its by convention */
-  claim("files", a.files, d => d.owns.files.concat(a.files.includes("lib/routes/" + d.key + ".js") ? ["lib/routes/" + d.key + ".js"] : []));
+  /* a domain's own route file, console file and seed file are its by convention */
+  claim("files", a.files, d => d.owns.files.concat(a.files.includes("lib/routes/" + d.key + ".js") ? ["lib/routes/" + d.key + ".js"] : [])
+    .concat(a.files.includes("public/js/admin/" + d.key + ".js") ? ["public/js/admin/" + d.key + ".js"] : [])
+    .concat(a.files.includes("lib/seed/" + d.key + ".json") ? ["lib/seed/" + d.key + ".json"] : []));
   claim("tables", a.tables, d => d.owns.tables);
   claim("routes", a.routes, d => d.owns.routes.map(re));
   claim("machines", a.machines, d => d.owns.machines);

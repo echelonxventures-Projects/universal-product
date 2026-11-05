@@ -578,7 +578,7 @@
    "key": "offer",
    "name": "Offers",
    "foundation": "Commerce",
-   "purpose": "Every reason a buyer pays less or gets more: offers and discounts of every type, coupons, cashback, rewards, gift cards and vouchers, deals and countdowns, group buying, price matching and trade-ins, the funding and settlement of each, and their governance.",
+   "purpose": "The offers themselves: every price a buyer pays less or gets more, and every rule about how they apply — the offer record, its types, its scopes, its channels, its funders, its stacking policy and its governance. A coupon, a voucher, a gift card, a cashback, a reward and a group buy are their own domains; this one decides which of them applies.",
    "users": [
     "shopper",
     "seller",
@@ -590,58 +590,46 @@
     "files": [
      "lib/offers.js",
      "lib/goip.js",
-     "lib/groupbuy.js"
+     "lib/grants.js"
     ],
     "tables": [
      "offers",
-     "promotions",
-     "coupons",
-     "coupon_redemptions",
      "goip_budgets",
      "goip_entitlements",
      "goip_settlements",
      "goip_touchpoints",
-     "gift_vouchers",
-     "group_campaigns",
-     "group_members",
      "attribution"
     ],
     "routes": [
-     "^/api/(offers|coupon|promos|giftcard|goip|group-buys)(/|$)",
-     "^/api/goip/",
-     "^/api/admin/(promotions|group-buys)(/|$)",
-     "^/api/platform/offers(/|$)",
-     "^/api/fintech/vouchers(/|$)"
+     "^/api/offers(?!/(coupons|analytics))(/|$)",
+     "^/api/goip(/|$)",
+     "^/api/platform/offers(/|$)"
     ],
     "machines": [
      "offer",
      "offer_governance",
-     "redemption",
      "entitlement",
      "goip_budget",
-     "goip_settlement",
-     "promotion",
-     "gift_voucher",
-     "group_campaign"
+     "goip_settlement"
     ],
     "capabilities": [
      "deals",
-     "coupons",
-     "gift_cards",
-     "gift_vouchers",
      "countdown",
-     "group_buying",
      "price_match",
      "exchange_offers"
     ],
     "registries": [
-     "groupCampaignStatuses",
-     "finVoucherStatuses"
+     "offerTypes",
+     "offerDirections",
+     "offerChannels",
+     "offerScopes",
+     "offerFunders",
+     "stackingPolicies",
+     "offerStatuses"
     ],
     "screens": [
      "promotions",
      "goip",
-     "groupbuy",
      "pricematch",
      "tradeins"
     ],
@@ -652,7 +640,156 @@
      "Offers & Incentives"
     ],
     "pages": [
-     "deals",
+     "deals"
+    ]
+   }
+  },
+  {
+   "key": "groupbuy",
+   "name": "Group buying",
+   "foundation": "Commerce",
+   "purpose": "A lower price when enough shoppers join before a deadline: staff open a campaign on a product with a group price, how many members it needs and how many it may take; a shopper joins by buying at the group price. A campaign that reaches its members succeeds and its orders go ahead; one that falls short fails and every member's order is cancelled and refunded.",
+   "users": [
+    "shopper",
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/groupbuy.js"
+    ],
+    "tables": [
+     "group_campaigns",
+     "group_members"
+    ],
+    "routes": [
+     "^/api/group-buys(/|$)",
+     "^/api/admin/group-buys(/|$)"
+    ],
+    "machines": [
+     "group_campaign"
+    ],
+    "capabilities": [
+     "group_buying"
+    ],
+    "registries": [
+     "groupCampaignStatuses"
+    ],
+    "screens": [
+     "groupbuy"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "coupon",
+   "name": "Coupons",
+   "foundation": "Commerce",
+   "purpose": "The codes a shopper types at the cart: a code that carries a value, issued by staff or in bulk, validated against its kind and its limits, redeemed into the redemption ledger, and voided when the order is refunded. The kinds — a single-use code, a bulk lot, a referral code — are rows.",
+   "users": [
+    "shopper",
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/coupons.js"
+    ],
+    "tables": [
+     "coupons",
+     "coupon_redemptions"
+    ],
+    "routes": [
+     "^/api/coupon(/|$)",
+     "^/api/offers/(coupons|analytics)(/|$)"
+    ],
+    "machines": [
+     "redemption"
+    ],
+    "capabilities": [
+     "coupons"
+    ],
+    "registries": [
+     "couponKinds",
+     "couponStatuses",
+     "redemptionStatuses"
+    ],
+    "screens": [
+     "coupons"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "voucher",
+   "name": "Vouchers",
+   "foundation": "Commerce",
+   "purpose": "An instrument of value that is not the shop's own discount and not a gift card: a bank voucher, a benefits note, an organisation's credit. Who stands behind it, whether it may be spent in part and how long it lives are its kind's rows; the code it travels on belongs to the Coupon domain.",
+   "users": [
+    "shopper",
+    "store_admin",
+    "platform_admin",
+    "partner"
+   ],
+   "owns": {
+    "files": [
+     "lib/vouchers.js"
+    ],
+    "tables": [
+     "vouchers"
+    ],
+    "routes": [],
+    "machines": [],
+    "capabilities": [],
+    "registries": [
+     "voucherKinds"
+    ],
+    "screens": [],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "giftcard",
+   "name": "Gift cards",
+   "foundation": "Commerce",
+   "purpose": "A card bought as an item or issued by staff: a code with a value, sent to its recipient with a message, redeemable into the recipient's gift balance, checked for its balance, voided with a reason and expired after its validity. A card is a node on the kernel; its code is sealed and found by a blind index.",
+   "users": [
+    "shopper",
+    "store_admin",
+    "platform_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/giftcards.js"
+    ],
+    "tables": [],
+    "routes": [
+     "^/api/gift-cards(/|$)",
+     "^/api/admin/gift-cards(/|$)"
+    ],
+    "machines": [
+     "gift_card"
+    ],
+    "capabilities": [
+     "gift_cards"
+    ],
+    "registries": [
+     "giftCardStatuses",
+     "giftCardOccasions",
+     "giftCardSources"
+    ],
+    "screens": [
+     "giftcards"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": [
      "gift-cards"
     ]
    }
@@ -1113,7 +1250,12 @@
     ],
     "machines": [],
     "capabilities": [],
-    "registries": [],
+    "registries": [
+     "taxClasses",
+     "taxRules",
+     "exemptionReasons",
+     "taxNumberFormats"
+    ],
     "screens": [],
     "platformScreens": [],
     "platformGroups": [],

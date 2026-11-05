@@ -106,7 +106,7 @@ flowchart LR
 
 **Store console:** ◈ Dashboard · 🖼️ Home Content
 
-**Platform console:** 📚 Catalogs · 💲 Pricing · 📊 Dynamic Pricing · 📋 Price Lists · 🎉 Promotions · Coupons · 🛍️ Merchandising · 🌐 Websites · 📱 Mobile Apps · 🛎️ Kiosks · POS · 🚪 Portals · 🖼️ Content · UGC · 🎨 Themes · 🖌️ Branding · 🎯 Personalization · ♿ Accessibility · 🧩 UI Components · 📡 Channels · 🔔 Notifications · ✉️ Email · 📱 Social
+**Platform console:** 📚 Catalogs · 💲 Pricing · 📊 Dynamic Pricing · 📋 Price Lists · 🛍️ Merchandising · 🌐 Websites · 📱 Mobile Apps · 🛎️ Kiosks · POS · 🚪 Portals · 🖼️ Content · UGC · 🎨 Themes · 🖌️ Branding · 🎯 Personalization · ♿ Accessibility · 🧩 UI Components · 📡 Channels · 🔔 Notifications · ✉️ Email · 📱 Social
 
 ## User flows
 

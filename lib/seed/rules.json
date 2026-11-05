@@ -73,11 +73,6 @@
    "source": "list:aiModels"
   },
   {
-   "key": "promotion",
-   "name": "Promotion",
-   "source": "entity:promotion"
-  },
-  {
    "key": "offer",
    "name": "Offer / exchange",
    "source": "rows:offers:id:name"
@@ -213,9 +208,9 @@
    }
   },
   {
-   "key": "promotions.apply",
-   "name": "Cart — promotions",
-   "subject_type": "promotion",
+   "key": "offers.apply",
+   "name": "Cart — offers",
+   "subject_type": "offer",
    "facts": {
     "service": "order"
    }

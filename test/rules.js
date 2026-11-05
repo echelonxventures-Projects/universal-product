@@ -1,6 +1,6 @@
 /* LUXORA Platform — applicability rules: where, for whom and for what anything applies.
    One engine (lib/rules.js) decides every subject — gateway, method, bank, carrier,
-   capability, module, service, AI model, promotion, offer, coupon, sign-in method, and any
+   capability, module, service, AI model, offer, coupon, sign-in method, and any
    type an operator registers — by any registered dimension: platform kind, platform,
    country or country group, currency, service, segment, channel, amount, dates, and any
    dimension added later. The platform owner bounds every platform; a platform narrows itself. */
@@ -42,7 +42,7 @@ const mk = () => {
     console.log("▸ THE VOCABULARY IS DATA");
     const sch = (await P("/api/platform/rules")).body.schema;
     const types = sch.subjectTypes.map(t => t.key);
-    ok(["gateway", "method", "bank", "carrier", "capability", "module", "service", "ai_model", "ai_capability", "promotion", "offer", "coupon", "login_method"].every(k => types.includes(k)), "every kind of thing is a rule subject", types);
+    ok(["gateway", "method", "bank", "carrier", "capability", "module", "service", "ai_model", "ai_capability", "offer", "coupon", "login_method"].every(k => types.includes(k)), "every kind of thing is a rule subject", types);
     const dims = Object.fromEntries(sch.dimensions.map(d => [d.key, d]));
     ok(["kinds", "platforms", "countries", "currencies", "services", "segments", "channels"].every(k => dims[k]), "rules scope by kind, platform, country, currency, service, segment, channel");
     ok(dims.countries.options.some(o => o.key === "EU") && dims.countries.options.some(o => o.key === "IN"), "countries offer country groups as well as countries");
@@ -191,6 +191,22 @@ const mk = () => {
     ok(named.length === 0, "no engine names a subject type or service in a rule call", named);
     const seedOnly = fs.readFileSync(path.join(__dirname, "..", "lib", "rules.js"), "utf8");
     ok(!/"(gateway|carrier|payout|razorpay|hdfc|premium|EU|IN|web)"/.test(seedOnly.replace(/\/\*[\s\S]*?\*\//g, "")), "the rules kernel names no subject type, service, provider, bank, segment, group, country or channel");
+
+    console.log("▸ AN OFFER IS SUBJECT TO THE RULES");
+    {
+      const L = mk(); await L("/api/session?store=luxora");
+      const prod = db.get("SELECT id FROM products WHERE tenant_id=1 AND lifecycle='published' LIMIT 1").id;
+      await L("/api/cart?store=luxora", "POST", { id: prod, qty: 1 });
+      await L("/api/coupon?store=luxora", "POST", { code: "WELCOME10" });
+      const off = db.get("SELECT id FROM offers WHERE tenant_id=1 AND code='WELCOME10'");
+      const d0 = (await L("/api/cart?store=luxora")).body.discount;
+      ok(off && d0 > 0, "the store's welcome offer applies", d0);
+      const r = await save(P, "/api/platform/rules", { subject_type: "offer", subject: String(off.id), effect: "deny", note: "not here" });
+      ok(r.status === 200, "a rule refuses that offer", r.body);
+      ok((await L("/api/cart?store=luxora")).body.discount === 0, "and the cart no longer applies it");
+      await P("/api/platform/rules/" + r.body.rule.id, "DELETE");
+      ok((await L("/api/cart?store=luxora")).body.discount > 0, "removing the rule restores it");
+    }
 
     console.log("▸ REMOVING A RULE RESTORES THE DEFAULT");
     const list = (await P("/api/platform/rules")).body.rules;

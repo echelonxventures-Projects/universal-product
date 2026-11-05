@@ -314,7 +314,7 @@ const raw = (text) => new Promise((resolve) => {
       ok((await SU("/api/platform/queue/drain", "POST", {})).status === 403, "support cannot drain the job queue");
       ok((await SU("/api/platform/entity-types", "POST", { entity: "product", type_key: "x", label: "x" })).status === 403, "support cannot edit the global schema");
       ok((await AU("/api/offers", "POST", { name: "global giveaway", scope: "global" })).status === 403, "an auditor cannot create offers");
-      ok((await AU("/api/fintech/vouchers", "POST", { amount: 1000 })).status === 403, "an auditor cannot mint vouchers");
+      ok((await AU("/api/admin/gift-cards", "POST", { amount: 1000 })).status === 403, "an auditor cannot issue gift cards");
       ok((await AU("/api/platform/data/tenant")).status === 200 || (await AU("/api/platform/data/tenant")).status === 404, "an auditor can still read (gdata:read)");
       const fo = await AU("/api/platform/fanout?path=/api/admin/webhooks");
       ok(fo.status === 200, "an auditor may fan out reads (gops:read)", fo.status);

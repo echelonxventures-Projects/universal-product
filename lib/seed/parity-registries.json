@@ -379,16 +379,6 @@
     "matured"
    ]
   },
-  "finVoucherStatuses": {
-   "label": "Fin · Voucher statuses",
-   "items": [
-    "issued",
-    "active",
-    "redeemed",
-    "expired",
-    "cancelled"
-   ]
-  },
   "mktBusinessTypes": {
    "label": "Mkt · Business types",
    "items": [
@@ -708,7 +698,8 @@
     "deliverable",
     "media_session",
     "option_follow_up",
-    "trial"
+    "trial",
+    "gift_card"
    ]
   },
   "shopDocKinds": {
@@ -1621,6 +1612,72 @@
     "spent",
     "released",
     "expired"
+   ]
+  },
+  "giftCardStatuses": {
+   "label": "Gift cards · Statuses",
+   "items": [
+    "issued",
+    "redeemed",
+    "expired",
+    "voided"
+   ]
+  },
+  "giftCardOccasions": {
+   "label": "Gift cards · Occasions",
+   "items": [
+    {
+     "key": "birthday",
+     "name": "Birthday",
+     "icon": "🎂"
+    },
+    {
+     "key": "graduation",
+     "name": "Graduation",
+     "icon": "🎓"
+    },
+    {
+     "key": "wedding",
+     "name": "Wedding",
+     "icon": "💍"
+    },
+    {
+     "key": "holidays",
+     "name": "Holidays",
+     "icon": "🎄"
+    },
+    {
+     "key": "thank_you",
+     "name": "Thank you",
+     "icon": "🙏"
+    },
+    {
+     "key": "housewarming",
+     "name": "Housewarming",
+     "icon": "🏠"
+    },
+    {
+     "key": "just_because",
+     "name": "Just because",
+     "icon": "🎁"
+    }
+   ]
+  },
+  "giftCardSources": {
+   "label": "Gift cards · How a card came to be",
+   "items": [
+    {
+     "key": "bought",
+     "name": "Bought at checkout"
+    },
+    {
+     "key": "issued",
+     "name": "Issued by staff"
+    },
+    {
+     "key": "granted",
+     "name": "Granted by an incentive"
+    }
    ]
   }
  }

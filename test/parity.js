@@ -307,13 +307,14 @@ console.log("\n▸ FINTECH — one ledger, escrow, KYC-gated credit");
   const act = fin.activateInsurance(T, pol.id);
   ok(act.status === "active" && balOf('u:2') === beforeAct - 12, "activating the policy debits the premium from the one ledger",
     JSON.stringify({ before: beforeAct, after: balOf('u:2') }));
-  const v = fin.issueVoucher(T, { amount: 25, buyer: "u:2", recipient: "u:3" });
-  ok(v.status === "issued" && v.code.length === 12, "a gift voucher is issued with a code");
-  const rd = fin.redeemVoucher(T, v.code, "u:3");
-  ok(rd.status === "redeemed" && rd.redeemed_by === "u:3", "the voucher redeems");
-  let again = false; try { fin.redeemVoucher(T, v.code, "u:3"); } catch (e) { again = /already redeemed/.test(e.message); }
-  ok(again, "a redeemed voucher cannot redeem again");
-  ok(balOf('u:3') === 125, "the redemption credits the same ledger");
+  const GC = require("../lib/giftcards.js"), Wl = require("../lib/wallet.js");
+  const v = GC.issue(T, { amount: 25, source: "issued", buyer: "u:2", recipient: "u:3" }, "test");
+  ok(v.redeemable && v.code.length === 16, "a gift card is issued with a code");
+  const rd = GC.redeem(T, v.code, "u:3");
+  ok(!rd.card.redeemable, "the card redeems");
+  let again = false; try { GC.redeem(T, v.code, "u:3"); } catch (e) { again = /has been/.test(e.message); }
+  ok(again, "a redeemed card cannot redeem again");
+  ok(Wl.balances(T, "u:3", Wl.walletOf(T, "u:3", null, require("../lib/capabilities.js").cap(T, "gift_cards").wallet_definition).id).posted === 25, "the redemption credits the same ledger, in the gift balance");
   /* API surface */
   ok(call("GET", "/api/fintech/upi", {}, { user_id: 2, tenant: { id: 1 } }).handles.length === 0,
     "GET /api/fintech/upi is scoped to the session's own owner (no other customer's handles)");
@@ -324,9 +325,9 @@ console.log("\n▸ FINTECH — one ledger, escrow, KYC-gated credit");
   ok(call("POST", "/api/fintech/escrow", { amount: 10, seller: "u:s" }, GUEST).error, "the escrow-hold endpoint is admin-gated");
   ok(call("GET", "/api/fintech/billers", {}, GUEST).billers.length === 1, "GET /api/fintech/billers is public");
   ok(call("GET", "/api/fintech/plans", {}, GUEST).plans.length >= 1, "GET /api/fintech/plans is public");
-  ok(call("POST", "/api/fintech/vouchers", { amount: 5 }, GUEST).error,
-    "issuing a voucher mints spendable credit, so it is refused for an anonymous shopper");
-  ok(call("POST", "/api/fintech/vouchers", { amount: 5 }, ADMIN).voucher.status === "issued", "an operator can issue a voucher through the API");
+  ok(call("POST", "/api/admin/gift-cards", { amount: 5 }, GUEST).error,
+    "issuing a gift card mints spendable value, so it is refused for an anonymous shopper");
+  ok(call("POST", "/api/admin/gift-cards", { amount: 5 }, ADMIN).card.redeemable, "an operator can issue a gift card through the API");
   ok(call("POST", "/api/fintech/bnpl", { credit_limit: 10 }, { user_id: 99, tenant: { id: 1 } }).error, "BNPL via the API still requires KYC");
 }
 
@@ -544,7 +545,7 @@ console.log("\n▸ THE ENTITY LAYER EXPOSES THE PARITY TABLES GENERICALLY");
   const all = entity.allEntities(1);
   const parityKeys = ["dark_store", "delivery_slot", "service_area", "store_inventory", "rider", "dispatch_run",
     "upi_handle", "upi_collect", "qr_code", "payment_link", "mandate", "escrow_hold", "split_payment", "kyc_profile",
-    "bank_payout", "bill_payment", "recharge", "bnpl_account", "bnpl_emi", "loan", "insurance_policy", "gift_voucher",
+    "bank_payout", "bill_payment", "recharge", "bnpl_account", "bnpl_emi", "loan", "insurance_policy",
     "seller_onboarding", "seller_offer", "fba_inbound", "seller_performance", "buyer_claim", "smart_fulfilment",
     "trade_assurance", "gold_supplier", "company_verification", "export_document", "letter_of_credit",
     "rfq_quote", "tender_bid", "price_list", "price_list_item"];

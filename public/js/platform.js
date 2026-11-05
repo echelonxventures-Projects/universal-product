@@ -206,7 +206,6 @@ const NAV = [
       ["pricing", "💲 Pricing", { u: "pricing" }],
       ["dynamic-pricing", "📊 Dynamic Pricing", { u: "dynamic_pricing" }],
       ["price-lists", "📋 Price Lists", { e: "price_list" }],
-      ["promotions", "🎉 Promotions · Coupons", { e: "promotion" }],
       ["merchandising", "🛍️ Merchandising", { u: "catalog_merchandising" }],
     ] },
     { g: "Offers & Incentives", l: [
@@ -3445,11 +3444,11 @@ async function vGfinance() {
 async function vGoffers() {
   await gMeta();
   const [promos, ret, rec, mem, aff, affPayout] = await Promise.all([
-    gFan("/api/admin/promotions"), gFan("/api/admin/retention"), gFan("/api/admin/recurring"), gFan("/api/admin/memberships"),
+    gFan("/api/offers"), gFan("/api/admin/retention"), gFan("/api/admin/recurring"), gFan("/api/admin/memberships"),
     gFan("/api/affiliate/affiliates"), gFan("/api/affiliate/payouts")
   ]);
   return gBar("Offers · Subscriptions · Affiliates", "🏷️", "Promotions, retention policy, recurring/membership programmes and the affiliate network, platform-wide.", 4)
-    + gRows("Promotions & coupons", "🏷️", (promos.merged || {}).promotions, [
+    + gRows("Offers and coupons", "🏷️", (promos.merged || {}).offers, [
       { l: "Name", k: "name" }, { l: "Type", k: "type" }, { l: "Value", k: "value" }, { l: "Code", k: "code" },
       { l: "Status", k: "status", f: x => `<span class="badge ${esc(x.status)}">${esc(x.status)}</span>` }
     ])

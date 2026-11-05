@@ -1,0 +1,11 @@
+{
+ "$comment": "Vouchers (lib/vouchers.js), the Voucher domain: an instrument of value that is not the shop's own discount and not a gift card — a bank voucher, a benefits note, an organisation's credit. A kind is a row: what it is called, who issues it (the funder that stands behind it), whether it may be spent in part, how long it lives, and the coupon kind its code travels as. The voucher domain issues through the Coupon domain's writer; it never writes a code itself.",
+ "REGISTRIES": {
+  "voucherKinds": [
+   { "key": "bank_voucher", "name": "Bank voucher", "issued_by": "bank", "partial_spend": true, "code_kind": "bank_voucher" },
+   { "key": "store_credit_note", "name": "Store credit note", "issued_by": "self", "partial_spend": true, "code_kind": "multi_use" },
+   { "key": "government_benefit_note", "name": "Government benefit note", "issued_by": "government", "partial_spend": false, "code_kind": "single_use" },
+   { "key": "corporate_benefit_note", "name": "Corporate benefit note", "issued_by": "partner", "partial_spend": true, "code_kind": "single_use" }
+  ]
+ }
+}
