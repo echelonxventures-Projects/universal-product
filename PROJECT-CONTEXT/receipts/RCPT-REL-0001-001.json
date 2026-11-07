@@ -1,0 +1,129 @@
+{
+  "acceptance": [
+    "npm test passes on the candidate",
+    "npm run registry passes (gate and seal)",
+    "npm run context:verify passes",
+    "every PR #5 fix re-verified on the candidate, mutation-checked"
+  ],
+  "agent": "claude-opus-5-5",
+  "budgetBytes": 60000,
+  "checks": [
+    {
+      "detail": "integration/luxora-production-go-2026-10-27 @ c9e63f4d50c4 (dirty: 53 paths)",
+      "name": "repository identified",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "knowledge valid",
+      "ok": true
+    },
+    {
+      "detail": "410 edges",
+      "name": "graph valid",
+      "ok": true
+    },
+    {
+      "detail": "PROJECT-CONTEXT/00-MASTER-INDEX.md",
+      "name": "master index present",
+      "ok": true
+    },
+    {
+      "detail": "Integrate PR #3, PR #4, PR #5 and the preserved Offers work into one verified release candidate",
+      "name": "task resolved",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "packs fresh",
+      "ok": true
+    },
+    {
+      "detail": "",
+      "name": "prerequisites available",
+      "ok": true
+    }
+  ],
+  "constraints": [
+    "CST-AUTHORIZED-SIDE-EFFECTS",
+    "CST-CONFIG-OVER-CODE",
+    "CST-EVIDENCE-BEFORE-CLAIMS",
+    "CST-EXPLAINABILITY",
+    "CST-FROZEN-PRIMITIVES",
+    "CST-KNOWLEDGE-ONCE",
+    "CST-NO-DESTRUCTIVE-CLEANUP",
+    "CST-NO-PRIVATE-ARCHIVES-IN-GIT",
+    "CST-NO-SECRETS",
+    "CST-NODE-ENGINE",
+    "CST-PRESERVE-WORKING-TREE",
+    "CST-PROJECTION-LAW",
+    "CST-SEAL-DERIVED",
+    "CST-SUPERSEDED-NOT-AUTHORITY",
+    "CST-ZERO-HARDCODING"
+  ],
+  "createdAt": "2026-10-28T12:34:27.385Z",
+  "decisions": [],
+  "exclusions": [
+    "No push, merge into master, PR change or deployment without the owner's authorisation",
+    "No change to the original local and context workspaces"
+  ],
+  "gaps": [],
+  "id": "RCPT-REL-0001-001",
+  "packs": [
+    {
+      "fingerprint": "69e58f01a707073cb8f9d842b6428fde02345cef52b1962be8725ad03b00aeff",
+      "fresh": true,
+      "id": "CTX-BOOTSTRAP"
+    },
+    {
+      "fingerprint": "ea49fb86fe39317929480f86025960490c950860ffc351e26143a9dbb53c9e7a",
+      "fresh": true,
+      "id": "CTX-PLATFORM-QUALITY"
+    }
+  ],
+  "prerequisites": [],
+  "readingOrder": [
+    {
+      "bytes": 6039,
+      "ref": "PROJECT-CONTEXT/00-MASTER-INDEX.md",
+      "step": "master-index"
+    },
+    {
+      "bytes": 2059,
+      "ref": "PROJECT-CONTEXT/task-packs/TASK-REL-0001.md",
+      "step": "task-pack"
+    },
+    {
+      "bytes": 4785,
+      "ref": "PROJECT-CONTEXT/handoffs/HO-REL-0001-003.json",
+      "step": "latest-handoff"
+    },
+    {
+      "bytes": 10809,
+      "estimatedTokens": 3603,
+      "ref": "PROJECT-CONTEXT/contexts/CTX-BOOTSTRAP.md @60000",
+      "step": "mandatory-bootstrap"
+    },
+    {
+      "bytes": 9302,
+      "estimatedTokens": 3101,
+      "ref": "PROJECT-CONTEXT/contexts/CTX-PLATFORM-QUALITY.md @60000",
+      "step": "pack"
+    }
+  ],
+  "repository": {
+    "branch": "integration/luxora-production-go-2026-10-27",
+    "dirty": true,
+    "head": "c9e63f4d50c4281519e9590311bfaff6f13d1865"
+  },
+  "requirements": [],
+  "schema": "ctx-receipt/1",
+  "scope": [
+    "the integration branch in a fresh clone outside iCloud",
+    "conflict resolution, defects the integration exposes, regeneration of derived artifacts",
+    "PRODUCTION_READINESS.md as the single release register"
+  ],
+  "task": "TASK-REL-0001",
+  "totalRequiredBytes": 28209,
+  "verdict": "pass"
+}
