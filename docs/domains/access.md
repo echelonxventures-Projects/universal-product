@@ -15,6 +15,7 @@ What someone may do: store roles and staff, platform roles, permission sections 
 | `lib/authz.js` | UCOS Ω∞ · authz — THE ONE AUTHORIZATION ENGINE --------------------------------------------------------------------------- There used to be two engines with two vocabularies: lib/rbac.js for the store console (staff roles, per-tenant) and lib/prbac.js for the platform console (operator roles, global). Two engines meant two places a grant could be mis-scoped, two seeds to keep alive, and — the defect that made this file necessary — two grant surfaces that SHARE THIRTY SECTION KEYS. "orders", "dash", "settings", "audit" exist on BOTH surfaces and mean different things on each. A single merged surface would have collided silently: a store manager's "orders" grant would have opened the platform's global order view, or the reverse. |
 | `lib/prbac.js` | PLATFORM RBAC (facade over the ONE authorization engine). * * lib/authz.js is now the single engine: it owns both grant surfaces (store and * platform) and namespaces every grant by scope, because the two consoles share * thirty section keys and a merged surface would have collided silently. This * file keeps the platform console's original call shapes alive — prbac.can(admin, * section, mode), prbac.grant(admin), the global operator-role CRUD — so every * call site, test and stored platformRoles row resolves exactly as before. Only * the resolver that read them was unified. * * The platform's sections are the platform console's NAV leaf keys * (public/js/platform.js); '*' expands to the platform surface only. See authz.js. |
 | `lib/rbac.js` | STORE RBAC (facade over the ONE authorization engine). * * lib/authz.js is now the single engine: it owns both grant surfaces (store and * platform) and namespaces every grant by scope, because the two consoles share * thirty section keys and a merged surface would have collided silently. This * file keeps the store console's original call shapes alive — rbac.can(user, * section, mode, tenantId), rbac.grant(user, tenantId), the per-tenant staff * role CRUD — so every call site, test and stored staffRoles row resolves * exactly as before. Only the resolver that reads them was unified. * * The store's sections are the store console's NAV leaf keys (public/js/admin.js); * '*' expands to the store surface only, never the platform one. See authz.js. |
+| `lib/routes/access.js` | access domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the access domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -66,7 +67,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store staff / Store administrator / Platform administrator]) --> UI[store console, platform console]
   UI --> API[19 API routes]
-  API --> ENG[authz.js, prbac.js, rbac.js]
+  API --> ENG[authz.js, prbac.js, rbac.js, access.js]
   ENG --> DB[(policies)]
 
 ```

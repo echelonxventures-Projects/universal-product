@@ -159,6 +159,7 @@
     "key": "node",
     "name": "node",
     "match": "taxonomy",
+    "single": true,
     "scope": [
      "node"
     ]

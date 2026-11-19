@@ -29,14 +29,14 @@
 
 **Live routes (10)** — what the platform serves today for this domain:
 
+- `GET /api/platform/kinds`
+- `POST /api/platform/kinds`
+- `DELETE /api/platform/kinds/:key`
 - `GET /api/compose/candidates`
 - `GET /api/compose/ledger`
 - `GET /api/compose/:key`
 - `POST /api/compose/:key`
 - `POST /api/compose/:key/recompose`
-- `GET /api/platform/kinds`
-- `POST /api/platform/kinds`
-- `DELETE /api/platform/kinds/:key`
 - `GET /api/platform/setup/steps`
 - `POST /api/platform/setup/discover`
 

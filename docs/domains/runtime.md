@@ -26,6 +26,7 @@ Running the platform: environments, configuration, the database and its migratio
 | `lib/pgworker.js` |  |
 | `lib/queue.js` | Job queue (inline by default, Bull/Redis when configured) |
 | `lib/sql.js` | SQLite→PostgreSQL SQL dialect translator (B-full foundation). The app emits a bounded, known set of SQLite idioms. This converts them to PostgreSQL so the same SQL runs on either engine; `?` placeholders become `$n`. It is pure + unit-tested — the one part of the async migration that can be validated without a live server. PRAGMA / randomblob-uuid triggers are SQLite-only and not translated (Postgres uses gen_random_uuid(); see migrate.js). |
+| `lib/routes/runtime.js` | runtime domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the runtime domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -68,7 +69,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Platform administrator / Developer]) --> UI[store console, platform console]
   UI --> API[19 API routes]
-  API --> ENG[api.js, config.js, db.js, dbpool.js, enterprise.js, env.js, logger.js, metrics.js, migrate.js, pg.js, pgbridge.js, pgworker.js, queue.js, sql.js]
+  API --> ENG[api.js, config.js, db.js, dbpool.js, enterprise.js, env.js, logger.js, metrics.js, migrate.js, pg.js, pgbridge.js, pgworker.js, queue.js, sql.js, runtime.js]
   ENG --> DB[(sqlite_sequence)]
 
 ```

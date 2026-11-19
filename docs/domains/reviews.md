@@ -33,6 +33,7 @@ Shoppers ask and answer questions on a product page.
 | Module | What it is |
 |---|---|
 | `lib/ugc.js` | Customer Trust & Commerce Content (UGC). Rich reviews (helpfulness votes, seller reply threads, photo media, moderation states) and product Q&A (questions, answers, votes, moderation). One vote per owner per target is enforced by the ugc_votes primary key; moderation states and author roles live in meta_lists (ugcStates, ugcRoles) so they are editable from Data Studio. |
+| `lib/routes/reviews.js` | reviews domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the reviews domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -140,7 +141,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Shopper / Seller / Store staff / Store administrator]) --> UI[store console]
   UI --> API[11 API routes]
-  API --> ENG[ugc.js]
+  API --> ENG[ugc.js, reviews.js]
   ENG --> DB[(reviews, review_replies, ugc_votes, qna_questions, qna_answers)]
 
 ```

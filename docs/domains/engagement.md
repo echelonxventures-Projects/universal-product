@@ -49,6 +49,7 @@ A shopper watches a product and is told when its price drops, reaches their targ
 |---|---|
 | `lib/alerts.js` | Price & stock alerts. A signed-in shopper watches a product and is told when something they care about happens to it. What can happen is the engine's own small vocabulary of TRIGGERS (a price below the price they watched at, a price at or below a target, stock coming back); which triggers exist as alerts a shopper can choose, what each is called, when it may be set and what its message says are alertKinds registry rows — so "tell me when it is 30% off" is a row naming a trigger, not code. The thresholds (how big a drop counts, how often one watch may fire) are the product_alerts capability's params. |
 | `lib/lists.js` | Shopper lists: wish lists, shopping lists, idea lists. A signed-in shopper keeps any number of named lists of products. What a kind of list IS (its starting visibility, whether people it is shared with may mark a gift bought) and what a visibility MEANS (reachable by its link? listed for anyone to find?) are rows of the listKinds and listVisibilities registries, so a new kind of list — a baby list, a classroom list — is a Data Studio row, never code. How many lists and items a shopper may keep, and whether sharing or public lists are allowed at all, are the wish_lists capability's params. Gift registries (an event, a date, a shipping address) keep their own engine; a list is the lighter, everyday shape. |
+| `lib/routes/engagement.js` | engagement domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the engagement domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `shopRegistryStatuses`, `listKinds`, `listVisibilities`, `listPriorities`, `alertKinds`, `watchStatuses`
 
@@ -201,7 +202,7 @@ Actions: `cancel` → cancelled · `rearm` → active
 flowchart LR
   U([Shopper / Guest]) --> UI[registry.html, platform console]
   UI --> API[21 API routes]
-  API --> ENG[alerts.js, lists.js]
+  API --> ENG[alerts.js, lists.js, engagement.js]
   ENG --> DB[(saved_items, view_history, gift_registries, compare_lists, shopper_lists, shopper_list_items, …)]
   ENG --> SM{{1 state machines}}
 ```

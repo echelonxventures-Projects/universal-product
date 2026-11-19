@@ -99,7 +99,7 @@ try {
   ok(entity.validate(entity.ENTITY_DEFS.country, { ...good, locale: "not a locale!" }).length > 0, "Data Studio's entity path runs the same check");
 
   console.log("▸ THE STOREFRONT AND THE API");
-  const api = fs.readFileSync(path.join(__dirname, "..", "lib", "api.js"), "utf8");
+  const api = require("./api-source.js")();
   ok(/geo: \{ countries: registry\.countries\(\)\.filter\(c => c\.active !== 0\)/.test(api), "the storefront is served active countries only");
   ok(["apiGlobalCountryPut", "apiGlobalCurrencyPut"].every(f => new RegExp("function " + f + "\\([^)]*\\) \\{ if \\(!requirePlatformSection\\(s, res, \"geo\", \"write\"\\)\\)").test(api)), "editing a country or currency needs the geo write permission, as creating one does");
 } catch (e) { failed++; console.log("  ✗ threw: " + (e && e.stack || e)); }

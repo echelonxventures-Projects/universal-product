@@ -24,7 +24,7 @@
 | **Contract** | [UCOS-INS-000001 Insight Architecture](#ucos-ins-000001) |
 | **Artifacts** | [UCOS-INS-000001](#ucos-ins-000001) |
 | **Concepts** | 597 — `node _registry/compile.js --search <words> --kind concept --owner "Insight"` |
-| **Code** | `lib/dashboards.js`, `lib/experiments.js`, `lib/planning.js` |
+| **Code** | `lib/dashboards.js`, `lib/experiments.js`, `lib/planning.js`, `lib/routes/analytics.js`, `lib/routes/experiments.js` |
 | **Managed in** | `_registry/domains.json` → `D-INS` |
 
 **Live routes (27)** — what the platform serves today for this domain:
@@ -43,6 +43,8 @@
 - `POST /api/reports/:key`
 - `PUT /api/reports/:key`
 - `DELETE /api/reports/:key`
+- `GET /api/admin/stats`
+- `GET /api/admin/analytics`
 - `GET /api/experiments/:id/assign`
 - `POST /api/experiments/:id/convert`
 - `GET /api/admin/experiments`
@@ -54,8 +56,6 @@
 - `PUT /api/admin/planning/:id`
 - `POST /api/admin/planning/approve-all`
 - `GET /api/admin/planning/pos`
-- `GET /api/admin/stats`
-- `GET /api/admin/analytics`
 
 <a id="ucos-ins-000001"></a>
 #### UCOS-INS-000001 · Insight Architecture

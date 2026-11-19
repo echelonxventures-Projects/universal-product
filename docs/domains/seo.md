@@ -13,6 +13,7 @@ Being found from outside: the sitemap and its files, page metadata and product f
 | Module | What it is |
 |---|---|
 | `lib/sitemap.js` | Auto-Sitemap Generator for SEO Generates dynamic XML/JSON sitemaps with automatic updates Supports multi-tenant, multi-currency, and localized content Registry-driven: schedule and rules are configurable |
+| `lib/routes/seo.js` | seo domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the seo domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -81,7 +82,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store administrator]) --> UI[store console]
   UI --> API[7 API routes]
-  API --> ENG[sitemap.js]
+  API --> ENG[sitemap.js, seo.js]
   ENG --> DB[(sitemap_config, sitemap_entries, sitemap_files)]
 
 ```

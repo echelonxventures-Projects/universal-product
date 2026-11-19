@@ -23,6 +23,10 @@ Per-store stock pinning so a dark store cannot oversell. Safety stock is held ba
 
 ## Architecture
 
+| Module | What it is |
+|---|---|
+| `lib/routes/inventory.js` | inventory domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the inventory domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
+
 **Registry lists** (editable in Data Studio): `qcInvStatuses`
 
 ## Data model
@@ -145,7 +149,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store staff / Store administrator]) --> UI[store console]
   UI --> API[8 API routes]
-  API --> ENG[engines]
+  API --> ENG[inventory.js]
   ENG --> DB[(warehouses, inventory, serialized_items, stock_transfers, store_inventory)]
 
 ```

@@ -65,12 +65,14 @@ try {
   /* where a fallback literal is not the registry value it spells: the boot seeder (it runs
      before the registries exist) and the affiliate module's own tier, which has no registry
      and only shares its spelling with the tax class "standard" */
-  const EXEMPT = { "db.js": ["physical"], "affiliate.js": ["standard"], "api.js": ["standard"] };
+  const EXEMPT = { "db.js": ["physical"], "affiliate.js": ["standard"], "api.js": ["standard"], "routes/affiliate.js": ["standard"] };
   const keys = new Set(Object.values(SEED.lists));
   const codes = new Set(db.all("SELECT code FROM currencies").map(r => r.code));
   const hits = [];
   const LIB = path.join(__dirname, "..", "lib");
-  for (const f of fs.readdirSync(LIB).filter(f => f.endsWith(".js"))) {
+  /* every engine file, and each domain's own route file (lib/routes/<domain>.js) */
+  const files = fs.readdirSync(LIB).filter(f => f.endsWith(".js")).concat(fs.existsSync(path.join(LIB, "routes")) ? fs.readdirSync(path.join(LIB, "routes")).filter(f => f.endsWith(".js")).map(f => "routes/" + f) : []);
+  for (const f of files) {
     const src = fs.readFileSync(path.join(LIB, f), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/[^\n]*/g, "");
     const re = /(?:\|\||\?\?)\s*\(?\s*["']([A-Za-z_]+)["']/g; let m;
     while ((m = re.exec(src))) {

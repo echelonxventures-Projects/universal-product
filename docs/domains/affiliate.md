@@ -13,6 +13,7 @@ Who brings buyers and what they earn: affiliate networks and tiers, tracked clic
 | Module | What it is |
 |---|---|
 | `lib/affiliate.js` | Affiliate Network Module Full-stack affiliate tracking, attribution, commissions, and payouts. Built on top of GOIP touchpoints and settlement infrastructure. Registry-driven: all rules, tiers, and networks are configurable. |
+| `lib/routes/affiliate.js` | affiliate domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the affiliate domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -179,7 +180,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Partner or affiliate / Store administrator]) --> UI[store console]
   UI --> API[15 API routes]
-  API --> ENG[affiliate.js]
+  API --> ENG[affiliate.js, affiliate.js]
   ENG --> DB[(affiliate_networks, affiliates, affiliate_clicks, affiliate_conversions, commission_rules, affiliate_tiers, …)]
 
 ```

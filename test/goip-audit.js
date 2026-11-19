@@ -108,7 +108,7 @@ ok(new Set(numbers).size === 67 && Math.min(...numbers) === 1 && Math.max(...num
 /* ── 5 · RE-USABLE: one writer per store, one engine per concern ── */
 group("re-usable — one writer per store, one engine per concern");
 const src = f => fs.readFileSync(path.join(__dirname, "..", "lib", f), "utf8");
-const api = src("api.js");
+const api = require("./api-source.js")(); /* lib/api.js and every domain route file */
 ok((api.match(/INSERT INTO offers\(/g) || []).length === 0, "api.js never writes `offers` directly — it goes through goip.createExchange");
 ok((api.match(/INSERT INTO coupons\(/g) || []).length === 0, "api.js never writes `coupons` directly — it goes through goip.issue");
 ok((src("goip.js").match(/INSERT INTO offers\(/g) || []).length === 1, "exactly one INSERT INTO offers in the whole platform");

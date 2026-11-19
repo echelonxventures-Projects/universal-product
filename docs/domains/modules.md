@@ -23,6 +23,7 @@ The 'Admin Console' link shown to a store's own staff on the storefront.
 | `lib/capabilities.js` | The Capability Layer. -------------------------------------------------------------------------- "Configure types, standards, quality, features and functionalities of any platform or service" — this module is that statement made literal. |
 | `lib/gates.js` | feature gates: an engine asks a binding point, never another engine's capability by name. Checkout does not ask "is the `wallet` module capability on?"; it asks `checkout.wallet`, and the featureGates registry row says which capability opens that point and where it comes from (`source: "module"` — an installed module's capability, through the rules engine's module.cap gate — or `"capability"` — the capability catalogue). A row may also carry the setting it reads from the providing module's config (`config`) and the message a refusal shows. Moving a feature to another module, or splitting a Pro bundle, is a row edit. An engine naming the capability it *is* (the ride engine's `ride_hailing`) is identity, not a gate, and stays as it is. |
 | `lib/modules.js` | Capability Marketplace. EVERYTHING is a product: identity, gid, geo, billing, seo, recommendations, cart, listing, checkout, tax, offers, wallet, logistics, payment rails, catalog packs, themes. Modules are catalog rows with price + manifest; manifests declare capabilities/features/ gateways/catalog actions; the platform auto-applies free baselines at provisioning ("purchase"). |
+| `lib/routes/modules.js` | modules domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the modules domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -196,7 +197,7 @@ Actions:
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[store console, platform console]
   UI --> API[21 API routes]
-  API --> ENG[capabilities.js, gates.js, modules.js]
+  API --> ENG[capabilities.js, gates.js, modules.js, modules.js]
   ENG --> DB[(modules, tenant_modules, capabilities, applicability_rules, platform_capabilities, capability_values, …)]
   ENG --> SM{{1 state machines}}
 ```

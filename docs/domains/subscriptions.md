@@ -33,6 +33,7 @@ Paid or free tiers with perks applied at checkout (free shipping, bonus credit).
 | Module | What it is |
 |---|---|
 | `lib/recurring.js` | Retention & recurring revenue. Subscribe & Save: customer recurring delivery schedules (frequency, next shipment, pause/skip/cancel, per-cycle ledger that mints a real order each cycle) with a subscriber discount. Membership program: paid tiers whose benefits (free shipping, early access, bonus rewards, priority support) are data in meta_lists and apply at checkout. Renewals charge through the existing payments ledger. Feature flags: settings.features.subscribeSave / membership. |
+| `lib/routes/subscriptions.js` | subscriptions domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the subscriptions domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -149,7 +150,7 @@ Actions:
 flowchart LR
   U([Shopper / Store administrator]) --> UI[store console, platform console]
   UI --> API[11 API routes]
-  API --> ENG[recurring.js]
+  API --> ENG[recurring.js, subscriptions.js]
   ENG --> DB[(subscriptions, recurring_schedules, recurring_cycles, memberships)]
   ENG --> SM{{3 state machines}}
 ```

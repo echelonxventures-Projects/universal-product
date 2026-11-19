@@ -61,8 +61,9 @@ const KERNEL = new Set(["id", "key", "name", "label", "type", "kind", "value", "
   "production", "development", "staging", "web", "api", "app", "info", "warn", "success", "failed", "queued", "done", "ready", "start", "end", "from", "to", "at", "by", "of", "for", "per"]);
 
 /* ---------- the code ---------- */
-const FILES = ["server.js"].concat(fs.readdirSync(path.join(ROOT, "lib")).filter(f => f.endsWith(".js")).map(f => "lib/" + f))
-  .concat(fs.readdirSync(path.join(ROOT, "public", "js")).filter(f => f.endsWith(".js")).map(f => "public/js/" + f));
+/* every code file, including each domain's own route and console files */
+const jsIn = dir => fs.existsSync(path.join(ROOT, dir)) ? fs.readdirSync(path.join(ROOT, dir)).filter(f => f.endsWith(".js")).map(f => dir + "/" + f) : [];
+const FILES = ["server.js"].concat(jsIn("lib"), jsIn("lib/routes"), jsIn("public/js"), jsIn("public/js/admin"));
 const stripComments = src => src.replace(/\/\*[\s\S]*?\*\//g, m => m.replace(/[^\n]/g, " ")).replace(/(^|[^:"'`\\])\/\/[^\n]*/g, (m, p) => p + " ".repeat(m.length - p.length));
 const LIT = /(["'])((?:(?!\1)[^\\\n]){1,60})\1/g;
 function classify(line, lit) {

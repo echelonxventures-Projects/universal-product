@@ -25,6 +25,7 @@ Order-time risk screening that may flag or block a suspicious order.
 | Module | What it is |
 |---|---|
 | `lib/risk.js` | Order fraud screening & risk. Screened at checkout: velocity (attempts per owner/IP/window), blocklists (email, card fingerprint, address, IP), an AVS/CVV-signal proxy and a composite 0–100 risk score producing a decision — approve / hold for manual review / block. Holds land in a review queue the admin can release or decline. Block reasons and thresholds are meta_lists registries (riskSignals, riskActions) — editable in Data Studio. Feature-gated by settings.features.fraudScreen. |
+| `lib/routes/risk.js` | risk domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the risk domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -80,7 +81,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store staff / Store administrator / Platform administrator]) --> UI[store console, platform console]
   UI --> API[5 API routes]
-  API --> ENG[risk.js]
+  API --> ENG[risk.js, risk.js]
   ENG --> DB[(risk_events, risk_blocklist)]
 
 ```

@@ -40,7 +40,7 @@
 | **Contract** | [UCOS-IDN-000001 Identity Architecture](#ucos-idn-000001) |
 | **Artifacts** | [UCOS-IDN-000001](#ucos-idn-000001) |
 | **Concepts** | 1349 — `node _registry/compile.js --search <words> --kind concept --owner "Identity"` |
-| **Code** | `lib/uid.js`, `lib/kernel.js`, `lib/platform-master.js` |
+| **Code** | `lib/uid.js`, `lib/kernel.js`, `lib/platform-master.js`, `lib/routes/identity.js` |
 | **Managed in** | `_registry/domains.json` → `D-IDN` |
 
 **Live routes:** none yet.
@@ -291,11 +291,11 @@ stateDiagram-v2
 - `POST /api/admin/taxonomy`
 - `PUT /api/admin/taxonomy/:id`
 - `DELETE /api/admin/taxonomy/:id`
+- `POST /api/admin/segments/members`
+- `DELETE /api/admin/segments/members/:id`
 - `GET /api/admin/departments`
 - `POST /api/admin/departments`
 - `DELETE /api/admin/departments/:key`
-- `POST /api/admin/segments/members`
-- `DELETE /api/admin/segments/members/:id`
 
 <a id="ucos-sem-000001"></a>
 #### UCOS-SEM-000001 · Universal Semantic Architecture
@@ -1312,7 +1312,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-GDN-000001 Guidance Architecture](#ucos-gdn-000001) |
 | **Artifacts** | [UCOS-IMP-000001](#ucos-imp-000001), [UCOS-IMP-000002](#ucos-imp-000002), [UCOS-IMP-000003](#ucos-imp-000003), [UCOS-IMP-000004](#ucos-imp-000004), [UCOS-IMP-000005](#ucos-imp-000005), [UCOS-GDN-000001](#ucos-gdn-000001) |
 | **Concepts** | 8 — `node _registry/compile.js --search <words> --kind concept --owner "Guidance"` |
-| **Code** | `scripts/domain-map.js`, `scripts/domain-docs.js`, `public/docs/architecture.html`, `public/docs/e2e-flow.html`, `public/docs/platform-reference.html`, `public/docs/provisioning-guide.html`, `public/docs/user-manual.html`, `public/docs/user-manual.js` |
+| **Code** | `scripts/domain-map.js`, `scripts/domain-docs.js`, `lib/routes/knowledge.js`, `public/docs/architecture.html`, `public/docs/e2e-flow.html`, `public/docs/platform-reference.html`, `public/docs/provisioning-guide.html`, `public/docs/user-manual.html`, `public/docs/user-manual.js` |
 | **Managed in** | `_registry/domains.json` → `D-GDN` |
 
 **Live routes:** none yet.
@@ -2490,7 +2490,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-PTY-000001 Party Architecture](#ucos-pty-000001) |
 | **Artifacts** | [UCOS-PTY-000001](#ucos-pty-000001) |
 | **Concepts** | 267 — `node _registry/compile.js --search <words> --kind concept --owner "Party"` |
-| **Code** | `lib/stores.js`, `lib/tenancy.js`, `lib/routes/stores.js`, `lib/seed/stores.json` |
+| **Code** | `lib/stores.js`, `lib/tenancy.js`, `lib/routes/customers.js`, `lib/routes/stores.js`, `lib/seed/stores.json` |
 | **Managed in** | `_registry/domains.json` → `D-PTY` |
 
 **Live routes (49)** — what the platform serves today for this domain:
@@ -2499,7 +2499,6 @@ stateDiagram-v2
 - `POST /api/admin/staff`
 - `PUT /api/admin/staff/:id`
 - `DELETE /api/admin/staff/:id`
-- `GET /api/tenant/entity-def`
 - `GET /api/tenant/master/permissions`
 - `GET /api/tenant/master/contributions`
 - `POST /api/tenant/master/contributions`
@@ -2508,14 +2507,25 @@ stateDiagram-v2
 - `GET /api/tenant/products`
 - `GET /api/tenant/catalog/importable`
 - `POST /api/tenant/catalog/import`
-- `GET /api/platform/global/tenant`
 - `GET /api/addresses`
 - `POST /api/addresses`
 - `PUT /api/addresses/:id`
 - `DELETE /api/addresses/:id`
-- `PUT /api/admin/mode`
 - `GET /api/admin/users`
 - `DELETE /api/admin/users/:id`
+- `PUT /api/admin/account`
+- `GET /api/user/identity-methods`
+- `POST /api/user/identity-methods`
+- `DELETE /api/user/identity-methods/:id`
+- `PUT /api/user/identity-methods/:id/primary`
+- `GET /api/platform/admins`
+- `POST /api/platform/admins`
+- `PUT /api/platform/admins/:id`
+- `DELETE /api/platform/admins/:id`
+- `POST /api/platform/users`
+- `GET /api/tenant/entity-def`
+- `GET /api/platform/global/tenant`
+- `PUT /api/admin/mode`
 - `GET /api/tenancy/tree`
 - `GET /api/tenancy/nodes`
 - `POST /api/tenancy/node`
@@ -2523,11 +2533,6 @@ stateDiagram-v2
 - `DELETE /api/tenancy/node/:id`
 - `GET /api/tenancy/resolve/:id`
 - `POST /api/tenancy/config/:id/:key`
-- `PUT /api/admin/account`
-- `GET /api/user/identity-methods`
-- `POST /api/user/identity-methods`
-- `DELETE /api/user/identity-methods/:id`
-- `PUT /api/user/identity-methods/:id/primary`
 - `GET /api/platform/tenants`
 - `GET /api/platform/tenants/:id/setup`
 - `POST /api/platform/tenants`
@@ -2539,11 +2544,6 @@ stateDiagram-v2
 - `POST /api/platform/tenants/:id/impersonate`
 - `POST /api/platform/tenants/:id/subscribe`
 - `POST /api/platform/tenants/:id/invoice`
-- `GET /api/platform/admins`
-- `POST /api/platform/admins`
-- `PUT /api/platform/admins/:id`
-- `DELETE /api/platform/admins/:id`
-- `POST /api/platform/users`
 
 <a id="ucos-pty-000001"></a>
 #### UCOS-PTY-000001 · Party Architecture

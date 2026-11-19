@@ -85,6 +85,7 @@ The cart must respect each line's minimum order quantity — from the product, t
 | Module | What it is |
 |---|---|
 | `lib/trade.js` | B2B trust & trade engine. Trade-assurance escrow, gold-supplier memberships, company verification audits, export/customs document generation, letters of credit, multi-seller RFQ bidding, reverse-auction tender bids, segment price lists and MOQ enforcement. |
+| `lib/routes/trade.js` | trade domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the trade domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `b2bAssuranceStatuses`, `b2bGoldTiers`, `b2bVerificationLevels`, `b2bVerificationStatuses`, `b2bDocKinds`, `b2bDocStatuses`, `b2bLcStatuses`, `b2bQuoteStatuses`, `b2bBidStatuses`
 
@@ -404,7 +405,7 @@ Actions:
 flowchart LR
   U([Seller / Store administrator / Store staff]) --> UI[store console, platform console]
   UI --> API[26 API routes]
-  API --> ENG[trade.js]
+  API --> ENG[trade.js, trade.js]
   ENG --> DB[(rfqs, contracts, tenders, trade_assurance, company_verifications, export_documents, …)]
   ENG --> SM{{7 state machines}}
 ```

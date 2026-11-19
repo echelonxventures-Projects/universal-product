@@ -487,7 +487,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(leaked.length === 0, "global registries are hidden from the store admin's entity list", leaked.join(","));
     /* the guard helpers write their own refusal, so a caller that writes again after a
        failed guard double-writes the response and kills the process — keep the pattern out */
-    const apiSrc = require("fs").readFileSync(require("path").join(__dirname, "..", "lib", "api.js"), "utf8");
+    const apiSrc = require("./api-source.js")();
     const dbl = (apiSrc.match(/require(?:Platform|Admin|Section|Store)\(s,\s*res[^)]*\)\)\s*return\s+bad\(/g) || []).length;
     ok(dbl === 0, "no caller re-writes a response after a failed authority guard", dbl + " site(s)");
 
@@ -1772,7 +1772,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
       // store protection is DATA (platform_settings.protectedStores), never a slug in code
       const del = await P("/api/platform/tenants/" + tenants[0].id, "DELETE", {});
       ok(del.status === 400 && /protected/i.test(del.body.error || ""), "the platform's first store is protected from deletion by default", del.body.error);
-      const apiSrc = require("fs").readFileSync(require("path").join(__dirname, "..", "lib", "api.js"), "utf8");
+      const apiSrc = require("./api-source.js")();
       const entSrc = require("fs").readFileSync(require("path").join(__dirname, "..", "lib", "enterprise.js"), "utf8");
       const regSrc = require("fs").readFileSync(require("path").join(__dirname, "..", "lib", "registry.js"), "utf8");
       ok(!/=== "luxora"|=== 'luxora'/.test(apiSrc), "no code path keys on any store's slug (tenant-independent)");

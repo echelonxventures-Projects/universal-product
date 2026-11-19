@@ -82,6 +82,7 @@ A plan covering an item for months (an extended warranty, a protection plan), so
 |---|---|
 | `lib/bookings.js` | Bookings: appointments, rentals, stays and experiences. A bookable product names the resources that deliver it (a stylist, a room, a vehicle, a venue — bookingResourceKinds rows) and how it is booked: a bookingModes row names the engine it runs — `slots` (fixed-length appointments on a step) or `days` (a range of days or nights). Each resource keeps weekly hours in its own time zone (the store's by default, resolved by the Time domain) and a capacity. |
 | `lib/media-sessions.js` | media sessions: live audio or video between a shopper and whoever serves them (a practitioner, a consultant, a tutor, a seller), and metering them by the minute. |
+| `lib/routes/services.js` | services domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the services domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `bookingResourceKinds`, `bookingModes`, `bookingStatuses`, `mediaSessionStatuses`, `serviceVisitStatuses`, `coverPlanStatuses`
 
@@ -273,7 +274,7 @@ Actions: `end` → ended · `cancel` → cancelled
 flowchart LR
   U([Shopper / Practitioner / Store staff / Store administrator]) --> UI[session.html, store console, platform console]
   UI --> API[18 API routes]
-  API --> ENG[bookings.js, media-sessions.js]
+  API --> ENG[bookings.js, media-sessions.js, services.js]
   ENG --> DB[(media_sessions, media_signals, booking_resources, product_bookings, bookings)]
   ENG --> SM{{4 state machines}}
 ```

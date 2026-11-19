@@ -26,11 +26,16 @@
 | **Contract** | [UCOS-REG-000001 Registry Architecture](#ucos-reg-000001) |
 | **Artifacts** | [UCOS-REG-000001](#ucos-reg-000001) |
 | **Concepts** | 327 — `node _registry/compile.js --search <words> --kind concept --owner "Registry"` |
-| **Code** | `lib/entity.js`, `lib/meta.js`, `lib/parity-registries.js`, `lib/registry.js`, `lib/canonical.js`, `lib/ucos.js`, `lib/ucos-registry.js`, `lib/ucos-foundations.js`, `lib/ucos-universes.js`, `lib/ucos-domain.js`, `lib/ucos-catalog.js`, `lib/ucos-completeness.js`, `lib/kernel.js`, `lib/store-attributes.js`, `lib/platform-master.js`, `lib/seed/entity.json`, `lib/seed/kernel.json`, `lib/seed/meta.json`, `lib/seed/parity-registries.json`, `lib/seed/ucos.json` |
+| **Code** | `lib/entity.js`, `lib/meta.js`, `lib/parity-registries.js`, `lib/registry.js`, `lib/canonical.js`, `lib/ucos.js`, `lib/ucos-registry.js`, `lib/ucos-foundations.js`, `lib/ucos-universes.js`, `lib/ucos-domain.js`, `lib/ucos-catalog.js`, `lib/ucos-completeness.js`, `lib/kernel.js`, `lib/store-attributes.js`, `lib/platform-master.js`, `lib/routes/kernel.js`, `lib/seed/entity.json`, `lib/seed/kernel.json`, `lib/seed/meta.json`, `lib/seed/parity-registries.json`, `lib/seed/ucos.json` |
 | **Managed in** | `_registry/domains.json` → `D-REG` |
 
 **Live routes (95)** — what the platform serves today for this domain:
 
+- `GET /api/platform/attributes`
+- `POST /api/platform/attributes`
+- `GET /api/admin/attributes`
+- `POST /api/admin/attributes`
+- `DELETE /api/admin/attributes/:key`
 - `GET /api/registries`
 - `POST /api/registries`
 - `POST /api/registries/:id/items`
@@ -45,9 +50,32 @@
 - `DELETE /api/meta/entity-def/:key`
 - `POST /api/meta/entity-def/:key/enable`
 - `POST /api/meta/entity-def/:key/disable`
+- `GET /api/platform/universe-fields/:key`
+- `GET /api/platform/entity-types`
+- `POST /api/platform/entity-types`
+- `PUT /api/platform/entity-types/:entity/:type_key`
+- `DELETE /api/platform/entity-types/:entity/:type_key`
+- `GET /api/platform/data`
+- `GET /api/platform/data/:key`
+- `GET /api/platform/data/:key/def`
+- `GET /api/platform/data/:key/export`
+- `GET /api/platform/data/:key/sample`
+- `POST /api/platform/data/:key`
+- `PUT /api/platform/data/:key/:id`
+- `DELETE /api/platform/data/:key/:id`
+- `POST /api/platform/data/:key/import`
+- `GET /api/platform/entity-attributes`
+- `POST /api/platform/entity-attributes`
+- `GET /api/platform/registries`
+- `GET /api/platform/registries/:name`
+- `POST /api/platform/registries/:name`
+- `POST /api/platform/registries/:name/recommend`
+- `DELETE /api/platform/registries/:name/:key`
+- `GET /api/admin/entity-usage`
+- `GET /api/admin/entity-meta`
+- `PUT /api/admin/entity-meta`
 - `GET /api/ucii/domains`
 - `POST /api/ucii/domains`
-- `GET /api/platform/universe-fields/:key`
 - `GET /api/ucii/knowledge`
 - `POST /api/ucii/knowledge`
 - `GET /api/ucos/manifest`
@@ -95,37 +123,9 @@
 - `GET /api/ucos/domains`
 - `GET /api/ucos/domain/:key`
 - `POST /api/ucos/domain/:key/fire`
-- `GET /api/platform/entity-types`
-- `POST /api/platform/entity-types`
-- `PUT /api/platform/entity-types/:entity/:type_key`
-- `DELETE /api/platform/entity-types/:entity/:type_key`
 - `GET /api/platform/tenant-entities`
 - `POST /api/platform/tenant-entities`
 - `POST /api/platform/tenant-fields`
-- `GET /api/platform/data`
-- `GET /api/platform/data/:key`
-- `GET /api/platform/data/:key/def`
-- `GET /api/platform/data/:key/export`
-- `GET /api/platform/data/:key/sample`
-- `POST /api/platform/data/:key`
-- `PUT /api/platform/data/:key/:id`
-- `DELETE /api/platform/data/:key/:id`
-- `POST /api/platform/data/:key/import`
-- `GET /api/platform/attributes`
-- `POST /api/platform/attributes`
-- `GET /api/platform/entity-attributes`
-- `POST /api/platform/entity-attributes`
-- `GET /api/admin/attributes`
-- `POST /api/admin/attributes`
-- `DELETE /api/admin/attributes/:key`
-- `GET /api/platform/registries`
-- `GET /api/platform/registries/:name`
-- `POST /api/platform/registries/:name`
-- `POST /api/platform/registries/:name/recommend`
-- `DELETE /api/platform/registries/:name/:key`
-- `GET /api/admin/entity-usage`
-- `GET /api/admin/entity-meta`
-- `PUT /api/admin/entity-meta`
 
 <a id="ucos-reg-000001"></a>
 #### UCOS-REG-000001 · Registry Architecture

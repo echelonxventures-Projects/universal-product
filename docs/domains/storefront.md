@@ -14,6 +14,7 @@ What a shopper sees: the home page's banners and cards, themes and their assignm
 |---|---|
 | `lib/bundle.js` | console bundles, served pre-wrapped. The unified console (public/js/console.js) drives the store and platform consoles' views without letting either bundle's top-level globals reach window. It used to fetch the bundle's source and compile it with new Function — which needs CSP 'unsafe-eval', so a real browser refused it. The server now does the wrapping: the bundle is served as an ordinary same-origin script that registers one factory on window.__lxBundle; the console calls it with its capture object as `this`. |
 | `lib/themes.js` | LUXORA · universal theme engine — every skin the storefront can wear. -------------------------------------------------------------------------- Themes are DATA. A theme is a set of CSS custom properties stored in `theme_presets`; an operator creates one with a single INSERT and it is live — no code, no deploy, no limit. That is the "infinitely expandable" part, and it is the only honest way to do it: a hardcoded theme gallery is finite by construction, a registry is not. |
+| `lib/routes/storefront.js` | storefront domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the storefront domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -95,7 +96,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Guest / Shopper / Store administrator]) --> UI[404.html, console.html, index.html, store console, platform console]
   UI --> API[15 API routes]
-  API --> ENG[bundle.js, themes.js]
+  API --> ENG[bundle.js, themes.js, storefront.js]
   ENG --> DB[(home_banners, home_cards, theme_presets, theme_assignments)]
 
 ```

@@ -26,6 +26,7 @@ A shopper asks about an item (a vehicle, a property, a service); the seller foll
 |---|---|
 | `lib/cases.js` | cases: anything someone asks a store to look at and decide. |
 | `lib/helpdesk.js` | Customer Service helpdesk with live chat & SMS support. Tickets raised by customers (storefront, inbound email/webhook, live chat, SMS), an agent queue with assignment, priorities and statuses, SLA timers (first-response + resolution targets), internal notes vs public replies, and CSAT ratings collected on close. Priorities, statuses and reasons are meta_lists registries (hdPriorities, hdStatuses, hdReasons) — editable from Data Studio, no code. Feature-gated by settings.features.helpdesk. Live chat and SMS threads are converted to tickets automatically. |
+| `lib/routes/support.js` | support domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the support domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `caseKinds`, `caseStatuses`, `leadStatuses`, `caseSubjects`
 
@@ -200,7 +201,7 @@ Actions: `contact` → contacted · `win` → won · `lose` → lost · `withdra
 flowchart LR
   U([Shopper / Store staff / Store administrator]) --> UI[customer-service.html, store console, platform console]
   UI --> API[23 API routes]
-  API --> ENG[cases.js, helpdesk.js]
+  API --> ENG[cases.js, helpdesk.js, support.js]
   ENG --> DB[(tickets, agent_availability, ticket_notes, cases)]
   ENG --> SM{{4 state machines}}
 ```

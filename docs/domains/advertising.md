@@ -32,6 +32,10 @@ Sellers' ads compete in a second-price auction for slots in search results and o
 
 ## Architecture
 
+| Module | What it is |
+|---|---|
+| `lib/routes/advertising.js` | advertising domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the advertising domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
+
 **Registry lists** (editable in Data Studio): `mktAdKinds`, `mktCreativeStatuses`
 
 ## Data model
@@ -117,7 +121,7 @@ Actions:
 flowchart LR
   U([Seller / Store administrator]) --> UI[API]
   UI --> API[3 API routes]
-  API --> ENG[engines]
+  API --> ENG[advertising.js]
   ENG --> DB[(ads, ad_events, sponsored_creatives)]
   ENG --> SM{{1 state machines}}
 ```

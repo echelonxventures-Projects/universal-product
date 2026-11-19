@@ -49,6 +49,7 @@ Projects, tasks and time-logging that accrues to a project's spend at a configur
 | Module | What it is |
 |---|---|
 | `lib/operations.js` | E18 · The Operations universe. -------------------------------------------------------------------------- Constitution E18: "Through configuration alone this universe yields ERP, HRMS, payroll, IT-service-management and workforce-management platforms: ERP · HRMS · Payroll · Workforce · SCM · Procurement · Manufacturing · Projects · Tasks · Approvals · Document management · Collaboration." |
+| `lib/routes/business_operations.js` | business_operations domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the business_operations domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -303,7 +304,7 @@ Actions:
 flowchart LR
   U([Store staff / Store administrator]) --> UI[store console, platform console]
   UI --> API[13 API routes]
-  API --> ENG[operations.js]
+  API --> ENG[operations.js, business_operations.js]
   ENG --> DB[(workflows, employees, attendance, payroll_runs, payroll_lines, work_orders, …)]
   ENG --> SM{{6 state machines}}
 ```

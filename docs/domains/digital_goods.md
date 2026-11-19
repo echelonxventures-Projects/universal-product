@@ -36,6 +36,7 @@ An ordered course grants access at once and counts the lessons the shopper finis
 | Module | What it is |
 |---|---|
 | `lib/deliverables.js` | deliverables: what an order hands the shopper beyond the goods. |
+| `lib/routes/digital_goods.js` | digital_goods domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the digital_goods domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `deliverableKinds`, `deliverableStatuses`
 
@@ -105,7 +106,7 @@ Actions: `deliver` → delivered · `revoke` → revoked
 flowchart LR
   U([Shopper / Store administrator]) --> UI[store console]
   UI --> API[6 API routes]
-  API --> ENG[deliverables.js]
+  API --> ENG[deliverables.js, digital_goods.js]
   ENG --> DB[(deliverables, deliverable_pool)]
   ENG --> SM{{1 state machines}}
 ```

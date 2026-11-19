@@ -54,6 +54,7 @@ Drivers and vehicles: onboarding, online/offline state, vehicle kinds, maintenan
 | Module | What it is |
 |---|---|
 | `lib/mobility.js` | E17 · The Mobility universe. -------------------------------------------------------------------------- Constitution E17: "Through configuration alone this universe yields ride-hailing, taxi, food-delivery and parcel-delivery platforms: ride hailing · dispatch · driver management · routing · fleet · delivery · tracking · dynamic pricing · matching · rating." |
+| `lib/routes/mobility.js` | mobility domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the mobility domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -199,7 +200,7 @@ Actions:
 flowchart LR
   U([Shopper / Driver or rider / Store administrator]) --> UI[store console]
   UI --> API[9 API routes]
-  API --> ENG[mobility.js]
+  API --> ENG[mobility.js, mobility.js]
   ENG --> DB[(drivers, rides, ride_events, vehicles)]
   ENG --> SM{{3 state machines}}
 ```

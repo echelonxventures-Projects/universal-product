@@ -36,7 +36,7 @@
 | **Contract** | [UCOS-SEC-000001 Security Runtime Architecture](#ucos-sec-000001) |
 | **Artifacts** | [UCOS-IAM-000001](#ucos-iam-000001), [UCOS-ZTA-000001](#ucos-zta-000001), [UCOS-CRY-000001](#ucos-cry-000001), [UCOS-KMS-000001](#ucos-kms-000001), [UCOS-SEC-000001](#ucos-sec-000001) |
 | **Concepts** | 285 — `node _registry/compile.js --search <words> --kind concept --owner "Security"` |
-| **Code** | `lib/security.js`, `lib/identity.js`, `lib/webauthn.js`, `lib/risk.js` |
+| **Code** | `lib/security.js`, `lib/identity.js`, `lib/webauthn.js`, `lib/risk.js`, `lib/routes/risk.js`, `lib/routes/security.js` |
 | **Managed in** | `_registry/domains.json` → `D-SEC` |
 
 **Live routes (45)** — what the platform serves today for this domain:
@@ -46,11 +46,6 @@
 - `POST /api/auth/login`
 - `POST /api/auth/logout`
 - `POST /api/auth/token-exchange`
-- `POST /api/admin/risk/screen`
-- `GET /api/admin/risk/blocklist`
-- `POST /api/admin/risk/blocklist`
-- `GET /api/admin/risk/queue`
-- `PUT /api/admin/risk/:id/resolve`
 - `GET /api/platform/identity-templates`
 - `POST /api/platform/identity-templates`
 - `DELETE /api/platform/identity-templates/:id`
@@ -84,6 +79,11 @@
 - `POST /api/platform/logout`
 - `GET /api/platform/me`
 - `GET /api/auth/me`
+- `POST /api/admin/risk/screen`
+- `GET /api/admin/risk/blocklist`
+- `POST /api/admin/risk/blocklist`
+- `GET /api/admin/risk/queue`
+- `PUT /api/admin/risk/:id/resolve`
 - `GET /api/platform/security`
 - `POST /api/platform/keys/rotate`
 
@@ -1337,7 +1337,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-AUD-000001 Audit Architecture](#ucos-aud-000001) |
 | **Artifacts** | [UCOS-AUD-000001](#ucos-aud-000001) |
 | **Concepts** | 40 — `node _registry/compile.js --search <words> --kind concept --owner "Audit"` |
-| **Code** | `lib/ucos-trace.js`, `lib/security.js` |
+| **Code** | `lib/ucos-trace.js`, `lib/security.js`, `lib/routes/audit.js` |
 | **Managed in** | `_registry/domains.json` → `D-AUD` |
 
 **Live routes (4)** — what the platform serves today for this domain:
@@ -1561,13 +1561,11 @@ stateDiagram-v2
 | **Contract** | [UCOS-CMP-000001 Compliance Architecture](#ucos-cmp-000001) |
 | **Artifacts** | [UCOS-DSP-000001](#ucos-dsp-000001), [UCOS-CNS-000001](#ucos-cns-000001), [UCOS-CMP-000001](#ucos-cmp-000001) |
 | **Concepts** | 211 — `node _registry/compile.js --search <words> --kind concept --owner "Compliance"` |
-| **Code** | `lib/compliance.js`, `lib/seed/compliance.json` |
+| **Code** | `lib/compliance.js`, `lib/routes/compliance.js`, `lib/seed/compliance.json` |
 | **Managed in** | `_registry/domains.json` → `D-CMP` |
 
 **Live routes (12)** — what the platform serves today for this domain:
 
-- `GET /api/admin/retention`
-- `PUT /api/admin/retention`
 - `GET /api/admin/compliance/status`
 - `GET /api/admin/compliance/catalog`
 - `POST /api/admin/compliance/control`
@@ -1578,6 +1576,8 @@ stateDiagram-v2
 - `GET /api/admin/privacy/requests`
 - `POST /api/admin/privacy/requests/:id`
 - `GET /api/admin/privacy/requests/:id/events`
+- `GET /api/admin/retention`
+- `PUT /api/admin/retention`
 
 <a id="ucos-dsp-000001"></a>
 #### UCOS-DSP-000001 · Data Sovereignty Architecture

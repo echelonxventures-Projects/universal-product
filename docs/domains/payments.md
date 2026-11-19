@@ -68,6 +68,10 @@ Divide a payment across parties at order time. The parts must sum to the total, 
 
 ## Architecture
 
+| Module | What it is |
+|---|---|
+| `lib/routes/payments.js` | payments domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the payments domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
+
 **Registry lists** (editable in Data Studio): `finUpiStatuses`, `finCollectStatuses`, `finQrKinds`, `finQrStatuses`, `finLinkStatuses`, `finMandateFrequencies`, `finMandateStatuses`, `finEscrowStatuses`, `finSplitStatuses`
 
 ## Data model
@@ -358,7 +362,7 @@ Actions:
 flowchart LR
   U([Shopper / Store administrator / Platform administrator / Developer]) --> UI[store console, platform console]
   UI --> API[22 API routes]
-  API --> ENG[engines]
+  API --> ENG[payments.js]
   ENG --> DB[(tenant_gateways, payments, payment_attempts, upi_handles, upi_collects, qr_codes, …)]
   ENG --> SM{{8 state machines}}
 ```

@@ -10,6 +10,10 @@ Every unit of value and how they convert: currencies, points and credits, and ex
 
 ## Architecture
 
+| Module | What it is |
+|---|---|
+| `lib/routes/currency.js` | currency domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the currency domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
+
 ## Data model
 
 ### `currencies`
@@ -57,7 +61,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[platform console]
   UI --> API[5 API routes]
-  API --> ENG[engines]
+  API --> ENG[currency.js]
   ENG --> DB[(currencies, fx_rates)]
 
 ```

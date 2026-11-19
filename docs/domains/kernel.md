@@ -23,6 +23,7 @@ The foundation every domain is built on: kinds, entities, identifiers, hierarchi
 | `lib/parity-registries.js` | Universal Commerce registries. Every status, kind, type, tier and category the commerce entities reference is a row in meta_lists, editable at runtime from Data Studio. Nothing is an enum in code: add a quick-commerce store kind, a fintech payout status, a B2B document type or a buyer-claim state here (or in the console) and every dropdown, every validation option and every state machine that reads the registry follows on the next request. This is the platform's Knowledge-Once rule applied to the commerce capability set. No vendor name appears in any list — these are the platform's own vocabularies. |
 | `lib/registry.js` | runtime registry: geo (countries/currencies), tax modes, provider catalog, availability relationships and list registries. All stored in DB tables (seeded once from providers.js/meta.js constants) and editable at runtime via the entity engine. |
 | `lib/uid.js` | Universal Unique IDs: every row in every table gets a UUIDv4 at insert time via SQLite triggers (covers seeds, API, entity engine, manual SQL). |
+| `lib/routes/kernel.js` | kernel domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the kernel domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -424,7 +425,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Platform administrator / Developer]) --> UI[store console, platform console]
   UI --> API[68 API routes]
-  API --> ENG[entity.js, events.js, global.js, kernel-context.js, kernel-lifecycle.js, kernel-shape.js, kernel.js, meta.js, parity-registries.js, registry.js, uid.js]
+  API --> ENG[entity.js, events.js, global.js, kernel-context.js, kernel-lifecycle.js, kernel-shape.js, kernel.js, meta.js, parity-registries.js, registry.js, uid.js, kernel.js]
   ENG --> DB[(meta_lists, links, context_types, entity_defs, entity_data, entity_types, …)]
 
 ```

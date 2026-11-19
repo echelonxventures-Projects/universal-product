@@ -56,6 +56,7 @@ Shoppers choose a locker, counter or store at checkout instead of a home address
 | `lib/pickup.js` | Pickup points & lockers. A store runs any number of pickup points — lockers, staffed counters, its own shops; the kinds are pickupKinds registry rows. At checkout a shopper may choose a point instead of a home address: the order is reserved a place there and given a one-time code. Staff mark the parcel arrived (the shopper is told), the shopper collects with the code, and a parcel left past its holding time expires and goes back. Every step is the pickup state machine, asked by tag (holding, collectable, expirable…) and never by a state's name; the fee, holding days, code length and lock-out are the pickup_points capability's params. |
 | `lib/qcommerce.js` | Quick-commerce engine. Dark stores, delivery slots, pincode serviceability, store-inventory pinning, a delivery-promise engine, rider dispatch batching and proof-of-delivery. |
 | `lib/shipping.js` | Shipping: live carrier rates, labels and tracking. A per-store parcel ledger (package_tracking) plus one live carrier integration through EasyPost, which fronts USPS, UPS, FedEx, DHL and ~100 others with one API: rate a parcel, buy the chosen rate's label, and receive signed tracker webhooks. Credentials live sealed on the platform's shipping_providers row (configured by a platform admin); with no active provider, quote/label still say so (501) rather than inventing data. |
+| `lib/routes/shipping.js` | shipping domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the shipping domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `qcStoreKinds`, `qcStoreStatuses`, `qcSlotStatuses`, `qcAreaStatuses`, `qcVehicles`, `qcRiderStatuses`, `qcDispatchStatuses`, `qcDeliveryKinds`, `pickupKinds`, `pickupStatuses`
 
@@ -419,7 +420,7 @@ Actions: `arrive` → ready · `collect` → collected · `expire` → expired �
 flowchart LR
   U([Shopper / Store staff / Store administrator / Driver or rider / Platform administrator]) --> UI[store console, platform console]
   UI --> API[32 API routes]
-  API --> ENG[logistics.js, pickup.js, qcommerce.js, shipping.js]
+  API --> ENG[logistics.js, pickup.js, qcommerce.js, shipping.js, shipping.js]
   ENG --> DB[(shipments, shipment_events, dark_stores, delivery_slots, service_areas, riders, …)]
   ENG --> SM{{7 state machines}}
 ```

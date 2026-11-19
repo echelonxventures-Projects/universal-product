@@ -13,6 +13,7 @@ What tax applies and how much: tax modes, rules by place and product, and how ta
 | Module | What it is |
 |---|---|
 | `lib/tax.js` | first-class Tax engine (all configuration, single source of truth for checkout + invoicing + reports). Rates are DATA: a jurisdiction rate registry (taxRules) with classes, plus per-product tax_rule overrides and compliance-based exemptions. Supports inclusive vs exclusive pricing, VAT/GST number validation, nexus, and digital-goods rules — so a store in any market/configures tax by data, not code. |
+| `lib/routes/tax.js` | tax domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the tax domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `taxClasses`, `taxRules`, `exemptionReasons`, `taxNumberFormats`
 
@@ -57,7 +58,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[API]
   UI --> API[3 API routes]
-  API --> ENG[tax.js]
+  API --> ENG[tax.js, tax.js]
   ENG --> DB[(tax_modes, tax_rules)]
 
 ```

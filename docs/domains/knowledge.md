@@ -22,6 +22,7 @@ The platform describing itself: the constitution, its foundations, universes, ca
 | `lib/ucos-registry.js` | UCOS Ω∞ · the frozen registry as a first-class corpus source. -------------------------------------------------------------------------- `_registry/*.json` is the platform's constitutional source of truth: the frozen primitives, the canonical terminology, the domain-ownership matrix and the 93-artifact manifest. Before this module it was a PARALLEL source of truth — `_registry/project.js` projected 93 markdown artifacts from it while the runtime derived everything from the corpora, and neither world knew the other existed. That is a Law 002 (Knowledge Once) violation: the same concept was defined twice, in two registries that never met. |
 | `lib/ucos-universes.js` | UCOS Ω∞ · Universe instantiation — every declared universe becomes operable. -------------------------------------------------------------------------- The corpus declares 2,500+ universes, domains and capability meta-models (Engineering, Streaming, Cloud, Transportation, Insurance, Advisory, Service Robots, Quantitative Sciences…). Before this module they were REGISTERED — parsed, counted, graphed, health-checked — but not OPERABLE: you could read about "Insurance Product" in the console, but you could not create one. |
 | `lib/ucos.js` | UCOS Ω∞ · UPIP / UMQSOCR constitutional registry -------------------------------------------------------------------------- Architecture1.txt (UPIP Ω∞ — 2,884 numbered sections, ~100 parts), Architecture2.txt (UMQSOCR Ω∞ — 529 articles, 26 documents) and Architecture3.txt (UCOS Ω∞ — 65 articles, 11 documents) are treated as the CANONICAL SOURCE OF TRUTH. This module never re-declares a single concept from them in code (Knowledge-Once Principle, Configuration-Over-Code): it parses the documents themselves and registers every part, section, article, concept, registry list and meta-model into the platform's registry tables. |
+| `lib/routes/knowledge.js` | knowledge domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the knowledge domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -303,7 +304,7 @@ Actions:
 flowchart LR
   U([Platform administrator / Developer]) --> UI[store console, platform console]
   UI --> API[61 API routes]
-  API --> ENG[canonical.js, governance.js, ucos-catalog.js, ucos-completeness.js, ucos-domain.js, ucos-foundations.js, ucos-monitor.js, ucos-registry.js, ucos-universes.js, ucos.js]
+  API --> ENG[canonical.js, governance.js, ucos-catalog.js, ucos-completeness.js, ucos-domain.js, ucos-foundations.js, ucos-monitor.js, ucos-registry.js, ucos-universes.js, ucos.js, knowledge.js]
   ENG --> DB[(domains, ucos_documents, ucos_parts, ucos_sections, ucos_concepts, ucos_registries, …)]
   ENG --> SM{{1 state machines}}
 ```

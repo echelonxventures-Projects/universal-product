@@ -13,6 +13,7 @@ What the platform charges its stores: plans, subscriptions to plans, usage meter
 | Module | What it is |
 |---|---|
 | `lib/billing.js` | first-class Billing engine (line items + tax + usage metering + credit notes + dunning + aging). Used for subscription invoices, plan-change proration, metered usage (AI units, orders over plan cap, storage), refunds-to-wallet, and platform revenue. All amounts in a single currency (platform billing currency, default USD); taxes flow through the Tax engine. Complements offers.js (discounts on invoices) + connect.js (gateway payment). |
+| `lib/routes/platform_billing.js` | platform_billing domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the platform_billing domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -209,7 +210,7 @@ Actions:
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[store console, platform console]
   UI --> API[13 API routes]
-  API --> ENG[billing.js]
+  API --> ENG[billing.js, platform_billing.js]
   ENG --> DB[(plans, invoices, invoice_lines, usage_records, credit_notes, billing_events, …)]
   ENG --> SM{{3 state machines}}
 ```

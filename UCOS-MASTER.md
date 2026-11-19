@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0039 (2026-11-19).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0040 (2026-11-19).
 
 ## Contents
 
@@ -63,13 +63,13 @@ A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A c
 | [V05](volumes/V05-structure.md) | C05 Structure | 1 of 1 | 2 | 2 | 19 KB |
 | [V06](volumes/V06-decision-and-control.md) | C06 Decision and Control | 1 of 1 | 4 | 4 | 30 KB |
 | [V07](volumes/V07-assurance.md) | C07 Assurance | 1 of 1 | 4 | 10 | 70 KB |
-| [V08](volumes/V08-interaction.md) | C08 Interaction | 1 of 1 | 4 | 4 | 28 KB |
+| [V08](volumes/V08-interaction.md) | C08 Interaction | 1 of 1 | 4 | 4 | 29 KB |
 | [V09.1](volumes/V09.1-automation.md) | C09 Automation | 1 of 2 | 2 | 14 | 94 KB |
 | [V09.2](volumes/V09.2-automation.md) | C09 Automation | 2 of 2 | 1 | 1 | 8 KB |
 | [V10](volumes/V10-intelligence.md) | C10 Intelligence | 1 of 1 | 1 | 1 | 7 KB |
 | [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 85 KB |
-| [V11.2](volumes/V11.2-platform.md) | C11 Platform | 2 of 2 | 3 | 6 | 39 KB |
-| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 79 KB |
+| [V11.2](volumes/V11.2-platform.md) | C11 Platform | 2 of 2 | 3 | 6 | 40 KB |
+| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 80 KB |
 | [V13](volumes/V13-composition.md) | C13 Composition | 1 of 1 | 1 | 1 | 7 KB |
 
 <a id="index"></a>
@@ -402,6 +402,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0037"></a>AMD-0037 | 2026-10-21 | Platform owner | The Universal Wallet, first slice (Value). A wallet definition is a versioned blueprint in a namespace — names in any language with aliases, the value classes it may hold (Value's classes), the operations it allows and its policy (overdraft, maximum balance, wallets per owner per unit, hold expiry); a new version never changes a wallet bound to an older one. An owner holds any number of wallets with immutable ids and names of their choosing (every past name kept). Value moves only as balanced journals in exact minor units against declared system accounts (issuance, clearing, migration, suspense), each with an idempotency key (the same key and request return the first outcome; a different request is refused) and an event in the kernel's hash-chained log; posted journals and postings cannot be updated or deleted (corrections are linked reversals, once). Balances are projections: posted, reserved by holds, available. Holds keep value until spent in full or in part, released or expired (wallet_hold machine); wallets restrict, suspend, reactivate and close by the wallet machine, closing only when empty. The single-balance wallet becomes each owner's default wallet with an opening journal; offers.credit/debit and the modules wallet calls are adapters onto it, so there is one money path, and a spend beyond what is available is refused instead of clamped to zero. Checkout holds the gift balance before writing the order and spends it after; a failed payment gives it back as a linked refund; an installment whose recording fails reverses its own spend; P2P is one transfer journal; a trial keep the wallet cannot pay stays open; a live session records any shortfall; a mandate charge takes the money before it counts against the mandate, in one transaction; a split payment pays every party in, all or none (a commission share was posted as a spend). Whether a unit is money is one predicate, its Value class's `money` flag (lib/registry.js isMoney; the offer engine and GOIP each had their own, and points were posted down the cash path); any registered unit may be held, issuance by place being the jurisdiction gate's. A definition version that only widens what its wallets may do takes them with it; one that narrows needs its own migration. An order's rewards are clawed back on refund as reversals linked to their journals. The wallet is what the Customer Wallets module sells. walletEntryKinds and walletAccountKinds are retired (the wallet's operations and definitions replace them). Conversion, commission, external links, custody and jurisdiction activation are the next slices. |
 | <a id="amd-0038"></a>AMD-0038 | 2026-10-21 | Platform owner | The Universal Wallet is derived only from the kernel (supersedes the definition, wallet and name tables of AMD-0037). Wallet definitions, wallets and holders are kernel nodes; a definition sits under the definition it refines in the definitions hierarchy to any depth, and a wallet under its definition and under its holder in the holding hierarchy. Every setting — value classes, operations, overdraft, maximum balance, wallets per owner, hold expiry, the default definition — is a kernel setting assigned at a definition node, a wallet or a namespace and resolved by context from the wallet upward, a store's namespace before the platform's; a definition states only what differs from the one above it. Names, aliases, state and settings are versions in valid and recorded time. The holder's identity is a sensitive attribute, sealed with AES-256-GCM bound to the node, and holders are found by a keyed blind index (lib/security.js blindIndex), never by a readable value. Every journal and every hold move is an event in the kernel's hash-chained log; verify() replays the log against the ledger index. A transfer now respects the receiving wallet's resolved maximum. Wallets held in AMD-0037's tables are ported onto the kernel once and the tables dropped. |
 | <a id="amd-0039"></a>AMD-0039 | 2026-11-19 | Platform owner | Phase A, the working tree made honest again. The uncommitted request path crashed every API call (a currency module reading a database handle and a tenant_settings table that do not exist) and served cached responses keyed by store and URL only, ahead of any login check, so one user's response reached any caller of the same store. The response cache, the per-request currency fields and the process-wide locale are removed: languages are Expression's (lib/expression.js, the messages catalogue) and units of value are Value's (the currencies and fx_rates tables), so the duplicate lib/i18n.js, lib/currency.js and i18n/locales are withdrawn rather than given a second home. The per-store request ceiling is a security-policy setting (tenantPerMin, 0 = off), not literal numbers. Unused session-revocation and MFA helpers are removed. The logger writes files only to a deliberately mounted LX_LOG_DIR, asynchronously, and never fails a request. The store's setup checklist and the platform's are one function (setupStatus). .gitignore no longer hides the authored _registry/ sources or _superseded/. .env.example names only variables the code reads. GAP-19: the test countries XX, XY, ZN (Zephyria Prime) and AQ and their provider availability are removed from the development database, and ZA is South Africa again (a backup is kept in data/backups/). GAP-20: the description of PR #3 now covers all 62 of its commits, including the 37 after 813e5f7, and says plainly that its head is unverified. GAP-30: the project folder moved off the iCloud-synced Desktop to /Users/bipin/Luxora; the conflict copies inside the repository are gone and the zero-byte and orphaned database files are removed. Also: the store's setup checklist is the stores domain's own (lib/routes/stores.js, public/js/admin/stores.js), with the wizard's duplicate modal() removed; deleting a platform provider names its store gateway through global.gatewayId (the kind prefixes are seed data, GATEWAY_PREFIX) rather than branching on provider kinds; the platform console's custom-provider form no longer reads its error element before declaring it; the hard-coding baseline falls to 47 branches and 79 fallbacks. |
+| <a id="amd-0040"></a>AMD-0040 | 2026-11-19 | Platform owner | Phase B, routes: every business domain's API routes and the handlers only it uses live in its own file, lib/routes/<domain>.js, the shape the Offers domain proved; lib/api.js is the shared HTTP kit and the router, and holds no route of its own (routesInSharedFile 839 → 0; lib/api.js 9,397 → 2,140 lines). Which route answers is decided by specificity, not by which file declared it first: at the first segment where two patterns differ a literal beats a :param, so the fifteen order-dependent pairs now resolve as their own comments say (/api/admin/deliverables/item/:id is the deliverable; /api/ucos/foundations/:key is Foundations, never a document named "foundations"). Three checks that read only lib/api.js now read every domain file too: the live-API register (lib/canonical.js apiRegister), the gate's independent route count, and the hard-coding audit (lib/routes, public/js/admin) — which had never counted the Offers files; the six gift-card routes they exposed have an owner (Commerce). Two literals the wider audit found are gone: the GOIP widget route no longer restates the engine's own distribution default, and the offer scope that takes one value says so in its row (offerScopes.node single). Tests that read the API's source as text read every domain route file too (test/api-source.js), so a negative check — api.js never writes offers directly, no fallback to a declared default — cannot pass vacuously once a handler moves. Every GET route answered the same status and shape before and after for a shopper, a store admin and a platform admin; every finding the audit counts moved file without one added or lost. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1270,7 +1271,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 195 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 245 files.
 
 ### C02 · Meaning
 
@@ -1285,6 +1286,9 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/platform-master.js` | [Semantic](volumes/V02-meaning.md#d-sem) | the trade, tariff and scientific classifications |
 | `lib/stores.js` | [Party](volumes/V02-meaning.md#d-pty) | stores on the kernel: the places each store serves (a Relationship hierarchy, time-windowed) and its jurisdiction (a Party setting) (P09) |
 | `lib/tenancy.js` | [Party](volumes/V02-meaning.md#d-pty) |  |
+| `lib/routes/customers.js` | [Party](volumes/V02-meaning.md#d-pty) | the Customers domain's API routes and handlers |
+| `lib/routes/identity.js` | [Identity](volumes/V02-meaning.md#d-idn) | the Identity domain's API routes and handlers |
+| `lib/routes/knowledge.js` | [Guidance](volumes/V02-meaning.md#d-gdn) | the Platform knowledge domain's API routes and handlers |
 | `lib/routes/stores.js` | [Party](volumes/V02-meaning.md#d-pty) | the Stores and organisation domain's API routes and handlers |
 | `lib/seed/master.json` | [Semantic](volumes/V02-meaning.md#d-sem) | the platform master starter content (GLOBAL_MASTER.md) |
 | `lib/seed/stores.json` | [Party](volumes/V02-meaning.md#d-pty) | the store kind, the serves hierarchy and the jurisdiction setting |
@@ -1324,6 +1328,11 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/defaults.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | resolver answers (K12) |
 | `lib/settings.js` | [Context](volumes/V04-universal-dimensions.md#d-ctx) | resolver answers (K12) |
 | `lib/subdivisions.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) |  |
+| `lib/routes/currency.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | the Currencies and exchange domain's API routes and handlers |
+| `lib/routes/financial_services.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | the Financial services domain's API routes and handlers |
+| `lib/routes/platform_billing.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | the Platform billing domain's API routes and handlers |
+| `lib/routes/settlement.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | the Settlements and payouts domain's API routes and handlers |
+| `lib/routes/wallet.js` | [Value](volumes/V04-universal-dimensions.md#d-val) | the Wallets domain's API routes and handlers |
 | `lib/seed/defaults.json` | [Context](volumes/V04-universal-dimensions.md#d-ctx) |  |
 | `lib/seed/expression.json` | [Expression](volumes/V04-universal-dimensions.md#d-exr) | the language registry and the storefront copy catalogues |
 | `lib/seed/time.json` | [Time](volumes/V04-universal-dimensions.md#d-tim) | calendars, chronologies, temporal units, conversions and each seeded country's primary zone |
@@ -1357,6 +1366,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/store-attributes.js` | [Registry](volumes/V05-structure.md#d-reg) | a store's attribute definitions as a read model of the platform master; the platform's attribute registry |
 | `lib/platform-master.js` | [Registry](volumes/V05-structure.md#d-reg) | attribute definitions, attribute sets and vocabularies |
 | `lib/platform-master.js` | [Relationship](volumes/V05-structure.md#d-rel) | relationships between items |
+| `lib/routes/kernel.js` | [Registry](volumes/V05-structure.md#d-reg) | the Kernel and registries domain's API routes and handlers |
 | `lib/seed/entity.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/seed/kernel.json` | [Registry](volumes/V05-structure.md#d-reg) | the kernel's namespaces, value types and event names |
 | `lib/seed/meta.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
@@ -1376,6 +1386,9 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/authz.js` | [Authority](volumes/V06-decision-and-control.md#d-aut) |  |
 | `lib/rbac.js` | [Authority](volumes/V06-decision-and-control.md#d-aut) |  |
 | `lib/prbac.js` | [Authority](volumes/V06-decision-and-control.md#d-aut) |  |
+| `lib/routes/access.js` | [Authority](volumes/V06-decision-and-control.md#d-aut) | the Access and roles domain's API routes and handlers |
+| `lib/routes/rules.js` | [Rule](volumes/V06-decision-and-control.md#d-rul) | the Rules, states and settings domain's API routes and handlers |
+| `lib/routes/tax.js` | [Rule](volumes/V06-decision-and-control.md#d-rul) | the Tax domain's API routes and handlers |
 | `lib/seed/authz.json` | [Authority](volumes/V06-decision-and-control.md#d-aut) |  |
 | `lib/seed/gates.json` | [Rule](volumes/V06-decision-and-control.md#d-rul) |  |
 | `lib/seed/rules.json` | [Rule](volumes/V06-decision-and-control.md#d-rul) |  |
@@ -1392,6 +1405,10 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/webauthn.js` | [Security](volumes/V07-assurance.md#d-sec) |  |
 | `lib/risk.js` | [Security](volumes/V07-assurance.md#d-sec) | fraud screening |
 | `lib/compliance.js` | [Compliance](volumes/V07-assurance.md#d-cmp) |  |
+| `lib/routes/audit.js` | [Audit](volumes/V07-assurance.md#d-aud) | the Audit domain's API routes and handlers |
+| `lib/routes/compliance.js` | [Compliance](volumes/V07-assurance.md#d-cmp) | the Compliance and privacy domain's API routes and handlers |
+| `lib/routes/risk.js` | [Security](volumes/V07-assurance.md#d-sec) | the Risk and fraud domain's API routes and handlers |
+| `lib/routes/security.js` | [Security](volumes/V07-assurance.md#d-sec) | the Security domain's API routes and handlers |
 | `lib/seed/compliance.json` | [Compliance](volumes/V07-assurance.md#d-cmp) |  |
 
 ### C08 · Interaction
@@ -1407,6 +1424,13 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/helpdesk.js` | [Communication](volumes/V08-interaction.md#d-cmn) | conversations |
 | `lib/search.js` | [Search](volumes/V08-interaction.md#d-srh) |  |
 | `public/js/admin/offer.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Offers domain's store-console screens |
+| `lib/routes/communication.js` | [Communication](volumes/V08-interaction.md#d-cmn) | the Messages and notifications domain's API routes and handlers |
+| `lib/routes/engagement.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Lists, alerts and history domain's API routes and handlers |
+| `lib/routes/reviews.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Reviews and questions domain's API routes and handlers |
+| `lib/routes/search.js` | [Search](volumes/V08-interaction.md#d-srh) | the Search and discovery domain's API routes and handlers |
+| `lib/routes/seo.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Search engine optimisation domain's API routes and handlers |
+| `lib/routes/storefront.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Storefront and content domain's API routes and handlers |
+| `lib/routes/support.js` | [Communication](volumes/V08-interaction.md#d-cmn) | the Customer support domain's API routes and handlers |
 | `public/js/admin/stores.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Stores and organisation domain's store-console screens |
 | `lib/tell.js` | [Notification](volumes/V08-interaction.md#d-ntf) |  |
 | `lib/seed/themes.json` | [Experience](volumes/V08-interaction.md#d-exp) |  |
@@ -1439,6 +1463,9 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/spec.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/connect.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/idempotency.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
+| `lib/routes/ai.js` | [Agent](volumes/V09.1-automation.md#d-agt) | the AI domain's API routes and handlers |
+| `lib/routes/integration.js` | [Integration](volumes/V09.2-automation.md#d-int) | the Integrations and webhooks domain's API routes and handlers |
+| `lib/routes/payments.js` | [Integration](volumes/V09.2-automation.md#d-int) | the Payment gateways domain's API routes and handlers |
 | `lib/seed/providers.json` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/seed/ai.json` | [Agent](volumes/V09.1-automation.md#d-agt) |  |
 | `lib/seed/states.json` | [Runtime](volumes/V09.1-automation.md#d-run) |  |
@@ -1450,6 +1477,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/dashboards.js` | [Insight](volumes/V10-intelligence.md#d-ins) |  |
 | `lib/experiments.js` | [Insight](volumes/V10-intelligence.md#d-ins) |  |
 | `lib/planning.js` | [Insight](volumes/V10-intelligence.md#d-ins) | forecasts |
+| `lib/routes/analytics.js` | [Insight](volumes/V10-intelligence.md#d-ins) | the Analytics and reports domain's API routes and handlers |
+| `lib/routes/experiments.js` | [Insight](volumes/V10-intelligence.md#d-ins) | the Experiments domain's API routes and handlers |
 
 ### C11 · Platform
 
@@ -1474,6 +1503,18 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/enterprise.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `lib/logger.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `lib/metrics.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `lib/routes/business_operations.js` | [Operations](volumes/V11.1-platform.md#d-ops) | the Business operations domain's API routes and handlers |
+| `lib/routes/catalog.js` | [Offering](volumes/V11.2-platform.md#d-ofg) | the Catalogue domain's API routes and handlers |
+| `lib/routes/digital_goods.js` | [Offering](volumes/V11.2-platform.md#d-ofg) | the Digital goods domain's API routes and handlers |
+| `lib/routes/health.js` | [Offering](volumes/V11.2-platform.md#d-ofg) | the Health and pharmacy domain's API routes and handlers |
+| `lib/routes/inventory.js` | [Offering](volumes/V11.2-platform.md#d-ofg) | the Inventory domain's API routes and handlers |
+| `lib/routes/mobility.js` | [Operations](volumes/V11.1-platform.md#d-ops) | the Mobility domain's API routes and handlers |
+| `lib/routes/modules.js` | [Offering](volumes/V11.2-platform.md#d-ofg) | the Modules and capabilities domain's API routes and handlers |
+| `lib/routes/product_content.js` | [Content](volumes/V11.2-platform.md#d-cnt) | the Product content domain's API routes and handlers |
+| `lib/routes/product_options.js` | [Offering](volumes/V11.2-platform.md#d-ofg) | the Product options domain's API routes and handlers |
+| `lib/routes/runtime.js` | [Operations](volumes/V11.1-platform.md#d-ops) | the Runtime and operations domain's API routes and handlers |
+| `lib/routes/services.js` | [Offering](volumes/V11.2-platform.md#d-ofg) | the Services and appointments domain's API routes and handlers |
+| `lib/routes/supply.js` | [Operations](volumes/V11.1-platform.md#d-ops) | the Supply and planning domain's API routes and handlers |
 | `lib/ugc.js` | [Content](volumes/V11.2-platform.md#d-cnt) | uploaded media |
 | `lib/seed/capabilities.json` | [Offering](volumes/V11.2-platform.md#d-ofg) |  |
 | `lib/seed/modules.json` | [Offering](volumes/V11.2-platform.md#d-ofg) |  |
@@ -1526,6 +1567,16 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/routes/groupbuy.js` | [Commerce](volumes/V12-business.md#d-biz) | group-buy campaigns and member settlement routes |
 | `lib/routes/coupon.js` | [Commerce](volumes/V12-business.md#d-biz) | coupon issuance, redemption and analytics routes |
 | `lib/routes/giftcard.js` | [Commerce](volumes/V12-business.md#d-biz) | gift-card redemption and issuance routes |
+| `lib/routes/advertising.js` | [Commerce](volumes/V12-business.md#d-biz) | the Advertising domain's API routes and handlers |
+| `lib/routes/affiliate.js` | [Commerce](volumes/V12-business.md#d-biz) | the Affiliates and creators domain's API routes and handlers |
+| `lib/routes/cart.js` | [Commerce](volumes/V12-business.md#d-biz) | the Cart and checkout domain's API routes and handlers |
+| `lib/routes/marketplace.js` | [Commerce](volumes/V12-business.md#d-biz) | the Marketplace domain's API routes and handlers |
+| `lib/routes/order.js` | [Commerce](volumes/V12-business.md#d-biz) | the Orders domain's API routes and handlers |
+| `lib/routes/price_discovery.js` | [Commerce](volumes/V12-business.md#d-biz) | the Negotiation and auctions domain's API routes and handlers |
+| `lib/routes/returns.js` | [Commerce](volumes/V12-business.md#d-biz) | the Returns and refunds domain's API routes and handlers |
+| `lib/routes/shipping.js` | [Commerce](volumes/V12-business.md#d-biz) | the Shipping and delivery domain's API routes and handlers |
+| `lib/routes/subscriptions.js` | [Commerce](volumes/V12-business.md#d-biz) | the Subscriptions and memberships domain's API routes and handlers |
+| `lib/routes/trade.js` | [Commerce](volumes/V12-business.md#d-biz) | the Business-to-business trade domain's API routes and handlers |
 | `lib/substitutions.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/affiliate.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/trade.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
@@ -2349,6 +2400,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0037 | amendment | The Universal Wallet, first slice (Value). A wallet definiti | [constitution](#amd-0037) |
 | AMD-0038 | amendment | The Universal Wallet is derived only from the kernel (supers | [constitution](#amd-0038) |
 | AMD-0039 | amendment | Phase A, the working tree made honest again. The uncommitted | [constitution](#amd-0039) |
+| AMD-0040 | amendment | Phase B, routes | [constitution](#amd-0040) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

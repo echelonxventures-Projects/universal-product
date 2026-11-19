@@ -44,6 +44,7 @@ Timed auctions with automatic (proxy) bidding, a reserve, a buy-it-now price and
 |---|---|
 | `lib/auctions.js` | Auctions: timed, ascending, with automatic (proxy) bidding. The store, or a shopper who listed the item (lib/listings.js), puts a product up between a start and an end, from a starting price, with an optional reserve (the lowest price it will sell at) and buy-it-now price. A bidder states the most they will pay; the auction bids for them one increment at a time — the price is always one increment above the runner-up's most, never above the leader's own. A bid in the last minutes extends the end, so nobody wins by bidding at the last second. The increment ladder and every window are the auctions capability's params. |
 | `lib/negotiation.js` | Make an offer: price negotiation between a shopper and a seller. A shopper offers a price for a quantity; whoever sells the product — the store, or the shopper who listed it (lib/listings.js) — accepts, counters or refuses; the shopper may accept a counter or answer it with a new price. Whose move it is, is what the offer's state MEANS (awaiting_seller, awaiting_buyer, agreed…) in the `price_offer` state machine. Store thresholds can accept or refuse at once. An agreed price rides on the bag line as its `offer` term (lib/lineterms.js) — it replaces the list price for that quantity — and is used up when the order is placed. Capability: price_negotiation. |
+| `lib/routes/price_discovery.js` | price_discovery domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the price_discovery domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `priceOfferStatuses`, `auctionStatuses`
 
@@ -181,7 +182,7 @@ Actions: `open` → live · `sell` → sold · `close_unsold` → unsold · `can
 flowchart LR
   U([Shopper / Seller / Store administrator]) --> UI[store console]
   UI --> API[15 API routes]
-  API --> ENG[auctions.js, negotiation.js]
+  API --> ENG[auctions.js, negotiation.js, price_discovery.js]
   ENG --> DB[(price_offers, auctions, auction_bids)]
   ENG --> SM{{2 state machines}}
 ```

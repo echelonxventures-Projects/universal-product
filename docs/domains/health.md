@@ -43,6 +43,7 @@ The shopper's own vault of records (a prescription, a report, a scan) beside wha
 | Module | What it is |
 |---|---|
 | `lib/health-records.js` | health records: the shopper's own vault. |
+| `lib/routes/health.js` | health domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the health domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -89,7 +90,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Shopper / Practitioner / Store staff / Store administrator]) --> UI[store console]
   UI --> API[5 API routes]
-  API --> ENG[health-records.js]
+  API --> ENG[health-records.js, health.js]
   ENG --> DB[(vault_records, vault_shares)]
 
 ```

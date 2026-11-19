@@ -175,7 +175,7 @@ ok(!!ghostTenant.error, "activating into a nonexistent tenant is refused", JSON.
 ok(/unknown or inactive tenant/.test(ghostTenant.error || ""), "the refusal names the missing tenant", ghostTenant.error);
 /* the guard writes once — a second write would corrupt the response (the platform
    hardening rule proven elsewhere); the endpoint must follow the same pattern */
-const apiSrc = fs.readFileSync(path.join(__dirname, "..", "lib", "api.js"), "utf8");
+const apiSrc = require("./api-source.js")();
 const dbl = (apiSrc.match(/require(?:Platform|Admin|Section|Store)\(s,\s*res[^)]*\)\)\s*return\s+bad\(/g) || []).length;
 ok(dbl === 0, "no new endpoint re-writes a response after a failed guard", dbl + " site(s)");
 

@@ -25,6 +25,7 @@ Queue a payout to a bank account or VPA and process it through the configured ga
 | Module | What it is |
 |---|---|
 | `lib/fin.js` | Payments & Financial services. Multi-gateway payment retry, chargeback / dispute lifecycle, batch payout runs to sellers, bank-feed reconciliation, and FX-aware ledger reads. Built on the existing payments / settlements / wallet_entries ledger so every financial movement is a single source of truth. All configuration (dispute states, payout kinds, recon sources, billing meters) lives in meta_lists — add new states or meter kinds from Data Studio with zero code. |
+| `lib/routes/settlement.js` | settlement domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the settlement domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `finPayoutStatuses`
 
@@ -198,7 +199,7 @@ Actions:
 flowchart LR
   U([Seller / Store administrator / Platform administrator]) --> UI[store console, platform console]
   UI --> API[13 API routes]
-  API --> ENG[fin.js]
+  API --> ENG[fin.js, settlement.js]
   ENG --> DB[(settlements, payouts, payout_items, recon_batches, recon_lines, remittance_records, …)]
   ENG --> SM{{2 state machines}}
 ```

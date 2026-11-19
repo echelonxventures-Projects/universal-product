@@ -27,6 +27,7 @@ Brand-authored modules (banners, image-and-text, feature lists, comparison table
 | Module | What it is |
 |---|---|
 | `lib/richcontent.js` | Rich product content (brand-authored modules below a product's details). A product may carry a stack of modules — a banner, image-and-text, a feature list, a comparison table, questions and answers. Which modules exist and which fields each holds are contentModules registry rows: a field declares only its TYPE (text, textarea, image, list, table) and its limits, so a new module — a size guide, a "what's in the box" — is a row, and both this engine's validation and the storefront's renderer follow it. |
+| `lib/routes/product_content.js` | product_content domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the product_content domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `contentModules`, `richContentStatuses`
 
@@ -88,7 +89,7 @@ Actions: `submit` → submitted · `approve` → approved · `reject` → reject
 flowchart LR
   U([Seller / Store administrator]) --> UI[store console]
   UI --> API[3 API routes]
-  API --> ENG[richcontent.js]
+  API --> ENG[richcontent.js, product_content.js]
   ENG --> DB[(rich_content)]
   ENG --> SM{{1 state machines}}
 ```

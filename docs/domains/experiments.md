@@ -21,6 +21,7 @@ A/B experiment assignment for storefront surfaces.
 | Module | What it is |
 |---|---|
 | `lib/experiments.js` | Experimentation (A/B testing). Experiments with weighted variants; assignment is deterministic per (experiment, subject) via a stable hash, so a returning customer always sees the same variant. Conversion events are tracked per variant and a simple significance readout (two-proportion z-test) is computed on demand. Variants and statuses are meta_lists registries (expStatuses). Feature-gated by settings.features.experiments. |
+| `lib/routes/experiments.js` | experiments domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the experiments domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -98,7 +99,7 @@ Actions:
 flowchart LR
   U([Store administrator]) --> UI[store console]
   UI --> API[6 API routes]
-  API --> ENG[experiments.js]
+  API --> ENG[experiments.js, experiments.js]
   ENG --> DB[(experiments, exp_assignments, exp_conversions)]
   ENG --> SM{{1 state machines}}
 ```

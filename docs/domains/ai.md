@@ -13,6 +13,7 @@ Machine help: AI providers and gateways, AI tasks and their metering.
 | Module | What it is |
 |---|---|
 | `lib/ai.js` | AI capability layer (a PRODUCT, not code). Everything (providers, capabilities, plans, per-capability model/limits/price) is DATA: providers live in provider_defs(kind='ai') + provider_availability; capabilities, plans and cleaning rules live in meta_lists (aiCapabilities / aiPlans / aiCleanRules …); the per-tenant model, limits and on/off live in the `ai` settings block. Free tier is ON by default (1st priority) via the built-in local engine; premium models are gated by REAL billing state (paid subscription plan or the `aiPro` capability) AND by provider credentials being configured. Nothing is hard-coded to a model, provider, price, limit or field — those come from registries. |
+| `lib/routes/ai.js` | ai domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the ai domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -73,7 +74,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[store console, platform console]
   UI --> API[10 API routes]
-  API --> ENG[ai.js]
+  API --> ENG[ai.js, ai.js]
   ENG --> DB[(ai_usage, ai_tasks)]
 
 ```

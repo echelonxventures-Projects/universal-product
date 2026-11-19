@@ -16,6 +16,7 @@ Connecting outside systems: connectors and providers registered as data, custom 
 | `lib/connect.js` | outbound integration dispatcher (zero per-provider code). A provider's protocol now lives in DATA (provider_defs.spec, or a custom provider manifest's `spec`) and is executed by lib/spec.js. connect.js only: checks offline/credentials, loads the spec, renders+executes it, maps the result. Nothing here hard-codes Stripe/Meta/Google/Twilio — adding a provider or changing an endpoint is a data edit. When offline / no credentials / no spec, callers fall back to their simulated path, so the app runs and tests never hit the network. |
 | `lib/providers.js` | pluggable provider registry: payments, shipping, notifications, tax, countries. Providers are pure data manifests - add new ones (built-in or custom JSON) with zero code changes. |
 | `lib/spec.js` | declarative integration spec engine. A "how to call this API" description is DATA (stored on provider_defs.spec / custom provider manifest), not JavaScript. This module renders a spec against a context and executes it with the injectable fetch — so adding Stripe/Meta/Google/TikTok/a custom gateway is "fill in the blanks", never a code change. A spec supports: optional token/auth exchange, method, url template, auth (basic\|bearer\|apikey header), form\|json body templates, status mapping, and success/error paths. |
+| `lib/routes/integration.js` | integration domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the integration domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -148,7 +149,7 @@ Actions:
 flowchart LR
   U([Store administrator / Platform administrator / Developer]) --> UI[store console, platform console]
   UI --> API[14 API routes]
-  API --> ENG[adapters.js, connect.js, providers.js, spec.js]
+  API --> ENG[adapters.js, connect.js, providers.js, spec.js, integration.js]
   ENG --> DB[(custom_providers, provider_defs, provider_availability, webhooks, webhook_deliveries, inbound_events)]
   ENG --> SM{{1 state machines}}
 ```

@@ -55,6 +55,7 @@ An item taken on trial costs a deposit share at checkout; within the window the 
 | `lib/lineterms.js` | line terms: what makes one bag line differ from the product's list price, and what must happen when it is ordered. |
 | `lib/tips.js` | tips: what a shopper adds for whoever serves them. |
 | `lib/trials.js` | try and buy: take it home, pay for what you keep. |
+| `lib/routes/cart.js` | cart domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the cart domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `trialStatuses`
 
@@ -169,7 +170,7 @@ Actions: `keep` → kept · `return` → returned · `lapse` → lapsed
 flowchart LR
   U([Guest / Shopper]) --> UI[cart.html, checkout.html, store console]
   UI --> API[14 API routes]
-  API --> ENG[fees.js, lineterms.js, tips.js, trials.js]
+  API --> ENG[fees.js, lineterms.js, tips.js, trials.js, cart.js]
   ENG --> DB[(cart_items, order_charge_rules, bag_tips, trials)]
   ENG --> SM{{1 state machines}}
 ```

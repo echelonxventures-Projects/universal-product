@@ -13,6 +13,7 @@ Knowing how the business does: dashboards and their widgets, reports and store s
 | Module | What it is |
 |---|---|
 | `lib/dashboards.js` | LUXORA · Universal Dashboard & Reporting Engine — Architecture1 §394 / §395. -------------------------------------------------------------------------- The constitution does not ask for "some dashboards". It declares dashboards to be RUNTIME OBJECTS: Identity, Audience, Widgets, Metrics, Dimensions, Filters, Visualizations, Security, Personalization, Actions (§1439 Dashboard Meta Model) and types from Executive to Compliance (§394). §395 declares the reporting engine the same way: Data → Analytics → Visualization → Report. |
+| `lib/routes/analytics.js` | analytics domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the analytics domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -110,7 +111,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[store console, platform console]
   UI --> API[16 API routes]
-  API --> ENG[dashboards.js]
+  API --> ENG[dashboards.js, analytics.js]
   ENG --> DB[(dashboards, dashboard_widgets, dashboard_prefs, reports)]
 
 ```

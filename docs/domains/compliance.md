@@ -26,6 +26,7 @@ Identity verification that gates credit: BNPL and loans require the full tier.
 | Module | What it is |
 |---|---|
 | `lib/compliance.js` | Compliance-as-Data: named regulations, control framework, evidence, privacy & consent, and data-subject rights. -------------------------------------------------------------------------- The corpus declares a COMPLIANCE UNIVERSE whose items are the regulations themselves (GDPR · CCPA · DPDP · HIPAA · PCI-DSS · SOC 2 · ISO 27001 · NIST · FedRAMP · SEBI · RBI · TRAI · future). Before this engine those names existed nowhere in the runtime — the platform had a generic `compliance_records` table but no regulation was modeled, so "continuous compliance validation" was impossible to even ask about. |
+| `lib/routes/compliance.js` | compliance domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the compliance domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `finKycKinds`, `finKycDocs`, `finKycDocStatuses`, `finKycStatuses`
 
@@ -243,7 +244,7 @@ Actions:
 flowchart LR
   U([Shopper / Store administrator / Platform administrator]) --> UI[store console, platform console]
   UI --> API[12 API routes]
-  API --> ENG[compliance.js]
+  API --> ENG[compliance.js, compliance.js]
   ENG --> DB[(compliance_records, compliance_controls, compliance_evidence, consents, privacy_requests, privacy_request_events, …)]
   ENG --> SM{{5 state machines}}
 ```

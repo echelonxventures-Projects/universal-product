@@ -14,6 +14,7 @@ Protecting the platform: encryption and key rotation, the security policy and sc
 |---|---|
 | `lib/idempotency.js` | idempotency for mutations (safe client retries). A client may send `Idempotency-Key` on POST/PUT/DELETE /api. The first request runs and its response is stored (key → status+body, TTL). Replays short-circuit with the stored response so a retried "place order" / "capture payment" never double-executes. |
 | `lib/security.js` | security core: defense-in-depth layers with real cryptography. L1 transport headers+TLS · L2 session CSRF · L3 credential KDF (scrypt+pepper) · L4 password policy L5 at-rest envelope encryption (AES-256-GCM) · L6 key hierarchy+rotation · L7 hash-chained audit L8 rate limiting+lockout (durable) · L9 SRI+input hardening · L10 least-privilege/tenant isolation |
+| `lib/routes/security.js` | security domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the security domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -47,7 +48,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Platform administrator / Developer]) --> UI[API]
   UI --> API[2 API routes]
-  API --> ENG[idempotency.js, security.js]
+  API --> ENG[idempotency.js, security.js, security.js]
   ENG --> DB[(idempotency_keys)]
 
 ```

@@ -13,6 +13,7 @@ What happened, provably: the hash-chained audit trail, its verification, retenti
 | Module | What it is |
 |---|---|
 | `lib/ucos-trace.js` | UCOS Ω∞ · traceability — every corpus declaration → its runtime artifact. -------------------------------------------------------------------------- The corpora declare 24,000+ concepts; the platform implements them through a small set of GENERIC engines (registry, foundation, entity, catalog). This module is the map between the two: for any key it reports every runtime artifact the declaration resolves to — registry concepts with document+line provenance, its foundation, its universe and live entity, its catalog projections, and the API routes and console views that expose it. |
+| `lib/routes/audit.js` | audit domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the audit domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -58,7 +59,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[store console, platform console]
   UI --> API[9 API routes]
-  API --> ENG[ucos-trace.js]
+  API --> ENG[ucos-trace.js, audit.js]
   ENG --> DB[(audit_log)]
 
 ```

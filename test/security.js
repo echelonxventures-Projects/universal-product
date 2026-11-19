@@ -211,7 +211,7 @@ const raw = (text) => new Promise((resolve) => {
     {
       const D = require(path.join(__dirname, "..", "lib", "db.js"));
       ok(!D.get("SELECT 1 ok FROM platform_settings WHERE key='demo_passwords'"), "no plaintext password list is stored at boot");
-      const src = fs.readFileSync(path.join(__dirname, "..", "lib", "api.js"), "utf8");
+      const src = require("./api-source.js")();
       ok(/function hintsAllowed\(\)[^}]*NODE_ENV !== "production"/.test(src), "hints are refused when NODE_ENV=production");
       const G = mk(); await G("/api/session");
       const ph = (await G("/api/platform/hint")).body;

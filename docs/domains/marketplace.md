@@ -97,6 +97,7 @@ Any signed-in shopper lists their own items — used, refurbished or new — rev
 | `lib/listings.js` | Shopper selling: resale, classifieds and peer-to-peer marketplaces. Any signed-in shopper may list their own items — new, used, refurbished (the item conditions are the mktConditions registry) — with a price, a quantity, photos and a department. A listing moves through the `listing` state machine: drafted, reviewed by staff where the store says so, then on sale as an ordinary product the whole storefront already sells — search, cart, checkout, offers, auctions, messages. The shopper is registered as a seller under the role the capability names (a sellerRoles row), so seller health, payouts and the buy-box treat them like any seller. |
 | `lib/marketplace-ext.js` | Marketplace engine. Seller onboarding & verification, a seller-scoped portal surface, buy-box multi-seller offers, FBA inbound, seller performance / account health, buyer-protection (A-to-z) claims, sponsored brands/display creatives and smart-fulfilment grading. |
 | `lib/marketplace.js` | Marketplace & Seller ecosystem. Ad inventory (CPC / CPM / CPA), a simple Generalized-Second-Price ranker, impression/click ledger with last-click and decayed attribution, a seller KPI dashboard (orders, take-rate, ad ROI), and take-rate settlement hooks into the fin/billing ledgers. All configuration lives in meta_lists so new bid models, attribution models, or ad surfaces are added from Data Studio. |
+| `lib/routes/marketplace.js` | marketplace domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the marketplace domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `mktBusinessTypes`, `mktOnboardingStatuses`, `mktConditions`, `mktFulfillment`, `mktOfferStatuses`, `mktFbaStatuses`, `mktTiers`, `mktClaimKinds`, `mktClaimStatuses`, `mktSmartGrades`, `mktSmartStatuses`, `brandClaimStatuses`, `brandReportKinds`, `brandReportStatuses`, `listingStatuses`, `earningStatuses`
 
@@ -509,7 +510,7 @@ Actions: `credit` → credited · `void` → void
 flowchart LR
   U([Seller / Shopper / Store staff / Store administrator / Platform administrator]) --> UI[sell.html, store console, platform console]
   UI --> API[31 API routes]
-  API --> ENG[brandreg.js, listings.js, marketplace-ext.js, marketplace.js]
+  API --> ENG[brandreg.js, listings.js, marketplace-ext.js, marketplace.js, marketplace.js]
   ENG --> DB[(sellers, seller_metrics, seller_onboarding, seller_offers, fba_inbound, seller_performance, …)]
   ENG --> SM{{9 state machines}}
 ```

@@ -25,6 +25,7 @@ Type-ahead suggestions on the storefront search box.
 | Module | What it is |
 |---|---|
 | `lib/search.js` | Search & Discovery at scale. In-memory inverted index over `products` per tenant, rebuilt lazily and invalidated on catalog write. Faceted query, synonym expansion (registry-driven), boost rules (registry-driven), and a co-occurrence recommendation engine backed by the orders + view_history graph. All configuration lives in meta_lists so new facets / boosts / synonyms are added from Data Studio. |
+| `lib/routes/search.js` | search domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the search domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## API reference
 
@@ -46,7 +47,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Guest / Shopper / Store administrator]) --> UI[results.html, store console]
   UI --> API[7 API routes]
-  API --> ENG[search.js]
+  API --> ENG[search.js, search.js]
   ENG --> DB[(kernel)]
 
 ```

@@ -42,7 +42,7 @@ try {
   ok(fields.filter(f => f.type === "ref:brand").every(f => f.refValue === "label"), "the product's brand field stores the brand's label (refValue)");
   const lead = Object.entries(defs).filter(([, d]) => (d.fields || []).filter(f => f.display === "lead").length > 1).map(([k]) => k);
   ok(lead.length === 0 && fields.some(f => f.display === "lead") && fields.some(f => f.display === "badge"), "each entity has at most one lead column; badge columns are declared", lead);
-  const data = fs.readFileSync(path.join(__dirname, "..", "lib", "api.js"), "utf8");
+  const data = require("./api-source.js")();
   ok(/fields: \(def\.fields \|\| \[\]\)\.filter\(f => f\.list\)\.map\(f => \(\{[^}]*display/.test(data), "the platform data index serves each field's display");
 
   console.log("▸ THE GATE: NO CONSOLE BRANCHES ON A FIELD KEY, LEVEL, CURRENCY OR DECLARED DEFAULT");

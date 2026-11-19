@@ -35,12 +35,12 @@
 
 **Live routes (6)** — what the platform serves today for this domain:
 
-- `GET /api/ucii/policies`
-- `POST /api/ucii/policies`
 - `GET /api/platform/policies`
 - `GET /api/platform/policies/:category`
 - `PUT /api/platform/policies/:category`
 - `DELETE /api/platform/policies/:category`
+- `GET /api/ucii/policies`
+- `POST /api/ucii/policies`
 
 <a id="ucos-pol-000001"></a>
 #### UCOS-POL-000001 · Policy Architecture
@@ -264,14 +264,11 @@ stateDiagram-v2
 | **Contract** | [UCOS-RUL-000001 Rule Architecture](#ucos-rul-000001) |
 | **Artifacts** | [UCOS-RUL-000001](#ucos-rul-000001) |
 | **Concepts** | 35 — `node _registry/compile.js --search <words> --kind concept --owner "Rule"` |
-| **Code** | `lib/registry.js`, `lib/rules.js`, `lib/gates.js`, `lib/tax.js`, `lib/seed/gates.json`, `lib/seed/rules.json`, `lib/seed/tax.json` |
+| **Code** | `lib/registry.js`, `lib/rules.js`, `lib/gates.js`, `lib/tax.js`, `lib/routes/rules.js`, `lib/routes/tax.js`, `lib/seed/gates.json`, `lib/seed/rules.json`, `lib/seed/tax.json` |
 | **Managed in** | `_registry/domains.json` → `D-RUL` |
 
 **Live routes (14)** — what the platform serves today for this domain:
 
-- `GET /api/admin/tax/report`
-- `GET /api/admin/tax`
-- `POST /api/admin/tax/quote`
 - `GET /api/platform/rules`
 - `POST /api/platform/rules`
 - `POST /api/platform/rules/explain`
@@ -283,6 +280,9 @@ stateDiagram-v2
 - `POST /api/admin/rules/explain`
 - `DELETE /api/admin/rules/:id`
 - `POST /api/rules/check`
+- `GET /api/admin/tax/report`
+- `GET /api/admin/tax`
+- `POST /api/admin/tax/quote`
 
 <a id="ucos-rul-000001"></a>
 #### UCOS-RUL-000001 · Rule Architecture
@@ -707,7 +707,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-AUT-000001 Authority Architecture](#ucos-aut-000001) |
 | **Artifacts** | [UCOS-AUT-000001](#ucos-aut-000001) |
 | **Concepts** | 331 — `node _registry/compile.js --search <words> --kind concept --owner "Authority"` |
-| **Code** | `lib/master-permissions.js`, `lib/authz.js`, `lib/rbac.js`, `lib/prbac.js`, `lib/seed/authz.json` |
+| **Code** | `lib/master-permissions.js`, `lib/authz.js`, `lib/rbac.js`, `lib/prbac.js`, `lib/routes/access.js`, `lib/seed/authz.json` |
 | **Managed in** | `_registry/domains.json` → `D-AUT` |
 
 **Live routes (12)** — what the platform serves today for this domain:
@@ -716,14 +716,14 @@ stateDiagram-v2
 - `POST /api/admin/roles`
 - `DELETE /api/admin/roles/:key`
 - `POST /api/admin/roles/reset`
-- `GET /api/platform/master/permissions`
-- `POST /api/platform/master/permissions`
-- `DELETE /api/platform/master/permissions/:id`
 - `GET /api/platform/roles`
 - `POST /api/platform/roles`
 - `DELETE /api/platform/roles/:key`
 - `POST /api/platform/roles/staff`
 - `DELETE /api/platform/roles/staff/:key`
+- `GET /api/platform/master/permissions`
+- `POST /api/platform/master/permissions`
+- `DELETE /api/platform/master/permissions/:id`
 
 <a id="ucos-aut-000001"></a>
 #### UCOS-AUT-000001 · Authority Architecture

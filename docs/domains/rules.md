@@ -17,6 +17,7 @@ How behaviour is configured: applicability rules, state machines, settings and t
 | `lib/rules.js` | applicability rules: WHERE, FOR WHOM and FOR WHAT anything applies. |
 | `lib/settings.js` | per-tenant settings engine (DB-backed, env-overridable, deep-merged) |
 | `lib/states.js` | the state-machine kernel: what a state MEANS and what entering it DOES. |
+| `lib/routes/rules.js` | rules domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the rules domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -81,7 +82,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[store console, platform console]
   UI --> API[17 API routes]
-  API --> ENG[defaults.js, policies.js, rules.js, settings.js, states.js]
+  API --> ENG[defaults.js, policies.js, rules.js, settings.js, states.js, rules.js]
   ENG --> DB[(settings, platform_settings, config_store)]
 
 ```

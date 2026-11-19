@@ -320,7 +320,9 @@ function run(payload) {
     try {
       const src = require("fs").readFileSync(path.join(ROOT, (rf.api || {}).source || "lib/api.js"), "utf8");
       const s0 = src.indexOf("const " + ((rf.api || {}).table || "routes") + " = ["), s1 = src.indexOf("function handle(", s0);
-      keyCount = (src.slice(s0, s1).match(/"(GET|POST|PUT|DELETE|PATCH) \/api\//g) || []).length;
+      const dir = path.join(ROOT, "lib", "routes");
+      const own = require("fs").existsSync(dir) ? require("fs").readdirSync(dir).filter(f => f.endsWith(".js")).map(f => require("fs").readFileSync(path.join(dir, f), "utf8")).join("\n") : "";
+      keyCount = ((src.slice(s0, s1) + "\n" + own).match(/"(GET|POST|PUT|DELETE|PATCH) \/api\//g) || []).length;
     } catch (e) { }
     const apiProblems = api ? api.unowned.slice(0, 5).concat(badApiRules) : ["no API register compiled"];
     if (api && api.routes.length !== keyCount) apiProblems.push("the register holds " + api.routes.length + " of " + keyCount + " routes in the table");

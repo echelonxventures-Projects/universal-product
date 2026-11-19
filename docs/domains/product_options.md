@@ -25,6 +25,7 @@ Modifiers, add-ons and personalisation: option groups defined once, attached to 
 | Module | What it is |
 |---|---|
 | `lib/options.js` | Product options: modifiers, add-ons and personalisation. An option group (a size, a crust, extra toppings, an engraving) is defined once and attached to any number of products. A group either offers values to choose from — each with its own price change — or takes the shopper's own text; what a kind of group does is its optionKinds registry row (`takes_text`). How many values a shopper must or may choose are the group's min and max. The shopper's choice rides on the bag line as its `options` term (lib/lineterms.js), adds its price changes to the line, and is kept on the order line, so a meal, a made-to-order item or a personalised gift is one product with options — not a product per combination. |
+| `lib/routes/product_options.js` | product_options domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the product_options domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `optionKinds`
 
@@ -113,7 +114,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Shopper / Store administrator]) --> UI[store console]
   UI --> API[9 API routes]
-  API --> ENG[options.js]
+  API --> ENG[options.js, product_options.js]
   ENG --> DB[(option_groups, option_values, option_follow_ups, product_option_groups)]
 
 ```

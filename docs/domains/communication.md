@@ -29,6 +29,7 @@ Conversations between a shopper and whoever sells a product, an order or a booki
 | `lib/conversations.js` | Buyer–seller conversations. A shopper messages whoever is on the other side of something — a product (its listing's owner, or the store), an order, a booking. What a conversation may be about is a conversationSubjects row naming the RESOLVER that finds that other side (this engine's own small vocabulary); a new subject is a row naming an existing resolver. The store's side is answered by its staff. Email addresses and phone numbers can be hidden so trades stay on the platform, and staff can read, flag and close any conversation. Capability: conversations. |
 | `lib/mailer.js` | person-to-person delivery: a message addressed to ONE recipient (a sign-in code, a password-reset link, an order confirmation), as opposed to lib/api.js notify(), which broadcasts a store event to the store's own configured address. |
 | `lib/tell.js` | telling a shopper something: an in-app notification, and an email when the shopper has an account with an address. The notification kind must be a row of the shopNotifKinds registry (an engine names the kind its capability or registry row declares); an unknown kind still emails but leaves no in-app note. Owners are "t<tenant>:u:<user>" for a signed-in shopper and "t<tenant>:s:<session>" for a guest, who has no address. |
+| `lib/routes/communication.js` | communication domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the communication domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `shopNotifKinds`, `conversationSubjects`, `conversationStatuses`
 
@@ -123,7 +124,7 @@ Actions: `close` → closed · `flag` → flagged · `reopen` → open
 flowchart LR
   U([Shopper / Seller / Store staff / Store administrator]) --> UI[messages.html, store console]
   UI --> API[13 API routes]
-  API --> ENG[conversations.js, mailer.js, tell.js]
+  API --> ENG[conversations.js, mailer.js, tell.js, communication.js]
   ENG --> DB[(notifications, conversations, conversation_messages)]
   ENG --> SM{{1 state machines}}
 ```

@@ -25,6 +25,7 @@ Wallet-to-wallet transfer between two owners. Self-transfer and overdraft are re
 | Module | What it is |
 |---|---|
 | `lib/wallet.js` | the Universal Wallet, on the kernel. |
+| `lib/routes/wallet.js` | wallet domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the wallet domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `walletStatuses`, `walletHoldStatuses`
 
@@ -185,7 +186,7 @@ Actions: `capture` → spent · `capture_part` → partly_spent · `release` →
 flowchart LR
   U([Shopper / Seller / Store administrator / Platform administrator]) --> UI[store console]
   UI --> API[18 API routes]
-  API --> ENG[wallet.js]
+  API --> ENG[wallet.js, wallet.js]
   ENG --> DB[(wallets, wallet_entries, ledger_accounts, ledger_journals, ledger_postings, wallet_holds)]
   ENG --> SM{{2 state machines}}
 ```

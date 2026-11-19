@@ -59,6 +59,7 @@ Quote a policy and activate it; activation debits the premium from the wallet.
 | Module | What it is |
 |---|---|
 | `lib/fintech.js` | Fintech engine (configurable money rails). UPI collect/push, QR scan-pay, payment links, mandates/auto-debit, escrow hold-and-release, split payments, KYC, bank-account payouts, BBPS bill payments, mobile/DTH recharge, P2P wallet transfer, BNPL/EMI, loans & credit lines, insurance distribution and gift vouchers. |
+| `lib/routes/financial_services.js` | financial_services domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the financial_services domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `finBillerCategories`, `finBillStatuses`, `finOperators`, `finCircles`, `finRechargeKinds`, `finRechargeStatuses`, `finBnplStatuses`, `finEmiStatuses`, `finLoanStatuses`, `finInsuranceStatuses`
 
@@ -309,7 +310,7 @@ Actions:
 flowchart LR
   U([Shopper / Store administrator]) --> UI[API]
   UI --> API[11 API routes]
-  API --> ENG[fintech.js]
+  API --> ENG[fintech.js, financial_services.js]
   ENG --> DB[(billers, bill_payments, recharges, recharge_plans, bnpl_accounts, bnpl_emis, …)]
   ENG --> SM{{8 state machines}}
 ```

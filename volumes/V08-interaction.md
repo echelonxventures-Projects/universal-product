@@ -30,11 +30,21 @@
 | **Contract** | [UCOS-EXP-000001 Experience Architecture](#ucos-exp-000001) |
 | **Artifacts** | [UCOS-EXP-000001](#ucos-exp-000001) |
 | **Concepts** | 97 — `node _registry/compile.js --search <words> --kind concept --owner "Experience"` |
-| **Code** | `lib/themes.js`, `lib/branding.js`, `lib/bundle.js`, `lib/sitemap.js`, `public/js/admin/offer.js`, `public/js/admin/stores.js`, `lib/seed/themes.json`, `public/js/admin.js`, `public/js/admin/groupbuy.js`, `public/js/admin/coupon.js`, `public/js/admin/giftcard.js`, `public/js/app.js`, `public/js/console.js`, `public/js/platform.js`, `public/js/data.js`, `public/js/editors.js`, `public/js/provisioning.js`, `public/js/rules-ui.js` |
+| **Code** | `lib/themes.js`, `lib/branding.js`, `lib/bundle.js`, `lib/sitemap.js`, `public/js/admin/offer.js`, `lib/routes/engagement.js`, `lib/routes/reviews.js`, `lib/routes/seo.js`, `lib/routes/storefront.js`, `public/js/admin/stores.js`, `lib/seed/themes.json`, `public/js/admin.js`, `public/js/admin/groupbuy.js`, `public/js/admin/coupon.js`, `public/js/admin/giftcard.js`, `public/js/app.js`, `public/js/console.js`, `public/js/platform.js`, `public/js/data.js`, `public/js/editors.js`, `public/js/provisioning.js`, `public/js/rules-ui.js` |
 | **Managed in** | `_registry/domains.json` → `D-EXP` |
 
 **Live routes (29)** — what the platform serves today for this domain:
 
+- `GET /api/platform/branding-permissions/:id`
+- `PUT /api/platform/branding-permissions/:id`
+- `GET /api/platform/hint`
+- `GET /api/hint`
+- `GET /api/seo/sitemap.xml`
+- `GET /api/sitemap`
+- `GET /api/sitemap.xml`
+- `POST /api/sitemap/generate`
+- `GET /api/sitemap/config`
+- `PUT /api/sitemap/config`
 - `GET /api/config`
 - `GET /api/themes`
 - `GET /api/themes/resolve`
@@ -42,8 +52,6 @@
 - `POST /api/themes/assign`
 - `POST /api/themes/unassign`
 - `POST /api/themes`
-- `GET /api/platform/hint`
-- `GET /api/hint`
 - `GET /api/admin/banners`
 - `POST /api/admin/banners`
 - `PUT /api/admin/banners/:id`
@@ -56,14 +64,6 @@
 - `PUT /api/branding`
 - `GET /api/platform/branding`
 - `PUT /api/platform/branding`
-- `GET /api/platform/branding-permissions/:id`
-- `PUT /api/platform/branding-permissions/:id`
-- `GET /api/seo/sitemap.xml`
-- `GET /api/sitemap`
-- `GET /api/sitemap.xml`
-- `POST /api/sitemap/generate`
-- `GET /api/sitemap/config`
-- `PUT /api/sitemap/config`
 
 <a id="ucos-exp-000001"></a>
 #### UCOS-EXP-000001 · Experience Architecture
@@ -270,7 +270,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-CMN-000001 Communication Architecture](#ucos-cmn-000001) |
 | **Artifacts** | [UCOS-CMN-000001](#ucos-cmn-000001) |
 | **Concepts** | 117 — `node _registry/compile.js --search <words> --kind concept --owner "Communication"` |
-| **Code** | `lib/media-sessions.js`, `lib/mailer.js`, `lib/helpdesk.js` |
+| **Code** | `lib/media-sessions.js`, `lib/mailer.js`, `lib/helpdesk.js`, `lib/routes/communication.js`, `lib/routes/support.js` |
 | **Managed in** | `_registry/domains.json` → `D-CMN` |
 
 **Live routes (22)** — what the platform serves today for this domain:
@@ -713,7 +713,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-SRC-000001 Search Architecture](#ucos-src-000001) |
 | **Artifacts** | [UCOS-SRC-000001](#ucos-src-000001) |
 | **Concepts** | 99 — `node _registry/compile.js --search <words> --kind concept --owner "Search"` |
-| **Code** | `lib/search.js` |
+| **Code** | `lib/search.js`, `lib/routes/search.js` |
 | **Managed in** | `_registry/domains.json` → `D-SRH` |
 
 **Live routes (5)** — what the platform serves today for this domain:

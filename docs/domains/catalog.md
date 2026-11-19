@@ -18,6 +18,7 @@ Everything a store sells, described once: products and their variants and SKUs, 
 | `lib/platform-master.js` | the platform master (GLOBAL_MASTER.md, roadmap P27; owners Identity, Semantic, Registry, Relationship and Measure). |
 | `lib/store-attributes.js` | a store's attribute definitions (its "columns"), as a read model of the platform master (GLOBAL_MASTER.md §1, §6; owner Registry). |
 | `lib/store-taxonomy.js` | a store's category tree, as a read model of the platform master (GLOBAL_MASTER.md §6, roadmap P27–P28; owner Semantic). |
+| `lib/routes/catalog.js` | catalog domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the catalog domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `contributionStatuses`
 
@@ -253,7 +254,7 @@ Actions: `approve` → approved · `reject` → rejected · `withdraw` → withd
 flowchart LR
   U([Shopper / Seller / Store staff / Store administrator / Platform administrator]) --> UI[product.html, store console, platform console]
   UI --> API[47 API routes]
-  API --> ENG[gcatalog.js, master-contributions.js, master-permissions.js, platform-master.js, store-attributes.js, store-taxonomy.js]
+  API --> ENG[gcatalog.js, master-contributions.js, master-permissions.js, platform-master.js, store-attributes.js, store-taxonomy.js, catalog.js]
   ENG --> DB[(products, product_bullets, brands, taxonomy, attribute_defs, skus, …)]
   ENG --> SM{{1 state machines}}
 ```

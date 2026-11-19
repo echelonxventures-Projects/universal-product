@@ -10,6 +10,10 @@ The people and organisations a store sells to: their profiles and addresses, seg
 
 ## Architecture
 
+| Module | What it is |
+|---|---|
+| `lib/routes/customers.js` | customers domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the customers domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
+
 ## Data model
 
 ### `addresses`
@@ -60,7 +64,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Shopper / Store staff / Store administrator / Platform administrator]) --> UI[platform console]
   UI --> API[6 API routes]
-  API --> ENG[engines]
+  API --> ENG[customers.js]
   ENG --> DB[(addresses, segment_members)]
 
 ```
