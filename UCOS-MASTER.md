@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0038 (2026-10-21).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0039 (2026-11-19).
 
 ## Contents
 
@@ -401,6 +401,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0036"></a>AMD-0036 | 2026-10-21 | Platform owner | Every feature is its own, complete capability (supersedes the merges recorded in AMD-0034 and AMD-0035). Each kind of case, deliverable and product option names the capability that switches it on, whose params are its settings, the console section and screen it is run from, and — where it leaves work behind — the state machine it lives by: price match, prescriptions, practitioner verification, enquiries and trade-ins; licence keys, lab tests and course progress; installation booking, assembly booking, extended warranties, customisation proofs and sample orders. Service fees and tips, health records and per-minute billing are separate capabilities. Staff routes are authorized against the section of the kind they name. Notification kinds the engines send are registered, and fields a seed newly declares on a registry row reach existing installs without overwriting an operator's values. |
 | <a id="amd-0037"></a>AMD-0037 | 2026-10-21 | Platform owner | The Universal Wallet, first slice (Value). A wallet definition is a versioned blueprint in a namespace — names in any language with aliases, the value classes it may hold (Value's classes), the operations it allows and its policy (overdraft, maximum balance, wallets per owner per unit, hold expiry); a new version never changes a wallet bound to an older one. An owner holds any number of wallets with immutable ids and names of their choosing (every past name kept). Value moves only as balanced journals in exact minor units against declared system accounts (issuance, clearing, migration, suspense), each with an idempotency key (the same key and request return the first outcome; a different request is refused) and an event in the kernel's hash-chained log; posted journals and postings cannot be updated or deleted (corrections are linked reversals, once). Balances are projections: posted, reserved by holds, available. Holds keep value until spent in full or in part, released or expired (wallet_hold machine); wallets restrict, suspend, reactivate and close by the wallet machine, closing only when empty. The single-balance wallet becomes each owner's default wallet with an opening journal; offers.credit/debit and the modules wallet calls are adapters onto it, so there is one money path, and a spend beyond what is available is refused instead of clamped to zero. Checkout holds the gift balance before writing the order and spends it after; a failed payment gives it back as a linked refund; an installment whose recording fails reverses its own spend; P2P is one transfer journal; a trial keep the wallet cannot pay stays open; a live session records any shortfall; a mandate charge takes the money before it counts against the mandate, in one transaction; a split payment pays every party in, all or none (a commission share was posted as a spend). Whether a unit is money is one predicate, its Value class's `money` flag (lib/registry.js isMoney; the offer engine and GOIP each had their own, and points were posted down the cash path); any registered unit may be held, issuance by place being the jurisdiction gate's. A definition version that only widens what its wallets may do takes them with it; one that narrows needs its own migration. An order's rewards are clawed back on refund as reversals linked to their journals. The wallet is what the Customer Wallets module sells. walletEntryKinds and walletAccountKinds are retired (the wallet's operations and definitions replace them). Conversion, commission, external links, custody and jurisdiction activation are the next slices. |
 | <a id="amd-0038"></a>AMD-0038 | 2026-10-21 | Platform owner | The Universal Wallet is derived only from the kernel (supersedes the definition, wallet and name tables of AMD-0037). Wallet definitions, wallets and holders are kernel nodes; a definition sits under the definition it refines in the definitions hierarchy to any depth, and a wallet under its definition and under its holder in the holding hierarchy. Every setting — value classes, operations, overdraft, maximum balance, wallets per owner, hold expiry, the default definition — is a kernel setting assigned at a definition node, a wallet or a namespace and resolved by context from the wallet upward, a store's namespace before the platform's; a definition states only what differs from the one above it. Names, aliases, state and settings are versions in valid and recorded time. The holder's identity is a sensitive attribute, sealed with AES-256-GCM bound to the node, and holders are found by a keyed blind index (lib/security.js blindIndex), never by a readable value. Every journal and every hold move is an event in the kernel's hash-chained log; verify() replays the log against the ledger index. A transfer now respects the receiving wallet's resolved maximum. Wallets held in AMD-0037's tables are ported onto the kernel once and the tables dropped. |
+| <a id="amd-0039"></a>AMD-0039 | 2026-11-19 | Platform owner | Phase A, the working tree made honest again. The uncommitted request path crashed every API call (a currency module reading a database handle and a tenant_settings table that do not exist) and served cached responses keyed by store and URL only, ahead of any login check, so one user's response reached any caller of the same store. The response cache, the per-request currency fields and the process-wide locale are removed: languages are Expression's (lib/expression.js, the messages catalogue) and units of value are Value's (the currencies and fx_rates tables), so the duplicate lib/i18n.js, lib/currency.js and i18n/locales are withdrawn rather than given a second home. The per-store request ceiling is a security-policy setting (tenantPerMin, 0 = off), not literal numbers. Unused session-revocation and MFA helpers are removed. The logger writes files only to a deliberately mounted LX_LOG_DIR, asynchronously, and never fails a request. The store's setup checklist and the platform's are one function (setupStatus). .gitignore no longer hides the authored _registry/ sources or _superseded/. .env.example names only variables the code reads. GAP-19: the test countries XX, XY, ZN (Zephyria Prime) and AQ and their provider availability are removed from the development database, and ZA is South Africa again (a backup is kept in data/backups/). GAP-20: the description of PR #3 now covers all 62 of its commits, including the 37 after 813e5f7, and says plainly that its head is unverified. GAP-30: the project folder moved off the iCloud-synced Desktop to /Users/bipin/Luxora; the conflict copies inside the repository are gone and the zero-byte and orphaned database files are removed. Also: the store's setup checklist is the stores domain's own (lib/routes/stores.js, public/js/admin/stores.js), with the wizard's duplicate modal() removed; deleting a platform provider names its store gateway through global.gatewayId (the kind prefixes are seed data, GATEWAY_PREFIX) rather than branching on provider kinds; the platform console's custom-provider form no longer reads its error element before declaring it; the hard-coding baseline falls to 47 branches and 79 fallbacks. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1269,7 +1270,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 193 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 195 files.
 
 ### C02 · Meaning
 
@@ -1284,6 +1285,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/platform-master.js` | [Semantic](volumes/V02-meaning.md#d-sem) | the trade, tariff and scientific classifications |
 | `lib/stores.js` | [Party](volumes/V02-meaning.md#d-pty) | stores on the kernel: the places each store serves (a Relationship hierarchy, time-windowed) and its jurisdiction (a Party setting) (P09) |
 | `lib/tenancy.js` | [Party](volumes/V02-meaning.md#d-pty) |  |
+| `lib/routes/stores.js` | [Party](volumes/V02-meaning.md#d-pty) | the Stores and organisation domain's API routes and handlers |
 | `lib/seed/master.json` | [Semantic](volumes/V02-meaning.md#d-sem) | the platform master starter content (GLOBAL_MASTER.md) |
 | `lib/seed/stores.json` | [Party](volumes/V02-meaning.md#d-pty) | the store kind, the serves hierarchy and the jurisdiction setting |
 | `public/docs/architecture.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
@@ -1405,6 +1407,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/helpdesk.js` | [Communication](volumes/V08-interaction.md#d-cmn) | conversations |
 | `lib/search.js` | [Search](volumes/V08-interaction.md#d-srh) |  |
 | `public/js/admin/offer.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Offers domain's store-console screens |
+| `public/js/admin/stores.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Stores and organisation domain's store-console screens |
 | `lib/tell.js` | [Notification](volumes/V08-interaction.md#d-ntf) |  |
 | `lib/seed/themes.json` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `public/js/admin.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
@@ -2201,7 +2204,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 <a id="gaps"></a>
 ### Gaps
 
-21 open, 9 closed. Every gap has one owning domain; a closed gap names the amendment that closed it (`_registry/roadmap.json` → `gaps`).
+18 open, 12 closed. Every gap has one owning domain; a closed gap names the amendment that closed it (`_registry/roadmap.json` → `gaps`).
 
 | Gap | Group | What | Owner | Status |
 |---|---|---|---|---|
@@ -2223,8 +2226,8 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="gap-16"></a>GAP-16 | requirement | Interface for every device: themes exist; no device types, component registry or screen builder | [Experience](volumes/V08-interaction.md#d-exp) | open |
 | <a id="gap-17"></a>GAP-17 | requirement | Workflow, notification, package, agent, integration and report designers described by the contracts are not built | [Runtime](volumes/V09.1-automation.md#d-run) | open |
 | <a id="gap-18"></a>GAP-18 | requirement | Launch by configuration, end to end, is not yet possible | [Package](volumes/V13-composition.md#d-pkg) | open |
-| <a id="gap-19"></a>GAP-19 | data | The development database holds test countries (XX, XY, Zamunda under ZA, Zephyria, Antarctica); awaiting the owner's go-ahead to remove | [Geo](volumes/V04-universal-dimensions.md#d-geo) | open |
-| <a id="gap-20"></a>GAP-20 | process | PR #3's description does not cover its last commits | [Guidance](volumes/V02-meaning.md#d-gdn) | open |
+| <a id="gap-19"></a>GAP-19 | data | The development database holds test countries (XX, XY, Zamunda under ZA, Zephyria, Antarctica); awaiting the owner's go-ahead to remove | [Geo](volumes/V04-universal-dimensions.md#d-geo) | closed (AMD-0039) |
+| <a id="gap-20"></a>GAP-20 | process | PR #3's description does not cover its last commits | [Guidance](volumes/V02-meaning.md#d-gdn) | closed (AMD-0039) |
 | <a id="gap-21"></a>GAP-21 | process | The development server is not running from the repository's new location | [Operations](volumes/V11.1-platform.md#d-ops) | closed (AMD-0009) |
 | <a id="gap-22"></a>GAP-22 | process | Stripe and EasyPost have never been run against real sandboxes; deployment is a single node | [Operations](volumes/V11.1-platform.md#d-ops) | open |
 | <a id="gap-23"></a>GAP-23 | process | CI moved to the actions' Node 24 runtime (checkout and setup-node v5) on a pinned ubuntu-24.04 runner (AMD-0024); unverified until CI can run again (GAP-29) | [Operations](volumes/V11.1-platform.md#d-ops) | open |
@@ -2234,7 +2237,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="gap-27"></a>GAP-27 | truth | Three event records coexist — audit_log, the webhook bus (lib/events.js) and the kernel's log (k_events); K08 requires one | [Runtime](volumes/V09.1-automation.md#d-run) | open |
 | <a id="gap-28"></a>GAP-28 | process | Intermittent test failures: the ECONNRESET was a 5 s server keep-alive racing a reused client socket (fixed, AMD-0022); the browser check's occasional Runtime.evaluate timeout and a console render that misses its fixed wait under full-suite load remain unexplained | [Quality](volumes/V11.2-platform.md#d-qlt) | open |
 | <a id="gap-29"></a>GAP-29 | process | CI did not run on 3e67d62: GitHub refused to start the jobs because the account's payments failed or its spending limit is reached; every later commit is checked locally only until the owner fixes billing | [Operations](volumes/V11.1-platform.md#d-ops) | open |
-| <a id="gap-30"></a>GAP-30 | process | The repository sits in an iCloud-synced Desktop folder: the sync made 67 conflict copies ("canonical 2.lxr", test databases, ".luxora 2.pid"), one hung git add, and its file locking may explain the intermittent test failures (GAP-28); the repository belongs outside iCloud | [Operations](volumes/V11.1-platform.md#d-ops) | open |
+| <a id="gap-30"></a>GAP-30 | process | The repository sits in an iCloud-synced Desktop folder: the sync made 67 conflict copies ("canonical 2.lxr", test databases, ".luxora 2.pid"), one hung git add, and its file locking may explain the intermittent test failures (GAP-28); the repository belongs outside iCloud | [Operations](volumes/V11.1-platform.md#d-ops) | closed (AMD-0039) |
 
 ### Steps
 
@@ -2345,6 +2348,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0036 | amendment | Every feature is its own, complete capability (supersedes th | [constitution](#amd-0036) |
 | AMD-0037 | amendment | The Universal Wallet, first slice (Value). A wallet definiti | [constitution](#amd-0037) |
 | AMD-0038 | amendment | The Universal Wallet is derived only from the kernel (supers | [constitution](#amd-0038) |
+| AMD-0039 | amendment | Phase A, the working tree made honest again. The uncommitted | [constitution](#amd-0039) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

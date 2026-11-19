@@ -83,8 +83,8 @@
     {"gapId": "GAP-16", "group": "requirement", "title": "Interface for every device: themes exist; no device types, component registry or screen builder", "owner": "Experience", "status": "open"},
     {"gapId": "GAP-17", "group": "requirement", "title": "Workflow, notification, package, agent, integration and report designers described by the contracts are not built", "owner": "Runtime", "status": "open"},
     {"gapId": "GAP-18", "group": "requirement", "title": "Launch by configuration, end to end, is not yet possible", "owner": "Package", "status": "open"},
-    {"gapId": "GAP-19", "group": "data", "title": "The development database holds test countries (XX, XY, Zamunda under ZA, Zephyria, Antarctica); awaiting the owner's go-ahead to remove", "owner": "Geo", "status": "open"},
-    {"gapId": "GAP-20", "group": "process", "title": "PR #3's description does not cover its last commits", "owner": "Guidance", "status": "open"},
+    {"gapId": "GAP-19", "group": "data", "title": "The development database holds test countries (XX, XY, Zamunda under ZA, Zephyria, Antarctica); awaiting the owner's go-ahead to remove", "owner": "Geo", "status": "closed", "closedBy": "AMD-0039"},
+    {"gapId": "GAP-20", "group": "process", "title": "PR #3's description does not cover its last commits", "owner": "Guidance", "status": "closed", "closedBy": "AMD-0039"},
     {"gapId": "GAP-21", "group": "process", "title": "The development server is not running from the repository's new location", "owner": "Operations", "status": "closed", "closedBy": "AMD-0009"},
     {"gapId": "GAP-22", "group": "process", "title": "Stripe and EasyPost have never been run against real sandboxes; deployment is a single node", "owner": "Operations", "status": "open"},
     {"gapId": "GAP-23", "group": "process", "title": "CI moved to the actions' Node 24 runtime (checkout and setup-node v5) on a pinned ubuntu-24.04 runner (AMD-0024); unverified until CI can run again (GAP-29)", "owner": "Operations", "status": "open"},
@@ -94,6 +94,6 @@
     {"gapId": "GAP-27", "group": "truth", "title": "Three event records coexist — audit_log, the webhook bus (lib/events.js) and the kernel's log (k_events); K08 requires one", "owner": "Runtime", "status": "open"},
     {"gapId": "GAP-28", "group": "process", "title": "Intermittent test failures: the ECONNRESET was a 5 s server keep-alive racing a reused client socket (fixed, AMD-0022); the browser check's occasional Runtime.evaluate timeout and a console render that misses its fixed wait under full-suite load remain unexplained", "owner": "Quality", "status": "open"},
     {"gapId": "GAP-29", "group": "process", "title": "CI did not run on 3e67d62: GitHub refused to start the jobs because the account's payments failed or its spending limit is reached; every later commit is checked locally only until the owner fixes billing", "owner": "Operations", "status": "open"},
-    {"gapId": "GAP-30", "group": "process", "title": "The repository sits in an iCloud-synced Desktop folder: the sync made 67 conflict copies (\"canonical 2.lxr\", test databases, \".luxora 2.pid\"), one hung git add, and its file locking may explain the intermittent test failures (GAP-28); the repository belongs outside iCloud", "owner": "Operations", "status": "open"}
+    {"gapId": "GAP-30", "group": "process", "title": "The repository sits in an iCloud-synced Desktop folder: the sync made 67 conflict copies (\"canonical 2.lxr\", test databases, \".luxora 2.pid\"), one hung git add, and its file locking may explain the intermittent test failures (GAP-28); the repository belongs outside iCloud", "owner": "Operations", "status": "closed", "closedBy": "AMD-0039"}
   ]
 }

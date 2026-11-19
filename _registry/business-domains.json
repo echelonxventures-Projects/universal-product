@@ -211,7 +211,7 @@
     ],
     "routes": [
      "^/api/(tenancy|stores|branding|compose)(/|$)",
-     "^/api/platform/(tenants|setup|branding|tenant-entities|tenant-fields|regions|fanout)(/|$)",
+     "^/api/platform/(tenants|setup|branding|tenant-entities|tenant-fields|regions|fanout)(/|$)", "^/api/admin/setup(/|$)",
      "^/api/admin/departments(/|$)"
     ],
     "machines": [
@@ -221,7 +221,8 @@
     "capabilities": [],
     "registries": [],
     "screens": [
-     "structure"
+     "structure",
+     "setup"
     ],
     "platformScreens": [
      "tenants",

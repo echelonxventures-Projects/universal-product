@@ -1620,6 +1620,7 @@ async function vDash() {
       <tbody>${st.lowStock.map(p => `<tr><td>${esc(p.title.slice(0, 46))}</td><td class="num" style="color:${p.st <= 3 ? "var(--p-red)" : "inherit"}">${p.stock}</td></tr>`).join("") || '<tr><td colspan="2" class="p-empty">All healthy</td></tr>'}</tbody></table></div>
   </div>`;
 }
+
 async function vAnalytics() {
   const a = await api("/admin/analytics");
   const max = Math.max(1, ...a.byDay.map(d => d.revenue));

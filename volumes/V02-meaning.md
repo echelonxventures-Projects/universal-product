@@ -2490,7 +2490,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-PTY-000001 Party Architecture](#ucos-pty-000001) |
 | **Artifacts** | [UCOS-PTY-000001](#ucos-pty-000001) |
 | **Concepts** | 267 — `node _registry/compile.js --search <words> --kind concept --owner "Party"` |
-| **Code** | `lib/stores.js`, `lib/tenancy.js`, `lib/seed/stores.json` |
+| **Code** | `lib/stores.js`, `lib/tenancy.js`, `lib/routes/stores.js`, `lib/seed/stores.json` |
 | **Managed in** | `_registry/domains.json` → `D-PTY` |
 
 **Live routes (49)** — what the platform serves today for this domain:

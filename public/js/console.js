@@ -57,6 +57,7 @@ async function api(path, methodOrOpts, body) {
   if (body) { opts.body = JSON.stringify(body); opts.headers = Object.assign({}, opts.headers, { "Content-Type": "application/json" }); }
   const csrf = (document.cookie.match(/azc=([^;]+)/) || [])[1] || "";
   opts.headers = Object.assign({ "x-csrf": csrf }, opts.headers || {});
+  opts.credentials = "include";
   const r = await fetch(path, opts);
   const j = await r.json().catch(() => ({}));
   if (!r.ok && j && !j.error) j.error = (j.error || r.statusText);
@@ -410,7 +411,9 @@ async function boot() {
     q.delete("token");
     try { history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q.toString() : "") + location.hash); } catch (e) { }
   }
-  const r = await api("/api/auth/me");
+  const storeParam = q.get("store");
+  const meUrl = storeParam ? "/api/auth/me?store=" + encodeURIComponent(storeParam) : "/api/auth/me";
+  const r = await api(meUrl);
   if (r && r.money) window.LX_MONEY = r.money;
   if (!r || (!r.hasStore && !r.hasPlatform)) return loginForm(r);
   me.store = r.identity.store || null;

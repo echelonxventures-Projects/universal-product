@@ -204,6 +204,7 @@ const handler = async (req, res) => {
       }
       if (!session) return api.bad(res, "No store configured", 500);
       res.__tenantId = session.tenant.id;
+      if (!sec.checkTenant(session.tenant.id)) { res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "5" }); return res.end(JSON.stringify({ error: "Rate limit exceeded for your store" })); }
       /* L2: CSRF double-submit for cookie-carrying mutations. The azc cookie is
          re-sent on EVERY response, not just when the token is first minted: the
          console reads it from document.cookie on each POST, so a page loaded from

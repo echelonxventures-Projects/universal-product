@@ -114,10 +114,10 @@ async function refreshSession() {
   Object.assign(S, { user: s.user, zip: s.zip, gift: s.gift, coupon: s.coupon, cartCount: s.cartCount, cartSub: s.cartSubtotal, viewed: s.viewed });
 }
 let toastT;
-function toast(html) {
+function toast(message) {
   let t = $("#toast");
   if (!t) { t = document.createElement("div"); t.id = "toast"; t.className = "toast"; document.body.appendChild(t); }
-  t.innerHTML = html; t.classList.add("show");
+  t.textContent = message; t.classList.add("show");
   clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3200);
 }
 

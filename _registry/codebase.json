@@ -134,6 +134,8 @@
     {"path": "lib/routes/groupbuy.js", "owner": "Commerce", "note": "group-buy campaigns and member settlement routes"},
     {"path": "lib/routes/coupon.js", "owner": "Commerce", "note": "coupon issuance, redemption and analytics routes"},
     {"path": "lib/routes/giftcard.js", "owner": "Commerce", "note": "gift-card redemption and issuance routes"},
+    {"path": "public/js/admin/stores.js", "owner": "Experience", "note": "the Stores and organisation domain's store-console screens"},
+    {"path": "lib/routes/stores.js", "owner": "Party", "note": "the Stores and organisation domain's API routes and handlers"},
     {"path": "lib/substitutions.js", "owner": "Commerce"},
     {"path": "lib/tell.js", "owner": "Notification"},
     {"path": "lib/affiliate.js", "owner": "Commerce"},

@@ -1,10 +1,10 @@
 {
  "summary": {
-  "branch": 51,
-  "fallback": 87,
+  "branch": 47,
+  "fallback": 79,
   "seedConstants": {
    "count": 7,
-   "lines": 223
+   "lines": 222
   }
  },
  "hits": {
@@ -26,7 +26,6 @@
    "lib/dashboards.js · manual": 1,
    "lib/entity.js · orders": 1,
    "lib/gates.js · capability": 1,
-   "lib/goip.js · coupon": 3,
    "lib/identity.js · password": 1,
    "lib/logistics.js · restock": 1,
    "lib/mailer.js · offline": 1,
@@ -50,7 +49,6 @@
    "lib/ugc.js · review": 1,
    "lib/webauthn.js · packed": 1,
    "public/js/app.js · coupon": 1,
-   "public/js/app.js · gift": 1,
    "public/js/app.js · rent": 2,
    "public/js/app.js · sku": 1,
    "public/js/app.js · track": 1,
@@ -89,11 +87,9 @@
    "lib/global.js · payment": 1,
    "lib/goip.js · DISCOVERED_BY": 3,
    "lib/goip.js · accepted": 1,
-   "lib/goip.js · bank_voucher": 2,
    "lib/goip.js · customer": 1,
    "lib/goip.js · discount": 1,
    "lib/goip.js · free": 2,
-   "lib/goip.js · future_benefit": 2,
    "lib/goip.js · merchant": 1,
    "lib/goip.js · partner": 2,
    "lib/goip.js · widget": 1,
@@ -106,7 +102,6 @@
    "lib/marketplace-ext.js · refund": 1,
    "lib/marketplace-ext.js · standard": 1,
    "lib/offers.js · discount": 1,
-   "lib/offers.js · voided": 1,
    "lib/sitemap.js · monthly": 2,
    "lib/tax.js · manual": 1,
    "lib/trade.js · released": 1,
@@ -115,7 +110,7 @@
    "public/js/admin.js · dark_store": 1,
    "public/js/admin.js · processing": 1,
    "public/js/console.js · block": 1,
-   "public/js/platform.js · block": 7,
+   "public/js/platform.js · block": 4,
    "public/js/platform.js · constitution": 1,
    "public/js/platform.js · custom": 1,
    "public/js/platform.js · declared": 1,
@@ -125,7 +120,7 @@
  "seedConstants": {
   "lib/api.js · STORE_ROUTE_SECTION": 28,
   "lib/authz.js · ROUTE_SECTION": 35,
-  "lib/goip.js · GOIP_HANDLERS": 40,
+  "lib/goip.js · GOIP_HANDLERS": 39,
   "lib/goip.js · INTEL": 30,
   "lib/goip.js · IMPL": 47,
   "lib/rules.js · PROVIDERS": 20,

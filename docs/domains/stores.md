@@ -18,6 +18,7 @@ The stores on the platform and how each is organised: creating and configuring a
 | `lib/platform-setup.js` | configuring a platform by its setup steps (GLOBAL_MASTER.md §4, roadmap P29; owner Package). |
 | `lib/stores.js` | stores on the kernel (P09, owners Party and Relationship). |
 | `lib/tenancy.js` | universal tenancy hierarchy Platform → Tenant → Organization → Business Unit → Brand → Store → Channel. Every node is one row; the materialized `path` makes subtree queries a LIKE away, mirroring GOIP's hierarchy paths (earth.in.bihar.patna) so operators think one way. The hierarchy is also the *config cascade*: a setting resolved at a Store inherits from Store → Brand → Business Unit → Organization → Tenant → Platform, deepest wins. |
+| `lib/routes/stores.js` | stores domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the stores domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
 
@@ -176,7 +177,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `GET /api/platform/regions` | `apiRegionsGet` | — |
 | `PUT /api/platform/regions` | `apiRegionsSet` | — |
 | `GET /api/platform/tenants` | `apiPlatformTenants` | — |
-| `GET /api/platform/tenants/:id/setup` | `apiPlatformTenantSetup` | Setup-wizard progress: one store, every step marked done or pending. Powers the "what's left" checklist after (or during) launch. |
+| `GET /api/platform/tenants/:id/setup` | `apiPlatformTenantSetup` | — |
 | `POST /api/platform/tenants` | `apiPlatformTenantCreate` | — |
 | `GET /api/platform/setup/steps` | `apiSetupSteps` | — |
 | `POST /api/platform/setup/discover` | `apiSetupDiscover` | — |
@@ -188,6 +189,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `POST /api/platform/tenants/:id/impersonate` | `apiPlatformImpersonate` | — |
 | `POST /api/platform/tenants/:id/subscribe` | `apiPlatformSubscribe` | — |
 | `POST /api/platform/tenants/:id/invoice` | `apiPlatformInvoiceGenerate` | — |
+| `GET /api/admin/setup` | `apiAdminSetup` | the store's own view of its setup checklist — the same steps the platform sees (setupStatus) |
 
 ## Process flows
 
@@ -216,15 +218,15 @@ Actions:
 ```mermaid
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[store console, platform console]
-  UI --> API[39 API routes]
-  API --> ENG[branding.js, compose.js, platform-discovery.js, platform-setup.js, stores.js, tenancy.js]
+  UI --> API[40 API routes]
+  API --> ENG[branding.js, compose.js, platform-discovery.js, platform-setup.js, stores.js, tenancy.js, stores.js]
   ENG --> DB[(tenants, tenant_state, departments, tenant_entities, tenancy_nodes, tenancy_config, …)]
   ENG --> SM{{2 state machines}}
 ```
 
 ## User interface
 
-**Store console:** 🏢 Org Structure
+**Store console:** 🏢 Org Structure · 🧭 Setup Wizard
 
 **Platform console:** 🏬 Tenants · 🏷️ Brands · Manufacturers · 🧬 Composition Engine · 🏬 Platforms & Kinds · 🏢 Companies · 🗂️ Workspaces · 🌍 Environments · 🛡️ Provisioning
 

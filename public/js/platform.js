@@ -1802,18 +1802,19 @@ document.addEventListener("click", async e => {
       const feePct = parseFloat($("#cpFeePct").value) || 0;
       const feeFixed = parseFloat($("#cpFeeFixed").value) || 0;
        const methods = $("#cpMethods").value.split(",").map(s => s.trim()).filter(Boolean);
-       let spec;
-       try { spec = JSON.parse($("#cpSpec").value); } catch (x) { error.textContent = "Integration spec must be valid JSON"; error.style.display = "block"; return; }
       const error = $("#cpError");
+      const fail = msg => { error.textContent = msg; error.style.display = "block"; };
+      let spec;
+      try { spec = JSON.parse($("#cpSpec").value); } catch (x) { return fail("Integration spec must be valid JSON"); }
       // Validate
       const idVal = validateUUID(id);
-      if (!idVal.valid) { error.textContent = idVal.error; error.style.display = "block"; return; }
+      if (!idVal.valid) return fail(idVal.error);
       const nameVal = validateName(name);
-      if (!nameVal.valid) { error.textContent = nameVal.error; error.style.display = "block"; return; }
+      if (!nameVal.valid) return fail(nameVal.error);
       const methodsVal = validateMethods(methods);
-      if (!methodsVal.valid) { error.textContent = methodsVal.error; error.style.display = "block"; return; }
+      if (!methodsVal.valid) return fail(methodsVal.error);
       const fieldsVal = validateFields(cpFields.filter(f => f.key));
-      if (!fieldsVal.valid) { error.textContent = fieldsVal.error; error.style.display = "block"; return; }
+      if (!fieldsVal.valid) return fail(fieldsVal.error);
       error.style.display = "none";
       const manifest = {
         id, name, emoji, desc,
