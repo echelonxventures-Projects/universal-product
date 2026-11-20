@@ -207,6 +207,11 @@ const raw = (text) => new Promise((resolve) => {
       d.close();
       const missing = live.filter(t => !snap.includes(t));
       ok(missing.length === 0, "every table a boot creates is in schema.sql (npm run schema regenerates it)", missing);
+      /* the snapshot is exactly what a fresh boot projects — no extra table, no hand edit, each table
+         under the domain that owns it */
+      const fresh = require("child_process").execFileSync(process.execPath, [path.join(__dirname, "..", "scripts", "schema-dump.js"), "--print"], { encoding: "utf8", env: { ...process.env, LX_DB: "" }, stdio: ["ignore", "pipe", "ignore"] });
+      ok(fresh === fs.readFileSync(path.join(__dirname, "..", "schema.sql"), "utf8"), "schema.sql is exactly a fresh boot's grouped snapshot (npm run schema)");
+      ok(!/^-- ── no owning domain/m.test(fresh), "every table in the snapshot has an owning domain");
     }
 
     /* ─────────── route-audit criticals (2026-10) ─────────── */

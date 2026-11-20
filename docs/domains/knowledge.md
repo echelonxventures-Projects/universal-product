@@ -210,11 +210,7 @@ The platform describing itself: the constitution, its foundations, universes, ca
 |---|---|
 | `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
 | `entity_key` | TEXT NOT NULL |
-| `/*` | which universe's record transitioned */ record_id INTEGER NOT NULL, from_state TEXT NOT NULL, to_state TEXT NOT NULL, rule TEXT, /* the corpus rule that authorized it (5.2) */ actor TEXT, /* who fired the transition */ detail TEXT DEFAULT '{}', at TEXT NOT NULL DEFAULT (datetime('now')) ); CREATE INDEX ix_ucos_record_tr_entity ON ucos_record_transitions(entity_key, record_id, at); CREATE TABLE theme_presets ( id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL UNIQUE, /* "quantum-glass", "solar-flare"… */ name TEXT NOT NULL, mood TEXT, /* light \| dark \| futurist \| organic… the registry's own vocabulary */ vars TEXT NOT NULL |
-| `/*` | the CSS custom properties |
-| `as` | JSON */ preview TEXT |
-| `/*` | a small gradient/emoji signature for the picker */ built_in INTEGER DEFAULT 0 |
-| `/*` | shipped presets vs operator-created */ position INTEGER DEFAULT 0 |
+| `/*` | which universe's record transitioned */ record_id INTEGER NOT NULL, from_state TEXT NOT NULL, to_state TEXT NOT NULL, rule TEXT, /* the corpus rule that authorized it (5.2) */ actor TEXT, /* who fired the transition */ detail TEXT DEFAULT '{}', at TEXT NOT NULL DEFAULT (datetime('now')) ); CREATE INDEX ix_ucos_record_tr_entity ON ucos_record_transitions(entity_key, record_id, at); -- ── runtime · Runtime and operations ───────────────────────────────────────────────────────────── CREATE TABLE sqlite_sequence(name,seq); |
 
 ## API reference
 
