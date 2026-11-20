@@ -54,22 +54,22 @@ function toast(msg) {
    read alike. Keys are unchanged — NAVSEC and canSee() still key off the flat list
    (every key is also a grant section), and NAVFLAT drives title lookup. */
 const NAV = [
-  { g: "Overview", items: [["dash", "◈ Dashboard"], ["analytics", "📊 Analytics"], ["monitor", "📈 Monitor"]] },
-  { g: "Orders & Fulfilment", items: [["orders", "🧾 Orders"], ["returns", "↩️ Returns"], ["shipping", "📮 Shipping & Tracking"], ["pickup", "📍 Pickup Points"], ["bookings", "📅 Bookings"], ["substitutions", "🔄 Substitutions"], ["prescriptions", "📄 Prescriptions"], ["credentials", "🪪 Practitioner Verification"], ["enquiries", "📨 Enquiries"], ["fees", "🧾 Service Fees"], ["tips", "💝 Tips"], ["trials", "👟 Try and Buy"], ["licencekeys", "🔑 Licence Keys"], ["labtests", "🧫 Lab Tests"], ["courses", "🎓 Course Progress"], ["healthrecords", "🩺 Health Records"], ["sessions", "🎥 Live Sessions"], ["metering", "⏱️ Per-minute Charges"], ["logistics", "🚚 Logistics & Fulfilment"], ["serialized", "🔢 Serialized Items"]] },
-  { g: "Catalogue", items: [["products", "📦 Products"], ["skus", "🔖 SKUs & Inventory"], ["brands", "🏷️ Brands"], ["brandreg", "™️ Brand Registry"], ["richcontent", "✨ Rich Content"], ["prodoptions", "🧩 Product Options"], ["installations", "🔧 Installations"], ["assemblies", "🪛 Assembly"], ["warranties", "🛡️ Extended Warranties"], ["proofs", "🎨 Customisation Proofs"], ["samples", "🧪 Sample Orders"], ["taxonomy", "🌳 Taxonomy"], ["attributes", "🧬 Attributes"], ["gcatalog", "🌐 Global Catalog"], ["mastercontrib", "🤝 Master Contributions"]] },
-  { g: "Supply Chain", items: [["suppliers", "🏭 Suppliers"], ["ops_proc", "🛒 Purchase Requests"], ["planning", "📈 Planning & Replenishment"]] },
-  { g: "Storefront", items: [["content", "🖼️ Home Content"], ["search", "🔎 Search & Discovery"], ["sitemap", "🗺️ Sitemap & SEO"], ["localizations", "🌐 Localizations"]] },
-  { g: "Marketing & Growth", items: [["affiliate", "📣 Influencers & Affiliates"], ["retention", "🔁 Subscriptions & Members"], ["experiments", "🧪 Experiments"], ["marketplace", "📢 Marketplace & Ads"], ["auctions", "🔨 Auctions"]] },
-  { g: "Customer Care", items: [["helpdesk", "🎧 Support Helpdesk"], ["conversations", "💬 Messages"], ["ugc", "⭐ Reviews & Q&A"]] },
-  { g: "Sellers & B2B", items: [["sellers", "🏪 Sellers"], ["listings", "🏷️ Shopper Listings"], ["negotiation", "🤝 Offers"], ["rfqs", "📋 RFQs"], ["contracts", "📝 Contracts"], ["tenders", "🏛️ Tenders"]] },
-  { g: "Payments & Finance", items: [["payments", "💳 Payment Gateways"], ["wallets", "👛 Wallets & Ledger"], ["settlements", "🤝 Settlements"], ["finance", "💰 Disputes & Payouts"], ["billing", "🧮 Billing"]] },
-  { g: "Business Operations", items: [["qcops", "⚡ Quick-commerce"], ["mktops", "🏬 Marketplace Ops"], ["tradeops", "🚢 Trade Ops"], ["finops", "💸 Fintech Ops"], ["ops_hr", "🧑‍💼 People & Payroll"], ["ops_mfg", "🏭 Manufacturing"], ["ops_proj", "📐 Projects & Approvals"]] },
-  { g: "Mobility", items: [["rides", "🚗 Rides & Dispatch"], ["fleet", "🚙 Fleet & Drivers"]] },
-  { g: "Team & Access", items: [["team", "👥 Team & Roles"], ["structure", "🏢 Org Structure"], ["sso", "🔐 SSO & Integrations"]] },
-  { g: "Trust & Compliance", items: [["risk", "🛡️ Risk & Fraud"], ["compliance", "✅ Compliance & Certs"], ["audit", "📜 Audit Trail"], ["trash", "🗑️ Trash & Retention"]] },
-  { g: "Automation", items: [["ai", "🤖 AI Studio"], ["webhooks", "🔗 Webhooks"]] },
-  { g: "Settings", tail: true, items: [["settings", "⚙️ Settings"], ["applicability", "🧭 Availability Rules"], ["modules", "🧩 Modules"], ["studio", "🛠️ Data Studio"]] },
-  { g: "Help", tail: true, items: [["manual", "📘 User Manual"], ["architecture", "🏛️ Architecture"]] }
+  { g: "Overview", items: [] },
+  { g: "Orders & Fulfilment", items: [] },
+  { g: "Catalogue", items: [] },
+  { g: "Supply Chain", items: [] },
+  { g: "Storefront", items: [] },
+  { g: "Marketing & Growth", items: [] },
+  { g: "Customer Care", items: [] },
+  { g: "Sellers & B2B", items: [] },
+  { g: "Payments & Finance", items: [] },
+  { g: "Business Operations", items: [] },
+  { g: "Mobility", items: [] },
+  { g: "Team & Access", items: [] },
+  { g: "Trust & Compliance", items: [] },
+  { g: "Automation", items: [] },
+  { g: "Settings", items: [], tail: true },
+  { g: "Help", items: [], tail: true }
 ];
 const NAVFLAT = NAV.flatMap(g => g.items);
 /* a domain's screens register themselves (public/js/admin/<domain>.js): what renders, what wires
@@ -80,7 +80,11 @@ function screen(key, def) {
   SCREENS[key] = def;
   let g = NAV.find(x => x.g === def.group);
   if (!g) { g = { g: def.group, items: [] }; const t = NAV.findIndex(x => x.tail); NAV.splice(t < 0 ? NAV.length : t, 0, g); }
-  if (!g.items.some(i => i[0] === key)) g.items.push([key, def.label]);
+  if (!g.items.some(i => i[0] === key)) {
+    /* a screen goes back to its declared position in its group (order), else last */
+    const at = def.order == null ? -1 : g.items.findIndex(i => i[2] != null && i[2] > def.order);
+    g.items.splice(at < 0 ? g.items.length : at, 0, [key, def.label, def.order == null ? Infinity : def.order]);
+  }
   if (def.section) NAVSEC[key] = def.section;
   NAVFLAT.length = 0; NAV.flatMap(x => x.items).forEach(x => NAVFLAT.push(x));
 }
@@ -126,138 +130,6 @@ function registerApps(apps) {
   NAV.flatMap(g => g.items).forEach(x => NAVFLAT.push(x));
 }
 
-async function vSearch() {
-  const [res, rec, suggest] = await Promise.all([api("/search", { q: "home" }), api("/recommend", { anchor: "LX-ELS-007", limit: 5 }), api("/suggest", { prefix: "so" })]);
-  const facets = res.facets || {};
-  return `<div class="a-head"><h2>🔎 Search &amp; Discovery</h2><p class="a-sub">Faceted, typo-tolerant query · registry-driven synonyms &amp; boosts · co-purchase / co-view recommendations. Configuration lives in Data Studio: <code>searchSynonyms</code>, <code>searchBoosts</code>.</p></div>
-  <div class="a-card"><h3>Sample query · <code>q=home</code></h3>
-    <p class="a-sub">matched <b>${res.matched}</b> · facets ${Object.entries(facets).slice(0, 8).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("")}</p>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>id</th><th>title</th><th>brand</th><th>dept</th><th>price</th><th>rating</th><th>reason</th></tr></thead>
-      <tbody>${res.items.map(i => `<tr><td><code>${esc(i.id)}</code></td><td>${esc(i.title)}</td><td>${esc(i.brand)}</td><td>${esc(i.dept)}</td><td>${money(i.price)}</td><td>${i.rating}</td><td>${i.reason ? `<span class="a-chip">${esc(i.reason)}</span>` : "—"}</td></tr>`).join("") || '<tr><td colspan="7">—</td></tr>'}</tbody></table></div>
-  </div>
-  <div class="a-card"><h3>Recommendations · co-purchase of <code>LX-ELS-007</code></h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>id</th><th>title</th><th>weight</th></tr></thead>
-      <tbody>${(rec.items || []).map(i => `<tr><td><code>${esc(i.id)}</code></td><td>${esc(i.title)}</td><td>${i.weight}</td></tr>`).join("") || '<tr><td colspan="3">No co-purchase signal yet.</td></tr>'}</tbody></table></div>
-  </div>
-  <div class="a-card"><h3>Autocomplete · prefix <code>so</code></h3>
-    <div>${(suggest.items || []).map(t => `<span class="a-chip">${esc(t)}</span>`).join(" ") || "—"}</div>
-  </div>`;
-}
-async function vLogistics() {
-  const [ships, sla, carriers] = await Promise.all([api("/shipments", {}), api("/admin/sla", { days: 3 }), api("/carriers", {})]);
-  const statuses = ships.statuses || [];
-  const by = {}; ships.shipments.forEach(s => by[s.status] = (by[s.status] || 0) + 1);
-  return `<div class="a-head"><h2>🚚 Logistics &amp; Fulfilment</h2><p class="a-sub">Fulfilment state machine · shipment tracking · 3PL carrier abstraction · warehouse routing · SLA · return disposition. States &amp; dispositions live in Data Studio: <code>logisticsStates</code>, <code>logisticsDispositions</code>.</p></div>
-  <div class="a-card"><h3>Active shipments</h3>
-    <p class="a-sub">${Object.entries(by).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join(" ") || "none"}</p>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>order</th><th>carrier</th><th>status</th><th>warehouse</th></tr></thead>
-      <tbody>${ships.shipments.slice(0, 25).map(s => `<tr><td><code>${esc(s.tracking_ref)}</code></td><td>${s.order_id}</td><td>${esc(s.carrier || "—")}</td><td><span class="a-chip">${esc(s.status)}</span></td><td>${s.warehouse_id || "—"}</td></tr>`).join("") || '<tr><td colspan="5">No shipments yet.</td></tr>'}</tbody></table></div>
-  </div>
-  <div class="a-card"><h3>SLA breaches (&gt;3 days undelivered)</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>status</th><th>created</th></tr></thead>
-      <tbody>${sla.breaches.map(b => `<tr><td><code>${esc(b.tracking_ref)}</code></td><td>${esc(b.status)}</td><td>${esc(b.created_at)}</td></tr>`).join("") || '<tr><td colspan="3">On schedule.</td></tr>'}</tbody></table></div>
-  </div>
-  <div class="a-card"><h3>3PL carriers (registry)</h3>
-    <div>${(carriers.carriers || []).map(c => `<span class="a-chip">${esc(c.emoji || "")} ${esc(c.name)}</span>`).join(" ") || "none configured"}</div>
-  </div>`;
-}
-async function vFinance() {
-  const [disp, pays, led] = await Promise.all([api("/admin/fin/disputes"), api("/admin/fin/payouts"), api("/admin/fin/ledger", { owner: "t1:s:demo" })]);
-  const byS = {}; disp.disputes.forEach(d => byS[d.state] = (byS[d.state] || 0) + 1);
-  return `<div class="a-head"><h2>💰 Finance &amp; Settlements</h2><p class="a-sub">Chargebacks / disputes · multi-gateway retries · batch payout runs · bank-feed reconciliation · FX-aware ledger. States &amp; kinds in Data Studio: <code>finDisputeStates</code>, <code>finPayoutKinds</code>, <code>finReconSources</code>.</p></div>
-  <div class="a-card"><h3>Disputes / chargebacks</h3>
-    <p class="a-sub">${Object.entries(byS).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("") || "none open"}</p>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>payment</th><th>amount</th><th>state</th></tr></thead>
-      <tbody>${disp.disputes.slice(0, 15).map(d => `<tr><td><code>${esc(d.ref)}</code></td><td>${d.payment_id || "—"}</td><td>${money(d.amount)} ${esc(d.currency)}</td><td><span class="a-chip">${esc(d.state)}</span></td></tr>`).join("") || '<tr><td colspan="4">No disputes.</td></tr>'}</tbody></table></div>
-  </div>
-  <div class="a-card"><h3>Payout runs</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>kind</th><th>seller</th><th>gross</th><th>net</th><th>status</th><th>items</th></tr></thead>
-      <tbody>${pays.payouts.slice(0, 15).map(p => `<tr><td><code>${esc(p.ref)}</code></td><td>${esc(p.kind)}</td><td>${p.seller_id || "—"}</td><td>${money(p.gross)}</td><td>${money(p.net)}</td><td><span class="a-chip">${esc(p.status)}</span></td><td>${p.items}</td></tr>`).join("") || '<tr><td colspan="7">No payout runs.</td></tr>'}</tbody></table></div>
-  </div>
-  <div class="a-card"><h3>FX ledger · <code>t1:s:demo</code></h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>kind</th><th>amount</th><th>currency</th><th>balance_after</th></tr></thead>
-      <tbody>${(led.entries || []).slice(0, 10).map(e => `<tr><td>${esc(e.kind)}</td><td>${money(e.amount)}</td><td>${esc(e.currency)}</td><td>${money(e.balance_after)}</td></tr>`).join("") || '<tr><td colspan="4">—</td></tr>'}</tbody></table></div>
-  </div>`;
-}
-async function vMarketplace() {
-  const [ads, m, rank] = await Promise.all([api("/marketplace/ads", {}), api("/admin/marketplace/metrics", {}), api("/marketplace/rank", { surface: "search", slots: 3 })]);
-  const byM = {}; (ads.ads || []).forEach(a => byM[a.bid_model] = (byM[a.bid_model] || 0) + 1);
-  const tgt = a => { let t = {}; try { t = JSON.parse(a.target || "{}"); } catch (e) { } return [t.product_id ? "<code>" + esc(t.product_id) + "</code>" : "", (t.keywords || []).map(k => '<span class="a-chip">' + esc(k) + "</span>").join(" "), t.surface ? esc(t.surface) : ""].filter(Boolean).join(" · ") || "—"; };
-  return `<div class="a-head"><h2>📣 Marketplace &amp; Ads</h2><p class="a-sub">Ad inventory · GSP bidding · impression/click ledger · last-click attribution · seller KPIs · take-rate settlement. Bid models / attribution models / surfaces in Data Studio: <code>mktBidModels</code>, <code>mktAttribution</code>, <code>mktSurfaces</code>. Sponsored products in search, the reserve price, budgets and schedules are the <code>sponsored_ads</code> capability's.</p></div>
-  <div class="a-card"><h3>New sponsored product</h3>
-    <div class="p-form"><div class="row"><label><span>Name *</span><input id="adName"></label><label><span>Product id *</span><input id="adProd"></label><label><span>Seller id</span><input id="adSeller"></label></div>
-      <div class="row"><label><span>Keywords (comma-separated; blank = every search)</span><input id="adKw"></label>
-        <label><span>Surface</span><select id="adSurf"><option value="">any</option>${(ads.surfaces || []).map(x => `<option>${esc(x)}</option>`).join("")}</select></label></div>
-      <div class="row"><label><span>Bid model</span><select id="adModel">${(ads.bid_models || []).map(b => `<option value="${esc(b.key)}">${esc(b.name || b.key)}</option>`).join("")}</select></label>
-        <label><span>Bid *</span><input id="adBid" type="number" min="0" step="0.01"></label><label><span>Budget (0 = none)</span><input id="adBudget" type="number" min="0" step="0.01" value="0"></label></div>
-      <div class="row"><label><span>Starts</span><input id="adStart" type="datetime-local"></label><label><span>Ends</span><input id="adEnd" type="datetime-local"></label></div>
-      <button class="p-btn primary" id="adCreate">Create ad</button></div></div>
-  <div class="a-card"><h3>Ad inventory</h3>
-    <p class="a-sub">${Object.entries(byM).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("") || "no active ads"}</p>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>name</th><th>seller</th><th>target</th><th>model</th><th>bid</th><th>spent / budget</th><th>status</th></tr></thead>
-      <tbody>${(ads.ads || []).slice(0, 25).map(a => `<tr><td>${esc(a.name)}</td><td>${a.seller_id || "—"}</td><td>${tgt(a)}</td><td><span class="a-chip">${esc(a.bid_model)}</span></td><td>${money(a.bid_amount)}</td><td>${money(a.spent)}${Number(a.budget) > 0 ? " / " + money(a.budget) : ""}</td><td><span class="a-chip">${esc(a.status)}</span></td></tr>`).join("") || '<tr><td colspan="7">No ads yet.</td></tr>'}</tbody></table></div>
-  </div>
-  <div class="a-card"><h3>Ad auction · surface <code>search</code> (top 3, GSP)</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>position</th><th>ad</th><th>seller</th><th>charge</th></tr></thead>
-      <tbody>${(rank.ranked || []).map(r => `<tr><td>${r.position}</td><td>${esc(r.name)} <code>${r.ad}</code></td><td>${r.seller || "—"}</td><td>${money(r.charge)}</td></tr>`).join("") || '<tr><td colspan="4">No active bids.</td></tr>'}</tbody></table></div>
-  </div>
-  <div class="a-card"><h3>Seller KPIs</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>seller</th><th>orders</th><th>revenue</th><th>take rate</th><th>commission</th><th>ad spend</th><th>ad ROI</th></tr></thead>
-      <tbody>${(m.sellers || []).map(x => `<tr><td>${esc(x.seller_id)}</td><td>${x.orders}</td><td>${money(x.revenue)}</td><td>${(x.take_rate*100).toFixed(0)}%</td><td>${money(x.commission)}</td><td>${money(x.ads_spend)}</td><td>${x.ad_roi}</td></tr>`).join("") || '<tr><td colspan="7">No seller data yet.</td></tr>'}</tbody></table></div>
-  </div>`;
-}
-function wireMarketplace() {
-  const b = $("#adCreate"); if (!b) return;
-  b.onclick = async () => {
-    const kw = $("#adKw").value.split(",").map(x => x.trim()).filter(Boolean);
-    const target = Object.assign({ product_id: $("#adProd").value.trim() }, kw.length ? { keywords: kw } : {}, $("#adSurf").value ? { surface: $("#adSurf").value } : {});
-    if (!$("#adName").value.trim() || !target.product_id || !(Number($("#adBid").value) > 0)) return toast("Name, product and a bid are required");
-    try {
-      await api("/admin/marketplace/ads", "POST", { name: $("#adName").value.trim(), seller_id: $("#adSeller").value || null, bid_model: $("#adModel").value, bid_amount: Number($("#adBid").value),
-        budget: Number($("#adBudget").value) || 0, target, start_at: $("#adStart").value ? new Date($("#adStart").value).toISOString() : null, end_at: $("#adEnd").value ? new Date($("#adEnd").value).toISOString() : null });
-      toast("Ad created"); render();
-    } catch (e) { toast(e.message); }
-  };
-}
-async function vUgc() {
-  const [q, revs] = await Promise.all([api("/admin/ugc/queue", {}), api("/admin/reviews", {})]);
-  const allR = revs.reviews || [];
-  const byS = {}; allR.forEach(r => byS[r.state] = (byS[r.state] || 0) + 1);
-  return `<div class="a-head"><h2>⭐ Reviews &amp; Q&amp;A</h2><p class="a-sub">Rich reviews (helpfulness votes, seller reply threads, media, moderation states) and product Q&amp;A. States &amp; roles are Data Studio registries: <code>ugcStates</code>, <code>ugcRoles</code>; behaviour toggles live in Settings → UGC.</p></div>
-  <div class="a-card"><h3>Moderation queue · ${q.pending || 0} pending</h3>
-    <p class="a-sub">${Object.entries(byS).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("") || "no reviews"}</p>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>type</th><th>product</th><th>author</th><th>text</th><th>state</th></tr></thead>
-      <tbody>${[
-        ...q.reviews.map(r => ({ k: "review", p: r.product_id, a: r.name, t: (r.title + " — " + r.body).slice(0, 90), s: r.state, id: r.id })),
-        ...q.questions.map(r => ({ k: "question", p: r.product_id, a: r.name, t: r.body.slice(0, 90), s: r.state, id: r.id })),
-        ...q.answers.map(r => ({ k: "answer", p: r.product_id, a: r.name, t: r.body.slice(0, 90), s: r.state, id: r.id }))
-      ].slice(0, 20).map(x => `<tr><td><span class="a-chip">${esc(x.k)}</span></td><td><code>${esc(x.p)}</code></td><td>${esc(x.a)}</td><td>${esc(x.t)}</td><td><span class="a-chip">${esc(x.s)}</span></td></tr>`).join("") || '<tr><td colspan="5">Queue is empty — everything published.</td></tr>'}</tbody></table></div>
-  </div>
-  <div class="a-card"><h3>Latest reviews</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>author</th><th>rating</th><th>helpful</th><th>state</th></tr></thead>
-      <tbody>${allR.slice(0, 15).map(r => `<tr><td><code>${esc(r.product_id)}</code></td><td>${esc(r.name)}</td><td>${r.rating}★</td><td>${r.votes_helpful || 0}/${r.votes_total || 0}</td><td><span class="a-chip">${esc(r.state)}</span></td></tr>`).join("") || '<tr><td colspan="5">No reviews yet.</td></tr>'}</tbody></table></div>
-  </div>`;
-}
-async function vHelpdesk() {
-  const [list, sla] = await Promise.all([api("/admin/helpdesk/tickets", {}), api("/admin/helpdesk/sla", {})]);
-  const tk = list.tickets || [];
-  const byS = {}; tk.forEach(t => byS[t.status] = (byS[t.status] || 0) + 1);
-  const breaches = (sla.health || []).filter(h => h.breach);
-  return `<div class="a-head"><h2>🎧 Support Helpdesk</h2><p class="a-sub">Customer cases · agent assignment · SLA timers (first response + resolution per priority) · public replies vs internal notes · CSAT on close. Statuses / priorities / reasons in Data Studio: <code>hdStatuses</code>, <code>hdPriorities</code>, <code>hdReasons</code>.</p></div>
-  <div class="a-card"><h3>Queue · ${tk.length} cases${breaches.length ? ` · <span class="a-chip">⚠ ${breaches.length} SLA breach</span>` : ""}</h3>
-    <p class="a-sub">${Object.entries(byS).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("") || "no cases"}</p>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>subject</th><th>customer</th><th>priority</th><th>status</th><th>assignee</th><th>csat</th></tr></thead>
-      <tbody>${tk.slice(0, 25).map(t => `<tr><td><code>${esc(t.ref)}</code></td><td>${esc(t.subject.slice(0, 48))}</td><td>${esc(t.owner_name)}</td><td><span class="a-chip">${esc(t.priority)}</span></td><td><span class="a-chip">${esc(t.status)}</span></td><td>${esc(t.assignee || "unassigned")}</td><td>${t.csat ? t.csat + "★" : "—"}</td></tr>`).join("") || '<tr><td colspan="7">No cases yet.</td></tr>'}</tbody></table></div>
-  </div>
-  <div class="a-card"><h3>SLA health</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>priority</th><th>status</th><th>breach</th></tr></thead>
-      <tbody>${(sla.health || []).slice(0, 15).map(h => `<tr><td><code>${esc(h.ref)}</code></td><td>${esc(h.priority)}</td><td>${esc(h.status)}</td><td>${h.breach ? `<span class="a-chip">⚠ ${esc(h.breach)}</span>` : "on schedule"}</td></tr>`).join("") || '<tr><td colspan="4">No open cases.</td></tr>'}</tbody></table></div>
-  </div>
-  <div class="a-card"><h3>Agent performance</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>agent</th><th>cases</th><th>responded</th><th>avg CSAT</th></tr></thead>
-      <tbody>${(sla.agents || []).map(a => `<tr><td>${esc(a.assignee)}</td><td>${a.tickets}</td><td>${a.responded}</td><td>${a.csat ? a.csat + " / 5" : "—"}</td></tr>`).join("") || '<tr><td colspan="4">No agent activity.</td></tr>'}</tbody></table></div>
-  </div>`;
-}
 /* ---------- Commerce Ops — the parity layer, surfaced. Each view reads this
    store's own capability composition first: a domain whose capabilities are all
    off shows one line ("switch it on in Capabilities") instead of empty tables,
@@ -294,162 +166,8 @@ function coTbl(head, rows, cols, empty) {
     <tbody>${rows.slice(0, 25).map(r => `<tr>${cols(r).map(c => `<td>${c}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${head.length}">${empty}</td></tr>`}</tbody></table></div>`;
 }
 
-/* ---------- Quick-commerce: dark stores, slots, serviceability, dispatch ---------- */
-async function vQcOps() {
-  const gate = await coGate("qcops");
-  if (!gate.any) return coOff("quick-commerce", "⚡ Quick-commerce", gate.off);
-  const d = await api("/qc/stores", {});
-  const stores = d.stores || [], riders = d.riders || [];
-  const runs = (await api("/qc/runs", {})).runs || [];
-  const slots = await Promise.all((stores.slice(0, 4)).map(s => api("/qc/slots", { store: s.id, day: 0 }).then(x => x.slots || []).catch(() => [])));
-  const flat = slots.flatMap((sl, i) => sl.map(x => ({ ...x, store: stores[i] && stores[i].name })));
-  return `<div class="a-head"><h2>⚡ Quick-commerce Ops</h2>
-    <p class="a-sub">Dark stores, delivery slots, per-store inventory pinning, riders and dispatch runs closed with a proof-of-delivery OTP. The promise a store advertises is its own minutes plus prep time, resolved per pincode. Kinds, statuses and vehicles are Data Studio registries: <code>qcStoreKinds</code>, <code>qcSlotStatuses</code>, <code>qcVehicles</code>.</p>
-    <p class="a-sub"><b>On for this store:</b> ${gate.on.map(k => `<span class="a-chip">${esc(k)}</span>`).join(" ")}${gate.off.length ? ` <span class="p-tag">off: ${esc(gate.off.join(", "))}</span>` : ""}</p></div>
-  <div class="a-card"><h3>Dark stores · ${stores.length}</h3>
-    <p class="a-sub">${coChips(stores, s => s.kind || "dark_store")}</p>
-    ${coTbl(["store", "code", "kind", "city", "pincode", "radius", "promise", "min order", "fee", "status"],
-      stores, s => [esc(s.name), `<code>${esc(s.code)}</code>`, esc(s.kind), esc(s.city), esc(s.pincode), (s.service_radius_km || 0) + " km", (s.promise_minutes || 0) + " min", money(s.min_order), money(s.delivery_fee), coBadge(s.status)])}
-    <button class="p-btn sm primary" data-act="co-new" data-key="dark_store">+ New dark store</button>
-    <button class="p-btn sm" data-act="co-new" data-key="rider">+ New rider</button></div>
-  <div class="a-card"><h3>Today's delivery slots</h3>
-    ${coTbl(["window", "store", "capacity", "booked", "fee", "status"], flat,
-      s => [`${esc(s.window_start)}–${esc(s.window_end)}`, esc(s.store || "—"), s.capacity, s.booked, s.fee ? money(s.fee) : "—", coBadge(s.status)],
-      "No open slots today — create one from the dark store.")}</div>
-  <div class="a-card"><h3>Riders · ${riders.length}</h3>
-    ${coTbl(["rider", "phone", "vehicle", "city", "status", "rating", "deliveries"], riders,
-      r => [esc(r.name), esc(r.phone || "—"), esc(r.vehicle || "—"), esc(r.city || "—"), coBadge(r.status), r.rating || "—", r.deliveries || 0])}</div>
-  <div class="a-card"><h3>Dispatch runs · ${runs.length}</h3>
-    <p class="a-sub">${coChips(runs, r => r.status)}</p>
-    ${coTbl(["run", "store", "rider", "batch", "orders", "PoD OTP", "status"], runs,
-      r => [`<code>${esc(r.ref)}</code>`, esc(String(r.store_id || "—")), esc(String(r.rider_id || "—")), r.batch_count || 0, (r.order_ids || []).length, `<code>${esc(r.pod_otp || "—")}</code>`, coBadge(r.status)])}
-    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><label><span>Store</span><select id="qcRunStore">${stores.map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></label>
-      <label><span>Rider</span><select id="qcRunRider">${riders.map(r => `<option value="${r.id}">${esc(r.name)}</option>`).join("")}</select></label>
-      <label><span>Order ids (CSV)</span><input id="qcRunOrders" placeholder="101,102"></label>
-      <button class="p-btn sm primary" id="qcRunGo">Create run</button></div></div>`;
-}
-function wireQcOps() {
-  const g = $("#qcRunGo"); if (g) g.onclick = async () => {
-    try {
-      const orders = String($("#qcRunOrders").value || "").split(",").map(x => Number(x.trim())).filter(Boolean);
-      const r = await api("/qc/runs", "POST", { store_id: Number($("#qcRunStore").value), rider_id: Number($("#qcRunRider").value), order_ids: orders, batch_count: orders.length });
-      toast("Dispatch run " + (r.run && r.run.ref)); render();
-    } catch (e) { toast(e.message); }
-  };
-}
 
-/* ---------- Fintech Ops: UPI, QR, links, mandates, escrow, KYC, credit, payouts ---------- */
-async function vFinOps() {
-  const gate = await coGate("finops");
-  if (!gate.any) return coOff("fintech", "💸 Fintech Ops", gate.off);
-  const upi = (await api("/fintech/upi", {})).upi || [];
-  const billers = (await api("/fintech/billers", {})).billers || [];
-  const plans = (await api("/fintech/plans", {})).plans || [];
-  const [escrowR, kycR, payoutR, loanR, polR] = await Promise.all([
-    api("/meta/entity/escrow_hold", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/kyc_profile", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/bank_payout", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/loan", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/payment_link", {}).catch(() => ({ rows: [] })),
-  ]);
-  const escrows = escrowR.rows || [], kycs = kycR.rows || [], payouts = payoutR.rows || [],
-    loans = loanR.rows || [], pols = polR.rows || [];
-  return `<div class="a-head"><h2>💸 Fintech Ops</h2>
-    <p class="a-sub">The payment rails: UPI collect, QR scan-pay, tokenised links, auto-debit mandates, escrow hold/release, split settlements, KYC-gated credit (BNPL, loans), bank payouts, bills, recharge, P2P, insurance and gift vouchers. Money never leaves the single wallet ledger. Statuses, kinds and frequencies are registries: <code>finUpiStatuses</code>, <code>finLinkStatuses</code>, <code>finEscrowStatuses</code>.</p>
-    <p class="a-sub"><b>On for this store:</b> ${gate.on.map(k => `<span class="a-chip">${esc(k)}</span>`).join(" ")}${gate.off.length ? ` <span class="p-tag">${esc(gate.off.length)} off</span>` : ""}</p></div>
-  <div class="a-card"><h3>Escrow holds · ${escrows.length}</h3>
-    <p class="a-sub">${coChips(escrows, e => e.status)}</p>
-    ${coTbl(["escrow", "order", "buyer", "seller", "held", "status"], escrows,
-      e => [`<code>${esc(e.ref)}</code>`, e.order_id || "—", esc(e.buyer), esc(e.seller), money(e.amount), coBadge(e.status)])}
-    ${hasCap(gate, "escrow") ? `<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><label><span>Order id</span><input id="finEscOrder" placeholder="101"></label>
-      <label><span>Seller</span><input id="finEscSeller" placeholder="s:acme"></label><label><span>Amount</span><input id="finEscAmt" type="number" step="0.01" placeholder="50.00"></label>
-      <button class="p-btn sm primary" id="finEscGo">Hold in escrow</button></div>` : ""}</div>
-  <div class="a-card"><h3>KYC profiles · ${kycs.length}</h3>
-    <p class="a-sub">${coChips(kycs, k => k.status)}</p>
-    ${coTbl(["owner", "kind", "name", "company", "docs", "status"], kycs,
-      k => [esc(k.owner), esc(k.kind), esc(k.full_name || "—"), esc(k.company || "—"), esc(k.doc_status || "—"), coBadge(k.status)])}
-    ${hasCap(gate, "kyc") ? `<button class="p-btn sm primary" data-act="co-new" data-key="kyc_profile">+ Submit KYC</button>` : ""}</div>
-  <div class="a-cap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px">
-    <div class="a-card"><h3>Payment links · ${pols.length}</h3>
-      ${coTbl(["link", "title", "amount", "status"], pols, p => [`<code>${esc(p.ref)}</code>`, esc(p.title), money(p.amount), coBadge(p.status)], "No links issued.")}</div>
-    <div class="a-card"><h3>Bank payouts · ${payouts.length}</h3>
-      ${coTbl(["payout", "payee", "amount", "status"], payouts, p => [`<code>${esc(p.ref)}</code>`, esc(p.payee), money(p.amount), coBadge(p.status)], "No payouts queued.")}
-      ${hasCap(gate, "bank_payouts") ? `<button class="p-btn sm primary" data-act="co-new" data-key="bank_payout">+ Queue payout</button>` : ""}</div>
-    <div class="a-card"><h3>Loans · ${loans.length}</h3>
-      ${coTbl(["loan", "owner", "principal", "emi", "status"], loans, l => [`<code>${esc(l.ref)}</code>`, esc(l.owner), money(l.principal), l.emi ? money(l.emi) : "—", coBadge(l.status)], "No credit issued.")}</div>
-  </div>
-  <div class="a-card"><h3>UPI handles · ${upi.length}</h3>
-    ${coTbl(["owner", "vpa", "verified", "default", "status"], upi,
-      u => [esc(u.owner), `<code>${esc(u.vpa)}</code>`, u.verified ? "✓" : "—", u.is_default ? "✓" : "—", coBadge(u.status)], "No VPA saved.")}</div>
-  <div class="a-card"><h3>Billers · ${billers.length} · recharge plans · ${plans.length}</h3>
-    <p class="a-sub">${(billers.slice(0, 12)).map(b => `<span class="a-chip">${esc(b.category)}·${esc(b.name)}</span>`).join(" ") || "no billers registered"}</p>
-    <p class="a-sub">${plans.slice(0, 12).map(p => `<span class="a-chip">${esc(p.operator)}·${money(p.amount)}/${esc(p.validity || "")}</span>`).join(" ") || "no plans registered"}</p></div>`;
-}
-function wireFinOps() {
-  const g = $("#finEscGo"); if (g) g.onclick = async () => {
-    try {
-      const r = await api("/fintech/escrow", "POST", { order_id: Number($("#finEscOrder").value), seller: $("#finEscSeller").value, amount: Number($("#finEscAmt").value) });
-      toast("Escrow " + (r.escrow && r.escrow.ref)); render();
-    } catch (e) { toast(e.message); }
-  };
-}
 
-/* ---------- Marketplace Ops: onboarding, buy-box, FBA, health, claims ---------- */
-async function vMktOps() {
-  const gate = await coGate("mktops");
-  if (!gate.any) return coOff("marketplace", "🏪 Marketplace Ops", gate.off);
-  const [onb, perf, claim, fba, smart] = await Promise.all([
-    api("/meta/entity/seller_onboarding", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/seller_performance", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/buyer_claim", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/fba_inbound", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/smart_fulfilment", {}).catch(() => ({ rows: [] })),
-  ]);
-  const onbs = onb.rows || [], perfs = perf.rows || [], claims = claim.rows || [],
-    fbas = fba.rows || [], smarts = smart.rows || [];
-  const prod = $("#f_product") ? $("#f_product").value : "";
-  const bb = prod ? await api("/marketplace/offers/" + encodeURIComponent(prod), {}).catch(() => ({ offers: [], buybox: null })) : { offers: [], buybox: null };
-  return `<div class="a-head"><h2>🏪 Marketplace Ops</h2>
-    <p class="a-sub">Seller onboarding and review, multi-seller offers competing for one product's featured offer, fulfilment-centre inbound, account health that decides tier and suspension, buyer-protection claims and smart-fulfilment grading. The buy-box winner is the best composite of price, fulfilment speed and seller trust — each weight tunable in ⚙️ Capabilities.</p>
-    <p class="a-sub"><b>On for this store:</b> ${gate.on.map(k => `<span class="a-chip">${esc(k)}</span>`).join(" ")}</p></div>
-  <div class="a-card"><h3>Seller onboarding · ${onbs.length}</h3>
-    <p class="a-sub">${coChips(onbs, o => o.status)}</p>
-    ${coTbl(["business", "type", "gstin", "status", "review"], onbs,
-      o => [esc(o.business_name), esc(o.business_type || "—"), `<code>${esc(o.gstin || "—")}</code>`, coBadge(o.status),
-        smIs("seller_onboarding", o.status, "awaiting_review") ? `<button class="p-btn sm primary" data-mktapp="${o.id}" data-v="${esc(smFirst("seller_onboarding", "approved"))}">Approve</button> <button class="p-btn sm danger" data-mktapp="${o.id}" data-v="${esc(smFirst("seller_onboarding", "rejected"))}">Reject</button>` : esc(o.reviewed_by || "—")])}
-    <button class="p-btn sm primary" data-act="co-new" data-key="seller_onboarding">+ Apply as seller</button></div>
-  <div class="a-card"><h3>Buy-box · product offers</h3>
-    <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap"><label><span>Product id</span><input id="mktProd" placeholder="VR-ELEC-01" value="${esc(prod)}"></label>
-      <button class="p-btn sm" id="mktLoad">Load offers</button>
-      <button class="p-btn sm primary" id="mktBb">Recompute buy-box</button></div>
-    ${coTbl(["seller", "price", "condition", "fulfilment", "score", "winner"], bb.offers || [],
-      o => [esc(String(o.seller_id)), money(o.price), esc(o.condition || "new"), esc(o.fulfillment || dfl("mktFulfillment")), (o.buybox_score || 0).toFixed(2), o.buybox ? '<span class="a-chip">★ featured</span>' : ""])}</div>
-  <div class="a-cap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px">
-    <div class="a-card"><h3>Account health · ${perfs.length}</h3>
-      ${coTbl(["seller", "period", "ODR", "late", "cancel", "score", "tier"], perfs,
-        p => [esc(String(p.seller_id)), esc(p.period), (p.odr || 0).toFixed(2) + "%", (p.late_ship_rate || 0).toFixed(1) + "%", (p.cancel_rate || 0).toFixed(1) + "%", (p.health_score || 0).toFixed(0), coBadge(p.tier)], "No health computed.")}
-      <button class="p-btn sm" data-act="co-mktperf">Recompute health</button></div>
-    <div class="a-card"><h3>FBA inbound · ${fbas.length}</h3>
-      ${coTbl(["ref", "units", "status"], fbas, f => [`<code>${esc(f.ref)}</code>`, f.units, coBadge(f.status)], "No inbound shipments.")}</div>
-    <div class="a-card"><h3>Claims (A-to-z) · ${claims.length}</h3>
-      ${coTbl(["ref", "order", "kind", "amount", "status"], claims,
-        c => [`<code>${esc(c.ref)}</code>`, c.order_id || "—", esc(c.kind), c.amount ? money(c.amount) : "—", coBadge(c.status)], "No claims open.")}</div>
-    <div class="a-card"><h3>Smart fulfilment · ${smarts.length}</h3>
-      ${coTbl(["ref", "grade", "SLA", "status"], smarts, s => [`<code>${esc(s.ref)}</code>`, coBadge(s.grade), (s.sla_hours || 0) + " h", coBadge(s.status)], "Not enrolled.")}</div>
-  </div>`;
-}
-function wireMktOps() {
-  const load = $("#mktLoad"); if (load) load.onclick = () => render();
-  const bb = $("#mktBb"); if (bb) bb.onclick = async () => {
-    const p = $("#mktProd").value.trim(); if (!p) return toast("Enter a product id");
-    try { const r = await api("/marketplace/buybox/" + encodeURIComponent(p), "POST", {}); toast("Buy-box recomputed · winner " + (r.winner ? r.winner.seller_id : "none")); render(); }
-    catch (e) { toast(e.message); }
-  };
-  $$("[data-mktapp]").forEach(b => b.onclick = async () => {
-    try { await api("/marketplace/onboarding/" + b.dataset.mktapp + "/review", "POST", { decision: b.dataset.v }); toast("Onboarding " + b.dataset.v); render(); }
-    catch (e) { toast(e.message); }
-  });
-}
 
 /* ---------- Pickup points, rich content, brand registry ----------
    Each screen renders what its engine answered: the kinds, modules and report kinds are
@@ -458,26 +176,6 @@ function wireMktOps() {
 const verbButtons = (acts, rec, attr) => acts.filter(a => (rec.next || []).includes(a.to))
   .map(a => `<button class="btn-white sm" data-${attr}="${esc(a.verb)}" data-id="${rec.id}">${esc(a.verb.charAt(0).toUpperCase() + a.verb.slice(1))}</button>`).join(" ");
 const stateChip = st => `<span class="a-chip" title="${esc(st && st.key)}">${esc((st && (st.icon ? st.icon + " " : "") + st.label) || "")}</span>`;
-async function vPickup() {
-  const gate = await coGate("pickup");
-  if (!gate.any) return coOff("pickup point", "📍 Pickup Points", gate.off);
-  const d = await api("/admin/pickup", {});
-  window.__pk = d;
-  const kindName = k => ((d.kinds || []).find(x => x.key === k) || { name: k }).name;
-  return `<div class="a-head"><h2>📍 Pickup Points &amp; Lockers</h2><p class="a-sub">Points shoppers can choose at checkout instead of a home address. The kinds of point are the <code>pickupKinds</code> registry; the fee, holding days, code length and lock-out are the <code>pickup_points</code> capability's params; a parcel's life is the <code>pickup</code> state machine.</p></div>
-  <div class="a-card"><h3>Points</h3>
-    <div style="margin-bottom:8px"><button class="btn-yellow sm" data-pk-new>＋ New point</button></div>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>kind</th><th>address</th><th>in use</th><th>hours</th><th>arrives in</th><th>state</th><th></th></tr></thead>
-    <tbody>${(d.points || []).map(p => `<tr><td><code>${esc(p.code)}</code></td><td>${esc(p.name)}</td><td>${esc(kindName(p.kind))}</td>
-      <td>${esc([p.address, p.city, p.postcode].filter(Boolean).join(", "))}</td><td>${p.held}${Number(p.capacity) > 0 ? " / " + p.capacity : ""}${p.full ? ' <span class="a-chip">full</span>' : ""}</td>
-      <td>${esc(p.hours || "—")}</td><td>${p.eta != null ? esc(p.eta) + " d" : "—"}</td><td>${p.active ? "on" : "off"}</td>
-      <td style="white-space:nowrap"><button class="btn-white sm" data-pk-edit="${p.id}">Edit</button> <button class="btn-white sm" data-pk-del="${p.id}">Remove</button></td></tr>`).join("") || '<tr><td colspan="9">No pickup points yet — add a locker, a counter or a shop.</td></tr>'}</tbody></table></div></div>
-  <div class="a-card"><h3>Parcels</h3>
-    <div style="margin-bottom:8px"><button class="btn-white sm" data-pk-sweep>Expire overdue parcels now</button></div>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>order</th><th>customer</th><th>point</th><th>state</th><th>hold until</th><th>wrong codes</th><th></th></tr></thead>
-    <tbody>${(d.reservations || []).map(r => `<tr><td><code>${esc(r.order_num || r.order_id)}</code></td><td>${esc(r.customer || "—")}</td><td>${esc(r.point_name || "—")}</td>
-      <td>${stateChip(r.state)}</td><td>${esc(r.hold_until || "—")}</td><td>${r.attempts || 0}</td><td style="white-space:nowrap">${verbButtons(d.actions || [], r, "pk-act")}</td></tr>`).join("") || '<tr><td colspan="7">No parcels for pickup yet.</td></tr>'}</tbody></table></div></div>`;
-}
 function pickupModal(p) {
   const d = window.__pk || {};
   const v = p || { active: 1 };
@@ -503,22 +201,6 @@ function pickupModal(p) {
     } catch (e) { toast(e.message); }
   };
 }
-function wirePickup() {
-  const d = window.__pk || {};
-  $$("[data-pk-new]").forEach(b => b.onclick = () => pickupModal(null));
-  $$("[data-pk-edit]").forEach(b => b.onclick = () => pickupModal((d.points || []).find(p => String(p.id) === b.dataset.pkEdit)));
-  $$("[data-pk-del]").forEach(b => b.onclick = async () => {
-    if (!confirm("Remove this point? A point with parcels is switched off instead.")) return;
-    try { const r = await api("/admin/pickup/points/" + b.dataset.pkDel, "DELETE"); toast(r.deactivated ? "Switched off (it has parcels)" : "Removed"); render(); } catch (e) { toast(e.message); }
-  });
-  $$("[data-pk-sweep]").forEach(b => b.onclick = async () => { try { const r = await api("/admin/pickup/sweep", "POST", {}); toast(r.expired + " parcel(s) expired"); render(); } catch (e) { toast(e.message); } });
-  $$("[data-pk-act]").forEach(b => b.onclick = async () => {
-    const a = (d.actions || []).find(x => x.verb === b.dataset.pkAct) || {};
-    let code;
-    if (a.needs_code) { code = prompt("The customer's pickup code"); if (code == null) return; }
-    try { const r = await api("/admin/pickup/reservations/" + b.dataset.id, "POST", { action: a.verb, code }); toast("Parcel " + r.reservation.state.label); render(); } catch (e) { toast(e.message); }
-  });
-}
 
 /* rich product content: a module's fields are declared on its contentModules row — the
    editor draws an input for each declared field by its type */
@@ -529,169 +211,13 @@ function rcModuleHtml(def, val, i) {
     ${(def.fields || []).map(f => { const tag = RC_INPUT[f.type] || "textarea"; const v = rcValue(val && val[f.key]);
       return `<label style="display:block;margin-top:6px"><span>${esc(f.label || f.key)}${f.required ? " *" : ""}</span>${tag === "input" ? `<input data-f="${esc(f.key)}" value="${esc(v)}" style="width:100%">` : `<textarea data-f="${esc(f.key)}" rows="3" style="width:100%">${esc(v)}</textarea>`}</label>`; }).join("")}</div>`;
 }
-async function vRichContent() {
-  const gate = await coGate("richcontent");
-  if (!gate.any) return coOff("rich content", "✨ Rich Content", gate.off);
-  const d = await api("/admin/rich-content", {});
-  window.__rc = d;
-  return `<div class="a-head"><h2>✨ Rich Product Content</h2><p class="a-sub">Brand content below a product's details. The modules and their fields are the <code>contentModules</code> registry; review, the module limit and owner-only publishing are the <code>rich_content</code> capability's params.</p></div>
-  <div class="a-card"><h3>Author</h3>
-    <div class="p-form"><div class="row"><label><span>Product id *</span><input id="rcProd" placeholder="e.g. LX1A2B3C4D"></label>
-      <label><span>On behalf of seller</span><select id="rcSeller"><option value="">— the store —</option>${(d.sellers || []).map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></label></div>
-      <div id="rcMods"></div>
-      <div class="row"><label><span>Add a module</span><select id="rcKind">${(d.modules || []).map(m => `<option value="${esc(m.key)}">${esc(m.name)}</option>`).join("")}</select></label><button class="btn-white sm" id="rcAdd">＋ Add</button></div>
-      <button class="p-btn primary" id="rcSave">Save draft</button></div></div>
-  <div class="a-card"><h3>Content</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>version</th><th>modules</th><th>state</th><th>by</th><th>review</th><th></th></tr></thead>
-    <tbody>${(d.content || []).map(c => `<tr><td>${esc(c.product ? c.product.title : c.product_id)} <code>${esc(c.product_id)}</code></td><td>v${c.version}</td>
-      <td>${c.modules.map(m => `<span class="a-chip">${esc(((d.modules || []).find(x => x.key === m.kind) || { name: m.kind }).name)}</span>`).join(" ")}</td>
-      <td>${stateChip(c.state)}</td><td>${esc(c.author || "—")}</td><td>${esc(c.review_notes || "")}</td>
-      <td style="white-space:nowrap"><button class="btn-white sm" data-rc-edit="${c.id}">Edit</button> ${verbButtons(d.actions || [], c, "rc-act")}</td></tr>`).join("") || '<tr><td colspan="7">No rich content yet.</td></tr>'}</tbody></table></div></div>`;
-}
-function wireRichContent() {
-  const d = window.__rc || {};
-  const box = $("#rcMods"); if (!box) return;
-  let mods = [];
-  const draw = () => {
-    box.innerHTML = mods.map((m, i) => { const def = (d.modules || []).find(x => x.key === m.kind); return def ? rcModuleHtml(def, m, i) : ""; }).join("") || '<p class="a-sub">No modules yet — add one below.</p>';
-    $$("[data-rc-drop]").forEach(b => b.onclick = () => { collect(); mods.splice(Number(b.dataset.rcDrop), 1); draw(); });
-  };
-  /* read what was typed back into the module list before redrawing or saving */
-  const collect = () => { $$("[data-rc-mod]").forEach(el => { const m = { kind: el.dataset.kind }; el.querySelectorAll("[data-f]").forEach(f => { m[f.dataset.f] = f.value; }); mods[Number(el.dataset.rcMod)] = m; }); };
-  draw();
-  $("#rcAdd").onclick = () => { collect(); mods.push({ kind: $("#rcKind").value }); draw(); };
-  $("#rcSave").onclick = async () => {
-    collect();
-    try { const r = await api("/admin/rich-content", "POST", { product_id: $("#rcProd").value.trim(), seller_id: $("#rcSeller").value || null, modules: mods }); toast("Draft saved · v" + r.content.version); render(); }
-    catch (e) { toast(e.message); }
-  };
-  $$("[data-rc-edit]").forEach(b => b.onclick = () => {
-    const c = (d.content || []).find(x => String(x.id) === b.dataset.rcEdit); if (!c) return;
-    $("#rcProd").value = c.product_id; $("#rcSeller").value = c.seller_id || "";
-    mods = c.modules.map(m => Object.assign({}, m)); draw(); window.scrollTo(0, 0);
-  });
-  $$("[data-rc-act]").forEach(b => b.onclick = async () => {
-    const notes = prompt("Notes for the author (optional)", ""); if (notes === null) return;
-    try { const r = await api("/admin/rich-content/" + b.dataset.id, "POST", { action: b.dataset.rcAct, notes }); toast("Content " + r.content.state.label); render(); } catch (e) { toast(e.message); }
-  });
-}
 
-async function vBrandReg() {
-  const gate = await coGate("brandreg");
-  if (!gate.any) return coOff("brand registry", "™️ Brand Registry", gate.off);
-  const d = await api("/admin/brand-registry", {});
-  window.__br = d;
-  const owners = (d.claims || []).filter(c => c.owner);
-  const kindName = k => ((d.reportKinds || []).find(x => x.key === k) || { name: k }).name;
-  return `<div class="a-head"><h2>™️ Brand Registry</h2><p class="a-sub">Sellers prove they own a brand; an approved owner reports infringing offers, and upholding a report moves the offer to the state the <code>brand_registry</code> capability names. Report kinds are the <code>brandReportKinds</code> registry.</p></div>
-  <div class="a-card"><h3>Claims</h3>
-    <div class="p-form"><div class="row"><label><span>Brand *</span><select id="brBrand">${(d.brands || []).map(b => `<option value="${esc(b.key)}">${esc(b.label)}</option>`).join("")}</select></label>
-      <label><span>Seller</span><select id="brSeller"><option value="">— the store —</option>${(d.sellers || []).map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></label></div>
-      <div class="row"><label><span>Trademark number</span><input id="brTm"></label><label><span>Trademark office</span><input id="brOffice"></label></div>
-      <label><span>Evidence (one item per line)</span><textarea id="brEv" rows="2"></textarea></label>
-      <button class="p-btn primary" id="brClaim">Submit claim</button></div>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>brand</th><th>seller</th><th>trademark</th><th>state</th><th>notes</th><th></th></tr></thead>
-    <tbody>${(d.claims || []).map(c => `<tr><td>${esc(c.brand)}</td><td>${esc(c.seller ? c.seller.name : "the store")}</td><td>${esc(c.trademark_number || "—")}${c.trademark_office ? " · " + esc(c.trademark_office) : ""}</td>
-      <td>${stateChip(c.state)}</td><td>${esc(c.notes || "")}</td><td style="white-space:nowrap">${verbButtons(d.claimActions || [], c, "br-claim")}</td></tr>`).join("") || '<tr><td colspan="6">No claims yet.</td></tr>'}</tbody></table></div></div>
-  <div class="a-card"><h3>Infringement reports</h3>
-    ${owners.length ? `<div class="p-form"><div class="row"><label><span>Reporting owner *</span><select id="brOwner">${owners.map(c => `<option value="${c.id}">${esc(c.brand)} · ${esc(c.seller ? c.seller.name : "the store")}</option>`).join("")}</select></label>
-      <label><span>Kind *</span><select id="brKind">${(d.reportKinds || []).map(k => `<option value="${esc(k.key)}">${esc(k.name)}</option>`).join("")}</select></label></div>
-      <div class="row"><label><span>Offer id</span><input id="brOffer"></label><label><span>…or product id</span><input id="brProd"></label><label><span>and seller</span><select id="brRSeller"><option value="">—</option>${(d.sellers || []).map(s => `<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></label></div>
-      <label><span>Details</span><textarea id="brDetails" rows="2"></textarea></label>
-      <button class="p-btn primary" id="brReport">File report</button></div>` : '<p class="a-sub">A brand needs an approved owner before anyone can report against it.</p>'}
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>brand</th><th>kind</th><th>product</th><th>offer</th><th>seller</th><th>details</th><th>state</th><th></th></tr></thead>
-    <tbody>${(d.reports || []).map(r => `<tr><td>${esc(r.brand)}</td><td>${esc(kindName(r.kind))}</td><td><code>${esc(r.product_id || "—")}</code></td><td>${r.offer ? "#" + r.offer.id + " · " + esc(r.offer.offer_status) : "—"}</td>
-      <td>${esc(r.seller_id || "—")}</td><td>${esc(r.details || "")}${r.outcome ? "<br><i>" + esc(r.outcome) + "</i>" : ""}</td><td>${stateChip(r.state)}</td><td style="white-space:nowrap">${verbButtons(d.reportActions || [], r, "br-report")}</td></tr>`).join("") || '<tr><td colspan="8">No reports.</td></tr>'}</tbody></table></div></div>`;
-}
-function wireBrandReg() {
-  const c = $("#brClaim"); if (c) c.onclick = async () => {
-    try { await api("/admin/brand-registry/claims", "POST", { brand: $("#brBrand").value, seller_id: $("#brSeller").value || null, trademark_number: $("#brTm").value, trademark_office: $("#brOffice").value, evidence: $("#brEv").value }); toast("Claim submitted"); render(); }
-    catch (e) { toast(e.message); }
-  };
-  const r = $("#brReport"); if (r) r.onclick = async () => {
-    try { await api("/admin/brand-registry/reports", "POST", { claim_id: $("#brOwner").value, kind: $("#brKind").value, offer_id: $("#brOffer").value || null, product_id: $("#brProd").value || null, seller_id: $("#brRSeller").value || null, details: $("#brDetails").value }); toast("Report filed"); render(); }
-    catch (e) { toast(e.message); }
-  };
-  $$("[data-br-claim]").forEach(b => b.onclick = async () => {
-    const notes = prompt("Notes for the record (optional)", ""); if (notes === null) return;
-    try { const x = await api("/admin/brand-registry/claims/" + b.dataset.id, "POST", { action: b.dataset.brClaim, notes }); toast("Claim " + x.claim.state.label); render(); } catch (e) { toast(e.message); }
-  });
-  $$("[data-br-report]").forEach(b => b.onclick = async () => {
-    const outcome = prompt("Outcome, for the record", ""); if (outcome === null) return;
-    try { const x = await api("/admin/brand-registry/reports/" + b.dataset.id, "POST", { action: b.dataset.brReport, outcome }); toast("Report " + x.report.state.label + (x.report.offers_affected ? " · " + x.report.offers_affected + " offer(s) moved" : "")); render(); } catch (e) { toast(e.message); }
-  });
-}
 
 /* ---------- the platform-type screens: options, bookings, offers, auctions, listings,
    messages, group buying, substitutions ----------
    Same rule as above: every button is one of the record's state-machine verbs the server
    offers; every kind, mode and policy is a registry row the server sends. */
 const fieldVal = id => ($(id) || {}).value || "";
-/* ---------- the platform master: what this store may do with it, and what it has proposed ----------
-   A store never edits the master: it proposes, and the global platform reviews each proposal
-   (lib/master-contributions.js). The actions, kinds and statuses all come from the API. */
-async function vMasterContrib() {
-  const [p, c] = await Promise.all([api("/tenant/master/permissions"), api("/tenant/master/contributions")]);
-  const perms = p.permissions || [], acts = p.actions || [], kinds = p.kinds || [];
-  const permRow = x => `<tr><td>${esc((x.scope || []).length ? x.scope.length + " part(s) of the master" : "the whole master")}</td><td>${esc((x.actions || []).join(", "))}</td><td>${esc(x.review || "")}</td><td>${esc((x.visible || []).join(", ") || "all")}</td></tr>`;
-  const conRow = x => `<tr><td>${esc(x.action)}</td><td><code>${esc(x.target || "—")}</code></td><td><code>${esc(JSON.stringify(x.patch || x.proposal || {}).slice(0, 80))}</code></td><td>${stateChip(x.state)}</td><td>${esc(x.placement || "")}</td><td>${esc(x.reason || "")}</td>
-    <td>${x.awaiting ? `<button class="btn-white sm" data-mc-withdraw="${esc(x.uid)}">Withdraw</button>` : ""}</td></tr>`;
-  return `<div class="a-head"><h2>🤝 Master Contributions</h2><p class="a-sub">The platform master is the global platform's. What this store may do with it is its permissions; every change it proposes is reviewed there, then applied to the master, added as new, attached as an addendum, or rejected with a reason.</p></div>
-  <div class="a-card"><h3>Permissions</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>covers</th><th>actions</th><th>review</th><th>visible attributes</th></tr></thead><tbody>${perms.map(permRow).join("") || '<tr><td colspan="4">No permissions yet — the platform grants them.</td></tr>'}</tbody></table></div></div>
-  <div class="a-card"><h3>Propose</h3><div class="a-form">
-    <label>Proposal <select id="mcAction">${acts.map(a => `<option value="${esc(a.name)}" data-target="${a.target ? 1 : 0}">${esc((a.title && (a.title.en || Object.values(a.title)[0])) || a.name)}</option>`).join("")}</select></label>
-    <label>On (master key or id) <input id="mcTarget" placeholder="leave empty for an addition"></label>
-    <label>Title <input id="mcTitle"></label>
-    <label>Facts (JSON) <input id="mcFacts" placeholder='{"colour":"teal"}'></label>
-    <label>Kind (an addition) <select id="mcKind">${kinds.map(k => `<option value="${esc(k.kind)}">${esc((k.title && (k.title.en || Object.values(k.title)[0])) || k.name)}</option>`).join("")}</select></label>
-    <label>Under (taxonomy key, an addition) <input id="mcAt"></label>
-    <button class="btn" id="mcPropose">Propose</button></div></div>
-  <div class="a-card"><h3>Proposals</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>proposal</th><th>on</th><th>change</th><th>state</th><th>landed as</th><th>reason</th><th></th></tr></thead><tbody>${(c.contributions || []).map(conRow).join("") || '<tr><td colspan="7">Nothing proposed yet.</td></tr>'}</tbody></table></div></div>`;
-}
-function wireMasterContrib() {
-  const val = id => (document.querySelector(id) || {}).value || "";
-  const go = document.querySelector("#mcPropose");
-  if (go) go.onclick = () => {
-    let facts = null;
-    try { facts = val("#mcFacts").trim() ? JSON.parse(val("#mcFacts")) : null; } catch (e) { return toast("Facts must be JSON"); }
-    const action = val("#mcAction"), title = val("#mcTitle").trim();
-    const patch = Object.assign({}, title ? { title: { en: title } } : {}, facts ? { facts } : {});
-    const body = val("#mcTarget").trim() ? { action, target: val("#mcTarget").trim(), patch }
-      : { action, proposal: { kind: val("#mcKind"), at: val("#mcAt").trim() ? [val("#mcAt").trim()] : [], title: { en: title }, facts: facts || undefined } };
-    postAndRender("/tenant/master/contributions", body, "POST", "Proposed — the platform reviews it");
-  };
-  $$("[data-mc-withdraw]").forEach(b => b.onclick = () => postAndRender("/tenant/master/contributions/" + encodeURIComponent(b.dataset.mcWithdraw) + "/withdraw", {}, "POST", "Withdrawn"));
-}
-/* ---------- live sessions (lib/media-sessions.js) ---------- */
-async function vSessions() {
-  const gate = await coGate("sessions");
-  if (!gate.any) return coOff("live sessions", "🎥 Live Sessions", gate.off);
-  const d = await api("/sessions", {}).catch(e => ({ sessions: [], error: e.message }));
-  return `<div class="a-head"><h2>🎥 Live Sessions</h2><p class="a-sub">Booked consultations, classes and calls held live. Carried by ${esc(((d.transports || []).find(t => t.builtin) || {}).name || "the platform")} unless the <code>media_sessions</code> capability names a media connector from the Provider Registry; charged by the minute where <code>per_minute_billing</code> is on (⏱️ Per-minute Charges).</p></div>
-  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>#</th><th>guest</th><th>mode</th><th>state</th><th>minutes</th><th>charged</th><th></th></tr></thead><tbody>
-  ${(d.sessions || []).map(x => `<tr><td>${x.id}</td><td>${esc(x.guest)}</td><td>${esc(x.mode)}</td><td>${stateChip(x.state)}</td><td>${(x.seconds / 60).toFixed(1)}</td><td>${x.charged ? money(x.charged) : ""}</td>
-    <td>${x.done ? "" : `<a class="btn-white sm" href="${esc(x.join_url)}" target="_blank" rel="noopener">Join</a>`}</td></tr>`).join("") || `<tr><td colspan="7">${esc(d.error || "No sessions yet.")}</td></tr>`}</tbody></table></div></div>`;
-}
-/* ---------- charged by the minute (capability per_minute_billing) ---------- */
-async function vMetering() {
-  const gate = await coGate("metering");
-  if (!gate.any) return coOff("charging by the minute", "⏱️ Per-minute Charges", gate.off);
-  const d = await api("/admin/per-minute", {}).catch(e => ({ error: e.message }));
-  if (d.error) return `<div class="a-head"><h2>⏱️ Per-minute Charges</h2><p class="a-sub">${esc(d.error)}</p></div>`;
-  const P = d.settings || {};
-  return `<div class="a-head"><h2>⏱️ Per-minute Charges</h2><p class="a-sub">Live sessions charged to the guest's wallet at the item's price per minute, else ${money(P.default_rate)} a minute, in steps of ${esc(P.increment_seconds)} seconds with ${esc(P.minimum_minutes)} minute(s) always charged — the <code>per_minute_billing</code> capability's params. Charged so far: <b>${money(d.total)}</b>.</p></div>
-  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>#</th><th>guest</th><th>rate / min</th><th>state</th><th>minutes</th><th>charged</th></tr></thead><tbody>
-  ${(d.sessions || []).map(x => `<tr><td>${x.id}</td><td>${esc(x.guest)}</td><td>${money(x.rate)}</td><td>${stateChip(x.state)}</td><td>${(x.seconds / 60).toFixed(1)}</td><td>${x.charged ? money(x.charged) : ""}</td></tr>`).join("") || '<tr><td colspan="6">No sessions charged by the minute yet.</td></tr>'}</tbody></table></div></div>`;
-}
-/* ---------- try and buy (lib/trials.js) ---------- */
-async function vTrials() {
-  const gate = await coGate("trials");
-  if (!gate.any) return coOff("try and buy", "👟 Try and Buy", gate.off);
-  const d = await api("/admin/trials", {}).catch(e => ({ trials: [], error: e.message }));
-  return `<div class="a-head"><h2>👟 Try and Buy</h2><p class="a-sub">Items on trial: the deposit paid, the window to decide, and what the shopper did — kept (the rest charged) or returned (the deposit back). A closed window keeps what was not returned.</p></div>
-  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>#</th><th>order</th><th>item</th><th>shopper</th><th>price</th><th>deposit</th><th>decide by</th><th>state</th><th>charged</th><th>refunded</th></tr></thead><tbody>
-  ${(d.trials || []).map(t => `<tr><td>${t.id}</td><td>#${t.order_id}</td><td><code>${esc(t.product_id)}</code></td><td>${esc(t.owner)}</td><td>${money(t.unit)} × ${t.qty}</td><td>${money(t.deposit)}</td><td>${esc(t.ends_at)}</td><td>${stateChip(t.state)}</td><td>${t.charged ? money(t.charged) : ""}</td><td>${t.refunded ? money(t.refunded) : ""}</td></tr>`).join("") || `<tr><td colspan="10">${esc(d.error || "Nothing on trial.")}</td></tr>`}</tbody></table></div></div>`;
-}
 /* ---------- deliverables: every kind (licence keys, lab tests, courses) its own screen, named by
    its deliverableKinds row ---------- */
 let deliverableKindsCache = null;
@@ -725,89 +251,9 @@ function wireDeliverables(section) {
 }
 /* ---------- health records (lib/health-records.js): what shoppers shared with the store ---------- */
 let hrParty = "";
-async function vHealthRecords() {
-  const gate = await coGate("healthrecords");
-  if (!gate.any) return coOff("health records", "🩺 Health Records", gate.off);
-  const party = hrParty;
-  const d = await api("/admin/health-records/shared?party=" + encodeURIComponent(party), {}).catch(e => ({ shared: [], error: e.message }));
-  return `<div class="a-head"><h2>🩺 Health Records</h2><p class="a-sub">Shoppers keep their records private and share one with a party for some days; a party sees only what is shared with it while the share lasts. Every share is recorded.</p></div>
-  <div class="a-card"><div class="p-form"><div class="row"><label><span>Party (who it was shared with)</span><input id="hrParty" value="${esc(party)}"></label></div><button class="p-btn primary" id="hrLook">Show</button></div>
-  <div class="a-tablewrap"><table class="a-table"><thead><tr><th>shopper</th><th>record</th><th>shared until</th></tr></thead><tbody>
-  ${(d.shared || []).map(x => `<tr><td>${esc(x.owner)}</td><td>${x.item ? `<a href="${esc(x.item.url)}" target="_blank" rel="noopener">${esc(x.item.title)}</a>` : ""}</td><td>${esc(x.until)}</td></tr>`).join("") || `<tr><td colspan="3">${esc(d.error || (party ? "Nothing shared with this party." : "Name a party."))}</td></tr>`}</tbody></table></div></div>`;
-}
-function wireHealthRecords() { const b = $("#hrLook"); if (b) b.onclick = () => { hrParty = fieldVal("#hrParty"); render(); }; }
 /* ---------- the Universal Wallet (lib/wallet.js): an owner's wallets, their statements and holds,
    staff moves with a reason, adjustments, reversals, and the ledger's own verification ---------- */
 let walOwner = "", walOpen = "";
-async function vWallets() {
-  const v = await api("/admin/ledger/verify", {}).catch(e => ({ error: e.message }));
-  const defs = await api("/wallet-definitions", {}).catch(() => ({ definitions: [] }));
-  const d = walOwner ? await api("/admin/wallets?owner=" + encodeURIComponent(walOwner), {}).catch(e => ({ error: e.message, wallets: [] })) : { wallets: [] };
-  const one = walOpen ? await api("/admin/wallets/" + encodeURIComponent(walOpen), {}).catch(e => ({ error: e.message })) : null;
-  const acts = d.walletActions || [];
-  return `<div class="a-head"><h2>👛 Wallets & Ledger</h2><p class="a-sub">Every wallet an owner holds — named as they like, each in one unit of value, bound to a versioned definition. Value moves only as balanced journals that cannot be edited; corrections are linked reversals. A wallet's balance is its postings, less what its holds keep.</p></div>
-  <div class="a-card"><h3>Ledger check</h3>${v.error ? `<p class="a-sub">${esc(v.error)}</p>` : `<p>${v.journals} journals · ${v.unbalanced.length ? `<b>${v.unbalanced.length} unbalanced</b>` : "every one balances"} · event chain ${v.chain && v.chain.ok ? "intact" : "<b>broken at " + esc(String((v.chain || {}).brokenAt)) + "</b>"}</p>`}</div>
-  <div class="a-card"><h3>Definitions</h3><p class="a-sub">Each refines the one above it and states only what differs; every value shown is resolved for this store — its own settings over the platform's. ★ is the store's default.</p>
-  <div class="a-tablewrap"><table class="a-table"><thead><tr><th>definition</th><th>refines</th><th>name</th><th>holds</th><th>allows</th><th>policy</th><th></th></tr></thead><tbody>
-  ${(defs.definitions || []).map(x => `<tr><td><code>${esc(x.key)}</code>${x.spec.default ? " ★" : ""}${x.spec.openable ? "" : ' <span class="a-chip">not opened directly</span>'}</td><td>${x.parent ? `<code>${esc(x.parent)}</code>` : "—"}</td><td>${esc(Object.values(x.spec.name || {})[0] || "")}</td><td>${esc(x.spec.classes.join(", ") || "—")}</td><td>${esc(x.spec.operations.join(", ") || "—")}</td><td>${esc(Object.entries(x.spec.policy || {}).filter(([, n]) => n).map(([k, n]) => k.replace(/_/g, " ") + " " + n).join(" · ") || "—")}</td>
-    <td style="white-space:nowrap">${x.spec.openable && !x.spec.default ? `<button class="btn-white sm" data-co-post="/admin/wallet-default" data-co-body='${esc(JSON.stringify({ key: x.key }))}'>Make default</button>` : ""} <button class="btn-white sm" data-wal-conf="${esc(x.key)}">Configure</button></td></tr>`).join("")}</tbody></table></div></div>
-  <div class="a-card"><h3>An owner's wallets</h3><div class="p-form"><div class="row"><label><span>Owner</span><input id="walOwner" value="${esc(walOwner)}" placeholder="t1:u:42"></label></div><button class="p-btn primary" id="walLook">Show</button></div>
-  ${d.error ? `<p class="a-sub">${esc(d.error)}</p>` : `<div class="a-tablewrap"><table class="a-table"><thead><tr><th>wallet</th><th>name</th><th>definition</th><th>unit</th><th>posted</th><th>reserved</th><th>available</th><th>state</th><th></th></tr></thead><tbody>
-  ${(d.wallets || []).map(w => `<tr><td><code>${esc(w.id)}</code></td><td>${esc(w.name)}</td><td><code>${esc(w.definition.key)}</code></td><td>${esc(w.unit)}</td><td>${w.posted}</td><td>${w.reserved}</td><td>${w.available}</td><td>${stateChip(w.state)}</td>
-    <td style="white-space:nowrap"><button class="btn-white sm" data-wal-open="${esc(w.id)}">Statement</button> ${acts.filter(a => a.to !== w.state.key).map(a => `<button class="btn-white sm" data-co-post="/admin/wallets/${encodeURIComponent(w.id)}/move" data-co-body='${esc(JSON.stringify({ action: a.verb }))}' data-co-ask="Why?" data-co-field="reason">${esc(a.label)}</button>`).join(" ")}
-      <button class="btn-white sm" data-wal-adjust="${esc(w.id)}">Adjust</button></td></tr>`).join("") || `<tr><td colspan="9">${walOwner ? "This owner holds no wallets." : "Name an owner."}</td></tr>`}</tbody></table></div>`}</div>
-  ${one ? (one.error ? `<div class="a-card"><p class="a-sub">${esc(one.error)}</p></div>` : `<div class="a-card"><h3>${esc(one.wallet.name)} · <code>${esc(one.wallet.id)}</code></h3><p class="a-sub">Names over time: ${one.names.map(n => esc(n.name) + (n.alias ? " (alias)" : "") + (n.valid_to ? " — until " + esc(n.valid_to) : " — now")).join("; ")}</p>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>journal</th><th>when</th><th>operation</th><th>ref</th><th>amount</th><th></th></tr></thead><tbody>
-    ${one.lines.map(l => `<tr><td>#${l.id}${l.reverses ? " ↩ #" + l.reverses : ""}</td><td>${esc(l.created_at)}</td><td>${esc(l.op_name)}</td><td>${esc(l.ref)}</td><td>${l.amount}</td><td>${l.reverses ? "" : `<button class="btn-white sm" data-co-post="/admin/journals/${l.id}/reverse" data-co-ask="Why reverse it?" data-co-field="reason">Reverse</button>`}</td></tr>`).join("") || '<tr><td colspan="6">No movements.</td></tr>'}</tbody></table></div>
-    <h3>Holds</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>#</th><th>purpose</th><th>ref</th><th>amount</th><th>captured</th><th>until</th><th>state</th></tr></thead><tbody>
-    ${one.holds.map(h => `<tr><td>${h.id}</td><td>${esc(h.purpose)}</td><td>${esc(h.ref)}</td><td>${h.amount}</td><td>${h.captured}</td><td>${esc(h.expires_at || "")}</td><td>${stateChip(h.state)}</td></tr>`).join("") || '<tr><td colspan="7">No holds.</td></tr>'}</tbody></table></div></div>`) : ""}`;
-}
-function wireWallets() {
-  const b = $("#walLook"); if (b) b.onclick = () => { walOwner = fieldVal("#walOwner").trim(); walOpen = ""; render(); };
-  $$("[data-wal-open]").forEach(x => x.onclick = () => { walOpen = x.dataset.walOpen; render(); });
-  /* a store's own value for one setting of a definition (JSON: a number, true/false, or a list) */
-  $$("[data-wal-conf]").forEach(x => x.onclick = () => {
-    const name = prompt("Which setting? (overdraft, max_balance, max_per_owner, hold_minutes, classes, operations, openable)"); if (!name) return;
-    const raw = prompt("Its value for this store"); if (raw == null) return;
-    let value; try { value = JSON.parse(raw); } catch (e) { value = raw; }
-    postAndRender("/admin/wallet-definitions/" + encodeURIComponent(x.dataset.walConf), { settings: { [name.trim()]: value } }, "POST", "Configured for this store");
-  });
-  $$("[data-wal-adjust]").forEach(x => x.onclick = () => {
-    const amount = prompt("Amount (negative takes value out)"); if (amount == null || amount === "") return;
-    const reason = prompt("Why?"); if (!reason) return;
-    postAndRender("/admin/wallets/" + encodeURIComponent(x.dataset.walAdjust) + "/adjust", { amount, reason, idempotency_key: "adj-" + Date.now() }, "POST", "Adjusted");
-  });
-  wireCoPosts();
-}
-/* ---------- tips (lib/tips.js) ---------- */
-async function vTips() {
-  const gate = await coGate("tips");
-  if (!gate.any) return coOff("tips", "💝 Tips", gate.off);
-  const d = await api("/admin/tips", {});
-  return `<div class="a-head"><h2>💝 Tips</h2><p class="a-sub">Shoppers add ${esc(d.label)} from ${(d.choices || []).map(money).join(", ")} or their own amount up to ${money(d.max)} — the <code>tips</code> capability's params (⚙️ Capabilities). Each tip is kept on its order.</p></div>`;
-}
-/* ---------- service fees (lib/fees.js) ---------- */
-async function vCharges() {
-  const gate = await coGate("fees");
-  if (!gate.any) return coOff("service fees", "🧾 Service Fees", gate.off);
-  const d = await api("/admin/charges", {});
-  return `<div class="a-head"><h2>🧾 Service Fees</h2><p class="a-sub">A fee is charged when its conditions hold — under an order amount, inside a window of the store's local hours, or always — and waived for members or with free shipping where it says.</p></div>
-  <div class="a-card"><h3>Fee</h3><div class="p-form">
-    <div class="row"><label><span>Code *</span><input id="fcCode"></label><label><span>Name *</span><input id="fcName" placeholder="Small order fee"></label><label><span>Amount</span><input id="fcAmt" type="number" step="0.01"></label><label><span>% of the order</span><input id="fcPct" type="number" step="0.1"></label></div>
-    <div class="row"><label><span>Only under an order of</span><input id="fcBelow" type="number" step="0.01"></label><label><span>From hour (local)</span><input id="fcFrom" type="number" min="0" max="23"></label><label><span>To hour</span><input id="fcTo" type="number" min="0" max="23"></label></div>
-    <div class="row"><label><input type="checkbox" id="fcMem"> Waived for members</label><label><input type="checkbox" id="fcFree"> Waived with free shipping</label><label><input type="checkbox" id="fcTax"> Taxed</label></div>
-    <button class="p-btn primary" id="fcSave">Save fee</button></div></div>
-  <div class="a-card"><h3>Fees</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>charge</th><th>when</th><th>waived</th><th></th></tr></thead><tbody>
-    ${(d.rules || []).map(r => `<tr><td><code>${esc(r.code)}</code></td><td>${esc(r.name)}</td><td>${r.amount ? money(r.amount) : ""}${r.amount && r.percent ? " + " : ""}${r.percent ? r.percent + "%" : ""}${r.taxable ? " · taxed" : ""}</td>
-      <td>${r.below_amount != null ? "under " + money(r.below_amount) : "any amount"}${r.from_hour != null ? " · " + r.from_hour + ":00–" + r.to_hour + ":00" : ""}</td><td>${[r.waive_for_members ? "members" : "", r.waive_with_free_shipping ? "free shipping" : ""].filter(Boolean).join(", ") || "—"}</td>
-      <td><button class="btn-white sm" data-co-post="/admin/charges/${encodeURIComponent(r.code)}" data-co-method="DELETE">Remove</button></td></tr>`).join("") || '<tr><td colspan="6">No fees.</td></tr>'}</tbody></table></div></div>`;
-}
-function wireCharges() {
-  const save = $("#fcSave"); if (!save) return;
-  save.onclick = () => postAndRender("/admin/charges", { code: fieldVal("#fcCode"), name: fieldVal("#fcName"), amount: fieldVal("#fcAmt"), percent: fieldVal("#fcPct"), below_amount: fieldVal("#fcBelow"),
-    from_hour: fieldVal("#fcFrom"), to_hour: fieldVal("#fcTo"), waive_for_members: $("#fcMem").checked, waive_with_free_shipping: $("#fcFree").checked, taxable: $("#fcTax").checked }, "POST", "Fee saved");
-  wireCoPosts();
-}
 /* ---------- cases: price matches, prescriptions, credentials, enquiries, trade-ins — every kind a
    caseKinds row, its actions its state machine's ---------- */
 /* every kind of case is its own feature with its own screen: the kind row names its section */
@@ -913,253 +359,14 @@ async function wireProdOptions() {
   wireCoPosts();
 }
 
-async function vBookings() {
-  const gate = await coGate("bookings");
-  if (!gate.any) return coOff("bookings", "📅 Bookings", gate.off);
-  const from = new Date(Date.now() - 864e5).toISOString().slice(0, 19).replace("T", " "), to = new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 19).replace("T", " ");
-  const d = await api("/admin/bookings", { from, to });
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const hoursText = h => Object.entries(h || {}).map(([k, rs]) => days[k] + " " + rs.map(r => r.join("-")).join(", ")).join("; ");
-  return `<div class="a-head"><h2>📅 Bookings</h2><p class="a-sub">Appointments, stays, rentals and experiences. Resource kinds and booking modes are the <code>bookingResourceKinds</code> and <code>bookingModes</code> registries; holding time and cancellation cut-off are the <code>bookings</code> capability's params.</p></div>
-  <div class="a-card"><h3>Resource</h3><div class="p-form"><div class="row"><label><span>Code *</span><input id="brCode"></label><label><span>Name *</span><input id="brName"></label>
-    <label><span>Kind</span><select id="brKind">${(d.resourceKinds || []).map(k => `<option value="${esc(k.key)}">${esc(k.name)}</option>`).join("")}</select></label><label><span>Capacity</span><input id="brCap" type="number" min="1" value="1"></label></div>
-    <div class="row"><label><span>Time zone (blank: the store's)</span><input id="brTz" placeholder="e.g. Asia/Kolkata"></label></div>
-    <label><span>Weekly hours — one line per day: weekday 0 (Sunday)–6, then HH:MM-HH:MM, …</span><textarea id="brHours" rows="3" placeholder="1 09:00-13:00, 14:00-18:00"></textarea></label>
-    <button class="p-btn primary" id="brSave">Save resource</button></div>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>kind</th><th>capacity</th><th>zone</th><th>hours</th></tr></thead><tbody>${(d.resources || []).map(r => `<tr><td><code>${esc(r.code)}</code></td><td>${esc(r.name)}</td><td>${esc(r.kind_row ? r.kind_row.name : r.kind)}</td><td>${r.capacity}</td><td>${esc(r.tz || "store")}</td><td>${esc(hoursText(r.hours))}</td></tr>`).join("") || '<tr><td colspan="6">No resources yet.</td></tr>'}</tbody></table></div></div>
-  <div class="a-card"><h3>Make a product bookable</h3><div class="p-form"><div class="row"><label><span>Product id *</span><input id="bpProd"></label>
-    <label><span>Mode</span><select id="bpMode">${(d.modes || []).map(m => `<option value="${esc(m.key)}">${esc(m.name)}</option>`).join("")}</select></label></div>
-    <div>${(d.resources || []).map(r => `<label style="display:inline-block;margin-right:12px"><input type="checkbox" data-bp-res="${r.id}"> ${esc(r.name)}</label>`).join("")}</div>
-    <div class="row"><label><span>Length (min)</span><input id="bpDur" type="number" value="60"></label><label><span>Every (min)</span><input id="bpStep" type="number" value="60"></label><label><span>Gap after (min)</span><input id="bpBuf" type="number" value="0"></label><label><span>Notice (hours)</span><input id="bpLead" type="number" value="0"></label></div>
-    <div class="row"><label><span>Fewest days</span><input id="bpMin" type="number" value="1"></label><label><span>Most days</span><input id="bpMax" type="number" value="30"></label></div>
-    <button class="p-btn primary" id="bpSave">Save</button></div></div>
-  <div class="a-card"><h3>Next 30 days</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>when</th><th>product</th><th>state</th><th></th></tr></thead><tbody>
-    ${(d.bookings || []).map(b => `<tr><td><code>${esc(b.ref)}</code></td><td>${esc(b.label)}</td><td><code>${esc(b.product_id)}</code></td><td>${stateChip(b.state)}</td><td style="white-space:nowrap">${verbRow(d.actions, b, "/admin/bookings/" + b.id)}</td></tr>`).join("") || '<tr><td colspan="5">Nothing booked.</td></tr>'}</tbody></table></div>
-    <button class="btn-white sm" data-co-post="/admin/bookings/sweep">Expire lapsed holds now</button></div>`;
-}
-function wireBookings() {
-  const s = $("#brSave"); if (!s) return;
-  s.onclick = () => {
-    const hours = {};
-    fieldVal("#brHours").split(/\n/).map(l => l.trim()).filter(Boolean).forEach(l => { const m = /^([0-6])\s+(.+)$/.exec(l); if (m) hours[m[1]] = m[2].split(",").map(x => x.trim().split("-")); });
-    postAndRender("/admin/bookings/resources", { code: fieldVal("#brCode"), name: fieldVal("#brName"), kind: fieldVal("#brKind"), capacity: fieldVal("#brCap"), tz: fieldVal("#brTz"), hours }, "POST", "Resource saved");
-  };
-  $("#bpSave").onclick = () => postAndRender("/admin/bookings/products/" + encodeURIComponent(fieldVal("#bpProd").trim()), { mode: fieldVal("#bpMode"), resource_ids: $$("[data-bp-res]").filter(c => c.checked).map(c => Number(c.dataset.bpRes)),
-    duration_min: fieldVal("#bpDur"), step_min: fieldVal("#bpStep"), buffer_min: fieldVal("#bpBuf"), lead_hours: fieldVal("#bpLead"), min_units: fieldVal("#bpMin"), max_units: fieldVal("#bpMax") }, "PUT", "Product is bookable");
-  wireCoPosts();
-}
-
-async function vNegotiation() {
-  const gate = await coGate("negotiation");
-  if (!gate.any) return coOff("offers", "🤝 Offers", gate.off);
-  const d = await api("/admin/price-offers", {});
-  return `<div class="a-head"><h2>🤝 Offers</h2><p class="a-sub">Shoppers' offers on the store's own products (offers on a shopper's listing are that shopper's to answer). Floors, automatic thresholds and windows are the <code>price_negotiation</code> capability's params.</p></div>
-  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>qty</th><th>offer</th><th>counter</th><th>state</th><th>expires</th><th></th></tr></thead><tbody>
-    ${(d.offers || []).map(o => `<tr><td>${esc(o.product ? o.product.title : "")}</td><td>${o.qty}</td><td>${money(o.amount)}</td><td>${o.counter_amount != null ? money(o.counter_amount) : "—"}</td><td>${stateChip(o.state)}</td><td>${esc(String(o.expires_at || "").slice(0, 16))}</td>
-      <td style="white-space:nowrap">${o.awaiting_you ? `<button class="btn-white sm" data-co-post="/admin/price-offers/${o.id}" data-co-body='{"action":"accept"}'>Accept</button> <button class="btn-white sm" data-co-post="/admin/price-offers/${o.id}" data-co-body='{"action":"counter"}' data-co-ask="Your counter price" data-co-field="amount">Counter</button> <button class="btn-white sm" data-co-post="/admin/price-offers/${o.id}" data-co-body='{"action":"refuse"}'>Refuse</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="7">No offers.</td></tr>'}</tbody></table></div></div>`;
-}
-
-async function vAuctions() {
-  const gate = await coGate("auctions");
-  if (!gate.any) return coOff("auctions", "🔨 Auctions", gate.off);
-  const d = await api("/admin/auctions", {});
-  return `<div class="a-head"><h2>🔨 Auctions</h2><p class="a-sub">Timed auctions with automatic bidding. The bid increments, the last-minute extension and the payment window are the <code>auctions</code> capability's params.</p></div>
-  <div class="a-card"><h3>New auction</h3><div class="p-form"><div class="row"><label><span>Product id *</span><input id="auProd"></label><label><span>Starting price *</span><input id="auStart" type="number" step="0.01"></label>
-    <label><span>Reserve</span><input id="auRes" type="number" step="0.01"></label><label><span>Buy it now</span><input id="auBn" type="number" step="0.01"></label></div>
-    <div class="row"><label><span>Starts (blank: now)</span><input id="auFrom" type="datetime-local"></label><label><span>Ends *</span><input id="auTo" type="datetime-local"></label></div>
-    <button class="p-btn primary" id="auSave">Open auction</button></div></div>
-  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>price</th><th>bids</th><th>reserve</th><th>ends</th><th>state</th><th></th></tr></thead><tbody>
-    ${(d.auctions || []).map(a => `<tr><td>${esc(a.product ? a.product.title : "")}</td><td>${money(a.current_price != null ? a.current_price : a.start_price)}</td><td>${a.bids}</td><td>${a.reserve_met ? "met" : "not met"}</td><td>${esc(a.ends_at)}</td><td>${stateChip(a.state)}</td>
-      <td>${a.live || (a.state && !a.final_price && !a.bids) ? `<button class="btn-white sm" data-co-post="/admin/auctions/${a.id}/cancel">Cancel</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="7">No auctions.</td></tr>'}</tbody></table></div>
-    <button class="btn-white sm" data-co-post="/admin/auctions/tick">Close ended auctions now</button></div>`;
-}
-function wireAuctions() {
-  const b = $("#auSave"); if (b) b.onclick = () => postAndRender("/admin/auctions", { product_id: fieldVal("#auProd").trim(), start_price: Number(fieldVal("#auStart")), reserve_price: fieldVal("#auRes") ? Number(fieldVal("#auRes")) : null, buy_now_price: fieldVal("#auBn") ? Number(fieldVal("#auBn")) : null,
-    starts_at: fieldVal("#auFrom") ? new Date(fieldVal("#auFrom")).toISOString() : undefined, ends_at: fieldVal("#auTo") ? new Date(fieldVal("#auTo")).toISOString() : "" }, "POST", "Auction opened");
-  wireCoPosts();
-}
-
-async function vListings() {
-  const gate = await coGate("listings");
-  if (!gate.any) return coOff("shopper selling", "🏷️ Shopper Listings", gate.off);
-  const d = await api("/admin/listings", {});
-  const staffVerbs = (d.actions || []).filter(a => a.staff_only);
-  return `<div class="a-head"><h2>🏷️ Shopper Listings</h2><p class="a-sub">Items shoppers sell. Review, commission and the holding period before proceeds are credited are the <code>peer_listings</code> capability's params; conditions are the <code>mktConditions</code> registry.</p></div>
-  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>title</th><th>seller</th><th>price</th><th>sold</th><th>condition</th><th>state</th><th></th></tr></thead><tbody>
-    ${(d.listings || []).map(l => `<tr><td>${esc(l.title)}${l.product_id ? ` <code>${esc(l.product_id)}</code>` : ""}<div class="p-tag">${esc((l.description || "").slice(0, 120))}</div></td><td>${esc(l.by || "")}</td><td>${money(l.price)}</td><td>${l.sold}/${l.qty}</td><td>${esc(l.condition || "")}</td><td>${stateChip(l.state)}</td>
-      <td style="white-space:nowrap">${staffVerbs.filter(a => (l.next || []).includes(a.to)).map(a => `<button class="btn-white sm" data-co-post="/admin/listings/${l.id}" data-co-body='${esc(JSON.stringify({ action: a.verb }))}' data-co-ask="Notes for the seller (optional)">${esc(a.verb)}</button>`).join(" ")}</td></tr>`).join("") || '<tr><td colspan="7">No listings.</td></tr>'}</tbody></table></div></div>`;
-}
-
-async function vConversations() {
-  const gate = await coGate("conversations");
-  if (!gate.any) return coOff("messages", "💬 Messages", gate.off);
-  const all = window.__convAll ? 1 : 0;
-  const d = await api("/admin/conversations", all ? { all: 1 } : {});
-  return `<div class="a-head"><h2>💬 Messages</h2><p class="a-sub">Conversations with the store, and — where staff may read them — between shoppers. Subjects are the <code>conversationSubjects</code> registry; hiding contact details is the <code>conversations</code> capability's param.</p>
-    <label><input type="checkbox" id="convAll" ${all ? "checked" : ""}> Show every conversation, not only the store's</label></div>
-  <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr><th>about</th><th>with</th><th>last</th><th>state</th><th></th></tr></thead><tbody>
-    ${(d.conversations || []).map(c => `<tr><td>${esc(c.title)}</td><td>${esc(c.with)}</td><td>${esc(String(c.last_at).slice(0, 16))}</td><td>${stateChip(c.state)}${c.unread ? ` <span class="a-chip">${c.unread} new</span>` : ""}</td>
-      <td style="white-space:nowrap"><button class="btn-white sm" data-conv-open="${c.id}">Open</button> ${(d.actions || []).filter(a => a.to !== c.status).map(a => `<button class="btn-white sm" data-co-post="/admin/conversations/${c.id}" data-co-body='${esc(JSON.stringify({ action: a.verb }))}'>${esc(a.verb)}</button>`).join(" ")}</td></tr>`).join("") || '<tr><td colspan="5">No conversations.</td></tr>'}</tbody></table></div></div>`;
-}
-function wireConversations() {
-  const all = $("#convAll"); if (all) all.onchange = () => { window.__convAll = all.checked; render(); };
-  $$("[data-conv-open]").forEach(b => b.onclick = async () => {
-    const t = await api("/admin/conversations/" + b.dataset.convOpen, {});
-    const m = modal(`<div class="p-modal-head"><h3>${esc(t.conversation.title)}</h3><button data-mclose>✕</button></div>
-      <div style="max-height:50vh;overflow:auto">${t.messages.map(x => `<p style="margin:6px 0"><b>${esc(x.side)}</b> ${x.hidden ? "<i>(hidden)</i> " : ""}${esc(x.body)} <button class="btn-white sm" data-msg-hide="${x.id}" data-hidden="${x.hidden ? 0 : 1}">${x.hidden ? "Show" : "Hide"}</button></p>`).join("")}</div>
-      ${t.conversation.side ? `<div class="p-form"><textarea id="convReply" rows="2"></textarea><button class="p-btn primary" id="convSend">Reply as the store</button></div>` : ""}`);
-    m.querySelector("[data-mclose]").onclick = () => { m.innerHTML = ""; };
-    m.querySelectorAll("[data-msg-hide]").forEach(h => h.onclick = async () => { await api("/admin/conversations/messages/" + h.dataset.msgHide, "POST", { hidden: h.dataset.hidden === "1" }); m.innerHTML = ""; toast("Updated"); });
-    const send = m.querySelector("#convSend"); if (send) send.onclick = async () => { try { await api("/admin/conversations/" + t.conversation.id, "POST", { body: m.querySelector("#convReply").value }); m.innerHTML = ""; toast("Sent"); render(); } catch (e) { toast(e.message); } };
-  });
-  wireCoPosts();
-}
 
 
-async function vSubstitutions() {
-  const gate = await coGate("substitutions");
-  if (!gate.any) return coOff("substitutions", "🔄 Substitutions", gate.off);
-  const oid = window.__subOrder || "";
-  const d = oid ? await api("/admin/substitutions/" + encodeURIComponent(oid), {}).catch(e => ({ error: e.message })) : null;
-  return `<div class="a-head"><h2>🔄 Substitutions</h2><p class="a-sub">At picking: each line shows the shopper's own choice (the <code>substitutionPolicies</code> registry). Propose a substitute, or mark the line unavailable to refund it. Whether a dearer substitute is charged is the <code>substitutions</code> capability's param.</p></div>
-  <div class="a-card"><div class="p-form"><div class="row"><label><span>Order id</span><input id="sbOrder" value="${esc(oid)}"></label><button class="p-btn primary" id="sbLoad">Open order</button></div></div>
-    ${d && d.error ? `<p class="a-sub">${esc(d.error)}</p>` : ""}
-    ${d && d.lines ? `<div class="a-tablewrap"><table class="a-table"><thead><tr><th>item</th><th>qty</th><th>shopper's choice</th><th>substitute id</th><th></th></tr></thead><tbody>${d.lines.map(l => `<tr><td>${esc(l.title || l.product_id)}</td><td>${l.qty}</td><td>${esc(l.policy ? l.policy.name : "—")}</td>
-      <td>${l.policy && l.policy.allows ? `<input data-sb-sub="${esc(l.product_id)}" placeholder="${l.policy.needs_item && l.preference ? esc(l.preference.product_id) : "product id"}" ${l.policy.needs_item ? "disabled" : ""}>` : "—"}</td>
-      <td style="white-space:nowrap">${l.policy && l.policy.allows ? `<button class="btn-white sm" data-sb-prop="${esc(l.product_id)}">Propose</button> ` : ""}<button class="btn-white sm" data-sb-un="${esc(l.product_id)}">Unavailable</button></td></tr>`).join("")}</tbody></table></div>
-    <h3>Decisions</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>item</th><th>substitute</th><th>qty</th><th>refund</th><th>state</th></tr></thead><tbody>${d.substitutions.map(x => `<tr><td><code>${esc(x.product_id)}</code></td><td><code>${esc(x.substitute_id || "—")}</code></td><td>${x.qty}</td><td>${money(x.refund)}</td><td>${stateChip(x.state)}</td></tr>`).join("") || '<tr><td colspan="5">None yet.</td></tr>'}</tbody></table></div>` : ""}</div>`;
-}
-function wireSubstitutions() {
-  const load = $("#sbLoad"); if (!load) return;
-  load.onclick = () => { window.__subOrder = fieldVal("#sbOrder").trim(); render(); };
-  const oid = window.__subOrder;
-  $$("[data-sb-prop]").forEach(b => b.onclick = () => postAndRender("/admin/substitutions/" + encodeURIComponent(oid), { product_id: b.dataset.sbProp, substitute_id: (($$("[data-sb-sub]").find(i => i.dataset.sbSub === b.dataset.sbProp)) || {}).value }, "POST", "Substitute proposed"));
-  $$("[data-sb-un]").forEach(b => b.onclick = () => { if (confirm("Refund this line as unavailable?")) postAndRender("/admin/substitutions/" + encodeURIComponent(oid), { product_id: b.dataset.sbUn, unavailable: true }, "POST", "Refunded"); });
-}
 
-/* ---------- Trade Ops: assurance, gold suppliers, verification, LCs, RFQs ---------- */
-async function vTradeOps() {
-  const gate = await coGate("tradeops");
-  if (!gate.any) return coOff("B2B trade", "🤝 Trade Ops", gate.off);
-  const [ta, gold, ver, lc, quo, pl, doc] = await Promise.all([
-    api("/meta/entity/trade_assurance", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/gold_supplier", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/company_verification", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/letter_of_credit", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/rfq_quote", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/price_list", {}).catch(() => ({ rows: [] })),
-    api("/meta/entity/export_document", {}).catch(() => ({ rows: [] })),
-  ]);
-  const tas = ta.rows || [], golds = gold.rows || [], vers = ver.rows || [], lcs = lc.rows || [],
-    quos = quo.rows || [], pls = pl.rows || [], docs = doc.rows || [];
-  return `<div class="a-head"><h2>🤝 Trade Ops</h2>
-    <p class="a-sub">B2B trust and trade: order-level escrow with milestones, paid supplier memberships, company-verification audits, export/customs documents generated from an order's own fields, letters of credit, multi-seller RFQ bidding ranked by price then lead time, sealed-bid tender reverse auctions and per-segment price lists with MOQ enforcement.</p>
-    <p class="a-sub"><b>On for this store:</b> ${gate.on.map(k => `<span class="a-chip">${esc(k)}</span>`).join(" ")}${gate.off.length ? ` <span class="p-tag">${esc(gate.off.length)} off</span>` : ""}</p></div>
-  <div class="a-card"><h3>Trade assurance · ${tas.length}</h3>
-    <p class="a-sub">${coChips(tas, t => t.status)}</p>
-    ${coTbl(["ref", "order", "buyer", "seller", "amount", "milestone", "status"], tas,
-      t => [`<code>${esc(t.ref)}</code>`, t.order_id || "—", esc(t.buyer), esc(t.seller), money(t.amount), esc(t.current_milestone || "—"), coBadge(t.status)])}
-    ${hasCap(gate, "trade_assurance") ? `<div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><label><span>Order id</span><input id="trAsOrder" placeholder="101"></label>
-      <label><span>Seller</span><input id="trAsSeller" placeholder="s:acme"></label><label><span>Amount</span><input id="trAsAmt" type="number" step="0.01" placeholder="500.00"></label>
-      <button class="p-btn sm primary" id="trAsGo">Create assurance</button></div>` : ""}</div>
-  <div class="a-cap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px">
-    <div class="a-card"><h3>Gold suppliers · ${golds.length}</h3>
-      ${coTbl(["supplier", "tier", "verified", "status"], golds, g => [esc(String(g.supplier_id)), coBadge(g.tier), g.verified ? "✓" : "—", coBadge(g.status)], "No memberships.")}
-      ${hasCap(gate, "gold_supplier") ? `<button class="p-btn sm primary" data-act="co-new" data-key="gold_supplier">+ Enrol supplier</button>` : ""}</div>
-    <div class="a-card"><h3>Company verification · ${vers.length}</h3>
-      ${coTbl(["company", "country", "audit", "status"], vers, v => [esc(v.company_name), esc(v.country || "—"), esc(v.audit_by || "—"), coBadge(v.verification_status)], "No audits filed.")}
-      ${hasCap(gate, "company_verification") ? `<button class="p-btn sm primary" data-act="co-new" data-key="company_verification">+ Submit audit</button>` : ""}</div>
-    <div class="a-card"><h3>Letters of credit · ${lcs.length}</h3>
-      ${coTbl(["ref", "buyer", "seller", "amount", "status"], lcs, l => [`<code>${esc(l.lc_number || l.ref)}</code>`, esc(l.buyer), esc(l.seller), money(l.amount), coBadge(l.status)], "No LCs issued.")}</div>
-    <div class="a-card"><h3>RFQ quotes · ${quos.length}</h3>
-      ${coTbl(["rfq", "supplier", "unit price", "MOQ", "lead", "rank", "status"], quos,
-        q => [esc(String(q.rfq_id)), esc(String(q.supplier_id)), money(q.unit_price), q.moq || "—", q.lead_days || "—", q.rank || "—", coBadge(q.status)], "No quotes yet.")}</div>
-    <div class="a-card"><h3>Price lists · ${pls.length}</h3>
-      ${coTbl(["name", "segment", "status"], pls, p => [esc(p.name), esc(p.segment || "—"), coBadge(p.status)], "No price lists.")}</div>
-    <div class="a-card"><h3>Export documents · ${docs.length}</h3>
-      ${coTbl(["ref", "kind", "dest", "value", "status"], docs,
-        d => [`<code>${esc(d.ref)}</code>`, esc(d.doc_kind), esc(d.dest_country || "—"), d.total_value ? money(d.total_value) : "—", coBadge(d.status)], "No documents generated.")}</div>
-  </div>`;
-}
-function wireTradeOps() {
-  const g = $("#trAsGo"); if (g) g.onclick = async () => {
-    try {
-      const r = await api("/trade/assurance", "POST", { order_id: Number($("#trAsOrder").value), seller: $("#trAsSeller").value, amount: Number($("#trAsAmt").value) });
-      toast("Assurance " + (r.assurance && r.assurance.ref)); render();
-    } catch (e) { toast(e.message); }
-  };
-}
 
-async function vRetention() {
-  const [rec, mem] = await Promise.all([api("/admin/recurring", {}), api("/admin/memberships", {})]);
-  const scheds = rec.schedules || [];
-  const byS = {}; scheds.forEach(s => byS[s.status] = (byS[s.status] || 0) + 1);
-  const mems = mem.memberships || [];
-  return `<div class="a-head"><h2>🔁 Subscriptions &amp; Members</h2><p class="a-sub">Subscribe &amp; Save recurring delivery schedules + paid membership tiers (benefits apply at checkout). Tiers &amp; frequencies in Data Studio: <code>membershipTiers</code>, <code>recFrequencies</code>.</p></div>
-  <div class="a-card"><h3>Recurring schedules · ${scheds.length} · ${rec.due} due now</h3>
-    <p class="a-sub">${Object.entries(byS).map(([k, v]) => `<span class="a-chip">${esc(k)}·${v}</span>`).join("") || "none"}</p>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>product</th><th>customer</th><th>qty</th><th>freq</th><th>disc</th><th>next ship</th><th>cycles</th><th>status</th></tr></thead>
-      <tbody>${scheds.slice(0, 20).map(s => `<tr><td><code>${esc(s.product_id)}</code> ${esc(s.product_title || "")}</td><td>${esc(s.owner)}</td><td>${s.qty}</td><td>${s.frequency_days}d</td><td>${s.discount_pct}%</td><td>${esc(String(s.next_ship_at).slice(0, 10))}</td><td>${s.cycles_completed}</td><td><span class="a-chip">${esc(s.status)}</span></td></tr>`).join("") || '<tr><td colspan="8">No subscriptions yet.</td></tr>'}</tbody></table></div>
-    <button class="btn-yellow" data-act="admin-rec-process">Process due shipments</button>
-  </div>
-  <div class="a-card"><h3>Membership tiers</h3>
-    <div>${(mem.tiers || []).map(t => `<span class="a-chip">${esc(t.name)} · ${money(t.price)}${t.benefits.length ? " · " + t.benefits.join(", ") : ""}</span>`).join("")}</div>
-  </div>
-  <div class="a-card"><h3>Members</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>customer</th><th>tier</th><th>status</th><th>renews</th></tr></thead>
-      <tbody>${mems.slice(0, 20).map(m => `<tr><td>${esc(m.owner)}</td><td><span class="a-chip">${esc(m.tier_detail ? m.tier_detail.name : m.tier)}</span></td><td>${esc(m.status)}</td><td>${esc(String(m.renews_at || "").slice(0, 10))}</td></tr>`).join("") || '<tr><td colspan="4">No members yet.</td></tr>'}</tbody></table></div>
-  </div>`;
-}
-async function vRisk() {
-  const q = await api("/admin/risk/queue", {});
-  const st = q.stats || { total: 0, approved: 0, held: 0, blocked: 0, pending: 0, avg_score: 0 };
-  return `<div class="a-head"><h2>🛡️ Risk &amp; Fraud</h2><p class="a-sub">Order screening at checkout — velocity (owner / IP / card), blocklists, composite 0–100 score → approve / hold / block. Held and blocked orders land in this queue. Signals &amp; thresholds are Data Studio registries: <code>riskSignals</code>, <code>riskActions</code>.</p></div>
-  <div class="a-card"><h3>Screening stats</h3>
-    <p class="a-sub"><span class="a-chip">screened·${st.total}</span><span class="a-chip">approved·${st.approved}</span><span class="a-chip">held·${st.held}</span><span class="a-chip">blocked·${st.blocked}</span><span class="a-chip">avg score·${st.avg_score}</span></p>
-  </div>
-  <div class="a-card"><h3>Review queue · ${st.pending} open</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>customer</th><th>amount</th><th>score</th><th>signals</th><th>decision</th></tr></thead>
-      <tbody>${(q.queue || []).slice(0, 25).map(e => `<tr><td><code>${esc(e.ref || e.id)}</code></td><td>${esc(e.owner || "—")}</td><td>${money(e.amount)}</td><td><b>${e.score}</b></td><td>${Object.keys(JSON.parse(e.signals || "{}")).map(k => `<span class="a-chip">${esc(k)}</span>`).join("") || "—"}</td><td><span class="a-chip">${esc(e.action)}</span></td></tr>`).join("") || '<tr><td colspan="6">Queue is clear.</td></tr>'}</tbody></table></div>
-  </div>`;
-}
-async function vExperiments() {
-  const list = await api("/admin/experiments", {});
-  return `<div class="a-head"><h2>🧪 Experiments</h2><p class="a-sub">A/B tests with weighted variants — assignment is deterministic per customer (stable hash), conversion tracked per variant with a 95% significance readout. Statuses in Data Studio: <code>expStatuses</code>.</p></div>
-  <div class="a-card"><h3>Experiments</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>key</th><th>name</th><th>variants</th><th>status</th><th>metric</th></tr></thead>
-      <tbody>${(list.experiments || []).map(e => `<tr><td><code>${esc(e.key)}</code></td><td>${esc(e.name)}</td><td>${(e.variants || []).map(v => `<span class="a-chip">${esc(v.key)}·${(v.share * 100).toFixed(0)}%</span>`).join("")}</td><td><span class="a-chip">${esc(e.status)}</span></td><td>${esc(e.metric)}</td></tr>`).join("") || '<tr><td colspan="5">No experiments yet.</td></tr>'}</tbody></table></div>
-  </div>`;
-}
-async function vPlanning() {
-  const [list, pos] = await Promise.all([api("/admin/planning", {}), api("/admin/planning/pos", {})]);
-  const st = list.stats || {};
-  const buy = (list.replenishments || []).filter(r => r.reorder_qty > 0);
-  return `<div class="a-head"><h2>📦 Planning &amp; Replenishment</h2><p class="a-sub">Per-SKU demand forecast from real order history (weighted moving average + trend), reorder point, safety stock and lead-time-aware suggested purchase orders to the primary supplier. Run the plan after order spikes or on a schedule. Statuses &amp; priorities in Data Studio: <code>planStatuses</code>, <code>planPriorities</code>.</p></div>
-  <div class="a-cards">
-    <div class="a-card"><h3>Overview</h3>
-      <div class="a-stats">${[["SKUs tracked", st.skus || 0], ["Active SKUs", st.active_skus || 0], ["Open suggestions", st.open || 0], ["Urgent", st.urgent || 0], ["Below reorder point", st.below_reorder || 0]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
-        <button class="btn-yellow" data-act="plan-run">▶ Run plan</button>
-        <button class="btn-white" data-act="plan-approve-all" ${buy.length ? "" : "disabled"}>Approve ${buy.length} suggestion${buy.length === 1 ? "" : "s"}</button>
-      </div></div>
-    <div class="a-card"><h3>Suggested purchase orders</h3>
-      <div class="a-tablewrap"><table class="a-table"><thead><tr><th>supplier</th><th>lines</th><th>units</th><th>est. cost</th></tr></thead>
-        <tbody>${(pos.purchaseOrders || []).map(p => `<tr><td>${esc(p.supplier_name)}</td><td>${p.lines.length}</td><td>${p.units}</td><td>${p.cost ? esc(p.cost.toFixed(2)) : "—"}</td></tr>`).join("") || '<tr><td colspan="4">No purchase orders — run the plan.</td></tr>'}</tbody></table></div></div>
-  </div>
-  <div class="a-card"><h3>Replenishment plan</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>sku</th><th>product</th><th>available</th><th>avg/day</th><th>forecast 30d</th><th>lead</th><th>safety</th><th>reorder pt</th><th>reorder qty</th><th>supplier</th><th>priority</th><th>status</th><th></th></tr></thead>
-      <tbody>${(list.replenishments || []).map(r => `<tr>
-        <td><code>${esc(r.sku_code || r.sku_id)}</code></td><td>${esc(r.product_title || r.product_id)}</td>
-        <td>${r.available}</td><td>${(+r.avg_daily).toFixed(1)}</td><td>${r.forecast_30d}</td><td>${r.lead_days}d</td>
-        <td>${r.safety_stock}</td><td>${r.reorder_point}</td>
-        <td><b>${r.reorder_qty > 0 ? r.reorder_qty : "—"}</b></td>
-        <td>${esc(r.supplier_name || "—")}</td>
-        <td><span class="a-chip">${esc(r.priority)}</span></td>
-        <td><span class="a-chip">${esc(r.status)}</span></td>
-        <td>${!["ordered", "received"].includes(r.status) ? `<button class="btn-white sm" data-act="plan-approve" data-id="${r.id}">Approve</button>` : `<code>${esc(r.po_ref || "")}</code>`}</td>
-      </tr>`).join("") || '<tr><td colspan="13">No plan yet — run the plan to forecast demand.</td></tr>'}</tbody></table></div>
-  </div>`;
-}
+
+
+
+
 function shell(content) {  $("#app").innerHTML = `
   <div class="p-shell">
     <aside class="p-side" id="pSide">
@@ -1595,141 +802,7 @@ document.addEventListener("input", e => {
   });
 });
 
-/* ---------- views ---------- */
-async function vDash() {
-  const st = await api("/admin/stats");
-  const max = Math.max(1, ...st.daily.map(d => d.t));
-  return `
-  <div class="p-cards">
-    <div class="p-stat"><em>Revenue</em><b>${money(st.revenue)}</b><small>lifetime GMV</small></div>
-    <div class="p-stat"><em>Orders</em><b>${st.orders}</b><small>${st.pending} open</small></div>
-    <div class="p-stat"><em>Customers</em><b>${st.customers}</b></div>
-    <div class="p-stat"><em>Products</em><b>${st.products}</b><small>plan: ${esc(st.plan.name)} (${st.plan.max_products} max)</small></div>
-  </div>
-  <div class="p-grid2">
-    <div class="p-panel"><h2>Revenue · last 14 days</h2>
-      <div class="p-chart">${st.daily.length ? st.daily.map(d => `<div class="bar" style="height:${Math.max(4, d.t / max * 100)}%" data-tip="${esc(d.d)}: ${money(d.t)}"></div>`).join("") : '<div class="p-empty">No orders yet</div>'}</div></div>
-    <div class="p-panel"><h2>Payment gateways</h2>
-      <table class="p-table"><thead><tr><th>Gateway</th><th>Count</th><th class="num">Volume</th><th class="num">Fees</th></tr></thead>
-      <tbody>${st.payments.map(p => `<tr><td>${esc(p.gateway)}</td><td>${p.c}</td><td class="num">${money(p.amt)}</td><td class="num">${money(p.fee)}</td></tr>`).join("") || '<tr><td colspan="4" class="p-empty">No payments yet</td></tr>'}</tbody></table></div>
-  </div>
-  <div class="p-grid2">
-    <div class="p-panel"><h2>Recent orders</h2><table class="p-table"><thead><tr><th>Order</th><th>Customer</th><th class="num">Total</th><th>Status</th></tr></thead>
-      <tbody>${st.recent.map(o => `<tr><td>${esc(o.num)}</td><td>${esc(o.name)}</td><td class="num">${money(o.total)}</td><td><span class="badge ${esc(o.status)}">${esc(o.status)}</span></td></tr>`).join("") || '<tr><td colspan="4" class="p-empty">None</td></tr>'}</tbody></table></div>
-    <div class="p-panel"><h2>Low stock</h2><table class="p-table"><thead><tr><th>Product</th><th class="num">Stock</th></tr></thead>
-      <tbody>${st.lowStock.map(p => `<tr><td>${esc(p.title.slice(0, 46))}</td><td class="num" style="color:${p.st <= 3 ? "var(--p-red)" : "inherit"}">${p.stock}</td></tr>`).join("") || '<tr><td colspan="2" class="p-empty">All healthy</td></tr>'}</tbody></table></div>
-  </div>`;
-}
 
-async function vAnalytics() {
-  const a = await api("/admin/analytics");
-  const max = Math.max(1, ...a.byDay.map(d => d.revenue));
-  return `
-  <div class="p-cards">
-    <div class="p-stat"><em>Inventory value</em><b>${money(a.invValue)}</b></div>
-    <div class="p-stat"><em>Funnel</em><b>${a.funnel.views} → ${a.funnel.carts} → ${a.funnel.orders}</b><small>views → carts → orders</small></div>
-  </div>
-  <div class="p-grid2">
-    <div class="p-panel"><h2>30-day revenue</h2><div class="p-chart">${a.byDay.map(d => `<div class="bar" style="height:${Math.max(4, d.revenue / max * 100)}%" data-tip="${esc(d.d)} ${money(d.revenue)}"></div>`).join("")}</div></div>
-    <div class="p-panel"><h2>Top products</h2><table class="p-table"><thead><tr><th></th><th>Product</th><th class="num">Units</th><th class="num">Revenue</th></tr></thead>
-      <tbody>${a.topProducts.map(p => `<tr><td class="t-emoji">${esc(p.emoji)}</td><td>${esc(p.title.slice(0, 44))}</td><td class="num">${p.units}</td><td class="num">${money(p.rev)}</td></tr>`).join("")}</tbody></table></div>
-  </div>
-  <div class="p-panel"><h2>Sales by industry</h2><table class="p-table"><thead><tr><th>Industry</th><th class="num">Revenue</th></tr></thead>
-    <tbody>${a.byIndustry.map(x => `<tr><td>${esc(x.industry)}</td><td class="num">${money(x.rev)}</td></tr>`).join("") || '<tr><td colspan="2" class="p-empty">No sales yet</td></tr>'}</tbody></table></div>`;
-}
-async function vPayments() {
-  const g = await api("/admin/gateways");
-  return `
-  <div class="p-panel"><h2>Payment gateways · ${esc(g.country.name)} (${esc(g.country.currency)})</h2>
-    <p class="p-tag">Enable gateways available in your country. Secrets are stored server-side and never sent to the browser.</p>
-    <table class="p-table"><thead><tr><th></th><th>Gateway</th><th>Methods</th><th>Fee</th><th>Mode</th><th>Enabled</th><th>Primary</th><th></th></tr></thead>
-    <tbody>${g.gateways.map(x => `<tr><td class="t-emoji">${x.emoji}</td><td><b>${esc(x.name)}</b><br><span class="p-tag">${esc(x.desc || "")}</span></td>
-      <td class="p-tag">${esc((x.methods || []).join(", "))}</td><td>${x.feePct}%${x.feeFixed ? " + " + money(x.feeFixed) : ""}</td>
-      <td><select data-gwmode="${x.id}"><option ${x.mode === "sandbox" ? "selected" : ""}>sandbox</option><option ${x.mode === "live" ? "selected" : ""}>live</option></select></td>
-      <td><input type="checkbox" data-gwen="${x.id}" ${x.enabled ? "checked" : ""}></td>
-      <td><input type="radio" name="gwprimary" data-gwpri="${x.id}" ${x.primary ? "checked" : ""} ${x.enabled ? "" : "disabled"}></td>
-      <td><button class="p-btn sm" data-gwtest="${x.id}">Test</button> <button class="p-btn sm" data-gwcfg="${x.id}">Configure</button></td></tr>`).join("")}</tbody></table>
-    <div style="margin-top:14px;display:flex;gap:10px"><button class="p-btn primary" id="gwSave">Save gateway config</button></div></div>
-  <div class="p-grid2">
-    <div class="p-panel"><h2>Shipping carriers</h2><table class="p-table"><thead><tr><th></th><th>Carrier</th><th>ETA</th><th>Base fee</th></tr></thead>
-      <tbody>${g.carriers.map(c => `<tr><td class="t-emoji">${c.emoji}</td><td>${esc(c.name)}</td><td>${c.eta[0]}–${c.eta[1]} days</td><td>${c.baseFee ? money(c.baseFee) : "—"}</td></tr>`).join("") || '<tr><td colspan="4" class="p-empty">None enabled</td></tr>'}</tbody></table></div>
-    <div class="p-panel"><h2>Notifications</h2><p class="p-tag">Active channels: ${g.notifiers.map(n => n.emoji + " " + esc(n.name)).join(", ") || "console log"}</p>
-      <p class="p-tag">Order events are dispatched to every enabled channel (audit-logged).</p></div>
-  </div>
-  <div class="p-panel"><h2>Payments ledger</h2><div id="payLedger"></div></div>`;
-}
-async function vSettings() {
-  const { settings: st, countries, taxModes, currencies } = await api("/admin/settings");
-  const geo = { countries, taxModes, currencies };
-  const reg = await api("/meta");
-  /* the feature flags ARE capability atoms — read the catalog so the settings view
-     labels each with its real name and points to where it is tuned */
-  const cat = await api("/capabilities").catch(() => ({}));
-  const capAtoms = {}; let capNote = "";
-  if (cat && cat.catalog) {
-    for (const c of cat.catalog) if (c.settings_atom) capAtoms[c.key] = c;
-    const n = Object.keys(capAtoms).length;
-    if (n) capNote = `The <b>${n}</b> toggles marked <span class="p-tag">atom</span> live in <b>◈ Capabilities</b> — switch and tune them there; this checkbox is the same bit.`;
-  }
-  const sec = (name, title, html) => `<div class="p-panel" data-sec="${name}"><h2>${title}</h2>${html}</div>`;
-  const inp = (path, label, val, type = "text") => `<label><span>${label}</span><input data-set="${path}" type="${type}" step="any" value="${esc(val)}"></label>`;
-  return `
-  ${sec("brand", "Brand", `<div class="p-form"><div class="row">
-    ${inp("brand.name", "Store name", st.brand.name)}${inp("brand.wordmark", "Wordmark", st.brand.wordmark)}</div>
-    ${inp("brand.tagline", "Tagline", st.brand.tagline)}${inp("brand.supportEmail", "Support email", st.brand.supportEmail)}
-    <label><span>Logo (emoji, text or inline SVG)</span><textarea data-set="brand.logo" rows="2">${esc(st.brand.logo || "")}</textarea></label>
-    ${inp("brand.poweredBy", "Powered-by line", st.brand.poweredBy)}
-    ${inp("brand.footerNote", "Footer note ({year} {brand})", st.brand.footerNote)}</div>`)}
-  ${sec("theme", "Theme & Aesthetics", `<div class="p-form"><div class="row3">
-    ${inp("theme.bg", "Background", st.theme.bg, "color")}${inp("theme.surface", "Surface", st.theme.surface, "color")}${inp("theme.ink", "Ink", st.theme.ink, "color")}
-    ${inp("theme.header", "Header", st.theme.header, "color")}${inp("theme.accent", "Accent", st.theme.accent, "color")}${inp("theme.accentDeep", "Accent deep", st.theme.accentDeep, "color")}
-    ${inp("theme.link", "Link", st.theme.link, "color")}${inp("theme.star", "Stars", st.theme.star, "color")}${inp("theme.deal", "Deal red", st.theme.deal, "color")}
-    </div><div class="row">
-    ${inp("theme.radius", "Corner radius", st.theme.radius)}${inp("theme.radiusBtn", "Button radius", st.theme.radiusBtn)}</div>
-    ${inp("theme.fontDisplay", "Display font stack", st.theme.fontDisplay)}${inp("theme.fontBody", "Body font stack", st.theme.fontBody)}
-    <label><span>Custom CSS</span><textarea data-set="theme.customCSS" rows="4">${esc(st.theme.customCSS || "")}</textarea></label>
-    <div class="swatch-row">${[["Gold Noir", "#C6A15B", "#0C0E13"], ["Rose Atelier", "#B76E79", "#1A1214"], ["Emerald", "#2E8B6E", "#0E1A16"], ["Midnight Blue", "#5B9BD5", "#0B1220"], ["Terracotta", "#C46A4A", "#1C1210"]].map(([n, a, h]) => `<button class="swatch" title="${n}" data-preset="${a}|${h}" style="background:linear-gradient(135deg,${a},${h})"></button>`).join("")}</div></div>`)}
-  ${sec("commerce", "Commerce & Localization", `<div class="p-form"><div class="row3">
-    <label><span>Country <em class="p-tag">(drives currency, symbol, locale, default tax — managed in Platform → Geo)</em></span><select data-set="commerce.country">${geo.countries.map(c => `<option ${st.commerce.country === c.code ? "selected" : ""} value="${c.code}">${esc(c.name)} (${esc(c.currency)} ${esc(c.symbol)})</option>`).join("")}</select></label>
-    <label><span>Currency <em class="p-tag">(default: jurisdiction currency — pick another to sell in a different settlement currency at live FX)</em></span><select data-set="commerce.currency"><option value="">— from country (${esc(geo.countries.find(c => c.code === st.commerce.country) ? geo.countries.find(c => c.code === st.commerce.country).currency : "")}) —</option>${geo.currencies.map(x => `<option value="${x.code}" ${st.commerce.currency === x.code ? "selected" : ""}>${esc(x.name)} (${x.code} ${esc(x.symbol)}) · 1=${x.usd} USD</option>`).join("")}</select></label>
-    ${inp("commerce.symbol", "Symbol (blank = from country)", st.commerce.symbol || "")}
-    <label><span>Locale <em class="p-tag">(blank = from country)</em></span><input data-set="commerce.locale" value="${esc(st.commerce.locale || "")}"></label>
-    <label><span>Tax mode <em class="p-tag">(blank = country default)</em></span><select data-set="commerce.taxMode"><option value="">— country default —</option>${geo.taxModes.map(t => `<option value="${t.key}" ${st.commerce.taxMode === t.key ? "selected" : ""}>${esc(t.label)} (${esc(t.description || t.key)})</option>`).join("")}</select></label>
-    <label><span>Tax rate (0-1, blank = country default)</span><input data-set="commerce.taxRate" type="number" step="any" value="${st.commerce.taxRate == null ? "" : st.commerce.taxRate}"></label>
-    ${inp("commerce.freeShipThreshold", "Free shipping ≥", st.commerce.freeShipThreshold, "number")}${inp("commerce.shipFee", "Shipping fee", st.commerce.shipFee, "number")}
-    ${inp("commerce.daysPriority", "Priority days", st.commerce.daysPriority, "number")}${inp("commerce.daysStandard", "Standard days", st.commerce.daysStandard, "number")}
-    ${inp("commerce.perPage", "Results per page", st.commerce.perPage, "number")}${inp("commerce.cartMaxQty", "Cart max qty", st.commerce.cartMaxQty, "number")}
-    </div></div>`)}
-  ${sec("features", "Feature Flags", `<div class="p-form"><div class="row3">
-    ${Object.entries(st.features).map(([k, v]) => {
-      const atom = (capAtoms || {})[k.replace(/([A-Z])/g, (_, c) => "_" + c.toLowerCase())];
-      return `<label style="display:flex;gap:8px;align-items:center" title="${esc(atom ? atom.description : "a settings row, not yet an atom")}"><input type="checkbox" data-feat="${k}" ${v ? "checked" : ""}> ${esc(atom ? atom.label : k)}${atom ? ' <span class="p-tag">atom</span>' : ""}</label>`;
-    }).join("")}
-    </div>${capNote ? `<p class="hint" style="grid-column:1/-1">${capNote}</p>` : ""}</div>`)}
-  ${sec("copy", "Copy & Wording", `<div class="p-form"><div class="row">
-    ${Object.entries(st.copy).slice(0, 24).map(([k, v]) => inp("copy." + k, k, v)).join("")}</div></div>`)}
-  ${sec("mode", "Deployment Mode", `<div class="p-form"><div class="row">
-    <label><span>Mode</span><select id="modeSel">${reg.deployModes.map(m => `<option value="${m.key}" ${TT.tenant.mode === m.key ? "selected" : ""}>${m.name} — ${m.desc}</option>`).join("")}</select></label>
-    <label><span>Industries (empty = all)</span><input id="modeInds" value="${esc((TT.tenant.industries || []).join(","))}" placeholder="furniture,grocery"></label></div>
-    <button class="p-btn" id="modeSave">Apply mode</button>`)}
-  <div style="display:flex;gap:12px"><button class="p-btn primary" id="setSave">Save all settings</button>
-    <button class="p-btn danger" id="setReset">Reset to defaults</button></div>`;
-}
-async function vModules() {
-  const [mkt, own] = await Promise.all([api("/market"), api("/modules")]);
-  const has = id => own.installed.some(x => x.id === id);
-  const cats = {};
-  mkt.modules.forEach(m => { (cats[m.category] = cats[m.category] || []).push(m); });
-  return `
-  <p class="p-tag" style="margin:0 0 14px">This store's capabilities: ${own.capabilities.map(c => `<span class="p-chip">${esc(c)}</span>`).join(" ")} — purchase more below; billed via store invoice (MOD-*).</p>
-  ${Object.entries(cats).map(([cat, ms]) => `<div class="p-panel"><h2>${esc(cat)}</h2>
-    ${ms.map(m => {
-    const on = has(m.id);
-    return `<div style="display:flex;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--p-line)">
-      <div style="flex:1"><b>${esc(m.name)}</b> <span class="p-tag">${m.price > 0 ? esc(m.price + " " + (m.currency || (DFLT && DFLT.currency) || "")) + " one-time" : "free"} · ${m.capabilities.map(esc).join(", ")}</span><br><span class="p-tag">${esc(m.summary || "")}</span></div>
-      ${on ? `<button class="p-btn sm danger" data-rel="${esc(m.id)}">Release</button>` : `<button class="p-btn sm primary" data-buy="${esc(m.id)}">Purchase</button>`}</div>`;
-  }).join("")}</div>`).join("")}`;
-}
 document.addEventListener("click", async e => {
   const buy = e.target.closest("[data-buy]"), rel = e.target.closest("[data-rel]");
   if (!buy && !rel) return;
@@ -1757,20 +830,6 @@ function modal(html) {
   m.classList.remove("hidden");
   return m;
 }
-async function vBilling() {
-  const [b, own] = await Promise.all([api("/admin/billing"), api("/modules")]);
-  const canPay = !!(own.gates || {})["billing.self_pay"];
-  let gws = [];
-  if (canPay) { try { gws = (await api("/providers")).gateways; } catch (e) { } }
-  return `
-  <div class="p-cards">
-    <div class="p-stat"><em>Plan</em><b>${esc(b.subscription ? b.subscription.plan : "—")}</b><small>${b.subscription ? money(b.subscription.price_month) + "/mo · " + esc(b.subscription.status) : ""}</small></div>
-    <div class="p-stat"><em>Products</em><b>${b.usage.products} / ${b.subscription ? b.subscription.max_products : "∞"}</b></div>
-    <div class="p-stat"><em>Orders this month</em><b>${b.usage.ordersMonth} / ${b.subscription ? b.subscription.max_orders_month : "∞"}</b></div>
-  </div>
-  <div class="p-panel"><h2>Invoices <span class="p-tag" style="font-weight:400;font-size:11px;margin-left:10px">${canPay ? "self-service payment enabled (Billing Pro)" : "Billing Pro enables self-service payment"}</span></h2><table class="p-table"><thead><tr><th>Number</th><th>Period</th><th class="num">Amount</th><th>Status</th><th>Paid</th><th></th></tr></thead>
-    <tbody id="invBody">${b.invoices.map(i => `<tr><td>${esc(i.number)}</td><td>${esc(i.period_start)} → ${esc(i.period_end || "")}</td><td class="num">${money(i.amount)}</td><td><span class="badge ${esc(i.status)}">${esc(i.status)}</span></td><td>${esc(i.paid_at || "—")}</td><td>${canPay && i.status !== "paid" ? `<select data-inv="${i.id}" class="p-btn sm">${gws.map(g => `<option value="${esc(g.id)}">${esc(g.name)}</option>`).join("")}</select> <button class="p-btn sm primary" data-payinv="${i.id}">Pay</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="6" class="p-empty">No invoices</td></tr>'}</tbody></table></div>`;
-}
 document.addEventListener("click", async e => {
   const pay = e.target.closest("[data-payinv]");
   if (pay) {
@@ -1778,294 +837,14 @@ document.addEventListener("click", async e => {
     try { const r = await api("/billing/invoices/" + pay.dataset.payinv + "/pay", "POST", { gateway: sel ? sel.value : undefined }); toast(r.ok ? "Invoice " + r.number + " paid" : "Failed"); render(); } catch (err) { toast(err.message); }
   }
 });
-async function vAudit() {
-  const a = await api("/admin/audit");
-  return `<div class="p-panel"><h2>Audit trail · ${a.entries.length} entries</h2>
-    <input class="p-search" placeholder="Filter…" id="auditQ" style="margin-bottom:12px">
-    <div class="p-scroll-x"><table class="p-table" id="auditTbl"><thead><tr><th>When</th><th>Actor</th><th>Action</th><th>Entity</th><th>Ref</th><th>Detail</th></tr></thead>
-    <tbody>${a.entries.map(e => `<tr><td>${esc(e.created_at)}</td><td>${esc(e.actor_type)} · ${esc(e.actor_name || "")}</td><td><b>${esc(e.action)}</b></td><td>${esc(e.entity || "")}</td><td>${esc(e.entity_id || "")}</td><td class="p-tag">${esc((e.meta || "").slice(0, 90))}</td></tr>`).join("")}</tbody></table></div></div>`;
-}
-async function vMonitor() {
-  const m = await api("/admin/monitor");
-  const max = Math.max(1, ...m.series.map(x => x.req));
-  return `
-  <div class="p-cards">
-    <div class="p-stat"><em>Requests</em><b>${m.totals.req}</b><small>${m.totals.err} errors</small></div>
-    <div class="p-stat"><em>Avg latency</em><b>${m.totals.avgMs}ms</b></div>
-  </div>
-  <div class="p-panel"><h2>Live traffic · last 30 min</h2>
-    <div class="p-chart">${m.series.map(x => `<div class="bar" style="height:${Math.max(3, x.req / max * 100)}%" data-tip="${new Date(x.t).toLocaleTimeString()}: ${x.req} req"></div>`).join("")}</div></div>
-  <div class="p-panel"><h2>Endpoints</h2><table class="p-table"><thead><tr><th>Endpoint</th><th class="num">Calls</th><th class="num">Errors</th><th class="num">Avg ms</th></tr></thead>
-    <tbody>${m.endpoints.map(x => `<tr><td>${esc(x.endpoint)}</td><td class="num">${x.count}</td><td class="num">${x.err}</td><td class="num">${x.avgMs}</td></tr>`).join("")}</tbody></table></div>`;
-}
-async function vStudio() {
-  const defs = Object.fromEntries(Object.entries((await api("/meta/entities")).entities).filter(([, d]) => !d.platformOnly));
-  const customs = await api("/meta/entity/custom_provider").catch(() => ({ rows: [] }));
-  return `
-  <div class="p-panel"><h2>Entity Studio</h2>
-    <p class="p-tag">Browse and manage entity data for this store.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0">${Object.entries(defs).map(([k, d]) => `<button class="p-btn sm ${k === A.studioSel ? "primary" : ""}" data-studio="${k}">${d.icon} ${esc(d.label)}</button>`).join("")}</div>
-    <div id="studioBody">${A.studioSel ? await entityTable(A.studioSel) : '<div class="p-empty">Select an entity above</div>'}</div></div>`;
-}
 
 /* ---------- render ---------- */
 /* ---------- serialized / contracts / tenders (custom screens over the entity engine) ---------- */
 const pj = (x, d) => { try { return JSON.parse(x == null || x === "" ? (d || "null") : x); } catch (e) { return d == null ? null : JSON.parse(d); } };
-async function vSerialized() {
-  const products = ((await api("/meta/entity/product")).rows || []).map(p => ({ id: p.id, t: p.title || p.id }));
-  return `<div class="p-panel"><div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px">
-    <label><span>Bulk-generate units for</span><select id="sbProd">${products.map(p => `<option value="${esc(p.id)}">${esc(String(p.t).slice(0, 40))}</option>`).join("")}</select></label>
-    <label><span>Count</span><input id="sbCount" type="number" value="5" min="1" max="500"></label>
-    <label><span>Prefix (optional)</span><input id="sbPrefix" placeholder="e.g. SN-2026"></label>
-    <button class="p-btn primary sm" id="sbGo">Generate</button></div>
-    ${await entityTable("serialized")}</div>`;
-}
-function wireSerialized() { const g = $("#sbGo"); if (g) g.onclick = async () => { try { const r = await api("/admin/serialized/bulk", "POST", { product_id: $("#sbProd").value, count: Number($("#sbCount").value) || 1, prefix: $("#sbPrefix").value || undefined }); toast("Generated " + r.created + " serialized units"); render(); } catch (e) { toast(e.message); } }; }
-
-/* ---------- global catalog: platform-supplied products this store may list ----------
-   The platform populates the global catalogue automatically (one canonical product per
-   universe the constitution declares) and manually (console rows). A store admin may
-   pull one into their own catalogue ONLY IF the platform has permitted it — the gate is
-   server-side; this view never decides, it reports what the platform allows. */
-async function vGcatalog() {
-  let items = [];
-  try { ({ items } = await api("/tenant/catalog/importable")); } catch (e) { toast(e.message); }
-  const permitted = items.filter(i => i.permitted && !i.listed);
-  const listed = items.filter(i => i.listed);
-  const denied = items.filter(i => !i.permitted);
-  const row = i => `<tr><td><b>${esc(i.name)}</b><div style="font-size:12px;color:var(--p-muted)">${esc(i.sku)}</div></td>
-    <td class="p-tag">${esc(i.universe)}</td><td>${esc(i.type)}</td>
-    <td>${i.listed ? '<span class="badge active">On your shelf</span>' : i.permitted ? '<button class="p-btn primary sm" data-gimp="' + i.id + '">Add to my store</button>' : '<span class="badge">🔒 ' + esc(i.reason || "Not permitted") + '</span>'}</td></tr>`;
-  return `
-  <div class="p-panel"><h2>🌐 Global Catalog — platform products</h2>
-    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Every product archetype the platform supports (UPIP §1: Physical, Digital, OTT, Cloud, API, AI, Financial, Quantum, Future Unknown…), populated automatically from the constitution and extended by the platform admin. You may list one here <b>only when the platform has permitted your store</b> — import is idempotent and never counts against your plan quota.</p>
-    <div class="p-stats" style="margin-bottom:14px">
-      <div class="p-stat"><em>Available to you</em><b>${permitted.length}</b></div>
-      <div class="p-stat"><em>Already on your shelf</em><b>${listed.length}</b></div>
-      <div class="p-stat"><em>Not yet permitted</em><b>${denied.length}</b><small>request from the platform admin</small></div>
-    </div>
-    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Product</th><th>Universe</th><th>Type</th><th></th></tr></thead>
-    <tbody>${items.map(row).join("") || '<tr><td colspan="4" class="p-empty">The global catalogue is empty</td></tr>'}</tbody></table></div></div>`;
-}
-function wireGcatalog() {
-  $$("[data-gimp]").forEach(b => b.onclick = async () => {
-    try {
-      const r = await api("/tenant/catalog/import", "POST", { global_product_id: b.dataset.gimp });
-      toast("Imported as " + r.type + (r.updated ? " (refreshed)" : ""));
-      render();
-    } catch (e) { toast(e.message); }
-  });
-}
-async function vContracts() {
-  const rows = (await api("/meta/entity/contract")).rows || [];
-  return `<div class="p-panel"><div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px">
-    <label><span>Buyer name</span><input id="ncName" placeholder="Acme Corp"></label>
-    <label><span>Buyer email</span><input id="ncEmail" placeholder="buy@acme.example"></label>
-    <label><span>Product ids (CSV)</span><input id="ncProducts" placeholder="VR-HARD-01"></label>
-    <label><span>Fixed unit price</span><input id="ncPrice" type="number" step="0.01" placeholder="10.00"></label>
-    <label><span>Min qty</span><input id="ncMin" type="number" value="10"></label>
-    <button class="p-btn primary sm" id="ncGo">+ New contract</button></div>
-    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Ref</th><th>Buyer</th><th>Products</th><th>Price</th><th>Min</th><th>Valid</th><th>Status</th><th></th></tr></thead>
-    <tbody>${rows.map(c => { const pr = pj(c.pricing, "{}") || {}, pid = pj(c.product_ids, "[]") || []; const fp = pr.fixed ? Object.values(pr.fixed)[0] : (Array.isArray(pr.tiers) && pr.tiers[0] ? pr.tiers[0].price : null); return `<tr><td><b>${esc(c.ref)}</b></td><td>${esc(c.buyer_name)}<br><span class="p-tag">${esc(c.buyer_email)}</span></td><td>${esc((pid).join(", "))}</td><td>${fp != null ? money(fp) : "—"}</td><td>${esc(c.min_qty)}</td><td>${esc(c.valid_from || "")}→${esc(c.valid_to || "")}</td><td><span class="badge ${esc(c.status)}">${esc(c.status)}</span></td><td style="white-space:nowrap;text-align:right">${c.status !== "active" ? `<button class="p-btn sm" data-cstat="${c.id}" data-v="active">Activate</button>` : ""}${c.status === "active" ? `<button class="p-btn sm" data-cstat="${c.id}" data-v="expired">Expire</button> <button class="p-btn sm danger" data-cstat="${c.id}" data-v="terminated">Terminate</button>` : ""} <button class="p-btn sm" data-cedit="${c.id}" data-id="${esc(c.id)}">Edit</button> <button class="p-btn sm danger" data-cdel="${c.id}">✕</button></td></tr>`; }).join("")}</tbody></table></div></div>`;
-}
-function wireContracts() {
-  $$("[data-cstat]").forEach(b => b.onclick = async () => { try { await api(`/admin/contracts/${b.dataset.cstat}/status`, "PUT", { status: b.dataset.v }); toast("Contract " + b.dataset.v); render(); } catch (e) { toast(e.message); } });
-  $$("[data-cedit]").forEach(b => b.onclick = () => openForm("contract", b.dataset.id, render));
-  $$("[data-cdel]").forEach(b => b.onclick = async () => { if (!confirm("Delete contract?")) return; try { await api(`/meta/entity/contract/${b.dataset.cdel}`, "DELETE"); toast("Deleted"); render(); } catch (e) { toast(e.message); } });
-  const g = $("#ncGo"); if (g) g.onclick = async () => {
-    const ids = $("#ncProducts").value.split(",").map(x => x.trim()).filter(Boolean), pv = Number($("#ncPrice").value), pricing = {}; if (ids.length && pv) { pricing.fixed = {}; ids.forEach(id => pricing.fixed[id] = pv); }
-    try { const r = await api("/admin/contracts", "POST", { buyer_name: $("#ncName").value, buyer_email: $("#ncEmail").value, product_ids: ids, pricing, min_qty: Number($("#ncMin").value) || 1 }); toast("Contract " + r.ref); render(); } catch (e) { toast(e.message); }
-  };
-}
-async function vTenders() {
-  const rows = (await api("/meta/entity/tender")).rows || [];
-  return `<div class="p-panel"><div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px">
-    <label><span>Title</span><input id="ntTitle" placeholder="Annual fastener supply"></label>
-    <label><span>Issuing org</span><input id="ntOrg" placeholder="BuildRight LLC"></label>
-    <label><span>Budget</span><input id="ntBudget" type="number" step="1" placeholder="120000"></label>
-    <button class="p-btn primary sm" id="ntGo">+ New tender</button></div>
-    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Ref</th><th>Title</th><th>Org</th><th>Budget</th><th>Closes</th><th>Status</th><th></th></tr></thead>
-    <tbody>${rows.map(t => `<tr><td><b>${esc(t.ref)}</b></td><td>${esc(t.title)}</td><td>${esc(t.buyer_org)}</td><td>${t.budget ? money(t.budget) : "—"}</td><td>${esc(t.close_at || "")}</td><td><span class="badge ${esc(t.status)}">${esc(t.status)}</span>${t.awarded_contract_id ? ` <span class="p-tag">→ contract #${esc(t.awarded_contract_id)}</span>` : ""}</td><td style="white-space:nowrap;text-align:right">${(t.status === "open" || t.status === "in_review") ? `<button class="p-btn sm primary" data-taward="${t.id}">Award → contract</button>` : ""} <button class="p-btn sm danger" data-tdel="${t.id}">✕</button></td></tr>`).join("")}</tbody></table></div></div>`;
-}
-function wireTenders() {
-  $$("[data-taward]").forEach(b => b.onclick = async () => { try { const r = await api(`/admin/tenders/${b.dataset.taward}/award`, "POST", {}); toast("Awarded → " + r.contract_ref); render(); } catch (e) { toast(e.message); } });
-  $$("[data-tdel]").forEach(b => b.onclick = async () => { if (!confirm("Delete tender?")) return; try { await api(`/meta/entity/tender/${b.dataset.tdel}`, "DELETE"); toast("Deleted"); render(); } catch (e) { toast(e.message); } });
-  const g = $("#ntGo"); if (g) g.onclick = async () => { try { const r = await api("/admin/tenders", "POST", { title: $("#ntTitle").value, buyer_org: $("#ntOrg").value, budget: Number($("#ntBudget").value) || 0 }); toast("Tender " + r.ref); render(); } catch (e) { toast(e.message); } };
-}
-
-/* ---------- AI Studio (capability layer) ---------- */
-async function vAI() {
-  const ov = await api("/ai");
-  const cap = ov.capabilities || [];
-  AI_CAPS = cap;
-  const st = ov.settings || {};
-  const premProviders = (await api("/meta")).providersAi || [];
-  const aiGw = await api("/admin/ai-gateways").catch(() => ({ gateways: [] }));
-  const tierBadge = t => `<span class="badge ${t === "premium" ? "active" : "processing"}">${esc(t)}</span>`;
-  return `<div class="p-panel"><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
-      <h2 style="margin:0">🤖 AI Studio</h2>
-      <span class="p-tag">store tier: ${tierBadge(ov.plan.tier)}</span>
-      <span style="flex:1"></span>
-      <span class="p-tag">${(ov.usage && ov.usage.totalCalls) || 0} calls · ${money(ov.usage && ov.usage.totalCost || 0)} accrued</span>
-    </div>
-    <p style="margin:0 0 14px;color:var(--p-muted);font-size:13px">Free built-in engine is on for every store (1st priority). Premium models (OpenAI / Anthropic / Stability / Google Vision) unlock for paid stores or after buying the <b>AI Premium</b> module — configure provider + model per capability below.</p>
-    <div class="p-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-bottom:16px">
-      ${cap.map(c => `<div class="p-stat" style="border:1px solid var(--p-line);border-radius:12px;padding:12px">
-        <div style="display:flex;align-items:center;gap:6px"><b>${esc(c.icon)} ${esc(c.name)}</b>${tierBadge(c.tier)}</div>
-        <div style="font-size:12px;color:var(--p-muted);margin:4px 0">${esc(c.desc)}</div>
-        <div style="font-size:12px">Provider: <b>${c.provider ? esc(c.provider.emoji + " " + c.provider.name) : "—"}</b> · model <code>${esc(c.model || "—")}</code></div>
-        <div style="font-size:12px;color:${c.status === "premium_locked" ? "var(--p-red)" : "var(--p-muted)"}">Status: ${esc(c.status.replace("_", " "))} · ${c.remaining}/${c.limits.perDay} left today</div>
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;margin-top:8px">
-          <input type="checkbox" data-aiprem="${esc(c.key)}" ${st[c.key] && st[c.key].premium ? "checked" : ""} ${c.premium ? "" : "disabled"}> use premium model
-        </label>
-        <div style="display:flex;gap:6px;margin-top:6px">
-          <select data-aiprov="${esc(c.key)}" ${c.premium ? "" : "disabled"}><option value="">provider…</option>${(premProviders.filter(p => (c.key)).map(p => `<option value="${esc(p.id)}" ${st[c.key] && st[c.key].provider === p.id ? "selected" : ""}>${esc(p.name)}</option>`).join(""))}</select>
-          <input data-aimodel="${esc(c.key)}" placeholder="model" value="${esc((st[c.key] || {}).model || "")}" style="flex:1" ${c.premium ? "" : "disabled"}>
-        </div>
-      </div>`).join("")}
-    </div>
-    <div class="p-panel"><h3>AI Provider Credentials</h3>
-      <p style="color:var(--p-muted);font-size:13px">Configure API keys for each AI provider. Secrets are stored encrypted server-side.</p>
-      <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Provider</th><th>Fields</th><th>Status</th><th></th></tr></thead>
-      <tbody id="aiGwBody">${aiGw.gateways.map(gw => {
-        const p = premProviders.find(p => p.id === gw.id) || {};
-        const fields = p.fields || [];
-        const hasSecret = fields.some(f => f.secret && (gw.config || {})[f.key]);
-        return `<tr>
-          <td><b>${esc(p.emoji)} ${esc(p.name)}</b><br><span class="p-tag">${esc(p.desc || "")}</span></td>
-          <td><div style="display:flex;flex-wrap:wrap;gap:6px">${fields.map(f => {
-            const val = (gw.config || {})[f.key] || "";
-            const masked = f.secret && val ? `••••${val.slice(-4)}` : val;
-            return `<label style="font-size:11px"><span>${esc(f.label)}</span><input data-aicred="${gw.id}" data-aikey="${f.key}" value="${esc(masked)}" style="font-size:11px" ${f.secret ? 'type="password"' : ''}></label>`;
-          }).join("")}</div></td>
-          <td>${hasSecret ? '<span class="badge active">configured</span>' : '<span class="badge processing">unconfigured</span>'}</td>
-          <td><button class="p-btn sm" data-aicfg="${gw.id}">Test</button></td>
-        </tr>`;
-      }).join("") || '<tr><td colspan="4">No AI providers available. Configure them in Platform Console → Provider Registry.</td></tr>'}</tbody></table></div>
-      <div style="margin-top:10px;display:flex;gap:10px"><button class="p-btn primary" id="aiGwSave">Save credentials</button><button class="p-btn" id="aiGwTestAll">Test all</button></div>
-    </div>
-    <div class="p-panel"><h3>Run a capability</h3>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
-        <label><span>Capability</span><select id="aiCapSel">${cap.map(c => `<option value="${esc(c.key)}">${esc(c.name)}</option>`).join("")}</select></label>
-        <div id="aiParams" class="row"></div>
-        <button class="p-btn primary sm" id="aiRun">Run</button>
-        <button class="p-btn sm" id="aiTask">Queue as task</button>
-      </div>
-      <pre id="aiOut" class="p-code" style="margin-top:10px;max-height:340px;overflow:auto;background:#0b0d12;color:#cfe;border-radius:10px;padding:10px;font-size:12px">Run a capability to see output…</pre></div>
-    <div class="p-panel"><h3>Usage ledger</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Capability</th><th>Provider</th><th>Tier</th><th class="num">Units</th><th class="num">Cost</th><th class="num">Calls</th><th>Last</th></tr></thead>
-      <tbody>${(ov.usage && ov.usage.rows || []).map(u => `<tr><td>${esc(u.capability)}</td><td>${esc(u.provider)}</td><td>${esc(u.tier)}</td><td class="num">${u.units}</td><td class="num">${money(u.cost)}</td><td class="num">${u.calls}</td><td>${esc(u.last || "")}</td></tr>`).join("") || '<tr><td colspan="7">No AI calls yet.</td></tr>'}</tbody></table></div></div>
-    <div class="p-panel"><h3>Recent tasks</h3><div id="aiTasks">${(await api("/ai/tasks")).tasks.map(t => `<div class="p-tag" style="display:block;margin:4px 0">${esc(t.capability)} · <b>${esc(t.status)}</b> · ${money(t.cost || 0)}</div>`).join("") || "No tasks."}</div></div>
-    </div>`;
-}
-function wireAI() {
-  const save = async () => {
-    const ai = {};
-    $$("[data-aiprem]").forEach(cb => { const k = cb.dataset.aiprem; ai[k] = ai[k] || {}; ai[k].premium = cb.checked; });
-    $$("[data-aiprov]").forEach(sel => { const k = sel.dataset.aiprov; ai[k] = ai[k] || {}; if (sel.value) ai[k].provider = sel.value; });
-    $$("[data-aimodel]").forEach(inp => { const k = inp.dataset.aimodel; ai[k] = ai[k] || {}; if (inp.value) ai[k].model = inp.value; });
-    try { await api("/admin/settings", "PUT", { ai }); toast("AI configuration saved"); render(); } catch (e) { toast(e.message); }
-  };
-  $$("[data-aiprem],[data-aiprov],[data-aimodel]").forEach(el => el.onchange = el.onblur = save);
-  const saveCredentials = async () => {
-    const creds = {};
-    $$("[data-aicred]").forEach(inp => {
-      const id = inp.dataset.aicred, k = inp.dataset.aikey, v = inp.value;
-      if (v) { creds[id] = creds[id] || {}; creds[id][k] = v; }
-    });
-    try { await api("/admin/ai-gateways", "PUT", creds); toast("AI credentials saved"); } catch (e) { toast(e.message); }
-  };
-  const testCredential = async id => {
-    try { const r = await api("/admin/ai-gateways/" + encodeURIComponent(id) + "/test", "POST", {}); toast(r.message); } catch (e) { toast(e.message); }
-  };
-  const testAll = async () => {
-    $$("[data-aicfg]").forEach(b => testCredential(b.dataset.aicfg));
-  };
-  if ($("#aiGwSave")) $("#aiGwSave").onclick = saveCredentials;
-  if ($("#aiGwTestAll")) $("#aiGwTestAll").onclick = testAll;
-  /* the inputs a capability takes are declared on its row (`params`) */
-  const capRows = AI_CAPS || [];
-  const drawParams = () => { const row = capRows.find(c => c.key === ($("#aiCapSel") || {}).value) || {}; const box = $("#aiParams"); if (box) box.innerHTML = (row.params || []).map(p => `<label><span>${esc(p.label || p.key)}</span><input data-aiparam="${esc(p.key)}" data-ailist="${p.list ? 1 : ""}" placeholder="${esc(p.placeholder || "")}"></label>`).join(""); };
-  if ($("#aiCapSel")) { $("#aiCapSel").onchange = drawParams; drawParams(); }
-  const collect = () => { const cap = $("#aiCapSel").value, p = {}; $$("[data-aiparam]").forEach(el => { const v = el.value.trim(); if (!v) return; p[el.dataset.aiparam] = el.dataset.ailist ? v.split(",").map(x => x.trim()).filter(Boolean) : v; }); return { cap, p }; };
-  const run = async () => { const { cap, p } = collect(); try { const r = await api("/ai/run/" + encodeURIComponent(cap), "POST", p); $("#aiOut").textContent = JSON.stringify(r, null, 1); toast(cap + " · " + (r.tier || "") + " · " + money(r.cost || 0)); } catch (e) { $("#aiOut").textContent = "⚠ " + e.message; toast(e.message); } };
-  const task = async () => { const { cap, p } = collect(); try { const r = await api("/ai/tasks", "POST", { capability: cap, params: p, runNow: true }); $("#aiOut").textContent = JSON.stringify(r.tasks.slice(0, 6), null, 1); toast("Queued"); render(); } catch (e) { toast(e.message); } };
-  if ($("#aiRun")) $("#aiRun").onclick = run; if ($("#aiTask")) $("#aiTask").onclick = task;
-  $$("[data-aicfg]").forEach(b => b.onclick = () => testCredential(b.dataset.aicfg));
-}
 
 
-/* ---------- Outbound Webhooks ---------- */
-async function vWebhooks() {
-  const d = await api("/admin/webhooks");
-  const ev = d.events || [];
-  const whRow = w => `<tr><td><code>${esc((w.url || "").slice(0, 46))}</code>${w.description ? `<br><span class="p-tag">${esc(w.description)}</span>` : ""}</td><td class="p-tag">${(w.events || []).map(e => `<code>${esc(e)}</code>`).join(" ")}</td><td><span class="badge ${w.active ? "published" : "draft"}">${w.active ? "active" : "off"}</span></td>
-    <td style="text-align:right;white-space:nowrap"><button class="p-btn sm" data-wtest="${w.id}">Send test</button> <button class="p-btn sm danger" data-wwipe="${w.id}">✕</button></td></tr>`;
-  const dl = (d.deliveries || []).slice(0, 40).map(x => `<tr><td><code>${esc(x.event)}</code></td><td><span class="badge ${esc(smTone("webhook_delivery", x.status))}">${esc(x.status)}</span></td><td class="num">${x.attempts}</td><td class="p-tag">${esc((x.response || "").slice(0, 40))}</td><td>${esc((x.created_at || "").slice(0, 16))}</td></tr>`).join("");
-  return `<div class="p-panel"><h2>🔗 Webhooks</h2>
-    <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Outbound events to your endpoints — payloads are HMAC-signed (X-Lux-Signature) and retried. Available events are a data registry; pick which ones each hook receives.</p>
-    <div class="p-panel"><b>Add endpoint</b><div style="display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin-top:6px">
-      <label><span>URL</span><input id="whUrl" placeholder="https://hooks.acme/orders" style="min-width:240px"></label>
-      <label><span>Secret</span><input id="whSecret" placeholder="signing secret"></label>
-      <label><span>Description</span><input id="whDesc"></label>
-      <button class="p-btn primary sm" id="whAdd">Add webhook</button></div>
-      <div style="margin-top:6px" class="p-tag">Events: ${ev.map(e => `<label style="margin-right:8px"><input type="checkbox" class="whEv" value="${esc(e)}"> ${esc(e)}</label>`).join("")}</div>
-    </div>
-    <h3>Endpoints</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>URL</th><th>Events</th><th>Status</th><th></th></tr></thead><tbody>${(d.webhooks || []).map(whRow).join("") || '<tr><td colspan="4">No webhooks.</td></tr>'}</tbody></table></div>
-    <div style="margin-top:8px"><button class="p-btn sm" id="whDrain">Retry failed / deliver queued</button></div>
-    <h3>Recent deliveries</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Event</th><th>Status</th><th class="num">Tries</th><th>Response</th><th>When</th></tr></thead><tbody>${dl || '<tr><td colspan="5">No deliveries yet.</td></tr>'}</tbody></table></div></div>`;
-}
-function wireWebhooks() {
-  const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
-  if ($("#whAdd")) $("#whAdd").onclick = async () => { const events = $$(".whEv:checked").map(c => c.value); try { await api("/admin/webhooks", "POST", { url: $("#whUrl").value, secret: $("#whSecret").value, description: $("#whDesc").value, events: events.length ? events : ["*"] }); toast("Webhook added"); render(); } catch (e) { toast(e.message); } };
-  $$("[data-wwipe]").forEach(b => b.onclick = async () => { if (!confirm("Delete webhook?")) return; try { await api("/admin/webhooks/" + b.dataset.wwipe, "DELETE"); render(); } catch (e) { toast(e.message); } });
-  $$("[data-wtest]").forEach(b => b.onclick = async () => { try { const r = await api("/admin/webhooks/" + b.dataset.wtest + "/test", "POST", { event: "store.test" }); toast(r.ok ? "Test dispatched" : "Failed"); render(); } catch (e) { toast(e.message); } });
-  if ($("#whDrain")) $("#whDrain").onclick = async () => { try { const r = await api("/admin/webhooks/drain", "POST", {}); toast((r.drained || 0) + " attempted, " + (r.remaining || 0) + " pending"); render(); } catch (e) { toast(e.message); } };
-}
-/* ---------- Trash & Retention (governance) ---------- */
-async function vTrash() {
-  const d = await api("/admin/trash");
-  const items = d.items || []; const counts = d.counts || {}; const ret = d.retention || {};
-  return `<div class="p-panel"><h2>🗑️ Trash &amp; Retention</h2>
-    <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Deleting content moves it to the trash (soft delete) — it disappears from the storefront but stays restorable. Retention purges tombstoned rows older than the policy (data-driven, per entity; 0 = keep forever).</p>
-    <div class="p-panel"><b>Retention (days; 0 = never purge)</b><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
-      ${Object.keys({ _default: 1, products: 1, orders: 1, reviews: 1, offers: 1, coupons: 1 }).map(k => `<label style="font-size:12px"><span>${esc(k)}</span><input data-ret="${k}" type="number" value="${ret[k] != null ? ret[k] : ""}" placeholder="—"></label>`).join("")}
-      <button class="p-btn sm primary" id="retSave">Save policy</button></div></div>
-    <h3>Trashed (${items.length})</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Entity</th><th>Reference</th><th>Deleted</th><th></th></tr></thead><tbody>
-      ${items.map(i => `<tr><td><code>${esc(i.entity)}</code></td><td>${esc(i.id)}</td><td>${esc((i.deleted_at || "").slice(0, 16))}</td><td style="text-align:right"><button class="p-btn sm" data-restore="${esc(i.entity)}" data-id="${esc(i.id)}">Restore</button></td></tr>`).join("") || '<tr><td colspan="4">Trash is empty.</td></tr>'}
-    </tbody></table></div>
-    <div style="margin-top:10px;display:flex;gap:8px;align-items:center"><button class="p-btn sm danger" id="purgeNow">Purge expired (per retention)</button><span class="p-tag">${Object.entries(counts).filter(x => x[1]).map(x => `${x[0]}: ${x[1]}`).join(" · ") || "nothing trashed"}</span></div></div>`;
-}
-function wireTrash() {
-  const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
-  $$("[data-restore]").forEach(b => b.onclick = async () => { try { await api(`/admin/trash/${encodeURIComponent(b.dataset.restore)}/${encodeURIComponent(b.dataset.id)}/restore`, "POST", {}); toast("Restored"); render(); } catch (e) { toast(e.message); } });
-  if ($("#retSave")) $("#retSave").onclick = async () => { const patch = {}; $$("[data-ret]").forEach(i => { if (i.value !== "") patch[i.dataset.ret] = Number(i.value); }); try { await api("/admin/retention", "PUT", patch); toast("Retention saved"); render(); } catch (e) { toast(e.message); } };
-  if ($("#purgeNow")) $("#purgeNow").onclick = async () => { if (!confirm("Purge tombstoned rows past their retention? This is permanent.")) return; try { const r = await api("/admin/trash/purge", "POST", {}); toast("Purged " + Object.values(r.purged || {}).reduce((a, b) => a + b, 0)); render(); } catch (e) { toast(e.message); } };
-}
-/* ---------- Team & Roles (RBAC) ---------- */
-/* this store's OWN role set — roles are per-store data. A store that has never edited its
-   set inherits the platform default (ownSet false); the first edit forks it, and a fork can
-   be dissolved back to the default. Defining a role is a team:write trust. */
-async function vTeam() {
-  const [r, s] = await Promise.all([api("/admin/roles"), api("/admin/staff")]);
-  const roles = r.roles || [], secs = r.sections || [];
-  const canEdit = (A.allowed || []).includes("*") || (A.allowed || []).includes("team");
-  const row = u => `<tr><td><b>${esc(u.name)}</b><br><span class="p-tag">${esc(u.email)}</span></td>
-    <td><select data-srole="${u.id}" ${String(u.id) === String(r.me.user.id) ? "disabled" : ""}>${roles.map(rl => `<option ${u.staff_role === rl.key ? "selected" : ""}>${esc(rl.key)}</option>`).join("")}</select></td>
-    <td><span class="badge ${u.disabled ? "failed" : "published"}">${u.disabled ? "disabled" : "active"}</span></td>
-    <td class="p-tag">${esc((u.last_login || "").slice(0, 16) || "never")}</td>
-    <td style="text-align:right;white-space:nowrap"><button class="p-btn sm" data-sperm="${u.id}" title="Per-user overrides">Perms</button> ${String(u.id) !== String(r.me.user.id) ? `<button class="p-btn sm danger" data-sdel="${u.id}">Remove</button>` : ""}</td></tr>`;
-  return `<div class="p-panel"><h2>👥 Team &amp; Roles</h2>
-    <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Staff share the store-console admin login but see and can only edit the sections their <b>role</b> grants. This store's roles are its own data${r.ownSet ? "" : " — it currently inherits the platform default, and the first edit forks it"}; per-user permission overrides take precedence.</p>
-    <h3>Role definitions (this store) ${r.ownSet ? '<span class="badge">forked from the platform default</span>' : '<span class="badge">platform default</span>'}</h3>
-    <div style="display:flex;gap:8px;margin-bottom:8px">${canEdit ? `<button class="p-btn primary sm" id="roleNew">+ New role</button>` : ""}${r.ownSet && canEdit ? `<button class="p-btn sm" id="roleReset">Reset to platform default</button>` : ""}</div>
-    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Role</th><th>Grants (section: access)</th>${canEdit ? "<th></th>" : ""}</tr></thead><tbody>${roles.map(rl => `<tr><td><b>${esc(rl.name)}</b><br><code>${esc(rl.key)}</code></td><td class="p-tag">${Object.entries(rl.sections || {}).map(([k, v]) => `${esc(k)}=${esc(v)}`).join(" · ")}</td>${canEdit ? `<td style="text-align:right">${rl.key !== "owner" ? `<button class="p-btn sm" data-roleedit="${esc(rl.key)}">Edit</button>` : ""}</td>` : ""}</tr>`).join("")}</tbody></table></div>
-    <h3>Members</h3><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Member</th><th>Role</th><th>Status</th><th>Last login</th><th></th></tr></thead><tbody>${(s.staff || []).map(row).join("")}</tbody></table></div>
-    <div class="p-panel" style="margin-top:10px"><b>Add staff member</b><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin-top:6px">
-      <label><span>Name</span><input id="stName"></label><label><span>Email</span><input id="stEmail"></label>
-      <label><span>Role</span><select id="stRole">${roles.filter(rl => rl.key !== "owner").map(rl => `<option>${esc(rl.key)}</option>`).join("")}</select></label>
-      <label><span>Password</span><input id="stPw" type="text" placeholder="blank = generate"></label>
-      <button class="p-btn primary sm" id="stAdd">Add member</button><span id="stGen" class="p-tag"></span></div></div></div>`;
-}
+
+
 /* the per-section grant editor: one control per console section, each read/write/off.
    It renders for create and edit from the same shape, so the two cannot drift. */
 function roleModal(role, sections, apps) {
@@ -2093,110 +872,12 @@ function roleModal(role, sections, apps) {
     catch (e) { const err = m.querySelector("#rmErr"); err.textContent = e.message; err.classList.remove("hidden"); }
   };
 }
-function wireTeam() {
-  const $$ = s => Array.from(document.querySelectorAll(s));
-  $$("[data-srole]").forEach(sel => sel.onchange = async () => { try { await api("/admin/staff/" + sel.dataset.srole, "PUT", { staff_role: sel.value }); toast("Role updated"); } catch (e) { toast(e.message); } });
-  $$("[data-sdel]").forEach(b => b.onclick = async () => { if (!confirm("Disable this member?")) return; try { await api("/admin/staff/" + b.dataset.sdel, "DELETE"); render(); } catch (e) { toast(e.message); } });
-  $$("[data-sperm]").forEach(b => b.onclick = async () => { const cur = prompt("Per-user overrides as JSON, e.g. {\"products\":\"read\",\"trash\":false}", "{}"); if (cur == null) return; try { await api("/admin/staff/" + b.dataset.sperm, "PUT", { perms: JSON.parse(cur) }); toast("Saved"); } catch (e) { toast(e.message); } });
-  if (document.getElementById("stAdd")) document.getElementById("stAdd").onclick = async () => { try { const r = await api("/admin/staff", "POST", { name: document.getElementById("stName").value, email: document.getElementById("stEmail").value, staff_role: document.getElementById("stRole").value, password: document.getElementById("stPw").value || undefined }); if (r.generated) document.getElementById("stGen").textContent = "generated password: " + r.generated; toast("Member added"); render(); } catch (e) { toast(e.message); } };
-  /* per-store role definition: create, edit, and dissolve a fork back to the default */
-  const newBtn = document.getElementById("roleNew");
-  if (newBtn) newBtn.onclick = async () => { const all = await api("/admin/roles"); roleModal(null, all.sections || [], all.apps); };
-  $$("[data-roleedit]").forEach(b => b.onclick = async () => {
-    const all = await api("/admin/roles");
-    const role = (all.roles || []).find(r => r.key === b.dataset.roleedit);
-    roleModal(role, all.sections || [], all.apps);
-  });
-  const resetBtn = document.getElementById("roleReset");
-  if (resetBtn) resetBtn.onclick = async () => { if (!confirm("Discard this store's own roles and inherit the platform default again?")) return; try { await api("/admin/roles/reset", "POST", {}); toast("Reverted to the platform default"); render(); } catch (e) { toast(e.message); } };
-}
-/* ---------- SSO & Integrations (SSO/SAML, SCIM, transfers, tax) ---------- */
-async function vSso() {
-  const [s, tks, tf, tax] = await Promise.all([api("/admin/sso"), api("/admin/webhooks").catch(() => ({ webhooks: [] })), api("/admin/transfers"), api("/admin/tax/report")]);
-  const c = s.connection || { enabled: false };
-  return `<div class="p-panel"><h2>🔐 SSO & Integrations</h2>
-    <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Single sign-on and directory sync via fill-in-the-blank config. Nothing activates until you enable it.</p>
-    <div class="p-panel"><b>SAML / OIDC SSO</b>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin-top:6px">
-        <label><span>Enabled</span><input id="ssoOn" type="checkbox" ${c.enabled ? "checked" : ""}></label>
-        <label><span>Provider</span><select id="ssoProv"><option ${c.provider === "okta" ? "selected" : ""}>okta</option><option ${c.provider === "entra" ? "selected" : ""}>entra</option><option ${c.provider === "google" ? "selected" : ""}>google</option><option ${c.provider === "saml-generic" ? "selected" : ""}>saml-generic</option></select></label>
-        <label><span>Entity ID</span><input id="ssoEnt" value="${esc(c.entityId || "")}"></label>
-        <label><span>SSO URL</span><input id="ssoUrl" style="min-width:240px" value="${esc(c.ssoUrl || "")}" placeholder="https://idp.example/app/sso"></label>
-        <label><span>Email domains</span><input id="ssoDom" value="${esc((c.domains || []).join(","))}" placeholder="corp.com,acme.com"></label>
-        <button class="p-btn primary sm" id="ssoSave">Save SSO</button></div>
-      <p class="p-tag" style="margin-top:6px">Store admins on these domains log in via <code>/console.html → SSO</code>; the IdP redirect is built from the connection (placeholder SAMLRequest until your metadata is loaded).</p></div>
-    <div class="p-panel"><b>SCIM 2.0 (directory sync)</b><div style="display:flex;gap:8px;align-items:end;margin-top:6px"><label><span>Label</span><input id="scimLbl" placeholder="okta bridge"></label><button class="p-btn sm" id="scimTok">Issue SCIM token</button></div><div id="scimOut" class="p-tag" style="margin-top:6px">Tokens: bearer at <code>/scim/Users?tenant_id=${(window.__tid || 1)}</code> — HR/IdP pushes staff here.</div></div>
-    <div class="p-panel"><b>Warehouse stock transfers</b><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin-top:6px">
-      <label><span>SKU</span><input id="trSku" type="number"></label><label><span>From WH</span><input id="trFrom" type="number"></label><label><span>To WH</span><input id="trTo" type="number"></label><label><span>Qty</span><input id="trQty" type="number" value="1"></label><button class="p-btn sm primary" id="trGo">Transfer</button></div>
-      <div class="p-tag" style="margin-top:6px">Recent: ${(tf.transfers || []).slice(0, 5).map(x => `${x.sku_id} ${x.qty} ${x.from_warehouse}→${x.to_warehouse}`).join(" · ") || "none"}</div></div>
-    <div class="p-panel"><b>Tax — period remittance</b><div class="p-tag" style="margin-top:4px">Period ${esc(tax.period || "")}: taxable ${money(tax.taxable || 0)} · collected ${money(tax.taxCollected || 0)} ${esc(tax.currency || "")} — <a href="/api/admin/tax/report" target="_blank">report</a></div></div>
-    </div>`;
-}
-function wireSso() {
-  const $ = s => document.querySelector(s);
-  if ($("#ssoSave")) $("#ssoSave").onclick = async () => { try { await api("/admin/sso", "PUT", { enabled: $("#ssoOn").checked, provider: $("#ssoProv").value, entityId: $("#ssoEnt").value, ssoUrl: $("#ssoUrl").value, domains: $("#ssoDom").value.split(",").map(x => x.trim()).filter(Boolean) }); toast("SSO saved"); } catch (e) { toast(e.message); } };
-  if ($("#scimTok")) $("#scimTok").onclick = async () => { try { const r = await api("/admin/scim/token", "POST", { label: $("#scimLbl").value || "default" }); $("#scimOut").innerHTML = "Token (shown once): <code>" + esc(r.token) + "</code>"; } catch (e) { toast(e.message); } };
-  if ($("#trGo")) $("#trGo").onclick = async () => { try { await api("/admin/transfers", "POST", { sku_id: Number($("#trSku").value), from_warehouse: Number($("#trFrom").value), to_warehouse: Number($("#trTo").value), qty: Number($("#trQty").value) || 1 }); toast("Transferred"); render(); } catch (e) { toast(e.message); } };
-}
 /* ── tenancy hierarchy ── the tenant's own org tree (org → BU → brand → store → channel).
    Every node is data; the path is materialized so a subtree is one LIKE away, and the tree
    doubles as the CONFIG CASCADE — the inspector shows which node a resolved value came from. */
 let tnSel = null, tnKey = "";
 const TN_ICON = { tenant: "🏬", organization: "🏢", business_unit: "🧱", brand: "🏷️", store: "🏪", channel: "📡", website: "🌐", mobile_app: "📱", marketplace: "🛒", social: "💬", pos: "🧾", api_commerce: "🔌", region: "🗺️" };
 function flatten(n, out = []) { out.push(n); (n.children || []).forEach(c => flatten(c, out)); return out; }
-async function renderStructure() {
-  const r = await api("/tenancy/tree");
-  const kinds = r.kinds || [];
-  const walk = (n, depth) => {
-    const kids = (n.children || []).map(c => walk(c, depth + 1)).join("");
-    const isRoot = n.parent_id == null;
-    const st = smIs("org_unit", n.status, "operating") ? "canonical" : "retired";
-    return `<div class="tn-row${tnSel === n.id ? " tn-sel" : ""}" style="margin-left:${depth * 20}px">
-        <button class="tn-name" data-act="tn-sel" data-id="${n.id}" title="Inspect configuration">
-          <span>${TN_ICON[n.kind] || "▪️"}</span><b>${esc(n.name)}</b></button>
-        <code class="tn-path">${esc(n.path)}</code>
-        <span class="badge ${st}">${esc(n.status)}</span>
-        ${isRoot ? `<span class="p-sub">tenant root</span>` : `<span class="tn-acts">
-          <button class="p-btn sm" data-act="tn-toggle" data-id="${n.id}" data-to="${esc(smFirst("org_unit", smIs("org_unit", n.status, "operating") ? "blocked" : "operating"))}">${smIs("org_unit", n.status, "operating") ? "Suspend" : "Activate"}</button>
-          <button class="p-btn sm danger" data-act="tn-del" data-id="${n.id}">✕</button></span>`}
-      </div>${kids}`;
-  };
-  const treeHtml = r.tree ? walk(r.tree, 0) : `<div class="p-empty">No hierarchy yet</div>`;
-  const nodes = r.tree ? flatten(r.tree) : [];
-  if (tnSel != null && !nodes.some(n => n.id === tnSel)) tnSel = null;
-  const sel = nodes.find(n => n.id === tnSel) || (r.tree || null);
-  let inspector = "";
-  if (sel) {
-    let resolved = null;
-    try { resolved = await api(`/tenancy/resolve/${sel.id}?key=${encodeURIComponent(tnKey)}`); } catch (e) { }
-    const chain = (resolved && resolved.chain) || [];
-    inspector = `<div class="p-panel" style="margin-top:16px">
-      <div class="p-head"><b>${TN_ICON[sel.kind] || "▪️"} ${esc(sel.name)}</b><span class="p-sub">configuration cascade — deepest wins</span></div>
-      <div class="p-form" style="grid-template-columns:1fr 2fr auto;align-items:end">
-        <label>Key<input id="tnKeyIn" value="${esc(tnKey)}" placeholder="e.g. checkout.defaultCurrency"></label>
-        <label>Value (JSON)<input id="tnValIn" placeholder='{"currency":"USD"}'></label>
-        <button class="p-btn primary" data-act="tn-cfg-set" data-id="${sel.id}">Set on this node</button>
-      </div>
-      <div class="p-scroll-x" style="margin-top:12px"><table class="p-table"><thead><tr><th>Node</th><th>Kind</th><th>Own value for “${esc(tnKey || "all config")}”</th></tr></thead>
-        <tbody>${chain.map(c => `<tr><td><code>${esc(c.path)}</code></td><td>${esc(c.kind)}</td><td><code>${esc(c.value == null || (typeof c.value === "object" && !Object.keys(c.value).length) ? "—" : JSON.stringify(c.value))}</code></td></tr>`).join("") || '<tr><td colspan="3" class="p-empty">no config set on the chain</td></tr>'}</tbody></table></div>
-      ${tnKey ? `<div class="p-note">Resolved <b>${esc(tnKey)}</b> → <code>${esc(JSON.stringify(resolved && resolved.resolved))}</code></div>` : ""}
-    </div>`;
-  }
-  const newForm = `<div class="p-modal"><div class="p-modal-box"><div class="p-modal-head"><h3>New node</h3><button data-mclose>✕</button></div>
-    <div class="p-form">
-      <label>Parent<select id="tnParent">${nodes.map(n => `<option value="${n.id}">${esc(n.path)}</option>`).join("")}</select></label>
-      <label>Kind<select id="tnKind">${kinds.map(k => `<option value="${k}">${k}</option>`).join("")}</select></label>
-      <label>Name<input id="tnName" placeholder="e.g. North America"></label>
-    </div>
-    <div style="margin-top:14px;text-align:right"><button class="p-btn primary" data-act="tn-create">Create node</button></div></div></div>`;
-  return `<div class="p-panel">
-      <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">
-        <span class="p-tag">${nodes.length} node${nodes.length === 1 ? "" : "s"}</span><span style="flex:1"></span>
-        <button class="p-btn primary sm" data-act="tn-new">+ New node</button></div>
-      <div class="tn-tree">${treeHtml}</div>
-    </div>${inspector}
-    <div id="tnModalHost" class="hidden">${newForm}</div>`;
-}
 
 async function render() {
   shell('<div class="p-empty">Loading…</div>');
@@ -2205,94 +886,12 @@ async function render() {
     /* every view may ask the state machines what a status means */
     await loadSM();
     if (view !== "dash" && !canSee(view)) { body.innerHTML = `<div class="p-empty">🔒 Your role (<b>${esc((A.user && A.user.staff_role) || "admin")}</b>) does not grant access to “${esc(view)}”.</div>`; return; }
-    if (SCREENS[view]) { body.innerHTML = await SCREENS[view].render(view); if (SCREENS[view].wire) SCREENS[view].wire(view); }
-    else if (view === "dash") body.innerHTML = await vDash();
+    if (SCREENS[view]) { body.innerHTML = await SCREENS[view].render(view); if (SCREENS[view].wire) await SCREENS[view].wire(view); }
     else if (/^app_/.test(view)) body.innerHTML = await entityTable(view.slice(4));
-    else if (view === "products") body.innerHTML = await entityTable("product");
-    else if (view === "gcatalog") { body.innerHTML = await vGcatalog(); wireGcatalog(); }
-    else if (view === "mastercontrib") { body.innerHTML = await vMasterContrib(); wireMasterContrib(); }
-    else if (view === "skus") body.innerHTML = await entityTable("sku") + await entityTable("inventory") + await entityTable("warehouse") + await entityTable("variant_group");
-    else if (view === "orders") { await loadSM(); body.innerHTML = await entityTable("order", { rowExtra: r => smIs("order", r.status, "shippable") || smIs("order", r.status, "in_transit") ? `<button class="p-btn sm primary" data-act="ship-order" data-id="${esc(r.id)}" data-num="${esc(r.num)}">${smIs("order", r.status, "in_transit") ? "Label" : "Ship"}</button>` : "" }); }
-    else if (view === "returns") body.innerHTML = await entityTable("ret");
-    else if (view === "rfqs") body.innerHTML = await entityTable("rfq");
-    else if (view === "sellers") body.innerHTML = await entityTable("seller");
-    else if (view === "settlements") body.innerHTML = await entityTable("settlement");
-    else if (view === "contracts") { body.innerHTML = await vContracts(); wireContracts(); }
-    else if (view === "tenders") { body.innerHTML = await vTenders(); wireTenders(); }
-    else if (view === "suppliers") body.innerHTML = await entityTable("supplier") + await entityTable("product_supplier");
-    else if (view === "serialized") { body.innerHTML = await vSerialized(); wireSerialized(); }
-    else if (view === "compliance") body.innerHTML = await entityTable("compliance");
-    else if (view === "structure") body.innerHTML = await renderStructure();
-    else if (view === "localizations") body.innerHTML = await entityTable("localization");
-    else if (view === "ai") { body.innerHTML = await vAI(); wireAI(); }
-    else if (view === "webhooks") { body.innerHTML = await vWebhooks(); wireWebhooks(); }
-    else if (view === "trash") { body.innerHTML = await vTrash(); wireTrash(); }
-    else if (view === "sso") { body.innerHTML = await vSso(); wireSso(); }
-    else if (view === "team") { body.innerHTML = await vTeam(); wireTeam(); }
-    else if (view === "content") body.innerHTML = await entityTable("banner") + await entityTable("card") + await entityTable("department");
-    else if (view === "taxonomy") body.innerHTML = await entityTable("taxonomy");
-    else if (view === "brands") body.innerHTML = await entityTable("brand");
-    else if (view === "attributes") body.innerHTML = await entityTable("attribute");
-    else if (view === "payments") { body.innerHTML = await vPayments(); wirePayments(); }
-    else if (view === "settings") { body.innerHTML = await vSettings(); wireSettings(); }
-    else if (view === "applicability") { body.innerHTML = `<div id="rulesRoot"></div>`; await LXRulesUI.mount(document.getElementById("rulesRoot"), { api, base: "/admin/rules", scope: "store" }); }
-    else if (view === "billing") body.innerHTML = await vBilling();
-    else if (view === "modules") { body.innerHTML = await vModules(); }
-    else if (view === "audit") { body.innerHTML = await vAudit(); wireAudit(); }
-    else if (view === "marketplace") { body.innerHTML = await vMarketplace(); wireMarketplace(); }
-    else if (view === "ugc") body.innerHTML = await vUgc();
-    else if (view === "qcops") { body.innerHTML = await vQcOps(); wireQcOps(); }
-    else if (view === "finops") { body.innerHTML = await vFinOps(); wireFinOps(); }
-    else if (view === "mktops") { body.innerHTML = await vMktOps(); wireMktOps(); }
-    else if (view === "pickup") { body.innerHTML = await vPickup(); wirePickup(); }
-    else if (view === "richcontent") { body.innerHTML = await vRichContent(); wireRichContent(); }
-    else if (view === "brandreg") { body.innerHTML = await vBrandReg(); wireBrandReg(); }
     else if (view === "prodoptions" || await optionSection(view)) { body.innerHTML = await vProdOptions(view); wireProdOptions(); }
-    else if (view === "bookings") { body.innerHTML = await vBookings(); wireBookings(); }
-    else if (view === "negotiation") { body.innerHTML = await vNegotiation(); wireCoPosts(); }
-    else if (view === "auctions") { body.innerHTML = await vAuctions(); wireAuctions(); }
-    else if (view === "listings") { body.innerHTML = await vListings(); wireCoPosts(); }
-    else if (view === "conversations") { body.innerHTML = await vConversations(); wireConversations(); }
-    else if (view === "substitutions") { body.innerHTML = await vSubstitutions(); wireSubstitutions(); }
     else if (await caseKindFor(view)) { body.innerHTML = await vCases(view); wireCases(); }
-    else if (view === "fees") { body.innerHTML = await vCharges(); wireCharges(); }
-    else if (view === "tips") body.innerHTML = await vTips();
-    else if (view === "sessions") body.innerHTML = await vSessions();
-    else if (view === "metering") body.innerHTML = await vMetering();
-    else if (view === "wallets") { body.innerHTML = await vWallets(); wireWallets(); }
-    else if (view === "trials") body.innerHTML = await vTrials();
     else if (await deliverableKindFor(view)) { body.innerHTML = await vDeliverables(view); wireDeliverables(view); }
-    else if (view === "healthrecords") { body.innerHTML = await vHealthRecords(); wireHealthRecords(); }
-    else if (view === "tradeops") { body.innerHTML = await vTradeOps(); wireTradeOps(); }
-    else if (view === "helpdesk") { body.innerHTML = await vHelpdesk(); } else if (view === "affiliate") renderAffiliate(); else if (view === "sitemap") renderSitemap(); else if (view === "shipping") renderShipping();
-    else if (view === "retention") body.innerHTML = await vRetention();
-    else if (view === "risk") body.innerHTML = await vRisk();
-    else if (view === "experiments") body.innerHTML = await vExperiments();
-    else if (view === "planning") body.innerHTML = await vPlanning();
-    else if (view === "rides") body.innerHTML = await vRides();
-    else if (view === "fleet") body.innerHTML = await vFleet();
-    else if (view === "ops_hr") body.innerHTML = await vOpsHR();
-    else if (view === "ops_proc") body.innerHTML = await vOpsProc();
-    else if (view === "ops_mfg") body.innerHTML = await vOpsMfg();
-    else if (view === "ops_proj") body.innerHTML = await vOpsProj();
-    else if (view === "finance") body.innerHTML = await vFinance();
-    else if (view === "logistics") body.innerHTML = await vLogistics();
-    else if (view === "search") body.innerHTML = await vSearch();
-    else if (view === "monitor") body.innerHTML = await vMonitor();
-    else if (view === "studio") { body.innerHTML = await vStudio(); wireStudio(); }
-    else if (view === "analytics") body.innerHTML = await vAnalytics();
-    else if (view === "manual") window.open("/docs/user-manual.html", "_blank");
-    else if (view === "architecture") window.open("/docs/architecture.html", "_blank");
   } catch (e) { body.innerHTML = `<div class="p-empty">⚠️ ${esc(e.message)}</div>`; }
-}
-function wireAudit() {
-  $("#auditQ").oninput = e => {
-    const q = e.target.value.toLowerCase();
-    $$("#auditTbl tbody tr").forEach(tr => tr.style.display = tr.textContent.toLowerCase().includes(q) ? "" : "none");
-  };
-}
-function wireStudio() {
-  $$("[data-studio]").forEach(b => b.onclick = () => { A.studioSel = b.dataset.studio; render(); });
 }
 /* the ledger: what each payment is waiting on, and the action that settles it */
 async function loadPayLedger() {
@@ -2313,60 +912,6 @@ async function loadPayLedger() {
   box.querySelectorAll("[data-payrec]").forEach(b => b.onclick = () => go(`/admin/payments/${b.dataset.payrec}/reconcile`, {}, r => "Gateway says: " + ((r.result && (r.result.provider_status || r.result.status)) || r.payment.status)));
   box.querySelectorAll("[data-payrcv]").forEach(b => b.onclick = () => { if (confirm("Record this payment as received? The order is released to fulfilment.")) go(`/admin/payments/${b.dataset.payrcv}/received`, {}, () => "Payment recorded as received"); });
   box.querySelectorAll("[data-payref]").forEach(b => b.onclick = () => { if (confirm("Refund this payment in full?")) go(`/admin/payments/${b.dataset.payref}/refund`, {}, () => "Payment refunded"); });
-}
-function wirePayments() {
-  loadPayLedger();
-  $("#gwSave").onclick = async () => {
-    const gateways = $$("[data-gwen]").map(cb => {
-      const id = cb.dataset.gwen;
-      return { id, enabled: cb.checked, primary: ($(`[data-gwpri="${id}"]`) || {}).checked, mode: ($(`[data-gwmode="${id}"]`) || {}).value, config: (A.gwCfg || {})[id] || {} };
-    });
-    A.gwCfg = {};
-    await api("/admin/gateways", "PUT", { gateways });
-    toast("Gateway configuration saved"); render();
-  };
-  $$("[data-gwtest]").forEach(b => b.onclick = async () => {
-    try { const r = await api(`/admin/gateways/${b.dataset.gwtest}/test`, "POST", {}); toast(r.message); } catch (e) { toast(e.message); }
-  });
-  $$("[data-gwcfg]").forEach(b => b.onclick = async () => {
-    const g = (await api("/admin/gateways")).gateways.find(x => x.id === b.dataset.gwcfg);
-    $("#modal").innerHTML = `<div class="p-modal"><div class="p-modal-box"><div class="p-modal-head"><h3>${esc(g.name)} configuration</h3><button id="mClose">✕</button></div>
-      <div class="p-form">${(g.fields || []).map(f => `<label><span>${esc(f.label)}${f.secret ? " (secret)" : ""}</span><input data-gcfg="${f.key}" value="${esc(g.config[f.key] || "")}" ${f.secret ? 'type="password"' : ""}></label>`).join("") || '<p class="p-tag">No credentials needed.</p>'}
-      <button class="p-btn primary" id="mCfgSave">Save</button></div></div></div>`;
-    $("#modal").classList.remove("hidden");
-    const closeGw = () => { const m = $("#modal"); m.innerHTML = ""; m.classList.add("hidden"); };
-    $("#mClose").onclick = closeGw;
-    $("#mCfgSave").onclick = () => {
-      A.gwCfg = A.gwCfg || {};
-      A.gwCfg[g.id] = A.gwCfg[g.id] || {};
-      $$("[data-gcfg]").forEach(i => { if (i.value && !i.value.startsWith("••••")) A.gwCfg[g.id][i.dataset.gcfg] = i.value; });
-      Object.assign(A.gwCfg[g.id], g.config);
-      closeGw(); toast("Credentials staged — press Save gateway config");
-    };
-  });
-}
-function wireSettings() {
-  $$("[data-preset]").forEach(b => b.onclick = () => {
-    const [a, h] = b.dataset.preset.split("|");
-    $('[data-set="theme.accent"]').value = a; $('[data-set="theme.header"]').value = h;
-  });
-  $("#setSave").onclick = async () => {
-    const body = { brand: {}, theme: {}, commerce: {}, copy: {}, features: {} };
-    $$("[data-set]").forEach(i => {
-      const [sec, key] = i.dataset.set.split(".");
-      body[sec][key] = i.type === "number" ? Number(i.value) : i.value;
-    });
-    $$("[data-feat]").forEach(cb => body.features[cb.dataset.feat] = cb.checked);
-    for (const k of Object.keys(body)) if (!Object.keys(body[k]).length) delete body[k];
-    await api("/admin/settings", "PUT", body);
-    TT = await api("/config");
-    toast("Settings saved — storefront updated live");
-  };
-  $("#setReset").onclick = async () => { if (confirm("Reset all settings to platform defaults?")) { await api("/admin/settings/reset", "POST"); TT = await api("/config"); render(); } };
-  $("#modeSave").onclick = async () => {
-    await api("/admin/mode", "PUT", { mode: $("#modeSel").value, industries: $("#modeInds").value.split(",").map(x => x.trim()).filter(Boolean) });
-    TT = await api("/config"); toast("Deployment mode applied"); render();
-  };
 }
 
 /* ---------- boot ---------- */
@@ -2452,33 +997,6 @@ function wireDocs() {
 }
 /* ========== NEW MODULES - Affiliate, Sitemap, Shipping, Helpdesk ========== */
 
-/* ========== Affiliate Network UI ========== */
-function renderAffiliate() {
-  /* a view renders INTO #vBody like every other view — writing to #app directly
-     painted outside the console shell and left the nav's selected state stale */
-  const html = `
-    <div class="a-head">
-      <h2>🤝 Influencers &amp; Affiliates</h2>
-      <p class="a-sub">Manage affiliates, tracking, commissions, and payouts</p>
-    </div>
-    <div class="a-card">
-      <h3>Affiliate Stats</h3>
-      <div class="stats" id="affiliateStats"></div>
-    </div>
-    <div class="a-card">
-      <h3>My Affiliates</h3>
-      <p class="a-sub">Affiliates tracking and converting for your store</p>
-      <div id="affiliateList"></div>
-      <button class="p-btn" id="affAdd">+ Add Affiliate</button>
-    </div>
-  `;
-  const body = $("#vBody");
-  if (body) body.innerHTML = html;
-  else { const a = $("#app"); if (a) a.innerHTML += html; }
-  const add = $("#affAdd"); if (add) add.onclick = () => createAffiliateModal();
-  loadAffiliateStats();
-  loadAffiliates();
-}
 
 async function loadAffiliateStats() {
   try {
@@ -2549,33 +1067,6 @@ function createAffiliateModal() {
   $("#affName").focus();
 }
 
-/* ========== Sitemap/SEO UI ========== */
-function renderSitemap() {
-  const html = `
-    <div class="a-head">
-      <h2>🔍 Sitemap & SEO</h2>
-      <p class="a-sub">Auto-generate XML sitemaps for search engines</p>
-    </div>
-    <div class="a-card">
-      <h3>Sitemap Configuration</h3>
-      <div id="sitemapConfig"></div>
-    </div>
-    <div class="a-card">
-      <h3>Generate Sitemap</h3>
-      <p class="a-sub">Creates XML sitemap for submission to Google, Bing, etc.</p>
-      <button class="p-btn primary" id="smGen">🔄 Generate Now</button>
-    </div>
-    <div class="a-card">
-      <h3>Last Generated</h3>
-      <div id="sitemapLast"></div>
-    </div>
-  `;
-  const body = $("#vBody");
-  if (body) body.innerHTML = html;
-  else { const a = $("#app"); if (a) a.innerHTML += html; }
-  const g = $("#smGen"); if (g) g.onclick = () => generateSitemap();
-  loadSitemapConfig();
-}
 
 async function loadSitemapConfig() {
   try {
@@ -2618,47 +1109,6 @@ async function generateSitemap() {
   }
 }
 
-/* ========== Shipping & Tracking UI ========== */
-/* the carrier account is platform-wide (Platform → Provider Registry); what a store sets is
-   its own ship-from address, the origin of every rate and label it buys */
-function renderShipping() {
-  const html = `
-    <div class="a-head">
-      <h2>📦 Shipping & Tracking</h2>
-      <p class="a-sub">Carrier rates and labels, your ship-from address, and parcel tracking</p>
-    </div>
-    <div class="a-card">
-      <h3>Carrier account</h3>
-      <div id="shippingProviders"></div>
-    </div>
-    <div class="a-card">
-      <h3>Ship-from address</h3>
-      <p class="a-sub">Where your parcels leave from. Carriers price every rate from this address.</p>
-      <div id="shipFrom"></div>
-    </div>
-    <div class="a-card">
-      <h3>What shoppers pay for shipping</h3>
-      <p class="a-sub">A flat fee, or the connected carrier's live rate from your ship-from address to the shopper's. Free-shipping rules apply to both.</p>
-      <div id="shipRates"></div>
-    </div>
-    <div class="a-card">
-      <h3>Track Shipment</h3>
-      <p class="a-sub">Enter tracking number to see real-time status</p>
-      <div class="p-form">
-        <input type="text" id="trackNumber" placeholder="Tracking number" style="flex:1">
-        <button class="p-btn" id="shTrack">Track</button>
-      </div>
-      <div id="trackResult"></div>
-    </div>
-  `;
-  const body = $("#vBody");
-  if (body) body.innerHTML = html;
-  else { const a = $("#app"); if (a) a.innerHTML += html; }
-  const tr = $("#shTrack"); if (tr) tr.onclick = () => trackShipment();
-  loadShippingProviders();
-  loadShipFrom();
-  loadShipRates();
-}
 
 async function loadShipRates() {
   const box = $("#shipRates");
@@ -2817,57 +1267,6 @@ async function loadChatStatus() {
   } catch (e) { console.error(e); }
 }
 
-/* ========== E17 · the mobility universe (rides & dispatch · fleet) ==========
-   The console renders only what lib/mobility.js answered: every fare, surge
-   multiplier, ETA and cancellation fee was computed from the store's own capability
-   params. No rate is hard-coded in this file. */
-async function vRides() {
-  const [d, caps] = await Promise.all([api("/admin/mobility", {}), coCaps()]);
-  const surgeOn = hasCap({ on: caps.filter(c => c.on).map(c => c.key) }, "dynamic_pricing");
-  const st = d.stats || {};
-  const rides = d.rides || [];
-  await loadSM();
-  const active = rides.filter(r => !smIs("ride", r.status, "terminal"));
-  const done = rides.filter(r => smIs("ride", r.status, "terminal"));
-  /* each ride's next step is the ride machine's next legal move (cancelling is its own button) */
-  const nextOf = st => { const mv = smNext("ride", st)[0]; return mv ? [mv.to, mv.label] : undefined; };
-  const chip = s => `<span class="a-chip">${esc(s)}</span>`;
-  return `<div class="a-head"><h2>🚗 Rides &amp; Dispatch</h2><p class="a-sub">The ride lifecycle, surge pricing and live dispatch. Fares, cancellation fees and the platform commission are the store's own capability params — <code>ride_hailing</code> · <code>dynamic_pricing</code> · <code>dispatch</code> — and the legal transitions live in Data Studio (<code>mobilityTransitions</code>), so no rate or rule is hard-coded here.</p></div>
-  <div class="a-cards">
-    <div class="a-card"><h3>Live</h3>
-      <div class="a-stats">${[["Rides", st.rides || 0], ["Active now", st.active || 0], ["Drivers online", st.drivers_online || 0], ["Gross revenue", (st.gross_revenue || 0).toFixed(2)], ["Avg rating", (st.avg_rating || 0).toFixed(1)]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
-      <div style="margin-top:10px"><button class="btn-yellow" data-act="mob-new-ride">＋ Request a ride</button></div></div>
-    <div class="a-card"><h3>Surge zones</h3>
-      ${surgeOn ? `<div style="margin-bottom:8px"><button class="btn-yellow sm" data-act="mob-new-zone">＋ New zone</button></div>`
-        : `<p class="p-tag">Switch on <code>dynamic_pricing</code> in ⚙️ Capabilities to raise a multiplier by zone.</p>`}
-      <div class="a-tablewrap"><table class="a-table"><thead><tr><th>zone</th><th>kind</th><th>multiplier</th><th>radius</th><th>state</th>${surgeOn ? "<th></th>" : ""}</tr></thead>
-      <tbody>${(d.zones || []).map(z => `<tr>
-        <td>${esc(z.name)}</td><td>${esc(z.kind)}</td><td><b>×${(+z.multiplier).toFixed(2)}</b></td><td>${z.radius_km} km</td>
-        <td>${chip(z.active ? "active" : "idle")}</td>
-        ${surgeOn ? `<td style="white-space:nowrap">
-          <button class="btn-white sm" data-act="mob-toggle-zone" data-id="${z.id}" data-on="${z.active ? 0 : 1}">${z.active ? "Pause" : "Resume"}</button>
-          <button class="btn-white sm" data-act="mob-edit-zone" data-id="${z.id}">Edit</button></td>` : ""}
-      </tr>`).join("") || `<tr><td colspan="${surgeOn ? 6 : 5}">No surge zones — every ride prices at ×1.</td></tr>`}</tbody></table></div></div>
-  </div>
-  <div class="a-card"><h3>Active rides (${active.length})</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>rider</th><th>route</th><th>vehicle</th><th>driver</th><th>surge</th><th>eta</th><th>status</th><th></th></tr></thead>
-    <tbody>${active.map(r => { const nx = nextOf(r.status); return `<tr>
-      <td><code>${esc(r.ref)}</code></td><td>${esc(r.rider || "—")}</td>
-      <td>${esc(r.pickup)} → ${esc(r.dropoff)}</td><td>${chip(r.vehicle_kind)}</td>
-      <td>${esc(r.driver_name || "unassigned")}</td>
-      <td>${(+r.surge) > 1 ? `<b>×${(+r.surge).toFixed(2)}</b>` : "—"}</td>
-      <td>${r.eta_min ? r.eta_min + " min" : "—"}</td><td>${chip(r.status)}</td>
-      <td>${nx ? `<button class="btn-white sm" data-act="mob-next" data-id="${r.id}" data-to="${nx[0]}">${nx[1]}</button>` : ""}</td>
-    </tr>`; }).join("") || `<tr><td colspan="9">No rides in flight — request one above.</td></tr>`}</tbody></table></div></div>
-  <div class="a-card"><h3>Ride history</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>rider</th><th>route</th><th>driver</th><th>distance</th><th>duration</th><th>fare</th><th>rating</th><th>status</th></tr></thead>
-    <tbody>${done.map(r => `<tr>
-      <td><code>${esc(r.ref)}</code></td><td>${esc(r.rider || "—")}</td>
-      <td>${esc(r.pickup)} → ${esc(r.dropoff)}</td><td>${esc(r.driver_name || "—")}</td>
-      <td>${(+r.distance_km).toFixed(1)} km</td><td>${(+r.duration_min).toFixed(0)} min</td>
-      <td>${r.fare ? (+r.fare).toFixed(2) : "—"}</td><td>${r.rating || "—"}</td><td>${chip(r.status)}</td>
-    </tr>`).join("") || `<tr><td colspan="9">No completed rides yet.</td></tr>`}</tbody></table></div></div>`;
-}
 /* a surge zone is authored as a form, not a prompt chain — eight values one question at a
    time would be unusable, and the engine's upsertZone validates exactly these fields.
    Editing re-sends the whole row: the upsert rewrites every column, so a partial body
@@ -2962,115 +1361,9 @@ function zoneModal(z) {
     } catch (e) { toast(e.message); }
   };
 }
-async function vFleet() {
-  const d = await api("/admin/mobility", {});
-  const st = d.stats || {};
-  const chip = s => `<span class="a-chip">${esc(s)}</span>`;
-  return `<div class="a-head"><h2>🚙 Fleet &amp; Drivers</h2><p class="a-sub">Driver onboarding, online state and the vehicle registry. Dispatch ranks candidates by rating then proximity, and a driver below the configured floor (<code>fleet_management · min_rating_to_dispatch</code>) is held out of matching. Vehicle kinds are the Data Studio list <code>mobilityVehicleKinds</code>.</p></div>
-  <div class="a-cards">
-    <div class="a-card"><h3>Fleet health</h3>
-      <div class="a-stats">${[["Drivers", st.drivers || 0], ["Online", st.drivers_online || 0], ["Avg rating", (st.driver_avg_rating || 0).toFixed(2)], ["Completed", st.completed || 0], ["Cancelled", st.cancelled || 0]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
-      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn-yellow" data-act="mob-new-driver">＋ Add driver</button><button class="btn-white" data-act="mob-new-vehicle">＋ Add vehicle</button></div></div>
-    <div class="a-card"><h3>Vehicles</h3>
-      <div class="a-tablewrap"><table class="a-table"><thead><tr><th>plate</th><th>kind</th><th>capacity</th><th>driver</th><th>odometer</th><th>insurance</th><th>status</th></tr></thead>
-      <tbody>${(d.vehicles || []).map(v => `<tr><td><code>${esc(v.plate)}</code></td><td>${esc(v.kind)}</td><td>${v.capacity}</td>
-      <td>${esc(v.driver_name || "—")}</td><td>${(+v.odometer).toFixed(0)} km</td><td>${esc(v.insurance_until || "—")}</td><td>${chip(v.status)}</td></tr>`).join("") || `<tr><td colspan="7">No vehicles registered.</td></tr>`}</tbody></table></div></div>
-  </div>
-  <div class="a-card"><h3>Drivers</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>name</th><th>city</th><th>vehicle</th><th>plate</th><th>rating</th><th>rides</th><th>earnings</th><th>state</th><th></th></tr></thead>
-    <tbody>${(d.drivers || []).map(x => `<tr>
-      <td>${esc(x.name)}${x.email ? `<div class="a-sub">${esc(x.email)}</div>` : ""}</td>
-      <td>${esc(x.city || "—")}</td><td>${chip(x.vehicle_kind)}</td><td><code>${esc(x.plate || "—")}</code></td>
-      <td>${(+x.rating).toFixed(2)}</td><td>${x.rides_completed}</td><td>${(+x.earnings).toFixed(2)}</td>
-      <td>${chip(x.status)}</td>
-      <td>${smIs("driver", x.status, "blocked") ? "" : `<button class="btn-white sm" data-act="mob-toggle-driver" data-id="${x.id}" data-to="${smIs("driver", x.status, "online") ? "0" : "1"}">${smIs("driver", x.status, "online") ? "Go offline" : "Go online"}</button> <button class="btn-white sm" data-act="mob-deact-driver" data-id="${x.id}">Deactivate</button>`}
-      ${x.deactivated_at ? `<span class="a-sub">since ${esc(x.deactivated_at)}</span>` : ""}</td>
-    </tr>`).join("") || `<tr><td colspan="9">No drivers yet — add one above.</td></tr>`}</tbody></table></div></div>`;
-}
 
-/* ========== E18 · the operations universe (ERP · HRMS · procurement · manufacturing · projects)
-   The console renders only what lib/operations.js answered: every tax rate, overtime
-   multiple, approval threshold, yield and cost rate is a capability param, not a
-   literal in this file. */
-async function vOpsHR() {
-  const d = await api("/admin/operations", {});
-  const st = (d.stats || {}).payroll || {};
-  const chip = s => `<span class="a-chip">${esc(s)}</span>`;
-  return `<div class="a-head"><h2>🧑‍💼 People &amp; Payroll</h2><p class="a-sub">Employees, attendance and the payroll run. Overtime, allowances, deductions and tax are the store's own <code>workforce</code> params — a run is recomputed from them, never from a hard-coded rate. Attendance statuses and payroll statuses are Data Studio lists (<code>opsTaskStatuses</code> shape: editable, not code).</p></div>
-  <div class="a-cards">
-    <div class="a-card"><h3>Headcount</h3>
-      <div class="a-stats">${[["Employees", st.employees || 0], ["Active", st.active_employees || 0], ["Payroll runs", st.runs || 0], ["Paid", st.paid_runs || 0], ["Last net", (st.last ? (+st.last.net).toFixed(0) : "—")]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
-      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn-yellow" data-act="ops-new-employee">＋ Add employee</button><button class="btn-white" data-act="ops-payroll-run">▶ Run this month's payroll</button></div></div>
-    <div class="a-card"><h3>Payroll runs</h3>
-      <div class="a-tablewrap"><table class="a-table"><thead><tr><th>period</th><th>headcount</th><th>gross</th><th>deductions</th><th>net</th><th>status</th><th></th></tr></thead>
-      <tbody>${(d.payroll || []).map(p => `<tr><td><code>${esc(p.period)}</code></td><td>${p.headcount}</td><td>${(+p.gross).toFixed(2)}</td><td>${(+p.deductions).toFixed(2)}</td><td><b>${(+p.net).toFixed(2)}</b></td><td>${chip(p.status)}</td>
-      <td>${smIs("payroll_run", p.status, "can:approve") || smIs("payroll_run", p.status, "can:pay") ? `<button class="btn-white sm" data-act="ops-payroll-status" data-id="${p.id}" data-to="${esc(smAction("payroll_run", smIs("payroll_run", p.status, "can:approve") ? "approve" : "pay"))}">${smIs("payroll_run", p.status, "can:approve") ? "Approve" : "Mark paid"}</button>` : ""}</td></tr>`).join("") || `<tr><td colspan="7">No payroll runs yet.</td></tr>`}</tbody></table></div></div>
-  </div>
-  <div class="a-card"><h3>Employees</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>department</th><th>designation</th><th>salary</th><th>state</th></tr></thead>
-    <tbody>${(d.employees || []).map(e => `<tr><td><code>${esc(e.code)}</code></td><td>${esc(e.name)}${e.email ? `<div class="a-sub">${esc(e.email)}</div>` : ""}</td><td>${esc(e.department || "—")}</td><td>${esc(e.designation || "—")}</td><td>${(+e.base_salary).toFixed(0)}</td><td>${chip(e.status)}</td></tr>`).join("") || `<tr><td colspan="6">No employees yet — add one above.</td></tr>`}</tbody></table></div></div>`;
-}
-async function vOpsProc() {
-  const d = await api("/admin/operations", {});
-  const chip = s => `<span class="a-chip">${esc(s)}</span>`;
-  return `<div class="a-head"><h2>🛒 Procurement</h2><p class="a-sub">Purchase requests and their lines. A request above the store's configured <code>approval_threshold</code> cannot advance to approved without a sign-off — the gate is a param, not a policy written in code. Statuses are the Data Studio list <code>opsPrStatuses</code>.</p></div>
-  <div class="a-cards">
-    <div class="a-card"><h3>Requests</h3>
-      <div class="a-stats">${[["Open", (d.stats || {}).procurement ? (d.stats.procurement.open || 0) : 0], ["Shown", (d.requests || []).length]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
-      <div style="margin-top:10px"><button class="btn-yellow" data-act="ops-new-request">＋ New purchase request</button></div></div>
-  </div>
-  <div class="a-card"><h3>Purchase requests</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>requested by</th><th>department</th><th>lines</th><th>est. cost</th><th>status</th><th></th></tr></thead>
-    <tbody>${(d.requests || []).map(r => { const next = { draft: "submitted", submitted: "approved", approved: "ordered", ordered: "received" }[r.status]; return `<tr>
-      <td><code>${esc(r.ref)}</code></td><td>${esc(r.requested_by || "—")}</td><td>${esc(r.department || "—")}</td>
-      <td>${r.lines}</td><td>${(+r.est_cost).toFixed(2)}</td><td>${chip(r.status)}</td>
-      <td>${next ? `<button class="btn-white sm" data-act="ops-pr-advance" data-id="${r.id}" data-to="${next}">→ ${next}</button>` : ""}</td>
-    </tr>`; }).join("") || `<tr><td colspan="7">No purchase requests yet.</td></tr>`}</tbody></table></div></div>`;
-}
-async function vOpsMfg() {
-  const d = await api("/admin/operations", {});
-  const chip = s => `<span class="a-chip">${esc(s)}</span>`;
-  return `<div class="a-head"><h2>🏭 Manufacturing</h2><p class="a-sub">Work orders and their bills of materials. Completion consumes the BOM and posts the finished good at the configured <code>yield_pct</code> with the configured <code>scrap_pct</code> loss — the yields are params, never guesses. Statuses are the Data Studio list <code>opsWoStatuses</code>.</p></div>
-  <div class="a-cards">
-    <div class="a-card"><h3>Work orders</h3>
-      <div class="a-stats">${[["Open", (d.stats || {}).manufacturing ? (d.stats.manufacturing.open || 0) : 0], ["Shown", (d.workOrders || []).length]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
-      <div style="margin-top:10px"><button class="btn-yellow" data-act="ops-new-wo">＋ New work order</button></div></div>
-  </div>
-  <div class="a-card"><h3>Work orders</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>ref</th><th>product</th><th>qty</th><th>completed</th><th>unit cost</th><th>status</th><th></th></tr></thead>
-    <tbody>${(d.workOrders || []).map(w => `<tr>
-      <td><code>${esc(w.ref)}</code></td><td>${esc(w.product_id || "—")}</td><td>${w.qty}</td><td>${w.completed_qty}</td>
-      <td>${(+w.unit_cost).toFixed(2)}</td><td>${chip(w.status)}</td>
-      <td>${smIs("work_order", w.status, "completable") ? `<button class="btn-white sm" data-act="ops-wo-complete" data-id="${w.id}">Complete</button>` : ""}</td>
-    </tr>`).join("") || `<tr><td colspan="7">No work orders yet.</td></tr>`}</tbody></table></div></div>`;
-}
-async function vOpsProj() {
-  const d = await api("/admin/operations", {});
-  const chip = s => `<span class="a-chip">${esc(s)}</span>`;
-  const st = (d.stats || {}).projects || {};
-  return `<div class="a-head"><h2>📐 Projects &amp; Approvals</h2><p class="a-sub">Projects, tasks and the approval chain. Logged hours accrue to a project's spend at the configured <code>internal_cost_per_hour</code> — the rate is a param, so the same timesheet costs what the store says it costs. Approval kinds are the Data Studio list <code>opsApprovalKinds</code>.</p></div>
-  <div class="a-cards">
-    <div class="a-card"><h3>Portfolio</h3>
-      <div class="a-stats">${[["Active projects", st.active || 0], ["Projects", (d.projects || []).length], ["Tasks", (d.tasks || []).length], ["Pending approvals", (d.approvals || []).filter(a => a.status === "pending").length]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
-      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn-yellow" data-act="ops-new-project">＋ New project</button><button class="btn-white" data-act="ops-new-task">＋ New task</button></div></div>
-    <div class="a-card"><h3>Approvals</h3>
-      <div class="a-tablewrap"><table class="a-table"><thead><tr><th>kind</th><th>ref</th><th>requester</th><th>approver</th><th>status</th><th></th></tr></thead>
-      <tbody>${(d.approvals || []).map(a => `<tr><td>${chip(a.kind)}</td><td><code>${esc(a.ref || a.ref_id)}</code></td><td>${esc(a.requester || "—")}</td><td>${esc(a.approver || "—")}</td><td>${chip(a.status)}</td>
-      <td>${a.status === "pending" ? `<button class="btn-white sm" data-act="ops-appr" data-id="${a.id}" data-to="approved">Approve</button> <button class="btn-white sm" data-act="ops-appr" data-id="${a.id}" data-to="rejected">Reject</button>` : ""}</td></tr>`).join("") || `<tr><td colspan="6">No approvals pending.</td></tr>`}</tbody></table></div></div>
-  </div>
-  <div class="a-card"><h3>Projects</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>code</th><th>name</th><th>owner</th><th>budget</th><th>spent</th><th>tasks</th><th>status</th></tr></thead>
-    <tbody>${(d.projects || []).map(p => `<tr><td><code>${esc(p.code)}</code></td><td>${esc(p.name)}</td><td>${esc(p.owner || "—")}</td><td>${(+p.budget).toFixed(0)}</td><td>${(+p.spent).toFixed(0)}</td><td>${p.tasks_done}/${p.tasks}</td><td>${chip(p.status)}</td></tr>`).join("") || `<tr><td colspan="7">No projects yet.</td></tr>`}</tbody></table></div></div>
-  <div class="a-card"><h3>Tasks</h3>
-    <div class="a-tablewrap"><table class="a-table"><thead><tr><th>title</th><th>project</th><th>assignee</th><th>est</th><th>logged</th><th>due</th><th>priority</th><th>status</th><th></th></tr></thead>
-    <tbody>${(d.tasks || []).map(t => `<tr><td>${esc(t.title)}</td><td>${esc(t.project_code || "—")}</td><td>${esc(t.assignee || "—")}</td><td>${t.estimate_hours}h</td><td>${t.logged_hours}h</td><td>${esc(t.due_date || "—")}</td><td>${chip(t.priority)}</td><td>${chip(t.status)}</td>
-    <td>${t.status !== "done" ? `<button class="btn-white sm" data-act="ops-task-done" data-id="${t.id}">Done</button> <button class="btn-white sm" data-act="ops-task-time" data-id="${t.id}">Log time</button>` : ""}</td></tr>`).join("") || `<tr><td colspan="9">No tasks yet.</td></tr>`}</tbody></table></div></div>`;
-}
 
 /* ========== Module Registration ========== */
-window.renderAffiliate = renderAffiliate;
-window.renderSitemap = renderSitemap;
-window.renderShipping = renderShipping;
 window.renderHelpdesk = renderHelpdesk;
 window.generateSitemap = generateSitemap;
 window.trackShipment = trackShipment;

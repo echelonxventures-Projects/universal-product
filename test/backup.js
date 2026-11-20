@@ -31,6 +31,9 @@ const register = async email => {
   return call("/api/auth/register?store=luxora", "POST", { name: "Backup Person", email, password: "Backup-Pass-123" });
 };
 
+/* stop a spawned server and wait until it has exited: a server still draining its sockets answers the
+   next boot's health check and then resets the request that follows (GAP-28) */
+const stopServer = p => new Promise(r => { if (p.exitCode !== null || p.signalCode) return r(); const t = setTimeout(() => { try { p.kill("SIGKILL"); } catch (e) { } }, 10000); p.once("exit", () => { clearTimeout(t); r(); }); p.kill("SIGTERM"); });
 (async () => {
   const clean = () => { for (const f of fs.readdirSync(__dirname)) if (f.startsWith("backup.db")) fs.rmSync(path.join(__dirname, f), { force: true }); };
   clean();
@@ -57,7 +60,7 @@ const register = async email => {
     const keepSet = path.join(DIR, fs.readdirSync(DIR).filter(d => d.startsWith("luxora-")).sort()[0]);
 
     console.log("▸ RESTORE");
-    srv.kill("SIGTERM"); await sleep(800);
+    await stopServer(srv);
     /* make the live db differ from the set: a write after the backups */
     const live = new DatabaseSync(DB); live.prepare("INSERT INTO users(tenant_id,name,email,salt,hash) VALUES(1,'Late','late@example.com','x','y')").run(); live.close();
     const dry = node("restore.js", [keepSet, "--force"]);
@@ -80,7 +83,7 @@ const register = async email => {
     const s0 = await fetch(BASE + "/api/session?store=luxora"); (s0.headers.getSetCookie() || []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i), kv.slice(i + 1)); });
     const li = await fetch(BASE + "/api/auth/login?store=luxora", { method: "POST", headers: { Cookie: [...c].map(x => x[0] + "=" + x[1]).join("; "), "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" }, body: JSON.stringify({ email: "before@example.com", password: "Backup-Pass-123" }) });
     ok(li.status === 200, "a customer from before the backup signs in on the restored server", li.status);
-    srv2.kill("SIGTERM"); await sleep(500);
+    await stopServer(srv2);
   } catch (e) {
     failed++; console.error("  ✗ harness error:", e && e.stack || e);
   } finally {

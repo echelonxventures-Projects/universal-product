@@ -396,3 +396,59 @@ function closeModal() {
 }
 
 screen("setup", { group: "Overview", label: "🧭 Setup Wizard", render: vSetup, wire: wireSetup });
+
+async function renderStructure() {
+  const r = await api("/tenancy/tree");
+  const kinds = r.kinds || [];
+  const walk = (n, depth) => {
+    const kids = (n.children || []).map(c => walk(c, depth + 1)).join("");
+    const isRoot = n.parent_id == null;
+    const st = smIs("org_unit", n.status, "operating") ? "canonical" : "retired";
+    return `<div class="tn-row${tnSel === n.id ? " tn-sel" : ""}" style="margin-left:${depth * 20}px">
+        <button class="tn-name" data-act="tn-sel" data-id="${n.id}" title="Inspect configuration">
+          <span>${TN_ICON[n.kind] || "▪️"}</span><b>${esc(n.name)}</b></button>
+        <code class="tn-path">${esc(n.path)}</code>
+        <span class="badge ${st}">${esc(n.status)}</span>
+        ${isRoot ? `<span class="p-sub">tenant root</span>` : `<span class="tn-acts">
+          <button class="p-btn sm" data-act="tn-toggle" data-id="${n.id}" data-to="${esc(smFirst("org_unit", smIs("org_unit", n.status, "operating") ? "blocked" : "operating"))}">${smIs("org_unit", n.status, "operating") ? "Suspend" : "Activate"}</button>
+          <button class="p-btn sm danger" data-act="tn-del" data-id="${n.id}">✕</button></span>`}
+      </div>${kids}`;
+  };
+  const treeHtml = r.tree ? walk(r.tree, 0) : `<div class="p-empty">No hierarchy yet</div>`;
+  const nodes = r.tree ? flatten(r.tree) : [];
+  if (tnSel != null && !nodes.some(n => n.id === tnSel)) tnSel = null;
+  const sel = nodes.find(n => n.id === tnSel) || (r.tree || null);
+  let inspector = "";
+  if (sel) {
+    let resolved = null;
+    try { resolved = await api(`/tenancy/resolve/${sel.id}?key=${encodeURIComponent(tnKey)}`); } catch (e) { }
+    const chain = (resolved && resolved.chain) || [];
+    inspector = `<div class="p-panel" style="margin-top:16px">
+      <div class="p-head"><b>${TN_ICON[sel.kind] || "▪️"} ${esc(sel.name)}</b><span class="p-sub">configuration cascade — deepest wins</span></div>
+      <div class="p-form" style="grid-template-columns:1fr 2fr auto;align-items:end">
+        <label>Key<input id="tnKeyIn" value="${esc(tnKey)}" placeholder="e.g. checkout.defaultCurrency"></label>
+        <label>Value (JSON)<input id="tnValIn" placeholder='{"currency":"USD"}'></label>
+        <button class="p-btn primary" data-act="tn-cfg-set" data-id="${sel.id}">Set on this node</button>
+      </div>
+      <div class="p-scroll-x" style="margin-top:12px"><table class="p-table"><thead><tr><th>Node</th><th>Kind</th><th>Own value for “${esc(tnKey || "all config")}”</th></tr></thead>
+        <tbody>${chain.map(c => `<tr><td><code>${esc(c.path)}</code></td><td>${esc(c.kind)}</td><td><code>${esc(c.value == null || (typeof c.value === "object" && !Object.keys(c.value).length) ? "—" : JSON.stringify(c.value))}</code></td></tr>`).join("") || '<tr><td colspan="3" class="p-empty">no config set on the chain</td></tr>'}</tbody></table></div>
+      ${tnKey ? `<div class="p-note">Resolved <b>${esc(tnKey)}</b> → <code>${esc(JSON.stringify(resolved && resolved.resolved))}</code></div>` : ""}
+    </div>`;
+  }
+  const newForm = `<div class="p-modal"><div class="p-modal-box"><div class="p-modal-head"><h3>New node</h3><button data-mclose>✕</button></div>
+    <div class="p-form">
+      <label>Parent<select id="tnParent">${nodes.map(n => `<option value="${n.id}">${esc(n.path)}</option>`).join("")}</select></label>
+      <label>Kind<select id="tnKind">${kinds.map(k => `<option value="${k}">${k}</option>`).join("")}</select></label>
+      <label>Name<input id="tnName" placeholder="e.g. North America"></label>
+    </div>
+    <div style="margin-top:14px;text-align:right"><button class="p-btn primary" data-act="tn-create">Create node</button></div></div></div>`;
+  return `<div class="p-panel">
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">
+        <span class="p-tag">${nodes.length} node${nodes.length === 1 ? "" : "s"}</span><span style="flex:1"></span>
+        <button class="p-btn primary sm" data-act="tn-new">+ New node</button></div>
+      <div class="tn-tree">${treeHtml}</div>
+    </div>${inspector}
+    <div id="tnModalHost" class="hidden">${newForm}</div>`;
+}
+
+screen("structure", { group: "Team & Access", label: "🏢 Org Structure", order: 1, render: async () => await renderStructure() });

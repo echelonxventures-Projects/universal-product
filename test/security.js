@@ -154,7 +154,10 @@ const raw = (text) => new Promise((resolve) => {
       const htmls = fs.readdirSync(pub).filter(f => f.endsWith(".html")).map(f => path.join(pub, f)).concat(fs.readdirSync(path.join(pub, "docs")).filter(f => f.endsWith(".html")).map(f => path.join(pub, "docs", f)));
       const inline = htmls.filter(f => /<script>|\son[a-z]+="/i.test(fs.readFileSync(f, "utf8")));
       ok(inline.length === 0, "no page carries inline script or inline event handlers", inline.map(f => path.basename(f)));
-      const js = ["admin.js", "platform.js", "app.js", "console.js"].filter(f => /\sonclick="/.test(fs.readFileSync(path.join(pub, "js", f), "utf8")));
+      /* every script the browser runs, including each domain's own console file */
+      const scripts = fs.readdirSync(path.join(pub, "js")).filter(f => f.endsWith(".js"))
+        .concat(...["admin", "platform"].filter(d => fs.existsSync(path.join(pub, "js", d))).map(d => fs.readdirSync(path.join(pub, "js", d)).filter(f => f.endsWith(".js")).map(f => d + "/" + f)));
+      const js = scripts.filter(f => /\sonclick="/.test(fs.readFileSync(path.join(pub, "js", f), "utf8")));
       ok(js.length === 0, "no bundle renders inline onclick handlers", js);
     }
 

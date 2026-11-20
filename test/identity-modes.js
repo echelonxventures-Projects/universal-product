@@ -46,6 +46,9 @@ const makeIdToken = (payload, secret) => {
   return h + "." + p + "." + sig;
 };
 
+/* stop a spawned server and wait until it has exited: a server still draining its sockets answers the
+   next boot's health check and then resets the request that follows (GAP-28) */
+const stopServer = p => new Promise(r => { if (p.exitCode !== null || p.signalCode) return r(); const t = setTimeout(() => { try { p.kill("SIGKILL"); } catch (e) { } }, 10000); p.once("exit", () => { clearTimeout(t); r(); }); p.kill("SIGTERM"); });
 (async () => {
   for (const s of ["", "-wal", "-shm"]) { try { require("fs").rmSync(DB + s, { force: true }); } catch (e) { } }
   const boot = async () => {
@@ -116,7 +119,7 @@ const makeIdToken = (payload, secret) => {
     ok((await f("/api/admin/roles")).roles.some(r => r.key === "scheduler") === false, "and in no other store's");
 
     console.log("▸ A5 — an operator's fork survives a reboot (the seed never reverts an edit)");
-    srv.kill(); srv = await boot();
+    await stopServer(srv); srv = await boot();
     await storeLogin("luxora", "hr@luxora.shop", "hr12345678");
     ok((await f("/api/admin/roles")).roles.some(r => r.key === "scheduler"), "the store-defined role survived the reboot");
     ok((fresh("SELECT edited FROM meta_lists WHERE name='staffRoles:t" + luxora.id + "'") || {}).edited === 1, "the fork is stamped edited, so the seed leaves it alone");

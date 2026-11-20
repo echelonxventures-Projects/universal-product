@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0040 (2026-11-19).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0041 (2026-11-20).
 
 ## Contents
 
@@ -63,7 +63,7 @@ A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A c
 | [V05](volumes/V05-structure.md) | C05 Structure | 1 of 1 | 2 | 2 | 19 KB |
 | [V06](volumes/V06-decision-and-control.md) | C06 Decision and Control | 1 of 1 | 4 | 4 | 30 KB |
 | [V07](volumes/V07-assurance.md) | C07 Assurance | 1 of 1 | 4 | 10 | 70 KB |
-| [V08](volumes/V08-interaction.md) | C08 Interaction | 1 of 1 | 4 | 4 | 29 KB |
+| [V08](volumes/V08-interaction.md) | C08 Interaction | 1 of 1 | 4 | 4 | 30 KB |
 | [V09.1](volumes/V09.1-automation.md) | C09 Automation | 1 of 2 | 2 | 14 | 94 KB |
 | [V09.2](volumes/V09.2-automation.md) | C09 Automation | 2 of 2 | 1 | 1 | 8 KB |
 | [V10](volumes/V10-intelligence.md) | C10 Intelligence | 1 of 1 | 1 | 1 | 7 KB |
@@ -403,6 +403,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0038"></a>AMD-0038 | 2026-10-21 | Platform owner | The Universal Wallet is derived only from the kernel (supersedes the definition, wallet and name tables of AMD-0037). Wallet definitions, wallets and holders are kernel nodes; a definition sits under the definition it refines in the definitions hierarchy to any depth, and a wallet under its definition and under its holder in the holding hierarchy. Every setting — value classes, operations, overdraft, maximum balance, wallets per owner, hold expiry, the default definition — is a kernel setting assigned at a definition node, a wallet or a namespace and resolved by context from the wallet upward, a store's namespace before the platform's; a definition states only what differs from the one above it. Names, aliases, state and settings are versions in valid and recorded time. The holder's identity is a sensitive attribute, sealed with AES-256-GCM bound to the node, and holders are found by a keyed blind index (lib/security.js blindIndex), never by a readable value. Every journal and every hold move is an event in the kernel's hash-chained log; verify() replays the log against the ledger index. A transfer now respects the receiving wallet's resolved maximum. Wallets held in AMD-0037's tables are ported onto the kernel once and the tables dropped. |
 | <a id="amd-0039"></a>AMD-0039 | 2026-11-19 | Platform owner | Phase A, the working tree made honest again. The uncommitted request path crashed every API call (a currency module reading a database handle and a tenant_settings table that do not exist) and served cached responses keyed by store and URL only, ahead of any login check, so one user's response reached any caller of the same store. The response cache, the per-request currency fields and the process-wide locale are removed: languages are Expression's (lib/expression.js, the messages catalogue) and units of value are Value's (the currencies and fx_rates tables), so the duplicate lib/i18n.js, lib/currency.js and i18n/locales are withdrawn rather than given a second home. The per-store request ceiling is a security-policy setting (tenantPerMin, 0 = off), not literal numbers. Unused session-revocation and MFA helpers are removed. The logger writes files only to a deliberately mounted LX_LOG_DIR, asynchronously, and never fails a request. The store's setup checklist and the platform's are one function (setupStatus). .gitignore no longer hides the authored _registry/ sources or _superseded/. .env.example names only variables the code reads. GAP-19: the test countries XX, XY, ZN (Zephyria Prime) and AQ and their provider availability are removed from the development database, and ZA is South Africa again (a backup is kept in data/backups/). GAP-20: the description of PR #3 now covers all 62 of its commits, including the 37 after 813e5f7, and says plainly that its head is unverified. GAP-30: the project folder moved off the iCloud-synced Desktop to /Users/bipin/Luxora; the conflict copies inside the repository are gone and the zero-byte and orphaned database files are removed. Also: the store's setup checklist is the stores domain's own (lib/routes/stores.js, public/js/admin/stores.js), with the wizard's duplicate modal() removed; deleting a platform provider names its store gateway through global.gatewayId (the kind prefixes are seed data, GATEWAY_PREFIX) rather than branching on provider kinds; the platform console's custom-provider form no longer reads its error element before declaring it; the hard-coding baseline falls to 47 branches and 79 fallbacks. |
 | <a id="amd-0040"></a>AMD-0040 | 2026-11-19 | Platform owner | Phase B, routes: every business domain's API routes and the handlers only it uses live in its own file, lib/routes/<domain>.js, the shape the Offers domain proved; lib/api.js is the shared HTTP kit and the router, and holds no route of its own (routesInSharedFile 839 → 0; lib/api.js 9,397 → 2,140 lines). Which route answers is decided by specificity, not by which file declared it first: at the first segment where two patterns differ a literal beats a :param, so the fifteen order-dependent pairs now resolve as their own comments say (/api/admin/deliverables/item/:id is the deliverable; /api/ucos/foundations/:key is Foundations, never a document named "foundations"). Three checks that read only lib/api.js now read every domain file too: the live-API register (lib/canonical.js apiRegister), the gate's independent route count, and the hard-coding audit (lib/routes, public/js/admin) — which had never counted the Offers files; the six gift-card routes they exposed have an owner (Commerce). Two literals the wider audit found are gone: the GOIP widget route no longer restates the engine's own distribution default, and the offer scope that takes one value says so in its row (offerScopes.node single). Tests that read the API's source as text read every domain route file too (test/api-source.js), so a negative check — api.js never writes offers directly, no fallback to a declared default — cannot pass vacuously once a handler moves. Every GET route answered the same status and shape before and after for a shopper, a store admin and a platform admin; every finding the audit counts moved file without one added or lost. |
+| <a id="amd-0041"></a>AMD-0041 | 2026-11-20 | Platform owner | Phase B, store console: every store-console screen is registered by its owning domain in public/js/admin/<domain>.js, the shape public/js/admin/offer.js proved; public/js/admin.js is the console shell and holds no screen of its own (screensInSharedScript 88 → 0; admin.js 3,077 → 1,370 lines). The shell's nav keeps only its groups; a screen declares its group, label and position, and screen() puts it back where it stood, so the menu is identical item for item (17 groups, 96 screens). The views that painted #vBody themselves (affiliate, sitemap, shipping) became an html and a wire function like every other view; screens a kind vocabulary dispatches (case, deliverable and option kinds) are registered by their domains while the dynamic branch stays for kinds an operator adds. Tests that read the console as text read every domain console file (test/console-source.js), and the no-inline-onclick check covers every script the browser runs. GAP-28 in part: a test that restarted its server without waiting for the old process to exit (test/identity-modes.js, test/backup.js) could have its next request reset by the draining process; both now wait for the exit. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1271,7 +1272,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 245 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 290 files.
 
 ### C02 · Meaning
 
@@ -1424,6 +1425,51 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/helpdesk.js` | [Communication](volumes/V08-interaction.md#d-cmn) | conversations |
 | `lib/search.js` | [Search](volumes/V08-interaction.md#d-srh) |  |
 | `public/js/admin/offer.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Offers domain's store-console screens |
+| `public/js/admin/access.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Access and roles domain's store-console screens |
+| `public/js/admin/affiliate.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Affiliates and creators domain's store-console screens |
+| `public/js/admin/ai.js` | [Experience](volumes/V08-interaction.md#d-exp) | the AI domain's store-console screens |
+| `public/js/admin/analytics.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Analytics and reports domain's store-console screens |
+| `public/js/admin/audit.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Audit domain's store-console screens |
+| `public/js/admin/business_operations.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Business operations domain's store-console screens |
+| `public/js/admin/cart.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Cart and checkout domain's store-console screens |
+| `public/js/admin/catalog.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Catalogue domain's store-console screens |
+| `public/js/admin/communication.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Messages and notifications domain's store-console screens |
+| `public/js/admin/compliance.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Compliance and privacy domain's store-console screens |
+| `public/js/admin/digital_goods.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Digital goods domain's store-console screens |
+| `public/js/admin/experiments.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Experiments domain's store-console screens |
+| `public/js/admin/health.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Health and pharmacy domain's store-console screens |
+| `public/js/admin/identity.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Identity domain's store-console screens |
+| `public/js/admin/integration.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Integrations and webhooks domain's store-console screens |
+| `public/js/admin/inventory.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Inventory domain's store-console screens |
+| `public/js/admin/kernel.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Kernel and registries domain's store-console screens |
+| `public/js/admin/knowledge.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Platform knowledge domain's store-console screens |
+| `public/js/admin/localisation.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Languages and localisation domain's store-console screens |
+| `public/js/admin/made_to_order.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Made to order domain's store-console screens |
+| `public/js/admin/marketplace.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Marketplace domain's store-console screens |
+| `public/js/admin/mobility.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Mobility domain's store-console screens |
+| `public/js/admin/modules.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Modules and capabilities domain's store-console screens |
+| `public/js/admin/order.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Orders domain's store-console screens |
+| `public/js/admin/payments.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Payment gateways domain's store-console screens |
+| `public/js/admin/platform_billing.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Platform billing domain's store-console screens |
+| `public/js/admin/price_discovery.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Negotiation and auctions domain's store-console screens |
+| `public/js/admin/product_content.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Product content domain's store-console screens |
+| `public/js/admin/product_options.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Product options domain's store-console screens |
+| `public/js/admin/returns.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Returns and refunds domain's store-console screens |
+| `public/js/admin/reviews.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Reviews and questions domain's store-console screens |
+| `public/js/admin/risk.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Risk and fraud domain's store-console screens |
+| `public/js/admin/rules.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Rules, states and settings domain's store-console screens |
+| `public/js/admin/runtime.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Runtime and operations domain's store-console screens |
+| `public/js/admin/search.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Search and discovery domain's store-console screens |
+| `public/js/admin/seo.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Search engine optimisation domain's store-console screens |
+| `public/js/admin/services.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Services and appointments domain's store-console screens |
+| `public/js/admin/settlement.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Settlements and payouts domain's store-console screens |
+| `public/js/admin/shipping.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Shipping and delivery domain's store-console screens |
+| `public/js/admin/storefront.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Storefront and content domain's store-console screens |
+| `public/js/admin/subscriptions.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Subscriptions and memberships domain's store-console screens |
+| `public/js/admin/supply.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Supply and planning domain's store-console screens |
+| `public/js/admin/support.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Customer support domain's store-console screens |
+| `public/js/admin/trade.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Business-to-business trade domain's store-console screens |
+| `public/js/admin/wallet.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Wallets domain's store-console screens |
 | `lib/routes/communication.js` | [Communication](volumes/V08-interaction.md#d-cmn) | the Messages and notifications domain's API routes and handlers |
 | `lib/routes/engagement.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Lists, alerts and history domain's API routes and handlers |
 | `lib/routes/reviews.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Reviews and questions domain's API routes and handlers |
@@ -2401,6 +2447,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0038 | amendment | The Universal Wallet is derived only from the kernel (supers | [constitution](#amd-0038) |
 | AMD-0039 | amendment | Phase A, the working tree made honest again. The uncommitted | [constitution](#amd-0039) |
 | AMD-0040 | amendment | Phase B, routes | [constitution](#amd-0040) |
+| AMD-0041 | amendment | Phase B, store console | [constitution](#amd-0041) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

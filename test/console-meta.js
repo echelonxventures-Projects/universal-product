@@ -33,7 +33,7 @@ try {
   ok(db.get("SELECT COUNT(*) c FROM taxonomy WHERE level=?", root).c > 0, "the seeded tree's top nodes sit at the root level");
 
   console.log("▸ ENTITY FIELDS DECLARE HOW THE CONSOLE SHOWS THEM");
-  const admin = JS("admin.js"), platform = JS("platform.js");
+  const admin = require("./console-source.js")(), platform = JS("platform.js"); /* admin: the shell and every domain console file */
   const edBlock = (/const EDITORS = \{([\s\S]*?)\n\};/.exec(admin) || [])[1] || "";
   const editors = new Set([...edBlock.matchAll(/^\s*([a-z_]+):/gm)].map(m => m[1]));
   const declared = [...new Set(fields.filter(f => f.editor).map(f => f.editor))];

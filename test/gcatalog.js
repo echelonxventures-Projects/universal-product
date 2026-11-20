@@ -245,7 +245,7 @@ ok(!q("SELECT name FROM sqlite_master WHERE type='table' AND name='global_produc
 console.log("\n▸ CONSOLE VIEW RENDERS WITHOUT JS ERRORS");
 let errs = [];
 try {
-  const js = fs.readFileSync(path.join(__dirname, "..", "public", "js", "admin.js"), "utf8");
+  const js = require("./console-source.js")(); /* the console shell and every domain console file */
   ok(/vGcatalog|gcatalog/.test(js), "the store console ships a Global Catalog view");
   ok(/tenant\/catalog\/importable|tenant\/catalog\/import/.test(js), "the store console consumes the gated import API");
   const plat = fs.readFileSync(path.join(__dirname, "..", "public", "js", "platform.js"), "utf8");
