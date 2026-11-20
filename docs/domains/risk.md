@@ -90,7 +90,7 @@ flowchart LR
 
 **Store console:** 🛡️ Risk & Fraud
 
-**Platform console:** 🕵️ Fraud Detection · ⚠️ Risk Engine · 🧠 Knowledge Intelligence · ⚠️ Risk · ⛔ Risk Blocks · 🔐 Security · 🎛️ Controls · 🧾 Evidence · 🛡️ Risk · Compliance · Trash
+**Platform console:** 🕵️ Fraud Detection · ⚠️ Risk Engine · 🧠 Knowledge Intelligence · 🛡️ Risk · Compliance · Trash · ⚠️ Risk · ⛔ Risk Blocks · 🔐 Security · 🎛️ Controls · 🧾 Evidence
 
 ## User flows
 

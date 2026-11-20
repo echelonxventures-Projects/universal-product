@@ -331,7 +331,9 @@
      "plans",
      "subs"
     ],
-    "platformGroups": [],
+    "platformGroups": [
+     "Platform Billing"
+    ],
     "pages": []
    }
   },
@@ -1164,7 +1166,9 @@
     "platformScreens": [
      "gfinance"
     ],
-    "platformGroups": [],
+    "platformGroups": [
+     "Settlements"
+    ],
     "pages": []
    }
   },
@@ -1704,7 +1708,9 @@
     "platformScreens": [
      "gops"
     ],
-    "platformGroups": [],
+    "platformGroups": [
+     "Business Operations"
+    ],
     "pages": []
    }
   },

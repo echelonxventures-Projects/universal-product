@@ -228,7 +228,7 @@ flowchart LR
 
 **Store console:** 🧭 Setup Wizard · 🏢 Org Structure
 
-**Platform console:** 🏬 Tenants · 🏷️ Brands · Manufacturers · 🧬 Composition Engine · 🏬 Platforms & Kinds · 🏢 Companies · 🗂️ Workspaces · 🌍 Environments · 🛡️ Provisioning
+**Platform console:** 🏬 Platforms & Kinds · 🏢 Companies · 🗂️ Workspaces · 🌍 Environments · 🏬 Tenants · 🏷️ Brands · Manufacturers · 🧬 Composition Engine · 🛡️ Provisioning
 
 ## User flows
 

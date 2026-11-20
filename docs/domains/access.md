@@ -76,7 +76,7 @@ flowchart LR
 
 **Store console:** 👥 Team & Roles
 
-**Platform console:** 🎭 Roles · 🔒 Policies · 👤 Users · 🎭 Roles · 🔑 Permissions · 🪪 Licenses · 👥 Team · Access · Settings
+**Platform console:** 👤 Users · 🎭 Roles · 🔑 Permissions · 🪪 Licenses · 👥 Team · Access · Settings · 🎭 Roles · 🔒 Policies
 
 ## User flows
 

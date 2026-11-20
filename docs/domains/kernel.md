@@ -434,7 +434,7 @@ flowchart LR
 
 **Store console:** 🛠️ Data Studio
 
-**Platform console:** 🕸️ Knowledge Graph · 🧠 Ontology Registry · 🔗 Semantic Registry · 🗄️ Canonical Knowledge Registry · 🔢 Versioning · 🔀 Migration · 🗑️ Deprecation · 📊 Impact Analysis · 🩹 Self Healing · ⚙️ Self Optimization · 🧬 Data Explorer · 🛠️ Data Studio · 📚 Platform Registries · 🧬 Universes
+**Platform console:** 🕸️ Knowledge Graph · 🧠 Ontology Registry · 🔗 Semantic Registry · 🗄️ Canonical Knowledge Registry · 🧬 Data Explorer · 🛠️ Data Studio · 📚 Platform Registries · 🧬 Universes · 🔢 Versioning · 🔀 Migration · 🗑️ Deprecation · 📊 Impact Analysis · 🩹 Self Healing · ⚙️ Self Optimization
 
 ## User flows
 

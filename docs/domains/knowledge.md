@@ -313,7 +313,7 @@ flowchart LR
 
 **Store console:** 📘 User Manual · 🏛️ Architecture
 
-**Platform console:** 🧭 Traceability · 🌀 UCII Ω∞ Registry · ♾️ UCOS Ω∞ Constitution · 🏛️ Foundations · 🔀 Domains · 📦 Canonical Objects · 📐 Canonical Schemas · 🔗 Canonical Relationships · ⚡ Canonical Events · 🔌 Canonical APIs · 🔀 Canonical Workflows · 🕸️ Capability Graph · 🕸️ Knowledge Graph · 🕸️ Dependency Graph · 🕸️ Traceability Graph · 🏛️ Reference Architecture · 🔐 Security Architecture · 🗄️ Data Architecture · 🧠 AI Architecture · 🧬 Evolution Architecture · 📘 User Manual · 🏛️ Architecture
+**Platform console:** 🌀 UCII Ω∞ Registry · ♾️ UCOS Ω∞ Constitution · 🏛️ Foundations · 🔀 Domains · 📦 Canonical Objects · 📐 Canonical Schemas · 🔗 Canonical Relationships · ⚡ Canonical Events · 🔌 Canonical APIs · 🔀 Canonical Workflows · 🧭 Traceability · 🕸️ Capability Graph · 🕸️ Knowledge Graph · 🕸️ Dependency Graph · 🕸️ Traceability Graph · 🏛️ Reference Architecture · 🔐 Security Architecture · 🗄️ Data Architecture · 🧠 AI Architecture · 🧬 Evolution Architecture · 📘 User Manual · 🏛️ Architecture
 
 ## User flows
 

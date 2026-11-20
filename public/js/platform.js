@@ -79,10 +79,8 @@ const NAV = [
       ["identity-templates", "📋 Identity Templates", { v: "identity-templates" }],
       ["persons", "👥 Persons", { u: "person" }],
       ["organizations", "🏢 Organizations", { u: "organization" }],
-      ["tenants", "🏬 Tenants", { e: "tenant", a: "tenants-admin" }],
       ["platform-setup", "🧭 Platform Setup", { v: "platform-setup" }],
       ["users", "👤 Users", { v: "users", a: "users-admin" }],
-      ["roles", "🎭 Roles", { v: "roles", a: "roles-admin" }],
       ["permissions", "🔑 Permissions", { u: "permission", a: "permissions-admin" }],
       ["credentials", "🧷 Credentials", { u: "credential_chain" }],
       ["authentication", "🔓 Authentication", { u: "authentication" }],
@@ -92,6 +90,7 @@ const NAV = [
       ["kyc", "📄 KYC", { e: "kyc_profile" }],
       ["kyb", "🏛️ KYB", { u: "kyb" }],
       ["identity-graph", "🕸️ Identity Graph", { u: "identity_universe" }],
+      ["padmins", "🛡️ Platform Admins", { v: "padmins" }],
     ] },
     { g: "Geography", l: [
       ["countries", "🗺️ Countries", { e: "country" }],
@@ -140,6 +139,7 @@ const NAV = [
       ["collections", "📚 Collections", { u: "collection" }],
       ["product-graph", "🕸️ Product Graph", { u: "product_ontology" }],
       ["product-registry", "🗄️ Product Registry", { u: "global_product_registry_universe" }],
+      ["definitions", "📐 Entity Definitions", { v: "definitions" }],
     ] },
     { g: "Services", l: [
       ["global-services", "🌐 Global Services", { u: "service" }],
@@ -155,7 +155,6 @@ const NAV = [
       ["taxonomy-universe", "🌳 Taxonomy Universe", { u: "universal_taxonomy_universe" }],
     ] },
     { g: "Provenance", l: [
-      ["brands", "🏷️ Brands · Manufacturers", { v: "brands" }],
       ["suppliers", "🚚 Suppliers", { e: "supplier" }],
       ["vendors", "🤝 Vendors", { u: "vendor" }],
       ["manufacturers", "🏭 Manufacturers", { e: "brand" }],
@@ -169,6 +168,10 @@ const NAV = [
       ["ontology", "🧠 Ontology Registry", { u: "ontology" }],
       ["semantic", "🔗 Semantic Registry", { u: "semantic" }],
       ["canonical-registry", "🗄️ Canonical Knowledge Registry", { u: "universal_knowledge_graph" }],
+      ["gdata", "🧬 Data Explorer", { v: "gdata" }],
+      ["studio", "🛠️ Data Studio", { v: "studio" }],
+      ["registries", "📚 Platform Registries", { v: "registries" }],
+      ["universes", "🧬 Universes", { v: "universes" }],
     ] },
   ] },
   { n: "03 · Business", g: [
@@ -237,29 +240,35 @@ const NAV = [
       ["reviews", "⭐ Reviews · UGC", { e: "review" }],
     ] },
     { g: "Recurring", l: [
-      ["subs", "🔁 Subscriptions", { v: "subs" }],
       ["memberships", "🎟️ Memberships", { e: "membership" }],
       ["recurring-billing", "♻️ Recurring Billing", { u: "recurring_billing" }],
     ] },
-    { g: "Billing & Payment", l: [
+    { g: "Platform Billing", l: [
+      ["subs", "🔁 Subscriptions", { v: "subs" }],
       ["plans", "💼 Plans", { v: "plans" }],
-      ["subs-plans", "🔁 Subscriptions", { v: "subs", a: "subs" }],
       ["invoices", "🧾 Invoices", { v: "invoices" }],
       ["billing", "💳 Billing Ops", { v: "billing" }],
-      ["gfinance", "💸 Finance · Payments", { v: "gfinance" }],
+    ] },
+    { g: "Billing & Payment", l: [
+      ["subs-plans", "🔁 Subscriptions", { v: "subs", a: "subs" }],
       ["payments", "💳 Payments", { e: "payment" }],
       ["settlements", "🧮 Settlements", { e: "settlement" }],
       ["escrow", "🔒 Escrow", { e: "escrow_hold" }],
     ] },
+    { g: "Settlements", l: [
+      ["gfinance", "💸 Finance · Payments", { v: "gfinance" }],
+    ] },
   ] },
   { n: "05 · Operations", g: [
     { g: "Supply", l: [
-      ["gops", "🧭 Ops Hub", { v: "gops" }],
       ["inventory", "📦 Inventory", { e: "inventory" }],
       ["warehousing", "🏬 Warehousing", { e: "warehouse" }],
       ["procurement", "🛒 Procurement", { u: "procurement" }],
       ["stock-transfers", "🔀 Stock Transfers", { e: "stock_transfer" }],
       ["replenishment", "🔄 Replenishment", { e: "replenishment" }],
+    ] },
+    { g: "Business Operations", l: [
+      ["gops", "🧭 Ops Hub", { v: "gops" }],
     ] },
     { g: "Fulfilment", l: [
       ["fulfilment", "📦 Fulfilment", { e: "smart_fulfilment" }],
@@ -335,6 +344,7 @@ const NAV = [
       ["fraud", "🕵️ Fraud Detection", { u: "fraud_detection" }],
       ["risk-intel", "⚠️ Risk Engine", { u: "risk" }],
       ["knowledge-intel", "🧠 Knowledge Intelligence", { u: "knowledge_intelligence" }],
+      ["grisk", "🛡️ Risk · Compliance · Trash", { v: "grisk" }],
     ] },
     { g: "Autonomy", l: [
       ["autonomous-planning", "🗓️ Autonomous Planning", { u: "autonomous_planning" }],
@@ -347,11 +357,11 @@ const NAV = [
       ["ganalytics", "📊 Analytics · A/B", { v: "ganalytics" }],
       ["experiments", "🧪 Experiments", { e: "experiment" }],
       ["intelligence-registry", "🗄️ Intelligence Registry", { u: "intelligence_registry" }],
+      ["dash", "◈ Command", { v: "dash" }],
     ] },
   ] },
   { n: "08 · Governance", g: [
     { g: "Policy", l: [
-      ["policies", "🔒 Policies", { v: "policies" }],
       ["standards", "📏 Standards", { u: "standard" }],
       ["regulations", "📜 Regulations", { u: "regulation" }],
       ["rules", "📏 Rules", { u: "rule" }],
@@ -373,12 +383,10 @@ const NAV = [
       ["evidence", "🧾 Evidence", { u: "evidence" }],
     ] },
     { g: "Oversight", l: [
-      ["grisk", "🛡️ Risk · Compliance · Trash", { v: "grisk" }],
       ["audit", "📜 Global Audit", { v: "audit" }],
       ["review-governance", "🔍 Reviews", { u: "review_governance" }],
       ["approvals", "✅ Approvals", { u: "approval" }],
       ["change-control", "🔄 Change Control", { u: "change_control" }],
-      ["trace", "🧭 Traceability", { v: "trace" }],
       ["ai-governance", "🧠 AI Governance", { u: "ai_governance" }],
       ["agent-governance", "🤖 Agent Governance", { u: "agent_governance" }],
       ["governance-graph", "🕸️ Governance Graph", { u: "governance_graph" }],
@@ -392,11 +400,10 @@ const NAV = [
       ["capability-registry", "🗄️ Capability Registry", { u: "capability_registry" }],
       ["capability-composition", "🧩 Capability Composition", { u: "capability_composition" }],
       ["capability-discovery", "🧭 Capability Discovery", { u: "capability_discovery" }],
-      ["compose", "🧬 Composition Engine", { v: "compose" }],
+      ["modules", "🧩 Module Marketplace", { v: "modules" }],
     ] },
     { g: "Extension", l: [
       ["providers", "🔌 Provider Registry", { v: "providers" }],
-      ["modules", "🧩 Module Marketplace", { v: "modules" }],
       ["connectors", "🔌 Connectors", { u: "connectors" }],
       ["integrations", "🔗 Integrations", { u: "integration" }],
       ["extensions", "🧩 Extensions", { u: "extension" }],
@@ -421,7 +428,6 @@ const NAV = [
   ] },
   { n: "10 · Observability", g: [
     { g: "Telemetry", l: [
-      ["dash", "◈ Command", { v: "dash" }],
       ["monitor", "📈 Monitoring", { v: "monitor" }],
       ["metrics", "📊 Metrics", { u: "metrics" }],
       ["logs", "🪵 Logs", { u: "logs" }],
@@ -437,9 +443,6 @@ const NAV = [
     ] },
     { g: "Insight", l: [
       ["dashboards", "📊 Dashboards", { v: "dashboards" }],
-      ["gdata", "🧬 Data Explorer", { v: "gdata" }],
-      ["studio", "🛠️ Data Studio", { v: "studio" }],
-      ["definitions", "📐 Entity Definitions", { v: "definitions" }],
       ["slo", "🎯 SLO · SLA", { u: "slo" }],
       ["rca", "🔍 Root Cause Analysis", { u: "root_cause_analysis" }],
       ["diagnostics", "🩺 Diagnostics", { u: "diagnostics" }],
@@ -452,22 +455,25 @@ const NAV = [
       ["companies", "🏢 Companies", { u: "company" }],
       ["workspaces", "🗂️ Workspaces", { u: "workspace" }],
       ["environments", "🌍 Environments", { v: "runtime" }],
+      ["tenants", "🏬 Tenants", { e: "tenant", a: "tenants-admin" }],
+      ["brands", "🏷️ Brands · Manufacturers", { v: "brands" }],
+      ["compose", "🧬 Composition Engine", { v: "compose" }],
+      ["provisioning", "🛡️ Provisioning", { v: "provisioning" }],
     ] },
     { g: "Access", l: [
       ["users-admin", "👤 Users", { v: "users" }],
       ["roles-admin", "🎭 Roles", { v: "roles" }],
       ["permissions-admin", "🔑 Permissions", { u: "permission" }],
-      ["padmins", "🛡️ Platform Admins", { v: "padmins" }],
       ["licenses", "🪪 Licenses", { u: "license" }],
       ["gteam", "👥 Team · Access · Settings", { v: "gteam" }],
+      ["roles", "🎭 Roles", { v: "roles", a: "roles-admin" }],
+      ["policies", "🔒 Policies", { v: "policies" }],
     ] },
     { g: "Configuration", l: [
-      ["registries", "📚 Platform Registries", { v: "registries" }],
       ["configurations", "⚙️ Configurations", { u: "configuration" }],
       ["secrets", "🗝️ Secrets", { u: "secrets_management" }],
       ["settings", "⚙️ Settings", { v: "gteam", a: "gteam" }],
       ["feature-flags", "🚩 Feature Flags", { v: "runtime" }],
-      ["provisioning", "🛡️ Provisioning", { v: "provisioning" }],
     ] },
   ] },
   { n: "12 · Architecture", g: [
@@ -475,7 +481,6 @@ const NAV = [
       ["ucii", "🌀 UCII Ω∞ Registry", { v: "ucii" }],
       ["ucos", "♾️ UCOS Ω∞ Constitution", { v: "ucos" }],
       ["foundations", "🏛️ Foundations", { v: "foundations" }],
-      ["universes", "🧬 Universes", { v: "universes" }],
       ["domains", "🔀 Domains", { v: "domains" }],
     ] },
     { g: "Canonical Model", l: [
@@ -485,6 +490,7 @@ const NAV = [
       ["canonical-events", "⚡ Canonical Events", { u: "canonical_event" }],
       ["canonical-apis", "🔌 Canonical APIs", { u: "canonical_api" }],
       ["canonical-workflows", "🔀 Canonical Workflows", { u: "canonical_workflow" }],
+      ["trace", "🧭 Traceability", { v: "trace" }],
     ] },
     { g: "Graphs", l: [
       ["capability-graph", "🕸️ Capability Graph", { u: "capability_graph" }],
