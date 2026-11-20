@@ -277,11 +277,7 @@
      "key": "price_type",
      "label": "Price type",
      "type": "select",
-     "options": [
-      "free",
-      "one_time",
-      "monthly"
-     ]
+     "options": "modulePriceTypes"
     },
     {
      "key": "price",
@@ -308,10 +304,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "active",
-      "retired"
-     ],
+     "options": "states:module",
      "display": "badge"
     },
     {
@@ -358,10 +351,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "installed",
-      "disabled"
-     ],
+     "options": "tenantModuleStatuses",
      "display": "badge"
     },
     {
@@ -413,11 +403,7 @@
      "key": "audience",
      "label": "Audience",
      "type": "select",
-     "options": [
-      "admin",
-      "platform",
-      "all"
-     ],
+     "options": "dashboardAudiences",
      "list": true
     },
     {
@@ -465,14 +451,7 @@
      "key": "kind",
      "label": "Visualization",
      "type": "select",
-     "options": [
-      "kpi",
-      "table",
-      "bar",
-      "line",
-      "donut",
-      "text"
-     ],
+     "options": "widgetKinds",
      "required": true,
      "list": true,
      "display": "badge"
@@ -496,14 +475,7 @@
      "key": "metric",
      "label": "Metric",
      "type": "select",
-     "options": [
-      "count",
-      "sum",
-      "avg",
-      "min",
-      "max",
-      "distinct"
-     ],
+     "options": "widgetMetrics",
      "list": true
     },
     {
@@ -522,10 +494,7 @@
      "key": "ord",
      "label": "Order",
      "type": "select",
-     "options": [
-      "desc",
-      "asc"
-     ]
+     "options": "sortDirections"
     },
     {
      "key": "lim",
@@ -585,14 +554,7 @@
      "key": "kind",
      "label": "Kind",
      "type": "select",
-     "options": [
-      "scheduled",
-      "event",
-      "regulatory",
-      "operational",
-      "executive",
-      "ai"
-     ],
+     "options": "reportKinds",
      "required": true,
      "list": true,
      "display": "badge"
@@ -625,23 +587,14 @@
      "key": "schedule",
      "label": "Schedule",
      "type": "select",
-     "options": [
-      "manual",
-      "daily",
-      "weekly",
-      "monthly"
-     ],
+     "options": "reportSchedules",
      "list": true
     },
     {
      "key": "format",
      "label": "Format",
      "type": "select",
-     "options": [
-      "table",
-      "csv",
-      "json"
-     ],
+     "options": "reportFormats",
      "list": true
     },
     {
@@ -791,11 +744,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "granted",
-      "withdrawn",
-      "denied"
-     ],
+     "options": "states:consent",
      "required": true,
      "list": true,
      "display": "badge"
@@ -1374,11 +1323,7 @@
      "key": "source_kind",
      "label": "Source",
      "type": "select",
-     "options": [
-      "seed",
-      "universe",
-      "import"
-     ],
+     "options": "productSources",
      "readonly": true,
      "list": true,
      "hint": "seeded, activated from a corpus universe, or imported"
@@ -2420,10 +2365,7 @@
      "key": "tier",
      "label": "Tier",
      "type": "select",
-     "options": [
-      "free",
-      "premium"
-     ],
+     "options": "aiUsageTiers",
      "list": true
     },
     {
@@ -2480,12 +2422,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "queued",
-      "running",
-      "done",
-      "failed"
-     ],
+     "options": "aiTaskStatuses",
      "list": true,
      "display": "badge"
     },
@@ -2575,12 +2512,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "draft",
-      "in_transit",
-      "completed",
-      "cancelled"
-     ],
+     "options": "stockTransferStatuses",
      "list": true,
      "display": "badge"
     },
@@ -2642,12 +2574,7 @@
      "key": "tax_type",
      "label": "Type",
      "type": "select",
-     "options": [
-      "vat",
-      "gst",
-      "sales",
-      "withholding"
-     ],
+     "options": "remittanceTaxTypes",
      "list": true
     },
     {
@@ -2666,12 +2593,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "pending",
-      "filed",
-      "paid",
-      "amended"
-     ],
+     "options": "remittanceStatuses",
      "list": true,
      "display": "badge"
     },
@@ -2776,12 +2698,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "processing",
-      "shipped",
-      "delivered",
-      "cancelled"
-     ],
+     "options": "states:order",
      "list": true,
      "display": "badge"
     },
@@ -2852,13 +2769,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "requested",
-      "approved",
-      "received",
-      "refunded",
-      "rejected"
-     ],
+     "options": "states:return",
      "list": true,
      "display": "badge"
     },
@@ -2925,13 +2836,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "open",
-      "quoted",
-      "accepted",
-      "rejected",
-      "closed"
-     ],
+     "options": "states:rfq",
      "list": true,
      "display": "badge"
     },
@@ -2996,10 +2901,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "pending",
-      "paid"
-     ],
+     "options": "settlementStatuses",
      "list": true,
      "display": "badge"
     },
@@ -3049,10 +2951,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "active",
-      "suspended"
-     ],
+     "options": "sellerStatuses",
      "list": true,
      "display": "badge"
     },
@@ -3200,14 +3099,7 @@
      "key": "level",
      "label": "Level",
      "type": "select",
-     "options": [
-      "domain",
-      "industry",
-      "category",
-      "subcategory",
-      "family",
-      "model"
-     ],
+     "options": "taxonomyLevels",
      "list": true
     },
     {
@@ -3294,15 +3186,7 @@
      "key": "type",
      "label": "Type",
      "type": "select",
-     "options": [
-      "text",
-      "number",
-      "bool",
-      "date",
-      "select",
-      "multi",
-      "json"
-     ],
+     "options": "attributeTypes",
      "list": true
     },
     {
@@ -3970,10 +3854,7 @@
      "key": "visibility",
      "label": "Visibility",
      "type": "select",
-     "options": [
-      "public",
-      "internal"
-     ],
+     "options": "noteVisibilities",
      "list": true
     },
     {
@@ -4313,12 +4194,7 @@
      "key": "kind",
      "label": "Kind",
      "type": "select",
-     "options": [
-      "email",
-      "card",
-      "address",
-      "ip"
-     ],
+     "options": "riskBlockKinds",
      "list": true,
      "display": "badge"
     },
@@ -4578,10 +4454,7 @@
      "key": "role",
      "label": "Role",
      "type": "select",
-     "options": [
-      "customer",
-      "admin"
-     ],
+     "options": "customerRoles",
      "list": true
     },
     {
@@ -4631,10 +4504,7 @@
      "key": "mode",
      "label": "Mode",
      "type": "select",
-     "options": [
-      "sandbox",
-      "live"
-     ],
+     "options": "gatewayModes",
      "list": true
     },
     {
@@ -4674,10 +4544,7 @@
      "key": "kind",
      "label": "Kind",
      "type": "select",
-     "options": [
-      "order",
-      "subscription"
-     ],
+     "options": "paymentKinds",
      "list": true,
      "display": "badge"
     },
@@ -4713,13 +4580,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "initiated",
-      "pending",
-      "captured",
-      "failed",
-      "refunded"
-     ],
+     "options": "states:payment",
      "list": true,
      "display": "badge"
     },
@@ -4797,10 +4658,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "active",
-      "suspended"
-     ],
+     "options": "states:tenant",
      "list": true,
      "display": "badge"
     }
@@ -4893,12 +4751,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "trialing",
-      "active",
-      "past_due",
-      "cancelled"
-     ],
+     "options": "states:plan_subscription",
      "list": true,
      "display": "badge"
     },
@@ -4963,12 +4816,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "draft",
-      "paid",
-      "overdue",
-      "void"
-     ],
+     "options": "states:invoice",
      "list": true,
      "display": "badge"
     },
@@ -5015,10 +4863,7 @@
      "key": "scope",
      "label": "Scope",
      "type": "select",
-     "options": [
-      "platform",
-      "tenant"
-     ],
+     "options": "providerScopes",
      "list": true
     },
     {
@@ -5217,11 +5062,7 @@
      "key": "status",
      "label": "Status",
      "type": "select",
-     "options": [
-      "open",
-      "exhausted",
-      "closed"
-     ],
+     "options": "states:goip_budget",
      "list": true,
      "display": "badge"
     },
@@ -9968,5 +9809,120 @@
  "WRITERS": {
   "$comment": "the modules a built-in entity may name as its writer: the owner's write path, which records the change on the kernel and writes the row in one transaction (lib/entity.js). Tenant-defined entities cannot name a writer.",
   "places": "./places.js"
+ },
+ "LISTS": {
+  "$comment": "the registry lists the entity fields choose from (lib/registry.js seeds them; an operator edits them in Data Studio)",
+  "modulePriceTypes": [
+   "free",
+   "one_time",
+   "monthly"
+  ],
+  "tenantModuleStatuses": [
+   "installed",
+   "disabled"
+  ],
+  "dashboardAudiences": [
+   "admin",
+   "platform",
+   "all"
+  ],
+  "widgetKinds": [
+   "kpi",
+   "table",
+   "bar",
+   "line",
+   "donut",
+   "text"
+  ],
+  "widgetMetrics": [
+   "count",
+   "sum",
+   "avg",
+   "min",
+   "max",
+   "distinct"
+  ],
+  "sortDirections": [
+   "desc",
+   "asc"
+  ],
+  "reportSchedules": [
+   "manual",
+   "daily",
+   "weekly",
+   "monthly"
+  ],
+  "reportFormats": [
+   "table",
+   "csv",
+   "json"
+  ],
+  "productSources": [
+   "seed",
+   "universe",
+   "import"
+  ],
+  "aiUsageTiers": [
+   "free",
+   "premium"
+  ],
+  "aiTaskStatuses": [
+   "queued",
+   "running",
+   "done",
+   "failed"
+  ],
+  "stockTransferStatuses": [
+   "draft",
+   "in_transit",
+   "completed",
+   "cancelled"
+  ],
+  "remittanceTaxTypes": [
+   "vat",
+   "gst",
+   "sales",
+   "withholding"
+  ],
+  "remittanceStatuses": [
+   "pending",
+   "filed",
+   "paid",
+   "amended"
+  ],
+  "settlementStatuses": [
+   "pending",
+   "paid"
+  ],
+  "sellerStatuses": [
+   "active",
+   "suspended"
+  ],
+  "noteVisibilities": [
+   "public",
+   "internal"
+  ],
+  "riskBlockKinds": [
+   "email",
+   "card",
+   "address",
+   "ip"
+  ],
+  "customerRoles": [
+   "customer",
+   "admin"
+  ],
+  "gatewayModes": [
+   "sandbox",
+   "live"
+  ],
+  "paymentKinds": [
+   "order",
+   "subscription"
+  ],
+  "providerScopes": [
+   "platform",
+   "tenant"
+  ]
  }
 }

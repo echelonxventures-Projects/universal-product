@@ -17756,6 +17756,11 @@
    "key": "vocab.taxonomy_levels",
    "shape": "objects"
   },
+  "attributeTypes": {
+   "from": "vocabulary",
+   "key": "vocab.attribute_types",
+   "shape": "objects"
+  },
   "industries": {
    "from": "kind",
    "kind": "master.industry",

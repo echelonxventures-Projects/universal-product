@@ -557,6 +557,7 @@ console.log("\n▸ THE ENTITY LAYER EXPOSES THE PARITY TABLES GENERICALLY");
   for (const k of parityKeys) {
     const def = all[k]; if (!def) continue;
     for (const f of def.fields) {
+      if (f.options && typeof f.options === "string" && f.options.startsWith("states:")) { if (!require("../lib/states.js").vocab(f.options.slice(7)).length) badOpts.push(k + "." + f.key + " → " + f.options + " (empty)"); continue; }
       if (f.options && typeof f.options === "string" && !reg.has(f.options, (reg.keys(f.options)[0] || ""))) badOpts.push(k + "." + f.key + " → " + f.options);
       else if (f.options && typeof f.options === "string" && reg.keys(f.options).length === 0) badOpts.push(k + "." + f.key + " → " + f.options + " (empty)");
     }

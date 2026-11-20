@@ -3065,7 +3065,7 @@ async function gFieldInput(f, val, editing) {
   if (f.type === "textarea") return `<label><span>${esc(f.label)}${req}</span><textarea id="${fid}" rows="3">${esc(val == null ? "" : val)}</textarea></label>`;
   if (f.type === "json" || f.type === "multi") return `<label><span>${esc(f.label)}${req} <small>(JSON)</small></span><textarea id="${fid}" rows="3" placeholder="{}">${esc(typeof val === "string" ? val : (val == null ? "" : JSON.stringify(val, null, 1)))}</textarea></label>`;
   if (f.type === "select") {
-    const opts = Array.isArray(f.options) ? f.options : [];
+    const opts = Array.isArray(f.options) ? f.options : (f.choices || []);
     return `<label><span>${esc(f.label)}${req}</span><select id="${fid}"><option value="">—</option>${opts.map(o => `<option ${String(o) === String(val) ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></label>`;
   }
   if (String(f.type || "").startsWith("ref:")) {

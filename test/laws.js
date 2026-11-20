@@ -183,6 +183,10 @@ const cleanup = () => { for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(
     const js = path.join(ROOT, "public", "js");
     const consoles = ["admin.js", "platform.js"].map(f => path.join(js, f)).concat(fs.existsSync(path.join(js, "admin")) ? fs.readdirSync(path.join(js, "admin")).filter(f => f.endsWith(".js")).map(f => path.join(js, "admin", f)) : []);
     let tags = 0; for (const f of consoles) tags += (fs.readFileSync(f, "utf8").match(/<option value="[a-z_]*">/g) || []).length;
+    /* a field that names its owner — a state machine (states:<machine>) or a registry list — gets choices from it */
+    const ent = require(path.join(ROOT, "lib", "entity.js")), empty = [];
+    for (const [k, d] of Object.entries(defs)) for (const f of (d && d.fields) || []) if (typeof f.options === "string" && f.options && f.options.indexOf(".") < 0) { const o = ent.optionsOf(f); if (!o || !o.length) empty.push(k + "." + f.key + " → " + f.options); }
+    ok(empty.length === 0, "every field that names its choices' owner gets choices from it", empty);
     ratchet("inlineChoices", inline.length + tags, "choices written in place instead of read from their owner (" + inline.length + " entity fields, " + tags + " console options)", inline.slice(0, 10));
   }
 

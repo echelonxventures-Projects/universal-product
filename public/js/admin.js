@@ -474,7 +474,7 @@ async function fieldInput(f, val, registry) {
   if (f.editor && EDITORS[f.editor]) return `<div class="p-field"><span class="p-field-l">${esc(f.label)}</span><div id="${id}" data-editor="${esc(f.editor)}"></div></div>`;
   if (f.type === "json" || f.type === "multi") return `<label><span>${esc(f.label)} (JSON)</span><textarea id="${id}" rows="3">${esc(typeof val === "string" ? val : JSON.stringify(val || (f.type === "multi" ? [] : {}), null, 1))}</textarea></label>`;
   if (f.type === "select") {
-    let opts = Array.isArray(f.options) ? f.options : (f.options && String(f.options).includes(".") ? String(f.options).split(".").reduce((o, k) => (o || {})[k], registry) : (registry && registry[f.options])) || [];
+    let opts = Array.isArray(f.options) ? f.options : (f.options && String(f.options).includes(".") ? String(f.options).split(".").reduce((o, k) => (o || {})[k], registry) : (registry && registry[f.options])) || f.choices || [];
     /* a registry list of rows offers each row's key */
     opts = opts.map(o => (o && typeof o === "object" ? o.key : o));
     return `<label><span>${esc(f.label)}</span><select id="${id}">${opts.map(o => `<option ${o === val ? "selected" : ""}>${esc(o)}</option>`).join("")}</select></label>`;
