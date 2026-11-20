@@ -1325,6 +1325,7 @@
    "owns": {
     "files": [
      "lib/shipping.js",
+     "lib/carrier-easypost.js",
      "lib/logistics.js",
      "lib/pickup.js",
      "lib/qcommerce.js"

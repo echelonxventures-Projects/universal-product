@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0043 (2026-11-20).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0045 (2026-11-20).
 
 ## Contents
 
@@ -303,7 +303,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 
 ### Laws
 
-26 laws: 6 enforced, 10 partly enforced, 10 planned. Each merges every place the corpus states it; its sources are document:line in the compiled corpus (`node _registry/compile.js --search` finds them).
+26 laws: 10 enforced, 10 partly enforced, 6 planned. Each merges every place the corpus states it; its sources are document:line in the compiled corpus (`node _registry/compile.js --search` finds them).
 
 | Law | Statement | Also called | Status | Enforced by | Sources |
 |---|---|---|---|---|---|
@@ -315,21 +315,21 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="law-006"></a>**LAW-006** Configuration Over Code | Behaviour is driven by metadata, ontologies, policies, rules, registries and configuration, never by product-specific code. Launching anywhere, extending or changing the platform is configuration that a person with the manual, or an agent, can do from the console or the API. | Configuration Only, Everything Is Configurable From The Console | partial | scripts/audit-hardcoding.js; test/audit-gate.js (ratchet) | upip:58, _superseded/FOUNDATIONS.md §2 rules 1 and 11 |
 | <a id="law-007"></a>**LAW-007** Single Ownership And Contract | No concept exists without an owner, no capability without a boundary, no boundary without a contract, no contract without governance; no term has two meanings, no meaning two definitions, and no two domains overlap. | Constitutional Law, Domain Ownership Law | enforced | _registry/gate.js (register checks) | ucosadd:33 |
 | <a id="law-008"></a>**LAW-008** Independent Authorities | No entity owns another domain's concern — identity, geography, time, value, security, knowledge, intelligence, analytics or governance. It relates to them: a place stores no currency, a store stores no country. | Root Architectural Principle, No Embedding | partial | test/places.js (a place's currency and locale are settings owned by Value and Expression; a country row holds only the place); test/stores.js (a store serves a set of places; its country is its jurisdiction, a Party setting) | upip:8356, _superseded/FOUNDATIONS.md §2 rule 4 |
-| <a id="law-009"></a>**LAW-009** Dependency Law | Dependencies run Identity → Knowledge → Relationships → Context → Policy → Trust → Projection. Circular dependencies, mutual ownership and cross-domain state mutation are forbidden. | — | planned | — | ucosadd:1123 |
+| <a id="law-009"></a>**LAW-009** Dependency Law | Dependencies run Identity → Knowledge → Relationships → Context → Policy → Trust → Projection. Circular dependencies, mutual ownership and cross-domain state mutation are forbidden. | — | enforced | test/laws.js (every module, loaded first in a fresh process, reads no module still loading; no artifact has two owning domains); lib/db.js (the bootstrap waits for a loading module to finish) | ucosadd:1123 |
 | <a id="law-010"></a>**LAW-010** Runtime Responsibility | The constitution defines truth, domains manage truth, the runtime derives reality, agents execute reality and applications consume it. | — | planned | — | ucosadd:1186 |
 | <a id="law-011"></a>**LAW-011** Architectural Freeze | Primitives, domain ownership, contract structure and the governance, dependency and projection models are frozen. Change happens through registries, policies, capabilities, contexts, relationships, knowledge, agents and projections, never by adding primitives, and only through a recorded amendment. | — | enforced | test/ucos-registry.js (the 27 primitives); _registry/domains.json → amendments | ucosadd:1207 |
 | <a id="law-012"></a>**LAW-012** Generated Platform | Everything is generated from declarations: data models, APIs, interfaces, workflows, state machines, reports, dashboards, permissions, integrations, documentation, SDKs and tests. One generated API serves everyone — the console, storefronts, apps, agents, partners — with no private back door. | One API For Everyone | partial | _registry/project.js (documentation) | ucrs:1311, _superseded/FOUNDATIONS.md §2 rule 12 |
 | <a id="law-013"></a>**LAW-013** Registry First | Everything is discoverable: if it exists it is registered, describable and searchable. | Meta-Architecture Principle, Meta Principle | partial | lib/canonical.js search (the register) | upip:73, upip:6609 |
 | <a id="law-014"></a>**LAW-014** Infinite Extensibility | Every domain is complete from zero to infinite and assumes no Earth, country, calendar, value unit, language or text direction. New kinds, places, categories and domains arrive by registration and configuration, never redesign; every concept is self-governing, self-describing, self-registering, self-validating, self-certifying, composable, replaceable and independently evolvable. | Constitutional Decomposition Principle, Zero To Infinite | planned | — | upip:93, upip:5796, _superseded/FOUNDATIONS.md §2 rule 2 |
-| <a id="law-015"></a>**LAW-015** Technology Agnostic | Nothing depends on a vendor, database, cloud or framework; each is an adapter chosen by configuration, per domain or per tenant. | Any Database | planned | — | upip:99, _superseded/FOUNDATIONS.md §2 rule 10 |
+| <a id="law-015"></a>**LAW-015** Technology Agnostic | Nothing depends on a vendor, database, cloud or framework; each is an adapter chosen by configuration, per domain or per tenant. | Any Database | enforced | test/laws.js (no platform module outside the adapter layer names a vendor, database or driver; the words are read from the provider specs, carrier adapters and runtime drivers); lib/carrier-easypost.js (the carrier behind an adapter); lib/adapters.js probe, lib/db.js DRIVER (drivers named in their own layer) | upip:99, _superseded/FOUNDATIONS.md §2 rule 10 |
 | <a id="law-016"></a>**LAW-016** Contextual Distribution | Configuring a place projects what applies there — expression, value units, tax, compliance, catalogue, pricing — inherited down the place hierarchies, for any number of places at once. | — | planned | — | ucosma:1071 |
-| <a id="law-017"></a>**LAW-017** Platform-Owned Master Data | Master data belongs to the platform. Platforms, tenants and modules select it through views and never copy it; a tenant extends only within its own scope. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 6 |
+| <a id="law-017"></a>**LAW-017** Platform-Owned Master Data | Master data belongs to the platform. Platforms, tenants and modules select it through views and never copy it; a tenant extends only within its own scope. | — | enforced | test/laws.js (no tenant-scoped table repeats a platform master's columns; the place, value and language masters carry no tenant column) | _superseded/FOUNDATIONS.md §2 rule 6 |
 | <a id="law-018"></a>**LAW-018** Selection From Owners | Every choice offered anywhere is a selection from the domain that owns the subject, in any combination. Constraints are declared by the entities, and every option carries a free or paid offering. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 7 |
 | <a id="law-019"></a>**LAW-019** Nothing Invented | Creating one thing never creates another. Anything missing shows as incomplete until a person or agent completes it; nothing is filled with a placeholder. | — | partial | test/geo.js (no invented countries); test/places.js (no place invented above the countries) | _superseded/FOUNDATIONS.md §2 rule 8 |
 | <a id="law-020"></a>**LAW-020** Rules Belong To Kinds | A format or validation rule belongs to the kind that needs it, never to a whole domain. | — | partial | lib/entity.js field declarations (pattern, format, bounds); lib/kernel.js (attribute values checked against the type their kind declares) | _superseded/FOUNDATIONS.md §2 rule 9 |
 | <a id="law-021"></a>**LAW-021** One Kernel | Every domain is built on the same kernel and receives every kernel part and shared service; no domain can lack one. | — | partial | _registry/gate.js (every domain complete, categorised and contracted) | _superseded/FOUNDATIONS.md §2 rule 10 |
 | <a id="law-022"></a>**LAW-022** Bounded Agents | An agent is a party with declared permissions, scope, budget and audit; it never exceeds the person or role it acts for, and money or irreversible actions need declared approval. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 13 |
-| <a id="law-023"></a>**LAW-023** Security Floor | Security and compliance are on by default; a tenant or operator may tighten policy but never weaken it below the platform baseline. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 14 |
+| <a id="law-023"></a>**LAW-023** Security Floor | Security and compliance are on by default; a tenant or operator may tighten policy but never weaken it below the platform baseline. | — | enforced | test/laws.js (every floor key detected, a weakening patch saved at the baseline, a weaker stored policy never effective, tightening kept, the policy route refuses with 422); lib/security.js (FLOOR, floorBreaches, withFloor) | _superseded/FOUNDATIONS.md §2 rule 14 |
 | <a id="law-024"></a>**LAW-024** Immutable Record | Every change and every access to sensitive data is recorded in an append-only, hash-chained record that no one can edit. | — | partial | lib/security.js (hash-chained audit log); lib/kernel.js and test/kernel.js (the kernel's hash-chained event log) | _superseded/FOUNDATIONS.md §2 rule 15 |
 | <a id="law-025"></a>**LAW-025** Packages Compose | Packages compose domains into ready-made, editable platforms; a customisation is an overlay that survives every package upgrade. | — | planned | — | _superseded/FOUNDATIONS.md §2 rule 16 |
 | <a id="law-026"></a>**LAW-026** Every Law Is Enforced | A law without an executable check is not finished; the register records each law's enforcement, and the count of laws not yet enforced may only fall. | — | enforced | _registry/gate.js (law register); _registry/register-baseline.json | _superseded/FOUNDATIONS.md §2 rule 18 |
@@ -406,6 +406,8 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0041"></a>AMD-0041 | 2026-11-20 | Platform owner | Phase B, store console: every store-console screen is registered by its owning domain in public/js/admin/<domain>.js, the shape public/js/admin/offer.js proved; public/js/admin.js is the console shell and holds no screen of its own (screensInSharedScript 88 → 0; admin.js 3,077 → 1,370 lines). The shell's nav keeps only its groups; a screen declares its group, label and position, and screen() puts it back where it stood, so the menu is identical item for item (17 groups, 96 screens). The views that painted #vBody themselves (affiliate, sitemap, shipping) became an html and a wire function like every other view; screens a kind vocabulary dispatches (case, deliverable and option kinds) are registered by their domains while the dynamic branch stays for kinds an operator adds. Tests that read the console as text read every domain console file (test/console-source.js), and the no-inline-onclick check covers every script the browser runs. GAP-28 in part: a test that restarted its server without waiting for the old process to exit (test/identity-modes.js, test/backup.js) could have its next request reset by the draining process; both now wait for the exit. |
 | <a id="amd-0042"></a>AMD-0042 | 2026-11-20 | Platform owner | Phase B, platform console: no menu group mixes business domains (mixedConsoleGroups 14 → 0). Each of the 22 screens that sat in a group another domain leads moved to the group its own domain leads — tenants, brands, compose and provisioning to Tenancy; roles and policies to Access; platform admins to Identity; module marketplace to Capabilities; the command dashboard to Analytics; data explorer, data studio, registries and universes to Knowledge Graph; entity definitions to Products; risk to Trust Intelligence; traceability to Canonical Model — and three domains that led no group have one beside where their screens stood: Platform Billing (subscriptions, plans, invoices, billing ops), Settlements (finance and payments) and Business Operations (ops hub), each claimed by its domain. Every moved screen was owned by an explicit key claim, so no owner changed; all 303 platform screens keep one owner. |
 | <a id="amd-0043"></a>AMD-0043 | 2026-11-20 | Platform owner | Phase B, schema: the code is the single source of truth for every table — lib/db.js for the core, and each module that declares its own tables (kernel, shape, context, lifecycle, tenancy, affiliate, shipping, sitemap) for its own — and schema.sql is their generated projection, every table with its indexes under the business domain that owns it (57 sections, 298 tables, none unowned). scripts/schema-dump.js boots all of them; test/security.js now requires schema.sql to equal a fresh boot's snapshot exactly and every table to have an owner, where before it checked only that live tables appeared in it. The two schema sources that had drifted were never two sources: the 27 tables absent from lib/db.js are their modules' own, and cart_items_v2 is the scratch name of a one-time migration that renames itself back to cart_items. |
+| <a id="amd-0044"></a>AMD-0044 | 2026-11-20 | Platform owner | Phase C, first laws enforced: LAW-009, LAW-017 and LAW-023 each have a check in test/laws.js that passes with nothing outstanding (lawsNotEnforced 20 → 17). LAW-009: loading any of the 182 platform modules first used to let the bootstrap seed read modules still loading — 22 of them broke so, seeding undefined vocabularies (the identity provider types among them) or failing with "… is not a function"; lib/db.js now runs its bootstrap as soon as a loading module finishes, which changes nothing when it loads first (server.js), and the identity provider types are seed data (lib/seed/identity.json) both identity and the registry read. Calls made lazily inside functions are not load-time dependencies and are not counted. LAW-017: no tenant table repeats a platform master's columns — tenant_modules references a module and holds only the store's choice, which is the selection the law asks for. LAW-023: the security policy had no floor — a minimum password length of 1, common-password blocking off or a weaker key derivation could be saved. The shipped baseline is now a floor for the password rules, the per-account lockout, CSRF, HSTS and the KDF cost: a weaker value is refused by the policy route (422), saved at the baseline by any other path, and never takes effect even if written to storage directly. Request ceilings (authPerMin, apiPerMin, tenantPerMin) are capacity and stay tunable; the lockout is the guard against guessing. |
+| <a id="amd-0045"></a>AMD-0045 | 2026-11-20 | Platform owner | Phase C, LAW-015 enforced (lawsNotEnforced 17 → 16): no platform module outside the adapter layer names a vendor, a database or a driver. The shipping engine carried EasyPost inside it — its endpoint, credentials, rate parsing, label purchase and webhook signature; that is now lib/carrier-easypost.js, one carrier adapter among any number (lib/carrier-<id>.js, found in the folder), each declaring its provider row and its quote, buy, verify and normalize, and lib/shipping.js rates, buys and tracks through whichever carrier a platform admin activated. The runtime test route's per-driver probes live in lib/adapters.js (probe), and the persistence layer names its own driver (lib/db.js DRIVER, EMBEDDED) for the database reports. The check reads its vendor words from the data — the provider specs that call an external host, the carrier adapters, the runtime drivers — so a new vendor is covered the moment it is registered. The platform console's carrier-account form still speaks EasyPost by name (GAP-31). |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1274,7 +1276,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 290 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 292 files.
 
 ### C02 · Meaning
 
@@ -1295,6 +1297,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/routes/stores.js` | [Party](volumes/V02-meaning.md#d-pty) | the Stores and organisation domain's API routes and handlers |
 | `lib/seed/master.json` | [Semantic](volumes/V02-meaning.md#d-sem) | the platform master starter content (GLOBAL_MASTER.md) |
 | `lib/seed/stores.json` | [Party](volumes/V02-meaning.md#d-pty) | the store kind, the serves hierarchy and the jurisdiction setting |
+| `lib/seed/identity.json` | [Identity](volumes/V02-meaning.md#d-idn) | the identity provider types the platform ships |
 | `public/docs/architecture.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
 | `public/docs/e2e-flow.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
 | `public/docs/platform-reference.html` | [Guidance](volumes/V02-meaning.md#d-gdn) |  |
@@ -1511,6 +1514,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/spec.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/connect.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/idempotency.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
+| `lib/carrier-easypost.js` | [Integration](volumes/V09.2-automation.md#d-int) | the EasyPost carrier adapter (rates, labels, signed tracker webhooks) |
 | `lib/routes/ai.js` | [Agent](volumes/V09.1-automation.md#d-agt) | the AI domain's API routes and handlers |
 | `lib/routes/integration.js` | [Integration](volumes/V09.2-automation.md#d-int) | the Integrations and webhooks domain's API routes and handlers |
 | `lib/routes/payments.js` | [Integration](volumes/V09.2-automation.md#d-int) | the Payment gateways domain's API routes and handlers |
@@ -2303,7 +2307,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 <a id="gaps"></a>
 ### Gaps
 
-18 open, 12 closed. Every gap has one owning domain; a closed gap names the amendment that closed it (`_registry/roadmap.json` → `gaps`).
+19 open, 12 closed. Every gap has one owning domain; a closed gap names the amendment that closed it (`_registry/roadmap.json` → `gaps`).
 
 | Gap | Group | What | Owner | Status |
 |---|---|---|---|---|
@@ -2337,6 +2341,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="gap-28"></a>GAP-28 | process | Intermittent test failures: the ECONNRESET was a 5 s server keep-alive racing a reused client socket (fixed, AMD-0022); the browser check's occasional Runtime.evaluate timeout and a console render that misses its fixed wait under full-suite load remain unexplained | [Quality](volumes/V11.2-platform.md#d-qlt) | open |
 | <a id="gap-29"></a>GAP-29 | process | CI did not run on 3e67d62: GitHub refused to start the jobs because the account's payments failed or its spending limit is reached; every later commit is checked locally only until the owner fixes billing | [Operations](volumes/V11.1-platform.md#d-ops) | open |
 | <a id="gap-30"></a>GAP-30 | process | The repository sits in an iCloud-synced Desktop folder: the sync made 67 conflict copies ("canonical 2.lxr", test databases, ".luxora 2.pid"), one hung git add, and its file locking may explain the intermittent test failures (GAP-28); the repository belongs outside iCloud | [Operations](volumes/V11.1-platform.md#d-ops) | closed (AMD-0039) |
+| <a id="gap-31"></a>GAP-31 | structure | The platform console's carrier-account form is written for one carrier by name (its key formats, setup steps and webhook URL); each carrier adapter should declare its own setup and the console render whichever carriers exist | [Experience](volumes/V08-interaction.md#d-exp) | open |
 
 ### Steps
 
@@ -2452,6 +2457,8 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0041 | amendment | Phase B, store console | [constitution](#amd-0041) |
 | AMD-0042 | amendment | Phase B, platform console | [constitution](#amd-0042) |
 | AMD-0043 | amendment | Phase B, schema | [constitution](#amd-0043) |
+| AMD-0044 | amendment | Phase C, first laws enforced | [constitution](#amd-0044) |
+| AMD-0045 | amendment | Phase C, LAW-015 enforced (lawsNotEnforced 17 → 16) | [constitution](#amd-0045) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |
@@ -2564,6 +2571,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | GAP-28 | gap | Intermittent test failures: the ECONNRESET was a 5 s server  | [gaps](#gap-28) |
 | GAP-29 | gap | CI did not run on 3e67d62: GitHub refused to start the jobs  | [gaps](#gap-29) |
 | GAP-30 | gap | The repository sits in an iCloud-synced Desktop folder: the  | [gaps](#gap-30) |
+| GAP-31 | gap | The platform console's carrier-account form is written for o | [gaps](#gap-31) |
 | K01 | kernel part | Kinds | [kernel](#k01) |
 | K02 | kernel part | Nodes | [kernel](#k02) |
 | K03 | kernel part | Hierarchies | [kernel](#k03) |

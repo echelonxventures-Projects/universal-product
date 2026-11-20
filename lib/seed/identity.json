@@ -1,0 +1,123 @@
+{
+ "$comment": "The identity provider types the platform ships (lib/identity.js): each names the one flow its credential proves the claim by; a registry row an operator adds or edits wins.",
+ "PROVIDER_TYPES": [
+  {
+   "key": "password",
+   "label": "Email / Password",
+   "flow": "password",
+   "fields": []
+  },
+  {
+   "key": "sso",
+   "label": "SSO (SAML / OIDC)",
+   "flow": "external",
+   "protocols": [
+    "saml",
+    "oidc"
+   ],
+   "fields": [
+    "mode",
+    "issuer",
+    "ssoUrl",
+    "cert",
+    "clientId",
+    "clientSecret",
+    "scope",
+    "redirectUri",
+    "domains",
+    "autoProvision",
+    "defaultRole"
+   ]
+  },
+  {
+   "key": "oauth",
+   "label": "OAuth / Social (Google, Facebook, Apple)",
+   "flow": "external",
+   "protocols": [
+    "oidc"
+   ],
+   "fields": [
+    "provider",
+    "clientId",
+    "clientSecret",
+    "scope",
+    "authUrl",
+    "tokenUrl",
+    "redirectUri"
+   ]
+  },
+  {
+   "key": "openid",
+   "label": "OpenID Connect",
+   "flow": "external",
+   "protocols": [
+    "oidc"
+   ],
+   "fields": [
+    "issuer",
+    "clientId",
+    "clientSecret",
+    "scope",
+    "redirectUri"
+   ]
+  },
+  {
+   "key": "ldap",
+   "label": "LDAP / Directory",
+   "flow": "external",
+   "protocols": [
+    "oidc"
+   ],
+   "fields": [
+    "url",
+    "bindDn",
+    "baseDn",
+    "bindPassword"
+   ]
+  },
+  {
+   "key": "otp",
+   "label": "OTP (Email / SMS)",
+   "flow": "challenge",
+   "delivery": "code",
+   "fields": [
+    "channel",
+    "length",
+    "ttl",
+    "from"
+   ]
+  },
+  {
+   "key": "totp",
+   "label": "Authenticator (TOTP)",
+   "flow": "challenge",
+   "delivery": "authenticator",
+   "enrol": "shared_secret",
+   "fields": [
+    "issuer",
+    "digits",
+    "step"
+   ]
+  },
+  {
+   "key": "magic_link",
+   "label": "Magic Link (passwordless)",
+   "flow": "link",
+   "fields": [
+    "ttl",
+    "from",
+    "baseUrl"
+   ]
+  },
+  {
+   "key": "biometric",
+   "label": "Biometric (WebAuthn / passkey)",
+   "flow": "biometric",
+   "fields": [
+    "rpId",
+    "rpName",
+    "timeout"
+   ]
+  }
+ ]
+}
