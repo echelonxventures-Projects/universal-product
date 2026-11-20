@@ -124,6 +124,64 @@ const cleanup = () => { for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(
     ok(hits.length === 0, "no platform module outside the adapter layer names a vendor, database or driver (" + files.length + " modules)", hits.slice(0, 20));
   }
 
+  /* the laws with work outstanding hold a ratchet: the count may only fall
+     (_registry/register-baseline.json → lawRatchets; lower it once the work is done) */
+  const RB = JSON.parse(fs.readFileSync(path.join(ROOT, "_registry", "register-baseline.json"), "utf8")).lawRatchets || {};
+  const UPDATE = process.argv.includes("--update"), now = {};
+  const ratchet = (key, n, what, sample) => {
+    now[key] = n;
+    const base = RB[key];
+    ok(base != null && n <= base, what + ": " + n + (base != null ? " (baseline " + base + ")" : " (no baseline — run node test/laws.js --update)"), n > (base || 0) ? sample : undefined);
+    if (base != null && n < base) console.log("    ↓ below the baseline — node test/laws.js --update holds the lower count");
+  };
+  const stripComments = src => src.replace(/\/\*[\s\S]*?\*\//g, m => m.replace(/[^\n]/g, " ")).replace(/(^|[^:"'`\\])\/\/[^\n]*/g, (m, p) => p + " ".repeat(m.length - p.length));
+  const libFiles = fs.readdirSync(path.join(ROOT, "lib")).filter(f => f.endsWith(".js")).map(f => "lib/" + f)
+    .concat(fs.readdirSync(path.join(ROOT, "lib", "routes")).filter(f => f.endsWith(".js")).map(f => "lib/routes/" + f));
+
+  console.log("▸ LAW-010 · RUNTIME RESPONSIBILITY — a domain writes only the truth it owns");
+  {
+    const dm = require(path.join(ROOT, "scripts", "domain-map.js")).map();
+    const tOwn = dm.kinds.tables.owned, fOwn = dm.kinds.files.owned;
+    const cross = [];
+    for (const f of Object.keys(fOwn).filter(f => f.endsWith(".js"))) {
+      const src = stripComments(fs.readFileSync(path.join(ROOT, f), "utf8"));
+      for (const m of src.matchAll(/\b(?:INSERT(?:\s+OR\s+\w+)?\s+INTO|UPDATE|DELETE\s+FROM)\s+"?([a-z_][a-z0-9_]*)"?/gi)) {
+        const o = tOwn[m[1]]; if (o && o !== fOwn[f]) cross.push(f + " (" + fOwn[f] + ") writes " + m[1] + " (" + o + ")");
+      }
+    }
+    ratchet("crossDomainWrites", cross.length, "statements in one domain's code that write another domain's table", cross.slice(0, 10));
+  }
+
+  console.log("▸ LAW-014 · INFINITE EXTENSIBILITY — no country, currency, calendar or direction is assumed");
+  {
+    const cc = new Set(db.all("SELECT code FROM countries").map(r => r.code)), cur = new Set(db.all("SELECT code FROM currencies").map(r => r.code));
+    const EARTH = new Set(["gregorian", "ltr", "rtl", "en-US", "en_US"]);
+    const hits = [];
+    for (const f of libFiles) {
+      const src = stripComments(fs.readFileSync(path.join(ROOT, f), "utf8"));
+      for (const m of src.matchAll(/["'`]([A-Za-z_-]{2,9})["'`]/g)) { const v = m[1]; if (cur.has(v) || (cc.has(v) && v.length === 2 && v === v.toUpperCase()) || EARTH.has(v)) hits.push(f + " " + v); }
+    }
+    ratchet("earthLiterals", hits.length, "literal countries, currencies, calendars and directions in platform code", hits.slice(0, 10));
+  }
+
+  console.log("▸ LAW-018 · SELECTION FROM OWNERS — every choice is read from the domain that owns it");
+  {
+    const E = JSON.parse(fs.readFileSync(path.join(ROOT, "lib", "seed", "entity.json"), "utf8"));
+    const defs = E.ENTITY_DEFS || E.defs || E;
+    const inline = [];
+    for (const [k, d] of Object.entries(defs)) for (const f of (d && d.fields) || []) if (Array.isArray(f.options) && f.options.length) inline.push(k + "." + f.key);
+    const js = path.join(ROOT, "public", "js");
+    const consoles = ["admin.js", "platform.js"].map(f => path.join(js, f)).concat(fs.existsSync(path.join(js, "admin")) ? fs.readdirSync(path.join(js, "admin")).filter(f => f.endsWith(".js")).map(f => path.join(js, "admin", f)) : []);
+    let tags = 0; for (const f of consoles) tags += (fs.readFileSync(f, "utf8").match(/<option value="[a-z_]*">/g) || []).length;
+    ratchet("inlineChoices", inline.length + tags, "choices written in place instead of read from their owner (" + inline.length + " entity fields, " + tags + " console options)", inline.slice(0, 10));
+  }
+
+  if (UPDATE) {
+    const p = path.join(ROOT, "_registry", "register-baseline.json"), cur = JSON.parse(fs.readFileSync(p, "utf8"));
+    cur.lawRatchets = Object.fromEntries(Object.entries(now).map(([k, v]) => [k, Math.min(v, (cur.lawRatchets || {})[k] ?? v)]));
+    fs.writeFileSync(p, JSON.stringify(cur, null, 2) + "\n"); console.log("  law ratchets written: " + JSON.stringify(cur.lawRatchets));
+  }
+
   console.log("▸ LAW-026 · EVERY ENFORCED LAW NAMES ITS CHECK");
   {
     const laws = JSON.parse(fs.readFileSync(path.join(ROOT, "_registry", "domains.json"), "utf8")).laws;

@@ -3,5 +3,10 @@
   "domainsWithoutContract": 0,
   "lawsNotEnforced": 16,
   "conceptsUnplaced": 0,
-  "containersUnreviewed": 0
+  "containersUnreviewed": 0,
+  "lawRatchets": {
+    "crossDomainWrites": 446,
+    "earthLiterals": 62,
+    "inlineChoices": 87
+  }
 }
