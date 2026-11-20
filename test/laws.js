@@ -182,7 +182,8 @@ const cleanup = () => { for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(
     for (const [k, d] of Object.entries(defs)) for (const f of (d && d.fields) || []) if (Array.isArray(f.options) && f.options.length) inline.push(k + "." + f.key);
     const js = path.join(ROOT, "public", "js");
     const consoles = ["admin.js", "platform.js"].map(f => path.join(js, f)).concat(fs.existsSync(path.join(js, "admin")) ? fs.readdirSync(path.join(js, "admin")).filter(f => f.endsWith(".js")).map(f => path.join(js, "admin", f)) : []);
-    let tags = 0; for (const f of consoles) tags += (fs.readFileSync(f, "utf8").match(/<option value="[a-z_]*">/g) || []).length;
+    /* a written-in choice is an option tag with a literal key; value="" is the form's "none", not a choice */
+    let tags = 0; for (const f of consoles) tags += (fs.readFileSync(f, "utf8").match(/<option value="[a-z_]+">/g) || []).length;
     /* a field that names its owner — a state machine (states:<machine>) or a registry list — gets choices from it */
     const ent = require(path.join(ROOT, "lib", "entity.js")), empty = [];
     for (const [k, d] of Object.entries(defs)) for (const f of (d && d.fields) || []) if (typeof f.options === "string" && f.options && f.options.indexOf(".") < 0) { const o = ent.optionsOf(f); if (!o || !o.length) empty.push(k + "." + f.key + " → " + f.options); }

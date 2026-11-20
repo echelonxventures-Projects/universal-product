@@ -1084,7 +1084,8 @@
    "engine": "discovery",
    "writes": null,
    "meter": "goip.decision",
-   "scope": "any"
+   "scope": "any",
+   "probe": "what is available"
   },
   {
    "key": "search",
@@ -1102,7 +1103,8 @@
    "engine": "ranking",
    "writes": null,
    "meter": "goip.decision",
-   "scope": "any"
+   "scope": "any",
+   "probe": "rank every candidate"
   },
   {
    "key": "validate",
@@ -1111,7 +1113,8 @@
    "engine": "qualification",
    "writes": null,
    "meter": "goip.decision",
-   "scope": "any"
+   "scope": "any",
+   "probe": "is this code usable"
   },
   {
    "key": "reserve",
@@ -1165,7 +1168,9 @@
    "engine": "benefit_resolution",
    "writes": null,
    "meter": "goip.decision",
-   "scope": "any"
+   "scope": "any",
+   "probe": "what would apply",
+   "probeDefault": true
   },
   {
    "key": "redeem",

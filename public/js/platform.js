@@ -1510,7 +1510,7 @@ async function vPlatformSetup() {
   const field = s => {
     const cur = a[s.answer];
     const has = v => s.many ? (cur || []).map(String).includes(String(v)) : String(cur || "") === String(v);
-    const opts = (s.options || []).map(o => `<option value="${esc(o.key)}" ${has(o.key) ? "selected" : ""}>${esc(o.name || o.key)}</option>`).join("");
+    const opts = (s.options || []).map(o => typeof o === "string" ? { key: o } : o).map(o => `<option value="${esc(o.key)}" ${has(o.key) ? "selected" : ""}>${esc(o.name || o.key)}</option>`).join("");
     const extra = s.many ? (cur || []).filter(v => !(s.options || []).some(o => String(o.key) === String(v))) : [];
     return `<label style="display:grid;gap:4px"><span><b>${esc(s.title)}</b>${s.required ? " *" : ""}</span>
       ${s.many ? `<select data-ps="${esc(s.answer)}" multiple size="${Math.min(8, Math.max(3, (s.options || []).length))}">${opts}${extra.map(v => `<option value="${esc(v)}" selected>${esc(v)}</option>`).join("")}</select>`
@@ -3141,6 +3141,8 @@ async function gRecordForm(key, id) {
    hand-entered one, and each rejection comes back with its row number so the operator
    fixes the data instead of guessing which line the engine refused */
 async function gImportForm(key) {
+  /* the formats an import reads, from the export registry */
+  const fmts = ((await api("/platform/data/" + encodeURIComponent(key) + "/export?format=formats").catch(() => ({}))).formats || []).filter(f => f.importable).map(f => ({ key: f.key, name: f.key.toUpperCase() }));
   /* the store-required guard needs the entity's scope and storage kind, and the index the
      toolbar renders from carries neither — so the declaration is read from /def (the same
      answer the record form uses), falling back to the index if the def call fails */
@@ -3153,7 +3155,7 @@ async function gImportForm(key) {
       <label><span>Records</span><textarea id="giBody" rows="9" style="font-family:monospace" placeholder="${esc(cols)}&#10;…"></textarea></label>
       <label><span>Columns</span><input value="${esc(cols)}" readonly title="the fields this entity declares"></label>
       <div class="p-sample"><span class="p-tag" style="flex:1">Don't know the shape? Download a sample file — these exact columns plus one example row.</span>
-        <select id="giSampleFmt" style="min-height:30px"><option value="csv">CSV</option><option value="json">JSON</option></select>
+        <select id="giSampleFmt" style="min-height:30px">${(fmts).map(o => typeof o === "string" ? { key: o } : o).map(o => `<option value="${esc(o.key)}">${esc(o.name || o.label || o.key)}</option>`).join("")}</select>
         <button class="p-btn sm" id="giSample" title="Download a sample file with this dataset's current columns">⇩ Sample file</button></div>
       ${gScopeSelect(def, "giTenant")}
       <div style="display:flex;gap:10px;margin-top:8px"><button class="p-btn primary" id="giGo">Import</button><button class="p-btn" data-mclose>Cancel</button></div>
@@ -4312,7 +4314,7 @@ function wireCapabilities() {
     <input placeholder="param key" data-capdef-pk style="padding:6px 9px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:150px">
     <input placeholder="label" data-capdef-pl style="padding:6px 9px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:150px">
     <select data-capdef-pt style="padding:6px 9px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg)">
-      <option value="number">number</option><option value="bool">bool</option><option value="text">text</option><option value="json">json</option></select>
+      ${((capData && capData.paramTypes) || []).map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join("")}</select>
     <input placeholder="default value" data-capdef-pd style="padding:6px 9px;border:1px solid var(--p-border);border-radius:8px;background:var(--p-bg);width:150px"></div>`;
   let paramRows = 0;
   const addP = document.getElementById("capDefAddParam");
@@ -4780,6 +4782,7 @@ document.addEventListener("click", e => {
   else if (act === "save-provider") { if (window.saveProviderAdd) window.saveProviderAdd(); }
 });
 async function addProviderType() {
+  const flows = (await api("/meta").catch(() => ({}))).identityFlows || [];
   /* the modal() helper owns the markup (the hand-rolled version's ✕ targeted a class the
      overlay never had, so it could never close). The registry shape is {key, label, fields[]};
      fields are config keys an instance of this type carries. */
@@ -4788,11 +4791,7 @@ async function addProviderType() {
       <label><span>Key (e.g. ldap, saml)</span><input type="text" id="ptKey" placeholder="custom"></label>
       <label><span>Label (e.g. LDAP, SAML)</span><input type="text" id="ptLabel" placeholder="Custom Provider"></label>
       <label><span>Flow — how this kind proves the claim</span><select id="ptFlow">
-        <option value="external">external — an authority (SSO/OIDC/directory) returns an assertion</option>
-        <option value="challenge">challenge — a short-lived code (OTP, authenticator)</option>
-        <option value="link">link — a passwordless link by email</option>
-        <option value="biometric">biometric — a WebAuthn challenge</option>
-        <option value="password">password — the native email+password</option>
+        ${flows.map(f => `<option value="${esc(f.key)}">${esc(f.key)} — ${esc(f.name)}</option>`).join("")}
       </select></label>
       <label><span>Config fields — one key per line (e.g. url, cert, ttl)</span><textarea id="ptFields" rows="4" placeholder="url&#10;cert&#10;domains"></textarea></label>
       <div class="p-err hidden" id="ptErr" style="color:var(--p-red);font-size:13px;margin:6px 0"></div>
@@ -5079,7 +5078,8 @@ async function vUsers() {
       </div>` : "")
     + await gTable("customer");
 }
-function userFormModal() {
+async function userFormModal() {
+  const roles = (await api("/meta").catch(() => ({}))).customerRoles || [];
   const tenants = Object.values(G.tmap || {});
   const staffRoles = window.__userStaffRoles || [];
   const m = modal(`<div class="p-modal-head"><h3>New user</h3><button data-mclose>✕</button></div>
@@ -5091,7 +5091,7 @@ function userFormModal() {
         <label><span>Email</span><input type="email" id="unEmail" placeholder="alex@store.shop"></label>
       </div>
       <label><span>Password <span class="p-tag">blank to generate</span></span><input type="password" id="unPw" placeholder="6+ characters, letter + digit"></label>
-      <label><span>Role</span><select id="unRole"><option value="customer">Customer</option><option value="admin">Store admin</option></select></label>
+      <label><span>Role</span><select id="unRole">${(roles).map(o => typeof o === "string" ? { key: o } : o).map(o => `<option value="${esc(o.key)}">${esc(o.name || o.label || o.key)}</option>`).join("")}</select></label>
       <label id="unStaffWrap"><span>Staff role</span><select id="unStaff">${/* the store surface lists owner first, but full store control is the wrong default
           for a new admin — the pre-selected role is the staffRoles row flagged default */ staffRoles.map(r => `<option value="${esc(r.key)}" ${r.key === window.__userStaffDefault ? "selected" : ""}>${esc(r.name)}</option>`).join("")}</select></label>
       <div style="display:flex;gap:8px;margin-top:4px">

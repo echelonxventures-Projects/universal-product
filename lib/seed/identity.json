@@ -119,5 +119,27 @@
     "timeout"
    ]
   }
+ ],
+ "FLOWS": [
+  {
+   "key": "external",
+   "name": "an authority (SSO/OIDC/directory) returns an assertion"
+  },
+  {
+   "key": "challenge",
+   "name": "a short-lived code (OTP, authenticator)"
+  },
+  {
+   "key": "link",
+   "name": "a passwordless link by email"
+  },
+  {
+   "key": "biometric",
+   "name": "a WebAuthn challenge"
+  },
+  {
+   "key": "password",
+   "name": "the native email+password"
+  }
  ]
 }

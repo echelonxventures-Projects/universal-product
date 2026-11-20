@@ -1046,7 +1046,8 @@ async function loadAffiliates() {
   } catch (e) { console.error(e); }
 }
 
-function createAffiliateModal() {
+async function createAffiliateModal() {
+  const tiers = (await api("/meta").catch(() => ({}))).affiliateTiers || [];
   const m = $("#modal");
   m.innerHTML = `
     <h3>Add Affiliate</h3>
@@ -1055,9 +1056,7 @@ function createAffiliateModal() {
       <label><span>Email</span><input type="email" id="affEmail"></label>
       <label><span>Tier</span>
         <select id="affTier">
-          <option value="standard">Standard</option>
-          <option value="gold">Gold</option>
-          <option value="platinum">Platinum</option>
+          ${(tiers).map(o => typeof o === "string" ? { key: o } : o).map(o => `<option value="${esc(o.key)}" ${o.default ? "selected" : ""}>${esc(o.name || o.label || o.key)}</option>`).join("")}
         </select>
       </label>
       <button class="p-btn primary">Create</button>

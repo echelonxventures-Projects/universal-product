@@ -45,7 +45,7 @@ async function vGoip() {
 
   <div class="p-panel"><h3>Decision tester — ask the platform what applies right now</h3>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;align-items:end">
-      <label><span>Capability</span><select id="gzCap"><option value="apply">apply — what would apply</option><option value="discover">discover — what is available</option><option value="validate">validate — is this code usable</option><option value="compare">compare — rank every candidate</option><option value="recommend" disabled>recommend (via discover)</option></select></label>
+      <label><span>Capability</span><select id="gzCap">${((await api("/meta").catch(() => ({}))).goipProbes || []).map(c => `<option value="${esc(c.key)}" ${c.default ? "selected" : ""}>${esc(c.key)} — ${esc(c.name)}</option>`).join("")}</select></label>
       <label><span>Cart amount</span><input id="gzAmount" type="number" value="200"></label>
       <label><span>Code</span><input id="gzCode" placeholder="GOIPWELCOME"></label>
       <label><span>Place</span><select id="gzPlace"><option value="">store default</option>${opt(man.spatial.nodes)}</select></label>

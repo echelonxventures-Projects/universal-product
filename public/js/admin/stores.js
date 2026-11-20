@@ -117,7 +117,7 @@ async function launchOwnerStep() {
         <label><span>Full Name</span><input name="name" required></label>
         <label><span>Email</span><input name="email" type="email" required></label>
         <label><span>Password</span><input name="password" type="password" required minlength="10"></label>
-        <label><span>Role</span><select name="staff_role"><option value="owner">Owner</option><option value="manager">Manager</option></select></label>
+        <label><span>Role</span><select name="staff_role">${((await api("/admin/roles").catch(() => ({}))).roles || []).map(r => `<option value="${esc(r.key)}">${esc(r.name || r.key)}</option>`).join("")}</select></label>
         <button class="p-btn primary" type="submit">Create Admin</button>
       </form>
     </div>
@@ -264,7 +264,7 @@ async function launchCatalogueStep() {
         <label><span>Brand</span><input name="brand" required></label>
         <label><span>Department</span><select name="dept"><option value="">Select...</option>${(await api("/admin/departments").catch(() => ({ departments: [] }))).departments.map(d => `<option value="${d.key}">${esc(d.label)}</option>`).join('')}</select></label>
         <label><span>Price</span><input name="price" type="number" step="0.01" required></label>
-        <label><span>Type</span><select name="type"><option value="physical">Physical</option><option value="digital">Digital</option><option value="service">Service</option><option value="subscription">Subscription</option></select></label>
+        <label><span>Type</span><select name="type">${((await api("/meta").catch(() => ({}))).productTypes || []).map(t => `<option value="${esc(t.key)}">${esc(t.name || t.key)}</option>`).join("")}</select></label>
         <label><span>Stock</span><input name="stock" type="number" value="100"></label>
         <button class="p-btn primary" type="submit">Add Product</button>
       </form>

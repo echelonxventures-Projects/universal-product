@@ -9909,8 +9909,14 @@
    "ip"
   ],
   "customerRoles": [
-   "customer",
-   "admin"
+   {
+    "key": "customer",
+    "name": "Customer"
+   },
+   {
+    "key": "admin",
+    "name": "Store admin"
+   }
   ],
   "gatewayModes": [
    "sandbox",
@@ -9923,6 +9929,21 @@
   "providerScopes": [
    "platform",
    "tenant"
+  ],
+  "affiliateTiers": [
+   {
+    "key": "standard",
+    "name": "Standard",
+    "default": true
+   },
+   {
+    "key": "gold",
+    "name": "Gold"
+   },
+   {
+    "key": "platinum",
+    "name": "Platinum"
+   }
   ]
  }
 }
