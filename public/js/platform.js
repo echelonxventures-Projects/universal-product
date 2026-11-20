@@ -1188,7 +1188,7 @@ async function vGeo() {
       <span><button class="p-btn sm" id="fxProvSave">Save</button> <button class="p-btn sm primary" id="fxSync">⟳ Sync now</button></span></div>
     <p class="p-tag">Last sync: ${fx.lastSync ? esc(fx.lastSync.at)+" — applied "+fx.lastSync.applied.length+(fx.lastSync.skipped.length?" skipped "+fx.lastSync.skipped.join(","):"") : "never"} · USD is always the 1.0 anchor.</p>
     <details style="margin:10px 0"><summary class="p-tag" style="cursor:pointer">Bulk update rates (manual)</summary>
-      <textarea id="fxBulk" rows="4" style="width:100%;background:var(--p-bg);border:1px solid var(--p-line);border-radius:10px;color:var(--p-text);padding:10px;font-family:monospace">{ "EUR": 1.08, "GBP": 1.27, "INR": 0.012 }</textarea>
+      <textarea id="fxBulk" rows="4" style="width:100%;background:var(--p-bg);border:1px solid var(--p-line);border-radius:10px;color:var(--p-text);padding:10px;font-family:monospace">${esc(JSON.stringify(Object.fromEntries(cy.rows.filter(x => Number(x.usd) !== 1).slice(0, 3).map(x => [x.code, Number(x.usd)]))))}</textarea>
       <button class="p-btn sm primary" id="fxBulkGo">Apply rates</button></details>
     <div class="row3" style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end;margin-bottom:10px">
       <label><span>Convert amount</span><input id="cxAmount" type="number" step="any" value="100"></label>

@@ -286,7 +286,7 @@ Shoppers choose a locker, counter or store at checkout instead of a home address
 | `provider_id` | TEXT |
 | `service_type` | TEXT |
 | `price` | REAL |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `transit_days` | INTEGER |
 | `guaranteed_delivery` | TEXT |
 | `status` | TEXT DEFAULT 'pending' |

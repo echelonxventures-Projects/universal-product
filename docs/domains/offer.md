@@ -68,7 +68,7 @@ A shopper describes what they trade in; staff value it, and the value comes off 
 | `type` | TEXT NOT NULL |
 | `direction` | TEXT NOT NULL DEFAULT 'discount' |
 | `value` | REAL DEFAULT 0 |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `scope_type` | TEXT NOT NULL DEFAULT 'store' |
 | `scope_value` | TEXT DEFAULT '{}' |
 | `funder` | TEXT NOT NULL DEFAULT 'self' |
@@ -126,7 +126,7 @@ A shopper describes what they trade in; staff value it, and the value comes off 
 | `session` | TEXT DEFAULT '' |
 | `order_id` | INTEGER |
 | `value` | REAL DEFAULT 0 |
-| `unit` | TEXT DEFAULT 'USD' |
+| `unit` | TEXT |
 | `context` | TEXT DEFAULT '{}' |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 | `uid` | TEXT |
@@ -140,7 +140,7 @@ A shopper describes what they trade in; staff value it, and the value comes off 
 | `domain` | TEXT NOT NULL DEFAULT 'incentive' |
 | `funder` | TEXT NOT NULL DEFAULT 'self' |
 | `funder_ref` | TEXT DEFAULT '' |
-| `unit` | TEXT NOT NULL DEFAULT 'USD' |
+| `unit` | TEXT NOT NULL |
 | `allocated` | REAL DEFAULT 0 |
 | `reserved` | REAL DEFAULT 0 |
 | `consumed` | REAL DEFAULT 0 |
@@ -160,7 +160,7 @@ A shopper describes what they trade in; staff value it, and the value comes off 
 | `period` | TEXT NOT NULL DEFAULT '' |
 | `party` | TEXT NOT NULL DEFAULT '' |
 | `party_type` | TEXT NOT NULL DEFAULT 'merchant' |
-| `unit` | TEXT NOT NULL DEFAULT 'USD' |
+| `unit` | TEXT NOT NULL |
 | `gross` | REAL DEFAULT 0 |
 | `fees` | REAL DEFAULT 0 |
 | `net` | REAL DEFAULT 0 |

@@ -120,7 +120,7 @@ The cart must respect each line's minimum order quantity — from the product, t
 | `buyer_org` | TEXT DEFAULT '' |
 | `supplier_id` | INTEGER |
 | `product_ids` | TEXT DEFAULT '[]' |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `pricing` | TEXT DEFAULT '{}' |
 | `min_qty` | INTEGER DEFAULT 1 |
 | `incoterms` | TEXT DEFAULT 'EXW' |
@@ -144,7 +144,7 @@ The cart must respect each line's minimum order quantity — from the product, t
 | `buyer_org` | TEXT DEFAULT '' |
 | `buyer_email` | TEXT DEFAULT '' |
 | `description` | TEXT DEFAULT '' |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `budget` | REAL DEFAULT 0 |
 | `open_at` | TEXT |
 | `close_at` | TEXT |

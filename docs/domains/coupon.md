@@ -40,7 +40,7 @@ Shopper-redeemable coupon codes at cart and checkout. Platform policy may refuse
 | `brand_ref` | TEXT DEFAULT '' |
 | `kind` | TEXT NOT NULL DEFAULT 'single_use' |
 | `value` | REAL DEFAULT 0 |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `max_uses` | INTEGER DEFAULT 1 |
 | `per_owner_limit` | INTEGER DEFAULT 1 |
 | `used` | INTEGER DEFAULT 0 |

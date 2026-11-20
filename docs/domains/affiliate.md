@@ -30,7 +30,7 @@ Who brings buyers and what they earn: affiliate networks and tiers, tracked clic
 | `cookie_days` | INTEGER DEFAULT 30 |
 | `attribution_model` | TEXT DEFAULT 'last_touch' |
 | `min_payout` | REAL DEFAULT 50.0 |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `created_at` | TEXT DEFAULT (datetime('now')) |
 | `uid` | TEXT |
 

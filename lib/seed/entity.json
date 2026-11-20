@@ -1101,17 +1101,17 @@
      "label": "Fixed Fee",
      "type": "number"
     },
-     {
-      "key": "fields",
-      "label": "Credential Fields",
-      "type": "json"
-     },
-     {
-      "key": "spec",
-      "label": "Integration Spec",
-      "type": "json"
-     },
-     {
+    {
+     "key": "fields",
+     "label": "Credential Fields",
+     "type": "json"
+    },
+    {
+     "key": "spec",
+     "label": "Integration Spec",
+     "type": "json"
+    },
+    {
      "key": "base_fee",
      "label": "Base Fee (ship)",
      "type": "number"
@@ -1574,7 +1574,8 @@
     {
      "key": "country",
      "label": "Country",
-     "type": "text"
+     "type": "text",
+     "resolves": "country"
     },
     {
      "key": "region",
@@ -1914,7 +1915,8 @@
      "key": "country",
      "label": "Country",
      "type": "text",
-     "list": true
+     "list": true,
+     "resolves": "country"
     },
     {
      "key": "region",
@@ -1951,7 +1953,8 @@
     {
      "key": "currency",
      "label": "Currency",
-     "type": "text"
+     "type": "text",
+     "resolves": "currency"
     },
     {
      "key": "payment_terms",
@@ -2196,7 +2199,8 @@
     {
      "key": "currency",
      "label": "Currency",
-     "type": "text"
+     "type": "text",
+     "resolves": "currency"
     },
     {
      "key": "pricing",
@@ -2302,7 +2306,8 @@
     {
      "key": "currency",
      "label": "Currency",
-     "type": "text"
+     "type": "text",
+     "resolves": "currency"
     },
     {
      "key": "budget",
@@ -2408,7 +2413,8 @@
     {
      "key": "currency",
      "label": "Currency",
-     "type": "text"
+     "type": "text",
+     "resolves": "currency"
     },
     {
      "key": "tier",
@@ -4832,7 +4838,8 @@
     {
      "key": "currency",
      "label": "Currency",
-     "type": "text"
+     "type": "text",
+     "resolves": "platform_currency"
     },
     {
      "key": "max_products",
@@ -4949,7 +4956,8 @@
     {
      "key": "currency",
      "label": "Currency",
-     "type": "text"
+     "type": "text",
+     "resolves": "platform_currency"
     },
     {
      "key": "status",
@@ -5112,7 +5120,8 @@
     {
      "key": "unit",
      "label": "Unit",
-     "type": "text"
+     "type": "text",
+     "resolves": "currency"
     },
     {
      "key": "device",
@@ -5177,7 +5186,8 @@
      "label": "Economic unit",
      "type": "text",
      "required": true,
-     "list": true
+     "list": true,
+     "resolves": "currency"
     },
     {
      "key": "allocated",
@@ -5261,7 +5271,8 @@
      "key": "unit",
      "label": "Unit",
      "type": "text",
-     "list": true
+     "list": true,
+     "resolves": "currency"
     },
     {
      "key": "gross",

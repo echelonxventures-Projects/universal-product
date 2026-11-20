@@ -1,0 +1,1082 @@
+{
+ "$comment": "Demonstration fixtures: the seeded demo stores, shopper, catalogue, suppliers and dark store. Data, not code (LAW-014): the platform assumes no country or currency; these demo rows name theirs.",
+ "stores": {
+  "velora": {
+   "settings": {
+    "brand": {
+     "name": "VELORA",
+     "wordmark": "VELORA",
+     "tagline": "The house of gold — fine jewellery, hallmarked.",
+     "supportEmail": "atelier@velora.shop",
+     "footerNote": "© {year} Velora — brand store on LUXORA Platform."
+    },
+    "theme": {
+     "bg": "#FBF7F2",
+     "header": "#241A12",
+     "accent": "#B98A3E",
+     "accentDeep": "#8C6425",
+     "accentSoft": "#F3E7D2",
+     "ink": "#241A12",
+     "muted": "#7C6F60",
+     "line": "#EAE0D2",
+     "star": "#B98A3E",
+     "link": "#8C6425",
+     "linkHover": "#B98A3E",
+     "price": "#241A12",
+     "radius": "4px",
+     "radiusBtn": "4px",
+     "fontDisplay": "\"Copperplate\",\"Trajan Pro\",Georgia,serif",
+     "fontBody": "\"Futura\",\"Century Gothic\",\"Avenir Next\",Arial,sans-serif"
+    },
+    "copy": {
+     "searchPlaceholder": "Discover the collection",
+     "addToCart": "Reserve",
+     "buyNow": "Enquire",
+     "priorityBadge": "ATELIER",
+     "bestSellers": "Signature Pieces",
+     "dealsTitle": "Private Viewing",
+     "reviewsTitle": "Client Words"
+    },
+    "commerce": {
+     "country": "AE",
+     "currency": "AED",
+     "symbol": "د.إ",
+     "locale": "ar-AE",
+     "taxMode": "vat",
+     "taxRate": 0.05,
+     "freeShipThreshold": 500,
+     "shipFee": 25,
+     "daysPriority": 1,
+     "daysStandard": 3
+    }
+   },
+   "warehouses": [
+    [
+     "Velora Atelier",
+     "DXB1",
+     "AE",
+     "Dubai"
+    ]
+   ]
+  },
+  "aurum": {
+   "settings": {
+    "brand": {
+     "name": "AURUM",
+     "wordmark": "AURUM",
+     "tagline": "Atelier of quiet luxury — fashion, beauty & home.",
+     "supportEmail": "concierge@aurum.shop",
+     "footerNote": "© {year} AURUM Atelier — white-label storefront on the LUXORA platform.",
+     "logo": "",
+     "accentOverride": null
+    },
+    "theme": {
+     "bg": "#F7F3F4",
+     "header": "#1A1214",
+     "accent": "#B76E79",
+     "accentDeep": "#8E4A55",
+     "accentSoft": "#F6E3E7",
+     "ink": "#211A1C",
+     "muted": "#7A6E70",
+     "line": "#EBE0E2",
+     "star": "#B76E79",
+     "link": "#8E4A55",
+     "linkHover": "#B76E79",
+     "price": "#211A1C",
+     "deal": "#B3261E",
+     "success": "#1E7A45",
+     "radius": "22px",
+     "radiusBtn": "999px",
+     "fontDisplay": "\"Baskerville\",\"Palatino\",\"Book Antiqua\",Georgia,serif",
+     "fontBody": "\"Optima\",\"Avenir Next\",\"Segoe UI\",Arial,sans-serif"
+    },
+    "copy": {
+     "searchPlaceholder": "Search the atelier",
+     "addToCart": "Add to bag",
+     "priorityBadge": "CONCIERGE",
+     "bestSellers": "Maison Favourites",
+     "dealsTitle": "Private Sale"
+    },
+    "commerce": {
+     "country": "IN",
+     "currency": "INR",
+     "symbol": "₹",
+     "locale": "en-IN",
+     "taxRate": 0.12,
+     "taxMode": "gst",
+     "freeShipThreshold": 2500,
+     "shipFee": 99,
+     "daysPriority": 2,
+     "daysStandard": 5,
+     "perPage": 16,
+     "cartMaxQty": 10
+    }
+   }
+  }
+ },
+ "shopper": {
+  "address": {
+   "label": "Home",
+   "name": "Demo Shopper",
+   "address": "1219 Second Ave",
+   "city": "Seattle",
+   "state": "WA",
+   "zip": "98109",
+   "country": "US"
+  }
+ },
+ "verticalProducts": [
+  {
+   "id": "VR-GROC-01",
+   "title": "Alpine Organic Whole Milk 1L — Farm Fresh",
+   "brand": "Alpine Dairy",
+   "dept": "grocery",
+   "nodeKey": "grocery.dairy_eggs_and_bakery",
+   "type": "consumable",
+   "price": 4.99,
+   "list": 6.49,
+   "rating": 4.8,
+   "count": 2140,
+   "emoji": "🥛",
+   "hue": 205,
+   "stock": 120,
+   "flags": "bs",
+   "kw": "milk dairy organic fresh",
+   "about": [
+    "Certified organic, single-origin Alpine valley milk",
+    "Cold-chain delivered within 48h of milking",
+    "Rich 3.8% butterfat, non-homogenised"
+   ],
+   "identity": {
+    "sku": "VR-GROC-01",
+    "gtin": "0762221021257",
+    "lot": "LOT-2291",
+    "batch": "B-2291",
+    "hsn": "0401"
+   },
+   "attrs": {
+    "capacity_l": 1,
+    "expiry_date": "2026-10-02"
+   },
+   "vertical": {
+    "expiry_date": "2026-10-02",
+    "mfg_date": "2026-09-08",
+    "best_before": "Use by 02 Oct",
+    "storage": "Refrigerate 2-4°C",
+    "temp_min": 2,
+    "temp_max": 4,
+    "lot_tracked": true,
+    "batch_tracked": true,
+    "nutrition": {
+     "energy_kcal": 65,
+     "protein_g": 3.4,
+     "fat_g": 3.8,
+     "carbs_g": 4.8
+    },
+    "ingredients": "Organic whole cow's milk",
+    "allergens": [
+     "milk"
+    ],
+    "origin": "CH",
+    "fssai": "FSSAI-10021",
+    "organic_cert": "USDA-ORG-8812"
+   },
+   "media": [
+    {
+     "kind": "image",
+     "label": "Bottle",
+     "emoji": "🥛"
+    },
+    {
+     "kind": "certificate",
+     "label": "Organic cert",
+     "emoji": "📜"
+    }
+   ],
+   "logistics": {
+    "shippingClass": "cold_chain"
+   },
+   "packaging": [
+    {
+     "level": "primary",
+     "unit": "bottle",
+     "qty": 1
+    },
+    {
+     "level": "secondary",
+     "unit": "case",
+     "qty": 12
+    },
+    {
+     "level": "tertiary",
+     "unit": "pallet",
+     "qty": 720
+    }
+   ],
+   "uom": {
+    "unit": "l"
+   }
+  },
+  {
+   "id": "VR-FURN-01",
+   "title": "Nordica 3-Seater Bouclé Sofa — Sand",
+   "brand": "Nordica",
+   "dept": "home",
+   "nodeKey": "furniture.furniture.sofas",
+   "type": "physical",
+   "price": 1249,
+   "list": 1599,
+   "rating": 4.7,
+   "count": 860,
+   "emoji": "🛋️",
+   "hue": 35,
+   "stock": 8,
+   "flags": "bs",
+   "kw": "sofa living room boucle furniture",
+   "about": [
+    "Kiln-dried beech frame, 10-year warranty",
+    "Feather-wrapped high-resilience foam",
+    "Modular — add chaise or 2-seater"
+   ],
+   "identity": {
+    "sku": "VR-FURN-01",
+    "gtin": "5901234123457",
+    "mpn": "NORD-3S-SND"
+   },
+   "attrs": {
+    "color": "beige",
+    "material": "Bouclé / beech",
+    "weight_kg": 62
+   },
+   "vertical": {
+    "material": "Beech + bouclé",
+    "dimensions": "218×92×82 cm",
+    "weight_kg": 62,
+    "assembly_required": true,
+    "room": "living",
+    "swatches": [
+     "sand",
+     "fog",
+     "clay"
+    ],
+    "wood_type": "European beech",
+    "fabric_type": "Bouclé 480gsm",
+    "spare_parts": true,
+    "assembly_service": true,
+    "install_service": true
+   },
+   "media": [
+    {
+     "kind": "image",
+     "label": "Front",
+     "emoji": "🛋️"
+    },
+    {
+     "kind": "manual",
+     "label": "Assembly PDF",
+     "emoji": "📖"
+    },
+    {
+     "kind": "model3d",
+     "label": "3D view",
+     "emoji": "🧊"
+    }
+   ],
+   "seo": {
+    "title": "Nordica Bouclé Sofa",
+    "description": "Scandinavian 3-seater in sand bouclé"
+   },
+   "logistics": {
+    "shippingClass": "white_glove",
+    "install_required": true
+   },
+   "packaging": [
+    {
+     "level": "tertiary",
+     "unit": "carton",
+     "qty": 3
+    }
+   ],
+   "uom": {
+    "unit": "ea"
+   },
+   "rels": [
+    [
+     "VR-BUND-01",
+     "bundle"
+    ]
+   ]
+  },
+  {
+   "id": "VR-HARD-01",
+   "title": "M8×40 Stainless Hex Bolt — A2-70 (100 pack)",
+   "brand": "Fastenal Pro",
+   "dept": "auto",
+   "nodeKey": "construction.hardware",
+   "type": "raw_material",
+   "price": 18.5,
+   "rating": 4.6,
+   "count": 430,
+   "emoji": "🔩",
+   "hue": 220,
+   "stock": 5000,
+   "flags": "",
+   "kw": "bolt fastener stainless hex m8 hardware",
+   "about": [
+    "A2-70 austenitic stainless, marine grade",
+    "DIN 931 partially threaded",
+    "Bulk tiers auto-applied at checkout"
+   ],
+   "identity": {
+    "sku": "VR-HARD-01",
+    "gtin": "4041501123456",
+    "hsn": "7318",
+    "unspsc": "31161502",
+    "part_number": "M8-40-A270"
+   },
+   "attrs": {
+    "material": "A2-70 stainless",
+    "size": "M8×40"
+   },
+   "vertical": {
+    "thread_size": "M8×1.25",
+    "diameter_mm": 8,
+    "length_mm": 40,
+    "material_grade": "A2-70",
+    "tolerance": "6g",
+    "finish": "Plain",
+    "load_capacity": "33 kN proof",
+    "torque_rating": "25 Nm",
+    "pressure_rating": "n/a",
+    "compat_matrix": {
+     "wrench": "13mm",
+     "nut": "M8 DIN934"
+    }
+   },
+   "pricing_rules": {
+    "tiers": [
+     {
+      "qty": 10,
+      "price": 16.5
+     },
+     {
+      "qty": 100,
+      "price": 14.2
+     },
+     {
+      "qty": 1000,
+      "price": 11.9
+     }
+    ],
+    "b2b": true
+   },
+   "logistics": {
+    "shippingClass": "heavy"
+   },
+   "packaging": [
+    {
+     "level": "primary",
+     "unit": "box",
+     "qty": 100
+    },
+    {
+     "level": "pallet",
+     "unit": "pallet",
+     "qty": 48000
+    }
+   ],
+   "uom": {
+    "unit": "set"
+   }
+  },
+  {
+   "id": "VR-AUTO-01",
+   "title": "Ceramic Brake Pad Set — Front Axle",
+   "brand": "Brembo",
+   "dept": "auto",
+   "nodeKey": "automotive.parts",
+   "type": "finished_good",
+   "price": 129.99,
+   "list": 164.99,
+   "rating": 4.7,
+   "count": 1210,
+   "emoji": "🛞",
+   "hue": 10,
+   "stock": 44,
+   "flags": "ac",
+   "kw": "brake pads ceramic automotive brembo",
+   "about": [
+    "Low-dust ceramic compound",
+    "Includes shims & hardware kit",
+    "OE-matched friction"
+   ],
+   "identity": {
+    "sku": "VR-AUTO-01",
+    "gtin": "8032534012345",
+    "oem": "34116878204",
+    "mpn": "P83041"
+   },
+   "vertical": {
+    "makes": [
+     "BMW",
+     "Mini"
+    ],
+    "models": "3-series F30 / F31",
+    "years": "2012-2019",
+    "engine": "N20/N26/B48",
+    "fuel": "petrol",
+    "vin_mapping": "WBA…F30",
+    "oem_ref": "34116878204",
+    "fitment": {
+     "front": "yes",
+     "rotor": "320mm"
+    },
+    "labor_hours": 1.2
+   },
+   "logistics": {
+    "shippingClass": "standard"
+   },
+   "rels": [
+    [
+     "VR-HARD-01",
+     "accessory"
+    ]
+   ],
+   "uom": {
+    "unit": "set"
+   }
+  },
+  {
+   "id": "VR-ELEC-01",
+   "title": "PulseBook Air 14 — M-Class 16GB/512GB",
+   "brand": "Pulse",
+   "dept": "computers",
+   "nodeKey": "electronics.computers.laptops",
+   "type": "physical",
+   "price": 1099,
+   "list": 1299,
+   "rating": 4.8,
+   "count": 3400,
+   "emoji": "💻",
+   "hue": 250,
+   "stock": 15,
+   "flags": "bs new",
+   "kw": "laptop ultrabook pulsebook computer",
+   "about": [
+    "18-hour battery, fanless design",
+    "14\" 2.8K 120Hz Liquid Retina",
+    "Wi-Fi 7 + Thunderbolt 4"
+   ],
+   "identity": {
+    "sku": "VR-ELEC-01",
+    "gtin": "0123456789012",
+    "imei": null,
+    "serial": "PB-AIR14-0001",
+    "mpn": "PB14-M2-512"
+   },
+   "attrs": {
+    "color": "silver",
+    "weight_kg": 1.24,
+    "warranty_months": 24
+   },
+   "vertical": {
+    "imei_required": false,
+    "serial_required": true,
+    "firmware": "2.4.1",
+    "warranty_months": 24,
+    "repair_coverage": "onsite",
+    "voltage": "100-240V",
+    "power_w": 67,
+    "energy_rating": "A+++",
+    "compat_matrix": {
+     "docks": "TB4/USB-C"
+    }
+   },
+   "media": [
+    {
+     "kind": "image",
+     "label": "Open",
+     "emoji": "💻"
+    },
+    {
+     "kind": "video",
+     "label": "Film",
+     "emoji": "🎬"
+    },
+    {
+     "kind": "warranty_doc",
+     "label": "Warranty",
+     "emoji": "🛡️"
+    }
+   ],
+   "logistics": {
+    "shippingClass": "fragile"
+   },
+   "rels": [
+    [
+     "VR-BUND-01",
+     "bundle"
+    ],
+    [
+     "VR-DIGI-01",
+     "cross_sell"
+    ]
+   ],
+   "uom": {
+    "unit": "ea"
+   }
+  },
+  {
+   "id": "VR-JEW-01",
+   "title": "Aurelia 22K Gold Bangle — Hallmarked",
+   "brand": "Velora",
+   "dept": "jewellery",
+   "nodeKey": "jewellery.fashion_jewellery.bracelets",
+   "type": "physical",
+   "price": 2890,
+   "rating": 4.9,
+   "count": 310,
+   "emoji": "💍",
+   "hue": 45,
+   "stock": 6,
+   "flags": "bs",
+   "priority": false,
+   "kw": "gold bangle jewellery hallmark 22k",
+   "about": [
+    "BIS hallmarked 22K (916) gold",
+    "Live gold-rate locked at dispatch",
+    "Complimentary lifetime polish"
+   ],
+   "identity": {
+    "sku": "VR-JEW-01",
+    "gtin": "8901234567890",
+    "serial": "VEL-BGL-2209"
+   },
+   "attrs": {
+    "purity": "22K",
+    "weight_kg": 0.042
+   },
+   "vertical": {
+    "purity": "916 / 22K",
+    "hallmark": "BIS-916-HG",
+    "stone_cert": null,
+    "weight_g": 42,
+    "making_charges_pct": 11,
+    "live_pricing": true,
+    "metal": "gold"
+   },
+   "logistics": {
+    "shippingClass": "white_glove",
+    "cross_border_restricted": true
+   },
+   "geo_rules": [
+    {
+     "country": "IN",
+     "note": "Import duties included"
+    }
+   ],
+   "uom": {
+    "unit": "g"
+   }
+  },
+  {
+   "id": "VR-DIGI-01",
+   "title": "StudioForge Pro — Perpetual License (1 seat)",
+   "brand": "Forge Labs",
+   "dept": "computers",
+   "nodeKey": "digital.digital_content",
+   "type": "license",
+   "price": 199,
+   "rating": 4.5,
+   "count": 980,
+   "emoji": "🧩",
+   "hue": 280,
+   "stock": 9999,
+   "flags": "",
+   "kw": "software license 3d design digital",
+   "about": [
+    "Instant key delivery",
+    "Perpetual + 1yr updates",
+    "Offline activation"
+   ],
+   "identity": {
+    "sku": "VR-DIGI-01"
+   },
+   "vertical": {
+    "license_key": true,
+    "activation": "1 seat, 2 deactivations/yr",
+    "downloads": 3,
+    "streaming": "n/a",
+    "drm": "none",
+    "sub_rules": "optional upgrade plan"
+   },
+   "logistics": {
+    "shippingClass": "standard",
+    "digital": true
+   },
+   "uom": {
+    "unit": "ea"
+   }
+  },
+  {
+   "id": "VR-SERV-01",
+   "title": "Home Deep Cleaning — 3 Rooms (2 crew)",
+   "brand": "SparkNest",
+   "dept": "home",
+   "nodeKey": "services.home_services",
+   "type": "appointment",
+   "price": 149,
+   "rating": 4.6,
+   "count": 540,
+   "emoji": "🧽",
+   "hue": 160,
+   "stock": 999,
+   "flags": "",
+   "kw": "cleaning service home appointment",
+   "about": [
+    "Eco-certified products",
+    "Vetted 2-person crew",
+    "Re-clean guarantee"
+   ],
+   "identity": {
+    "sku": "VR-SERV-01"
+   },
+   "vertical": {
+    "appointment": true,
+    "duration_min": 180,
+    "location_mode": "onsite",
+    "workforce": 2,
+    "sla": "48h reschedule",
+    "contract": "none"
+   },
+   "logistics": {
+    "shippingClass": "standard",
+    "service": true
+   },
+   "uom": {
+    "unit": "hr"
+   }
+  },
+  {
+   "id": "VR-RENT-01",
+   "title": "Pro Drill & Impact Driver Kit — Weekly Rental",
+   "brand": "Hilti",
+   "dept": "tools",
+   "nodeKey": "rental.equipment_rental",
+   "type": "rental",
+   "price": 59,
+   "rating": 4.4,
+   "count": 210,
+   "emoji": "🛠️",
+   "hue": 20,
+   "stock": 12,
+   "flags": "",
+   "priority": false,
+   "kw": "rental drill tools equipment weekly",
+   "about": [
+    "Deposit refundable on return",
+    "Insurance option at checkout",
+    "Pickup or delivery"
+   ],
+   "identity": {
+    "sku": "VR-RENT-01",
+    "serial": "HIL-KIT-77"
+   },
+   "vertical": {
+    "durations": [
+     {
+      "label": "Day",
+      "price": 25
+     },
+     {
+      "label": "Week",
+      "price": 59
+     },
+     {
+      "label": "Month",
+      "price": 149
+     }
+    ],
+    "deposit": 200,
+    "asset_tracking": true,
+    "damage": true,
+    "return_inspection": true
+   },
+   "logistics": {
+    "shippingClass": "heavy"
+   },
+   "uom": {
+    "unit": "day"
+   }
+  },
+  {
+   "id": "VR-SUBS-01",
+   "title": "Bean Box — Specialty Coffee Subscription",
+   "brand": "Roast & Co",
+   "dept": "grocery",
+   "nodeKey": "subscription.boxes",
+   "type": "subscription",
+   "price": 24.99,
+   "rating": 4.8,
+   "count": 4200,
+   "emoji": "☕",
+   "hue": 25,
+   "stock": 999,
+   "flags": "bs",
+   "kw": "coffee subscription beans monthly",
+   "about": [
+    "Rotating single-origin roasts",
+    "Skip or pause anytime",
+    "Free shipping every cycle"
+   ],
+   "identity": {
+    "sku": "VR-SUBS-01"
+   },
+   "vertical": {
+    "license_key": false,
+    "activation": "n/a",
+    "downloads": 0,
+    "streaming": "n/a",
+    "drm": "none",
+    "sub_rules": "monthly billing, cancel anytime"
+   },
+   "logistics": {
+    "shippingClass": "standard"
+   },
+   "uom": {
+    "unit": "month"
+   }
+  },
+  {
+   "id": "VR-BUND-01",
+   "title": "Home Cinema Bundle — Sofa + PulseBook + Audio",
+   "brand": "LUXORA Studio",
+   "dept": "home",
+   "nodeKey": "furniture.furniture.sofas",
+   "type": "bundle",
+   "price": 1999,
+   "list": 2487,
+   "rating": 4.7,
+   "count": 90,
+   "emoji": "🎁",
+   "hue": 320,
+   "stock": 5,
+   "flags": "",
+   "kw": "bundle home cinema sofa laptop",
+   "about": [
+    "Save $488 vs buying separately",
+    "Curated by our design studio",
+    "Single white-glove delivery"
+   ],
+   "identity": {
+    "sku": "VR-BUND-01"
+   },
+   "pricing_rules": {
+    "bundle_items": [
+     "VR-FURN-01",
+     "VR-ELEC-01"
+    ],
+    "bundle_price": 1999
+   },
+   "rels": [
+    [
+     "VR-FURN-01",
+     "bundle"
+    ],
+    [
+     "VR-ELEC-01",
+     "bundle"
+    ]
+   ],
+   "logistics": {
+    "shippingClass": "white_glove"
+   },
+   "uom": {
+    "unit": "set"
+   }
+  },
+  {
+   "id": "VR-IND-01",
+   "title": "Industrial Air Compressor 5HP — Tank Mount",
+   "brand": "Atlas Copco",
+   "dept": "industrial",
+   "nodeKey": "industrial.machinery",
+   "type": "equipment",
+   "price": 2450,
+   "list": 2890,
+   "rating": 4.5,
+   "count": 140,
+   "emoji": "🏭",
+   "hue": 200,
+   "stock": 4,
+   "flags": "",
+   "priority": false,
+   "kw": "compressor industrial machinery air",
+   "about": [
+    "AMC contracts available",
+    "Calibration certificate included",
+    "Installation crew on request"
+   ],
+   "identity": {
+    "sku": "VR-IND-01",
+    "gtin": "7312345678904",
+    "part_number": "AC-GX5-270"
+   },
+   "vertical": {
+    "tech_specs": {
+     "power_kw": 3.7,
+     "pressure_bar": 10,
+     "tank_l": 270,
+     "noise_db": 68
+    },
+    "maintenance": "500h service interval",
+    "calibration": "ISO-17025",
+    "compliance_docs": "CE/UKCA",
+    "safety_sheet": "MSDS-AC",
+    "install_service": true,
+    "amc": true,
+    "warranty_contract": true
+   },
+   "pricing_rules": {
+    "tiers": [
+     {
+      "qty": 2,
+      "price": 2300
+     },
+     {
+      "qty": 5,
+      "price": 2150
+     }
+    ],
+    "b2b": true
+   },
+   "logistics": {
+    "shippingClass": "heavy",
+    "install_required": true
+   },
+   "uom": {
+    "unit": "ea"
+   }
+  },
+  {
+   "id": "VR-VEHI-01",
+   "title": "Volt Crossover EV — 2026 Long Range",
+   "brand": "Volt Motors",
+   "dept": "auto",
+   "nodeKey": "automotive.parts",
+   "type": "vehicle",
+   "price": 42900,
+   "rating": 4.6,
+   "count": 60,
+   "emoji": "🚙",
+   "hue": 190,
+   "stock": 3,
+   "flags": "new",
+   "priority": false,
+   "kw": "electric car vehicle ev crossover",
+   "about": [
+    "520 km WLTP range",
+    "Book a test drive online",
+    "8-year battery warranty"
+   ],
+   "identity": {
+    "sku": "VR-VEHI-01",
+    "vin": "1VVK2345678901234"
+   },
+   "vertical": {
+    "vin": "1VVK2345678901234",
+    "make": "Volt",
+    "model": "Crossover",
+    "year": 2026,
+    "engine": "Dual motor AWD",
+    "transmission": "Single-speed",
+    "emission_class": "Zero",
+    "test_drive": true
+   },
+   "logistics": {
+    "shippingClass": "oversized"
+   },
+   "uom": {
+    "unit": "ea"
+   }
+  },
+  {
+   "id": "VR-HEAL-01",
+   "title": "CardioGuard BP Monitor — Clinically Validated",
+   "brand": "Omron Health",
+   "dept": "health",
+   "nodeKey": "healthcare.medical_equipment.monitors",
+   "type": "physical",
+   "price": 89.99,
+   "list": 99.99,
+   "rating": 4.6,
+   "count": 720,
+   "emoji": "🩺",
+   "hue": 170,
+   "stock": 30,
+   "flags": "",
+   "kw": "blood pressure monitor medical device",
+   "about": [
+    "AFib detection algorithm",
+    "Clinically validated accuracy",
+    "2-user memory + app sync"
+   ],
+   "identity": {
+    "sku": "VR-HEAL-01",
+    "gtin": "4542234567890",
+    "serial": "CG-BP-0042"
+   },
+   "vertical": {
+    "lot_tracked": true,
+    "serial_tracked": true,
+    "udi": "04542234BP01",
+    "regulatory": "FDA 510(k) K213",
+    "expiry_tracked": false,
+    "storage_compliance": "10-40°C",
+    "prescription": false,
+    "audit_trail": true
+   },
+   "logistics": {
+    "shippingClass": "standard"
+   },
+   "uom": {
+    "unit": "ea"
+   }
+  }
+ ],
+ "warehouses": [
+  [
+   "Main DC",
+   "DC1",
+   "US",
+   "WA"
+  ],
+  [
+   "East DC",
+   "DC2",
+   "US",
+   "NJ"
+  ]
+ ],
+ "suppliers": [
+  {
+   "name": "Brembo Parts Co",
+   "role": "manufacturer",
+   "country": "IT",
+   "lead_days": 14,
+   "moq": 10,
+   "terms": "net45",
+   "certifications": [
+    "ISO-9001",
+    "IATF-16949"
+   ],
+   "prices": {
+    "VR-AUTO-01": 78
+   },
+   "phone": "+1-555-0100"
+  },
+  {
+   "name": "Atlas Copco Supply",
+   "role": "manufacturer",
+   "country": "SE",
+   "lead_days": 21,
+   "moq": 1,
+   "terms": "net60",
+   "certifications": [
+    "CE"
+   ],
+   "prices": {},
+   "phone": "+1-555-0100"
+  },
+  {
+   "name": "Global Fastener Supply",
+   "role": "distributor",
+   "country": "DE",
+   "lead_days": 5,
+   "moq": 500,
+   "terms": "net30",
+   "certifications": [
+    "DIN"
+   ],
+   "prices": {
+    "VR-HARD-01": 9.5
+   },
+   "phone": "+1-555-0100"
+  }
+ ],
+ "complianceIssuers": [
+  {
+   "kind": "authorization",
+   "field": "fssai",
+   "issuer": "Food Safety Authority",
+   "jurisdiction": "IN"
+  },
+  {
+   "kind": "certificate",
+   "field": "organic_cert",
+   "issuer": "USDA Organic",
+   "jurisdiction": "US"
+  },
+  {
+   "kind": "mark",
+   "field": "hallmark",
+   "issuer": "BIS",
+   "jurisdiction": "IN"
+  },
+  {
+   "kind": "certificate",
+   "field": "stone_cert",
+   "issuer": "GIA",
+   "jurisdiction": "US"
+  },
+  {
+   "kind": "registration",
+   "field": "udi",
+   "issuer": "FDA UDI",
+   "jurisdiction": "US"
+  },
+  {
+   "kind": "approval",
+   "field": "regulatory",
+   "issuer": "FDA",
+   "jurisdiction": "US"
+  },
+  {
+   "kind": "certificate",
+   "field": "compliance_docs",
+   "issuer": "Conformity (Notified Body)",
+   "jurisdiction": ""
+  },
+  {
+   "kind": "certificate",
+   "field": "calibration",
+   "issuer": "ISO-17025 Calibration",
+   "jurisdiction": ""
+  },
+  {
+   "kind": "license",
+   "field": "seed_cert",
+   "issuer": "Seed Certification Board",
+   "jurisdiction": ""
+  }
+ ],
+ "darkStore": {
+  "code": "QC-SEA-01",
+  "name": "Capitol Hill Dark Store",
+  "kind": "dark_store",
+  "city": "Seattle",
+  "region": "WA",
+  "pincode": "98109",
+  "country": "US",
+  "service_radius_km": 3,
+  "promise_minutes": 10,
+  "prep_minutes": 4,
+  "min_order": 15,
+  "delivery_fee": 1.99,
+  "service_pincodes": [
+   "98101",
+   "98102",
+   "98112"
+  ]
+ }
+}

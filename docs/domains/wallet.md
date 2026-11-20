@@ -48,7 +48,7 @@ Wallet-to-wallet transfer between two owners. Self-transfer and overdraft are re
 | `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
 | `tenant_id` | INTEGER NOT NULL DEFAULT 0 |
 | `owner` | TEXT NOT NULL |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `kind` | TEXT NOT NULL |
 | `amount` | REAL NOT NULL |
 | `balance_after` | REAL DEFAULT 0 |

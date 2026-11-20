@@ -28,7 +28,7 @@ Machine help: AI providers and gateways, AI tasks and their metering.
 | `model` | TEXT DEFAULT '' |
 | `units` | INTEGER NOT NULL DEFAULT 1 |
 | `cost` | REAL NOT NULL DEFAULT 0 |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `tier` | TEXT DEFAULT 'free' |
 | `status` | TEXT DEFAULT 'ok' |
 | `actor` | TEXT DEFAULT '' |

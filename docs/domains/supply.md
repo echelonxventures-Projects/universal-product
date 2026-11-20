@@ -43,14 +43,14 @@ Purchase requests with lines and an approval gate: below the threshold a request
 | `name` | TEXT NOT NULL |
 | `party_role` | TEXT DEFAULT 'manufacturer' |
 | `tax_id` | TEXT DEFAULT '' |
-| `country` | TEXT DEFAULT 'US' |
+| `country` | TEXT |
 | `region` | TEXT DEFAULT '' |
 | `address` | TEXT DEFAULT '' |
 | `email` | TEXT DEFAULT '' |
 | `phone` | TEXT DEFAULT '' |
 | `lead_time_days` | INTEGER DEFAULT 7 |
 | `moq` | INTEGER DEFAULT 1 |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `payment_terms` | TEXT DEFAULT 'net30' |
 | `on_time_pct` | REAL DEFAULT 0 |
 | `status` | TEXT DEFAULT 'active' |

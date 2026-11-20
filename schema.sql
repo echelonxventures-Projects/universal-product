@@ -212,7 +212,7 @@ CREATE TRIGGER trg_departments_uid AFTER INSERT ON departments
 -- ── modules · Modules and capabilities ───────────────────────────────────────────────────────────
 CREATE TABLE modules (
   id TEXT PRIMARY KEY, name TEXT NOT NULL, category TEXT, summary TEXT,
-  price_type TEXT DEFAULT 'one_time', price REAL DEFAULT 0, currency TEXT DEFAULT 'USD',
+  price_type TEXT DEFAULT 'one_time', price REAL DEFAULT 0, currency TEXT,
   version TEXT DEFAULT '1.0', vendor TEXT DEFAULT 'LUXORA', manifest TEXT DEFAULT '{}',
   status TEXT DEFAULT 'active', position INTEGER DEFAULT 0
 , uid TEXT);
@@ -289,14 +289,14 @@ CREATE TRIGGER trg_tenant_modules_uid AFTER INSERT ON tenant_modules
 -- ── platform_billing · Platform billing ──────────────────────────────────────────────────────────
 CREATE TABLE plans (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL, price_month REAL NOT NULL DEFAULT 0, currency TEXT DEFAULT 'USD',
+  name TEXT NOT NULL, price_month REAL NOT NULL DEFAULT 0, currency TEXT,
   max_products INTEGER NOT NULL DEFAULT 100, max_orders_month INTEGER NOT NULL DEFAULT 100,
   features TEXT DEFAULT '{}', position INTEGER DEFAULT 0
 , uid TEXT);
 CREATE TABLE invoices (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   tenant_id INTEGER NOT NULL REFERENCES tenants(id), number TEXT NOT NULL UNIQUE,
-  period_start TEXT, period_end TEXT, amount REAL NOT NULL, currency TEXT DEFAULT 'USD',
+  period_start TEXT, period_end TEXT, amount REAL NOT NULL, currency TEXT,
   status TEXT NOT NULL DEFAULT 'draft', issued_at TEXT NOT NULL DEFAULT (datetime('now')),
   paid_at TEXT, note TEXT DEFAULT ''
 , trace_id TEXT, uid TEXT);
@@ -309,12 +309,12 @@ CREATE TABLE invoice_lines (
 CREATE TABLE usage_records (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, kind TEXT NOT NULL,
   ref TEXT DEFAULT '', description TEXT NOT NULL DEFAULT '', qty REAL DEFAULT 1, unit_amount REAL DEFAULT 0,
-  amount REAL DEFAULT 0, currency TEXT DEFAULT 'USD', period TEXT NOT NULL DEFAULT '', billed INTEGER DEFAULT 0,
+  amount REAL DEFAULT 0, currency TEXT, period TEXT NOT NULL DEFAULT '', billed INTEGER DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 , uid TEXT);
 CREATE TABLE credit_notes (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, number TEXT NOT NULL UNIQUE,
-  invoice_id INTEGER, amount REAL NOT NULL, currency TEXT DEFAULT 'USD', reason TEXT DEFAULT '',
+  invoice_id INTEGER, amount REAL NOT NULL, currency TEXT, reason TEXT DEFAULT '',
   status TEXT NOT NULL DEFAULT 'issued', to_wallet INTEGER DEFAULT 0, created_at TEXT NOT NULL DEFAULT (datetime('now'))
 , uid TEXT);
 CREATE TABLE billing_events (
@@ -454,7 +454,7 @@ CREATE TABLE product_option_groups (
 -- ── inventory · Inventory ────────────────────────────────────────────────────────────────────────
 CREATE TABLE warehouses (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, name TEXT NOT NULL,
-  code TEXT, country TEXT DEFAULT 'US', region TEXT DEFAULT '', active INTEGER DEFAULT 1
+  code TEXT, country TEXT, region TEXT DEFAULT '', active INTEGER DEFAULT 1
 , kind TEXT DEFAULT 'warehouse', lat REAL, lng REAL, service_radius_km REAL, promise_minutes INTEGER, pincode TEXT, city TEXT, deleted_at TEXT, uid TEXT);
 CREATE TABLE inventory (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, sku_id INTEGER NOT NULL,
@@ -555,7 +555,7 @@ CREATE TABLE offers (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 0,
   scope_level TEXT NOT NULL DEFAULT 'tenant', channel TEXT NOT NULL DEFAULT 'commerce',
   name TEXT NOT NULL, code TEXT DEFAULT '', type TEXT NOT NULL, direction TEXT NOT NULL DEFAULT 'discount',
-  value REAL DEFAULT 0, currency TEXT DEFAULT 'USD',
+  value REAL DEFAULT 0, currency TEXT,
   scope_type TEXT NOT NULL DEFAULT 'store', scope_value TEXT DEFAULT '{}',
   funder TEXT NOT NULL DEFAULT 'self', funder_ref TEXT DEFAULT '', brand_ref TEXT DEFAULT '',
   min_amount REAL DEFAULT 0, min_qty INTEGER DEFAULT 0, max_discount REAL DEFAULT 0,
@@ -569,20 +569,20 @@ CREATE TABLE goip_touchpoints (
   subject_uid TEXT DEFAULT '', offer_id INTEGER, code TEXT DEFAULT '', kind TEXT NOT NULL DEFAULT 'view',
   party TEXT DEFAULT '', party_type TEXT DEFAULT 'customer', channel TEXT DEFAULT 'commerce', distribution TEXT DEFAULT 'in_app',
   device TEXT DEFAULT '', owner TEXT DEFAULT '', session TEXT DEFAULT '', order_id INTEGER,
-  value REAL DEFAULT 0, unit TEXT DEFAULT 'USD', context TEXT DEFAULT '{}',
+  value REAL DEFAULT 0, unit TEXT, context TEXT DEFAULT '{}',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 , uid TEXT);
 CREATE TABLE goip_budgets (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 0,
   domain TEXT NOT NULL DEFAULT 'incentive', funder TEXT NOT NULL DEFAULT 'self', funder_ref TEXT DEFAULT '',
-  unit TEXT NOT NULL DEFAULT 'USD', allocated REAL DEFAULT 0, reserved REAL DEFAULT 0, consumed REAL DEFAULT 0,
+  unit TEXT NOT NULL, allocated REAL DEFAULT 0, reserved REAL DEFAULT 0, consumed REAL DEFAULT 0,
   period TEXT NOT NULL DEFAULT '', status TEXT NOT NULL DEFAULT 'open', policy TEXT DEFAULT '{}',
   created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT
 , uid TEXT);
 CREATE TABLE goip_settlements (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 0,
   period TEXT NOT NULL DEFAULT '', party TEXT NOT NULL DEFAULT '', party_type TEXT NOT NULL DEFAULT 'merchant',
-  unit TEXT NOT NULL DEFAULT 'USD', gross REAL DEFAULT 0, fees REAL DEFAULT 0, net REAL DEFAULT 0,
+  unit TEXT NOT NULL, gross REAL DEFAULT 0, fees REAL DEFAULT 0, net REAL DEFAULT 0,
   redemptions REAL DEFAULT 0, status TEXT NOT NULL DEFAULT 'accrued', reference TEXT DEFAULT '',
   paid_at TEXT, meta TEXT DEFAULT '{}', created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT
 , uid TEXT);
@@ -633,7 +633,7 @@ CREATE INDEX ix_group_members ON group_members(campaign_id);
 CREATE TABLE coupons (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 0,
   code TEXT NOT NULL, offer_id INTEGER, funder TEXT DEFAULT 'self', funder_ref TEXT DEFAULT '', brand_ref TEXT DEFAULT '',
-  kind TEXT NOT NULL DEFAULT 'single_use', value REAL DEFAULT 0, currency TEXT DEFAULT 'USD',
+  kind TEXT NOT NULL DEFAULT 'single_use', value REAL DEFAULT 0, currency TEXT,
   max_uses INTEGER DEFAULT 1, per_owner_limit INTEGER DEFAULT 1, used INTEGER DEFAULT 0,
   issued_to TEXT DEFAULT '', batch TEXT DEFAULT '', starts TEXT, ends TEXT, status TEXT DEFAULT 'active', note TEXT DEFAULT '',
   created_at TEXT NOT NULL DEFAULT (datetime('now')), deleted_at TEXT, uid TEXT, UNIQUE (tenant_id, code)
@@ -656,7 +656,7 @@ CREATE TRIGGER trg_coupon_redemptions_uid AFTER INSERT ON coupon_redemptions
 CREATE TABLE vouchers (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 0,
   code TEXT NOT NULL, kind TEXT NOT NULL DEFAULT 'bank_voucher', issued_by TEXT DEFAULT '', offer_id INTEGER,
-  value REAL DEFAULT 0, currency TEXT DEFAULT 'USD', issued_to TEXT DEFAULT '', batch TEXT DEFAULT '',
+  value REAL DEFAULT 0, currency TEXT, issued_to TEXT DEFAULT '', batch TEXT DEFAULT '',
   starts TEXT, ends TEXT, status TEXT DEFAULT 'active', note TEXT DEFAULT '',
   created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE (tenant_id, code)
 );
@@ -665,7 +665,7 @@ CREATE TABLE vouchers (
 CREATE TABLE affiliate_networks (
     id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, slug TEXT UNIQUE, tenant_id INTEGER DEFAULT 1,
     status TEXT DEFAULT 'active', default_commission_pct REAL DEFAULT 5.0, cookie_days INTEGER DEFAULT 30,
-    attribution_model TEXT DEFAULT 'last_touch', min_payout REAL DEFAULT 50.0, currency TEXT DEFAULT 'USD',
+    attribution_model TEXT DEFAULT 'last_touch', min_payout REAL DEFAULT 50.0, currency TEXT,
     created_at TEXT DEFAULT (datetime('now')), uid TEXT );
 CREATE TABLE affiliates (
     id INTEGER PRIMARY KEY AUTOINCREMENT, network_id INTEGER REFERENCES affiliate_networks(id), tenant_id INTEGER DEFAULT 1,
@@ -882,7 +882,7 @@ CREATE TABLE wallets (
 );
 CREATE TABLE wallet_entries (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL DEFAULT 0,
-  owner TEXT NOT NULL, currency TEXT DEFAULT 'USD', kind TEXT NOT NULL,
+  owner TEXT NOT NULL, currency TEXT, kind TEXT NOT NULL,
   amount REAL NOT NULL, balance_after REAL DEFAULT 0, ref TEXT DEFAULT '', note TEXT DEFAULT '',
   channel TEXT DEFAULT 'commerce', actor TEXT DEFAULT 'system',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -929,7 +929,7 @@ CREATE TABLE payouts (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
   seller_id INTEGER, kind TEXT NOT NULL DEFAULT 'seller', ref TEXT, period TEXT,
   gross REAL NOT NULL DEFAULT 0, fee REAL NOT NULL DEFAULT 0, net REAL NOT NULL DEFAULT 0,
-  currency TEXT DEFAULT 'USD', status TEXT NOT NULL DEFAULT 'open',
+  currency TEXT, status TEXT NOT NULL DEFAULT 'open',
   disbursed_at TEXT, note TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE TABLE payout_items (
@@ -949,7 +949,7 @@ CREATE TABLE recon_lines (
 CREATE TABLE remittance_records (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
   period TEXT NOT NULL, jurisdiction TEXT NOT NULL, tax_type TEXT DEFAULT 'vat',
-  taxable REAL DEFAULT 0, tax_collected REAL DEFAULT 0, currency TEXT DEFAULT 'USD',
+  taxable REAL DEFAULT 0, tax_collected REAL DEFAULT 0, currency TEXT,
   status TEXT NOT NULL DEFAULT 'pending', filed_at TEXT, reference TEXT DEFAULT '',
   created_at TEXT NOT NULL DEFAULT (datetime('now')), deleted_at TEXT
 , uid TEXT);
@@ -1201,7 +1201,7 @@ CREATE TABLE shipping_quotes (
     provider_id TEXT,
     service_type TEXT,
     price REAL,
-    currency TEXT DEFAULT 'USD',
+    currency TEXT,
     transit_days INTEGER,
     guaranteed_delivery TEXT,
     status TEXT DEFAULT 'pending',
@@ -1213,9 +1213,9 @@ CREATE TABLE shipping_quotes (
 CREATE TABLE suppliers (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
   name TEXT NOT NULL, party_role TEXT DEFAULT 'manufacturer', tax_id TEXT DEFAULT '',
-  country TEXT DEFAULT 'US', region TEXT DEFAULT '', address TEXT DEFAULT '',
+  country TEXT, region TEXT DEFAULT '', address TEXT DEFAULT '',
   email TEXT DEFAULT '', phone TEXT DEFAULT '', lead_time_days INTEGER DEFAULT 7,
-  moq INTEGER DEFAULT 1, currency TEXT DEFAULT 'USD', payment_terms TEXT DEFAULT 'net30',
+  moq INTEGER DEFAULT 1, currency TEXT, payment_terms TEXT DEFAULT 'net30',
   on_time_pct REAL DEFAULT 0, status TEXT DEFAULT 'active',
   certifications TEXT DEFAULT '[]', price_list TEXT DEFAULT '{}',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -1637,7 +1637,7 @@ CREATE TABLE rfqs (
 CREATE TABLE contracts (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL,
   buyer_name TEXT NOT NULL, buyer_email TEXT NOT NULL, buyer_org TEXT DEFAULT '',
-  supplier_id INTEGER, product_ids TEXT DEFAULT '[]', currency TEXT DEFAULT 'USD',
+  supplier_id INTEGER, product_ids TEXT DEFAULT '[]', currency TEXT,
   pricing TEXT DEFAULT '{}', min_qty INTEGER DEFAULT 1, incoterms TEXT DEFAULT 'EXW',
   payment_terms TEXT DEFAULT 'net30', valid_from TEXT, valid_to TEXT,
   status TEXT NOT NULL DEFAULT 'draft', notes TEXT DEFAULT '',
@@ -1647,7 +1647,7 @@ CREATE TABLE contracts (
 CREATE TABLE tenders (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL,
   title TEXT NOT NULL, buyer_org TEXT DEFAULT '', buyer_email TEXT DEFAULT '', description TEXT DEFAULT '',
-  currency TEXT DEFAULT 'USD', budget REAL DEFAULT 0, open_at TEXT, close_at TEXT,
+  currency TEXT, budget REAL DEFAULT 0, open_at TEXT, close_at TEXT,
   status TEXT NOT NULL DEFAULT 'open', awarded_seller_id INTEGER, awarded_contract_id INTEGER,
   items TEXT DEFAULT '[]', bids TEXT DEFAULT '[]',
   created_at TEXT NOT NULL DEFAULT (datetime('now')), deleted_at TEXT, uid TEXT,
@@ -2193,7 +2193,7 @@ CREATE TRIGGER trg_idempotency_keys_uid AFTER INSERT ON idempotency_keys
 CREATE TABLE ai_usage (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
   capability TEXT NOT NULL, provider TEXT NOT NULL, model TEXT DEFAULT '',
-  units INTEGER NOT NULL DEFAULT 1, cost REAL NOT NULL DEFAULT 0, currency TEXT DEFAULT 'USD',
+  units INTEGER NOT NULL DEFAULT 1, cost REAL NOT NULL DEFAULT 0, currency TEXT,
   tier TEXT DEFAULT 'free', status TEXT DEFAULT 'ok', actor TEXT DEFAULT '',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 , uid TEXT);

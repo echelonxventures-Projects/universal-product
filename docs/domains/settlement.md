@@ -59,7 +59,7 @@ Queue a payout to a bank account or VPA and process it through the configured ga
 | `gross` | REAL NOT NULL DEFAULT 0 |
 | `fee` | REAL NOT NULL DEFAULT 0 |
 | `net` | REAL NOT NULL DEFAULT 0 |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `status` | TEXT NOT NULL DEFAULT 'open' |
 | `disbursed_at` | TEXT |
 | `note` | TEXT DEFAULT '' |
@@ -120,7 +120,7 @@ Queue a payout to a bank account or VPA and process it through the configured ga
 | `tax_type` | TEXT DEFAULT 'vat' |
 | `taxable` | REAL DEFAULT 0 |
 | `tax_collected` | REAL DEFAULT 0 |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `status` | TEXT NOT NULL DEFAULT 'pending' |
 | `filed_at` | TEXT |
 | `reference` | TEXT DEFAULT '' |

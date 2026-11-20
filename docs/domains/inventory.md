@@ -39,7 +39,7 @@ Per-store stock pinning so a dark store cannot oversell. Safety stock is held ba
 | `tenant_id` | INTEGER NOT NULL |
 | `name` | TEXT NOT NULL |
 | `code` | TEXT |
-| `country` | TEXT DEFAULT 'US' |
+| `country` | TEXT |
 | `region` | TEXT DEFAULT '' |
 | `active` | INTEGER DEFAULT 1 |
 | `kind` | TEXT DEFAULT 'warehouse' |

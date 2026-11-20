@@ -37,7 +37,7 @@ The 'Admin Console' link shown to a store's own staff on the storefront.
 | `summary` | TEXT |
 | `price_type` | TEXT DEFAULT 'one_time' |
 | `price` | REAL DEFAULT 0 |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `version` | TEXT DEFAULT '1.0' |
 | `vendor` | TEXT DEFAULT 'LUXORA' |
 | `manifest` | TEXT DEFAULT '{}' |

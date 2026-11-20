@@ -164,6 +164,16 @@ const cleanup = () => { for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(
     ratchet("earthLiterals", hits.length, "literal countries, currencies, calendars and directions in platform code", hits.slice(0, 10));
   }
 
+  console.log("▸ LAW-008 · INDEPENDENT AUTHORITIES — a row stores no other domain's answer");
+  {
+    /* a column names no country or currency for a row that leaves it out: Geo and Value answer
+       (lib/entity.js reads an omitted one from its owner — fields that declare resolves) */
+    const cc = new Set(db.all("SELECT code FROM countries").map(r => r.code)), cur = new Set(db.all("SELECT code FROM currencies").map(r => r.code));
+    const schema = fs.readFileSync(path.join(ROOT, "schema.sql"), "utf8");
+    const defs = [...schema.matchAll(/(\w+) TEXT(?: NOT NULL)? DEFAULT '([A-Z]{2,3})'/g)].filter(m => cur.has(m[2]) || cc.has(m[2])).map(m => m[1] + " DEFAULT '" + m[2] + "'");
+    ok(defs.length === 0, "no table column defaults to a country or currency (" + defs.length + ")", defs.slice(0, 10));
+  }
+
   console.log("▸ LAW-018 · SELECTION FROM OWNERS — every choice is read from the domain that owns it");
   {
     const E = JSON.parse(fs.readFileSync(path.join(ROOT, "lib", "seed", "entity.json"), "utf8"));

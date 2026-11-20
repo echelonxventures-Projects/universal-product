@@ -29,7 +29,7 @@ An instrument of value that is not the shop's own discount and not a gift card: 
 | `issued_by` | TEXT DEFAULT '' |
 | `offer_id` | INTEGER |
 | `value` | REAL DEFAULT 0 |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `issued_to` | TEXT DEFAULT '' |
 | `batch` | TEXT DEFAULT '' |
 | `starts` | TEXT |

@@ -24,7 +24,7 @@ What the platform charges its stores: plans, subscriptions to plans, usage meter
 | `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
 | `name` | TEXT NOT NULL |
 | `price_month` | REAL NOT NULL DEFAULT 0 |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `max_products` | INTEGER NOT NULL DEFAULT 100 |
 | `max_orders_month` | INTEGER NOT NULL DEFAULT 100 |
 | `features` | TEXT DEFAULT '{}' |
@@ -41,7 +41,7 @@ What the platform charges its stores: plans, subscriptions to plans, usage meter
 | `period_start` | TEXT |
 | `period_end` | TEXT |
 | `amount` | REAL NOT NULL |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `status` | TEXT NOT NULL DEFAULT 'draft' |
 | `issued_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 | `paid_at` | TEXT |
@@ -79,7 +79,7 @@ What the platform charges its stores: plans, subscriptions to plans, usage meter
 | `qty` | REAL DEFAULT 1 |
 | `unit_amount` | REAL DEFAULT 0 |
 | `amount` | REAL DEFAULT 0 |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `period` | TEXT NOT NULL DEFAULT '' |
 | `billed` | INTEGER DEFAULT 0 |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
@@ -94,7 +94,7 @@ What the platform charges its stores: plans, subscriptions to plans, usage meter
 | `number` | TEXT NOT NULL UNIQUE |
 | `invoice_id` | INTEGER |
 | `amount` | REAL NOT NULL |
-| `currency` | TEXT DEFAULT 'USD' |
+| `currency` | TEXT |
 | `reason` | TEXT DEFAULT '' |
 | `status` | TEXT NOT NULL DEFAULT 'issued' |
 | `to_wallet` | INTEGER DEFAULT 0 |
