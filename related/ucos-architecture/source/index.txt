@@ -1,0 +1,461 @@
+# term :: owner :: note      (owner = universe name | KERNEL | LABEL | SECTION)
+A/B, multivariate and bandit experiments :: Experimentation
+Access control decision (RBAC, ABAC, PBAC, ReBAC, ZBAC, context- and risk-based) :: Security
+Access roles & permissions :: Security
+Accessibility :: Experience
+Account (bank deposit product) :: Financial Services
+Account (customer / B2B relationship) :: Relationship
+Account (ledger) :: Finance & Accounting
+Accountability :: Authority & Governance
+Adapter (provider SPI implementation) :: Integration :: SPI defined by the consuming universe
+Address, place, location :: Spatial
+Advertising, ad inventory, placements, targeting, ad serving :: Advertising
+Affiliate network & partner network :: Marketplace & Distribution
+Agent (autonomous actor), agent framework, agent types :: Agent
+Agent authority & delegation :: Authority & Governance
+Agent memory :: Agent
+Agent registry :: Agent
+Agent-to-agent & tool protocols (MCP, A2A) :: Integration
+AGI / ASI / autonomous civilizations :: Agent :: bounded by the Autonomy Model
+AI certification :: Certification
+AI governance, AI safety, guardrails, model risk (genome slots) :: Intelligence :: mechanisms from {{Authority & Governance}} and {{Policy}}
+AI model, prompt, tool, evaluation, model card :: Intelligence
+Alerting :: Observability
+Amendment (constitutional) :: Constitution & Law
+Analytics, BI, reports, dashboards :: Analytics
+Anomaly detection on telemetry :: Observability
+API (UCOS-exposed: REST, GraphQL, gRPC, async) :: API
+API gateway :: Runtime Fabric
+Appeal :: Legal & Agreement
+Application :: LABEL :: a Composition ({{Composition}})
+Appointment, booking engine, waitlist :: Resource & Capacity
+Approval authority & approval record :: Authority & Governance
+Approval step :: Workflow
+AR / VR / MR / XR / spatial / holographic / ambient / brain-computer interfaces :: Experience
+Arbitration :: Legal & Agreement
+Asset (digital media, DAM) :: Content & Media
+Asset (economic) & title of ownership :: Value & Economics
+Asset (infrastructure resource) :: Infrastructure
+Asset offering (rentable / sellable) :: Offering
+Attack simulation :: Simulation :: scenario packs authored by {{Security}}
+Attack-surface discovery :: Security
+Attestation :: Trust & Reputation
+Attribute definition (global) :: Global Offering Knowledge Network
+Attribute value (tenant offering) :: Offering
+Attribution & conversion measurement (paid media) :: Advertising
+Auction, bid, market clearing :: Marketplace & Distribution
+Audit trail (immutable, cryptographic) :: Audit & Evidence
+Authentication (MFA, passkeys, biometrics, SSO, adaptive) :: Identity
+Authority (six types) :: Authority & Governance
+Auto-* and Self-* functions :: SECTION :: {{§autofns}}
+Autonomy levels L0–L9 & risk tiers :: Authority & Governance :: model in {{§autonomy}}
+Autoscaling & workload placement :: Infrastructure
+Availability (of a resource) :: Resource & Capacity
+Availability (system, high availability) :: Resilience
+Availability window :: Temporal
+B2B / B2C / D2C / C2C / P2P / B2G / G2C topologies :: Value & Economics :: commerce model catalog
+Backup, restore, backup validation :: Resilience
+Banking (deposit accounts, card issuing, transfer products) :: Financial Services
+Behavioural profile :: Relationship
+Behavioural security analytics :: Security
+Bill of materials :: Production
+Billing, billing cycles, invoices, credit notes :: Billing & Revenue
+Blueprint (industry), industry & marketplace templates, reference compositions :: Blueprint
+BNPL credit :: Financial Services :: BNPL as a payment instrument → {{Payment}}
+BPM / BPMN processes :: Workflow
+Brand (party) :: Party & Organization
+Broadcast (message) :: Communication & Collaboration
+Budgeting :: Finance & Accounting
+Builder Studio, composers, designer, sandbox :: Composition
+Bundle / package (offering) :: Offering
+Bundle offer (incentive) :: Offer & Incentive
+Business continuity :: Resilience
+Cache :: Runtime Fabric
+Calendar (civil, business, fiscal, holiday, market, cultural) :: Temporal
+Campaign (marketing) :: Marketing & Engagement
+Campaign (paid advertising) :: Advertising
+Canary, blue-green, rolling, progressive release :: Deployment & Release
+Capability :: Capability
+Capability Constitutional Properties :: SECTION :: {{§properties}}
+Capability Genome :: KERNEL :: {{§genome}}
+Capability marketplace, packs, plugins, extension universes :: Capability
+Capacity (business resource) :: Resource & Capacity
+Capacity planning & forecasting (platform) :: Operations
+Carbon accounting & energy consumption :: Sustainability
+Carrier :: Logistics & Fulfillment
+Cart :: Transaction
+Case management (generic engine) :: Workflow :: tickets, claims, disputes, investigations and incidents are case types
+Cashback :: Offer & Incentive
+Catalog (commercial), assortment, collections :: Catalog & Merchandising
+Category (global taxonomy) :: Global Offering Knowledge Network
+Category (tenant navigation) :: Catalog & Merchandising
+CDN :: Infrastructure
+CDP / unified customer profile :: Relationship
+Certificate (PKI) :: Security
+Certification (of artifacts), revocation :: Certification
+Change control (approving changes) :: Authority & Governance
+Change management & impact analysis :: Evolution
+Channel (content / creator) :: Content & Media
+Channel (interaction surface) :: Experience
+Channel (route to market) :: Marketplace & Distribution
+Chaos engineering & failure injection (execution) :: Resilience
+Chaos test (definition) :: Testing & Proof
+Chargeback (money flow) :: Payment :: dispute semantics → {{Legal & Agreement}}
+Chart of accounts :: Finance & Accounting
+Chat / conversation thread / messaging :: Communication & Collaboration
+Checkout :: Transaction
+Civilization scope (ecosystem of ecosystems) :: Composition :: civilization twin → {{Digital Twin}}; civilization knowledge → {{Knowledge}}
+Claim (generic legal) :: Legal & Agreement
+Claim (insurance) :: Financial Services
+Classification (ML) :: Intelligence
+Classification mappings (UNSPSC, GS1, HS) :: Global Offering Knowledge Network
+Classification scheme :: Knowledge
+Clearing & settlement :: Payment
+CMS :: Content & Media
+Collaboration (AI to AI) :: Agent
+Collaboration (human: workspaces, comments, co-editing) :: Communication & Collaboration
+Commerce Object :: Transaction
+Commission, fee schedules, revenue share, royalties :: Billing & Revenue
+Community, forums, groups :: Communication & Collaboration
+Company, legal-entity structure, government body :: Party & Organization
+Compensation & benefits :: Workforce
+Completeness Model, gap discovery :: Platform Intelligence
+Compliance control library & control mapping :: Compliance
+Composition :: Composition
+Compute (CPU, GPU, TPU, serverless, containers, Kubernetes, quantum, edge) :: Infrastructure
+Confidence (knowledge claim) :: Knowledge
+Confidential computing :: Security
+Configuration (environment) :: Deployment & Release
+Configuration (tenant platform definition) :: Composition
+Consent, purpose, lawful basis :: Privacy & Consent
+Constitution, laws, principles, internal standards :: Constitution & Law
+Constraint (policy) :: Policy
+Constraint intelligence (jurisdiction applicability) :: Compliance
+Contact center (operations) :: Support & Service :: telephony transport → {{Communication & Collaboration}}
+Content item, publication, creator :: Content & Media
+Content moderation :: Trust & Reputation
+Context dimensions :: SECTION :: {{§context}}
+Context Frame, reality types, observer :: Context & Reality
+Contract (legal agreement), terms, clause library :: Legal & Agreement
+Contract (offering type) :: Offering
+Contract (technical: service, data, API, event, runtime) :: Capability :: genome slot D
+Contradiction detection & resolution :: Knowledge
+Conversational, voice & agent interfaces :: Experience
+Correction pipeline, self-optimization :: Correction
+Cost (cloud / FinOps) :: Operations
+Cost accounting & profitability :: Finance & Accounting
+Coupon :: Offer & Incentive
+Course (learning structure), curriculum, enrollment :: Education & Learning
+Credential (authentication) :: Identity
+Credential (verifiable), credential chains :: Trust & Reputation
+Credit / debit / adjustment entries :: Finance & Accounting
+Credit, lending, loans, underwriting :: Financial Services
+CRM :: LABEL :: maps to {{Relationship}}
+Cryptography: encryption, KMS, HSM, PKI, post-quantum :: Security
+Cultural context :: Language & Locale
+Currency, token, exchange-rate reference data :: Value & Economics
+Customer (party role) :: Party & Organization
+Customer relationship, customer success :: Relationship
+Customs & global trade :: Logistics & Fulfillment
+DAM :: LABEL :: maps to {{Content & Media}}
+Dashboard :: Analytics
+Data contract, product, catalog, quality, lineage :: Data
+Data marketplace / data exchange :: LABEL :: {{Marketplace & Distribution}} + {{Data}}
+Data mesh / fabric / lakehouse (logical) :: Data
+Data residency, data sovereignty :: Sovereignty & Residency
+Data subject rights :: Privacy & Consent
+Decision model, decision table, decision tree, decision record :: Decision
+Decision support & decision intelligence :: Decision
+Delegation :: Authority & Governance
+Delivery, pickup, last mile, delivery slot :: Logistics & Fulfillment :: window semantics → {{Temporal}}
+Dependency declarations & dependency graph :: Capability
+Dependency rules D1–D7 :: KERNEL :: {{§rules}}
+Deployment pipeline (CI/CD), GitOps :: Deployment & Release
+Deprecation & supersession :: Evolution
+Design system, themes, white-label, multi-brand :: Experience
+Developer portal, SDKs, universal CLI :: API
+Device / machine / robot / vehicle / service identity :: Identity
+Devices, sensors, actuators (management) :: Cyber-Physical
+Diagnostics & root-cause analysis :: Observability
+Digital human :: Agent :: identity → {{Identity}}; rendering → {{Experience}}
+Digital signature, proof, non-repudiation :: Trust & Reputation
+Digital twin :: Digital Twin
+Digital-asset custody :: Financial Services
+Disaster recovery, failover, fault isolation :: Resilience
+Discount :: Offer & Incentive
+Discovery (capability) :: Capability
+Discovery (domains, future capabilities, unknown unknowns) :: Evolution
+Discovery (user-facing search & browse) :: Search & Recommendation
+Dispatch / assignment :: Resource & Capacity
+Dispute :: Legal & Agreement
+Distance, containment, proximity, geofencing, routing primitives :: Spatial
+DLP :: Security
+Document (business: invoice PDF, contract document, report, certificate, form) :: Content & Media
+Documentation (platform), runbooks (authored), manuals, diagrams :: Documentation
+Domain (within a universe) :: KERNEL :: {{§object}}
+Dunning & collections :: Billing & Revenue
+Dynamic pricing :: Pricing
+E-commerce :: LABEL :: a Blueprint composition
+Ecosystem (federation of tenants) :: Tenancy & Ecosystem
+EDI, file exchange, webhooks, message queues (external) :: Integration
+Edge & offline operation :: Cyber-Physical
+Email, SMS, push, WhatsApp, voice calls, video :: Communication & Collaboration
+Employee, worker, contractor, gig worker :: Workforce :: as party roles → {{Party & Organization}}
+Engines (workflow, rule, policy, decision, search, graph, AI) — execution :: Runtime Fabric :: semantics stay with the owning universe
+Entitlement, license grant, quota, seat :: Entitlement
+Entity resolution & golden identity :: Identity
+Environment (dev, test, stage, prod, sandbox) :: Deployment & Release
+Environmental context :: Context & Reality
+ERP :: LABEL :: a Blueprint composition
+Escalation (process) :: Workflow
+Escrow :: Payment
+Ethical frameworks :: Constitution & Law :: ethics reviews → {{Authority & Governance}}
+ETL / ELT / CDC (internal pipelines) :: Data
+ETL / data sync (external systems) :: Integration
+Event, event catalog, event schema, CEP, event sourcing :: Event
+Event bus / mesh / streaming / messaging transport :: Runtime Fabric
+Evidence :: Audit & Evidence
+Exchange (after-sales) :: Transaction
+Existence primitives :: KERNEL :: {{§primitives}}
+Experience (offering type) :: Offering
+Experience Model :: Experience
+Explainability :: Decision
+Feature flag & toggle :: Experimentation
+Federated & cross-tenant learning :: Intelligence
+Federation (cross-tenant knowledge) :: Knowledge
+Federation (identity) :: Identity
+Federation (systems / protocols) :: Integration
+Feedback, NPS, CSAT :: Relationship
+Field service & service work orders :: Support & Service
+Financial close, statements, reporting :: Finance & Accounting
+Financial planning & forecasting :: Finance & Accounting
+FinOps & cost optimization :: Operations
+Flash sale :: Offer & Incentive
+Fleet & logistics vehicles :: Logistics & Fulfillment
+Forecasting (models) :: Intelligence
+Forensics :: Security
+Fraud (typologies, cases, prevention policies) :: Risk
+Fulfillment orchestration :: Logistics & Fulfillment
+Funding, treasury, cash management, FX operations :: Finance & Accounting
+Future Object (extension root) :: Evolution
+Gamification :: Offer & Incentive
+Geography & geometry (point, polygon, region, zone, country, state, city, planet, station, virtual space) :: Spatial
+Geo-intelligence & maps :: Spatial
+Global Product Registry (GPID) :: Global Offering Knowledge Network
+Global Service Registry (GSID) :: Global Offering Knowledge Network
+Governance of artifacts (ownership, stewardship, custodianship) :: Authority & Governance
+Graph (knowledge, logical) :: Knowledge
+Healthcare :: LABEL :: a Blueprint + extension universes
+Hierarchy (organization), team, department :: Party & Organization
+History, as-of queries, replay, temporal versioning of facts :: Temporal
+HRMS :: LABEL :: a Workforce-centred composition
+Human task, AI task, agent task :: Workflow
+Hypothesis :: Knowledge
+Hypothetical / simulated scenario :: Simulation
+IAM :: LABEL :: {{Identity}} + {{Security}}
+Identifier (UGID) & type codes :: Identity :: scheme in {{§ugid}}
+Incident (customer-facing) :: Support & Service
+Incident (platform operations), on-call :: Operations
+Incident response (security) :: Security
+Industry registry & industry taxonomy :: Blueprint
+Inference (model serving), multi-model routing :: Intelligence
+Inference (semantic, over the ontology) :: Knowledge
+Insider threat :: Security
+Insurance (products, underwriting, policy administration, premiums) :: Financial Services
+Intent (goals, outcomes, constraints) :: Composition
+Interaction log (CRM) :: Relationship
+Inventory, stock, ATP / CTP, lots, serials :: Inventory
+Investment, wealth, securities, trading, brokerage :: Financial Services
+IoT :: LABEL :: {{Cyber-Physical}} + {{Integration}} (IoT protocols)
+ITSM :: LABEL :: {{Support & Service}} + {{Workflow}} + {{Work Management}}
+Journey (customer journey model) :: Relationship
+Journey orchestration (marketing) :: Marketing & Engagement
+Jurisdiction (legal / regulatory) :: Compliance
+Knowledge Graph :: Knowledge
+Knowledge marketplace :: LABEL :: {{Marketplace & Distribution}} + {{Knowledge}}
+Knowledge Object :: Knowledge
+Knowledge-base article (support) :: Support & Service :: content stored in {{Content & Media}}
+KPI, business metric, metrics layer :: Analytics
+KYC / KYB / identity proofing :: Trust & Reputation
+Language, script, dialect, translation, transliteration :: Language & Locale
+Law (external statute / regulation) :: Compliance
+Lead, prospect, opportunity :: Relationship
+Lead generation & lead scoring :: Marketing & Engagement
+Ledger (double-entry), journals, sub-ledgers :: Finance & Accounting
+Legal hold :: Legal & Agreement
+Liability (contractual) :: Legal & Agreement
+License (offering) :: Offering
+Lifecycle states :: KERNEL :: {{§lifecycle}}
+Lineage & provenance (data) :: Data
+Lineage & provenance (knowledge) :: Knowledge
+Lineage (artifact) :: Evolution
+Listing (seller) & participant onboarding :: Marketplace & Distribution
+Live streaming, VOD, OTT, broadcasting (media) :: Content & Media
+LLM / SLM / multimodal provider adapters :: Intelligence
+LMS :: LABEL :: maps to {{Education & Learning}}
+Locale formats & localization resources :: Language & Locale :: applied in UI by {{Experience}}
+Logs, metrics, traces, events (telemetry) :: Observability
+Loyalty program & points, reward, referral benefit :: Offer & Incentive
+Machine / robot HMI :: Experience
+Manufacturing routing, work centers, work orders, MES, quality control :: Production
+Market price intelligence & price history (global) :: Global Offering Knowledge Network
+Marketing, marketing plans, engagement programs :: Marketing & Engagement
+Marketplace instances & marketplace policies :: Marketplace & Distribution
+Masking & tokenization :: Security
+Master & reference data management :: Data
+Matching (two-sided) :: Search & Recommendation
+Measurement: quantity, unit, dimension, conversion :: Measurement
+Media transcoding & rendition :: Content & Media
+Meeting / video conference :: Communication & Collaboration
+Membership (commercial lifecycle) :: Subscription :: sold as an {{Offering}} type
+Membership (community) :: Communication & Collaboration
+Membership (organizational unit) :: Party & Organization
+Merchandising rules :: Catalog & Merchandising
+Meta-model, canonical object, meta-types :: KERNEL :: {{§object}}
+Metadata model, semantic layer :: Knowledge
+Metering, rating, charging, usage billing :: Billing & Revenue
+Migration (schema, data, API, workflow) :: Evolution
+Mobility / ride hailing :: LABEL :: a composition ({{§compositions}})
+Model, prompt and tool registries :: Intelligence
+Monetization models (subscription, freemium, usage-based, outcome-based, …) :: Value & Economics
+Monitoring & health :: Observability
+Multi-agent coordination, agent society, swarm :: Agent
+Multi-tenancy & tenant isolation :: Tenancy & Ecosystem
+Negotiation (human & autonomous) :: Marketplace & Distribution
+Network (VPC, edge, multi-region) :: Infrastructure
+Notification :: Communication & Collaboration
+Obligation (contractual, incl. SLA commitment) :: Legal & Agreement
+Obligation (policy enforcement side-effect) :: Policy
+Obsolescence detection & horizon scanning :: Evolution
+Offer (commercial proposition, seller offer) :: Offer & Incentive
+Offering — product, service, experience, rental, plan, course… (tenant) :: Offering
+OMS :: LABEL :: {{Transaction}} + {{Inventory}} + {{Logistics & Fulfillment}}
+Onboarding (employee) :: Workforce
+Ontology, taxonomy, vocabulary, semantics :: Knowledge
+Optimization (algorithms) :: Intelligence
+Orchestration & choreography :: Workflow
+Order, order lines, order orchestration state :: Transaction
+Organization, party, person profile :: Party & Organization
+Package (shipping) :: Logistics & Fulfillment
+PAM :: Security
+Party roles (customer, seller, vendor, supplier, partner, manufacturer, creator, …) :: Party & Organization
+Payment intent, instruments, capture, void, refund :: Payment
+Payout, disbursement, split payment :: Payment
+Payroll :: Workforce :: postings → {{Finance & Accounting}}; payouts → {{Payment}}
+Penetration validation (continuous) :: Security
+Performance monitoring :: Observability
+Performance, load & scalability test :: Testing & Proof
+Personalization (applied to experiences) :: Experience :: ranking → {{Search & Recommendation}}; models → {{Intelligence}}
+PIM :: LABEL :: {{GOKN}} + {{Offering}} + {{Catalog & Merchandising}} + {{Content & Media}}
+Planning & scheduling (production) :: Production
+Planning, reasoning, prediction, causal inference (AI) :: Intelligence
+Platform Definition :: Composition :: {{§definition}}
+Platform Factory :: LABEL :: the {{§pipeline}} pipeline ({{Composition}} + {{Generation}})
+Platform Questions :: SECTION :: {{§loop}}
+Plugin host (runtime) :: Runtime Fabric
+Policy, rule, exception, waiver, policy conflict resolution :: Policy
+Portals (customer, seller, vendor, partner, admin, support, finance, governance, AI ops, certification) :: Experience
+POS & kiosk :: Experience
+Price, price list, price book, price models :: Pricing
+Privacy policy & notice :: Privacy & Consent
+Procurement, requisition, purchase order :: Sourcing & Procurement
+Product relationships (accessory, compatible, substitute, successor) :: Global Offering Knowledge Network
+Project, task, milestone, board, timesheet :: Work Management
+Promotion :: Offer & Incentive
+Proof (property verification) :: Testing & Proof
+Provenance attestation :: Trust & Reputation
+Quality control (manufacturing) & equipment maintenance :: Production
+Quote :: Transaction
+RAG orchestration :: Intelligence :: retriever → {{Search & Recommendation}}
+Ranking & relevance :: Search & Recommendation
+Ratification :: Authority & Governance
+Rating & review (reputation) :: Trust & Reputation
+Reality types (physical, digital, virtual, mixed, simulated) :: Context & Reality
+Recommendation (offerings, content, people, capabilities, next-best-action) :: Search & Recommendation
+Reconciliation (general ledger) :: Finance & Accounting
+Reconciliation (payment provider) :: Payment
+Recruitment & hiring :: Workforce
+Recurrence, schedule (semantics), time trigger :: Temporal
+Registry fabric & partitions :: Registry
+Regulation registry & regulation packs (GDPR, HIPAA, PCI-DSS, …) :: Compliance
+Relationship (meta-model edge) :: KERNEL :: {{§relationship}}
+Release management :: Deployment & Release
+Reporting & BI views :: Analytics
+Reputation & trust scores :: Trust & Reputation
+Reservation (capacity hold) :: Resource & Capacity
+Reservation (stock allocation) :: Inventory
+Reservation / booking (offering type) :: Offering
+Resource (finite business resource) :: Resource & Capacity
+Retention policy & schedule :: Privacy & Consent
+Return :: Transaction
+Revenue recognition :: Billing & Revenue
+Reverse logistics :: Logistics & Fulfillment
+Review (governance) :: Authority & Governance
+Risk assessment, scoring, appetite, limits :: Risk
+Robots, drones, autonomous vehicles (operation) :: Cyber-Physical
+Role (job / position) :: Workforce
+Route plan (shipments) :: Logistics & Fulfillment
+Routing (payment provider) :: Payment
+Runbook execution :: Operations
+Runtime enforcement points :: Runtime Fabric
+Saga, compensation, long-running transaction :: Workflow
+Scenario, what-if, stress test :: Simulation
+Scheduler (timers, jobs — execution) :: Runtime Fabric
+Search (full-text, semantic, vector, hybrid, graph, geo) :: Search & Recommendation
+Secrets management :: Security
+Segment & audience :: Relationship
+Service mesh :: Runtime Fabric
+Service registry (runtime services) :: Runtime Fabric
+Session security, device & network trust, ZTNA, CASB :: Security
+Shift scheduling, time & attendance, leave :: Workforce
+Shipment, movement, tracking :: Logistics & Fulfillment
+SIEM / SOAR / SOC / EDR / XDR :: Security
+Skills & competencies :: Workforce
+SKU & variant (tenant) :: Offering
+SLA clock & deadline :: Temporal
+SLO / SLI & SLA measurement :: Observability
+Social graph & feeds :: Communication & Collaboration
+Social media management :: Marketing & Engagement
+Sourcing events (RFI, RFQ, RFP, tender) :: Sourcing & Procurement
+Sovereignty (tenant, organization, data, AI, national), export control :: Sovereignty & Residency
+Specification registry (global product) :: Global Offering Knowledge Network
+Standard (external: ISO, NIST, SOC 2) :: Compliance
+State machine :: Workflow
+Storage engines (transactional, analytical, document, object, graph, vector, time-series, ledger, search index) :: Infrastructure
+Subscription agreement (trial, renewal, pause, proration, cancellation) :: Subscription
+Supplier management, qualification & scorecards :: Sourcing & Procurement
+Supply chain :: LABEL :: {{Sourcing & Procurement}} + {{Inventory}} + {{Production}} + {{Logistics & Fulfillment}}
+Supply-chain security (SBOM, signing, provenance verification) :: Security
+Support case, ticket, service request :: Support & Service
+Sustainability reporting & carbon-aware placement :: Sustainability
+Tax rules, rates, calculation, filing, exemptions, e-invoicing, GST/VAT packs :: Tax
+Temporal Policy :: Temporal :: example in {{§examples}}
+Tenant, sub-tenant, workspace :: Tenancy & Ecosystem
+Test suites (unit, integration, contract, e2e, security, accessibility, compliance, AI eval) :: Testing & Proof
+Threat modeling, detection, intelligence, hunting :: Security
+Time point, instant, duration, range, time zone, timeline :: Temporal
+Token (value / tokenized asset definition) :: Value & Economics :: security tokenization → {{Security}}
+Training, fine-tuning, evaluation, drift detection :: Intelligence
+Transaction (runtime ACID) :: Runtime Fabric
+Translation memory & glossaries :: Language & Locale
+Traceability chain :: KERNEL :: {{§trace}}
+Truth model & truth management :: Knowledge
+Twin synchronization & twin graph :: Digital Twin
+UI generation :: Generation
+User (human identity) :: Identity
+Validation (artifact & capability) rules & validation engine :: Testing & Proof
+Value & economic models :: Value & Economics
+Variant model (global) :: Global Offering Knowledge Network
+Verification & validation of claims :: Trust & Reputation
+Versioning (artifact, SemVer) & compatibility :: Evolution
+Versioning (data) :: Data
+Voucher :: Offer & Incentive
+Vulnerability & dependency scanning :: Security
+Wallet & stored value (incl. store credit) :: Payment
+Warehouse operations (WMS) :: Logistics & Fulfillment
+Warranty & guarantee :: Transaction
+Web, mobile, tablet, desktop, TV, watch, wearables (surfaces) :: Experience
+Wiring generation :: Generation :: verified by {{Platform Intelligence}}
+Workflow, workflow templates, automation modes :: Workflow
+Workforce planning & performance :: Workforce
+Zero trust :: Security
