@@ -185,6 +185,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `POST /api/platform/tenants/:id/blueprint` | `apiTenantBlueprint` | — |
 | `POST /api/platform/tenants/:id/requests` | `apiTenantRequests` | — |
 | `PUT /api/platform/tenants/:id` | `apiPlatformTenantUpdate` | — |
+| `POST /api/platform/tenants/:id/sample-content` | `apiPlatformTenantSampleContent` | loads the sample products, home banners and cards into one store, for a demonstration — and the invented ratings and reviews only when the operator ticks them (body.reviews) |
 | `DELETE /api/platform/tenants/:id` | `apiPlatformTenantDelete` | — |
 | `POST /api/platform/tenants/:id/impersonate` | `apiPlatformImpersonate` | — |
 | `POST /api/platform/tenants/:id/subscribe` | `apiPlatformSubscribe` | — |
@@ -218,7 +219,7 @@ Actions:
 ```mermaid
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[store console, platform console]
-  UI --> API[40 API routes]
+  UI --> API[41 API routes]
   API --> ENG[branding.js, compose.js, platform-discovery.js, platform-setup.js, stores.js, tenancy.js, stores.js]
   ENG --> DB[(tenants, tenant_state, departments, tenant_entities, tenancy_nodes, tenancy_config, …)]
   ENG --> SM{{2 state machines}}

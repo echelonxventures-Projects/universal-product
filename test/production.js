@@ -260,6 +260,11 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
         ok(n.products === 0, "a production store starts with an empty catalogue: no sample products, no placeholder universes", n);
         ok(n.rated === 0, "…so no product is rated", n);
         ok(n.reviews === 0, "…and with no review no customer wrote", n);
+        const loaded = JSON.parse(require("child_process").execFileSync(process.execPath, ["-e",
+          "const d=require('./lib/db.js');const m=d.masterTenant();const r=d.seedSampleContent(m.id,{reviews:false});console.log(JSON.stringify({r,rated:d.get('SELECT COUNT(*) c FROM products WHERE rating>0 OR ratings_count>0').c,reviews:d.get('SELECT COUNT(*) c FROM reviews').c,banners:d.get('SELECT COUNT(*) c FROM home_banners WHERE tenant_id=?',m.id).c}))"],
+          { cwd: path.join(__dirname, ".."), env: { ...process.env, NODE_ENV: "production", LX_DB: prodDb }, encoding: "utf8", timeout: 240000 }).trim().split("\n").pop());
+        ok(loaded.r.ok && loaded.r.added > 0 && loaded.banners > 0, "Load sample content fills a production store on the operator's request", loaded);
+        ok(loaded.rated === 0 && loaded.reviews === 0, "…without invented ratings or reviews unless they are asked for", loaded);
       } finally { clean(); }
     }
   } catch (e) {

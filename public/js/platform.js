@@ -695,6 +695,7 @@ async function vTenants() {
         <button class="p-btn sm" data-tedit="${t.id}" title="Edit this tenant's identity">Edit</button>
         <button class="p-btn sm primary" data-imp="${t.id}" title="Open this ${esc(t.kind ? t.kind.noun : "platform")}'s own console">Manage</button>
         <button class="p-btn sm" data-susp="${t.id}">${t.operating ? "Suspend" : "Resume"}</button>
+        <button class="p-btn sm" data-sample="${t.id}" title="Fill this store with sample products and banners, for a demonstration">Load sample content</button>
         <button class="p-btn sm" data-inv="${t.id}">Invoice</button>
         <button class="p-btn sm danger" data-del="${t.id}">✕</button></td></tr>`).join("")}</tbody></table></div></div>`;
 }
@@ -1658,7 +1659,14 @@ document.addEventListener("click", async e => {
   try {
     const open = e.target.closest("[data-open]"), imp = e.target.closest("[data-imp]"), susp = e.target.closest("[data-susp]"),
       del = e.target.closest("[data-del]"), inv = e.target.closest("[data-inv]"), pay = e.target.closest("[data-payinv]"),
-      editp = e.target.closest("[data-editplan]"), delprov = e.target.closest("[data-delprov]");
+      editp = e.target.closest("[data-editplan]"), delprov = e.target.closest("[data-delprov]"), sample = e.target.closest("[data-sample]");
+    if (sample) {
+      /* sample content is for a demonstration store; the invented reviews are a separate, explicit choice */
+      if (!confirm("Add the sample products, home banners and cards to this store? Use this only for a demonstration store.")) return;
+      const reviews = confirm("Also add invented star ratings and reviews? These are not from real customers — never use them on a live store.");
+      const r = await api(`/platform/tenants/${sample.dataset.sample}/sample-content`, "POST", { reviews });
+      toast(`Sample content loaded: ${r.added} products added${r.reviews ? ", with invented reviews" : ""}`); render(); return;
+    }
     if (open) window.open("/index.html?store=" + P.tenants.find(t => t.id == open.dataset.open).slug, "_blank");
     if (imp) { const r = await api(`/platform/tenants/${imp.dataset.imp}/impersonate`, "POST", {}); window.open(r.url, "_blank"); }
     if (susp) {
