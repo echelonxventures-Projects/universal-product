@@ -527,7 +527,7 @@ const raw = (text) => new Promise((resolve) => {
         const link = (() => { process.env.NODE_ENV = prev.env || "test"; const l = fin.createLink(1, { title: "x", amount: 5, owner: who }); process.env.NODE_ENV = "production"; return l; })();
         ok(throwsLike(() => fin.payLink(1, link.token), /simulated/), "a payment link is refused");
         process.env.LX_ALLOW_SIMULATED_PAYMENTS = "1";
-        ok(fin.payBill(1, who, { amount: 10 }).status === "success", "an operator can opt into simulated rails explicitly");
+        ok(throwsLike(() => fin.payBill(1, who, { amount: 10 }), /simulated/) && mods.walletBalance(1, who) === 100, "the old environment opt-in no longer turns simulated rails on in production");
       } finally {
         if (prev.env === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = prev.env;
         if (prev.allow === undefined) delete process.env.LX_ALLOW_SIMULATED_PAYMENTS; else process.env.LX_ALLOW_SIMULATED_PAYMENTS = prev.allow;

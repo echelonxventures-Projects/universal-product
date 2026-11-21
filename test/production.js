@@ -73,7 +73,7 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
   for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(DB + s, { force: true }); } catch (e) { } }
   const mail = await smtpServer();
   /* no sender in the environment: the email sender is configured in the console below */
-  const env = { ...process.env, PORT, LX_DB: DB, LX_LOG: "", LX_SMTP_ALLOW_PLAINTEXT: "1" };
+  const env = { ...process.env, PORT, LX_DB: DB, LX_LOG: "" };
   for (const k of Object.keys(env)) if (/^LX_(MAIL|SMS)_|^LX_SMTP_URL$/.test(k)) delete env[k];
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env, stdio: ["ignore", "ignore", "pipe"] });
   let stderr = ""; srv.stderr.on("data", d => { stderr += d; });
@@ -214,12 +214,9 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
         db.run("DELETE FROM tenant_gateways WHERE tenant_id=? AND provider_id LIKE 'notify:%' AND provider_id<>'notify:log'", master);
         if (id) db.run("INSERT INTO tenant_gateways(tenant_id,provider_id,enabled,mode,config,position) VALUES(?,?,1,'live',?,0)", master, "notify:" + id, sec.sealConfig(master, "notify:" + id, cfg, secrets));
       };
-      const savedPlain = process.env.LX_SMTP_ALLOW_PLAINTEXT;
       sender("smtp", { host: "127.0.0.1", port: String(mail.port), user: "u", pass: "p", from: "Shop <s@luxora.test>" }, ["pass"]);
-      delete process.env.LX_SMTP_ALLOW_PLAINTEXT;
-      const plain = await mailer.send({ tenantId: 0, channel: "email", to: "x@example.com", subject: "s", text: "t" });
-      ok(!plain.sent && /STARTTLS/.test(plain.error), "a relay without STARTTLS is refused unless plaintext is explicitly allowed", plain);
-      process.env.LX_SMTP_ALLOW_PLAINTEXT = "1";
+      /* plaintext is allowed only to a relay on this machine; any other host must offer STARTTLS */
+      ok(mailer.plaintextAllowed("127.0.0.1") && mailer.plaintextAllowed("localhost") && !mailer.plaintextAllowed("mail.example.com") && !mailer.plaintextAllowed("10.0.0.5"), "plaintext SMTP is allowed only to a relay on this machine");
       ok((mailer.transportFor(0, "email") || {}).scope === "platform", "a send for no store goes through the platform's own store's sender");
       const b = mail.inbox.length;
       const inj = await mailer.send({ tenantId: 0, channel: "email", to: "x@example.com", subject: "Hi\r\nBcc: victim@example.com", text: "line\n.\nafter" });
@@ -245,7 +242,6 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
       ok(!fail.sent && /bad key/.test(fail.error), "a provider rejection is reported, not treated as sent", fail);
       connect.__setTransport(null);
       sender(null);
-      if (savedPlain === undefined) delete process.env.LX_SMTP_ALLOW_PLAINTEXT; else process.env.LX_SMTP_ALLOW_PLAINTEXT = savedPlain;
       const none = await mailer.send({ tenantId: 0, channel: "sms", to: "+15551234567", subject: "s", text: "t" });
       ok(!none.sent && /no sms transport/.test(none.error), "with no transport the send reports that, rather than claiming success", none);
     }
