@@ -250,6 +250,25 @@ const handler = async (req, res) => {
       res.writeHead(200, { "Content-Type": "application/json" });
       return res.end(JSON.stringify({ ok: true, tenant: t && t.slug, products: t ? get("SELECT COUNT(*) c FROM products WHERE tenant_id=?", t.id).c : 0, uptime: Math.floor(process.uptime()), tls: IS_TLS }));
     }
+    /* crawlers: robots.txt keeps them out of the API, the consoles and the private shopper
+       pages, and points at the store's sitemap when its SEO tools are on (the sitemap is
+       the SEO module's: the gate decides, as it does for /api/sitemap.xml) */
+    if (url.pathname === "/robots.txt" || url.pathname === "/sitemap.xml") {
+      const t = resolveTenant(req, url, cookies);
+      const seoOn = !!(t && require("./lib/gates.js").on(t.id, "seo.tools"));
+      if (url.pathname === "/sitemap.xml") {
+        if (!seoOn) { res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }); return res.end("Not found"); }
+        const sm = require("./lib/sitemap.js");
+        res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600" });
+        return res.end(sm.generateXML(sm.buildSitemapEntries(t.id)));
+      }
+      const host = String(req.headers.host || "").replace(/[^A-Za-z0-9.:[\]-]/g, "");
+      const lines = ["User-agent: *", "Allow: /",
+        ...["/api/", "/console.html", "/admin.html", "/platform.html", "/registry.html", "/session.html", "/cart.html", "/checkout.html", "/orders.html", "/messages.html", "/reset.html"].map(p => "Disallow: " + p)];
+      if (seoOn && host) lines.push("", "Sitemap: " + (sec.httpsRequest(req) ? "https" : "http") + "://" + host + "/sitemap.xml");
+      res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" });
+      return res.end(lines.join("\n") + "\n");
+    }
     /* readiness, for a load balancer or orchestrator: 200 only while this process can serve —
        the database answers, the master deployment exists and no shutdown has begun (a draining
        instance answers 503 so traffic moves away before it closes). /healthz is liveness only. */

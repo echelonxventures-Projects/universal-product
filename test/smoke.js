@@ -765,10 +765,17 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     // seo-pro / listing-pro / reco-pro
     const sm0 = await fetch(BASE + "/api/seo/sitemap.xml", { headers: { Cookie: cookieHeader() } });
     ok(sm0.status === 403, "sitemap 403 without SEO Pro");
+    const rb0 = await fetch(BASE + "/robots.txt", { headers: { Cookie: cookieHeader() } }); const rb0t = await rb0.text();
+    ok(rb0.status === 200 && /Disallow: \/api\//.test(rb0t) && /Disallow: \/checkout\.html/.test(rb0t), "robots.txt keeps crawlers out of the API and the private pages", rb0t);
+    ok(!/Sitemap:/.test(rb0t), "…and names no sitemap without SEO Pro");
+    ok((await fetch(BASE + "/sitemap.xml", { headers: { Cookie: cookieHeader() } })).status === 404, "/sitemap.xml is not served without SEO Pro");
     await f("/api/platform/modules/seo-pro/install", "POST", { tenant_id: tMap.luxora });
     const sm1 = await fetch(BASE + "/api/seo/sitemap.xml", { headers: { Cookie: cookieHeader() } });
     const smtxt = await sm1.text();
     ok(sm1.status === 200 && smtxt.includes("<urlset"), "sitemap live after SEO Pro purchase");
+    const rsm = await fetch(BASE + "/sitemap.xml", { headers: { Cookie: cookieHeader() } });
+    ok(rsm.status === 200 && (await rsm.text()).includes("<urlset"), "/sitemap.xml serves the store's sitemap after SEO Pro purchase");
+    ok(/Sitemap: http:\/\/[^\s]+\/sitemap\.xml/.test(await (await fetch(BASE + "/robots.txt", { headers: { Cookie: cookieHeader() } })).text()), "…and robots.txt points at it");
     await f("/api/platform/modules/listing-pro/install", "POST", { tenant_id: tMap.luxora });
     ok((await f("/api/facets?q=")).brands.length > 3, "Listing Pro facets live");
     await f("/api/platform/modules/reco-pro/install", "POST", { tenant_id: tMap.luxora });
