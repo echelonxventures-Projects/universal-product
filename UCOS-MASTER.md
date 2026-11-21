@@ -1281,7 +1281,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 302 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 303 files.
 
 ### C02 · Meaning
 
@@ -1435,6 +1435,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/helpdesk.js` | [Communication](volumes/V08-interaction.md#d-cmn) | conversations |
 | `lib/search.js` | [Search](volumes/V08-interaction.md#d-srh) |  |
 | `public/js/admin/offer.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Offers domain's store-console screens |
+| `public/js/astro.js` | [Experience](volumes/V08-interaction.md#d-exp) | the storefront astrology page: chart in the store's style, dasha, panchang, matching, the astrology guide |
 | `public/js/admin/access.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Access and roles domain's store-console screens |
 | `public/js/admin/affiliate.js` | [Experience](volumes/V08-interaction.md#d-exp) | the Affiliates and creators domain's store-console screens |
 | `public/js/admin/ai.js` | [Experience](volumes/V08-interaction.md#d-exp) | the AI domain's store-console screens |

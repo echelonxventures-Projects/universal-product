@@ -103,4 +103,104 @@ function wireAI() {
   $$("[data-aicfg]").forEach(b => b.onclick = () => testCredential(b.dataset.aicfg));
 }
 
-screen("ai", { group: "Automation", label: "🤖 AI Studio", order: 0, render: async () => await vAI(), wire: async () => { wireAI(); } });
+/* ---------- Knowledge, assistants and MCP keys (lib/rag.js, lib/assistant.js, lib/mcp.js) ----------
+   Every app's knowledge collections with their mode and experts; entries, proposals, versions and
+   rollback; the assistant profiles; and the MCP access keys outside clients use. */
+const KB = { coll: null, status: "" };
+async function vKnowledgePanels() {
+  const [kc, ap, mk] = await Promise.all([api("/kb/collections").catch(e => ({ error: e.message })), api("/assistant/profiles").catch(() => ({ profiles: [], tools: [] })), api("/admin/mcp-keys").catch(() => ({ keys: [], roles: [] }))]);
+  if (kc.error) return `<div class="p-panel"><h2>📚 Knowledge</h2><p class="p-tag">${esc(kc.error)}</p></div>`;
+  const cols = kc.collections || [], modes = kc.modes || [], roles = kc.roles || [];
+  if (!KB.coll && cols.length) KB.coll = cols[0].key;
+  const cur = cols.find(c => c.key === KB.coll);
+  const [en, pr] = cur ? await Promise.all([api(`/kb/${encodeURIComponent(cur.key)}/entries` + (KB.status ? "?status=" + encodeURIComponent(KB.status) : "")), api(`/kb/${encodeURIComponent(cur.key)}/proposals`)]) : [{ entries: [] }, { proposals: [] }];
+  const modeOpts = sel => modes.map(m => `<option value="${esc(m.key)}" ${m.key === sel ? "selected" : ""} title="${esc(m.description)}">${esc(m.label)}</option>`).join("");
+  const roleOpts = sel => roles.map(r => `<option value="${esc(r)}" ${(sel || []).includes(r) ? "selected" : ""}>${esc(r)}</option>`).join("");
+  const count = c => Object.entries(c.counts || {}).map(([k, v]) => esc(k) + " " + v).join(" · ") || "empty";
+  const origin = location.origin;
+  return `
+  <div class="p-panel"><h2>📚 Knowledge</h2>
+    <p class="p-tag">Collections of approved knowledge your assistants answer from — one per app (astrology, consultancy, help…). The mode decides how knowledge grows; only the collection's expert roles approve it. Every change is versioned and can be rolled back.</p>
+    <table class="p-table"><thead><tr><th>Collection</th><th>Mode</th><th>Experts</th><th>Entries</th><th></th></tr></thead><tbody>
+    ${cols.map(c => `<tr><td><b>${esc(c.label)}</b> <code>${esc(c.key)}</code></td><td><select data-kbmode="${esc(c.key)}">${modeOpts(c.mode)}</select></td>
+      <td><select multiple size="2" data-kbexperts="${esc(c.key)}">${roleOpts(c.expertRoles)}</select></td><td class="p-tag">${count(c)}</td>
+      <td><button class="p-btn sm" data-kbopen="${esc(c.key)}">${c.key === KB.coll ? "Open ✓" : "Open"}</button> <button class="p-btn sm" data-kbsave="${esc(c.key)}">Save</button></td></tr>`).join("") || '<tr><td colspan="5" class="p-empty">No collections yet</td></tr>'}
+    </tbody></table>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><input id="kbNewKey" placeholder="key, e.g. astro" size="12"><input id="kbNewLabel" placeholder="label, e.g. Astrology" size="16">
+      <select id="kbNewMode">${modeOpts("ai_assisted")}</select><button class="p-btn" id="kbNew">+ Collection</button></div>
+  </div>
+  ${cur ? `<div class="p-panel"><h2>${esc(cur.label)} · entries</h2>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px"><select id="kbStatus"><option value="">all statuses</option>${["draft", "review", "approved", "rejected", "retired"].map(x => `<option ${x === KB.status ? "selected" : ""}>${x}</option>`).join("")}</select></div>
+    <table class="p-table"><thead><tr><th>Title</th><th>Tags</th><th>Status</th><th>Source</th><th>Rating</th><th>v</th><th></th></tr></thead><tbody>
+    ${(en.entries || []).map(e => `<tr><td><b>${esc(e.title)}</b><br><span class="p-tag">${esc(String(e.body).slice(0, 140))}${e.body.length > 140 ? "…" : ""}</span></td><td class="p-tag">${esc((e.tags || []).join(" "))}</td>
+      <td><span class="badge">${esc(e.status)}</span></td><td class="p-tag">${esc(e.source)}</td><td>${e.rating == null ? "—" : e.rating + " (" + e.votes + ")"}</td><td>${e.version}</td>
+      <td style="white-space:nowrap"><button class="p-btn sm" data-kbrev="${e.id}|approve">Approve</button> <button class="p-btn sm" data-kbrev="${e.id}|reject">Reject</button> <button class="p-btn sm" data-kbrev="${e.id}|retire">Retire</button> <button class="p-btn sm" data-kbhist="${e.id}">History</button></td></tr>`).join("") || '<tr><td colspan="7" class="p-empty">No entries</td></tr>'}
+    </tbody></table>
+    <div class="p-form" style="margin-top:12px"><label><span>Title</span><input id="kbTitle"></label><label><span>Text</span><textarea id="kbBody" rows="4"></textarea></label>
+      <label><span>Tags (space-separated, e.g. planet:mars house:7)</span><input id="kbTags"></label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="p-btn primary" id="kbAdd">Add entry</button><button class="p-btn" id="kbDraft" title="The AI drafts the entry for an expert's review (where the mode allows)">AI draft for review</button></div></div>
+    <h3 style="margin-top:14px">Proposed revisions</h3>
+    <table class="p-table"><thead><tr><th>Entry</th><th>Proposed text</th><th>From</th><th>Confidence</th><th>Confirmations</th><th></th></tr></thead><tbody>
+    ${(pr.proposals || []).map(x => `<tr><td>#${x.entry_id}</td><td class="p-tag">${esc(String(x.body).slice(0, 200))}</td><td class="p-tag">${esc(x.source)} · ${esc(x.author || "")}</td><td>${x.confidence == null ? "—" : x.confidence}</td><td>${x.confirmations}</td>
+      <td style="white-space:nowrap"><button class="p-btn sm" data-kbprop="${x.id}|approve">Approve</button> <button class="p-btn sm" data-kbprop="${x.id}|reject">Reject</button> <button class="p-btn sm" data-kbconfirm="${x.id}">Confirm</button></td></tr>`).join("") || '<tr><td colspan="6" class="p-empty">Nothing waiting</td></tr>'}
+    </tbody></table><div id="kbHistory"></div></div>` : ""}
+  <div class="p-panel"><h2>💬 Assistants</h2>
+    <p class="p-tag">Each app's assistant: what it answers from, which platform tools it may use, who it hands people to. Switch the <b>AI assistant</b> capability on to offer them; add your Claude API key in the AI gateways above. Without a key an assistant answers from approved knowledge only.</p>
+    <table class="p-table"><thead><tr><th>Profile</th><th>Collections</th><th>Tools</th><th>Model · effort</th><th></th></tr></thead><tbody>
+    ${(ap.profiles || []).map(p => `<tr><td><b>${esc(p.label || p.key)}</b> <code>${esc(p.key)}</code></td><td class="p-tag">${esc((p.collections || []).join(", "))}</td><td class="p-tag">${esc((p.tools || []).join(", "))}</td><td class="p-tag">${esc(p.model)} · ${esc(p.effort)}</td>
+      <td><button class="p-btn sm" data-apedit="${esc(p.key)}">Edit</button></td></tr>`).join("")}
+    </tbody></table></div>
+  <div class="p-panel"><h2>🔌 MCP access</h2>
+    <p class="p-tag">Outside MCP clients (Claude Desktop, agents, partner apps) call the platform's tools at <code>${esc(origin)}/api/mcp</code> with an access key as the Bearer token. A key acts as one store role and sees only what that role may.</p>
+    <table class="p-table"><thead><tr><th>Name</th><th>Role</th><th>Created</th><th>Last used</th><th></th></tr></thead><tbody>
+    ${(mk.keys || []).map(k => `<tr><td>${esc(k.name)}</td><td>${esc(k.role_key)}</td><td class="p-tag">${esc(k.created_at)} · ${esc(k.created_by || "")}</td><td class="p-tag">${esc(k.last_used || "never")}</td>
+      <td>${k.revoked ? '<span class="badge">revoked</span>' : `<button class="p-btn sm" data-mcprevoke="${k.id}">Revoke</button>`}</td></tr>`).join("") || '<tr><td colspan="5" class="p-empty">No keys</td></tr>'}
+    </tbody></table>
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><input id="mcpName" placeholder="name, e.g. Claude Desktop"><select id="mcpRole">${(mk.roles || []).map(r => `<option>${esc(r)}</option>`).join("")}</select><button class="p-btn" id="mcpIssue">Issue key</button></div>
+    <div id="mcpOut"></div></div>`;
+}
+function wireKnowledge() {
+  const picked = el => el ? [...el.selectedOptions].map(o => o.value) : [];
+  const go = async (fn, ok) => { try { const r = await fn(); if (ok) toast(typeof ok === "function" ? ok(r) : ok); render(); return r; } catch (e) { toast(e.message); } };
+  $$("[data-kbopen]").forEach(b => b.onclick = () => { KB.coll = b.dataset.kbopen; render(); });
+  $$("[data-kbsave]").forEach(b => b.onclick = () => { const k = b.dataset.kbsave; go(() => api(`/kb/collections/${encodeURIComponent(k)}`, "PUT", { mode: $(`[data-kbmode="${k}"]`).value, expertRoles: picked($(`[data-kbexperts="${k}"]`)) }), "Collection saved"); });
+  if ($("#kbNew")) $("#kbNew").onclick = () => { const key = $("#kbNewKey").value.trim(); KB.coll = key; go(() => api(`/kb/collections/${encodeURIComponent(key)}`, "PUT", { label: $("#kbNewLabel").value.trim() || key, mode: $("#kbNewMode").value }), "Collection created"); };
+  if ($("#kbStatus")) $("#kbStatus").onchange = e => { KB.status = e.target.value; render(); };
+  const tags = () => ($("#kbTags").value || "").split(/\s+/).filter(Boolean);
+  if ($("#kbAdd")) $("#kbAdd").onclick = () => go(() => api(`/kb/${encodeURIComponent(KB.coll)}/entries`, "POST", { title: $("#kbTitle").value, body: $("#kbBody").value, tags: tags() }), r => "Entry saved — " + r.entry.status);
+  if ($("#kbDraft")) $("#kbDraft").onclick = () => go(() => api(`/kb/${encodeURIComponent(KB.coll)}/draft`, "POST", { title: $("#kbTitle").value, notes: $("#kbBody").value, tags: tags() }), "AI draft waiting for review");
+  $$("[data-kbrev]").forEach(b => b.onclick = () => { const [id, decision] = b.dataset.kbrev.split("|"); go(() => api(`/kb/entries/${id}/review`, "POST", { decision }), "Entry " + decision + "d"); });
+  $$("[data-kbprop]").forEach(b => b.onclick = () => { const [id, decision] = b.dataset.kbprop.split("|"); go(() => api(`/kb/proposals/${id}/decide`, "POST", { decision }), "Proposal " + decision + "d"); });
+  $$("[data-kbconfirm]").forEach(b => b.onclick = () => go(() => api(`/kb/proposals/${b.dataset.kbconfirm}/confirm`, "POST", {}), r => r.applied ? "Confirmed — it went live (auto-evolving)" : "Confirmed"));
+  $$("[data-kbhist]").forEach(b => b.onclick = async () => {
+    try {
+      const h = await api(`/kb/entries/${b.dataset.kbhist}/history`);
+      $("#kbHistory").innerHTML = `<h3 style="margin-top:14px">Versions of entry #${esc(b.dataset.kbhist)}</h3><table class="p-table"><thead><tr><th>v</th><th>Title</th><th>Status</th><th>By</th><th>Why</th><th>When</th><th></th></tr></thead><tbody>${h.versions.map(v => `<tr><td>${v.version}</td><td>${esc(v.title)}</td><td>${esc(v.status)}</td><td>${esc(v.changed_by)}</td><td class="p-tag">${esc(v.reason)}</td><td class="p-tag">${esc(v.at)}</td><td><button class="p-btn sm" data-kbroll="${esc(b.dataset.kbhist)}|${v.version}">Restore</button></td></tr>`).join("")}</tbody></table>`;
+      $$("[data-kbroll]").forEach(r => r.onclick = () => { const [id, version] = r.dataset.kbroll.split("|"); go(() => api(`/kb/entries/${id}/rollback`, "POST", { version: Number(version) }), "Version " + version + " restored"); });
+    } catch (e) { toast(e.message); }
+  });
+  $$("[data-apedit]").forEach(b => b.onclick = async () => {
+    const { profiles, tools } = await api("/assistant/profiles"); const p = profiles.find(x => x.key === b.dataset.apedit);
+    $("#modal").innerHTML = `<div class="p-modal"><div class="p-modal-box"><div class="p-modal-head"><h3>${esc(p.label || p.key)}</h3><button id="mClose">✕</button></div><div class="p-form">
+      <label><span>Label</span><input id="apLabel" value="${esc(p.label || "")}"></label>
+      <label><span>Persona and rules</span><textarea id="apPersona" rows="6">${esc(p.persona || "")}</textarea></label>
+      <label><span>Knowledge collections (comma-separated keys)</span><input id="apColls" value="${esc((p.collections || []).join(", "))}"></label>
+      <label><span>Tools it may use</span><select id="apTools" multiple size="5">${tools.map(t => `<option value="${esc(t.name)}" ${(p.tools || []).includes(t.name) ? "selected" : ""}>${esc(t.title)} (${esc(t.name)})</option>`).join("")}</select></label>
+      <label><span>Disclaimer (always said)</span><input id="apDisc" value="${esc(p.disclaimer || "")}"></label>
+      <label><span>Hand-off label · page</span><input id="apHoLabel" value="${esc((p.handoff || {}).label || "")}"> <input id="apHoPath" value="${esc((p.handoff || {}).path || "")}"></label>
+      <label><span>Model · effort</span><input id="apModel" value="${esc(p.model)}"> <select id="apEffort">${["low", "medium", "high", "xhigh", "max"].map(x => `<option ${x === p.effort ? "selected" : ""}>${x}</option>`).join("")}</select></label>
+      <button class="p-btn primary" id="apSave">Save</button></div></div></div>`;
+    $("#modal").classList.remove("hidden");
+    const close = () => { $("#modal").innerHTML = ""; $("#modal").classList.add("hidden"); };
+    $("#mClose").onclick = close;
+    $("#apSave").onclick = () => go(() => api(`/assistant/profiles/${encodeURIComponent(p.key)}`, "PUT", { label: $("#apLabel").value, persona: $("#apPersona").value, collections: $("#apColls").value.split(",").map(x => x.trim()).filter(Boolean),
+      tools: picked($("#apTools")), disclaimer: $("#apDisc").value, handoff: { label: $("#apHoLabel").value, path: $("#apHoPath").value }, model: $("#apModel").value.trim(), effort: $("#apEffort").value }).then(r => { close(); return r; }), "Assistant saved");
+  });
+  if ($("#mcpIssue")) $("#mcpIssue").onclick = async () => {
+    try { const r = await api("/admin/mcp-keys", "POST", { name: $("#mcpName").value || "MCP key", role: $("#mcpRole").value });
+      $("#mcpOut").innerHTML = `<p class="p-tag" style="margin-top:8px">Copy this key now — it is not shown again:</p><code style="word-break:break-all">${esc(r.key)}</code>`; toast("Key issued"); } catch (e) { toast(e.message); }
+  };
+  $$("[data-mcprevoke]").forEach(b => b.onclick = () => { if (confirm("Revoke this key? Clients using it stop at once.")) go(() => api(`/admin/mcp-keys/${b.dataset.mcprevoke}`, "DELETE"), "Key revoked"); });
+}
+
+screen("ai", { group: "Automation", label: "🤖 AI Studio", order: 0, render: async () => (await vAI()) + (await vKnowledgePanels()), wire: async () => { wireAI(); wireKnowledge(); } });

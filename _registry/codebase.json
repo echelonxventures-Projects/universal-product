@@ -127,6 +127,7 @@
     {"path": "lib/lineterms.js", "owner": "Commerce"},
     {"path": "lib/options.js", "owner": "Commerce"},
     {"path": "lib/bookings.js", "owner": "Commerce"},
+    {"path": "public/js/astro.js", "owner": "Experience", "note": "the storefront astrology page: chart in the store's style, dasha, panchang, matching, the astrology guide"},
     {"path": "lib/rag.js", "owner": "Agent", "note": "the knowledge base any app keeps: collections, modes (expert, AI-assisted, self-learning, auto-evolving), versions, proposals, feedback, retrieval"},
     {"path": "lib/assistant.js", "owner": "Agent", "note": "the AI assistant: profiles per app, retrieval from the knowledge base, the platform's tools, Claude through the official SDK"},
     {"path": "lib/mcp.js", "owner": "Agent", "note": "the platform's MCP server: declared tools, role-scoped, JSON-RPC at /api/mcp; MCP access keys"},

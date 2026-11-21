@@ -288,7 +288,7 @@ Actions: `end` → ended · `cancel` → cancelled
 
 ```mermaid
 flowchart LR
-  U([Shopper / Practitioner / Store staff / Store administrator]) --> UI[session.html, store console, platform console]
+  U([Shopper / Practitioner / Store staff / Store administrator]) --> UI[astro.html, session.html, store console, platform console]
   UI --> API[21 API routes]
   API --> ENG[astro.js, bookings.js, media-sessions.js, services.js]
   ENG --> DB[(media_sessions, media_signals, booking_resources, product_bookings, bookings)]
@@ -297,7 +297,7 @@ flowchart LR
 
 ## User interface
 
-**Pages:** `session.html`
+**Pages:** `astro.html`, `session.html`
 
 **Store console:** 📅 Bookings · 🎥 Live Sessions · ⏱️ Per-minute Charges · 🔧 Installations · 🪛 Assembly · 🛡️ Extended Warranties
 

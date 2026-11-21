@@ -127,6 +127,34 @@ ok(v.providers.some(p => p.key === "builtin") && v.ayanamsas.some(a => a.key ===
     ok(bad.st === 400 && /time zone|timeZone|latitude/.test(bad.b.error), "a birth missing its place or zone is refused with the reason", bad.b);
     const pc = await f("/api/astro/panchang", "POST", { when: { date: "2024-04-24", time: "05:30", timeZone: "Asia/Kolkata", latitude: 28.61, longitude: 77.21 } });
     ok(pc.st === 200 && pc.b.panchang.vara === "Budhavara", "the panchang is computed through the API", pc.b);
+    console.log("▸ THE STOREFRONT PAGE");
+    {
+      const { JSDOM, VirtualConsole } = require("jsdom");
+      const errs = [], vc = new VirtualConsole(); vc.on("jsdomError", e => errs.push(String(e.message || e)));
+      const pjar = new Map();
+      const dom = await JSDOM.fromURL(BASE + "/astro.html", { runScripts: "dangerously", resources: "usable", pretendToBeVisual: true, virtualConsole: vc, beforeParse(w) {
+        w.fetch = async (u, o = {}) => { const h = Object.assign({}, o.headers || {}, { Cookie: [...pjar].map(x => x.join("=")).join("; ") }); const r = await fetch(new URL(u, w.location.href), Object.assign({}, o, { headers: h }));
+          (r.headers.getSetCookie() || []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); pjar.set(kv.slice(0, i), kv.slice(i + 1)); w.document.cookie = kv; }); return r; };
+        w.Intl = Intl; } });
+      const d = dom.window.document;
+      for (let i = 0; i < 60 && !d.querySelector("#zones option"); i++) await sleep(100);
+      await sleep(800);
+      d.querySelector("#bDate").value = "1990-03-15"; d.querySelector("#bTime").value = "11:00"; d.querySelector("#bZone").value = "Asia/Kolkata";
+      d.querySelector("#bLat").value = "28.6139"; d.querySelector("#bLon").value = "77.2090";
+      d.querySelector("#astroForm").dispatchEvent(new dom.window.Event("submit", { cancelable: true }));
+      for (let i = 0; i < 80 && d.querySelector("#astroOut").hidden; i++) await sleep(100);
+      ok(!d.querySelector("#astroOut").hidden && d.querySelector("#chartSvg svg") && d.querySelectorAll("#bodies tr").length === 11, "the page draws the chart and the planet table from the platform's chart", d.querySelector("#astroErr").textContent);
+      ok(/raman/.test(d.querySelector("#chartSettings").textContent), "it shows the store's settings (here the ayanamsa the owner set)", d.querySelector("#chartSettings").textContent);
+      ok(d.querySelectorAll("#dasha tbody tr").length === 9 && d.querySelector("#dasha .now"), "the dasha table marks the period running today");
+      for (let i = 0; i < 50 && !/Tithi/.test(d.querySelector("#panchang").textContent); i++) await sleep(100);
+      ok(/Tithi/.test(d.querySelector("#panchang").textContent), "today's panchang is shown for the birth place");
+      d.querySelector("#mDate").value = "1992-07-08"; d.querySelector("#mTime").value = "06:45"; d.querySelector("#mLat").value = "19.08"; d.querySelector("#mLon").value = "72.88";
+      d.querySelector("#mGo").click();
+      for (let i = 0; i < 80 && !/gunas/.test(d.querySelector("#match").textContent); i++) await sleep(100);
+      ok(/\/ 36/.test(d.querySelector("#match").textContent) && /astrologer to confirm/.test(d.querySelector("#match").textContent), "kundli matching runs through the MCP tool and flags the kootas to confirm", d.querySelector("#match").textContent.slice(0, 200));
+      ok(!errs.length, "no script errors on the page", errs);
+      dom.window.close();
+    }
   } catch (e) { failed++; console.log("  ✗ harness error: " + (e && e.stack || e)); }
   finally { srv.kill("SIGTERM"); await sleep(300); clean(); }
   console.log(`\n${passed} passed, ${failed} failed`);

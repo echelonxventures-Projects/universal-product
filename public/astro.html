@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Astrology — LUXORA</title>
+<meta name="description" content="Your birth chart, dashas, today's panchang, kundli matching and an astrology guide.">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  .astro { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+  .astro .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .astro .card { border: 1px solid #e3e3e3; border-radius: 12px; padding: 16px; background: #fff; }
+  .astro label { display: block; margin: 6px 0; font-size: 14px; }
+  .astro input, .astro select, .astro textarea { width: 100%; padding: 7px 9px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font: inherit; }
+  .astro table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .astro th, .astro td { text-align: left; padding: 5px 6px; border-bottom: 1px solid #eee; }
+  .astro .now { background: #fff7e0; font-weight: 600; }
+  .astro .note { color: #7a5b00; background: #fffbeb; border: 1px solid #f3d27a; border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+  .astro .muted { color: #666; font-size: 13px; }
+  .astro .chat { max-height: 360px; overflow: auto; border: 1px solid #eee; border-radius: 8px; padding: 8px; margin: 8px 0; }
+  .astro .msg { margin: 6px 0; white-space: pre-wrap; } .astro .msg.me { text-align: right; }
+  .astro svg text { font-family: Arial, sans-serif; }
+  @media print { header, footer, aside, #astroForm, .noprint { display: none !important; } .astro .card { border: none; } }
+</style>
+</head>
+<body data-page="">
+<a class="skip-nav" href="#page">Skip to main content</a>
+<header id="hdr" role="banner"></header>
+<aside id="sidebar" role="complementary"></aside>
+<main id="page" role="main" class="astro">
+  <h1>Astrology</h1>
+  <p class="muted" id="astroIntro">Enter a birth date, time and place. Positions are computed by the store's astrology engine.</p>
+  <div id="astroOff" class="note" hidden>This store does not offer astrology.</div>
+  <form id="astroForm" class="card noprint">
+    <div class="grid">
+      <label>Birth date <input type="date" id="bDate" required></label>
+      <label>Birth time (local) <input type="time" id="bTime" required></label>
+      <label>Time zone <input id="bZone" list="zones" placeholder="Asia/Kolkata" required><datalist id="zones"></datalist></label>
+      <label>Latitude (north +, south −) <input type="number" step="0.0001" id="bLat" placeholder="28.6139" required></label>
+      <label>Longitude (east +, west −) <input type="number" step="0.0001" id="bLon" placeholder="77.2090" required></label>
+    </div>
+    <button class="btn-yellow" type="submit" style="margin-top:10px">Show my chart</button>
+    <span id="astroErr" class="muted"></span>
+  </form>
+  <div id="astroOut" hidden>
+    <div class="grid" style="margin-top:16px">
+      <div class="card"><h2 style="margin-top:0">Birth chart</h2><div id="chartSvg"></div><p class="muted" id="chartSettings"></p></div>
+      <div class="card"><h2 style="margin-top:0">Planets</h2><table id="bodies"></table></div>
+    </div>
+    <div class="grid" style="margin-top:16px">
+      <div class="card"><h2 style="margin-top:0">Vimshottari dasha</h2><div id="dasha"></div></div>
+      <div class="card"><h2 style="margin-top:0">Today's panchang</h2><div id="panchang"></div></div>
+    </div>
+    <div class="grid" style="margin-top:16px">
+      <div class="card noprint"><h2 style="margin-top:0">Kundli matching</h2>
+        <p class="muted">The partner's birth details:</p>
+        <div class="grid"><label>Date <input type="date" id="mDate"></label><label>Time <input type="time" id="mTime"></label>
+          <label>Latitude <input type="number" step="0.0001" id="mLat"></label><label>Longitude <input type="number" step="0.0001" id="mLon"></label></div>
+        <button class="btn-white" id="mGo" type="button">Match</button><div id="match"></div></div>
+      <div class="card noprint"><h2 style="margin-top:0">Ask the astrology guide</h2>
+        <div class="chat" id="chat"></div>
+        <textarea id="chatIn" rows="2" placeholder="Ask about your chart…"></textarea>
+        <button class="btn-yellow" id="chatGo" type="button" style="margin-top:6px">Ask</button> <a id="handoff" class="btn-white" hidden></a>
+        <p class="muted" id="chatNote"></p></div>
+    </div>
+    <p class="noprint" style="margin-top:16px"><button class="btn-white" id="printBtn" type="button">Print or save the report as PDF</button></p>
+  </div>
+</main>
+<footer id="ftr" role="contentinfo"></footer>
+<div id="modals"></div>
+<script src="js/app.js"></script>
+<script src="js/astro.js"></script>
+</body>
+</html>

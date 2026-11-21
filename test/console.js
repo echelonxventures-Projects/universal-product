@@ -140,6 +140,13 @@ const waitForSettled = async (doc, ms = 7000) => waitFor(() => settled(doc), ms)
       ok([...R.doc.querySelectorAll("#defExtends option")].some(o => /Extra fields for/.test(o.textContent)), "an existing type can be chosen to extend");
       ok(!R.doc.querySelector("#defFields"), "there is no raw JSON box any more");
     }
+    {
+      /* AI Studio carries the knowledge base, the assistants and the MCP keys */
+      const ba = navBtn(R.doc, "store", "ai");
+      if (ba) ba.click();
+      ok(await waitForSettled(R.doc) && await waitFor(() => /Knowledge/.test((R.doc.querySelector("#vBody") || {}).textContent || "") && /MCP access/.test(R.doc.querySelector("#vBody").textContent)), "AI Studio shows the Knowledge, Assistants and MCP access panels");
+      ok(!/⚠️/.test((R.doc.querySelector("#vBody") || {}).textContent || "") && R.doc.querySelector("#kbNew") && R.doc.querySelector("#mcpIssue"), "…with no error, ready to create a collection and issue a key");
+    }
 
     console.log("▸ §E A STORE-ONLY IDENTITY SEES ONE SURFACE");
     const jar2 = new Map(jar);   /* keep the platform cookies out of the store-only probe */
