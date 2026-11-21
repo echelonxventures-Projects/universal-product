@@ -1,0 +1,13 @@
+{
+  "name": "ucii-platform",
+  "version": "1.0.0",
+  "description": "Universal Commerce & Incentive Infrastructure",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
