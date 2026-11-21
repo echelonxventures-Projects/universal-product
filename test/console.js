@@ -126,6 +126,20 @@ const waitForSettled = async (doc, ms = 7000) => waitFor(() => settled(doc), ms)
     if (b2) b2.click();
     ok(await waitForSettled(R.doc) && await waitFor(() => { const t = R.doc.querySelector("#vTitle"); return t && /Identity · Auth/i.test(t.textContent); }), "the platform-only leaf renders through the PLATFORM bundle", (R.doc.querySelector("#vTitle") || {}).textContent);
     ok(!/⚠️/.test((R.doc.querySelector("#vBody") || {}).textContent || ""), "the platform leaf renders without an error");
+    {
+      /* the schema designer: types and fields are defined in a form, from the platform's own roles
+         and field types — no JSON to type */
+      const bd = navBtn(R.doc, "platform", "definitions");
+      if (bd) bd.click();
+      ok(await waitForSettled(R.doc) && await waitFor(() => !!R.doc.querySelector("#newDef")), "the Entity Definitions leaf renders");
+      R.doc.querySelector("#newDef").click();
+      const grid = R.doc.querySelectorAll("[data-acc]");
+      ok(grid.length >= 4 * 4 && [...grid].some(c => c.dataset.acc === "support|create"), "the access grid lists the store's roles for read, create, update and delete", grid.length);
+      const types = [...R.doc.querySelectorAll('#defFieldRows [data-f="type"] option')].map(o => o.value);
+      ok(types.includes("text") && types.includes("select"), "a field's type is picked from the declared types", types);
+      ok([...R.doc.querySelectorAll("#defExtends option")].some(o => /Extra fields for/.test(o.textContent)), "an existing type can be chosen to extend");
+      ok(!R.doc.querySelector("#defFields"), "there is no raw JSON box any more");
+    }
 
     console.log("▸ §E A STORE-ONLY IDENTITY SEES ONE SURFACE");
     const jar2 = new Map(jar);   /* keep the platform cookies out of the store-only probe */

@@ -2285,6 +2285,11 @@ CREATE TABLE entity_data (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER, entity TEXT NOT NULL,
   data TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT (datetime('now'))
 , uid TEXT);
+CREATE TABLE entity_ext (
+  tenant_id INTEGER NOT NULL DEFAULT 0, entity TEXT NOT NULL, record_id TEXT NOT NULL,
+  data TEXT NOT NULL DEFAULT '{}', updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (tenant_id, entity, record_id)
+);
 CREATE TABLE entity_types (
   id INTEGER PRIMARY KEY AUTOINCREMENT, entity TEXT NOT NULL, type_key TEXT NOT NULL,
   label TEXT NOT NULL, icon TEXT DEFAULT '📝', fields TEXT NOT NULL DEFAULT '[]',

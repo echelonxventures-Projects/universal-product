@@ -2658,6 +2658,7 @@
      "meta_lists",
      "entity_attributes",
      "entity_data",
+     "entity_ext",
      "entity_defs",
      "entity_field_config",
      "entity_meta",

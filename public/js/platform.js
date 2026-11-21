@@ -1103,6 +1103,8 @@ async function vProviders() {
  }
  async function vDefinitions() {
   const data = await api("/meta/entity-def");
+  /* the designer's choices — field types, roles, actions, existing types — come from the platform */
+  const V = window.__schemaVocab = data.vocab || {};
   const rows = data.rows || [];
   const defs = rows.map(e => ({ 
     ...e, 
@@ -1144,10 +1146,15 @@ async function vProviders() {
             <label><span>Label</span><input id="defLabel" placeholder="Service Contracts"></label>
           </div>
           <label><span>Icon</span><input id="defIcon" placeholder="🧾"></label>
-          <label><span>Fields (JSON array)</span><textarea id="defFields" rows="5">[
-  {"key":"name","label":"Name","type":"text","required":true},
-  {"key":"value","label":"Value","type":"money"}
-]</textarea></label>
+          <label><span>What are you defining?</span><select id="defExtends"><option value="">A new type of record</option>
+            ${(V.types || []).map(t => `<option value="${esc(t.key)}">Extra fields for: ${esc(t.label)}</option>`).join("")}</select></label>
+          <p class="p-tag">Who may do what. A role named here is granted it directly; “All store staff” still follows each role's sections in the store's Team screen. For extra fields, this is who may use the added fields.</p>
+          <div class="p-scroll-x"><table class="p-table" id="defAccess"><thead><tr><th>Role</th>${(V.actions || []).map(a => `<th>${esc(a)}</th>`).join("")}</tr></thead>
+            <tbody>${(V.roles || []).map(r => `<tr><td>${esc(r.label)}</td>${(V.actions || []).map(a => `<td><input type="checkbox" data-acc="${esc(r.key)}|${esc(a)}"></td>`).join("")}</tr>`).join("")}</tbody></table></div>
+          <h4 style="margin:14px 0 6px">Fields</h4>
+          <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Key</th><th>Label</th><th>Type</th><th>Required</th><th>In list</th><th>Choices (comma-separated)</th><th>Who can see</th><th>Who can change</th><th></th></tr></thead>
+            <tbody id="defFieldRows"></tbody></table></div>
+          <button class="p-btn sm" id="defAddField" type="button">+ Add field</button>
           <div style="display:flex;gap:10px;margin-top:8px">
             <button class="p-btn primary" id="saveDef">Save</button>
             <button class="p-btn" id="cancelDef">Cancel</button>
@@ -2224,30 +2231,56 @@ function wireGlobalOffers() {
 function wireDefinitions() {
   const $id = i => document.getElementById(i);
   const modal = $id("defModal");
-  $id("newDef").onclick = () => { $id("defTitle").textContent = "Define Entity"; $id("defKey").value = ""; $id("defLabel").value = ""; $id("defIcon").value = ""; $id("defFields").value = ""; modal.style.display = "block"; };
+  const V = window.__schemaVocab || {};
+  const roleOpts = sel => (V.roles || []).map(r => `<option value="${esc(r.key)}" ${(sel || []).includes(r.key) ? "selected" : ""}>${esc(r.label)}</option>`).join("");
+  const typeOpts = sel => (V.fieldTypes || []).map(t => `<option value="${esc(t.key)}" ${t.key === sel ? "selected" : ""}>${esc(t.label)}</option>`).join("");
+  const fieldRow = f => `<tr data-frow>
+    <td><input data-f="key" value="${esc(f.key || "")}" placeholder="field_key" size="12"></td>
+    <td><input data-f="label" value="${esc(f.label || "")}" placeholder="Label" size="14"></td>
+    <td><select data-f="type">${typeOpts(f.type || "text")}</select></td>
+    <td><input type="checkbox" data-f="required" ${f.required ? "checked" : ""}></td>
+    <td><input type="checkbox" data-f="list" ${f.list ? "checked" : ""}></td>
+    <td><input data-f="options" value="${esc((f.options || []).join(", "))}" size="14"></td>
+    <td><select multiple size="3" data-f="read" title="None selected: follows the type">${roleOpts((f.perm || {}).read)}</select></td>
+    <td><select multiple size="3" data-f="write" title="None selected: follows the type">${roleOpts((f.perm || {}).write)}</select></td>
+    <td><button class="p-btn sm" type="button" data-fdel>✕</button></td></tr>`;
+  const wireRows = () => document.querySelectorAll("[data-fdel]").forEach(b => { b.onclick = () => { const tr = b.closest("tr"); tr.parentNode.removeChild(tr); }; });
+  const setAccess = perm => document.querySelectorAll("[data-acc]").forEach(cb => { const [r, a] = cb.dataset.acc.split("|"); const p = perm || {}; cb.checked = (p[a] || (a !== "read" ? p.write : null) || []).includes(r); });
+  const openDef = (def, key) => {
+    $id("defKey").value = key || ""; $id("defKey").disabled = !!key;
+    $id("defLabel").value = def.label || ""; $id("defIcon").value = def.icon || "";
+    $id("defExtends").value = def.extends || ""; $id("defExtends").disabled = !!key;
+    setAccess(def.perm || (def.extends ? null : { read: ["admin", "platform"], write: ["admin", "platform"] }));
+    $id("defFieldRows").innerHTML = (def.fields && def.fields.length ? def.fields : [{ type: "text" }]).map(fieldRow).join("");
+    wireRows(); modal.style.display = "block";
+  };
+  $id("defAddField").onclick = () => { $id("defFieldRows").insertAdjacentHTML("beforeend", fieldRow({ type: "text" })); wireRows(); };
+  $id("newDef").onclick = () => { $id("defTitle").textContent = "Define a type or extra fields"; openDef({}, ""); };
   $id("cancelDef").onclick = () => { modal.style.display = "none"; };
   $id("saveDef").onclick = async () => {
-    const key = $id("defKey").value.trim();
-    const label = $id("defLabel").value.trim();
-    const icon = $id("defIcon").value.trim() || "🧬";
-    const fields = JSON.parse($id("defFields").value || "[]");
-    if (!key || !label || !Array.isArray(fields)) { alert("Key, label and fields required"); return; }
-    try {
-      await api("/meta/entity-def", "POST", { key, label, icon, fields });
-      toast("Entity definition saved"); modal.style.display = "none"; render();
-    } catch (e) { toast(e.message); }
+    const extendsKey = $id("defExtends").value || undefined;
+    const perm = {};
+    document.querySelectorAll("[data-acc]").forEach(cb => { if (!cb.checked) return; const [r, a] = cb.dataset.acc.split("|"); (perm[a] = perm[a] || []).push(r); });
+    const picked = el => [...el.selectedOptions].map(o => o.value);
+    const fields = [...document.querySelectorAll("[data-frow]")].map(tr => {
+      const g = k => tr.querySelector(`[data-f="${k}"]`);
+      const f = { key: g("key").value.trim(), label: g("label").value.trim(), type: g("type").value, required: g("required").checked, list: g("list").checked };
+      const opts = g("options").value.split(",").map(x => x.trim()).filter(Boolean); if (opts.length) f.options = opts;
+      const fp = {}; if (picked(g("read")).length) fp.read = picked(g("read")); if (picked(g("write")).length) fp.write = picked(g("write"));
+      if (Object.keys(fp).length) f.perm = fp;
+      return f;
+    }).filter(f => f.key);
+    const body = { key: $id("defKey").value.trim() || undefined, label: $id("defLabel").value.trim(), icon: $id("defIcon").value.trim() || undefined, extends: extendsKey, fields };
+    if (Object.keys(perm).length) body.perm = perm;
+    try { await api("/meta/entity-def", "POST", body); toast("Definition saved"); modal.style.display = "none"; render(); }
+    catch (e) { toast(e.message); }
   };
- $$("[data-edit]").forEach(b => b.onclick = async () => {
+  $$("[data-edit]").forEach(b => b.onclick = async () => {
     const key = b.dataset.edit;
-    const row = await api("/meta/entity-def");
-    const def = row.rows.find(r => r.key === key);
-    if (!def) return;
-    $id("defTitle").textContent = "Edit Entity";
-    $id("defKey").value = def.key;
-    $id("defLabel").value = JSON.parse(def.def || "{}").label;
-    $id("defIcon").value = JSON.parse(def.def || "{}").icon || "";
-    $id("defFields").value = JSON.stringify(JSON.parse(def.def || "{}").fields || [], null, 2);
-    modal.style.display = "block";
+    const row = (await api("/meta/entity-def")).rows.find(r => r.key === key);
+    if (!row) return;
+    $id("defTitle").textContent = "Edit " + key;
+    openDef(JSON.parse(row.def || "{}"), key);
   });
   $$("[data-toggle-entity]").forEach(b => b.onclick = async () => {
     const key = b.dataset.toggleEntity;

@@ -88,6 +88,16 @@ The foundation every domain is built on: kinds, entities, identifiers, hierarchi
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 | `uid` | TEXT |
 
+### `entity_ext`
+
+| Column | Type |
+|---|---|
+| `tenant_id` | INTEGER NOT NULL DEFAULT 0 |
+| `entity` | TEXT NOT NULL |
+| `record_id` | TEXT NOT NULL |
+| `data` | TEXT NOT NULL DEFAULT '{}' |
+| `updated_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+
 ### `entity_types`
 
 | Column | Type |
@@ -426,7 +436,7 @@ flowchart LR
   U([Platform administrator / Developer]) --> UI[store console, platform console]
   UI --> API[68 API routes]
   API --> ENG[entity.js, events.js, global.js, kernel-context.js, kernel-lifecycle.js, kernel-shape.js, kernel.js, meta.js, parity-registries.js, registry.js, uid.js, kernel.js]
-  ENG --> DB[(meta_lists, links, context_types, entity_defs, entity_data, entity_types, …)]
+  ENG --> DB[(meta_lists, links, context_types, entity_defs, entity_data, entity_ext, …)]
 
 ```
 

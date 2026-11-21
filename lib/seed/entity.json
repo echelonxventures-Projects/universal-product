@@ -9945,5 +9945,45 @@
     "name": "Platinum"
    }
   ]
- }
+ },
+ "FIELD_TYPES": [
+  {
+   "key": "text",
+   "label": "Short text"
+  },
+  {
+   "key": "textarea",
+   "label": "Long text"
+  },
+  {
+   "key": "number",
+   "label": "Number"
+  },
+  {
+   "key": "money",
+   "label": "Money"
+  },
+  {
+   "key": "bool",
+   "label": "Yes / no"
+  },
+  {
+   "key": "date",
+   "label": "Date"
+  },
+  {
+   "key": "select",
+   "label": "One choice",
+   "options": true
+  },
+  {
+   "key": "multi",
+   "label": "Several choices",
+   "options": true
+  },
+  {
+   "key": "json",
+   "label": "Structured (JSON)"
+  }
+ ]
 }
