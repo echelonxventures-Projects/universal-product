@@ -1800,6 +1800,41 @@
    }
   },
   {
+   "key": "astro_engine",
+   "label": "Astrology engine",
+   "domain": "shopper",
+   "icon": "🪐",
+   "shopper": true,
+   "description": "Birth charts, Vimshottari dashas and the panchang from a date, time and place, computed by the provider the store chooses (the built-in formulas, or a library the operator installs under its own licence), in the zodiac, ayanamsa, house system and chart style the store sets. The choices are declared in lib/seed/astro.json.",
+   "params": {
+    "provider": {
+     "type": "text",
+     "default": "builtin",
+     "label": "Calculation provider (builtin, swisseph…)"
+    },
+    "zodiac": {
+     "type": "text",
+     "default": "sidereal",
+     "label": "Zodiac (sidereal or tropical)"
+    },
+    "ayanamsa": {
+     "type": "text",
+     "default": "lahiri",
+     "label": "Ayanamsa for the sidereal zodiac (lahiri, raman, krishnamurti)"
+    },
+    "house_system": {
+     "type": "text",
+     "default": "whole_sign",
+     "label": "House system (whole_sign or equal)"
+    },
+    "chart_style": {
+     "type": "text",
+     "default": "north",
+     "label": "Chart style (north, south or western)"
+    }
+   }
+  },
+  {
    "key": "try_and_buy",
    "label": "Try and buy",
    "domain": "shopper",
@@ -2757,9 +2792,9 @@
   "customisation_proofs": [
    "proofs"
   ],
-   "sample_orders": [
-    "samples"
-   ]
+  "sample_orders": [
+   "samples"
+  ]
  },
  "ROUTES": {
   "admin/charges": "fees",

@@ -127,6 +127,8 @@
     {"path": "lib/lineterms.js", "owner": "Commerce"},
     {"path": "lib/options.js", "owner": "Commerce"},
     {"path": "lib/bookings.js", "owner": "Commerce"},
+    {"path": "lib/astro.js", "owner": "Commerce", "note": "the astrology engine: birth charts, Vimshottari dashas and the panchang, by the provider a store chooses (capability astro_engine)"},
+    {"path": "lib/seed/astro.json", "owner": "Commerce", "note": "the astrology engine's declared providers, zodiacs, ayanamsas, house systems, signs, nakshatras, dasha and panchang names"},
     {"path": "lib/listings.js", "owner": "Commerce"},
     {"path": "lib/negotiation.js", "owner": "Commerce"},
     {"path": "lib/auctions.js", "owner": "Commerce"},

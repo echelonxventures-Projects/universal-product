@@ -33,10 +33,10 @@
 | **Contract** | [UCOS-COM-000001 Universal Commerce Architecture](#ucos-com-000001) |
 | **Artifacts** | [UCOS-COM-000001](#ucos-com-000001), [UCOS-GPS-000001](#ucos-gps-000001), [UCOS-PRC-000001](#ucos-prc-000001), [UCOS-OFR-000001](#ucos-ofr-000001), [UCOS-SUB-000001](#ucos-sub-000001), [UCOS-CNT-000001](#ucos-cnt-000001), [UCOS-MKT-000001](#ucos-mkt-000001), [UCOS-INV-000001](#ucos-inv-000001), [UCOS-ORD-000001](#ucos-ord-000001), [UCOS-FUL-000001](#ucos-ful-000001) |
 | **Concepts** | 1968 — `node _registry/compile.js --search <words> --kind concept --owner "Commerce"` |
-| **Code** | `lib/trials.js`, `lib/fees.js`, `lib/tips.js`, `lib/deliverables.js`, `lib/health-records.js`, `lib/cases.js`, `lib/billing.js`, `lib/routes/offer.js`, `lib/offers.js`, `lib/grants.js`, `lib/coupons.js`, `lib/vouchers.js`, `lib/giftcards.js`, `lib/goip.js`, `lib/shipping.js`, `lib/logistics.js`, `lib/fin.js`, `lib/fintech.js`, `lib/marketplace.js`, `lib/marketplace-ext.js`, `lib/lists.js`, `lib/alerts.js`, `lib/pickup.js`, `lib/richcontent.js`, `lib/brandreg.js`, `lib/lineterms.js`, `lib/options.js`, `lib/bookings.js`, `lib/listings.js`, `lib/negotiation.js`, `lib/auctions.js`, `lib/conversations.js`, `lib/groupbuy.js`, `lib/routes/groupbuy.js`, `lib/routes/coupon.js`, `lib/routes/giftcard.js`, `lib/routes/advertising.js`, `lib/routes/affiliate.js`, `lib/routes/cart.js`, `lib/routes/marketplace.js`, `lib/routes/order.js`, `lib/routes/price_discovery.js`, `lib/routes/returns.js`, `lib/routes/shipping.js`, `lib/routes/subscriptions.js`, `lib/routes/trade.js`, `lib/substitutions.js`, `lib/affiliate.js`, `lib/trade.js`, `lib/qcommerce.js`, `lib/mobility.js`, `lib/operations.js`, `lib/recurring.js`, `lib/ugc.js`, `lib/gcatalog.js`, `lib/seed/goip.json`, `lib/seed/offers.json`, `lib/seed/coupons.json`, `lib/seed/vouchers.json`, `lib/seed/giftcards.json` |
+| **Code** | `lib/trials.js`, `lib/fees.js`, `lib/tips.js`, `lib/deliverables.js`, `lib/health-records.js`, `lib/cases.js`, `lib/billing.js`, `lib/routes/offer.js`, `lib/offers.js`, `lib/grants.js`, `lib/coupons.js`, `lib/vouchers.js`, `lib/giftcards.js`, `lib/goip.js`, `lib/shipping.js`, `lib/logistics.js`, `lib/fin.js`, `lib/fintech.js`, `lib/marketplace.js`, `lib/marketplace-ext.js`, `lib/lists.js`, `lib/alerts.js`, `lib/pickup.js`, `lib/richcontent.js`, `lib/brandreg.js`, `lib/lineterms.js`, `lib/options.js`, `lib/bookings.js`, `lib/astro.js`, `lib/seed/astro.json`, `lib/listings.js`, `lib/negotiation.js`, `lib/auctions.js`, `lib/conversations.js`, `lib/groupbuy.js`, `lib/routes/groupbuy.js`, `lib/routes/coupon.js`, `lib/routes/giftcard.js`, `lib/routes/advertising.js`, `lib/routes/affiliate.js`, `lib/routes/cart.js`, `lib/routes/marketplace.js`, `lib/routes/order.js`, `lib/routes/price_discovery.js`, `lib/routes/returns.js`, `lib/routes/shipping.js`, `lib/routes/subscriptions.js`, `lib/routes/trade.js`, `lib/substitutions.js`, `lib/affiliate.js`, `lib/trade.js`, `lib/qcommerce.js`, `lib/mobility.js`, `lib/operations.js`, `lib/recurring.js`, `lib/ugc.js`, `lib/gcatalog.js`, `lib/seed/goip.json`, `lib/seed/offers.json`, `lib/seed/coupons.json`, `lib/seed/vouchers.json`, `lib/seed/giftcards.json` |
 | **Managed in** | `_registry/domains.json` → `D-BIZ` |
 
-**Live routes (378)** — what the platform serves today for this domain:
+**Live routes (381)** — what the platform serves today for this domain:
 
 - `GET /api/marketplace/sponsored`
 - `GET /api/marketplace/ads`
@@ -315,6 +315,9 @@
 - `GET /api/admin/reviews`
 - `DELETE /api/admin/reviews/:id`
 - `GET /api/feeds/:slug`
+- `GET /api/astro`
+- `POST /api/astro/chart`
+- `POST /api/astro/panchang`
 - `GET /api/bookings/availability`
 - `POST /api/bookings/hold`
 - `GET /api/bookings`

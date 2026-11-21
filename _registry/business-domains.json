@@ -1450,7 +1450,8 @@
    "owns": {
     "files": [
      "lib/bookings.js",
-     "lib/media-sessions.js"
+     "lib/media-sessions.js",
+     "lib/astro.js"
     ],
     "tables": [
      "bookings",
@@ -1460,7 +1461,7 @@
      "media_signals"
     ],
     "routes": [
-     "^/api/(bookings|sessions)(/|$)",
+     "^/api/(bookings|sessions|astro)(/|$)",
      "^/api/admin/(bookings|per-minute)(/|$)"
     ],
     "machines": [
@@ -1473,6 +1474,7 @@
      "bookings",
      "media_sessions",
      "per_minute_billing",
+     "astro_engine",
      "installation_booking",
      "assembly_booking",
      "extended_warranty"

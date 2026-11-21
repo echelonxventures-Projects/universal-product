@@ -51,6 +51,18 @@ A live session charged by the minute to the guest's wallet, at the item's price 
 | `increment_seconds` | Charged in steps of | `60` |
 | `ledger_kind` | Wallet ledger kind for the charge | `"redeem"` |
 
+### Astrology engine (`astro_engine`)
+
+Birth charts, Vimshottari dashas and the panchang from a date, time and place, computed by the provider the store chooses (the built-in formulas, or a library the operator installs under its own licence), in the zodiac, ayanamsa, house system and chart style the store sets. The choices are declared in lib/seed/astro.json.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `provider` | Calculation provider (builtin, swisseph…) | `"builtin"` |
+| `zodiac` | Zodiac (sidereal or tropical) | `"sidereal"` |
+| `ayanamsa` | Ayanamsa for the sidereal zodiac (lahiri, raman, krishnamurti) | `"lahiri"` |
+| `house_system` | House system (whole_sign or equal) | `"whole_sign"` |
+| `chart_style` | Chart style (north, south or western) | `"north"` |
+
 ### Installation booking (`installation_booking`)
 
 Installation offered as an option on an item: chosen at the bag, it leaves a visit for staff to book and complete.
@@ -80,6 +92,7 @@ A plan covering an item for months (an extended warranty, a protection plan), so
 
 | Module | What it is |
 |---|---|
+| `lib/astro.js` | the astrology engine: a birth chart (planetary positions, ascendant, houses, signs, nakshatras), the Vimshottari dasha periods and the panchang, from a date, time and place. |
 | `lib/bookings.js` | Bookings: appointments, rentals, stays and experiences. A bookable product names the resources that deliver it (a stylist, a room, a vehicle, a venue — bookingResourceKinds rows) and how it is booked: a bookingModes row names the engine it runs — `slots` (fixed-length appointments on a step) or `days` (a range of days or nights). Each resource keeps weekly hours in its own time zone (the store's by default, resolved by the Time domain) and a capacity. |
 | `lib/media-sessions.js` | media sessions: live audio or video between a shopper and whoever serves them (a practitioner, a consultant, a tutor, a seller), and metering them by the minute. |
 | `lib/routes/services.js` | services domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the services domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
@@ -179,6 +192,9 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 
 | Method and path | Handler | What it does |
 |---|---|---|
+| `GET /api/astro` | `apiAstro` | the choices a store may make and the ones it has made |
+| `POST /api/astro/chart` | `apiAstroChart` | a birth chart: positions, ascendant, houses, signs, nakshatras and the Vimshottari dasha, from body.birth { date, time, timeZone or utcOffsetMinutes, latitude, longitude } |
+| `POST /api/astro/panchang` | `apiAstroPanchang` | the panchang at body.when { date, time, timeZone or utcOffsetMinutes, latitude, longitude } |
 | `GET /api/bookings/availability` | `apiBookingAvailability` | bookings |
 | `POST /api/bookings/hold` | `apiBookingHold` | — |
 | `GET /api/bookings` | `apiBookingsMine` | — |
@@ -273,8 +289,8 @@ Actions: `end` → ended · `cancel` → cancelled
 ```mermaid
 flowchart LR
   U([Shopper / Practitioner / Store staff / Store administrator]) --> UI[session.html, store console, platform console]
-  UI --> API[18 API routes]
-  API --> ENG[bookings.js, media-sessions.js, services.js]
+  UI --> API[21 API routes]
+  API --> ENG[astro.js, bookings.js, media-sessions.js, services.js]
   ENG --> DB[(media_sessions, media_signals, booking_resources, product_bookings, bookings)]
   ENG --> SM{{4 state machines}}
 ```

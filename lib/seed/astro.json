@@ -1,0 +1,101 @@
+{
+ "$comment": "The astrology engine's declared data (lib/astro.js reads it; nothing here is code). Providers are how positions are computed; ayanamsas, zodiacs and house systems are the choices a store makes in Store console -> Capabilities -> Astrology engine. Ayanamsa values are standard published approximations (value at J2000.0 and the general precession rate); an astrologer should confirm the ones a store uses.",
+ "PROVIDERS": [
+  {"key": "builtin", "label": "Built-in (published formulas: Meeus; JPL approximate elements)", "transport": "builtin", "note": "No licence or outside dependency. Accurate to a few arcminutes for 1800-2050; outside that range the planets drift."},
+  {"key": "swisseph", "label": "Swiss Ephemeris (needs the operator's commercial licence)", "transport": "module", "module": "swisseph", "note": "Not shipped with the platform. An operator with a commercial licence installs the module; the platform then uses it. The adapter follows the module's documented API and has not been run here."}
+ ],
+ "ZODIACS": [
+  {"key": "sidereal", "label": "Sidereal (Vedic)"},
+  {"key": "tropical", "label": "Tropical (Western)"}
+ ],
+ "AYANAMSAS": [
+  {"key": "lahiri", "label": "Lahiri (Chitrapaksha)", "j2000": 23.85706, "perCentury": 1.396971},
+  {"key": "raman", "label": "Raman", "j2000": 22.41079, "perCentury": 1.396971},
+  {"key": "krishnamurti", "label": "Krishnamurti (KP)", "j2000": 23.76024, "perCentury": 1.396971}
+ ],
+ "HOUSE_SYSTEMS": [
+  {"key": "whole_sign", "label": "Whole sign"},
+  {"key": "equal", "label": "Equal (from the ascendant)"}
+ ],
+ "CHART_STYLES": [
+  {"key": "north", "label": "North Indian"},
+  {"key": "south", "label": "South Indian"},
+  {"key": "western", "label": "Western wheel"}
+ ],
+ "BODIES": [
+  {"key": "sun", "label": "Sun", "short": "Su"},
+  {"key": "moon", "label": "Moon", "short": "Mo"},
+  {"key": "mars", "label": "Mars", "short": "Ma", "elements": "mars"},
+  {"key": "mercury", "label": "Mercury", "short": "Me", "elements": "mercury"},
+  {"key": "jupiter", "label": "Jupiter", "short": "Ju", "elements": "jupiter"},
+  {"key": "venus", "label": "Venus", "short": "Ve", "elements": "venus"},
+  {"key": "saturn", "label": "Saturn", "short": "Sa", "elements": "saturn"},
+  {"key": "rahu", "label": "Rahu (mean node)", "short": "Ra"},
+  {"key": "ketu", "label": "Ketu", "short": "Ke"}
+ ],
+ "ELEMENTS": {
+  "$comment": "JPL Keplerian elements for approximate positions of the major planets, 1800-2050 (Standish): a (au), e, I, L, long. of perihelion, long. of node (degrees), each with its rate per Julian century from J2000.",
+  "mercury": [[0.38709927, 0.20563593, 7.00497902, 252.25032350, 77.45779628, 48.33076593], [0.00000037, 0.00001906, -0.00594749, 149472.67411175, 0.16047689, -0.12534081]],
+  "venus": [[0.72333566, 0.00677672, 3.39467605, 181.97909950, 131.60246718, 76.67984255], [0.00000390, -0.00004107, -0.00078890, 58517.81538729, 0.00268329, -0.27769418]],
+  "earth": [[1.00000261, 0.01671123, -0.00001531, 100.46457166, 102.93768193, 0.0], [0.00000562, -0.00004392, -0.01294668, 35999.37244981, 0.32327364, 0.0]],
+  "mars": [[1.52371034, 0.09339410, 1.84969142, -4.55343205, -23.94362959, 49.55953891], [0.00001847, 0.00007882, -0.00813131, 19140.30268499, 0.44441088, -0.29257343]],
+  "jupiter": [[5.20288700, 0.04838624, 1.30439695, 34.39644051, 14.72847983, 100.47390909], [-0.00011607, -0.00013253, -0.00183714, 3034.74612775, 0.21252668, 0.20469106]],
+  "saturn": [[9.53667594, 0.05386179, 2.48599187, 49.95424423, 92.59887831, 113.66242448], [-0.00125060, -0.00050991, 0.00193609, 1222.49362201, -0.41897216, -0.28867794]]
+ },
+ "MOON_TERMS": {
+  "$comment": "Meeus, Astronomical Algorithms, ch. 47: the largest periodic terms of the Moon's longitude, as [D, M, M', F, coefficient in 1e-6 degree].",
+  "longitude": [
+   [0, 0, 1, 0, 6288774], [2, 0, -1, 0, 1274027], [2, 0, 0, 0, 658314], [0, 0, 2, 0, 213618], [0, 1, 0, 0, -185116],
+   [0, 0, 0, 2, -114332], [2, 0, -2, 0, 58793], [2, -1, -1, 0, 57066], [2, 0, 1, 0, 53322], [2, -1, 0, 0, 45758],
+   [0, 1, -1, 0, -40923], [1, 0, 0, 0, -34720], [0, 1, 1, 0, -30383], [2, 0, 0, -2, 15327], [0, 0, 1, 2, -12528],
+   [0, 0, 1, -2, 10980], [4, 0, -1, 0, 10675], [0, 0, 3, 0, 10034], [4, 0, -2, 0, 8548], [2, 1, -1, 0, -7888],
+   [2, 1, 0, 0, -6766], [1, 0, -1, 0, -5163], [1, 1, 0, 0, 4987], [2, -1, 1, 0, 4036], [2, 0, 2, 0, 3994],
+   [4, 0, 0, 0, 3861], [2, 0, -3, 0, 3665], [0, 1, -2, 0, -2689], [2, 0, -1, 2, -2602], [2, -1, -2, 0, 2390],
+   [1, 0, 1, 0, -2348], [2, -2, 0, 0, 2236], [0, 1, 2, 0, -2120], [0, 2, 0, 0, -2069]
+  ]
+ },
+ "SIGNS": [
+  {"key": "aries", "label": "Aries", "vedic": "Mesha", "lord": "mars"},
+  {"key": "taurus", "label": "Taurus", "vedic": "Vrishabha", "lord": "venus"},
+  {"key": "gemini", "label": "Gemini", "vedic": "Mithuna", "lord": "mercury"},
+  {"key": "cancer", "label": "Cancer", "vedic": "Karka", "lord": "moon"},
+  {"key": "leo", "label": "Leo", "vedic": "Simha", "lord": "sun"},
+  {"key": "virgo", "label": "Virgo", "vedic": "Kanya", "lord": "mercury"},
+  {"key": "libra", "label": "Libra", "vedic": "Tula", "lord": "venus"},
+  {"key": "scorpio", "label": "Scorpio", "vedic": "Vrishchika", "lord": "mars"},
+  {"key": "sagittarius", "label": "Sagittarius", "vedic": "Dhanu", "lord": "jupiter"},
+  {"key": "capricorn", "label": "Capricorn", "vedic": "Makara", "lord": "saturn"},
+  {"key": "aquarius", "label": "Aquarius", "vedic": "Kumbha", "lord": "saturn"},
+  {"key": "pisces", "label": "Pisces", "vedic": "Meena", "lord": "jupiter"}
+ ],
+ "NAKSHATRAS": [
+  {"key": "ashwini", "label": "Ashwini", "lord": "ketu"}, {"key": "bharani", "label": "Bharani", "lord": "venus"},
+  {"key": "krittika", "label": "Krittika", "lord": "sun"}, {"key": "rohini", "label": "Rohini", "lord": "moon"},
+  {"key": "mrigashira", "label": "Mrigashira", "lord": "mars"}, {"key": "ardra", "label": "Ardra", "lord": "rahu"},
+  {"key": "punarvasu", "label": "Punarvasu", "lord": "jupiter"}, {"key": "pushya", "label": "Pushya", "lord": "saturn"},
+  {"key": "ashlesha", "label": "Ashlesha", "lord": "mercury"}, {"key": "magha", "label": "Magha", "lord": "ketu"},
+  {"key": "purva_phalguni", "label": "Purva Phalguni", "lord": "venus"}, {"key": "uttara_phalguni", "label": "Uttara Phalguni", "lord": "sun"},
+  {"key": "hasta", "label": "Hasta", "lord": "moon"}, {"key": "chitra", "label": "Chitra", "lord": "mars"},
+  {"key": "swati", "label": "Swati", "lord": "rahu"}, {"key": "vishakha", "label": "Vishakha", "lord": "jupiter"},
+  {"key": "anuradha", "label": "Anuradha", "lord": "saturn"}, {"key": "jyeshtha", "label": "Jyeshtha", "lord": "mercury"},
+  {"key": "mula", "label": "Mula", "lord": "ketu"}, {"key": "purva_ashadha", "label": "Purva Ashadha", "lord": "venus"},
+  {"key": "uttara_ashadha", "label": "Uttara Ashadha", "lord": "sun"}, {"key": "shravana", "label": "Shravana", "lord": "moon"},
+  {"key": "dhanishta", "label": "Dhanishta", "lord": "mars"}, {"key": "shatabhisha", "label": "Shatabhisha", "lord": "rahu"},
+  {"key": "purva_bhadrapada", "label": "Purva Bhadrapada", "lord": "jupiter"}, {"key": "uttara_bhadrapada", "label": "Uttara Bhadrapada", "lord": "saturn"},
+  {"key": "revati", "label": "Revati", "lord": "mercury"}
+ ],
+ "VIMSHOTTARI": {
+  "$comment": "The mahadasha order and each lord's years; a dasha year is yearDays days (a convention the store may change).",
+  "order": ["ketu", "venus", "sun", "moon", "mars", "rahu", "jupiter", "saturn", "mercury"],
+  "years": {"ketu": 7, "venus": 20, "sun": 6, "moon": 10, "mars": 7, "rahu": 18, "jupiter": 16, "saturn": 19, "mercury": 17},
+  "yearDays": 365.25
+ },
+ "TITHIS": ["Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami", "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami", "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Purnima", "Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami", "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami", "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Amavasya"],
+ "PAKSHAS": ["Shukla", "Krishna"],
+ "VARAS": ["Ravivara", "Somavara", "Mangalavara", "Budhavara", "Guruvara", "Shukravara", "Shanivara"],
+ "YOGAS": ["Vishkambha", "Priti", "Ayushman", "Saubhagya", "Shobhana", "Atiganda", "Sukarma", "Dhriti", "Shula", "Ganda", "Vriddhi", "Dhruva", "Vyaghata", "Harshana", "Vajra", "Siddhi", "Vyatipata", "Variyana", "Parigha", "Shiva", "Siddha", "Sadhya", "Shubha", "Shukla", "Brahma", "Indra", "Vaidhriti"],
+ "KARANAS": {
+  "$comment": "60 half-tithis: the first is fixed, the next 56 cycle through the 7 movable karanas, the last 3 are fixed.",
+  "first": "Kimstughna", "movable": ["Bava", "Balava", "Kaulava", "Taitila", "Gara", "Vanija", "Vishti"], "last": ["Shakuni", "Chatushpada", "Naga"]
+ }
+}

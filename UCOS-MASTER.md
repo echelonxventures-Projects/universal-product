@@ -1281,7 +1281,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 294 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 296 files.
 
 ### C02 · Meaning
 
@@ -1617,6 +1617,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/lineterms.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/options.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/bookings.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/astro.js` | [Commerce](volumes/V12-business.md#d-biz) | the astrology engine: birth charts, Vimshottari dashas and the panchang, by the provider a store chooses (capability astro_engine) |
+| `lib/seed/astro.json` | [Commerce](volumes/V12-business.md#d-biz) | the astrology engine's declared providers, zodiacs, ayanamsas, house systems, signs, nakshatras, dasha and panchang names |
 | `lib/listings.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/negotiation.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/auctions.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
