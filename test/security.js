@@ -534,6 +534,24 @@ const raw = (text) => new Promise((resolve) => {
       }
       ok(fin.simulatedAllowed() === true, "outside production the sandbox rails still work");
     }
+    console.log("\n▸ HTTPS BEHIND A PROXY — cookies are Secure when TLS ends at a trusted proxy");
+    {
+      const { httpsRequest } = require("../lib/security.js");
+      const viaProxy = { socket: {}, headers: { "x-forwarded-proto": "https" } };
+      const prev = process.env.LX_TRUST_PROXY;
+      try {
+        delete process.env.LX_TRUST_PROXY;
+        ok(httpsRequest(viaProxy) === false, "an untrusted X-Forwarded-Proto is ignored (the client could forge it)");
+        process.env.LX_TRUST_PROXY = "1";
+        ok(httpsRequest(viaProxy) === true, "with LX_TRUST_PROXY=1 a proxy's X-Forwarded-Proto: https counts as HTTPS");
+        ok(httpsRequest({ socket: {}, headers: { "x-forwarded-proto": "http" } }) === false, "…and its http does not");
+        ok(httpsRequest({ socket: { encrypted: true }, headers: {} }) === true, "a TLS socket is HTTPS without any header");
+      } finally { if (prev === undefined) delete process.env.LX_TRUST_PROXY; else process.env.LX_TRUST_PROXY = prev; }
+      /* end to end: the running server (no trust flag) never marks a plain-HTTP session cookie Secure */
+      const r = await fetch(BASE + "/api/session", { headers: { "x-forwarded-proto": "https" } });
+      const azs = (r.headers.getSetCookie ? r.headers.getSetCookie() : []).find(c => c.startsWith("azs="));
+      ok(azs && !/;\s*Secure/i.test(azs), "an untrusted proxy header cannot make the server claim HTTPS", azs);
+    }
   } catch (e) {
     failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e) + (e && e.cause ? "\n    cause: " + (e.cause.stack || e.cause) : ""));
     /* what the server said before it went away */

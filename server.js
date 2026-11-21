@@ -74,7 +74,7 @@ function getSession(req, res, url, cookies) {
     sid = crypto.randomBytes(24).toString("hex");
     run("INSERT INTO sessions(sid, expires_at) VALUES(?, datetime('now','+30 days'))", sid);
     s = get("SELECT * FROM sessions WHERE sid=?", sid);
-    res.appendHeader("Set-Cookie", `azs=${sid}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * DAY}${IS_TLS ? "; Secure" : ""}`);
+    res.appendHeader("Set-Cookie", `azs=${sid}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * DAY}${sec.httpsRequest(req) ? "; Secure" : ""}`);
   }
   const st = get("SELECT * FROM tenant_state WHERE sid=? AND tenant_id=?", sid, tenant.id) || { zip: "98109", gift_balance: 0 };
   if (!get("SELECT sid FROM tenant_state WHERE sid=? AND tenant_id=?", sid, tenant.id)) run("INSERT INTO tenant_state(sid,tenant_id) VALUES(?,?)", sid, tenant.id);
@@ -176,10 +176,10 @@ const handler = async (req, res) => {
   req.__ip = clientIp;
   const rid = String(req.headers["x-request-id"] || "");
   req.__trace = /^[A-Za-z0-9._-]{1,128}$/.test(rid) ? rid : crypto.randomUUID();
-  for (const [k, v] of Object.entries(sec.securityHeaders(IS_TLS))) res.setHeader(k, v);
+  for (const [k, v] of Object.entries(sec.securityHeaders(sec.httpsRequest(req)))) res.setHeader(k, v);
   res.setHeader("X-Request-Id", req.__trace); res.setHeader("X-Trace-Id", req.__trace);
   res.setHeader("Access-Control-Expose-Headers", "X-Request-Id, X-Trace-Id");
-  if (IS_TLS && sec.policy().hsts) res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
+  if (sec.httpsRequest(req) && sec.policy().hsts) res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
   res.on("finish", () => {
     const tenant = res.__tenantId || 0;
     metrics.record(tenant, req.method, url.pathname, res.statusCode, Date.now() - t0);
@@ -199,7 +199,7 @@ const handler = async (req, res) => {
       if (url.searchParams.get("store") && SLUG_RE.test(url.searchParams.get("store"))) {
         const cur = res.getHeader("Set-Cookie");
         const arr = cur ? (Array.isArray(cur) ? cur : [cur]) : [];
-        arr.push(`store=${url.searchParams.get("store")}; Path=/; Max-Age=${365 * DAY}; SameSite=Lax${IS_TLS ? "; Secure" : ""}`);
+        arr.push(`store=${url.searchParams.get("store")}; Path=/; Max-Age=${365 * DAY}; SameSite=Lax${sec.httpsRequest(req) ? "; Secure" : ""}`);
         res.setHeader("Set-Cookie", arr);
       }
       if (!session) return api.bad(res, "No store configured", 500);
@@ -215,7 +215,7 @@ const handler = async (req, res) => {
         session.csrf = sec.csrfToken();
         run("UPDATE sessions SET csrf=? WHERE sid=?", session.csrf, session.sid);
       }
-      res.appendHeader("Set-Cookie", `azc=${session.csrf}; Path=/; SameSite=Lax; Max-Age=2592000${IS_TLS ? "; Secure" : ""}`);
+      res.appendHeader("Set-Cookie", `azc=${session.csrf}; Path=/; SameSite=Lax; Max-Age=2592000${sec.httpsRequest(req) ? "; Secure" : ""}`);
       if (sec.policy().csrfEnabled && ["POST", "PUT", "DELETE"].includes(req.method) && cookies.azs && !sec.csrfOk({ headers: { "x-csrf": req.headers["x-csrf"] || req.headers["x-csrf-token"] } }, session)) {
         res.writeHead(403, { "Content-Type": "application/json" }); return res.end(JSON.stringify({ error: "Missing or invalid CSRF token" }));
       }
@@ -289,7 +289,7 @@ const handler = async (req, res) => {
       res.writeHead(302, { Location: "/console.html?" + q.toString(), "Cache-Control": "no-store" });
       return res.end();
     }
-    if (url.searchParams.get("store") && SLUG_RE.test(url.searchParams.get("store"))) res.appendHeader("Set-Cookie", `store=${url.searchParams.get("store")}; Path=/; Max-Age=${365 * DAY}; SameSite=Lax${IS_TLS ? "; Secure" : ""}`);
+    if (url.searchParams.get("store") && SLUG_RE.test(url.searchParams.get("store"))) res.appendHeader("Set-Cookie", `store=${url.searchParams.get("store")}; Path=/; Max-Age=${365 * DAY}; SameSite=Lax${sec.httpsRequest(req) ? "; Secure" : ""}`);
     serveStatic(req, res, url.pathname);
   } catch (e) {
     console.error("FATAL", e);
