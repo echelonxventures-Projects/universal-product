@@ -289,6 +289,14 @@ async function pageHome() {
   main.innerHTML = `<div class="loading">Composing…</div>`;
   const [res, tax] = await Promise.all([api("/products?limit=200"), api("/taxonomy")]);
   const all = res.items;
+  /* a store with nothing on its shelf and no banners yet says so, instead of showing empty
+     carousels and arrows (a new live store starts this way, before the owner adds products) */
+  if (!all.length && !CFG.home.banners.length && !CFG.home.cards.length) {
+    document.title = CFG.brand.name;
+    main.innerHTML = `<section class="empty-store" style="max-width:640px;margin:64px auto;padding:0 16px;text-align:center">
+      <h1>${esc(CFG.brand.name)}</h1><p>We are getting the shelves ready. Our first products are coming soon.</p></section>`;
+    return;
+  }
   const f = CFG.features;
   const deals = all.filter(isDeal).sort((a, b) => discount(b) - discount(a)).slice(0, 12);
   const best = all.filter(p => p.fl.includes("bs")).slice(0, 12);

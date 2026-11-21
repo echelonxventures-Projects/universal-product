@@ -237,7 +237,8 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
           "const d=require('./lib/db.js');console.log(JSON.stringify({products:d.get('SELECT COUNT(*) c FROM products').c,rated:d.get('SELECT COUNT(*) c FROM products WHERE rating>0 OR ratings_count>0').c,reviews:d.get('SELECT COUNT(*) c FROM reviews').c}))"],
           { cwd: path.join(__dirname, ".."), env: { ...process.env, NODE_ENV: "production", LX_DB: prodDb, LUXORA_DEMO_REVIEWS: "" }, encoding: "utf8", timeout: 240000 });
         const n = JSON.parse(out.trim().split("\n").pop());
-        ok(n.products > 0 && n.rated === 0, "a production catalogue starts with no product rated", n);
+        ok(n.products === 0, "a production store starts with an empty catalogue: no sample products, no placeholder universes", n);
+        ok(n.rated === 0, "…so no product is rated", n);
         ok(n.reviews === 0, "…and with no review no customer wrote", n);
       } finally { clean(); }
     }
