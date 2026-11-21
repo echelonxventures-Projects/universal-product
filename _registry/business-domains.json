@@ -1031,7 +1031,7 @@
      "split_payments"
     ],
     "routes": [
-     "^/api/admin/(payments|gateway|gateways)(/|$)",
+     "^/api/admin/(payments|gateway|gateways|notifiers)(/|$)",
      "^/api/fintech/(links|qr|upi|mandates|escrow|splits)(/|$)"
     ],
     "machines": [

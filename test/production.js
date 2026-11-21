@@ -72,8 +72,9 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
 (async () => {
   for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(DB + s, { force: true }); } catch (e) { } }
   const mail = await smtpServer();
-  const env = { ...process.env, PORT, LX_DB: DB, LX_LOG: "", LX_MAIL_PROVIDER: "smtp", LX_MAIL_FROM: "LUXORA <no-reply@luxora.test>",
-    LX_SMTP_URL: `smtp://mailer:s3cret@127.0.0.1:${mail.port}`, LX_SMTP_ALLOW_PLAINTEXT: "1" };
+  /* no sender in the environment: the email sender is configured in the console below */
+  const env = { ...process.env, PORT, LX_DB: DB, LX_LOG: "", LX_SMTP_ALLOW_PLAINTEXT: "1" };
+  for (const k of Object.keys(env)) if (/^LX_(MAIL|SMS)_|^LX_SMTP_URL$/.test(k)) delete env[k];
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env, stdio: ["ignore", "ignore", "pipe"] });
   let stderr = ""; srv.stderr.on("data", d => { stderr += d; });
   for (let i = 0; i < 120 && !(await alive()); i++) await sleep(500);
@@ -85,6 +86,19 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
       const A = mk(); await A("/api/session?store=luxora");
       const li = await A("/api/auth/login?store=luxora", "POST", { email: "admin@luxora.shop", password: "admin123" });
       ok(li.status === 200, "store admin signs in", li.body);
+      const none = await A("/api/admin/notifiers/test/email?store=luxora", "POST", {});
+      ok(none.status === 200 && none.body.ok === false && /No live Email sender/.test(none.body.message), "with no sender configured, the console's test says so", none.body);
+      const ns = await A("/api/admin/notifiers?store=luxora", "PUT", { notifiers: [{ id: "smtp", enabled: true, mode: "live", config: { host: "127.0.0.1", port: String(mail.port), user: "mailer", pass: "s3cret", from: "LUXORA <no-reply@luxora.test>" } }] });
+      ok(ns.status === 200 && ns.body.ok, "the email sender is configured in the store console (SMTP)", ns.body);
+      const shown = ((await A("/api/admin/notifiers?store=luxora")).body.notifiers || []).find(x => x.id === "smtp") || {};
+      ok(shown.enabled && shown.mode === "live" && shown.config.pass === "••••cret" && shown.config.host === "127.0.0.1", "the console shows it live with the password masked", shown.config);
+      const raw = (db => db.get("SELECT config FROM tenant_gateways WHERE provider_id='notify:smtp'"))(require("../lib/db.js"));
+      ok(raw && !raw.config.includes("s3cret") && /lux\.v1\./.test(raw.config), "the password is stored encrypted, not as text");
+      const keep = await A("/api/admin/notifiers?store=luxora", "PUT", { notifiers: [{ id: "smtp", enabled: true, mode: "live", config: { pass: "••••cret" } }] });
+      ok(keep.body.ok && ((await A("/api/admin/notifiers?store=luxora")).body.notifiers.find(x => x.id === "smtp").config.host === "127.0.0.1"), "re-saving with masked values keeps every stored field");
+      const tb = mail.inbox.length;
+      const tst = await A("/api/admin/notifiers/test/email?store=luxora", "POST", {});
+      ok(tst.body.ok && !!(await until(() => mail.inbox.slice(tb).find(x => x.to.some(t => t.includes("admin@luxora.shop"))))), "Send test email reaches the admin's own address", tst.body);
       const pv = await A("/api/admin/identity-providers?store=luxora", "PUT", { provider_type: "otp", name: "Email OTP", enabled: true, config: { channel: "email", length: 6, ttl: 5 } });
       ok(pv.status === 200 && pv.body.ok, "an email OTP provider is configured", pv.body);
       await A("/api/admin/identity-providers?store=luxora", "PUT", { provider_type: "magic_link", name: "Magic link", enabled: true, config: { ttl: 15, baseUrl: "https://shop.example" } });
@@ -191,12 +205,22 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
     {
       const mailer = require("../lib/mailer.js");
       const connect = require("../lib/connect.js");
-      const saved = { ...process.env };
-      Object.assign(process.env, { LX_MAIL_PROVIDER: "smtp", LX_MAIL_FROM: "Shop <s@luxora.test>", LX_SMTP_URL: `smtp://u:p@127.0.0.1:${mail.port}` });
+      const sec = require("../lib/security.js");
+      const db = require("../lib/db.js");
+      /* the platform default sender is the master store's own gateway: each case sets it there,
+         the way the console does, and a send for no store (tenantId 0) goes through it */
+      const master = db.masterTenant().id;
+      const sender = (id, cfg, secrets) => {
+        db.run("DELETE FROM tenant_gateways WHERE tenant_id=? AND provider_id LIKE 'notify:%' AND provider_id<>'notify:log'", master);
+        if (id) db.run("INSERT INTO tenant_gateways(tenant_id,provider_id,enabled,mode,config,position) VALUES(?,?,1,'live',?,0)", master, "notify:" + id, sec.sealConfig(master, "notify:" + id, cfg, secrets));
+      };
+      const savedPlain = process.env.LX_SMTP_ALLOW_PLAINTEXT;
+      sender("smtp", { host: "127.0.0.1", port: String(mail.port), user: "u", pass: "p", from: "Shop <s@luxora.test>" }, ["pass"]);
       delete process.env.LX_SMTP_ALLOW_PLAINTEXT;
       const plain = await mailer.send({ tenantId: 0, channel: "email", to: "x@example.com", subject: "s", text: "t" });
       ok(!plain.sent && /STARTTLS/.test(plain.error), "a relay without STARTTLS is refused unless plaintext is explicitly allowed", plain);
       process.env.LX_SMTP_ALLOW_PLAINTEXT = "1";
+      ok((mailer.transportFor(0, "email") || {}).scope === "platform", "a send for no store goes through the platform's own store's sender");
       const b = mail.inbox.length;
       const inj = await mailer.send({ tenantId: 0, channel: "email", to: "x@example.com", subject: "Hi\r\nBcc: victim@example.com", text: "line\n.\nafter" });
       const im = mail.inbox[b];
@@ -207,12 +231,12 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
 
       const calls = [];
       connect.__setTransport(async (url, o) => { calls.push({ url, o }); return { ok: true, status: 201, text: async () => JSON.stringify({ sid: "SM1", id: "re_1" }) }; });
-      Object.assign(process.env, { LX_SMS_PROVIDER: "twilio", LX_SMS_ACCOUNT_SID: "AC123", LX_SMS_AUTH_TOKEN: "tok", LX_SMS_FROM: "+15550001111" });
+      db.run("INSERT INTO tenant_gateways(tenant_id,provider_id,enabled,mode,config,position) VALUES(?,?,1,'live',?,1)", master, "notify:twilio", sec.sealConfig(master, "notify:twilio", { sid: "AC123", token: "tok", from: "+15550001111" }, ["token"]));
       const sms = await mailer.send({ tenantId: 0, channel: "sms", to: "+15551234567", subject: "Your sign-in code", text: "Your code is 123456" });
       const c0 = calls[0];
       ok(sms.sent && c0 && c0.url === "https://api.twilio.com/2010-04-01/Accounts/AC123/Messages.json", "SMS goes to Twilio's Messages API for the configured account", c0 && c0.url);
       ok(c0 && c0.o.headers.Authorization === "Basic " + Buffer.from("AC123:tok").toString("base64") && /To=%2B15551234567/.test(c0.o.body) && /Body=Your\+code\+is\+123456/.test(c0.o.body), "…authenticated, to the right number, with the message", c0 && c0.o.body);
-      Object.assign(process.env, { LX_MAIL_PROVIDER: "resend", LX_MAIL_API_KEY: "re_key" });
+      sender("resend", { apiKey: "re_key", from: "Shop <s@luxora.test>" }, ["apiKey"]);
       const rs = await mailer.send({ tenantId: 0, channel: "email", to: "x@example.com", subject: "Hello", text: "Body" });
       const c1 = calls[1];
       ok(rs.sent && c1 && c1.url === "https://api.resend.com/emails" && c1.o.headers.Authorization === "Bearer re_key" && JSON.parse(c1.o.body).to[0] === "x@example.com", "email can go through an HTTP provider (Resend) instead of SMTP", c1 && c1.o.body);
@@ -220,8 +244,8 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
       const fail = await mailer.send({ tenantId: 0, channel: "email", to: "x@example.com", subject: "Hello", text: "Body" });
       ok(!fail.sent && /bad key/.test(fail.error), "a provider rejection is reported, not treated as sent", fail);
       connect.__setTransport(null);
-      for (const k of Object.keys(process.env)) if (!(k in saved)) delete process.env[k];
-      Object.assign(process.env, saved);
+      sender(null);
+      if (savedPlain === undefined) delete process.env.LX_SMTP_ALLOW_PLAINTEXT; else process.env.LX_SMTP_ALLOW_PLAINTEXT = savedPlain;
       const none = await mailer.send({ tenantId: 0, channel: "sms", to: "+15551234567", subject: "s", text: "t" });
       ok(!none.sent && /no sms transport/.test(none.error), "with no transport the send reports that, rather than claiming success", none);
     }

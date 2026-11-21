@@ -264,6 +264,9 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `POST /api/fintech/escrow/:id/release` | `apiFinEscrowRelease` | — |
 | `POST /api/fintech/escrow/:id/dispute` | `apiFinEscrowDispute` | — |
 | `POST /api/fintech/splits` | `apiFinSplit` | — |
+| `GET /api/admin/notifiers` | `apiAdminNotifiers` | lists every email / SMS provider the platform declares, with its fields, whether this store has it enabled and live, and its stored values masked |
+| `PUT /api/admin/notifiers` | `apiAdminNotifiersPut` | saves the store's email / SMS senders: enabled, mode and credentials, encrypted; a masked or empty value keeps what is stored |
+| `POST /api/admin/notifiers/test/:channel` | `apiAdminNotifierTest` | sends one test message to the signed-in admin's own address through the store's transport |
 | `GET /api/admin/gateways` | `apiAdminGateways` | — |
 | `PUT /api/admin/gateways` | `apiAdminGatewaysPut` | — |
 | `POST /api/admin/gateways/:id/test` | `apiAdminGatewayTest` | — |
@@ -361,7 +364,7 @@ Actions:
 ```mermaid
 flowchart LR
   U([Shopper / Store administrator / Platform administrator / Developer]) --> UI[store console, platform console]
-  UI --> API[22 API routes]
+  UI --> API[25 API routes]
   API --> ENG[payments.js]
   ENG --> DB[(tenant_gateways, payments, payment_attempts, upi_handles, upi_collects, qr_codes, …)]
   ENG --> SM{{8 state machines}}

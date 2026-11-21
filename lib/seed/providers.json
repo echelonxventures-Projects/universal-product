@@ -2255,7 +2255,6 @@
    "default": true,
    "address": "email",
    "pattern": "^[^@\\s<>]+@[^@\\s<>]+\\.[^@\\s<>]+$",
-   "env": "mail",
    "providers": [
     {
      "key": "smtp"
@@ -2273,7 +2272,6 @@
    "name": "SMS",
    "address": "phone",
    "pattern": "^\\+?[0-9][0-9 ()-]{5,19}$",
-   "env": "sms",
    "providers": [
     {
      "key": "twilio"

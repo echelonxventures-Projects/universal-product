@@ -37,7 +37,7 @@ const setSpec = (id, s) => db.run("UPDATE provider_defs SET spec=? WHERE id=? AN
     ok(declared.every(id => specOf(id).transport === providers.PROVIDER_SPECS["notification:" + id].transport), "the declarations reach provider_defs on boot (" + declared.join(", ") + ")");
 
     console.log("▸ THE KERNEL FOLLOWS THE DECLARATION");
-    const smtpId = declared.find(id => mailer.kernelOf(id) && mailer.kernelOf(id).urlEnv);
+    const smtpId = declared.find(id => mailer.kernelOf(id) && !mailer.isLocal(id));
     const logId = declared.find(id => mailer.isLocal(id));
     ok(!!smtpId && !!logId, "one provider declares the SMTP kernel, one the local log", { smtpId, logId });
     ok(mailer.localNotifier() === logId, "a new store's starting notifier is the provider whose transport is local");
@@ -48,16 +48,19 @@ const setSpec = (id, s) => db.run("UPDATE provider_defs SET spec=? WHERE id=? AN
     ok(!mailer.isLocal(logId) && mailer.localNotifier() === "devconsole", "removing the declaration stops the old provider being local; the next declared one takes over");
     setSpec(logId, before);
 
-    console.log("▸ THE PLATFORM DEFAULT IS CHOSEN BY THE KERNEL THAT READS IT");
-    const k = mailer.kernelOf(smtpId);
-    const save = { url: process.env[k.urlEnv], from: process.env.LX_MAIL_FROM, prov: process.env.LX_MAIL_PROVIDER };
-    delete process.env.LX_MAIL_PROVIDER;
-    process.env[k.urlEnv] = "smtps://u%40x:p@mail.example.test:465"; process.env.LX_MAIL_FROM = "noreply@example.test";
-    const t = mailer.transportFor(null, "email");
-    ok(t && t.provider === smtpId && t.config.host === "mail.example.test" && t.config.user === "u@x" && t.config.secure === true, "a URL in " + k.urlEnv + " selects the provider whose kernel reads it", t);
-    if (save.url === undefined) delete process.env[k.urlEnv]; else process.env[k.urlEnv] = save.url;
-    if (save.from === undefined) delete process.env.LX_MAIL_FROM; else process.env.LX_MAIL_FROM = save.from;
-    if (save.prov !== undefined) process.env.LX_MAIL_PROVIDER = save.prov;
+    console.log("▸ THE PLATFORM DEFAULT IS THE MASTER STORE'S OWN SENDER");
+    {
+      const sec = require("../lib/security.js");
+      const master = db.masterTenant().id;
+      ok(!mailer.transportFor(null, "email"), "with no sender on the master store there is no platform default (the environment carries none)");
+      db.run("INSERT INTO tenant_gateways(tenant_id,provider_id,enabled,mode,config,position) VALUES(?,?,1,'live',?,9)", master, "notify:" + smtpId,
+        sec.sealConfig(master, "notify:" + smtpId, { host: "mail.example.test", port: "465", user: "u@x", pass: "p", from: "noreply@example.test" }, ["pass"]));
+      const t = mailer.transportFor(null, "email");
+      ok(t && t.provider === smtpId && t.scope === "platform" && t.config.host === "mail.example.test" && t.config.pass === "p", "the master store's live sender is every other store's default, decrypted", t && { provider: t.provider, scope: t.scope });
+      const own = mailer.transportFor(master, "email");
+      ok(own && own.scope === "store", "on the master store itself it is the store's own sender");
+      db.run("DELETE FROM tenant_gateways WHERE tenant_id=? AND provider_id=?", master, "notify:" + smtpId);
+    }
 
     console.log("▸ AN IDENTITY PROVIDER TYPE DECLARES ITS PROTOCOLS");
     const types = identity.getProviderTypes();

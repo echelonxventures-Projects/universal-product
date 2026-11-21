@@ -57,7 +57,7 @@
     {"pattern": "^/api/(ai|platform/ai)(/|$)", "owner": "Agent"},
     {"pattern": "^/api/admin/ai-gateways(/|$)", "owner": "Agent"},
     {"pattern": "^/api/(webhooks|providers)(/|$)", "owner": "Integration"},
-    {"pattern": "^/api/admin/(webhooks|gateway|gateways|custom-providers|export)(/|$)", "owner": "Integration"},
+    {"pattern": "^/api/admin/(webhooks|gateway|gateways|notifiers|custom-providers|export)(/|$)", "owner": "Integration"},
     {"pattern": "^/api/platform/(custom-providers|fanout)(/|$)", "owner": "Integration"},
     {"pattern": "^/api/(dashboards|reports|experiments)(/|$)", "owner": "Insight"},
     {"pattern": "^/api/admin/(analytics|stats|experiments|planning)(/|$)", "owner": "Insight"},
