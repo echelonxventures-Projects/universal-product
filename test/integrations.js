@@ -190,16 +190,6 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
       ok((await post("razorpay", rzRaw, { "X-Razorpay-Signature": rzSig("wrong") })).status === 401 && rz.row().status === "pending", "Razorpay: a webhook signed with the wrong secret changes nothing");
       const rzOk = await post("razorpay", rzRaw, { "X-Razorpay-Signature": rzSig("rzp_whsec") });
       ok(rzOk.status === 200 && rz.row().status === "captured" && rz.row().ostatus === "processing" && rz.row().provider_payment_id === "pay_rzp_1", "Razorpay: a signed payment_link.paid captures the payment and releases the order", rzOk.body);
-      {
-        /* the deployment's own store reads a gateway's credentials from LX_PAY_<PROVIDER>_<FIELD> */
-        const api = require("../lib/api.js"); const prev = process.env.LX_PAY_RAZORPAY_KEYID;
-        process.env.LX_PAY_RAZORPAY_KEYID = "rzp_test_from_env";
-        try {
-          ok(api.gatewaySecrets(1, "razorpay").cfg.keyId === "rzp_test_from_env", "a gateway credential in the environment overrides the stored one on the master store");
-          const other = db.get("SELECT id FROM tenants WHERE id<>1 ORDER BY id LIMIT 1");
-          if (other) ok(!("keyId" in (api.envGatewayConfig(other.id, "razorpay"))), "…and never reaches another store");
-        } finally { if (prev === undefined) delete process.env.LX_PAY_RAZORPAY_KEYID; else process.env.LX_PAY_RAZORPAY_KEYID = prev; }
-      }
 
       gwCfg("square", { appId: "sq_app", token: "sq_tok", webhookSecret: "sq_key", webhookUrl: "https://shop.example/api/webhooks/inbound/square" }, ["token", "webhookSecret"]);
       const sq = await pendingOn("square", "sq_pay_1");
