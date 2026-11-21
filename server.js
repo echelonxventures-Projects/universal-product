@@ -390,12 +390,12 @@ listenServer.listen(PORT, () => {
   const master = masterTenant();
   const fixtures = tenants.filter(t => !master || t.slug !== master.slug);
   console.log(`
-  ██╗  ██╗██╗   ██╗██╗  ██╗ ██████╗ ██████╗  ██████╗  █████╗
-  ██║  ██║██║   ██║██║ ██╔╝██╔═══██╗██╔══██╗██╔════╝ ██╔══██╗
-  ███████║██║   ██║█████╔╝ ██║   ██║██████╔╝██║  ███╗███████║
-  ██╔══██║██║   ██║██╔═██╗ ██║   ██║██╔══██╗██║   ██║██║  ██║
-  ██║  ██║╚██████╔╝██║  ██╗╚██████╔╝██║  ██║╚██████╔╝██║  ██║
-  ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝
+  ██╗     ██╗   ██╗██╗  ██╗ ██████╗ ██████╗  █████╗
+  ██║     ██║   ██║╚██╗██╔╝██╔═══██╗██╔══██╗██╔══██╗
+  ██║     ██║   ██║ ╚███╔╝ ██║   ██║██████╔╝███████║
+  ██║     ██║   ██║ ██╔██╗ ██║   ██║██╔══██╗██╔══██║
+  ███████╗╚██████╔╝██╔╝ ██╗╚██████╔╝██║  ██║██║  ██║
+  ╚══════╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
    P L A T F O R M  ·  the master global platform, configured into any platform  ·  🛡 10-layer security${IS_TLS ? " (TLS ON)" : " (HTTP — set LUX_TLS=1 for HTTPS)"}
 
    🏬 Master:      http${IS_TLS ? "s" : ""}://${(master || { slug: "luxora" }).slug}.localhost:${PORT} (the master's own deployment${fixtures.length ? `, +${fixtures.length} fixture${fixtures.length > 1 ? "s" : ""}` : ""})
